@@ -21,6 +21,7 @@ namespace Content.Server.Preferences.Managers
         IEnumerable<KeyValuePair<NetUserId, ICharacterProfile>> GetSelectedProfilesForPlayers(List<NetUserId> userIds);
         bool HavePreferencesLoaded(ICommonSession session);
         Task RefreshPreferencesAsync(ICommonSession session, CancellationToken cancel);
+        void ResendPreferences(NetUserId userId); // WOLFGATE(Feedback): push a server-side change such as the bank balance to the client
         Task SetProfile(NetUserId userId, int slot, ICharacterProfile profile,
             bool authoritative = true); // Mono
     }

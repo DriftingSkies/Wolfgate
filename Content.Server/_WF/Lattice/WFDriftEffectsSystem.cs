@@ -4,6 +4,8 @@ using Content.Server._WF.Remade.Conversion;
 using Content.Server.Chat.Managers;
 using Content.Shared._WF.Lattice;
 using Content.Shared.Chat;
+using Content.Shared.Examine;
+using Content.Shared.Ghost;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
@@ -30,6 +32,7 @@ public sealed partial class WFDriftEffectsSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private ExamineSystemShared _examine = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
@@ -39,6 +42,10 @@ public sealed partial class WFDriftEffectsSystem : EntitySystem
     private const int RadioLines = 8;
     private const int HailLines = 6;
     private const int FakeShips = 8;
+    private const int MimicLines = 12;
+
+    /// <summary>How far away someone can be and still be seen as Remade or overheard saying what they didn't.</summary>
+    private const float NearRange = 10f;
     private const string RadioColor = "#2cdb2c";
 
     private static readonly SoundSpecifier[] Sounds =
@@ -74,7 +81,10 @@ public sealed partial class WFDriftEffectsSystem : EntitySystem
         if (_next.TryGetValue(session.UserId, out var next) && now < next)
             return;
 
-        _next[session.UserId] = now + TimeSpan.FromSeconds(profile.EffectInterval * _random.NextFloat(0.6f, 1.4f));
+        var share = Math.Clamp(drift / profile.DriftMax, 0f, 1f);
+        // The rolls come closer together as Drift climbs, until at full Drift something is always happening.
+        var interval = MathHelper.Lerp(profile.EffectInterval, profile.EffectIntervalAtMax, MathF.Pow(share, 1.5f));
+        _next[session.UserId] = now + TimeSpan.FromSeconds(interval * _random.NextFloat(0.6f, 1.4f));
         if (!_mobState.IsAlive(mob))
             return;
 
@@ -89,10 +99,19 @@ public sealed partial class WFDriftEffectsSystem : EntitySystem
             total += effect.Weight;
         }
 
-        var share = Math.Clamp(drift / profile.DriftMax, 0f, 1f);
         if (_open.Count == 0 || !_random.Prob(MathHelper.Lerp(profile.EffectChance.X, profile.EffectChance.Y, share)))
             return;
 
+        // Near the top they pile on each other.
+        var count = share >= 0.95f ? 3 : share >= 0.8f ? 2 : 1;
+        for (var i = 0; i < count; i++)
+        {
+            Pick(session, mob, total);
+        }
+    }
+
+    private void Pick(ICommonSession session, EntityUid mob, float total)
+    {
         var pick = _random.NextFloat(total);
         foreach (var effect in _open)
         {
@@ -125,22 +144,77 @@ public sealed partial class WFDriftEffectsSystem : EntitySystem
                 _audio.PlayStatic(_random.Pick(Sounds), Filter.SinglePlayer(session), Near(mob, 3f, 6f), true);
                 return;
             case WFLatticeHallucinationKind.Blip:
-                // A contact somewhere out in the dark round the ship.
-                RaiseNetworkEvent(new WFLatticeHallucinationEvent(kind, GetNetCoordinates(Near(mob, 400f, 1500f, true)), 25f, seed), session);
+                // A contact somewhere out in the dark round the ship; now and then a true one.
+                var contact = _random.Prob(TrueBlipChance) && TrueThing(mob, BlipRange) is { } real
+                    ? real
+                    : Near(mob, 400f, 1500f, true);
+                RaiseNetworkEvent(new WFLatticeHallucinationEvent(kind, GetNetCoordinates(contact), 25f, seed), session);
                 return;
             case WFLatticeHallucinationKind.Glimpse:
-                RaiseNetworkEvent(new WFLatticeHallucinationEvent(kind, GetNetCoordinates(Near(mob, 4f, 7f)), 0.6f, seed), session);
+                Shared(session, mob, new WFLatticeHallucinationEvent(kind, GetNetCoordinates(Near(mob, 4f, 7f)), 0.6f, seed));
                 return;
             case WFLatticeHallucinationKind.Phantom:
                 var at = Near(mob, 5f, 8f);
-                RaiseNetworkEvent(new WFLatticeHallucinationEvent(kind, GetNetCoordinates(at), 8f, seed), session);
+                Shared(session, mob, new WFLatticeHallucinationEvent(kind, GetNetCoordinates(at), 8f, seed));
                 _audio.PlayStatic(Menace, Filter.SinglePlayer(session), at, true);
                 return;
             case WFLatticeHallucinationKind.Pulse:
                 RaiseNetworkEvent(new WFLatticeHallucinationEvent(kind, GetNetCoordinates(Transform(mob).Coordinates), PulseSeconds, seed), session);
                 _audio.PlayGlobal(PulseSound, session);
                 return;
+            case WFLatticeHallucinationKind.Bleed:
+                Shared(session, mob, new WFLatticeHallucinationEvent(kind, GetNetCoordinates(Transform(mob).Coordinates), _random.NextFloat(6f, 14f), seed));
+                return;
+            case WFLatticeHallucinationKind.Mirror:
+                RaiseNetworkEvent(new WFLatticeHallucinationEvent(kind, GetNetCoordinates(new EntityCoordinates(mob, Vector2.Zero)), _random.NextFloat(2f, 6f), seed), session);
+                _popup.PopupEntity(Loc.GetString("wf-lattice-mirror"), mob, session, PopupType.LargeCaution);
+                return;
+            case WFLatticeHallucinationKind.Swarm:
+                Shared(session, mob, new WFLatticeHallucinationEvent(kind, GetNetCoordinates(Transform(mob).Coordinates), _random.NextFloat(1.2f, 2.5f), seed));
+                _audio.PlayStatic(Menace, Filter.SinglePlayer(session), Transform(mob).Coordinates, true);
+                return;
+            case WFLatticeHallucinationKind.Turn:
+                if (Someone(mob) is not { } other)
+                {
+                    Show(session, mob, WFLatticeHallucinationKind.Mirror);
+                    return;
+                }
+
+                RaiseNetworkEvent(new WFLatticeHallucinationEvent(kind, GetNetCoordinates(new EntityCoordinates(other, Vector2.Zero)), _random.NextFloat(1.5f, 5f), seed), session);
+                return;
+            case WFLatticeHallucinationKind.Mimic:
+                if (Someone(mob) is not { } speaker)
+                {
+                    Show(session, mob, WFLatticeHallucinationKind.Radio);
+                    return;
+                }
+
+                var line = Loc.GetString($"wf-lattice-mimic-{_random.Next(1, MimicLines + 1)}", ("name", Name(mob)));
+                var said = Loc.GetString("wf-lattice-mimic-wrap", ("name", Name(speaker)), ("message", line));
+                _chat.ChatMessageToOne(ChatChannel.Local, line, said, EntityUid.Invalid, false, session.Channel);
+                return;
+            default:
+                ShowLie(session, mob, kind, seed);
+                return;
         }
+    }
+
+    /// <summary>Another living person this one can see close by, if any.</summary>
+    private EntityUid? Someone(EntityUid mob)
+    {
+        var near = new List<EntityUid>();
+        var query = EntityQueryEnumerator<MobStateComponent, TransformComponent>();
+        var at = _transform.GetMapCoordinates(mob);
+        while (query.MoveNext(out var uid, out _, out var xform))
+        {
+            if (uid == mob || xform.MapID != at.MapId || HasComp<GhostComponent>(uid) || !_mobState.IsAlive(uid)
+                || !_examine.InRangeUnOccluded(mob, uid, NearRange))
+                continue;
+
+            near.Add(uid);
+        }
+
+        return near.Count == 0 ? null : _random.Pick(near);
     }
 
     /// <summary>Rolls whether the Unmooring takes one of a ship's small animals this tick.</summary>

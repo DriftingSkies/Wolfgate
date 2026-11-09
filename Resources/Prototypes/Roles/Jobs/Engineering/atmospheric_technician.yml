@@ -12,6 +12,9 @@
   supervisors: job-supervisors-hire # Frontier
   accessGroups: # Frontier
   - GeneralAccess # Frontier
+  # WOLFGATE(Feedback): atmos techs can use air alarms
+  access:
+  - Atmospherics
   special:
   - !type:GiveItemOnHolidaySpecial
     holiday: FirefighterDay

@@ -21,6 +21,10 @@
       - id: DrinkDetFlask
       - id: BoxEvidenceMarkers
       - id: HandLabeler
+      # WOLFGATE(Photography)
+      - id: WFCameraDetective
+      - id: WFCameraFilm
+        amount: 2
   - type: AccessReader
     access: [["Detective"]]
 

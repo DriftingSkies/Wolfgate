@@ -132,9 +132,12 @@ public sealed partial class WFAdsCampaignSystem
         state.NoNodeSince = null;
         state.Defeated = false;
         Recompute();
-        AnnouncePlace(campaign, announcement, true, at.MapId, at.Position,
-            ("callsign", WFSectorHex.Callsign(cell)),
-            ("bounty", ByTier(campaign.NodeBounty, state.Tier, 0)));
+        var args = new (string, object)[] { ("callsign", WFSectorHex.Callsign(cell)), ("bounty", ByTier(campaign.NodeBounty, state.Tier, 0)) };
+        // Only the first node and a wake from dormancy are banners; the rest go on the radio.
+        if (state.Founded == 1 || announcement == "wf-ads-node-regrouped")
+            AnnouncePlace(campaign, announcement, true, at.MapId, at.Position, args);
+        else
+            AnnounceRadio(PlaceLine(announcement, at.MapId, at.Position, args));
     }
 
     /// <summary>Claims a node's cell and ring for it; a cell with a station in it is skipped.</summary>
@@ -377,11 +380,11 @@ public sealed partial class WFAdsCampaignSystem
         var freed = _territory.Release(uid);
         state.Broken++;
         AfterNodeGone(state);
-        AnnouncePlace(campaign, "wf-ads-node-broken", false, Transform(uid).MapID, Position(encounter, comp.Lead),
+        AnnounceRadio(PlaceLine("wf-ads-node-broken", Transform(uid).MapID, Position(encounter, comp.Lead),
             ("callsign", WFSectorHex.Callsign(comp.Cell)),
             ("bounty", bounty),
             ("paid", paid),
-            ("cells", freed));
+            ("cells", freed)));
         AnnounceDefeat(campaign, state);
     }
 

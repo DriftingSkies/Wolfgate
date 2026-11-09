@@ -53,6 +53,8 @@ def update_submodules():
 
     # If the status doesn't match, force VS to reload the solution.
     # status = run_command(["git", "submodule", "status"], capture=True)
+    # WOLFGATE(Engine): pick up the Lupine URL in clones made before the submodule moved off space-wizards
+    run_command(["git", "submodule", "sync", "--recursive"])
     run_command(["git", "submodule", "update", "--init", "--recursive"])
     # status2 = run_command(["git", "submodule", "status"], capture=True)
 

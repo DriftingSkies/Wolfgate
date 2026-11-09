@@ -52,9 +52,11 @@ public sealed class JoinProgressTest
             Assert.That(info.OverGameConnection, Is.True);
         });
 
+        // The flag follows the channel the engine actually gave this client, not the cvar: the test network has no
+        // websocket, so with the fast channel switched on the files still travel over the game connection.
         await server.WaitPost(() => cfg.SetCVar(CVars.TransferHttp, true));
         await Reconnect();
-        Assert.That(clientManager.DownloadInfo!.OverGameConnection, Is.False, "WebSocket bytes aren't in net statistics.");
+        Assert.That(clientManager.DownloadInfo!.OverGameConnection, Is.True, "no websocket was connected, so the files use the game connection");
 
         await server.WaitPost(() => cfg.SetCVar(CVars.TransferHttp, false));
         await client.WaitPost(() => clientNet.ClientDisconnect("For testing"));

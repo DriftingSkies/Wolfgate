@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Server._WF.Planets.Flight;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Shuttles.Components;
@@ -6,6 +7,8 @@ using Content.Server.Shuttles.Systems;
 using Content.Shared._WF.Lattice;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
+using Content.Shared.Doors.Components;
+using Content.Shared.Doors.Systems;
 using Content.Shared.Ghost;
 using Content.Shared.Maps;
 using Content.Shared.Mobs.Components;
@@ -29,10 +32,11 @@ namespace Content.Server._WF.Lattice;
 /// The Coda is not a place to linger. A crewed ship out there is found by Remade hunters the longer it stays, has its
 /// structure eaten unless a stabiliser runs, and has its thrusters, gyroscopes and power give out now and then.
 /// </summary>
-public sealed class WFCodaHazardSystem : EntitySystem
+public sealed partial class WFCodaHazardSystem : EntitySystem
 {
     [Dependency] private ApcSystem _apc = default!;
     [Dependency] private DamageableSystem _damage = default!;
+    [Dependency] private SharedDoorSystem _doors = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPlayerManager _players = default!;
     [Dependency] private IPrototypeManager _proto = default!;
@@ -45,6 +49,7 @@ public sealed class WFCodaHazardSystem : EntitySystem
     [Dependency] private ThrusterSystem _thrusters = default!;
     [Dependency] private TurfSystem _turf = default!;
     [Dependency] private WFLatticeSystem _lattice = default!;
+    [Dependency] private WFCodaFleshSystem _flesh = default!;
 
     private static readonly ProtoId<DamageTypePrototype> Structural = "Structural";
     private static readonly SoundSpecifier BoardSound = new SoundCollectionSpecifier("WFDreadMenace");
@@ -53,7 +58,9 @@ public sealed class WFCodaHazardSystem : EntitySystem
     private static readonly TimeSpan Tick = TimeSpan.FromSeconds(5);
     private const float HunterRollSeconds = 60f;
     private const float RotSeconds = 20f;
-    private const float FailureRollSeconds = 40f;
+
+    /// <summary>Most doors one fault slams, opens or bolts.</summary>
+    private const int DoorFaults = 5;
 
     /// <summary>Hunters keep this far from the crew when they board, in metres.</summary>
     private const float BoardDistance = 6f;
@@ -67,6 +74,7 @@ public sealed class WFCodaHazardSystem : EntitySystem
     {
         Thruster,
         Breaker,
+        Bolt,
     }
 
     /// <summary>One crewed ship's time in the Coda.</summary>
@@ -77,12 +85,15 @@ public sealed class WFCodaHazardSystem : EntitySystem
         public float RotClock;
         public float FailureClock;
         public TimeSpan HuntersAfter;
+        public TimeSpan LeviathanAfter;
         public readonly List<EntityUid> Hunters = new();
     }
 
     public override void Initialize()
     {
         base.Initialize();
+        UpdatesBefore.Add(typeof(PowerNetSystem));
+        SubscribeLocalEvent<WFCodaFlutterComponent, ComponentShutdown>(OnFlutterShutdown);
         SubscribeLocalEvent<Content.Shared.GameTicking.RoundRestartCleanupEvent>(_ =>
         {
             _ships.Clear();
@@ -96,6 +107,8 @@ public sealed class WFCodaHazardSystem : EntitySystem
 
         var now = _timing.CurTime;
         RestoreFailures(now);
+        UpdateLeviathans(now);
+        Flutter(now);
         if (now < _next)
             return;
 
@@ -147,8 +160,15 @@ public sealed class WFCodaHazardSystem : EntitySystem
                     Rot((grid, gridComp), crew, depth, profile);
             }
 
-            ship.FailureClock += seconds;
-            if (ship.FailureClock >= FailureRollSeconds)
+            // Flesh takes root on an unsheltered ship, and now and then something vast passes by.
+            if (!sheltered)
+                _flesh.Roll((grid, gridComp), crew, depth, profile, seconds);
+
+            RollLeviathan((grid, gridComp), ship, crew, depth, profile, seconds, now);
+
+            // Faults come quicker the longer the ship stays and the deeper it is.
+            ship.FailureClock += seconds * (1f + depth + Math.Min(ship.Exposure / 300f, 1f));
+            if (ship.FailureClock >= profile.FailureInterval)
             {
                 ship.FailureClock = 0f;
                 RollFailure(grid, crew, profile, now);
@@ -177,15 +197,28 @@ public sealed class WFCodaHazardSystem : EntitySystem
         Rot(grid, new List<EntityUid>(), depth, profile);
     }
 
-    /// <summary>Makes one kind of system give out on a ship: 0 thrusters, 1 gyroscopes, 2 power.</summary>
+    /// <summary>Makes one kind of system give out on a ship: 0 thrusters, 1 gyroscopes, 2 power, 3 flickering power, 4 doors.</summary>
     public bool FailNow(EntityUid grid, int kind, float seconds)
     {
-        var until = _timing.CurTime + TimeSpan.FromSeconds(seconds);
+        return Fail(grid, kind, _timing.CurTime + TimeSpan.FromSeconds(seconds)) != null;
+    }
+
+    /// <summary>Whether a ship is counted as crewed and in the Coda.</summary>
+    public bool IsExposed(EntityUid grid)
+    {
+        return _ships.ContainsKey(grid);
+    }
+
+    /// <summary>Makes one kind of system give out; the popup to show, or null if nothing aboard could fail.</summary>
+    private string? Fail(EntityUid grid, int kind, TimeSpan until)
+    {
         return kind switch
         {
-            0 => FailThrusters(grid, ThrusterType.Linear, until),
-            1 => FailThrusters(grid, ThrusterType.Angular, until),
-            _ => FailPower(grid, until),
+            0 => FailThrusters(grid, ThrusterType.Linear, until) ? "wf-coda-fail-thrusters" : null,
+            1 => FailThrusters(grid, ThrusterType.Angular, until) ? "wf-coda-fail-gyros" : null,
+            2 => FailPower(grid, until) ? "wf-coda-fail-power" : null,
+            3 => FlutterPower(grid, until) ? "wf-coda-fail-flutter" : null,
+            _ => FailDoors(grid, until) ? "wf-coda-fail-doors" : null,
         };
     }
 
@@ -242,6 +275,12 @@ public sealed class WFCodaHazardSystem : EntitySystem
         {
             _popup.PopupEntity(Loc.GetString("wf-coda-hunters"), mob, mob, PopupType.LargeCaution);
         }
+    }
+
+    /// <summary>An open floor tile well away from the crew, for something to take root or come aboard.</summary>
+    public bool TryFindQuietFloor(Entity<MapGridComponent> grid, List<EntityUid> crew, out EntityCoordinates at)
+    {
+        return TryFindBoarding(grid, crew, out at);
     }
 
     /// <summary>An open floor tile well away from the crew.</summary>
@@ -306,13 +345,7 @@ public sealed class WFCodaHazardSystem : EntitySystem
             return;
 
         var until = now + TimeSpan.FromSeconds(_random.NextFloat(profile.FailureSeconds.X, profile.FailureSeconds.Y));
-        var kind = _random.Next(3);
-        var message = kind switch
-        {
-            0 => FailThrusters(grid, ThrusterType.Linear, until) ? "wf-coda-fail-thrusters" : null,
-            1 => FailThrusters(grid, ThrusterType.Angular, until) ? "wf-coda-fail-gyros" : null,
-            _ => FailPower(grid, until) ? "wf-coda-fail-power" : null,
-        };
+        var message = Fail(grid, _random.Pick(FailureKinds), until);
 
         if (message == null)
             return;
@@ -359,6 +392,97 @@ public sealed class WFCodaHazardSystem : EntitySystem
         return any;
     }
 
+    /// <summary>Flickering power and doors are the commonest faults; dead breakers and engines the rarest.</summary>
+    private static readonly int[] FailureKinds = { 0, 1, 2, 3, 3, 3, 4, 4, 4 };
+
+    /// <summary>Makes every APC aboard cut in and out until the time is up.</summary>
+    private bool FlutterPower(EntityUid grid, TimeSpan until)
+    {
+        var any = false;
+        var query = EntityQueryEnumerator<ApcComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out _, out var xform))
+        {
+            if (xform.GridUid != grid || HasComp<WFCrashApcFaultComponent>(uid))
+                continue;
+
+            // A flicker already running keeps its later end and its rhythm.
+            var running = HasComp<WFCodaFlutterComponent>(uid);
+            var flutter = EnsureComp<WFCodaFlutterComponent>(uid);
+            if (!running || until > flutter.Until)
+                flutter.Until = until;
+            if (!running)
+                flutter.Next = _timing.CurTime;
+            any = true;
+        }
+
+        return any;
+    }
+
+    /// <summary>Cuts fluttering APCs' output in and out, a moment to a couple of seconds at a time.</summary>
+    private void Flutter(TimeSpan now)
+    {
+        var query = EntityQueryEnumerator<WFCodaFlutterComponent, ApcComponent, PowerNetworkBatteryComponent>();
+        while (query.MoveNext(out var uid, out var flutter, out var apc, out var battery))
+        {
+            if (now >= flutter.Until)
+            {
+                RemCompDeferred<WFCodaFlutterComponent>(uid);
+                continue;
+            }
+
+            if (now >= flutter.Next)
+            {
+                flutter.Out = !flutter.Out;
+                flutter.Next = now + TimeSpan.FromSeconds(flutter.Out ? _random.NextFloat(0.15f, 1.2f) : _random.NextFloat(0.3f, 2.5f));
+            }
+
+            battery.CanDischarge = apc.MainBreakerEnabled && !flutter.Out;
+        }
+    }
+
+    private void OnFlutterShutdown(Entity<WFCodaFlutterComponent> ent, ref ComponentShutdown args)
+    {
+        if (TryComp<ApcComponent>(ent, out var apc) && TryComp<PowerNetworkBatteryComponent>(ent, out var battery))
+            battery.CanDischarge = apc.MainBreakerEnabled;
+    }
+
+    /// <summary>A few doors aboard slam, open or bolt themselves; the bolts lift again when the time is up.</summary>
+    private bool FailDoors(EntityUid grid, TimeSpan until)
+    {
+        var doors = new List<EntityUid>();
+        var query = EntityQueryEnumerator<DoorComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out _, out var xform))
+        {
+            if (xform.GridUid == grid)
+                doors.Add(uid);
+        }
+
+        var any = false;
+        _random.Shuffle(doors);
+        foreach (var door in doors.Take(_random.Next(2, DoorFaults + 1)))
+        {
+            // A door that won't move, or one picked to, bolts itself instead.
+            if (!_random.Prob(0.35f) && _doors.TryToggleDoor(door))
+            {
+                any = true;
+                continue;
+            }
+
+            if (TryComp<DoorBoltComponent>(door, out var bolts) && !bolts.BoltsDown)
+            {
+                // An unpowered door's bolts don't move, so only count one that took.
+                _doors.SetBoltsDown((door, bolts), true);
+                if (!bolts.BoltsDown)
+                    continue;
+
+                _failed.Add((door, until, Failure.Bolt));
+                any = true;
+            }
+        }
+
+        return any;
+    }
+
     /// <summary>Brings back what gave out, once its time is up.</summary>
     private void RestoreFailures(TimeSpan now)
     {
@@ -380,6 +504,9 @@ public sealed class WFCodaHazardSystem : EntitySystem
                     break;
                 case Failure.Breaker when TryComp<ApcComponent>(uid, out var apc) && !apc.MainBreakerEnabled:
                     _apc.ApcToggleBreaker(uid, apc);
+                    break;
+                case Failure.Bolt when TryComp<DoorBoltComponent>(uid, out var bolts) && bolts.BoltsDown:
+                    _doors.SetBoltsDown((uid, bolts), false);
                     break;
             }
         }

@@ -20,6 +20,7 @@ public sealed partial class WFWarheadSystem
     [Dependency] private DeviceLinkSystem _deviceLink = default!;
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private Content.Shared.Containers.ItemSlots.ItemSlotsSystem _itemSlots = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private SharedToolSystem _tool = default!;
 
@@ -68,6 +69,24 @@ public sealed partial class WFWarheadSystem
             args.PushMarkup(Loc.GetString("wf-warhead-examine-fuze-remote"));
         if (HasComp<WFImpactFuzeComponent>(ent))
             args.PushMarkup(Loc.GetString("wf-warhead-examine-fuze-impact"));
+        if (TryComp<WFWarheadKeyLockComponent>(ent, out var keyLock))
+            args.PushMarkup(Loc.GetString(_itemSlots.GetItemOrNull(ent, keyLock.Slot) != null
+                ? "wf-warhead-examine-key-in" : "wf-warhead-examine-key-out"));
+    }
+
+    /// <summary>Whether a keyed warhead has its own key in; says so to the user when it doesn't. True for one with no keyhole.</summary>
+    public bool KeyIn(EntityUid warhead, EntityUid? user)
+    {
+        if (!TryComp<WFWarheadKeyLockComponent>(warhead, out var keyLock))
+            return true;
+
+        if (_itemSlots.GetItemOrNull(warhead, keyLock.Slot) is { } key
+            && TryComp<WFNukeKeyComponent>(key, out var cut) && cut.Warhead == warhead)
+            return true;
+
+        if (user != null)
+            _popup.PopupEntity(Loc.GetString("wf-warhead-key-missing"), warhead, user.Value);
+        return false;
     }
 
     private void OnInteractUsing(Entity<WFWarheadComponent> ent, ref InteractUsingEvent args)

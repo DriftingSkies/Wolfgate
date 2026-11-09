@@ -76,6 +76,7 @@ public sealed partial class WFTradeWarSystem : EntitySystem
         if (navy.Companies.Contains(company))
         {
             if (navy.CreditEntity is not { } credit
+                || navy.Unpaid.Contains(company)
                 || profile.WarEffortCredits <= 0
                 || !profile.WarEffortGroups.Any(group => _market.InGroup(args.Good, group))
                 || !_market.WasHauled(args.Chute, args.Crate))

@@ -26,15 +26,14 @@ public sealed class WFLatticeFtlTest
 
         await server.WaitAssertion(() =>
         {
-            entities.EnsureComponent<WFDroneRingsComponent>(map.MapUid).Radii = new List<float> { 18000f, 24000f, 31000f, 40000f };
             lattice.Setup(map.MapUid);
 
             Assert.That(lattice.FtlWorksAt(new MapCoordinates(new Vector2(10000f, 0f), map.MapId)), Is.True, "FTL died in anchored space.");
-            Assert.That(lattice.FtlWorksAt(new MapCoordinates(new Vector2(28000f, 0f), map.MapId)), Is.True, "FTL died Adrift.");
-            Assert.That(lattice.FtlWorksAt(new MapCoordinates(new Vector2(35000f, 0f), map.MapId)), Is.False, "FTL worked Untethered.");
-            Assert.That(lattice.FtlWorksAt(new MapCoordinates(new Vector2(50000f, 0f), map.MapId)), Is.False, "FTL worked in the Deep.");
+            Assert.That(lattice.FtlWorksAt(new MapCoordinates(new Vector2(42000f, 0f), map.MapId)), Is.True, "FTL died Adrift.");
+            Assert.That(lattice.FtlWorksAt(new MapCoordinates(new Vector2(58000f, 0f), map.MapId)), Is.False, "FTL worked Untethered.");
+            Assert.That(lattice.FtlWorksAt(new MapCoordinates(new Vector2(72000f, 0f), map.MapId)), Is.False, "FTL worked in the Deep.");
 
-            transform.SetWorldPosition(map.Grid, new Vector2(35000f, 0f));
+            transform.SetWorldPosition(map.Grid, new Vector2(58000f, 0f));
             Assert.That(shuttles.CanFTL(map.Grid, out var reason), Is.False, "a ship jumped out of Untethered space.");
             Assert.That(reason, Is.EqualTo(Robust.Shared.Localization.Loc.GetString("wf-lattice-ftl-dead")), "the ship was refused for something other than the Lattice.");
 

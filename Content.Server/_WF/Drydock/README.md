@@ -52,6 +52,9 @@ rebuilt or charged, the same check the ship repair tool makes.
 
 ## Pricing
 
+A credit console also offers Clean Drift when the berthed hull has soaked up Drift in the Coda (Lattice module): it
+scrubs it at once for `cleanDriftPrice` a point (150 thlr), no cranes needed.
+
 A hull tile costs 120 cr. Rebuilding an entity costs 60 cr labor plus the more of twice its estimated price and 35% of
 its construction materials' value (`WFDrydockSystem.Construction.cs`), so a plastitanium wall, priced low but built
 from four 600 cr sheets, comes to about 960 cr. A machine's construction materials include its board's sheets, and a

@@ -16,6 +16,10 @@
   spawnGroup: Required
   gridPath: /Maps/_Mono/POI/pdvhelios.yml
   addComponents:
+  # WOLFGATE(Ordnance) START: the faction's ordnance terminal
+  - type: WFOrdnanceStation
+    terminal: WFOrdnanceTerminalPDV
+  # WOLFGATE END
   - type: IFF
     color: "#DE9E59"
     readOnly: true # mono
@@ -64,6 +68,7 @@
             PirateCaptain: [ 1, 1 ]
             PirateFirstMate: [ 1, 1 ]
             PDVDenasvar: [ 3, 3 ]
+            WFPdvJarrah: [ 2, 2 ] # WOLFGATE(PdvMedic): PDV field medic slots
             # PDVInfiltrator: [ 2, 2 ]
             Pirate: [ -1, -1 ]
             PdvBorg: [ 2, 2 ]
@@ -85,6 +90,10 @@
   spawnGroup: Required
   gridPath: /Maps/_Mono/POI/pdvhelios_hw.yml
   addComponents:
+  # WOLFGATE(Ordnance) START: the faction's ordnance terminal
+  - type: WFOrdnanceStation
+    terminal: WFOrdnanceTerminalPDV
+  # WOLFGATE END
   - type: IFF
     color: "#DE9E59"
     readOnly: true # mono
@@ -120,6 +129,7 @@
             PDVTarkhan: [ 3, 3 ]
             PirateFirstMate: [ 3, 3 ]
             PDVDenasvar: [ 6, 6 ]
+            WFPdvJarrah: [ 4, 4 ] # WOLFGATE(PdvMedic): PDV field medic slots
             # PDVInfiltrator: [ 2, 2 ]
             Pirate: [ -1, -1 ]
             PdvBorg: [ 2, 2 ]

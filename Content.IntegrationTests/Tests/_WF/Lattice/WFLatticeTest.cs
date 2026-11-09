@@ -27,6 +27,8 @@ public sealed class WFLatticeTest
 
         await server.WaitAssertion(() =>
         {
+            // The shift is checked at once here; LostAnchorsFadeSlowly covers the fade.
+            server.CfgMan.SetCVar(WFLatticeEndgameCVars.AnchorFade, 0f);
             lattice.Setup(map.MapUid);
 
             var anchors = new List<EntityUid>();
@@ -38,11 +40,11 @@ public sealed class WFLatticeTest
             }
 
             Assert.That(anchors, Has.Count.EqualTo(6));
-            Assert.That(lattice.BandAt(map.MapUid, new Vector2(10000f, 0f)), Is.EqualTo(0));
-            Assert.That(lattice.BandAt(map.MapUid, new Vector2(0f, 21000f)), Is.EqualTo(1));
-            Assert.That(lattice.BandAt(map.MapUid, new Vector2(-27500f, 0f)), Is.EqualTo(2));
-            Assert.That(lattice.BandAt(map.MapUid, new Vector2(0f, -35500f)), Is.EqualTo(3));
-            Assert.That(lattice.BandAt(map.MapUid, new Vector2(45000f, 0f)), Is.EqualTo(4));
+            Assert.That(lattice.BandAt(map.MapUid, new Vector2(15000f, 0f)), Is.EqualTo(0));
+            Assert.That(lattice.BandAt(map.MapUid, new Vector2(0f, 27000f)), Is.EqualTo(1));
+            Assert.That(lattice.BandAt(map.MapUid, new Vector2(-42000f, 0f)), Is.EqualTo(2));
+            Assert.That(lattice.BandAt(map.MapUid, new Vector2(0f, -58000f)), Is.EqualTo(3));
+            Assert.That(lattice.BandAt(map.MapUid, new Vector2(72000f, 0f)), Is.EqualTo(4));
 
             // Setting up again keeps the anchors it has.
             lattice.Setup(map.MapUid);
@@ -58,10 +60,10 @@ public sealed class WFLatticeTest
 
             var lost = anchors[0];
             var direction = Vector2.Normalize(transform.GetWorldPosition(lost));
-            Assert.That(lattice.BandAt(map.MapUid, direction * 16000f), Is.EqualTo(0));
+            Assert.That(lattice.BandAt(map.MapUid, direction * 18200f), Is.EqualTo(0));
             entities.DeleteEntity(lost);
-            Assert.That(lattice.BandAt(map.MapUid, direction * 16000f), Is.EqualTo(1));
-            Assert.That(lattice.BandAt(map.MapUid, -direction * 16000f), Is.EqualTo(0));
+            Assert.That(lattice.BandAt(map.MapUid, direction * 18200f), Is.EqualTo(1));
+            Assert.That(lattice.BandAt(map.MapUid, -direction * 18200f), Is.EqualTo(0));
         });
 
         // Clients get the anchors that are left once the field next ticks.
@@ -73,6 +75,7 @@ public sealed class WFLatticeTest
             Assert.That(field.Strengths, Has.Count.EqualTo(5));
         });
 
+        await server.WaitPost(() => server.CfgMan.SetCVar(WFLatticeEndgameCVars.AnchorFade, WFLatticeEndgameCVars.AnchorFade.DefaultValue));
         await pair.CleanReturnAsync();
     }
 
@@ -92,9 +95,8 @@ public sealed class WFLatticeTest
         EntityUid wreck = default;
         await server.WaitAssertion(() =>
         {
-            entities.EnsureComponent<WFDroneRingsComponent>(map.MapUid).Radii = new List<float> { 10000f, 12000f, 14000f, 16000f };
             lattice.Setup(map.MapUid);
-            wreck = entities.SpawnEntity("NFWreckDebrisSmall", new Robust.Shared.Map.MapCoordinates(new Vector2(40000f, 0f), map.MapId));
+            wreck = entities.SpawnEntity("NFWreckDebrisSmall", new Robust.Shared.Map.MapCoordinates(new Vector2(72000f, 0f), map.MapId));
             var grid = entities.GetComponent<Robust.Shared.Map.Components.MapGridComponent>(wreck);
             var plating = new Robust.Shared.Map.Tile(server.ResolveDependency<Robust.Shared.Map.ITileDefinitionManager>()["Plating"].TileId);
             for (var x = 0; x < 6; x++)
@@ -122,8 +124,12 @@ public sealed class WFLatticeTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>
+    /// The bands keep the profile's edges whatever a map's drone rings say, and are near-circles round the centre: a
+    /// relay anchor makes only a well of anchored space round itself, not a bulge in the Coda's edge. The Deep garbles.
+    /// </summary>
     [Test]
-    public async Task BandsFollowDroneRingsAndTheDeepGarbles()
+    public async Task BandsKeepTheirEdgesAndTheDeepGarbles()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -137,13 +143,26 @@ public sealed class WFLatticeTest
             lattice.Setup(map.MapUid);
 
             var field = entities.GetComponent<WFLatticeFieldComponent>(map.MapUid);
-            Assert.That(field.Edges, Is.EqualTo(new List<float> { 0f, 10000f, 12000f, 14000f, 16000f }));
-            Assert.That(lattice.Locate(map.MapUid, new Vector2(11000f, 0f)).Band, Is.EqualTo(1));
-            Assert.That(lattice.Locate(map.MapUid, new Vector2(30000f, 0f)).Band, Is.EqualTo(4));
+            Assert.That(field.Edges, Is.EqualTo(new List<float> { 0f, 20000f, 34000f, 50000f, 66000f }), "drone rings moved the band edges.");
+
+            // Every direction crosses into the Coda within a kilometre of its edge.
+            for (var angle = 0f; angle < MathF.Tau; angle += 0.3f)
+            {
+                var direction = new Vector2(MathF.Cos(angle), MathF.Sin(angle));
+                Assert.That(lattice.Locate(map.MapUid, direction * 65000f).Band, Is.EqualTo(3), $"not Feedback just inside the Coda at {angle} rad.");
+                Assert.That(lattice.Locate(map.MapUid, direction * 67000f).Band, Is.EqualTo(4), $"not the Coda just past its edge at {angle} rad.");
+            }
+
+            // A relay out in Dissonance anchors the space round it and leaves the Coda's edge where it was.
+            var relay = new Vector2(0f, 46000f);
+            Assert.That(lattice.Locate(map.MapUid, relay).Band, Is.EqualTo(2));
+            entities.SpawnEntity("WFLatticeAnchorRelayMarker", new Robust.Shared.Map.MapCoordinates(relay, map.MapId));
+            Assert.That(lattice.Locate(map.MapUid, relay + new Vector2(500f, 0f)).Band, Is.EqualTo(0), "the relay held no anchored space round it.");
+            Assert.That(lattice.Locate(map.MapUid, new Vector2(0f, 67000f)).Band, Is.EqualTo(4), "the relay pushed the Coda's edge out.");
 
             const string text = "12345 67890";
             Assert.That(lattice.GarbleAt(text, map.MapUid, new Vector2(5000f, 0f), 1), Is.EqualTo(text));
-            Assert.That(lattice.GarbleAt(text, map.MapUid, new Vector2(60000f, 0f), 1), Is.Not.EqualTo(text));
+            Assert.That(lattice.GarbleAt(text, map.MapUid, new Vector2(72000f, 0f), 1), Is.Not.EqualTo(text));
 
             var centres = new List<Robust.Shared.Map.MapCoordinates>();
             lattice.GetCentres(centres);

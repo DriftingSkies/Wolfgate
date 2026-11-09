@@ -10,6 +10,10 @@
   spawnGroup: Required
   gridPath: /Maps/_Mono/POI/hokkaido.yml
   addComponents:
+  # WOLFGATE(Ordnance) START: the faction's ordnance terminal
+  - type: WFOrdnanceStation
+    terminal: WFOrdnanceTerminalMieyo
+  # WOLFGATE END
   - type: IFF
     color: "#EEEEEE"
     readOnly: true # mono

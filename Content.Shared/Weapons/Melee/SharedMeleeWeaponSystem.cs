@@ -589,6 +589,8 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
         RaiseLocalEvent(target.Value, attackedEvent);
 
         var modifiedDamage = DamageSpecifier.ApplyModifierSets(damage + hitEvent.BonusDamage + attackedEvent.BonusDamage, hitEvent.ModifiersList);
+        // WOLFGATE: apply configured damage after melee modifier sets
+        modifiedDamage += hitEvent.PostModifierDamage;
         var damageResult = Damageable.TryChangeDamage(target, modifiedDamage, origin: user, armorPenetration: component.ArmorPenetration, partMultiplier: component.ClickPartDamageMultiplier, tool: meleeUid); // Shitmed Change // WOLFGATE(Wolfmed): W1: tool = the weapon, so Wolfmed's wound rules can tell melee from gunfire.
 
         if (damageResult is {Empty: false})
@@ -755,6 +757,8 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
             var attackedEvent = new AttackedEvent(meleeUid, user, GetCoordinates(ev.Coordinates));
             RaiseLocalEvent(entity, attackedEvent);
             var modifiedDamage = DamageSpecifier.ApplyModifierSets(damage + hitEvent.BonusDamage + attackedEvent.BonusDamage, hitEvent.ModifiersList);
+            // WOLFGATE: apply configured damage after melee modifier sets
+            modifiedDamage += hitEvent.PostModifierDamage;
 
             var damageResult = Damageable.TryChangeDamage(entity, modifiedDamage, origin: user, armorPenetration: component.ArmorPenetration, partMultiplier: component.HeavyPartDamageMultiplier, tool: meleeUid); // Shitmed Change // WOLFGATE(Wolfmed): W1: tool = the weapon, see the light attack above.
 

@@ -21,6 +21,14 @@ join-console-transport-unknown = UNKNOWN
 join-console-transport-game = GAME LINK
 join-console-transport-socket = FILE SOCKET
 
+join-console-channel-row = { $tag } FAST FILE CHANNEL: { $result }
+join-console-channel-GameConnection = OFF ON THIS SERVER
+join-console-channel-WebSocket = CONNECTED
+join-console-channel-WebSocketFailed = FAILED, USING THE SLOWER GAME LINK
+join-console-log-channel-WebSocket = FAST FILE CHANNEL CONNECTED
+join-console-log-channel-WebSocketFailed = FAST FILE CHANNEL FAILED, DOWNLOADS USE THE GAME LINK
+join-progress-details-channel = Fast file channel: { $result }
+
 join-console-tag-Pending = [    ]
 join-console-tag-Active = [ >> ]
 join-console-tag-Stuck = [WAIT]

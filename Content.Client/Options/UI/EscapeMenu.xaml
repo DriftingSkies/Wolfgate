@@ -1,7 +1,9 @@
-﻿<ui1:EscapeMenu xmlns="https://spacestation14.io"
+﻿<!-- WOLFGATE(Census): census namespace for the Census button -->
+<ui1:EscapeMenu xmlns="https://spacestation14.io"
             xmlns:changelog="clr-namespace:Content.Client.Changelog"
             xmlns:ui="clr-namespace:Content.Client.Voting.UI"
             xmlns:ui1="clr-namespace:Content.Client.Options.UI"
+            xmlns:census="clr-namespace:Content.Client._WF.Census"
             Title="{Loc 'ui-escape-title'}"
             Resizable="False">
 
@@ -13,6 +15,8 @@
         <Button Access="Public" Name="SectorMapButton" Text="{Loc 'wf-sector-map-button'}" />
         <!-- WOLFGATE(Feedback): bug report and suggestion entry, green so players find it -->
         <Button Access="Public" Name="FeedbackButton" Text="{Loc 'wf-feedback-button'}" StyleClasses="ButtonColorGreen" />
+        <!-- WOLFGATE(Census): census list with the count yet to answer -->
+        <census:CensusButton Access="Public" Name="CensusButton" />
         <ui:VoteCallMenuButton />
         <!-- WOLFGATE(InRoundCreator): opens the character creator over the round -->
         <Button Access="Public" Name="CharacterButton" Text="{Loc 'wf-escape-character-creator'}" ToolTip="{Loc 'wf-escape-character-creator-tooltip'}" />

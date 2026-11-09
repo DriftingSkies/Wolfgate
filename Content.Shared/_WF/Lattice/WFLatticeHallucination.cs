@@ -30,6 +30,39 @@ public enum WFLatticeHallucinationKind : byte
 
     /// <summary>A bad turn: vision narrows and throbs for a few seconds, glyphs crawl round its edge, and the bass hits.</summary>
     Pulse,
+
+    /// <summary>Blood spattered round them that isn't there.</summary>
+    Bleed,
+
+    /// <summary>Someone near them looks like a Remade for a few seconds. The coordinates are on that person.</summary>
+    Turn,
+
+    /// <summary>They see themselves as a Remade for a few seconds.</summary>
+    Mirror,
+
+    /// <summary>Remade all round them, for a moment.</summary>
+    Swarm,
+
+    /// <summary>Someone near them says something they never said.</summary>
+    Mimic,
+
+    /// <summary>Something near them, a door, a wall or a person, isn't there for a few seconds. The coordinates are on it.</summary>
+    Vanish,
+
+    /// <summary>Their own ship shows on the radar a second time, somewhere close.</summary>
+    Double,
+
+    /// <summary>A warning on their screen that isn't true: low oxygen, pressure or heat.</summary>
+    FalseAlert,
+
+    /// <summary>Sounds round them play again a moment later, from the wrong side.</summary>
+    Echo,
+
+    /// <summary>Every sound stops for a while, then everything they missed plays at once.</summary>
+    Silence,
+
+    /// <summary>They just know where something is out in the dark. Sometimes they're right.</summary>
+    Knowing,
 }
 
 /// <summary>Tells one client to show a hallucination at a place.</summary>

@@ -21,6 +21,7 @@ public sealed class JoinConsoleStyle
     public Color Pending { get; }
     public Color Warn { get; }
     public Color Fail { get; }
+    public Color Good { get; }
     public Color Tape { get; }
     public Font Font { get; }
     public Stylesheet Sheet { get; }
@@ -32,6 +33,7 @@ public sealed class JoinConsoleStyle
         Pending = skin.TextMuted;
         Warn = skin.Caution;
         Fail = skin.Danger;
+        Good = skin.Good;
         Tape = skin.AccentDim;
 
         var font = cache.GetFont(skin.MonoFonts, FontSize);

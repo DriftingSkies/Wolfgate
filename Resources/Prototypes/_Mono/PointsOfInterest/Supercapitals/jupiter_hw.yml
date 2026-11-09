@@ -39,6 +39,7 @@
           availableJobs:
             PirateFirstMate: [ 1, 1 ] # Mono
             PDVDenasvar: [ 2, 2 ]
+            WFPdvJarrah: [ 2, 2 ] # WOLFGATE(PdvMedic): PDV field medic slots
             Pirate: [ 8, 8 ] # Mono
           tags:
           - PDVCommand

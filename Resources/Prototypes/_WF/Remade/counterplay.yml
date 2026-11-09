@@ -1,6 +1,6 @@
 # What the crew has against the Remade: necrotoxin, the plasma cutter, the Prime's armour and what a fallen Monolith leaves.
 
-# The Prime stands up to guns and blades. Blasts and heavy cutting (the Structural in a cutter's arc) are what hurt it.
+# The Prime's armour. WFPrimeSystem cancels all damage to it anyway: only a nuclear detonation close by destroys it.
 - type: damageModifierSet
   id: WFPrimeArmour
   coefficients:

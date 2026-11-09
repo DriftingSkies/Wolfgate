@@ -1,0 +1,127 @@
+# Faction nuclear ordnance (WFOrdnanceSystem). Faction command buys a delivery beacon at their station's ordnance
+# terminal; the sector is told. Planted, the beacon brings down a tactical warhead that only arms with its own key.
+
+# The key cut for one warhead. It goes in the warhead's keyhole; no other key fits.
+- type: entity
+  parent: BaseItem
+  id: WFNukeKey
+  components:
+  - type: Sprite
+    sprite: _WF/Vehicles/Objects/vehicle_key.rsi
+    state: key
+    color: "#e05050"
+  - type: Item
+    size: Tiny
+  - type: WFNukeKey
+  - type: CargoSellBlacklist
+
+# A tactical warhead with a keyhole. Its fuzes are cut down on delivery to what the beacon was set up for.
+- type: entity
+  parent: WFWarheadTactical
+  id: WFWarheadTacticalKeyed
+  components:
+  - type: AccessReader
+    access: []
+  - type: WFWarheadKeyLock
+  - type: ItemSlots
+    slots:
+      key:
+        name: wf-ordnance-key-slot
+        whitelist:
+          components:
+          - WFNukeKey
+  - type: ContainerContainer
+    containers:
+      key: !type:ContainerSlot
+
+- type: entity
+  parent: BaseItem
+  id: WFOrdnanceBeaconTactical
+  components:
+  - type: Sprite
+    sprite: Objects/Tools/thief_beacon.rsi
+    noRot: true
+    color: "#ff5050"
+    state: folded_extraction
+  - type: Item
+    size: Normal
+  - type: WFOrdnanceBeacon
+    warhead: WFWarheadTacticalKeyed
+  - type: CargoSellBlacklist
+  - type: StaticPrice
+    price: 0
+
+- type: wfVehicleCatalog
+  id: WFOrdnanceCatalog
+  vehicles:
+  - vehicle: WFOrdnanceBeaconTactical
+    price: 750000
+
+# A faction's ordnance terminal: sells the catalogue to the faction's command only.
+- type: entity
+  parent: [ BaseStructureDisableToolUse, BaseStructureIndestructible, WFBaseComputerVehicleShop ]
+  id: WFOrdnanceTerminalBase
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _NF/Structures/Machines/computers.rsi
+    layers:
+    - map: [ "computerLayerBody" ]
+      state: computer
+    - map: [ "computerLayerKeyboard" ]
+      state: generic_keyboard
+    - map: [ "computerLayerScreen" ]
+      state: contraband
+    - map: [ "computerLayerKeys" ]
+      state: telesci_key
+  - type: Computer
+    board: Null
+  - type: WFVehicleShop
+    catalog: WFOrdnanceCatalog
+    extraCatalogs: []
+  - type: ActivatableUIRequiresAccess
+
+- type: entity
+  parent: WFOrdnanceTerminalBase
+  id: WFOrdnanceTerminalPDV
+  components:
+  - type: AccessReader
+    access: [["GrandVizier"], ["PDVCommand"]]
+  - type: WFOrdnanceTerminal
+    faction: wf-ordnance-faction-pdv
+
+- type: entity
+  parent: WFOrdnanceTerminalBase
+  id: WFOrdnanceTerminalTSF
+  components:
+  - type: AccessReader
+    access: [["HeadOfSecurity"]]
+  - type: WFOrdnanceTerminal
+    faction: wf-ordnance-faction-tsf
+
+- type: entity
+  parent: WFOrdnanceTerminalBase
+  id: WFOrdnanceTerminalUSSP
+  components:
+  - type: AccessReader
+    access: [["USSPCommand"]]
+  - type: WFOrdnanceTerminal
+    faction: wf-ordnance-faction-ussp
+
+- type: entity
+  parent: WFOrdnanceTerminalBase
+  id: WFOrdnanceTerminalUnderground
+  components:
+  - type: AccessReader
+    access: [["Godfather"]]
+  - type: WFOrdnanceTerminal
+    faction: wf-ordnance-faction-underground
+
+- type: entity
+  parent: WFOrdnanceTerminalBase
+  id: WFOrdnanceTerminalMieyo
+  components:
+  - type: AccessReader
+    access: [["MieyoLiason"]]
+  - type: WFOrdnanceTerminal
+    faction: wf-ordnance-faction-mieyo

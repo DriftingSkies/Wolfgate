@@ -8,8 +8,8 @@ announcements and the map. The sector is the cells whose centre lies within `WFS
 of the origin, the grid the map outlines; a cell past it can't be claimed or contested.
 
 Players see held cells, borders and contested cells with their countdown on the map, and a legend line per faction
-that the driver writes. A crewed player ship that has been inside a faction's space for ten seconds is told "WARNING:
-entering ... controlled space" (at most once every two minutes), and one back outside for thirty seconds that it has
+that the driver writes. A crewed player ship that has been inside a faction's space for twenty seconds is told "WARNING:
+entering ... controlled space" (at most once every ten minutes), and one back outside for a minute that it has
 left, in chat to everyone aboard and over its PA when it has a speaker; a faction may set its own lines
 (`enteredNotice`, `leftNotice`). Flying a
 cell is what keeps it: every minute each crewed player ship that moved 100 m counts as activity in its cell (parked,

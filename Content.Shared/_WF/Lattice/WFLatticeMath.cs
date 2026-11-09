@@ -18,13 +18,31 @@ public static class WFLatticeMath
         return strength / (1f + ratio * ratio);
     }
 
-    /// <summary>The summed hold of every anchor at a point.</summary>
+    /// <summary>
+    /// The local hold of a secondary anchor (a relay or a station's own), which makes anchored space round it without
+    /// bending the bands far off: a sharp well at a <see cref="LocalReachShare"/> of the reach, falling with the fourth power.
+    /// </summary>
+    public static float LocalHold(float distance, float reach, float strength)
+    {
+        var ratio = distance / (reach * LocalReachShare);
+        return strength * LocalPeak / (1f + ratio * ratio * ratio * ratio);
+    }
+
+    /// <summary>A secondary anchor's well, as a share of the reach, and its hold at its centre per unit of strength.</summary>
+    public const float LocalReachShare = 0.375f;
+    public const float LocalPeak = 1f;
+
+    /// <summary>
+    /// The summed hold at a point. Primary anchors (positive strength) hold out to the band edges; secondary anchors
+    /// (negative strength) only make a well of anchored space round themselves.
+    /// </summary>
     public static float Field(Vector2 point, IReadOnlyList<(Vector2 Position, float Strength)> anchors, float reach)
     {
         var field = 0f;
         foreach (var (position, strength) in anchors)
         {
-            field += Hold(Vector2.Distance(point, position), reach, strength);
+            var distance = Vector2.Distance(point, position);
+            field += strength >= 0f ? Hold(distance, reach, strength) : LocalHold(distance, reach, -strength);
         }
 
         return field;

@@ -1,0 +1,37 @@
+<controls:CensusWindow
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client._WF.Census"
+    xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    SetSize="540 640"
+    MinSize="440 440"
+    Title="{Loc 'wf-census-window-title'}">
+    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+        <BoxContainer Name="ListBox" Orientation="Vertical" VerticalExpand="True" SeparationOverride="6">
+            <Label Name="ListNote" Text="{Loc 'wf-census-list-loading'}" />
+            <PanelContainer VerticalExpand="True">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#141414" BorderColor="#333333" BorderThickness="1" />
+                </PanelContainer.PanelOverride>
+                <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
+                    <BoxContainer Name="CensusList" Orientation="Vertical" HorizontalExpand="True" />
+                </ScrollContainer>
+            </PanelContainer>
+        </BoxContainer>
+        <BoxContainer Name="FormBox" Orientation="Vertical" VerticalExpand="True" SeparationOverride="6" Visible="False">
+            <Button Name="BackButton" Text="{Loc 'wf-census-back'}" HorizontalAlignment="Left" />
+            <RichTextLabel Name="FormTitle" />
+            <RichTextLabel Name="FormDescription" />
+            <PanelContainer VerticalExpand="True">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#141414" BorderColor="#333333" BorderThickness="1" />
+                </PanelContainer.PanelOverride>
+                <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
+                    <BoxContainer Name="QuestionList" Orientation="Vertical" HorizontalExpand="True" />
+                </ScrollContainer>
+            </PanelContainer>
+            <RichTextLabel Name="RequiredNote" />
+            <Button Name="SubmitButton" Text="{Loc 'wf-census-submit'}" />
+        </BoxContainer>
+        <RichTextLabel Name="StatusLabel" />
+    </BoxContainer>
+</controls:CensusWindow>

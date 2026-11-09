@@ -25,8 +25,13 @@ public sealed partial class InternetSoundSystem
         _nextAudienceUpdate = _timing.CurTime + AudienceInterval;
         foreach (var track in _tracks.Values)
         {
-            if (track.IsPa && track.Transfer != null)
+            if (track.Transfer == null)
+                continue;
+
+            if (track.IsPa)
                 SendToPaAudience(track);
+            else if (track.Source != null)
+                SendToSourceAudience(track);
         }
     }
 

@@ -74,11 +74,11 @@ public sealed partial class WFAdsCampaignSystem
             _territory.Contest(map, target, campaign.Faction, _timing.CurTime + FlightTime(start, goal) + FlightSlack, uid);
 
             var (station, bearing, range) = Place(map, goal);
-            AnnounceQuiet(campaign, Loc.GetString("wf-ads-deployment-launched",
+            AnnounceRadio(Loc.GetString("wf-ads-deployment-launched",
                 ("callsign", WFSectorHex.Callsign(target)),
                 ("station", station),
                 ("bearing", bearing),
-                ("range", range)), true);
+                ("range", range)));
             Log.Info($"ADS deployment {ToPrettyString(uid)} launched from {ToPrettyString(source.Owner)} for {WFSectorHex.Callsign(target)}.");
             deployment = uid;
             return true;
@@ -213,10 +213,10 @@ public sealed partial class WFAdsCampaignSystem
 
         var (bounty, paid) = PayDeploymentBounty(campaign, state, uid);
         state.DeploymentsStopped++;
-        AnnounceQuiet(campaign, Loc.GetString("wf-ads-deployment-stopped",
+        AnnounceRadio(Loc.GetString("wf-ads-deployment-stopped",
             ("callsign", WFSectorHex.Callsign(comp.Target)),
             ("bounty", bounty),
-            ("paid", paid)), false);
+            ("paid", paid)));
         AnnounceDefeat(campaign, state);
         Recompute();
     }

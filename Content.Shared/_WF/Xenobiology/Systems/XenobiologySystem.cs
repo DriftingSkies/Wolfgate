@@ -33,6 +33,7 @@ public sealed partial class XenobiologySystem : EntitySystem
     [Dependency] private SharedContainerSystem _container = default!;
     [Dependency] private SharedJitteringSystem _jitter = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SlimeLatchSystem _latch = default!;
 
     public const string StomachContainerId = "slimeStomach";
 
@@ -204,6 +205,8 @@ public sealed partial class XenobiologySystem : EntitySystem
         }
 
         _container.EmptyContainer(ent.Comp.Stomach);
+        // Let go first, so the half-eaten mob can be fed on by the offspring.
+        _latch.Unlatch(ent);
         QueueDel(ent);
     }
 

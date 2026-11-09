@@ -1,12 +1,14 @@
+using Content.Shared.Damage; // WOLFGATE: resolve the Black Flash damage specification type
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Mono.BlackFlash;
 
+// WOLFGATE: document the armed action's flat damage bonus
 /// <summary>
-/// Grants the Black Flash action. Arm it, land a melee hit inside the window, and the target eats
-/// a multiplied hit and gets launched.
+/// Grants the Black Flash action. Arm it, land a melee hit inside the window, and the target takes
+/// a flat damage bonus and gets launched.
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class BlackFlashComponent : Component
@@ -26,8 +28,19 @@ public sealed partial class BlackFlashComponent : Component
     [DataField, AutoNetworkedField]
     public TimeSpan MissCooldown = TimeSpan.FromSeconds(10);
 
+    // WOLFGATE START: flat bonus added after melee modifiers, about 100 with a bare fist
+    /// <summary>
+    /// Damage the armed hit adds after melee modifier sets; armor still applies.
+    /// </summary>
     [DataField, AutoNetworkedField]
-    public float DamageMultiplier = 2.5f;
+    public DamageSpecifier Damage = new()
+    {
+        DamageDict = new()
+        {
+            { "Blunt", 95 },
+        }
+    };
+    // WOLFGATE END
 
     [DataField, AutoNetworkedField]
     public float StaminaCost = 30f;

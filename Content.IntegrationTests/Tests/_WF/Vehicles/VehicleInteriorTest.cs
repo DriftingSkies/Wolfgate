@@ -1753,6 +1753,9 @@ public sealed class VehicleInteriorTest
         {
             var seat = DriverSeat(pair, rig);
             server.System<MobStateSystem>().ChangeMobState(victim, MobState.Critical);
+            // Unhurt, Wolfmed's consciousness tick could bring a forced Critical back to Alive within the 10 ticks, and a
+            // driver who comes round takes the wheel by design; a forced sleep keeps them out cold.
+            entMan.EnsureComponent<Content.Shared.Bed.Sleep.ForcedSleepingComponent>(victim);
             server.System<SharedTransformSystem>().SetCoordinates(victim, entMan.GetComponent<TransformComponent>(seat).Coordinates);
             server.System<SharedTransformSystem>().SetCoordinates(helper, entMan.GetComponent<TransformComponent>(seat).Coordinates);
 
@@ -1866,6 +1869,9 @@ public sealed class VehicleInteriorTest
         {
             var seat = DriverSeat(pair, rig);
             server.System<MobStateSystem>().ChangeMobState(victim, MobState.Critical);
+            // Unhurt, Wolfmed's consciousness tick could bring a forced Critical back to Alive within the 10 ticks, and a
+            // driver who comes round takes the wheel by design; a forced sleep keeps them out cold.
+            entMan.EnsureComponent<Content.Shared.Bed.Sleep.ForcedSleepingComponent>(victim);
             server.System<SharedTransformSystem>().SetCoordinates(victim, entMan.GetComponent<TransformComponent>(seat).Coordinates);
             server.System<SharedTransformSystem>().SetCoordinates(helper, entMan.GetComponent<TransformComponent>(seat).Coordinates);
 

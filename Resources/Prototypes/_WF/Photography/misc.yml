@@ -1,0 +1,63 @@
+- type: entity
+  id: WFActionPhotoAiCapture
+  components:
+  - type: WorldTargetAction
+    icon:
+      sprite: _WF/Photography/camera.rsi
+      state: icon
+    itemIconStyle: NoItem
+    priority: -8
+    useDelay: 2
+    checkCanAccess: false
+    range: 0
+    event: !type:PhotoAiCaptureActionEvent
+
+- type: entity
+  id: WFActionPhotoGallery
+  components:
+  - type: InstantAction
+    icon:
+      sprite: _WF/Photography/album.rsi
+      state: album
+    itemIconStyle: NoItem
+    priority: -8
+    event: !type:PhotoGalleryActionEvent
+
+- type: trait
+  id: WFPhotographer
+  name: trait-photographer-name
+  description: trait-photographer-desc
+  category: Quirks
+  components:
+  - type: Photographer
+
+- type: latheRecipePack
+  id: WFPhotographyStatic
+  recipes:
+  - WFCamera
+  - WFCameraFilm
+
+- type: latheRecipe
+  id: WFCamera
+  result: WFCamera
+  categories:
+  - Tools
+  completetime: 4
+  materials:
+    Steel: 100
+    Glass: 200
+
+- type: latheRecipe
+  id: WFCameraFilm
+  result: WFCameraFilm
+  categories:
+  - Tools
+  completetime: 1
+  materials:
+    Steel: 20
+    Glass: 20
+
+- type: latheRecipe
+  parent: BaseBorgModuleRecipe
+  id: WFBorgModulePhotography
+  result: WFBorgModulePhotography

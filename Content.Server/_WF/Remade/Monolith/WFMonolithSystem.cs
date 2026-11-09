@@ -4,9 +4,11 @@ using Content.Server._WF.Remade.Counterplay;
 using Content.Server._WF.Remade.Dread;
 using Content.Server._WF.Remade.Sector;
 using Content.Server.Cargo.Components;
+using Content.Server.Cargo.Systems;
 using Content.Server.Chat.Systems;
 using Content.Server.Power.Components;
 using Content.Shared._WF.Remade;
+using Content.Shared.Cargo.Components;
 using Content.Shared.Humanoid;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Pulling.Components;
@@ -48,6 +50,33 @@ public sealed partial class WFMonolithSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<WFMonolithComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<WFMonolithComponent, EntityTerminatingEvent>(OnTerminating);
+        SubscribeLocalEvent<WFMonolithComponent, PriceCalculationEvent>(OnPrice);
+        SubscribeLocalEvent<WFMonolithComponent, EntParentChangedMessage>(OnParentChanged);
+    }
+
+    /// <summary>Carried onto or off a station, its sale is decided again at once, so it can't be sold off Central meanwhile.</summary>
+    private void OnParentChanged(Entity<WFMonolithComponent> ent, ref EntParentChangedMessage args)
+    {
+        // Not while it is still being spawned: map init decides its sale first.
+        if (!TerminatingOrDeleted(ent) && MetaData(ent).EntityLifeStage >= EntityLifeStage.MapInitialized)
+            UpdateSale(ent);
+    }
+
+    /// <summary>A Scion fetches more the further it has climbed: up to double its base at the Crescendo.</summary>
+    private void OnPrice(Entity<WFMonolithComponent> ent, ref PriceCalculationEvent args)
+    {
+        if (TryComp<StaticPriceComponent>(ent, out var price))
+            args.Price += price.Price * Math.Clamp(ent.Comp.Resonance / 100f, 0f, 1f);
+    }
+
+    /// <summary>Only Caelestinus Central buys a Scion, so it sells only from a pallet on a main station.</summary>
+    private void UpdateSale(Entity<WFMonolithComponent> ent)
+    {
+        var central = Transform(ent).GridUid is { } grid && _corruption.IsMainStation(grid) && !ent.Comp.Local;
+        if (central)
+            RemComp<CargoSellBlacklistComponent>(ent);
+        else
+            EnsureComp<CargoSellBlacklistComponent>(ent);
     }
 
     private void OnMapInit(Entity<WFMonolithComponent> ent, ref MapInitEvent args)
@@ -93,6 +122,7 @@ public sealed partial class WFMonolithSystem : EntitySystem
         {
             monolith.NextCorpseCount = now + CorpseCountRate;
             monolith.Corpses = CountCorpses(ent);
+            UpdateSale(ent);
         }
 
         if (IsBarred(ent))
@@ -235,11 +265,7 @@ public sealed partial class WFMonolithSystem : EntitySystem
         ent.Comp.Stage = stage;
         _appearance.SetData(ent, WFMonolithVisuals.Stage, stage);
 
-        // Only a quiet Scion is a thing a buyer will touch.
-        if (stage == WFMonolithStage.Quiet)
-            RemComp<CargoSellBlacklistComponent>(ent);
-        else
-            EnsureComp<CargoSellBlacklistComponent>(ent);
+        UpdateSale(ent);
 
         if (_light.TryGetLight(ent, out var light))
         {

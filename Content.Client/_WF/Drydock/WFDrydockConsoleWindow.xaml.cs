@@ -1,4 +1,3 @@
-using Content.Client._WF.Branding;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
@@ -50,6 +49,9 @@ public sealed partial class WFDrydockConsoleWindow : FancyWindow
     /// <summary>Raised when the break key is pressed and confirmed.</summary>
     public event Action? OnBreakPressed;
 
+    /// <summary>Raised when the clean Drift button is pressed.</summary>
+    public event Action? OnCleanDriftPressed;
+
     /// <summary>Raised when the cancel booking button is pressed.</summary>
     public event Action? OnCancelBookingPressed;
 
@@ -88,13 +90,13 @@ public sealed partial class WFDrydockConsoleWindow : FancyWindow
     public WFDrydockConsoleWindow()
     {
         RobustXamlLoader.Load(this);
-        WFWindowBranding.Apply(this);
         IoCManager.InjectDependencies(this);
         FitWindow(this, new Vector2(1060, 690));
 
         _quote.EmptyText = _salvage.EmptyText = Loc.GetString("drydock-console-materials-none");
         RepairButton.OnPressed += _ => OnRepairPressed?.Invoke();
         BreakButton.OnPressed += _ => OnBreakPressed?.Invoke();
+        CleanDriftButton.OnPressed += _ => OnCleanDriftPressed?.Invoke();
         BreakButton.Text = Loc.GetString("drydock-ui-break-key");
         BreakButton.ConfirmationText = Loc.GetString("drydock-ui-break-confirm");
         CancelBookingButton.OnPressed += _ => OnCancelBookingPressed?.Invoke();
@@ -140,7 +142,7 @@ public sealed partial class WFDrydockConsoleWindow : FancyWindow
         _warrant.Tint = Red;
         _warrant.Lit = true;
         _warrant.Value = Loc.GetString("drydock-ui-chop-warrant-text");
-        var survey = Panel("drydock-ui-repairs", Column(_counters, _quote, _progress, _eta, RepairButton, _salvage, _cash, _warrant, BreakButton), padding: 10, gap: 4);
+        var survey = Panel("drydock-ui-repairs", Column(_counters, _quote, _progress, _eta, RepairButton, CleanDriftButton, _salvage, _cash, _warrant, BreakButton), padding: 10, gap: 4);
         var supplies = new ScrollContainer { HScrollEnabled = false, HorizontalExpand = true, SetHeight = SupplyListHeight };
         supplies.AddChild(_supplyList);
         _suppliesPanel = Panel("drydock-ui-supplies", supplies, padding: 10, gap: 4);
@@ -317,6 +319,9 @@ public sealed partial class WFDrydockConsoleWindow : FancyWindow
             _salvage.Tint = null;
             _salvage.Lit = state.BreakYield.Count > 0;
         }
+        CleanDriftButton.Visible = state.CleanDriftPrice > 0 && !state.Working;
+        CleanDriftButton.Text = Loc.GetString("drydock-ui-clean-drift", ("price", state.CleanDriftPrice.ToString("N0", CultureInfo.InvariantCulture)));
+        CleanDriftButton.Disabled = blocked;
         BreakButton.Visible = state.CanBreak;
         BreakButton.Disabled = state.ShipName is null || state.Working || !state.Breakable || blocked;
 

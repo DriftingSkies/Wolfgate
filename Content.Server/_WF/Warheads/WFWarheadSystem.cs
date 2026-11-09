@@ -86,6 +86,8 @@ public sealed partial class WFWarheadSystem : EntitySystem
         SetDisplay(ent, ent.Comp.DetonateAt);
         UpdateAppearance(ent);
         _audio.PlayPvs(ArmSound, ent);
+        var armed = new WFWarheadArmedEvent(ent, user);
+        RaiseLocalEvent(ref armed);
 
         _adminLog.Add(LogType.Explosion, LogImpact.Extreme,
             $"{(user != null ? ToPrettyString(user.Value) : "Unknown")} started {ToPrettyString(ent):warhead} counting down from {time}s at {_transform.GetMapCoordinates(ent)}");
@@ -120,6 +122,8 @@ public sealed partial class WFWarheadSystem : EntitySystem
         ent.Comp.State = WFWarheadState.Armed;
         Dirty(ent);
         UpdateAppearance(ent);
+        var armed = new WFWarheadArmedEvent(ent, user);
+        RaiseLocalEvent(ref armed);
         _adminLog.Add(LogType.Explosion, LogImpact.High,
             $"{(user != null ? ToPrettyString(user.Value) : "Unknown")} took the safety off {ToPrettyString(ent):warhead}");
     }
@@ -279,6 +283,10 @@ public sealed partial class WFWarheadSystem : EntitySystem
         if (coords.MapId == MapId.Nullspace || !_map.TryGetMap(coords.MapId, out var mapUid))
             return;
 
+        // Before the grid goes or anything is erased, so what only a nuke can kill sees the blast.
+        var detonated = new WFNuclearDetonatedEvent(coords, payload.EraseRadius * 2f + 16f, cause);
+        RaiseLocalEvent(ref detonated);
+
         var planet = HasComp<MapAtmosphereComponent>(mapUid.Value);
 
         RaiseNetworkEvent(new WFNuclearDetonationEvent
@@ -306,7 +314,7 @@ public sealed partial class WFWarheadSystem : EntitySystem
             && !HasComp<MapComponent>(gridUid))
         {
             _adminLog.Add(LogType.Explosion, LogImpact.Extreme, $"Warhead deleted grid {ToPrettyString(gridUid)}");
-            Del(gridUid);
+            EntityManager.System<Content.Server._WF.Performance.WFGridDeleteSystem>().QueueDel(gridUid);
         }
 
         Erase(coords, payload.EraseRadius);
@@ -356,3 +364,11 @@ public sealed partial class WFWarheadSystem : EntitySystem
         radiation.Slope = 1f / Math.Max(payload.FalloutRadius, 0.5f);
     }
 }
+
+/// <summary>Raised once for every nuclear detonation, before it does anything: where, and how far it kills outright.</summary>
+[ByRefEvent]
+public readonly record struct WFNuclearDetonatedEvent(MapCoordinates Coordinates, float KillRadius, EntityUid? Cause);
+
+/// <summary>Raised once whenever a warhead starts counting down or has its safety taken off.</summary>
+[ByRefEvent]
+public readonly record struct WFWarheadArmedEvent(EntityUid Warhead, EntityUid? User);

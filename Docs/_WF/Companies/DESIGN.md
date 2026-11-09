@@ -121,7 +121,7 @@ Each rank also has:
 ## Hangar and fleet licences
 
 - A company holds up to 3 licences (*tunable*).
-- Licence price: 200x the design's shipyard price, minimum 20,000,000 (*tunable*). Bought by the owner from the account.
+- Licence price: 35x the design's shipyard price, minimum 2,000,000 (*tunable*). Bought by the owner from the account.
   Selling a licence refunds nothing.
 - Each licence can be launched once per round. All of a company's licences can be out at once.
 - Launching (Launch permission) creates a company crew for that design. The purchase price is skipped.

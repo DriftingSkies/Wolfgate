@@ -526,6 +526,7 @@ requests are handled in MappingTools (`MappingToolsSystem.Links.cs`). Cvars are 
 - [`Content.Client/_WF/MappingMode/Modes/WFMappingBuildModeSystem.cs`](../../../Content.Client/_WF/MappingMode/Modes/WFMappingBuildModeSystem.cs)
 - [`Content.Client/_WF/MappingMode/Modes/WFMappingBuildModeSystem.PipeDevices.cs`](../../../Content.Client/_WF/MappingMode/Modes/WFMappingBuildModeSystem.PipeDevices.cs)
 - [`Content.Client/_WF/MappingMode/Modes/WFMappingBuildModeSystem.Spawners.cs`](../../../Content.Client/_WF/MappingMode/Modes/WFMappingBuildModeSystem.Spawners.cs)
+- [`Content.Client/_WF/MappingMode/Modes/WFMappingBuildModeSystem.Tools.cs`](../../../Content.Client/_WF/MappingMode/Modes/WFMappingBuildModeSystem.Tools.cs)
 - [`Content.Client/_WF/MappingMode/Modes/WFMappingDragModeBase.cs`](../../../Content.Client/_WF/MappingMode/Modes/WFMappingDragModeBase.cs)
 - [`Content.Client/_WF/MappingMode/Modes/WFMappingEraseMode.cs`](../../../Content.Client/_WF/MappingMode/Modes/WFMappingEraseMode.cs)
 - [`Content.Client/_WF/MappingMode/Modes/WFMappingFillMode.cs`](../../../Content.Client/_WF/MappingMode/Modes/WFMappingFillMode.cs)
@@ -626,6 +627,7 @@ requests are handled in MappingTools (`MappingToolsSystem.Links.cs`). Cvars are 
 - [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingTemplateShareTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingTemplateShareTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingTestModeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingTestModeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingTickerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingTickerTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingToolToggleTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingToolToggleTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingUnsavedTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingUnsavedTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingUploadClientTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingUploadClientTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingUploadTest.cs`](../../../Content.IntegrationTests/Tests/_WF/MappingMode/WFMappingUploadTest.cs)
@@ -669,8 +671,8 @@ requests are handled in MappingTools (`MappingToolsSystem.Links.cs`). Cvars are 
 - [`Resources/Locale/en-US/_WF/MappingMode/mapping-ship.ftl`](../../../Resources/Locale/en-US/_WF/MappingMode/mapping-ship.ftl)
 - [`Resources/Locale/en-US/_WF/MappingMode/mapping-template.ftl`](../../../Resources/Locale/en-US/_WF/MappingMode/mapping-template.ftl)
 - [`Resources/Locale/en-US/_WF/MappingMode/mapping-test.ftl`](../../../Resources/Locale/en-US/_WF/MappingMode/mapping-test.ftl)
+- [`Resources/Locale/en-US/_WF/MappingMode/mapping-tools-mode.ftl`](../../../Resources/Locale/en-US/_WF/MappingMode/mapping-tools-mode.ftl)
 - [`Resources/Locale/en-US/_WF/MappingMode/mapping-upload.ftl`](../../../Resources/Locale/en-US/_WF/MappingMode/mapping-upload.ftl)
-- [`Resources/Locale/en-US/_WF/MappingMode/mapping-wrench.ftl`](../../../Resources/Locale/en-US/_WF/MappingMode/mapping-wrench.ftl)
 
 ### Textures
 

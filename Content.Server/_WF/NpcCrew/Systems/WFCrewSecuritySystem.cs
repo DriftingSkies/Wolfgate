@@ -160,6 +160,13 @@ public sealed partial class WFCrewSecuritySystem : EntitySystem
     /// <summary>Authorization requires a company of the same faction or an overlapping NPC faction.</summary>
     public bool IsAuthorized(EntityUid crew, EntityUid other)
     {
+        // What the ship came out carrying is its own, whatever faction it is: the Remade a flesh ship brings, say.
+        if (TryComp<Content.Server._WF.Encounters.Components.WFEncounterPassengerComponent>(other, out var passenger)
+            && TryComp<Content.Server._WF.Encounters.Components.WFEncounterComponent>(passenger.Encounter, out var encounter)
+            && encounter.Ships.TryGetValue(passenger.Key, out var ship)
+            && Transform(crew).GridUid == ship.Grid)
+            return true;
+
         if (TryComp<CompanyComponent>(crew, out var company) && company.CompanyName.Id is not ("" or "None")
             && TryComp<CompanyComponent>(other, out var visitorCompany))
             return WFCompanyFamily.Same(company.CompanyName, visitorCompany.CompanyName);

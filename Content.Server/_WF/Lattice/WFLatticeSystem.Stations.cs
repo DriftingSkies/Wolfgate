@@ -63,6 +63,7 @@ public sealed partial class WFLatticeSystem
         SubscribeLocalEvent<WFLatticeAnchorComponent, ComponentShutdown>(OnAnchorShutdown);
         SubscribeLocalEvent<WFLatticeAnchorComponent, AnchorStateChangedEvent>(OnAnchorUnbolted);
         SubscribeLocalEvent<WFLatticeAnchorComponent, DamageChangedEvent>(OnAnchorDamaged);
+        SubscribeLocalEvent<WFLatticeStationPartComponent, DamageChangedEvent>(OnPartDamaged);
         SubscribeLocalEvent<WFLatticeAnchorShieldComponent, MapInitEvent>(OnShieldMapInit);
         SubscribeLocalEvent<WFShipShieldAttackedEvent>(OnShieldAttacked);
         SubscribeLocalEvent<WFDefconGatherEvent>(OnDefconGather);
@@ -276,7 +277,16 @@ public sealed partial class WFLatticeSystem
             return;
 
         var attacker = args.Origin is { } origin && TryComp<TransformComponent>(origin, out var from) ? from.GridUid : null;
+        // The direct-hit alarm goes first, so the weaker under-fire advisory can't take its cooldown.
+        Provoke(grid, args.Origin);
         Strike(grid, attacker, 1f);
+    }
+
+    /// <summary>A hit on anything else on the station is answered at once too.</summary>
+    private void OnPartDamaged(Entity<WFLatticeStationPartComponent> ent, ref DamageChangedEvent args)
+    {
+        if (args.DamageIncreased && Transform(ent.Owner).GridUid is { } grid)
+            Provoke(grid, args.Origin);
     }
 
     /// <summary>A hit on the shield counts towards the limit.</summary>

@@ -30,6 +30,12 @@ public sealed class MeleeHitEvent : HandledEntityEventArgs
     /// </remarks>
     public DamageSpecifier BonusDamage = new();
 
+    // WOLFGATE: support hit damage that bypasses melee modifier sets
+    /// <summary>
+    ///     Damage to add after melee modifier sets have been applied.
+    /// </summary>
+    public DamageSpecifier PostModifierDamage = new();
+
     /// <summary>
     ///     A list containing every hit entity. Can be zero.
     /// </summary>

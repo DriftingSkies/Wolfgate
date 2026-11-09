@@ -259,7 +259,8 @@ public sealed class EnvironmentTest
 
         var morgues = entMan.System<WFMorgueSystem>();
         var startTime = server.ResolveDependency<IGameTiming>().CurTime;
-        await pair.RunSeconds(2f);
+        // The scan runs every 2 s on the 0.5 s update, so exactly 2 s can end a tick before it.
+        await pair.RunSeconds(3f);
         await server.WaitAssertion(() =>
         {
             Assert.That(entMan.HasComponent<WFMorgueTurningComponent>(body), Is.True, "the body in the tray wasn't marked to turn.");

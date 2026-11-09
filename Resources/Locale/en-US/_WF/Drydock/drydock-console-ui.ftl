@@ -106,3 +106,6 @@ drydock-upgrade-durasteel-lamp = DURA
 drydock-console-materials-none = none
 drydock-console-material-amount = { $name } { $sheets }
 drydock-console-part-amount = { $name } ×{ $count }
+drydock-ui-clean-drift = Clean Drift ({$price} thlr)
+drydock-console-no-drift = No Drift has soaked into this hull.
+drydock-console-drift-cleaned = Hull scrubbed clean of Drift for {$price} thlr.

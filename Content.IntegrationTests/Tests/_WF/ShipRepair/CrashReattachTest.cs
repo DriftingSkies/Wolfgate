@@ -146,6 +146,14 @@ public sealed class CrashReattachTest
                         return;
 
                     var grid = em.GetComponent<MapGridComponent>(section);
+                    var sectionSystem = server.System<WFHullSectionSystem>();
+                    // Now and then a section is thrown past the SRD's reach mid-skid; a crew would tow it back first.
+                    if (!sectionSystem.InReattachRange(hull, (section, grid)))
+                    {
+                        var home = Vector2.Transform((Vector2) sectionSystem.OffsetOf(section) * grid.TileSize, xforms.GetWorldMatrix(hull));
+                        xforms.SetWorldPositionRotation(section, home, xforms.GetWorldRotation(hull));
+                    }
+
                     var tile = maps.GetAllTiles(section, grid).First().GridIndices;
                     TestContext.Out.WriteLine($"round {round}: section {section}, " +
                                               $"{server.System<WFHullSectionSystem>().CountTiles((section, grid))} tiles, " +

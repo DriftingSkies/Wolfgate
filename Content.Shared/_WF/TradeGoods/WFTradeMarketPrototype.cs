@@ -429,6 +429,10 @@ public sealed partial class WFTradeNavy
     /// <summary>Whether it posts a warrant on one of its own who sells war goods to the enemy.</summary>
     [DataField]
     public bool PostsDefectorWarrants;
+
+    /// <summary>Own companies paid no faction credits, such as contractors.</summary>
+    [DataField]
+    public List<ProtoId<CompanyPrototype>> Unpaid = new();
 }
 
 /// <summary>A faction the Market app groups stations under: its name, colour and the chutes its stations run.</summary>

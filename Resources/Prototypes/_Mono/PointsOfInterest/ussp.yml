@@ -19,6 +19,10 @@
   spawnGroup: Required
   gridPath: /Maps/_Mono/POI/camelot.yml
   addComponents:
+  # WOLFGATE(Ordnance) START: the faction's ordnance terminal
+  - type: WFOrdnanceStation
+    terminal: WFOrdnanceTerminalUSSP
+  # WOLFGATE END
   - type: IFF
     color: "#ccaa55"
   - type: WorldGenDistanceCarver

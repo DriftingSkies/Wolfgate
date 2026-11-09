@@ -173,7 +173,8 @@ public sealed partial class BlackFlashSystem : EntitySystem
 
         RemComp<BlackFlashArmedComponent>(weapon);
 
-        args.BonusDamage += args.BaseDamage * (flash.DamageMultiplier - 1f);
+        // WOLFGATE: apply configured flat damage after melee modifiers
+        args.PostModifierDamage += flash.Damage;
 
         var origin = _transform.GetWorldPosition(args.User);
         foreach (var target in args.HitEntities)

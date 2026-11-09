@@ -1,5 +1,7 @@
 using System.Linq;
 using System.Numerics;
+using Content.Server._WF.Lattice;
+using Content.Shared._WF.Lattice;
 using Content.Server.Station.Components;
 using Robust.Shared.Configuration;
 using Robust.Shared.Map;
@@ -7,12 +9,23 @@ using Robust.Shared.Map.Components;
 
 namespace Content.Server._WF.Remade.Corruption;
 
-/// <summary>Where nothing may grow: main stations, and a stretch of space round them.</summary>
+/// <summary>
+/// Where nothing may grow: a sealed hex field, sanctuary grids and a stretch of space round them, and anywhere within a
+/// standing anchor's ward.
+/// </summary>
 public sealed partial class WFCorruptionSystem
 {
     [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private WFLatticeSystem _lattice = default!;
 
     private static readonly TimeSpan NearStationTtl = TimeSpan.FromSeconds(5);
+    private static readonly TimeSpan ShieldedTtl = TimeSpan.FromSeconds(2);
+
+    /// <summary>Whether each grid sat inside a sealed hex when last looked at, and until when that holds.</summary>
+    private readonly Dictionary<EntityUid, (TimeSpan Until, bool Shielded)> _shielded = new();
+
+    /// <summary>Whether each grid lay within a standing anchor's ward when last looked at, and until when that holds.</summary>
+    private readonly Dictionary<EntityUid, (TimeSpan Until, bool Warded)> _warded = new();
 
     /// <summary>Whether each grid lay within the sanctuary radius of a main station when last looked at, and until when that holds.</summary>
     private readonly Dictionary<EntityUid, (TimeSpan Until, bool Near)> _nearStation = new();
@@ -47,6 +60,78 @@ public sealed partial class WFCorruptionSystem
             if (TerminatingOrDeleted(grid))
                 _nearStation.Remove(grid);
         }
+
+        foreach (var grid in _shielded.Keys.ToList())
+        {
+            if (TerminatingOrDeleted(grid))
+                _shielded.Remove(grid);
+        }
+
+        foreach (var grid in _warded.Keys.ToList())
+        {
+            if (TerminatingOrDeleted(grid))
+                _warded.Remove(grid);
+        }
+    }
+
+    /// <summary>
+    /// Whether a grid keeps a Monolith off by itself: one marked as a sanctuary, or a main station on a map with no Lattice.
+    /// Where there is a Lattice, its hex field shelters the main station instead, and only while it is sealed.
+    /// </summary>
+    private bool HoldsSanctuary(EntityUid grid)
+    {
+        if (HasComp<WFRemadeSanctuaryComponent>(grid))
+            return true;
+
+        return IsMainStation(grid) && !HasComp<WFLatticeFieldComponent>(Transform(grid).MapUid);
+    }
+
+    /// <summary>Whether a grid sits inside a sealed hex field.</summary>
+    private bool Shielded(EntityUid grid)
+    {
+        var now = _timing.CurTime;
+        if (_shielded.TryGetValue(grid, out var cached) && now < cached.Until)
+            return cached.Shielded;
+
+        var shielded = _lattice.IsShielded(grid);
+        _shielded[grid] = (now + ShieldedTtl, shielded);
+        return shielded;
+    }
+
+    /// <summary>Whether corruption is kept off a grid: a sanctuary, or within a standing anchor's ward.</summary>
+    public bool IsWarded(EntityUid? grid)
+    {
+        if (grid is not { } uid)
+            return false;
+
+        if (IsSanctuary(uid))
+            return true;
+
+        var now = _timing.CurTime;
+        if (_warded.TryGetValue(uid, out var cached) && now < cached.Until)
+            return cached.Warded;
+
+        var warded = false;
+        if (TryComp<MapGridComponent>(uid, out var gridComp))
+        {
+            var (centre, radius) = Bounds(uid, gridComp);
+            var map = Transform(uid).MapID;
+            var anchors = EntityQueryEnumerator<WFLatticeAnchorComponent, TransformComponent>();
+            while (anchors.MoveNext(out _, out var anchor, out var xform))
+            {
+                if (!anchor.Active || anchor.Ward <= 0f || xform.MapID != map)
+                    continue;
+
+                if ((_transform.GetWorldPosition(xform) - centre).Length() - radius <= anchor.Ward)
+                {
+                    warded = true;
+                    break;
+                }
+            }
+        }
+
+        _warded[uid] = (now + NearStationTtl, warded);
+        return warded;
     }
 
     /// <summary>
@@ -66,7 +151,11 @@ public sealed partial class WFCorruptionSystem
     public bool IsSanctuaryAt(EntityUid entity)
     {
         var xform = Transform(entity);
-        return xform.GridUid is { } grid ? IsSanctuary(grid) : NearMainStation(_transform.GetMapCoordinates(entity));
+        if (xform.GridUid is { } grid)
+            return IsSanctuary(grid);
+
+        var at = _transform.GetMapCoordinates(entity);
+        return NearMainStation(at) || _lattice.IsShielded(at);
     }
 
     /// <summary>Whether the grid lies within the sanctuary radius of a main station, edge to edge.</summary>
@@ -112,7 +201,7 @@ public sealed partial class WFCorruptionSystem
     /// <summary>Whether a sanctuary grid lies within the radius of a circle, edge to edge.</summary>
     private bool Within(EntityUid uid, MapGridComponent grid, TransformComponent xform, MapId map, Vector2 centre, float radius, EntityUid? except)
     {
-        if (uid == except || xform.MapID != map || !IsMainStation(uid))
+        if (uid == except || xform.MapID != map || !HoldsSanctuary(uid))
             return false;
 
         var (stationCentre, stationRadius) = Bounds(uid, grid);

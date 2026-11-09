@@ -104,7 +104,7 @@ public sealed partial class SpeechVoiceSystem : EntitySystem
 
     private void OnSpoke(Entity<SpeechVoiceComponent> ent, ref EntitySpokeEvent args)
     {
-        if (!ent.Comp.Voice.Enabled || string.IsNullOrWhiteSpace(args.Message))
+        if (!ent.Comp.Voice.Enabled || string.IsNullOrWhiteSpace(args.Message) || !args.Language.SpeechOverride.RequireSpeech)
             return;
 
         var line = LineFor((ent, FormattedMessage.EscapeText(args.Message)));

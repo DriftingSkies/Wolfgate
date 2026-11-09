@@ -161,6 +161,9 @@ public sealed partial class RadioSystem : EntitySystem
             ? FormattedMessage.EscapeText(message)
             : message;
 
+        // WOLFGATE(ChatFormatting): emphasis delimiters convert to BBCode after escape (so ~ replacement doesn't corrupt tags)
+        content = ChatSystem.ConvertCustomEmphasisToBBCode(content);
+
         // Frontier: append frequency if the channel requests it
         string channelText;
         if (channel.ShowFrequency)
@@ -193,6 +196,8 @@ public sealed partial class RadioSystem : EntitySystem
 
         // Einstein Engines - Language begin
         var obfuscated = _language.ObfuscateSpeech(content, language);
+        // WOLFGATE(ChatFormatting): emphasis delimiters convert to BBCode after obfuscation
+        obfuscated = ChatSystem.ConvertCustomEmphasisToBBCode(obfuscated);
         var obfuscatedWrapped = WrapRadioMessage(messageSource, channel, name, obfuscated, language);
         var notUdsMsg = new ChatMessage(ChatChannel.Radio, obfuscated, obfuscatedWrapped, NetEntity.Invalid, null);
         var ev = new RadioReceiveEvent(messageSource, channel, msg, notUdsMsg, language, radioSource);

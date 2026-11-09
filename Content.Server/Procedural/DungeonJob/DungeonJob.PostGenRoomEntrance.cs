@@ -37,6 +37,11 @@ public sealed partial class DungeonJob
 
         foreach (var room in dungeon.Rooms)
         {
+            // WOLFGATE(Performance): yield between rooms so a big dungeon never finishes in one tick
+            await SuspendDungeon();
+            if (!ValidateResume())
+                return;
+
             foreach (var entrance in room.Entrances)
             {
                 _entManager.SpawnEntities(

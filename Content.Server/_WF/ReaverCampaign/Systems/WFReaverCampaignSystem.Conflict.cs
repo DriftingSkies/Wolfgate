@@ -88,7 +88,6 @@ public sealed partial class WFReaverCampaignSystem
         comp.Stronghold = from.Owner;
         comp.Lead = lead;
         comp.Home = home;
-        AnnounceRadio(Loc.GetString("wf-reaver-response-launched", ("callsign", WFSectorHex.Callsign(cell))));
         Log.Info($"Reaver response pack {ToPrettyString(uid)} launched from {ToPrettyString(from.Owner)} for {WFSectorHex.Callsign(cell)}.");
         pack = uid;
         return true;
@@ -161,9 +160,9 @@ public sealed partial class WFReaverCampaignSystem
             return;
 
         state.CellsLost++;
-        AnnounceQuiet(campaign, Loc.GetString("wf-reaver-cell-lost",
+        AnnounceRadio(Loc.GetString("wf-reaver-cell-lost",
             ("callsign", WFSectorHex.Callsign(args.Cell)),
-            ("faction", FactionName(args.Faction))), false);
+            ("faction", FactionName(args.Faction))));
         Recompute();
     }
 

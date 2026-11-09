@@ -138,6 +138,10 @@ public sealed partial class WFMappingPropertiesPanel : BoxContainer
         LinkDevicesButton.OnPressed += _ => _link.SetTool(WFMappingLinkTool.Devices);
         LinkAccessButton.OnPressed += _ => _link.SetTool(WFMappingLinkTool.Access);
         LinkThresholdsButton.OnPressed += _ => _link.SetTool(WFMappingLinkTool.Thresholds);
+        foreach (var (button, tool) in ToolButtons())
+        {
+            button.OnPressed += _ => _modes.SetTool(tool);
+        }
         LinkClearButton.OnPressed += _ => _link.ClearSelection();
 
         QuickSelectButton.OnPressed += _ =>
@@ -282,6 +286,7 @@ public sealed partial class WFMappingPropertiesPanel : BoxContainer
         ShapeRow.Visible = mode == WFMappingBuildMode.Shape;
         PipeBox.Visible = mode == WFMappingBuildMode.Pipe;
         LinkBox.Visible = mode == WFMappingBuildMode.Link;
+        ToolBox.Visible = mode == WFMappingBuildMode.Wrench;
         UpdateShapeFill();
     }
 
@@ -298,6 +303,7 @@ public sealed partial class WFMappingPropertiesPanel : BoxContainer
         ShapeKindMenu.TrySelectId((int) _modes.ShapeKind);
         UpdateShapeFill();
         UpdatePipe();
+        UpdateTools();
         PlacementModeMenu.TrySelectId(_modes.PlacementModeIndex);
         UpdateRotation();
     }
@@ -363,6 +369,27 @@ public sealed partial class WFMappingPropertiesPanel : BoxContainer
         return prototype.EditorSuffix is { } suffix
             ? Loc.GetString("wf-mapping-screen-pipe-device-tooltip-suffix", ("name", prototype.Name), ("suffix", suffix))
             : prototype.Name;
+    }
+
+    private (Button Button, WFMappingTool Tool)[] ToolButtons()
+    {
+        return
+        [
+            (ToolWrenchButton, WFMappingTool.Wrench),
+            (ToolBoltsButton, WFMappingTool.Bolts),
+            (ToolWeldButton, WFMappingTool.Weld),
+            (ToolLockButton, WFMappingTool.Lock),
+            (ToolPanelButton, WFMappingTool.Panel),
+            (ToolDoorButton, WFMappingTool.Door),
+        ];
+    }
+
+    private void UpdateTools()
+    {
+        foreach (var (button, tool) in ToolButtons())
+        {
+            button.Pressed = _modes.Tool == tool;
+        }
     }
 
     private void UpdateLink()

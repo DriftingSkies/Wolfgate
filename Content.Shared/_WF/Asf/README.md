@@ -47,6 +47,7 @@ spine, flared shoulders with the docks, a pinched waist and a wide engineering s
   | Vigil (escort fighter) | 64 | 3: Hummingbird, Flutter | - | 40k |
   | Bulwark (gunship) | 99 | 4: Hummingbird, Serpent | small | 75k |
   | Guardian (corvette) | 237 | 12: Apollo, 2 Hummingbird, 2 Tarnyx | small | 123k |
+  | Revelation (research, drone hunter) | 313 | 6: 2 Hummingbird, 2 Flutter | small | 162k |
   | Lodestar (flagship frigate) | 479 | 22: 2 Apollo, 4 Hummingbird, 2 Serpent, 2 Flutter | MS-250 Aegis | 250k, voucher only |
 
   Peers at those sizes: QJ340/Bazalt (fighters), QJ270/Strayk/Reaver (gunships), Paladin/Kite/Shiv (corvettes),
@@ -249,15 +250,18 @@ The wardrobe sprites and the seven hulls come from
 - [`Resources/SharedMaps/_WF/Asf/lamplighter.yml`](../../../Resources/SharedMaps/_WF/Asf/lamplighter.yml)
 - [`Resources/SharedMaps/_WF/Asf/lodestar.yml`](../../../Resources/SharedMaps/_WF/Asf/lodestar.yml)
 - [`Resources/SharedMaps/_WF/Asf/porter.yml`](../../../Resources/SharedMaps/_WF/Asf/porter.yml)
+- [`Resources/SharedMaps/_WF/Asf/revelation.yml`](../../../Resources/SharedMaps/_WF/Asf/revelation.yml)
 - [`Resources/SharedMaps/_WF/Asf/vigil.yml`](../../../Resources/SharedMaps/_WF/Asf/vigil.yml)
 
 ### Guidebook
 
 - [`Resources/ServerInfo/_WF/Asf/Guidebook/Factions/Asf.xml`](../../../Resources/ServerInfo/_WF/Asf/Guidebook/Factions/Asf.xml)
+- [`Resources/ServerInfo/_WF/Asf/Guidebook/Shipyard/Revelation.xml`](../../../Resources/ServerInfo/_WF/Asf/Guidebook/Shipyard/Revelation.xml)
 
 ## Non-modular edits
 
 - [`Resources/Prototypes/_Mono/Entities/Objects/Misc/loot.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Misc/loot.yml): ASF crystal bounties
 - [`Resources/Prototypes/_Mono/Guidebook/factions.yml`](../../../Resources/Prototypes/_Mono/Guidebook/factions.yml)
+- [`Resources/Prototypes/_Mono/Guidebook/shipyard.yml`](../../../Resources/Prototypes/_Mono/Guidebook/shipyard.yml)
 
 <!-- WOLFGATE-GENERATED END -->

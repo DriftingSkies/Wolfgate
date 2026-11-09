@@ -146,7 +146,11 @@ public abstract partial class CESharedZFlightSystem
             return;
         }
 
-        TryActivateFlight(ent.Owner);
+        // WOLFGATE(Planets) START: a refused take-off (orbit) must not leave the preventive visuals running
+        // TryActivateFlight(ent.Owner);
+        if (!TryActivateFlight(ent.Owner) && TryComp<CEZFlyerComponent>(ent, out var flyer) && !flyer.Active)
+            StopFlightVisuals(ent.Owner);
+        // WOLFGATE END
         args.Handled = true;
     }
 }

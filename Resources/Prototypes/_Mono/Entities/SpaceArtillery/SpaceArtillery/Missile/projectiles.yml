@@ -114,13 +114,43 @@
   - type: GatheringProjectile
   - type: MiningGatheringSoft
   - type: MiningGatheringHard
+  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WFMissileFlightSystem flies the missile
+  # Upstream carrier, which flew the missile itself:
+  # - type: TargetSeeking
+  #   acceleration: 140
+  #   detectionRange: 1200
+  #   scanArc: 15
+  #   launchSpeed: 150
+  #   maxSpeed: 300
+  #   trackDelay: 0.1
   - type: TargetSeeking
-    acceleration: 140
+    acceleration: 0
+    launchSpeed: 0
+    turnRate: 0
+    trackingAlgorithm: Direct
+    maxSpeed: 300
     detectionRange: 1200
     scanArc: 15
-    launchSpeed: 150
-    maxSpeed: 300
     trackDelay: 0.1
+  - type: WFMissileFlight
+    launchSpeed: 150
+    boostAccel: 260
+    boostTime: 1.6
+    maxSpeed: 300
+    lateralAccel: 120
+    divertBudget: 80
+    divertCap: 60
+    notchBand: 6
+    notchMemory: 1
+    memoryTime: 1.5
+    launchTransient: 0.5
+    launchTurnMultiplier: 3
+    launchDamping: 0.1
+    launchAcquireCone: 60
+    launchAcquireRange: 1200
+    launchOffBoresight: 120
+    snapFraction: 1
+  # WOLFGATE END
   - type: Destructible
     thresholds:
     - trigger:
@@ -174,14 +204,43 @@
   - type: GatheringProjectile
   - type: MiningGatheringSoft
   - type: MiningGatheringHard
+  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WFMissileFlightSystem flies the missile
+  # Upstream carrier, which flew the missile itself:
+  # - type: TargetSeeking
+  #   acceleration: 250
+  #   detectionRange: 1600
+  #   scanArc: 25
+  #   launchSpeed: 90
+  #   maxSpeed: 240
+  #   trackDelay: 0.2
+  #   trackingAlgorithm: AdvancedPredictive
   - type: TargetSeeking
-    acceleration: 250
-    detectionRange: 1600
-    scanArc: 25
-    launchSpeed: 90
+    acceleration: 0
+    launchSpeed: 0
+    turnRate: 0
+    trackingAlgorithm: Direct
     maxSpeed: 240
+    detectionRange: 1600
+    scanArc: 30
     trackDelay: 0.2
-    trackingAlgorithm: AdvancedPredictive
+  - type: WFMissileFlight
+    launchSpeed: 90
+    boostAccel: 200
+    boostTime: 3
+    maxSpeed: 240
+    lateralAccel: 110
+    divertBudget: 120
+    divertCap: 60
+    notchBand: 4
+    notchMemory: 1.5
+    memoryTime: 2
+    launchTransient: 0.35
+    launchTurnMultiplier: 2.5
+    launchDamping: 0.15
+    launchAcquireCone: 45
+    launchAcquireRange: 1600
+    launchOffBoresight: 90
+  # WOLFGATE END
 
 - type: entity
   id: ShipMissileASM150Unguided
@@ -189,12 +248,31 @@
   parent: ShipMissileASM150
   categories: [ HideSpawnMenu ]
   components:
+  # WOLFGATE(ShipMissiles) START: motor only, no seeker and no diverters
+  # Upstream carrier, which flew the missile itself:
+  # - type: TargetSeeking
+  #   acceleration: 150
+  #   detectionRange: 0
+  #   scanArc: 0
+  #   launchSpeed: 90
+  #   maxSpeed: 300
   - type: TargetSeeking
-    acceleration: 150
+    acceleration: 0
+    launchSpeed: 0
+    turnRate: 0
+    trackingAlgorithm: Direct
     detectionRange: 0
     scanArc: 0
-    launchSpeed: 90
     maxSpeed: 300
+  - type: WFMissileFlight
+    launchSpeed: 90
+    boostAccel: 150
+    boostTime: 4
+    maxSpeed: 300
+    lateralAccel: 0
+    divertBudget: 0
+    launchTransient: 0
+  # WOLFGATE END
   - type: Explosive
     explosionType: Default
     totalIntensity: 30
@@ -242,13 +320,42 @@
   - type: GatheringProjectile
   - type: MiningGatheringSoft
   - type: MiningGatheringHard
+  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WFMissileFlightSystem flies the missile
+  # Upstream carrier, which flew the missile itself:
+  # - type: TargetSeeking
+  #   acceleration: 180
+  #   detectionRange: 2400
+  #   scanArc: 35
+  #   launchSpeed: 120
+  #   maxSpeed: 350
+  #   trackDelay: 0.15
   - type: TargetSeeking
-    acceleration: 180
+    acceleration: 0
+    launchSpeed: 0
+    turnRate: 0
+    trackingAlgorithm: Direct
+    maxSpeed: 350
     detectionRange: 2400
     scanArc: 35
-    launchSpeed: 120
-    maxSpeed: 350
     trackDelay: 0.15
+  - type: WFMissileFlight
+    launchSpeed: 120
+    boostAccel: 260
+    boostTime: 4
+    maxSpeed: 350
+    lateralAccel: 130
+    divertBudget: 160
+    divertCap: 70
+    notchBand: 4
+    notchMemory: 2
+    memoryTime: 2.2
+    launchTransient: 0.4
+    launchTurnMultiplier: 2
+    launchDamping: 0.15
+    launchAcquireCone: 35
+    launchAcquireRange: 2400
+    launchOffBoresight: 75
+  # WOLFGATE END
 
 - type: entity
   id: ShipMissileASM250HV
@@ -288,14 +395,43 @@
   - type: GatheringProjectile
   - type: MiningGatheringSoft
   - type: MiningGatheringHard
+  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WFMissileFlightSystem flies the missile
+  # Upstream carrier, which flew the missile itself:
+  # - type: TargetSeeking
+  #   acceleration: 360 # PD skillcheck
+  #   detectionRange: 700
+  #   scanArc: 20
+  #   launchSpeed: 300
+  #   maxSpeed: 650
+  #   trackDelay: 0
+  #   trackingAlgorithm: AdvancedPredictive
   - type: TargetSeeking
-    acceleration: 360 # PD skillcheck
+    acceleration: 0
+    launchSpeed: 0
+    turnRate: 0
+    trackingAlgorithm: Direct
+    maxSpeed: 650
     detectionRange: 700
     scanArc: 20
-    launchSpeed: 300
-    maxSpeed: 650
     trackDelay: 0
-    trackingAlgorithm: AdvancedPredictive
+  - type: WFMissileFlight
+    launchSpeed: 300
+    boostAccel: 900
+    boostTime: 2
+    maxSpeed: 650
+    lateralAccel: 200
+    divertBudget: 90
+    divertCap: 120
+    notchBand: 3
+    notchMemory: 1.2
+    memoryTime: 1
+    launchTransient: 0.25
+    launchTurnMultiplier: 1.5
+    launchDamping: 0.2
+    launchAcquireCone: 25
+    launchAcquireRange: 700
+    launchOffBoresight: 45
+  # WOLFGATE END
 
 - type: entity
   id: ShipMissileASM250
@@ -338,13 +474,42 @@
   - type: GatheringProjectile
   - type: MiningGatheringSoft
   - type: MiningGatheringHard
+  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WFMissileFlightSystem flies the missile
+  # Upstream carrier, which flew the missile itself:
+  # - type: TargetSeeking
+  #   acceleration: 220
+  #   detectionRange: 2400
+  #   scanArc: 35
+  #   launchSpeed: 60
+  #   maxSpeed: 300
+  #   trackDelay: 0.2
   - type: TargetSeeking
-    acceleration: 220
+    acceleration: 0
+    launchSpeed: 0
+    turnRate: 0
+    trackingAlgorithm: Direct
+    maxSpeed: 300
     detectionRange: 2400
     scanArc: 35
-    launchSpeed: 60
-    maxSpeed: 300
     trackDelay: 0.2
+  - type: WFMissileFlight
+    launchSpeed: 60
+    boostAccel: 240
+    boostTime: 3.5
+    maxSpeed: 300
+    lateralAccel: 140
+    divertBudget: 140
+    divertCap: 65
+    notchBand: 4
+    notchMemory: 2
+    memoryTime: 2.2
+    launchTransient: 0.4
+    launchTurnMultiplier: 2
+    launchDamping: 0.15
+    launchAcquireCone: 35
+    launchAcquireRange: 2400
+    launchOffBoresight: 75
+  # WOLFGATE END
 
 # Serpent Torpedo
 

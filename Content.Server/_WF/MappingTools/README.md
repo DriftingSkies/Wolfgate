@@ -107,6 +107,7 @@ rotation maths).
 - [`Content.Server/_WF/MappingTools/MappingToolsSystem.PipeDevices.cs`](MappingToolsSystem.PipeDevices.cs)
 - [`Content.Server/_WF/MappingTools/MappingToolsSystem.Pipes.cs`](MappingToolsSystem.Pipes.cs)
 - [`Content.Server/_WF/MappingTools/MappingToolsSystem.Thresholds.cs`](MappingToolsSystem.Thresholds.cs)
+- [`Content.Server/_WF/MappingTools/MappingToolsSystem.Toggles.cs`](MappingToolsSystem.Toggles.cs)
 - [`Content.Server/_WF/MappingTools/MappingToolsSystem.Wrench.cs`](MappingToolsSystem.Wrench.cs)
 - [`Content.Server/_WF/MappingTools/MappingZLevelsSystem.cs`](MappingZLevelsSystem.cs)
 - [`Content.Server/_WF/MappingTools/WFMappingPermissionEvents.cs`](WFMappingPermissionEvents.cs)
@@ -122,6 +123,7 @@ rotation maths).
 - [`Content.Shared/_WF/MappingTools/MappingToolsShapes.cs`](../../../Content.Shared/_WF/MappingTools/MappingToolsShapes.cs)
 - [`Content.Shared/_WF/MappingTools/MappingToolsThresholdEvents.cs`](../../../Content.Shared/_WF/MappingTools/MappingToolsThresholdEvents.cs)
 - [`Content.Shared/_WF/MappingTools/MappingZLevelsEvents.cs`](../../../Content.Shared/_WF/MappingTools/MappingZLevelsEvents.cs)
+- [`Content.Shared/_WF/MappingTools/SharedDoorSystem.Mapping.cs`](../../../Content.Shared/_WF/MappingTools/SharedDoorSystem.Mapping.cs)
 - [`Content.Shared/_WF/MappingTools/ToggleMappingToolsActionEvent.cs`](../../../Content.Shared/_WF/MappingTools/ToggleMappingToolsActionEvent.cs)
 - [`Content.Shared/_WF/MappingTools/WFMappingAccessFillComponent.cs`](../../../Content.Shared/_WF/MappingTools/WFMappingAccessFillComponent.cs)
 

@@ -7,24 +7,25 @@ using Robust.Shared.GameObjects;
 
 namespace Content.IntegrationTests.Tests._WF.ReaverCampaign;
 
-/// <summary>The sector watch's three tiers: a chimed banner, a quiet banner held to one per window, and a radio line.</summary>
+/// <summary>The sector watch banners only capital moments; the rest is a radio line, and bookkeeping says nothing.</summary>
 [TestOf(typeof(WFReaverCampaignSystem))]
 public sealed class WFReaverAnnouncementTest : WFReaverTestBase
 {
     private const string Founded = "Reavers have built a stronghold at";
     private const string Inbound = "Reaver reinforcements are inbound to";
     private const string ConvoyLaunched = "A Reaver convoy is under way to";
+    private const string Falling = "Reaver threat is falling";
 
-    /// <summary>Two cells beyond the home stronghold's ring, for convoys to head for.</summary>
+    /// <summary>Two cells beyond the home stronghold's ring.</summary>
     private (WFSectorCell, WFSectorCell) Targets()
     {
         var cells = WFSectorHex.Ring(Home, 3).OrderByDescending(cell => WFSectorHex.Distance(cell, WFSectorCell.Origin)).ToList();
         return (cells[0], cells[1]);
     }
 
-    /// <summary>A founding chimes once and is a banner, with no radio line.</summary>
+    /// <summary>The first founding chimes once and is a banner, with no radio line.</summary>
     [Test]
-    public async Task FoundingIsOneChimedBanner()
+    public async Task FirstFoundingIsOneChimedBanner()
     {
         await StartCampaign();
         // A tier change in the same tick would take the chime; this one is past.
@@ -44,9 +45,33 @@ public sealed class WFReaverAnnouncementTest : WFReaverTestBase
         Assert.That(RadioLines(since, Founded), Is.Zero);
     }
 
-    /// <summary>A reinforcement launch is a radio line: no banner and no chime.</summary>
+    /// <summary>A later founding is a radio line: no banner and no chime.</summary>
     [Test]
-    public async Task ReinforcementLaunchIsARadioLine()
+    public async Task LaterFoundingIsARadioLine()
+    {
+        await StartCampaign();
+        await Server.WaitAssertion(() =>
+        {
+            Server.System<WFReaverCampaignSystem>().SetTier(5);
+            FoundAt(Home);
+        });
+        await RunTicks(5);
+
+        var since = ChatCount();
+        await Server.WaitAssertion(() =>
+        {
+            var chimes = Chimes();
+            FoundAt(new WFSectorCell(-5, 3));
+            Assert.That(Chimes(), Is.EqualTo(chimes), "No chime.");
+        });
+        await RunTicks(30);
+        Assert.That(Banners(since, Founded), Is.Zero);
+        Assert.That(RadioLines(since, Founded), Is.EqualTo(1));
+    }
+
+    /// <summary>A reinforcement launch says nothing.</summary>
+    [Test]
+    public async Task ReinforcementLaunchIsSilent()
     {
         await StartCampaign();
         EntityUid stronghold = default;
@@ -54,62 +79,56 @@ public sealed class WFReaverAnnouncementTest : WFReaverTestBase
         await RunTicks(5);
 
         var since = ChatCount();
-        var chimes = 0;
         await Server.WaitAssertion(() =>
         {
-            chimes = Chimes();
+            var chimes = Chimes();
             Assert.That(Server.System<WFReaverCampaignSystem>().TryReinforce(stronghold), Is.True);
             Assert.That(Chimes(), Is.EqualTo(chimes), "No chime.");
         });
         await RunTicks(30);
-        Assert.That(Banners(since, Inbound), Is.Zero);
-        Assert.That(RadioLines(since, Inbound), Is.EqualTo(1));
+        Assert.That(ChatSince(since).Any(line => line.Contains(Inbound)), Is.False);
     }
 
-    /// <summary>Two convoys inside the window: the first is a quiet banner, the second goes out on the radio.</summary>
+    /// <summary>Convoys are radio lines, however many go out.</summary>
     [Test]
-    public async Task SecondConvoyInsideTheWindowGoesOnTheRadio()
+    public async Task ConvoysAreRadioLines()
     {
         await StartCampaign();
         await Server.WaitAssertion(() => FoundAt(Home));
         await RunTicks(5);
 
         var since = ChatCount();
-        var chimes = 0;
         await Server.WaitAssertion(() =>
         {
             var campaign = Server.System<WFReaverCampaignSystem>();
             var (first, second) = Targets();
-            chimes = Chimes();
+            var chimes = Chimes();
             Assert.That(campaign.TryLaunchConvoy(first, out _), Is.True);
             Assert.That(campaign.TryLaunchConvoy(second, out _), Is.True);
             Assert.That(Chimes(), Is.EqualTo(chimes), "Neither chimes.");
-            Assert.That(campaign.State()!.LastQuietBanner, Is.EqualTo(STiming.CurTime));
         });
         await RunTicks(30);
-        Assert.That(Banners(since, ConvoyLaunched), Is.EqualTo(1));
-        Assert.That(RadioLines(since, ConvoyLaunched), Is.EqualTo(1));
+        Assert.That(Banners(since, ConvoyLaunched), Is.Zero);
+        Assert.That(RadioLines(since, ConvoyLaunched), Is.EqualTo(2));
     }
 
-    /// <summary>A quiet banner after the window has passed is a banner again.</summary>
+    /// <summary>A falling tier is a radio line, not a banner.</summary>
     [Test]
-    public async Task QuietBannerAfterTheWindowIsABannerAgain()
+    public async Task FallingTierIsARadioLine()
     {
         await StartCampaign();
-        await Server.WaitAssertion(() => FoundAt(Home));
+        await Server.WaitAssertion(() => Server.System<WFReaverCampaignSystem>().SetTier(5));
         await RunTicks(5);
 
         var since = ChatCount();
         await Server.WaitAssertion(() =>
         {
-            var campaign = Server.System<WFReaverCampaignSystem>();
-            var (first, second) = Targets();
-            Assert.That(campaign.TryLaunchConvoy(first, out _), Is.True);
-            campaign.State()!.LastQuietBanner = STiming.CurTime - WFReaverCampaignSystem.QuietBannerInterval - System.TimeSpan.FromSeconds(1);
-            Assert.That(campaign.TryLaunchConvoy(second, out _), Is.True);
+            var chimes = Chimes();
+            Server.System<WFReaverCampaignSystem>().SetTier(1);
+            Assert.That(Chimes(), Is.EqualTo(chimes), "No chime.");
         });
         await RunTicks(30);
-        Assert.That(Banners(since, ConvoyLaunched), Is.EqualTo(2));
-        Assert.That(RadioLines(since, ConvoyLaunched), Is.Zero);
+        Assert.That(Banners(since, Falling), Is.Zero);
+        Assert.That(RadioLines(since, Falling), Is.EqualTo(1));
     }
 }

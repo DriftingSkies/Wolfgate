@@ -276,6 +276,7 @@ public sealed partial class BankSystem : SharedBankSystem
             return false;
         }
         _prefsManager.SetProfile(session.UserId, index, newProfile);
+        _prefsManager.ResendPreferences(session.UserId); // WOLFGATE(Feedback): the in-round creator shows the deposit; withdrawals are too frequent to push
         // Update any active admin UI with new balance
         RaiseLocalEvent(new BalanceChangedEvent(session, newBalance.Value));
         return true;

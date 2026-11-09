@@ -11,3 +11,5 @@ wf-expedition-completed = Expedition completed. The site is cleared.
 wf-expedition-failed = Expedition failed.
 wf-expedition-out-of-time = Expedition failed: out of time.
 wf-expedition-abandoned = Expedition abandoned.
+
+wf-expedition-leave-planet = The ship can't jump from here. Fly up into orbit first.

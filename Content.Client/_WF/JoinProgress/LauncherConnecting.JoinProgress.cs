@@ -21,6 +21,9 @@ public sealed partial class LauncherConnecting
 
     public MsgJoinDownloadInfo? JoinDownloadInfo => _joinProgress.DownloadInfo;
 
+    /// <summary>Which channel this connection's file transfers use; null until the server says.</summary>
+    public JoinTransferMode? JoinTransferMode => _joinProgress.TransferMode;
+
     public bool CanReconnectJoin => _gameController.LaunchState.ConnectEndpoint != null;
 
     /// <summary>Round trip to the server in ms, or null with no connection yet.</summary>
@@ -46,6 +49,7 @@ public sealed partial class LauncherConnecting
         _clientNetManager.Connected += OnJoinNetConnected;
         _baseClient.RunLevelChanged += OnJoinRunLevelChanged;
         _joinProgress.DownloadInfoReceived += OnJoinDownloadInfo;
+        _joinProgress.TransferModeReceived += OnJoinTransferMode;
         ConnectFailed += OnJoinConnectFailed;
 
         OnJoinConnectState(_clientNetManager.ClientConnectState);
@@ -57,7 +61,16 @@ public sealed partial class LauncherConnecting
         _clientNetManager.Connected -= OnJoinNetConnected;
         _baseClient.RunLevelChanged -= OnJoinRunLevelChanged;
         _joinProgress.DownloadInfoReceived -= OnJoinDownloadInfo;
+        _joinProgress.TransferModeReceived -= OnJoinTransferMode;
         ConnectFailed -= OnJoinConnectFailed;
+    }
+
+    private void OnJoinTransferMode(JoinTransferMode mode)
+    {
+        if (mode == Content.Shared._WF.JoinProgress.JoinTransferMode.GameConnection)
+            return;
+
+        JoinTracker.AddLog(Loc.GetString($"join-console-log-channel-{mode}"), JoinNow);
     }
 
     /// <summary>Drops a hung connection and starts over. The engine has no other way out of a stuck handshake.</summary>

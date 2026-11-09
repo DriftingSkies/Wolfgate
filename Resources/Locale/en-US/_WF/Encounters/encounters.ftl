@@ -361,3 +361,4 @@ wf-encounter-trader-hail-leave = Never mind.
 wf-encounter-trader-hail-stopping = Understood. Holding position for {$minutes} minutes. Dock when ready.
 wf-encounter-trader-hail-cannot = Sorry, we can't stop here.
 wf-encounter-trader-hail-farewell = Safe travels.
+wf-encounter-admin-target-anchor = reality anchor

@@ -5,6 +5,7 @@ using Content.Shared.Whitelist;
 using Content.Shared.Wires;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Network;
+using Content.Shared._WF.Construction; // WOLFGATE(Construction)
 
 namespace Content.Shared._DV.Construction;
 
@@ -19,6 +20,7 @@ public sealed partial class UpgradeKitSystem : EntitySystem
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedWiresSystem _wires = default!;
+    [Dependency] private WFKitRefundSystem _wfRefund = default!; // WOLFGATE(Construction)
 
     public override void Initialize()
     {
@@ -68,6 +70,7 @@ public sealed partial class UpgradeKitSystem : EntitySystem
 
         // do the upgrading now
         EntityManager.AddComponents(target, ent.Comp.Components);
+        _wfRefund.RecordKit(target, ent); // WOLFGATE(Construction): deconstructing the machine gives the kit back
         if (_net.IsServer)
             QueueDel(ent);
     }

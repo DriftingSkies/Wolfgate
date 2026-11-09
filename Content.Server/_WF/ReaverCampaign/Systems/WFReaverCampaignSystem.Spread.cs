@@ -81,10 +81,10 @@ public sealed partial class WFReaverCampaignSystem
         if (!_territory.Contest(map, cell, campaign.Faction, _timing.CurTime + BlockadeTime, source))
             return false;
 
-        AnnounceQuiet(campaign, Loc.GetString("wf-reaver-blockade",
+        AnnounceRadio(Loc.GetString("wf-reaver-blockade",
             ("station", Name(station)),
             ("callsign", WFSectorHex.Callsign(cell)),
-            ("minutes", (int) BlockadeTime.TotalMinutes)), true);
+            ("minutes", (int) BlockadeTime.TotalMinutes)));
         return true;
     }
 }

@@ -115,7 +115,8 @@ reason; `--check` fails until both are filled in.
 
 ## Engine traps
 
-- Never edit `RobustToolbox`. It is a submodule; engine changes need a separate discussion.
+- Don't edit `RobustToolbox` from a content branch. It is the Lupine submodule (`Docs/_WF/Engine`): engine changes are
+  server-only patches on its `wolfgate/v291` branch, filed in the engine docket first, and the gitlink moves with a PR.
 - Client and Shared code is checked against `RobustToolbox/Robust.Shared/ContentPack/Sandbox.yml` at client
   load, and the compiler won't catch a violation. Not allowed: `BinaryWriter`, `EndOfStreamException`,
   `ConditionalWeakTable`, `System.Diagnostics.Process`, a collection expression assigned to a `List<T>`, and

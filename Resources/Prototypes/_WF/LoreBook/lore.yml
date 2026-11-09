@@ -43,7 +43,6 @@
   lore: true
   priority: 20
   children:
-  - WFLoreMonolith
   - WFLoreChimera
   - WFLoreXenonids
 
@@ -55,6 +54,7 @@
   lore: true
   priority: 30
   children:
+  - WFLoreMonolith
   - WFLoreUnmooring
   - WFLoreLattice
   - WFLoreChoir
@@ -63,6 +63,7 @@
   id: WFLoreMonolith
   name: wf-lore-entry-monolith
   text: "/ServerInfo/_WF/LoreBook/Threats/Monolith.xml"
+  unease: 0.3
 
 - type: guideEntry
   id: WFLoreChimera

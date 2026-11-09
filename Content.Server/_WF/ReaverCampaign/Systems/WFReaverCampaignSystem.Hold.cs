@@ -84,7 +84,6 @@ public sealed partial class WFReaverCampaignSystem
     {
         state.BelowSince += span;
         state.TierAnnounced += span;
-        state.LastQuietBanner += span;
         state.LastFounded += span;
         state.NoStrongholdSince += span;
         state.NextSpread += span;

@@ -43,8 +43,10 @@
     - type: NpcFactionMember
       factions:
       - PirateNF
-    - type: ChatRank
-      rank: pdv-vizier
+    # WOLFGATE(PdvRanks) START: the rank comes from the loadout ladder, whose default is Grand Vizier (Vzr.)
+    # - type: ChatRank
+    #   rank: pdv-vizier
+    # WOLFGATE END
     - type: RadioOnCryosleep
       radioChannel: Freelance # freelance = Vanguard
   - !type:AddImplantSpecial

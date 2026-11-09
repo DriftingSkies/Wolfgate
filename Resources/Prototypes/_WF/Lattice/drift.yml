@@ -1,0 +1,135 @@
+# Cutting a Coda-twisted arm away: open it up, saw through, and cut the blade free. What comes off is Remade tissue.
+- type: entity
+  parent: SurgeryBase
+  id: WFSurgeryCutTwistedArm
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Surgery
+    requirement: SurgeryOpenIncision
+    steps:
+    - SurgeryStepSawBones
+    - WFLatticeStepCutTwistedArm
+  - type: SurgeryPartCondition
+    part: Arm
+  - type: WFTwistedArmCondition
+
+- type: entity
+  parent: SurgeryStepBase
+  id: WFLatticeStepCutTwistedArm
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SurgeryStep
+    tool:
+    - type: Scalpel
+    duration: 8
+  - type: Sprite
+    sprite: Objects/Weapons/Melee/armblade.rsi
+    state: icon
+  - type: WFTwistedArmRemoval
+  - type: SurgeryStepEmoteEffect
+
+# What's left of a twisted arm. Researchers pay well for it.
+- type: entity
+  parent: BaseItem
+  id: WFRemadeTissue
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Melee/armblade.rsi
+    state: icon
+    color: "#9a7a86"
+  - type: Item
+    size: Small
+  - type: StaticPrice
+    price: 2500
+  - type: WFDriftSource
+    rate: 0
+    range: 0
+    carried: 0.05
+    touch: 1
+    cap: 25
+
+# Logs the Drift where it is carried. The deeper the band, the more each minute is worth; sell it for what it logged.
+- type: entity
+  parent: BaseItem
+  id: WFDriftLogger
+  components:
+  - type: Sprite
+    sprite: Objects/Tools/geiger.rsi
+    color: "#c0a0ff"
+    layers:
+    - state: geiger_base
+  - type: Item
+    sprite: Objects/Tools/geiger.rsi
+    size: Small
+  - type: StaticPrice
+    price: 100
+  - type: WFDriftLogger
+
+- type: latheRecipe
+  id: WFDriftLogger
+  result: WFDriftLogger
+  categories:
+  - Tools
+  completetime: 4
+  materials:
+    Steel: 300
+    Glass: 200
+    Gold: 50
+
+# A knot of Remade flesh the Coda roots on a ship. Flesh creeps out from it across the floor and up the walls; kill it and
+# its flesh dies. WFCodaFleshSystem adds its node component when it takes root.
+- type: entity
+  id: WFCodaFleshNode
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Appearance
+  - type: Sprite
+    sprite: _WF/Remade/Structures/growths.rsi
+    drawdepth: FloorObjects
+    layers:
+    - state: growth
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 60
+        hard: false
+        layer:
+        - MidImpassable
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 80
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Flammable
+    fireSpread: true
+    damage:
+      types:
+        Heat: 4
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: WFDriftSource
+    rate: 0.3
+    range: 4
+    carried: 0
+    touch: 2
+    cap: 60

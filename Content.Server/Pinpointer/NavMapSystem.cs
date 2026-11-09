@@ -66,6 +66,9 @@ public sealed partial class NavMapSystem : SharedNavMapSystem
 
     private void OnStationInit(StationGridAddedEvent ev)
     {
+        if (WfSkipsNavMap(ev.GridId)) // WOLFGATE(Performance): a planet layer grid's nav map would cover the whole world and nothing shows it
+            return;
+
         var comp = EnsureComp<NavMapComponent>(ev.GridId);
         RefreshGrid(ev.GridId, comp, Comp<MapGridComponent>(ev.GridId));
     }

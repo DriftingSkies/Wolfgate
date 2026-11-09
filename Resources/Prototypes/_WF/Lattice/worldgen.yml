@@ -1,0 +1,49 @@
+# Rock density for each band out past the Lattice's hold. A bigger output spaces the rocks further apart, so each band
+# out has fewer than the last, and the Coda fewest of all; what is out there is richer for it (each band's yield).
+- type: noiseChannel
+  id: WFDensityDetune
+  noiseType: Perlin
+  fractalLacunarityByPi: 0.666666666
+  remapTo0Through1: true
+  clippingRanges:
+  - 0.4, 0.6
+  clippedValue: 25
+  inputMultiplier: 3
+  outputMultiplier: 7000.0
+  minimum: 0.25
+
+- type: noiseChannel
+  id: WFDensityDissonance
+  noiseType: Perlin
+  fractalLacunarityByPi: 0.666666666
+  remapTo0Through1: true
+  clippingRanges:
+  - 0.4, 0.6
+  clippedValue: 25
+  inputMultiplier: 3
+  outputMultiplier: 8500.0
+  minimum: 0.25
+
+- type: noiseChannel
+  id: WFDensityFeedback
+  noiseType: Perlin
+  fractalLacunarityByPi: 0.666666666
+  remapTo0Through1: true
+  clippingRanges:
+  - 0.4, 0.6
+  clippedValue: 30
+  inputMultiplier: 3
+  outputMultiplier: 12000.0
+  minimum: 0.25
+
+- type: noiseChannel
+  id: WFDensityCoda
+  noiseType: Perlin
+  fractalLacunarityByPi: 0.666666666
+  remapTo0Through1: true
+  clippingRanges:
+  - 0.4, 0.6
+  clippedValue: 30
+  inputMultiplier: 3
+  outputMultiplier: 16000.0
+  minimum: 0.25

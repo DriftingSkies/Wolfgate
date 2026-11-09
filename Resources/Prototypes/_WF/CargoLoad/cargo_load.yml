@@ -28,7 +28,6 @@
     CrateTradeSecureHigh: Bulk
   massScale: 1
   thrustFloor: 0.4
-  spoolPerTonne: 0.1
   spoolCap: 6
   bands: [ 0.8, 0.6 ]
   hysteresis: 0.05

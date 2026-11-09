@@ -31,9 +31,6 @@ public sealed partial class WFAdsCampaignSystem
     /// <summary>How the system's units and its watch speak: the synthetic verbs in the system's readout face.</summary>
     private static readonly ProtoId<SpeechVerbPrototype> SynthVerb = "WFAdsSynth";
 
-    /// <summary>How long a quiet banner holds the next one back; a quiet banner inside it goes out on the radio instead.</summary>
-    public static readonly TimeSpan QuietBannerInterval = TimeSpan.FromMinutes(5);
-
     /// <summary>
     /// A banner to everyone: purple with the rising sound, or teal with the falling one; without <paramref name="chime"/> it is silent and
     /// never held back. A chimed rising banner is the system's own anomaly alert, with the malfunctioning-AI klaxon, not the sector watch.
@@ -43,21 +40,6 @@ public sealed partial class WFAdsCampaignSystem
         var sender = chime && rising ? "wf-ads-anomaly-alert" : "wf-ads-watch";
         Banner(Loc.GetString(sender), message, chime ? rising ? campaign.RisingSound : campaign.FallingSound : null,
             rising ? campaign.RisingColor : campaign.FallingColor);
-    }
-
-    /// <summary>A banner to everyone with no sound, at most one per <see cref="QuietBannerInterval"/>; inside the window it goes out on the radio.</summary>
-    private void AnnounceQuiet(WFAdsCampaignPrototype campaign, string message, bool rising)
-    {
-        var now = _timing.CurTime;
-        if (State() is { } state)
-        {
-            if (state.LastQuietBanner is { } last && now - last < QuietBannerInterval && Radio(_territory.SectorMap, message))
-                return;
-
-            state.LastQuietBanner = now;
-        }
-
-        Banner(Loc.GetString("wf-ads-watch"), message, null, rising ? campaign.RisingColor : campaign.FallingColor);
     }
 
     /// <summary>
@@ -75,20 +57,26 @@ public sealed partial class WFAdsCampaignSystem
         _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Global station announcement from {sender}: {message}");
     }
 
-    /// <summary>A routine line on the common channel from the sector watch, with no banner.</summary>
+    /// <summary>A line on the common channel from the sector watch, with no banner: everything short of a capital event.</summary>
     private void AnnounceRadio(string message)
     {
         Radio(_territory.SectorMap, message);
     }
 
-    /// <summary>Announces something at a place, with the station, bearing and range from the nearest station added as arguments.</summary>
+    /// <summary>A banner about something at a place, chimed unless a tier change already chimed this tick.</summary>
     private void AnnouncePlace(WFAdsCampaignPrototype campaign, string key, bool rising, MapId map, Vector2 position,
         params (string, object)[] args)
     {
+        var chime = State()?.TierAnnounced != _timing.CurTime;
+        Announce(campaign, PlaceLine(key, map, position, args), rising, chime);
+    }
+
+    /// <summary>A string about something at a place, with the station, bearing and range from the nearest station added as arguments.</summary>
+    private string PlaceLine(string key, MapId map, Vector2 position, params (string, object)[] args)
+    {
         var (station, bearing, range) = Place(map, position);
         var all = new List<(string, object)>(args) { ("station", station), ("bearing", bearing), ("range", range) };
-        var chime = State()?.TierAnnounced != _timing.CurTime;
-        Announce(campaign, Loc.GetString(key, all.ToArray()), rising, chime);
+        return Loc.GetString(key, all.ToArray());
     }
 
     /// <summary>The nearest station to a point, with the bearing and range from it to the point; the origin if there is none.</summary>
@@ -114,8 +102,8 @@ public sealed partial class WFAdsCampaignSystem
             WFReaverCampaignSystem.Kilometres(from, position));
     }
 
-    /// <summary>Warns a ship over its PA and in chat to those aboard, and the sector on the common channel, with the bearing and range from it to the ADS ship.</summary>
-    private void WarnShip(WFAdsCampaignPrototype campaign, MapId map, EntityUid ship, Vector2 ads, string key)
+    /// <summary>Warns a ship over its PA and in chat to those aboard, with the bearing and range from it to the ADS ship; the rest of the sector is not told.</summary>
+    private void WarnShip(WFAdsCampaignPrototype campaign, EntityUid ship, Vector2 ads, string key)
     {
         var at = _transform.GetWorldPosition(ship);
         var message = Loc.GetString(key,
@@ -123,7 +111,6 @@ public sealed partial class WFAdsCampaignSystem
             ("bearing", WFReaverCampaignSystem.Bearing(at, ads)),
             ("range", WFReaverCampaignSystem.Kilometres(at, ads)));
         _notices.Tell(ship, message, Loc.GetString("wf-ads-watch"), campaign.RisingColor, true);
-        Radio(map, message);
     }
 
     /// <summary>Says something on the common channel as the sector watch; false if there is no watch to say it.</summary>

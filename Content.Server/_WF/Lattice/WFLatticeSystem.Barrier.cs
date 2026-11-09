@@ -5,6 +5,7 @@ using Content.Shared._Crescent.ShipShields;
 using Content.Shared._WF.Lattice;
 using Content.Shared._WF.ShipShields;
 using Robust.Shared.Physics.Components;
+using Robust.Shared.Timing;
 
 namespace Content.Server._WF.Lattice;
 
@@ -19,11 +20,19 @@ public sealed partial class WFLatticeSystem
 
     private readonly HashSet<EntityUid> _barrierFriendly = new();
 
+    /// <summary>Ships are held out every tick; people loose in space only this often, which is still plenty to push a jetpack back.</summary>
+    private static readonly TimeSpan BarrierPeopleInterval = TimeSpan.FromSeconds(0.25);
+    private TimeSpan _nextBarrierPeople;
+
     /// <summary>Each shield's oval, kept until its outline changes.</summary>
     private readonly Dictionary<EntityUid, (Vector2[][] Contours, Vector2 Centre, Vector2 Radii)> _ovals = new();
 
     private void HoldBarriers()
     {
+        var people = _timing.CurTime >= _nextBarrierPeople;
+        if (people)
+            _nextBarrierPeople = _timing.CurTime + BarrierPeopleInterval;
+
         var shields = EntityQueryEnumerator<WFLatticeAnchorShieldComponent, ShipShieldEmitterComponent, TransformComponent>();
         while (shields.MoveNext(out _, out _, out var emitter, out var xform))
         {
@@ -36,7 +45,7 @@ public sealed partial class WFLatticeSystem
 
             _barrierFriendly.Clear();
             _shuttle.GetAllDockedShuttles(station, _barrierFriendly);
-            _ward.HoldOut(station, centre, radii, _barrierFriendly, true);
+            _ward.HoldOut(station, centre, radii, _barrierFriendly, people);
         }
     }
 

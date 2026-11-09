@@ -89,6 +89,7 @@ public sealed partial class WFDreadSystem : EntitySystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private WFCorruptionSystem _corruption = default!;
     [Dependency] private WFDriftMindSystem _drift = default!;
+    [Dependency] private WFLatticeSystem _lattice = default!;
 
     private static readonly TimeSpan TickRate = TimeSpan.FromSeconds(1);
 
@@ -110,7 +111,7 @@ public sealed partial class WFDreadSystem : EntitySystem
     private const string WhisperSounds = "WFDreadWhispers";
 
     private readonly record struct Source(EntityUid Uid, WFMonolithStage Stage, MapCoordinates At, bool Shard = false,
-        bool Rooted = false, EntityUid? Carrier = null, EntityUid? LocalGrid = null);
+        bool Rooted = false, EntityUid? Carrier = null, EntityUid? LocalGrid = null, bool Shielded = false);
 
     private readonly List<Source> _sources = new();
     private TimeSpan _next;
@@ -134,7 +135,10 @@ public sealed partial class WFDreadSystem : EntitySystem
         while (monoliths.MoveNext(out var uid, out var monolith, out var xform))
         {
             if (monolith.Stage != WFMonolithStage.Quiet && xform.MapID != MapId.Nullspace)
-                _sources.Add(new Source(uid, monolith.Stage, _transform.GetMapCoordinates(uid, xform), LocalGrid: monolith.Local ? xform.GridUid ?? uid : null));
+            {
+                var at = _transform.GetMapCoordinates(uid, xform);
+                _sources.Add(new Source(uid, monolith.Stage, at, LocalGrid: monolith.Local ? xform.GridUid ?? uid : null, Shielded: _lattice.IsShielded(at)));
+            }
         }
 
         // A shard stands in for its Scion at a short reach, and goes quiet near a main station like everything else.
@@ -147,7 +151,8 @@ public sealed partial class WFDreadSystem : EntitySystem
                 continue;
             }
 
-            _sources.Add(new Source(uid, parentStone.Stage, _transform.GetMapCoordinates(uid, xform), true, shard.Deployed, CarrierOf(uid)));
+            var shardAt = _transform.GetMapCoordinates(uid, xform);
+            _sources.Add(new Source(uid, parentStone.Stage, shardAt, true, shard.Deployed, CarrierOf(uid), Shielded: _lattice.IsShielded(shardAt)));
         }
 
         var sectorWide = _config.GetCVar(WFDreadCVars.Sector);
@@ -167,8 +172,14 @@ public sealed partial class WFDreadSystem : EntitySystem
             var sameMap = false;
             var shardInfluence = 0f;
             var shardStage = WFMonolithStage.Quiet;
+
+            // A sealed hex field keeps out everything of a Monolith that is outside it.
+            var shielded = _sources.Count > 0 && _lattice.IsShielded(here);
             foreach (var source in _sources)
             {
+                if (shielded && !source.Shielded)
+                    continue;
+
                 var same = source.At.MapId == here.MapId;
                 var away = same ? (source.At.Position - here.Position).Length() : 0f;
                 if (source.Shard)

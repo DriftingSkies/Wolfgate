@@ -227,7 +227,7 @@ public sealed partial class WFCorruptionSystem
     /// <summary>Grows a tile if the sanctuary, scorch and the Monolith's budget allow it.</summary>
     private bool TryGrowAt(Entity<WFMonolithComponent> source, EntityUid gridUid, MapGridComponent grid, Vector2i tile, EntityUid? from)
     {
-        if (IsSanctuary(gridUid) || GridFull(gridUid))
+        if (IsWarded(gridUid) || GridFull(gridUid))
             return false;
 
         var attempt = new WFCorruptionGrowAttemptEvent(tile);

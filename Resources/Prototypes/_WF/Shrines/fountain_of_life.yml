@@ -9,19 +9,22 @@
   physicalDesc: reagent-physical-desc-wf-vitae
   flavor: sweet
   color: "#ffd678"
+  # A corpse still takes it in, so a dose brings the dead back.
+  worksOnTheDead: true
   metabolisms:
     Medicine:
       # Slow, so a dose builds up as it is absorbed; less than a dose waits for more.
+      # The surge takes 8 of the dose's 10 units, so a little lost to bleeding before it takes still counts.
       metabolismRate: 0.1
       effects:
       - !type:WFLifeSurge
         conditions:
         - !type:ReagentThreshold
-          min: 10
+          min: 8
       - !type:PopupMessage
         conditions:
         - !type:ReagentThreshold
-          min: 10
+          min: 8
         type: Local
         visualType: Large
         messages: [ "wf-vitae-surge" ]
@@ -30,7 +33,7 @@
       - !type:AdjustReagent
         conditions:
         - !type:ReagentThreshold
-          min: 10
+          min: 8
         reagent: WFVitae
         amount: -10
 

@@ -5,7 +5,7 @@ meta:
   forkId: ""
   forkVersion: ""
   time: 08/25/2026 21:10:38
-  entityCount: 7706
+  entityCount: 7708
 maps: []
 grids:
 - 1
@@ -36113,6 +36113,18 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -9.5,54.5
       parent: 1
+- proto: WFSpawnPointPdvJarrah
+  entities:
+  - uid: 7707
+    components:
+    - type: Transform
+      parent: 1
+      pos: -6.5,47.5
+  - uid: 7708
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,47.5
 - proto: hydroponicsTrayAnchored
   entities:
   - uid: 4903

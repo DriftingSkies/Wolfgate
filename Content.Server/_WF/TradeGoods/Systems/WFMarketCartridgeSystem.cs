@@ -488,7 +488,7 @@ public sealed partial class WFMarketCartridgeSystem : EntitySystem
             yield break;
 
         var home = profile.Navies.FirstOrDefault(navy => navy.Companies.Contains(own));
-        if (home is { CreditEntity: not null } && profile.WarEffortCredits > 0)
+        if (home is { CreditEntity: not null } && !home.Unpaid.Contains(own) && profile.WarEffortCredits > 0)
         {
             yield return new WFMarketAlert(Loc.GetString("wf-market-alert-war-effort", ("navy", Loc.GetString(home.Name)),
                 ("credits", profile.WarEffortCredits)), null, false, WFMarketAlertKind.Personal);

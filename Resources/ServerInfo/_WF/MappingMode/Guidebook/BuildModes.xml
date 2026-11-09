@@ -32,8 +32,8 @@
     <Box HorizontalAlignment="Left">Link</Box>
     <Box HorizontalAlignment="Left">Signal links, device lists and access.</Box>
     <Box HorizontalAlignment="Left">[bold]0[/bold]</Box>
-    <Box HorizontalAlignment="Left">Wrench</Box>
-    <Box HorizontalAlignment="Left">Anchor or unanchor machines.</Box>
+    <Box HorizontalAlignment="Left">Tools</Box>
+    <Box HorizontalAlignment="Left">Wrench, bolts, weld, lock, panel and door.</Box>
   </Table>
 
   Right click drops a drag in progress. Escape drops what you're doing; press it again to go back to Place. Picking anything in the palette or the quick-select bar switches to Place, so pick first, then change mode.
@@ -84,9 +84,18 @@
 
   Click machines to wire them up. See Wiring.
 
-  ## Wrench (0)
+  ## Tools (0)
 
-  Click anything a wrench works on to anchor or unanchor it. The line by the cursor says which it is. Anchoring snaps it to its tile and refuses a tile that's already blocked. Undo covers it.
+  Pick a tool in Properties, then click. The line by the cursor says what it would change.
+
+  - [bold]Wrench[/bold] anchors or unanchors. Anchoring snaps it to its tile and refuses a tile that's already blocked.
+  - [bold]Bolts[/bold] bolts or unbolts a door. No power needed.
+  - [bold]Weld[/bold] welds or unwelds a door, vent, scrubber or locker. Close it first.
+  - [bold]Lock[/bold] locks or unlocks a locker, crate or machine.
+  - [bold]Panel[/bold] opens or closes a maintenance panel.
+  - [bold]Door[/bold] opens or closes a door straight away. Unweld it first.
+
+  Every click is one undo step. Ghosts don't get hands: use Test map to try things with a real character.
 
   ## Other keys
 

@@ -141,6 +141,7 @@
     - id: Medicine
     - id: Poison
     - id: Narcotic
+    - id: Cryogenic # WOLFGATE(Feedback): cryoxadone drains from a Synth like it does from a human
 
 - type: entity
   id: OrganSynthStomach

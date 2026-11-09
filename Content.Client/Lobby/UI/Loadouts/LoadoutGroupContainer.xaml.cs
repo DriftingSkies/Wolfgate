@@ -84,6 +84,8 @@ public sealed partial class LoadoutGroupContainer : BoxContainer
             var loadoutContainer = new LoadoutContainer(loadoutProto, !enabled, reason);
             loadoutContainer.Select.Pressed = pressed;
             loadoutContainer.Text = string.IsNullOrEmpty(loadProto.Name) ? loadoutSystem.GetName(loadProto) : loadProto.Name; // Frontier: allow overriding loadout names
+            if (Loc.TryGetString(loadProto.Name, out var wfLocName)) // WOLFGATE(PdvRanks): a loadout name may be a Fluent key
+                loadoutContainer.Text = wfLocName;
 
             loadoutContainer.Select.OnPressed += args =>
             {
@@ -117,6 +119,8 @@ public sealed partial class LoadoutGroupContainer : BoxContainer
                 var loadoutContainer = new LoadoutContainer(loadoutProto, !enabled, reason);
                 loadoutContainer.Select.Pressed = pressed;
                 loadoutContainer.Text = string.IsNullOrEmpty(loadProto.Name) ? loadoutSystem.GetName(loadProto) : loadProto.Name; // Frontier: allow overriding loadout names
+                if (Loc.TryGetString(loadProto.Name, out var wfLocName)) // WOLFGATE(PdvRanks): a loadout name may be a Fluent key
+                    loadoutContainer.Text = wfLocName;
 
                 loadoutContainer.Select.OnPressed += args =>
                 {

@@ -1,5 +1,6 @@
-# The Lattice round the sector's centre. Band edges follow the drone rings (18, 24, 31 and 40 km on the default
-# worldgen); the edges here are used when the rings don't line up. Drift rates are per second, out of 100. Yield
+# The Lattice round the sector's centre. Band edges are 20, 34, 50 and 66 km; the default worldgen's biomes change at
+# the same distances; a map's drone rings never move them. Drift rates are per second, out of 100, and each band
+# stops at its maxDrift, so a ship climbs slowly and only the Coda reaches the worst (about 10 minutes a band). Yield
 # multiplies asteroid ore; exotic is exotic matter shards per vein.
 - type: wfLatticeProfile
   id: WFDefault
@@ -8,9 +9,13 @@
   anchorAngle: 30
   reach: 4000
   driftMax: 100
-  # Hallucinations, each seen or heard by one player only, rolled every 20 s or so.
+  # The edges below are the bands; a map's drone rings don't move them.
+  droneRingEdges: false
+  # Hallucinations, each seen or heard by one player only: rolled every 20 s or so with no Drift, closing to every 4 s
+  # at full Drift, where two or three come at once.
   effectInterval: 20
-  effectChance: 0.15, 0.75
+  effectIntervalAtMax: 4
+  effectChance: 0.15, 0.95
   effects:
   - kind: Whisper
     minDrift: 5
@@ -37,6 +42,40 @@
   - kind: Pulse
     minDrift: 40
     weight: 0.6
+  - kind: Bleed
+    minDrift: 40
+    weight: 2
+  - kind: Mimic
+    minDrift: 50
+    weight: 1.5
+  - kind: Turn
+    minDrift: 60
+    weight: 2
+  - kind: Swarm
+    minDrift: 80
+    weight: 1.5
+  - kind: Mirror
+    minDrift: 90
+    weight: 1.5
+  # Lies about the game itself, and the rare true thing.
+  - kind: Double
+    minDrift: 45
+    weight: 1
+  - kind: Echo
+    minDrift: 50
+    weight: 1.5
+  - kind: Knowing
+    minDrift: 50
+    weight: 1
+  - kind: Vanish
+    minDrift: 55
+    weight: 1.5
+  - kind: FalseAlert
+    minDrift: 60
+    weight: 1.5
+  - kind: Silence
+    minDrift: 85
+    weight: 0.5
   # The Coda's hazards for a crewed ship: hunter packs board the longer it stays (from three minutes in), its structure
   # rots unless a stabiliser runs, and thrusters, gyroscopes or power give out now and then.
   hazardBand: 4
@@ -69,39 +108,42 @@
     color: "#60c0e0"
   - name: wf-lattice-band-slack
     message: wf-lattice-enter-slack
-    edge: 18000
-    drift: 0.05
+    edge: 20000
+    drift: 0.03
+    maxDrift: 20
     chip: Advisory
     color: "#e0b040"
-    yield: 1.1
+    yield: 1.2
   - name: wf-lattice-band-adrift
     message: wf-lattice-enter-adrift
-    edge: 24000
-    drift: 0.15
+    edge: 34000
+    drift: 0.06
+    maxDrift: 40
     chip: Warning
     color: "#e08030"
-    yield: 1.25
-    exotic: 0.005
+    yield: 1.35
   - name: wf-lattice-band-untethered
     message: wf-lattice-enter-untethered
-    edge: 31000
-    drift: 0.4
+    edge: 50000
+    drift: 0.1
+    maxDrift: 65
     chip: Warning
     color: "#e04030"
-    yield: 1.4
-    exotic: 0.015
+    yield: 1.5
     flash: true
     ftl: false
   - name: wf-lattice-band-deep
     message: wf-lattice-enter-deep
-    edge: 40000
-    drift: 1
-    driftGrowth: 4
+    edge: 66000
+    drift: 0.12
+    driftGrowth: 1.2
+    maxDrift: 100
     garbled: true
     chip: Warning
     color: "#d030a0"
-    yield: 1.6
-    exotic: 0.04
+    yield: 1.8
+    # Exotic matter is found only in the Coda.
+    exotic: 0.06
     flash: true
     ftl: false
 
@@ -130,3 +172,22 @@
     raiseOnUser: true
     checkCanInteract: false
     checkConsciousness: false
+
+# Blood one player sees round them in the Coda; spawned on their client only, the splatter set when it appears.
+- type: entity
+  id: WFLatticeBloodGhost
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Fluids/splatter.rsi
+    drawdepth: FloorObjects
+    color: "#6a0a0e"
+    layers:
+    - state: splatter-0
+
+# What a Coda-twisted arm becomes: an arm blade that can't be let go.
+- type: entity
+  parent: ArmBlade
+  id: WFCodaArmBlade
+  components:
+  - type: Unremoveable

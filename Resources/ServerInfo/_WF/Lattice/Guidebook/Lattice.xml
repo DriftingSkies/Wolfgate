@@ -7,11 +7,11 @@
 
   Your radar draws the band edges as rings, in place of the old drone zone rings. Crossing one shows a warning.
 
-  - [bold]Unison[/bold], up to about 18 km from the centre: safe. Drift fades here.
-  - [bold]Detune[/bold], 18 to 24 km: Drift builds slowly. Ore yields a little more.
-  - [bold]Dissonance[/bold], 24 to 31 km: Drift builds faster. Rocks start to drop exotic matter.
-  - [bold]Feedback[/bold], 31 to 40 km: Drift builds fast. FTL drives stop working. More ore, more exotic matter.
-  - [bold]the Coda[/bold], past 40 km: Drift climbs fastest of all, up to its cap. No FTL. Names and coordinates garble. Stay more than a few minutes and Remade hunters come aboard, more often the longer you stay; the hull rots unless a stabiliser runs; thrusters, gyroscopes and power cut out now and then; and the radar goes blind in patches. The best ore, the most exotic matter, and Monolith hulks.
+  - [bold]Unison[/bold], up to about 20 km from the centre: safe. Drift fades here.
+  - [bold]Detune[/bold], 20 to 34 km: Drift builds slowly. Fewer rocks, but ore yields a little more.
+  - [bold]Dissonance[/bold], 34 to 50 km: Drift builds faster. Rocks are sparser and richer.
+  - [bold]Feedback[/bold], 50 to 66 km: Drift builds fast. FTL drives stop working. Few rocks, but rich ones.
+  - [bold]the Coda[/bold], past 66 km: Drift climbs fastest of all, up to its cap. No FTL. Names and coordinates garble. Stay a while and Remade hunters come aboard; the hull rots and Remade flesh takes root unless a stabiliser runs; power, doors and engines fail now and then; the radar goes blind in patches; and something vast lives out there. The richest rocks, the only exotic matter, and Monolith hulks.
 
   If an anchor is destroyed, the bands move inward on its side.
 
@@ -34,13 +34,21 @@
 
   ## Exotic matter
 
-  Mined from asteroid rock in the Dissonance band and beyond, more of it the deeper you go. It sells for 3,000 a shard and builds the stabiliser, the charm and relay anchors.
+  Mined from asteroid rock in the Coda, and nowhere else. It sells for 3,000 a shard and builds the stabiliser, the charm and relay anchors.
 
   ## Anchors
 
   The six primary anchors are shielded stations about 3 km out from the centre. Attack one and drones come out to defend it. Destroying an anchor's core is a breach: the whole sector is told, anchored space shrinks, and the black hole looks worse for everyone.
 
   A [bold]relay anchor[/bold] (autolathe flatpack, 20 exotic matter) pushes anchored space outward around it. Bolt it down with 30 kW of power on a hull that stays still for a minute and it takes hold. Move the hull or cut the power and it lets go. It burns exotic matter while it holds: feed it shards by hand (up to six), and each one keeps it holding for ten minutes. Run it dry and it lets go.
+
+  ## The hex field
+
+  The beams between the six anchors form a hex around Caelestinus Central. While every beam stands, nothing of a Monolith gets in: a ship carrying a Scion is thrown back at the beam and can't jump inside, and the Monolith's whispers and growth can't reach anyone within. Each lost anchor breaks the two beams to it, and the gap lets a Scion through. Only Caelestinus Central buys a Scion, so selling one means bringing an anchor down. Radars draw the beams, dashed red where broken.
+
+  Every anchor also keeps corruption off nearby hulls. Caelestinus Central has its own anchor for this. If it is destroyed, the station can be overgrown.
+
+  A woken Scion sends flesh ships against the anchors. They wear down the shield, then the core, and put Remade aboard. If the last anchor falls, nothing holds anywhere: the Coda is everywhere and FTL is dead. Not long after, the black hole collapses and the lights go out.
 
   ## The Choir
 

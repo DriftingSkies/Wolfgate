@@ -82,6 +82,12 @@ public sealed partial class PickSlimeLatchTargetOperator : HTNOperator
             targets.Add(entity);
         }
 
+        // The nearest first.
+        var xformSys = _ent.System<SharedTransformSystem>();
+        var ownerPos = xformSys.GetWorldPosition(owner);
+        targets.Sort((a, b) => (xformSys.GetWorldPosition(a) - ownerPos).LengthSquared()
+            .CompareTo((xformSys.GetWorldPosition(b) - ownerPos).LengthSquared()));
+
         foreach (var target in targets)
         {
             if (!_ent.TryGetComponent<TransformComponent>(target, out var xform))

@@ -170,12 +170,12 @@ public sealed partial class WFAdsCampaignSystem
             state.Challenges++;
 
             var (station, bearing, range) = Place(map, goal);
-            AnnounceQuiet(campaign, Loc.GetString("wf-ads-challenge-launched",
+            AnnounceRadio(Loc.GetString("wf-ads-challenge-launched",
                 ("callsign", WFSectorHex.Callsign(target)),
                 ("holder", FactionName(holder)),
                 ("station", station),
                 ("bearing", bearing),
-                ("range", range)), true);
+                ("range", range)));
             Log.Info($"ADS interdictor {ToPrettyString(uid)} launched from {ToPrettyString(node.Owner)} to challenge {WFSectorHex.Callsign(target)}.");
             interdictor = uid;
             return true;
@@ -238,7 +238,6 @@ public sealed partial class WFAdsCampaignSystem
                     Log.Info($"ADS interdictor {ToPrettyString(uid)} ran past its time short of {WFSectorHex.Callsign(comp.Target)} and was ended.");
                     // Ending it releases it, which drops the challenge.
                     _encounters.End(uid);
-                    AnnounceRadio(Loc.GetString("wf-ads-challenge-withdrawn", ("callsign", WFSectorHex.Callsign(comp.Target))));
                     continue;
                 }
 

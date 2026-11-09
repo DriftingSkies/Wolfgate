@@ -9,6 +9,32 @@
   - MonoSecurityGuardBackpack
   - MonoSecurityGuardSatchel
   - MonoSecurityGuardDuffel
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutBackpackMarineMedic
+  - WFRMCLoadoutBackpackMarineTech
+  - WFRMCLoadoutBackpackMarineWelder
+  - WFRMCLoadoutBackpackMarineRadio
+  - WFRMCLoadoutBackpackMarineMortar
+  - WFRMCLoadoutBackpackMarineMolle
+  - WFRMCLoadoutBackpackMarinePhone
+  - WFRMCLoadoutBackpackSmockPlain
+  - WFRMCLoadoutSatchelMarineLarge
+  - WFRMCLoadoutSatchelMarineMedic
+  - WFRMCLoadoutSatchelMarineTech
+  - WFRMCLoadoutSatchelMarineIntel
+  - WFRMCLoadoutSatchelMarineMolle
+  - WFRMCLoadoutSatchelMarineGrenade
+  - WFRMCLoadoutSatchelMarineRocket
+  - WFRMCLoadoutChestRigIntel
+  - WFRMCLoadoutChestRigTechSnowUrban
+  - WFRMCLoadoutLightPackLightpack
+  - WFRMCLoadoutLightPackLightpackBlack
+  - WFRMCLoadoutLightPackLightpackMedic
+  - WFRMCLoadoutCloakM68
+  - WFRMCLoadoutBackpackMarine
+  - WFRMCLoadoutSatchelMarine
+  - WFRMCLoadoutBackpackSmock
+  # WOLFGATE END
   fallbacks:
   - TsfmcClothingBackpack
 
@@ -25,6 +51,32 @@
   - MonoSecurityGuardBackpack
   - MonoSecurityGuardSatchel
   - MonoSecurityGuardDuffel
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutBackpackMarineMedic
+  - WFRMCLoadoutBackpackMarineTech
+  - WFRMCLoadoutBackpackMarineWelder
+  - WFRMCLoadoutBackpackMarineRadio
+  - WFRMCLoadoutBackpackMarineMortar
+  - WFRMCLoadoutBackpackMarineMolle
+  - WFRMCLoadoutBackpackMarinePhone
+  - WFRMCLoadoutBackpackSmockPlain
+  - WFRMCLoadoutSatchelMarineLarge
+  - WFRMCLoadoutSatchelMarineMedic
+  - WFRMCLoadoutSatchelMarineTech
+  - WFRMCLoadoutSatchelMarineIntel
+  - WFRMCLoadoutSatchelMarineMolle
+  - WFRMCLoadoutSatchelMarineGrenade
+  - WFRMCLoadoutSatchelMarineRocket
+  - WFRMCLoadoutChestRigIntel
+  - WFRMCLoadoutChestRigTechSnowUrban
+  - WFRMCLoadoutLightPackLightpack
+  - WFRMCLoadoutLightPackLightpackBlack
+  - WFRMCLoadoutLightPackLightpackMedic
+  - WFRMCLoadoutCloakM68
+  - WFRMCLoadoutBackpackMarine
+  - WFRMCLoadoutSatchelMarine
+  - WFRMCLoadoutBackpackSmock
+  # WOLFGATE END
   fallbacks:
   - TsfmcEngiClothingModsuit
 
@@ -37,6 +89,19 @@
   - TsfmcClothingJumpsuitType47D
   - TsfmcClothingJumpsuitType47F
   - TsfmcClothingDressUniform
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutUniformMarine
+  - WFRMCLoadoutUniformMarineMedic
+  - WFRMCLoadoutUniformMarineRTO
+  - WFRMCLoadoutUniformMarineTanker
+  - WFRMCLoadoutUniformIntel
+  - WFRMCLoadoutUniformBoiler
+  - WFRMCLoadoutUniformMP
+  - WFRMCLoadoutUniformMarsoc
+  - WFRMCLoadoutUniformDressEnlisted
+  - WFRMCLoadoutUniformDressSenior
+  - WFRMCLoadoutUniformDressGeneral
+  # WOLFGATE END
   fallbacks:
   - TsfmcClothingJumpsuit
 
@@ -61,6 +126,19 @@
   - TsfmcClothingJumpsuitType47D
   - TsfmcClothingJumpsuitType47F
   - TsfmcClothingDressUniform
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutUniformMarine
+  - WFRMCLoadoutUniformMarineEngineer
+  - WFRMCLoadoutUniformMarineRTO
+  - WFRMCLoadoutUniformMarineTanker
+  - WFRMCLoadoutUniformIntel
+  - WFRMCLoadoutUniformBoiler
+  - WFRMCLoadoutUniformMP
+  - WFRMCLoadoutUniformMarsoc
+  - WFRMCLoadoutUniformDressEnlisted
+  - WFRMCLoadoutUniformDressSenior
+  - WFRMCLoadoutUniformDressGeneral
+  # WOLFGATE END
   fallbacks:
   - TsfmcEngineeringClothingJumpsuit
 
@@ -72,16 +150,33 @@
   loadouts:
   - TsfmcCombatBoots
   - TsfmcJackboots
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutBootsBlack
+  - WFRMCLoadoutBootsBrown
+  - WFRMCLoadoutBootsGrey
+  - WFRMCLoadoutBootsJungle
+  - WFRMCLoadoutBootsUrban
+  - WFRMCLoadoutBootsJackboots
+  - WFRMCLoadoutBootsSwat
+  # WOLFGATE END
   fallbacks:
   - TsfmcCombatBoots
 
 - type: loadoutGroup
   id: TsfmcGloves
   name: loadout-group-contractor-gloves
-  hidden: true # No point in showing this, it gets auto-selected.
+  hidden: false # WOLFGATE(RMCClothing): ported RMC-14 clothing gives this slot a choice
   minLimit: 1
   loadouts:
   - TsfmcCombatGloves
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutGlovesBlack
+  - WFRMCLoadoutGlovesBrown
+  - WFRMCLoadoutGlovesGrey
+  - WFRMCLoadoutGlovesLightBrown
+  - WFRMCLoadoutGlovesLeatherBlack
+  - WFRMCLoadoutGlovesVeteran
+  # WOLFGATE END
   fallbacks:
   - TsfmcCombatGloves
 
@@ -94,6 +189,14 @@
   - TsfmcCombatGloves
   - TsfmcNitrileGloves
   - TsfmcLatexGloves
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutGlovesBlack
+  - WFRMCLoadoutGlovesBrown
+  - WFRMCLoadoutGlovesGrey
+  - WFRMCLoadoutGlovesLightBrown
+  - WFRMCLoadoutGlovesLeatherBlack
+  - WFRMCLoadoutGlovesVeteran
+  # WOLFGATE END
   fallbacks:
   - TsfmcNitrileGloves
 
@@ -106,6 +209,26 @@
   - TsfmcCombatWebbing
   - TsfmcCombatWebbingLarge
   - ContractorClothingBeltSheathFilled
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutBeltMarine
+  - WFRMCLoadoutBeltSparePouch
+  - WFRMCLoadoutBeltMedicBag
+  - WFRMCLoadoutBeltMortar
+  - WFRMCLoadoutBeltHeavyGunner
+  - WFRMCLoadoutBeltHolster
+  - WFRMCLoadoutBeltTanker
+  - WFRMCLoadoutBeltMedical
+  - WFRMCLoadoutBeltMachinegunner
+  - WFRMCLoadoutBeltUtility
+  - WFRMCLoadoutBeltCombatUtility
+  - WFRMCLoadoutBeltConstruction
+  - WFRMCLoadoutBeltSecurity
+  - WFRMCLoadoutBeltGrenade
+  - WFRMCLoadoutBeltHolsterSMG
+  - WFRMCLoadoutBeltTanAmmo
+  - WFRMCLoadoutBeltTanGeneral
+  - WFRMCLoadoutBeltTanMedical
+  # WOLFGATE END
   fallbacks:
   - TsfmcCombatWebbing
 
@@ -140,6 +263,26 @@
   - TsfmcCombatWebbingMedical
   - TsfmcCombatWebbing
   - TsfmcCombatWebbingLarge
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutBeltMarine
+  - WFRMCLoadoutBeltSparePouch
+  - WFRMCLoadoutBeltMedicBag
+  - WFRMCLoadoutBeltMortar
+  - WFRMCLoadoutBeltHeavyGunner
+  - WFRMCLoadoutBeltHolster
+  - WFRMCLoadoutBeltTanker
+  - WFRMCLoadoutBeltMedical
+  - WFRMCLoadoutBeltMachinegunner
+  - WFRMCLoadoutBeltUtility
+  - WFRMCLoadoutBeltCombatUtility
+  - WFRMCLoadoutBeltConstruction
+  - WFRMCLoadoutBeltSecurity
+  - WFRMCLoadoutBeltGrenade
+  - WFRMCLoadoutBeltHolsterSMG
+  - WFRMCLoadoutBeltTanAmmo
+  - WFRMCLoadoutBeltTanGeneral
+  - WFRMCLoadoutBeltTanMedical
+  # WOLFGATE END
   fallbacks:
   - TsfmcCombatWebbingMedical
 
@@ -151,6 +294,46 @@
   loadouts:
   - TsfmcGaiter
   - TsfmcGasmask
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutKeffiyehKeffiyeh
+  - WFRMCLoadoutKeffiyehKeffiyehBlack
+  - WFRMCLoadoutKeffiyehKeffiyehBlue
+  - WFRMCLoadoutKeffiyehKeffiyehGreen
+  - WFRMCLoadoutKeffiyehKeffiyehRed
+  - WFRMCLoadoutKeffiyehKeffiyehWhite
+  - WFRMCLoadoutScarfAlpha
+  - WFRMCLoadoutScarfBlack
+  - WFRMCLoadoutScarfBravo
+  - WFRMCLoadoutScarfCharlie
+  - WFRMCLoadoutScarfDelta
+  - WFRMCLoadoutScarfEcho
+  - WFRMCLoadoutScarfGray
+  - WFRMCLoadoutScarfGreen
+  - WFRMCLoadoutScarfTan
+  - WFRMCLoadoutNeckerchiefAlpha
+  - WFRMCLoadoutNeckerchiefBlack
+  - WFRMCLoadoutNeckerchiefBravo
+  - WFRMCLoadoutNeckerchiefCharlie
+  - WFRMCLoadoutNeckerchiefDelta
+  - WFRMCLoadoutNeckerchiefEcho
+  - WFRMCLoadoutNeckerchiefGray
+  - WFRMCLoadoutNeckerchiefGreen
+  - WFRMCLoadoutNeckerchiefTan
+  - WFRMCLoadoutNeckerchiefWhite
+  - WFRMCLoadoutSmock
+  - WFRMCLoadoutTornScarfBlack
+  - WFRMCLoadoutTornScarfDesert
+  - WFRMCLoadoutTornScarfGreen
+  - WFRMCLoadoutTornScarfGrey
+  - WFRMCLoadoutTornScarfSnow
+  - WFRMCLoadoutTornScarfUrban
+  - WFRMCLoadoutCoifBalaclava
+  - WFRMCLoadoutCoifCoif
+  - WFRMCLoadoutCoifGreenCoif
+  - WFRMCLoadoutCoifGreyCoif
+  - WFRMCLoadoutCoifTanCoif
+  - WFRMCLoadoutCoifSkullCoif
+  # WOLFGATE END
   fallbacks:
   - TsfmcGaiter
 
@@ -166,9 +349,18 @@
 - type: loadoutGroup
   id: TsfmcGlasses
   name: loadout-group-contractor-glasses
-  hidden: true # No point in showing this, it gets auto-selected.
+  hidden: false # WOLFGATE(RMCClothing): ported RMC-14 clothing gives this slot a choice
   loadouts:
   - TsfmcHud
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutGogglesBallisticGoggles
+  - WFRMCLoadoutGogglesM1A1BallisticGoggles
+  - WFRMCLoadoutGogglesM1A1BallisticGogglesBlue
+  - WFRMCLoadoutGogglesBlackBallisticGoggles
+  - WFRMCLoadoutGogglesBallisticGogglesRcm
+  - WFRMCLoadoutGogglesBallisticGogglesRcmTint
+  - WFRMCLoadoutGogglesSwatgoggles
+  # WOLFGATE END
   fallbacks:
   - TsfmcHud
 
@@ -189,6 +381,91 @@
   loadouts:
   - TsfmcClothingNeckIFFCyan
   - TsfmcClothingNeckWearableCameraTSF
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutNeckScarfAlpha
+  - WFRMCLoadoutNeckScarfBlack
+  - WFRMCLoadoutNeckScarfBravo
+  - WFRMCLoadoutNeckScarfCharlie
+  - WFRMCLoadoutNeckScarfDelta
+  - WFRMCLoadoutNeckScarfEcho
+  - WFRMCLoadoutNeckScarfGray
+  - WFRMCLoadoutNeckScarfGreen
+  - WFRMCLoadoutNeckScarfTan
+  - WFRMCLoadoutNeckNeckerchiefAlpha
+  - WFRMCLoadoutNeckNeckerchiefBlack
+  - WFRMCLoadoutNeckNeckerchiefBravo
+  - WFRMCLoadoutNeckNeckerchiefCharlie
+  - WFRMCLoadoutNeckNeckerchiefDelta
+  - WFRMCLoadoutNeckNeckerchiefEcho
+  - WFRMCLoadoutNeckNeckerchiefGray
+  - WFRMCLoadoutNeckNeckerchiefGreen
+  - WFRMCLoadoutNeckNeckerchiefTan
+  - WFRMCLoadoutNeckNeckerchiefWhite
+  - WFRMCLoadoutNeckSmock
+  - WFRMCLoadoutNeckTornScarfBlack
+  - WFRMCLoadoutNeckTornScarfDesert
+  - WFRMCLoadoutNeckTornScarfGreen
+  - WFRMCLoadoutNeckTornScarfGrey
+  - WFRMCLoadoutNeckTornScarfSnow
+  - WFRMCLoadoutNeckTornScarfUrban
+  - WFRMCLoadoutPoncho
+  - WFRMCLoadoutNeckGuard
+  - WFRMCLoadoutTieBlack
+  - WFRMCLoadoutTieBlue
+  - WFRMCLoadoutTieGold
+  - WFRMCLoadoutTieGreen
+  - WFRMCLoadoutTieHorrible
+  - WFRMCLoadoutTiePurple
+  - WFRMCLoadoutTieRed
+  - WFRMCLoadoutArmbandRedArmband
+  - WFRMCLoadoutArmbandAlphaArmband
+  - WFRMCLoadoutArmbandBravoArmband
+  - WFRMCLoadoutArmbandCharlieArmband
+  - WFRMCLoadoutArmbandDeltaArmband
+  - WFRMCLoadoutArmbandEchoArmband
+  - WFRMCLoadoutArmbandFoxtrotArmband
+  - WFRMCLoadoutArmbandSquadArmband
+  - WFRMCLoadoutArmbandMedArmband
+  - WFRMCLoadoutArmbandMedGreenArmband
+  - WFRMCLoadoutArmbandEngiArmband
+  - WFRMCLoadoutArmbandMpArmband
+  - WFRMCLoadoutDropPouchDropPouch
+  - WFRMCLoadoutDropPouchDropPouchBlack
+  - WFRMCLoadoutDropPouchDropPouchRcm
+  - WFRMCLoadoutDropPouchGrenadePouch
+  - WFRMCLoadoutDropPouchMl66aPouch
+  - WFRMCLoadoutLegPouch
+  - WFRMCLoadoutArmorPouchesMag
+  - WFRMCLoadoutArmorPouchesDrum
+  - WFRMCLoadoutArmorPouchesNade
+  - WFRMCLoadoutArmorPouchesShell
+  - WFRMCLoadoutArmorPouchesPouch
+  - WFRMCLoadoutShoulderPads
+  - WFRMCLoadoutBracers
+  - WFRMCLoadoutThighGuards
+  - WFRMCLoadoutShinGuards
+  - WFRMCLoadoutGroinPlate
+  - WFRMCLoadoutArmorPaintSkull
+  - WFRMCLoadoutArmorPaintCross
+  - WFRMCLoadoutArmorPaintHeart
+  - WFRMCLoadoutArmorPaintMedic
+  - WFRMCLoadoutArmorPaintTarget
+  - WFRMCLoadoutArmorPaintSmiley
+  - WFRMCLoadoutArmorPaintMixtape
+  - WFRMCLoadoutArmorPaintInscription
+  - WFRMCLoadoutArmorPaintNeutral
+  - WFRMCLoadoutPatchTSFMC
+  - WFRMCLoadoutPatchTSFMCRecon
+  - WFRMCLoadoutPatchTSFFlag
+  - WFRMCLoadoutPatchTSFFlagSquare
+  - WFRMCLoadoutPatchTSFMCSenior
+  - WFRMCLoadoutPatchTSFMCDevils
+  - WFRMCLoadoutPatchTSFMCFalcons
+  - WFRMCLoadoutPatchTSFMCFalconsLarge
+  - WFRMCLoadoutPatchMedic
+  - WFRMCLoadoutPatchOlive
+  - WFRMCLoadoutPatchPeace
+  # WOLFGATE END
 
 - type: loadoutGroup
   id: TsfmcNeckEngi
@@ -199,6 +476,91 @@
   - TsfmcClothingNeckIFFOrange
   - TsfmcClothingNeckIFFCyan
   - TsfmcClothingNeckWearableCameraTSF
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutNeckScarfAlpha
+  - WFRMCLoadoutNeckScarfBlack
+  - WFRMCLoadoutNeckScarfBravo
+  - WFRMCLoadoutNeckScarfCharlie
+  - WFRMCLoadoutNeckScarfDelta
+  - WFRMCLoadoutNeckScarfEcho
+  - WFRMCLoadoutNeckScarfGray
+  - WFRMCLoadoutNeckScarfGreen
+  - WFRMCLoadoutNeckScarfTan
+  - WFRMCLoadoutNeckNeckerchiefAlpha
+  - WFRMCLoadoutNeckNeckerchiefBlack
+  - WFRMCLoadoutNeckNeckerchiefBravo
+  - WFRMCLoadoutNeckNeckerchiefCharlie
+  - WFRMCLoadoutNeckNeckerchiefDelta
+  - WFRMCLoadoutNeckNeckerchiefEcho
+  - WFRMCLoadoutNeckNeckerchiefGray
+  - WFRMCLoadoutNeckNeckerchiefGreen
+  - WFRMCLoadoutNeckNeckerchiefTan
+  - WFRMCLoadoutNeckNeckerchiefWhite
+  - WFRMCLoadoutNeckSmock
+  - WFRMCLoadoutNeckTornScarfBlack
+  - WFRMCLoadoutNeckTornScarfDesert
+  - WFRMCLoadoutNeckTornScarfGreen
+  - WFRMCLoadoutNeckTornScarfGrey
+  - WFRMCLoadoutNeckTornScarfSnow
+  - WFRMCLoadoutNeckTornScarfUrban
+  - WFRMCLoadoutPoncho
+  - WFRMCLoadoutNeckGuard
+  - WFRMCLoadoutTieBlack
+  - WFRMCLoadoutTieBlue
+  - WFRMCLoadoutTieGold
+  - WFRMCLoadoutTieGreen
+  - WFRMCLoadoutTieHorrible
+  - WFRMCLoadoutTiePurple
+  - WFRMCLoadoutTieRed
+  - WFRMCLoadoutArmbandRedArmband
+  - WFRMCLoadoutArmbandAlphaArmband
+  - WFRMCLoadoutArmbandBravoArmband
+  - WFRMCLoadoutArmbandCharlieArmband
+  - WFRMCLoadoutArmbandDeltaArmband
+  - WFRMCLoadoutArmbandEchoArmband
+  - WFRMCLoadoutArmbandFoxtrotArmband
+  - WFRMCLoadoutArmbandSquadArmband
+  - WFRMCLoadoutArmbandMedArmband
+  - WFRMCLoadoutArmbandMedGreenArmband
+  - WFRMCLoadoutArmbandEngiArmband
+  - WFRMCLoadoutArmbandMpArmband
+  - WFRMCLoadoutDropPouchDropPouch
+  - WFRMCLoadoutDropPouchDropPouchBlack
+  - WFRMCLoadoutDropPouchDropPouchRcm
+  - WFRMCLoadoutDropPouchGrenadePouch
+  - WFRMCLoadoutDropPouchMl66aPouch
+  - WFRMCLoadoutLegPouch
+  - WFRMCLoadoutArmorPouchesMag
+  - WFRMCLoadoutArmorPouchesDrum
+  - WFRMCLoadoutArmorPouchesNade
+  - WFRMCLoadoutArmorPouchesShell
+  - WFRMCLoadoutArmorPouchesPouch
+  - WFRMCLoadoutShoulderPads
+  - WFRMCLoadoutBracers
+  - WFRMCLoadoutThighGuards
+  - WFRMCLoadoutShinGuards
+  - WFRMCLoadoutGroinPlate
+  - WFRMCLoadoutArmorPaintSkull
+  - WFRMCLoadoutArmorPaintCross
+  - WFRMCLoadoutArmorPaintHeart
+  - WFRMCLoadoutArmorPaintMedic
+  - WFRMCLoadoutArmorPaintTarget
+  - WFRMCLoadoutArmorPaintSmiley
+  - WFRMCLoadoutArmorPaintMixtape
+  - WFRMCLoadoutArmorPaintInscription
+  - WFRMCLoadoutArmorPaintNeutral
+  - WFRMCLoadoutPatchTSFMC
+  - WFRMCLoadoutPatchTSFMCRecon
+  - WFRMCLoadoutPatchTSFFlag
+  - WFRMCLoadoutPatchTSFFlagSquare
+  - WFRMCLoadoutPatchTSFMCSenior
+  - WFRMCLoadoutPatchTSFMCDevils
+  - WFRMCLoadoutPatchTSFMCFalcons
+  - WFRMCLoadoutPatchTSFMCFalconsLarge
+  - WFRMCLoadoutPatchMedic
+  - WFRMCLoadoutPatchOlive
+  - WFRMCLoadoutPatchPeace
+  # WOLFGATE END
 
 - type: loadoutGroup
   id: TsfmcNeckMedic
@@ -209,6 +571,91 @@
   - TsfmcClothingNeckIFFWhite
   - TsfmcClothingNeckIFFCyan
   - TsfmcClothingNeckWearableCameraTSF
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutNeckScarfAlpha
+  - WFRMCLoadoutNeckScarfBlack
+  - WFRMCLoadoutNeckScarfBravo
+  - WFRMCLoadoutNeckScarfCharlie
+  - WFRMCLoadoutNeckScarfDelta
+  - WFRMCLoadoutNeckScarfEcho
+  - WFRMCLoadoutNeckScarfGray
+  - WFRMCLoadoutNeckScarfGreen
+  - WFRMCLoadoutNeckScarfTan
+  - WFRMCLoadoutNeckNeckerchiefAlpha
+  - WFRMCLoadoutNeckNeckerchiefBlack
+  - WFRMCLoadoutNeckNeckerchiefBravo
+  - WFRMCLoadoutNeckNeckerchiefCharlie
+  - WFRMCLoadoutNeckNeckerchiefDelta
+  - WFRMCLoadoutNeckNeckerchiefEcho
+  - WFRMCLoadoutNeckNeckerchiefGray
+  - WFRMCLoadoutNeckNeckerchiefGreen
+  - WFRMCLoadoutNeckNeckerchiefTan
+  - WFRMCLoadoutNeckNeckerchiefWhite
+  - WFRMCLoadoutNeckSmock
+  - WFRMCLoadoutNeckTornScarfBlack
+  - WFRMCLoadoutNeckTornScarfDesert
+  - WFRMCLoadoutNeckTornScarfGreen
+  - WFRMCLoadoutNeckTornScarfGrey
+  - WFRMCLoadoutNeckTornScarfSnow
+  - WFRMCLoadoutNeckTornScarfUrban
+  - WFRMCLoadoutPoncho
+  - WFRMCLoadoutNeckGuard
+  - WFRMCLoadoutTieBlack
+  - WFRMCLoadoutTieBlue
+  - WFRMCLoadoutTieGold
+  - WFRMCLoadoutTieGreen
+  - WFRMCLoadoutTieHorrible
+  - WFRMCLoadoutTiePurple
+  - WFRMCLoadoutTieRed
+  - WFRMCLoadoutArmbandRedArmband
+  - WFRMCLoadoutArmbandAlphaArmband
+  - WFRMCLoadoutArmbandBravoArmband
+  - WFRMCLoadoutArmbandCharlieArmband
+  - WFRMCLoadoutArmbandDeltaArmband
+  - WFRMCLoadoutArmbandEchoArmband
+  - WFRMCLoadoutArmbandFoxtrotArmband
+  - WFRMCLoadoutArmbandSquadArmband
+  - WFRMCLoadoutArmbandMedArmband
+  - WFRMCLoadoutArmbandMedGreenArmband
+  - WFRMCLoadoutArmbandEngiArmband
+  - WFRMCLoadoutArmbandMpArmband
+  - WFRMCLoadoutDropPouchDropPouch
+  - WFRMCLoadoutDropPouchDropPouchBlack
+  - WFRMCLoadoutDropPouchDropPouchRcm
+  - WFRMCLoadoutDropPouchGrenadePouch
+  - WFRMCLoadoutDropPouchMl66aPouch
+  - WFRMCLoadoutLegPouch
+  - WFRMCLoadoutArmorPouchesMag
+  - WFRMCLoadoutArmorPouchesDrum
+  - WFRMCLoadoutArmorPouchesNade
+  - WFRMCLoadoutArmorPouchesShell
+  - WFRMCLoadoutArmorPouchesPouch
+  - WFRMCLoadoutShoulderPads
+  - WFRMCLoadoutBracers
+  - WFRMCLoadoutThighGuards
+  - WFRMCLoadoutShinGuards
+  - WFRMCLoadoutGroinPlate
+  - WFRMCLoadoutArmorPaintSkull
+  - WFRMCLoadoutArmorPaintCross
+  - WFRMCLoadoutArmorPaintHeart
+  - WFRMCLoadoutArmorPaintMedic
+  - WFRMCLoadoutArmorPaintTarget
+  - WFRMCLoadoutArmorPaintSmiley
+  - WFRMCLoadoutArmorPaintMixtape
+  - WFRMCLoadoutArmorPaintInscription
+  - WFRMCLoadoutArmorPaintNeutral
+  - WFRMCLoadoutPatchTSFMC
+  - WFRMCLoadoutPatchTSFMCRecon
+  - WFRMCLoadoutPatchTSFFlag
+  - WFRMCLoadoutPatchTSFFlagSquare
+  - WFRMCLoadoutPatchTSFMCSenior
+  - WFRMCLoadoutPatchTSFMCDevils
+  - WFRMCLoadoutPatchTSFMCFalcons
+  - WFRMCLoadoutPatchTSFMCFalconsLarge
+  - WFRMCLoadoutPatchMedic
+  - WFRMCLoadoutPatchOlive
+  - WFRMCLoadoutPatchPeace
+  # WOLFGATE END
 
 - type: loadoutGroup
   id: TsfmcBrigmedicGlasses
@@ -229,6 +676,37 @@
   - TsfmcBeret
   - TsfmcUtilityCap
   - TsfmcBeretCommon
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutHelmetM10
+  - WFRMCLoadoutHelmetM10Officer
+  - WFRMCLoadoutHelmetM11
+  - WFRMCLoadoutHelmetM12
+  - WFRMCLoadoutHelmetM30
+  - WFRMCLoadoutHelmetM35
+  - WFRMCLoadoutHelmetM3G4
+  - WFRMCLoadoutHelmetM3Scout
+  - WFRMCLoadoutHelmetM50
+  - WFRMCLoadoutHelmetMarsoc
+  - WFRMCLoadoutHelmetM45
+  - WFRMCLoadoutHatBeret
+  - WFRMCLoadoutHatBeretTan
+  - WFRMCLoadoutHatCap
+  - WFRMCLoadoutHatCapOfficer
+  - WFRMCLoadoutHatFlapCap
+  - WFRMCLoadoutHatDressEnlisted
+  - WFRMCLoadoutHatDressOfficer
+  - WFRMCLoadoutHatBoonie
+  - WFRMCLoadoutHatBoonieTan
+  - WFRMCLoadoutHatBeaniesBeanie
+  - WFRMCLoadoutHatBeaniesGray
+  - WFRMCLoadoutHatBeaniesGreen
+  - WFRMCLoadoutHatBeaniesTan
+  - WFRMCLoadoutHatHeadbandBrown
+  - WFRMCLoadoutHatHeadbandGray
+  - WFRMCLoadoutHatHeadbandGreen
+  - WFRMCLoadoutHatHeadbandRed
+  - WFRMCLoadoutHatHeadbandTan
+  # WOLFGATE END
 
 - type: loadoutGroup
   id: TsfmcInfantryHead
@@ -248,6 +726,35 @@
   - TsfmcBeretMedic
   - TsfmcUtilityCap
   - TsfmcBeretCommon
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutHelmetM10
+  - WFRMCLoadoutHelmetM10Medic
+  - WFRMCLoadoutHelmetM11
+  - WFRMCLoadoutHelmetM12
+  - WFRMCLoadoutHelmetM30
+  - WFRMCLoadoutHelmetM3Scout
+  - WFRMCLoadoutHelmetM50
+  - WFRMCLoadoutHelmetMarsoc
+  - WFRMCLoadoutHelmetM45
+  - WFRMCLoadoutHatBeret
+  - WFRMCLoadoutHatBeretTan
+  - WFRMCLoadoutHatCap
+  - WFRMCLoadoutHatCapOfficer
+  - WFRMCLoadoutHatFlapCap
+  - WFRMCLoadoutHatDressEnlisted
+  - WFRMCLoadoutHatDressOfficer
+  - WFRMCLoadoutHatBoonie
+  - WFRMCLoadoutHatBoonieTan
+  - WFRMCLoadoutHatBeaniesBeanie
+  - WFRMCLoadoutHatBeaniesGray
+  - WFRMCLoadoutHatBeaniesGreen
+  - WFRMCLoadoutHatBeaniesTan
+  - WFRMCLoadoutHatHeadbandBrown
+  - WFRMCLoadoutHatHeadbandGray
+  - WFRMCLoadoutHatHeadbandGreen
+  - WFRMCLoadoutHatHeadbandRed
+  - WFRMCLoadoutHatHeadbandTan
+  # WOLFGATE END
 
 - type: loadoutGroup
   id: TsfmcHeadEngi
@@ -257,6 +764,36 @@
   - TsfmcBeretEngineer
   - TsfmcUtilityCap
   - TsfmcBeretCommon
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutHelmetM10
+  - WFRMCLoadoutHelmetM10Tech
+  - WFRMCLoadoutHelmetM11
+  - WFRMCLoadoutHelmetM12
+  - WFRMCLoadoutHelmetM30
+  - WFRMCLoadoutHelmetM3Demo
+  - WFRMCLoadoutHelmetM3Scout
+  - WFRMCLoadoutHelmetM50
+  - WFRMCLoadoutHelmetMarsoc
+  - WFRMCLoadoutHelmetM45
+  - WFRMCLoadoutHatBeret
+  - WFRMCLoadoutHatBeretTan
+  - WFRMCLoadoutHatCap
+  - WFRMCLoadoutHatCapOfficer
+  - WFRMCLoadoutHatFlapCap
+  - WFRMCLoadoutHatDressEnlisted
+  - WFRMCLoadoutHatDressOfficer
+  - WFRMCLoadoutHatBoonie
+  - WFRMCLoadoutHatBoonieTan
+  - WFRMCLoadoutHatBeaniesBeanie
+  - WFRMCLoadoutHatBeaniesGray
+  - WFRMCLoadoutHatBeaniesGreen
+  - WFRMCLoadoutHatBeaniesTan
+  - WFRMCLoadoutHatHeadbandBrown
+  - WFRMCLoadoutHatHeadbandGray
+  - WFRMCLoadoutHatHeadbandGreen
+  - WFRMCLoadoutHatHeadbandRed
+  - WFRMCLoadoutHatHeadbandTan
+  # WOLFGATE END
 
 # Grunt headsets
 - type: loadoutGroup
@@ -288,6 +825,35 @@
   loadouts:
   - TsfmcClothingOuterArmorBPVestLight
   - TsfmcClothingOuterArmorBPVestMedium
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutArmorM3
+  - WFRMCLoadoutArmorM3L
+  - WFRMCLoadoutArmorM3EOD
+  - WFRMCLoadoutArmorM3T
+  - WFRMCLoadoutArmorB12
+  - WFRMCLoadoutArmorM3G4
+  - WFRMCLoadoutArmorM35
+  - WFRMCLoadoutArmorML66A
+  - WFRMCLoadoutArmorXM4
+  - WFRMCLoadoutArmorM3XL
+  - WFRMCLoadoutArmorM3Scout
+  - WFRMCLoadoutArmorM70Flak
+  - WFRMCLoadoutArmorM3Officer
+  - WFRMCLoadoutCoatService
+  - WFRMCLoadoutCoatTanker
+  - WFRMCLoadoutCoatPilot
+  - WFRMCLoadoutCoatDressEnlisted
+  - WFRMCLoadoutCoatDressSenior
+  - WFRMCLoadoutGhillie
+  - WFRMCLoadoutGhillieUDEP
+  - WFRMCLoadoutCoatSnow
+  - WFRMCLoadoutCoatSnowGreen
+  - WFRMCLoadoutCoatSnowNavy
+  - WFRMCLoadoutCoatWindbreaker
+  - WFRMCLoadoutCoatWindbreakerBrown
+  - WFRMCLoadoutCoatWindbreakerGrey
+  - WFRMCLoadoutCoatWindbreakerExpedition
+  # WOLFGATE END
   fallbacks:
   - TsfmcClothingOuterArmorBPVestLight
 
@@ -307,6 +873,11 @@
   minLimit: 1
   loadouts:
   - TsfmcClothingOuterHardsuitColonel
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
+  - WFRMCLoadoutArmorM3CO
+  - WFRMCLoadoutArmorM3Officer
+  - WFRMCLoadoutCoatDressGeneral
+  # WOLFGATE END
   fallbacks:
   - TsfmcClothingOuterHardsuitColonel
 

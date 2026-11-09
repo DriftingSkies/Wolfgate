@@ -11,8 +11,12 @@ public sealed partial class VehiclePullingSystem : EntitySystem
 {
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private ITileDefinitionManager _tileDefs = default!;
     [Dependency] private PullingSystem _pulling = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+
+    /// <summary>The filler tile that rings vehicle interiors; it lies outside the cabin.</summary>
+    private const string VoidTile = "RMCVoid";
 
     /// <summary>The tiles round the puller's landing spot, sides before corners.</summary>
     private static readonly Vector2i[] Around =
@@ -51,7 +55,7 @@ public sealed partial class VehiclePullingSystem : EntitySystem
     }
 
     /// <summary>
-    /// A free tile beside where the puller landed, for what they drag: landed on top of them, the two wedge against
+    /// A free tile of the cabin floor beside where the puller landed, for what they drag: landed on top of them, the two wedge against
     /// whatever is next to the doorway and neither can move. The puller's own spot when nothing round it is free.
     /// </summary>
     private MapCoordinates SpotBeside(EntityUid user, EntityUid pulled, MapCoordinates fallback)
@@ -66,7 +70,7 @@ public sealed partial class VehiclePullingSystem : EntitySystem
         foreach (var step in Around)
         {
             var tile = centre + step;
-            if (!_map.TryGetTileRef(gridUid, grid, tile, out var tileRef) || tileRef.Tile.IsEmpty || Blocked(gridUid, grid, tile, pulled, body))
+            if (!_map.TryGetTileRef(gridUid, grid, tile, out var tileRef) || tileRef.Tile.IsEmpty || IsVoid(tileRef.Tile) || Blocked(gridUid, grid, tile, pulled, body))
                 continue;
 
             return _transform.ToMapCoordinates(_map.GridTileToLocal(gridUid, grid, tile));
@@ -74,6 +78,8 @@ public sealed partial class VehiclePullingSystem : EntitySystem
 
         return fallback;
     }
+
+    private bool IsVoid(Tile tile) => _tileDefs[tile.TypeId].ID == VoidTile;
 
     /// <summary>Whether anything on the tile would collide with the dragged body, either way round.</summary>
     private bool Blocked(EntityUid gridUid, MapGridComponent grid, Vector2i tile, EntityUid pulled, PhysicsComponent body)

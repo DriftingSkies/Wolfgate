@@ -45,6 +45,17 @@ public sealed partial class WFDefconProfilePrototype : IPrototype
     [DataField]
     public int WarFloor = 3;
 
+    /// <summary>Score for each nuclear device bought and not yet set off, and the calmest level while any is held.</summary>
+    [DataField]
+    public float NuclearHeld = 40f;
+
+    [DataField]
+    public int NuclearHeldFloor = 3;
+
+    /// <summary>Score for each armed nuclear device; while any is armed the level is held at 1.</summary>
+    [DataField]
+    public float NuclearArmed = 100f;
+
     /// <summary>Score for each open scheduled threat encounter, and its cap.</summary>
     [DataField]
     public float ThreatEncounter = 6f;

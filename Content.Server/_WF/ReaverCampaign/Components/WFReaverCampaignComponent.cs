@@ -32,10 +32,6 @@ public sealed partial class WFReaverCampaignComponent : Component
     [ViewVariables]
     public TimeSpan? TierAnnounced;
 
-    /// <summary>When a quiet banner was last sent.</summary>
-    [ViewVariables]
-    public TimeSpan? LastQuietBanner;
-
     /// <summary>When the last stronghold was founded; a convoy counts when it arrives.</summary>
     [ViewVariables]
     public TimeSpan? LastFounded;

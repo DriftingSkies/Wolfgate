@@ -93,3 +93,28 @@
   maxSeverity: 42
   name: wf-drift-alert-name
   description: wf-drift-alert-desc
+
+# Warnings a drifting mind sees that aren't true. They look and read exactly like the real ones.
+- type: alert
+  id: WFFalseLowOxygen
+  icons:
+  - sprite: /Textures/_Crescent/Interface/Alerts/breathing.rsi
+    state: not_enough_oxy
+  name: alerts-low-oxygen-name
+  description: alerts-low-oxygen-desc
+
+- type: alert
+  id: WFFalseLowPressure
+  icons:
+  - sprite: /Textures/_Crescent/Interface/Alerts/pressure.rsi
+    state: lowpressure2
+  name: alerts-low-pressure-name
+  description: alerts-low-pressure-desc
+
+- type: alert
+  id: WFFalseHot
+  icons:
+  - sprite: /Textures/_Crescent/Interface/Alerts/temperature.rsi
+    state: hot2
+  name: alerts-too-hot-name
+  description: alerts-too-hot-desc

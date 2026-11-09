@@ -60,6 +60,7 @@ public sealed partial class WFDrydockSystem
             args.AddNumberUpgrade("drydock-crane-upgrade-width", (int) MathF.Round(crane.MaxExtension - stockWidth));
         }
 
+        args.AddPercentageUpgrade("drydock-crane-upgrade-efficiency", AtTier(upgrades.Efficiency, upgrades.EfficiencyTier));
         args.AddPercentageUpgrade("drydock-crane-upgrade-load", crane.WorkingLoad / upgrades.WorkingLoad);
     }
 

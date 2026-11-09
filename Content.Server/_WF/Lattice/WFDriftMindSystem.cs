@@ -1,6 +1,7 @@
 using Content.Server._WF.Remade.Conversion;
 using Content.Shared._WF.Lattice;
 using Content.Shared.Alert;
+using Content.Shared.Bed.Sleep;
 using Content.Shared.Ghost;
 using Content.Shared.Hands;
 using Content.Shared.Interaction;
@@ -44,6 +45,12 @@ public sealed partial class WFDriftMindSystem : EntitySystem
     /// <summary>Drift a second a head loses once nothing is feeding it.</summary>
     public const float Decay = 0.4f;
 
+    /// <summary>How much faster a sleeping head clears.</summary>
+    private const float SleepDecay = 3f;
+
+    /// <summary>How long a person's felt Drift holds without being worked out again, off the Lattice.</summary>
+    private static readonly TimeSpan FeltStale = TimeSpan.FromSeconds(3);
+
     private readonly HashSet<EntityUid> _fed = new();
     private readonly HashSet<Entity<ActorComponent>> _near = new();
     private TimeSpan _next;
@@ -54,6 +61,23 @@ public sealed partial class WFDriftMindSystem : EntitySystem
 
         SubscribeLocalEvent<WFDriftSourceComponent, InteractHandEvent>(OnTouched);
         SubscribeLocalEvent<WFDriftSourceComponent, GotEquippedHandEvent>(OnPickedUp);
+        SubscribeLocalEvent<WFGroundEvent>(OnGrounded);
+    }
+
+    /// <summary>A grounding drug keeps Drift off a person for a while and clears some out of their head.</summary>
+    private void OnGrounded(ref WFGroundEvent args)
+    {
+        if (!CanDrift(args.Target))
+            return;
+
+        var grounded = EnsureComp<WFGroundedComponent>(args.Target);
+        grounded.Until = _timing.CurTime + args.Duration;
+        grounded.Share = args.Share;
+        if (TryComp<WFDriftComponent>(args.Target, out var drift) && drift.Mind > 0f)
+        {
+            drift.Mind = Math.Max(0f, drift.Mind - args.Clear);
+            Sync(args.Target, drift);
+        }
     }
 
     /// <summary>Whether this person can hold Drift in their head at all.</summary>
@@ -153,7 +177,7 @@ public sealed partial class WFDriftMindSystem : EntitySystem
                 continue;
 
             if (!_fed.Contains(uid) || !CanDrift(uid))
-                drift.Mind = Math.Max(0f, drift.Mind - Decay * seconds);
+                drift.Mind = Math.Max(0f, drift.Mind - Decay * seconds * (HasComp<SleepingComponent>(uid) ? SleepDecay : 1f));
 
             Sync(uid, drift);
             if (profile != null && CanDrift(uid) && !HasComp<WFLatticeFieldComponent>(xform.MapUid))
@@ -173,7 +197,17 @@ public sealed partial class WFDriftMindSystem : EntitySystem
             var own = CompOrNull<WFDriftComponent>(uid);
             var carrier = xform.GridUid is { } grid && TryComp<WFDriftComponent>(grid, out var ship) ? ship : own;
             var band = carrier?.Band ?? 0;
-            var level = Math.Max(carrier?.Level ?? 0, own?.MindLevel ?? 0);
+
+            // What they feel, once worked out; off the Lattice it goes stale and drops away.
+            var fresh = own != null && _timing.CurTime - own.FeltAt < FeltStale;
+            if (own is { FeltLevel: > 0 } && !fresh)
+            {
+                own.Felt = 0f;
+                own.FeltLevel = 0;
+                Dirty(uid, own);
+            }
+
+            var level = Math.Max(fresh ? own!.FeltLevel : carrier?.Level ?? 0, own?.MindLevel ?? 0);
             if (!CanDrift(uid) || band == 0 && (carrier?.Drift ?? 0f) <= 0f && (own?.Mind ?? 0f) <= 0f)
             {
                 _alerts.ClearAlert(uid, DriftAlert);
@@ -184,7 +218,7 @@ public sealed partial class WFDriftMindSystem : EntitySystem
             if (Garbled(xform.MapUid, band))
                 severity = GaugeSteps + 1;
             // A Monolith's hold on the head reads in red, when it is the greater.
-            else if (own is { Flavour: WFDriftFlavour.Monolith, Mind: > 0f } && own.MindLevel >= (carrier?.Level ?? 0))
+            else if (own is { Flavour: WFDriftFlavour.Monolith, Mind: > 0f } && own.MindLevel >= (fresh ? own.FeltLevel : carrier?.Level ?? 0))
                 severity += GaugeSteps + 2;
 
             _alerts.ShowAlert(uid, DriftAlert, severity);

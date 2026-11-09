@@ -223,7 +223,7 @@ public sealed partial class WFGrowthSystem : EntitySystem
     public bool CanPlace(WFRemadeGrowthPrototype def, EntityCoordinates at)
     {
         if (!TryGetTile(at, out var gridUid, out var grid, out var tile)
-            || _corruption.IsSanctuary(gridUid)
+            || _corruption.IsWarded(gridUid)
             || !_corruption.IsCorrupted((gridUid.Value, grid), tile)
             || _turf.IsTileBlocked(gridUid.Value, tile, CollisionGroup.MobMask))
         {

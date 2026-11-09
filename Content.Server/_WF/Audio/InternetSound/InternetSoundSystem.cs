@@ -99,6 +99,9 @@ public sealed partial class InternetSoundSystem : EntitySystem
         /// <summary>The ship it plays on, or null for everyone at once.</summary>
         public EntityUid? Grid;
 
+        /// <summary>The item it plays from, such as a boombox, or null.</summary>
+        public EntityUid? Source;
+
         public TrackState State;
         public CancellationTokenSource? Fetch;
 
@@ -125,6 +128,9 @@ public sealed partial class InternetSoundSystem : EntitySystem
         public InternetSoundTransfer? Transfer;
 
         public bool IsPa => Grid != null;
+
+        /// <summary>Comes out of something in the world: no radio, no readiness barrier, only nearby players get it.</summary>
+        public bool IsDiegetic => Grid != null || Source != null;
     }
 
     public override void Initialize()
@@ -156,6 +162,7 @@ public sealed partial class InternetSoundSystem : EntitySystem
 
         _tracks.Clear();
         _byGrid.Clear();
+        _bySource.Clear();
         _global = 0;
 
         // Nothing is playing after this, so anything still mounted is dead weight.
@@ -182,6 +189,10 @@ public sealed partial class InternetSoundSystem : EntitySystem
 
                 // Clients play a sound for everyone on their own clocks; the server only keeps its time.
                 case TrackState.Playing when !track.IsPa && _timing.CurTime >= track.Ends:
+                    Finish(track);
+                    break;
+
+                case TrackState.Playing when track.Source is { } source && !Exists(source):
                     Finish(track);
                     break;
 
@@ -252,7 +263,7 @@ public sealed partial class InternetSoundSystem : EntitySystem
         return Begin(admin, requester, url, grid, out error, errorRecipient, stealth);
     }
 
-    private bool Begin(ICommonSession? admin, string requester, string url, EntityUid? grid, out string? error, ICommonSession? errorRecipient = null, bool stealth = false)
+    private bool Begin(ICommonSession? admin, string requester, string url, EntityUid? grid, out string? error, ICommonSession? errorRecipient = null, bool stealth = false, EntityUid? source = null)
     {
         error = null;
 
@@ -264,7 +275,8 @@ public sealed partial class InternetSoundSystem : EntitySystem
         }
 
         // A ship replacing its own track doesn't add to the load, so it doesn't count against the cap.
-        var replacing = grid is { } existing && _byGrid.ContainsKey(existing);
+        var replacing = grid is { } existing && _byGrid.ContainsKey(existing)
+                        || source is { } item && _bySource.ContainsKey(item);
 
         if (!replacing && _tracks.Count >= _cfg.GetCVar(InternetSoundCVars.MaxConcurrent))
         {
@@ -284,6 +296,8 @@ public sealed partial class InternetSoundSystem : EntitySystem
         // Whatever that ship had is replaced, so its audio comes back rather than piling up.
         if (grid is { } target && _byGrid.TryGetValue(target, out var old))
             Drop(_tracks[old]);
+        else if (source is { } from && _bySource.TryGetValue(from, out var previous))
+            Drop(_tracks[previous]);
 
         var id = ++_lastId;
         var fetch = new CancellationTokenSource();
@@ -295,6 +309,7 @@ public sealed partial class InternetSoundSystem : EntitySystem
             Requester = requester,
             Stealth = stealth,
             Grid = grid,
+            Source = source,
             State = TrackState.Fetching,
             Fetch = fetch,
             Admin = admin,
@@ -305,27 +320,20 @@ public sealed partial class InternetSoundSystem : EntitySystem
 
         if (grid is { } uid)
             _byGrid[uid] = id;
+        else if (source is { } sourceUid)
+            _bySource[sourceUid] = id;
         else
             _global = id;
 
         // Ship PA is positional, so stereo would only cost memory for an image the speakers throw away.
-        var stereo = _cfg.GetCVar(InternetSoundCVars.Stereo) && grid == null;
+        var stereo = _cfg.GetCVar(InternetSoundCVars.Stereo) && grid == null && source == null;
 
-        var settings = new InternetSoundDownloader.Settings(
-            _cfg.GetCVar(InternetSoundCVars.YtDlpPath),
-            _cfg.GetCVar(InternetSoundCVars.FfmpegPath),
-            _cfg.GetCVar(InternetSoundCVars.MaxDuration),
-            _cfg.GetCVar(InternetSoundCVars.Timeout),
-            _cfg.GetCVar(InternetSoundCVars.MaxSizeMb),
-            Math.Clamp(_cfg.GetCVar(InternetSoundCVars.SampleRate), 8000, 48000),
-            stereo ? 2 : 1,
-            Math.Clamp(_cfg.GetCVar(InternetSoundCVars.Bitrate), 8, 192),
-            (long) Math.Max(1, _cfg.GetCVar(InternetSoundCVars.MaxDownloadMb)) * 1024 * 1024);
+        var settings = BuildSettings(stereo);
 
         Report(admin, Loc.GetString("wf-internet-sound-fetching", ("url", uri.AbsoluteUri)), false);
 
         _adminLogger.Add(LogType.AdminCommands, LogImpact.Low,
-            $"{requester} requested {(stealth ? "stealth " : "")}internet sound {uri.AbsoluteUri}{(grid is { } ship ? $" for {_shipPa.GetShipName(ship)}" : " for everyone")}");
+            $"{requester} requested {(stealth ? "stealth " : "")}internet sound {uri.AbsoluteUri}{(grid is { } ship ? $" for {_shipPa.GetShipName(ship)}" : source is { } box ? $" from {ToPrettyString(box)}" : " for everyone")}");
 
         SendState();
 
@@ -408,12 +416,12 @@ public sealed partial class InternetSoundSystem : EntitySystem
     }
 
     /// <summary>
-    /// True when a track for this ship would not be turned away for want of room: it already holds a slot,
+    /// True when a track for this ship or source item would not be turned away for want of room: it already holds a slot,
     /// or the server-wide cap has one free.
     /// </summary>
     public bool HasFreeSlot(EntityUid grid)
     {
-        return _byGrid.ContainsKey(grid) || _tracks.Count < _cfg.GetCVar(InternetSoundCVars.MaxConcurrent);
+        return _byGrid.ContainsKey(grid) || _bySource.ContainsKey(grid) || _tracks.Count < _cfg.GetCVar(InternetSoundCVars.MaxConcurrent);
     }
 
     /// <summary>
@@ -447,12 +455,16 @@ public sealed partial class InternetSoundSystem : EntitySystem
             return;
         }
 
-        track.Transfer = new InternetSoundTransfer(Encode(id, result.Title, track.ShownRequester, track.IsPa, result.Audio));
+        track.Transfer = new InternetSoundTransfer(Encode(id, result.Title, track.ShownRequester, track.IsDiegetic, result.Audio));
         track.Waiting.Clear();
 
         if (track.IsPa)
         {
             SendToPaAudience(track);
+        }
+        else if (track.Source != null)
+        {
+            SendToSourceAudience(track);
         }
         else
         {
@@ -478,7 +490,7 @@ public sealed partial class InternetSoundSystem : EntitySystem
         SendState();
 
         // PA sources are created locally only once their asset exists. They need no readiness barrier.
-        if (track.IsPa || track.Waiting.Count == 0)
+        if (track.IsDiegetic || track.Waiting.Count == 0)
             StartPlayback(track);
     }
 
@@ -546,6 +558,18 @@ public sealed partial class InternetSoundSystem : EntitySystem
                 ("title", track.Title),
                 ("ship", _shipPa.GetShipName(grid))), false);
         }
+        else if (track.Source is { } source)
+        {
+            if (!StartSource(track, source, path))
+            {
+                ReportError(track, Loc.GetString("wf-internet-sound-no-source"));
+                Drop(track);
+                SendState();
+                return;
+            }
+
+            track.State = TrackState.Playing;
+        }
         else
         {
             // Not a networked stream: a radio needs no tick-exact sync, and the engine's resync on every
@@ -590,6 +614,11 @@ public sealed partial class InternetSoundSystem : EntitySystem
         {
             _shipPa.StopAlarm(grid, TrackKey);
             _byGrid.Remove(grid);
+        }
+        else if (track.Source is { } source)
+        {
+            StopSource(source, track.Id);
+            _bySource.Remove(source);
         }
         else if (_global == track.Id)
         {
@@ -643,7 +672,8 @@ public sealed partial class InternetSoundSystem : EntitySystem
 
         foreach (var track in _tracks.Values)
         {
-            var ship = track.Grid is { } grid && Exists(grid) ? _shipPa.GetShipName(grid) : null;
+            var ship = track.Grid is { } grid && Exists(grid) ? _shipPa.GetShipName(grid)
+                : track.Source is { } source && Exists(source) ? Name(source) : null;
             var netGrid = track.Grid is { } uid && Exists(uid) ? GetNetEntity(uid) : (NetEntity?) null;
 
             entries.Add(new InternetSoundEntry(

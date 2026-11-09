@@ -107,12 +107,18 @@ public sealed partial class WFAdsCampaignSystem
         if (rising && state.Finished)
             return;
 
-        state.TierAnnounced = _timing.CurTime;
-        Announce(campaign, Loc.GetString(rising ? "wf-ads-tier-rising" : "wf-ads-tier-falling",
+        var message = Loc.GetString(rising ? "wf-ads-tier-rising" : "wf-ads-tier-falling",
             ("tier", TierName(tier)),
             ("nodes", Nodes().Count),
             ("cells", _territory.Held(_territory.SectorMap, campaign.Faction).Count),
-            ("bounty", ByTier(campaign.NodeBounty, tier, 0))), rising);
+            ("bounty", ByTier(campaign.NodeBounty, tier, 0)));
+
+        // Either way it holds back the next fall; a falling threat is good news, not an alert.
+        state.TierAnnounced = _timing.CurTime;
+        if (rising)
+            Announce(campaign, message, true);
+        else
+            AnnounceRadio(message);
     }
 
     /// <summary>Sends the campaign's legend line for the sector map.</summary>

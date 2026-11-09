@@ -50,6 +50,13 @@ public sealed partial class ServerPreferencesManager
     }
 
     /// <summary>Sends a player their preferences again, so the creator shows what the server changed.</summary>
+    public void ResendPreferences(NetUserId userId)
+    {
+        if (_cachedPlayerPrefs.TryGetValue(userId, out var data) && data.Prefs is { } prefs)
+            ResendPreferences(userId, prefs);
+    }
+
+    /// <summary>Sends a player their preferences again, so the creator shows what the server changed.</summary>
     private void ResendPreferences(NetUserId userId, PlayerPreferences prefs)
     {
         if (!_playerManager.TryGetSessionById(userId, out var session))

@@ -137,7 +137,9 @@ public sealed class CargoSetTest
             Assert.That(levels.WfGetSetLiftLoad(tug), Is.EqualTo(tugLoad + bargeLoad).Within(0.01f),
                 "Planet lift counts each crate of a locked pair once.");
             Assert.That(cargo.SpoolPenalty(tug, new FTLDriveComponent()),
-                Is.EqualTo(System.Math.Min(profile.SpoolCap, profile.SpoolPerTonne * (tugLoad + bargeLoad))).Within(0.001f),
+                Is.EqualTo(WFCargoLoadSystem.SpoolSeconds(profile,
+                    entMan.GetComponent<PhysicsComponent>(tug).FixturesMass + entMan.GetComponent<PhysicsComponent>(barge).FixturesMass,
+                    tugLoad + bargeLoad)).Within(0.001f),
                 "A locked barge jumps with the tug, so its cargo spools too.");
 
             entMan.System<ShuttleConsoleSystem>().SetFTLLock(barge, false);
@@ -152,7 +154,8 @@ public sealed class CargoSetTest
             Assert.That(cargo.GetSpaceFactor(tug), Is.EqualTo(expected).Within(0.001f), "A barge with its lock off still slows the tug.");
             Assert.That(levels.WfGetSetLiftLoad(tug), Is.EqualTo(tugLoad).Within(0.01f), "Lift judges an unlocked barge as its own set.");
             Assert.That(cargo.SpoolPenalty(tug, new FTLDriveComponent()),
-                Is.EqualTo(System.Math.Min(profile.SpoolCap, profile.SpoolPerTonne * tugLoad)).Within(0.001f),
+                Is.EqualTo(WFCargoLoadSystem.SpoolSeconds(profile, entMan.GetComponent<PhysicsComponent>(tug).FixturesMass, tugLoad))
+                    .Within(0.001f),
                 "An unlocked barge stays behind, so its cargo adds no spool.");
 
             // Empty the tug and cast off.

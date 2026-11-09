@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Content.Server._NF.Bank;
 using Content.Server._NF.BountyContracts;
 using Content.Server._NF.SectorServices;
@@ -10,6 +11,7 @@ using Content.Server._WF.Remade.Counterplay;
 using Content.Server._WF.Remade.Director;
 using Content.Server._WF.Remade.Gifts;
 using Content.Server._WF.Remade.Monolith;
+using Content.Server._WF.Warheads;
 using Content.Server.Body.Systems;
 using Content.Server.Destructible;
 using Content.Shared._NF.Bank.Components;
@@ -83,7 +85,10 @@ public sealed class CounterplayTest
             entMan.GetComponent<WFMonolithComponent>(scion).Resonance = 40f;
         });
 
+        // Growth spreads on a 10 % roll a second, so the first few tiles can take a while: give it up to two minutes.
         await pair.RunSeconds(40f);
+        for (var i = 0; i < 16 && entMan.EntityQuery<WFCorruptionComponent>().Count() <= 4; i++)
+            await pair.RunSeconds(5f);
 
         await server.WaitAssertion(() =>
         {
@@ -328,13 +333,12 @@ public sealed class CounterplayTest
             Assert.That(contract!.Reward, Is.EqualTo(prime.Reward));
             Assert.That(contract.Name, Is.Not.Empty);
 
-            // Guns and blades do nothing to it; a blast does.
+            // Nothing short of a nuke hurts it: not blades, bullets or blasts.
             Hit(entMan, server.ProtoMan, scion, "Slash", 8f, crewman);
             Hit(entMan, server.ProtoMan, scion, "Piercing", 15f, crewman);
-            Assert.That(Total(entMan, scion), Is.Zero, "blades and bullets hurt the Prime.");
-            Hit(entMan, server.ProtoMan, scion, "Structural", 100f, crewman);
-            Assert.That(Total(entMan, scion), Is.EqualTo(80f).Within(1f), "a blast did the wrong damage to the Prime.");
-            Assert.That(prime.Hits.Values.Sum(), Is.EqualTo(80f).Within(1f), "the Prime didn't keep count of who hurt it.");
+            Hit(entMan, server.ProtoMan, scion, "Structural", 100000f, crewman);
+            Hit(entMan, server.ProtoMan, scion, "Heat", 100000f, crewman);
+            Assert.That(Total(entMan, scion), Is.Zero, "something short of a nuke hurt the Prime.");
 
             // The bounty grows while it stands, and the board follows.
             prime.RootedAt = timing.CurTime - TimeSpan.FromMinutes(10);
@@ -355,11 +359,15 @@ public sealed class CounterplayTest
             Assert.That(prime.Verses, Is.GreaterThanOrEqualTo(1), "the Prime never sang again.");
             Assert.That(entMan.GetComponent<WFRemadeDirectorComponent>(scion).Biomass, Is.GreaterThanOrEqualTo(prime.VerseBiomass - 1f),
                 "a verse gave the Director nothing.");
-            Assert.That(Total(entMan, scion), Is.LessThan(78f), "the Prime didn't mend while left alone.");
 
+            // A nuclear blast close by ends it, and whoever set it off is paid.
             paid = prime.Reward;
             before = entMan.System<BankSystem>().TryGetBalance(crewman, out var start) ? start : 0;
-            entMan.System<DestructibleSystem>().DestroyEntity(scion);
+            var far = new WFNuclearDetonatedEvent(new MapCoordinates(new Vector2(5000f, 0f), map.MapId), 60f, crewman);
+            entMan.EventBus.RaiseEvent(EventSource.Local, ref far);
+            Assert.That(entMan.Deleted(scion), Is.False, "a nuke far away killed the Prime.");
+            var blast = new WFNuclearDetonatedEvent(entMan.System<SharedTransformSystem>().GetMapCoordinates(scion), 60f, crewman);
+            entMan.EventBus.RaiseEvent(EventSource.Local, ref blast);
             Assert.That(board.TryGetContract(contractId, out _), Is.False, "the bounty stayed up after the Prime fell.");
         });
 

@@ -344,6 +344,8 @@ public sealed partial class CEZLevelsSystem
     /// </summary>
     private void MoveGridSetToMap(HashSet<EntityUid> movedGrids, EntityUid targetMap, int offset, int depth)
     {
+        WfAdoptStanders(movedGrids); // WOLFGATE(Planets): crates and players the ground layer still owns ride the hull off the planet.
+
         foreach (var gridUid in movedGrids)
         {
             var beforeEv = new CEZLevelBeforeMapMoveEvent(offset, depth);

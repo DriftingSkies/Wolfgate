@@ -8,6 +8,9 @@ staff, and lets the player's next message bwoink again. Claims reset at round re
 Also fixes the panel's **Play sound** and **Admin only** boxes being ignored while the panel is popped out, and the
 Play sound box being ignored for event staff.
 
+The round keeps each ahelp (up to 200 lines a player) and replays it silently on connect: staff get every ahelp
+they would have received, a player gets their own. It resets with the round (`BwoinkSystem.AHelpHistory`).
+
 Entry points: the `BwoinkSystem` partials (`AHelpStaffSound`, `OnAHelpResolve`, client `SendResolve`) and
 `AHelpResolveMessage`.
 
@@ -18,6 +21,7 @@ Entry points: the `BwoinkSystem` partials (`AHelpStaffSound`, `OnAHelpResolve`, 
 
 ### Server
 
+- [`Content.Server/_WF/AHelpResolve/BwoinkSystem.AHelpHistory.cs`](BwoinkSystem.AHelpHistory.cs)
 - [`Content.Server/_WF/AHelpResolve/BwoinkSystem.AHelpResolve.cs`](BwoinkSystem.AHelpResolve.cs)
 
 ### Shared
@@ -47,11 +51,16 @@ Entry points: the `BwoinkSystem` partials (`AHelpStaffSound`, `OnAHelpResolve`, 
 - [`Content.Client/UserInterface/Systems/Bwoink/AHelpUIController.cs`](../../../Content.Client/UserInterface/Systems/Bwoink/AHelpUIController.cs): read the boxes from the control; Window is null while popped out
 - [`Content.Server/Administration/Systems/BwoinkSystem.cs`](../../Administration/Systems/BwoinkSystem.cs)
   - resolve button
+  - ahelp history replayed on connect
   - claims reset with the round
+  - and so does the ahelp history
+  - the next connection gets the history again
+  - a rejoining player sees their ahelp again
   - quoted in an on-call-only ping
   - the on-call ping works without the ahelp webhook
   - no ahelp embed to link, so quote the messages
   - every staff reply honours the play sound box; answered ahelps stop bwoinking staff
+  - kept for replay on connect
   - staff get their own sound flag
   - queue for an on-call-only relay
 - [`Content.Shared/CCVar/CCVars.Discord.cs`](../../../Content.Shared/CCVar/CCVars.Discord.cs): works without discord.ahelp_webhook; the ping then quotes the messages

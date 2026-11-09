@@ -88,6 +88,17 @@ public sealed partial class FireControlSystem
             }
         }
 
+        // WOLFGATE(ShipMissiles) START: tell a soft-launched missile where the console aimed, before its seeker locks
+        foreach (var projectileUid in args.FiredProjectiles)
+        {
+            if (TryComp<Content.Server._WF.ShipMissiles.WFMissileFlightComponent>(projectileUid, out var wfMissile) &&
+                !_wfHack.RefusesGuidance(projectileUid, targetCoords.Value))
+            {
+                wfMissile.Designated = _xform.ToMapCoordinates(targetCoords.Value);
+            }
+        }
+        // WOLFGATE END
+
         foreach (var projectileUid in args.FiredProjectiles)
         {
             if (!TryComp<TargetGuidedComponent>(projectileUid, out var guidedComp))

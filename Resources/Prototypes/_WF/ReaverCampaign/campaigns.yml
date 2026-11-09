@@ -71,7 +71,7 @@
     bountyScale: 1.5
   credits:
   - entity: FederationMilitaryCredit1
-    companies: [ TSF, TSFCivilian ]
+    companies: [ TSF ]
     stronghold: 100
     patrol: 40
   - entity: Doubloon1
@@ -161,7 +161,7 @@
     bountyScale: 1.5
   credits:
   - entity: FederationMilitaryCredit1
-    companies: [ TSF, TSFCivilian ]
+    companies: [ TSF ]
     stronghold: 100
     patrol: 40
   - entity: Doubloon1
@@ -254,7 +254,7 @@
     bountyScale: 1.5
   credits:
   - entity: FederationMilitaryCredit1
-    companies: [ TSF, TSFCivilian ]
+    companies: [ TSF ]
     stronghold: 100
     patrol: 40
   - entity: Doubloon1

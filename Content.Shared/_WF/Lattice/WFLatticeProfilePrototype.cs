@@ -85,9 +85,12 @@ public sealed partial class WFLatticeProfilePrototype : IPrototype
     [DataField]
     public float StrikeWindow = 60f;
 
-    /// <summary>Seconds a ship stays an attacker after its last hit; the station only shoots at it while the shield is down.</summary>
+    /// <summary>
+    /// Seconds a ship or person stays an attacker after its last hit; the station only shoots at it while the shield is down,
+    /// so only those actively attacking are fired on.
+    /// </summary>
     [DataField]
-    public float HostileSeconds = 90f;
+    public float HostileSeconds = 20f;
 
     /// <summary>Furthest the station's lances reach for a hostile grid, in metres.</summary>
     [DataField]
@@ -95,7 +98,7 @@ public sealed partial class WFLatticeProfilePrototype : IPrototype
 
     /// <summary>Seconds between the station's alerts.</summary>
     [DataField]
-    public float AlertCooldown = 120f;
+    public float AlertCooldown = 300f;
 
     /// <summary>DEFCON score for each primary anchor lost.</summary>
     [DataField]
@@ -113,6 +116,10 @@ public sealed partial class WFLatticeProfilePrototype : IPrototype
     [DataField]
     public float EffectInterval = 20f;
 
+    /// <summary>Seconds between rolls at full Drift; the interval closes towards it as Drift climbs.</summary>
+    [DataField]
+    public float EffectIntervalAtMax = 4f;
+
     /// <summary>Chance of a hallucination per roll at no Drift and at full Drift.</summary>
     [DataField]
     public Vector2 EffectChance = new(0.15f, 0.75f);
@@ -127,11 +134,11 @@ public sealed partial class WFLatticeProfilePrototype : IPrototype
 
     /// <summary>Seconds a ship can sit in the Coda before hunters can find it.</summary>
     [DataField]
-    public float HunterGrace = 180f;
+    public float HunterGrace = 90f;
 
     /// <summary>Seconds of exposure past the grace over which the hunters' chance per roll climbs to its most.</summary>
     [DataField]
-    public float HunterRamp = 900f;
+    public float HunterRamp = 480f;
 
     /// <summary>Most chance per roll (once a minute) that a hunter pack boards.</summary>
     [DataField]
@@ -161,13 +168,69 @@ public sealed partial class WFLatticeProfilePrototype : IPrototype
     [DataField]
     public float RotDamage = 12f;
 
-    /// <summary>Chance per failure roll (every 40 s) that something aboard gives out.</summary>
+    /// <summary>Seconds between failure rolls for a ship just arrived at the band's edge; deeper and longer stays roll faster.</summary>
     [DataField]
-    public float FailureChance = 0.45f;
+    public float FailureInterval = 30f;
+
+    /// <summary>Chance per failure roll that something aboard gives out.</summary>
+    [DataField]
+    public float FailureChance = 0.6f;
 
     /// <summary>How long a failure lasts, in seconds: least and most.</summary>
     [DataField]
     public Vector2 FailureSeconds = new(8f, 20f);
+
+    /// <summary>Drift a minute a ship in the Coda soaks into its hull, which it keeps until a drydock cleans it.</summary>
+    [DataField]
+    public float ResidueRate = 0.5f;
+
+    /// <summary>The most Drift a hull can soak in.</summary>
+    [DataField]
+    public float ResidueMax = 30f;
+
+    /// <summary>What a drydock charges to clean each point of soaked-in Drift out of a hull.</summary>
+    [DataField]
+    public int CleanDriftPrice = 150;
+
+    /// <summary>Chance a minute, at the Coda's edge, that Remade flesh takes root on an unsheltered crewed ship; it doubles far out.</summary>
+    [DataField]
+    public float FleshChance = 0.04f;
+
+    /// <summary>Most flesh nodes rooted on one ship.</summary>
+    [DataField]
+    public int FleshMaxNodes = 3;
+
+    /// <summary>Chance a minute, at the Coda's edge, that the leviathan finds a crewed ship; it doubles far out.</summary>
+    [DataField]
+    public float LeviathanChance = 0.025f;
+
+    /// <summary>Seconds after the leviathan passes a ship before it can find it again.</summary>
+    [DataField]
+    public float LeviathanCooldown = 1200f;
+
+    /// <summary>Most outer hull tiles its touch tears away.</summary>
+    [DataField]
+    public int LeviathanTear = 3;
+
+    /// <summary>Least band in which an unsheltered person's flesh can twist into a Remade's.</summary>
+    [DataField]
+    public int MutationBand = 4;
+
+    /// <summary>Least Drift before the flesh twists.</summary>
+    [DataField]
+    public float MutationMinDrift = 80f;
+
+    /// <summary>Chance per minute of a mutation at the least Drift; it doubles at full Drift.</summary>
+    [DataField]
+    public float MutationChance = 0.12f;
+
+    /// <summary>Seconds out of the band before a mutation withers away.</summary>
+    [DataField]
+    public float MutationWither = 600f;
+
+    /// <summary>What an arm twists into: held in the hand it replaces, and never let go.</summary>
+    [DataField]
+    public EntProtoId MutationArm = "WFCodaArmBlade";
 
     /// <summary>Least band in which the dead rise as Remade, unless sheltered.</summary>
     [DataField]
@@ -256,6 +319,10 @@ public sealed partial class WFLatticeBand
     /// <summary>Drift gained per second here; negative fades it.</summary>
     [DataField]
     public float Drift;
+
+    /// <summary>Most Drift a ship or person can build here; more than that fades back down to it. Negative is the profile's most.</summary>
+    [DataField]
+    public float MaxDrift = -1f;
 
     /// <summary>Drift rate multiplier grows as e^(this × depth), depth running 0 to 1 past the band's edge.</summary>
     [DataField]

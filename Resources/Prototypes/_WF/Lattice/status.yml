@@ -1,0 +1,118 @@
+# The Lattice status display: the anchors, the hex field, Central's anchor, the flesh ships and the band you are in.
+# As a PDA app and as a console; both read the networked field.
+- type: entity
+  parent: NFBasePDACartridge
+  id: WFLatticeStatusCartridge
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-nav
+    color: "#d8a0ff"
+  - type: Icon
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-nav
+  - type: UIFragment
+    ui: !type:WFLatticeStatusUi
+  - type: Cartridge
+    programName: wf-lattice-status-program-name
+    icon:
+      sprite: Structures/Machines/Anomaly/adv_anomaly_vessel.rsi
+      state: base
+  - type: StaticPrice
+    price: 300
+
+- type: entity
+  id: WFLatticeStatusConsole
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: telesci
+      shader: unshaded
+      color: "#d070ff"
+    - state: telesci_key
+      shader: unshaded
+  - type: Icon
+    sprite: Structures/Machines/computers.rsi
+    state: computer
+  - type: PointLight
+    radius: 1.5
+    energy: 1.2
+    color: "#b040e0"
+  - type: InteractionOutline
+  - type: Clickable
+  - type: Anchorable
+  - type: Pullable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.35,0.35,0.35"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: ActivatableUI
+    key: enum.WFLatticeStatusUiKey.Key
+    requireActiveHand: false
+  - type: UserInterface
+    interfaces:
+      enum.WFLatticeStatusUiKey.Key:
+        type: WFLatticeStatusBoundUserInterface
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: BaseFlatpack
+  id: WFFlatpackLatticeStatusConsole
+  components:
+  - type: Flatpack
+    entity: WFLatticeStatusConsole
+  - type: StaticPrice
+    price: 1500
+
+- type: latheRecipe
+  id: WFLatticeStatusCartridge
+  result: WFLatticeStatusCartridge
+  categories:
+  - Tools
+  completetime: 4
+  materials:
+    Steel: 100
+    Glass: 200
+    Gold: 50
+
+- type: latheRecipe
+  id: WFFlatpackLatticeStatusConsole
+  result: WFFlatpackLatticeStatusConsole
+  categories:
+  - Tools
+  completetime: 10
+  materials:
+    Steel: 1500
+    Glass: 800
+    Gold: 100

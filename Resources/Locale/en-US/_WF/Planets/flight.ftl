@@ -106,3 +106,6 @@ wf-landing-kit-out-of-reach = Move closer to install the landing conversion.
 
 wf-crash-apc-fault-examine = The power regulator is damaged and intermittently cuts out. Recalibrate it with a multitool.
 wf-crash-apc-fault-repaired = You recalibrate the damaged APC regulator. Its output is stable again.
+
+wf-orbit-flight-refused = There is no air to fly in up here.
+wf-orbit-flight-stopped = There is no air up here and you stop flying.

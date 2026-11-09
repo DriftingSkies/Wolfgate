@@ -3,3 +3,8 @@
   name: guide-entry-wf-asf
   text: "/ServerInfo/_WF/Asf/Guidebook/Factions/Asf.xml"
   priority: 13
+
+- type: guideEntry
+  id: WFShipyardAsfRevelation
+  name: guide-entry-wf-shipyard-asf-revelation
+  text: "/ServerInfo/_WF/Asf/Guidebook/Shipyard/Revelation.xml"

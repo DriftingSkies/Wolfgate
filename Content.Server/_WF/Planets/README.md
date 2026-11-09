@@ -6,6 +6,11 @@ shuttle console's orbit button (an unsanctioned world asks first), descend throu
 thrusters, lift off again, and land hard, skid, break up or crash when lift is lost. Hulls that stop keeping station
 fall out of orbit, and a world's gravity well pulls adrift hulls in from the sector.
 
+Every layer but orbit is range-limited in PVS (`WFPlanetPvsSystem`, `wf.planet_pvs_range_limited`): a client gets a
+layer's map and terrain only while a viewer is on or near it, instead of every planet tile on every join. The orbit
+layer stays sent to everyone, so radar, the FTL target and parked hulls work from anywhere; the ground is deleted on
+a client that leaves and arrives as new when it returns, so client code resolves layer references with `TryGetEntity`.
+
 The hop into and out of orbit is `WFPlanetHopSystem` (`Hop/`), its own state and not FTL: no hull in a hop ever has an
 `FTLComponent`, and no drive, beacon, range or cooldown is asked or started, so a driveless hull or one with its drive
 cooling down can enter and leave. A hop warms up for five seconds on the old map (ripple, spool-up sound, shields
@@ -169,6 +174,9 @@ takes it from there. It flies in a cavern too, and up or down through a hole in 
 ground overhead is a ceiling (the Caverns `WfSealedAbove`). `WFAtmosphericJetpackSystem` (shared) decides where it lights and refuels it,
 `WFAtmosphericJetpackFuelSystem` burns the fuel. John Wolfgate stocks it.
 
+Wings and other z-flight (Avali, moths) don't work in orbit either: `WFOrbitFlightSystem` refuses take-off on an orbit
+layer and stops a flyer that reaches one, since flying between orbit and the air layer below desynced the flyer.
+
 A world's standing water comes as lakes and ponds a few dozen tiles across at most, never seas (`PlanetLakeTest`).
 `BiomeSystem.WfIsWater` says whether the biome grows water on a tile from its recipe alone, before the ground exists, so
 the PlanetPois placement keeps sites, roads and camps out of it.
@@ -256,6 +264,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.Server/_WF/Planets/CEZLevelsSystem.Wolfgate.cs`](CEZLevelsSystem.Wolfgate.cs)
 - [`Content.Server/_WF/Planets/Commands/WFPlanetCommand.cs`](Commands/WFPlanetCommand.cs)
 - [`Content.Server/_WF/Planets/ExplosionSystem.WFPlanets.cs`](ExplosionSystem.WFPlanets.cs)
+- [`Content.Server/_WF/Planets/Flight/CEZLevelsSystem.WFAdoptStanders.cs`](Flight/CEZLevelsSystem.WFAdoptStanders.cs)
 - [`Content.Server/_WF/Planets/Flight/CEZLevelsSystem.WFFlight.cs`](Flight/CEZLevelsSystem.WFFlight.cs)
 - [`Content.Server/_WF/Planets/Flight/CEZLevelsSystem.WFGravityCache.cs`](Flight/CEZLevelsSystem.WFGravityCache.cs)
 - [`Content.Server/_WF/Planets/Flight/CEZLevelsSystem.WFLandingClearance.cs`](Flight/CEZLevelsSystem.WFLandingClearance.cs)
@@ -331,6 +340,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.Server/_WF/Planets/WFPlanetNetworkComponent.cs`](WFPlanetNetworkComponent.cs)
 - [`Content.Server/_WF/Planets/WFPlanetNetworkSystem.cs`](WFPlanetNetworkSystem.cs)
 - [`Content.Server/_WF/Planets/WFPlanetNetworkSystem.Prebuild.cs`](WFPlanetNetworkSystem.Prebuild.cs)
+- [`Content.Server/_WF/Planets/WFPlanetPvsSystem.cs`](WFPlanetPvsSystem.cs)
 - [`Content.Server/_WF/Planets/WFPlanetRegistrySystem.cs`](WFPlanetRegistrySystem.cs)
 - [`Content.Server/_WF/Planets/WFPlanetRegistrySystem.Lobby.cs`](WFPlanetRegistrySystem.Lobby.cs)
 - [`Content.Server/_WF/Planets/WFPlanetRoundHoldSystem.cs`](WFPlanetRoundHoldSystem.cs)
@@ -357,6 +367,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.Shared/_WF/Planets/Flight/WFLandingThrusterComponent.cs`](../../../Content.Shared/_WF/Planets/Flight/WFLandingThrusterComponent.cs)
 - [`Content.Shared/_WF/Planets/Flight/WFLiftLostComponent.cs`](../../../Content.Shared/_WF/Planets/Flight/WFLiftLostComponent.cs)
 - [`Content.Shared/_WF/Planets/Flight/WFLiftoffAttemptEvent.cs`](../../../Content.Shared/_WF/Planets/Flight/WFLiftoffAttemptEvent.cs)
+- [`Content.Shared/_WF/Planets/Flight/WFOrbitFlightSystem.cs`](../../../Content.Shared/_WF/Planets/Flight/WFOrbitFlightSystem.cs)
 - [`Content.Shared/_WF/Planets/Forecast/WFWeatherForecast.cs`](../../../Content.Shared/_WF/Planets/Forecast/WFWeatherForecast.cs)
 - [`Content.Shared/_WF/Planets/Jetpack/WFAtmosphericJetpackComponent.cs`](../../../Content.Shared/_WF/Planets/Jetpack/WFAtmosphericJetpackComponent.cs)
 - [`Content.Shared/_WF/Planets/Jetpack/WFAtmosphericJetpackSystem.cs`](../../../Content.Shared/_WF/Planets/Jetpack/WFAtmosphericJetpackSystem.cs)
@@ -479,6 +490,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetPopulationTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetPopulationTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetPrebuildTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetPrebuildTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetPrototypeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetPrototypeTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Planets/PlanetPvsRangeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetPvsRangeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetRadarDrawingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetRadarDrawingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetRadarTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetRadarTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetRoofFallTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetRoofFallTest.cs)
@@ -746,6 +758,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.Server/_CE/ZLevels/Core/CEZLevelsSystem.Transit.cs`](../../_CE/ZLevels/Core/CEZLevelsSystem.Transit.cs)
   - a grid on a planet orbit layer holds its height instead of sinking.
   - hulls leave orbit through transit and never hop below ground.
+  - crates and players the ground layer still owns ride the hull off the planet.
   - riders' contacts with the old map must not survive the move.
   - hulls never descend below a planet's ground.
   - a held climb pops out into a planet's orbit layer instead of pinning under it.
@@ -807,6 +820,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.Server/Pinpointer/PinpointerSystem.cs`](../../Pinpointer/PinpointerSystem.cs)
   - a hop moves the pinpointer's map like a jump
   - pinpointers find their target again after a hop
+- [`Content.Server/Salvage/RestrictedRangeSystem.cs`](../../Salvage/RestrictedRangeSystem.cs): one fixture per edge, not one chain fixture with many child edges
 - [`Content.Server/Shuttles/Systems/ShuttleSystem.FasterThanLight.cs`](../../Shuttles/Systems/ShuttleSystem.FasterThanLight.cs)
   - a hull mid-hop can't jump, nor can a ship docked to one
   - the docking branch never calls TrySetupFTL, so it asks the same gate.
@@ -827,6 +841,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
   - a ghost never sticks to stairs or stays between levels
   - a thrown body stays InAir until the throw lands, or friction eats a jump at once.
 - [`Content.Shared/_CE/ZLevels/Core/EntitySystems/CESharedZLevelsSystem.WallCollision.cs`](../../../Content.Shared/_CE/ZLevels/Core/EntitySystems/CESharedZLevelsSystem.WallCollision.cs): retain the contacted obstacle for crash ploughing.
+- [`Content.Shared/_CE/ZLevels/Flight/CESharedZFlightSystem.Controllable.cs`](../../../Content.Shared/_CE/ZLevels/Flight/CESharedZFlightSystem.Controllable.cs): a refused take-off (orbit) must not leave the preventive visuals running
 - [`Content.Shared/_CE/ZLevels/Throwing/CEZLevelThrowingSystem.cs`](../../../Content.Shared/_CE/ZLevels/Throwing/CEZLevelThrowingSystem.cs): a throw only has an arc where there are levels to arc through.
 - [`Content.Shared/_Mono/ForceParent/ForceParentSystem.cs`](../../../Content.Shared/_Mono/ForceParent/ForceParentSystem.cs): the pin isn't networked, so a client applying a body's state must not re-parent it to nothing.
 - [`Content.Shared/CCVar/CCVars.Game.cs`](../../../Content.Shared/CCVar/CCVars.Game.cs): defaults to MonoStandard (was nfpirate), whose round start spawns the star system.

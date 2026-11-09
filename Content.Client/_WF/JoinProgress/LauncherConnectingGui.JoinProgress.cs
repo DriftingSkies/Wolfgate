@@ -5,6 +5,7 @@ using Content.Client._WF.JoinProgress;
 using Content.Client._WF.Stylesheets;
 using Content.Client.Resources;
 using Content.Shared._WF.CCVar;
+using Content.Shared._WF.JoinProgress;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
@@ -39,6 +40,7 @@ public sealed partial class LauncherConnectingGui
     private readonly Dictionary<JoinStage, (Label Row, Label Bar, Label Detail)> _joinStageRows = new();
     private readonly List<Label> _joinLogRows = new();
     private Label _joinLinkRow = default!;
+    private Label _joinChannelRow = default!;
     private Label _joinOverallRow = default!;
     private Control _joinOverallDivider = default!;
     private Label _joinCursorRow = default!;
@@ -127,6 +129,9 @@ public sealed partial class LauncherConnectingGui
                 AddJoinRow(_joinStyle.Active),
                 AddJoinRow(_joinStyle.Done));
         }
+
+        _joinChannelRow = AddJoinRow(_joinStyle.Done);
+        _joinChannelRow.Visible = false;
 
         AddJoinDivider();
         _joinOverallRow = AddJoinRow(_joinStyle.Active);
@@ -229,6 +234,7 @@ public sealed partial class LauncherConnectingGui
         {
             UpdateJoinHeader();
             UpdateJoinStageRows(now);
+            UpdateJoinChannelRow();
             UpdateJoinOverall(now);
             UpdateJoinLog(now);
         }
@@ -261,6 +267,28 @@ public sealed partial class LauncherConnectingGui
         return Loc.GetString(info.OverGameConnection
             ? "join-console-transport-game"
             : "join-console-transport-socket");
+    }
+
+    /// <summary>
+    /// The fast file channel's result: green when the websocket connected, red when this client fell back to the slower
+    /// game connection. Hidden until the server says, and when the server has the fast channel off.
+    /// </summary>
+    private void UpdateJoinChannelRow()
+    {
+        if (_state.JoinTransferMode is not { } mode || mode == JoinTransferMode.GameConnection)
+        {
+            _joinChannelRow.Visible = false;
+            return;
+        }
+
+        var ok = mode == JoinTransferMode.WebSocket;
+        var left = Loc.GetString("join-console-channel-row",
+            ("tag", Loc.GetString(ok ? "join-console-tag-Done" : "join-console-tag-Failed")),
+            ("result", Loc.GetString($"join-console-channel-{mode}")));
+
+        _joinChannelRow.Text = JoinConsoleText.Row(left, string.Empty, JoinRowColumns);
+        _joinChannelRow.FontColorOverride = ok ? _joinStyle.Good : _joinStyle.Fail;
+        _joinChannelRow.Visible = true;
     }
 
     private void UpdateJoinStageRows(TimeSpan now)
@@ -386,6 +414,12 @@ public sealed partial class LauncherConnectingGui
                 ("step", (int) stage),
                 ("stage", Loc.GetString($"join-progress-stage-{stage}")),
                 ("seconds", duration.TotalSeconds.ToString("0.0"))));
+        }
+
+        if (_state.JoinTransferMode is { } channel)
+        {
+            details.Append('\n');
+            details.Append(Loc.GetString("join-progress-details-channel", ("result", Loc.GetString($"join-console-channel-{channel}"))));
         }
 
         if (_state.JoinDownloadInfo is { } info)

@@ -244,7 +244,10 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
         return state;
     }
 
-    /// <summary>Every ship with a living player aboard that isn't an encounter's, with who is aboard, nearest the viewer first.</summary>
+    /// <summary>
+    /// Every ship with a living player aboard that isn't an encounter's, with who is aboard, and every standing reality
+    /// anchor station, nearest the viewer first.
+    /// </summary>
     private void AddTargets(WFEncounterAdminState state, ICommonSession? viewer)
     {
         var from = viewer?.AttachedEntity is { } body ? _transform.GetMapCoordinates(body) : MapCoordinates.Nullspace;
@@ -269,6 +272,23 @@ public sealed partial class WFEncounterAdminSystem : EntitySystem
                 Grid = GetNetEntity(grid),
                 Name = Name(grid),
                 Players = string.Join(", ", names),
+                Distance = at.MapId == from.MapId ? (at.Position - from.Position).Length() : -1f,
+            });
+        }
+
+        // The Lattice's anchor stations that still stand, so a ship can be set on one.
+        var anchors = EntityQueryEnumerator<Content.Shared._WF.Lattice.WFLatticeAnchorStationComponent, TransformComponent>();
+        while (anchors.MoveNext(out var station, out var anchor, out var stationXform))
+        {
+            if (TerminatingOrDeleted(anchor.Core) || aboard.ContainsKey(station))
+                continue;
+
+            var at = _transform.GetMapCoordinates(station, stationXform);
+            state.Targets.Add(new WFEncounterAdminTarget
+            {
+                Grid = GetNetEntity(station),
+                Name = Name(station),
+                Players = Loc.GetString("wf-encounter-admin-target-anchor"),
                 Distance = at.MapId == from.MapId ? (at.Position - from.Position).Length() : -1f,
             });
         }

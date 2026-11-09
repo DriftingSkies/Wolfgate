@@ -52,6 +52,11 @@ public sealed partial class DungeonJob
 
         foreach (var entrance in spawnPositions)
         {
+            // WOLFGATE(Performance): yield between spawns so a big dungeon never finishes in one tick
+            await SuspendDungeon();
+            if (!ValidateResume())
+                return;
+
             _entManager.SpawnEntities(_maps.GridTileToLocal(_gridUid, _grid, entrance), EntitySpawnCollection.GetSpawns(entGroup.Entries, random));
         }
     }

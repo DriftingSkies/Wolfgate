@@ -28,6 +28,8 @@ namespace Content.Shared.Verbs
         /// </remarks>
         public readonly bool IconsOnly;
 
+        public VerbCategory? Parent; // WOLFGATE(Photography): nested verb categories
+
         public VerbCategory(string text, string? icon, bool iconsOnly = false)
         {
             Text = Loc.GetString(text);

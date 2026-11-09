@@ -7,9 +7,9 @@
   - type: Projectile
     damage:
       types:
-        Radiation: 10
-        Structural: 50
-        Heat: 80
+        Radiation: 5
+        Structural: 40
+        Heat: 60
   - type: Sprite
     sprite: _Impstation/Objects/Weapons/Guns/Projectiles/energybolts.rsi
     layers:
@@ -26,11 +26,12 @@
     color: "#b040e0"
     radius: 2
     energy: 2
+  # A tight blast, so it hits what it is aimed at and not whoever stands near.
   - type: Explosive
     explosionType: Default
-    totalIntensity: 40
-    intensitySlope: 4
-    maxIntensity: 5
+    totalIntensity: 12
+    intensitySlope: 6
+    maxIntensity: 3
 
 - type: entity
   parent: WeaponTurretScylla
@@ -59,9 +60,9 @@
     maxAngle: 3
     fireRate: 1
     recoil: 0
-    burstCooldown: 4
-    burstFireRate: 10
-    shotsPerBurst: 10
+    burstCooldown: 5
+    burstFireRate: 8
+    shotsPerBurst: 6
     selectedMode: Burst
     availableModes: Burst
     shootThermalSignature: 500000
@@ -107,9 +108,9 @@
   - type: Projectile
     damage:
       types:
-        Piercing: 10
-        Slash: 9
-    armorPenetration: 0.5
+        Piercing: 14
+        Slash: 12
+    armorPenetration: 0.6
   - type: Tracer
     color: "#d070ffff"
     length: 2
@@ -121,8 +122,8 @@
   components:
   - type: ProjectileSpread
     proto: WFLatticeFlechette
-    count: 4
-    spread: 14
+    count: 5
+    spread: 12
 
 - type: entity
   parent: BaseWeaponTurret
@@ -138,13 +139,26 @@
     - SimpleHostile
   - type: BasicEntityAmmoProvider
     proto: WFLatticeFlechetteVolley
+  # Snaps round and fires near enough at once: the base turret turns at 90 degrees a second, this one at about 690.
+  - type: HTN
+    rootTask:
+      task: TurretCompound
+    blackboard:
+      RotateSpeed: !type:Single
+        12
+      SoundTargetInLOS: !type:SoundPathSpecifier
+        path: /Audio/Effects/double_beep.ogg
+  - type: MouseRotator
+    angleTolerance: 15
+    rotationSpeed: 720
+    simple4DirMode: false
   - type: Gun
-    fireRate: 1.2
-    projectileSpeed: 45
+    fireRate: 3
+    projectileSpeed: 70
     minAngle: 2
-    maxAngle: 10
-    angleIncrease: 1
-    angleDecay: 6
+    maxAngle: 8
+    angleIncrease: 0.5
+    angleDecay: 8
     selectedMode: FullAuto
     availableModes:
     - FullAuto

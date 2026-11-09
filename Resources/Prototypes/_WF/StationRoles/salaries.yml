@@ -98,6 +98,11 @@
   account: BlackMarket
 
 - type: wfStationSalary
+  id: WFPdvJarrah
+  wage: 6000
+  account: BlackMarket
+
+- type: wfStationSalary
   id: Pirate
   wage: 5000
   account: BlackMarket

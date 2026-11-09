@@ -265,6 +265,35 @@ public sealed class XenobiologyTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>Report 652: a slime splitting mid-meal lets go, so the half-eaten mob can be fed on again.</summary>
+    [Test]
+    public async Task SplittingSlimeFreesItsMeal()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entities = server.ResolveDependency<IEntityManager>();
+
+        EntityUid target = default;
+        await server.WaitPost(() =>
+        {
+            var slime = SpawnGrey(entities, map.GridCoords);
+            target = entities.SpawnEntity("MobMonkey", map.GridCoords.Offset(new Vector2(0.5f, 0)));
+            var comp = entities.GetComponent<SlimeComponent>(slime);
+            entities.System<SlimeLatchSystem>().Latch((slime, comp), target);
+            entities.System<XenobiologySystem>().DoMitosis((slime, comp));
+        });
+
+        await server.WaitRunTicks(60);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entities.HasComponent<BeingLatchedComponent>(target), Is.False, "The monkey is still marked as being eaten.");
+            Assert.That(entities.HasComponent<SlimeDamageOvertimeComponent>(target), Is.False);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     [Test]
     public async Task LatchedSlimesFeedOnTheirTarget()
     {

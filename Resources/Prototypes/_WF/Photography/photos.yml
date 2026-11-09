@@ -1,0 +1,132 @@
+- type: Tag
+  id: WFPhoto
+
+- type: soundCollection
+  id: WFPhotoShutter
+  files:
+  - /Audio/_WF/Photography/polaroid1.ogg
+  - /Audio/_WF/Photography/polaroid2.ogg
+
+- type: entity
+  parent: BaseItem
+  id: WFPhoto
+  components:
+  - type: Sprite
+    sprite: _WF/Photography/photo.rsi
+    layers:
+    - state: photo
+      map: ["enum.PhotoVisualLayers.Base"]
+    - state: photo
+      map: ["enum.PhotoVisualLayers.Thumbnail"]
+      visible: false
+  - type: Item
+    size: Tiny
+  - type: Photo
+  - type: ActivatableUI
+    key: enum.PhotoUiKey.Viewer
+    requiresComplex: false
+  - type: UserInterface
+    interfaces:
+      enum.PhotoUiKey.Viewer:
+        type: PhotoBoundUserInterface
+  - type: Tag
+    tags:
+    - WFPhoto
+  - type: EmitSoundOnPickup
+    sound:
+      path: /Audio/_Goobstation/Items/handling/paper_pickup.ogg
+      params:
+        volume: -6
+  - type: EmitSoundOnDrop
+    sound:
+      path: /Audio/_Goobstation/Items/handling/paper_drop.ogg
+      params:
+        volume: -6
+  - type: EmitSoundOnCollide
+    sound:
+      path: /Audio/_Goobstation/Items/handling/paper_drop.ogg
+      params:
+        volume: -6
+  - type: Flammable
+    fireSpread: true
+    alwaysCombustible: true
+    damage:
+      types:
+        Heat: 1
+  - type: FireVisuals
+    sprite: Effects/fire.rsi
+    normalState: fire
+  - type: Damageable
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          Ash:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: SolutionContainerManager
+    solutions:
+      photo:
+        maxVol: 4
+        reagents:
+        - ReagentId: Iodine
+          Quantity: 4
+  - type: Extractable
+    grindableSolutionName: photo
+  - type: Appearance
+
+- type: entity
+  parent: BaseStorageItem
+  id: WFPhotoAlbum
+  components:
+  - type: Sprite
+    sprite: _WF/Photography/album.rsi
+    state: album
+  - type: Item
+    sprite: _WF/Photography/album.rsi
+    size: Small
+    shape: null
+  - type: Storage
+    maxItemSize: Tiny
+    grid:
+    - 0,0,9,4
+    whitelist:
+      tags:
+      - WFPhoto
+  - type: StaticPrice
+    price: 20
+
+- type: entity
+  parent: WFPhotoAlbum
+  id: WFPhotoAlbumBlue
+  components:
+  - type: Sprite
+    state: album-blue
+
+- type: entity
+  parent: WFPhotoAlbum
+  id: WFPhotoAlbumRed
+  components:
+  - type: Sprite
+    state: album-red
+
+- type: entity
+  parent: WFPhotoAlbum
+  id: WFPhotoAlbumGreen
+  components:
+  - type: Sprite
+    state: album-green
+
+- type: entity
+  parent: WFPhotoAlbumGreen
+  id: WFPhotoAlbumPersonal
+  components:
+  - type: StaticPrice
+    price: 0

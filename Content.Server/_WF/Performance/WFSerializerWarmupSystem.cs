@@ -25,6 +25,11 @@ public sealed partial class WFSerializerWarmupSystem : EntitySystem
         if (!_cfg.GetCVar(WFIdleHelmCVars.SerializerWarmup) || _cfg.GetCVar(CCVars.GameDummyTicker))
             return;
 
+        // The Lupine engine does the same warm-up itself after PostInit; two threads compiling the same delegates
+        // only slow each other down.
+        if (_cfg.GetCVar(Robust.Shared.CVars.SerializationPrecompile))
+            return;
+
         var types = new List<Type>(_factory.AllRegisteredTypes);
         var serialization = _serialization;
         var sawmill = Log;

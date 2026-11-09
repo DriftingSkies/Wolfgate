@@ -1,5 +1,6 @@
 ﻿using Content.Client.Gameplay;
 using Content.Client._WF.Feedback; // WOLFGATE(Feedback)
+using Content.Client._WF.Census; // WOLFGATE(Census)
 using Content.Client._WF.RoundSetup; // WOLFGATE(RoundSetup)
 using Content.Client._WF.MappingMode; // WOLFGATE(MappingMode)
 using Content.Client.Lobby; // WOLFGATE(InRoundCreator)
@@ -89,6 +90,14 @@ public sealed partial class EscapeUIController : UIController, IOnStateEntered<G
         {
             CloseEscapeWindow();
             UIManager.GetUIController<FeedbackUIController>().ToggleWindow();
+        };
+        // WOLFGATE END
+
+        // WOLFGATE(Census) START: census list in the game menu
+        _escapeWindow.CensusButton.OnPressed += _ =>
+        {
+            CloseEscapeWindow();
+            UIManager.GetUIController<CensusUIController>().ToggleWindow();
         };
         // WOLFGATE END
 

@@ -8,7 +8,7 @@ wf-mapping-screen-mode-shape = Shape
 wf-mapping-screen-mode-pick = Pick
 wf-mapping-screen-mode-template = Template
 wf-mapping-screen-mode-pipe = Pipe
-wf-mapping-screen-mode-wrench = Wrench
+wf-mapping-screen-mode-wrench = Tools
 wf-mapping-screen-mode-current = Mode: {$mode}
 wf-mapping-screen-rail-button = {$key} {$mode}
 

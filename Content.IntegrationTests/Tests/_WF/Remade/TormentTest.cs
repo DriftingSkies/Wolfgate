@@ -31,7 +31,8 @@ public sealed class TormentTest
             Assert.That(torment.Toggle(crewman), Is.True, "the torment didn't turn on.");
         });
 
-        await pair.RunSeconds(20f);
+        // About 15 glimpses a minute with a gap after each: 20 s showed none about one run in 130, a minute about one in 4 million.
+        await pair.RunSeconds(60f);
         await server.WaitAssertion(() =>
         {
             var dread = entMan.GetComponent<WFDreadSubjectComponent>(crewman);

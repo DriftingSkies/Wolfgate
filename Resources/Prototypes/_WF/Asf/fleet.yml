@@ -250,3 +250,39 @@
           WFAsfEnforcer: [ 0, 0 ]
           WFAsfFieldResearcher: [ 0, 0 ]
           WFAsfColonist: [ 0, 0 ]
+
+#Created by SylvaraWasTaken on github, Sylvaratayn on Discord
+- type: vessel
+  id: WFAsfRevelation
+  parent: BaseVessel
+  name: ASF Revelation
+  description: 'A prototype ASF deep-space research vessel, built with self-sufficiency in mind. Kitted with a hyper-efficient Pinch reactor, an MS-100 shield generator, moderate armament to attack and collect datacores from Monolith drones, a single mining laser and ore magnet, a small tractor beam to mitigate ramming attacks, a small salvage bay, a lightly equipped research lab, and enough amenities to stay sane in the void for days at a time. The kitchen does not come stocked - remember to pack your own food and drinks! Equipped with two ASF Hummingbirds and two Flutters, its defensive capabilities are not to be taken lightly. However, due to budget constraints, the armor is particularly light and the engines are slightly underpowered. Exploration beyond the shallowest fringes of the Colossus Sector is inadvisable without support.'
+  price: 161912 # appraised at 140793, 15% markup
+  category: Medium # 313 tiles
+  group: Custom
+  shuttlePath: /SharedMaps/_WF/Asf/revelation.yml
+  guidebookPage: WFShipyardAsfRevelation
+  class:
+  - Science
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WFAsfRevelation
+  mapName: 'ASF Revelation'
+  mapPath: /SharedMaps/_WF/Asf/revelation.yml
+  minPlayers: 0
+  stations:
+    WFAsfRevelation:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Revelation ASF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          WFAsfEnforcer: [ 0, 0 ]
+          WFAsfFieldResearcher: [ 0, 0 ]
+          WFAsfColonist: [ 0, 0 ]

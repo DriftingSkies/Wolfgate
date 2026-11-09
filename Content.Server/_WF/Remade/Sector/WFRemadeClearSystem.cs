@@ -32,7 +32,7 @@ public sealed class WFRemadeClearSystem : EntitySystem
         RaiseNetworkEvent(new WFRemadeClearEvent(), Filter.Broadcast());
     }
 
-    /// <summary>Deletes everything of the Remade in the round. Returns how many entities went.</summary>
+    /// <summary>Deletes everything of the Remade in the round, at once, so call it between ticks. Returns how many entities went.</summary>
     public int Clear()
     {
         var doomed = new HashSet<EntityUid>();
@@ -52,9 +52,11 @@ public sealed class WFRemadeClearSystem : EntitySystem
                 doomed.Add(uid);
         }
 
+        // At once, not queued: the spreader runs once more before a queue is flushed and would grow tiles nobody collected.
         foreach (var uid in doomed)
         {
-            QueueDel(uid);
+            if (!TerminatingOrDeleted(uid))
+                Del(uid);
         }
 
         var stressed = EntityQueryEnumerator<WFRemadeStressComponent>();

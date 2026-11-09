@@ -231,9 +231,6 @@ public sealed partial class WFAdsCampaignSystem
 
         node.NextSentinel = _timing.CurTime + campaign.SentinelInterval;
         _encounters.SetOrders(uid, comp.Lead, CircleOrders(hub, _transform.GetWorldPosition(hub)));
-        AnnounceRadio(Loc.GetString("wf-ads-sentinel-joined",
-            ("callsign", WFSectorHex.Callsign(node.Cell)),
-            ("count", AliveSentinels(node))));
         Log.Info($"ADS sentinel {ToPrettyString(uid)} joined node {ToPrettyString(comp.Node)}.");
 
         // Arriving mid-fight, it goes straight out.

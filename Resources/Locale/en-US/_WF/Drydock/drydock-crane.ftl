@@ -16,4 +16,5 @@ drydock-crane-mirror-done = You move the arm to the other side.
 drydock-crane-upgrade-speed = Work speed
 drydock-crane-upgrade-length = Berth length in tiles
 drydock-crane-upgrade-width = Berth width in tiles
-drydock-crane-upgrade-load = Working power draw
+drydock-crane-upgrade-efficiency = Power draw from capacitors
+drydock-crane-upgrade-load = Total working power draw (speed and reach raise it)

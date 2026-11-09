@@ -88,6 +88,9 @@ public sealed class WFDrydockConsoleState : BoundUserInterfaceState
     /// <summary>Reagents the working cranes' chemical silos hold, by prototype.</summary>
     public Dictionary<string, FixedPoint2> StoredChemicals = new();
 
+    /// <summary>What cleaning the Drift soaked into the berthed hull costs, or 0 if there is none to clean.</summary>
+    public int CleanDriftPrice;
+
     /// <summary>Whether this console breaks hulls.</summary>
     public bool CanBreak;
 
@@ -203,6 +206,12 @@ public sealed class WFDrydockUpgradeEntry
 /// </summary>
 [Serializable, NetSerializable]
 public sealed class WFDrydockRepairMessage : BoundUserInterfaceMessage;
+
+/// <summary>
+/// Cleans the Drift soaked into the berthed ship's hull.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class WFDrydockCleanDriftMessage : BoundUserInterfaceMessage;
 
 /// <summary>
 /// Starts breaking up the berthed ship.

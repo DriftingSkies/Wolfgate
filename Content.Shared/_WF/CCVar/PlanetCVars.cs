@@ -21,6 +21,13 @@ public sealed class PlanetCVars
         CVarDef.Create("wf.planet_weather", false, CVar.SERVERONLY);
 
     /// <summary>
+    /// Whether planet layers other than orbit are sent to a client only while a viewer is on or near them, instead
+    /// of every planet tile going to every client on join. Needs the Lupine engine; applies to existing planets too.
+    /// </summary>
+    public static readonly CVarDef<bool> PvsRangeLimited =
+        CVarDef.Create("wf.planet_pvs_range_limited", true, CVar.SERVERONLY);
+
+    /// <summary>
     /// Whether planet ground gets an atmosphere, so rooms built on it hold their own air. Bare ground keeps the
     /// planet's air either way. Applies to networks built after it is set.
     /// </summary>

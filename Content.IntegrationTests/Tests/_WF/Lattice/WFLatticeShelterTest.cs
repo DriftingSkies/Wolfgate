@@ -69,7 +69,8 @@ public sealed class WFLatticeShelterTest
         {
             lattice.Setup(map.MapUid);
             var near = new MapCoordinates(new Vector2(5000f, 0f), map.MapId);
-            var deep = new MapCoordinates(new Vector2(40000f, 0f), map.MapId);
+            var feedback = new MapCoordinates(new Vector2(58000f, 0f), map.MapId);
+            var deep = new MapCoordinates(new Vector2(72000f, 0f), map.MapId);
             Assert.That(lattice.YieldAt(near), Is.EqualTo(1f));
             Assert.That(lattice.YieldAt(deep), Is.GreaterThan(1f));
 
@@ -80,6 +81,8 @@ public sealed class WFLatticeShelterTest
 
             lattice.SpawnExotic(near, 1000f, 2f);
             Assert.That(Shards(), Is.Zero, "anchored space dropped exotic matter.");
+            lattice.SpawnExotic(feedback, 1000f, 2f);
+            Assert.That(Shards(), Is.Zero, "exotic matter dropped outside the Coda.");
             lattice.SpawnExotic(deep, 1000f, 2f);
             Assert.That(Shards(), Is.GreaterThan(10));
         });

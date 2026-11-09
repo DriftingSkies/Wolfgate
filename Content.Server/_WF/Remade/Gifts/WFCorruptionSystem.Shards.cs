@@ -24,7 +24,7 @@ public sealed partial class WFCorruptionSystem
     public bool SeedShard(EntityUid shard, Entity<WFCorruptionNodeComponent> node, Entity<WFMonolithComponent> parent)
     {
         var xform = Transform(shard);
-        if (xform.GridUid is not { } gridUid || IsSanctuary(gridUid) || GridFull(gridUid)
+        if (xform.GridUid is not { } gridUid || IsWarded(gridUid) || GridFull(gridUid)
             || !TryComp<MapGridComponent>(gridUid, out var grid))
         {
             return false;

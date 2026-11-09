@@ -512,4 +512,9 @@ public enum LogType
     /// </summary>
     WFAnatomy = 12490,
     // WOLFGATE END
+
+    // WOLFGATE(Photography) START: photos taken, labelled and written on
+    /// <summary>Photos taken, labelled and written on.</summary>
+    WFPhoto = 12491,
+    // WOLFGATE END
 }

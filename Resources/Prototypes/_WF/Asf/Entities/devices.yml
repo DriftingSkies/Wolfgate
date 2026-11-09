@@ -135,6 +135,7 @@
     - WFAsfBulwark
     - WFAsfGuardian
     - WFAsfLodestar
+    - WFAsfRevelation
   # Checked by company, not ID: a buyer's only ID card is in the console's slot while they buy.
   - type: CompanyAccessReader
     requiredCompanies:

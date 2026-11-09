@@ -19,7 +19,10 @@
   - 0.0, 0.5
   clippedValue: 0.25 # MONO NOTE = BIGGER = SMALLER AMOUNT OF ASTEROIDS!!!
   inputMultiplier: 3 # Makes density hopefully low noise in the local area while still being interesting at scale.
-  outputMultiplier: 150 # We scale density up significantly for more human-friendly numbers.
+  # WOLFGATE(Lattice) START: fewer rocks near home, so the good ones are a trip out
+  # outputMultiplier: 150 # We scale density up significantly for more human-friendly numbers.
+  outputMultiplier: 210
+  # WOLFGATE END
   minimum: 0.25
 
 - type: noiseChannel
@@ -412,9 +415,11 @@
     - id: MonoDroneSpawnerT1
       prob: 0.05
       orGroup: wreck
-    - id: MonoDroneSpawnerT2Inner
-      prob: 0.025
-      orGroup: wreck
+    # WOLFGATE(Lattice) START: no high-tier drones anywhere
+    # - id: MonoDroneSpawnerT2Inner
+    #   prob: 0.025
+    #   orGroup: wreck
+    # WOLFGATE END
 
 - type: spaceBiome
   id: MonoWildsOutskirts
@@ -474,7 +479,7 @@
 - type: spaceBiome
   id: MonoEmptyFallback # We need nothing to generate under 18000, but Far Reaches 4 would generate instead, so we need a useless thing.
   priority: 1
-  distanceRange: 0, 18000
+  distanceRange: 0, 20000 # WOLFGATE(Lattice): anchored space reaches 20 km
   noiseRanges: {}
 
 # 9km Ring
@@ -636,7 +641,7 @@
 - type: spaceBiome
   id: MonoRareAsteroidsFallback
   priority: 1
-  distanceRange: 0, 18000
+  distanceRange: 0, 20000 # WOLFGATE(Lattice): anchored space reaches 20 km
   noiseRanges: {}
   chunkComponents:
   - type: DebrisFeaturePlacerController
@@ -685,10 +690,10 @@
   id: MonoWorldgenVeryFarT1
   parent: NFBiomeBase
   priority: -1
-  distanceRange: 18000, 24000 # WOLFGATE(Lattice): wider Lattice bands, Detune 18-24 km
+  distanceRange: 20000, 34000 # WOLFGATE(Lattice): wider Lattice bands, Detune 20-34 km
   chunkComponents:
   - type: DebrisFeaturePlacerController
-    densityNoiseChannel: DensityRare
+    densityNoiseChannel: WFDensityDetune # WOLFGATE(Lattice): each band thins its own rocks
   - type: SimpleDebrisSelector
     debrisTable:
     # Medium (1.44)
@@ -813,8 +818,12 @@
   id: MonoWorldgenVeryFarT2Inner
   parent: MonoWorldgenVeryFarT1
   priority: -2
-  distanceRange: 24000, 31000 # WOLFGATE(Lattice): wider Lattice bands, Dissonance 24-31 km
+  distanceRange: 34000, 50000 # WOLFGATE(Lattice): wider Lattice bands, Dissonance 34-50 km
   chunkComponents:
+  # WOLFGATE(Lattice) START: each band thins its own rocks
+  - type: DebrisFeaturePlacerController
+    densityNoiseChannel: WFDensityDissonance
+  # WOLFGATE END
   - type: NoiseDrivenDebrisSelector
     noiseChannel: WreckRare
     debrisTable:
@@ -833,7 +842,10 @@
     - id: NFWreckDebrisBrassExtraLarge
       prob: 0.3
       orGroup: wreck
-    - id: MonoDroneSpawnerT2Inner
+    # WOLFGATE(Lattice) START: only the low-tier drones out past the hold
+    # - id: MonoDroneSpawnerT2Inner
+    - id: MonoDroneSpawnerT1
+    # WOLFGATE END
       prob: 1.5
       orGroup: wreck
 
@@ -841,8 +853,12 @@
   id: MonoWorldgenVeryFarT2Middle
   parent: MonoWorldgenVeryFarT1
   priority: -3
-  distanceRange: 31000, 40000 # WOLFGATE(Lattice): wider Lattice bands, Feedback 31-40 km
+  distanceRange: 50000, 66000 # WOLFGATE(Lattice): wider Lattice bands, Feedback 50-66 km
   chunkComponents:
+  # WOLFGATE(Lattice) START: each band thins its own rocks
+  - type: DebrisFeaturePlacerController
+    densityNoiseChannel: WFDensityFeedback
+  # WOLFGATE END
   - type: NoiseDrivenDebrisSelector
     noiseChannel: WreckRare
     debrisTable:
@@ -861,8 +877,12 @@
     - id: NFWreckDebrisBrassExtraLarge
       prob: 0.3
       orGroup: wreck
-    - id: MonoDroneSpawnerT2Middle
-      prob: 1.5
+    # WOLFGATE(Lattice) START: only the low-tier drones out past the hold
+    # - id: MonoDroneSpawnerT2Middle
+    #   prob: 1.5
+    - id: MonoDroneSpawnerT1
+      prob: 1
+    # WOLFGATE END
       orGroup: wreck
 
 - type: spaceBiome
@@ -872,7 +892,10 @@
   distanceRange: null
   chunkComponents:
   - type: DebrisFeaturePlacerController
-    densityNoiseChannel: DensityVeryRare
+    # WOLFGATE(Lattice) START: the Coda has the fewest rocks of all
+    # densityNoiseChannel: DensityVeryRare
+    densityNoiseChannel: WFDensityCoda
+    # WOLFGATE END
   - type: NoiseDrivenDebrisSelector
     debrisTable:
     - id: NFWreckDebrisSmall
@@ -890,6 +913,10 @@
     - id: NFWreckDebrisBrassExtraLarge
       prob: 0.9
       orGroup: wreck
-    - id: MonoDroneSpawnerT2Far
-      prob: 1
+    # WOLFGATE(Lattice) START: only the low-tier drones out past the hold, rarest in the Coda
+    # - id: MonoDroneSpawnerT2Far
+    #   prob: 1
+    - id: MonoDroneSpawnerT1
+      prob: 0.5
+    # WOLFGATE END
       orGroup: wreck

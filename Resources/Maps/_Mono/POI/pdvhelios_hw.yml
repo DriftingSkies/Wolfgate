@@ -5,7 +5,7 @@ meta:
   forkId: ""
   forkVersion: ""
   time: 09/27/2026 09:37:07
-  entityCount: 8505
+  entityCount: 8509
 maps: []
 grids:
 - 1
@@ -27692,6 +27692,30 @@ entities:
     - type: Transform
       pos: -4.5,51.5
       parent: 1
+- proto: WFSpawnPointPdvJarrah
+  entities:
+  - uid: 8508
+    components:
+    - type: Transform
+      parent: 1
+      pos: -5.5,63.5
+  - uid: 8509
+    components:
+    - type: Transform
+      parent: 1
+      pos: -5.5,64.5
+- proto: WFVendingMachinePdvOutfitter
+  entities:
+  - uid: 8506
+    components:
+    - type: Transform
+      parent: 1
+      pos: -8.5,64.5
+  - uid: 8507
+    components:
+    - type: Transform
+      parent: 1
+      pos: -2.5,64.5
 - proto: filingCabinetDrawerRandom
   entities:
   - uid: 4257

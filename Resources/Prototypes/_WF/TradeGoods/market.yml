@@ -173,6 +173,7 @@
     companies: [ TSF, TSFCivilian ]
     enemies: [ PDV, PDVCivilian ]
     creditEntity: FederationMilitaryCredit1
+    unpaid: [ TSFCivilian ]
     postsDefectorWarrants: true
   - name: wf-trade-navy-pdv
     chutes: [ CargoChuteHideout, CargoChuteJupiter ]

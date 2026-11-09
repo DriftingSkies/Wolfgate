@@ -3,9 +3,9 @@ meta:
   category: Grid
   engineVersion: 291.0.0
   forkId: wolfgate-mapping
-  forkVersion: 20261029-212245-66d7752-tm231-d329497c
-  time: 11/01/2026 02:37:51
-  entityCount: 1445
+  forkVersion: 20261106-021336-f99d2cb-tm508-6eaf4386
+  time: 11/07/2026 08:49:00
+  entityCount: 1451
 maps: []
 grids:
 - 1
@@ -622,7 +622,7 @@ entities:
             2: 49152
           -4,2:
             1: 17414
-            2: 4416
+            2: 4424
           -5,2:
             3: 8
             2: 34820
@@ -658,7 +658,7 @@ entities:
             1: 65520
           -2,2:
             1: 34879
-            2: 12480
+            2: 12416
           -2,3:
             1: 23563
             2: 132
@@ -760,7 +760,7 @@ entities:
     components:
     - type: Transform
       parent: 1
-      rot: 3.141592653589793 rad
+      rot: 1.5707963267948966 rad
       pos: -5.5,12.5
   - uid: 5
     components:
@@ -802,7 +802,6 @@ entities:
     components:
     - type: Transform
       parent: 1
-      rot: 3.141592653589793 rad
       pos: -4.5,9.5
   - uid: 1447
     components:
@@ -917,6 +916,12 @@ entities:
       parent: 1
       rot: -1.5707963267948966 rad
       pos: -9.5,22.5
+  - uid: 234
+    components:
+    - type: Transform
+      parent: 1
+      rot: 1.5707963267948966 rad
+      pos: -11.5,22.5
 - proto: AtmosFixSaunaMarker
   entities:
   - uid: 27
@@ -2534,6 +2539,11 @@ entities:
     - type: Transform
       parent: 1
       pos: -6.5,12.5
+  - uid: 308
+    components:
+    - type: Transform
+      parent: 1
+      pos: -3.5,10.5
   - uid: 309
     components:
     - type: Transform
@@ -2594,6 +2604,11 @@ entities:
     - type: Transform
       parent: 1
       pos: -17.5,7.5
+  - uid: 321
+    components:
+    - type: Transform
+      parent: 1
+      pos: -4.5,10.5
   - uid: 322
     components:
     - type: Transform
@@ -3132,6 +3147,12 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: -9.5,9.5
+  - uid: 369
+    components:
+    - type: Transform
+      parent: 1
+      rot: -1.5707963267948966 rad
+      pos: -12.5,8.5
   - uid: 422
     components:
     - type: Transform
@@ -5755,7 +5776,7 @@ entities:
       pos: -0.31017947,8.439505
 - proto: LockerWallMaterialsFuelPlasmaFilled
   entities:
-  - uid: 234
+  - uid: 300
     components:
     - type: Transform
       parent: 1
@@ -6012,7 +6033,7 @@ entities:
       pos: -15.5,14.5
 - proto: PoweredlightSodium
   entities:
-  - uid: 300
+  - uid: 302
     components:
     - type: Transform
       parent: 1
@@ -6961,11 +6982,23 @@ entities:
       pos: -2.2907786,8.366432
 - proto: Railing
   entities:
-  - uid: 927
+  - uid: 304
+    components:
+    - type: Transform
+      parent: 1
+      rot: 1.5707963267948966 rad
+      pos: -13.5,6.5
+  - uid: 307
     components:
     - type: Transform
       parent: 1
       pos: -12.5,7.5
+  - uid: 332
+    components:
+    - type: Transform
+      parent: 1
+      rot: 1.5707963267948966 rad
+      pos: -13.5,8.5
   - uid: 996
     components:
     - type: Transform
@@ -7009,6 +7042,20 @@ entities:
       parent: 1
       rot: -1.5707963267948966 rad
       pos: -5.5,27.5
+- proto: RailingCornerSmall
+  entities:
+  - uid: 305
+    components:
+    - type: Transform
+      parent: 1
+      rot: 3.141592653589793 rad
+      pos: -13.5,7.5
+  - uid: 351
+    components:
+    - type: Transform
+      parent: 1
+      rot: -1.5707963267948966 rad
+      pos: -13.5,7.5
 - proto: ResearchAndDevelopmentServerMerc
   entities:
   - uid: 1003
@@ -8054,6 +8101,11 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: -11.5,4.5
+  - uid: 306
+    components:
+    - type: Transform
+      parent: 1
+      pos: -5.5,9.5
   - uid: 760
     components:
     - type: Transform
@@ -8944,11 +8996,6 @@ entities:
     - type: Transform
       parent: 1
       pos: -14.5,3.5
-  - uid: 1368
-    components:
-    - type: Transform
-      parent: 1
-      pos: -12.5,8.5
   - uid: 1371
     components:
     - type: Transform
@@ -9014,12 +9061,6 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: -8.5,4.5
-  - uid: 822
-    components:
-    - type: Transform
-      parent: 1
-      rot: 1.5707963267948966 rad
-      pos: -5.5,9.5
   - uid: 1385
     components:
     - type: Transform
@@ -9635,16 +9676,6 @@ entities:
       parent: 1
       rot: -1.5707963267948966 rad
       pos: -15.5,7.5
-    - type: DeltaPressure
-      gridUid: 1
-- proto: WindowReinforcedDirectional
-  entities:
-  - uid: 1160
-    components:
-    - type: Transform
-      parent: 1
-      rot: -1.5707963267948966 rad
-      pos: -12.5,6.5
     - type: DeltaPressure
       gridUid: 1
 - proto: Wrench

@@ -241,6 +241,49 @@ public sealed class DropOriginalBodyOnDeathTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>Report 620: what a fleshbeast pocketed falls to the floor when it dies, not locked on the corpse.</summary>
+    [Test]
+    public async Task DeadFleshbeastDropsWhatItCarries()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = false, Dirty = true });
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+
+        var entMan = server.EntMan;
+        var protoMan = server.ResolveDependency<IPrototypeManager>();
+        var containerSys = entMan.System<SharedContainerSystem>();
+
+        var pocketed = EntityUid.Invalid;
+        var stored = EntityUid.Invalid;
+
+        await server.WaitAssertion(() =>
+        {
+            var (_, beast, _) = Turn(entMan, map.GridCoords, "LetoferolMutationNatural");
+
+            pocketed = entMan.SpawnEntity(PocketedProto, map.GridCoords);
+            Assert.That(entMan.System<InventorySystem>().TryEquip(beast, pocketed, "pocket1", true, true), Is.True);
+            stored = entMan.SpawnEntity(StoredProto, map.GridCoords);
+            Assert.That(containerSys.Insert(stored, entMan.GetComponent<StorageComponent>(beast).Container), Is.True);
+
+            var lethal = new DamageSpecifier(protoMan.Index<DamageTypePrototype>(Piercing), 1000);
+            entMan.System<DamageableSystem>().TryChangeDamage(beast, lethal, ignoreResistances: true, canSever: false);
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(entMan.Deleted(pocketed) || entMan.Deleted(stored), Is.False);
+                Assert.That(containerSys.IsEntityInContainer(pocketed), Is.False, "The pocketed item stayed on the corpse.");
+                Assert.That(containerSys.IsEntityInContainer(stored), Is.False, "The stored item stayed on the corpse.");
+            });
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     /// <summary>
     /// Spawns a dressed body with a mind and both kinds of Letoferol in its blood and stomach, kills it and turns it.
     /// </summary>

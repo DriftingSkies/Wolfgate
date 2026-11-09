@@ -173,6 +173,9 @@
   - WFFlatpackLatticeStabiliser
   - WFLatticeCharm
   - WFFlatpackLatticeRelay
+  - WFDriftLogger
+  - WFLatticeStatusCartridge
+  - WFFlatpackLatticeStatusConsole
 
 - type: latheRecipe
   id: WFFlatpackLatticeStabiliser

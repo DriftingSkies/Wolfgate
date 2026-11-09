@@ -1,0 +1,28 @@
+<Document>
+# ASF 'Revelation'
+
+[color=#a4885c]Ship Size:[/color] Medium
+
+[color=#a4885c]Recommended Crew:[/color] 2-3
+
+[color=#a4885c]Power Gen Type:[/color] NRF (Plasma)
+
+[color=#a4885c]Base Power Draw:[/color] 85 kW
+
+[color=#a4885c]Expeditions:[/color] No
+
+[color=#a4885c]IFF Console:[/color] None
+
+"A prototype ASF deep-space research vessel, built with self-sufficiency in mind. Kitted with a hyper-efficient Pinch reactor, an MS-100 shield generator, moderate armament to attack and collect datacores from Monolith drones, a single mining laser and ore magnet, a small tractor beam to mitigate ramming attacks, a small salvage bay, a lightly equipped research lab, and enough amenities to stay sane in the void for days at a time. The kitchen does not come stocked - remember to pack your own food and drinks!  Equipped with two ASF Hummingbirds and two Flutters, its defensive capabilities are not to be taken lightly. However, due to budget constraints, the armor is particularly light and the engines are slightly underpowered. Exploration beyond the shallowest fringes of the Colossus Sector is inadvisable without support."
+
+## Tractor Beam
+
+The Revelation is equipped with a small tractor beam, meant for slowing or stopping incoming ramming drones. However, use of the tractor beam requires massive amounts of energy in a very short time, which cannot be easily supplied by unupgraded substations with slow ramp-up. If you find your tractor beam is shutting down before slowing or halting targets, try upgrading the three substations located at the nose of the vessel, which power the tractor beam array.
+
+A copilot is STRONGLY recommended to operate the tractor beam, as well as to watch sensors. Flying into the endless abyss is more fun with friends!
+
+## Cockpit Signals
+
+Attached to the cockpit are two signals, on channels one and two. Channel one closes the lounge window's blast doors, and channel two closes the salvage bay blast doors. Buttons present in each room can toggle them open or closed; the cockpit specifically only closes them, for quick lockdown in case of combat.
+
+</Document>

@@ -5,8 +5,8 @@ using Robust.Shared.Prototypes;
 namespace Content.Server._WF.Remade.Counterplay;
 
 /// <summary>
-/// A Monolith that has rooted at the Crescendo. It is armoured against everything but blasts and heavy cutting, mends itself when
-/// left alone, sings again every so often until it is stopped, and carries a sector bounty for whoever brings it down.
+/// A Monolith that has rooted at the Crescendo. Nothing harms it but a nuclear detonation close by; it sings again every so
+/// often until it is stopped, and carries a sector bounty for whoever brings it down.
 /// </summary>
 [RegisterComponent]
 public sealed partial class WFPrimeComponent : Component

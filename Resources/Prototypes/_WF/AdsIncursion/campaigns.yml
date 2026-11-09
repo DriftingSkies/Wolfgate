@@ -46,7 +46,7 @@
   retakeBounty: [ 16000, 20000, 24000, 28000, 32000, 40000 ]
   credits:
   - entity: FederationMilitaryCredit1
-    companies: [ TSF, TSFCivilian ]
+    companies: [ TSF ]
     stronghold: 60
     patrol: 20
   - entity: Doubloon1
@@ -110,7 +110,7 @@
   retakeBounty: [ 20000, 24000, 28000, 34000, 40000, 50000 ]
   credits:
   - entity: FederationMilitaryCredit1
-    companies: [ TSF, TSFCivilian ]
+    companies: [ TSF ]
     stronghold: 60
     patrol: 20
   - entity: Doubloon1
@@ -174,7 +174,7 @@
   retakeBounty: [ 24000, 30000, 36000, 44000, 52000, 60000 ]
   credits:
   - entity: FederationMilitaryCredit1
-    companies: [ TSF, TSFCivilian ]
+    companies: [ TSF ]
     stronghold: 60
     patrol: 20
   - entity: Doubloon1

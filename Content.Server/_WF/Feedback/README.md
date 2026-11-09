@@ -148,7 +148,9 @@ refresh of everyone.
 - [`Content.IntegrationTests/Tests/_WF/Feedback/WFFeedbackBatch1104Test.cs`](../../../Content.IntegrationTests/Tests/_WF/Feedback/WFFeedbackBatch1104Test.cs)
 - [`Content.IntegrationTests/Tests/_WF/Feedback/WFFeedbackBatch1105Test.cs`](../../../Content.IntegrationTests/Tests/_WF/Feedback/WFFeedbackBatch1105Test.cs)
 - [`Content.IntegrationTests/Tests/_WF/Feedback/WFFeedbackBatch1106bTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Feedback/WFFeedbackBatch1106bTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Feedback/WFFeedbackBatch1107bTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Feedback/WFFeedbackBatch1107bTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Feedback/WFFeedbackBatch1107Test.cs`](../../../Content.IntegrationTests/Tests/_WF/Feedback/WFFeedbackBatch1107Test.cs)
+- [`Content.IntegrationTests/Tests/_WF/Feedback/WFFeedbackBatch1108Test.cs`](../../../Content.IntegrationTests/Tests/_WF/Feedback/WFFeedbackBatch1108Test.cs)
 
 ### Localization
 
@@ -174,6 +176,13 @@ refresh of everyone.
   - player bug reports and suggestions
   - counted by who sent it and when for the daily limit, and listed by status
   - player bug reports and suggestions, read by the SSymphony panel
+- [`Content.Server/_NF/Bank/BankSystem.cs`](../../_NF/Bank/BankSystem.cs): the in-round creator shows the deposit; withdrawals are too frequent to push
 - [`Content.Server/Content.Server.csproj`](../../Content.Server.csproj): a log handler keeps the latest warnings and errors for bug reports; the engine's interface takes Serilog's event
+- [`Content.Server/Preferences/Managers/IServerPreferencesManager.cs`](../../Preferences/Managers/IServerPreferencesManager.cs): push a server-side change such as the bank balance to the client
+- [`Content.Shared/Access/Systems/AccessReaderSystem.cs`](../../../Content.Shared/Access/Systems/AccessReaderSystem.cs): a vehicle opens doors for its rider, so the rider is the one logged
+- [`Content.Shared/NightVision/SharedNightVisionSystem.cs`](../../../Content.Shared/NightVision/SharedNightVisionSystem.cs): clear the wearer's overlay, not the clothing's
+- [`Resources/Prototypes/_HL/Body/Organs/synth.yml`](../../../Resources/Prototypes/_HL/Body/Organs/synth.yml): cryoxadone drains from a Synth like it does from a human
+- [`Resources/Prototypes/Entities/Structures/Machines/Computers/computers.yml`](../../../Resources/Prototypes/Entities/Structures/Machines/Computers/computers.yml): the MMC liaison can skip bounties too
+- [`Resources/Prototypes/Roles/Jobs/Engineering/atmospheric_technician.yml`](../../../Resources/Prototypes/Roles/Jobs/Engineering/atmospheric_technician.yml): atmos techs can use air alarms
 
 <!-- WOLFGATE-GENERATED END -->

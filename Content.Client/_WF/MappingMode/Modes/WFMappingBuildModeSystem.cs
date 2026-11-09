@@ -411,19 +411,9 @@ public sealed partial class WFMappingBuildModeSystem : EntitySystem
                 ("join", PipeAutoJoin ? "yes" : "no"),
                 ("replace", PipeReplace ? "yes" : "no")),
             WFMappingBuildMode.Link => _link.ReadoutText(),
-            WFMappingBuildMode.Wrench => WrenchReadout(),
+            WFMappingBuildMode.Wrench => ToolReadout(),
             _ => string.Empty,
         };
-    }
-
-    /// <summary>What a click in Wrench mode would turn, or how to use it.</summary>
-    private string WrenchReadout()
-    {
-        if (AnchorableAt(MouseMapPosition) is not { } target)
-            return Loc.GetString("wf-mapping-screen-readout-wrench");
-
-        return Loc.GetString("wf-mapping-screen-readout-wrench-target", ("name", Name(target)),
-            ("anchored", Transform(target).Anchored ? "yes" : "no"));
     }
 
     /// <summary>The wrenchable entity at a map position, anchored ones first since those are what blocks a tile.</summary>

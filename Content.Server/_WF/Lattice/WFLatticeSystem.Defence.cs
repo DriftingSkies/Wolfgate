@@ -1,13 +1,19 @@
 using System.Numerics;
 using Content.Server._Mono.FireControl;
+using Content.Server._WF.NpcCrew.Systems;
+using Content.Shared.Ghost;
+using Content.Shared._Crescent.Hardpoints;
 using Content.Shared._Crescent.ShipShields;
+using Content.Shared.Construction.Components;
 using Content.Shared._WF.Announcements;
 using Content.Shared._WF.Lattice;
+using Content.Shared.Damage;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.NPC;
 using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Weapons.Ranged.Events;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Player;
 
@@ -23,6 +29,13 @@ namespace Content.Server._WF.Lattice;
 public sealed partial class WFLatticeSystem
 {
     [Dependency] private FireControlSystem _fireControl = default!;
+    [Dependency] private WFCrewSystem _crew = default!;
+
+    /// <summary>How long before the same trespasser is named again.</summary>
+    private static readonly TimeSpan TrespassRepeat = TimeSpan.FromMinutes(5);
+
+    /// <summary>Least time between two trespass announcements for one station; everyone who came aboard meanwhile goes in the next.</summary>
+    private static readonly TimeSpan TrespassAlertGap = TimeSpan.FromMinutes(10);
 
     /// <summary>Seconds between the lances' aiming passes.</summary>
     private const float DefenceInterval = 0.25f;
@@ -71,13 +84,102 @@ public sealed partial class WFLatticeSystem
         }
     }
 
+    /// <summary>
+    /// Something hit the station directly: it alerts the sector, calls its drones and turns its lances on the attacker at
+    /// once, shield or no shield. The attacker is the ship it hit from, or the person themselves if they are on foot.
+    /// </summary>
+    public void Provoke(EntityUid station, EntityUid? origin)
+    {
+        if (!TryComp<WFLatticeAnchorStationComponent>(station, out var comp)
+            || !TryGetProfile(station, out var profile))
+            return;
+
+        var now = _timing.CurTime;
+        if (origin is not { } source || Attacker(station, source) is not { } enemy)
+        {
+            // Untraceable, but the sector still hears it.
+            if (now >= comp.NextAlert)
+            {
+                comp.NextAlert = now + TimeSpan.FromSeconds(profile.AlertCooldown);
+                Alert(station, comp, "wf-lattice-defence-struck", null, true);
+            }
+
+            return;
+        }
+
+        comp.Hostiles[enemy] = now + TimeSpan.FromSeconds(profile.HostileSeconds);
+        comp.ProvokedUntil = now + TimeSpan.FromSeconds(profile.HostileSeconds);
+        // Engaged either way, so the defence pass doesn't raise a second alarm while this one's cooldown runs.
+        var alarm = !comp.Engaged && now >= comp.NextAlert;
+        comp.Engaged = true;
+        if (alarm)
+        {
+            comp.NextAlert = now + TimeSpan.FromSeconds(profile.AlertCooldown);
+            Alert(station, comp, "wf-lattice-defence", enemy, true);
+        }
+
+        Defend(station, enemy);
+    }
+
+    /// <summary>
+    /// What a station shoots back at for a hit from this source: the person who fired a hand weapon, wherever they stand, so a
+    /// ship's other crew aren't caught up in it; or the ship a mounted gun fired from.
+    /// </summary>
+    private EntityUid? Attacker(EntityUid station, EntityUid source)
+    {
+        if (!Exists(source))
+            return null;
+
+        // A hitscan gun names itself as the origin; it is whoever holds it.
+        source = _crew.Wielder(source);
+
+        var grid = Transform(source).GridUid;
+        EntityUid enemy;
+        if (HasComp<MobStateComponent>(source))
+            enemy = source;
+        else if (grid is { } from && from != station && !HasComp<MapComponent>(from))
+            enemy = from;
+        else
+            return null;
+
+        return HasComp<WFLatticeAnchorStationComponent>(enemy) ? null : enemy;
+    }
+
+    /// <summary>Every so often marks what can be damaged on each station, so builds and repairs are covered too.</summary>
+    private void MarkParts(TimeSpan now)
+    {
+        var stations = EntityQueryEnumerator<WFLatticeAnchorStationComponent, TransformComponent>();
+        while (stations.MoveNext(out _, out var comp, out var xform))
+        {
+            if (now < comp.NextMark)
+                continue;
+
+            comp.NextMark = now + TimeSpan.FromSeconds(30);
+            // Only what stands on the station itself, not the whole world.
+            var children = xform.ChildEnumerator;
+            while (children.MoveNext(out var uid))
+            {
+                if (HasComp<DamageableComponent>(uid)
+                    && !HasComp<WFLatticeAnchorComponent>(uid)
+                    && !HasComp<MobStateComponent>(uid))
+                    EnsureComp<WFLatticeStationPartComponent>(uid);
+
+                // The hardpoints and their lances can't be unbolted and carried off.
+                if (HasComp<AnchorableComponent>(uid)
+                    && (HasComp<HardpointComponent>(uid) || HasComp<WFLatticeDefenceWeaponComponent>(uid)))
+                    RemCompDeferred<AnchorableComponent>(uid);
+            }
+        }
+    }
+
     /// <summary>Announces something about a station to the sector.</summary>
     private void Alert(EntityUid station, WFLatticeAnchorStationComponent comp, string key, EntityUid? enemy, bool flash)
     {
         var anchor = Exists(comp.Core) ? Name(comp.Core) : Name(station);
         var attacker = enemy is { } ship && Exists(ship) ? Name(ship) : Loc.GetString("wf-lattice-defence-unknown");
         var text = Loc.GetString(key, ("anchor", anchor), ("attacker", attacker));
-        _chat.DispatchGlobalAnnouncement(text, Loc.GetString("wf-lattice-chip-sender"), true, BreachSound, Color.FromHex("#d030a0"));
+        // Only a direct hit sounds the alarm; shield fire is a silent banner.
+        _chat.DispatchGlobalAnnouncement(text, Loc.GetString("wf-lattice-chip-sender"), flash, flash ? BreachSound : null, Color.FromHex("#d030a0"));
         RaiseNetworkEvent(new WFAnnouncementChipEvent
         {
             Level = flash ? WFAnnounceChipLevel.Warning : WFAnnounceChipLevel.Advisory,
@@ -111,6 +213,10 @@ public sealed partial class WFLatticeSystem
     /// <summary>Whether a ship still has anyone alive aboard to fight back: a player or an NPC crewman.</summary>
     private bool Crewed(EntityUid grid)
     {
+        // A person on foot is their own crew.
+        if (TryComp<MobStateComponent>(grid, out var self))
+            return self.CurrentState != MobState.Dead;
+
         var mobs = EntityQueryEnumerator<MobStateComponent, TransformComponent>();
         while (mobs.MoveNext(out var uid, out var state, out var xform))
         {
@@ -135,9 +241,16 @@ public sealed partial class WFLatticeSystem
 
         _defenceAccumulator = 0f;
         var now = _timing.CurTime;
+        MarkParts(now);
         var stations = EntityQueryEnumerator<WFLatticeAnchorStationComponent, TransformComponent>();
         while (stations.MoveNext(out var uid, out var comp, out var xform))
         {
+            if (now >= comp.NextTrespassCheck)
+            {
+                comp.NextTrespassCheck = now + TimeSpan.FromSeconds(1);
+                CheckTrespass(uid, comp, now);
+            }
+
             if (comp.Hostiles.Count == 0)
             {
                 comp.Engaged = false;
@@ -160,8 +273,8 @@ public sealed partial class WFLatticeSystem
             if (comp.Hostiles.Count == 0 || !TryGetProfile(uid, out var profile))
                 continue;
 
-            // The shield holding means the station is not yet in danger: it waits.
-            if (!ShieldDown(uid))
+            // The shield holding means the station is not yet in danger, unless something struck it directly.
+            if (now >= comp.ProvokedUntil && !ShieldDown(uid))
             {
                 comp.Engaged = false;
                 continue;
@@ -196,6 +309,48 @@ public sealed partial class WFLatticeSystem
 
             FireLances(uid, aim);
         }
+    }
+
+    /// <summary>
+    /// Names the players aboard the station to the sector: everyone who came aboard since the last announcement in one line,
+    /// no more than every two minutes, and each person again only after a few minutes.
+    /// </summary>
+    private void CheckTrespass(EntityUid station, WFLatticeAnchorStationComponent comp, TimeSpan now)
+    {
+        // An expired entry already lets them be named again, so dropping it changes nothing but the memory.
+        _expired.Clear();
+        foreach (var (named, until) in comp.Trespassers)
+        {
+            if (now >= until || TerminatingOrDeleted(named))
+                _expired.Add(named);
+        }
+
+        foreach (var named in _expired)
+        {
+            comp.Trespassers.Remove(named);
+        }
+
+        var players = EntityQueryEnumerator<ActorComponent, MobStateComponent, TransformComponent>();
+        while (players.MoveNext(out var uid, out _, out var state, out var xform))
+        {
+            if (xform.GridUid != station || state.CurrentState == MobState.Dead || HasComp<GhostComponent>(uid)
+                || comp.Trespassers.TryGetValue(uid, out var next) && now < next)
+                continue;
+
+            comp.Trespassers[uid] = now + TrespassRepeat;
+            comp.PendingTrespassers.Add(uid);
+        }
+
+        comp.PendingTrespassers.RemoveAll(uid => TerminatingOrDeleted(uid));
+        if (comp.PendingTrespassers.Count == 0 || now < comp.NextTrespassAlert)
+            return;
+
+        comp.NextTrespassAlert = now + TrespassAlertGap;
+        var names = string.Join(", ", comp.PendingTrespassers.ConvertAll(uid => Name(uid)));
+        comp.PendingTrespassers.Clear();
+        var anchor = Exists(comp.Core) ? Name(comp.Core) : Name(station);
+        var text = Loc.GetString("wf-lattice-trespass", ("anchor", anchor), ("attacker", names));
+        _chat.DispatchGlobalAnnouncement(text, Loc.GetString("wf-lattice-chip-sender"), false, colorOverride: Color.FromHex("#d030a0"));
     }
 
     /// <summary>Fires every lance on a station at a grid, leading it by its speed.</summary>

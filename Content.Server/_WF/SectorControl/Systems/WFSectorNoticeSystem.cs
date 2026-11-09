@@ -24,13 +24,13 @@ public sealed partial class WFSectorNoticeSystem : EntitySystem
     private static readonly TimeSpan CheckInterval = TimeSpan.FromSeconds(5);
 
     /// <summary>How long a ship stays inside a faction's space before it is told.</summary>
-    public static readonly TimeSpan EnteredDwell = TimeSpan.FromSeconds(10);
+    public static readonly TimeSpan EnteredDwell = TimeSpan.FromSeconds(20);
 
     /// <summary>How long a ship stays outside before it is told it has left.</summary>
-    public static readonly TimeSpan LeftDwell = TimeSpan.FromSeconds(30);
+    public static readonly TimeSpan LeftDwell = TimeSpan.FromSeconds(60);
 
     /// <summary>The least time between two entered notices to one ship; a left notice is never held back by it.</summary>
-    public static readonly TimeSpan Cooldown = TimeSpan.FromMinutes(2);
+    public static readonly TimeSpan Cooldown = TimeSpan.FromMinutes(10);
 
     private readonly Dictionary<EntityUid, NoticeState> _ships = new();
     private TimeSpan _nextCheck;

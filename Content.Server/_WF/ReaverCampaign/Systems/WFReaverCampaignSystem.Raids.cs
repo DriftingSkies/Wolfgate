@@ -148,9 +148,8 @@ public sealed partial class WFReaverCampaignSystem
 
         Raided(state, uid.Owner, target, from.Owner, prototype.Ships[0].Key, false);
         var hunted = IsMarked(target);
-        WarnShip(campaign, map, target, _transform.GetWorldPosition(uid.Comp.Ships[prototype.Ships[0].Key].Grid),
-            hunted ? "wf-reaver-raid-hunting" : "wf-reaver-raid-warning-pa",
-            hunted ? "wf-reaver-raid-hunting" : "wf-reaver-raid-warning-radio");
+        WarnShip(campaign, target, _transform.GetWorldPosition(uid.Comp.Ships[prototype.Ships[0].Key].Grid),
+            hunted ? "wf-reaver-raid-hunting" : "wf-reaver-raid-warning-pa");
         return true;
     }
 

@@ -1,5 +1,6 @@
 ﻿using Content.Client.Changelog;
 using Content.Client._WF.Roadmap; // WOLFGATE(Roadmap)
+using Content.Client._WF.Census; // WOLFGATE(Census)
 using Content.Client.UserInterface.Systems.EscapeMenu;
 using Content.Client.UserInterface.Systems.Guidebook;
 using Content.Shared.CCVar;
@@ -53,6 +54,12 @@ namespace Content.Client.Info
             var roadmapButton = new Button { Text = Loc.GetString("wf-roadmap-button") };
             roadmapButton.OnPressed += _ => UserInterfaceManager.GetUIController<RoadmapUIController>().ToggleRoadmap();
             buttons.AddChild(roadmapButton);
+            // WOLFGATE END
+
+            // WOLFGATE(Census) START: census list in the lobby footer, with the count yet to answer
+            var censusButton = new CensusButton();
+            censusButton.OnPressed += _ => UserInterfaceManager.GetUIController<CensusUIController>().ToggleWindow();
+            buttons.AddChild(censusButton);
             // WOLFGATE END
 
             void AddInfoButton(string loc, CVarDef<string> cVar)

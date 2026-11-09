@@ -60,7 +60,7 @@ public sealed class CargoReadoutTest
         return hull * (1f - factor) / factor + hull * profile.FreeLoad;
     }
 
-    /// <summary>Cargo adds SpoolPerTonne seconds a tonne up to SpoolCap, and nothing to a drive mass doesn't affect.</summary>
+    /// <summary>Cargo spools FTL in step with its thrust cut, up to SpoolCap, and adds nothing to a drive mass doesn't affect.</summary>
     [Test]
     public async Task SpoolPenaltyScalesWithLoadUpToCap()
     {
@@ -86,9 +86,14 @@ public sealed class CargoReadoutTest
         await server.WaitAssertion(() =>
         {
             Assert.That(cargo.GetLoad(ship), Is.EqualTo(tonnes).Within(0.01f));
-            Assert.That(profile.SpoolPerTonne * tonnes, Is.LessThan(profile.SpoolCap), "The test load should sit under the cap.");
-            Assert.That(cargo.SpoolPenalty(ship, new FTLDriveComponent()),
-                Is.EqualTo(System.Math.Min(profile.SpoolCap, profile.SpoolPerTonne * tonnes)).Within(0.001f));
+            var hull = entMan.GetComponent<PhysicsComponent>(ship).FixturesMass;
+            var spool = WFCargoLoadSystem.SpoolSeconds(profile, hull, tonnes);
+            Assert.That(spool, Is.GreaterThan(0f).And.LessThan(profile.SpoolCap), "The test load should sit under the cap.");
+            Assert.That(cargo.SpoolPenalty(ship, new FTLDriveComponent()), Is.EqualTo(spool).Within(0.001f));
+            Assert.That(WFCargoLoadSystem.SpoolSeconds(profile, hull, hull * profile.FreeLoad), Is.EqualTo(0f),
+                "The free allowance adds no spool.");
+            Assert.That(WFCargoLoadSystem.SpoolSeconds(profile, hull * 10f, tonnes), Is.LessThan(spool),
+                "The same load spools a bigger hull less.");
             Assert.That(cargo.SpoolPenalty(ship, new FTLDriveComponent { MassAffectedDrive = false }), Is.EqualTo(0f),
                 "A drive mass doesn't affect gets no cargo spool.");
 
