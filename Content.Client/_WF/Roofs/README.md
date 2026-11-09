@@ -5,7 +5,8 @@ ship, on a station or in the ship previewer, rooms are seen top-down as always. 
 same z-stack, such as a planet's air layer, a city's upper level or a rooftop, sees the buildings and ships on the levels
 below them roofed over: the open floor of every roofed tile gets a solid roof, lit by that level's daylight and shaded
 along its edges. A vessel or station's enclosed rooms are roofed as hull plating (exterior plating, catwalks and lattice
-open to the outside stay bare), a planet building's roofed floor as roofing. Walls, windows, doors and other
+open to the outside stay bare), a planet building's roofed floor as corrugated roofing (`_WF/Roofs/roof.rsi`, drawn by
+`Tools/_WF/Roofs/build_roof.py`), with a lip and shadow overlay on each edge that meets open sky. Walls, windows, doors and other
 full-height structures are never covered, so from above a building shows its walls and doors with roof only over its
 rooms. What stands on each tile is remembered and looked at again whenever the tile or anything anchored on it
 changes, so building, deconstruction and breaches show at once. Caverns and other layers under a world layer are left
@@ -39,6 +40,14 @@ rules), `WFRoofOverlay` (the drawing).
 ### Unit tests
 
 - [`Content.Tests/_WF/Roofs/RoofTilesTest.cs`](../../../Content.Tests/_WF/Roofs/RoofTilesTest.cs)
+
+### Textures
+
+- [`Resources/Textures/_WF/Roofs/roof.rsi/`](../../../Resources/Textures/_WF/Roofs/roof.rsi/)
+
+### Tools
+
+- [`Tools/_WF/Roofs/build_roof.py`](../../../Tools/_WF/Roofs/build_roof.py)
 
 ## Non-modular edits
 

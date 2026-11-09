@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Made for Wolfgate in the style and palette of NovaSector's colony fabricator set (CC BY-SA 3.0)",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "roof"
+        },
+        {
+            "name": "edge_n"
+        },
+        {
+            "name": "edge_s"
+        },
+        {
+            "name": "edge_e"
+        },
+        {
+            "name": "edge_w"
+        }
+    ]
+}

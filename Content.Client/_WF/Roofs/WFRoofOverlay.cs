@@ -1,18 +1,20 @@
 using System.Numerics;
 using Content.Shared.Light.Components;
 using Content.Shared.Maps;
+using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
 using Robust.Shared.Enums;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
+using Robust.Shared.Utility;
 
 namespace Content.Client._WF.Roofs;
 
 /// <summary>
 /// Draws a solid roof over the floor of roofed tiles on the levels below the local player, seen from above: a vessel's
-/// enclosed rooms as hull plating, a building's roofed floor as roofing, shaded at the eaves and lit by the level's
-/// daylight. Walls, windows and doors are left uncovered, so they draw and light as normal. Nothing is drawn on the
+/// enclosed rooms as hull plating shaded at the eaves, a building's roofed floor as corrugated roofing with a lip and
+/// shadow along its edges, lit by the level's daylight. Walls, windows and doors are left uncovered, so they draw and light as normal. Nothing is drawn on the
 /// player's own level (<see cref="WFRoofSystem.BelowViewer"/>). The z-level renderer draws each lower level through an
 /// eye of its own, offset and scaled for its depth, and this overlay with it, so the roof sits on that level's tiles.
 /// Drawn over the world after lighting, so it isn't darkened as the sunless indoors below it is.
@@ -28,6 +30,7 @@ public sealed class WFRoofOverlay : Overlay
     private readonly WFRoofSystem _roofs;
     private readonly Texture _hull;
     private readonly Texture _roofing;
+    private readonly Texture _edgeN, _edgeS, _edgeE, _edgeW;
     private List<Entity<MapGridComponent>> _grids = new();
 
     /// <summary>Light on a roof with no daylight to go by, such as out in space.</summary>
@@ -36,7 +39,7 @@ public sealed class WFRoofOverlay : Overlay
     /// <summary>The least light a roof gets, so it still reads at night.</summary>
     private const float MinLight = 0.22f;
 
-    /// <summary>Width of the shadow along a roof's edge, in tiles.</summary>
+    /// <summary>Width of the shadow along a vessel roof's edge, in tiles.</summary>
     private const float Eaves = 0.12f;
 
     public override OverlaySpace Space => OverlaySpace.WorldSpace;
@@ -48,7 +51,14 @@ public sealed class WFRoofOverlay : Overlay
         _transform = _entities.System<SharedTransformSystem>();
         _roofs = _entities.System<WFRoofSystem>();
         _hull = _resources.GetResource<TextureResource>("/Textures/Tiles/hull.png").Texture;
-        _roofing = _resources.GetResource<TextureResource>("/Textures/Tiles/plating.png").Texture;
+        var sprites = _entities.System<SpriteSystem>();
+        var rsi = new ResPath("/Textures/_WF/Roofs/roof.rsi");
+        Texture State(string state) => sprites.Frame0(new SpriteSpecifier.Rsi(rsi, state));
+        _roofing = State("roof");
+        _edgeN = State("edge_n");
+        _edgeS = State("edge_s");
+        _edgeE = State("edge_e");
+        _edgeW = State("edge_w");
         ZIndex = -10;
     }
 
@@ -89,13 +99,31 @@ public sealed class WFRoofOverlay : Overlay
 
                 var box = new Box2(index * size, (index + Vector2i.One) * size);
                 handle.DrawTextureRect(texture, box, shade);
-                if (!Covered(index + new Vector2i(-1, 0)))
+                var west = !Covered(index + new Vector2i(-1, 0));
+                var east = !Covered(index + new Vector2i(1, 0));
+                var south = !Covered(index + new Vector2i(0, -1));
+                var north = !Covered(index + new Vector2i(0, 1));
+                if (!implicitRoof)
+                {
+                    // The roofing's edge overlays carry their own lip and shadow.
+                    if (north)
+                        handle.DrawTextureRect(_edgeN, box, shade);
+                    if (south)
+                        handle.DrawTextureRect(_edgeS, box, shade);
+                    if (east)
+                        handle.DrawTextureRect(_edgeE, box, shade);
+                    if (west)
+                        handle.DrawTextureRect(_edgeW, box, shade);
+                    continue;
+                }
+
+                if (west)
                     handle.DrawRect(new Box2(box.Left, box.Bottom, box.Left + Eaves, box.Top), eaves);
-                if (!Covered(index + new Vector2i(1, 0)))
+                if (east)
                     handle.DrawRect(new Box2(box.Right - Eaves, box.Bottom, box.Right, box.Top), eaves);
-                if (!Covered(index + new Vector2i(0, -1)))
+                if (south)
                     handle.DrawRect(new Box2(box.Left, box.Bottom, box.Right, box.Bottom + Eaves), eaves);
-                if (!Covered(index + new Vector2i(0, 1)))
+                if (north)
                     handle.DrawRect(new Box2(box.Left, box.Top - Eaves, box.Right, box.Top), eaves);
             }
         }
