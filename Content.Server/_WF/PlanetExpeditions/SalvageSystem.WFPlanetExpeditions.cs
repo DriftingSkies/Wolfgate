@@ -75,7 +75,7 @@ public sealed partial class SalvageSystem
             for (var i = 0; i < record.Sites.Count; i++)
             {
                 var site = record.Sites[i];
-                if (site.Expeditions && site.ExpeditionClaim == null && !site.Cleared)
+                if (site.Expeditions && site.ExpeditionClaim == null && site.ContractClaim == null && !site.Cleared)
                     free.Add((ground, i));
             }
         }
@@ -120,7 +120,7 @@ public sealed partial class SalvageSystem
 
         if (!TryComp<WFPlanetPoiComponent>(offer.Ground, out var record)
             || offer.SiteIndex >= record.Sites.Count
-            || record.Sites[offer.SiteIndex] is not { ExpeditionClaim: null, Cleared: false } site)
+            || record.Sites[offer.SiteIndex] is not { ExpeditionClaim: null, ContractClaim: null, Cleared: false } site)
         {
             // Another crew got there first; fresh offers next tick.
             PlayDenySound(console, component);

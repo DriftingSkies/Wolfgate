@@ -1,0 +1,43 @@
+# Hostile wildlife for planetside contracts, one pool per world. Each pool keeps to factions that leave one another
+# alone (SimpleHostile and one fauna faction at most; Fervidus is all Xeno), so a site's mobs wait for the crew
+# instead of fighting each other. Carcinoma has no pool and takes no contracts.
+
+# Temperate forests, lakes and irradiated scars: wolves, bears, scar rats and giant spiders.
+- type: wfContractWorldFauna
+  id: WFContractFaunaAsclepiu
+  world: WFSurfaceAsclepiu
+  light: [ WFMobVerdaScarRat, ShiptestMobWolf, PolarisMobGiantSpiderLurker ]
+  heavy: [ ShiptestMobWolfAlpha, ShiptestMobBearBrown, WFMobVerdaFrostBear, PolarisMobGiantSpiderHunter, PolarisMobGiantSpiderWebslinger, VirgoMobGiantRat ]
+  boss: [ WFMobVerdaRatKing, ShiptestMobBearWar, VirgoMobGiantSpiderBroodmother ]
+
+# Desert: tarantulas, antlions, cobras and goliaths, with basilisks and skallax in the deep sand.
+- type: wfContractWorldFauna
+  id: WFContractFaunaMerak
+  world: WFSurfaceMerak
+  light: [ WFMobDesertTarantula, ShiptestMobAntlion, MobCobraSpace, ShiptestMobGoliathWhitesands ]
+  heavy: [ CitadelRPMobBasilisk, PolarisMobSavik, CitadelRPMobSkallaxYoung, OnyxBayMobGoliath, ShiptestMobGoliathWhitesandsAncient ]
+  boss: [ ShiptestMobAntlionQueen, OnyxBayMobGoliathAlpha, CitadelRPMobSkallaxMature ]
+
+# Dark glowing fungus world: lickers, floating nightmares and luminous things, geists and phantoms in the deep groves.
+- type: wfContractWorldFauna
+  id: WFContractFaunaAerumna
+  world: WFSurfaceAerumna
+  light: [ SojournMobLicker, SojournMobHoveringNightmare, OnyxBayMobHoverhead, MobLuminousEntity ]
+  heavy: [ WFMobGravityCrab, CitadelRPMobChameleon, CitadelRPMobGeist, CitadelRPMobPhantom, MobIronGolem ]
+  boss: [ CitadelRPMobDerelictHorror, OnyxBayMobBeholder ]
+
+# Volcanic: the world's own Xeno-kin, cinder slimes, ash golems and laser raptors, with hellspawn at the worst.
+- type: wfContractWorldFauna
+  id: WFContractFaunaFervidus
+  world: WFSurfaceFervidus
+  light: [ WFMobCinderSlime, WFMobLaserRaptorFervidus ]
+  heavy: [ WFMobAshGolem, WFMobLaserRaptorFervidus ]
+  boss: [ WFMobHellspawnFervidus ]
+
+# Deep winter: snow spiders, frostflies and ice demons, frost bears and lobstrosities, primordial ice demons at the worst.
+- type: wfContractWorldFauna
+  id: WFContractFaunaThrascias
+  world: WFSurfaceThrascias
+  light: [ WFMobThrasciasSnowSpider, PolarisMobFrostfly, ShiptestMobIceDemon ]
+  heavy: [ WFMobThrasciasFrostBear, WFMobThrasciasCrystalCrab, ShiptestMobIceWhelp, ShiptestMobBearPolar, ShiptestMobLobstrosityArctic ]
+  boss: [ ShiptestMobIceDemonPrimordial, VGMobWendigoAlpha ]

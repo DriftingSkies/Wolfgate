@@ -85,6 +85,10 @@ public sealed class ContractRewardCeilingTest
                 min += w.PerPoint * w.Points.X;
                 max += w.PerPoint * w.Points.Y;
                 break;
+            case WFContractDeploy d:
+                min += d.PerPoint * d.Points.X;
+                max += d.PerPoint * d.Points.Y;
+                break;
             case WFContractRecovery { PerUnlockedNode: > 0 } r:
                 // A fully analysed artifact: allow for a large node graph.
                 max += r.PerUnlockedNode * 12;

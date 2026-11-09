@@ -102,7 +102,7 @@
   color: "#d0573f"
   stations: [ USSPCamelot ]
   board: USSP
-  companies: [ USSP, TheViperGroup ]
+  companies: [ USSP ]
   offers: 4
   order: 11
 
@@ -141,3 +141,25 @@
   companies: [ WFAsf ]
   offers: 4
   order: 14
+
+- type: wfContractor
+  id: WFContractorColonialDevelopment
+  name: wf-contractor-colonial-development
+  description: wf-contractor-colonial-development-desc
+  employer: wf-contractor-colonial-development-employer
+  color: "#7aa35a"
+  stations: [ Frontier ]
+  offers: 2
+  order: 15
+
+- type: wfContractor
+  id: WFContractorViperGroup
+  name: wf-contractor-viper-group
+  description: wf-contractor-viper-group-desc
+  employer: wf-contractor-viper-group-employer
+  color: "#b82121"
+  stations: [ USSPCamelot ]
+  board: VG
+  companies: [ TheViperGroup ]
+  offers: 4
+  order: 16

@@ -36,3 +36,11 @@ public sealed partial class WFContractInspectableComponent : Component
 /// <summary>Marks the Contracts PDA app.</summary>
 [RegisterComponent]
 public sealed partial class WFContractCartridgeComponent : Component;
+
+/// <summary>A construction kit; set down on its contract's site, it unfolds into <see cref="Unfold"/>.</summary>
+[RegisterComponent]
+public sealed partial class WFContractKitComponent : Component
+{
+    [DataField(required: true)]
+    public Robust.Shared.Prototypes.EntProtoId Unfold;
+}

@@ -424,3 +424,55 @@
     - /Maps/Salvage/asteroid-base.yml
     - /Maps/Salvage/outpost-arm.yml
     - /Maps/Salvage/engineering-chunk.yml
+
+- type: wfContract
+  id: WFContractMMCClaimGuard
+  contractor: WFContractorMMC
+  category: Bounty
+  tier: 2
+  title: wf-contract-mmc-claim-guard
+  briefing: wf-contract-mmc-claim-guard-brief
+  reward: 15000, 20000
+  deposit: 1000
+  minutes: 40
+  weight: 1.2
+  objective: !type:WFContractPicket
+    encounters: [ WFContractTargetClaimJumper ]
+    duration: 360
+    range: 400
+
+- type: wfContract
+  id: WFContractMMCPlanetRig
+  contractor: WFContractorMMC
+  category: Salvage
+  tier: 2
+  title: wf-contract-mmc-planet-rig
+  briefing: wf-contract-mmc-planet-rig-brief
+  reward: 20000, 26000
+  deposit: 1000
+  minutes: 70
+  weight: 1.1
+  objective: !type:WFContractRepair
+    wrecks: []
+    planet:
+      hostiles: 3, 4
+
+- type: wfContract
+  id: WFContractMMCPlanetClaim
+  contractor: WFContractorMMC
+  category: Bounty
+  tier: 2
+  title: wf-contract-mmc-planet-claim
+  briefing: wf-contract-mmc-planet-claim-brief
+  reward: 22000, 28000
+  deposit: 1000
+  minutes: 70
+  weight: 1.2
+  crewBonus: 0.25
+  objective: !type:WFContractClear
+    wrecks: []
+    targets:
+      entity: WFContractCreatureDen
+      count: 2, 3
+    planet:
+      hostiles: 3, 5

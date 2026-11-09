@@ -58,6 +58,23 @@ public sealed class WFContract
     public EntityUid? EncounterEntity;
     public EntityUid? WreckGrid;
 
+    /// <summary>A planetside contract's world (its surface) and ground map, picked when posted.</summary>
+    public string? PlanetWorld;
+    public EntityUid? PlanetGround;
+
+    /// <summary>The claimed site on that ground, while the contract runs, and its bounds.</summary>
+    public int? PlanetSite;
+    public Box2i? SiteBounds;
+
+    /// <summary>A chain link's site, held for it from the link before so the crew builds on the same ground.</summary>
+    public int? PreferredSite;
+
+    /// <summary>A picket's failed raider spawns so far.</summary>
+    public int RaiderTries;
+
+    /// <summary>Hostiles placed on a planet site, removed with the site's release.</summary>
+    public List<EntityUid> Spawned = new();
+
     /// <summary>Anomalies a survey placed, and those scanned so far.</summary>
     public List<EntityUid> Anomalies = new();
     public HashSet<EntityUid> Scanned = new();

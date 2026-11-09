@@ -321,3 +321,40 @@
     stops: 3, 4
     perStop: 1250
     perKilometre: 750
+
+- type: wfContract
+  id: WFContractSBCommRelays
+  contractor: WFContractorStellarBlessing
+  category: Delivery
+  tier: 1
+  title: wf-contract-sb-comm-relays
+  briefing: wf-contract-sb-comm-relays-brief
+  reward: 5500, 7500
+  minutes: 45
+  weight: 1.2
+  objective: !type:WFContractDeploy
+    buoy: WFContractRelayBuoy
+    points: 2, 3
+    perPoint: 1500
+    minDistance: 1500
+    maxDistance: 4000
+
+- type: wfContract
+  id: WFContractSBPlanetHomesteaders
+  contractor: WFContractorStellarBlessing
+  category: Salvage
+  tier: 2
+  title: wf-contract-sb-planet-homesteaders
+  briefing: wf-contract-sb-planet-homesteaders-brief
+  reward: 24000, 30000
+  deposit: 1000
+  minutes: 80
+  weight: 1.1
+  minCrew: 2
+  crewBonus: 0.25
+  objective: !type:WFContractRecovery
+    wrecks: []
+    item: WFContractStasisBag
+    count: 2, 3
+    planet:
+      hostiles: 3, 5

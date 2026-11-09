@@ -309,3 +309,56 @@
     - /Maps/Salvage/medium-1.yml
     - /Maps/Salvage/medium-crashed-shuttle.yml
     - /Maps/Salvage/medium-ruined-emergency-shuttle.yml
+
+- type: wfContract
+  id: WFContractLabProbeLine
+  contractor: WFContractorAnomalousLab
+  category: Science
+  tier: 1
+  title: wf-contract-lab-probe-line
+  briefing: wf-contract-lab-probe-line-brief
+  reward: 6000, 8000
+  minutes: 45
+  weight: 1.3
+  objective: !type:WFContractDeploy
+    buoy: WFContractProbeBuoy
+    points: 3, 4
+    perPoint: 1500
+    minDistance: 2000
+    maxDistance: 4500
+
+- type: wfContract
+  id: WFContractLabPlanetSurvey
+  contractor: WFContractorAnomalousLab
+  category: Science
+  tier: 2
+  title: wf-contract-lab-planet-survey
+  briefing: wf-contract-lab-planet-survey-brief
+  reward: 16000, 20000
+  deposit: 1000
+  minutes: 75
+  weight: 1.2
+  objective: !type:WFContractSurvey
+    wrecks: []
+    count: 2, 3
+    perAnomaly: 2500
+    anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyIce, AnomalyFlora, AnomalyBluespace ]
+    planet:
+      hostiles: 2, 4
+
+- type: wfContract
+  id: WFContractLabPlanetSample
+  contractor: WFContractorAnomalousLab
+  category: Science
+  tier: 1
+  title: wf-contract-lab-planet-sample
+  briefing: wf-contract-lab-planet-sample-brief
+  reward: 9000, 12000
+  minutes: 70
+  weight: 1.2
+  objective: !type:WFContractRecovery
+    wrecks: []
+    item: WFContractAnomalySample
+    count: 1, 1
+    planet:
+      hostiles: 2, 3

@@ -17,6 +17,9 @@ public sealed partial class WFContractSystem
     /// <summary>Characters whose stored standing has been read this round.</summary>
     private readonly HashSet<WFContractHolder> _loaded = new();
 
+    /// <summary>Characters whose stored standing is being read; changes wait in memory until it arrives.</summary>
+    private readonly HashSet<WFContractHolder> _loading = new();
+
     /// <summary>Saves run in order, so two changes to a new row cannot both insert it.</summary>
     private Task _saves = Task.CompletedTask;
 
@@ -36,7 +39,7 @@ public sealed partial class WFContractSystem
     /// <summary>Loads, drifts and merges a character's stored standing, once per round.</summary>
     public async Task LoadStanding(WFContractHolder holder)
     {
-        if (!_loaded.Add(holder))
+        if (_loaded.Contains(holder) || !_loading.Add(holder))
             return;
 
         var generation = _generation;
@@ -50,12 +53,15 @@ public sealed partial class WFContractSystem
             Log.Error($"Could not load contract standing for {holder.Character} ({holder.User}): {e}");
             // Unread standing must not overwrite the stored row.
             if (generation == _generation)
-                _loaded.Remove(holder);
+                _loading.Remove(holder);
             return;
         }
 
         if (generation != _generation)
             return;
+
+        _loading.Remove(holder);
+        _loaded.Add(holder);
 
         var round = _ticker.RoundId;
         var standing = _standing.GetOrNew(holder);

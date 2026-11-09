@@ -192,6 +192,90 @@ public sealed class ContractOperationsTest
             Assert.That(contracts.Packed(ammo, crate).Single(), Is.EqualTo(2));
         });
 
+        // Buoys: one per point, counted only once set adrift in open space near an unlogged point.
+        WFContract buoys = default!;
+        EntityUid packing = default;
+        var placed = new System.Collections.Generic.List<EntityUid>();
+        var crates = entMan.System<Content.Shared.Storage.EntitySystems.SharedEntityStorageSystem>();
+        await server.WaitAssertion(() =>
+        {
+            buoys = Take(contracts, mob, board, "WFContractCaelNavBuoys");
+            Assert.That(buoys.Items, Has.Count.EqualTo(buoys.Count));
+            Assert.That(buoys.Points, Has.Count.EqualTo(buoys.Count));
+            // At the point but packed in a crate floating there: not adrift.
+            packing = entMan.SpawnEntity("CrateGenericSteel", buoys.Points[0]);
+            Assert.That(crates.Insert(buoys.Items[0], packing), Is.True);
+        });
+        await pair.RunTicksSync(150);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(buoys.Logged, Is.Empty, "A packed buoy was counted.");
+            Assert.That(crates.Remove(buoys.Items[0], packing), Is.True);
+            placed.AddRange(buoys.Items);
+            for (var i = 0; i < buoys.Items.Count; i++)
+            {
+                var point = buoys.Points[i];
+                xforms.SetMapCoordinates(buoys.Items[i], new MapCoordinates(point.Position + new Vector2(20f, 0f), point.MapId));
+            }
+        });
+        await pair.RunTicksSync(90);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(buoys.Status, Is.EqualTo(WFContractStatus.Completed), "Buoys set adrift at every point did not complete.");
+            Assert.That(placed.All(b => !entMan.Deleted(b) && !entMan.IsQueuedForDeletion(b)), Is.True,
+                "Set buoys were cleared away as soon as the contract completed.");
+        });
+
+        // Picket: arriving sends the raiders; holding the point long enough completes it and sends them away.
+        WFContract picket = default!;
+        await server.WaitAssertion(() =>
+        {
+            picket = Take(contracts, mob, board, "WFContractMarshalsPicket");
+            Assert.That(picket.Site, Is.Not.Null);
+            Assert.That(picket.EncounterEntity, Is.Null, "Raiders were sent before anyone arrived.");
+            // Earlier stages leave the test character hurt; the picket wants them conscious.
+            entMan.System<Content.Server.Administration.Systems.RejuvenateSystem>().PerformRejuvenate(mob);
+            xforms.SetMapCoordinates(mob, picket.Site!.Value);
+        });
+        await pair.RunTicksSync(150);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(picket.Started, Is.True, "Reaching the point did not start the picket.");
+            Assert.That(picket.EncounterEntity, Is.Not.Null, "No raiders were sent at the picket.");
+            picket.Progress = System.TimeSpan.FromMinutes(6) - System.TimeSpan.FromSeconds(1);
+        });
+        await pair.RunTicksSync(150);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(picket.Status, Is.EqualTo(WFContractStatus.Completed), "Holding the point did not complete the picket.");
+            var encounter = entMan.GetComponentOrNull<Content.Server._WF.Encounters.Components.WFEncounterComponent>(picket.EncounterEntity!.Value);
+            Assert.That(encounter == null || encounter.Resolution != null, "The raiders were left active after the picket.");
+        });
+
+        // Rescue: every stasis bag must come in; one alone doesn't finish it.
+        WFContract rescue = default!;
+        await server.WaitAssertion(() =>
+        {
+            rescue = Take(contracts, mob, board, "WFContractMarshalsRescue", crewCheck: false);
+            Assert.That(rescue.Items, Has.Count.GreaterThanOrEqualTo(3));
+            xforms.SetCoordinates(rescue.Items[0], new EntityCoordinates(ContractFlowTest.Largest(server, central), 1.5f, 1.5f));
+        });
+        await pair.RunTicksSync(150);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(rescue.Status, Is.EqualTo(WFContractStatus.Active), "One survivor finished a rescue.");
+            Assert.That(rescue.Delivered, Is.EqualTo(1));
+            foreach (var bag in rescue.Items.Skip(1))
+            {
+                xforms.SetCoordinates(bag, new EntityCoordinates(ContractFlowTest.Largest(server, central), 1.5f, 1.5f));
+            }
+        });
+        await pair.RunTicksSync(150);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(rescue.Status, Is.EqualTo(WFContractStatus.Completed), "Every survivor brought in did not finish the rescue.");
+        });
+
         await pair.CleanReturnAsync();
     }
 

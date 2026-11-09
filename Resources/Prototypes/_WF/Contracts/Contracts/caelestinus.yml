@@ -591,3 +591,307 @@
     encounters: [ WFContractTargetWarlord ]
     minDistance: 5000
     maxDistance: 7000
+
+- type: wfContract
+  id: WFContractCaelNavBuoys
+  contractor: WFContractorCaelPort
+  category: Delivery
+  tier: 1
+  title: wf-contract-cael-nav-buoys
+  briefing: wf-contract-cael-nav-buoys-brief
+  reward: 6000, 8000
+  minutes: 45
+  weight: 1.3
+  objective: !type:WFContractDeploy
+    buoy: WFContractRelayBuoy
+    points: 2, 3
+    perPoint: 1500
+    minDistance: 1500
+    maxDistance: 4000
+
+- type: wfContract
+  id: WFContractMarshalsPicket
+  contractor: WFContractorCaelMarshals
+  category: Bounty
+  tier: 2
+  title: wf-contract-marshals-picket
+  briefing: wf-contract-marshals-picket-brief
+  reward: 17500, 22500
+  deposit: 1000
+  minutes: 40
+  weight: 1.3
+  objective: !type:WFContractPicket
+    encounters: [ WFContractTargetClaimJumper ]
+    duration: 360
+    range: 400
+
+- type: wfContract
+  id: WFContractMarshalsHoldLine
+  contractor: WFContractorCaelMarshals
+  category: Bounty
+  tier: 3
+  title: wf-contract-marshals-hold-line
+  briefing: wf-contract-marshals-hold-line-brief
+  reward: 45000, 55000
+  deposit: 2500
+  minutes: 50
+  weight: 0.9
+  minCrew: 2
+  crewBonus: 0.25
+  excludePresets: [ WFContestedSector ]
+  objective: !type:WFContractPicket
+    encounters: [ WFContractTargetRaiderPair ]
+    duration: 480
+    range: 500
+
+- type: wfContract
+  id: WFContractMarshalsRescue
+  contractor: WFContractorCaelMarshals
+  category: Salvage
+  tier: 2
+  title: wf-contract-marshals-rescue
+  briefing: wf-contract-marshals-rescue-brief
+  reward: 20000, 26000
+  deposit: 1000
+  minutes: 55
+  minCrew: 2
+  crewBonus: 0.25
+  weight: 1.1
+  objective: !type:WFContractRecovery
+    wrecks:
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+    - /Maps/Salvage/medium-ruined-emergency-shuttle.yml
+    item: WFContractStasisBag
+    count: 3, 4
+    infestation:
+    - entity: MobCarpSalvage
+      count: 2, 4
+
+- type: wfContract
+  id: WFContractCaelPlanetRelay
+  contractor: WFContractorCaelPort
+  category: Salvage
+  tier: 2
+  title: wf-contract-cael-planet-relay
+  briefing: wf-contract-cael-planet-relay-brief
+  reward: 22000, 28000
+  deposit: 1000
+  minutes: 70
+  weight: 1.1
+  minCrew: 2
+  crewBonus: 0.25
+  objective: !type:WFContractRepair
+    wrecks: []
+    planet:
+      hostiles: 3, 5
+
+- type: wfContract
+  id: WFContractCaelPlanetProduce
+  contractor: WFContractorCaelPort
+  category: Supply
+  tier: 1
+  title: wf-contract-cael-planet-produce
+  briefing: wf-contract-cael-planet-produce-brief
+  reward: 6000, 9000
+  minutes: 75
+  weight: 1.2
+  objective: !type:WFContractSupply
+    premium: 1.3
+    pick: 2
+    goods:
+    - entity: WFAgaveSap
+      count: 6, 10
+      value: 120
+    - entity: WFMerakDates
+      count: 6, 10
+      value: 100
+    - entity: WFFrostbelleBloom
+      count: 4, 8
+      value: 180
+    - entity: WFFrozenFungus
+      count: 6, 10
+      value: 110
+    - entity: WFAerumnaGlowcap
+      count: 6, 10
+      value: 130
+    - entity: WFAerumnaSapPod
+      count: 4, 8
+      value: 160
+    - entity: WFAshShroom
+      count: 6, 10
+      value: 140
+    - entity: WFFireBlossomBloom
+      count: 4, 8
+      value: 200
+
+- type: wfContract
+  id: WFContractMarshalsPlanetDens
+  contractor: WFContractorCaelMarshals
+  category: Bounty
+  tier: 2
+  title: wf-contract-marshals-planet-dens
+  briefing: wf-contract-marshals-planet-dens-brief
+  reward: 24000, 30000
+  deposit: 1000
+  minutes: 70
+  weight: 1.3
+  crewBonus: 0.25
+  objective: !type:WFContractClear
+    wrecks: []
+    targets:
+      entity: WFContractCreatureDen
+      count: 2, 3
+    planet:
+      hostiles: 4, 6
+
+- type: wfContract
+  id: WFContractMarshalsPlanetPurge
+  contractor: WFContractorCaelMarshals
+  category: Bounty
+  tier: 4
+  title: wf-contract-marshals-planet-purge
+  briefing: wf-contract-marshals-planet-purge-brief
+  reward: 95000, 110000
+  deposit: 4000
+  minutes: 90
+  weight: 0.7
+  minCrew: 3
+  crewBonus: 0.25
+  objective: !type:WFContractClear
+    wrecks: []
+    targets:
+      entity: WFContractCreatureDen
+      count: 3, 5
+    planet:
+      hostiles: 7, 10
+
+- type: wfContract
+  id: WFContractOutpostClaim
+  contractor: WFContractorColonialDevelopment
+  category: Salvage
+  tier: 3
+  title: wf-contract-outpost-claim
+  briefing: wf-contract-outpost-claim-brief
+  reward: 55000, 65000
+  minutes: 30
+  weight: 1.0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WFContractOutpostClearance
+  objective: !type:WFContractConstruct
+    kits:
+    - entity: WFContractKitBeacon
+      count: 2, 2
+    planet:
+      hostiles: 3, 5
+
+- type: wfContract
+  id: WFContractOutpostClearance
+  contractor: WFContractorColonialDevelopment
+  category: Salvage
+  tier: 3
+  title: wf-contract-outpost-clearance
+  briefing: wf-contract-outpost-clearance-brief
+  reward: 85000, 95000
+  minutes: 30
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WFContractOutpostPower
+  objective: !type:WFContractClear
+    wrecks: []
+    targets:
+      entity: WFContractCreatureDen
+      count: 3, 4
+    planet:
+      hostiles: 5, 8
+
+- type: wfContract
+  id: WFContractOutpostPower
+  contractor: WFContractorColonialDevelopment
+  category: Salvage
+  tier: 3
+  title: wf-contract-outpost-power
+  briefing: wf-contract-outpost-power-brief
+  reward: 75000, 85000
+  minutes: 25
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WFContractOutpostFab
+  objective: !type:WFContractConstruct
+    kits:
+    - entity: WFContractKitGenerator
+      count: 1, 1
+    - entity: WFContractKitSolar
+      count: 4, 4
+    planet:
+      hostiles: 2, 4
+
+- type: wfContract
+  id: WFContractOutpostFab
+  contractor: WFContractorColonialDevelopment
+  category: Salvage
+  tier: 4
+  title: wf-contract-outpost-fab
+  briefing: wf-contract-outpost-fab-brief
+  reward: 105000, 115000
+  minutes: 25
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WFContractOutpostHold
+  objective: !type:WFContractConstruct
+    kits:
+    - entity: WFContractKitFab
+      count: 1, 1
+    - entity: WFContractKitOreProcessor
+      count: 1, 1
+    - entity: WFContractKitAirMiner
+      count: 1, 1
+    planet:
+      hostiles: 2, 4
+
+- type: wfContract
+  id: WFContractOutpostHold
+  contractor: WFContractorColonialDevelopment
+  category: Salvage
+  tier: 4
+  title: wf-contract-outpost-hold
+  briefing: wf-contract-outpost-hold-brief
+  reward: 115000, 125000
+  minutes: 30
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WFContractOutpostCommission
+  objective: !type:WFContractDownload
+    wrecks: []
+    duration: 300
+    waveInterval: 45
+    terminal: WFContractColonyFabCore
+    planet:
+      hostiles: 3, 5
+      waveHostiles: 3, 4
+
+- type: wfContract
+  id: WFContractOutpostCommission
+  contractor: WFContractorColonialDevelopment
+  category: Supply
+  tier: 4
+  title: wf-contract-outpost-commission
+  briefing: wf-contract-outpost-commission-brief
+  reward: 135000, 145000
+  minutes: 40
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  objective: !type:WFContractSupply
+    goodsCap: 10000
+    goods:
+    - stack: Steel
+      count: 120, 150
+    - stack: Glass
+      count: 60, 80
+    - stack: Plasteel
+      count: 20, 30

@@ -304,3 +304,35 @@
     - /Maps/Salvage/small-cargo.yml
     - /Maps/Salvage/small-ship-1.yml
     - /Maps/Salvage/small-ai-survey-drone.yml
+
+- type: wfContract
+  id: WFContractCamelotPicket
+  contractor: WFContractorCamelot
+  category: Bounty
+  tier: 2
+  title: wf-contract-camelot-picket
+  briefing: wf-contract-camelot-picket-brief
+  reward: 17500, 22500
+  deposit: 1000
+  minutes: 40
+  weight: 1.2
+  objective: !type:WFContractPicket
+    encounters: [ WFContractTargetClaimJumper ]
+    duration: 360
+    range: 400
+
+- type: wfContract
+  id: WFContractCamelotPlanetCache
+  contractor: WFContractorCamelot
+  category: Salvage
+  tier: 2
+  title: wf-contract-camelot-planet-cache
+  briefing: wf-contract-camelot-planet-cache-brief
+  reward: 20000, 26000
+  deposit: 1000
+  minutes: 70
+  weight: 1.1
+  objective: !type:WFContractInspect
+    wrecks: []
+    planet:
+      hostiles: 3, 5

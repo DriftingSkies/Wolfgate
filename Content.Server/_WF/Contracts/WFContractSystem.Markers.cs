@@ -67,7 +67,11 @@ public sealed partial class WFContractSystem
                     ? _transform.GetMapCoordinates(waiting)
                     : null;
             case WFContractSweep:
+            case WFContractDeploy:
                 return NextPoint(contract);
+            case WFContractPicket:
+            case WFContractConstruct:
+                return contract.Site;
             case WFContractClear:
             case WFContractRepair:
             case WFContractDownload:

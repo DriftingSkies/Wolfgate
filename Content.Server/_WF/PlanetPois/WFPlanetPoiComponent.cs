@@ -122,6 +122,9 @@ public sealed class WFPlanetPoiSite
 
     /// <summary>The station running an expedition on the site, and whether one has already cleared it this round.</summary>
     public EntityUid? ExpeditionClaim;
+
+    /// <summary>The station whose contract holds the site; expeditions skip it while it does.</summary>
+    public EntityUid? ContractClaim;
     public bool Cleared;
 }
 

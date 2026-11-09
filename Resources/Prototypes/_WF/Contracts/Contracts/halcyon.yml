@@ -325,3 +325,38 @@
     perPoint: 1500
     minDistance: 2000
     maxDistance: 5000
+
+- type: wfContract
+  id: WFContractHalcyonSensorLine
+  contractor: WFContractorHalcyon
+  category: Science
+  tier: 2
+  title: wf-contract-halcyon-sensor-line
+  briefing: wf-contract-halcyon-sensor-line-brief
+  reward: 10000, 14000
+  minutes: 55
+  weight: 1.2
+  objective: !type:WFContractDeploy
+    buoy: WFContractSensorBuoy
+    points: 3, 4
+    perPoint: 2500
+    minDistance: 2500
+    maxDistance: 5000
+
+- type: wfContract
+  id: WFContractHalcyonPlanetRecorder
+  contractor: WFContractorHalcyon
+  category: Salvage
+  tier: 2
+  title: wf-contract-halcyon-planet-recorder
+  briefing: wf-contract-halcyon-planet-recorder-brief
+  reward: 20000, 26000
+  deposit: 1000
+  minutes: 70
+  weight: 1.2
+  objective: !type:WFContractRecovery
+    wrecks: []
+    item: WFContractFlightRecorder
+    count: 1, 1
+    planet:
+      hostiles: 3, 5

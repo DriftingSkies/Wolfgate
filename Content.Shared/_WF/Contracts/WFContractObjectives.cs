@@ -1,3 +1,4 @@
+using Content.Shared._WF.Encounters;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
@@ -186,4 +187,59 @@ public sealed partial class WFContractOperation : WFContractObjective
 
     [DataField]
     public float StationClearance = 2500f;
+}
+
+/// <summary>Carry buoys from the board and set one adrift in open space at each of several points.</summary>
+public sealed partial class WFContractDeploy : WFContractObjective
+{
+    /// <summary>The buoy handed out, one per point.</summary>
+    [DataField]
+    public EntProtoId Buoy = "WFContractRelayBuoy";
+
+    /// <summary>How many points, rolled between the two.</summary>
+    [DataField]
+    public Vector2i Points = new(2, 3);
+
+    /// <summary>Metres from a point a buoy set adrift counts at.</summary>
+    [DataField]
+    public float Range = 100f;
+
+    [DataField]
+    public float MinDistance = 1500f;
+
+    [DataField]
+    public float MaxDistance = 4000f;
+
+    /// <summary>Pay added per point.</summary>
+    [DataField]
+    public int PerPoint;
+}
+
+/// <summary>Hold a point in open space for a while; raiders are sent against whoever arrives.</summary>
+public sealed partial class WFContractPicket : WFContractObjective
+{
+    /// <summary>Sent once a crewmate reaches the point; one is picked when the offer is posted.</summary>
+    [DataField(required: true)]
+    public List<ProtoId<WFEncounterPrototype>> Encounters = new();
+
+    /// <summary>Time a crewmate must spend within range of the point.</summary>
+    [DataField]
+    public TimeSpan Duration = TimeSpan.FromMinutes(6);
+
+    /// <summary>Metres from the point that count as holding it.</summary>
+    [DataField]
+    public float Range = 400f;
+
+    /// <summary>Metres from the point the raiders arrive at.</summary>
+    [DataField]
+    public float RaiderDistance = 900f;
+
+    [DataField]
+    public float MinDistance = 2500f;
+
+    [DataField]
+    public float MaxDistance = 4500f;
+
+    [DataField]
+    public float StationClearance = 2000f;
 }

@@ -10,8 +10,12 @@
 
 - type: wfContractFaction
   id: WFContractFactionUSSP
-  companies: [ USSP, TheViperGroup ]
+  companies: [ USSP ]
 
 - type: wfContractFaction
   id: WFContractFactionASF
   companies: [ WFAsf ]
+
+- type: wfContractFaction
+  id: WFContractFactionVG
+  companies: [ TheViperGroup ]

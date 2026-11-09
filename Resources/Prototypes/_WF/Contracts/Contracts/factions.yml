@@ -1345,3 +1345,334 @@
     - /Maps/Salvage/small-1.yml
     - /Maps/Salvage/small-2.yml
     - /Maps/Salvage/medium-crashed-shuttle.yml
+
+- type: wfContract
+  id: WFContractTSFFactionScreen
+  contractor: WFContractorTSFRequisitions
+  category: Bounty
+  tier: 2
+  title: wf-contract-tsf-faction-screen
+  briefing: wf-contract-tsf-faction-screen-brief
+  reward: 25000, 32500
+  deposit: 1000
+  minutes: 50
+  weight: 1.2
+  crewBonus: 0.25
+  credits: 15
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WFContractorPDVQuartermaster: 1
+  objective: !type:WFContractPicket
+    encounters: [ WFContractTargetPdvPatrol ]
+    duration: 420
+    range: 400
+
+- type: wfContract
+  id: WFContractTSFFactionSensorNet
+  contractor: WFContractorTSFRequisitions
+  category: Science
+  tier: 2
+  title: wf-contract-tsf-faction-sensor-net
+  briefing: wf-contract-tsf-faction-sensor-net-brief
+  reward: 12000, 15000
+  minutes: 55
+  weight: 1.2
+  credits: 10
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WFContractorPDVQuartermaster: 1
+  objective: !type:WFContractDeploy
+    buoy: WFContractSensorBuoy
+    points: 3, 4
+    perPoint: 2500
+    minDistance: 3000
+    maxDistance: 5500
+
+- type: wfContract
+  id: WFContractPDVFactionHoldout
+  contractor: WFContractorPDVQuartermaster
+  category: Bounty
+  tier: 2
+  title: wf-contract-pdv-faction-holdout
+  briefing: wf-contract-pdv-faction-holdout-brief
+  reward: 25000, 32500
+  deposit: 1000
+  minutes: 50
+  weight: 1.2
+  crewBonus: 0.25
+  credits: 15
+  creditEntity: Doubloon1
+  harms:
+    WFContractorTSFRequisitions: 1
+  objective: !type:WFContractPicket
+    encounters: [ WFContractTargetTsfPatrol ]
+    duration: 420
+    range: 400
+
+- type: wfContract
+  id: WFContractUSSPFactionScreen
+  contractor: WFContractorUSSPCommissariat
+  category: Bounty
+  tier: 2
+  title: wf-contract-ussp-faction-screen
+  briefing: wf-contract-ussp-faction-screen-brief
+  reward: 22500, 30000
+  deposit: 1000
+  minutes: 50
+  weight: 1.2
+  crewBonus: 0.25
+  objective: !type:WFContractPicket
+    encounters: [ WFContractTargetClaimJumper, WFContractTargetSmuggler ]
+    duration: 420
+    range: 400
+
+- type: wfContract
+  id: WFContractTSFFactionPlanetDens
+  contractor: WFContractorTSFRequisitions
+  category: Bounty
+  tier: 3
+  title: wf-contract-tsf-faction-planet-dens
+  briefing: wf-contract-tsf-faction-planet-dens-brief
+  reward: 50000, 60000
+  deposit: 2500
+  minutes: 80
+  weight: 1.0
+  minCrew: 2
+  crewBonus: 0.25
+  credits: 15
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WFContractClear
+    wrecks: []
+    targets:
+      entity: WFContractCreatureDen
+      count: 3, 4
+    planet:
+      hostiles: 5, 8
+
+- type: wfContract
+  id: WFContractTSFFactionPlanetCore
+  contractor: WFContractorTSFRequisitions
+  category: Salvage
+  tier: 2
+  title: wf-contract-tsf-faction-planet-core
+  briefing: wf-contract-tsf-faction-planet-core-brief
+  reward: 24000, 30000
+  deposit: 1000
+  minutes: 70
+  weight: 1.1
+  credits: 15
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WFContractRecovery
+    wrecks: []
+    item: WFContractDataCore
+    count: 1, 1
+    planet:
+      hostiles: 3, 5
+
+- type: wfContract
+  id: WFContractUSSPFactionPlanetClaim
+  contractor: WFContractorUSSPCommissariat
+  category: Salvage
+  tier: 1
+  title: wf-contract-ussp-faction-planet-claim
+  briefing: wf-contract-ussp-faction-planet-claim-brief
+  reward: 10000, 14000
+  minutes: 70
+  weight: 1.4
+  objective: !type:WFContractConstruct
+    kits:
+    - entity: WFContractKitBeacon
+      count: 2, 3
+    planet:
+      hostiles: 1, 3
+
+- type: wfContract
+  id: WFContractUSSPFactionPlanetSurvey
+  contractor: WFContractorUSSPCommissariat
+  category: Science
+  tier: 2
+  title: wf-contract-ussp-faction-planet-survey
+  briefing: wf-contract-ussp-faction-planet-survey-brief
+  reward: 18000, 22000
+  deposit: 1000
+  minutes: 75
+  weight: 1.2
+  objective: !type:WFContractSurvey
+    wrecks: []
+    count: 2, 3
+    perAnomaly: 2500
+    anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyIce, AnomalyFlora, AnomalyBluespace ]
+    planet:
+      hostiles: 2, 4
+
+- type: wfContract
+  id: WFContractPDVFactionPlanetCache
+  contractor: WFContractorPDVQuartermaster
+  category: Salvage
+  tier: 2
+  title: wf-contract-pdv-faction-planet-cache
+  briefing: wf-contract-pdv-faction-planet-cache-brief
+  reward: 22000, 28000
+  deposit: 1000
+  minutes: 70
+  weight: 1.1
+  credits: 15
+  creditEntity: Doubloon1
+  objective: !type:WFContractInspect
+    wrecks: []
+    planet:
+      hostiles: 3, 5
+
+- type: wfContract
+  id: WFContractPDVFactionPlanetDownload
+  contractor: WFContractorPDVQuartermaster
+  category: Salvage
+  tier: 3
+  title: wf-contract-pdv-faction-planet-download
+  briefing: wf-contract-pdv-faction-planet-download-brief
+  reward: 45000, 55000
+  deposit: 2500
+  minutes: 80
+  weight: 0.9
+  minCrew: 2
+  crewBonus: 0.25
+  credits: 15
+  creditEntity: Doubloon1
+  objective: !type:WFContractDownload
+    wrecks: []
+    duration: 240
+    waveInterval: 45
+    planet:
+      hostiles: 3, 5
+      waveHostiles: 2, 4
+
+- type: wfContract
+  id: WFContractUSSPOutpostClaim
+  contractor: WFContractorUSSPCommissariat
+  category: Salvage
+  tier: 3
+  title: wf-contract-outpost-claim
+  briefing: wf-contract-outpost-claim-brief
+  reward: 55000, 65000
+  minutes: 30
+  weight: 1.0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WFContractUSSPOutpostClearance
+  objective: !type:WFContractConstruct
+    kits:
+    - entity: WFContractKitBeacon
+      count: 2, 2
+    planet:
+      hostiles: 3, 5
+
+- type: wfContract
+  id: WFContractUSSPOutpostClearance
+  contractor: WFContractorUSSPCommissariat
+  category: Salvage
+  tier: 3
+  title: wf-contract-outpost-clearance
+  briefing: wf-contract-outpost-clearance-brief
+  reward: 85000, 95000
+  minutes: 30
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WFContractUSSPOutpostPower
+  objective: !type:WFContractClear
+    wrecks: []
+    targets:
+      entity: WFContractCreatureDen
+      count: 3, 4
+    planet:
+      hostiles: 5, 8
+
+- type: wfContract
+  id: WFContractUSSPOutpostPower
+  contractor: WFContractorUSSPCommissariat
+  category: Salvage
+  tier: 3
+  title: wf-contract-outpost-power
+  briefing: wf-contract-outpost-power-brief
+  reward: 75000, 85000
+  minutes: 25
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WFContractUSSPOutpostFab
+  objective: !type:WFContractConstruct
+    kits:
+    - entity: WFContractKitGenerator
+      count: 1, 1
+    - entity: WFContractKitSolar
+      count: 4, 4
+    planet:
+      hostiles: 2, 4
+
+- type: wfContract
+  id: WFContractUSSPOutpostFab
+  contractor: WFContractorUSSPCommissariat
+  category: Salvage
+  tier: 4
+  title: wf-contract-outpost-fab
+  briefing: wf-contract-outpost-fab-brief
+  reward: 105000, 115000
+  minutes: 25
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WFContractUSSPOutpostHold
+  objective: !type:WFContractConstruct
+    kits:
+    - entity: WFContractKitFab
+      count: 1, 1
+    - entity: WFContractKitOreProcessor
+      count: 1, 1
+    - entity: WFContractKitAirMiner
+      count: 1, 1
+    planet:
+      hostiles: 2, 4
+
+- type: wfContract
+  id: WFContractUSSPOutpostHold
+  contractor: WFContractorUSSPCommissariat
+  category: Salvage
+  tier: 4
+  title: wf-contract-outpost-hold
+  briefing: wf-contract-outpost-hold-brief
+  reward: 115000, 125000
+  minutes: 30
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WFContractUSSPOutpostCommission
+  objective: !type:WFContractDownload
+    wrecks: []
+    duration: 300
+    waveInterval: 45
+    terminal: WFContractColonyFabCore
+    planet:
+      hostiles: 3, 5
+      waveHostiles: 3, 4
+
+- type: wfContract
+  id: WFContractUSSPOutpostCommission
+  contractor: WFContractorUSSPCommissariat
+  category: Supply
+  tier: 4
+  title: wf-contract-outpost-commission
+  briefing: wf-contract-outpost-commission-brief
+  reward: 135000, 145000
+  minutes: 40
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  objective: !type:WFContractSupply
+    goodsCap: 10000
+    goods:
+    - stack: Steel
+      count: 120, 150
+    - stack: Glass
+      count: 60, 80
+    - stack: Plasteel
+      count: 20, 30

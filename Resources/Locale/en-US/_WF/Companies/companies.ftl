@@ -292,6 +292,7 @@ wf-company-payroll-returned-note = returned, bank refused it
 wf-company-cut-source-cargo = cargo sale
 wf-company-cut-source-bounty = bounty
 wf-company-cut-source-reward = reward
+wf-company-cut-source-contract = contract
 
 wf-company-error-loading = Companies are still loading. Try again in a moment.
 wf-company-error-character = Save your character first.

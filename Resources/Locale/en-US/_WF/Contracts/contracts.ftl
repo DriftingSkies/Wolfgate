@@ -131,6 +131,9 @@ wf-contract-completed = "{$title}" complete. {$pay} {$pay ->
     } paid to your account{$crew ->
         [1] .
        *[other] , your share of the crew's pay.
+    }{$cut ->
+        [0] {""}
+       *[other] {" "}Your company took {$cut}.
     }
 wf-contract-completed-owed = "{$title}" complete. {$pay} {$pay ->
         [one] thaler is
@@ -156,6 +159,7 @@ wf-contract-reason-lost = the cargo was destroyed or lost.
 wf-contract-reason-escaped = the target got away.
 wf-contract-reason-target-gone = the target is no longer out there.
 wf-contract-reason-escort-lost = the ship you were escorting was lost.
+wf-contract-reason-escort-surrendered = the ship you were escorting surrendered.
 wf-contract-reason-anomaly-collapsed = an anomaly collapsed before it was surveyed.
 wf-contract-reason-hull-lost = the hull was destroyed.
 
@@ -195,7 +199,14 @@ wf-contract-objective-goods = {$active ->
 }
 wf-contract-objective-crate = Close the crate aboard {$destination}
 wf-contract-objective-bounty = Destroy {$target}
-wf-contract-objective-recover = Recover the {$item} from the wreck
+wf-contract-objective-recover = Recover the {$item} from the {$planet ->
+    [true] site
+   *[false] wreck
+}
+wf-contract-objective-recover-many = Bring all {$count} {$item}s from the {$planet ->
+    [true] site
+   *[false] wreck
+} to {$destination} ({$done}/{$count})
 wf-contract-objective-return = Bring the {$item} to {$destination}
 wf-contract-location-survey = {$active ->
     [true] Derelict about {$km} km out from {$home}. Expect hostiles aboard.
@@ -209,7 +220,10 @@ wf-contract-objective-tow = {$gap ->
     [-1] Tow the derelict to within {$range} m of {$destination}
    *[other] Tow the derelict to within {$range} m of {$destination} ({$gap} m away)
 }
-wf-contract-objective-survey = Scan every anomaly aboard with an anomaly scanner ({$done}/{$count})
+wf-contract-objective-survey = Scan every anomaly {$planet ->
+    [true] at the site
+   *[false] aboard
+} with an anomaly scanner ({$done}/{$count})
 wf-contract-objective-escort-meet = Meet {$target} at the rendezvous
 wf-contract-objective-escort = See {$target} safely to {$destination}
 wf-contract-location-escort = {$active ->
@@ -275,15 +289,44 @@ wf-contract-location-derelict = {$active ->
     [true] Derelict about {$km} km out from {$home}.
    *[false] Derelict reported about {$km} km out from {$home}. Exact position on accepting.
 }
-wf-contract-objective-clear = Destroy every nest aboard ({$done}/{$count})
+wf-contract-location-deploy = {$active ->
+    [true] {$count} points out from {$home}, up to about {$km} km. The next one is on your waypoints.
+   *[false] {$count} points out from {$home}, up to about {$km} km. Collect the buoys at the board; positions on accepting.
+}
+wf-contract-objective-deploy-count = Set {$count} {$item}s adrift in open space
+wf-contract-objective-deploy = Set a buoy adrift within {$range} m of {$x}, {$y}
+wf-contract-location-picket = {$active ->
+    [true] Picket point about {$km} km out from {$home}.
+   *[false] Picket point about {$km} km out from {$home}. Exact position on accepting.
+}
+wf-contract-objective-picket = Hold within {$range} m of the point ({$percent}%, {$minutes} min in all), or destroy the raiders
+wf-contract-objective-clear = Destroy every {$planet ->
+    [true] den at the site
+   *[false] nest aboard
+} ({$done}/{$count})
 wf-contract-objective-repair-weld = Weld the beacon whole
 wf-contract-objective-repair-cell = Fit a power cell
 wf-contract-objective-download = Stay by the terminal until the download completes ({$percent}%, {$minutes} min in all)
 wf-contract-objective-inspect = Find the suspect cargo crate and inspect it
 
 wf-contract-point-logged = "{$title}": {$done} of {$count} points logged.
+wf-contract-buoy-set = "{$title}": {$done} of {$count} buoys set.
+wf-contract-picket-started = "{$title}": you're on station. Hold the point for {$minutes} minutes; raiders are inbound.
+wf-contract-recovered-one = "{$title}": {$done} of {$count} brought in.
 wf-contract-download-started = "{$title}": download started. Stay by the terminal; it stops when no one is near.
 wf-contract-follow-up = A new lead: "{$title}" is on the board for your crew for the next {$minutes} minutes.
 wf-contract-inspect-verb = Inspect cargo
 wf-contract-inspect-done = You go through the crate against its manifest and log what's really inside.
 wf-contract-reason-device-lost = the objective aboard the derelict was destroyed.
+
+## Planetside contracts.
+
+wf-contract-location-planet = {$active ->
+    [true] {$site} on {$world}. Its signal is marked in orbit; land and find it.
+   *[false] A site on {$world}. Exact site on accepting.
+}
+wf-contract-world-unknown = an unknown world
+wf-contract-site-unknown = a site
+wf-contract-objective-construct = Set every kit down on the site, where it unfolds ({$done}/{$count})
+wf-contract-kit-unfolded = "{$title}": {$done} of {$count} kits set up.
+wf-contract-receiving-locked = This receiving crate is sealed for the station's own faction.

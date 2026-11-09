@@ -336,3 +336,65 @@
     - /Maps/Salvage/tick-colony.yml
     - /Maps/Salvage/outpost-arm.yml
     - /Maps/Salvage/security-chunk.yml
+
+- type: wfContract
+  id: WFContractAsfProbeLine
+  contractor: WFContractorAsfResearch
+  category: Science
+  tier: 2
+  title: wf-contract-asf-probe-line
+  briefing: wf-contract-asf-probe-line-brief
+  reward: 9000, 12000
+  minutes: 55
+  weight: 1.3
+  credits: 10
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractDeploy
+    buoy: WFContractProbeBuoy
+    points: 3, 4
+    perPoint: 2000
+    minDistance: 2500
+    maxDistance: 5000
+
+- type: wfContract
+  id: WFContractAsfPlanetSurvey
+  contractor: WFContractorAsfResearch
+  category: Science
+  tier: 2
+  title: wf-contract-asf-planet-survey
+  briefing: wf-contract-asf-planet-survey-brief
+  reward: 16000, 20000
+  deposit: 1000
+  minutes: 75
+  weight: 1.3
+  credits: 12
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractSurvey
+    wrecks: []
+    count: 2, 3
+    perAnomaly: 2500
+    anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyIce, AnomalyFlora, AnomalyBluespace ]
+    planet:
+      hostiles: 2, 4
+
+- type: wfContract
+  id: WFContractAsfPlanetFieldData
+  contractor: WFContractorAsfResearch
+  category: Science
+  tier: 2
+  title: wf-contract-asf-planet-field-data
+  briefing: wf-contract-asf-planet-field-data-brief
+  reward: 24000, 30000
+  deposit: 1500
+  minutes: 75
+  weight: 1.1
+  crewBonus: 0.25
+  credits: 12
+  creditEntity: WFAsfRewardGrant1
+  objective: !type:WFContractDownload
+    wrecks: []
+    duration: 180
+    waveInterval: 45
+    planet:
+      hostiles: 2, 4
+      waveHostiles: 2, 3

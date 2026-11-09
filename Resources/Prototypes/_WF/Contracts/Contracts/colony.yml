@@ -236,3 +236,82 @@
     - /Maps/Salvage/small-1.yml
     - /Maps/Salvage/small-2.yml
     - /Maps/Salvage/small-ai-survey-drone.yml
+
+- type: wfContract
+  id: WFContractColonyWatch
+  contractor: WFContractorColonyCouncil
+  category: Bounty
+  tier: 2
+  title: wf-contract-colony-watch
+  briefing: wf-contract-colony-watch-brief
+  reward: 15000, 20000
+  deposit: 1000
+  minutes: 40
+  weight: 1.3
+  objective: !type:WFContractPicket
+    encounters: [ WFContractTargetClaimJumper ]
+    duration: 360
+    range: 400
+
+- type: wfContract
+  id: WFContractColonyLostSettlers
+  contractor: WFContractorColonyCouncil
+  category: Salvage
+  tier: 2
+  title: wf-contract-colony-lost-settlers
+  briefing: wf-contract-colony-lost-settlers-brief
+  reward: 18000, 24000
+  deposit: 1000
+  minutes: 55
+  minCrew: 2
+  crewBonus: 0.25
+  weight: 1.2
+  objective: !type:WFContractRecovery
+    wrecks:
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+    - /Maps/Salvage/medium-ruined-emergency-shuttle.yml
+    item: WFContractStasisBag
+    count: 2, 3
+    infestation:
+    - entity: MobCarpSalvage
+      count: 1, 3
+
+- type: wfContract
+  id: WFContractColonyPlanetHomestead
+  contractor: WFContractorColonyCouncil
+  category: Salvage
+  tier: 2
+  title: wf-contract-colony-planet-homestead
+  briefing: wf-contract-colony-planet-homestead-brief
+  reward: 20000, 26000
+  deposit: 1000
+  minutes: 75
+  weight: 1.3
+  objective: !type:WFContractConstruct
+    kits:
+    - entity: WFContractKitGenerator
+      count: 1, 1
+    - entity: WFContractKitSolar
+      count: 2, 3
+    planet:
+      hostiles: 2, 4
+
+- type: wfContract
+  id: WFContractColonyPlanetDens
+  contractor: WFContractorColonyCouncil
+  category: Bounty
+  tier: 2
+  title: wf-contract-colony-planet-dens
+  briefing: wf-contract-colony-planet-dens-brief
+  reward: 22000, 28000
+  deposit: 1000
+  minutes: 70
+  weight: 1.2
+  crewBonus: 0.25
+  objective: !type:WFContractClear
+    wrecks: []
+    targets:
+      entity: WFContractCreatureDen
+      count: 2, 3
+    planet:
+      hostiles: 3, 5

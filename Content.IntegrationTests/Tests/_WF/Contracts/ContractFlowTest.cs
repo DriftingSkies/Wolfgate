@@ -1,4 +1,5 @@
 #nullable enable
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Content.Server._WF.Contracts;
@@ -143,6 +144,50 @@ public sealed class ContractFlowTest
             Assert.That(contracts.Standing(holder, "WFContractorMMC"), Is.EqualTo(1));
         });
 
+        // A faction station keeps what is delivered: the test colony has no silo, so the goods go to a receiving crate.
+        WFContract greenhouse = default!;
+        await server.WaitAssertion(() =>
+        {
+            greenhouse = contracts.PostOffer("WFContractColonyGreenhouse")!;
+            greenhouse.Deposit = 0;
+            Assert.That(contracts.ForceAccept(mob, greenhouse.Id, board), Is.True);
+            var manifest = greenhouse.Items.Single();
+            var supply = (WFContractSupply) server.ProtoMan.Index<WFContractPrototype>("WFContractColonyGreenhouse").Objective;
+            var sheets = new Dictionary<string, string> { ["Glass"] = "SheetGlass1", ["Plastic"] = "SheetPlastic1", ["Steel"] = "SheetSteel1" };
+            foreach (var (line, count) in greenhouse.Goods)
+            {
+                Fill(server, manifest, sheets[supply.Goods[line].Stack!.Value.Id], count);
+            }
+
+            xforms.SetCoordinates(manifest, new EntityCoordinates(Largest(server, colony), 1.5f, 1.5f));
+        });
+        await pair.RunTicksSync(150);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(greenhouse.Status, Is.EqualTo(WFContractStatus.Completed), "The greenhouse delivery did not complete.");
+            var stations = entMan.System<StationSystem>();
+            var receiving = new List<EntityUid>();
+            var query = entMan.EntityQueryEnumerator<MetaDataComponent, TransformComponent>();
+            while (query.MoveNext(out var uid, out var meta, out var xform))
+            {
+                if (meta.EntityPrototype?.ID == "WFContractReceivingCrate" && stations.GetOwningStation(uid, xform) == colony)
+                    receiving.Add(uid);
+            }
+
+            Assert.That(receiving, Has.Count.EqualTo(1), "The faction station got no receiving crate.");
+            var kept = entMan.GetComponent<Content.Server.Storage.Components.EntityStorageComponent>(receiving[0]).Contents.ContainedEntities
+                .Sum(e => entMan.GetComponent<StackComponent>(e).Count);
+            Assert.That(kept, Is.EqualTo(greenhouse.Goods.Sum(g => g.Count)), "The delivered goods were not all kept for the faction.");
+            // Sealed for the colony, so nobody else can take the goods back out and deliver them again.
+            Assert.That(entMan.GetComponent<WFContractReceivingComponent>(receiving[0]).Companies.Select(c => c.Id), Does.Contain("TSFCivilian"));
+            var storage = entMan.System<SharedEntityStorageSystem>();
+            Assert.That(storage.TryOpenStorage(mob, receiving[0]), Is.False, "An outsider opened a faction's receiving crate.");
+            Assert.That(entMan.GetComponent<TransformComponent>(receiving[0]).Anchored, Is.True, "The receiving crate can be hauled off to sell.");
+            var pulled = new Content.Shared.Pulling.Events.BeingPulledAttemptEvent(mob, receiving[0]);
+            entMan.EventBus.RaiseLocalEvent(receiving[0], pulled);
+            Assert.That(pulled.Cancelled, Is.True, "An outsider could pull a faction's receiving crate.");
+        });
+
         // Recovery: a colony shuttle's recorder, out of a loaded wreck, back aboard the Stellar Blessing.
         await server.WaitAssertion(() =>
         {
@@ -263,7 +308,13 @@ public sealed class ContractFlowTest
             Assert.That(escort.EncounterEntity is { } run && !entMan.Deleted(run), Is.True, "The escort run removed itself when its escort arrived.");
             Assert.That(entMan.GetComponent<WFEncounterComponent>(escort.EncounterEntity!.Value).Begun, Is.True);
             Assert.That(contracts.ActiveFor(holder).Single().Id, Is.EqualTo(escort.Id), "The escort contract ended when its escort arrived.");
-            Assert.That(contracts.TryAbandon(holder, escort.Id), Is.True);
+            // Surrendered and held still: not arrived, whatever its orders say.
+            entMan.GetComponent<WFEncounterComponent>(escort.EncounterEntity!.Value).Ships["freighter"].Surrendered = true;
+        });
+        await pair.RunTicksSync(150);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(escort.Status, Is.EqualTo(WFContractStatus.Failed), "An escorted ship's surrender did not fail the escort.");
         });
 
         await pair.CleanReturnAsync();

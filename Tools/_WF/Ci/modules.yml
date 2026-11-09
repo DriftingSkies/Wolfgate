@@ -333,7 +333,7 @@ unmarked:
     reason: TSF faction contract boards with pickup pads in the arrival hall, by both west public docks and the navy dock hall.
   - path: Resources/Maps/_Mono/POI/camelot.yml
     module: Contracts
-    reason: USSP faction contract boards with pickup pads off the warp corridor and by the north-west and south-west docks.
+    reason: USSP contract boards with pickup pads off the warp corridor and by the north-west and south-west docks, and the Viper Group board in their office hall.
   - path: Resources/Maps/_Mono/POI/pdvhelios.yml
     module: Contracts
     reason: PDV faction contract boards with pickup pads in the civilian arm by the west docks and in the cargo bay.

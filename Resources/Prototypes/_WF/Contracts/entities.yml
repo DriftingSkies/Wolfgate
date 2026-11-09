@@ -163,6 +163,26 @@
   - type: PointLight
     color: "#9b6dff"
 
+- type: entity
+  parent: WFContractBoard
+  id: WFContractBoardVG
+  name: Viper Group board
+  description: "Deniable work for the Viper Group: raids, prizes, relics and extractions, paid in thalers and ship component crates."
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: syndishuttle
+      shader: unshaded
+    - state: syndie_key
+      shader: unshaded
+  - type: WFContractBoard
+    board: VG
+  - type: PointLight
+    color: "#b82121"
+
 # The Contracts PDA app.
 - type: entity
   parent: NFBasePDACartridge
@@ -493,6 +513,51 @@
 
 # Devices and targets placed aboard derelicts by contracts.
 
+# Deploy: set adrift in open space at a marked point.
+- type: entity
+  parent: BaseItem
+  id: WFContractRelayBuoy
+  name: relay buoy
+  description: A self-righting navigation buoy under a contract seal. Set it adrift at its marked point and it switches on by itself.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/station_beacon.rsi
+    layers:
+    - state: icon
+    - state: blink
+      shader: unshaded
+  - type: Item
+    size: Large
+  - type: StaticPrice
+    price: 0
+
+- type: entity
+  parent: WFContractRelayBuoy
+  id: WFContractSensorBuoy
+  name: sensor buoy
+  description: A passive sensor buoy in Federation grey. Set it adrift at its marked point and it listens for drive wakes by itself.
+
+- type: entity
+  parent: WFContractRelayBuoy
+  id: WFContractProbeBuoy
+  name: gravimetric probe
+  description: A sealed ASF probe that maps the local gravity field. Set it adrift at its marked point and it starts logging by itself.
+
+# Rescue: carried out of a wreck one at a time.
+- type: entity
+  parent: BaseItem
+  id: WFContractStasisBag
+  name: occupied stasis bag
+  description: A sealed stasis bag holding an unconscious survivor, kept cold until a medical bay can thaw them. Handle it gently.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Medical/Morgue/bodybags.rsi
+    state: bag
+  - type: Item
+    size: Huge
+  - type: StaticPrice
+    price: 0
+
 # Repair: weld it whole and fit a power cell. Starts damaged.
 - type: entity
   id: WFContractNavBeacon
@@ -677,3 +742,173 @@
   - type: Sprite
     layers:
     - state: weapon-components
+
+# Planetside clearing: a den the world's wildlife breeds in. Collapse it.
+- type: entity
+  id: WFContractCreatureDen
+  name: creature den
+  description: A dug-out den reeking of the world's wildlife, gnawed bones round its mouth. Collapse it before more come out.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.4
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    sprite: _WF/Fauna/Objects/CHOMP/tribal_gear.rsi
+    state: hole
+    drawdepth: FloorObjects
+  - type: InteractionOutline
+  - type: Clickable
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Rock
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+# Construction: a kit set down on its site unfolds into what it is named for.
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: WFContractKitBase
+  name: outpost kit
+  description: A sealed prefab kit under a contract seal. Set it down on the marked site and it unfolds by itself.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/flatpack.rsi
+    state: icon-default
+  - type: Item
+    size: Huge
+  - type: StaticPrice
+    price: 0
+
+- type: entity
+  parent: WFContractKitBase
+  id: WFContractKitBeacon
+  name: outpost beacon kit
+  components:
+  - type: WFContractKit
+    unfold: WFContractOutpostBeacon
+
+- type: entity
+  parent: WFContractKitBase
+  id: WFContractKitGenerator
+  name: outpost generator kit
+  components:
+  - type: WFContractKit
+    unfold: PortableGeneratorPacman
+
+- type: entity
+  parent: WFContractKitBase
+  id: WFContractKitSolar
+  name: outpost solar kit
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/flatpack.rsi
+    state: solar-assembly-part
+  - type: WFContractKit
+    unfold: SolarPanel
+
+- type: entity
+  parent: WFContractKitBase
+  id: WFContractKitFab
+  name: colony fab kit
+  description: A folded-up colony fabricator under a contract seal. Set it down on the marked site and it unfolds by itself.
+  components:
+  - type: WFContractKit
+    unfold: Autolathe
+
+- type: entity
+  parent: WFContractKitBase
+  id: WFContractKitOreProcessor
+  name: ore processor kit
+  components:
+  - type: WFContractKit
+    unfold: OreProcessor
+
+- type: entity
+  parent: WFContractKitBase
+  id: WFContractKitAirMiner
+  name: air miner kit
+  components:
+  - type: WFContractKit
+    unfold: GasMinerOxygen
+
+# What a beacon kit unfolds into: an outpost's marker, lit and anchored.
+- type: entity
+  id: WFContractOutpostBeacon
+  name: outpost beacon
+  description: A claim beacon marking a new outpost, blinking for any ship overhead.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.3,-0.3,0.3,0.3"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    sprite: Objects/Devices/station_beacon.rsi
+    layers:
+    - state: icon
+    - state: blink
+      shader: unshaded
+  - type: PointLight
+    color: "#7fd4ff"
+    radius: 3.0
+    energy: 1.5
+  - type: InteractionOutline
+  - type: Clickable
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+# The outpost chain's hold stage: stay by it while it prints the outpost's first parts.
+- type: entity
+  parent: WFContractDataTerminal
+  id: WFContractColonyFabCore
+  name: colony fab core
+  description: The heart of a new outpost's fabricator, printing its first parts. Stay close while it works; the wildlife hates the noise.
+
+# What a faction station keeps contract deliveries in when its material silo won't take them.
+- type: entity
+  parent: CrateGenericSteel
+  id: WFContractReceivingCrate
+  name: receiving crate
+  description: Goods a contract delivered for the station's own use, set aside for its faction to collect.

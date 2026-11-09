@@ -6,6 +6,7 @@ using Content.Server.Anomaly.Components;
 using Content.Server.Storage.Components;
 using Content.Shared._WF.Contracts;
 using Content.Shared._WF.Encounters;
+using Content.Server.Shuttles.Components;
 using Content.Shared._WF.NpcCrew;
 using Content.Shared.Anomaly;
 using Content.Shared.Anomaly.Components;
@@ -36,6 +37,11 @@ public sealed partial class WFContractSystem
 
     /// <summary>How close a player must be to a wreck to keep it in the world once its contract ends.</summary>
     private const float WreckKeepRange = 300f;
+
+    /// <summary>Tries at finding a site, each with the band widened by <see cref="SiteWidening"/>.</summary>
+    private const int SitePasses = 3;
+
+    private const float SiteWidening = 1.3f;
 
     /// <summary>Open space a bounty or wreck needs round it.</summary>
     private const float SiteClearance = 250f;
@@ -108,26 +114,29 @@ public sealed partial class WFContractSystem
                 if (options.Count == 0)
                     return false;
 
+                if (!SiteAvailable(contract.Home, bounty.MinDistance, bounty.MaxDistance, bounty.StationClearance))
+                    return false;
+
                 contract.Encounter = _random.Pick(options);
                 contract.Distance = (bounty.MinDistance + bounty.MaxDistance) / 2f;
                 return true;
             }
             case WFContractRecovery recovery:
             {
-                if (recovery.Wrecks.Count == 0 || !_proto.HasIndex(recovery.Item))
+                if (!_proto.HasIndex(recovery.Item) || !RollWreck(contract, recovery.Wrecks, recovery.MinDistance, recovery.MaxDistance, recovery.StationClearance))
                     return false;
 
-                contract.Wreck = _random.Pick(recovery.Wrecks);
+                contract.Count = _random.Next(recovery.Count.X, Math.Max(recovery.Count.X, recovery.Count.Y) + 1);
                 contract.Destination = recovery.To == WFContractEnd.Board ? board : contract.Home;
                 contract.Distance = (recovery.MinDistance + recovery.MaxDistance) / 2f;
                 return true;
             }
             case WFContractTow tow:
                 contract.Destination = contract.Home;
-                return RollWreck(contract, tow.Wrecks, tow.MinDistance, tow.MaxDistance);
+                return RollWreck(contract, tow.Wrecks, tow.MinDistance, tow.MaxDistance, tow.StationClearance);
             case WFContractSurvey survey:
             {
-                if (!survey.Anomalies.Any(id => _proto.HasIndex(id)) || !RollWreck(contract, survey.Wrecks, survey.MinDistance, survey.MaxDistance))
+                if (!survey.Anomalies.Any(id => _proto.HasIndex(id)) || !RollWreck(contract, survey.Wrecks, survey.MinDistance, survey.MaxDistance, survey.StationClearance))
                     return false;
 
                 contract.Count = _random.Next(survey.Count.X, Math.Max(survey.Count.X, survey.Count.Y) + 1);
@@ -317,7 +326,6 @@ public sealed partial class WFContractSystem
                     if (PickSite(contract.Home, bounty.MinDistance, bounty.MaxDistance, bounty.StationClearance) is not { } site)
                         continue;
 
-                    // The contract's tier picks the target's ships from tier bands, such as the Reaver line.
                     if (!_encounters.TrySpawn(encounterProto, site, out var encounter, offBudget: true, tier: proto.Tier))
                     {
                         Log.Warning($"Bounty contract {contract.Id} could not start {encounterId} at {site}.");
@@ -325,6 +333,7 @@ public sealed partial class WFContractSystem
                     }
 
                     contract.Site = site;
+                    contract.Distance = SiteDistance(contract.Home, site);
                     contract.EncounterEntity = encounter;
                     return true;
                 }
@@ -336,14 +345,19 @@ public sealed partial class WFContractSystem
                 if (LoadWreck(contract, recovery.MinDistance, recovery.MaxDistance, recovery.StationClearance) is not { } grid)
                     return false;
 
-                if (FreeTile(grid) is not { } tile)
+                for (var i = 0; i < Math.Max(1, contract.Count) && FreeTile(grid, contract.SiteBounds) is { } tile; i++)
+                {
+                    Track(contract, Spawn(recovery.Item, tile));
+                }
+
+                if (contract.Items.Count == 0)
                 {
                     DropWreck(contract);
                     return false;
                 }
 
-                Track(contract, Spawn(recovery.Item, tile));
-                Infest(grid, recovery.Infestation);
+                contract.Count = contract.Items.Count;
+                Infest(contract, grid, recovery.Infestation);
                 return true;
             }
             case WFContractTow tow:
@@ -351,7 +365,7 @@ public sealed partial class WFContractSystem
                 if (LoadWreck(contract, tow.MinDistance, tow.MaxDistance, tow.StationClearance) is not { } grid)
                     return false;
 
-                Infest(grid, tow.Infestation);
+                Infest(contract, grid, tow.Infestation);
                 return true;
             }
             case WFContractSurvey survey:
@@ -359,7 +373,7 @@ public sealed partial class WFContractSystem
                 if (LoadWreck(contract, survey.MinDistance, survey.MaxDistance, survey.StationClearance) is not { } grid)
                     return false;
 
-                var grids = LoadTwins(contract, grid, survey.Derelicts);
+                var grids = contract.PlanetSite != null ? new List<Entity<MapGridComponent>> { grid } : LoadTwins(contract, grid, survey.Derelicts);
                 PlaceAnomalies(contract, grids, survey.Anomalies);
                 if (contract.Anomalies.Count < contract.Count)
                 {
@@ -369,7 +383,7 @@ public sealed partial class WFContractSystem
 
                 foreach (var derelict in grids)
                 {
-                    Infest(derelict, survey.Infestation);
+                    Infest(contract, derelict, survey.Infestation);
                 }
 
                 return true;
@@ -410,6 +424,10 @@ public sealed partial class WFContractSystem
     /// <summary>Loads a contract's wreck in open space near its contractor, named for the contract.</summary>
     private Entity<MapGridComponent>? LoadWreck(WFContract contract, float min, float max, float clearance)
     {
+        var proto = _proto.Index(contract.Prototype);
+        if (proto.Objective.Planet is { } planet)
+            return ClaimSite(contract, planet, proto.Tier);
+
         if (contract.Wreck is not { } wreck || PickSite(contract.Home, min, max, clearance) is not { } site
             || !_mapLoader.TryLoadGrid(site.MapId, wreck, out var grid, offset: site.Position, rot: _random.NextAngle()))
             return null;
@@ -423,6 +441,7 @@ public sealed partial class WFContractSystem
     /// <summary>Deletes a wreck loaded for a contract that could not start.</summary>
     private void DropWreck(WFContract contract)
     {
+        ReleaseSite(contract);
         if (contract.WreckGrid is { } wreck)
             QueueDel(wreck);
 
@@ -437,15 +456,18 @@ public sealed partial class WFContractSystem
         contract.Targets.Clear();
     }
 
-    /// <summary>Places hostile mobs on free tiles of a wreck.</summary>
-    private void Infest(Entity<MapGridComponent> grid, List<WFContractSpawn> infestation)
+    /// <summary>Places hostile mobs on free tiles of a wreck or planet site.</summary>
+    private void Infest(WFContract contract, Entity<MapGridComponent> grid, List<WFContractSpawn> infestation)
     {
         foreach (var spawn in infestation)
         {
             var count = _random.Next(spawn.Count.X, Math.Max(spawn.Count.X, spawn.Count.Y) + 1);
-            for (var i = 0; i < count && FreeTile(grid) is { } tile; i++)
+            for (var i = 0; i < count; i++)
             {
-                Spawn(spawn.Entity, tile);
+                if (contract.PlanetSite != null)
+                    PlaceNative(contract, grid, spawn.Entity);
+                else if (FreeTile(grid) is { } tile)
+                    Spawn(spawn.Entity, tile);
             }
         }
     }
@@ -520,8 +542,22 @@ public sealed partial class WFContractSystem
                     Void(contract, "wf-contract-reason-target-gone");
                 break;
             case WFContractRecovery:
-                if (contract.Items.FirstOrDefault() is { Valid: true } recovered && !TerminatingOrDeleted(recovered)
-                    && OnStation(recovered, contract.Destination))
+                foreach (var recovered in contract.Items)
+                {
+                    if (TerminatingOrDeleted(recovered) || !TryComp<WFContractItemComponent>(recovered, out var comp) || comp.Delivered
+                        || !OnStation(recovered, contract.Destination))
+                        continue;
+
+                    // Kept, not deleted, so an artifact's nodes can still be counted at completion.
+                    comp.Delivered = true;
+                    contract.Delivered++;
+                    _dirty = true;
+                    if (contract.Delivered < contract.Items.Count && contract.User is { } user)
+                        Tell(new WFContractHolder(user, contract.Character), Loc.GetString("wf-contract-recovered-one",
+                            ("title", Title(contract)), ("done", contract.Delivered), ("count", contract.Items.Count)));
+                }
+
+                if (contract.Items.Count > 0 && contract.Delivered >= contract.Items.Count)
                     Complete(contract);
                 break;
             case WFContractTow tow:
@@ -529,7 +565,6 @@ public sealed partial class WFContractSystem
                     Fail(contract, "wf-contract-reason-hull-lost");
                 else if (TowGap(contract) is { } gap && gap <= tow.Range)
                 {
-                    // The contractor takes the hull: gone once no one is aboard.
                     _departures[towed] = _timing.CurTime;
                     Complete(contract);
                 }
@@ -549,20 +584,31 @@ public sealed partial class WFContractSystem
                     Void(contract, "wf-contract-reason-target-gone");
                 else if (EscortedShip(contract, escort) is not { } ship || TerminatingOrDeleted(ship.Grid))
                     Fail(contract, "wf-contract-reason-escort-lost");
-                else if (ship.Flown || Arrived(ship))
+                else if (ship.Surrendered)
+                    Fail(contract, "wf-contract-reason-escort-surrendered");
+                else if (ship.Flown || Arrived(ship, contract.Destination))
                     Complete(contract);
                 break;
         }
     }
 
-    /// <summary>
-    /// Whether an escorted ship has reached its destination: no dock call is left in its orders. The escort is done
-    /// there, whatever the ship does with its departure afterwards.
-    /// </summary>
-    private bool Arrived(Encounters.Components.WFEncounterShipState ship)
+    /// <summary>Whether an escorted ship is docked to one of its destination station's grids.</summary>
+    private bool Arrived(Encounters.Components.WFEncounterShipState ship, EntityUid? destination)
     {
-        return _crewObjectives.TryGetQueue(ship.Grid, ship.Group, out var left)
-               && left.All(order => order.Kind != WFCrewObjectiveKind.Dock);
+        if (destination == null)
+            return false;
+
+        if (ship.Virtual)
+            return _crewObjectives.TryGetQueue(ship.Grid, ship.Group, out var left) && left.All(order => order.Kind != WFCrewObjectiveKind.Dock);
+
+        var docks = EntityQueryEnumerator<DockingComponent, TransformComponent>();
+        while (docks.MoveNext(out _, out var dock, out var xform))
+        {
+            if (xform.GridUid == ship.Grid && dock.DockedWith is { } other && OnStation(other, destination))
+                return true;
+        }
+
+        return false;
     }
 
     /// <summary>The ship an escort contract protects, if its encounter is still running.</summary>
@@ -594,6 +640,7 @@ public sealed partial class WFContractSystem
             if (TerminatingOrDeleted(item) || !TryComp<WFContractItemComponent>(item, out var comp))
                 continue;
 
+            var set = comp.Delivered;
             comp.Delivered = true;
             // An undelivered supply crate is the holder's to keep.
             if (proto.Objective is WFContractSupply && contract.Status != WFContractStatus.Completed)
@@ -605,12 +652,23 @@ public sealed partial class WFContractSystem
 
             if (proto.Objective is WFContractSupply)
                 TakeDelivery(contract, item);
+
+            if (proto.Objective is WFContractDeploy && set && contract.Status == WFContractStatus.Completed)
+            {
+                RemComp<WFContractItemComponent>(item);
+                _departures[item] = _timing.CurTime + BuoyLifetime;
+                continue;
+            }
+
             QueueDel(item);
         }
 
         contract.Items.Clear();
+        ReleaseSite(contract);
+        ReleaseHeld(contract);
         contract.Anomalies.Clear();
         ClearMarkers(contract);
+        WithdrawRaiders(contract);
         foreach (var twin in contract.ExtraWrecks)
         {
             if (!TerminatingOrDeleted(twin) && !PlayerNear(twin, WreckKeepRange))
@@ -621,10 +679,7 @@ public sealed partial class WFContractSystem
             QueueDel(wreck);
     }
 
-    /// <summary>
-    /// The contractor keeps a delivered crate's manifest goods; everything else, players caught inside when it closed
-    /// above all, is put out beside it before the crate goes.
-    /// </summary>
+    /// <summary>Takes a delivered crate's manifest goods and puts everything else, players above all, out beside it.</summary>
     private void TakeDelivery(WFContract contract, EntityUid crate)
     {
         if (_proto.Index(contract.Prototype).Objective is not WFContractSupply supply
@@ -632,6 +687,8 @@ public sealed partial class WFContractSystem
             return;
 
         var needed = contract.Goods.Select(g => g.Count).ToList();
+        var faction = contract.Destination is { } station && HousesFaction(station) ? station : (EntityUid?) null;
+        EntityUid? received = null;
         foreach (var uid in storage.Contents.ContainedEntities.ToList())
         {
             if (HasComp<MobStateComponent>(uid) || HasComp<MindContainerComponent>(uid))
@@ -643,7 +700,10 @@ public sealed partial class WFContractSystem
                     continue;
 
                 needed[i] -= count;
-                Del(uid);
+                if (faction is not { } home)
+                    Del(uid);
+                else
+                    Receive(home, uid, ReceivingCompanies(home, contract), ref received);
                 break;
             }
         }
@@ -715,12 +775,24 @@ public sealed partial class WFContractSystem
 
         if (_proto.Index(contract.Prototype).Objective is WFContractEscort escort)
         {
-            if (args.Resolution == WFEncounterResolution.Ended)
+            // A surrender ends the run too, and is the escort's failure, not the target leaving.
+            if (EscortedShip(contract, escort) is { Surrendered: true })
+                Fail(contract, "wf-contract-reason-escort-surrendered");
+            else if (args.Resolution == WFEncounterResolution.Ended)
                 Void(contract, "wf-contract-reason-target-gone");
-            else if (EscortedShip(contract, escort) is { } ship && !TerminatingOrDeleted(ship.Grid) && (ship.Flown || Arrived(ship)))
+            else if (EscortedShip(contract, escort) is { } ship && !TerminatingOrDeleted(ship.Grid)
+                     && (ship.Flown || Arrived(ship, contract.Destination)))
                 Complete(contract);
             else if (args.Resolution is WFEncounterResolution.Destroyed or WFEncounterResolution.Expired)
                 Fail(contract, "wf-contract-reason-escort-lost");
+            return;
+        }
+
+        // Destroying a picket's raiders completes it; their leaving doesn't.
+        if (_proto.Index(contract.Prototype).Objective is WFContractPicket)
+        {
+            if (args.Resolution == WFEncounterResolution.Destroyed)
+                Complete(contract);
             return;
         }
 
@@ -759,18 +831,15 @@ public sealed partial class WFContractSystem
         return false;
     }
 
-    /// <summary>
-    /// Open space at a distance from a station, clear of grids, stations and gravity wells. A crowded band is tried
-    /// again wider and with half the station clearance, so busy sectors still find a site.
-    /// </summary>
-    private MapCoordinates? PickSite(EntityUid station, float min, float max, float clearance)
+    /// <summary>Open space at a distance from a station, clear of grids, stations and gravity wells; a crowded band is widened.</summary>
+    private MapCoordinates? PickSite(EntityUid station, float min, float max, float clearance, bool quiet = false)
     {
         if (_station.GetLargestGrid(station) is not { } grid)
             return null;
 
         var centre = _transform.GetMapCoordinates(grid);
         var far = Math.Max(min, max);
-        for (var pass = 0; pass < 3; pass++)
+        for (var pass = 0; pass < SitePasses; pass++)
         {
             for (var attempt = 0; attempt < 40; attempt++)
             {
@@ -779,31 +848,80 @@ public sealed partial class WFContractSystem
                     return new MapCoordinates(point, centre.MapId);
             }
 
-            far *= 1.5f;
-            clearance *= 0.5f;
+            far *= SiteWidening;
         }
 
-        Log.Warning($"No clear contract site {min}-{max} m from {ToPrettyString(station)}.");
+        if (!quiet)
+            Log.Warning($"No clear contract site {min}-{max} m from {ToPrettyString(station)}.");
         return null;
     }
 
-    /// <summary>A random floor tile of a wreck clear of tables and machines, else any walkable one.</summary>
-    private EntityCoordinates? FreeTile(Entity<MapGridComponent> grid)
+    /// <summary>Whether a hostile site can be found now, so a crowded sector posts no bounty it couldn't start.</summary>
+    private bool SiteAvailable(EntityUid station, float min, float max, float clearance)
     {
-        var clear = new List<Vector2i>();
-        var walkable = new List<Vector2i>();
-        foreach (var tile in _map.GetAllTiles(grid, grid.Comp))
-        {
-            if (_turf.IsSpace(tile) || _turf.IsTileBlocked(grid, tile.GridIndices, CollisionGroup.Impassable, grid.Comp))
-                continue;
+        return PickSite(station, min, max, clearance, quiet: true) != null;
+    }
 
-            walkable.Add(tile.GridIndices);
-            if (!_turf.IsTileBlocked(grid, tile.GridIndices, CargoBlockers, grid.Comp))
-                clear.Add(tile.GridIndices);
+    /// <summary>Metres from a station's largest grid to a site.</summary>
+    private float SiteDistance(EntityUid station, MapCoordinates site)
+    {
+        return _station.GetLargestGrid(station) is { } grid
+            ? (_transform.GetMapCoordinates(grid).Position - site.Position).Length()
+            : 0f;
+    }
+
+    /// <summary>A random floor tile of a wreck clear of tables and machines, else any walkable one.</summary>
+    private EntityCoordinates? FreeTile(Entity<MapGridComponent> grid, Box2i? bounds = null)
+    {
+        // Spawns in the same tick share one scan, each taking its own tile.
+        if (_freeTiles is not { } cache || cache.Grid != grid.Owner || cache.Bounds != bounds || cache.Tick != _timing.CurTick)
+        {
+            cache = (grid.Owner, bounds, _timing.CurTick, new List<Vector2i>(), new List<Vector2i>());
+            foreach (var tile in SiteTiles(grid, bounds))
+            {
+                if (_turf.IsSpace(tile) || _turf.IsTileBlocked(grid, tile.GridIndices, CollisionGroup.Impassable, grid.Comp))
+                    continue;
+
+                cache.Walkable.Add(tile.GridIndices);
+                if (!_turf.IsTileBlocked(grid, tile.GridIndices, CargoBlockers, grid.Comp))
+                    cache.Clear.Add(tile.GridIndices);
+            }
+
+            _freeTiles = cache;
         }
 
-        // A cramped wreck may have no clear floor at all; any walkable tile beats failing the contract.
-        var pool = clear.Count > 0 ? clear : walkable;
-        return pool.Count == 0 ? null : _map.GridTileToLocal(grid, grid.Comp, _random.Pick(pool));
+        // A cramped wreck may have no clear floor.
+        var pool = cache.Clear.Count > 0 ? cache.Clear : cache.Walkable;
+        if (pool.Count == 0)
+            return null;
+
+        var picked = _random.Pick(pool);
+        cache.Clear.Remove(picked);
+        if (cache.Walkable.Count > 1)
+            cache.Walkable.Remove(picked);
+        return _map.GridTileToLocal(grid, grid.Comp, picked);
+    }
+
+    private (EntityUid Grid, Box2i? Bounds, Robust.Shared.Timing.GameTick Tick, List<Vector2i> Clear, List<Vector2i> Walkable)? _freeTiles;
+
+    /// <summary>Every tile of a wreck, or the ground tiles within a planet site's bounds.</summary>
+    private IEnumerable<TileRef> SiteTiles(Entity<MapGridComponent> grid, Box2i? bounds)
+    {
+        if (bounds is not { } box)
+        {
+            foreach (var tile in _map.GetAllTiles(grid, grid.Comp))
+                yield return tile;
+            yield break;
+        }
+
+        for (var x = box.Left; x < box.Right; x++)
+        {
+            for (var y = box.Bottom; y < box.Top; y++)
+            {
+                var tile = _map.GetTileRef(grid, grid.Comp, new Vector2i(x, y));
+                if (!tile.Tile.IsEmpty)
+                    yield return tile;
+            }
+        }
     }
 }

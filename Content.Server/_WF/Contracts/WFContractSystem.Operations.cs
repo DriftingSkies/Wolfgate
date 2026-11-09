@@ -1,5 +1,7 @@
 using System.Linq;
 using Content.Shared._WF.Contracts;
+using Content.Shared._WF.Encounters;
+using Content.Shared._WF.NpcCrew;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
@@ -13,7 +15,7 @@ using Robust.Shared.Random;
 
 namespace Content.Server._WF.Contracts;
 
-/// <summary>Mail runs, sweeps, clearing, repairs, downloads, inspections, salvage operations, departures and chains.</summary>
+/// <summary>Mail runs, sweeps, buoys, pickets, clearing, repairs, downloads, inspections, salvage operations, departures and chains.</summary>
 public sealed partial class WFContractSystem
 {
     [Dependency] private DamageableSystem _damageable = default!;
@@ -24,13 +26,24 @@ public sealed partial class WFContractSystem
     /// <summary>Metres between derelicts of a twin survey.</summary>
     private const float TwinSpread = 160f;
 
+    /// <summary>Failed raider spawns before a picket's clock runs without them, and the wait between tries.</summary>
+    private const int RaiderTries = 3;
+
+    private static readonly TimeSpan RaiderRetry = TimeSpan.FromSeconds(30);
+
+    /// <summary>Open space a picket's raiders need round where they arrive.</summary>
+    private const float RaiderClearance = 200f;
+
     /// <summary>Least distance between two points of a sweep.</summary>
     private const float SweepSpacing = 800f;
 
     /// <summary>How long a follow-up offer waits for its crew.</summary>
     private static readonly TimeSpan FollowUpLifetime = TimeSpan.FromMinutes(15);
 
-    /// <summary>Derelicts finished with (repaired, towed in) and when they go, once no one is aboard.</summary>
+    /// <summary>How long a set buoy stays in space after its contract completes.</summary>
+    private static readonly TimeSpan BuoyLifetime = TimeSpan.FromMinutes(30);
+
+    /// <summary>Derelicts finished with (repaired, towed in) and set buoys, and when they go, once no one is aboard.</summary>
     private readonly Dictionary<EntityUid, TimeSpan> _departures = new();
 
     private void InitializeOperations()
@@ -69,17 +82,47 @@ public sealed partial class WFContractSystem
                 contract.Distance = (sweep.MinDistance + sweep.MaxDistance) / 2f;
                 contract.Reward += sweep.PerPoint * contract.Count;
                 return true;
+            case WFContractDeploy deploy:
+                if (!_proto.HasIndex(deploy.Buoy))
+                    return false;
+
+                contract.Count = _random.Next(deploy.Points.X, Math.Max(deploy.Points.X, deploy.Points.Y) + 1);
+                contract.Distance = (deploy.MinDistance + deploy.MaxDistance) / 2f;
+                contract.Reward += deploy.PerPoint * contract.Count;
+                return true;
+            case WFContractPicket picket:
+            {
+                var options = picket.Encounters.Where(id => _proto.HasIndex(id)).ToList();
+                if (options.Count == 0 || !SiteAvailable(contract.Home, picket.MinDistance, picket.MaxDistance, picket.StationClearance))
+                    return false;
+
+                contract.Encounter = _random.Pick(options);
+                contract.Distance = (picket.MinDistance + picket.MaxDistance) / 2f;
+                return true;
+            }
+            case WFContractConstruct construct:
+                if (construct.Planet is not { } site || construct.Kits.Any(k => !_proto.HasIndex(k.Entity)) || !RollPlanet(contract, site))
+                    return false;
+
+                for (var i = 0; i < construct.Kits.Count; i++)
+                {
+                    var kit = construct.Kits[i];
+                    contract.Goods.Add((i, _random.Next(kit.Count.X, Math.Max(kit.Count.X, kit.Count.Y) + 1)));
+                }
+
+                contract.Count = contract.Goods.Sum(g => g.Count);
+                return true;
             case WFContractClear clear:
-                return RollWreck(contract, clear.Wrecks, clear.MinDistance, clear.MaxDistance);
+                return RollWreck(contract, clear.Wrecks, clear.MinDistance, clear.MaxDistance, clear.StationClearance);
             case WFContractRepair repair:
-                return RollWreck(contract, repair.Wrecks, repair.MinDistance, repair.MaxDistance);
+                return RollWreck(contract, repair.Wrecks, repair.MinDistance, repair.MaxDistance, repair.StationClearance);
             case WFContractDownload download:
-                return RollWreck(contract, download.Wrecks, download.MinDistance, download.MaxDistance);
+                return RollWreck(contract, download.Wrecks, download.MinDistance, download.MaxDistance, download.StationClearance);
             case WFContractInspect inspect:
-                return RollWreck(contract, inspect.Wrecks, inspect.MinDistance, inspect.MaxDistance);
+                return RollWreck(contract, inspect.Wrecks, inspect.MinDistance, inspect.MaxDistance, inspect.StationClearance);
             case WFContractOperation operation:
                 if (!operation.Anomalies.Any(id => _proto.HasIndex(id)) || !RollWreck(contract, operation.Wrecks,
-                        operation.MinDistance, operation.MaxDistance))
+                        operation.MinDistance, operation.MaxDistance, operation.StationClearance))
                     return false;
 
                 contract.Destination = contract.Home;
@@ -90,9 +133,13 @@ public sealed partial class WFContractSystem
         return null;
     }
 
-    private bool RollWreck(WFContract contract, List<Robust.Shared.Utility.ResPath> wrecks, float min, float max)
+    private bool RollWreck(WFContract contract, List<Robust.Shared.Utility.ResPath> wrecks, float min, float max, float clearance)
     {
-        if (wrecks.Count == 0)
+        if (_proto.Index(contract.Prototype).Objective.Planet is { } planet)
+            return RollPlanet(contract, planet);
+
+        // A crowded sector posts no wreck it couldn't place.
+        if (wrecks.Count == 0 || !SiteAvailable(contract.Home, min, max, clearance))
             return false;
 
         contract.Wreck = _random.Pick(wrecks);
@@ -122,24 +169,50 @@ public sealed partial class WFContractSystem
                 return true;
             }
             case WFContractSweep sweep:
+                return PickPoints(contract, sweep.MinDistance, sweep.MaxDistance);
+            case WFContractDeploy deploy:
             {
-                for (var attempt = 0; attempt < contract.Count * 6 && contract.Points.Count < contract.Count; attempt++)
-                {
-                    if (PickSite(contract.Home, sweep.MinDistance, sweep.MaxDistance, 1000f) is not { } point
-                        || contract.Points.Any(p => (p.Position - point.Position).Length() < SweepSpacing))
-                        continue;
+                if (BoardDrop(board) is not { } coords || !PickPoints(contract, deploy.MinDistance, deploy.MaxDistance))
+                    return false;
 
-                    contract.Points.Add(point);
+                for (var i = 0; i < contract.Count; i++)
+                {
+                    Track(contract, Spawn(deploy.Buoy, coords));
                 }
 
-                if (contract.Points.Count < contract.Count)
+                return true;
+            }
+            case WFContractPicket picket:
+            {
+                if (PickSite(contract.Home, picket.MinDistance, picket.MaxDistance, picket.StationClearance) is not { } site)
+                    return false;
+
+                contract.Site = site;
+                contract.Distance = SiteDistance(contract.Home, site);
+                return true;
+            }
+            case WFContractConstruct construct:
+            {
+                if (BoardDrop(board) is not { } drop || LoadWreck(contract, 0f, 0f, 0f) is null)
                 {
-                    contract.Points.Clear();
+                    DropWreck(contract);
                     return false;
                 }
 
-                contract.Site = contract.Points[0];
-                return true;
+                foreach (var (line, count) in contract.Goods)
+                {
+                    for (var i = 0; i < count; i++)
+                    {
+                        Track(contract, Spawn(construct.Kits[line].Entity, drop));
+                    }
+                }
+
+                contract.Count = contract.Items.Count;
+                if (contract.Count > 0)
+                    return true;
+
+                DropWreck(contract);
+                return false;
             }
             case WFContractClear clear:
             {
@@ -147,7 +220,7 @@ public sealed partial class WFContractSystem
                     return false;
 
                 var count = _random.Next(clear.Targets.Count.X, Math.Max(clear.Targets.Count.X, clear.Targets.Count.Y) + 1);
-                for (var i = 0; i < count && FreeTile(grid) is { } tile; i++)
+                for (var i = 0; i < count && FreeTile(grid, contract.SiteBounds) is { } tile; i++)
                 {
                     contract.Targets.Add(Spawn(clear.Targets.Entity, tile));
                 }
@@ -159,7 +232,7 @@ public sealed partial class WFContractSystem
                 }
 
                 contract.Count = contract.Targets.Count;
-                Infest(grid, clear.Infestation);
+                Infest(contract, grid, clear.Infestation);
                 return true;
             }
             case WFContractRepair repair:
@@ -178,7 +251,7 @@ public sealed partial class WFContractSystem
             case WFContractOperation operation:
             {
                 if (LoadWreck(contract, operation.MinDistance, operation.MaxDistance, operation.StationClearance) is not { } grid
-                    || FreeTile(grid) is not { } itemTile)
+                    || FreeTile(grid, contract.SiteBounds) is not { } itemTile)
                 {
                     DropWreck(contract);
                     return false;
@@ -192,7 +265,7 @@ public sealed partial class WFContractSystem
                     return false;
                 }
 
-                Infest(grid, operation.Infestation);
+                Infest(contract, grid, operation.Infestation);
                 return true;
             }
         }
@@ -200,11 +273,33 @@ public sealed partial class WFContractSystem
         return null;
     }
 
+    /// <summary>Picks the contract's count of open-space points, spaced apart; the first is its site.</summary>
+    private bool PickPoints(WFContract contract, float min, float max)
+    {
+        for (var attempt = 0; attempt < contract.Count * 6 && contract.Points.Count < contract.Count; attempt++)
+        {
+            if (PickSite(contract.Home, min, max, 1000f, quiet: true) is not { } point
+                || contract.Points.Any(p => (p.Position - point.Position).Length() < SweepSpacing))
+                continue;
+
+            contract.Points.Add(point);
+        }
+
+        if (contract.Points.Count < contract.Count)
+        {
+            contract.Points.Clear();
+            return false;
+        }
+
+        contract.Site = contract.Points[0];
+        return true;
+    }
+
     /// <summary>Loads a wreck with one device on it, recorded as the contract's target.</summary>
     private bool StartDevice(WFContract contract, Robust.Shared.Prototypes.EntProtoId device, float min, float max, float clearance,
         List<WFContractSpawn> infestation, Action<EntityUid>? setup)
     {
-        if (LoadWreck(contract, min, max, clearance) is not { } grid || FreeTile(grid) is not { } tile)
+        if (LoadWreck(contract, min, max, clearance) is not { } grid || FreeTile(grid, contract.SiteBounds) is not { } tile)
         {
             DropWreck(contract);
             return false;
@@ -213,7 +308,7 @@ public sealed partial class WFContractSystem
         var placed = Spawn(device, tile);
         contract.Targets.Add(placed);
         setup?.Invoke(placed);
-        Infest(grid, infestation);
+        Infest(contract, grid, infestation);
         return true;
     }
 
@@ -223,7 +318,7 @@ public sealed partial class WFContractSystem
         var anomalies = pool.Where(id => _proto.HasIndex(id)).ToList();
         for (var i = 0; i < contract.Count; i++)
         {
-            if (FreeTile(grids[i % grids.Count]) is not { } tile)
+            if (FreeTile(grids[i % grids.Count], contract.SiteBounds) is not { } tile)
                 break;
 
             var anomaly = Spawn(_random.Pick(anomalies), tile);
@@ -298,8 +393,86 @@ public sealed partial class WFContractSystem
                     Complete(contract);
                 return true;
             }
+            case WFContractDeploy deploy:
+            {
+                foreach (var buoy in contract.Items)
+                {
+                    if (TerminatingOrDeleted(buoy) || !TryComp<WFContractItemComponent>(buoy, out var comp) || comp.Delivered
+                        || !Adrift(buoy))
+                        continue;
+
+                    var at = _transform.GetMapCoordinates(buoy);
+                    var point = Enumerable.Range(0, contract.Points.Count)
+                        .FirstOrDefault(i => !contract.Logged.Contains(i) && contract.Points[i].MapId == at.MapId
+                                             && (contract.Points[i].Position - at.Position).Length() <= deploy.Range, -1);
+                    if (point < 0)
+                        continue;
+
+                    comp.Delivered = true;
+                    contract.Logged.Add(point);
+                    _dirty = true;
+                    if (contract.Logged.Count < contract.Points.Count && contract.User is { } user)
+                        Tell(new WFContractHolder(user, contract.Character), Loc.GetString("wf-contract-buoy-set",
+                            ("title", Title(contract)), ("done", contract.Logged.Count), ("count", contract.Points.Count)));
+                }
+
+                if (contract.Logged.Count >= contract.Points.Count)
+                    Complete(contract);
+                return true;
+            }
+            case WFContractPicket picket:
+            {
+                if (contract.Site is not { } site || CrewBodies(contract).FirstOrDefault(b => Near(b, site, picket.Range)) is not { Valid: true } holding)
+                    return true;
+
+                // The clock waits for the raiders; a failed spawn is retried, and after three the point is held anyway.
+                if (!contract.Started)
+                {
+                    if (_timing.CurTime < contract.NextWave)
+                        return true;
+
+                    if (!StartRaiders(contract, picket, site, holding) && ++contract.RaiderTries < RaiderTries)
+                    {
+                        contract.NextWave = _timing.CurTime + RaiderRetry;
+                        return true;
+                    }
+
+                    contract.Started = true;
+                    if (contract.User is { } user)
+                        Tell(new WFContractHolder(user, contract.Character), Loc.GetString("wf-contract-picket-started",
+                            ("title", Title(contract)), ("minutes", (int) Math.Ceiling(picket.Duration.TotalMinutes))));
+                }
+
+                contract.Progress += CheckInterval;
+                _dirty = true;
+                if (contract.Progress >= picket.Duration)
+                    Complete(contract);
+                return true;
+            }
+            case WFContractConstruct:
+                foreach (var kit in contract.Items.ToList())
+                {
+                    if (TerminatingOrDeleted(kit) || !TryComp<WFContractItemComponent>(kit, out var item) || item.Delivered
+                        || !SetDownOnSite(contract, kit) || !TryComp<WFContractKitComponent>(kit, out var unfold))
+                        continue;
+
+                    item.Delivered = true;
+                    contract.Delivered++;
+                    _dirty = true;
+                    var built = Spawn(unfold.Unfold, Transform(kit).Coordinates);
+                    if (!Transform(built).Anchored)
+                        _transform.AnchorEntity(built);
+                    QueueDel(kit);
+                    if (contract.Delivered < contract.Count && contract.User is { } user)
+                        Tell(new WFContractHolder(user, contract.Character), Loc.GetString("wf-contract-kit-unfolded",
+                            ("title", Title(contract)), ("done", contract.Delivered), ("count", contract.Count)));
+                }
+
+                if (contract.Count > 0 && contract.Delivered >= contract.Count)
+                    Complete(contract);
+                return true;
             case WFContractClear:
-                if (contract.Targets.All(t => TerminatingOrDeleted(t)))
+                if (contract.Targets.All(Cleared))
                     Complete(contract);
                 return true;
             case WFContractRepair repair:
@@ -343,10 +516,12 @@ public sealed partial class WFContractSystem
 
                 contract.Progress += CheckInterval;
                 _dirty = true;
-                if (now >= contract.NextWave && contract.WreckGrid is { } wreck && TryComp<MapGridComponent>(wreck, out var grid))
+                if (now >= contract.NextWave && SiteGrid(contract) is { } grid)
                 {
                     contract.NextWave = now + download.WaveInterval;
-                    Infest((wreck, grid), download.Waves);
+                    Infest(contract, grid, download.Waves);
+                    if (download.Planet is { } planet)
+                        SpawnNatives(contract, grid, planet.WaveHostiles, _proto.Index(contract.Prototype).Tier);
                 }
 
                 if (contract.Progress >= download.Duration)
@@ -398,7 +573,69 @@ public sealed partial class WFContractSystem
         return false;
     }
 
-    /// <summary>The next unlogged point of a sweep.</summary>
+    /// <summary>Whether a buoy floats free in open space: not carried, packed or on any grid.</summary>
+    private bool Adrift(EntityUid uid)
+    {
+        var xform = Transform(uid);
+        return xform.GridUid == null && xform.ParentUid == xform.MapUid;
+    }
+
+    /// <summary>Sends a picket's raiders in from a random side of its point.</summary>
+    private bool StartRaiders(WFContract contract, WFContractPicket picket, MapCoordinates site, EntityUid holding)
+    {
+        if (contract.Encounter is not { } id || !_proto.TryIndex(id, out var encounterProto))
+            return false;
+
+        var tier = _proto.Index(contract.Prototype).Tier;
+        for (var attempt = 0; attempt < 8; attempt++)
+        {
+            var from = site.Position + _random.NextAngle().ToVec() * picket.RaiderDistance;
+            if (!_scheduler.IsClearSpace(site.MapId, from, RaiderClearance, 0f)
+                || !_encounters.TrySpawn(encounterProto, new MapCoordinates(from, site.MapId), out var encounter, offBudget: true, tier: tier))
+                continue;
+
+            contract.EncounterEntity = encounter;
+            SendRaiders(encounter, site, holding);
+            return true;
+        }
+
+        Log.Warning($"Picket contract {contract.Id} could not start {id} near {site}.");
+        return false;
+    }
+
+    /// <summary>Orders every raider ship at the crew's ship, or to the point when the crew holds it on foot.</summary>
+    private void SendRaiders(EntityUid encounter, MapCoordinates site, EntityUid holding)
+    {
+        if (!TryComp<Content.Server._WF.Encounters.Components.WFEncounterComponent>(encounter, out var comp))
+            return;
+
+        var ship = Transform(holding).GridUid;
+        foreach (var key in comp.Ships.Keys.ToList())
+        {
+            var orders = ship is { } target
+                ? new List<WFCrewObjective>
+                {
+                    new() { Kind = WFCrewObjectiveKind.Attack, Target = GetNetEntity(target) },
+                    new() { Kind = WFCrewObjectiveKind.Hold },
+                }
+                : new List<WFCrewObjective>
+                {
+                    new() { Kind = WFCrewObjectiveKind.GoTo, Position = site.Position, Range = 150f },
+                    new() { Kind = WFCrewObjectiveKind.Hold },
+                };
+            _encounters.SetOrders((encounter, comp), key, orders);
+        }
+    }
+
+    /// <summary>Sends a picket's surviving raiders away once the contract is over.</summary>
+    private void WithdrawRaiders(WFContract contract)
+    {
+        if (_proto.Index(contract.Prototype).Objective is WFContractPicket && contract.EncounterEntity is { } encounter
+            && !TerminatingOrDeleted(encounter))
+            _encounters.Resolve(encounter, WFEncounterResolution.Completed);
+    }
+
+    /// <summary>The next unlogged point of a sweep or a buoy run.</summary>
     private MapCoordinates? NextPoint(WFContract contract)
     {
         for (var i = 0; i < contract.Points.Count; i++)
@@ -455,11 +692,47 @@ public sealed partial class WFContractSystem
 
                 return;
             }
+            case WFContractDeploy deploy:
+            {
+                view.Site = WFContractSite.Space;
+                view.Location = Loc.GetString("wf-contract-location-deploy", ("home", home), ("count", contract.Count), ("km", km),
+                    ("active", active));
+                if (active && NextPoint(contract) is { } next)
+                    view.Coordinates = next.Position;
+                if (!active)
+                {
+                    view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-deploy-count",
+                        ("count", contract.Count), ("item", _proto.Index(deploy.Buoy).Name)), false));
+                    return;
+                }
+
+                for (var i = 0; i < contract.Points.Count; i++)
+                {
+                    var p = contract.Points[i].Position;
+                    view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-deploy",
+                        ("x", (int) p.X), ("y", (int) p.Y), ("range", (int) deploy.Range)), contract.Logged.Contains(i)));
+                }
+
+                return;
+            }
+            case WFContractPicket picket:
+                view.Site = WFContractSite.Space;
+                view.Location = Loc.GetString("wf-contract-location-picket", ("home", home), ("km", km), ("active", active));
+                view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-picket",
+                    ("range", (int) picket.Range), ("percent", (int) Math.Min(100, contract.Progress / picket.Duration * 100)),
+                    ("minutes", (int) Math.Ceiling(picket.Duration.TotalMinutes))), false));
+                break;
+            case WFContractConstruct:
+                view.Site = WFContractSite.Space;
+                view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-construct",
+                    ("count", contract.Count), ("done", contract.Delivered)), active && contract.Delivered >= contract.Count));
+                break;
             case WFContractClear:
                 view.Site = WFContractSite.Space;
                 view.Location = Loc.GetString("wf-contract-location-derelict", ("home", home), ("km", km), ("active", active));
                 view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-clear",
-                    ("done", contract.Targets.Count(t => TerminatingOrDeleted(t))), ("count", contract.Count)), false));
+                    ("done", contract.Targets.Count(Cleared)), ("count", contract.Count),
+                    ("planet", _proto.Index(contract.Prototype).Objective.Planet != null)), false));
                 break;
             case WFContractRepair:
             {
@@ -593,11 +866,14 @@ public sealed partial class WFContractSystem
     }
 
     /// <summary>Posts the next link of a chain for the crew that finished the last one.</summary>
-    private void PostFollowUp(WFContractHolder holder, WFContractPrototype finished)
+    private void PostFollowUp(WFContractHolder holder, WFContractPrototype finished, (EntityUid? Ground, string? World, int? Index) site)
     {
         if (finished.FollowUp is not { } next || !_proto.TryIndex(next, out var template) || BoardStation() is not { } board
             || Build(template, ContractorHomes(), board, _timing.CurTime) is not { } offer)
             return;
+
+        if (template.Objective.Planet != null && site is { Ground: { } ground, Index: { } index })
+            HoldSite(offer, ground, site.World, index);
 
         offer.ReservedFor = holder.User;
         offer.Deadline = _timing.CurTime + FollowUpLifetime;

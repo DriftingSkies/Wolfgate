@@ -299,7 +299,7 @@ wf-contract-tsf-escort-supply-brief = A Marine Corps supply freighter is bound f
 wf-contractor-tsf-requisitions = TSF Naval Requisitions
 wf-contractor-tsf-requisitions-desc = Federation work for Federation people, paid in thalers and Federation credits.
 wf-contractor-ussp-commissariat = USSP Commissariat
-wf-contractor-ussp-commissariat-desc = The freeport's own needs, posted for its citizens and the Viper Group at good rates.
+wf-contractor-ussp-commissariat-desc = The freeport's own needs, posted for its citizens at good rates.
 wf-contractor-pdv-quartermaster = PDV Quartermaster
 wf-contractor-pdv-quartermaster-desc = Prizes and stores wanted at Helios, paid in thalers and doubloons.
 
@@ -322,7 +322,7 @@ wf-contract-tsf-faction-recorder = Lost patrol recorder
 wf-contract-tsf-faction-recorder-brief = A Federation patrol craft went down about {$km} km from the Halcyon. Bring its flight recorder back before the Dynasty finds it.
 
 wf-contract-ussp-faction-rations = Rations for the freeport
-wf-contract-ussp-faction-rations-brief = The Commissariat needs {$goods} for the freeport's canteens. Pack the manifest crate and close it aboard Camelot. For USSP citizens and the Viper Group only.
+wf-contract-ussp-faction-rations-brief = The Commissariat needs {$goods} for the freeport's canteens. Pack the manifest crate and close it aboard Camelot. For USSP citizens only.
 
 wf-contract-ussp-faction-reactor = Reactor fuel for the freeport
 wf-contract-ussp-faction-reactor-brief = Camelot's reactors run on what its citizens bring: {$goods}. Pack the manifest crate and close it aboard Camelot. The Federation won't like it.
@@ -363,7 +363,7 @@ wf-contract-sb-colony-ore-brief = The colony's fabricators run on raw ore and th
 wf-contract-tsf-faction-ore = Fleet ore requisition
 wf-contract-tsf-faction-ore-brief = Naval Requisitions needs {$goods} for the fleet's yards. Crew work, for Federation personnel and civilians only. Close the manifest crate aboard the Halcyon. Paid in thalers and Federation credits.
 wf-contract-ussp-faction-ore = Commissariat ore quota
-wf-contract-ussp-faction-ore-brief = The Commissariat sets the quota and the brigade meets it: {$goods}, closed in the manifest crate aboard Camelot. Crew work, for USSP citizens and the Viper Group only.
+wf-contract-ussp-faction-ore-brief = The Commissariat sets the quota and the brigade meets it: {$goods}, closed in the manifest crate aboard Camelot. Crew work, for USSP citizens only.
 
 ## Science: anomaly surveys.
 
@@ -412,7 +412,7 @@ wf-contractor-halcyon-employer = the Trans-Solar Federation Marine Corps
 wf-contractor-camelot-employer = Freeport Camelot, a USSP port
 wf-contractor-anomalous-lab-employer = the Anomalous Lab, an independent research station
 wf-contractor-tsf-requisitions-employer = the Trans-Solar Federation Navy (TSF members only)
-wf-contractor-ussp-commissariat-employer = the USSP (USSP citizens and the Viper Group only)
+wf-contractor-ussp-commissariat-employer = the USSP (USSP citizens only)
 wf-contractor-pdv-quartermaster-employer = the PDV (PDV members only)
 
 ## Second batch.
@@ -446,7 +446,7 @@ wf-contract-mmc-annual-quota-brief = MMC's yearly quota is due and it is short b
 wf-contract-tsf-faction-ammo = Ammunition drive
 wf-contract-tsf-faction-ammo-brief = Naval Requisitions is stocking the fleet's magazines and wants {$goods}. Federation personnel and civilians only. Paid in thalers and Federation credits; the freeport and Helios won't thank you for it.
 wf-contract-ussp-faction-ammo = Ammunition drive
-wf-contract-ussp-faction-ammo-brief = The Commissariat is arming the brigade and wants {$goods}, closed in the manifest crate aboard Camelot. For USSP citizens and the Viper Group. The Federation keeps count of who arms the freeport.
+wf-contract-ussp-faction-ammo-brief = The Commissariat is arming the brigade and wants {$goods}, closed in the manifest crate aboard Camelot. For USSP citizens. The Federation keeps count of who arms the freeport.
 
 wf-contract-goods-seeds = seed packets
 wf-contract-goods-machine-boards = machine circuit boards
@@ -501,21 +501,21 @@ wf-contract-halcyon-fleet-salvage-brief = A battle wreck about {$km} km from the
 ## Fifth batch.
 
 wf-contract-ussp-faction-mail = Citizens' mail to Camelot
-wf-contract-ussp-faction-mail-brief = {$count} parcels for freeport citizens are waiting at {$origin}. Carry them by hand to Camelot, {$km} km away. For USSP citizens and the Viper Group only.
+wf-contract-ussp-faction-mail-brief = {$count} parcels for freeport citizens are waiting at {$origin}. Carry them by hand to Camelot, {$km} km away. For USSP citizens only.
 wf-contract-ussp-faction-clinic = Clinic stock for the freeport
-wf-contract-ussp-faction-clinic-brief = The freeport clinic is short of {$goods}. Pack the manifest crate and close it aboard Camelot. For USSP citizens and the Viper Group only.
+wf-contract-ussp-faction-clinic-brief = The freeport clinic is short of {$goods}. Pack the manifest crate and close it aboard Camelot. For USSP citizens only.
 wf-contract-ussp-faction-approaches = Survey the freeport approaches
-wf-contract-ussp-faction-approaches-brief = The Commissariat wants the approaches to Camelot charted. Fly within range of {$count} points out from the freeport and the readings log themselves. For USSP citizens and the Viper Group only.
+wf-contract-ussp-faction-approaches-brief = The Commissariat wants the approaches to Camelot charted. Fly within range of {$count} points out from the freeport and the readings log themselves. For USSP citizens only.
 wf-contract-ussp-faction-beacon = Freeport beacon repair
-wf-contract-ussp-faction-beacon-brief = A beacon guiding ships into Camelot sits dark on a derelict about {$km} km out. Weld it whole and fit a power cell. For USSP citizens and the Viper Group only.
+wf-contract-ussp-faction-beacon-brief = A beacon guiding ships into Camelot sits dark on a derelict about {$km} km out. Weld it whole and fit a power cell. For USSP citizens only.
 wf-contract-ussp-faction-customs = Freeport customs inspection
-wf-contract-ussp-faction-customs-brief = A ship that has been cheating the freeport's tariffs has stopped dead about {$km} km from Camelot. Board it, find the crate with the doctored manifest and inspect it. Its crew will resist. For USSP citizens and the Viper Group only.
+wf-contract-ussp-faction-customs-brief = A ship that has been cheating the freeport's tariffs has stopped dead about {$km} km from Camelot. Board it, find the crate with the doctored manifest and inspect it. Its crew will resist. For USSP citizens only.
 wf-contract-ussp-faction-scrap-tow = Scrap for the freeport
-wf-contract-ussp-faction-scrap-tow-brief = The freeport's yards will strip anything that floats. Tow the derelict about {$km} km from Camelot into the harbour. Towing takes a rope coil and a tether installer; bring both to take the job. For USSP citizens and the Viper Group only.
+wf-contract-ussp-faction-scrap-tow-brief = The freeport's yards will strip anything that floats. Tow the derelict about {$km} km from Camelot into the harbour. Towing takes a rope coil and a tether installer; bring both to take the job. For USSP citizens only.
 wf-contract-ussp-faction-records = Recover Commissariat records
-wf-contract-ussp-faction-records-brief = A Commissariat courier was lost with its records about {$km} km out, and something has made a nest of the wreck. Hold its terminal until the records are copied. Crew work, for USSP citizens and the Viper Group only.
+wf-contract-ussp-faction-records-brief = A Commissariat courier was lost with its records about {$km} km out, and something has made a nest of the wreck. Hold its terminal until the records are copied. Crew work, for USSP citizens only.
 wf-contract-ussp-faction-gunship = Reaver gunship on the freeport run
-wf-contract-ussp-faction-gunship-brief = A Reaver gunship is preying on ships bound for Camelot, about {$km} km out. The Commissariat will pay a full crew to end it. Crew work, for USSP citizens and the Viper Group only.
+wf-contract-ussp-faction-gunship-brief = A Reaver gunship is preying on ships bound for Camelot, about {$km} km out. The Commissariat will pay a full crew to end it. Crew work, for USSP citizens only.
 wf-contract-sev-backup-tapes = Backup tape run
 wf-contract-sev-backup-tapes-brief = Sevastopol keeps off-site backups at {$count} stations around the sector. Each data case is addressed to its own station: walk each one aboard where it belongs. About {$km} km all told.
 wf-contract-camelot-beacon = Harbour beacon repair
@@ -679,3 +679,138 @@ wf-contract-asf-field-station = Recover a lost field station
 wf-contract-asf-field-station-brief = An ASF field station was lost about {$km} km from the Lantern Post. Scan its {$count} anomalies, bring its data core to the Lantern Post and tow the hull home. Towing takes a rope coil and a tether installer; bring both to take the job. Crew work, for ASF members only.
 wf-contract-asf-xeno-study = Xeno nest study
 wf-contract-asf-xeno-study-brief = A xeno nest has grown around {$count} anomalies about {$km} km out. The researchers want readings from every one, and the nest will not make that easy. Crew work for armed crews, ASF members only. Paid in thalers and reward grants.
+
+## Batch 6: buoy runs and pickets.
+
+wf-contract-cael-nav-buoys = Navigation buoys
+wf-contract-cael-nav-buoys-brief = The port authority is re-marking the approach lanes. Collect {$count} relay buoys at the board and set each adrift at its marked point, up to {$km} km out from {$home}. Throw it out of an airlock or carry it out on a spacewalk; a buoy left aboard a ship doesn't count.
+wf-contract-marshals-picket = Lane picket
+wf-contract-marshals-picket-brief = Claim jumpers have been working a lane about {$km} km from {$home}. Sit on the marked point for six minutes, or drive off whoever comes for you.
+wf-contract-marshals-hold-line = Hold the line
+wf-contract-marshals-hold-line-brief = A Reaver raiding party is expected through a choke point about {$km} km from {$home}. Hold the marked point for eight minutes or destroy the raiders. Bring a crew of two or more.
+wf-contract-mmc-claim-guard = Claim guard
+wf-contract-mmc-claim-guard-brief = MMC surveyors staked a rich field about {$km} km from {$home}, and claim jumpers are circling. Hold the marked point for six minutes until the survey ship is done, or see the jumpers off.
+wf-contract-sev-relay-chain = Relay chain
+wf-contract-sev-relay-chain-brief = Sevastopol's comms keep dropping out past the station's horizon. Collect {$count} relay buoys at the board and set each adrift at its marked point, up to {$km} km out. A buoy left aboard a ship doesn't count.
+wf-contract-halcyon-sensor-line = Sensor line
+wf-contract-halcyon-sensor-line-brief = Halcyon traffic control wants more eyes on its approaches. Collect {$count} sensor buoys at the board and set each adrift at its marked point, up to {$km} km out from {$home}. A buoy left aboard a ship doesn't count.
+wf-contract-lab-probe-line = Gravimetric probes
+wf-contract-lab-probe-line-brief = The lab is mapping the gravity field around its anomalies. Collect {$count} gravimetric probes at the board and set each adrift at its marked point, up to {$km} km out. A probe left aboard a ship doesn't count.
+wf-contract-camelot-picket = Freeport picket
+wf-contract-camelot-picket-brief = The freeport's harbour watch wants a lane covered about {$km} km from {$home} while a convoy forms up. Hold the marked point for six minutes, or drive off whoever comes for you.
+wf-contract-sb-comm-relays = Colony comm relays
+wf-contract-sb-comm-relays-brief = Settlers out on the far claims can't reach the Stellar Blessing. Collect {$count} relay buoys at the board and set each adrift at its marked point, up to {$km} km out. A buoy left aboard a ship doesn't count.
+wf-contract-colony-watch = Colony watch
+wf-contract-colony-watch-brief = Raiders have been seen near the settlers' supply lane, about {$km} km from {$home}. Keep watch at the marked point for six minutes, or drive them off. For TSF civilians only.
+wf-contract-asf-probe-line = Probe line
+wf-contract-asf-probe-line-brief = The Field Research Office is laying a gravimetric survey line. Collect {$count} probes at the board and set each adrift at its marked point, up to {$km} km out from {$home}. A probe left aboard a ship doesn't count. For ASF members only. Paid in thalers and reward grants.
+wf-contract-tsf-faction-screen = Picket screen
+wf-contract-tsf-faction-screen-brief = Naval Requisitions needs a picket on a lane about {$km} km from the Halcyon, and a PDV patrol is expected to test it. Hold the marked point for seven minutes, or destroy the patrol. Federation personnel and civilians only. Paid in thalers and Federation credits; Helios will take it personally.
+wf-contract-tsf-faction-sensor-net = Sensor net
+wf-contract-tsf-faction-sensor-net-brief = Naval Requisitions is seeding the Helios approaches with passive sensors. Collect {$count} sensor buoys at the board and set each adrift at its marked point, up to {$km} km out. A buoy left aboard a ship doesn't count. Federation personnel and civilians only. Paid in thalers and Federation credits.
+wf-contract-pdv-faction-holdout = Holdout
+wf-contract-pdv-faction-holdout-brief = The Quartermaster wants a lane held about {$km} km from Helios while a run gets through, and a TSF patrol will come looking. Hold the marked point for seven minutes, or destroy the patrol. PDV members only. Paid in thalers and doubloons; the Federation will remember it.
+wf-contract-ussp-faction-screen = Freeport screen
+wf-contract-ussp-faction-screen-brief = The Commissariat wants a lane screened about {$km} km from {$home} while a brigade convoy moves. Hold the marked point for seven minutes, or drive off whoever comes for you. For USSP citizens.
+
+## Batch 6: rescues.
+
+wf-contract-marshals-rescue = Survivor rescue
+wf-contract-marshals-rescue-brief = A crippled hull about {$km} km from {$home} still has survivors aboard in stasis bags. Carry every one of them back to {$destination}; losing one fails the job. Carp have found the wreck first. Bring a crew of two or more.
+wf-contract-colony-lost-settlers = Lost settlers
+wf-contract-colony-lost-settlers-brief = A settler transport went dark about {$km} km out, and its passengers are in stasis bags aboard. Bring every one of them home to {$destination}. Bring a crew of two or more. For TSF civilians only.
+
+## Batch 7: planetside work and the outpost chain.
+
+wf-contractor-colonial-development = Colonial Development Office
+wf-contractor-colonial-development-desc = The freeport office that licenses new outposts on the sector's worlds and pays crews to raise them.
+wf-contractor-colonial-development-employer = Caelestinus Colonial Development Office
+
+wf-contract-cael-planet-relay = Ground relay repair
+wf-contract-cael-planet-relay-brief = A port authority relay at a site on one of the worlds has gone silent. Land, weld it whole and fit a fresh power cell. Expect the local wildlife. Bring a crew of two or more.
+wf-contract-cael-planet-produce = Off-world produce
+wf-contract-cael-planet-produce-brief = The freeport's kitchens and chemists want what only the worlds grow: {$goods}. Harvest it planetside and close it in the manifest crate aboard {$destination}.
+wf-contract-marshals-planet-dens = Den clearance
+wf-contract-marshals-planet-dens-brief = The wildlife around a site on one of the worlds has been attacking landing parties. Collapse every den there; the creatures guarding them will make it a fight.
+wf-contract-marshals-planet-purge = Infestation purge
+wf-contract-marshals-planet-purge-brief = A site on one of the worlds is overrun, and something big leads the pack. Collapse every den and put the rest down. Bring a crew of three or more and heavy weapons.
+wf-contract-mmc-planet-rig = Survey rig repair
+wf-contract-mmc-planet-rig-brief = An MMC prospecting rig at a site on one of the worlds was knocked out by the wildlife. Weld it whole and fit a power cell so the survey can go on.
+wf-contract-mmc-planet-claim = Claim clearance
+wf-contract-mmc-planet-claim-brief = MMC wants to stake a ground claim, but the site is a nest. Collapse every den there and the miners will do the rest.
+wf-contract-sev-planet-archive = Ground archive pull
+wf-contract-sev-planet-archive-brief = Sevastopol wants the records off a terminal at a site on one of the worlds. Stay by it while it downloads; the wildlife won't like the noise.
+wf-contract-sb-planet-homesteaders = Stranded homesteaders
+wf-contract-sb-planet-homesteaders-brief = A homesteading party went down on one of the worlds and its survivors are in stasis bags at the site. Bring every one of them back to {$destination}; losing one fails the job. Bring a crew of two or more.
+wf-contract-halcyon-planet-recorder = Downed patrol craft
+wf-contract-halcyon-planet-recorder-brief = A Halcyon patrol craft came down on one of the worlds. Recover its flight recorder from the site and bring it to {$destination}.
+wf-contract-camelot-planet-cache = Smuggler's cache
+wf-contract-camelot-planet-cache-brief = Harbour watch traced a smuggler's cache to a site on one of the worlds. Find the marked crate and inspect it against its manifest. Whoever stashed it may still be watching, and so is the wildlife.
+wf-contract-lab-planet-survey = Ground anomaly survey
+wf-contract-lab-planet-survey-brief = Anomalies have surfaced at a site on one of the worlds. Scan {$count} of them with an anomaly scanner before they collapse.
+wf-contract-lab-planet-sample = Field sample
+wf-contract-lab-planet-sample-brief = The lab left a sample case at a field site on one of the worlds. Recover it and bring it to {$destination}.
+wf-contract-tsf-faction-planet-dens = Landing zone sweep
+wf-contract-tsf-faction-planet-dens-brief = Naval Requisitions wants a site on one of the worlds cleared for a Federation landing zone. Collapse every den there and deal with what guards them. Bring a crew of two or more. Federation personnel and civilians only. Paid in thalers and Federation credits.
+wf-contract-tsf-faction-planet-core = Lost survey core
+wf-contract-tsf-faction-planet-core-brief = A Federation survey team left its data core at a site on one of the worlds. Recover it and bring it to {$destination}. Federation personnel and civilians only. Paid in thalers and Federation credits.
+wf-contract-ussp-faction-planet-claim = Stake a claim
+wf-contract-ussp-faction-planet-claim-brief = The Commissariat is marking new ground for the Union. Collect {$count} beacon kits at the board and set each down on a site on one of the worlds, where it unfolds by itself. For USSP citizens only.
+wf-contract-ussp-faction-planet-survey = Site survey
+wf-contract-ussp-faction-planet-survey-brief = Before the builders come, the Commissariat wants the ground read. Scan {$count} anomalies at a site on one of the worlds. For USSP citizens only.
+wf-contract-pdv-faction-planet-cache = Dead drop
+wf-contract-pdv-faction-planet-cache-brief = The Quartermaster has a dead drop at a site on one of the worlds and wants it checked before anyone else finds it. Find the marked crate and inspect it. PDV members only. Paid in thalers and doubloons.
+wf-contract-pdv-faction-planet-download = Ground intelligence
+wf-contract-pdv-faction-planet-download-brief = A terminal at a site on one of the worlds holds Federation traffic logs. Stay by it while it downloads, against everything the site throws at you. Bring a crew of two or more. PDV members only. Paid in thalers and doubloons.
+wf-contract-colony-planet-homestead = Homestead power
+wf-contract-colony-planet-homestead-brief = Settlers are moving onto a site on one of the worlds and need power before they land. Collect {$count} kits at the board and set each down on the site, where it unfolds by itself. For TSF civilians only.
+wf-contract-colony-planet-dens = Homestead clearance
+wf-contract-colony-planet-dens-brief = The ground the settlers picked is crawling with wildlife. Collapse every den at the site before they move in. For TSF civilians only.
+wf-contract-asf-planet-survey = Planetary anomaly survey
+wf-contract-asf-planet-survey-brief = The Field Research Office wants readings from anomalies at a site on one of the worlds. Scan {$count} of them before they collapse. For ASF members only. Paid in thalers and reward grants.
+wf-contract-asf-planet-field-data = Field station data
+wf-contract-asf-planet-field-data-brief = An abandoned ASF field station still holds its data. Stay by its terminal while it downloads; the wildlife has moved in. For ASF members only. Paid in thalers and reward grants.
+
+wf-contract-outpost-claim = Outpost I: stake the claim
+wf-contract-outpost-claim-brief = The first link of a six-part outpost build on one of the worlds, about two hours in all and paid at every stage. Collect two beacon kits at the board and set them down on the site, where they unfold by themselves. Each finished stage puts the next on the board for your crew. Bring a crew of two or more.
+wf-contract-outpost-clearance = Outpost II: clear the ground
+wf-contract-outpost-clearance-brief = The claim is staked. Now the ground: collapse every den on the outpost site and clear out what guards them.
+wf-contract-outpost-power = Outpost III: power
+wf-contract-outpost-power-brief = The site is clear. Collect {$count} kits at the board (a generator and solar panels) and set each down on the outpost site.
+wf-contract-outpost-fab = Outpost IV: fabrication
+wf-contract-outpost-fab-brief = The outpost has power. Collect {$count} kits at the board (a colony fab, an ore processor and an air miner) and set each down on the site.
+wf-contract-outpost-hold = Outpost V: hold the outpost
+wf-contract-outpost-hold-brief = The fab core is printing the outpost's first parts, and the noise is drawing in everything for kilometres. Stay by the core until it finishes.
+wf-contract-outpost-commission = Outpost VI: commission
+wf-contract-outpost-commission-brief = The outpost stands. Commission it with its first stock of materials: {$goods}, closed in the manifest crate aboard {$destination}. The biggest payout of the build.
+
+## The Viper Group's board.
+
+wf-contractor-viper-group = Viper Group
+wf-contractor-viper-group-desc = A mercenary company out of Camelot. Raids, prizes, relics and extractions, done to the letter and never traced back to the client.
+wf-contractor-viper-group-employer = The Viper Group, Camelot branch office
+
+wf-contract-vg-convoy-raid = Convoy raid
+wf-contract-vg-convoy-raid-brief = A client wants {$target} hit about {$km} km from {$home}. Nobody will say who; nobody will ask. Bring a crew of two or more. Vipers only. Paid in thalers and ship component crates.
+wf-contract-vg-dynasty-raid = Dynasty raid
+wf-contract-vg-dynasty-raid-brief = A client wants {$target} gone, about {$km} km from {$home}. Deniable, as always. Bring a crew of two or more. Vipers only. Paid in thalers and ship component crates.
+wf-contract-vg-rival-cull = Rival cull
+wf-contract-vg-rival-cull-brief = {$target} has been taking contracts that should have been ours. Remind them, about {$km} km from {$home}. Vipers only. Paid in thalers and ship component crates.
+wf-contract-vg-fangs = Show your fangs
+wf-contract-vg-fangs-brief = The command wants proof the Vipers' fangs are still sharp: {$target}, about {$km} km from {$home}. Bring a crew of three or more. Vipers only. Paid in thalers and ship component crates.
+wf-contract-vg-protection = Protection money
+wf-contract-vg-protection-brief = A trader paid for a quiet lane. Hold it about {$km} km from {$home} for six minutes, or drive off whoever tests it. Vipers only. Paid in thalers and a ship component crate.
+wf-contract-vg-prize-hull = Prize hull
+wf-contract-vg-prize-hull-brief = A hull worth taking is drifting about {$km} km out. Clear what's aboard and tow it to {$destination} for the yards. Vipers only. Paid in thalers and ship component crates.
+wf-contract-vg-relic-hunt = Relic hunt
+wf-contract-vg-relic-hunt-brief = An old Syndicate hulk about {$km} km out still holds strongboxes the black market will pay for. Bring every one to {$destination}. Vipers only. Paid in thalers and ship component crates.
+wf-contract-vg-data-heist = Data heist
+wf-contract-vg-data-heist-brief = A client wants what's on a terminal aboard a derelict about {$km} km out. Stay by it while it downloads; the client wasn't the only one who knew. Vipers only. Paid in thalers and ship component crates.
+wf-contract-vg-arms = Arms for the brotherhood
+wf-contract-vg-arms-brief = The armoury is running low. Bring {$goods}, closed in the manifest crate aboard {$destination}. Vipers only. Paid in thalers and a ship component crate.
+wf-contract-vg-extraction = Extraction
+wf-contract-vg-extraction-brief = A client is in a stasis bag at a site on one of the worlds, and the wildlife found them first. Get them to {$destination} in one piece. Bring a crew of two or more. Vipers only. Paid in thalers and ship component crates.
+wf-contract-vg-planet-raid = Ground clearance
+wf-contract-vg-planet-raid-brief = A client wants a site on one of the worlds cleared and asks no questions about how. Collapse every den and put down what guards them. Bring a crew of two or more. Vipers only. Paid in thalers and ship component crates.
+wf-contract-vg-cache-run = Cache run
+wf-contract-vg-cache-run-brief = Someone stashed a crate at a site on one of the worlds, and a client wants to know what's in it before its owner does. Find it and inspect it. Vipers only. Paid in thalers and a ship component crate.

@@ -3,6 +3,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Content.Server._WF.Companies;
+using Content.Server._WF.Contracts;
+using Content.Shared._WF.Contracts;
 using Content.Server.Afk;
 using Content.Server._WF.Encounters.Systems;
 using Content.Server.GameTicking;
@@ -165,19 +167,46 @@ public sealed partial class WFCompanyTest
                 Assert.That(WorkerBank(), Is.EqualTo(1940));
             });
             await server.WaitPost(() => companies.AdminAdjust(id.Value, 40, "Test", "restore"));
+
+            // A completed contract pays the company its cut of the earnings, but none of the returned deposit.
+            await server.WaitPost(() =>
+            {
+                var contracts = server.System<WFContractSystem>();
+                em.EnsureComponent<Content.Shared._NF.Bank.Components.BankAccountComponent>(workerBody);
+                var contract = new WFContract
+                {
+                    Id = 9001, Prototype = "WFContractSevDataInbound", Status = WFContractStatus.Active,
+                    Reward = 1000, Deposit = 200, User = worker.UserId, Character = "Dee Worker",
+                };
+                var live = (IDictionary<int, WFContract>) typeof(WFContractSystem)
+                    .GetField("_contracts", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(contracts)!;
+                live[contract.Id] = contract;
+                typeof(WFContractSystem).GetMethod("Complete", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(contracts, new object[] { contract });
+                Assert.That(contract.Status, Is.EqualTo(WFContractStatus.Completed));
+                var holder = new WFContractHolder(worker.UserId, "Dee Worker");
+                Assert.That(contracts.MobOf(holder), Is.Not.Null, "The worker is not playing the contract's character.");
+                Assert.That(contracts.Owed(holder), Is.Zero, "The contract pay was owed instead of paid.");
+            });
+            await server.WaitAssertion(() =>
+            {
+                Assert.That(companies.GetBalance(id.Value), Is.EqualTo(200), "The company took no cut of the contract pay.");
+                Assert.That(WorkerBank(), Is.EqualTo(3040), "900 of the pay after the cut, plus the 200 deposit.");
+            });
+
             await RequestAs(owner, new(WFCompanyAction.SetCut) { CompanyId = id.Value, Amount = 0 });
             await server.WaitPost(() => Assert.That(server.System<WFEncounterBountySystem>().Deposit(worker, 500), Is.True));
             await server.WaitAssertion(() =>
             {
-                Assert.That(companies.GetBalance(id.Value), Is.EqualTo(100), "No cut at 0%.");
-                Assert.That(WorkerBank(), Is.EqualTo(2440));
+                Assert.That(companies.GetBalance(id.Value), Is.EqualTo(200), "No cut at 0%.");
+                Assert.That(WorkerBank(), Is.EqualTo(3540));
             });
             await server.WaitAssertion(() =>
             {
                 var report = new RoundEndTextAppendEvent();
                 em.EventBus.RaiseEvent(EventSource.Local, report);
                 Assert.That(report.Text, Does.Contain("Payday Works"));
-                Assert.That(report.Text, Does.Contain("Wages paid 1000, payments 40, cuts earned 100, deposits 1000"), report.Text);
+                Assert.That(report.Text, Does.Contain("Wages paid 1000, payments 40, cuts earned 200, deposits 1000"), report.Text);
                 Assert.That(report.Text, Does.Contain("1 member played 2"), report.Text);
             });
         }

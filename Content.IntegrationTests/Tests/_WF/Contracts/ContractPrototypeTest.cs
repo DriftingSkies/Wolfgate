@@ -101,7 +101,7 @@ public sealed class ContractPrototypeTest
 
                 void CheckWrecks(List<ResPath> wrecks)
                 {
-                    Check(wrecks.Count > 0, id, "no wrecks");
+                    Check(wrecks.Count > 0 || contract.Objective.Planet != null, id, "no wrecks");
                     foreach (var wreck in wrecks)
                     {
                         Check(resources.ContentFileExists(wreck), id, $"missing wreck {wreck}");
@@ -114,6 +114,19 @@ public sealed class ContractPrototypeTest
                     {
                         Check(protos.HasIndex<EntityPrototype>(spawn.Entity), id, $"unknown infestation {spawn.Entity}");
                         Check(spawn.Count.X >= 0 && spawn.Count.X <= spawn.Count.Y, id, "bad infestation count");
+                    }
+                }
+
+                if (contract.Objective.Planet is { } planet)
+                {
+                    Check(contract.Objective is WFContractRecovery or WFContractClear or WFContractRepair or WFContractDownload
+                        or WFContractInspect or WFContractSurvey or WFContractConstruct, id, "this objective can't run on a planet");
+                    Check(planet.Hostiles.X >= 0 && planet.Hostiles.X <= planet.Hostiles.Y, id, "bad planet hostile count");
+                    foreach (var world in planet.Worlds)
+                    {
+                        Check(!WFContractSystem.ExcludedWorlds.Contains(world.Id), id, $"{world} takes no contracts");
+                        Check(protos.EnumeratePrototypes<WFContractWorldFaunaPrototype>().Any(f => f.World == world), id,
+                            $"{world} has no fauna pool, so it would never be picked");
                     }
                 }
 
@@ -180,6 +193,8 @@ public sealed class ContractPrototypeTest
                         Check(recovery.To != WFContractEnd.Other, id, "a recovery goes to its contractor or the board");
                         CheckWrecks(recovery.Wrecks);
                         CheckInfestation(recovery.Infestation);
+                        Check(recovery.Count.X >= 1 && recovery.Count.X <= recovery.Count.Y, id, "bad count");
+                        Check(recovery.PerUnlockedNode == 0 || recovery.Count.Y == 1, id, "artifact pay counts one find only");
                         break;
                     case WFContractSurvey survey:
                         CheckWrecks(survey.Wrecks);
@@ -243,9 +258,48 @@ public sealed class ContractPrototypeTest
                                 $"{anomaly} is not an anomaly");
                         }
                         break;
+                    case WFContractDeploy deploy:
+                        Check(protos.HasIndex<EntityPrototype>(deploy.Buoy), id, "unknown buoy");
+                        Check(deploy.Points.X >= 1 && deploy.Points.X <= deploy.Points.Y && deploy.Range > 0f, id, "bad points");
+                        Check(deploy.MinDistance > 0 && deploy.MinDistance <= deploy.MaxDistance, id, "bad range");
+                        break;
+                    case WFContractPicket picket:
+                        Check(picket.Encounters.Count > 0, id, "no raiders");
+                        Check(picket.MinDistance > 0 && picket.MinDistance <= picket.MaxDistance && picket.Range > 0f, id, "bad range");
+                        Check(picket.Duration.TotalMinutes < contract.Minutes, id, "the picket outlasts the contract");
+                        foreach (var raiders in picket.Encounters)
+                        {
+                            Check(protos.TryIndex(raiders, out var encounter) && encounter.Start == WFEncounterStart.Manual
+                                  && encounter.Bounty == null, id, $"{raiders} is unknown, scheduled on its own or posts a warrant");
+                        }
+                        break;
+                    case WFContractConstruct construct:
+                        Check(construct.Planet != null, id, "a construction needs a planet site");
+                        Check(construct.Kits.Count > 0, id, "no kits");
+                        foreach (var kit in construct.Kits)
+                        {
+                            Check(protos.TryIndex(kit.Entity, out var kitProto) && kitProto.TryComp<WFContractKitComponent>(out var unfold, factory)
+                                  && protos.HasIndex<EntityPrototype>(unfold.Unfold), id, $"{kit.Entity} is not a kit that unfolds into something");
+                            Check(kit.Count.X >= 1 && kit.Count.X <= kit.Count.Y, id, "bad kit count");
+                        }
+                        break;
                     default:
                         Check(false, id, "objective the board cannot run");
                         break;
+                }
+            }
+
+            // Carcinoma is a quarantined death world: no pool, so no contract can ever be posted there.
+            Check(WFContractSystem.ExcludedWorlds.Contains("WFSurfaceCarcinoma"), "ExcludedWorlds", "Carcinoma must be excluded");
+            foreach (var fauna in protos.EnumeratePrototypes<WFContractWorldFaunaPrototype>())
+            {
+                Check(protos.HasIndex(fauna.World), fauna.ID, $"unknown world {fauna.World}");
+                Check(!WFContractSystem.ExcludedWorlds.Contains(fauna.World.Id), fauna.ID, $"{fauna.World} takes no contracts");
+                Check(fauna.Light.Count > 0, fauna.ID, "no common hostiles");
+                foreach (var mob in fauna.Light.Concat(fauna.Heavy).Concat(fauna.Boss))
+                {
+                    Check(protos.TryIndex(mob, out var mobProto) && mobProto.TryComp<Content.Shared.Mobs.Components.MobStateComponent>(out _, factory),
+                        fauna.ID, $"{mob} is not a mob");
                 }
             }
 

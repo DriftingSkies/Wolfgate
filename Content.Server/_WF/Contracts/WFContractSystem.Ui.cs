@@ -259,9 +259,17 @@ public sealed partial class WFContractSystem
                 if (active && contract.Site is { } site)
                     view.Coordinates = site.Position;
                 var item = _proto.Index(recovery.Item).Name;
+                if (Math.Max(1, contract.Count) > 1)
+                {
+                    view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-recover-many",
+                        ("item", item), ("count", contract.Count), ("destination", StationName(contract.Destination)), ("planet", recovery.Planet != null),
+                        ("done", contract.Delivered)), active && contract.Delivered >= contract.Count));
+                    break;
+                }
+
                 var carried = active && contract.Items.FirstOrDefault() is { Valid: true } recovered && !TerminatingOrDeleted(recovered)
-                              && contract.WreckGrid is { } wreck && Transform(recovered).GridUid != wreck;
-                view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-recover", ("item", item)), carried));
+                              && OffSite(contract, recovered);
+                view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-recover", ("item", item), ("planet", recovery.Planet != null)), carried));
                 view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-return", ("item", item),
                     ("destination", StationName(contract.Destination))), false));
                 break;
@@ -280,7 +288,7 @@ public sealed partial class WFContractSystem
                     ("gap", gap is { } metres ? (int) metres : -1)), gap is { } close && close <= tow.Range));
                 break;
             }
-            case WFContractSurvey:
+            case WFContractSurvey survey:
             {
                 view.Site = WFContractSite.Space;
                 view.Location = Loc.GetString("wf-contract-location-survey", ("home", StationName(contract.Home)),
@@ -289,7 +297,7 @@ public sealed partial class WFContractSystem
                     view.Coordinates = surveySite.Position;
                 var scanned = contract.Scanned.Count;
                 view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-survey",
-                    ("done", scanned), ("count", contract.Count)), active && scanned >= contract.Count));
+                    ("done", scanned), ("count", contract.Count), ("planet", survey.Planet != null)), active && scanned >= contract.Count));
                 break;
             }
             case WFContractEscort:
@@ -306,6 +314,14 @@ public sealed partial class WFContractSystem
             default:
                 ViewOperation(contract, proto.Objective, view, active);
                 break;
+        }
+
+        if (proto.Objective.Planet != null)
+        {
+            var (site, world) = PlanetNames(contract);
+            view.Site = WFContractSite.Planet;
+            view.Location = Loc.GetString("wf-contract-location-planet", ("site", site), ("world", world),
+                ("active", active && contract.PlanetSite != null));
         }
 
         return view;
