@@ -1,6 +1,6 @@
 # OutpostRaids
 
-Raids on planet outposts, off unless `wf.outposts.raids` is on. Outposts can only be raided in a world's Active window:
+Raids on planet outposts, on unless `wf.outposts.raids` is turned off. Outposts can only be raided in a world's Active window:
 from dusk (18:00 local) to dawn (06:00) and while a storm rages, unless a `wfRaidWindow` prototype gives the world
 other hours or none (`WFRaidWindowSystem`). The outpost console's Overview and the time and weather console count
 down to the window opening or closing.

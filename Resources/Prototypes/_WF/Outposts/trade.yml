@@ -207,6 +207,19 @@
   - type: StaticPrice
     vendPrice: 2300
 
+# Every preset outpost lands with one, so its fabricator has something to work on minute one.
+- type: entity
+  parent: CrateGenericSteel
+  id: WFCrateOutpostStarterMaterials
+  name: outpost starter materials crate
+  description: Steel, glass and plastic, ten sheets of each, to get an outpost's fabricator going.
+  components:
+  - type: StorageFill
+    contents:
+    - id: SheetSteel10
+    - id: SheetGlass10
+    - id: SheetPlastic10
+
 # The outfitter.
 
 - type: vendingMachineInventory
@@ -255,6 +268,9 @@
     WFOutpostPartsPressPack: 4294967295 # Infinite
     WFOutpostPowerExporterPack: 4294967295 # Infinite
     WFOutpostMiningBotDockPack: 4294967295 # Infinite
+    WFColonyExtractorPack: 4294967295 # Infinite
+    WFColonyExchangeVendorPack: 4294967295 # Infinite
+    WFColonyExchangeChutePack: 4294967295 # Infinite
     WFOutpostSensorUplinkPack: 4294967295 # Infinite
     WFOutpostFlakBatteryPack: 4294967295 # Infinite
     WFOutpostDefenceBatteryPack: 4294967295 # Infinite

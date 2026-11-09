@@ -27,6 +27,14 @@ public sealed partial class WFOutpostSystem
     /// <summary>Cryopods an outpost holds at most.</summary>
     public const int MaxPods = 6;
 
+    /// <summary>Cryopods this outpost holds at most: <see cref="MaxPods"/>, more for one with heritage.</summary>
+    public int PodLimit(EntityUid outpost)
+    {
+        var limit = new WFOutpostPodLimitEvent(MaxPods);
+        RaiseLocalEvent(outpost, ref limit);
+        return limit.Limit;
+    }
+
     /// <summary>The job an outpost's owner joins as.</summary>
     public static readonly ProtoId<JobPrototype> SettlerJob = WFOutpostLimits.SettlerJob;
 

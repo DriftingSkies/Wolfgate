@@ -31,12 +31,11 @@ public sealed partial class WFTradeDropVisualsSystem : EntitySystem
     /// <summary>Dresses a descent as its product, under a canopy and over a shadow.</summary>
     private void Dress(Entity<WFTradeDropComponent> ent)
     {
-        if (!TryComp<SpriteComponent>(ent, out var sprite) || string.IsNullOrEmpty(ent.Comp.Product.Id)
-            || !_proto.HasIndex(ent.Comp.Product))
+        if (!TryComp<SpriteComponent>(ent, out var sprite) || ent.Comp.Product is not { } product || !_proto.HasIndex(product))
             return;
 
         // Look the same as the product by borrowing its sprite from a throwaway client copy.
-        var copy = Spawn(ent.Comp.Product, MapCoordinates.Nullspace);
+        var copy = Spawn(product, MapCoordinates.Nullspace);
         if (TryComp<SpriteComponent>(copy, out var source))
             _sprite.CopySprite((copy, source), (ent, sprite));
         Del(copy);

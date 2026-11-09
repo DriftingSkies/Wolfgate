@@ -92,6 +92,7 @@ public partial class ShuttleNavControl
         WfMapDrawCircles(handle, worldToView, map, scale);
         WfMapDrawSites(handle, worldToView, map, scale);
         WfMapDrawPads(handle, worldToView, map, scale);
+        WfMapDrawLabels(handle, worldToView, map);
         _wfMapDrewSites = map.Sites.Count > 0;
         return true;
     }
@@ -243,6 +244,20 @@ public partial class ShuttleNavControl
             var label = Loc.GetString(site.Name);
             var labelSize = handle.GetDimensions(Font, label, UIScale * 0.75f);
             handle.DrawString(Font, point + new Vector2(size * 2f, -labelSize.Y / 2f), label, UIScale * 0.75f, colour);
+        }
+    }
+
+    /// <summary>The names written on the map, at any zoom.</summary>
+    private void WfMapDrawLabels(DrawingHandleScreen handle, Matrix3x2 worldToView, WFPlanetMapComponent map)
+    {
+        foreach (var label in map.Labels)
+        {
+            var point = Vector2.Transform(label.Position, worldToView);
+            if (!new UIBox2(Vector2.Zero, PixelSize).Contains(point))
+                continue;
+
+            var size = handle.GetDimensions(Font, label.Text, UIScale * 0.8f);
+            handle.DrawString(Font, point - new Vector2(size.X / 2f, size.Y + 6f * UIScale), label.Text, UIScale * 0.8f, WfMapSiteColour);
         }
     }
 

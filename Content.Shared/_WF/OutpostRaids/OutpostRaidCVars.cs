@@ -8,7 +8,7 @@ public sealed class OutpostRaidCVars
 {
     /// <summary>Whether the raid director sends raids.</summary>
     public static readonly CVarDef<bool> Enabled =
-        CVarDef.Create("wf.outposts.raids", false, CVar.SERVERONLY);
+        CVarDef.Create("wf.outposts.raids", true, CVar.SERVERONLY);
 
     /// <summary>Seconds after an outpost is founded or loaded before it can be raided.</summary>
     public static readonly CVarDef<float> Grace =

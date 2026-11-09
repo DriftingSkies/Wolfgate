@@ -30,8 +30,12 @@ public sealed partial class WFContractorPrototype : IPrototype
     public Color Color = Color.White;
 
     /// <summary>Game maps it works from; the first in the round is home.</summary>
-    [DataField(required: true)]
+    [DataField]
     public List<string> Stations = new();
+
+    /// <summary>Whether its home is found at runtime instead, such as a colony short of supplies.</summary>
+    [DataField]
+    public bool Runtime;
 
     /// <summary>How many offers it keeps on the board at once.</summary>
     [DataField]

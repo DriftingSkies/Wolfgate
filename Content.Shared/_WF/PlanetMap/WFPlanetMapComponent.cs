@@ -40,6 +40,10 @@ public sealed partial class WFPlanetMapComponent : Component
     [ViewVariables, AutoNetworkedField]
     public List<WFPlanetMapPad> Pads = new();
 
+    /// <summary>Names written on the map, such as an old outpost's, kept by the Colonies module.</summary>
+    [ViewVariables, AutoNetworkedField]
+    public List<WFPlanetMapLabel> Labels = new();
+
     /// <summary>Server only: the ground the roads and sites were read from, once they were.</summary>
     [ViewVariables]
     public EntityUid? RoadsFrom;
@@ -102,6 +106,10 @@ public readonly record struct WFPlanetMapSite(WFPlanetMapSiteKind Kind, Vector2i
 /// <summary>A landing pad: its middle, its side in tiles, how it is turned, and whether any pilot may use it.</summary>
 [Serializable, NetSerializable]
 public readonly record struct WFPlanetMapPad(Vector2 Centre, int Size, Angle Rotation, bool Public);
+
+/// <summary>A name written on the map at a place; plain text, not a Fluent id.</summary>
+[Serializable, NetSerializable]
+public readonly record struct WFPlanetMapLabel(Vector2 Position, string Text);
 
 /// <summary>What a site is; <see cref="Depot"/> is a cargo depot built on the planet.</summary>
 public enum WFPlanetMapSiteKind : byte { Unknown, Building, House, Fuel, Vault, Facility, City, Camp, Wreck, Depot }

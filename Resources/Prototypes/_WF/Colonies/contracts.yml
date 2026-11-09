@@ -1,0 +1,67 @@
+# Colony contractors: a colony short of Supplies or Medical posts on the public board. They have no game map; each round
+# the colony lowest on the good under half its target is their home (WFColonySystem.Imports), and the goods count as
+# delivered on any of its world's outposts.
+
+- type: wfContractor
+  id: WFContractorColonySupplies
+  name: wf-contractor-colony-supplies
+  description: wf-contractor-colony-supplies-desc
+  employer: wf-contractor-colony-supplies-employer
+  color: "#8fbf7f"
+  runtime: true
+  offers: 2
+  order: 20
+
+- type: wfContractor
+  id: WFContractorColonyMedical
+  name: wf-contractor-colony-medical
+  description: wf-contractor-colony-medical-desc
+  employer: wf-contractor-colony-medical-employer
+  color: "#7fbfb4"
+  runtime: true
+  offers: 2
+  order: 21
+
+- type: wfContract
+  id: WFContractColonyProvisions
+  contractor: WFContractorColonySupplies
+  category: Supply
+  tier: 1
+  title: wf-contract-colony-provisions
+  briefing: wf-contract-colony-provisions-brief
+  reward: 8000, 11000
+  minutes: 60
+  weight: 2
+  objective: !type:WFContractSupply
+    pick: 2
+    premium: 1.5
+    goods:
+    - entity: FoodBreadPlain
+      count: 6, 12
+    - entity: FoodMeat
+      count: 10, 20
+    - entity: DrinkWaterBottleFull
+      count: 10, 20
+
+- type: wfContract
+  id: WFContractColonyMedicalRelief
+  contractor: WFContractorColonyMedical
+  category: Supply
+  tier: 1
+  title: wf-contract-colony-medical
+  briefing: wf-contract-colony-medical-brief
+  reward: 7000, 10000
+  minutes: 60
+  weight: 2
+  objective: !type:WFContractSupply
+    pick: 2
+    premium: 1.5
+    goods:
+    - stack: Gauze
+      count: 20, 40
+    - stack: Ointment
+      count: 20, 40
+    - stack: Brutepack
+      count: 20, 40
+    - entity: MedkitFilled
+      count: 2, 4

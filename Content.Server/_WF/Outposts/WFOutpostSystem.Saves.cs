@@ -118,6 +118,17 @@ public sealed partial class WFOutpostSystem
     }
 
     /// <summary>
+    /// An outpost's appraisal as its save stores it: scaled so that <see cref="LoadPrice"/> charges the outpost's own markup,
+    /// lower for one with heritage.
+    /// </summary>
+    public int LoadAppraisal(Entity<MapGridComponent> grid)
+    {
+        var markup = new WFOutpostMarkupEvent(LoadMarkup);
+        RaiseLocalEvent(grid, ref markup);
+        return (int) Math.Ceiling(Appraise(grid) * markup.Markup / LoadMarkup);
+    }
+
+    /// <summary>
     /// Whether a save keeps an entity: players, mobs, cash, deeds, ghost roles and raid loot are left out of its value, and taken
     /// off the copy when it is loaded.
     /// </summary>
@@ -241,7 +252,7 @@ public sealed partial class WFOutpostSystem
         }
 
         var save = new WFStoredOutpostSave(slot, Name(outpost), CountAllTiles((outpost, outpost.Comp, grid)), entities,
-            Appraise((outpost, grid)), _ticker.RoundId, 0, DateTime.UtcNow, GetLineage(outpost.Comp));
+            LoadAppraisal((outpost, grid)), _ticker.RoundId, 0, DateTime.UtcNow, GetLineage(outpost.Comp));
         outpost.Comp.Slot = slot;
         outpost.Comp.SavedFingerprint = Fingerprint((outpost, grid));
         outpost.Comp.NextAutosave = _timing.CurTime + TimeSpan.FromSeconds(_cfg.GetCVar(OutpostCVars.AutosaveInterval));

@@ -29,6 +29,8 @@ public sealed partial class WFContractSystem
             }
         }
 
+        var ev = new WFContractorHomesEvent(homes);
+        RaiseLocalEvent(ev);
         return homes;
     }
 

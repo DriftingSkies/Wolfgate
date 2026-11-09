@@ -23,7 +23,7 @@
   name: wf-outpost-preset-farmstead
   description: wf-outpost-preset-farmstead-desc
   grid: /SharedMaps/_WF/Outposts/farmstead.yml
-  price: 25000
+  price: 26000
   order: 2
 
 - type: wfOutpostPreset

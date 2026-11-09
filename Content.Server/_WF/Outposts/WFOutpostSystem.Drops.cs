@@ -255,6 +255,12 @@ public sealed partial class WFOutpostSystem
             return;
         }
 
+        if (!MayFound(drop.Owner, null, drop.Ground, out var refusal))
+        {
+            FinishDrop(drop, null, refusal);
+            return;
+        }
+
         if (!TryStageSave(drop.Yaml!, $"outpost drop {drop.Name}", out var staged, out var console))
         {
             Log.Error($"Outpost save slot {drop.Slot} of {drop.Owner} failed to stage for a drop.");
@@ -270,7 +276,7 @@ public sealed partial class WFOutpostSystem
         }
 
         var consoleTile = _maps.TileIndicesFor(staged, staged.Comp, Transform(console).Coordinates);
-        if (!TryFindDropSite((drop.Ground, biome, groundGrid), tiles, consoleTile, out var shift))
+        if (!TryFindDropSite(drop.Owner, (drop.Ground, biome, groundGrid), tiles, consoleTile, out var shift))
         {
             Del(staged);
             FinishDrop(drop, null, "wf-outpost-drop-no-site");
@@ -290,7 +296,7 @@ public sealed partial class WFOutpostSystem
     /// tile of it on open, unclaimed ground and its claim clear of reserved ground. Chunks under each try are generated
     /// first.
     /// </summary>
-    private bool TryFindDropSite(Entity<BiomeComponent, MapGridComponent> ground, List<Vector2i> tiles, Vector2i consoleTile,
+    private bool TryFindDropSite(NetUserId owner, Entity<BiomeComponent, MapGridComponent> ground, List<Vector2i> tiles, Vector2i consoleTile,
         out Vector2i shift)
     {
         if (_bounds.TryGetBounds(ground, out var centre, out var radius))
@@ -301,8 +307,10 @@ public sealed partial class WFOutpostSystem
             radius = UnboundedDropRadius;
         }
 
-        // The lots the world kept for outposts first, centred on the save's middle.
-        if (TryComp<WFPlanetPoiComponent>(ground, out var pois) && pois.OutpostLots.Count > 0 && tiles.Count > 0)
+        // The lots the world kept for outposts first, centred on the save's middle, unless a module keeps them for others.
+        var lots = new WFOutpostLotsEvent(owner, ground);
+        RaiseLocalEvent(ref lots);
+        if (!lots.SkipLots && TryComp<WFPlanetPoiComponent>(ground, out var pois) && pois.OutpostLots.Count > 0 && tiles.Count > 0)
         {
             var min = tiles.Aggregate(Vector2i.ComponentMin);
             var max = tiles.Aggregate(Vector2i.ComponentMax);

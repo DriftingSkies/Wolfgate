@@ -79,6 +79,8 @@ public sealed partial class WFHusbandrySystem : EntitySystem
                     MakeLivestock(animal);
                     _penned.Add(animal);
                 }
+
+                FeedPen(pen);
             }
         }
 

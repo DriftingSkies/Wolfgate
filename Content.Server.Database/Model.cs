@@ -77,6 +77,12 @@ namespace Content.Server.Database
         // WOLFGATE END
         public DbSet<WolfgateOutpostSave> WolfgateOutpostSave { get; set; } = null!; // WOLFGATE(Outposts): saved outposts
         public DbSet<WolfgateOutpostPayout> WolfgateOutpostPayout { get; set; } = null!; // WOLFGATE(Outposts): round-end sales owed to offline owners
+        // WOLFGATE(Colonies) START: world development scores, charters, yard platforms and yard builds
+        public DbSet<WolfgateWorldDevelopment> WolfgateWorldDevelopment { get; set; } = null!;
+        public DbSet<WolfgateWorldCharter> WolfgateWorldCharter { get; set; } = null!;
+        public DbSet<WolfgateWorldYard> WolfgateWorldYard { get; set; } = null!;
+        public DbSet<WolfgateYardJob> WolfgateYardJob { get; set; } = null!;
+        // WOLFGATE END
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -523,6 +529,23 @@ namespace Content.Server.Database
 
             modelBuilder.Entity<WolfgateOutpostPayout>()
                 .HasIndex(p => p.PlayerUserId);
+            // WOLFGATE END
+
+            // WOLFGATE(Colonies) START: one score per holder and world; one charter and one yard per world
+            modelBuilder.Entity<WolfgateWorldDevelopment>()
+                .HasIndex(d => new { d.World, d.Holder })
+                .IsUnique();
+
+            modelBuilder.Entity<WolfgateWorldCharter>()
+                .HasIndex(c => c.World)
+                .IsUnique();
+
+            modelBuilder.Entity<WolfgateWorldYard>()
+                .HasIndex(y => y.World)
+                .IsUnique();
+
+            modelBuilder.Entity<WolfgateYardJob>()
+                .HasIndex(j => j.World);
             // WOLFGATE END
 
             // WOLFGATE(Companies) START: names and tags are unique; a character's membership goes with the character
@@ -2188,6 +2211,110 @@ namespace Content.Server.Database
         public int Amount { get; set; }
 
         public DateTime Sold { get; set; }
+    }
+    // WOLFGATE END
+
+    // WOLFGATE(Colonies) START: a holder's development score on a world, the world's charter, its yard and the builds on it
+    public class WolfgateWorldDevelopment
+    {
+        [Key]
+        public int Id { get; set; }
+
+        /// <summary>A company as "c" and its id, or a player as "u" and their user id.</summary>
+        [Required, MaxLength(48)]
+        public string Holder { get; set; } = "";
+
+        /// <summary>The world's surface prototype.</summary>
+        [Required, MaxLength(64)]
+        public string World { get; set; } = "";
+
+        /// <summary>The holder's name when last seen, for players who are offline.</summary>
+        [Required, MaxLength(64)]
+        public string Name { get; set; } = "";
+
+        public double Points { get; set; }
+
+        /// <summary>When the points were last decayed to.</summary>
+        public DateTime Updated { get; set; }
+    }
+
+    public class WolfgateWorldCharter
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Required, MaxLength(64)]
+        public string World { get; set; } = "";
+
+        /// <summary>The governing company.</summary>
+        public int CompanyId { get; set; }
+
+        public DateTime Granted { get; set; }
+
+        /// <summary>The company leading the governor at the last daily checks, and how many checks in a row.</summary>
+        public int? Rival { get; set; }
+
+        public int Streak { get; set; }
+
+        public DateTime LastCheck { get; set; }
+
+        /// <summary>Whether the outposts' batteries engage campaign ships in orbit.</summary>
+        public bool Defence { get; set; }
+
+        /// <summary>Whether anyone may found on the world without a permit.</summary>
+        public bool Open { get; set; }
+
+        /// <summary>Holder keys with a permit, comma-separated.</summary>
+        [Required, MaxLength(2048)]
+        public string Permits { get; set; } = "";
+    }
+
+    public class WolfgateWorldYard
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Required, MaxLength(64)]
+        public string World { get; set; } = "";
+
+        /// <summary>The platform grid as gzip'd YAML.</summary>
+        public byte[] Data { get; set; } = default!;
+
+        /// <summary>Where the platform sits on the orbit map.</summary>
+        public float X { get; set; }
+
+        public float Y { get; set; }
+
+        /// <summary>Companies the governor opened the berths to, as holder keys, comma-separated.</summary>
+        [Required, MaxLength(2048)]
+        public string Berths { get; set; } = "";
+
+        public DateTime Saved { get; set; }
+    }
+
+    public class WolfgateYardJob
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Required, MaxLength(64)]
+        public string World { get; set; } = "";
+
+        public int CompanyId { get; set; }
+
+        [Required, MaxLength(64)]
+        public string Design { get; set; } = "";
+
+        public int Stage { get; set; }
+
+        /// <summary>Share of the stage's work done, 0 to 1.</summary>
+        public float Progress { get; set; }
+
+        public int Components { get; set; }
+
+        public int Metals { get; set; }
+
+        public DateTime Updated { get; set; }
     }
     // WOLFGATE END
 

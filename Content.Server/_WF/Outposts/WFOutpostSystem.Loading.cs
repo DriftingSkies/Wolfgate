@@ -263,7 +263,7 @@ public sealed partial class WFOutpostSystem
             Owner = outpost.Comp.Owner,
             Slot = slot,
             Name = name,
-            Price = price ?? LoadPrice(Appraise(loaded)),
+            Price = price ?? LoadPrice(LoadAppraisal(loaded)),
             Staged = loaded.Owner,
             StagedConsole = stagedConsole,
             Shift = shift,

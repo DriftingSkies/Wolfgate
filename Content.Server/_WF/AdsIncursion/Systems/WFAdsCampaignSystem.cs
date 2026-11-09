@@ -407,10 +407,12 @@ public sealed partial class WFAdsCampaignSystem : EntitySystem
         return ships;
     }
 
-    /// <summary>Whether a station's bounds are centred in a cell: the ADS never claims, contests or challenges one.</summary>
+    /// <summary>Whether a station's bounds, or a colony world, are centred in a cell: the ADS never claims, contests or challenges one.</summary>
     public bool HasStation(MapId map, WFSectorCell cell)
     {
-        return _territory.StationsIn(map, cell).Count > 0;
+        var colony = new Colonies.WFColonyCellQueryEvent(map, cell);
+        RaiseLocalEvent(ref colony);
+        return colony.Colony || _territory.StationsIn(map, cell).Count > 0;
     }
 
     /// <summary>The Asset Preservation Directive: vetoes every ADS claim, contest and challenge on a cell with a station in it.</summary>

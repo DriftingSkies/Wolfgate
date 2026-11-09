@@ -115,6 +115,15 @@ public sealed partial class WFOutpostSystem : EntitySystem
         return false;
     }
 
+    /// <summary>Whether another module lets a player found, claim or drop an outpost on a ground map.</summary>
+    public bool MayFound(NetUserId owner, EntityUid? user, EntityUid ground, out string reason)
+    {
+        var attempt = new WFOutpostFoundAttemptEvent(owner, user, ground);
+        RaiseLocalEvent(ref attempt);
+        reason = attempt.Refusal ?? string.Empty;
+        return attempt.Refusal == null;
+    }
+
     /// <summary>
     /// Founds an outpost centred on <paramref name="target"/>: a square grid anchored over natural ground, with the
     /// kit's console in the middle. The kit is used up. <paramref name="reason"/> is a loc id when it fails.
@@ -150,7 +159,8 @@ public sealed partial class WFOutpostSystem : EntitySystem
             return TryRefound(user, owner, kit, abandoned, abandonedTile, out outpost, out reason);
 
         if (!TryGetFootprint(kit.Comp, target, out var ground, out var origin, out reason)
-            || !IsClaimable((ground, Comp<MapGridComponent>(ground)), origin, kit.Comp.Size, out reason))
+            || !IsClaimable((ground, Comp<MapGridComponent>(ground)), origin, kit.Comp.Size, out reason)
+            || !MayFound(owner, user, ground, out reason))
             return false;
 
         var mapId = Transform(ground).MapID;
@@ -468,7 +478,16 @@ public sealed partial class WFOutpostSystem : EntitySystem
         GetHubStatus((grid, outpost), out var hub);
         if (hub != null && Transform(hub.Value).GridUid == grid)
             state.Hub = GetNetEntity(hub.Value);
+        var ev = new WFOutpostConsoleStateEvent(state);
+        RaiseLocalEvent(grid, ref ev);
         _ui.SetUiState(console.Owner, WFOutpostConsoleUiKey.Key, state);
+    }
+
+    /// <summary>Shows an outpost's console afresh.</summary>
+    public void RefreshConsole(Entity<WFOutpostComponent> outpost)
+    {
+        if (TryComp<WFOutpostConsoleComponent>(outpost.Comp.Console, out var console))
+            UpdateUi((outpost.Comp.Console, console));
     }
 
     /// <summary>Floor tiles on an outpost.</summary>

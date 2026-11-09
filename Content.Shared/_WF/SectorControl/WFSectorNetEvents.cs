@@ -15,6 +15,9 @@ public sealed class WFSectorTerritoryEvent : EntityEventArgs
     /// <summary>The <see cref="WFSectorFactionPrototype"/> ids the claims and contests index into.</summary>
     public List<string> Factions = new();
 
+    /// <summary>The name and colour of each faction in <see cref="Factions"/> no prototype describes, such as a colony's governor.</summary>
+    public Dictionary<string, WFSectorFactionStyle> Styles = new();
+
     public List<WFSectorClaimEntry> Claims = new();
 
     public List<WFSectorContestEntry> Contests = new();
@@ -31,6 +34,10 @@ public sealed class WFSectorTerritoryEvent : EntityEventArgs
     /// <summary>Whether this is the sector map, which the client keeps with nothing held so the sector map can draw its grid.</summary>
     public bool Sector;
 }
+
+/// <summary>How the map shows a faction made at runtime.</summary>
+[Serializable, NetSerializable]
+public readonly record struct WFSectorFactionStyle(string Name, Color Color);
 
 /// <summary>A held cell and the index of its owner in <see cref="WFSectorTerritoryEvent.Factions"/>.</summary>
 [Serializable, NetSerializable]

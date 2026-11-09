@@ -50,6 +50,25 @@ public sealed partial class WFTradeStationComponent : Component
 {
     [DataField(required: true)]
     public string Id = string.Empty;
+
+    /// <summary>A role set in code for a station no prototype describes, such as a colony; it overrides the prototype's.</summary>
+    [ViewVariables]
+    public WFTradeStationPrototype? Role;
+
+    /// <summary>
+    /// Crates an hour this station makes of each industry's outputs on its own, on top of the sector's shared rates; its
+    /// goods don't stop the outside supply.
+    /// </summary>
+    [ViewVariables]
+    public Dictionary<string, float> OwnRates = new();
+}
+
+/// <summary>Puts the machines on a grid on another station's ledger, as a colony's exchanges are on their world's.</summary>
+[RegisterComponent]
+public sealed partial class WFTradeMarketLinkComponent : Component
+{
+    [ViewVariables]
+    public EntityUid Market;
 }
 
 /// <summary>The stock changes a station's material prices haven't caught up with yet, and what it has part used.</summary>

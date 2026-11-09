@@ -41,7 +41,8 @@ public sealed partial class WFTradeDropSystem : EntitySystem
         foreach (var (uid, drop) in _landing)
         {
             var coords = Transform(uid).Coordinates;
-            Spawn(drop.Product, coords);
+            if (drop.Product is { } product)
+                Spawn(product, coords);
             Spawn(drop.LandEffect, coords);
             _audio.PlayPvs(drop.LandSound, coords);
             QueueDel(uid);

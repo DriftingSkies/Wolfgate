@@ -508,6 +508,10 @@ public sealed class EconomyLedgerTest
             var made = new HashSet<string>();
             foreach (var industry in protoMan.EnumeratePrototypes<WFTradeIndustryPrototype>())
             {
+                // Colony industries run only where players build them, never at a station that always spawns.
+                if (industry.Colony)
+                    continue;
+
                 Assert.That(running, Does.Contain(industry.ID), $"No station runs {industry.ID}.");
                 made.UnionWith(industry.Outputs.Select(good => good.Id));
             }

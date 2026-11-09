@@ -1,0 +1,118 @@
+# The orbital yard: the platform kit a Dominion world's governor deploys in orbit, its console and chute, and the yard
+# designs, hulls no shipyard sells. A stage needs its Ship Components and Metals crates at the chute, then crane time.
+# Names are in colonies.ftl.
+
+- type: entity
+  parent: BaseItem
+  id: WFColonyYardKit
+  components:
+  - type: Item
+    size: Huge
+  - type: Sprite
+    sprite: Objects/Devices/flatpack.rsi
+    layers:
+    - state: base
+    - state: overlay
+      color: "#c9a85a"
+    - state: icon-default
+  - type: WFColonyYardKit
+  - type: StaticPrice
+    price: 0
+
+- type: entity
+  parent: BaseComputer
+  id: WFColonyYardConsole
+  components:
+  - type: Sprite
+    sprite: _NF/Structures/Machines/computers.rsi
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: shipyard
+    - map: ["computerLayerKeys"]
+      state: telesci_key
+  - type: Anchorable
+    flags:
+    - Anchorable
+  - type: WFColonyYard
+  - type: ActivatableUI
+    key: enum.WFYardConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.WFYardConsoleUiKey.Key:
+        type: WFYardConsoleBoundUserInterface
+
+- type: entity
+  parent: BaseStructure
+  id: WFColonyYardChute
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Anchorable
+    flags:
+    - None
+  - type: Sprite
+    sprite: _Crescent/Structures/cargochute.rsi
+    layers:
+    - state: icon
+      color: "#c9a85a"
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 190
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: InteractionOutline
+  - type: WFColonyYardChute
+
+# Each design's crates at base prices come to about its listed price, so a deeded hull never sells back for more than it
+# took to build.
+- type: wfYardDesign
+  id: WFYardDesignPacem
+  vessel: Pacem
+  stages:
+  - name: wf-yard-stage-keel
+    components: 3
+    metals: 5
+    minutes: 20
+  - name: wf-yard-stage-hull
+    components: 4
+    metals: 6
+    minutes: 25
+  - name: wf-yard-stage-fitting
+    components: 5
+    metals: 3
+    minutes: 25
+
+- type: wfYardDesign
+  id: WFYardDesignInfiltrator
+  vessel: Infiltrator
+  stages:
+  - name: wf-yard-stage-keel
+    components: 4
+    metals: 7
+    minutes: 25
+  - name: wf-yard-stage-hull
+    components: 5
+    metals: 8
+    minutes: 30
+  - name: wf-yard-stage-systems
+    components: 6
+    metals: 4
+    minutes: 30
+  - name: wf-yard-stage-fitting
+    components: 5
+    metals: 3
+    minutes: 30

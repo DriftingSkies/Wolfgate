@@ -30,6 +30,9 @@ public sealed partial class WFTradeMarketSystem
         if (!TryComp<WFTradeStationComponent>(grid, out var station))
             return null;
 
+        if (station.Role != null)
+            return station.Role;
+
         if (_roles == null)
         {
             _roles = new Dictionary<string, WFTradeStationPrototype>();

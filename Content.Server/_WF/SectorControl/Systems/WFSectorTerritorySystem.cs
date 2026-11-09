@@ -55,6 +55,27 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
     /// <summary>The sector map: the game ticker's default map.</summary>
     public MapId SectorMap => _ticker.DefaultMap;
 
+    /// <summary>Factions made at runtime, such as a player company governing a colony, with how the map shows them.</summary>
+    private readonly Dictionary<string, WFSectorFactionStyle> _runtimeFactions = new();
+
+    /// <summary>Lets a faction no prototype describes hold cells, shown by the given name and colour.</summary>
+    public void RegisterFaction(string id, string name, Color color)
+    {
+        _runtimeFactions[id] = new WFSectorFactionStyle(name, color);
+    }
+
+    /// <summary>Whether a faction may hold cells: a prototype's, or one registered at runtime.</summary>
+    public bool IsFaction(ProtoId<WFSectorFactionPrototype> faction)
+    {
+        return _prototypes.HasIndex(faction) || _runtimeFactions.ContainsKey(faction);
+    }
+
+    /// <summary>How the map shows a faction registered at runtime.</summary>
+    public bool TryGetRuntimeFaction(string faction, out WFSectorFactionStyle style)
+    {
+        return _runtimeFactions.TryGetValue(faction, out style);
+    }
+
     public override void Initialize()
     {
         base.Initialize();
@@ -518,7 +539,7 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
     /// <summary>Whether a faction could claim a cell now: it is unheld or its own, and no protection rule vetoes it.</summary>
     public bool CanClaim(MapId map, WFSectorCell cell, ProtoId<WFSectorFactionPrototype> faction, EntityUid? source = null)
     {
-        if (!Enabled || !_prototypes.HasIndex(faction) || map == MapId.Nullspace || !_map.MapExists(map)
+        if (!Enabled || !IsFaction(faction) || map == MapId.Nullspace || !_map.MapExists(map)
             || !WFSectorHex.InSector(cell, CellSize))
             return false;
 
@@ -538,7 +559,7 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
     public bool TryClaim(MapId map, WFSectorCell cell, ProtoId<WFSectorFactionPrototype> faction, EntityUid? source)
     {
         // Nothing past the sector's edge can be held: the map shows no cell there.
-        if (!Enabled || !_prototypes.HasIndex(faction) || source is { } live && TerminatingOrDeleted(live)
+        if (!Enabled || !IsFaction(faction) || source is { } live && TerminatingOrDeleted(live)
             || !WFSectorHex.InSector(cell, CellSize) || Territory(map, true) is not { } territory)
             return false;
 
@@ -591,7 +612,7 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
     /// </summary>
     public bool Contest(MapId map, WFSectorCell cell, ProtoId<WFSectorFactionPrototype> faction, TimeSpan deadline, EntityUid? source = null)
     {
-        if (!Enabled || !_prototypes.HasIndex(faction) || source is { } live && TerminatingOrDeleted(live)
+        if (!Enabled || !IsFaction(faction) || source is { } live && TerminatingOrDeleted(live)
             || !WFSectorHex.InSector(cell, CellSize) || Territory(map, true) is not { } territory || territory.Contests.ContainsKey(cell))
             return false;
 
@@ -627,7 +648,7 @@ public sealed partial class WFSectorTerritorySystem : EntitySystem
     /// </summary>
     public bool Challenge(MapId map, WFSectorCell cell, ProtoId<WFSectorFactionPrototype> faction, TimeSpan deadline, EntityUid? source)
     {
-        if (!Enabled || !_prototypes.HasIndex(faction) || source is { } live && TerminatingOrDeleted(live)
+        if (!Enabled || !IsFaction(faction) || source is { } live && TerminatingOrDeleted(live)
             || Territory(map) is not { } territory || territory.Contests.ContainsKey(cell)
             || !territory.Claims.TryGetValue(cell, out var held) || held.Faction == faction)
             return false;

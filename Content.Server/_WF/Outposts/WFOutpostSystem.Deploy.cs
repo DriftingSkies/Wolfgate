@@ -146,7 +146,7 @@ public sealed partial class WFOutpostSystem
         if (!CanDeploy(user, out var outpost, out var index, out reason))
             return false;
 
-        if (Deploys<WFOutpostCryopodComponent>(pack) && CountPods(outpost) >= MaxPods)
+        if (Deploys<WFOutpostCryopodComponent>(pack) && CountPods(outpost) >= PodLimit(outpost))
         {
             reason = "wf-outpost-cryopod-full";
             return false;

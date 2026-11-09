@@ -248,7 +248,7 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
         return ev;
     }
 
-    private static int Index(WFSectorTerritoryEvent ev, Dictionary<string, int> indices, string faction)
+    private int Index(WFSectorTerritoryEvent ev, Dictionary<string, int> indices, string faction)
     {
         if (indices.TryGetValue(faction, out var index))
             return index;
@@ -256,6 +256,8 @@ public sealed partial class WFSectorSyncSystem : EntitySystem
         index = ev.Factions.Count;
         ev.Factions.Add(faction);
         indices[faction] = index;
+        if (_territory.TryGetRuntimeFaction(faction, out var style))
+            ev.Styles[faction] = style;
         return index;
     }
 }

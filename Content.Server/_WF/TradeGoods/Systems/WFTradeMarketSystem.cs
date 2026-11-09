@@ -146,7 +146,7 @@ public sealed partial class WFTradeMarketSystem : EntitySystem
     public WFTradeQuote? Quote(EntityUid chute, string good, EntityUid? crate = null, EntityUid? seller = null)
     {
         if (!TryComp<DispenserComponent>(chute, out var dispenser)
-            || Transform(chute).GridUid is not { } grid
+            || MarketOf(chute) is not { } grid
             || (BasePrice(dispenser, good) ?? RestockBase(grid, good)) is not { } basePrice
             || basePrice <= 0)
             return null;
@@ -211,7 +211,7 @@ public sealed partial class WFTradeMarketSystem : EntitySystem
     /// </summary>
     public void Sell(EntityUid chute, EntityUid crate, EntityUid seller, int? fixedAmount = null)
     {
-        if (Transform(chute).GridUid is not { } grid || MetaData(crate).EntityPrototype?.ID is not { } good)
+        if (MarketOf(chute) is not { } grid || MetaData(crate).EntityPrototype?.ID is not { } good)
             return;
 
         int amount;
@@ -353,10 +353,22 @@ public sealed partial class WFTradeMarketSystem : EntitySystem
         return _proto.TryIndex<EntityPrototype>(good, out var proto) ? proto.Name : good;
     }
 
+    /// <summary>The station whose ledger a machine trades on: its grid, or the station that grid is linked to.</summary>
+    public EntityUid? MarketOf(EntityUid machine)
+    {
+        return LinkedMarket(Transform(machine).GridUid);
+    }
+
+    /// <summary>A grid's own ledger, or the one it is linked to.</summary>
+    public EntityUid? LinkedMarket(EntityUid? grid)
+    {
+        return grid is { } uid && TryComp<WFTradeMarketLinkComponent>(uid, out var link) && Exists(link.Market) ? link.Market : grid;
+    }
+
     /// <summary>The name players know a chute's station by: its grid's name.</summary>
     public string StationName(EntityUid chute)
     {
-        return Transform(chute).GridUid is { } grid ? Name(grid) : Name(chute);
+        return MarketOf(chute) is { } grid ? Name(grid) : Name(chute);
     }
 
     /// <summary>Every chute on a market map, with its grid.</summary>
@@ -366,8 +378,11 @@ public sealed partial class WFTradeMarketSystem : EntitySystem
         var query = EntityQueryEnumerator<DispenserComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var dispenser, out var xform))
         {
-            if (xform.GridUid is { } grid && xform.Anchored && IsMarketMap(xform.MapID) && dispenser.Inventory.Count > 0)
-                chutes.Add((uid, dispenser, grid));
+            if (xform.GridUid is not { } grid || !xform.Anchored || dispenser.Inventory.Count == 0)
+                continue;
+
+            if (IsMarketMap(xform.MapID) || HasComp<WFTradeMarketLinkComponent>(grid))
+                chutes.Add((uid, dispenser, LinkedMarket(grid)!.Value));
         }
 
         return chutes;

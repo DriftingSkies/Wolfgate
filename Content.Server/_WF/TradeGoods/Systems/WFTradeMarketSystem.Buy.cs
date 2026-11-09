@@ -68,7 +68,7 @@ public sealed partial class WFTradeMarketSystem
     public WFTradeBuyQuote? BuyQuote(EntityUid vendor, string good)
     {
         if (!HasComp<WFTradeVendorComponent>(vendor)
-            || Transform(vendor).GridUid is not { } grid
+            || MarketOf(vendor) is not { } grid
             || !_proto.TryIndex<EntityPrototype>(good, out var proto)
             || !proto.HasComp<WFTradeOriginComponent>(_factory)
             || VendorBasePrice(vendor, proto) is not { } basePrice)
@@ -123,7 +123,7 @@ public sealed partial class WFTradeMarketSystem
     {
         if (price <= 0
             || !HasComp<WFTradeVendorComponent>(vendor)
-            || Transform(vendor).GridUid is not { } grid
+            || MarketOf(vendor) is not { } grid
             || !proto.HasComp<WFTradeOriginComponent>(_factory))
             return price;
 
@@ -134,7 +134,7 @@ public sealed partial class WFTradeMarketSystem
     private void OnPurchased(Entity<VendingMachinePurchaseComponent> ent, ref ComponentStartup args)
     {
         if (!HasComp<WFTradeOriginComponent>(ent)
-            || Transform(ent).GridUid is not { } grid
+            || MarketOf(ent) is not { } grid
             || MetaData(ent).EntityPrototype?.ID is not { } good
             || Profile(grid).ContrabandGoods.Contains(good))
             return;
@@ -160,10 +160,10 @@ public sealed partial class WFTradeMarketSystem
         var query = EntityQueryEnumerator<WFTradeVendorComponent, VendingMachineComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var vendor, out var machine, out var xform))
         {
-            if (onGrid != null && xform.GridUid != onGrid)
+            if (onGrid != null && LinkedMarket(xform.GridUid) != onGrid)
                 continue;
 
-            SyncStock(uid, machine, xform.GridUid);
+            SyncStock(uid, machine, LinkedMarket(xform.GridUid));
             var prices = new Dictionary<string, int>();
             foreach (var good in machine.Inventory.Keys)
             {
@@ -249,7 +249,7 @@ public sealed partial class WFTradeMarketSystem
     public bool TakesToRestock(EntityUid chute, EntityUid crate)
     {
         return TryComp<DispenserComponent>(chute, out var dispenser)
-               && Transform(chute).GridUid is { } grid
+               && MarketOf(chute) is { } grid
                && MetaData(crate).EntityPrototype?.ID is { } good
                && BasePrice(dispenser, good) == null
                && RestockBase(grid, good) != null;
@@ -262,7 +262,7 @@ public sealed partial class WFTradeMarketSystem
         var query = EntityQueryEnumerator<WFTradeVendorComponent, VendingMachineComponent, TransformComponent>();
         while (query.MoveNext(out _, out var machine, out var xform))
         {
-            if (xform.GridUid != grid)
+            if (LinkedMarket(xform.GridUid) != grid)
                 continue;
 
             foreach (var good in machine.Inventory.Keys)
@@ -282,7 +282,7 @@ public sealed partial class WFTradeMarketSystem
         var query = EntityQueryEnumerator<WFTradeVendorComponent, VendingMachineComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out _, out var machine, out var xform))
         {
-            if (xform.GridUid != grid)
+            if (LinkedMarket(xform.GridUid) != grid)
                 continue;
 
             foreach (var (good, entry) in machine.Inventory)

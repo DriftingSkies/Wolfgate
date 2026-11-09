@@ -94,7 +94,9 @@ public sealed partial class WFOutpostIndustrySystem : EntitySystem
             output.Produced = 0;
         }
 
-        return _cfg.GetCVar(OutpostIndustryCVars.HourlyCap) - output.Produced;
+        var cap = new WFOutpostProducerCapEvent(_cfg.GetCVar(OutpostIndustryCVars.HourlyCap));
+        RaiseLocalEvent(outpost, ref cap);
+        return cap.Cap - output.Produced;
     }
 
     /// <summary>Books value made by an outpost's producers against its hourly cap.</summary>
@@ -102,6 +104,8 @@ public sealed partial class WFOutpostIndustrySystem : EntitySystem
     {
         Remaining(outpost);
         Comp<WFOutpostOutputComponent>(outpost).Produced += value;
+        var produced = new WFOutpostProducedEvent(value);
+        RaiseLocalEvent(outpost, ref produced);
     }
 
     private void UpdatePresses(TimeSpan now)
@@ -192,3 +196,11 @@ public sealed partial class WFOutpostIndustrySystem : EntitySystem
             args.PushMarkup(Loc.GetString(reason));
     }
 }
+
+/// <summary>Raised on an outpost when its producers make something, with what it is worth in spesos.</summary>
+[ByRefEvent]
+public readonly record struct WFOutpostProducedEvent(double Value);
+
+/// <summary>Raised on an outpost for what its producers may make an hour, in spesos.</summary>
+[ByRefEvent]
+public record struct WFOutpostProducerCapEvent(double Cap);

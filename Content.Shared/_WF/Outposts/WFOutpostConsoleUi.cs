@@ -1,3 +1,4 @@
+using Content.Shared._WF.Colonies;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
 
@@ -44,6 +45,9 @@ public sealed class WFOutpostConsoleState : BoundUserInterfaceState
 
     /// <summary>The outpost's own trade hub, for the Overview map.</summary>
     public NetEntity? Hub;
+
+    /// <summary>The outpost's world's development, for the Development tab; null while colonies are off.</summary>
+    public WFWorldDevelopmentView? Development;
 
     public WFOutpostConsoleState(string name, string ownerName, NetUserId owner, int tiles, int maxTiles, int entities, int maxEntities,
         List<WFOutpostSaveSlot?>? slots, bool busy, WFOutpostPendingLoad? pending, WFOutpostTradeView trade, WFOutpostSaleView sale)

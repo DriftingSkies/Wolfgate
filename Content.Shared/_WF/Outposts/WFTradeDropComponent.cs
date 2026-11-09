@@ -11,9 +11,9 @@ namespace Content.Shared._WF.Outposts;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class WFTradeDropComponent : Component
 {
-    /// <summary>What lands.</summary>
+    /// <summary>What lands; the descent prototype leaves it to whoever spawns the drop.</summary>
     [DataField, AutoNetworkedField]
-    public EntProtoId Product;
+    public EntProtoId? Product;
 
     /// <summary>When the descent began.</summary>
     [DataField, AutoNetworkedField]

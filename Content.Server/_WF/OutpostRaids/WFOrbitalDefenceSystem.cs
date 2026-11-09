@@ -1,3 +1,6 @@
+using Content.Server._WF.Encounters.Components;
+using Content.Server._WF.Outposts.Components;
+using Content.Server.Explosion.EntitySystems;
 using Content.Server.Power.EntitySystems;
 using Content.Shared._WF.OutpostRaids;
 using Content.Shared.GameTicking;
@@ -10,8 +13,8 @@ namespace Content.Server._WF.OutpostRaids;
 /// <summary>
 /// Orbital defence: a shuttle raid on an outpost with a powered sensor uplink or descent jammer descends from orbit
 /// instead of landing at once. It spends <see cref="Salvos"/> salvos coming down, two more under a jammer; at each,
-/// every powered battery on the outpost fires on it while an uplink tracks it. Shot down, it never lands. Only raid
-/// shuttles are ever fired on.
+/// every powered battery on the outpost fires on it while an uplink tracks it. Shot down, it never lands. On a governed
+/// world whose charter engages, the batteries also shell campaign ships in its orbit; never a player ship.
 /// </summary>
 public sealed class WFOrbitalDefenceSystem : EntitySystem
 {
@@ -19,6 +22,8 @@ public sealed class WFOrbitalDefenceSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private PowerReceiverSystem _power = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private ExplosionSystem _explosion = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private WFRaidDirectorSystem _director = default!;
     [Dependency] private WFRaidSystem _raids = default!;
 
@@ -29,6 +34,8 @@ public sealed class WFOrbitalDefenceSystem : EntitySystem
     public const float Hull = 100f;
 
     private readonly List<WFDescent> _descents = new();
+
+    private TimeSpan _nextOrbitSalvo;
 
     /// <summary>The shuttle raids descending now.</summary>
     public IReadOnlyList<WFDescent> Descents => _descents;
@@ -67,6 +74,12 @@ public sealed class WFOrbitalDefenceSystem : EntitySystem
     {
         base.Update(frameTime);
         var now = _timing.CurTime;
+        if (now >= _nextOrbitSalvo)
+        {
+            _nextOrbitSalvo = now + Interval;
+            FireOnOrbit();
+        }
+
         for (var i = _descents.Count - 1; i >= 0; i--)
         {
             var descent = _descents[i];
@@ -119,6 +132,55 @@ public sealed class WFOrbitalDefenceSystem : EntitySystem
             _raids.Notify(descent.Outpost, Loc.GetString("wf-orbital-hit", ("hull", (int) Math.Ceiling(descent.Hull / Hull * 100))));
     }
 
+    /// <summary>
+    /// Each tracked outpost whose world engages fires its powered batteries at a campaign ship in that world's orbit.
+    /// Returns the ships fired on.
+    /// </summary>
+    public List<EntityUid> FireOnOrbit()
+    {
+        var fired = new List<EntityUid>();
+        var outposts = EntityQueryEnumerator<WFOutpostComponent>();
+        while (outposts.MoveNext(out var uid, out var outpost))
+        {
+            if (outpost.Abandoned || !HasPowered<WFSensorUplinkComponent>(uid))
+                continue;
+
+            var engage = new WFOrbitalEngageEvent();
+            RaiseLocalEvent(uid, ref engage);
+            if (engage.Orbit is not { } orbit || OrbitTarget(orbit) is not { } target)
+                continue;
+
+            var batteries = EntityQueryEnumerator<WFOrbitalBatteryComponent, TransformComponent>();
+            while (batteries.MoveNext(out var battery, out var comp, out var xform))
+            {
+                if (xform.GridUid != uid || !xform.Anchored || !_power.IsPowered(battery))
+                    continue;
+
+                _explosion.QueueExplosion(_transform.GetMapCoordinates(target), "Default", comp.Damage, 3f, comp.Damage / 3f, battery);
+                if (comp.Sound != null)
+                    _audio.PlayPvs(comp.Sound, battery);
+                if (!fired.Contains(target))
+                    fired.Add(target);
+            }
+        }
+
+        return fired;
+    }
+
+    /// <summary>A campaign ship on an orbit map: a grid of a live encounter. Player ships are never targets.</summary>
+    private EntityUid? OrbitTarget(EntityUid orbit)
+    {
+        var query = EntityQueryEnumerator<WFEncounterGridComponent, TransformComponent>();
+        while (query.MoveNext(out var grid, out var encounter, out var xform))
+        {
+            if (xform.MapUid == orbit && HasComp<Robust.Shared.Map.Components.MapGridComponent>(grid)
+                && HasComp<Encounters.Components.WFEncounterComponent>(encounter.Encounter) && !HasComp<WFOutpostComponent>(grid))
+                return grid;
+        }
+
+        return null;
+    }
+
     private bool HasPowered<T>(EntityUid outpost) where T : IComponent
     {
         var query = EntityQueryEnumerator<T, TransformComponent>();
@@ -142,4 +204,11 @@ public sealed class WFDescent(int raid, EntityUid outpost)
     public float Hull = WFOrbitalDefenceSystem.Hull;
     public int SalvosLeft;
     public TimeSpan NextSalvo;
+}
+
+/// <summary>Raised on an outpost for the orbit map its batteries engage campaign ships on, if any.</summary>
+[ByRefEvent]
+public record struct WFOrbitalEngageEvent
+{
+    public EntityUid? Orbit;
 }

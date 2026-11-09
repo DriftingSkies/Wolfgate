@@ -50,6 +50,7 @@ faction that hunts by default hunts, and goes back to the passive faction when p
 - [`Content.Server/_WF/Husbandry/Components/WFTameableComponent.cs`](Components/WFTameableComponent.cs)
 - [`Content.Server/_WF/Husbandry/EggLayerSystem.Husbandry.cs`](EggLayerSystem.Husbandry.cs)
 - [`Content.Server/_WF/Husbandry/WFHusbandrySystem.cs`](WFHusbandrySystem.cs)
+- [`Content.Server/_WF/Husbandry/WFHusbandrySystem.Feeding.cs`](WFHusbandrySystem.Feeding.cs)
 - [`Content.Server/_WF/Husbandry/WFHusbandrySystem.Herding.cs`](WFHusbandrySystem.Herding.cs)
 - [`Content.Server/_WF/Husbandry/WFHusbandrySystem.Lasso.cs`](WFHusbandrySystem.Lasso.cs)
 - [`Content.Server/_WF/Husbandry/WFHusbandrySystem.Records.cs`](WFHusbandrySystem.Records.cs)
@@ -63,6 +64,7 @@ faction that hunts by default hunts, and goes back to the passive faction when p
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/Husbandry/FeederTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Husbandry/FeederTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Husbandry/HerdingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Husbandry/HerdingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Husbandry/LivestockSaveTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Husbandry/LivestockSaveTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Husbandry/NativeLivestockTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Husbandry/NativeLivestockTest.cs)

@@ -350,6 +350,10 @@ public sealed partial class WFTradeIndustryPrototype : IPrototype
     /// <summary>Materials it can work from a station's stock to make more, first listed first.</summary>
     [DataField]
     public List<EntProtoId> Materials = new();
+
+    /// <summary>Whether only colonies run it, from their buildings; no fixed station's role names it.</summary>
+    [DataField]
+    public bool Colony;
 }
 
 /// <summary>Something a station's or the sector's stock of a good keeps running.</summary>

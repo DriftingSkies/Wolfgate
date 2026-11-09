@@ -5,7 +5,7 @@ meta:
   forkId: wolfgate-mapping
   forkVersion: 20261020-040257-874e52c-tm294-a26dc02e
   time: 10/20/2026 23:08:58
-  entityCount: 195
+  entityCount: 200
 maps: []
 grids:
 - 1
@@ -381,6 +381,16 @@ entities:
     - type: Transform
       pos: 7.5,9.5
       parent: 1
+  - uid: 199
+    components:
+    - type: Transform
+      pos: 12.5,10.5
+      parent: 1
+  - uid: 200
+    components:
+    - type: Transform
+      pos: 12.5,11.5
+      parent: 1
 - proto: CableMV
   entities:
   - uid: 181
@@ -515,6 +525,13 @@ entities:
     - type: Transform
       pos: 15.5,9.5
       parent: 1
+- proto: WFCrateOutpostStarterMaterials
+  entities:
+  - uid: 198
+    components:
+    - type: Transform
+      pos: 5.5,6.5
+      parent: 1
 - proto: WFOutpostBatteryLarge
   entities:
   - uid: 65
@@ -605,6 +622,13 @@ entities:
     - type: Transform
       pos: 15.5,6.5
       parent: 1
+- proto: WFOutpostSustenanceDispenser
+  entities:
+  - uid: 197
+    components:
+    - type: Transform
+      pos: 10.5,12.5
+      parent: 1
 - proto: WFOutpostTemperatureRegulator
   entities:
   - uid: 193
@@ -637,6 +661,13 @@ entities:
     components:
     - type: Transform
       pos: 3.5,9.5
+      parent: 1
+- proto: WFOutpostWaterSynthesizer
+  entities:
+  - uid: 196
+    components:
+    - type: Transform
+      pos: 12.5,11.5
       parent: 1
 - proto: WFOutpostWindTurbine
   entities:

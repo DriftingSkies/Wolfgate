@@ -1,0 +1,119 @@
+# Colonies: what works a colony's ledger, what each world gives it, the one industry only colonies run, the colony
+# station's role and the neutral sector faction colony cells are held as. Player text is in Resources/Locale/en-US/_WF/Colonies/colonies.ftl.
+
+# Buildings. An entity counts as every kind it matches, so an animal works its pen and adds its wool or milk. Rates are
+# crates an hour at full workforce; a holder counts at most `most` of each kind on a world. An animal counts only alive
+# and fed. A `worksMaterials` kind makes its output out of its industry's raw materials in its own storage.
+
+- type: wfColonyBuilding
+  id: WFColonyBuildingHydroponics
+  components: [ PlantHolder ]
+  industry: WFTradeIndustryFood
+  rate: 0.25
+  most: 12
+
+- type: wfColonyBuilding
+  id: WFColonyBuildingLivestock
+  components: [ WFLivestock ]
+  industry: WFTradeIndustryAgriculture
+  rate: 0.25
+  most: 12
+
+- type: wfColonyBuilding
+  id: WFColonyBuildingWool
+  components: [ WFLivestock, Wooly ]
+  good: TradeGoodFabric
+  rate: 0.15
+  most: 8
+
+- type: wfColonyBuilding
+  id: WFColonyBuildingDairy
+  components: [ WFLivestock, Udder ]
+  good: TradeGoodSupplies
+  rate: 0.15
+  most: 8
+
+- type: wfColonyBuilding
+  id: WFColonyBuildingEggs
+  components: [ WFLivestock, EggLayer ]
+  good: TradeGoodSupplies
+  rate: 0.1
+  most: 8
+
+- type: wfColonyBuilding
+  id: WFColonyBuildingOreSilo
+  components: [ OreSilo ]
+  industry: WFTradeIndustryRefining
+  rate: 0.5
+  most: 2
+  worksMaterials: true
+
+- type: wfColonyBuilding
+  id: WFColonyBuildingPartsPress
+  components: [ WFPartsPress ]
+  industry: WFTradeIndustryFabrication
+  rate: 0.5
+  most: 4
+  powered: true
+
+- type: wfColonyBuilding
+  id: WFColonyBuildingFissionExtractor
+  components: [ WFColonyExtractor ]
+  industry: WFTradeIndustryExtraction
+  rate: 0.4
+  most: 4
+  powered: true
+  deposit: Uranium
+
+- type: wfColonyBuilding
+  id: WFColonyBuildingVolatileExtractor
+  components: [ WFColonyExtractor ]
+  industry: WFTradeIndustryChemicals
+  rate: 0.5
+  most: 4
+  powered: true
+  deposit: Volatile
+
+# Deposits each world gets every round, placed within its bounds.
+
+- type: wfColonyWorld
+  id: WFColonyWorldFervidus
+  surface: WFSurfaceFervidus
+  deposits:
+  - deposit: WFColonyDepositVolatile
+    count: 4
+
+- type: wfColonyWorld
+  id: WFColonyWorldThrascias
+  surface: WFSurfaceThrascias
+  deposits:
+  - deposit: WFColonyDepositUranium
+    count: 3
+
+- type: wfColonyWorld
+  id: WFColonyWorldAerumna
+  surface: WFSurfaceAerumna
+  deposits:
+  - deposit: WFColonyDepositUranium
+    count: 3
+
+# Extraction: Fission Fuel straight from the ground. Only colony extractors run it, so it has no station.
+- type: wfTradeIndustry
+  id: WFTradeIndustryExtraction
+  name: wf-trade-industry-extraction
+  outputs: [ TradeGoodFissionFuel ]
+  rate: 4
+  colony: true
+
+# The ledger role of every colony station, made at runtime on a Colony world's body; no POI or map takes it.
+- type: wfTradeStation
+  id: WFTradeStationColony
+  stations: []
+  uses: [ TradeGoodSupplies, TradeGoodMedicalSupplies ]
+
+# The neutral pattern a Colony-tier world's cell shows; a Charter world shows its governor's colours instead.
+- type: wfSectorFaction
+  id: WFSectorFactionColonies
+  name: wf-sector-faction-colonies
+  color: "#8FBF7F"
+  blockades: false

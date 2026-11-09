@@ -34,6 +34,7 @@ namespace Content.Server.Salvage;
 public sealed partial class SalvageSystem
 {
     [Dependency] private WFPlanetPoiSystem _wfPois = default!;
+    [Dependency] private Content.Server._WF.Colonies.WFColonySystem _wfColonies = default!;
     [Dependency] private SharedRoofSystem _wfRoof = default!;
     [Dependency] private IPlayerManager _wfPlayers = default!;
 
@@ -87,6 +88,9 @@ public sealed partial class SalvageSystem
         offers.Offers.Clear();
         data.Missions.Clear();
         _random.Shuffle(free);
+        // Camps near a colony's outposts come first, so a colony draws the crews that clear its surroundings.
+        free = free.OrderBy(pick => _wfColonies.NearColony(pick.Ground, Comp<WFPlanetPoiComponent>(pick.Ground).Sites[pick.Index].Origin) ? 0 : 1)
+            .ToList();
 
         foreach (var (ground, index) in free.Take(MissionLimit))
         {

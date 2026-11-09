@@ -54,7 +54,8 @@ public sealed class OutpostPresetTest
     }
 
     /// <summary>
-    /// Every preset grid loads with one console, a pod and a trade hub under open sky, within the save caps, and its price
+    /// Every preset grid loads with one console, a pod, a trade hub under open sky, a water and a food synthesizer and a
+    /// starter crate of materials, within the save caps, and its price
     /// is at least the load price of its appraisal.
     /// </summary>
     [Test]
@@ -83,10 +84,22 @@ public sealed class OutpostPresetTest
                 var consoles = 0;
                 var pods = 0;
                 var hubs = 0;
+                var water = 0;
+                var food = 0;
+                var starter = 0;
                 while (on.MoveNext(out var child))
                 {
                     if (entMan.HasComponent<WFOutpostConsoleComponent>(child))
                         consoles++;
+                    if (entMan.TryGetComponent<WFReagentSynthesizerComponent>(child, out var synth))
+                    {
+                        if (synth.Reagent == "Water")
+                            water++;
+                        if (synth.Reagent == "Nutriment")
+                            food++;
+                    }
+                    if (entMan.GetComponent<MetaDataComponent>(child).EntityPrototype?.ID == "WFCrateOutpostStarterMaterials")
+                        starter++;
                     if (entMan.HasComponent<WFOutpostCryopodComponent>(child))
                         pods++;
                     if (!entMan.HasComponent<WFUniversalTradeHubComponent>(child))
@@ -101,6 +114,9 @@ public sealed class OutpostPresetTest
                 Assert.That(consoles, Is.EqualTo(1), $"{preset.ID} has {consoles} consoles.");
                 Assert.That(pods, Is.GreaterThan(0), $"{preset.ID} has no pod.");
                 Assert.That(hubs, Is.GreaterThan(0), $"{preset.ID} has no trade hub.");
+                Assert.That(water, Is.GreaterThan(0), $"{preset.ID} has no water synthesizer.");
+                Assert.That(food, Is.GreaterThan(0), $"{preset.ID} has no sustenance dispenser.");
+                Assert.That(starter, Is.EqualTo(1), $"{preset.ID} has no starter materials crate.");
                 Assert.That(outposts.CountTiles(grid), Is.LessThanOrEqualTo(server.CfgMan.GetCVar(OutpostCVars.MaxTiles)), preset.ID);
                 Assert.That(outposts.CountEntities(grid), Is.LessThanOrEqualTo(server.CfgMan.GetCVar(OutpostCVars.MaxEntities)), preset.ID);
 

@@ -2745,6 +2745,208 @@ namespace Content.Server.Database.Migrations.Postgres
                     b.ToTable("wolfgate_photo_album", (string)null);
                 });
 
+            modelBuilder.Entity("Content.Server.Database.WolfgateWorldCharter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("wolfgate_world_charter_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("integer")
+                        .HasColumnName("company_id");
+
+                    b.Property<bool>("Defence")
+                        .HasColumnType("boolean")
+                        .HasColumnName("defence");
+
+                    b.Property<DateTime>("Granted")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("granted");
+
+                    b.Property<DateTime>("LastCheck")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_check");
+
+                    b.Property<bool>("Open")
+                        .HasColumnType("boolean")
+                        .HasColumnName("open");
+
+                    b.Property<string>("Permits")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)")
+                        .HasColumnName("permits");
+
+                    b.Property<int?>("Rival")
+                        .HasColumnType("integer")
+                        .HasColumnName("rival");
+
+                    b.Property<int>("Streak")
+                        .HasColumnType("integer")
+                        .HasColumnName("streak");
+
+                    b.Property<string>("World")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("world");
+
+                    b.HasKey("Id")
+                        .HasName("PK_wolfgate_world_charter");
+
+                    b.HasIndex("World")
+                        .IsUnique();
+
+                    b.ToTable("wolfgate_world_charter", (string)null);
+                });
+
+            modelBuilder.Entity("Content.Server.Database.WolfgateWorldDevelopment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("wolfgate_world_development_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Holder")
+                        .IsRequired()
+                        .HasMaxLength(48)
+                        .HasColumnType("character varying(48)")
+                        .HasColumnName("holder");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("name");
+
+                    b.Property<double>("Points")
+                        .HasColumnType("double precision")
+                        .HasColumnName("points");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated");
+
+                    b.Property<string>("World")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("world");
+
+                    b.HasKey("Id")
+                        .HasName("PK_wolfgate_world_development");
+
+                    b.HasIndex("World", "Holder")
+                        .IsUnique();
+
+                    b.ToTable("wolfgate_world_development", (string)null);
+                });
+
+            modelBuilder.Entity("Content.Server.Database.WolfgateWorldYard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("wolfgate_world_yard_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Berths")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)")
+                        .HasColumnName("berths");
+
+                    b.Property<byte[]>("Data")
+                        .IsRequired()
+                        .HasColumnType("bytea")
+                        .HasColumnName("data");
+
+                    b.Property<DateTime>("Saved")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("saved");
+
+                    b.Property<string>("World")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("world");
+
+                    b.Property<float>("X")
+                        .HasColumnType("real")
+                        .HasColumnName("x");
+
+                    b.Property<float>("Y")
+                        .HasColumnType("real")
+                        .HasColumnName("y");
+
+                    b.HasKey("Id")
+                        .HasName("PK_wolfgate_world_yard");
+
+                    b.HasIndex("World")
+                        .IsUnique();
+
+                    b.ToTable("wolfgate_world_yard", (string)null);
+                });
+
+            modelBuilder.Entity("Content.Server.Database.WolfgateYardJob", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("wolfgate_yard_job_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("integer")
+                        .HasColumnName("company_id");
+
+                    b.Property<int>("Components")
+                        .HasColumnType("integer")
+                        .HasColumnName("components");
+
+                    b.Property<string>("Design")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("design");
+
+                    b.Property<int>("Metals")
+                        .HasColumnType("integer")
+                        .HasColumnName("metals");
+
+                    b.Property<float>("Progress")
+                        .HasColumnType("real")
+                        .HasColumnName("progress");
+
+                    b.Property<int>("Stage")
+                        .HasColumnType("integer")
+                        .HasColumnName("stage");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated");
+
+                    b.Property<string>("World")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("world");
+
+                    b.HasKey("Id")
+                        .HasName("PK_wolfgate_yard_job");
+
+                    b.HasIndex("World");
+
+                    b.ToTable("wolfgate_yard_job", (string)null);
+                });
+
             modelBuilder.Entity("PlayerRound", b =>
                 {
                     b.Property<int>("PlayersId")

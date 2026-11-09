@@ -352,6 +352,8 @@ public sealed partial class WFOutpostSystem
         RemComp<WFOutpostCrewComponent>(outpost);
         _roundSetup.ReleaseOutpost(outpost);
         SetupAccess(outpost, mob);
+        var transferred = new WFOutpostTransferredEvent();
+        RaiseLocalEvent(outpost, ref transferred);
     }
 
     /// <summary>Sells every outpost set to sell at round end, before the last autosaves; an offline owner is paid later.</summary>

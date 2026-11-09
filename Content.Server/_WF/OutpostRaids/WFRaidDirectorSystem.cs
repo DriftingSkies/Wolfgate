@@ -125,7 +125,9 @@ public sealed partial class WFRaidDirectorSystem : EntitySystem
                 continue;
 
             var tiles = _outposts.CountTiles((uid, grid));
-            attention.Attention += _cfg.GetCVar(OutpostRaidCVars.AttentionRate) * (float) TickInterval.TotalMinutes * (1f + tiles / 400f);
+            var scale = new WFRaidAttentionScaleEvent(1f);
+            RaiseLocalEvent(uid, ref scale);
+            attention.Attention += _cfg.GetCVar(OutpostRaidCVars.AttentionRate) * (float) TickInterval.TotalMinutes * (1f + tiles / 400f) * scale.Scale;
             if (enabled)
                 TryPickRaid((uid, outpost, grid, attention));
         }
@@ -391,6 +393,9 @@ public sealed partial class WFRaidDirectorSystem : EntitySystem
                     continue;
                 }
 
+                if (!outpostGone && Transform(mob).GridUid == raid.Outpost)
+                    raid.BrokeIn = true;
+
                 WalkOn(mob, raid);
             }
 
@@ -412,8 +417,15 @@ public sealed partial class WFRaidDirectorSystem : EntitySystem
 
             done.Add(raid.Id);
             Leave(raid, dawn);
-            if (!outpostGone && raid.Despawned == 0 && raid.Killed > 0 && TryComp<WFRaidAttentionComponent>(raid.Outpost, out var attention))
+            var beaten = !outpostGone && raid.Despawned == 0 && raid.Killed > 0;
+            if (beaten && TryComp<WFRaidAttentionComponent>(raid.Outpost, out var attention))
                 attention.Step = Math.Max(attention.Step, raid.NextStep);
+
+            if (!outpostGone)
+            {
+                var ended = new WFRaidEndedEvent(raid.Step, beaten, raid.BrokeIn);
+                RaiseLocalEvent(raid.Outpost, ref ended);
+            }
         }
 
         foreach (var id in done)
@@ -498,4 +510,15 @@ public sealed class WFActiveRaid(
 
     public int Killed;
     public int Despawned;
+
+    /// <summary>Whether a raid mob got onto the outpost itself.</summary>
+    public bool BrokeIn;
 }
+
+/// <summary>Raised on an outpost to scale the attention it builds up.</summary>
+[ByRefEvent]
+public record struct WFRaidAttentionScaleEvent(float Scale);
+
+/// <summary>Raised on an outpost when a raid on it is over: beaten, or gone with or without breaking in.</summary>
+[ByRefEvent]
+public readonly record struct WFRaidEndedEvent(int Step, bool Beaten, bool BrokeIn);

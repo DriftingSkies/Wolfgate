@@ -1,3 +1,4 @@
+using Content.Shared._WF.Colonies;
 using Content.Shared._WF.Outposts;
 using Content.Shared._WF.ShipAccess;
 using Robust.Client.UserInterface;
@@ -30,6 +31,14 @@ public sealed class WFOutpostConsoleBoundUserInterface : BoundUserInterface
         _window.OnOffer += (buyer, price) => SendMessage(new WFOutpostOfferMessage(buyer, price));
         _window.OnWithdrawOffer += () => SendMessage(new WFOutpostWithdrawOfferMessage());
         _window.OnRefreshBuyers += () => SendMessage(new WFOutpostRefreshBuyersMessage());
+
+        var development = _window.DevelopmentTab;
+        development.OnKeep += (good, keep) => SendMessage(new WFColonyKeepMessage(good, keep));
+        development.OnDefence += engage => SendMessage(new WFColonyDefenceMessage(engage));
+        development.OnOpen += open => SendMessage(new WFColonyOpenMessage(open));
+        development.OnPermit += (holder, granted) => SendMessage(new WFColonyPermitMessage(holder, granted));
+        development.OnBerth += (holder, open) => SendMessage(new WFColonyBerthMessage(holder, open));
+        development.OnYardKit += () => SendMessage(new WFColonyYardKitMessage());
 
         var access = _window.AccessTab;
         access.ModeChanged += mode => SendMessage(new WFShipAccessSetModeMessage(mode));

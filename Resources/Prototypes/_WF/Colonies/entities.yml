@@ -1,0 +1,199 @@
+# Colony machines: the deposits extractors work, the extractor, the colony exchange (a vendor and chute pair that trade on
+# the world's colony shelf) and the import pod that marks a supply drop. Names are in colonies.ftl.
+
+# Deposits: an ore seam in the ground, seen only with a survey or mining scanner.
+
+- type: entity
+  abstract: true
+  id: WFColonyDepositBase
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: Structures/Walls/rock.rsi
+    drawdepth: FloorTiles
+    layers:
+    - state: rock_uranium
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+      visible: false
+  - type: MiningScannerViewable
+
+- type: entity
+  parent: WFColonyDepositBase
+  id: WFColonyDepositUranium
+  components:
+  - type: Sprite
+    layers:
+    - state: rock_uranium
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+      visible: false
+  - type: WFColonyDeposit
+    kind: Uranium
+
+- type: entity
+  parent: WFColonyDepositBase
+  id: WFColonyDepositVolatile
+  components:
+  - type: Sprite
+    layers:
+    - state: rock_phoron
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+      visible: false
+  - type: WFColonyDeposit
+    kind: Volatile
+
+# Extractor: works the deposit it stands on for the colony while powered and someone is home.
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFColonyExtractorPack
+  components:
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/ore_silo.rsi
+    layers:
+    - state: packed
+      color: "#d6c27a"
+  - type: WFDeployable
+    machine: WFColonyExtractor
+    delay: 4
+  - type: StaticPrice
+    price: 6000
+
+- type: entity
+  parent: WFBaseOutpostLifeGizmo
+  id: WFColonyExtractor
+  components:
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/ore_silo.rsi
+    snapCardinals: true
+    layers:
+    - state: silo
+      color: "#d6c27a"
+  - type: ApcPowerReceiver
+    powerLoad: 4000
+  - type: WFColonyExtractor
+  - type: WFRepackable
+    pack: WFColonyExtractorPack
+    delay: 4
+  - type: StaticPrice
+    price: 6000
+
+# Colony exchange: the vendor sells off the world's colony shelf and the chute buys for it. Every exchange on a world
+# trades on the same shelf. Outside a Colony-tier world they are an ordinary vendor and chute with no stock.
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFColonyExchangeVendorPack
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#8fbf7f"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFColonyExchangeVendor
+    delay: 4
+  - type: StaticPrice
+    price: 2500
+
+- type: entity
+  parent: VendingMachineTraderBaikal
+  id: WFColonyExchangeVendor
+  suffix: Colony
+  components:
+  - type: VendingMachine
+    pack: WFColonyExchangeInventory
+  - type: WFRepackable
+    pack: WFColonyExchangeVendorPack
+    delay: 4
+  - type: StaticPrice
+    price: 2500
+
+- type: vendingMachineInventory
+  id: WFColonyExchangeInventory
+  startingInventory:
+    TradeGoodSupplies: 4294967295 # Infinite
+    TradeGoodMedicalSupplies: 4294967295 # Infinite
+    TradeGoodFertilizer: 4294967295 # Infinite
+    TradeGoodFabric: 4294967295 # Infinite
+    TradeGoodMetals: 4294967295 # Infinite
+    TradeGoodComponents: 4294967295 # Infinite
+    TradeGoodWeaponParts: 4294967295 # Infinite
+    TradeGoodChemicalSupplies: 4294967295 # Infinite
+    TradeGoodChemicalsVolatile: 4294967295 # Infinite
+    TradeGoodFissionFuel: 4294967295 # Infinite
+    PaperWrittenDispenserInstructions: 4294967295 # Infinite
+
+- type: entity
+  parent: WFBaseOutpostPack
+  id: WFColonyExchangeChutePack
+  components:
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#7fa8bf"
+    - state: icon-default
+  - type: WFDeployable
+    machine: WFColonyExchangeChute
+    delay: 4
+  - type: StaticPrice
+    price: 1500
+
+# Its prices are also what a holder's buildings are paid per crate they make (wf.colonies.pay_share of them).
+- type: entity
+  parent: BaseCargoChute
+  id: WFColonyExchangeChute
+  components:
+  - type: Transform
+    anchored: true
+  - type: Dispenser
+    defaultItem: PaperWrittenDispenserInstructions
+    inventory:
+      TradeGoodSupplies: SpaceCash3500
+      TradeGoodMedicalSupplies: SpaceCash4500
+      TradeGoodFertilizer: SpaceCash6000
+      TradeGoodScrap: SpaceCash4000
+      TradeGoodFabric: SpaceCash4000
+      TradeGoodMetals: SpaceCash5500
+      TradeGoodComponents: SpaceCash6000
+      TradeGoodWeaponParts: SpaceCash6000
+      TradeGoodChemicalSupplies: SpaceCash3500
+      TradeGoodChemicalsVolatile: SpaceCash7000
+      TradeGoodFissionFuel: SpaceCash20000
+  - type: WFRepackable
+    pack: WFColonyExchangeChutePack
+    delay: 4
+  - type: StaticPrice
+    price: 1500
+
+# Import pod: the empty capsule a colony import comes down in. Worth nothing, gone in a few minutes.
+- type: entity
+  parent: BaseStructureDynamic
+  id: WFColonyImportPod
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: Structures/Storage/Crates/generic.rsi
+    layers:
+    - state: base
+      color: "#8fbf7f"
+    - state: closed
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.4,0.4,0.4"
+        density: 50
+        mask:
+        - CrateMask
+        layer:
+        - MachineLayer
+  - type: TimedDespawn
+    lifetime: 180
+  - type: StaticPrice
+    price: 0

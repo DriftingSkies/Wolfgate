@@ -22,7 +22,7 @@ public enum WFCompanyPermissions
 /// <summary>Kinds of credit movement recorded in a company's ledger.</summary>
 public enum WFCompanyLedgerKind : byte
 {
-    Deposit, Withdraw, Wage, Cut, LicenceBuy, LicenceUpkeep, RegistryFee, LaunchFee, AdminAdjust, AdminRefund, Payment, Loadout,
+    Deposit, Withdraw, Wage, Cut, LicenceBuy, LicenceUpkeep, RegistryFee, LaunchFee, AdminAdjust, AdminRefund, Payment, Loadout, Colony,
 }
 
 /// <summary>Limits and validation shared by the company server and window.</summary>

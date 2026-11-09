@@ -52,7 +52,7 @@ public sealed class ContractPrototypeTest
             {
                 Check(loc.HasString(contractor.Name) && loc.HasString(contractor.Description) && loc.HasString(contractor.Employer),
                     contractor.ID, "missing strings");
-                Check(contractor.Stations.Count > 0, contractor.ID, "no stations");
+                Check(contractor.Stations.Count > 0 != contractor.Runtime, contractor.ID, "needs stations, or a runtime home and none");
                 Check(contracts.Any(c => c.Contractor == contractor.ID), contractor.ID, "no contracts");
                 Check(contractor.Companies.All(c => protos.HasIndex(c)), contractor.ID, "unknown company");
                 Check(contractor.Drift >= 0, contractor.ID, "negative drift");

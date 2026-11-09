@@ -73,6 +73,9 @@ public sealed partial class WFOutpostSystem
             return false;
         }
 
+        if (!MayFound(owner, user, terminal.Comp.Ground, out reason))
+            return false;
+
         switch (type.Claim)
         {
             case WFPoiClaim.Repair when CompOrNull<DamageableComponent>(terminal)?.TotalDamage > 0:

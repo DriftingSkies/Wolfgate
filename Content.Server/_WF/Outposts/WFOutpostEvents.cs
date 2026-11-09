@@ -19,3 +19,36 @@ public record struct WFOutpostAppraiseEvent(double Value);
 /// <summary>Raised on an outpost being fingerprinted, for what a save keeps of it other than as kept entities.</summary>
 [ByRefEvent]
 public record struct WFOutpostFingerprintEvent(int Hash);
+
+/// <summary>
+/// Raised before a player founds, claims or drops an outpost on a ground map; a module that sets
+/// <see cref="Refusal"/> to a loc id stops it.
+/// </summary>
+[ByRefEvent]
+public record struct WFOutpostFoundAttemptEvent(Robust.Shared.Network.NetUserId Owner, EntityUid? User, EntityUid Ground)
+{
+    public string? Refusal;
+}
+
+/// <summary>Raised as a drop looks for a site; a module that sets <see cref="SkipLots"/> keeps it off the world's outpost lots.</summary>
+[ByRefEvent]
+public record struct WFOutpostLotsEvent(Robust.Shared.Network.NetUserId Owner, EntityUid Ground)
+{
+    public bool SkipLots;
+}
+
+/// <summary>Raised on an outpost handed to a new owner, which makes it a new outpost.</summary>
+[ByRefEvent]
+public record struct WFOutpostTransferredEvent;
+
+/// <summary>Raised on an outpost grid for the markup its save loads at.</summary>
+[ByRefEvent]
+public record struct WFOutpostMarkupEvent(float Markup);
+
+/// <summary>Raised on an outpost for the cryopods it may hold.</summary>
+[ByRefEvent]
+public record struct WFOutpostPodLimitEvent(int Limit);
+
+/// <summary>Raised on an outpost as its console's state is built, for other modules' parts of it.</summary>
+[ByRefEvent]
+public record struct WFOutpostConsoleStateEvent(Content.Shared._WF.Outposts.WFOutpostConsoleState State);

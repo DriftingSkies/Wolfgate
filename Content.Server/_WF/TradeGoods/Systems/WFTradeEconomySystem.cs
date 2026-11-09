@@ -123,6 +123,14 @@ public sealed partial class WFTradeEconomySystem : EntitySystem
         return stations;
     }
 
+    /// <summary>What a station makes on its own, outside the shared rates.</summary>
+    private IReadOnlyDictionary<string, float> OwnRates(EntityUid grid)
+    {
+        return CompOrNull<WFTradeStationComponent>(grid)?.OwnRates ?? (IReadOnlyDictionary<string, float>) EmptyRates;
+    }
+
+    private static readonly Dictionary<string, float> EmptyRates = new();
+
     /// <summary>The goods a station with a role keeps rows for from the start.</summary>
     private IEnumerable<string> Traded(EntityUid grid, WFTradeStationPrototype role)
     {
@@ -210,11 +218,13 @@ public sealed partial class WFTradeEconomySystem : EntitySystem
         var profile = _proto.Index(WFTradeMarketSystem.DefaultProfile);
         var stations = Stations();
         var running = new Dictionary<string, int>();
-        foreach (var (_, role) in stations)
+        foreach (var (grid, role) in stations)
         {
+            var own = OwnRates(grid);
             foreach (var industry in role.Industries)
             {
-                running[industry] = running.GetValueOrDefault(industry) + 1;
+                if (!own.ContainsKey(industry))
+                    running[industry] = running.GetValueOrDefault(industry) + 1;
             }
         }
 
@@ -233,9 +243,20 @@ public sealed partial class WFTradeEconomySystem : EntitySystem
                 Use(grid, good, profile.UseRate * role.Population * hours, hours);
             }
 
+            var ownRates = OwnRates(grid);
             foreach (var id in role.Industries)
             {
-                RunIndustry(grid, _proto.Index(id), running[id], profile, hours, !simulateFreight);
+                var industry = _proto.Index(id);
+                if (!ownRates.TryGetValue(id, out var own))
+                {
+                    RunIndustry(grid, industry, industry.Rate / running[id], profile, hours, !simulateFreight);
+                    continue;
+                }
+
+                var outputs = new Dictionary<string, float>();
+                RunIndustry(grid, industry, own, profile, hours, !simulateFreight, outputs);
+                var ran = new WFTradeIndustryRanEvent(id, outputs, simulateFreight);
+                RaiseLocalEvent(grid, ref ran);
             }
 
             var made = Made(role);
@@ -300,11 +321,11 @@ public sealed partial class WFTradeEconomySystem : EntitySystem
     /// An industry makes its rate, split between the stations running it and scaled by its input, and more with materials to
     /// work from. A full output stops being made.
     /// </summary>
-    private void RunIndustry(EntityUid grid, WFTradeIndustryPrototype industry, int stations, WFTradeMarketPrototype profile, float hours, bool useMaterials)
+    private void RunIndustry(EntityUid grid, WFTradeIndustryPrototype industry, float rate, WFTradeMarketPrototype profile, float hours, bool useMaterials, Dictionary<string, float>? outputsMade = null)
     {
         var input = industry.Input is { } good ? _market.Row(grid, good) : null;
         var share = MathF.Max(profile.MinOutput, MathF.Min(input == null ? 1f : input.Stock / profile.StockTarget, 1f));
-        var amount = industry.Rate / stations * share * hours;
+        var amount = rate * share * hours;
         if (useMaterials && industry.Materials.Count > 0)
         {
             var extra = amount * profile.MaterialBoost;
@@ -322,6 +343,8 @@ public sealed partial class WFTradeEconomySystem : EntitySystem
             row.Stock += made;
             row.Made += made / hours;
             outputs++;
+            if (outputsMade != null)
+                outputsMade[output] = made;
         }
 
         if (input != null)
@@ -365,7 +388,7 @@ public sealed partial class WFTradeEconomySystem : EntitySystem
     /// <summary>Goods nothing in the sector makes arrive from outside it, as long as someone is taking them.</summary>
     private void AddOutsideSupply(List<(EntityUid Grid, WFTradeStationPrototype Role)> stations, WFTradeMarketPrototype profile, float hours)
     {
-        var made = stations.SelectMany(station => Made(station.Role)).ToHashSet();
+        var made = stations.Where(station => OwnRates(station.Grid).Count == 0).SelectMany(station => Made(station.Role)).ToHashSet();
         var wanted = stations.SelectMany(station => Comp<WFTradeMarketComponent>(station.Grid).Ledger.Keys).ToHashSet();
         foreach (var good in wanted)
         {
@@ -453,3 +476,7 @@ public sealed partial class WFTradeEconomySystem : EntitySystem
             (int) MathF.Round(entry.Value.Made), (int) MathF.Round(entry.Value.Used), entry.Value.Short)).ToList();
     }
 }
+
+/// <summary>Raised on a station with its own rates after one of its industries ran, with the crates each output made.</summary>
+[ByRefEvent]
+public readonly record struct WFTradeIndustryRanEvent(string Industry, Dictionary<string, float> Made, bool Simulated);

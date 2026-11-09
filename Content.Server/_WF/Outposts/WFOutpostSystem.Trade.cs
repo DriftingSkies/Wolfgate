@@ -223,19 +223,29 @@ public sealed partial class WFOutpostSystem
     /// </summary>
     private EntityUid? Drop(Entity<WFOutpostComponent, MapGridComponent> outpost, ProtoId<CargoProductPrototype> productId)
     {
+        if (!_proto.TryIndex(productId, out var product) || DropAtHub(outpost, product.Product) is not { } delivery)
+            return null;
+
+        _adminLog.Add(LogType.WFOutpost, LogImpact.Low,
+            $"Dropped {ToPrettyString(delivery):entity} for outpost {ToPrettyString(outpost):grid}");
+        return delivery;
+    }
+
+    /// <summary>
+    /// Drops an entity over the hub taking the outpost's drops, or the nearest clear open tile within its drop radius.
+    /// Null while there is nowhere to drop it.
+    /// </summary>
+    public EntityUid? DropAtHub(Entity<WFOutpostComponent, MapGridComponent> outpost, EntProtoId product)
+    {
         GetHubStatus((outpost, outpost.Comp1), out var hub);
         if (hub == null || Transform(hub.Value).GridUid is not { } hubGridUid || !TryComp<MapGridComponent>(hubGridUid, out var hubGrid)
-            || !_proto.TryIndex(productId, out var product) || !TryGetDropTile((hubGridUid, hubGrid), hub.Value, out var tile))
+            || !TryGetDropTile((hubGridUid, hubGrid), hub.Value, out var tile))
             return null;
 
         _dropTiles.Add(tile);
         var coords = _maps.GridTileToLocal(hubGridUid, hubGrid, tile);
         Spawn(DropFlare, coords);
-        var delivery = _tradeDrop.StartDrop(DropDescent, product.Product, coords);
-
-        _adminLog.Add(LogType.WFOutpost, LogImpact.Low,
-            $"Dropped {ToPrettyString(delivery):entity} for outpost {ToPrettyString(outpost):grid}");
-        return delivery;
+        return _tradeDrop.StartDrop(DropDescent, product, coords);
     }
 
     /// <summary>The hub's tile if it is clear and open to the sky, else the nearest such tile of its grid within its radius.</summary>

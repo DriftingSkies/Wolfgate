@@ -18,8 +18,8 @@ namespace Content.Client._WF.Outposts;
 
 /// <summary>
 /// The outpost console: an Overview tab with a map of the outpost and its claim, its name, owner, caps and status, a
-/// Saves tab with its save slots, a Trade tab to order supplies down onto the trade hub, a Sell tab, and the ship access
-/// tab for who may open its doors.
+/// Saves tab with its save slots, a Trade tab to order supplies down onto the trade hub, a Sell tab, the world's Development
+/// tab while colonies are on, and the ship access tab for who may open its doors.
 /// </summary>
 [GenerateTypedNameReferences]
 public sealed partial class WFOutpostConsoleWindow : FancyWindow
@@ -90,7 +90,9 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
         Tabs.SetTabTitle(1, Loc.GetString("wf-outpost-console-tab-saves"));
         Tabs.SetTabTitle(2, Loc.GetString("wf-outpost-console-tab-trade"));
         Tabs.SetTabTitle(3, Loc.GetString("wf-outpost-console-tab-sell"));
-        Tabs.SetTabTitle(4, Loc.GetString("wf-outpost-console-tab-access"));
+        Tabs.SetTabTitle(4, Loc.GetString("wf-outpost-console-tab-development"));
+        Tabs.SetTabTitle(5, Loc.GetString("wf-outpost-console-tab-access"));
+        Tabs.SetTabVisible(4, false);
         NameEdit.IsValid = text => text.Length <= WFOutpostLimits.NameLength;
         RenameButton.OnPressed += _ => OnRename?.Invoke(NameEdit.Text);
         NameEdit.OnTextEntered += args => OnRename?.Invoke(args.Text);
@@ -233,6 +235,8 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
         UpdatePending();
         UpdateTrade(state.Trade, isOwner);
         UpdateSale(state.Sale, isOwner, state.Busy || state.Pending != null);
+        DevelopmentTab.UpdateState(state.Development);
+        Tabs.SetTabVisible(4, state.Development != null);
 
         ReadingLabel.Visible = state.Slots == null;
         var locked = !isOwner || state.Busy || state.Pending != null;

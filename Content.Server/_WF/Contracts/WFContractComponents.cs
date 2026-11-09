@@ -36,3 +36,9 @@ public sealed partial class WFContractInspectableComponent : Component
 /// <summary>Marks the Contracts PDA app.</summary>
 [RegisterComponent]
 public sealed partial class WFContractCartridgeComponent : Component;
+
+/// <summary>Raised broadcast when the round's contractor homes are gathered, for contractors whose home is found at runtime.</summary>
+public sealed class WFContractorHomesEvent(Dictionary<string, EntityUid> homes) : EntityEventArgs
+{
+    public readonly Dictionary<string, EntityUid> Homes = homes;
+}

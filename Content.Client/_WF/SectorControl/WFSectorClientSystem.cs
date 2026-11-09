@@ -123,7 +123,7 @@ public sealed partial class WFSectorClientSystem : EntitySystem
         var legend = new List<WFSectorLegendView>();
         foreach (var line in ev.Lines)
         {
-            legend.Add(new WFSectorLegendView(FactionColor(line.Faction), line.Line));
+            legend.Add(new WFSectorLegendView(FactionColor(null, line.Faction), line.Line));
         }
 
         Legend = legend;
@@ -141,14 +141,18 @@ public sealed partial class WFSectorClientSystem : EntitySystem
         _maps[ev.Map] = Build(ev);
     }
 
-    private Color FactionColor(string faction)
+    private Color FactionColor(WFSectorTerritoryEvent? ev, string faction)
     {
-        return _prototypes.TryIndex<WFSectorFactionPrototype>(faction, out var proto) ? proto.Color : Color.White;
+        if (_prototypes.TryIndex<WFSectorFactionPrototype>(faction, out var proto))
+            return proto.Color;
+        return ev != null && ev.Styles.TryGetValue(faction, out var style) ? style.Color : Color.White;
     }
 
-    private string FactionName(string faction)
+    private string FactionName(WFSectorTerritoryEvent ev, string faction)
     {
-        return _prototypes.TryIndex<WFSectorFactionPrototype>(faction, out var proto) ? Loc.GetString(proto.Name) : faction;
+        if (_prototypes.TryIndex<WFSectorFactionPrototype>(faction, out var proto))
+            return Loc.GetString(proto.Name);
+        return ev.Styles.TryGetValue(faction, out var style) ? style.Name : faction;
     }
 
     /// <summary>Builds the fills, the border edges, the contest outlines, the cell grid and the callsigns of one map's event.</summary>
@@ -159,8 +163,8 @@ public sealed partial class WFSectorClientSystem : EntitySystem
         var names = new string[ev.Factions.Count];
         for (var i = 0; i < colors.Length; i++)
         {
-            colors[i] = FactionColor(ev.Factions[i]);
-            names[i] = FactionName(ev.Factions[i]);
+            colors[i] = FactionColor(ev, ev.Factions[i]);
+            names[i] = FactionName(ev, ev.Factions[i]);
         }
 
         var owners = new Dictionary<WFSectorCell, int>();

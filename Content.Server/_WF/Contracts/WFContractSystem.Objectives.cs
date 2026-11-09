@@ -2,6 +2,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Server._WF.Encounters;
 using Content.Server._WF.Encounters.Systems;
+using Content.Server._WF.TradeGoods.Components;
 using Content.Server.Anomaly.Components;
 using Content.Server.Storage.Components;
 using Content.Server.Storage.EntitySystems;
@@ -711,10 +712,11 @@ public sealed partial class WFContractSystem
         }
     }
 
-    /// <summary>Whether an entity is aboard one of a station's grids, carried or not.</summary>
+    /// <summary>Whether an entity is aboard one of a station's grids, carried or not, or on a grid trading on its ledger, such as a colony's outpost.</summary>
     private bool OnStation(EntityUid uid, EntityUid? station)
     {
-        return station != null && _station.GetOwningStation(uid) == station;
+        return station != null && (_station.GetOwningStation(uid) == station
+            || Transform(uid).GridUid is { } grid && CompOrNull<WFTradeMarketLinkComponent>(grid)?.Market == station);
     }
 
     private bool PlayerNear(EntityUid uid, float range)

@@ -158,6 +158,8 @@ wf-company-ledger-kind-adminadjust = Admin
 wf-company-ledger-kind-adminrefund = Refund
 wf-company-ledger-kind-payment = Payment
 wf-company-ledger-kind-loadout = Loadout
+wf-company-ledger-kind-colony = Colony
+wf-company-ledger-colony-note = Colony output on {$world}
 
 wf-company-details = Details
 wf-company-colour = Colour

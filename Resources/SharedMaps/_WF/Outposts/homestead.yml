@@ -5,7 +5,7 @@ meta:
   forkId: wolfgate-mapping
   forkVersion: 20261020-040257-874e52c-tm294-a26dc02e
   time: 10/20/2026 23:08:58
-  entityCount: 101
+  entityCount: 102
 maps: []
 grids:
 - 1
@@ -399,6 +399,13 @@ entities:
     components:
     - type: Transform
       pos: 3.5,9.5
+      parent: 1
+- proto: WFCrateOutpostStarterMaterials
+  entities:
+  - uid: 102
+    components:
+    - type: Transform
+      pos: 7.5,7.5
       parent: 1
 - proto: WFOutpostBatterySmall
   entities:
