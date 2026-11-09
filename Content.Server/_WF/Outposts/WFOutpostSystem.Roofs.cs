@@ -32,7 +32,7 @@ public sealed partial class WFOutpostSystem
             return;
         }
 
-        QueueDel(panel);
+        UseOne(panel);
     }
 
     /// <summary>

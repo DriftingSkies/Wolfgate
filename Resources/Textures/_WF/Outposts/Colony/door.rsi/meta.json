@@ -1,21 +1,45 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from NovaSector (modular_nova/modules/colony_fabricator, https://github.com/NovaSector/NovaSector) via Meridian-Rift",
+    "copyright": "Taken from NovaSector (modular_nova/modules/colony_fabricator, https://github.com/NovaSector/NovaSector) via Meridian-Rift; side views and the airlock screen and panel overlays drawn from it for Wolfgate",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-            "name": "closed"
+            "name": "closed",
+            "directions": 4
         },
         {
-            "name": "open"
+            "name": "open",
+            "directions": 4
         },
         {
             "name": "opening",
+            "directions": 4,
             "delays": [
+                [
+                    0.2,
+                    0.4,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.4,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.4,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
                 [
                     0.2,
                     0.4,
@@ -27,7 +51,29 @@
         },
         {
             "name": "closing",
+            "directions": 4,
             "delays": [
+                [
+                    0.267,
+                    0.267,
+                    0.267,
+                    0.133,
+                    0.267
+                ],
+                [
+                    0.267,
+                    0.267,
+                    0.267,
+                    0.133,
+                    0.267
+                ],
+                [
+                    0.267,
+                    0.267,
+                    0.267,
+                    0.133,
+                    0.267
+                ],
                 [
                     0.267,
                     0.267,

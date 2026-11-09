@@ -1,21 +1,42 @@
 {
     "version": 1,
     "license": "CC-BY-SA-3.0",
-    "copyright": "Taken from NovaSector (modular_nova/modules/colony_fabricator, https://github.com/NovaSector/NovaSector) via Meridian-Rift",
+    "copyright": "Taken from NovaSector (modular_nova/modules/colony_fabricator, https://github.com/NovaSector/NovaSector) via Meridian-Rift; side views and the airlock screen and panel overlays drawn from it for Wolfgate",
     "size": {
         "x": 32,
         "y": 32
     },
     "states": [
         {
-            "name": "closed"
+            "name": "closed",
+            "directions": 4
         },
         {
-            "name": "open"
+            "name": "open",
+            "directions": 4
         },
         {
             "name": "opening",
+            "directions": 4,
             "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
                 [
                     0.2,
                     0.2,
@@ -26,7 +47,26 @@
         },
         {
             "name": "closing",
+            "directions": 4,
             "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
                 [
                     0.2,
                     0.2,
@@ -36,10 +76,207 @@
             ]
         },
         {
-            "name": "assembly"
+            "name": "assembly",
+            "directions": 4
         },
         {
             "name": "packed"
+        },
+        {
+            "name": "closed_unlit",
+            "directions": 4
+        },
+        {
+            "name": "open_unlit",
+            "directions": 4
+        },
+        {
+            "name": "opening_unlit",
+            "directions": 4,
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ]
+            ]
+        },
+        {
+            "name": "closing_unlit",
+            "directions": 4,
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ]
+            ]
+        },
+        {
+            "name": "deny_unlit",
+            "directions": 4,
+            "delays": [
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ],
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ],
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ],
+                [
+                    0.1,
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            ]
+        },
+        {
+            "name": "bolted_unlit",
+            "directions": 4
+        },
+        {
+            "name": "emergency_unlit",
+            "directions": 4,
+            "delays": [
+                [
+                    1.2,
+                    1.2
+                ],
+                [
+                    1.2,
+                    1.2
+                ],
+                [
+                    1.2,
+                    1.2
+                ],
+                [
+                    1.2,
+                    1.2
+                ]
+            ]
+        },
+        {
+            "name": "welded",
+            "directions": 4
+        },
+        {
+            "name": "sparks",
+            "directions": 4
+        },
+        {
+            "name": "panel_open",
+            "directions": 4
+        },
+        {
+            "name": "panel_opening",
+            "directions": 4,
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ]
+            ]
+        },
+        {
+            "name": "panel_closing",
+            "directions": 4,
+            "delays": [
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ],
+                [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.2
+                ]
+            ]
         }
     ]
 }

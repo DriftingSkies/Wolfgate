@@ -17,14 +17,16 @@ The ground under an outpost is carved away (`BiomeSystem.WFOutposts`): the tile 
 biome never grows it back, and loose things on it move onto the outpost. Its floor is then the only floor there, so the
 ground's navmesh, weather strikes and wildlife never reach under its walls. The carved tiles come back as they were when
 the outpost is deleted or sold. Its edge is joined to the ground by a ring of pathfinding portals
-(`WFOutpostSystem.Portals`), so NPCs walk on and off it. Foundation plates (`WFOutpostFoundationPlate`) extend the
+(`WFOutpostSystem.Portals`), so NPCs walk on and off it. Foundation plates (`WFOutpostFoundationPlate`, stacks of 30) extend the
 outpost a tile at a time onto open ground anywhere in its claim, so its floor may lie in separate patches, up to
 `wf.outposts.max_tiles` (1,600) and no wider than `wf.outposts.max_span` (64) tiles either way. Outpost grids never
 split (`CanSplit` off), so a patch cut off by a breach stays part of the outpost.
 
 An outpost is a terrain grid (`WFPlanetTerrainGridComponent`, from Planets), not a vessel: open to the sky until roofed,
 so weather and lightning reach its bare tiles. Walls roof the tile they stand on, and roof panels (`WFOutpostRoofPanel`)
-roof a floor tile (`WFOutpostSystem.Roofs`). Carcinoma's tendrils leave terrain grids alone.
+roof a floor tile (`WFOutpostSystem.Roofs`); both stack to 30, crates hold stacks of 10, and their art is
+`Textures/_WF/Outposts/building.rsi` (`Tools/_WF/Outposts/build_plates.py`). Floor tiles go on an outpost like on any
+grid: `FloorTileSystem` doesn't count the planet layer as a grid placed close by. Carcinoma's tendrils leave terrain grids alone.
 
 The console's Overview tab shows a top-down map of the outpost (`WFOutpostMapControl`, a `NavMapControl` fed by the
 grid's nav map, refreshed when it is held down) with its claim outlined and the console and trade hub marked, next to
@@ -91,12 +93,18 @@ deploys by founding, and the console of an outpost still as it was founded packs
 outpost up. Walls and windows (`face: false`) stand square with the outpost instead of facing their user.
 
 Fabricator (`fabricator.yml`, `construction.yml`, `recipes.yml`): the outpost fabricator is a gizmo lathe, twice as
-slow as an autolathe and with no parts to upgrade. It prints foundation plates, roof panels, prefab walls, doors and
+slow as an autolathe and with no parts to upgrade; like a stock lathe it links ore and fabrication silos and shows
+sheets going in (its `inserting` state is drawn in `build_colony.py`), and plays Nova's start, loop and end sounds
+while its queue runs (`WFLatheRunningSoundSystem`). It prints foundation plates, roof panels, prefab walls, doors and
 shutters (gizmos that pack up again), window and airlock kits (colony-pattern ones that come apart as stock ones),
 colony floor tiles (`floors.yml`), another fabricator, the powered driver, the arc welder (it makes its own fuel) and
 the stock parts, electronics and cables. The gizmo and prefab art in `Textures/_WF/Outposts/Colony` is NovaSector's
 colony fabricator set (CC BY-SA 3.0), adapted to our 3/4 view: the prefab wall and window are the stock solid wall
-and window recoloured to Nova's palette, and the doors' lit lids are painted as our dark wall tops. `build_colony.py`
+and window recoloured to Nova's palette, and the doors' lit lids are painted as our dark wall tops. Doors face four
+ways: north and south show the front, east and west a side view turned to stand in a north-south wall, so a door set
+in a side wall (deployed from beside it, or a preset door at q=1) lies along it. The airlock's lights, wiring panel and
+emag sparks show on its own status screen and ride with its leaf, in place of the stock airlock's overlays; the manual
+door slides with Nova's manual door sound (`Audio/_WF/Outposts`), not the stone door's grind. `build_colony.py`
 and `build_walls.py` in `Tools/_WF/Outposts` rebuild it from the DMIs. The outpost console (`Textures/_WF/Outposts/
 console.rsi`) is drawn for Wolfgate in that set's palette at the stock computer's size: four facings, an unshaded screen with the
 outpost's map in claim amber, and a shrink-wrapped `packed` state for its kit.
@@ -111,8 +119,10 @@ a wire run powers an outpost's machines with no APC. Wind turbines (`WFWindTurbi
 under open sky in air of 5 kPa or more, up to twice that as the weather's wind rises to storm strength, and nothing
 under a roof. Solar strings (`WFSolarStringComponent`) follow the planet clock: nothing at night (`IsNight`), rising
 from dawn to a noon peak. Both are set once a second. The gizmos modelled on stock machines run at 0.6 of them
-(`OutpostPowerTest.ScaleRule`): the compact RTG of the RTG, the A.W. fuel generator of the J.R.P.A.C.M.A.N., the large
-battery of the SMES and the small one of the substation. Nothing stacks on a tile: a deploy is refused where anything
+(`OutpostPowerTest.ScaleRule`): the compact RTG of the RTG, the A.W. generator of the S.U.P.E.R.P.A.C.M.A.N., the large
+battery of the SMES and the small one of the substation. The A.W. (Atomic Whisperer) burns one uranium fuel rod
+(`WFFuelRodGeneratorSystem`): used on it, the rod goes in, keeps what fuel it has left on itself, lasts three hours at
+optimal power and comes out with the eject button; it is shielded and gives off no radiation. Nothing stacks on a tile: a deploy is refused where anything
 low, mid or high blocks it.
 
 Trade (`trade.yml`, `WFOutpostSystem.Trade.cs`): the console's Trade tab lists the cargo products in the `WFOutpost`
@@ -244,6 +254,8 @@ its placement, claims and saves never reach below it.
 - [`Content.Server/_WF/Outposts/Components/WFCo2CrackerComponent.cs`](Components/WFCo2CrackerComponent.cs)
 - [`Content.Server/_WF/Outposts/Components/WFDeployableComponent.cs`](Components/WFDeployableComponent.cs)
 - [`Content.Server/_WF/Outposts/Components/WFDepositOnlyComponent.cs`](Components/WFDepositOnlyComponent.cs)
+- [`Content.Server/_WF/Outposts/Components/WFFuelRodGeneratorComponent.cs`](Components/WFFuelRodGeneratorComponent.cs)
+- [`Content.Server/_WF/Outposts/Components/WFLatheRunningSoundComponent.cs`](Components/WFLatheRunningSoundComponent.cs)
 - [`Content.Server/_WF/Outposts/Components/WFMultiChargerComponent.cs`](Components/WFMultiChargerComponent.cs)
 - [`Content.Server/_WF/Outposts/Components/WFOutpostBasementComponent.cs`](Components/WFOutpostBasementComponent.cs)
 - [`Content.Server/_WF/Outposts/Components/WFOutpostComponent.cs`](Components/WFOutpostComponent.cs)
@@ -268,7 +280,9 @@ its placement, claims and saves never reach below it.
 - [`Content.Server/_WF/Outposts/Components/WFWindTurbineComponent.cs`](Components/WFWindTurbineComponent.cs)
 - [`Content.Server/_WF/Outposts/NavMapSystem.Outposts.cs`](NavMapSystem.Outposts.cs)
 - [`Content.Server/_WF/Outposts/ServerDbManager.Outposts.cs`](ServerDbManager.Outposts.cs)
+- [`Content.Server/_WF/Outposts/WFFuelRodGeneratorSystem.cs`](WFFuelRodGeneratorSystem.cs)
 - [`Content.Server/_WF/Outposts/WFLandingPadSystem.cs`](WFLandingPadSystem.cs)
+- [`Content.Server/_WF/Outposts/WFLatheRunningSoundSystem.cs`](WFLatheRunningSoundSystem.cs)
 - [`Content.Server/_WF/Outposts/WFOutpostEvents.cs`](WFOutpostEvents.cs)
 - [`Content.Server/_WF/Outposts/WFOutpostLifeSupportSystem.cs`](WFOutpostLifeSupportSystem.cs)
 - [`Content.Server/_WF/Outposts/WFOutpostLogisticsSystem.cs`](WFOutpostLogisticsSystem.cs)
@@ -384,6 +398,7 @@ its placement, claims and saves never reach below it.
 
 ### Textures
 
+- [`Resources/Textures/_WF/Outposts/building.rsi/`](../../../Resources/Textures/_WF/Outposts/building.rsi/)
 - [`Resources/Textures/_WF/Outposts/Colony/airlock.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/airlock.rsi/)
 - [`Resources/Textures/_WF/Outposts/Colony/arc_welder.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/arc_welder.rsi/)
 - [`Resources/Textures/_WF/Outposts/Colony/battery_large.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/battery_large.rsi/)
@@ -411,6 +426,16 @@ its placement, claims and saves never reach below it.
 - [`Resources/Textures/_WF/Outposts/console.rsi/`](../../../Resources/Textures/_WF/Outposts/console.rsi/)
 - [`Resources/Textures/_WF/Outposts/Effects/drop_shadow.rsi/`](../../../Resources/Textures/_WF/Outposts/Effects/drop_shadow.rsi/)
 
+### Audio
+
+- [`Resources/Audio/_WF/Outposts/attributions.yml`](../../../Resources/Audio/_WF/Outposts/attributions.yml)
+- [`Resources/Audio/_WF/Outposts/aw_reactor.ogg`](../../../Resources/Audio/_WF/Outposts/aw_reactor.ogg)
+- [`Resources/Audio/_WF/Outposts/fabricator_end.ogg`](../../../Resources/Audio/_WF/Outposts/fabricator_end.ogg)
+- [`Resources/Audio/_WF/Outposts/fabricator_loop.ogg`](../../../Resources/Audio/_WF/Outposts/fabricator_loop.ogg)
+- [`Resources/Audio/_WF/Outposts/fabricator_start.ogg`](../../../Resources/Audio/_WF/Outposts/fabricator_start.ogg)
+- [`Resources/Audio/_WF/Outposts/manual_door_close.ogg`](../../../Resources/Audio/_WF/Outposts/manual_door_close.ogg)
+- [`Resources/Audio/_WF/Outposts/manual_door_open.ogg`](../../../Resources/Audio/_WF/Outposts/manual_door_open.ogg)
+
 ### Shared maps
 
 - [`Resources/SharedMaps/_WF/Outposts/bastion.yml`](../../../Resources/SharedMaps/_WF/Outposts/bastion.yml)
@@ -421,6 +446,7 @@ its placement, claims and saves never reach below it.
 ### Tools
 
 - [`Tools/_WF/Outposts/build_colony.py`](../../../Tools/_WF/Outposts/build_colony.py)
+- [`Tools/_WF/Outposts/build_plates.py`](../../../Tools/_WF/Outposts/build_plates.py)
 - [`Tools/_WF/Outposts/build_walls.py`](../../../Tools/_WF/Outposts/build_walls.py)
 
 ### Docs

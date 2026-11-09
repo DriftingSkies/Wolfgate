@@ -1,5 +1,11 @@
 # Building out an outpost: foundation plates grow its floor onto the ground beside it, roof panels roof it over.
 
+- type: stack
+  id: WFOutpostFoundationPlate
+  name: outpost foundation plate
+  spawn: WFOutpostFoundationPlate
+  maxCount: 30
+
 - type: entity
   parent: BaseItem
   id: WFOutpostFoundationPlate
@@ -8,14 +14,44 @@
   components:
   - type: Item
     size: Normal
-  - type: Sprite
     sprite: Objects/Materials/Sheets/metal.rsi
-    state: steel
+    heldPrefix: steel
+  - type: Sprite
+    sprite: _WF/Outposts/building.rsi
+    layers:
+    - state: plate
+      map: ["base"]
+  - type: Appearance
+  - type: Stack
+    stackType: WFOutpostFoundationPlate
+    baseLayer: base
+    layerStates:
+    - plate
+    - plate_2
+    - plate_3
   - type: WFOutpostFoundationPlate
-  - type: StaticPrice
+  - type: StackPrice
     price: 25
 
+- type: entity
+  parent: WFOutpostFoundationPlate
+  id: WFOutpostFoundationPlate10
+  suffix: 10
+  components:
+  - type: Sprite
+    layers:
+    - state: plate_3
+      map: ["base"]
+  - type: Stack
+    count: 10
+
 # Roofing for outposts, which stand open to the sky until roofed.
+
+- type: stack
+  id: WFOutpostRoofPanel
+  name: outpost roof panel
+  spawn: WFOutpostRoofPanel
+  maxCount: 30
 
 - type: entity
   parent: BaseItem
@@ -25,9 +61,33 @@
   components:
   - type: Item
     size: Normal
-  - type: Sprite
     sprite: Objects/Materials/Sheets/metal.rsi
-    state: plasteel
+    heldPrefix: plasteel
+  - type: Sprite
+    sprite: _WF/Outposts/building.rsi
+    layers:
+    - state: panel
+      map: ["base"]
+  - type: Appearance
+  - type: Stack
+    stackType: WFOutpostRoofPanel
+    baseLayer: base
+    layerStates:
+    - panel
+    - panel_2
+    - panel_3
   - type: WFOutpostRoofPanel
-  - type: StaticPrice
+  - type: StackPrice
     price: 20
+
+- type: entity
+  parent: WFOutpostRoofPanel
+  id: WFOutpostRoofPanel10
+  suffix: 10
+  components:
+  - type: Sprite
+    layers:
+    - state: panel_3
+      map: ["base"]
+  - type: Stack
+    count: 10

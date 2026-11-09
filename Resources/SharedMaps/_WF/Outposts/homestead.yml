@@ -365,6 +365,7 @@ entities:
     - type: Transform
       pos: 8.5,8.5
       parent: 1
+      rot: 1.5707963267948966 rad
 - proto: WFPrefabWall
   entities:
   - uid: 3

@@ -279,3 +279,14 @@ tiles-wf-colony-grey-bolts = bolted grey colony floor
 tiles-wf-colony-white = white colony floor
 tiles-wf-colony-white-texture = ribbed white colony floor
 tiles-wf-colony-white-bolts = bolted white colony floor
+
+## A.W. generator fuel rods
+
+wf-fuel-rod-generator-loaded = You load {THE($rod)} into {THE($generator)}.
+wf-fuel-rod-generator-full = {CAPITALIZE(THE($generator))} already holds a fuel rod.
+wf-fuel-rod-generator-examine-loaded = A fuel rod is loaded, [color=yellow]{$percent}%[/color] of it left.
+wf-fuel-rod-generator-examine-empty = No fuel rod is loaded.
+wf-fuel-rod-examine-charge = {$percent ->
+    [0] It is spent.
+   *[other] It has [color=yellow]{$percent}%[/color] of its fuel left.
+}

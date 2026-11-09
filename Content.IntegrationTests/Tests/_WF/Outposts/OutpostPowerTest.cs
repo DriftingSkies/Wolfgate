@@ -150,11 +150,11 @@ public sealed class OutpostPowerTest
                     Is.EqualTo(Scale * Comp<PowerSupplierComponent>("GeneratorRTG").MaxSupply).Within(1f), "Compact RTG supply");
 
                 var fuel = Comp<FuelGeneratorComponent>("WFOutpostFuelGenerator");
-                var jr = Comp<FuelGeneratorComponent>("PortableGeneratorJrPacman");
-                Assert.That(fuel.TargetPower, Is.EqualTo(Scale * jr.TargetPower).Within(1f), "Fuel generator target power");
-                Assert.That(fuel.MinTargetPower, Is.EqualTo(Scale * jr.MinTargetPower).Within(1f), "Fuel generator minimum power");
-                Assert.That(fuel.MaxTargetPower, Is.EqualTo(Scale * jr.MaxTargetPower).Within(1f), "Fuel generator maximum power");
-                Assert.That(fuel.OptimalPower, Is.EqualTo(Scale * jr.OptimalPower).Within(1f), "Fuel generator optimal power");
+                var superPacman = Comp<FuelGeneratorComponent>("PortableGeneratorSuperPacman");
+                Assert.That(fuel.TargetPower, Is.EqualTo(Scale * superPacman.TargetPower).Within(1f), "Fuel generator target power");
+                Assert.That(fuel.MinTargetPower, Is.EqualTo(Scale * superPacman.MinTargetPower).Within(1f), "Fuel generator minimum power");
+                Assert.That(fuel.MaxTargetPower, Is.EqualTo(Scale * superPacman.MaxTargetPower).Within(1f), "Fuel generator maximum power");
+                Assert.That(fuel.OptimalPower, Is.EqualTo(Scale * superPacman.OptimalPower).Within(1f), "Fuel generator optimal power");
 
                 foreach (var (outpost, stock) in new[] { ("WFOutpostBatteryLarge", "SMESBasic"), ("WFOutpostBatterySmall", "SubstationBasic") })
                 {

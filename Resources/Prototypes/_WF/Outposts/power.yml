@@ -1,6 +1,6 @@
 # The outpost power pack. Every gizmo here feeds the LV network straight from the cable under it, so a wire run powers
 # an outpost's machines without an APC. Those modelled on a stock machine run at 0.6 of it (OutpostPowerTest):
-# the compact RTG of the RTG, the A.W. fuel generator of the J.R.P.A.C.M.A.N., the large battery of the SMES and the
+# the compact RTG of the RTG, the A.W. generator of the S.U.P.E.R.P.A.C.M.A.N., the large battery of the SMES and the
 # small one of the substation. Wind turbines and solar strings answer to the sky instead (WFOutpostPowerSystem).
 
 - type: entity
@@ -176,8 +176,8 @@
 - type: entity
   parent: WFBaseOutpostPack
   id: WFOutpostFuelGeneratorPack
-  name: A.W. fuel generator pack
-  description: A packed welding-fuel generator. Use it in hand facing your outpost's floor, over an LV cable, to set it up there.
+  name: A.W. generator pack
+  description: A packed A.W. micro-reactor. Use it in hand facing your outpost's floor, over an LV cable, to set it up there.
   components:
   - type: Sprite
     sprite: _WF/Outposts/Colony/fuel_generator.rsi
@@ -192,8 +192,8 @@
 - type: entity
   parent: WFBaseOutpostGenerator
   id: WFOutpostFuelGenerator
-  name: A.W. fuel generator
-  description: A bolted-down generator that burns welding fuel into the LV cable underneath. Fill its tank and start it up.
+  name: A.W. generator
+  description: An Atomic Whisperer, a bolted-down micro-reactor that burns a uranium fuel rod into the LV cable underneath, shielded well enough to stand beside. Load a rod and start it up.
   components:
   - type: Sprite
     sprite: _WF/Outposts/Colony/fuel_generator.rsi
@@ -210,9 +210,9 @@
           False: { state: idle }
   - type: AmbientSound
     range: 4
-    volume: -8
+    volume: -2
     sound:
-      path: /Audio/Ambience/Objects/engine_hum.ogg
+      path: /Audio/_WF/Outposts/aw_reactor.ogg
     enabled: false
   - type: UserInterface
     interfaces:
@@ -225,27 +225,21 @@
     startSoundEmpty: { collection: GeneratorTugEmpty }
     startSound: { collection: GeneratorTug }
   - type: FuelGenerator
-    targetPower: 3600
-    minTargetPower: 600
-    optimalPower: 3600
-    maxTargetPower: 12000
-    optimalBurnRate: 0.11111111
+    targetPower: 18000
+    minTargetPower: 3000
+    optimalPower: 18000
+    maxTargetPower: 36000
+    optimalBurnRate: 0.00925926 # a rod's 100 fuel lasts three hours at optimal power
     fuelEfficiencyConstant: 0.5
-  - type: ChemicalFuelGeneratorAdapter
-    solution: tank
-    reagents:
-      WeldingFuel: 1
-  - type: SolutionContainerManager
-    solutions:
-      tank:
-        maxVol: 180
-  - type: RefillableSolution
-    solution: tank
+  - type: WFFuelRodGenerator
+  - type: ContainerContainer
+    containers:
+      wf_fuel_rod: !type:ContainerSlot
   - type: PowerSupplier
     supplyRampTolerance: 2000
     enabled: false
   - type: GeneratorExhaustGas
-    gasType: CarbonDioxide
+    gasType: WaterVapor
     moleRatio: 0.5
   - type: PowerMonitoringDevice
     sprite: _WF/Outposts/Colony/fuel_generator.rsi

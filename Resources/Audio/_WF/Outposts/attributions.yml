@@ -1,0 +1,16 @@
+# From NovaSector's colony fabricator module (modular_nova/modules/colony_fabricator/sound), mixed to mono and
+# converted to ogg for Wolfgate; the loop joins its four running clips.
+- files: ["fabricator_start.ogg", "fabricator_loop.ogg", "fabricator_end.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Recorded and edited for NovaSector by a contributor who asked not to be named, for free open source use; mixed to mono for Wolfgate."
+  source: "https://github.com/NovaSector/NovaSector/tree/master/modular_nova/modules/colony_fabricator/sound/fabricator"
+
+- files: ["aw_reactor.ogg"]
+  license: "CC-BY-4.0"
+  copyright: "\"20070117.reactor.wav\" by dobroide on freesound.org, shortened for NovaSector; mixed to mono for Wolfgate."
+  source: "https://freesound.org/people/dobroide/sounds/29611/"
+
+- files: ["manual_door_open.ogg", "manual_door_close.ogg"]
+  license: "Custom"
+  copyright: "\"Schlonk\" on pixabay.com (Pixabay Content License), cut for NovaSector's manual door; mixed to mono for Wolfgate."
+  source: "https://pixabay.com/sound-effects/schlonk-107321/"

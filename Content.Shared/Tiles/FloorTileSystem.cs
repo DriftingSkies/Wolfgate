@@ -90,7 +90,7 @@ public sealed partial class FloorTileSystem : EntitySystem
 
                 tuple.weh = false;
                 return false;
-            });
+            }, includeMap: false); // WOLFGATE(Planets): a planet layer is itself a grid; it isn't one placed close by.
 
         if (!state.inRange)
         {

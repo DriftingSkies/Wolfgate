@@ -50,6 +50,9 @@
     layers:
     - state: icon
       map: ["enum.LatheVisualLayers.IsRunning"]
+    - state: inserting
+      map: ["enum.MaterialStorageVisualLayers.Inserting"]
+      visible: false
   - type: Appearance
   - type: ApcPowerReceiver
     powerLoad: 500
@@ -64,6 +67,19 @@
     - PartsStatic
     - ElectronicsStatic
     - CablesStatic
+  - type: OreSiloClient
+  - type: FabricationSiloClient
+  - type: AmbientSound
+    enabled: false
+    range: 5
+    volume: -4
+    sound:
+      path: /Audio/_WF/Outposts/fabricator_loop.ogg
+  - type: WFLatheRunningSound
+    startSound:
+      path: /Audio/_WF/Outposts/fabricator_start.ogg
+    endSound:
+      path: /Audio/_WF/Outposts/fabricator_end.ogg
   - type: MaterialStorage
     whitelist:
       tags:

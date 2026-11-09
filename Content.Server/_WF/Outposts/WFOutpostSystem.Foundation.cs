@@ -3,6 +3,7 @@ using Content.Shared._WF.Caverns;
 using Content.Shared._WF.Outposts;
 using Content.Shared.Database;
 using Content.Shared.Interaction;
+using Content.Shared.Stacks;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
@@ -15,6 +16,8 @@ namespace Content.Server._WF.Outposts;
 /// </summary>
 public sealed partial class WFOutpostSystem
 {
+    [Dependency] private SharedStackSystem _stack = default!;
+
     private static readonly Vector2i[] Neighbours = { Vector2i.Up, Vector2i.Down, Vector2i.Left, Vector2i.Right };
 
     private void InitializeFoundation()
@@ -34,7 +37,14 @@ public sealed partial class WFOutpostSystem
             return;
         }
 
-        QueueDel(plate);
+        UseOne(plate);
+    }
+
+    /// <summary>Uses up one plate or panel: one off its stack, or the item itself.</summary>
+    private void UseOne(EntityUid item)
+    {
+        if (!TryComp<StackComponent>(item, out var stack) || !_stack.Use(item, 1, stack))
+            QueueDel(item);
     }
 
     /// <summary>

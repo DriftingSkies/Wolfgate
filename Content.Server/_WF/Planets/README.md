@@ -876,6 +876,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.Shared/Shuttles/Systems/SharedShuttleSystem.cs`](../../../Content.Shared/Shuttles/Systems/SharedShuttleSystem.cs): you only FTL out of a planet network from orbit, and never FTL into an orbit layer.
 - [`Content.Shared/Tiles/FloorTileSystem.cs`](../../../Content.Shared/Tiles/FloorTileSystem.cs)
   - reads the planet ground under a tile.
+  - a planet layer is itself a grid; it isn't one placed close by.
   - a planet's natural ground takes lattice directly, and remembers what is under it.
   - lattice also goes straight onto planet ground.
   - the ground under lattice is kept so cutting it gives the ground back.

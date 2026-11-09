@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Made for Wolfgate in the palette of NovaSector's colony fabricator set (CC BY-SA 3.0)",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "plate"
+        },
+        {
+            "name": "plate_2"
+        },
+        {
+            "name": "plate_3"
+        },
+        {
+            "name": "panel"
+        },
+        {
+            "name": "panel_2"
+        },
+        {
+            "name": "panel_3"
+        }
+    ]
+}

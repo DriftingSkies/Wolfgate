@@ -152,10 +152,8 @@
     - id: WFOutpostSolarStringPack
     - id: WFOutpostBatterySmallPack
     - id: CableApcStack
-    - id: WFOutpostFoundationPlate
-      amount: 10
-    - id: WFOutpostRoofPanel
-      amount: 10
+    - id: WFOutpostFoundationPlate10
+    - id: WFOutpostRoofPanel10
   - type: StaticPrice
     vendPrice: 9500
 
@@ -183,10 +181,8 @@
   components:
   - type: StorageFill
     contents:
-    - id: WFOutpostFoundationPlate
-      amount: 10
-    - id: WFOutpostRoofPanel
-      amount: 10
+    - id: WFOutpostFoundationPlate10
+    - id: WFOutpostRoofPanel10
   - type: StaticPrice
     vendPrice: 600
 

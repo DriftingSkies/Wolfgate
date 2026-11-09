@@ -563,11 +563,13 @@ entities:
     - type: Transform
       pos: 9.5,11.5
       parent: 1
+      rot: 1.5707963267948966 rad
   - uid: 63
     components:
     - type: Transform
       pos: 13.5,10.5
       parent: 1
+      rot: 1.5707963267948966 rad
 - proto: WFPrefabShutters
   entities:
   - uid: 117

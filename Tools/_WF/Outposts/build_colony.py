@@ -56,6 +56,15 @@ def write_rsi(name, mapping):
     os.makedirs(dst, exist_ok=True)
     meta_states, size = [], None
     for out, src in mapping.items():
+        if isinstance(src, tuple) and isinstance(src[0], list):  # drawn frames and their delays
+            frames, delays = src
+            size = frames[0].size
+            sheet = Image.new('RGBA', (size[0] * len(frames), size[1]))
+            for k, f in enumerate(frames):
+                sheet.paste(f, (k * size[0], 0))
+            sheet.save(os.path.join(dst, out + '.png'))
+            meta_states.append({'name': out, 'delays': [delays]})
+            continue
         if isinstance(src, Image.Image):
             img = src
             size = img.size
@@ -84,11 +93,32 @@ def write_rsi(name, mapping):
         if frames > 1:
             entry['delays'] = [list(delays) for _ in range(dirs)]
         meta_states.append(entry)
-    meta = {'version': 1, 'license': 'CC-BY-SA-3.0', 'copyright': COPYRIGHT,
+    meta = {'version': 1, 'license': 'CC-BY-SA-3.0', 'copyright': COPYRIGHT + COPYRIGHT_EXTRA.get(name, ''),
             'size': {'x': size[0], 'y': size[1]}, 'states': meta_states}
     with open(os.path.join(dst, 'meta.json'), 'w', newline='\n') as fh:
         json.dump(meta, fh, indent=4)
         fh.write('\n')
+
+
+COPYRIGHT_EXTRA = {'fabricator': '; the inserting state drawn for Wolfgate'}
+
+
+def lathe_inserting():
+    """A sheet sliding down into the colony lathe's top, in greys the lathe tints to the material's colour."""
+    x0, w, top = 22, 5, 7  # the sheet's left edge and width, and the machine's top edge it drops into
+    rim, fill, shine, slot = (150, 150, 150, 255), (215, 215, 215, 255), (255, 255, 255, 255), (30, 30, 34, 255)
+    frames = []
+    for k in range(8):
+        img = Image.new('RGBA', (32, 32))
+        px = img.load()
+        for x in range(x0 - 1, x0 + w + 1):
+            px[x, top] = slot
+        for y in range(k, top):
+            for x in range(x0, x0 + w):
+                edge = x in (x0, x0 + w - 1) or y == k
+                px[x, y] = rim if edge else shine if x == x0 + 1 else fill
+        frames.append(img)
+    return frames, [0.1] * 8
 
 
 M = 'machines.dmi'
@@ -136,6 +166,7 @@ RSIS = {
     'fabricator': {
         'icon': (M, 'colony_lathe'),
         'building': (M, 'colony_lathe_working'),
+        'inserting': lathe_inserting,
         'packed': (P, 'colony_lathe_packed'),
     },
     'co2_cracker': {

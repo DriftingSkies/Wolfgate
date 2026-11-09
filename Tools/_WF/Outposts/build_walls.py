@@ -21,6 +21,20 @@ GLASS = {(91, 152, 183, 128): (122, 128, 168, 128), (72, 118, 170, 129): (96, 10
          (194, 230, 233, 213): (220, 219, 228, 220), (235, 247, 255, 219): (240, 240, 245, 230)}
 # a door's lit lid -> our dark wall top
 LID = {WHITE: NAVY, LIGHT: DUSK, MID: DUSK}
+# a side-view door's long edges, outermost first
+EDGE = (NAVY, DUSK, MID)
+# the airlock's status screen (x, y, w, h on the closed frame) and what it shows; Nova's airlock has no motion lights
+SCREEN = (22, 12, 7, 7)
+LIGHTS = {'G': (119, 189, 93), 'g': (39, 137, 93), 'Y': (255, 214, 140), 'y': (232, 163, 61),
+          'R': (248, 77, 57), 'r': (215, 32, 23), 'W': WHITE,
+          'q': (170, 40, 30), 'u': (200, 150, 50), 'v': (60, 130, 180), 'k': (13, 12, 25)}
+GLYPH_OPEN = ['.......', '..G.G..', '.G...G.', 'G..g..G', '.G...G.', '..G.G..', '.......']
+GLYPH_CLOSE = ['.......', '..yyy..', '.yYYYy.', '.yYYYy.', '.yYYYy.', '..yyy..', '.......']
+GLYPH_DENY = ['.......', '.rrrrr.', 'rrrrrrr', 'rWWWWWr', 'rrrrrrr', '.rrrrr.', '.......']
+GLYPH_SPARKS = ['..W....', '.Y..Y..', '...W..Y', 'Y.Y....', '..W.Y..', '.Y....W', '...Y...']
+# the maintenance panel open: the screen lifted off its wiring
+GLYPH_WIRES = ['kqkukvk', 'kqkukvk', 'kkqukvk', 'kkqkuvk', 'kqkkuvk', 'kqkukvk', 'kqkukvk']
+DOOR_COPYRIGHT = bc.COPYRIGHT + '; side views and the airlock screen and panel overlays drawn from it for Wolfgate'
 STOCK_COPYRIGHT = ('Geometry from the stock solid wall and window (rye-rice and 20nypercent, modified by AftrLite), '
                    "recoloured to NovaSector's colony fabricator palette for Wolfgate")
 
@@ -79,13 +93,17 @@ def anim(dmi, state, total=None, lid=False):
     return [lidded(f) for f in out] if lid else out, delays
 
 
-def write_states(name, mapping):
-    """mapping: out state -> image, or (frames, delays)."""
+def write_states(name, mapping, copyright=None):
+    """mapping: out state -> image, (frames, delays), or Dirs."""
     dst = os.path.join(bc.OUT, name + '.rsi')
     os.makedirs(dst, exist_ok=True)
     meta = []
     for out, src in mapping.items():
-        frames, delays = (src, None) if isinstance(src, Image.Image) else src
+        if isinstance(src, Dirs):
+            frames, delays, extra = [f for d in src.frames for f in d], src.delays, {'directions': 4}
+        else:
+            frames, delays = (src, None) if isinstance(src, Image.Image) else src
+            extra = {}
         if isinstance(frames, Image.Image):
             frames.save(os.path.join(dst, out + '.png'))
             meta.append({'name': out})
@@ -96,8 +114,41 @@ def write_states(name, mapping):
         for k, f in enumerate(frames):
             sheet.paste(f, ((k % c) * 32, (k // c) * 32))
         sheet.save(os.path.join(dst, out + '.png'))
-        meta.append({'name': out, 'delays': [delays]})
-    write_meta(dst, meta)
+        state = {'name': out, **extra}
+        if delays:
+            state['delays'] = [delays] * (4 if extra else 1)
+        meta.append(state)
+    write_meta(dst, meta, copyright)
+
+
+class Dirs:
+    """A door state in four directions: the front view facing north and south, the side view east and west."""
+
+    def __init__(self, src, overlay=False, sym=False, screen=False):
+        frames, self.delays = ([src], None) if isinstance(src, Image.Image) else src
+        sides = [side(upright(f) if screen else f, overlay, sym) for f in frames]
+        self.frames = [frames, frames, sides, sides]
+
+
+def side(img, overlay=False, sym=False):
+    """A front-view door frame turned to stand in a north-south wall: the face transposed so its leaves slide north and
+    south, the lid and foot replaced by even frame edges. An overlay keeps its edge pixels; sym mirrors it across."""
+    out = Image.new('RGBA', img.size)
+    src, px = img.load(), out.load()
+    for y in range(32):
+        for x in range(3, 29):
+            px[x, y] = src[y, x + 1]
+        if overlay:
+            for x, r in ((0, 1), (1, 2), (2, 3), (29, 30), (30, 31), (31, 31)):
+                px[x, y] = src[y, r]
+        else:
+            for xs, r in (((0, 1, 2), 4), ((31, 30, 29), 29)):
+                if src[y, r][3]:
+                    for x, c in zip(xs, EDGE):
+                        px[x, y] = c + (255,)
+    if sym:
+        out.alpha_composite(out.transpose(Image.FLIP_LEFT_RIGHT))
+    return out
 
 
 def first(dmi, state, lid=False):
@@ -121,34 +172,84 @@ def overlay_diff(dmi, base_state, lit_state):
     return out, delays
 
 
+def upright(img):
+    """The overlay with its screen box pre-turned, so what the screen shows reads upright on the side view."""
+    x, y, w, h = SCREEN
+    img = img.copy()
+    img.paste(img.crop((x, y, x + w, y + h)).transpose(Image.TRANSPOSE), (x, y))
+    return img
+
+
+def screen_offset(closed, frame):
+    """How far the airlock's screen has slid right in this frame, or None once it is off the door."""
+    x0, y0, w, h = SCREEN
+    cp, fp = closed.load(), frame.load()
+    for dx in range(32 - x0):
+        cols = [x for x in range(x0, x0 + w) if x + dx < 32]
+        if cols and all(fp[x + dx, y] == cp[x, y] for x in cols for y in range(y0, y0 + h)):
+            return dx
+    return None
+
+
+def screen_lights(closed, frames, glyph):
+    """Unlit frames that show the glyph on the airlock's screen, riding along with its leaf."""
+    out = []
+    for f in frames:
+        img = Image.new('RGBA', (32, 32))
+        dx = screen_offset(closed, f)
+        for r, line in enumerate(glyph if dx is not None else []):
+            for c, ch in enumerate(line):
+                x = SCREEN[0] + c + dx
+                if ch in LIGHTS and x < 32:
+                    img.putpixel((x, SCREEN[1] + r), LIGHTS[ch] + (255,))
+        out.append(img)
+    return out
+
+
 recolour('Structures/Walls/solid.rsi', 'prefab_wall', 'solid', WALL)
 recolour('Structures/Windows/window.rsi', 'prefab_window', 'window', GLASS, rgba=True)
 
 A, M, SH, PK, OV = 'doors/airlock.dmi', 'doors/airlock_manual.dmi', 'doors/shutter.dmi', 'doors/packed.dmi', 'doors/overlays.dmi'
+air_closed = first(A, 'closed', True)
+air_opening, air_closing = anim(A, 'opening', 0.8, True), anim(A, 'closing', 0.8, True)
+blank = Image.new('RGBA', (32, 32))
+deny = screen_lights(air_closed, [air_closed], GLYPH_DENY)[0]
 write_states('airlock', {
-    'closed': first(A, 'closed', True),
-    'open': first(A, 'open', True),
-    'opening': anim(A, 'opening', 0.8, True),
-    'closing': anim(A, 'closing', 0.8, True),
-    'assembly': first(A, 'construction', True),
+    'closed': Dirs(air_closed),
+    'open': Dirs(first(A, 'open', True)),
+    'opening': Dirs(air_opening),
+    'closing': Dirs(air_closing),
+    'assembly': Dirs(first(A, 'construction', True)),
     'packed': first(PK, 'airlock_parts'),
-})
+    'closed_unlit': Dirs(blank, True),
+    'open_unlit': Dirs(blank, True),
+    'opening_unlit': Dirs((screen_lights(air_closed, air_opening[0], GLYPH_OPEN), air_opening[1]), True),
+    'closing_unlit': Dirs((screen_lights(air_closed, air_closing[0], GLYPH_CLOSE), air_closing[1]), True),
+    'deny_unlit': Dirs(([deny, blank, deny, blank], [0.1, 0.1, 0.1, 0.1]), True, screen=True),
+    'bolted_unlit': Dirs(first(OV, 'lights_bolts'), True, sym=True),
+    'emergency_unlit': Dirs(anim(OV, 'lights_emergency'), True, screen=True),
+    'welded': Dirs(first(OV, 'welded'), True),
+    'sparks': Dirs(screen_lights(air_closed, [air_closed], GLYPH_SPARKS)[0], True, screen=True),
+    'panel_open': Dirs(screen_lights(air_closed, [air_closed], GLYPH_WIRES)[0], True),
+    'panel_opening': Dirs((screen_lights(air_closed, air_opening[0], GLYPH_WIRES), air_opening[1]), True),
+    'panel_closing': Dirs((screen_lights(air_closed, air_closing[0], GLYPH_WIRES), air_closing[1]), True),
+}, DOOR_COPYRIGHT)
 write_states('door', {
-    'closed': first(M, 'manual', True),
-    'open': first(M, 'manualopen', True),
-    'opening': anim(M, 'manualopening', 1.2, True),
-    'closing': anim(M, 'manualclosing', 1.2, True),
+    'closed': Dirs(first(M, 'manual', True)),
+    'open': Dirs(first(M, 'manualopen', True)),
+    'opening': Dirs(anim(M, 'manualopening', 1.2, True)),
+    'closing': Dirs(anim(M, 'manualclosing', 1.2, True)),
     'packed': first(PK, 'airlock_parts_manual'),
-})
+}, DOOR_COPYRIGHT)
 write_states('shutters', {
-    'closed': first(SH, 'closed'),
-    'open': first(SH, 'open'),
-    'opening': anim(SH, 'opening', 1.4),
-    'closing': anim(SH, 'closing', 1.4),
-    'assembly': first(SH, 'open'),
-    'welded': first(OV, 'welded'),
+    'closed': Dirs(first(SH, 'closed')),
+    'open': Dirs(first(SH, 'open')),
+    'opening': Dirs(anim(SH, 'opening', 1.4)),
+    'closing': Dirs(anim(SH, 'closing', 1.4)),
+    'assembly': Dirs(first(SH, 'open')),
+    'welded': Dirs(first(OV, 'welded'), True),
     'packed': first(PK, 'shutters_parts'),
-})
+}, DOOR_COPYRIGHT)
 write_states('arc_welder', {
     'icon': first('tools.dmi', 'arc_welder'),
     'welder_flame': overlay_diff('tools.dmi', 'arc_welder', 'arc_welder-on'),
