@@ -59,32 +59,54 @@
     - id: WFMobVerdaScarRat
       min: 1
       max: 2
+  # Steps 3 and 4 walk in from the Reaver camp set down on the world, while any of its crew lives.
   - tier: WFRaidTierScavengers
+    source: Camp
+    name: wf-raid-source-camp
     spawns:
-    - id: WFMobRaidScavenger
+    - id: WFMobRaidReaverDeckhand
       min: 2
       max: 3
-    - id: WFMobRaidScavengerGunner
+    - id: WFMobRaidReaver
   - tier: WFRaidTierRaiders
+    source: Camp
+    name: wf-raid-source-camp
     arrival: WFRaidRaiderQuad
     spawns:
-    - id: WFMobRaidBreacher
-    - id: WFMobRaidRaider
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
       min: 1
       max: 2
-    - id: WFMobRaidScavenger
+    - id: WFMobRaidReaverDeckhand
       min: 1
       max: 2
   # Step 3 from below: tunnel raiders dig in from the cavern and come up at the claim's edge.
   - tier: WFRaidTierScavengers
     tunnel: true
+    name: wf-raid-source-tunnels
     arrival: WFRaidTunnelExit
     spawns:
     - id: WFMobRaidTunneller
       min: 2
       max: 3
     - id: WFMobRaidTunnellerGunner
+  # Steps 5 and 6 come down from orbit: the Reavers while a stronghold of theirs is in reach of the world, a drifter
+  # gang in a round with no Reaver campaign.
   - tier: WFRaidTierShuttle
+    source: Reavers
+    name: wf-raid-source-reavers
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    spawns:
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
+      min: 2
+      max: 3
+    - id: WFMobRaidReaverDeckhand
+      min: 1
+      max: 1
+  - tier: WFRaidTierShuttle
+    source: Drifters
+    name: wf-raid-source-drifters
     shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
     spawns:
     - id: WFMobRaidBreacher
@@ -95,6 +117,21 @@
       min: 1
       max: 2
   - tier: WFRaidTierSiege
+    source: Reavers
+    name: wf-raid-source-reavers
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    waves: 3
+    spawns:
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
+      min: 1
+      max: 2
+    - id: WFMobRaidReaverDeckhand
+      min: 1
+      max: 2
+  - tier: WFRaidTierSiege
+    source: Drifters
+    name: wf-raid-source-drifters
     shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
     waves: 3
     spawns:
@@ -126,32 +163,54 @@
     - id: WFMobDesertTarantula
       min: 1
       max: 2
+  # Steps 3 and 4 walk in from the Reaver camp set down on the world, while any of its crew lives.
   - tier: WFRaidTierScavengers
+    source: Camp
+    name: wf-raid-source-camp
     spawns:
-    - id: WFMobRaidScavenger
+    - id: WFMobRaidReaverDeckhand
       min: 2
       max: 3
-    - id: WFMobRaidScavengerGunner
+    - id: WFMobRaidReaver
   - tier: WFRaidTierRaiders
+    source: Camp
+    name: wf-raid-source-camp
     arrival: WFRaidRaiderQuad
     spawns:
-    - id: WFMobRaidBreacher
-    - id: WFMobRaidRaider
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
       min: 1
       max: 2
-    - id: WFMobRaidScavenger
+    - id: WFMobRaidReaverDeckhand
       min: 1
       max: 2
   # Step 3 from below: tunnel raiders dig in from the cavern and come up at the claim's edge.
   - tier: WFRaidTierScavengers
     tunnel: true
+    name: wf-raid-source-tunnels
     arrival: WFRaidTunnelExit
     spawns:
     - id: WFMobRaidTunneller
       min: 2
       max: 3
     - id: WFMobRaidTunnellerGunner
+  # Steps 5 and 6 come down from orbit: the Reavers while a stronghold of theirs is in reach of the world, a drifter
+  # gang in a round with no Reaver campaign.
   - tier: WFRaidTierShuttle
+    source: Reavers
+    name: wf-raid-source-reavers
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    spawns:
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
+      min: 2
+      max: 3
+    - id: WFMobRaidReaverDeckhand
+      min: 1
+      max: 1
+  - tier: WFRaidTierShuttle
+    source: Drifters
+    name: wf-raid-source-drifters
     shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
     spawns:
     - id: WFMobRaidBreacher
@@ -162,6 +221,21 @@
       min: 1
       max: 2
   - tier: WFRaidTierSiege
+    source: Reavers
+    name: wf-raid-source-reavers
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    waves: 3
+    spawns:
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
+      min: 1
+      max: 2
+    - id: WFMobRaidReaverDeckhand
+      min: 1
+      max: 2
+  - tier: WFRaidTierSiege
+    source: Drifters
+    name: wf-raid-source-drifters
     shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
     waves: 3
     spawns:
@@ -194,32 +268,54 @@
     - id: WFMobThrasciasSnowSpider
       min: 1
       max: 2
+  # Steps 3 and 4 walk in from the Reaver camp set down on the world, while any of its crew lives.
   - tier: WFRaidTierScavengers
+    source: Camp
+    name: wf-raid-source-camp
     spawns:
-    - id: WFMobRaidScavenger
+    - id: WFMobRaidReaverDeckhand
       min: 2
       max: 3
-    - id: WFMobRaidScavengerGunner
+    - id: WFMobRaidReaver
   - tier: WFRaidTierRaiders
+    source: Camp
+    name: wf-raid-source-camp
     arrival: WFRaidRaiderQuad
     spawns:
-    - id: WFMobRaidBreacher
-    - id: WFMobRaidRaider
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
       min: 1
       max: 2
-    - id: WFMobRaidScavenger
+    - id: WFMobRaidReaverDeckhand
       min: 1
       max: 2
   # Step 3 from below: tunnel raiders dig in from the cavern and come up at the claim's edge.
   - tier: WFRaidTierScavengers
     tunnel: true
+    name: wf-raid-source-tunnels
     arrival: WFRaidTunnelExit
     spawns:
     - id: WFMobRaidTunneller
       min: 2
       max: 3
     - id: WFMobRaidTunnellerGunner
+  # Steps 5 and 6 come down from orbit: the Reavers while a stronghold of theirs is in reach of the world, a drifter
+  # gang in a round with no Reaver campaign.
   - tier: WFRaidTierShuttle
+    source: Reavers
+    name: wf-raid-source-reavers
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    spawns:
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
+      min: 2
+      max: 3
+    - id: WFMobRaidReaverDeckhand
+      min: 1
+      max: 1
+  - tier: WFRaidTierShuttle
+    source: Drifters
+    name: wf-raid-source-drifters
     shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
     spawns:
     - id: WFMobRaidBreacher
@@ -230,6 +326,21 @@
       min: 1
       max: 2
   - tier: WFRaidTierSiege
+    source: Reavers
+    name: wf-raid-source-reavers
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    waves: 3
+    spawns:
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
+      min: 1
+      max: 2
+    - id: WFMobRaidReaverDeckhand
+      min: 1
+      max: 2
+  - tier: WFRaidTierSiege
+    source: Drifters
+    name: wf-raid-source-drifters
     shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
     waves: 3
     spawns:
@@ -264,32 +375,54 @@
     - id: WFMobCinderSlime
       min: 1
       max: 2
+  # Steps 3 and 4 walk in from the Reaver camp set down on the world, while any of its crew lives.
   - tier: WFRaidTierScavengers
+    source: Camp
+    name: wf-raid-source-camp
     spawns:
-    - id: WFMobRaidScavenger
+    - id: WFMobRaidReaverDeckhand
       min: 2
       max: 3
-    - id: WFMobRaidScavengerGunner
+    - id: WFMobRaidReaver
   - tier: WFRaidTierRaiders
+    source: Camp
+    name: wf-raid-source-camp
     arrival: WFRaidRaiderQuad
     spawns:
-    - id: WFMobRaidBreacher
-    - id: WFMobRaidRaider
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
       min: 1
       max: 2
-    - id: WFMobRaidScavenger
+    - id: WFMobRaidReaverDeckhand
       min: 1
       max: 2
   # Step 3 from below: tunnel raiders dig in from the cavern and come up at the claim's edge.
   - tier: WFRaidTierScavengers
     tunnel: true
+    name: wf-raid-source-tunnels
     arrival: WFRaidTunnelExit
     spawns:
     - id: WFMobRaidTunneller
       min: 2
       max: 3
     - id: WFMobRaidTunnellerGunner
+  # Steps 5 and 6 come down from orbit: the Reavers while a stronghold of theirs is in reach of the world, a drifter
+  # gang in a round with no Reaver campaign.
   - tier: WFRaidTierShuttle
+    source: Reavers
+    name: wf-raid-source-reavers
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    spawns:
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
+      min: 2
+      max: 3
+    - id: WFMobRaidReaverDeckhand
+      min: 1
+      max: 1
+  - tier: WFRaidTierShuttle
+    source: Drifters
+    name: wf-raid-source-drifters
     shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
     spawns:
     - id: WFMobRaidBreacher
@@ -300,6 +433,21 @@
       min: 1
       max: 2
   - tier: WFRaidTierSiege
+    source: Reavers
+    name: wf-raid-source-reavers
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    waves: 3
+    spawns:
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
+      min: 1
+      max: 2
+    - id: WFMobRaidReaverDeckhand
+      min: 1
+      max: 2
+  - tier: WFRaidTierSiege
+    source: Drifters
+    name: wf-raid-source-drifters
     shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
     waves: 3
     spawns:
@@ -329,32 +477,54 @@
     - id: WFMobCarcinomaSpider
       min: 1
       max: 2
+  # Steps 3 and 4 walk in from the Reaver camp set down on the world, while any of its crew lives.
   - tier: WFRaidTierScavengers
+    source: Camp
+    name: wf-raid-source-camp
     spawns:
-    - id: WFMobRaidScavenger
+    - id: WFMobRaidReaverDeckhand
       min: 2
       max: 3
-    - id: WFMobRaidScavengerGunner
+    - id: WFMobRaidReaver
   - tier: WFRaidTierRaiders
+    source: Camp
+    name: wf-raid-source-camp
     arrival: WFRaidRaiderQuad
     spawns:
-    - id: WFMobRaidBreacher
-    - id: WFMobRaidRaider
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
       min: 1
       max: 2
-    - id: WFMobRaidScavenger
+    - id: WFMobRaidReaverDeckhand
       min: 1
       max: 2
   # Step 3 from below: tunnel raiders dig in from the cavern and come up at the claim's edge.
   - tier: WFRaidTierScavengers
     tunnel: true
+    name: wf-raid-source-tunnels
     arrival: WFRaidTunnelExit
     spawns:
     - id: WFMobRaidTunneller
       min: 2
       max: 3
     - id: WFMobRaidTunnellerGunner
+  # Steps 5 and 6 come down from orbit: the Reavers while a stronghold of theirs is in reach of the world, a drifter
+  # gang in a round with no Reaver campaign.
   - tier: WFRaidTierShuttle
+    source: Reavers
+    name: wf-raid-source-reavers
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    spawns:
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
+      min: 2
+      max: 3
+    - id: WFMobRaidReaverDeckhand
+      min: 1
+      max: 1
+  - tier: WFRaidTierShuttle
+    source: Drifters
+    name: wf-raid-source-drifters
     shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
     spawns:
     - id: WFMobRaidBreacher
@@ -365,6 +535,21 @@
       min: 1
       max: 2
   - tier: WFRaidTierSiege
+    source: Reavers
+    name: wf-raid-source-reavers
+    shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
+    waves: 3
+    spawns:
+    - id: WFMobRaidReaverBreacher
+    - id: WFMobRaidReaver
+      min: 1
+      max: 2
+    - id: WFMobRaidReaverDeckhand
+      min: 1
+      max: 2
+  - tier: WFRaidTierSiege
+    source: Drifters
+    name: wf-raid-source-drifters
     shuttle: /Maps/_NF/Shuttles/Scrap/tide.yml
     waves: 3
     spawns:

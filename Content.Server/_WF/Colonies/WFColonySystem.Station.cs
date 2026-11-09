@@ -39,6 +39,16 @@ public sealed partial class WFColonySystem
     [Dependency] private SharedMaterialStorageSystem _materials = default!;
     [Dependency] private WFTradeMarketSystem _market = default!;
     [Dependency] private WFTradeSectorSystem _sector = default!;
+    [Dependency] private WFPlanetClimateSystem _climate = default!;
+    [Dependency] private Content.Server._Mono.AlertLevel.WarLevelSystem _war = default!;
+
+    /// <summary>The outside temperatures, in kelvin, between which a world's farms grow at their full rate.</summary>
+    private const float GrowsFrom = 278.15f;
+    private const float GrowsTo = 303.15f;
+
+    /// <summary>Degrees past those at which farms are down to <see cref="PoorClimate"/>.</summary>
+    private const float ClimateFalloff = 30f;
+    private const float PoorClimate = 0.4f;
 
     public const string Supplies = "TradeGoodSupplies";
     public const string Medical = "TradeGoodMedicalSupplies";
@@ -48,7 +58,6 @@ public sealed partial class WFColonySystem
 
     /// <summary>The chute whose prices a colony pays its holders by.</summary>
     public static readonly EntProtoId ExchangeChute = "WFColonyExchangeChute";
-
     private static readonly TimeSpan ScanInterval = TimeSpan.FromSeconds(60);
     private const float DepositRange = 1.5f;
 
@@ -88,7 +97,8 @@ public sealed partial class WFColonySystem
     private void UpdateColony(WorldState world, EntityUid network, List<OutpostEntry> entries, float seconds)
     {
         var body = ColonyBody(network);
-        if (world.Tier < WFWorldTier.Colony || entries.Count == 0)
+        // A depot stands for the colony when no outpost has come down yet.
+        if (world.Tier < WFWorldTier.Colony || entries.Count == 0 && !HasDepot(network))
         {
             if (HasComp<WFColonyComponent>(body))
                 Dissolve(body);
@@ -117,6 +127,7 @@ public sealed partial class WFColonySystem
         Grow(colony, world, seconds);
         MakeGoods(colony, world, seconds);
         UpdateImports(colony, entries);
+        UpdateSeat(colony, world);
     }
 
     /// <summary>Makes a world's sector body its colony station, with a shelf half stocked.</summary>
@@ -167,9 +178,11 @@ public sealed partial class WFColonySystem
         colony.Comp.Industries.Clear();
         colony.Comp.Goods.Clear();
         colony.Comp.Stores.Clear();
-        colony.Comp.Housing = 0;
+        colony.Comp.Housing = TryGetSeat(colony.Comp.Network, out _, out var seat) ? seat.Housing : 0;
         var perBed = _cfg.GetCVar(ColonyCVars.PeoplePerBed);
         var buildings = _proto.EnumeratePrototypes<WFColonyBuildingPrototype>().ToList();
+        var rates = WorldProto(world.Id)?.Rates;
+        colony.Comp.Climate = ClimateFactor(colony.Comp.Network);
         var counts = new Dictionary<(string Holder, string Building), int>();
         foreach (var entry in entries)
         {
@@ -179,7 +192,7 @@ public sealed partial class WFColonySystem
                 if (HasComp<HealOnBuckleComponent>(child) || HasComp<CryoSleepComponent>(child))
                     colony.Comp.Housing += (int) MathF.Round(perBed);
 
-                // An entity counts as every kind it matches: a goat works the pen and gives wool and milk.
+                // An entity counts as every kind it matches.
                 foreach (var building in buildings)
                 {
                     var key = (entry.Holder, building.ID);
@@ -188,9 +201,16 @@ public sealed partial class WFColonySystem
                         continue;
 
                     counts[key] = count + 1;
+                    // What the world is good for, and for what grows, its weather.
+                    var rate = building.Rate;
+                    if (rates != null && rates.TryGetValue(building.ID, out var worldRate))
+                        rate *= worldRate;
+                    if (building.Climate)
+                        rate *= colony.Comp.Climate;
+
                     if (building.Industry is { } industry)
                     {
-                        AddRate(colony.Comp.Industries, industry, entry.Holder, building.Rate);
+                        AddRate(colony.Comp.Industries, industry, entry.Holder, rate);
                         if (building.WorksMaterials)
                         {
                             var store = (industry.Id, entry.Holder);
@@ -200,7 +220,7 @@ public sealed partial class WFColonySystem
                         }
                     }
                     else if (building.Good is { } good)
-                        AddRate(colony.Comp.Goods, good, entry.Holder, building.Rate);
+                        AddRate(colony.Comp.Goods, good, entry.Holder, rate);
                 }
             }
         }
@@ -226,6 +246,20 @@ public sealed partial class WFColonySystem
         {
             _market.Row(colony, good);
         }
+    }
+
+    /// <summary>
+    /// How well things grow in a world's weather: fully while it is mild outside, down to <see cref="PoorClimate"/> in
+    /// deep cold or heat. It follows the season, the weather and the hour.
+    /// </summary>
+    public float ClimateFactor(EntityUid network)
+    {
+        if (!TryComp<WFPlanetNetworkComponent>(network, out var comp) || TerminatingOrDeleted(comp.GroundMap)
+            || _climate.GetOutsideTemperature(comp.GroundMap) is not { } kelvin)
+            return 1f;
+
+        var off = kelvin < GrowsFrom ? GrowsFrom - kelvin : kelvin > GrowsTo ? kelvin - GrowsTo : 0f;
+        return 1f - (1f - PoorClimate) * Math.Clamp(off / ClimateFalloff, 0f, 1f);
     }
 
     private static void AddRate(Dictionary<string, Dictionary<string, float>> rates, string key, string holder, float rate)
@@ -395,7 +429,9 @@ public sealed partial class WFColonySystem
         colony.Comp.People = MathF.Max(0f, people);
 
         var station = Comp<WFTradeStationComponent>(colony);
-        station.Role!.Population = colony.Comp.People / MathF.Max(1, _cfg.GetCVar(ColonyCVars.PeoplePerPopulation));
+        // A chartered colony answers the navies' requisitions while the sector is at war: its people draw more.
+        var draw = world.Charter != null && _war.GetWarLevel(EntityUid.Invalid) ? _cfg.GetCVar(ColonyCVars.WarDraw) : 1f;
+        station.Role!.Population = colony.Comp.People / MathF.Max(1, _cfg.GetCVar(ColonyCVars.PeoplePerPopulation)) * draw;
         var workforce = Workforce(colony.Comp);
         foreach (var (industry, holders) in colony.Comp.Industries)
         {

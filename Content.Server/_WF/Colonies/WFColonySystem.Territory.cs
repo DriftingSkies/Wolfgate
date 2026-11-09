@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server._WF.Defcon;
+using Content.Server._WF.ReaverCampaign.Systems;
 using Content.Server._WF.SectorControl;
 using Content.Server._WF.SectorControl.Systems;
 using Content.Shared._WF.Colonies;
@@ -31,6 +32,21 @@ public sealed partial class WFColonySystem
         SubscribeLocalEvent<WFSectorRetakeAttemptEvent>(OnRetakeAttempt);
         SubscribeLocalEvent<WFColonyCellQueryEvent>(OnCellQuery);
         SubscribeLocalEvent<WFDefconGatherEvent>(OnDefconGather);
+        SubscribeLocalEvent<WFReaverSpreadWeightEvent>(OnSpreadWeight);
+    }
+
+    /// <summary>The Reavers spread toward colonies: a cell beside a colony's draws them more than open space.</summary>
+    private void OnSpreadWeight(ref WFReaverSpreadWeightEvent args)
+    {
+        foreach (var (id, network) in Networks())
+        {
+            if (Tier(id) < WFWorldTier.Colony || !TryColonyCell(network, out var map, out var cell) || map != args.Map
+                || WFSectorHex.Distance(cell, args.Cell) != 1)
+                continue;
+
+            args.Weight *= _cfg.GetCVar(ColonyCVars.ReaverDraw);
+            return;
+        }
     }
 
     /// <summary>Whether a faction is one the Colonies driver holds cells as.</summary>
@@ -74,7 +90,7 @@ public sealed partial class WFColonySystem
 
             var owner = _territory.Owner(map, cell);
             var ours = owner is { } held && IsColonyFaction(held);
-            if (world.Tier < WFWorldTier.Colony || here.Count == 0)
+            if (world.Tier < WFWorldTier.Colony || here.Count == 0 && !HasDepot(network))
             {
                 if (ours)
                     _territory.Free(map, cell);

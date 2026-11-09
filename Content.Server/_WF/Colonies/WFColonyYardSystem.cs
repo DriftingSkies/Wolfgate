@@ -140,6 +140,14 @@ public sealed partial class WFColonyYardSystem : EntitySystem
 
         /// <summary>Whether its first write is still out, so it has no id yet.</summary>
         public bool Writing;
+
+        /// <summary>Its frame standing below the platform this round, how many pieces of it are up, and where the finished hull will reach.</summary>
+        public EntityUid? Frame;
+        public int Pieces;
+        public Box2? FrameBox;
+
+        /// <summary>Where the finished vessel is loaded to stand in the frame's place.</summary>
+        public Vector2 FrameAt;
     }
 
     public override void Initialize()
@@ -281,6 +289,7 @@ public sealed partial class WFColonyYardSystem : EntitySystem
 
     private void RemoveJob(JobState job)
     {
+        ClearFrame(job);
         _jobs.Remove(job);
         if (job.Id != 0)
             Track(_db.DeleteYardJobAsync(job.Id));
@@ -357,6 +366,7 @@ public sealed partial class WFColonyYardSystem : EntitySystem
         }
 
         _kitsIssued.Clear();
+        ForgetFrames();
         _nextTick = TimeSpan.Zero;
         _nextWrite = TimeSpan.Zero;
     }
@@ -678,44 +688,60 @@ public sealed partial class WFColonyYardSystem : EntitySystem
 
             var stage = design.Stages[job.Stage];
             if (job.Components < stage.Components || job.Metals < stage.Metals)
+            {
+                // Waiting on its crates: the frame stands as far as the work has got.
+                TendFrame(job, design, platform, false);
                 continue;
+            }
 
             job.Progress += seconds * share / MathF.Max(1f, stage.Minutes * 60f);
             job.Dirty = true;
             changed = true;
-            if (job.Progress < 1f)
-                continue;
+            if (job.Progress >= 1f)
+            {
+                job.Stage++;
+                job.Progress = 0f;
+                job.Components = 0;
+                job.Metals = 0;
+            }
 
-            job.Stage++;
-            job.Progress = 0f;
-            job.Components = 0;
-            job.Metals = 0;
             if (job.Stage >= design.Stages.Count)
+            {
                 Complete(job, design, platform);
-            else
+                continue;
+            }
+
+            if (job.Progress == 0f)
                 WriteJob(job);
+            TendFrame(job, design, platform, seconds <= CatchUp);
         }
 
         if (changed)
             RefreshConsoles(world);
+        else
+            ParkCranes(platform);
     }
 
     /// <summary>Spawns a finished hull clear of the platform, deeds it to its company and grants the licence its first build earns.</summary>
     private void Complete(JobState job, WFYardDesignPrototype design, EntityUid platform)
     {
+        // The frame makes way for the finished vessel, which stands where it stood.
+        var berth = ClearFrame(job);
         RemoveJob(job);
         if (!_proto.TryIndex(design.Vessel, out var vessel))
             return;
 
         var map = Transform(platform).MapID;
         var platformBox = _transform.GetWorldMatrix(platform).TransformBox(Comp<MapGridComponent>(platform).LocalAABB);
-        if (!_vessels.TrySpawnVessel(vessel, map, platformBox.Center - new Vector2(0f, 1000f), platform, out var hull))
+        if (!_vessels.TrySpawnVessel(vessel, map, berth ?? platformBox.Center - new Vector2(0f, 1000f), platform, out var hull))
         {
             _log.Error($"The yard of {job.World} could not spawn {vessel.ID} for company {job.CompanyId}.");
             return;
         }
 
-        PlaceHull(hull.Value, platformBox);
+        if (berth == null)
+            PlaceHull(hull.Value, platformBox);
+        ParkCranes(platform);
         var companyName = _companies.CompanyIdentity(job.CompanyId)?.Name ?? job.CompanyId.ToString();
         var deeded = Deliverer(job.CompanyId, map) is { } session
             && _vessels.TryGetDeedCard(session, out var card, out _)
@@ -984,6 +1010,7 @@ public sealed partial class WFColonyYardSystem : EntitySystem
     public async Task ReloadForTest()
     {
         await Flush();
+        ForgetFrames();
         _yards.Clear();
         _jobs.Clear();
         Loaded = false;

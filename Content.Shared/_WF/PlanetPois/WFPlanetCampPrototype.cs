@@ -31,6 +31,10 @@ public sealed partial class WFPlanetCampPrototype : IPrototype
     [DataField]
     public ProtoId<NpcFactionPrototype> Faction = "SimpleNeutral";
 
+    /// <summary>Whether its crew send landing parties at the world's outposts while any of them lives (OutpostRaids).</summary>
+    [DataField]
+    public bool Raids;
+
     /// <summary>
     /// Whether the camp is pitched beside a road, just off the shoulder on a straight stretch and facing it, where
     /// whoever drives by sees it; out in the open instead when the world has no roads or no stretch has room.

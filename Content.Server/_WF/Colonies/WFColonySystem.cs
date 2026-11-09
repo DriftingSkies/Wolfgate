@@ -38,6 +38,7 @@ public sealed partial class WFColonySystem : EntitySystem
     [Dependency] private WFPlanetWeatherSystem _weather = default!;
     [Dependency] private WFRaidDirectorSystem _director = default!;
     [Dependency] private WFShipAccessServerSystem _shipAccess = default!;
+    [Dependency] private SharedMapSystem _maps = default!;
 
     private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(10);
 
@@ -103,6 +104,9 @@ public sealed partial class WFColonySystem : EntitySystem
         InitializeCharter();
         InitializeTerritory();
         InitializeHeritage();
+        InitializeProduce();
+        InitializeSeat();
+        InitializeOffice();
         _loading = Reload();
     }
 
@@ -176,6 +180,8 @@ public sealed partial class WFColonySystem : EntitySystem
         foreach (var world in _worlds.Values)
         {
             world.Tier = TierFor(WFWorldTier.None, world.Total);
+            if (world.Tier < BaseTier(world.Id))
+                world.Tier = BaseTier(world.Id);
         }
 
         Loaded = true;
@@ -185,7 +191,7 @@ public sealed partial class WFColonySystem : EntitySystem
     {
         if (!_worlds.TryGetValue(id, out var world))
         {
-            world = new WorldState(id);
+            world = new WorldState(id) { Tier = BaseTier(id) };
             _worlds[id] = world;
         }
 
@@ -258,7 +264,22 @@ public sealed partial class WFColonySystem : EntitySystem
     public double Total(string world) => _worlds.TryGetValue(world, out var state) ? state.Total : 0;
 
     /// <summary>A world's tier.</summary>
-    public WFWorldTier Tier(string world) => _worlds.TryGetValue(world, out var state) ? state.Tier : WFWorldTier.None;
+    public WFWorldTier Tier(string world) => _worlds.TryGetValue(world, out var state) ? state.Tier : BaseTier(world);
+
+    /// <summary>What a world gives colonies, if it has an entry.</summary>
+    public WFColonyWorldPrototype? WorldProto(string world)
+    {
+        foreach (var proto in _proto.EnumeratePrototypes<WFColonyWorldPrototype>())
+        {
+            if (proto.Surface.Id == world)
+                return proto;
+        }
+
+        return null;
+    }
+
+    /// <summary>The tier a world never reads below: a world with a city on it is settled already.</summary>
+    public WFWorldTier BaseTier(string world) => WorldProto(world)?.BaseTier ?? WFWorldTier.None;
 
     /// <summary>A holder's score over the world's total.</summary>
     public float Share(string world, string holder)
@@ -382,6 +403,9 @@ public sealed partial class WFColonySystem : EntitySystem
     private void UpdateTier(WorldState world)
     {
         var tier = TierFor(world.Tier, world.Total);
+        var floor = BaseTier(world.Id);
+        if (tier < floor)
+            tier = floor;
         if (tier == world.Tier)
             return;
 
@@ -395,7 +419,7 @@ public sealed partial class WFColonySystem : EntitySystem
         _log.Info($"World {world.Id} went from {old} to {world.Tier} at {world.Total:F0} points.");
         if (world.Tier > old && world.Tier >= WFWorldTier.Colony)
         {
-            _market.Radio(Loc.GetString("wf-colony-tier-up", ("world", WorldName(world.Id)),
+            _market.Radio(Loc.GetString("wf-colony-registered", ("world", WorldName(world.Id)),
                 ("tier", Loc.GetString($"wf-colony-tier-{world.Tier.ToString().ToLowerInvariant()}"))));
         }
 
@@ -449,6 +473,8 @@ public sealed partial class WFColonySystem : EntitySystem
             var member = EnsureComp<WFColonyMemberComponent>(entry.Outpost);
             if (entry.Home)
                 member.HomeMinutes += seconds / 60f;
+            if (member.Lot == 0)
+                NoteLot((entry.Outpost.Owner, member));
             if (CompanyOfKey(entry.Holder) is { } company)
                 member.CompanyId = company;
             else if (CompOrNull<WFShipAccessComponent>(entry.Outpost)?.Mode != WFShipAccessMode.Company)
@@ -584,6 +610,7 @@ public sealed partial class WFColonySystem : EntitySystem
     private void OnSettled(Entity<WFColonyMemberComponent> member, ref WFOutpostSettledEvent args)
     {
         member.Comp.HomeMinutes = 0;
+        NoteLot(member);
         if (member.Comp.CompanyId is not { } company || !TryComp<WFShipAccessComponent>(member, out var access)
             || access.Mode != WFShipAccessMode.Company || access.CompanyId != null || _companies.CompanyIdentity(company) is not { } identity)
             return;
@@ -593,12 +620,30 @@ public sealed partial class WFColonySystem : EntitySystem
 
     private void OnFingerprint(Entity<WFColonyMemberComponent> member, ref WFOutpostFingerprintEvent args)
     {
-        args.Hash = HashCode.Combine(args.Hash, member.Comp.CompanyId, member.Comp.Heritage);
+        args.Hash = HashCode.Combine(args.Hash, member.Comp.CompanyId, member.Comp.Heritage, member.Comp.Lot);
+    }
+
+    /// <summary>Remembers which of its world's outpost lots an outpost came down on, so it is set down there again.</summary>
+    private void NoteLot(Entity<WFColonyMemberComponent> member)
+    {
+        if (!TryComp<WFOutpostComponent>(member, out var outpost) || TerminatingOrDeleted(outpost.Console)
+            || !TryComp<PlanetPois.WFPlanetPoiComponent>(outpost.Ground, out var pois)
+            || !TryComp<MapGridComponent>(outpost.Ground, out var ground))
+            return;
+
+        var tile = _maps.TileIndicesFor(outpost.Ground, ground, _transform.GetMapCoordinates(outpost.Console));
+        for (var i = 0; i < pois.OutpostLots.Count; i++)
+        {
+            var lot = pois.OutpostLots[i];
+            if (tile.X >= lot.Left && tile.X < lot.Right && tile.Y >= lot.Bottom && tile.Y < lot.Top)
+                member.Comp.Lot = i + 1;
+        }
     }
 
     private void OnTransferred(Entity<WFColonyMemberComponent> member, ref WFOutpostTransferredEvent args)
     {
         member.Comp.CompanyId = null;
+        member.Comp.Lot = 0;
         member.Comp.Heritage = 0;
         member.Comp.HeritageRound = 0;
         member.Comp.HomeMinutes = 0;

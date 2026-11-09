@@ -130,7 +130,7 @@ low, mid or high blocks it.
 Trade (`trade.yml`, `WFOutpostSystem.Trade.cs`): the console's Trade tab lists the cargo products in the `WFOutpost`
 group. The owner pays from their bank with the cargo console's tax split (`taxAccounts` on the console), up to five
 orders at once. After `wf.outposts.trade_lead_time` seconds a flare (`WFTradeDropFlare`) lights on the outpost's
-universal trade hub (`WFUniversalTradeHubComponent`, a 1 kW gizmo that takes orders only with power and open sky; its colony-style pad, `trade_hub.rsi`, is drawn by
+universal trade hub (`WFUniversalTradeHubComponent`, a 1 kW gizmo that takes orders only with power, open sky and, with `wf.outposts.trade_needs_comms`, the world's comms uplink; its colony-style pad, `trade_hub.rsi`, is drawn by
 `build_trade_hub.py`, its corner beacons lit while powered) and
 the order comes down onto it by parachute: `WFTradeDropSystem` spawns a `WFTradeDropDescent` there, which
 `WFTradeDropVisualsSystem` draws as the product sinking under a canopy over a growing shadow, and after 8 seconds swaps

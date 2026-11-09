@@ -380,6 +380,7 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
             WFOutpostHubStatus.None => "wf-outpost-trade-hub-none",
             WFOutpostHubStatus.Unpowered => "wf-outpost-trade-hub-unpowered",
             WFOutpostHubStatus.Covered => "wf-outpost-trade-hub-covered",
+            WFOutpostHubStatus.NoUplink => "wf-outpost-trade-hub-no-uplink",
             _ => "wf-outpost-trade-hub-ready",
         });
         var hubColor = trade.Hub switch

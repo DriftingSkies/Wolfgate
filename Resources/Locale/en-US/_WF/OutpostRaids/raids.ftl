@@ -25,3 +25,11 @@ ent-WFOutpostDescentJammerPack = descent jammer pack
     .desc = A packed descent jammer. Use it in hand facing your outpost's floor to set it up there.
 ent-WFOutpostDescentJammer = descent jammer
     .desc = Scrambles a raid shuttle's descent while it has power, so it spends longer under the outpost's guns before it lands.
+
+## Who a raid is, as an early warning mast names them
+
+wf-raid-warning-named = The early warning mast picks up { $source } closing in. They land in { $seconds } seconds!
+wf-raid-source-camp = a landing party from the Reaver encampment
+wf-raid-source-tunnels = tunnel raiders under the ground
+wf-raid-source-reavers = an Ashfall Reaver shuttle coming down from orbit
+wf-raid-source-drifters = a drifter gang's shuttle

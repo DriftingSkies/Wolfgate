@@ -251,6 +251,23 @@ public sealed class RaidArrivalTest
         });
     }
 
+    /// <summary>Sets a raiding camp's hull down on a ground with one guard alive, so the director has landing parties to send.</summary>
+    internal static EntityUid SpawnRaidCamp(RobustIntegrationTest.ServerIntegrationInstance server, EntityUid ground, System.Numerics.Vector2 at)
+    {
+        var entMan = server.EntMan;
+        var maps = server.System<SharedMapSystem>();
+        var hull = maps.CreateGridEntity(entMan.GetComponent<TransformComponent>(ground).MapID);
+        maps.SetTile(hull, Robust.Shared.Maths.Vector2i.Zero, new Tile(1));
+        server.System<SharedTransformSystem>().SetWorldPosition(hull, at);
+        server.System<Robust.Shared.Physics.Systems.SharedPhysicsSystem>().SetBodyType(hull, Robust.Shared.Physics.BodyType.Static);
+        var camp = entMan.AddComponent<Content.Server._WF.PlanetPois.WFPlanetCampComponent>(hull);
+        camp.Camp = "WFCampReavers";
+        camp.Group = "WFCampReavers-test";
+        var guard = entMan.SpawnEntity("WFMobCrewMarine", new EntityCoordinates(hull, 0.5f, 0.5f));
+        entMan.GetComponent<Content.Server._WF.NpcCrew.Components.WFCrewComponent>(guard).Group = camp.Group;
+        return hull;
+    }
+
     /// <summary>Founds the outpost at night, with the founder out of every raider's sights.</summary>
     internal static EntityUid Found(RobustIntegrationTest.ServerIntegrationInstance server, EntityUid ground, EntityUid user)
     {

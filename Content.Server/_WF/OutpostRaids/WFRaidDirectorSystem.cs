@@ -1,3 +1,4 @@
+using System.Numerics;
 using Content.Server._WF.Outposts;
 using Content.Server._WF.Outposts.Components;
 using Content.Server._WF.Planets;
@@ -149,24 +150,34 @@ public sealed partial class WFRaidDirectorSystem : EntitySystem
             return false;
         if (!_weather.TryGetWorld(outpost.Comp1.Ground, out var world) || GetTable(world) is not { } table)
             return false;
-        if (PickPack(table, attention) is not { } pack)
+        if (PickPack(table, attention, (outpost.Owner, outpost.Comp1)) is not { } pack)
             return false;
 
         var tier = _proto.Index(pack.Tier);
         attention.Attention -= tier.Cost;
         attention.RaidedUntil = until > TimeSpan.Zero ? now + until : now + TimeSpan.FromHours(1);
-        var id = _raids.ScheduleRaid(outpost, now + TimeSpan.FromSeconds(_cfg.GetCVar(OutpostRaidCVars.Lead)));
+        var id = _raids.ScheduleRaid(outpost, now + TimeSpan.FromSeconds(_cfg.GetCVar(OutpostRaidCVars.Lead)), pack.Name);
         _picked[id] = pack;
         _adminLog.Add(LogType.WFOutpost, LogImpact.Medium,
             $"The raid director sent a step {tier.Step} raid ({tier.ID}) at {ToPrettyString(outpost):grid}");
         return true;
     }
 
-    /// <summary>The pack of the highest affordable tier at or below the outpost's step, weighted among that tier's packs.</summary>
-    private WFRaidPack? PickPack(WFRaidTablePrototype table, WFRaidAttentionComponent attention)
+    /// <summary>
+    /// The pack of the highest affordable tier at or below the outpost's step, weighted among that tier's packs. Only
+    /// packs whose source stands count, so a world with no raiding camp left sends no landing parties.
+    /// </summary>
+    private WFRaidPack? PickPack(WFRaidTablePrototype table, WFRaidAttentionComponent attention, Entity<WFOutpostComponent> outpost)
     {
-        var best = -1;
+        var open = new List<WFRaidPack>();
         foreach (var pack in table.Packs)
+        {
+            if (SourceStands(pack, outpost))
+                open.Add(pack);
+        }
+
+        var best = -1;
+        foreach (var pack in open)
         {
             var tier = _proto.Index(pack.Tier);
             if (tier.Step <= attention.Step && tier.Cost <= attention.Attention && tier.Step > best)
@@ -177,7 +188,7 @@ public sealed partial class WFRaidDirectorSystem : EntitySystem
             return null;
 
         var total = 0f;
-        foreach (var pack in table.Packs)
+        foreach (var pack in open)
         {
             if (_proto.Index(pack.Tier).Step == best)
                 total += pack.Weight;
@@ -185,7 +196,7 @@ public sealed partial class WFRaidDirectorSystem : EntitySystem
 
         var roll = _random.NextFloat(total);
         WFRaidPack? picked = null;
-        foreach (var pack in table.Packs)
+        foreach (var pack in open)
         {
             if (_proto.Index(pack.Tier).Step != best)
                 continue;
@@ -263,7 +274,10 @@ public sealed partial class WFRaidDirectorSystem : EntitySystem
             || !TryComp<MapGridComponent>(args.Outpost, out var grid))
             return;
 
+        // A camp's party comes from its camp's side; if no spot is clear there, from wherever one is.
+        Vector2? toward = pack.Source == WFRaidSource.Camp && TryGetRaidCamp((args.Outpost, outpost), out var camp) ? camp : null;
         if (!(pack.Tunnel && TryFindTunnelExit((args.Outpost, outpost, grid), out var spot, out var edge))
+            && !(toward != null && TryFindWalkIn((args.Outpost, outpost, grid), out spot, out edge, toward))
             && !TryFindWalkIn((args.Outpost, outpost, grid), out spot, out edge))
         {
             Log.Info($"A raid on {ToPrettyString(args.Outpost)} found nowhere to walk in from.");

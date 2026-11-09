@@ -4,6 +4,7 @@ wf-law-chapter-reality = Article I: Crimes against Reality
 wf-law-chapter-persons = Article II: Crimes against persons and vessels
 wf-law-chapter-bench = Article III: Crimes against the Bench
 wf-law-chapter-central = Article IV: Ordinances of Caelestinus Central
+wf-law-chapter-colonial = Article V: The colonial charters
 
 wf-law-anchor-breach = Breach of the Anchors
 wf-law-anchor-breach-text = Raising a hand, weapon or tool against an anchor, its shield or its wardens, or cutting the power to a sanctioned relay.
@@ -54,6 +55,11 @@ wf-law-undeclared = Undeclared Material
 wf-law-undeclared-text = Failing to declare unlawful material on docking. Charged together with Article I.
 wf-law-concealment = Concealment
 wf-law-concealment-text = Refusing to show identification to a judge.
+
+wf-law-claim-jumping = Claim Jumping
+wf-law-claim-jumping-text = Building on, breaking into or stripping an outpost claim that is not yours, or settling a chartered world against its governor's refusal of a permit.
+wf-law-supply-interdiction = Interdicting a Supply Run
+wf-law-supply-interdiction-text = Stopping, boarding or firing on a supply run bound for a colony.
 
 wf-penalty-citation = Citation
 wf-penalty-impound = Impound

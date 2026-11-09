@@ -23,6 +23,10 @@ public sealed partial class WFPlanetCampComponent : Component
 {
     [ViewVariables]
     public ProtoId<WFPlanetCampPrototype> Camp;
+
+    /// <summary>The crew group its guards were spawned in.</summary>
+    [ViewVariables]
+    public string Group = string.Empty;
 }
 
 /// <summary>
@@ -111,11 +115,13 @@ public sealed partial class WFPlanetPoiSystem
             if (TerminatingOrDeleted(ground) || TerminatingOrDeleted(ship))
                 return false;
             SettleWreck(ship);
-            EnsureComp<WFPlanetCampComponent>(ship).Camp = camp.ID;
+            var group = $"{camp.ID}-{++_campCount}";
+            var marker = EnsureComp<WFPlanetCampComponent>(ship);
+            marker.Camp = camp.ID;
+            marker.Group = group;
 
             var under = ClearCampGround(ground, grid, biome, spot, camped);
 
-            var group = $"{camp.ID}-{++_campCount}";
             var deck = _maps.GetAllTiles(ship.Owner, ship.Comp).Select(t => t.GridIndices).Except(SolidTiles(ship)).ToList();
             if (deck.Count > 0)
             {

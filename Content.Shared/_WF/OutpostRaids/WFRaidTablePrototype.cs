@@ -62,6 +62,17 @@ public sealed partial class WFRaidPack
     [DataField]
     public bool Tunnel;
 
+    /// <summary>
+    /// Where the raid comes from. A raid with a source is only sent while that source stands, so removing it ends
+    /// those raids: see <see cref="WFRaidSource"/>.
+    /// </summary>
+    [DataField]
+    public WFRaidSource Source = WFRaidSource.None;
+
+    /// <summary>Who the early warning names, in place of plain raiders.</summary>
+    [DataField]
+    public LocId? Name;
+
     /// <summary>How many times the spawns are sent: more than one is a siege.</summary>
     [DataField]
     public int Waves = 1;
@@ -69,6 +80,22 @@ public sealed partial class WFRaidPack
     /// <summary>Time between a siege's waves.</summary>
     [DataField]
     public TimeSpan WaveInterval = TimeSpan.FromSeconds(150);
+}
+
+/// <summary>Where a raid pack comes from, and so what has to stand for it to be sent.</summary>
+public enum WFRaidSource : byte
+{
+    /// <summary>The world's own wildlife and tunnels: always there.</summary>
+    None,
+
+    /// <summary>A hostile camp or hideout on the world, with someone left alive in it. The raid walks in from its side.</summary>
+    Camp,
+
+    /// <summary>The Ashfall Reavers, while their campaign has a stronghold within reach of the world.</summary>
+    Reavers,
+
+    /// <summary>A gang from off-world, only in a round where no Reaver campaign runs.</summary>
+    Drifters,
 }
 
 /// <summary>A kind of mob in a raid pack and how many of it.</summary>

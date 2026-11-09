@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server._WF.Outposts.Components;
+using Content.Server._WF.PlanetComms;
 using Content.Server.Power.Components;
 using Content.Shared._NF.Bank.BUI;
 using Content.Shared._WF.Outposts;
@@ -24,6 +25,7 @@ public sealed partial class WFOutpostSystem
     [Dependency] private WFTradeDropSystem _tradeDrop = default!;
     [Dependency] private SharedWolfWeatherSystem _weather = default!;
     [Dependency] private WFOutpostPowerSystem _outpostPower = default!;
+    [Dependency] private WFPlanetCommsSystem _comms = default!;
 
     private static readonly TimeSpan TradeUpdateInterval = TimeSpan.FromSeconds(1);
 
@@ -66,13 +68,14 @@ public sealed partial class WFOutpostSystem
             return false;
         }
 
-        var status = GetHubStatus(outpost, out _);
+        var status = GetOrderStatus(outpost);
         if (status != WFOutpostHubStatus.Ready)
         {
             reason = status switch
             {
                 WFOutpostHubStatus.None => "wf-outpost-trade-no-hub",
                 WFOutpostHubStatus.Unpowered => "wf-outpost-trade-unpowered",
+                WFOutpostHubStatus.NoUplink => "wf-outpost-trade-no-uplink",
                 _ => "wf-outpost-trade-covered",
             };
             return false;
@@ -150,6 +153,18 @@ public sealed partial class WFOutpostSystem
         return best;
     }
 
+    /// <summary>
+    /// Whether the outpost can place an order: its hub's status, and with a hub ready, whether the world's planetary
+    /// comms carry the order off it. Drops already paid for come down either way.
+    /// </summary>
+    public WFOutpostHubStatus GetOrderStatus(Entity<WFOutpostComponent> outpost)
+    {
+        var status = GetHubStatus(outpost, out _);
+        return status == WFOutpostHubStatus.Ready && _cfg.GetCVar(OutpostCVars.TradeNeedsComms) && !_comms.IsCommsUp(outpost.Comp.Ground)
+            ? WFOutpostHubStatus.NoUplink
+            : status;
+    }
+
     private WFOutpostHubStatus HubStatus(EntityUid hub, TransformComponent xform)
     {
         return !_outpostPower.IsOutdoors(xform) ? WFOutpostHubStatus.Covered
@@ -166,7 +181,7 @@ public sealed partial class WFOutpostSystem
         var orders = outpost.Comp.Orders
             .Select(order => new WFOutpostOrderView(order.Product, order.Drops, order.Delivery != null))
             .ToList();
-        return new WFOutpostTradeView(GetHubStatus(outpost, out _), balance, orders);
+        return new WFOutpostTradeView(GetOrderStatus(outpost), balance, orders);
     }
 
     private void UpdateTrade()
@@ -238,8 +253,27 @@ public sealed partial class WFOutpostSystem
     public EntityUid? DropAtHub(Entity<WFOutpostComponent, MapGridComponent> outpost, EntProtoId product)
     {
         GetHubStatus((outpost, outpost.Comp1), out var hub);
-        if (hub == null || Transform(hub.Value).GridUid is not { } hubGridUid || !TryComp<MapGridComponent>(hubGridUid, out var hubGrid)
-            || !TryGetDropTile((hubGridUid, hubGrid), hub.Value, out var tile))
+        return hub is { } found ? DropAtHub(found, product) : null;
+    }
+
+    /// <summary>A public trade hub ready for drops on a ground, such as a Tradepost's or a colony depot's.</summary>
+    public EntityUid? PublicHub(EntityUid ground)
+    {
+        var query = EntityQueryEnumerator<WFUniversalTradeHubComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out var comp, out var xform))
+        {
+            if (comp.Public && xform.Anchored && xform.MapUid == ground && HubStatus(uid, xform) == WFOutpostHubStatus.Ready)
+                return uid;
+        }
+
+        return null;
+    }
+
+    /// <summary>Drops an entity over a trade hub, or the nearest clear open tile within its drop radius.</summary>
+    public EntityUid? DropAtHub(EntityUid hub, EntProtoId product)
+    {
+        if (Transform(hub).GridUid is not { } hubGridUid || !TryComp<MapGridComponent>(hubGridUid, out var hubGrid)
+            || !TryGetDropTile((hubGridUid, hubGrid), hub, out var tile))
             return null;
 
         _dropTiles.Add(tile);

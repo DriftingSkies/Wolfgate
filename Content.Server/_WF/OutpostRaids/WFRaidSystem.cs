@@ -43,10 +43,13 @@ public sealed class WFRaidSystem : EntitySystem
         SubscribeLocalEvent<RoundRestartCleanupEvent>(_ => _raids.Clear());
     }
 
-    /// <summary>Sends a raid to an outpost, landing at <paramref name="arrival"/>; returns its id.</summary>
-    public int ScheduleRaid(EntityUid outpost, TimeSpan arrival)
+    /// <summary>
+    /// Sends a raid to an outpost, landing at <paramref name="arrival"/>; returns its id. A mast's warning names
+    /// <paramref name="source"/> when the raid has one.
+    /// </summary>
+    public int ScheduleRaid(EntityUid outpost, TimeSpan arrival, LocId? source = null)
     {
-        var raid = new WFPendingRaid(++_nextId, outpost, arrival);
+        var raid = new WFPendingRaid(++_nextId, outpost, arrival) { Source = source };
         _raids.Add(raid);
         _adminLog.Add(LogType.Action, LogImpact.Medium,
             $"A raid on {ToPrettyString(outpost)} lands in {(arrival - _timing.CurTime).TotalSeconds:F0} s");
@@ -105,7 +108,10 @@ public sealed class WFRaidSystem : EntitySystem
             {
                 raid.Warned = true;
                 _alert.SetCode(raid.Outpost, AlertCode);
-                Notify(raid.Outpost, Loc.GetString("wf-raid-warning", ("seconds", (int) Math.Ceiling(left.TotalSeconds))));
+                var seconds = (int) Math.Ceiling(left.TotalSeconds);
+                Notify(raid.Outpost, raid.Source is { } source
+                    ? Loc.GetString("wf-raid-warning-named", ("source", Loc.GetString(source)), ("seconds", seconds))
+                    : Loc.GetString("wf-raid-warning", ("seconds", seconds)));
             }
             else if (!raid.Warned && !raid.LateWarned && left <= LateWarning)
             {
@@ -133,6 +139,9 @@ public sealed class WFPendingRaid(int id, EntityUid outpost, TimeSpan arrival)
     public readonly int Id = id;
     public readonly EntityUid Outpost = outpost;
     public readonly TimeSpan Arrival = arrival;
+
+    /// <summary>Who is coming, for a mast to name.</summary>
+    public LocId? Source;
 
     /// <summary>A mast has sounded the alarm.</summary>
     public bool Warned;

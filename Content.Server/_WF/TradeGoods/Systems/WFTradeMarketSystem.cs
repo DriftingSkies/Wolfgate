@@ -353,9 +353,15 @@ public sealed partial class WFTradeMarketSystem : EntitySystem
         return _proto.TryIndex<EntityPrototype>(good, out var proto) ? proto.Name : good;
     }
 
-    /// <summary>The station whose ledger a machine trades on: its grid, or the station that grid is linked to.</summary>
+    /// <summary>
+    /// The station whose ledger a machine trades on: its grid, or the station that grid is linked to. A machine linked
+    /// on its own trades for that station whatever it stands on, as a colony depot's do on a planet's ground.
+    /// </summary>
     public EntityUid? MarketOf(EntityUid machine)
     {
+        if (TryComp<WFTradeMarketLinkComponent>(machine, out var own) && Exists(own.Market))
+            return own.Market;
+
         return LinkedMarket(Transform(machine).GridUid);
     }
 
@@ -381,8 +387,8 @@ public sealed partial class WFTradeMarketSystem : EntitySystem
             if (xform.GridUid is not { } grid || !xform.Anchored || dispenser.Inventory.Count == 0)
                 continue;
 
-            if (IsMarketMap(xform.MapID) || HasComp<WFTradeMarketLinkComponent>(grid))
-                chutes.Add((uid, dispenser, LinkedMarket(grid)!.Value));
+            if (IsMarketMap(xform.MapID) || HasComp<WFTradeMarketLinkComponent>(grid) || HasComp<WFTradeMarketLinkComponent>(uid))
+                chutes.Add((uid, dispenser, MarketOf(uid)!.Value));
         }
 
         return chutes;

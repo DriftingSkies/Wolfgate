@@ -33,8 +33,12 @@ public sealed partial class WFColonySystem
 
     private void OnConsoleState(Entity<WFOutpostComponent> outpost, ref WFOutpostConsoleStateEvent args)
     {
-        if (_cfg.GetCVar(ColonyCVars.Enabled) && TryWorldOf(outpost.Comp.Ground, out var world, out var network))
-            args.State.Development = View(world, network, HolderOf(outpost, out _));
+        if (!_cfg.GetCVar(ColonyCVars.Enabled) || !TryWorldOf(outpost.Comp.Ground, out var world, out var network))
+            return;
+
+        // With a charter office standing in the governor's hall, the charter is worked from there.
+        var view = View(world, network, HolderOf(outpost, out _));
+        args.State.Development = HasOffice(network) ? view with { Charter = null } : view;
     }
 
     /// <summary>A world's development as a holder sees it.</summary>
@@ -76,7 +80,8 @@ public sealed partial class WFColonySystem
             colony?.Blockaded ?? false,
             you,
             output,
-            charter);
+            charter,
+            colony?.Climate ?? 1f);
     }
 
     private WFWorldHolderView HolderView(WorldState world, string key, double total, string you)
@@ -191,9 +196,10 @@ public sealed partial class WFColonySystem
         RefreshConsoles(world);
     }
 
-    /// <summary>Shows every outpost console on a world afresh.</summary>
+    /// <summary>Shows every outpost console and charter office on a world afresh.</summary>
     private void RefreshConsoles(string world)
     {
+        RefreshOffices(world);
         var query = EntityQueryEnumerator<WFOutpostComponent>();
         while (query.MoveNext(out var uid, out var outpost))
         {

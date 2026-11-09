@@ -9,6 +9,7 @@
   vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
   profile: WFCrewProfilePirate
   faction: PirateNF
+  raids: true
   skill: Regular
   minDeckGuards: 2
   maxDeckGuards: 3

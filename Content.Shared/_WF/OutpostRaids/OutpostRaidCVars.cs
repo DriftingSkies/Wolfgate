@@ -46,6 +46,10 @@ public sealed class OutpostRaidCVars
     public static readonly CVarDef<float> Leash =
         CVarDef.Create("wf.outposts.raid_leash", 100f, CVar.SERVERONLY);
 
+    /// <summary>Sector cells from a world within which a Reaver stronghold sends its shuttles down at outposts.</summary>
+    public static readonly CVarDef<int> ReaverReach =
+        CVarDef.Create("wf.outposts.raid_reaver_reach", 4, CVar.SERVERONLY);
+
     /// <summary>Most turrets one outpost may have set up.</summary>
     public static readonly CVarDef<int> MaxTurrets =
         CVarDef.Create("wf.outposts.max_turrets", 6, CVar.SERVERONLY);

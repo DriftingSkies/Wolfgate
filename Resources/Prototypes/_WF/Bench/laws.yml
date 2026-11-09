@@ -20,6 +20,11 @@
   name: wf-law-chapter-central
   order: 4
 
+- type: wfLawChapter
+  id: WFLawChapterColonial
+  name: wf-law-chapter-colonial
+  order: 5
+
 - type: wfLaw
   id: WFLawAnchorBreach
   chapter: WFLawChapterReality
@@ -257,6 +262,29 @@
   fine: 5000
   minFine: 2000
   maxFine: 10000
+
+# Article V: the worlds the Bench has sanctioned for settlement, their claims and their charters (the Colonies module).
+- type: wfLaw
+  id: WFLawClaimJumping
+  chapter: WFLawChapterColonial
+  order: 1
+  name: wf-law-claim-jumping
+  text: wf-law-claim-jumping-text
+  level: Citation
+  fine: 15000
+  minFine: 5000
+  maxFine: 30000
+
+- type: wfLaw
+  id: WFLawSupplyInterdiction
+  chapter: WFLawChapterColonial
+  order: 2
+  name: wf-law-supply-interdiction
+  text: wf-law-supply-interdiction-text
+  level: Impound
+  fine: 75000
+  minFine: 50000
+  maxFine: 120000
 
 # Unlawful material under Article I of the Common Writ. Shown on examine like other contraband.
 - type: contrabandSeverity

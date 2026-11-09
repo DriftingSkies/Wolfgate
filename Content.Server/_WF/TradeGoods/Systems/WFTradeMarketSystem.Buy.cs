@@ -160,10 +160,10 @@ public sealed partial class WFTradeMarketSystem
         var query = EntityQueryEnumerator<WFTradeVendorComponent, VendingMachineComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var vendor, out var machine, out var xform))
         {
-            if (onGrid != null && LinkedMarket(xform.GridUid) != onGrid)
+            if (onGrid != null && MarketOf(uid) != onGrid)
                 continue;
 
-            SyncStock(uid, machine, LinkedMarket(xform.GridUid));
+            SyncStock(uid, machine, MarketOf(uid));
             var prices = new Dictionary<string, int>();
             foreach (var good in machine.Inventory.Keys)
             {
@@ -260,9 +260,9 @@ public sealed partial class WFTradeMarketSystem
     {
         var goods = new HashSet<string>();
         var query = EntityQueryEnumerator<WFTradeVendorComponent, VendingMachineComponent, TransformComponent>();
-        while (query.MoveNext(out _, out var machine, out var xform))
+        while (query.MoveNext(out var uid, out _, out var machine, out _))
         {
-            if (LinkedMarket(xform.GridUid) != grid)
+            if (MarketOf(uid) != grid)
                 continue;
 
             foreach (var good in machine.Inventory.Keys)
@@ -280,9 +280,9 @@ public sealed partial class WFTradeMarketSystem
     {
         var quotes = new Dictionary<string, WFTradeBuyQuote>();
         var query = EntityQueryEnumerator<WFTradeVendorComponent, VendingMachineComponent, TransformComponent>();
-        while (query.MoveNext(out var uid, out _, out var machine, out var xform))
+        while (query.MoveNext(out var uid, out _, out var machine, out _))
         {
-            if (LinkedMarket(xform.GridUid) != grid)
+            if (MarketOf(uid) != grid)
                 continue;
 
             foreach (var (good, entry) in machine.Inventory)

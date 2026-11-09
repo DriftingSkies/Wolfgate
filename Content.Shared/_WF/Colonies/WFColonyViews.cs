@@ -27,7 +27,8 @@ public sealed record WFWorldDevelopmentView(
     bool Blockaded,
     string You,
     List<WFColonyOutputView> Output,
-    WFColonyCharterView? Charter);
+    WFColonyCharterView? Charter,
+    float Climate = 1f);
 
 /// <summary>One holder's standing on a world.</summary>
 [Serializable, NetSerializable]
@@ -88,3 +89,16 @@ public sealed class WFColonyBerthMessage(string holder, bool open) : BoundUserIn
 /// <summary>The governor asks for the yard platform kit, dropped at the outpost's hub, to deploy in the world's orbit.</summary>
 [Serializable, NetSerializable]
 public sealed class WFColonyYardKitMessage : BoundUserInterfaceMessage;
+
+[Serializable, NetSerializable]
+public enum WFColonyOfficeUiKey : byte
+{
+    Key,
+}
+
+/// <summary>A world's development as one viewer of its charter office sees it.</summary>
+[Serializable, NetSerializable]
+public sealed class WFColonyOfficeState(WFWorldDevelopmentView view) : BoundUserInterfaceMessage
+{
+    public readonly WFWorldDevelopmentView View = view;
+}

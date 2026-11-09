@@ -46,9 +46,10 @@ public sealed partial class WFRaidDirectorSystem
     /// A spot a raid walks in from: between <see cref="OutpostRaidCVars.SpawnMin"/> and
     /// <see cref="OutpostRaidCVars.SpawnMax"/> tiles out from the outpost's claim, far enough from every player, inside the
     /// world, clear of points of interest and other grids, on open ground. <paramref name="edge"/> is the point on the
-    /// claim's edge it faces.
+    /// claim's edge it faces. With <paramref name="toward"/>, a world position, it lies on that side of the outpost.
     /// </summary>
-    public bool TryFindWalkIn(Entity<WFOutpostComponent, MapGridComponent> outpost, out EntityCoordinates spot, out EntityCoordinates edge)
+    public bool TryFindWalkIn(Entity<WFOutpostComponent, MapGridComponent> outpost, out EntityCoordinates spot, out EntityCoordinates edge,
+        Vector2? toward = null)
     {
         spot = default;
         edge = default;
@@ -66,10 +67,19 @@ public sealed partial class WFRaidDirectorSystem
         var sites = CompOrNull<WFPlanetPoiComponent>(ground)?.Sites;
         var mapId = Transform(ground).MapID;
         var groundMatrix = _transform.GetWorldMatrix(ground);
+        Angle? bearing = null;
+        if (toward is { } target)
+        {
+            var offset = Vector2.Transform(target, _transform.GetInvWorldMatrix(ground)) - centre;
+            if (offset.LengthSquared() > 1f)
+                bearing = new Angle(offset);
+        }
 
         for (var attempt = 0; attempt < WalkInAttempts; attempt++)
         {
-            var dir = new Angle(_random.NextFloat(MathF.Tau)).ToVec();
+            var dir = bearing is { } side
+                ? (side + Angle.FromDegrees(_random.NextFloat(-CampArc, CampArc))).ToVec()
+                : new Angle(_random.NextFloat(MathF.Tau)).ToVec();
             var toEdge = MathF.Min(
                 MathF.Abs(dir.X) < 0.001f ? float.MaxValue : half.X / MathF.Abs(dir.X),
                 MathF.Abs(dir.Y) < 0.001f ? float.MaxValue : half.Y / MathF.Abs(dir.Y));

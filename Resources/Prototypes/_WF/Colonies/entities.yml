@@ -44,6 +44,19 @@
   - type: WFColonyDeposit
     kind: Volatile
 
+- type: entity
+  parent: WFColonyDepositBase
+  id: WFColonyDepositBiomass
+  components:
+  - type: Sprite
+    layers:
+    - state: rock_verdantium
+      color: "#c0566a"
+      map: [ "enum.MiningScannerVisualLayers.Overlay" ]
+      visible: false
+  - type: WFColonyDeposit
+    kind: Biomass
+
 # Extractor: works the deposit it stands on for the colony while powered and someone is home.
 
 - type: entity
@@ -100,12 +113,18 @@
     price: 2500
 
 - type: entity
+  abstract: true
   parent: VendingMachineTraderBaikal
-  id: WFColonyExchangeVendor
-  suffix: Colony
+  id: WFColonyExchangeVendorBase
   components:
   - type: VendingMachine
     pack: WFColonyExchangeInventory
+
+- type: entity
+  parent: WFColonyExchangeVendorBase
+  id: WFColonyExchangeVendor
+  suffix: Colony
+  components:
   - type: WFRepackable
     pack: WFColonyExchangeVendorPack
     delay: 4
@@ -145,8 +164,9 @@
 
 # Its prices are also what a holder's buildings are paid per crate they make (wf.colonies.pay_share of them).
 - type: entity
+  abstract: true
   parent: BaseCargoChute
-  id: WFColonyExchangeChute
+  id: WFColonyExchangeChuteBase
   components:
   - type: Transform
     anchored: true
@@ -164,6 +184,12 @@
       TradeGoodChemicalSupplies: SpaceCash3500
       TradeGoodChemicalsVolatile: SpaceCash7000
       TradeGoodFissionFuel: SpaceCash20000
+  - type: WFColonyProduceChute
+
+- type: entity
+  parent: WFColonyExchangeChuteBase
+  id: WFColonyExchangeChute
+  components:
   - type: WFRepackable
     pack: WFColonyExchangeChutePack
     delay: 4

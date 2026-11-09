@@ -78,6 +78,18 @@ public sealed class ColonyCVars
     public static readonly CVarDef<float> PayShare =
         CVarDef.Create("wf.colonies.pay_share", 0.5f, CVar.SERVERONLY);
 
+    /// <summary>Whether a developed world gets a colony seat among its sites: a landing field, a depot, a governor's hall.</summary>
+    public static readonly CVarDef<bool> Seats =
+        CVarDef.Create("wf.colonies.seats", true, CVar.SERVERONLY);
+
+    /// <summary>People of a colony for each colonist who lives at its seat; one killed is that many lost.</summary>
+    public static readonly CVarDef<float> PeoplePerColonist =
+        CVarDef.Create("wf.colonies.people_per_colonist", 6f, CVar.SERVERONLY);
+
+    /// <summary>How many times the Supplies and Medical a chartered colony draws while the sector is at war.</summary>
+    public static readonly CVarDef<float> WarDraw =
+        CVarDef.Create("wf.colonies.war_draw", 1.5f, CVar.SERVERONLY);
+
     /// <summary>People each bed or cryopod on a colony's outposts houses.</summary>
     public static readonly CVarDef<float> PeoplePerBed =
         CVarDef.Create("wf.colonies.people_per_bed", 4f, CVar.SERVERONLY);
@@ -94,6 +106,29 @@ public sealed class ColonyCVars
     public static readonly CVarDef<float> ImportInterval =
         CVarDef.Create("wf.colonies.import_interval", 240f, CVar.SERVERONLY);
 
+    /// <summary>
+    /// Whether a colony's imports come on supply runs, freighters that hold over the world and send them down. Needs
+    /// wf.encounters.enabled; without either, imports come down on their own every import interval.
+    /// </summary>
+    public static readonly CVarDef<bool> SupplyRuns =
+        CVarDef.Create("wf.colonies.supply_runs", true, CVar.SERVERONLY);
+
+    /// <summary>Seconds from one supply run leaving a colony to the next setting out; a lost run doubles it.</summary>
+    public static readonly CVarDef<float> SupplyInterval =
+        CVarDef.Create("wf.colonies.supply_interval", 600f, CVar.SERVERONLY);
+
+    /// <summary>Fewest crates a colony must be owed for a supply run to set out.</summary>
+    public static readonly CVarDef<float> SupplyMinimum =
+        CVarDef.Create("wf.colonies.supply_minimum", 2f, CVar.SERVERONLY);
+
+    /// <summary>Most owed crates one supply run carries.</summary>
+    public static readonly CVarDef<float> SupplyCrates =
+        CVarDef.Create("wf.colonies.supply_crates", 16f, CVar.SERVERONLY);
+
+    /// <summary>Seconds a supply run holds over its world sending pods down.</summary>
+    public static readonly CVarDef<float> SupplyHold =
+        CVarDef.Create("wf.colonies.supply_hold", 300f, CVar.SERVERONLY);
+
     /// <summary>Most owed crates one parachute drop brings down.</summary>
     public static readonly CVarDef<int> ImportCrates =
         CVarDef.Create("wf.colonies.import_crates", 4, CVar.SERVERONLY);
@@ -109,6 +144,10 @@ public sealed class ColonyCVars
     /// <summary>Metres from a colony's outposts within which planet expedition camps are offered first.</summary>
     public static readonly CVarDef<float> CampRange =
         CVarDef.Create("wf.colonies.camp_range", 400f, CVar.SERVERONLY);
+
+    /// <summary>How many times likelier the Reavers are to spread into a cell beside a colony's than into open space.</summary>
+    public static readonly CVarDef<float> ReaverDraw =
+        CVarDef.Create("wf.colonies.reaver_draw", 4f, CVar.SERVERONLY);
 
     /// <summary>DEFCON score a blockaded colony adds.</summary>
     public static readonly CVarDef<float> BlockadeDefcon =

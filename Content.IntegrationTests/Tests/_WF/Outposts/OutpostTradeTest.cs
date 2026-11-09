@@ -82,6 +82,13 @@ public sealed class OutpostTradeTest
                 entMan.GetComponent<ApcPowerReceiverComponent>(hub).Powered = true;
                 Assert.That(outposts.GetHubStatus((outpost, comp), out _), Is.EqualTo(WFOutpostHubStatus.Ready));
 
+                // The world's mass transceiver is down: the hub is ready, but no order gets off the world.
+                Assert.That(outposts.GetOrderStatus((outpost, comp)), Is.EqualTo(WFOutpostHubStatus.NoUplink));
+                Assert.That(outposts.TryOrder(user, console, (outpost, comp), Crate, out reason), Is.False, "A dark world takes no orders.");
+                Assert.That(reason, Is.EqualTo("wf-outpost-trade-no-uplink"));
+                server.CfgMan.SetCVar(OutpostCVars.TradeNeedsComms, false);
+                Assert.That(outposts.GetOrderStatus((outpost, comp)), Is.EqualTo(WFOutpostHubStatus.Ready));
+
                 entMan.EnsureComponent<BankAccountComponent>(user);
                 Assert.That(bank.TryBankDeposit(user, 50_000, tax: false), Is.True, "Could not fund the owner.");
                 Assert.That(bank.TryGetBalance(user, out balance), Is.True);
@@ -136,6 +143,7 @@ public sealed class OutpostTradeTest
         }
         finally
         {
+            await server.WaitPost(() => server.CfgMan.SetCVar(OutpostCVars.TradeNeedsComms, OutpostCVars.TradeNeedsComms.DefaultValue));
             await Teardown(pair, layers);
         }
 

@@ -637,6 +637,35 @@ public sealed partial class WFDrydockSystem
             correction);
     }
 
+    /// <summary>The sounds and sparks of a crane worked outside a berth job, such as a colony yard's.</summary>
+    private readonly WFDrydockConsoleComponent _looseCrane = new();
+
+    /// <summary>
+    /// Swings a crane's tool head over a point on another grid and sets it working there, with a burst of sparks. For
+    /// work that isn't a berth job: a colony yard raising a frame.
+    /// </summary>
+    public void WorkCraneAt(EntityUid craneUid, EntityUid ship, Vector2 shipLocal)
+    {
+        if (!TryGetCrane(craneUid, out var crane) || TerminatingOrDeleted(ship))
+            return;
+
+        var target = ArmPoint(ship, craneUid, crane, shipLocal);
+        var along = target.Y;
+        var arm = along > crane.Arm ? Math.Clamp(along + 0.5f, crane.BerthGap + 1f, crane.MaxArm) : crane.Arm;
+        var position = Math.Clamp(along, Math.Min(crane.BerthGap, arm), arm);
+        var extension = ClampBoom(craneUid, crane, position, ClampExtension(crane, Math.Max(crane.Extension, target.X)));
+        MoveCrane(craneUid, crane, _looseCrane,
+            new CraneTarget(arm, position, Math.Clamp(target.X, 1f, extension), extension, crane.Angle), active: true);
+        Spawn(_looseCrane.SparkEffect, new EntityCoordinates(ship, shipLocal + RandomOffset(0.3f)));
+    }
+
+    /// <summary>Folds a crane worked with <see cref="WorkCraneAt"/> back to its parked pose.</summary>
+    public void ParkCrane(EntityUid craneUid)
+    {
+        if (TryGetCrane(craneUid, out var crane) && crane.Active)
+            MoveCrane(craneUid, crane, _looseCrane, new CraneTarget(0f, 0f, 0f, crane.SectionLength, crane.ParkAngle), active: false);
+    }
+
     /// <summary>A ship-local point in a crane's arm frame.</summary>
     private Vector2 ArmPoint(EntityUid ship, EntityUid craneUid, WFDrydockCraneComponent crane, Vector2 shipLocal)
     {

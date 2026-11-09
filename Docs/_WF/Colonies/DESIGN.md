@@ -331,9 +331,7 @@ D0 to D7 are built in one change, with `wf.colonies.enabled` on. The module READ
 Not yet covered by a test: goods a holder keeps off the shelf and their drops (D3.2), expedition offers near a colony
 (D4.3), a platform changing hands with the charter (D6.1), and the Development tab and yard console windows.
 
-Not built: the Reaver campaign doesn't seek out colony cells (D4.2). A colony is blockaded when a blockading faction
-comes to hold its cell, and loses the cell to one holding a neighbour while nobody is home, but nothing steers the
-campaign there.
+The Reaver campaign seeks out colony cells (D4.2) since D9: its spread weighs a cell beside a colony four times.
 
 D6.4 uses two existing admin-only classic hulls, the Pacem and the Infiltrator, as the first designs; no new hull was
 mapped. Placeholder art: the extractor is a tinted ore silo, the exchange chute and the yard chute tinted cargo chutes.
@@ -415,13 +413,31 @@ one about 14 more, and a building counted because it existed. D8 makes output fo
 |---|---|---|---|---|
 | D8.1 Home points | Home points down from 10 to 2 an hour | The cvar's default | S | Built |
 | D8.2 Fed animals, worked ore | Livestock count only alive and fed; ore silos draw raw ore for the Metals they make | Test: a starving goat works nothing; a silo's ore runs down and an empty one stops | S | Built |
-| D8.3 Produce at the exchange | Wool, milk, eggs and crops sold at the exchange chute become fractions of Fabric and Supplies crates for the seller's holder; the passive wool, dairy and egg rates go | Test: sheared wool sold at the chute raises Fabric and scores; an unsheared sheep raises nothing | M | Open |
+| D8.3 Produce at the exchange | Wool, milk, eggs and crops sold at the exchange chute become fractions of Fabric and Supplies crates for the seller's holder; the passive wool, dairy and egg rates go | Test: sheared wool sold at the chute raises Fabric and scores; an unsheared sheep raises nothing | M | Built |
 | D8.4 Staffing | The per-kind caps (`most`) give way to staffing: each running building needs some of the colony's people, so growth follows housing and a supplied shelf | Test: more beds and Supplies let more buildings run | M | Open |
 | D8.5 Yard contracts | A build posts supply contracts for its Ship Components and Metals on the public board, as a short colony does | Test: an unfed stage posts a contract; a delivery feeds it | S | Open |
 
 Watch for: the exchange must not pay twice for goods that also sell at cargo (D8.3); Fission Fuel output once extractors
 are the only passive producers left (open question 2); and the tier thresholds, which were set for 10 home points an
 hour and need a pass through the economy's simulation.
+
+### D9: The colony in the world
+
+D0 to D8 left the colony a ledger: a tier on a tab, drops from nowhere, raiders from nowhere and a charter nobody
+granted. D9 gives each of those a place or a sender in the round. Built in one change:
+
+| Step | Ships | Covered by |
+|---|---|---|
+| D9.1 The seat | A site by tier at world build: landing field, depot with the exchange, governor's hall; a depot stands for the colony with no outposts; colonists live there | `ColonySeatMapsTest`, `ColonySeatTest` |
+| D9.2 The outfitter | Saves read as manifests filed with the outfitter; an outpost with heritage comes down on its old lot | Strings; no test for the lot |
+| D9.3 Raiders are someone | Packs need their source standing: a raiding camp on the world, a Reaver stronghold in reach, or no campaign; the campaign spreads towards colonies | `RaidBreachTest` |
+| D9.4 Freight and comms | Trade orders need the world's uplink; a colony's imports come by a supply run that can be shot down | `OutpostTradeTest` for the uplink; no test for the run |
+| D9.5 The Bench grants | Charter changes are writs of the Bench; Article V of the Common Writ; the charter office in the hall; a hot war stops successions and raises a chartered colony's draw | `ColonySeatTest` for the office standing; no test for the war |
+| D9.6 The hull on the stocks | A build stands by the platform as a frame that grows with the work and makes way for the vessel | `CharterPassesAndYardBuildGrantsLicence` |
+| D9.7 The planet matters | `baseTier` and `rates` by world, climate on farms, produce sold at the exchange (D8.3), biomass on Carcinoma | `ScoresAddUpAndDecay`, `BuildingsWorkTheColony` |
+
+Left open: a world that tiers up mid-round gets its seat at the next round's world build; raid points still outweigh
+the rest of the index; the seat maps are generated and want a mapper's pass.
 
 ## Open questions
 

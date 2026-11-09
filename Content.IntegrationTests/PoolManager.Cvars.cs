@@ -42,6 +42,7 @@ public static partial class PoolManager
         ("wf.encounters.simulate", "false"), // WOLFGATE(Encounters): tests spawn real ships unless they turn simulation on
         ("wf.planet_site_stash", "false"), // WOLFGATE(Dormancy): tests look at a formed world's sites with nobody near
         ("wf.planet_cargo_hub_chance", "0"), // WOLFGATE(PlanetCargoHubs): a hub would take the room other tests' sites expect
+        ("wf.colonies.seats", "false"), // WOLFGATE(Colonies): a colony seat would take the room other tests' sites expect
         ("wf.caverns", "false"), // WOLFGATE(Caverns): tests that want a cavern turn caverns on themselves
         ("wf.encounters.vote", "false"), // WOLFGATE(Encounters): a round-restart vote throws on a dummy session's join
         (CCVars.AutoVoteEnabled.Name, "false"), // WOLFGATE: a round-restart vote throws on a dummy session's join

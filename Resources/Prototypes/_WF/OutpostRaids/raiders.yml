@@ -223,3 +223,67 @@
     state: burrow
     scale: 1.5, 1.5
     drawdepth: FloorObjects
+
+# Ashfall Reavers: who comes by shuttle while their campaign has a stronghold in reach of the world. Raiders in all but
+# their colours, so turrets, breaching and raid loot treat them the same.
+- type: entity
+  parent: WFMobRaidRaiderBase
+  id: WFMobRaidReaver
+  name: Ashfall reaver
+  description: A Reaver landing hand in ash orange, down from a stronghold to strip an outpost.
+  components:
+  - type: Loadout
+    prototypes: [ WFRaidGearReaver ]
+
+- type: entity
+  parent: WFMobRaidRaiderBase
+  id: WFMobRaidReaverDeckhand
+  name: Ashfall deckhand
+  description: A Reaver deckhand sent down with a blade to carry off what the others shoot loose.
+  components:
+  - type: Loadout
+    prototypes: [ WFRaidGearReaverDeckhand ]
+
+- type: entity
+  parent: WFMobRaidRaiderBase
+  id: WFMobRaidReaverBreacher
+  name: Ashfall breacher
+  description: The Reaver who goes through the wall first, maul in hand.
+  components:
+  - type: WFRaidRaider
+    breacher: true
+  - type: Loadout
+    prototypes: [ WFRaidGearReaverBreacher ]
+
+- type: startingGear
+  id: WFRaidGearReaver
+  equipment:
+    jumpsuit: WFClothingUniformReaverFatigues
+    head: WFClothingHeadReaverBeret
+    outerClothing: ClothingOuterArmorBasic
+    belt: WFClothingBeltReaverChestRig
+    gloves: ClothingHandsGlovesFingerless
+    shoes: ClothingShoesBootsWork
+  inhand:
+  - WeaponShotgunImprovisedLoaded
+
+- type: startingGear
+  id: WFRaidGearReaverDeckhand
+  equipment:
+    jumpsuit: WFClothingUniformReaverDeck
+    gloves: ClothingHandsGlovesFingerless
+    shoes: ClothingShoesBootsWork
+  inhand:
+  - Shiv
+
+- type: startingGear
+  id: WFRaidGearReaverBreacher
+  equipment:
+    jumpsuit: WFClothingUniformReaverFatigues
+    head: ClothingHeadHelmetBasic
+    outerClothing: ClothingOuterArmorBasic
+    belt: WFClothingBeltReaverChestRig
+    gloves: ClothingHandsGlovesFingerless
+    shoes: ClothingShoesBootsWork
+  inhand:
+  - WFRaidBreachingMaul

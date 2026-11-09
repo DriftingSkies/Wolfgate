@@ -1,0 +1,125 @@
+# Colony seats: the ground a developed world's colony stands on. As a round's worlds are built, a world at Settled tier
+# or past gets the seat of the highest tier it has reached among its sites, placed before the world's own
+# (WFColonySystem.Seat). The maps are written by Tools/_WF/Colonies/seats.py, which prints these footprints and sockets.
+# Names are in colonies.ftl.
+
+- type: wfColonySeat
+  id: WFColonySeatField
+  tier: Settled
+  site:
+    mapPath: /Maps/_WF/Colonies/colony_field.yml
+    name: wf-colony-seat-field
+    footprint: -10,-12,11,13
+    connection: Roadside
+    sockets:
+    - offset: 0,-12
+      direction: South
+
+- type: wfColonySeat
+  id: WFColonySeatDepot
+  tier: Colony
+  housing: 28
+  colonists: 5
+  site:
+    mapPath: /Maps/_WF/Colonies/colony_town_depot.yml
+    name: wf-colony-seat-depot
+    footprint: -20,-15,21,15
+    connection: Roadside
+    sockets:
+    - offset: -2,-15
+      direction: South
+
+- type: wfColonySeat
+  id: WFColonySeatHall
+  tier: Charter
+  housing: 52
+  colonists: 9
+  site:
+    mapPath: /Maps/_WF/Colonies/colony_town_hall.yml
+    name: wf-colony-seat-hall
+    footprint: -20,-21,21,22
+    connection: Roadside
+    sockets:
+    - offset: -2,-21
+      direction: South
+
+# What stands on a seat.
+
+# The depot's exchange: the colony exchange built in, on the depot's own supply, trading on the world's colony shelf.
+- type: entity
+  parent: WFColonyExchangeVendorBase
+  id: WFColonyDepotVendor
+  suffix: Colony depot
+  components:
+  - type: ApcPowerReceiver
+    needsPower: false
+  - type: WFColonyDepotMachine
+
+- type: entity
+  parent: WFColonyExchangeChuteBase
+  id: WFColonyDepotChute
+  suffix: Colony depot
+  components:
+  - type: WFColonyDepotMachine
+
+# The charter office: the terminal the governing company works its charter from, and anyone reads the world's standing on.
+- type: entity
+  parent: BaseComputer
+  id: WFColonyOfficeTerminal
+  components:
+  - type: Sprite
+    sprite: _NF/Structures/Machines/computers.rsi
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: shipyard
+    - map: ["computerLayerKeys"]
+      state: telesci_key
+  - type: ApcPowerReceiver
+    needsPower: false
+  - type: WFColonyOffice
+  - type: ActivatableUI
+    key: enum.WFColonyOfficeUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.WFColonyOfficeUiKey.Key:
+        type: WFColonyOfficeBoundUserInterface
+
+# The seat's mast: a steady light over the landing field, so a pilot coming down finds the colony.
+- type: entity
+  parent: WFCargoHubBeacon
+  id: WFColonySeatBeacon
+  components:
+  - type: Sprite
+    noRot: true
+    sprite: _WF/Streets/Objects/Misc/Lights/floodlightbig.rsi
+    layers:
+    - state: bigflood
+    - state: bigfloodon
+      shader: unshaded
+      color: "#C8E6B4"
+    offset: "0.0,0.5"
+    drawdepth: Mobs
+  - type: PointLight
+    enabled: true
+    radius: 14
+    energy: 3
+    softness: 1
+    offset: "0,0.5"
+    color: "#8FBF7F"
+
+# The hall's mast shows the governing company's colour (WFColonySystem.Seat).
+- type: entity
+  parent: WFColonySeatBeacon
+  id: WFColonyHallBeacon
+  components:
+  - type: WFColonyHallBeacon
+
+# A colonist: one of the colony's people, living at its seat. As many live there as the colony's people call for, and
+# one killed is a loss to the colony.
+- type: entity
+  parent: WFCityResident
+  id: WFColonyColonist

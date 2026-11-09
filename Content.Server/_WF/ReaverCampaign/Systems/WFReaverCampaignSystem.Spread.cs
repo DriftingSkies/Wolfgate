@@ -62,7 +62,9 @@ public sealed partial class WFReaverCampaignSystem
                 continue;
 
             var ring = WFSectorHex.Distance(cell, WFSectorCell.Origin) + 1f;
-            candidates.Add(((cell, supporter), 1f / (ring * ring)));
+            var weight = new WFReaverSpreadWeightEvent(map, cell, 1f / (ring * ring));
+            RaiseLocalEvent(ref weight);
+            candidates.Add(((cell, supporter), weight.Weight));
         }
 
         if (PickWeighted(candidates) is not { } pick)
@@ -88,3 +90,7 @@ public sealed partial class WFReaverCampaignSystem
         return true;
     }
 }
+
+/// <summary>Raised broadcast for each cell the Reavers could spread into, so something worth taking there draws them.</summary>
+[ByRefEvent]
+public record struct WFReaverSpreadWeightEvent(MapId Map, WFSectorCell Cell, float Weight);

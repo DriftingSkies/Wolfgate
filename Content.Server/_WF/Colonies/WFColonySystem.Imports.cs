@@ -3,6 +3,7 @@ using Content.Server._WF.Contracts;
 using Content.Server._WF.TradeGoods;
 using Content.Server._WF.TradeGoods.Components;
 using Content.Shared._WF.Colonies;
+using Content.Shared._WF.Outposts;
 using Content.Shared._WF.TradeGoods;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
@@ -60,19 +61,46 @@ public sealed partial class WFColonySystem
         if (blockaded != colony.Comp.Blockaded)
             _market.Radio(Loc.GetString(blockaded ? "wf-colony-blockaded" : "wf-colony-blockade-lifted", ("world", Name(colony))));
         colony.Comp.Blockaded = blockaded;
+
+        // A supply run brings the imports while one can fly; with runs off, or a world off the sector map, they just come down.
+        if (CanFlySupply(colony))
+        {
+            TendSupplyRun(colony, entries);
+            return;
+        }
+
         var now = _timing.CurTime;
         if (now < colony.Comp.NextImport)
             return;
 
         colony.Comp.NextImport = now + TimeSpan.FromSeconds(_cfg.GetCVar(ColonyCVars.ImportInterval));
-        if (colony.Comp.Blockaded || ReadyHub(entries, null) is not { } outpost)
-            return;
+        if (!colony.Comp.Blockaded)
+            DropImports(colony, entries, _cfg.GetCVar(ColonyCVars.ImportCrates));
+    }
 
-        var crates = (float) _cfg.GetCVar(ColonyCVars.ImportCrates);
+    /// <summary>The hub a colony's imports come down at: a holder's ready one, else a public one on its ground.</summary>
+    private EntityUid? ImportHub(Entity<WFColonyComponent> colony, List<OutpostEntry> entries, out EntityUid? outpost)
+    {
+        outpost = null;
+        if (ReadyHub(entries, null) is { } ready && _outposts.GetHubStatus((ready.Owner, ready.Comp1), out var hub) == WFOutpostHubStatus.Ready)
+        {
+            outpost = ready.Owner;
+            return hub;
+        }
+
+        return TryComp<Planets.WFPlanetNetworkComponent>(colony.Comp.Network, out var network) ? _outposts.PublicHub(network.GroundMap) : null;
+    }
+
+    /// <summary>
+    /// Brings down up to <paramref name="crates"/> of what the colony is owed, scarcest first, as one pod on a hub.
+    /// Returns the crates that reached the shelf; none without a hub to drop on.
+    /// </summary>
+    private float DropImports(Entity<WFColonyComponent> colony, List<OutpostEntry> entries, float crates)
+    {
+        if (ImportHub(colony, entries, out var outpost) is not { } hub || !TryComp<WFTradeMarketComponent>(colony, out var market))
+            return 0f;
+
         var delivered = 0f;
-        if (!TryComp<WFTradeMarketComponent>(colony, out var market))
-            return;
-
         // The scarcest goods come first, as a freighter's manifest would put them.
         foreach (var (good, row) in market.Ledger.OrderBy(pair => pair.Value.Stock).ToList())
         {
@@ -85,10 +113,12 @@ public sealed partial class WFColonySystem
         }
 
         if (delivered < 1f)
-            return;
+            return delivered;
 
-        _outposts.DropAtHub(outpost, ImportPod);
-        _market.TellAboard(new[] { outpost.Owner }, Loc.GetString("wf-colony-import-landed", ("crates", (int) delivered)));
+        _outposts.DropAtHub(hub, ImportPod);
+        var told = outpost is { } grid ? new[] { grid } : entries.Select(entry => entry.Outpost.Owner).ToArray();
+        _market.TellAboard(told, Loc.GetString("wf-colony-import-landed", ("crates", (int) delivered)));
+        return delivered;
     }
 
     /// <summary>A crate hauled down from off the world and sold at its colony's exchange scores for the seller's holder.</summary>

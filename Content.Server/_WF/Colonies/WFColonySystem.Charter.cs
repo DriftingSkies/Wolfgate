@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Server._Mono.AlertLevel;
 using Content.Server._WF.OutpostRaids;
 using Content.Server._WF.Outposts;
 using Content.Server._WF.Outposts.Components;
@@ -14,6 +15,8 @@ namespace Content.Server._WF.Colonies;
 /// </summary>
 public sealed partial class WFColonySystem
 {
+    [Dependency] private Content.Server.Chat.Systems.ChatSystem _chat = default!;
+
     private static readonly TimeSpan CheckInterval = TimeSpan.FromDays(1);
 
     /// <summary>Prefix of a holder with an open yard berth in a charter's stored list.</summary>
@@ -40,6 +43,7 @@ public sealed partial class WFColonySystem
         SubscribeLocalEvent<WFOutpostFoundAttemptEvent>(OnFoundAttempt);
         SubscribeLocalEvent<WFOutpostLotsEvent>(OnLots);
         SubscribeLocalEvent<WFOutpostComponent, WFOrbitalEngageEvent>(OnOrbitalEngage);
+        SubscribeLocalEvent<WarLevelChangedEvent>(OnWarLevelChanged);
     }
 
     /// <summary>A governed world's batteries engage campaign ships in its orbit when its governor says so.</summary>
@@ -109,6 +113,10 @@ public sealed partial class WFColonySystem
 
         charter.LastCheck = now;
         charter.Dirty = true;
+        // The Bench hears no succession while the sector is at war: the day counts for no one.
+        if (_war.GetWarLevel(EntityUid.Invalid))
+            return;
+
         var governing = Points(world.Id, CompanyKey(charter.CompanyId));
         var lead = 1 + _cfg.GetCVar(ColonyCVars.SuccessionLead);
         if (!Candidate(world, out var rival, 0f, except: charter.CompanyId)
@@ -158,7 +166,7 @@ public sealed partial class WFColonySystem
 
         var name = HolderName(world, CompanyKey(company));
         _log.Info($"Company {company} ({name}) took the charter of {world.Id}.");
-        _market.Radio(Loc.GetString(old == null ? "wf-colony-charter-granted" : "wf-colony-charter-passed",
+        Writ(Loc.GetString(old == null ? "wf-colony-charter-granted" : "wf-colony-charter-passed",
             ("world", WorldName(world.Id)), ("company", name)));
         Track(_db.SetWorldCharterAsync(world.Id, StoredCharter(world.Id, world.Charter)));
         world.Charter.Dirty = false;
@@ -172,12 +180,26 @@ public sealed partial class WFColonySystem
             return;
 
         _log.Info($"The charter of {world.Id} held by company {charter.CompanyId} lapsed.");
-        _market.Radio(Loc.GetString("wf-colony-charter-lapsed", ("world", WorldName(world.Id)),
+        Writ(Loc.GetString("wf-colony-charter-lapsed", ("world", WorldName(world.Id)),
             ("company", HolderName(world, CompanyKey(charter.CompanyId)))));
         world.Charter = null;
         Track(_db.SetWorldCharterAsync(world.Id, null));
         RefreshTerritory(world);
         CharterChanged(world.Id);
+    }
+
+    /// <summary>Announces a writ of the Bench on a charter to the sector.</summary>
+    private void Writ(string message)
+    {
+        _chat.DispatchGlobalAnnouncement(message, Loc.GetString("wf-colony-charter-sender"), playSound: false,
+            colorOverride: Color.FromHex("#C9A85A"));
+    }
+
+    /// <summary>The navies requisition from the chartered colonies while war is declared; the sector is told once.</summary>
+    private void OnWarLevelChanged(WarLevelChangedEvent args)
+    {
+        if (args.WarLevel && _worlds.Values.Any(world => world.Charter != null && world.Tier >= WFWorldTier.Charter))
+            _market.Radio(Loc.GetString("wf-colony-war-requisition"));
     }
 
     /// <summary>Lets other systems, such as the yard, follow a world's charter changing hands.</summary>
@@ -221,6 +243,10 @@ public sealed partial class WFColonySystem
     /// <summary>For the first minutes of a round a governed world's outpost lots wait for its governor's outposts.</summary>
     private void OnLots(ref WFOutpostLotsEvent args)
     {
+        // An outpost old enough to have a lot of its own is set down on the same one.
+        if (TryComp<WFColonyMemberComponent>(args.Outpost, out var member) && member.Lot > 0 && member.Heritage >= HeritageMarkup)
+            args.Preferred = member.Lot - 1;
+
         if (_ticker.RoundDuration() >= TimeSpan.FromMinutes(_cfg.GetCVar(ColonyCVars.LotHold))
             || !TryWorldOf(args.Ground, out var id, out _) || !_worlds.TryGetValue(id, out var world)
             || world.Charter is not { } charter)

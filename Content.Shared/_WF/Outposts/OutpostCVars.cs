@@ -33,6 +33,10 @@ public sealed class OutpostCVars
     public static readonly CVarDef<float> AutosaveInterval =
         CVarDef.Create("wf.outposts.autosave_interval", 600f, CVar.SERVERONLY);
 
+    /// <summary>Whether a Trade tab order needs the world's planetary comms up (PlanetComms) to reach the outfitter.</summary>
+    public static readonly CVarDef<bool> TradeNeedsComms =
+        CVarDef.Create("wf.outposts.trade_needs_comms", true, CVar.SERVERONLY);
+
     /// <summary>Seconds from paying for a Trade tab order to its crate dropping out of the sky.</summary>
     public static readonly CVarDef<float> TradeLeadTime =
         CVarDef.Create("wf.outposts.trade_lead_time", 30f, CVar.SERVERONLY);

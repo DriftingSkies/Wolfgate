@@ -30,11 +30,17 @@ public record struct WFOutpostFoundAttemptEvent(Robust.Shared.Network.NetUserId 
     public string? Refusal;
 }
 
-/// <summary>Raised as a drop looks for a site; a module that sets <see cref="SkipLots"/> keeps it off the world's outpost lots.</summary>
+/// <summary>
+/// Raised as a drop looks for a site, with the staged outpost coming down. A module that sets <see cref="SkipLots"/>
+/// keeps it off the world's outpost lots; one that sets <see cref="Preferred"/> has that lot of the world's tried first.
+/// </summary>
 [ByRefEvent]
-public record struct WFOutpostLotsEvent(Robust.Shared.Network.NetUserId Owner, EntityUid Ground)
+public record struct WFOutpostLotsEvent(Robust.Shared.Network.NetUserId Owner, EntityUid Ground, EntityUid? Outpost = null)
 {
     public bool SkipLots;
+
+    /// <summary>The index of the lot to try first, or null.</summary>
+    public int? Preferred;
 }
 
 /// <summary>Raised on an outpost handed to a new owner, which makes it a new outpost.</summary>

@@ -96,6 +96,21 @@ public sealed class RaidBreachTest
                 attention.Started = true;
                 attention.Attention = 100;
                 attention.Step = 4;
+
+                // A raid comes from somewhere. Landing parties need a raiding camp on the world with someone alive in
+                // it, Reaver shuttles a stronghold in reach, and a drifter gang only flies where no Reaver campaign runs.
+                var table = director.GetTable(world)!;
+                var party = table.Packs.First(pack => pack.Source == WFRaidSource.Camp);
+                var reavers = table.Packs.First(pack => pack.Source == WFRaidSource.Reavers);
+                var drifters = table.Packs.First(pack => pack.Source == WFRaidSource.Drifters);
+                Assert.That(director.SourceStands(party, (outpost, comp)), Is.False, "With no camp on the world, no landing party comes.");
+                Assert.That(director.SourceStands(reavers, (outpost, comp)), Is.False, "With no campaign, no Reaver shuttle comes.");
+                Assert.That(director.SourceStands(drifters, (outpost, comp)), Is.True, "With no campaign, drifters fly.");
+                var camp = RaidArrivalTest.SpawnRaidCamp(server, ground, xforms.GetWorldPosition(outpost) + new System.Numerics.Vector2(90f, 0f));
+                Assert.That(director.SourceStands(party, (outpost, comp)), Is.True, "A camp with a guard alive sends landing parties.");
+                Assert.That(director.TryGetRaidCamp((outpost, comp), out var from), Is.True);
+                Assert.That(from, Is.EqualTo(xforms.GetWorldPosition(camp)));
+
                 Assert.That(director.TryPickRaid((outpost, comp, grid, attention)), Is.True, "The director sent no raid.");
                 Assert.That(attention.Attention, Is.EqualTo(40).Within(0.01), "A step 4 raid should spend 60 threat points.");
             });
@@ -109,7 +124,7 @@ public sealed class RaidBreachTest
                 Assert.That(raid.Props, Has.Count.EqualTo(1), "The party left no quad where it walked in.");
                 Assert.That(entMan.GetComponent<MetaDataComponent>(raid.Props[0]).EntityPrototype?.ID, Is.EqualTo("WFRaidRaiderQuad"));
                 mobs.AddRange(raid.Mobs);
-                Assert.That(mobs, Has.Count.InRange(3, 5), "A raider party is a breacher, one or two raiders and one or two scavengers.");
+                Assert.That(mobs, Has.Count.InRange(3, 5), "A landing party is a breacher, one or two reavers and one or two deckhands.");
 
                 var breachers = mobs.Where(m => entMan.GetComponent<WFRaidRaiderComponent>(m).Breacher).ToList();
                 Assert.That(breachers, Has.Count.EqualTo(1), "The party has no breacher.");
@@ -120,7 +135,11 @@ public sealed class RaidBreachTest
                 var maul = Carried(entMan, breacher).Single(e => entMan.GetComponent<MetaDataComponent>(e).EntityPrototype?.ID == "WFRaidBreachingMaul");
                 Assert.That(entMan.HasComponent<WFRaidLootComponent>(maul), Is.True, "The breacher's maul isn't raid loot.");
                 Assert.That(entMan.HasComponent<CargoSellBlacklistComponent>(maul), Is.True, "The breacher's maul can be sold.");
-                Assert.That(Carried(entMan, mobs[0]).All(e => entMan.HasComponent<WFRaidLootComponent>(e)), Is.True, "Some raider gear isn't raid loot.");
+                foreach (var mob in mobs)
+                {
+                    Assert.That(Carried(entMan, mob).Where(e => !entMan.HasComponent<WFRaidLootComponent>(e)).Select(e => entMan.ToPrettyString(e).ToString()),
+                        Is.Empty, "Some raider gear isn't raid loot.");
+                }
 
                 // How fast a wall falls is the maul's balance, not this test's.
                 var blunt = server.ResolveDependency<IPrototypeManager>().Index<DamageTypePrototype>("Blunt");

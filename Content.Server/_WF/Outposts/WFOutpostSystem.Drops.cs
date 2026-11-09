@@ -276,7 +276,7 @@ public sealed partial class WFOutpostSystem
         }
 
         var consoleTile = _maps.TileIndicesFor(staged, staged.Comp, Transform(console).Coordinates);
-        if (!TryFindDropSite(drop.Owner, (drop.Ground, biome, groundGrid), tiles, consoleTile, out var shift))
+        if (!TryFindDropSite(drop.Owner, (drop.Ground, biome, groundGrid), tiles, consoleTile, out var shift, staged))
         {
             Del(staged);
             FinishDrop(drop, null, "wf-outpost-drop-no-site");
@@ -297,7 +297,7 @@ public sealed partial class WFOutpostSystem
     /// first.
     /// </summary>
     private bool TryFindDropSite(NetUserId owner, Entity<BiomeComponent, MapGridComponent> ground, List<Vector2i> tiles, Vector2i consoleTile,
-        out Vector2i shift)
+        out Vector2i shift, EntityUid? staged = null)
     {
         if (_bounds.TryGetBounds(ground, out var centre, out var radius))
             radius *= BoundedDropShare;
@@ -308,14 +308,16 @@ public sealed partial class WFOutpostSystem
         }
 
         // The lots the world kept for outposts first, centred on the save's middle, unless a module keeps them for others.
-        var lots = new WFOutpostLotsEvent(owner, ground);
+        var lots = new WFOutpostLotsEvent(owner, ground, staged);
         RaiseLocalEvent(ref lots);
         if (!lots.SkipLots && TryComp<WFPlanetPoiComponent>(ground, out var pois) && pois.OutpostLots.Count > 0 && tiles.Count > 0)
         {
             var min = tiles.Aggregate(Vector2i.ComponentMin);
             var max = tiles.Aggregate(Vector2i.ComponentMax);
             var middle = (min + max) / 2;
-            foreach (var lot in pois.OutpostLots.OrderBy(_ => _random.Next()))
+            // An outpost with a lot of its own goes back to it; the rest take one at random.
+            var kept = lots.Preferred is { } index && index >= 0 && index < pois.OutpostLots.Count ? pois.OutpostLots[index] : (Box2i?) null;
+            foreach (var lot in pois.OutpostLots.OrderBy(lot => kept is { } own && lot.Equals(own) ? int.MinValue : _random.Next()))
             {
                 shift = new Vector2i((lot.Left + lot.Right) / 2, (lot.Bottom + lot.Top) / 2) - middle;
                 if (IsDropSiteClear(ground, tiles, shift))

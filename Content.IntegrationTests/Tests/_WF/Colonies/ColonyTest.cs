@@ -90,6 +90,17 @@ public sealed class ColonyTest
             colonies.Decay(DateTime.UtcNow.AddDays(30));
             Assert.That(colonies.Total(world), Is.EqualTo(120 * Math.Pow(0.95, 30)).Within(1.0));
             Assert.That(colonies.Tier(world), Is.EqualTo(WFWorldTier.None), "A month of decay should unsettle the world.");
+
+            // A world with a city on it never reads below Settled, whatever its score.
+            Assert.That(colonies.BaseTier("WFSurfaceAsclepiu"), Is.EqualTo(WFWorldTier.Settled));
+            Assert.That(colonies.Tier("WFSurfaceAsclepiu"), Is.GreaterThanOrEqualTo(WFWorldTier.Settled));
+            Assert.That(colonies.BaseTier(world), Is.EqualTo(WFWorldTier.None));
+
+            // A world gets the seat of the highest tier it has reached.
+            Assert.That(colonies.SeatFor(WFWorldTier.None), Is.Null, "A wild world has no seat.");
+            Assert.That(colonies.SeatFor(WFWorldTier.Settled)?.ID, Is.EqualTo("WFColonySeatField"));
+            Assert.That(colonies.SeatFor(WFWorldTier.Colony)?.ID, Is.EqualTo("WFColonySeatDepot"));
+            Assert.That(colonies.SeatFor(WFWorldTier.Dominion)?.ID, Is.EqualTo("WFColonySeatHall"));
         });
 
         await pair.CleanReturnAsync();
@@ -194,10 +205,28 @@ public sealed class ColonyTest
 
                 yard.Work(world, platform, 3600f);
                 Assert.That(yard.Jobs(world).Single().Stage, Is.EqualTo(1), "The cranes should finish a fed stage.");
+
+                // The build stands in its berth as a frame: its deck goes down first, then its hull goes up.
+                var mapSystem = server.System<SharedMapSystem>();
+                var xforms = server.System<SharedTransformSystem>();
+                var frame = yard.FrameOf(world, "WFYardDesignPacem");
+                Assert.That(frame, Is.Not.Null, "A build should stand in its berth as a frame.");
+                var frameGrid = entMan.GetComponent<MapGridComponent>(frame!.Value);
+                var deck = mapSystem.GetAllTiles(frame.Value, frameGrid).Count();
+                Assert.That(deck, Is.GreaterThan(1), "A third of the work should have laid some of the deck.");
+                var berth = xforms.GetWorldPosition(frame.Value);
                 Feed(yard, world, beta, 4, 6);
                 yard.Work(world, platform, 3600f);
+                Assert.That(yard.FrameOf(world, "WFYardDesignPacem"), Is.EqualTo(frame), "A frame stands until its build is done.");
+                Assert.That(mapSystem.GetAllTiles(frame.Value, frameGrid).Count(), Is.GreaterThan(deck), "More work should lay more deck.");
+                var plating = 0;
+                var pieces = entMan.GetComponent<TransformComponent>(frame.Value).ChildEnumerator;
+                while (pieces.MoveNext(out _))
+                    plating++;
+                Assert.That(plating, Is.Positive, "With the deck down, the hull should be going up.");
                 Feed(yard, world, beta, 5, 3);
                 yard.Work(world, platform, 3600f);
+                Assert.That(entMan.Deleted(frame.Value), Is.True, "The frame should make way for the finished vessel.");
 
                 Assert.That(yard.Jobs(world), Is.Empty, "The finished build should leave the berth.");
                 Assert.That(companies.HasLicence(beta, "Pacem"), Is.True, "The first completion should grant the licence.");
@@ -210,6 +239,7 @@ public sealed class ColonyTest
                 }
 
                 Assert.That(hulls, Has.Count.EqualTo(1), "The hull should spawn by the platform.");
+                Assert.That((xforms.GetWorldPosition(hulls[0]) - berth).Length(), Is.LessThan(0.01f), "The vessel should stand where its frame stood.");
                 foreach (var uid in hulls.Append(platform))
                     entMan.DeleteEntity(uid);
             });
@@ -234,9 +264,10 @@ public sealed class ColonyTest
     }
 
     /// <summary>
-    /// At Colony tier the world's body becomes a colony station: a goat on an outpost works the Agriculture pen and makes
-    /// Fabric, an extractor over a uranium seam runs Extraction while someone is home, and the outpost trades on the
-    /// colony's shelf. A starving goat works nothing, and an ore silo's Refining draws down the ore in it and stops empty.
+    /// At Colony tier the world's body becomes a colony station: a goat on an outpost works the Agriculture pen, an
+    /// extractor over a uranium seam runs Extraction while someone is home, the outpost trades on the colony's shelf, and
+    /// an egg sold at its exchange chute goes on that shelf. A starving goat works nothing, and an ore silo's Refining
+    /// draws down the ore in it and stops empty.
     /// </summary>
     [Test]
     public async Task BuildingsWorkTheColony()
@@ -308,7 +339,26 @@ public sealed class ColonyTest
                 Assert.That(entMan.TryGetComponent<WFColonyComponent>(body, out var colony), Is.True, "The world's body should be a colony station.");
                 Assert.That(colony!.Industries.GetValueOrDefault("WFTradeIndustryAgriculture")?.Values.Sum() ?? 0f, Is.GreaterThan(0f),
                     "The goat should work the Agriculture pen.");
-                Assert.That(colony.Goods.GetValueOrDefault("TradeGoodFabric")?.Values.Sum() ?? 0f, Is.GreaterThan(0f), "The goat's wool should make Fabric.");
+                Assert.That(colony.Goods, Is.Empty, "What an animal yields is sold at the exchange, not made on its own.");
+
+                // An egg sold at the exchange chute goes on the shelf as its worth of Supplies and scores for the seller.
+                var at = entMan.GetComponent<TransformComponent>(outpostComp.Console).Coordinates;
+                var chute = entMan.SpawnEntity(WFColonySystem.ExchangeChute, at.Offset(new Vector2(-1f, 1f)));
+                var egg = entMan.SpawnEntity("FoodEgg", at);
+                var supplies = market.Row(body, WFColonySystem.Supplies);
+                market.SetVendorStock(body, WFColonySystem.Supplies, 2);
+                var shelf = supplies.Stock;
+                var founder = WFColonySystem.UserKey(outpostComp.Owner);
+                var score = colonies.Points(world, founder);
+                Assert.That(colonies.TrySellProduce(chute, (body, colony), egg, user, out var paid), Is.True, "The exchange should buy an egg.");
+                Assert.That(paid, Is.Positive);
+                Assert.That(supplies.Stock, Is.GreaterThan(shelf), "The egg should go on the shelf as Supplies.");
+                Assert.That(colonies.Points(world, founder), Is.GreaterThan(score), "Produce sold should score for the seller's holder.");
+                Assert.That(entMan.IsQueuedForDeletion(egg), Is.True, "The exchange keeps what it buys.");
+                var wrench = entMan.SpawnEntity("Wrench", at);
+                Assert.That(colonies.TrySellProduce(chute, (body, colony), wrench, user, out _), Is.False, "A wrench is no produce.");
+                entMan.DeleteEntity(wrench);
+                entMan.DeleteEntity(chute);
                 Assert.That(colony.Industries.GetValueOrDefault("WFTradeIndustryExtraction")?.Values.Sum() ?? 0f, Is.GreaterThan(0f),
                     "The extractor on the seam should run Extraction while someone is home.");
                 Assert.That(server.ProtoMan.Index(WFColonySystem.ColonyRole).Industries, Is.Empty,
@@ -323,7 +373,6 @@ public sealed class ColonyTest
                 colony.NextScan = server.Timing.CurTime;
                 colonies.Tick(1f);
                 Assert.That(colony.Industries.ContainsKey(Agriculture), Is.False, "A starving goat should work nothing.");
-                Assert.That(colony.Goods.ContainsKey(Fabric), Is.False, "A starving goat should give no wool.");
                 hungers.SetHunger(goat, hunger.Thresholds[HungerThreshold.Okay], hunger);
                 colony.NextScan = server.Timing.CurTime;
                 colonies.Tick(1f);
@@ -491,6 +540,9 @@ public sealed class ColonyTest
                     "Ten hours home should earn the founder ten hours' points.");
 
                 var colony = entMan.GetComponent<WFColonyComponent>(body);
+                // The ledger runs the goat's pen; the colony books what it made to the goat's holder.
+                var made = new WFTradeIndustryRanEvent(Agriculture, new Dictionary<string, float> { ["TradeGoodFabric"] = 0.5f }, false);
+                entMan.EventBus.RaiseLocalEvent(body, ref made);
                 Assert.That(colony.Owed.Keys, Is.EquivalentTo(new[] { founder }), "Only the goat's holder should be owed for what it makes.");
                 var owed = (int) Math.Floor(colony.Owed[founder]);
                 Assert.That(owed, Is.Positive, "The goat should have made something worth paying for.");
@@ -929,7 +981,6 @@ public sealed class ColonyTest
     private const string Bystander = "c900009";
     private const string Agriculture = "WFTradeIndustryAgriculture";
     private const string Refining = "WFTradeIndustryRefining";
-    private const string Fabric = "TradeGoodFabric";
     private const string Metals = "TradeGoodMetals";
     private const string RawIron = "RawIron";
     private const string SuppliesContractor = "WFContractorColonySupplies";

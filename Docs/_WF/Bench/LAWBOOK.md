@@ -85,6 +85,20 @@ follow-up.
 | **Undeclared Material** | Failing to declare unlawful material on docking. Charged together with Article I. | Citation | 25,000 (15,000–40,000) |
 | **Concealment** | Refusing to show identification to a judge. | Citation | 5,000 (2,000–10,000) |
 
+## Article V: The colonial charters
+
+A world the Bench has sanctioned may be settled by anyone, and an outpost's claim is its holder's while it stands. Once
+a world is developed enough to keep a colony, the Bench enters it in the colonial register, and from then on grants its
+charter to the company that has done most to settle it. The charter is a duty to the world, not a title to it: the
+governor may ask a permit of newcomers, has first call on the world's lots, commands its batteries and may raise its
+yard, and takes nothing of what another holder earns. The Bench hears a challenge to a charter only from a company that
+has outdone the governor for three days running, and hears none while war is declared.
+
+| Law | Text | Level | Fine |
+|---|---|---|---|
+| **Claim Jumping** | Building on, breaking into or stripping an outpost claim that is not yours, or settling a chartered world against its governor's refusal of a permit. | Citation | 15,000 (5,000–30,000) |
+| **Interdicting a Supply Run** | Stopping, boarding or firing on a supply run bound for a colony. | Impound | 75,000 (50,000–120,000) |
+
 ## General clauses
 
 - **Drift is no defence.** A judge may take it into account in setting the penalty, but never in deciding guilt.

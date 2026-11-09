@@ -32,6 +32,9 @@ public sealed class WFColonyDevelopmentPanel : BoxContainer
     /// <summary>The governor asks for the yard platform kit.</summary>
     public event Action? OnYardKit;
 
+    /// <summary>Whether the viewer's own output is shown; the charter office, which belongs to no holder, leaves it out.</summary>
+    public bool ShowOutput = true;
+
     private WFWorldDevelopmentView? _built;
 
     public WFColonyDevelopmentPanel()
@@ -58,7 +61,8 @@ public sealed class WFColonyDevelopmentPanel : BoxContainer
 
         body.AddChild(Card(Summary(view)));
         body.AddChild(Card(Holders(view)));
-        body.AddChild(Card(Output(view)));
+        if (ShowOutput)
+            body.AddChild(Card(Output(view)));
         if (view.Charter is { } charter && view.Holders.Any(holder => holder.Yours && holder.Governs))
             body.AddChild(Card(Charter(view, charter)));
     }
@@ -68,7 +72,7 @@ public sealed class WFColonyDevelopmentPanel : BoxContainer
     {
         return a.World == b.World && a.Tier == b.Tier && Math.Abs(a.Total - b.Total) < 0.5 && a.Next == b.Next
                && a.Governor == b.Governor && a.Population == b.Population && a.Housing == b.Housing
-               && a.Blockaded == b.Blockaded && a.You == b.You
+               && a.Blockaded == b.Blockaded && a.You == b.You && Math.Abs(a.Climate - b.Climate) < 0.01f
                && a.Holders.Count == b.Holders.Count && a.Holders.Zip(b.Holders).All(pair =>
                    pair.First.Key == pair.Second.Key && Math.Abs(pair.First.Points - pair.Second.Points) < 0.5
                    && pair.First.Governs == pair.Second.Governs)
@@ -173,6 +177,8 @@ public sealed class WFColonyDevelopmentPanel : BoxContainer
             return box;
         }
 
+        if (view.Climate < 0.99f)
+            box.AddChild(Secondary(Loc.GetString("wf-colony-ui-climate", ("percent", (int) MathF.Round(view.Climate * 100)))));
         if (view.Output.Count == 0)
             box.AddChild(Secondary(Loc.GetString("wf-colony-ui-no-output")));
         foreach (var output in view.Output)

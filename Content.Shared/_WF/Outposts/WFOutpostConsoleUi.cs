@@ -88,6 +88,9 @@ public enum WFOutpostHubStatus : byte
     /// <summary>A roof covers the hub.</summary>
     Covered,
 
+    /// <summary>The hub is ready, but the world's mass transceiver is down, so no order gets off it.</summary>
+    NoUplink,
+
     Ready,
 }
 
