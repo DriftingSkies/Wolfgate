@@ -1,0 +1,270 @@
+# Colony floors, printed as tiles at the outpost fabricator. Art from NovaSector's colony fabricator.
+
+- type: latheRecipe
+  abstract: true
+  parent: BaseTileRecipe
+  id: WFBaseOutpostFloorRecipe
+  categories:
+  - WFOutpostBuilding
+
+- type: latheRecipePack
+  id: WFOutpostFloorsStatic
+  recipes:
+  - WFFloorTileItemColonyGrey
+  - WFFloorTileItemColonyGreyTexture
+  - WFFloorTileItemColonyGreyBolts
+  - WFFloorTileItemColonyWhite
+  - WFFloorTileItemColonyWhiteTexture
+  - WFFloorTileItemColonyWhiteBolts
+
+- type: tile
+  id: WFFloorColonyGrey
+  name: tiles-wf-colony-grey
+  sprite: /Textures/_WF/Outposts/Colony/floors.rsi/colony_grey.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: WFFloorTileItemColonyGrey
+  heatCapacity: 10000
+
+- type: stack
+  id: WFFloorTileColonyGrey
+  name: grey colony floor
+  spawn: WFFloorTileItemColonyGrey
+  maxCount: 30
+
+- type: entity
+  parent: FloorTileItemBase
+  id: WFFloorTileItemColonyGrey
+  name: grey colony floor tile
+  components:
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/floor_tiles.rsi
+    state: colony_grey
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+    - Plating
+    - WFFloorColonyGrey
+  - type: Stack
+    stackType: WFFloorTileColonyGrey
+  - type: StackPrice
+    price: 2
+
+- type: latheRecipe
+  parent: WFBaseOutpostFloorRecipe
+  id: WFFloorTileItemColonyGrey
+  result: WFFloorTileItemColonyGrey
+
+- type: tile
+  id: WFFloorColonyGreyTexture
+  name: tiles-wf-colony-grey-texture
+  sprite: /Textures/_WF/Outposts/Colony/floors.rsi/colony_grey_texture.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: WFFloorTileItemColonyGreyTexture
+  heatCapacity: 10000
+
+- type: stack
+  id: WFFloorTileColonyGreyTexture
+  name: ribbed grey colony floor
+  spawn: WFFloorTileItemColonyGreyTexture
+  maxCount: 30
+
+- type: entity
+  parent: FloorTileItemBase
+  id: WFFloorTileItemColonyGreyTexture
+  name: ribbed grey colony floor tile
+  components:
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/floor_tiles.rsi
+    state: colony_grey_texture
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+    - Plating
+    - WFFloorColonyGreyTexture
+  - type: Stack
+    stackType: WFFloorTileColonyGreyTexture
+  - type: StackPrice
+    price: 2
+
+- type: latheRecipe
+  parent: WFBaseOutpostFloorRecipe
+  id: WFFloorTileItemColonyGreyTexture
+  result: WFFloorTileItemColonyGreyTexture
+
+- type: tile
+  id: WFFloorColonyGreyBolts
+  name: tiles-wf-colony-grey-bolts
+  sprite: /Textures/_WF/Outposts/Colony/floors.rsi/colony_grey_bolts.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepHull
+  itemDrop: WFFloorTileItemColonyGreyBolts
+  heatCapacity: 10000
+
+- type: stack
+  id: WFFloorTileColonyGreyBolts
+  name: bolted grey colony floor
+  spawn: WFFloorTileItemColonyGreyBolts
+  maxCount: 30
+
+- type: entity
+  parent: FloorTileItemBase
+  id: WFFloorTileItemColonyGreyBolts
+  name: bolted grey colony floor tile
+  components:
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/floor_tiles.rsi
+    state: colony_grey_bolts
+  - type: Item
+    heldPrefix: steel
+  - type: FloorTile
+    outputs:
+    - Plating
+    - WFFloorColonyGreyBolts
+  - type: Stack
+    stackType: WFFloorTileColonyGreyBolts
+  - type: StackPrice
+    price: 2
+
+- type: latheRecipe
+  parent: WFBaseOutpostFloorRecipe
+  id: WFFloorTileItemColonyGreyBolts
+  result: WFFloorTileItemColonyGreyBolts
+
+- type: tile
+  id: WFFloorColonyWhite
+  name: tiles-wf-colony-white
+  sprite: /Textures/_WF/Outposts/Colony/floors.rsi/colony_white.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: WFFloorTileItemColonyWhite
+  heatCapacity: 10000
+
+- type: stack
+  id: WFFloorTileColonyWhite
+  name: white colony floor
+  spawn: WFFloorTileItemColonyWhite
+  maxCount: 30
+
+- type: entity
+  parent: FloorTileItemBase
+  id: WFFloorTileItemColonyWhite
+  name: white colony floor tile
+  components:
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/floor_tiles.rsi
+    state: colony_white
+  - type: Item
+    heldPrefix: white
+  - type: FloorTile
+    outputs:
+    - Plating
+    - WFFloorColonyWhite
+  - type: Stack
+    stackType: WFFloorTileColonyWhite
+  - type: StackPrice
+    price: 2
+
+- type: latheRecipe
+  parent: WFBaseOutpostFloorRecipe
+  id: WFFloorTileItemColonyWhite
+  result: WFFloorTileItemColonyWhite
+
+- type: tile
+  id: WFFloorColonyWhiteTexture
+  name: tiles-wf-colony-white-texture
+  sprite: /Textures/_WF/Outposts/Colony/floors.rsi/colony_white_texture.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepFloor
+  itemDrop: WFFloorTileItemColonyWhiteTexture
+  heatCapacity: 10000
+
+- type: stack
+  id: WFFloorTileColonyWhiteTexture
+  name: ribbed white colony floor
+  spawn: WFFloorTileItemColonyWhiteTexture
+  maxCount: 30
+
+- type: entity
+  parent: FloorTileItemBase
+  id: WFFloorTileItemColonyWhiteTexture
+  name: ribbed white colony floor tile
+  components:
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/floor_tiles.rsi
+    state: colony_white_texture
+  - type: Item
+    heldPrefix: white
+  - type: FloorTile
+    outputs:
+    - Plating
+    - WFFloorColonyWhiteTexture
+  - type: Stack
+    stackType: WFFloorTileColonyWhiteTexture
+  - type: StackPrice
+    price: 2
+
+- type: latheRecipe
+  parent: WFBaseOutpostFloorRecipe
+  id: WFFloorTileItemColonyWhiteTexture
+  result: WFFloorTileItemColonyWhiteTexture
+
+- type: tile
+  id: WFFloorColonyWhiteBolts
+  name: tiles-wf-colony-white-bolts
+  sprite: /Textures/_WF/Outposts/Colony/floors.rsi/colony_white_bolts.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepHull
+  itemDrop: WFFloorTileItemColonyWhiteBolts
+  heatCapacity: 10000
+
+- type: stack
+  id: WFFloorTileColonyWhiteBolts
+  name: bolted white colony floor
+  spawn: WFFloorTileItemColonyWhiteBolts
+  maxCount: 30
+
+- type: entity
+  parent: FloorTileItemBase
+  id: WFFloorTileItemColonyWhiteBolts
+  name: bolted white colony floor tile
+  components:
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/floor_tiles.rsi
+    state: colony_white_bolts
+  - type: Item
+    heldPrefix: white
+  - type: FloorTile
+    outputs:
+    - Plating
+    - WFFloorColonyWhiteBolts
+  - type: Stack
+    stackType: WFFloorTileColonyWhiteBolts
+  - type: StackPrice
+    price: 2
+
+- type: latheRecipe
+  parent: WFBaseOutpostFloorRecipe
+  id: WFFloorTileItemColonyWhiteBolts
+  result: WFFloorTileItemColonyWhiteBolts

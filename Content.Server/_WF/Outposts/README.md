@@ -90,8 +90,10 @@ outpost up. Walls and windows (`face: false`) stand square with the outpost inst
 
 Fabricator (`fabricator.yml`, `construction.yml`, `recipes.yml`): the outpost fabricator is a gizmo lathe, twice as
 slow as an autolathe and with no parts to upgrade. It prints foundation plates, roof panels, prefab walls, doors and
-shutters (gizmos that pack up again), window and airlock kits (they set up the stock window and airlock), another
-fabricator, the powered driver, the arc welder (it makes its own fuel) and the stock parts, electronics and cables.
+shutters (gizmos that pack up again), window and airlock kits (colony-pattern ones that come apart as stock ones),
+colony floor tiles (`floors.yml`), another fabricator, the powered driver, the arc welder (it makes its own fuel) and
+the stock parts, electronics and cables. The gizmo and prefab art in `Textures/_WF/Outposts/Colony` is NovaSector's
+colony fabricator set (CC BY-SA 3.0); `build_colony.py` and `build_walls.py` in `Tools/_WF/Outposts` rebuild it from the DMIs.
 It never prints a console. Its `BlueprintReceiver` takes only outpost recipe disks (tag `WFOutpostRecipeDisk`). A POI
 workshop leaves one disk (`WFOutpostRecipeDiskWorkshopSpawner`): the homestead disk 60% of the time, the T2 industrial
 disk (autolathe, ore processor, biogenerator, gas recycler) 30%, the T3 advanced disk (protolathe, circuit imprinter,
@@ -109,10 +111,12 @@ low, mid or high blocks it.
 
 Trade (`trade.yml`, `WFOutpostSystem.Trade.cs`): the console's Trade tab lists the cargo products in the `WFOutpost`
 group. The owner pays from their bank with the cargo console's tax split (`taxAccounts` on the console), up to five
-orders at once. After `wf.outposts.trade_lead_time` seconds each order is spawned on the top air layer over the
-outpost's universal trade hub (`WFUniversalTradeHubComponent`, a 1 kW gizmo that takes orders only with power and open
-sky) and comes down by parachute. If the hub's tile is roofed or blocked, it lands on the nearest clear open tile
-within 5 tiles; while there is none the order waits. Orders aren't saved: they are lost with the round.
+orders at once. After `wf.outposts.trade_lead_time` seconds a flare (`WFTradeDropFlare`) lights on the outpost's
+universal trade hub (`WFUniversalTradeHubComponent`, a 1 kW gizmo that takes orders only with power and open sky) and
+the order comes down onto it by parachute: `WFTradeDropSystem` spawns a `WFTradeDropDescent` there, which
+`WFTradeDropVisualsSystem` draws as the product sinking under a canopy over a growing shadow, and after 8 seconds swaps
+it for the product with a thud and a puff of dust. If the hub's tile is roofed or blocked, it lands on the nearest
+clear open tile within 5 tiles; while there is none the order waits. Orders aren't saved: they are lost with the round.
 
 Landing guard (`WFLandingClaimEvent`, answered in `WFOutpostSystem.Claims.cs`): hulls keep off every outpost's claim,
 its owner's too. Enter Atmosphere is refused over one with the outpost named, a gentle set-down holds off over one,
@@ -279,6 +283,7 @@ its placement, claims and saves never reach below it.
 - [`Content.Server/_WF/Outposts/WFOutpostSystem.Settlers.cs`](WFOutpostSystem.Settlers.cs)
 - [`Content.Server/_WF/Outposts/WFOutpostSystem.Trade.cs`](WFOutpostSystem.Trade.cs)
 - [`Content.Server/_WF/Outposts/WFPoiClaimTerminalSystem.cs`](WFPoiClaimTerminalSystem.cs)
+- [`Content.Server/_WF/Outposts/WFTradeDropSystem.cs`](WFTradeDropSystem.cs)
 
 ### Shared
 
@@ -294,6 +299,7 @@ its placement, claims and saves never reach below it.
 - [`Content.Shared/_WF/Outposts/WFPlanetBroadcast.cs`](../../../Content.Shared/_WF/Outposts/WFPlanetBroadcast.cs)
 - [`Content.Shared/_WF/Outposts/WFPoiClaimEvents.cs`](../../../Content.Shared/_WF/Outposts/WFPoiClaimEvents.cs)
 - [`Content.Shared/_WF/Outposts/WFSaveOriginComponent.cs`](../../../Content.Shared/_WF/Outposts/WFSaveOriginComponent.cs)
+- [`Content.Shared/_WF/Outposts/WFTradeDropComponent.cs`](../../../Content.Shared/_WF/Outposts/WFTradeDropComponent.cs)
 
 ### Client
 
@@ -310,6 +316,7 @@ its placement, claims and saves never reach below it.
 - [`Content.Client/_WF/Outposts/WFOutpostSavesSystem.cs`](../../../Content.Client/_WF/Outposts/WFOutpostSavesSystem.cs)
 - [`Content.Client/_WF/Outposts/WFPlanetBroadcastBoundUserInterface.cs`](../../../Content.Client/_WF/Outposts/WFPlanetBroadcastBoundUserInterface.cs)
 - [`Content.Client/_WF/Outposts/WFPlanetBroadcastWindow.cs`](../../../Content.Client/_WF/Outposts/WFPlanetBroadcastWindow.cs)
+- [`Content.Client/_WF/Outposts/WFTradeDropVisualsSystem.cs`](../../../Content.Client/_WF/Outposts/WFTradeDropVisualsSystem.cs)
 
 ### Integration tests
 
@@ -346,6 +353,7 @@ its placement, claims and saves never reach below it.
 - [`Resources/Prototypes/_WF/Outposts/console.yml`](../../../Resources/Prototypes/_WF/Outposts/console.yml)
 - [`Resources/Prototypes/_WF/Outposts/construction.yml`](../../../Resources/Prototypes/_WF/Outposts/construction.yml)
 - [`Resources/Prototypes/_WF/Outposts/fabricator.yml`](../../../Resources/Prototypes/_WF/Outposts/fabricator.yml)
+- [`Resources/Prototypes/_WF/Outposts/floors.yml`](../../../Resources/Prototypes/_WF/Outposts/floors.yml)
 - [`Resources/Prototypes/_WF/Outposts/foundation.yml`](../../../Resources/Prototypes/_WF/Outposts/foundation.yml)
 - [`Resources/Prototypes/_WF/Outposts/lifesupport.yml`](../../../Resources/Prototypes/_WF/Outposts/lifesupport.yml)
 - [`Resources/Prototypes/_WF/Outposts/logistics.yml`](../../../Resources/Prototypes/_WF/Outposts/logistics.yml)
@@ -364,12 +372,45 @@ its placement, claims and saves never reach below it.
 - [`Resources/Locale/en-US/_WF/Outposts/outposts.ftl`](../../../Resources/Locale/en-US/_WF/Outposts/outposts.ftl)
 - [`Resources/Locale/en-US/_WF/Outposts/pads.ftl`](../../../Resources/Locale/en-US/_WF/Outposts/pads.ftl)
 
+### Textures
+
+- [`Resources/Textures/_WF/Outposts/Colony/airlock.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/airlock.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/arc_welder.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/arc_welder.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/battery_large.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/battery_large.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/battery_small.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/battery_small.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/co2_cracker.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/co2_cracker.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/door.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/door.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/fabricator.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/fabricator.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/floor_tiles.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/floor_tiles.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/floors.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/floors.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/fuel_generator.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/fuel_generator.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/griddle.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/griddle.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/heater.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/heater.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/ore_silo.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/ore_silo.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/plastic_panels.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/plastic_panels.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/prefab_wall.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/prefab_wall.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/prefab_window.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/prefab_window.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/range.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/range.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/rations_printer.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/rations_printer.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/recycler.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/recycler.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/rtg.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/rtg.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/shutters.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/shutters.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/solar_string.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/solar_string.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/synthesizers.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/synthesizers.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/wind_turbine.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/wind_turbine.rsi/)
+- [`Resources/Textures/_WF/Outposts/Effects/drop_shadow.rsi/`](../../../Resources/Textures/_WF/Outposts/Effects/drop_shadow.rsi/)
+
 ### Shared maps
 
 - [`Resources/SharedMaps/_WF/Outposts/bastion.yml`](../../../Resources/SharedMaps/_WF/Outposts/bastion.yml)
 - [`Resources/SharedMaps/_WF/Outposts/farmstead.yml`](../../../Resources/SharedMaps/_WF/Outposts/farmstead.yml)
 - [`Resources/SharedMaps/_WF/Outposts/homestead.yml`](../../../Resources/SharedMaps/_WF/Outposts/homestead.yml)
 - [`Resources/SharedMaps/_WF/Outposts/workshop.yml`](../../../Resources/SharedMaps/_WF/Outposts/workshop.yml)
+
+### Tools
+
+- [`Tools/_WF/Outposts/build_colony.py`](../../../Tools/_WF/Outposts/build_colony.py)
+- [`Tools/_WF/Outposts/build_walls.py`](../../../Tools/_WF/Outposts/build_walls.py)
 
 ### Docs
 

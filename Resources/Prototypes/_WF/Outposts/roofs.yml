@@ -4,7 +4,7 @@
   parent: BaseItem
   id: WFOutpostFoundationPlate
   name: outpost foundation plate
-  description: A heavy plate that bolts onto an outpost's edge. Lay it on open ground right beside your outpost's floor to extend it by a tile.
+  description: A heavy plate that bolts onto an outpost's edge. Lay it on open ground inside your outpost's claim to add a tile of floor there.
   components:
   - type: Item
     size: Normal

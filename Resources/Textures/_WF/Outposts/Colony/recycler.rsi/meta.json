@@ -1,0 +1,60 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Taken from NovaSector (modular_nova/modules/colony_fabricator, https://github.com/NovaSector/NovaSector) via Meridian-Rift",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "grinder-o0"
+        },
+        {
+            "name": "grinder-o1",
+            "delays": [
+                [
+                    0.05,
+                    0.3,
+                    0.05
+                ]
+            ]
+        },
+        {
+            "name": "grinder-o2",
+            "delays": [
+                [
+                    0.05,
+                    0.3,
+                    0.05
+                ]
+            ]
+        },
+        {
+            "name": "grinder-o0bld"
+        },
+        {
+            "name": "grinder-o1bld",
+            "delays": [
+                [
+                    0.05,
+                    0.3,
+                    0.05
+                ]
+            ]
+        },
+        {
+            "name": "grinder-o2bld",
+            "delays": [
+                [
+                    0.05,
+                    0.3,
+                    0.05
+                ]
+            ]
+        },
+        {
+            "name": "packed"
+        }
+    ]
+}

@@ -24,7 +24,7 @@
   abstract: true
   id: WFBaseOutpostTradeHub
   name: universal trade hub
-  description: A drop beacon for your outpost's Trade orders, which come down on it by parachute. It needs power and open sky.
+  description: A drop beacon for your outpost's Trade orders, which come down on it by parachute, a flare marking the spot. It needs power and open sky.
   placement:
     mode: SnapgridCenter
   components:
@@ -65,6 +65,68 @@
   - type: WFUniversalTradeHub
   - type: StaticPrice
     price: 400
+
+# A delivery on its way down: the client draws the product under a canopy over its shadow, and it lands as the product.
+- type: entity
+  id: WFTradeDropDescent
+  name: supply drop
+  description: A delivery coming down under its canopy.
+  categories: [ HideSpawnMenu ]
+  save: false
+  components:
+  - type: Sprite
+    noRot: true
+    drawdepth: Effects
+  - type: WFTradeDrop
+  - type: Tag
+    tags:
+    - HideContextMenu
+
+# Lit on the drop tile as a delivery starts down, and burns out a little after it lands.
+- type: entity
+  id: WFTradeDropFlare
+  name: drop flare
+  description: A flare marking where a delivery is about to come down. Stand clear.
+  categories: [ HideSpawnMenu ]
+  save: false
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/flare.rsi
+    drawdepth: FloorObjects
+    layers:
+    - state: flare_base
+    - state: flare_unlit
+      color: "#FF0000"
+    - state: flare_burn
+      shader: unshaded
+    - sprite: Effects/chemsmoke.rsi
+      state: chemsmoke
+      color: "#D0605070"
+      scale: 0.45, 0.45
+      offset: 0, 0.55
+  - type: PointLight
+    color: "#FF5040"
+    radius: 3.5
+    energy: 4
+    netsync: false
+  - type: LightBehaviour
+    behaviours:
+    - !type:RandomizeBehaviour
+      interpolate: Nearest
+      minDuration: 0.05
+      maxDuration: 0.15
+      startValue: 3
+      endValue: 5
+      property: Energy
+      isLooped: true
+      enabled: true
+  - type: AmbientSound
+    range: 6
+    volume: -8
+    sound:
+      path: /Audio/Items/Flare/flare_burn.ogg
+  - type: TimedDespawn
+    lifetime: 13
 
 - type: entity
   parent: WFBaseOutpostTradeHub

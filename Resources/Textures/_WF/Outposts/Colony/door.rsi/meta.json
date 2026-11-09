@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Taken from NovaSector (modular_nova/modules/colony_fabricator, https://github.com/NovaSector/NovaSector) via Meridian-Rift",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "closed"
+        },
+        {
+            "name": "open"
+        },
+        {
+            "name": "opening",
+            "delays": [
+                [
+                    0.2,
+                    0.4,
+                    0.2,
+                    0.2,
+                    0.2
+                ]
+            ]
+        },
+        {
+            "name": "closing",
+            "delays": [
+                [
+                    0.267,
+                    0.267,
+                    0.267,
+                    0.133,
+                    0.267
+                ]
+            ]
+        },
+        {
+            "name": "packed"
+        }
+    ]
+}

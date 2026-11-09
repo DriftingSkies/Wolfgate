@@ -57,11 +57,9 @@
   description: A folded wind turbine. Use it in hand facing your outpost's floor, over an LV cable, to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/wind_turbine.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#9FED58"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostWindTurbine
   - type: StaticPrice
@@ -74,12 +72,11 @@
   description: Turns whatever breeze blows over it into power for the LV cable underneath, the more in a storm. It must stand under open sky, and there must be air.
   components:
   - type: Sprite
-    sprite: Structures/Piping/Atmospherics/directionalfan.rsi
-    state: icon
-    snapCardinals: false
+    sprite: _WF/Outposts/Colony/wind_turbine.rsi
+    state: turbine_normal
   - type: PowerMonitoringDevice
-    sprite: Structures/Piping/Atmospherics/directionalfan.rsi
-    state: icon
+    sprite: _WF/Outposts/Colony/wind_turbine.rsi
+    state: turbine
   - type: WFWindTurbine
   - type: WFRepackable
     pack: WFOutpostWindTurbinePack
@@ -95,11 +92,9 @@
   description: A folded string of solar panels. Use it in hand facing your outpost's floor, over an LV cable, to lay it out there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/solar_string.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#334E6D"
-    - state: solar-assembly-part
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostSolarString
   - type: StaticPrice
@@ -112,8 +107,8 @@
   description: A string of panels feeding the LV cable underneath. Strongest at noon, idle at night and under a roof.
   components:
   - type: Sprite
-    sprite: Structures/Power/Generation/solar_panel.rsi
-    state: solar_panel_glass
+    sprite: _WF/Outposts/Colony/solar_string.rsi
+    state: solar
     drawdepth: FloorObjects
   - type: Fixtures
     fixtures:
@@ -127,8 +122,8 @@
         layer:
         - LowImpassable
   - type: PowerMonitoringDevice
-    sprite: Structures/Power/Generation/solar_panel.rsi
-    state: solar_panel_glass
+    sprite: _WF/Outposts/Colony/solar_string.rsi
+    state: solar
   - type: WFSolarString
   - type: WFRepackable
     pack: WFOutpostSolarStringPack
@@ -144,11 +139,9 @@
   description: A packed compact RTG. Use it in hand facing your outpost's floor, over an LV cable, to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/rtg.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#DE3A3A"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostCompactRTG
     delay: 4
@@ -162,11 +155,8 @@
   description: A small radioisotope generator for outposts. Feeds the LV cable underneath, day and night, for as long as it stands.
   components:
   - type: Sprite
-    sprite: Structures/Power/Generation/rtg.rsi
-    layers:
-    - state: rtg
-    - state: rtg_glow
-      shader: unshaded
+    sprite: _WF/Outposts/Colony/rtg.rsi
+    state: rtg
   - type: PowerSupplier
     supplyRate: 24000
   - type: AmbientSound
@@ -179,6 +169,9 @@
     delay: 4
   - type: StaticPrice
     price: 6000
+  - type: PowerMonitoringDevice
+    sprite: _WF/Outposts/Colony/rtg.rsi
+    state: rtg
 
 - type: entity
   parent: WFBaseOutpostPack
@@ -187,11 +180,9 @@
   description: A packed welding-fuel generator. Use it in hand facing your outpost's floor, over an LV cable, to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/fuel_generator.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#EFB341"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostFuelGenerator
     delay: 4
@@ -205,25 +196,18 @@
   description: A bolted-down generator that burns welding fuel into the LV cable underneath. Fill its tank and start it up.
   components:
   - type: Sprite
-    sprite: Structures/Power/Generation/portable_generator.rsi
+    sprite: _WF/Outposts/Colony/fuel_generator.rsi
     noRot: true
     layers:
-    - state: portgen3
+    - state: idle
       map: [ "enum.GeneratorVisualLayers.Body" ]
-    - state: portgen3on_unlit
-      map: [ "enum.GeneratorVisualLayers.Unlit" ]
-      shader: unshaded
-      visible: false
   - type: Appearance
   - type: GenericVisualizer
     visuals:
       enum.GeneratorVisuals.Running:
         enum.GeneratorVisualLayers.Body:
-          True: { state: portgen3on }
-          False: { state: portgen3 }
-        enum.GeneratorVisualLayers.Unlit:
-          True: { visible: true }
-          False: { visible: false }
+          True: { state: running }
+          False: { state: idle }
   - type: AmbientSound
     range: 4
     volume: -8
@@ -264,8 +248,8 @@
     gasType: CarbonDioxide
     moleRatio: 0.5
   - type: PowerMonitoringDevice
-    sprite: Structures/Power/Generation/portable_generator.rsi
-    state: portgen3
+    sprite: _WF/Outposts/Colony/fuel_generator.rsi
+    state: idle
   - type: WFRepackable
     pack: WFOutpostFuelGeneratorPack
     delay: 4
@@ -280,7 +264,7 @@
   id: WFBaseOutpostBattery
   components:
   - type: Sprite
-    sprite: Structures/Power/smes.rsi
+    sprite: _WF/Outposts/Colony/battery_small.rsi
     layers:
     - state: smes
     - map: ["enum.SmesVisualLayers.Charge"]
@@ -318,8 +302,8 @@
     sourceNode: input
     loadNode: output
     collectionName: smes
-    sprite: Structures/Power/smes.rsi
-    state: static
+    sprite: _WF/Outposts/Colony/battery_small.rsi
+    state: smes
   - type: UserInterface
     interfaces:
       enum.BatteryUiKey.Key:
@@ -334,11 +318,9 @@
   description: A packed small stationary battery. Use it in hand facing your outpost's floor, over an LV cable, to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/battery_small.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#52B4E9"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostBatterySmall
   - type: StaticPrice
@@ -374,11 +356,9 @@
   description: A packed large stationary battery. Use it in hand facing your outpost's floor, over an LV cable, to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/battery_large.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#334E6D"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostBatteryLarge
     delay: 4
@@ -408,3 +388,8 @@
     delay: 4
   - type: StaticPrice
     price: 900
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/battery_large.rsi
+  - type: PowerMonitoringDevice
+    sprite: _WF/Outposts/Colony/battery_large.rsi
+    state: smes

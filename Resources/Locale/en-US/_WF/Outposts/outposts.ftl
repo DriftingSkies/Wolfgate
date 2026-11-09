@@ -264,3 +264,11 @@ wf-outpost-preset-farmstead = Farmstead
 wf-outpost-preset-farmstead-desc = A farmhouse and a hydroponic greenhouse with water and nutrient synthesizers, and a feeder for livestock.
 wf-outpost-preset-bastion = Bastion
 wf-outpost-preset-bastion-desc = A walled compound with two turrets, a warning mast and floodlights round a small barracks.
+
+# Colony floors
+tiles-wf-colony-grey = grey colony floor
+tiles-wf-colony-grey-texture = ribbed grey colony floor
+tiles-wf-colony-grey-bolts = bolted grey colony floor
+tiles-wf-colony-white = white colony floor
+tiles-wf-colony-white-texture = ribbed white colony floor
+tiles-wf-colony-white-bolts = bolted white colony floor

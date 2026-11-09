@@ -2,12 +2,8 @@ using System.Linq;
 using System.Numerics;
 using Content.Server._WF.Outposts.Components;
 using Content.Server.Power.Components;
-using Content.Shared._CE.ZLevels.Core.Components;
-using Content.Shared._CE.ZLevels.Core.EntitySystems;
 using Content.Shared._NF.Bank.BUI;
 using Content.Shared._WF.Outposts;
-using Content.Shared._WF.Planets;
-using Content.Shared._WF.Planets.Parachute;
 using Content.Shared._WF.WolfWeather;
 using Content.Shared.Cargo.Prototypes;
 using Content.Shared.Database;
@@ -20,12 +16,12 @@ namespace Content.Server._WF.Outposts;
 
 /// <summary>
 /// The Trade tab: the owner buys catalogue listings from the outpost group, paying with the cargo console's tax split,
-/// and each comes down by parachute from the top air layer onto the outpost's trade hub, or the nearest clear tile
-/// round it when the hub is covered.
+/// and each comes down by parachute onto the outpost's trade hub, or the nearest clear tile round it when the hub is
+/// covered, where a flare marks the spot.
 /// </summary>
 public sealed partial class WFOutpostSystem
 {
-    [Dependency] private CESharedZLevelsSystem _zLevels = default!;
+    [Dependency] private WFTradeDropSystem _tradeDrop = default!;
     [Dependency] private SharedWolfWeatherSystem _weather = default!;
     [Dependency] private WFOutpostPowerSystem _outpostPower = default!;
 
@@ -33,6 +29,9 @@ public sealed partial class WFOutpostSystem
 
     /// <summary>How long after its drop a delivery still counts as in flight, whether or not it came down.</summary>
     private static readonly TimeSpan DeliveryTimeout = TimeSpan.FromMinutes(2);
+
+    private static readonly EntProtoId DropDescent = "WFTradeDropDescent";
+    private static readonly EntProtoId DropFlare = "WFTradeDropFlare";
 
     private TimeSpan _nextTradeUpdate;
     private readonly HashSet<Vector2i> _dropTiles = new();
@@ -188,6 +187,16 @@ public sealed partial class WFOutpostSystem
             _dropTiles.Clear();
             var changed = outpost.Orders.RemoveAll(order => order.Delivery is { } delivery
                 && (HasLanded(delivery) || order.Drops + DeliveryTimeout < now)) > 0;
+            // A tile with a delivery still coming down is taken.
+            foreach (var order in outpost.Orders)
+            {
+                if (order.Delivery is not { } flying || Transform(flying) is not { GridUid: { } dropGrid } xform
+                    || !TryComp<MapGridComponent>(dropGrid, out var dropGridComp))
+                    continue;
+
+                _dropTiles.Add(_maps.TileIndicesFor(dropGrid, dropGridComp, xform.Coordinates));
+            }
+
             foreach (var order in outpost.Orders)
             {
                 if (order.Delivery != null || order.Drops > now)
@@ -202,10 +211,10 @@ public sealed partial class WFOutpostSystem
         }
     }
 
-    /// <summary>A delivery is down once its chute comes off, or gone if it was destroyed on the way.</summary>
+    /// <summary>A delivery is down once its descent has given way to the product.</summary>
     private bool HasLanded(EntityUid delivery)
     {
-        return TerminatingOrDeleted(delivery) || !HasComp<WFParachutedComponent>(delivery);
+        return TerminatingOrDeleted(delivery) || !HasComp<WFTradeDropComponent>(delivery);
     }
 
     /// <summary>
@@ -220,16 +229,9 @@ public sealed partial class WFOutpostSystem
             return null;
 
         _dropTiles.Add(tile);
-        var world = _maps.GridTileToWorld(hubGridUid, hubGrid, tile);
-        var sky = TopAirLayer(outpost.Comp1.Ground);
-        var delivery = Spawn(product.Product, new MapCoordinates(world.Position, Transform(sky).MapID));
-
-        // Opens as it falls out of the top layer and leaves nothing behind on landing.
-        if (sky != outpost.Comp1.Ground)
-        {
-            EnsureComp<WFParachutedComponent>(delivery).Pack = null;
-            _zLevels.WFRefreshGround(delivery);
-        }
+        var coords = _maps.GridTileToLocal(hubGridUid, hubGrid, tile);
+        Spawn(DropFlare, coords);
+        var delivery = _tradeDrop.StartDrop(DropDescent, product.Product, coords);
 
         _adminLog.Add(LogType.WFOutpost, LogImpact.Low,
             $"Dropped {ToPrettyString(delivery):entity} for outpost {ToPrettyString(outpost):grid}");
@@ -266,19 +268,6 @@ public sealed partial class WFOutpostSystem
 
         tile = default;
         return false;
-    }
-
-    /// <summary>The highest planet layer over the ground that is still air: under the clouds and the orbit.</summary>
-    private EntityUid TopAirLayer(EntityUid ground)
-    {
-        var top = ground;
-        while (_zLevels.TryMapUp(top, out var above)
-               && !HasComp<WFOrbitLayerComponent>(above) && !HasComp<CEZCloudLayerComponent>(above))
-        {
-            top = above.Owner;
-        }
-
-        return top;
     }
 
     private static int DistanceSquared(Vector2i a, Vector2i b)

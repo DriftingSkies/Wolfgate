@@ -8,10 +8,8 @@ using Content.Server._WF.Outposts;
 using Content.Server._WF.Outposts.Components;
 using Content.Server.Cargo.Systems;
 using Content.Server.Power.Components;
-using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._NF.Bank.Components;
 using Content.Shared._WF.Outposts;
-using Content.Shared._WF.Planets.Parachute;
 using Content.Shared.Cargo.Prototypes;
 using Content.Shared.Power.EntitySystems;
 using Content.Shared.Storage.Components;
@@ -239,9 +237,8 @@ public sealed class OutpostTradeTest
                 if (order.Delivery is not { } d || !entMan.EntityExists(d))
                     continue;
                 var xform = entMan.GetComponent<TransformComponent>(d);
-                entMan.TryGetComponent<CEZPhysicsComponent>(d, out var z);
-                entMan.TryGetComponent<WFParachutedComponent>(d, out var chute);
-                report += $" map {xform.MapUid} parent {xform.ParentUid} pos {xform.WorldPosition} z {z?.LocalPosition} v {z?.Velocity} ground {z?.CachedGroundHeight} fallable {z?.Fallable} chute {chute?.Deployed}";
+                entMan.TryGetComponent<WFTradeDropComponent>(d, out var drop);
+                report += $" map {xform.MapUid} parent {xform.ParentUid} pos {xform.WorldPosition} descent from {drop?.Start} for {drop?.Duration}";
             }
         });
         Assert.Fail($"The outpost's orders never landed:{report}");

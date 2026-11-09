@@ -1,6 +1,6 @@
 # Prefab building for outposts, printed at the outpost fabricator. Each panel or kit deploys in hand onto the outpost
-# floor tile in front of you. Prefab walls, doors and shutters pack up again as they are; the window and airlock kits
-# set up stock ones, taken apart the usual way.
+# floor tile in front of you. Prefab walls, doors and shutters pack up again as they are; prefab windows and airlocks
+# are taken apart the usual way, as stock ones.
 
 - type: entity
   parent: WFBaseOutpostPack
@@ -11,11 +11,9 @@
   - type: Item
     size: Normal
   - type: Sprite
+    sprite: _WF/Outposts/Colony/plastic_panels.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#8A8A8A"
-    - state: icon-default
+    - state: sheet
   - type: WFDeployable
     machine: WFPrefabWall
     delay: 2
@@ -32,12 +30,12 @@
   - type: Transform
     anchored: true
   - type: Sprite
-    sprite: Structures/Walls/mining.rsi
+    sprite: _WF/Outposts/Colony/prefab_wall.rsi
   - type: Icon
-    sprite: Structures/Walls/mining.rsi
+    sprite: _WF/Outposts/Colony/prefab_wall.rsi
   - type: IconSmooth
     key: walls
-    base: mining
+    base: prefab
   - type: Damageable
     damageContainer: StructuralInorganic
     damageModifierSet: WallDefense1
@@ -76,11 +74,25 @@
       color: "#A8D8EA"
     - state: icon-default
   - type: WFDeployable
-    machine: Window
+    machine: WFPrefabWindow
     delay: 2
     face: false
   - type: StaticPrice
     price: 30
+
+- type: entity
+  parent: Window
+  id: WFPrefabWindow
+  name: prefab window
+  description: A glass pane in a bolt-on frame.
+  components:
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/prefab_window.rsi
+  - type: Icon
+    sprite: _WF/Outposts/Colony/prefab_window.rsi
+  - type: IconSmooth
+    key: walls
+    base: prefab
 
 - type: entity
   parent: WFBaseOutpostPack
@@ -89,11 +101,9 @@
   description: A hinged door in its frame. Use it in hand facing your outpost's floor to hang it there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/door.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#6E6E6E"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFPrefabDoor
     delay: 3
@@ -108,6 +118,8 @@
   components:
   - type: Transform
     anchored: true
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/door.rsi
   - type: AccessReader
   - type: WFRepackable
     pack: WFPrefabDoorKit
@@ -122,16 +134,23 @@
   description: A packed airlock, its electronics wired in. Use it in hand facing your outpost's floor to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/airlock.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#52B4E9"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
-    machine: Airlock
+    machine: WFPrefabAirlock
     delay: 4
   - type: StaticPrice
     price: 85
+
+- type: entity
+  parent: Airlock
+  id: WFPrefabAirlock
+  name: prefab airlock
+  description: A colony-pattern airlock. It opens, it closes, and it was cheap.
+  components:
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/airlock.rsi
 
 - type: entity
   parent: WFBaseOutpostPack
@@ -140,11 +159,9 @@
   description: A rolled-up shutter. Use it in hand facing your outpost's floor to set it up there, then link it to a button.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/shutters.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#DE3A3A"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFPrefabShutters
     delay: 3
@@ -159,6 +176,8 @@
   components:
   - type: Transform
     anchored: true
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/shutters.rsi
   - type: Occluder
   - type: ContainerFill
     containers:

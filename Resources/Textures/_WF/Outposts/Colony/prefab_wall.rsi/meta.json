@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Taken from NovaSector (modular_nova/modules/colony_fabricator, https://github.com/NovaSector/NovaSector) via Meridian-Rift",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "full"
+        },
+        {
+            "name": "prefab0",
+            "directions": 4
+        },
+        {
+            "name": "prefab1",
+            "directions": 4
+        },
+        {
+            "name": "prefab2",
+            "directions": 4
+        },
+        {
+            "name": "prefab3",
+            "directions": 4
+        },
+        {
+            "name": "prefab4",
+            "directions": 4
+        },
+        {
+            "name": "prefab5",
+            "directions": 4
+        },
+        {
+            "name": "prefab6",
+            "directions": 4
+        },
+        {
+            "name": "prefab7",
+            "directions": 4
+        }
+    ]
+}

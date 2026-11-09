@@ -48,11 +48,9 @@
   description: A packed CO2 cracker. Use it in hand facing your outpost's floor to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/co2_cracker.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#8FD3FF"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostCo2Cracker
     delay: 3
@@ -66,13 +64,9 @@
   description: Splits the carbon dioxide in the room back into oxygen, up to a mole a second, while it has power.
   components:
   - type: Sprite
-    sprite: Structures/Piping/Atmospherics/Portable/portable_scrubber.rsi
+    sprite: _WF/Outposts/Colony/co2_cracker.rsi
     noRot: true
-    layers:
-    - state: icon-running
-      color: "#BFE6FF"
-    - state: unlit
-      shader: unshaded
+    state: working
   - type: ApcPowerReceiver
     powerLoad: 2000
   - type: AtmosDevice
@@ -92,20 +86,20 @@
   id: WFBaseOutpostHeater
   components:
   - type: Sprite
-    sprite: Structures/Piping/Atmospherics/Portable/portable_sheater.rsi
+    sprite: _WF/Outposts/Colony/heater.rsi
     noRot: true
     layers:
-    - state: sheaterOff
+    - state: sheater-off
       map: ["enum.SpaceHeaterVisualLayers.Main"]
   - type: Appearance
   - type: GenericVisualizer
     visuals:
       enum.SpaceHeaterVisuals.State:
         SpaceHeaterVisualLayers.Main:
-          Off: { state: sheaterOff }
-          StandBy: { state: sheaterStandby }
-          Heating: { state: sheaterHeat }
-          Cooling: { state: sheaterCool }
+          Off: { state: sheater-off }
+          StandBy: { state: sheater-standby }
+          Heating: { state: sheater-heat }
+          Cooling: { state: sheater-cool }
   - type: AtmosDevice
     joinSystem: true
   - type: SpaceHeater
@@ -124,11 +118,9 @@
   description: A packed temperature regulator. Use it in hand facing your outpost's floor to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/heater.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#FF9F5A"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostTemperatureRegulator
     delay: 3
@@ -163,11 +155,9 @@
   description: A packed wall heater. Use it in hand facing your outpost's floor to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/heater.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#E8603C"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostWallHeater
     delay: 2
@@ -203,7 +193,7 @@
   id: WFBaseOutpostSynthesizer
   components:
   - type: Sprite
-    sprite: Structures/Storage/tanks.rsi
+    sprite: _WF/Outposts/Colony/synthesizers.rsi
     noRot: true
   - type: ApcPowerReceiver
     powerLoad: 400
@@ -224,11 +214,9 @@
   description: A packed water synthesizer. Use it in hand facing your outpost's floor to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/synthesizers.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#4A90E2"
-    - state: icon-default
+    - state: water-packed
   - type: WFDeployable
     machine: WFOutpostWaterSynthesizer
     delay: 3
@@ -243,7 +231,7 @@
   components:
   - type: Sprite
     layers:
-    - state: watercooler
+    - state: water
   - type: WFReagentSynthesizer
     reagent: Water
     rate: 1
@@ -260,11 +248,9 @@
   description: A packed nutrient synthesizer. Use it in hand facing your outpost's floor to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/synthesizers.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#7BC043"
-    - state: icon-default
+    - state: nutrient-packed
   - type: WFDeployable
     machine: WFOutpostNutrientSynthesizer
     delay: 3
@@ -279,8 +265,7 @@
   components:
   - type: Sprite
     layers:
-    - state: generictank-1
-      color: "#9BD770"
+    - state: nutrient
   - type: WFReagentSynthesizer
     reagent: EZNutrient
     rate: 0.5
@@ -297,11 +282,9 @@
   description: A packed sustenance dispenser. Use it in hand facing your outpost's floor to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/synthesizers.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#D8B26E"
-    - state: icon-default
+    - state: dispenser-packed
   - type: WFDeployable
     machine: WFOutpostSustenanceDispenser
     delay: 3
@@ -316,8 +299,7 @@
   components:
   - type: Sprite
     layers:
-    - state: watercooler
-      color: "#E6C98F"
+    - state: dispenser
   - type: SolutionContainerManager
     solutions:
       tank:
@@ -340,11 +322,9 @@
   description: A packed rations printer. Use it in hand facing your outpost's floor to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/rations_printer.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#C9A66B"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostRationsPrinter
     delay: 3
@@ -358,17 +338,14 @@
   description: Presses biomass into ration bricks. Feed it biomass from a biogenerator.
   components:
   - type: Sprite
-    sprite: Structures/Machines/autolathe.rsi
+    sprite: _WF/Outposts/Colony/rations_printer.rsi
     snapCardinals: true
     layers:
     - state: icon
       map: ["enum.LatheVisualLayers.IsRunning"]
-      color: "#E8D3A8"
     - state: unlit
       shader: unshaded
       map: ["enum.PowerDeviceVisualLayers.Powered"]
-    - state: inserting
-      map: ["enum.MaterialStorageVisualLayers.Inserting"]
   - type: Appearance
   - type: ApcPowerReceiver
     powerLoad: 300
@@ -376,7 +353,7 @@
     idleState: icon
     runningState: building
     unlitIdleState: unlit
-    unlitRunningState: unlit-building
+    unlitRunningState: unlit
     staticPacks:
     - WFOutpostRationsStatic
   - type: MaterialStorage
@@ -435,11 +412,9 @@
   description: A packed griddle. Use it in hand facing your outpost's floor to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/griddle.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#B0B0B0"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostGriddle
     delay: 2
@@ -453,13 +428,13 @@
   description: A flat hot plate for steaks and eggs. Put the food on it and set the heat.
   components:
   - type: Sprite
-    sprite: Structures/Machines/electric_grill.rsi
+    sprite: _WF/Outposts/Colony/griddle.rsi
     drawdepth: SmallObjects
     snapCardinals: true
     layers:
-    - state: icon
-    - map: ["enum.EntityHeaterVisuals.Setting"]
-      shader: unshaded
+    - state: griddle
+    - state: griddle-lit
+      map: ["enum.EntityHeaterVisuals.Setting"]
       visible: false
   - type: Fixtures
     fixtures:
@@ -497,9 +472,9 @@
       enum.EntityHeaterVisuals.Setting:
         enum.EntityHeaterVisuals.Setting:
           Off: { visible: false }
-          Low: { visible: true, state: low }
-          Medium: { visible: true, state: medium }
-          High: { visible: true, state: high }
+          Low: { visible: true }
+          Medium: { visible: true }
+          High: { visible: true }
   - type: WFRepackable
     pack: WFOutpostGriddlePack
     delay: 2
@@ -513,11 +488,9 @@
   description: A packed electric range. Use it in hand facing your outpost's floor to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/range.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#6E6E6E"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostRange
     delay: 3
@@ -545,15 +518,6 @@
   - type: Appearance
   - type: GenericVisualizer
     visuals:
-      enum.PowerDeviceVisuals.VisualState:
-        enum.MicrowaveVisualizerLayers.Base:
-          Idle: { state: "off_no_door" }
-          Broken: { state: "off_no_door" }
-          Cooking: { state: "off_no_door" }
-        enum.MicrowaveVisualizerLayers.BaseUnlit:
-          Idle: { state: "unlit" }
-          Broken: { state: "unlit" }
-          Cooking: { state: "cooking_unlit" }
       enum.PowerDeviceVisuals.Powered:
         enum.MicrowaveVisualizerLayers.BaseUnlit:
           True: { visible: true }
@@ -561,9 +525,9 @@
       enum.EntityHeaterVisuals.Setting:
         enum.EntityHeaterVisuals.Setting:
           Off: { visible: false }
-          Low: { visible: true, state: range_low }
-          Medium: { visible: true, state: range_medium }
-          High: { visible: true, state: range_high }
+          Low: { visible: true }
+          Medium: { visible: true }
+          High: { visible: true }
   - type: ActivatableUI
     key: enum.MicrowaveUiKey.ElectricRangeKey
   - type: UserInterface
@@ -593,17 +557,17 @@
         - LowImpassable
         hard: false
   - type: Sprite
-    sprite: _NF/Structures/Machines/oven.rsi
+    sprite: _WF/Outposts/Colony/range.rsi
     snapCardinals: true
     layers:
-    - state: off_no_door
+    - state: range
       map: ["enum.MicrowaveVisualizerLayers.Base"]
-    - state: unlit
+    - state: glow
       shader: unshaded
       map: ["enum.MicrowaveVisualizerLayers.BaseUnlit"]
-    - state: oven_door
+    - state: lid
     - map: ["enum.EntityHeaterVisuals.Setting"]
-      state: range_low
+      state: flame
       shader: unshaded
       visible: false
   - type: ApcPowerReceiver

@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Taken from NovaSector (modular_nova/modules/colony_fabricator, https://github.com/NovaSector/NovaSector) via Meridian-Rift",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "sheater-off"
+        },
+        {
+            "name": "sheater-standby",
+            "delays": [
+                [
+                    0.1,
+                    0.4
+                ]
+            ]
+        },
+        {
+            "name": "sheater-heat",
+            "delays": [
+                [
+                    0.2,
+                    0.2
+                ]
+            ]
+        },
+        {
+            "name": "sheater-cool",
+            "delays": [
+                [
+                    0.2,
+                    0.2
+                ]
+            ]
+        },
+        {
+            "name": "packed"
+        }
+    ]
+}

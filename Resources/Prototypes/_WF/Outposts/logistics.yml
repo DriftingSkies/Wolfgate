@@ -433,11 +433,9 @@
   description: A packed materials recycler. Use it in hand facing your outpost's floor to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/recycler.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#A0A0A0"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostRecycler
     delay: 3
@@ -457,6 +455,8 @@
     price: 900
 
 # Organics printer
+  - type: Sprite
+    sprite: _WF/Outposts/Colony/recycler.rsi
 
 - type: entity
   parent: WFBaseOutpostPack
@@ -540,11 +540,9 @@
   description: A packed ore silo. Use it in hand facing your outpost's floor to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/ore_silo.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#B08D57"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostOreSilo
     delay: 3
@@ -558,7 +556,7 @@
   description: Stores ore, sheets and ingots and lends them to linked fabricators nearby.
   components:
   - type: Sprite
-    sprite: Structures/Machines/silo.rsi
+    sprite: _WF/Outposts/Colony/ore_silo.rsi
     snapCardinals: true
     layers:
     - state: silo

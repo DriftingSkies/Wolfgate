@@ -7,7 +7,7 @@
   description: A welding tool that strikes its arc from a built-in charge cell, slowly restoring its own fuel. Prints empty.
   components:
   - type: Sprite
-    sprite: Objects/Tools/welder_experimental.rsi
+    sprite: _WF/Outposts/Colony/arc_welder.rsi
   - type: Item
     sprite: Objects/Tools/welder_experimental.rsi
   - type: SolutionContainerManager
