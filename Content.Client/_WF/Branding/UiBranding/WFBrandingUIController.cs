@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Numerics;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
@@ -90,6 +91,13 @@ public sealed class WFBrandingUIController : UIController
         {
             footer = new WFBrandingFooter(_footerTexture);
             stack.AddChild(footer);
+
+            // The strip lands a frame after the window opened; split the growth so a centred window stays centred.
+            if (window.Parent is LayoutContainer)
+            {
+                var y = MathF.Max(0f, window.Position.Y - WFBrandingFooter.StripHeight / 2f);
+                LayoutContainer.SetPosition(window, new Vector2(window.Position.X, y));
+            }
         }
 
         Restore(footer);
