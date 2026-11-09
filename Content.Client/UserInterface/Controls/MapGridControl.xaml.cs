@@ -235,7 +235,7 @@ public partial class MapGridControl : LayoutContainer
             var frameTime = Timing.FrameTime;
             var diff = (TargetOffset - Offset) * (float)frameTime.TotalSeconds;
 
-            if (Offset.LengthSquared() < RecenterMinimum)
+            if ((Offset - TargetOffset).LengthSquared() < RecenterMinimum) // WOLFGATE(Outposts): snap to the target, not the origin.
             {
                 Offset = TargetOffset;
                 Recentering = false;

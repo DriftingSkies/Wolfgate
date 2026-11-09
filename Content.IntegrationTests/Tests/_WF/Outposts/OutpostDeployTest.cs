@@ -7,8 +7,12 @@ using Content.Server.Cargo.Systems;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Construction.Components;
 using Content.Shared.Construction.Components;
+using Content.Shared.DoAfter;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Interaction;
+using Content.Shared.Item.ItemToggle;
 using Content.Shared.Power.Components;
+using Content.Shared.Verbs;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -143,6 +147,109 @@ public sealed class OutpostDeployTest
         }
 
         await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// A prefab wall's builder welds it fast with a few seconds' welding, and it can't be packed up; cutting the welds
+    /// frees it, and the Pack up verb is offered again.
+    /// </summary>
+    [Test]
+    public async Task WeldingFixesPrefabWalls()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var (layers, user) = await OutpostFoundingTest.Setup(pair);
+        var ground = layers[0];
+        var outposts = server.System<WFOutpostSystem>();
+        var transform = server.System<SharedTransformSystem>();
+        var maps = server.System<SharedMapSystem>();
+        var hands = server.System<SharedHandsSystem>();
+        var verbs = server.System<SharedVerbSystem>();
+        var repackText = Robust.Shared.Localization.Loc.GetString("wf-outpost-repack-verb");
+
+        EntityUid wall = default;
+        EntityUid welder = default;
+        try
+        {
+            await server.WaitAssertion(() =>
+            {
+                var site = OutpostFoundingTest.Site;
+                Assert.That(outposts.TryFound(user, OutpostFoundingTest.SpawnKit(entMan, ground),
+                    new EntityCoordinates(ground, site.X, site.Y), out var found, out var reason), Is.True, $"Founding was refused: {reason}.");
+                var outpost = found!.Value;
+                var grid = entMan.GetComponent<Robust.Shared.Map.Components.MapGridComponent>(outpost);
+                transform.SetCoordinates(user, maps.GridTileToLocal(outpost, grid, new Vector2i(0, 0)));
+                transform.SetWorldRotation(user, Direction.North.ToAngle());
+
+                var panel = entMan.SpawnEntity("WFPrefabWallPanel", entMan.GetComponent<TransformComponent>(user).Coordinates);
+                Assert.That(outposts.TryDeploy(user, (panel, entMan.GetComponent<WFDeployableComponent>(panel)), out var deployed, out reason), Is.True,
+                    $"The wall panel wasn't deployed: {reason}.");
+                wall = deployed!.Value;
+                Assert.That(HasRepackVerb(wall), "A loose prefab wall offers Pack up.");
+
+                welder = entMan.SpawnEntity("Welder", entMan.GetComponent<TransformComponent>(user).Coordinates);
+                Assert.That(hands.TryPickupAnyHand(user, welder), "Precondition: the welder is in hand.");
+                Assert.That(server.System<ItemToggleSystem>().TryActivate(welder, user), "Precondition: the welder is lit.");
+            });
+
+            wall = await Weld(wall, "WFPrefabWallFixed");
+            await server.WaitAssertion(() =>
+            {
+                Assert.That(entMan.GetComponent<TransformComponent>(wall).Anchored, "The welded wall stands anchored.");
+                Assert.That(HasRepackVerb(wall), Is.False, "A welded prefab wall doesn't pack up.");
+            });
+
+            wall = await Weld(wall, "WFPrefabWall");
+            await server.WaitAssertion(() =>
+            {
+                Assert.That(entMan.GetComponent<TransformComponent>(wall).Anchored, "The cut wall stands anchored.");
+                Assert.That(HasRepackVerb(wall), "A prefab wall with its welds cut offers Pack up again.");
+                Assert.That(outposts.TryRepack(user, (wall, entMan.GetComponent<WFRepackableComponent>(wall)), out _, out var reason), Is.True, reason);
+            });
+        }
+        finally
+        {
+            await Teardown(pair, layers);
+        }
+
+        await pair.CleanReturnAsync();
+
+        bool HasRepackVerb(EntityUid target)
+        {
+            return verbs.GetLocalVerbs(target, user, typeof(AlternativeVerb)).Any(v => v.Text == repackText);
+        }
+
+        // Welds the wall, checking it takes a few seconds and not less, and returns what it became.
+        async Task<EntityUid> Weld(EntityUid target, string into)
+        {
+            await server.WaitAssertion(() =>
+            {
+                var interact = new InteractUsingEvent(user, welder, target, entMan.GetComponent<TransformComponent>(target).Coordinates);
+                entMan.EventBus.RaiseLocalEvent(target, interact);
+                Assert.That(interact.Handled, $"Nothing took the welder to {entMan.ToPrettyString(target)}.");
+                Assert.That(entMan.GetComponent<DoAfterComponent>(user).DoAfters, Is.Not.Empty, "The welding started no do-after.");
+            });
+
+            await pair.RunSeconds(2f);
+            await server.WaitAssertion(() => Assert.That(entMan.Deleted(target), Is.False, "The weld finished in under 2 seconds."));
+            await pair.RunSeconds(5f);
+
+            EntityUid result = default;
+            await server.WaitAssertion(() =>
+            {
+                Assert.That(entMan.Deleted(target), "The welded structure wasn't replaced.");
+                var coords = transform.GetMapCoordinates(user);
+                foreach (var near in server.System<EntityLookupSystem>().GetEntitiesInRange(coords, 2f))
+                {
+                    if (entMan.GetComponent<MetaDataComponent>(near).EntityPrototype?.ID == into)
+                        result = near;
+                }
+
+                Assert.That(result, Is.Not.EqualTo(default(EntityUid)), $"No {into} stands where the wall was.");
+            });
+            return result;
+        }
     }
 
     /// <summary>

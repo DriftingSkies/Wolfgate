@@ -67,7 +67,7 @@
                     <Button Name="CancelLoadButton" Text="{Loc 'wf-outpost-console-cancel-load'}" StyleClasses="Caution"/>
                 </BoxContainer>
             </PanelContainer>
-            <BoxContainer Orientation="Horizontal" VerticalExpand="True" SeparationOverride="8">
+            <SplitContainer Name="SavesSplit" Orientation="Horizontal" VerticalExpand="True">
                 <ScrollContainer HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False">
                     <BoxContainer Orientation="Vertical" SeparationOverride="6">
                         <Label Name="ReadingLabel" Text="{Loc 'wf-outpost-console-saves-reading'}" StyleClasses="LabelSecondaryColor"/>
@@ -77,7 +77,7 @@
                 <PanelContainer StyleClasses="AngleRect" HorizontalExpand="True" VerticalExpand="True">
                     <outposts:WFOutpostPreviewBox Name="PreviewBox" Margin="6" VerticalExpand="True"/>
                 </PanelContainer>
-            </BoxContainer>
+            </SplitContainer>
         </BoxContainer>
         <BoxContainer Name="TradeTab" Orientation="Vertical" Margin="8" SeparationOverride="8">
             <BoxContainer Orientation="Horizontal" SeparationOverride="8">

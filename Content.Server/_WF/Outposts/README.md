@@ -96,8 +96,8 @@ Fabricator (`fabricator.yml`, `construction.yml`, `recipes.yml`): the outpost fa
 slow as an autolathe and with no parts to upgrade; like a stock lathe it links ore and fabrication silos and shows
 sheets going in (its `inserting` state is drawn in `build_colony.py`), and plays Nova's start, loop and end sounds
 while its queue runs (`WFLatheRunningSoundSystem`). It prints foundation plates, roof panels, prefab walls, doors and
-shutters (gizmos that pack up again; a wall welded in place, `WFPrefabWallFixed` through `WFPrefabWallGraph`, no longer
-does until its welds are cut), window and airlock kits (colony-pattern ones that come apart as stock ones),
+shutters (gizmos that pack up again; a wall welded in place for 5 seconds, `WFPrefabWallFixed` through `WFWeldSwapComponent`, no
+longer does until its welds are cut, by its owner or builders), window and airlock kits (colony-pattern ones that come apart as stock ones),
 colony floor tiles (`floors.yml`), another fabricator, the powered driver, the arc welder (it makes its own fuel) and
 the stock parts, electronics and cables. The gizmo and prefab art in `Textures/_WF/Outposts/Colony` is NovaSector's
 colony fabricator set (CC BY-SA 3.0), adapted to our 3/4 view: the prefab wall and window are the stock solid wall
@@ -282,6 +282,7 @@ its placement, claims and saves never reach below it.
 - [`Content.Server/_WF/Outposts/Components/WFRepackableComponent.cs`](Components/WFRepackableComponent.cs)
 - [`Content.Server/_WF/Outposts/Components/WFSolarStringComponent.cs`](Components/WFSolarStringComponent.cs)
 - [`Content.Server/_WF/Outposts/Components/WFUniversalTradeHubComponent.cs`](Components/WFUniversalTradeHubComponent.cs)
+- [`Content.Server/_WF/Outposts/Components/WFWeldSwapComponent.cs`](Components/WFWeldSwapComponent.cs)
 - [`Content.Server/_WF/Outposts/Components/WFWindTurbineComponent.cs`](Components/WFWindTurbineComponent.cs)
 - [`Content.Server/_WF/Outposts/NavMapSystem.Outposts.cs`](NavMapSystem.Outposts.cs)
 - [`Content.Server/_WF/Outposts/ServerDbManager.Outposts.cs`](ServerDbManager.Outposts.cs)
@@ -310,6 +311,7 @@ its placement, claims and saves never reach below it.
 - [`Content.Server/_WF/Outposts/WFOutpostSystem.Saves.cs`](WFOutpostSystem.Saves.cs)
 - [`Content.Server/_WF/Outposts/WFOutpostSystem.Settlers.cs`](WFOutpostSystem.Settlers.cs)
 - [`Content.Server/_WF/Outposts/WFOutpostSystem.Trade.cs`](WFOutpostSystem.Trade.cs)
+- [`Content.Server/_WF/Outposts/WFOutpostSystem.Welding.cs`](WFOutpostSystem.Welding.cs)
 - [`Content.Server/_WF/Outposts/WFPoiClaimTerminalSystem.cs`](WFPoiClaimTerminalSystem.cs)
 - [`Content.Server/_WF/Outposts/WFTradeDropSystem.cs`](WFTradeDropSystem.cs)
 
@@ -464,6 +466,8 @@ its placement, claims and saves never reach below it.
 ## Non-modular edits
 
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs): the account's outpost saves, as a tab of their own
+- [`Content.Client/Pinpointer/UI/NavMapControl.cs`](../../../Content.Client/Pinpointer/UI/NavMapControl.cs): agree with Draw, so a map framed off the origin doesn't flicker.
+- [`Content.Client/UserInterface/Controls/MapGridControl.xaml.cs`](../../../Content.Client/UserInterface/Controls/MapGridControl.xaml.cs): snap to the target, not the origin.
 - [`Content.Server.Database/Model.cs`](../../../Content.Server.Database/Model.cs)
   - saved outposts
   - round-end sales owed to offline owners

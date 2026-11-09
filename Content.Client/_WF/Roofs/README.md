@@ -45,10 +45,6 @@ rules), `WFRoofOverlay` (the drawing).
 
 - [`Resources/Textures/_WF/Roofs/roof.rsi/`](../../../Resources/Textures/_WF/Roofs/roof.rsi/)
 
-### Tools
-
-- [`Tools/_WF/Roofs/build_roof.py`](../../../Tools/_WF/Roofs/build_roof.py)
-
 ## Non-modular edits
 
 - [`Content.Client/Light/RoofOverlay.cs`](../../Light/RoofOverlay.cs)

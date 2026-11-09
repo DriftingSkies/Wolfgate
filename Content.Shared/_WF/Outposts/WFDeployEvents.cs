@@ -10,3 +10,7 @@ public sealed partial class WFDeployDoAfterEvent : SimpleDoAfterEvent;
 /// <summary>A deployed outpost gizmo finished packing up.</summary>
 [Serializable, NetSerializable]
 public sealed partial class WFRepackDoAfterEvent : SimpleDoAfterEvent;
+
+/// <summary>An outpost structure finished being welded into another.</summary>
+[Serializable, NetSerializable]
+public sealed partial class WFWeldSwapDoAfterEvent : SimpleDoAfterEvent;

@@ -29,6 +29,9 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
     [Dependency] private IPlayerManager _player = default!;
     [Dependency] private IPrototypeManager _proto = default!;
 
+    /// <summary>What the save list was last built from; the console refreshes every second, and a rebuild drops a pending confirm.</summary>
+    private (List<WFOutpostSaveSlot?>? Slots, bool Locked, bool IsOwner)? _builtSlots;
+
     /// <summary>The owner asked for a new name.</summary>
     public event Action<string>? OnRename;
 
@@ -105,6 +108,10 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
         WithdrawOfferButton.OnPressed += _ => OnWithdrawOffer?.Invoke();
         BuildLegend();
         BuildCatalogue();
+
+        // The list is measured at its own half, so a wrapped description takes the height it is drawn at.
+        SavesSplit.SetSplitFractionOnNextArrange(0.5f);
+        SavesSplit.OnSplitResized += SavesSplit.InvalidateMeasure;
     }
 
     /// <summary>A card: a dark angled panel round a row of content.</summary>
@@ -228,11 +235,16 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
         UpdateSale(state.Sale, isOwner, state.Busy || state.Pending != null);
 
         ReadingLabel.Visible = state.Slots == null;
+        var locked = !isOwner || state.Busy || state.Pending != null;
+        if (_builtSlots is { } built && built.Locked == locked && built.IsOwner == isOwner
+            && (built.Slots == null ? state.Slots == null : state.Slots != null && built.Slots.SequenceEqual(state.Slots)))
+            return;
+
+        _builtSlots = (state.Slots, locked, isOwner);
         SlotsBox.RemoveAllChildren();
         if (state.Slots == null)
             return;
 
-        var locked = !isOwner || state.Busy || state.Pending != null;
         for (var i = 0; i < state.Slots.Count; i++)
         {
             SlotsBox.AddChild(BuildSlot(i, state.Slots[i], locked, isOwner));

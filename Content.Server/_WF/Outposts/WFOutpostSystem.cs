@@ -67,6 +67,7 @@ public sealed partial class WFOutpostSystem : EntitySystem
         InitializeSale();
         InitializeSettlers();
         InitializeBasements();
+        InitializeWelding();
 
         Subs.BuiEvents<WFOutpostConsoleComponent>(WFOutpostConsoleUiKey.Key, subs =>
         {

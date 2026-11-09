@@ -262,7 +262,7 @@ public partial class NavMapControl : MapGridControl
     {
         base.MouseMove(args);
 
-        if (Offset != Vector2.Zero)
+        if (Offset != TargetOffset) // WOLFGATE(Outposts): agree with Draw, so a map framed off the origin doesn't flicker.
             _recenter.Disabled = false;
         else
             _recenter.Disabled = true;

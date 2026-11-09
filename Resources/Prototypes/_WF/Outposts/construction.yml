@@ -64,9 +64,9 @@
   - type: WFRepackable
     pack: WFPrefabWallPanel
     delay: 2
-  - type: Construction
-    graph: WFPrefabWallGraph
-    node: loose
+  - type: WFWeldSwap
+    into: WFPrefabWallFixed
+    done: wf-prefab-wall-welded
 
 # A welded prefab wall no longer packs up; welding its seams open again frees it.
 - type: entity
@@ -75,28 +75,9 @@
   suffix: Welded
   description: A prefab wall section with its seams welded, fixed in place. Cut the welds to pack it up again.
   components:
-  - type: Construction
-    graph: WFPrefabWallGraph
-    node: fixed
-
-- type: constructionGraph
-  id: WFPrefabWallGraph
-  start: loose
-  graph:
-  - node: loose
-    entity: WFPrefabWall
-    edges:
-    - to: fixed
-      steps:
-      - tool: Welding
-        doAfter: 3
-  - node: fixed
-    entity: WFPrefabWallFixed
-    edges:
-    - to: loose
-      steps:
-      - tool: Welding
-        doAfter: 5
+  - type: WFWeldSwap
+    into: WFPrefabWall
+    done: wf-prefab-wall-cut
 
 - type: entity
   parent: WFBaseOutpostPack

@@ -129,6 +129,9 @@ wf-outpost-repack-verb = Pack up
 wf-outpost-repack-not-yours = Only the outpost's owner and its builders can pack this up.
 wf-outpost-repack-failed = It won't go back into its pack.
 wf-outpost-repack-console-built = Clear the outpost back to its founding square before packing up its console.
+wf-outpost-weld-not-yours = Only the outpost's owner and its builders can weld this.
+wf-prefab-wall-welded = You weld the wall's seams. It's fixed in place.
+wf-prefab-wall-cut = You cut the wall's welds. It can be packed up again.
 
 ## Fabricator
 
