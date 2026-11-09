@@ -34,7 +34,7 @@ public sealed class WFFuelRodGeneratorSystem : EntitySystem
 
     private void OnInteractUsing(Entity<WFFuelRodGeneratorComponent> ent, ref InteractUsingEvent args)
     {
-        if (args.Handled || MetaData(args.Used).EntityPrototype?.ID != ent.Comp.Rod)
+        if (args.Handled || Prototype(args.Used)?.ID != ent.Comp.Rod.Id)
             return;
 
         args.Handled = true;
@@ -60,13 +60,13 @@ public sealed class WFFuelRodGeneratorSystem : EntitySystem
             args.Fuel = charge.Fuel;
     }
 
-    private void OnUseFuel(Entity<WFFuelRodGeneratorComponent> ent, GeneratorUseFuel args)
+    private void OnUseFuel(Entity<WFFuelRodGeneratorComponent> ent, ref GeneratorUseFuel args)
     {
         if (TryGetRod(ent, out var charge))
             charge.Fuel = Math.Max(0f, charge.Fuel - args.FuelUsed);
     }
 
-    private void OnEmpty(Entity<WFFuelRodGeneratorComponent> ent, GeneratorEmpty args)
+    private void OnEmpty(Entity<WFFuelRodGeneratorComponent> ent, ref GeneratorEmpty args)
     {
         if (_container.TryGetContainer(ent, WFFuelRodGeneratorComponent.ContainerId, out var slot))
             _container.EmptyContainer(slot);
