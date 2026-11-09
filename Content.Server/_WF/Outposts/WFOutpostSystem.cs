@@ -7,6 +7,7 @@ using Content.Server._WF.Outposts.Components;
 using Content.Server._WF.Planets;
 using Content.Server.Administration.Logs;
 using Content.Server.Parallax;
+using Content.Server.Pinpointer;
 using Content.Server.Shuttles.Systems;
 using Content.Shared._WF.Outposts;
 using Content.Shared._WF.Planets;
@@ -36,6 +37,7 @@ public sealed partial class WFOutpostSystem : EntitySystem
     [Dependency] private ITileDefinitionManager _tiles = default!;
     [Dependency] private SharedMapSystem _maps = default!;
     [Dependency] private MetaDataSystem _metaData = default!;
+    [Dependency] private NavMapSystem _navMap = default!;
     [Dependency] private BiomeSystem _biome = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
@@ -212,6 +214,8 @@ public sealed partial class WFOutpostSystem : EntitySystem
         RemComp<ImplicitRoofComponent>(grid);
         EnsureComp<RoofComponent>(grid);
         EnsureComp<WFPlanetTerrainGridComponent>(grid);
+        // The console's Overview map draws the outpost from its nav map.
+        _navMap.RefreshOutpostNavMap(grid);
     }
 
     /// <summary>
@@ -459,6 +463,10 @@ public sealed partial class WFOutpostSystem : EntitySystem
             GetSaleView(console, (grid, outpost, gridComp)));
         if (Transform(grid).MapUid is { } map && _raidWindow.TryGetWindowOn(map, out var active, out var until))
             state.Raid = new WFOutpostRaidView(active, until > TimeSpan.Zero ? _timing.CurTime + until : null);
+        state.ClaimMargin = ClaimMargin;
+        GetHubStatus((grid, outpost), out var hub);
+        if (hub != null && Transform(hub.Value).GridUid == grid)
+            state.Hub = GetNetEntity(hub.Value);
         _ui.SetUiState(console.Owner, WFOutpostConsoleUiKey.Key, state);
     }
 

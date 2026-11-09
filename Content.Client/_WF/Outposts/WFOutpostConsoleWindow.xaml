@@ -2,72 +2,141 @@
                       xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
                       xmlns:outposts="clr-namespace:Content.Client._WF.Outposts"
                       xmlns:access="clr-namespace:Content.Client._WF.ShipAccess"
-                      MinSize="520 360"
-                      SetSize="760 600"
+                      MinSize="640 460"
+                      SetSize="900 640"
                       Title="{Loc 'wf-outpost-console-title'}">
     <TabContainer Name="Tabs" Margin="8">
-        <BoxContainer Name="OverviewTab" Orientation="Vertical" Margin="8" SeparationOverride="8">
-            <Label Text="{Loc 'wf-outpost-console-name'}" StyleClasses="LabelSubHeading"/>
-            <BoxContainer Orientation="Horizontal" SeparationOverride="4">
-                <LineEdit Name="NameEdit" HorizontalExpand="True"/>
-                <Button Name="RenameButton" Text="{Loc 'wf-outpost-console-rename'}"/>
+        <BoxContainer Name="OverviewTab" Orientation="Horizontal" Margin="8" SeparationOverride="8">
+            <PanelContainer StyleClasses="AngleRect" HorizontalExpand="True" VerticalExpand="True">
+                <BoxContainer Orientation="Vertical" Margin="6" SeparationOverride="4">
+                    <outposts:WFOutpostMapControl Name="OutpostMap" HorizontalExpand="True" VerticalExpand="True" MinSize="280 280"/>
+                    <BoxContainer Name="MapLegend" Orientation="Horizontal" SeparationOverride="14" HorizontalAlignment="Center"/>
+                </BoxContainer>
+            </PanelContainer>
+            <BoxContainer Orientation="Vertical" MinWidth="270" MaxWidth="300" SeparationOverride="8">
+                <PanelContainer StyleClasses="AngleRect">
+                    <BoxContainer Orientation="Vertical" Margin="10" SeparationOverride="4">
+                        <Label Text="{Loc 'wf-outpost-console-name'}" StyleClasses="LabelSubText"/>
+                        <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                            <LineEdit Name="NameEdit" HorizontalExpand="True"/>
+                            <Button Name="RenameButton" Text="{Loc 'wf-outpost-console-rename'}" StyleClasses="OpenBoth"/>
+                        </BoxContainer>
+                        <BoxContainer Orientation="Horizontal" SeparationOverride="8" Margin="0 4 0 0">
+                            <Label Text="{Loc 'wf-outpost-console-owner'}" StyleClasses="LabelSecondaryColor"/>
+                            <Label Name="OwnerLabel" HorizontalExpand="True" Align="Right" ClipText="True"/>
+                        </BoxContainer>
+                    </BoxContainer>
+                </PanelContainer>
+                <PanelContainer StyleClasses="AngleRect">
+                    <BoxContainer Orientation="Vertical" Margin="10" SeparationOverride="4">
+                        <Label Text="{Loc 'wf-outpost-console-capacity'}" StyleClasses="LabelHeading"/>
+                        <BoxContainer Orientation="Horizontal">
+                            <Label Text="{Loc 'wf-outpost-console-tiles'}" StyleClasses="LabelSecondaryColor" HorizontalExpand="True"/>
+                            <Label Name="TilesLabel"/>
+                        </BoxContainer>
+                        <ProgressBar Name="TilesBar" MinValue="0" MaxValue="1" MinHeight="10" HorizontalExpand="True"/>
+                        <BoxContainer Orientation="Horizontal" Margin="0 4 0 0">
+                            <Label Text="{Loc 'wf-outpost-console-entities'}" StyleClasses="LabelSecondaryColor" HorizontalExpand="True"/>
+                            <Label Name="EntitiesLabel"/>
+                        </BoxContainer>
+                        <ProgressBar Name="EntitiesBar" MinValue="0" MaxValue="1" MinHeight="10" HorizontalExpand="True"/>
+                    </BoxContainer>
+                </PanelContainer>
+                <PanelContainer StyleClasses="AngleRect">
+                    <BoxContainer Orientation="Vertical" Margin="10" SeparationOverride="4">
+                        <Label Text="{Loc 'wf-outpost-console-status'}" StyleClasses="LabelHeading"/>
+                        <Label Text="{Loc 'wf-outpost-trade-hub'}" StyleClasses="LabelSecondaryColor"/>
+                        <Label Name="OverviewHubLabel" ClipText="True"/>
+                        <BoxContainer Orientation="Horizontal" Margin="0 4 0 0">
+                            <Label Text="{Loc 'wf-outpost-console-orders'}" StyleClasses="LabelSecondaryColor" HorizontalExpand="True"/>
+                            <Label Name="OverviewOrdersLabel"/>
+                        </BoxContainer>
+                        <Label Name="RaidTitle" Text="{Loc 'wf-outpost-console-raids'}" StyleClasses="LabelSecondaryColor" Visible="False" Margin="0 4 0 0"/>
+                        <Label Name="RaidLabel" Visible="False" ClipText="True"/>
+                    </BoxContainer>
+                </PanelContainer>
             </BoxContainer>
-            <GridContainer Columns="2" HSeparationOverride="12">
-                <Label Text="{Loc 'wf-outpost-console-owner'}" StyleClasses="LabelSecondaryColor"/>
-                <Label Name="OwnerLabel"/>
-                <Label Text="{Loc 'wf-outpost-console-tiles'}" StyleClasses="LabelSecondaryColor"/>
-                <Label Name="TilesLabel"/>
-                <Label Text="{Loc 'wf-outpost-console-entities'}" StyleClasses="LabelSecondaryColor"/>
-                <Label Name="EntitiesLabel"/>
-                <Label Name="RaidTitle" Text="{Loc 'wf-outpost-console-raids'}" StyleClasses="LabelSecondaryColor" Visible="False"/>
-                <Label Name="RaidLabel" Visible="False"/>
-            </GridContainer>
         </BoxContainer>
         <BoxContainer Name="SavesTab" Orientation="Vertical" Margin="8" SeparationOverride="8">
-            <RichTextLabel Name="SavesHint"/>
-            <BoxContainer Name="PendingBox" Orientation="Horizontal" SeparationOverride="8" Visible="False">
-                <Label Name="PendingLabel" HorizontalExpand="True" ClipText="True"/>
-                <Button Name="CancelLoadButton" Text="{Loc 'wf-outpost-console-cancel-load'}"/>
+            <PanelContainer StyleClasses="AngleRect">
+                <RichTextLabel Name="SavesHint" Margin="10 6"/>
+            </PanelContainer>
+            <PanelContainer Name="PendingBox" StyleClasses="AngleRect" Visible="False">
+                <BoxContainer Orientation="Horizontal" SeparationOverride="8" Margin="10 6">
+                    <Label Name="PendingLabel" HorizontalExpand="True" ClipText="True"/>
+                    <Button Name="CancelLoadButton" Text="{Loc 'wf-outpost-console-cancel-load'}" StyleClasses="Caution"/>
+                </BoxContainer>
+            </PanelContainer>
+            <BoxContainer Orientation="Horizontal" VerticalExpand="True" SeparationOverride="8">
+                <ScrollContainer HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False">
+                    <BoxContainer Orientation="Vertical" SeparationOverride="6">
+                        <Label Name="ReadingLabel" Text="{Loc 'wf-outpost-console-saves-reading'}" StyleClasses="LabelSecondaryColor"/>
+                        <BoxContainer Name="SlotsBox" Orientation="Vertical" SeparationOverride="6"/>
+                    </BoxContainer>
+                </ScrollContainer>
+                <PanelContainer StyleClasses="AngleRect" HorizontalExpand="True" VerticalExpand="True">
+                    <outposts:WFOutpostPreviewBox Name="PreviewBox" Margin="6" VerticalExpand="True"/>
+                </PanelContainer>
             </BoxContainer>
-            <Label Name="ReadingLabel" Text="{Loc 'wf-outpost-console-saves-reading'}" StyleClasses="LabelSecondaryColor"/>
-            <BoxContainer Name="SlotsBox" Orientation="Vertical" SeparationOverride="6"/>
-            <outposts:WFOutpostPreviewBox Name="PreviewBox" VerticalExpand="True"/>
         </BoxContainer>
         <BoxContainer Name="TradeTab" Orientation="Vertical" Margin="8" SeparationOverride="8">
-            <GridContainer Columns="2" HSeparationOverride="12">
-                <Label Text="{Loc 'wf-outpost-trade-hub'}" StyleClasses="LabelSecondaryColor"/>
-                <Label Name="HubLabel"/>
-                <Label Text="{Loc 'wf-outpost-trade-balance'}" StyleClasses="LabelSecondaryColor"/>
-                <Label Name="BalanceLabel"/>
-            </GridContainer>
-            <Label Name="OrdersHeader" StyleClasses="LabelSubHeading"/>
-            <BoxContainer Name="OrdersBox" Orientation="Vertical" SeparationOverride="2"/>
-            <LineEdit Name="TradeSearch" PlaceHolder="{Loc 'wf-outpost-trade-search'}"/>
+            <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                <PanelContainer StyleClasses="AngleRect" HorizontalExpand="True">
+                    <BoxContainer Orientation="Vertical" Margin="10 6">
+                        <Label Text="{Loc 'wf-outpost-trade-hub'}" StyleClasses="LabelSubText"/>
+                        <Label Name="HubLabel" ClipText="True"/>
+                    </BoxContainer>
+                </PanelContainer>
+                <PanelContainer StyleClasses="AngleRect" MinWidth="200">
+                    <BoxContainer Orientation="Vertical" Margin="10 6">
+                        <Label Text="{Loc 'wf-outpost-trade-balance'}" StyleClasses="LabelSubText"/>
+                        <Label Name="BalanceLabel" StyleClasses="LabelBig"/>
+                    </BoxContainer>
+                </PanelContainer>
+            </BoxContainer>
+            <PanelContainer StyleClasses="AngleRect">
+                <BoxContainer Orientation="Vertical" Margin="10 6" SeparationOverride="4">
+                    <Label Name="OrdersHeader" StyleClasses="LabelHeading"/>
+                    <BoxContainer Name="OrdersBox" Orientation="Vertical" SeparationOverride="4"/>
+                </BoxContainer>
+            </PanelContainer>
+            <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                <Label Text="{Loc 'wf-outpost-trade-catalogue'}" StyleClasses="LabelHeading" HorizontalExpand="True"/>
+                <LineEdit Name="TradeSearch" MinWidth="260" PlaceHolder="{Loc 'wf-outpost-trade-search'}"/>
+            </BoxContainer>
             <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
                 <BoxContainer Name="CatalogueBox" Orientation="Vertical" SeparationOverride="4"/>
             </ScrollContainer>
         </BoxContainer>
         <BoxContainer Name="SellTab" Orientation="Vertical" Margin="8" SeparationOverride="8">
-            <RichTextLabel Name="SellHint"/>
-            <GridContainer Columns="2" HSeparationOverride="12">
-                <Label Text="{Loc 'wf-outpost-sell-value'}" StyleClasses="LabelSecondaryColor"/>
-                <Label Name="SellValueLabel"/>
-            </GridContainer>
-            <BoxContainer Orientation="Horizontal" SeparationOverride="8">
-                <controls:ConfirmButton Name="SellButton" Text="{Loc 'wf-outpost-sell-button'}"/>
-                <CheckBox Name="SellAtRoundEndCheck" Text="{Loc 'wf-outpost-sell-round-end-toggle'}"/>
-            </BoxContainer>
-            <Label Text="{Loc 'wf-outpost-offer-header'}" StyleClasses="LabelSubHeading"/>
-            <BoxContainer Orientation="Horizontal" SeparationOverride="4">
-                <OptionButton Name="BuyerOption" HorizontalExpand="True"/>
-                <LineEdit Name="OfferPriceEdit" MinWidth="120" PlaceHolder="{Loc 'wf-outpost-offer-price'}"/>
-                <Button Name="OfferButton" Text="{Loc 'wf-outpost-offer-button'}"/>
-                <Button Name="RefreshBuyersButton" Text="{Loc 'wf-outpost-offer-refresh'}"/>
-            </BoxContainer>
-            <BoxContainer Name="OfferBox" Orientation="Horizontal" SeparationOverride="8" Visible="False">
-                <Label Name="OfferLabel" HorizontalExpand="True" ClipText="True"/>
-                <Button Name="WithdrawOfferButton" Text="{Loc 'wf-outpost-offer-withdraw'}"/>
-            </BoxContainer>
+            <PanelContainer StyleClasses="AngleRect">
+                <BoxContainer Orientation="Vertical" Margin="10" SeparationOverride="6">
+                    <RichTextLabel Name="SellHint"/>
+                    <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                        <Label Text="{Loc 'wf-outpost-sell-value'}" StyleClasses="LabelSecondaryColor"/>
+                        <Label Name="SellValueLabel" StyleClasses="LabelBig" HorizontalExpand="True"/>
+                    </BoxContainer>
+                    <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                        <controls:ConfirmButton Name="SellButton" Text="{Loc 'wf-outpost-sell-button'}" StyleClasses="Caution"/>
+                        <CheckBox Name="SellAtRoundEndCheck" Text="{Loc 'wf-outpost-sell-round-end-toggle'}"/>
+                    </BoxContainer>
+                </BoxContainer>
+            </PanelContainer>
+            <PanelContainer StyleClasses="AngleRect">
+                <BoxContainer Orientation="Vertical" Margin="10" SeparationOverride="6">
+                    <Label Text="{Loc 'wf-outpost-offer-header'}" StyleClasses="LabelHeading"/>
+                    <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                        <OptionButton Name="BuyerOption" HorizontalExpand="True"/>
+                        <LineEdit Name="OfferPriceEdit" MinWidth="120" PlaceHolder="{Loc 'wf-outpost-offer-price'}"/>
+                        <Button Name="OfferButton" Text="{Loc 'wf-outpost-offer-button'}"/>
+                        <Button Name="RefreshBuyersButton" Text="{Loc 'wf-outpost-offer-refresh'}"/>
+                    </BoxContainer>
+                    <BoxContainer Name="OfferBox" Orientation="Horizontal" SeparationOverride="8" Visible="False">
+                        <Label Name="OfferLabel" HorizontalExpand="True" ClipText="True"/>
+                        <Button Name="WithdrawOfferButton" Text="{Loc 'wf-outpost-offer-withdraw'}"/>
+                    </BoxContainer>
+                </BoxContainer>
+            </PanelContainer>
         </BoxContainer>
         <access:ShipAccessScreen Name="AccessTab" Access="Public" Margin="8"/>
     </TabContainer>

@@ -7,7 +7,7 @@
   name: wf-outpost-preset-homestead
   description: wf-outpost-preset-homestead-desc
   grid: /SharedMaps/_WF/Outposts/homestead.yml
-  price: 12500
+  price: 15500
   order: 0
 
 - type: wfOutpostPreset
@@ -15,7 +15,7 @@
   name: wf-outpost-preset-workshop
   description: wf-outpost-preset-workshop-desc
   grid: /SharedMaps/_WF/Outposts/workshop.yml
-  price: 22500
+  price: 28000
   order: 1
 
 - type: wfOutpostPreset
@@ -23,7 +23,7 @@
   name: wf-outpost-preset-farmstead
   description: wf-outpost-preset-farmstead-desc
   grid: /SharedMaps/_WF/Outposts/farmstead.yml
-  price: 21000
+  price: 24000
   order: 2
 
 - type: wfOutpostPreset
@@ -31,5 +31,5 @@
   name: wf-outpost-preset-bastion
   description: wf-outpost-preset-bastion-desc
   grid: /SharedMaps/_WF/Outposts/bastion.yml
-  price: 36000
+  price: 44000
   order: 3

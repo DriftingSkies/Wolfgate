@@ -26,8 +26,10 @@ An outpost is a terrain grid (`WFPlanetTerrainGridComponent`, from Planets), not
 so weather and lightning reach its bare tiles. Walls roof the tile they stand on, and roof panels (`WFOutpostRoofPanel`)
 roof a floor tile (`WFOutpostSystem.Roofs`). Carcinoma's tendrils leave terrain grids alone.
 
-The console's Overview tab shows the outpost's name, owner, floor tiles and objects against their caps (objects:
-`wf.outposts.max_entities`, 2,000, what a save can hold), and lets the owner rename it (30 characters). Only the owner
+The console's Overview tab shows a top-down map of the outpost (`WFOutpostMapControl`, a `NavMapControl` fed by the
+grid's nav map, refreshed when it is held down) with its claim outlined and the console and trade hub marked, next to
+its name, owner, trade hub status, and floor tiles and objects as bars against their caps (objects:
+`wf.outposts.max_entities`, 2,000, what a save can hold). The owner can rename it (30 characters). Only the owner
 opens the console. Plates and roof panels are laid by the owner and by cards listed as builders on the Access tab.
 
 Access (`WFOutpostSystem.Access`): an outpost takes ship access (`WFShipAccessComponent`, module ShipAccess) like a
@@ -93,7 +95,9 @@ slow as an autolathe and with no parts to upgrade. It prints foundation plates, 
 shutters (gizmos that pack up again), window and airlock kits (colony-pattern ones that come apart as stock ones),
 colony floor tiles (`floors.yml`), another fabricator, the powered driver, the arc welder (it makes its own fuel) and
 the stock parts, electronics and cables. The gizmo and prefab art in `Textures/_WF/Outposts/Colony` is NovaSector's
-colony fabricator set (CC BY-SA 3.0); `build_colony.py` and `build_walls.py` in `Tools/_WF/Outposts` rebuild it from the DMIs.
+colony fabricator set (CC BY-SA 3.0), adapted to our 3/4 view: the prefab wall and window are the stock solid wall
+and window recoloured to Nova's palette, and the doors' lit lids are painted as our dark wall tops. `build_colony.py`
+and `build_walls.py` in `Tools/_WF/Outposts` rebuild it from the DMIs.
 It never prints a console. Its `BlueprintReceiver` takes only outpost recipe disks (tag `WFOutpostRecipeDisk`). A POI
 workshop leaves one disk (`WFOutpostRecipeDiskWorkshopSpawner`): the homestead disk 60% of the time, the T2 industrial
 disk (autolathe, ore processor, biogenerator, gas recycler) 30%, the T3 advanced disk (protolathe, circuit imprinter,
@@ -197,6 +201,8 @@ Its value at claiming (`ClaimBaseline`, saved) is taken off its sale value, so a
 
 Presets (`WFOutpostPresetPrototype`, `presets.yml`, grids in `Resources/SharedMaps/_WF/Outposts`): ready-made outposts,
 the homestead, workshop, farmstead and bastion, each with a console, pods, a trade hub under open sky and its own power.
+They use the colony prefab walls, windows, doors and floors players make at the fabricator, lay plates only where
+something stands, and are laid out as rooms added on over time, so they read as player-built.
 The console's Saves tab lists them after the slots (`TryStartPresetLoad`, in place of a fresh outpost like a load) and an
 Outpost crew's page lists them after the host's saves (`TryQueuePresetDrop`). Both stage the grid like a save, for the
 preset's fixed price, and land it as no slot under the preset's name; it is saved only when its owner chooses. Clients
@@ -258,6 +264,7 @@ its placement, claims and saves never reach below it.
 - [`Content.Server/_WF/Outposts/Components/WFSolarStringComponent.cs`](Components/WFSolarStringComponent.cs)
 - [`Content.Server/_WF/Outposts/Components/WFUniversalTradeHubComponent.cs`](Components/WFUniversalTradeHubComponent.cs)
 - [`Content.Server/_WF/Outposts/Components/WFWindTurbineComponent.cs`](Components/WFWindTurbineComponent.cs)
+- [`Content.Server/_WF/Outposts/NavMapSystem.Outposts.cs`](NavMapSystem.Outposts.cs)
 - [`Content.Server/_WF/Outposts/ServerDbManager.Outposts.cs`](ServerDbManager.Outposts.cs)
 - [`Content.Server/_WF/Outposts/WFLandingPadSystem.cs`](WFLandingPadSystem.cs)
 - [`Content.Server/_WF/Outposts/WFOutpostEvents.cs`](WFOutpostEvents.cs)
@@ -309,6 +316,7 @@ its placement, claims and saves never reach below it.
 - [`Content.Client/_WF/Outposts/WFOutpostConsoleWindow.xaml`](../../../Content.Client/_WF/Outposts/WFOutpostConsoleWindow.xaml)
 - [`Content.Client/_WF/Outposts/WFOutpostConsoleWindow.xaml.cs`](../../../Content.Client/_WF/Outposts/WFOutpostConsoleWindow.xaml.cs)
 - [`Content.Client/_WF/Outposts/WFOutpostJoinSystem.cs`](../../../Content.Client/_WF/Outposts/WFOutpostJoinSystem.cs)
+- [`Content.Client/_WF/Outposts/WFOutpostMapControl.cs`](../../../Content.Client/_WF/Outposts/WFOutpostMapControl.cs)
 - [`Content.Client/_WF/Outposts/WFOutpostPendingLoadOverlay.cs`](../../../Content.Client/_WF/Outposts/WFOutpostPendingLoadOverlay.cs)
 - [`Content.Client/_WF/Outposts/WFOutpostPendingLoadOverlaySystem.cs`](../../../Content.Client/_WF/Outposts/WFOutpostPendingLoadOverlaySystem.cs)
 - [`Content.Client/_WF/Outposts/WFOutpostPreviewBox.cs`](../../../Content.Client/_WF/Outposts/WFOutpostPreviewBox.cs)

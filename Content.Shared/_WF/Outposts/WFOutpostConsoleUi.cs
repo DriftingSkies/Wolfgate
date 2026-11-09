@@ -39,6 +39,12 @@ public sealed class WFOutpostConsoleState : BoundUserInterfaceState
     /// <summary>The raid window on the outpost's world; null where nothing raids.</summary>
     public WFOutpostRaidView? Raid;
 
+    /// <summary>How far the outpost's claim reaches past its floor, in tiles, for the Overview map.</summary>
+    public int ClaimMargin;
+
+    /// <summary>The outpost's own trade hub, for the Overview map.</summary>
+    public NetEntity? Hub;
+
     public WFOutpostConsoleState(string name, string ownerName, NetUserId owner, int tiles, int maxTiles, int entities, int maxEntities,
         List<WFOutpostSaveSlot?>? slots, bool busy, WFOutpostPendingLoad? pending, WFOutpostTradeView trade, WFOutpostSaleView sale)
     {
