@@ -138,11 +138,19 @@ public sealed partial class WFOutpostSystem
         return Value(grid, IsKept);
     }
 
+    /// <summary>What one foundation plate is worth; the prototype's estimate is for a whole default stack of them.</summary>
+    public double PlatePrice()
+    {
+        var proto = _proto.Index(PlatePrototype);
+        var price = _pricing.GetEstimatedPrice(proto);
+        return proto.TryGetComponent<StackComponent>(out var stack, EntityManager.ComponentFactory) && stack.Count > 1 ? price / stack.Count : price;
+    }
+
     /// <summary>What the entities on an outpost that pass <paramref name="counted"/> are worth, with its added plates.</summary>
     private int Value(Entity<MapGridComponent> grid, Func<EntityUid, bool> counted)
     {
         var founding = CompOrNull<WFOutpostComponent>(grid)?.FoundingTiles ?? 0;
-        var plate = _pricing.GetEstimatedPrice(_proto.Index(PlatePrototype));
+        var plate = PlatePrice();
         var plates = Math.Max(0, CountTiles(grid) - founding) * plate;
         var ev = new WFOutpostAppraiseEvent(0);
         RaiseLocalEvent(grid, ref ev);

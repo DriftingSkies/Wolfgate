@@ -15,6 +15,7 @@ using Content.Shared.Power.Components;
 using Content.Shared.Verbs;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Localization;
 using Robust.Shared.Map;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
@@ -166,7 +167,7 @@ public sealed class OutpostDeployTest
         var maps = server.System<SharedMapSystem>();
         var hands = server.System<SharedHandsSystem>();
         var verbs = server.System<SharedVerbSystem>();
-        var repackText = Robust.Shared.Localization.Loc.GetString("wf-outpost-repack-verb");
+        var repackText = server.ResolveDependency<ILocalizationManager>().GetString("wf-outpost-repack-verb");
 
         EntityUid wall = default;
         EntityUid welder = default;

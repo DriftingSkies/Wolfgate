@@ -13,6 +13,7 @@ using Content.Server.Preferences.Managers;
 using Content.Shared._NF.Bank.Components;
 using Content.Shared._WF.Outposts;
 using Content.Shared._WF.RoundSetup;
+using Content.Shared.Cargo.Components;
 using Content.Shared.CCVar;
 using Content.Shared.Light.Components;
 using Content.Shared.Light.EntitySystems;
@@ -35,6 +36,23 @@ namespace Content.IntegrationTests.Tests._WF.Outposts;
 [TestOf(typeof(WFOutpostPresetPrototype))]
 public sealed class OutpostPresetTest
 {
+    /// <summary>A tile of outpost floor appraises at what one foundation plate is worth, not a whole stack of them.</summary>
+    [Test]
+    public async Task FloorAppraisesPerPlate()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        await server.WaitAssertion(() =>
+        {
+            var plate = server.ProtoMan.Index<EntityPrototype>("WFOutpostFoundationPlate");
+            Assert.That(plate.TryGetComponent<StackPriceComponent>(out var price, server.ResolveDependency<IComponentFactory>()),
+                "Precondition: a plate has a per-unit price.");
+            Assert.That(server.System<WFOutpostSystem>().PlatePrice(), Is.EqualTo(price!.Price).Within(0.01));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     /// <summary>
     /// Every preset grid loads with one console, a pod and a trade hub under open sky, within the save caps, and its price
     /// is at least the load price of its appraisal.
