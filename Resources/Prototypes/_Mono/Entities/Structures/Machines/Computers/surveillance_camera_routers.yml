@@ -5,6 +5,7 @@
   components:
     - type: SurveillanceCameraRouter
       subnetFrequency: SurveillanceCameraPDV
+    - type: WFLocalCameraRouter # WOLFGATE(CameraNetworks): only monitors on this grid see the subnet
     - type: WirelessNetworkConnection
       range: 40000 # Modify this to change the range, make sure to change the range of the respective camera to be the same
 
@@ -15,6 +16,7 @@
   components:
     - type: SurveillanceCameraRouter
       subnetFrequency: SurveillanceCameraTSF
+    - type: WFLocalCameraRouter # WOLFGATE(CameraNetworks): only monitors on this grid see the subnet
     - type: WirelessNetworkConnection
       range: 40000
 
@@ -25,5 +27,6 @@
   components:
     - type: SurveillanceCameraRouter
       subnetFrequency: SurveillanceCameraMMC
+    - type: WFLocalCameraRouter # WOLFGATE(CameraNetworks): only monitors on this grid see the subnet
     - type: WirelessNetworkConnection
       range: 40000

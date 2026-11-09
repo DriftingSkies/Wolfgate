@@ -32,6 +32,7 @@ Bench's ticket range, debt deadline, debt cap, garnish share and outlaw bounty.
 - [`Content.Shared/_WF/CCVar/ShipAccessCVars.cs`](ShipAccessCVars.cs)
 - [`Content.Shared/_WF/CCVar/ShockwaveCVars.cs`](ShockwaveCVars.cs)
 - [`Content.Shared/_WF/CCVar/SoundtrackMuteCVars.cs`](SoundtrackMuteCVars.cs)
+- [`Content.Shared/_WF/CCVar/ThrowSweepCVars.cs`](ThrowSweepCVars.cs)
 - [`Content.Shared/_WF/CCVar/WFIdleHelmCVars.cs`](WFIdleHelmCVars.cs)
 - [`Content.Shared/_WF/CCVar/WolfgateCVars.cs`](WolfgateCVars.cs)
 

@@ -242,9 +242,14 @@ public sealed partial class GunSystem : SharedGunSystem
 
         var useKey = gunUid.Comp.UseKey ? EngineKeyFunctions.Use : EngineKeyFunctions.UseSecondary;
 
-        if (_inputSystem.CmdStates.GetState(useKey) != BoundKeyState.Down && !gunUid.Comp.BurstActivated)
+        // WOLFGATE(Weapons) START: no requests with the trigger up; the server finishes a started burst itself.
+        // A request landing after the burst ended started a new one, so a short burst cooldown fired forever.
+        // upstream original, kept for merges:
+        // if (_inputSystem.CmdStates.GetState(useKey) != BoundKeyState.Down && !gunUid.Comp.BurstActivated)
+        if (_inputSystem.CmdStates.GetState(useKey) != BoundKeyState.Down)
+        // WOLFGATE END
         {
-            if (gunUid.Comp.ShotCounter != 0)
+            if (gunUid.Comp.ShotCounter != 0 && !gunUid.Comp.BurstActivated) // WOLFGATE(Weapons): a burst still runs out
                 EntityManager.RaisePredictiveEvent(new RequestStopShootEvent { Gun = GetNetEntity(gunUid) });
             return;
         }

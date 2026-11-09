@@ -264,7 +264,10 @@ public sealed partial class DungeonSystem
 
                 // Fallback because uhhhhhhhh yeah, a corner tile might look valid on the original
                 // but place 1 nanometre off grid and fail the add.
-                if (!_maps.TryGetTileRef(gridUid, grid, tilePos, out var tileRef) || tileRef.Tile.IsEmpty)
+                // WOLFGATE START: a decal on lattice (a space tile) failed to add and tripped the assert below
+                if (!_maps.TryGetTileRef(gridUid, grid, tilePos, out var tileRef) || tileRef.Tile.IsEmpty
+                    || _turf.IsSpace(tileRef))
+                // WOLFGATE END
                 {
                     _maps.SetTile(gridUid, grid, tilePos, _tile.GetVariantTile((ContentTileDefinition) _tileDefManager[FallbackTileId], _random.GetRandom()));
                 }

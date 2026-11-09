@@ -16,6 +16,9 @@ external:
 # Edits outside _WF that can't hold a WOLFGATE marker: JSON, images, audio, rich-text .txt and map files.
 # Each entry has a path (a file, a folder or a glob), the module it serves (null for a standalone edit) and a reason.
 unmarked:
+  - path: Resources/Textures/_Floof/Mobs/Customization/skyrattails.rsi/
+    module: null
+    reason: The leopard wag's front layers hold the fourth frame as long as the back layers, so the halves stay in step.
   - path: Resources/Maps/_Mono/POI/pdvhelios.yml
     module: Lattice
     reason: Mapped a station anchor beside an APC so Helios stays anchored space past the Lattice's hold.

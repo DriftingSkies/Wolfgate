@@ -9,6 +9,8 @@
     <PackageReference Include="YamlDotNet" />
     <!-- WOLFGATE(CustomMarkings): encodes marking art as PNG on the server and in the editor -->
     <PackageReference Include="SixLabors.ImageSharp" />
+    <!-- WOLFGATE(UploadCache): hashes shared files; the sandbox allows it, the engine ships it, Robust.Shared keeps it compile-private -->
+    <PackageReference Include="SpaceWizards.Sodium" />
   </ItemGroup>
 
   <Import Project="..\RobustToolbox\Imports\Lidgren.props" />

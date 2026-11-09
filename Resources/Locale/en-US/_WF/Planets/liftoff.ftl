@@ -4,6 +4,7 @@ wf-shuttle-console-cancel-liftoff = Cancel liftoff
 
 ## Liftoff gates
 wf-liftoff-no-hull = This console is not aboard a flyable hull.
+wf-liftoff-refused-ground = This console is on the planet's ground, not on a ship. It can't fly.
 wf-liftoff-not-grounded = Liftoff can only engage while the hull is landed on a planet.
 wf-liftoff-not-planet = This hull is not flying over a planet.
 wf-liftoff-pilot-lost = Take control of this shuttle console before engaging liftoff.

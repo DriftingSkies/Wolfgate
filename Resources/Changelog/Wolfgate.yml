@@ -6539,3 +6539,58 @@ Entries:
   id: 100402
   time: '2026-11-08T10:27:16.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/563
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Consoles built on a planet's ground can no longer lift the whole planet
+        into the sky.
+  id: 100403
+  time: '2026-11-09T12:18:35.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/571
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Things thrown fast no longer pass through walls.
+    - type: Tweak
+      message: Ship collisions throw loose things and people less hard.
+    - type: Fix
+      message: >-
+        Lobby music and backgrounds are no longer downloaded again every time
+        you join.
+  id: 100404
+  time: '2026-11-09T20:45:58.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/574
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        [704] Spall liners now stop rounds and fragments lodging in synthetic
+        bodies and robotic limbs.
+    - type: Fix
+      message: >-
+        [701] Synthetic eyes and pumps are repaired with a wrench, multitool and
+        welder instead of flesh surgery.
+    - type: Fix
+      message: >-
+        [703] The synthetic diagnostics readout no longer runs off screen in the
+        Separated layout.
+    - type: Fix
+      message: >-
+        [696] Opening a gas tank's valve on a planet no longer sends it flying
+        up out of sight.
+    - type: Fix
+      message: '[691] The Lee-Enfield accepts low-capacity 7.62x51 magazines.'
+    - type: Fix
+      message: '[689] Burst fire stops when you let go of the trigger.'
+    - type: Fix
+      message: '[688] The leopard tail wag animation no longer flips back and forth.'
+    - type: Fix
+      message: >-
+        [685] [686] TSF, PDV and MMC bodycams can only be viewed from consoles
+        on their own ship or base.
+    - type: Fix
+      message: '[668] You can no longer toggle hardsuit seals while crit or dead.'
+  id: 100405
+  time: '2026-11-09T20:55:58.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/573

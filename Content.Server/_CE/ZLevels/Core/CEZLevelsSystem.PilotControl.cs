@@ -110,7 +110,11 @@ public sealed partial class CEZLevelsSystem
             if (vertical == 0f)
                 continue;
 
-            // WOLFGATE(Planets) START: grounded ascend engages liftoff; airborne input keeps CE's normal control.
+            // WOLFGATE(Planets) START: a console on planet ground has no ship to lift.
+            if (WfRefusesGroundInput(pilotUid, console, grid))
+                continue;
+
+            // Grounded ascend engages liftoff; airborne input keeps CE's normal control.
             if (WfHandleLiftoffPilotInput(pilotUid, console, grid, vertical))
                 continue;
 

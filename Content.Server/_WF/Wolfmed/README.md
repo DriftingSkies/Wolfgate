@@ -556,6 +556,7 @@ Skipped ("dirty-disposed").
 - [`Resources/Prototypes/_WF/Wolfmed/Surgery/slime_core.yml`](../../../Resources/Prototypes/_WF/Wolfmed/Surgery/slime_core.yml)
 - [`Resources/Prototypes/_WF/Wolfmed/Surgery/surgeries.yml`](../../../Resources/Prototypes/_WF/Wolfmed/Surgery/surgeries.yml)
 - [`Resources/Prototypes/_WF/Wolfmed/Surgery/surgery_steps.yml`](../../../Resources/Prototypes/_WF/Wolfmed/Surgery/surgery_steps.yml)
+- [`Resources/Prototypes/_WF/Wolfmed/Surgery/synth_components.yml`](../../../Resources/Prototypes/_WF/Wolfmed/Surgery/synth_components.yml)
 - [`Resources/Prototypes/_WF/Wolfmed/Surgery/synth_core.yml`](../../../Resources/Prototypes/_WF/Wolfmed/Surgery/synth_core.yml)
 - [`Resources/Prototypes/_WF/Wolfmed/Surgery/synth_power_cell.yml`](../../../Resources/Prototypes/_WF/Wolfmed/Surgery/synth_power_cell.yml)
 - [`Resources/Prototypes/_WF/Wolfmed/Voice/bobmed_emote_sounds.yml`](../../../Resources/Prototypes/_WF/Wolfmed/Voice/bobmed_emote_sounds.yml)

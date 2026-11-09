@@ -125,10 +125,10 @@ public sealed class WolfmedSynthRepairTest : WolfmedGameTest
             SEntMan.System<BlindableSystem>().AdjustEyeDamage((body, null), 4);
             var head = Part(body, BodyPartType.Head);
             var surgery = SEntMan.System<SurgerySystem>();
-            Assert.That(surgery.WolfmedSurgeryValid(body, head, "WFSurgeryHealEyes"), Is.True,
+            Assert.That(surgery.WolfmedSurgeryValid(body, head, "WFSurgeryRepairChassisEyes"), Is.True,
                 "no eye surgery for flashed optics.");
 
-            RunStep(surgery, user, body, head, new List<EntityUid>(), "WFSurgeryStepHealEyes");
+            RunStep(surgery, user, body, head, new List<EntityUid>(), "WFSurgeryStepRepairChassisEyes");
             Assert.That(SEntMan.GetComponent<BlindableComponent>(body).EyeDamage, Is.Zero, "the eye surgery left the blur.");
         });
     }

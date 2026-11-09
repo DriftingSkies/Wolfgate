@@ -72,7 +72,7 @@ public sealed class WolfmedSyntheticHudOverlay : Overlay
     {
         var handle = args.ScreenHandle;
         var control = args.ViewportControl as Control;
-        var screen = WolfmedSyntheticHudLayout.Screen(args.ViewportBounds,
+        var screen = WolfmedSyntheticHudLayout.Screen(VisibleBounds(args, control),
             control?.GlobalPixelPosition ?? Vector2i.Zero);
         if (screen.Width < 160f || screen.Height < 80f)
             return;
@@ -266,6 +266,24 @@ public sealed class WolfmedSyntheticHudOverlay : Overlay
             handle.DrawLine(corner + new Vector2(dx * 8f, 0f), corner + new Vector2(0f, dy * 8f), colour);
             handle.DrawLine(corner + new Vector2(0f, dy * 8f), corner + new Vector2(0f, dy * tick), colour);
         }
+    }
+
+    /// <summary>
+    /// The part of the viewport's picture its control shows. The separated layout crops a picture wider than the
+    /// control, and blocks laid out across the whole picture ran off the screen.
+    /// </summary>
+    private static UIBox2i VisibleBounds(in OverlayDrawArgs args, Control? control)
+    {
+        var bounds = args.ViewportBounds;
+        if (control == null)
+            return bounds;
+
+        var shown = control.GlobalPixelRect;
+        return new UIBox2i(
+            Math.Max(bounds.Left, shown.Left),
+            Math.Max(bounds.Top, shown.Top),
+            Math.Min(bounds.Right, shown.Right),
+            Math.Min(bounds.Bottom, shown.Bottom));
     }
 
     private UIBox2 Shift(UIBox2 box) =>

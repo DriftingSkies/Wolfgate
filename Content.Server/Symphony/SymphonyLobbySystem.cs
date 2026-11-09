@@ -19,7 +19,6 @@ using Content.Shared.GameTicking;
 using Content.Shared.Symphony;
 using Robust.Server.Player;
 using Robust.Server.ServerStatus;
-using Robust.Server.Upload;
 using Robust.Shared.Asynchronous;
 using Robust.Shared.Configuration;
 using Robust.Shared.ContentPack;
@@ -84,8 +83,7 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private IResourceManager _resources = default!;
     [Dependency] private IPlayerManager _players = default!;
-    [Dependency] private IServerNetManager _net = default!;
-    [Dependency] private NetworkResourceManager _netRes = default!;
+    [Dependency] private Content.Server._WF.UploadCache.WFUploadCacheSystem _uploadCache = default!;
     [Dependency] private GameTicker _ticker = default!;
     [Dependency] private ContentAudioSystem _audio = default!;
     [Dependency] private IChatManager _chat = default!;
@@ -384,7 +382,7 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
         {
             if (_uploads.ContainsKey(path))
                 return -1;
-            var n = SymphonyUploads.Put(_netRes, _net, relative, data);
+            var n = SymphonyUploads.Put(_uploadCache, relative, data);
             _uploads[path] = data.Length;
             Save(relative, data);
             return n;
@@ -515,7 +513,7 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
         {
             _uploads.Remove(path);
             var relative = new ResPath(path).RelativeTo(SymphonyUploads.Root);
-            SymphonyUploads.Remove(_netRes, relative);
+            SymphonyUploads.Remove(_uploadCache, relative);
             try
             {
                 var saved = SavedDir / relative.Filename;
@@ -599,7 +597,7 @@ public sealed partial class SymphonyLobbySystem : EntitySystem
                 using var stream = _resources.UserData.OpenRead(saved);
                 using var copy = new MemoryStream();
                 stream.CopyTo(copy);
-                SymphonyUploads.Load(_netRes, relative, copy.ToArray());
+                SymphonyUploads.Load(_uploadCache, relative, copy.ToArray());
                 _uploads[path] = (int) copy.Length;
                 return true;
             }

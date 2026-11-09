@@ -315,7 +315,8 @@ public sealed partial class ShuttleSystem
             if (direction.LengthSquared() > minsq)
             {
                 _stuns.TryKnockdown(ent.Owner, knockdownTime, true);
-                _throwing.TryThrow(ent, direction, ent.Comp, Transform(ent), _projQuery, direction.Length(), playSound: false);
+                var wfThrow = WfCapImpactThrow(direction); // WOLFGATE(ThrowSweep): thrown no faster than walls can stop
+                _throwing.TryThrow(ent, wfThrow, ent.Comp, Transform(ent), _projQuery, wfThrow.Length(), playSound: false); // WOLFGATE(ThrowSweep)
             }
             else
             {
@@ -472,7 +473,7 @@ public sealed partial class ShuttleSystem
                 }
                 else
                 {
-                    var direction = throwDirection * tileData.DistanceFactor;
+                    var direction = WfCapImpactThrow(throwDirection * tileData.DistanceFactor); // WOLFGATE(ThrowSweep): thrown no faster than walls can stop
                     _throwing.TryThrow(localEnt, direction, physics, localEnt.Comp, _projQuery, direction.Length(), playSound: false);
                 }
             }

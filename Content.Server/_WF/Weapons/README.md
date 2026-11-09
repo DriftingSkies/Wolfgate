@@ -169,6 +169,8 @@ predicted on their own client; this only cuts the audio entities other players r
   - predicted copies move on the tick they're fired, like the server's
   - also draws the beams this client predicts locally
   - keeps the Mono multi-shot offset in step with the server
+  - no requests with the trigger up; the server finishes a started burst itself.
+  - a burst still runs out
   - one slot per fired projectile, holding its predicted copy's id
   - this client already drew this shot's beams
   - recoil and predicted copies

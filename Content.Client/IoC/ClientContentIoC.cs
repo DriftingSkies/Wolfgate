@@ -71,6 +71,7 @@ namespace Content.Client.IoC
             collection.Register<_WF.JoinProgress.JoinProgressManager>(); // WOLFGATE(JoinProgress): holds the server's download size
             collection.Register<_WF.GameHub.WFGameDataManager>(); // WOLFGATE(GameHub): downloads and caches game data
             collection.Register<_WF.MameArcade.MameArcadeNetManager>(); // WOLFGATE(MameArcade): relays 2-player inputs
+            collection.Register<_WF.UploadCache.WFUploadCacheManager>(); // WOLFGATE(UploadCache): keeps shared files on disk across joins
         }
     }
 }

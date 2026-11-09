@@ -56,6 +56,9 @@
     - WFSurgeryHealEyes
     - WFSurgeryRepairCore
     - WFSurgeryRepairSynthCore
+    - WFSurgeryRepairChassisEyes
+    - WFSurgeryRepairChassisPump
+    - WFSurgeryRepairSynthPump
 
   # 7. Joints back in their sockets before the bones under them are opened.
   - surgeries:

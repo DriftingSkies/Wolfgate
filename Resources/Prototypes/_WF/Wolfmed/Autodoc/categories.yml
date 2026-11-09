@@ -80,6 +80,9 @@
   - WFSurgeryHealEyes
   - WFSurgeryRepairCore
   - WFSurgeryRepairSynthCore
+  - WFSurgeryRepairChassisEyes
+  - WFSurgeryRepairChassisPump
+  - WFSurgeryRepairSynthPump
 
 - type: autodocCategory
   id: WFWolfmedAutodocCategoryLimbs

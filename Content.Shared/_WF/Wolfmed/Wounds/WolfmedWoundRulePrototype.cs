@@ -85,4 +85,8 @@ public sealed partial class WolfmedEmbeddedSpec
     /// <summary>Cap on what one wound can hold, so repeated hits do not stack forever.</summary>
     [DataField]
     public int MaxTotal = 6;
+
+    /// <summary>A wound whose armour ward also stops this object staying in, so a spall liner covers a chassis breach.</summary>
+    [DataField]
+    public ProtoId<WoundPrototype>? WardedAs;
 }

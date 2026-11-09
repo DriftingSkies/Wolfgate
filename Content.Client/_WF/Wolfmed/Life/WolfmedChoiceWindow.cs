@@ -51,6 +51,14 @@ public sealed class WolfmedChoiceWindow : DefaultWindow
         });
     }
 
+    /// <summary>Re-centres when layout settles on a size the open-time measure missed, such as a wrap one line longer.</summary>
+    protected override void Resized()
+    {
+        base.Resized();
+        if (IsOpen)
+            RecenterWindow(new Vector2(0.5f, 0.5f));
+    }
+
     public void SetChoice(string title, string text, string accept, string deny)
     {
         Title = title;

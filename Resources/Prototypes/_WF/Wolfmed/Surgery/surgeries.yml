@@ -108,6 +108,7 @@
     part: Torso
   - type: WolfmedSurgeryOrganDamagedCondition
     slot: heart
+    mechanical: false
 
 - type: entity
   parent: SurgeryBase
@@ -124,6 +125,7 @@
     part: Torso
   - type: WolfmedSurgeryOrganDamagedCondition
     slot: lungs
+    mechanical: false
 
 - type: entity
   parent: SurgeryBase
@@ -140,6 +142,7 @@
     part: Torso
   - type: WolfmedSurgeryOrganDamagedCondition
     slot: liver
+    mechanical: false
 
 - type: entity
   parent: SurgeryBase
@@ -156,6 +159,7 @@
     part: Torso
   - type: WolfmedSurgeryOrganDamagedCondition
     slot: stomach
+    mechanical: false
 
 - type: entity
   parent: SurgeryBase
@@ -172,6 +176,7 @@
     part: Torso
   - type: WolfmedSurgeryOrganDamagedCondition
     slot: kidneys
+    mechanical: false
 
 # Kidneys can be swapped like the other torso organs; Shitmed ships no kidney surgeries.
 - type: entity
@@ -230,6 +235,7 @@
     part: Head
   - type: WolfmedSurgeryOrganDamagedCondition
     slot: brain
+    mechanical: false
 
 - type: entity
   parent: SurgeryBase
@@ -247,6 +253,7 @@
     part: Head
   - type: WolfmedSurgeryOrganDamagedCondition
     slot: eyes
+    mechanical: false
 
 # Slash and bite (W2) ---------------------------------------------------------
 

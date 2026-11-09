@@ -95,6 +95,9 @@
   # M6: a machine's core, the positronic brain's repair (OD10). The IPC's is in the chassis, a synth's in the head.
   - WFSurgeryRepairCore
   - WFSurgeryRepairSynthCore
+  - WFSurgeryRepairChassisEyes
+  - WFSurgeryRepairChassisPump
+  - WFSurgeryRepairSynthPump
 
 - type: autodocProgram
   id: WFWolfmedAutodocProgramCavity

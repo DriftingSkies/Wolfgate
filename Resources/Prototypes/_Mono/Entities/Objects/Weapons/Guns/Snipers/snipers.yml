@@ -47,6 +47,7 @@
         whitelist:
           tags:
           - Magazine762x51mmFMJ
+          - Magazine762x51mmLowCapacityFMJ # WOLFGATE: low-cap 7.62x51 mags fit like every other 7.62x51 rifle
         whitelistFailPopup: gun-magazine-whitelist-fail
       gun_chamber:
         name: Chamber

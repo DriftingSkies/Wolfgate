@@ -132,6 +132,9 @@ public abstract partial class SharedSealableClothingSystem : EntitySystem
             comp.WearerEntity != user && _actionBlockerSystem.CanInteract(comp.WearerEntity.Value, null))
             return;
 
+        if (!_actionBlockerSystem.CanInteract(user, null)) // WOLFGATE: a crit or dead wearer can't work their own seals
+            return;
+
         var verbIcon = comp.IsCurrentlySealed ?
             new SpriteSpecifier.Texture(new("/Textures/Interface/VerbIcons/unlock.svg.192dpi.png")) :
             new SpriteSpecifier.Texture(new("/Textures/Interface/VerbIcons/lock.svg.192dpi.png"));

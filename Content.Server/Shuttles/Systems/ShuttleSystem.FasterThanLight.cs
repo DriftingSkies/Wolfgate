@@ -256,6 +256,13 @@ public sealed partial class ShuttleSystem
             reason = Loc.GetString("wf-orbit-hopping");
             return false;
         }
+
+        // Planet ground is the map's own grid: jumping it would move the whole world.
+        if (HasComp<MapComponent>(shuttleUid))
+        {
+            reason = Loc.GetString("wf-liftoff-refused-ground");
+            return false;
+        }
         // WOLFGATE END
 
         if (TryComp<PhysicsComponent>(shuttleUid, out var shuttlePhysics))
