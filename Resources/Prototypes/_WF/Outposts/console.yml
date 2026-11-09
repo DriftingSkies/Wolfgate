@@ -10,12 +10,8 @@
   - type: Item
     size: Large
   - type: Sprite
-    sprite: Objects/Devices/flatpack.rsi
-    layers:
-    - state: base
-    - state: overlay
-      color: "#EFB341"
-    - state: icon-default
+    sprite: _WF/Outposts/console.rsi
+    state: packed
   - type: WFOutpostKit
   - type: WFDeployable
     machine: WFOutpostConsole
@@ -34,18 +30,15 @@
   - type: Transform
     anchored: true
   - type: Sprite
-    sprite: Structures/Machines/computers.rsi
+    sprite: _WF/Outposts/console.rsi
     drawdepth: Objects
     layers:
-    - state: computer
-    - state: generic_keyboard
-    - state: comm
-      shader: unshaded
-    - state: mining_key
+    - state: console
+    - state: screen
       shader: unshaded
   - type: Icon
-    sprite: Structures/Machines/computers.rsi
-    state: computer
+    sprite: _WF/Outposts/console.rsi
+    state: console
   - type: InteractionOutline
   - type: Physics
     bodyType: Static

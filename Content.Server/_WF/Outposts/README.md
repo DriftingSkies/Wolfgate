@@ -97,7 +97,9 @@ colony floor tiles (`floors.yml`), another fabricator, the powered driver, the a
 the stock parts, electronics and cables. The gizmo and prefab art in `Textures/_WF/Outposts/Colony` is NovaSector's
 colony fabricator set (CC BY-SA 3.0), adapted to our 3/4 view: the prefab wall and window are the stock solid wall
 and window recoloured to Nova's palette, and the doors' lit lids are painted as our dark wall tops. `build_colony.py`
-and `build_walls.py` in `Tools/_WF/Outposts` rebuild it from the DMIs.
+and `build_walls.py` in `Tools/_WF/Outposts` rebuild it from the DMIs. The outpost console (`Textures/_WF/Outposts/
+console.rsi`) is drawn for Wolfgate in that set's palette at the stock computer's size: four facings, an unshaded screen with the
+outpost's map in claim amber, and a shrink-wrapped `packed` state for its kit.
 It never prints a console. Its `BlueprintReceiver` takes only outpost recipe disks (tag `WFOutpostRecipeDisk`). A POI
 workshop leaves one disk (`WFOutpostRecipeDiskWorkshopSpawner`): the homestead disk 60% of the time, the T2 industrial
 disk (autolathe, ore processor, biogenerator, gas recycler) 30%, the T3 advanced disk (protolathe, circuit imprinter,
@@ -406,6 +408,7 @@ its placement, claims and saves never reach below it.
 - [`Resources/Textures/_WF/Outposts/Colony/solar_string.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/solar_string.rsi/)
 - [`Resources/Textures/_WF/Outposts/Colony/synthesizers.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/synthesizers.rsi/)
 - [`Resources/Textures/_WF/Outposts/Colony/wind_turbine.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/wind_turbine.rsi/)
+- [`Resources/Textures/_WF/Outposts/console.rsi/`](../../../Resources/Textures/_WF/Outposts/console.rsi/)
 - [`Resources/Textures/_WF/Outposts/Effects/drop_shadow.rsi/`](../../../Resources/Textures/_WF/Outposts/Effects/drop_shadow.rsi/)
 
 ### Shared maps
