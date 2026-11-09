@@ -254,10 +254,10 @@
   tier: 2
   title: wf-contract-mmc-deep-core
   briefing: wf-contract-mmc-deep-core-brief
-  reward: 42000, 52000
+  reward: 52000, 62000
   deposit: 3000
   minutes: 90
-  minCrew: 3
+  minCrew: 2
   crewBonus: 0.35
   weight: 1.2
   objective: !type:WFContractSupply
@@ -266,13 +266,13 @@
     goodsCap: 36000
     goods:
     - stack: GoldOre
-      count: 40, 60
+      count: 30, 45
     - stack: SilverOre
-      count: 40, 60
+      count: 30, 45
     - stack: PlasmaOre
-      count: 60, 90
+      count: 45, 70
     - stack: UraniumOre
-      count: 50, 80
+      count: 40, 60
 
 - type: wfContract
   id: WFContractMMCStripClaim
@@ -281,10 +281,10 @@
   tier: 3
   title: wf-contract-mmc-strip-claim
   briefing: wf-contract-mmc-strip-claim-brief
-  reward: 64000, 80000
+  reward: 125000, 145000
   deposit: 5000
   minutes: 105
-  minCrew: 4
+  minCrew: 3
   crewBonus: 0.3
   weight: 0.8
   objective: !type:WFContractSupply
@@ -361,7 +361,7 @@
   tier: 3
   title: wf-contract-mmc-annual-quota
   briefing: wf-contract-mmc-annual-quota-brief
-  reward: 110000, 130000
+  reward: 175000, 205000
   deposit: 7500
   minutes: 180
   minCrew: 3
@@ -372,15 +372,15 @@
     goodsCap: 90000
     goods:
     - stack: SteelOre
-      count: 800, 1000
+      count: 600, 750
     - stack: SpaceQuartz
-      count: 400, 500
+      count: 300, 380
     - stack: GoldOre
-      count: 100, 150
+      count: 75, 110
     - stack: PlasmaOre
-      count: 150, 200
+      count: 110, 150
     - stack: UraniumOre
-      count: 100, 150
+      count: 75, 110
 
 # Fifth batch.
 

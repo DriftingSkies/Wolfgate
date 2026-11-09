@@ -162,10 +162,10 @@
   tier: 2
   title: wf-contract-sb-foundation
   briefing: wf-contract-sb-foundation-brief
-  reward: 36000, 45000
+  reward: 48000, 58000
   deposit: 2000
   minutes: 90
-  minCrew: 3
+  minCrew: 2
   crewBonus: 0.35
   weight: 1
   objective: !type:WFContractSupply
@@ -173,13 +173,13 @@
     goodsCap: 30000
     goods:
     - stack: Steel
-      count: 250, 350
+      count: 180, 260
     - stack: Glass
-      count: 150, 250
+      count: 110, 180
     - stack: Plasteel
-      count: 50, 80
+      count: 40, 60
     - stack: Plastic
-      count: 80, 120
+      count: 60, 90
 
 - type: wfContract
   id: WFContractSBColonyOre

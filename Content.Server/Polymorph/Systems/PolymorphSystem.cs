@@ -281,7 +281,9 @@ public sealed partial class PolymorphSystem : EntitySystem
         if (configuration.TransferName && TryComp(uid, out MetaDataComponent? targetMeta))
             _metaData.SetEntityName(child, targetMeta.EntityName);
 
-        if (configuration.TransferHumanoidAppearance)
+        // WOLFGATE: skip the copy when either body isn't humanoid, as when an artifact turns a monkey into a lizard
+        if (configuration.TransferHumanoidAppearance
+            && HasComp<Content.Shared.Humanoid.HumanoidAppearanceComponent>(uid) && HasComp<Content.Shared.Humanoid.HumanoidAppearanceComponent>(child))
         {
             _humanoid.CloneAppearance(uid, child);
         }

@@ -32,6 +32,7 @@ public sealed partial class WFContractSystem
     [Dependency] private TagSystem _tags = default!;
     [Dependency] private IComponentFactory _factory = default!;
     [Dependency] private WFEncounterSchedulerSystem _scheduler = default!;
+    [Dependency] private Content.Server._WF.Lattice.WFLatticeSystem _lattice = default!;
     [Dependency] private SharedAnomalySystem _anomalies = default!;
     [Dependency] private Content.Shared.Storage.EntitySystems.SharedEntityStorageSystem _entityStorage = default!;
 
@@ -48,6 +49,9 @@ public sealed partial class WFContractSystem
 
     /// <summary>How far an escort's rendezvous must be from any station.</summary>
     private const float EscortClearance = 800f;
+
+    /// <summary>How far every space site keeps from a reality anchor, so a fight or a wreck never reaches one.</summary>
+    public const float AnchorClearance = 2000f;
 
     /// <summary>Highest severity a survey's anomaly starts at, so it does not go critical before the survey team arrives.</summary>
     private const float SurveyStartSeverity = 0.3f;
@@ -831,7 +835,7 @@ public sealed partial class WFContractSystem
         return false;
     }
 
-    /// <summary>Open space at a distance from a station, clear of grids, stations and gravity wells; a crowded band is widened.</summary>
+    /// <summary>Open space at a distance from a station, clear of grids, stations, gravity wells and reality anchors; a crowded band is widened.</summary>
     private MapCoordinates? PickSite(EntityUid station, float min, float max, float clearance, bool quiet = false)
     {
         if (_station.GetLargestGrid(station) is not { } grid)
@@ -844,7 +848,8 @@ public sealed partial class WFContractSystem
             for (var attempt = 0; attempt < 40; attempt++)
             {
                 var point = centre.Position + _random.NextAngle().ToVec() * _random.NextFloat(min, far);
-                if (_scheduler.IsClearSpace(centre.MapId, point, SiteClearance, clearance))
+                if (_scheduler.IsClearSpace(centre.MapId, point, SiteClearance, clearance)
+                    && !_lattice.NearAnchor(centre.MapId, point, AnchorClearance))
                     return new MapCoordinates(point, centre.MapId);
             }
 

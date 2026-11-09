@@ -325,10 +325,10 @@
   tier: 2
   title: wf-contract-tsf-faction-ore
   briefing: wf-contract-tsf-faction-ore-brief
-  reward: 36000, 45000
+  reward: 50000, 60000
   deposit: 2000
   minutes: 90
-  minCrew: 3
+  minCrew: 2
   crewBonus: 0.35
   weight: 1
   credits: 20
@@ -341,11 +341,11 @@
     goodsCap: 30000
     goods:
     - stack: SteelOre
-      count: 160, 220
+      count: 120, 160
     - stack: PlasmaOre
-      count: 50, 80
-    - stack: UraniumOre
       count: 40, 60
+    - stack: UraniumOre
+      count: 30, 45
 
 - type: wfContract
   id: WFContractTSFFactionAnomaly
@@ -385,10 +385,10 @@
   tier: 2
   title: wf-contract-ussp-faction-ore
   briefing: wf-contract-ussp-faction-ore-brief
-  reward: 36000, 45000
+  reward: 50000, 60000
   deposit: 2000
   minutes: 90
-  minCrew: 3
+  minCrew: 2
   crewBonus: 0.35
   weight: 1
   harms:
@@ -399,11 +399,11 @@
     goodsCap: 30000
     goods:
     - stack: SteelOre
-      count: 160, 220
-    - stack: Coal
       count: 120, 160
+    - stack: Coal
+      count: 90, 120
     - stack: UraniumOre
-      count: 40, 60
+      count: 30, 45
 
 # --- Ammunition drives: faction boards, costing standing with rivals ---
 
@@ -977,10 +977,10 @@
   tier: 2
   title: wf-contract-pdv-faction-levy
   briefing: wf-contract-pdv-faction-levy-brief
-  reward: 36000, 45000
+  reward: 50000, 60000
   deposit: 2000
   minutes: 90
-  minCrew: 3
+  minCrew: 2
   crewBonus: 0.35
   weight: 1
   credits: 20
@@ -991,11 +991,11 @@
     goodsCap: 30000
     goods:
     - stack: SteelOre
-      count: 160, 220
+      count: 120, 160
     - stack: PlasmaOre
-      count: 50, 80
-    - stack: UraniumOre
       count: 40, 60
+    - stack: UraniumOre
+      count: 30, 45
 
 # --- TSF Naval Requisitions: counter-piracy, lane security and fleet logistics ---
 

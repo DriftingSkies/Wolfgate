@@ -227,6 +227,19 @@ public sealed partial class WFLatticeSystem : EntitySystem
         }
     }
 
+    /// <summary>Whether a point is within a distance of any reality anchor on its map: a primary core, Central's or a relay.</summary>
+    public bool NearAnchor(MapId map, Vector2 point, float range)
+    {
+        var anchors = EntityQueryEnumerator<WFLatticeAnchorComponent, TransformComponent>();
+        while (anchors.MoveNext(out _, out var xform))
+        {
+            if (xform.MapID == map && (_transform.GetWorldPosition(xform) - point).LengthSquared() < range * range)
+                return true;
+        }
+
+        return false;
+    }
+
     /// <summary>Copies the gathered anchors onto the field for clients, if they changed.</summary>
     private void SyncAnchors(Entity<WFLatticeFieldComponent> map)
     {

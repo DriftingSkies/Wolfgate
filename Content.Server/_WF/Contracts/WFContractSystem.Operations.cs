@@ -761,7 +761,7 @@ public sealed partial class WFContractSystem
                 view.Site = WFContractSite.Space;
                 view.Location = Loc.GetString("wf-contract-location-derelict", ("home", home), ("km", km), ("active", active));
                 view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-survey",
-                    ("done", contract.Scanned.Count), ("count", contract.Count)), active && contract.Scanned.Count >= contract.Count));
+                    ("done", contract.Scanned.Count), ("count", contract.Count), ("planet", false)), active && contract.Scanned.Count >= contract.Count));
                 view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-return",
                     ("item", _proto.Index(operation.Item).Name), ("destination", home)), contract.Recovered));
                 view.Objectives.Add(new WFContractObjectiveView(Loc.GetString("wf-contract-objective-tow",

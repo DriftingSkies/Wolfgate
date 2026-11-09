@@ -88,7 +88,8 @@ escort encounters), `world_fauna.yml` (each world's hostiles for planetside work
   loaded magazine, speed loader or ammunition box.
 - `WFContractBounty` (Bounty): accepting starts one of `encounters` (Encounters module, `start: Manual`, no warrant)
   in open sector space `minDistance` to `maxDistance` from the contractor's station, at least `stationClearance`
-  (2.5 km) from every station and clear of planet wells; a crowded band is tried again wider, never closer to a
+  (2.5 km) from every station, 2 km from every Lattice reality anchor (`AnchorClearance`: primary cores, Central's and
+  relays) and clear of planet wells; a crowded band is tried again wider, never closer to a
   station, and a bounty or picket is only posted while such a site exists. It is done when the encounter resolves Destroyed; expired or
   flown off fails it. The target shows on the sector radar like any encounter and leaves a claimable deed.
 - `WFContractRecovery` (Salvage): accepting loads a wreck from `wrecks` in open space, placed as bounties are, and puts
@@ -185,6 +186,7 @@ escort encounters), `world_fauna.yml` (each world's hostiles for planetside work
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/Contracts/ContractAnchorClearanceTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Contracts/ContractAnchorClearanceTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Contracts/ContractFlowTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Contracts/ContractFlowTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Contracts/ContractOperationsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Contracts/ContractOperationsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Contracts/ContractPlanetTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Contracts/ContractPlanetTest.cs)
