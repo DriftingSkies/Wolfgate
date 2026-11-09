@@ -1,0 +1,130 @@
+- type: entity
+  parent: BaseItem
+  id: WFCamera
+  components:
+  - type: Sprite
+    sprite: _WF/Photography/camera.rsi
+    layers:
+    - state: icon
+      map: ["enum.PhotoCameraVisuals.Ready"]
+  - type: Item
+    size: Small
+  - type: Clothing
+    quickEquip: false
+    slots:
+    - neck
+  - type: PhotoCamera
+  - type: PointLight
+    enabled: false
+    radius: 6
+    energy: 3
+    color: "#ffffff"
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.PhotoCameraVisuals.Ready:
+        enum.PhotoCameraVisuals.Ready:
+          True: { state: icon }
+          False: { state: icon-off }
+  - type: Reactive
+    reactions:
+    - reagents: [ Holywater ]
+      methods: [ Touch ]
+      effects:
+      - !type:PhotoReplaceEntity
+        prototype: WFCameraObscura
+        conditions:
+        - !type:ReagentThreshold
+          reagent: Holywater
+          min: 10
+  - type: StaticPrice
+    price: 60
+
+- type: entity
+  parent: WFCamera
+  id: WFCameraDetective
+  components:
+  - type: PhotoCamera
+    filmLeft: 30
+    filmMax: 30
+    monochrome: true
+    flash: false
+    silent: true
+
+- type: entity
+  parent: WFCamera
+  id: WFCameraPersonal
+  components:
+  - type: StaticPrice
+    price: 0
+
+- type: entity
+  parent: WFCamera
+  id: WFCameraObscura
+  components:
+  - type: PhotoCamera
+    seeGhosts: true
+    stealsSouls: true
+  - type: Reactive
+    reactions: []
+
+- type: entity
+  parent: WFCameraObscura
+  id: WFCameraObscuraBadmin
+  components:
+  - type: PhotoCamera
+    seeGhosts: true
+    stealsSouls: true
+    filmLeft: 100
+    filmMax: 100
+    cooldown: 1
+
+- type: entity
+  parent: BaseItem
+  id: WFCameraFilm
+  components:
+  - type: Sprite
+    sprite: _WF/Photography/film.rsi
+    state: icon
+  - type: Item
+    size: Tiny
+  - type: PhotoFilm
+  - type: StaticPrice
+    price: 10
+
+- type: entity
+  parent: WFCamera
+  id: WFCameraBorg
+  components:
+  - type: PhotoCamera
+    storesPhotos: true
+    customise: false
+    cooldown: 2
+  - type: PhotoGallery
+    printCharge: 50
+  - type: ActivatableUI
+    key: enum.PhotoUiKey.Gallery
+    inHandsOnly: true
+  - type: UserInterface
+    interfaces:
+      enum.PhotoUiKey.Gallery:
+        type: PhotoGalleryBoundUserInterface
+  - type: Reactive
+    reactions: []
+
+- type: entity
+  parent: [ BaseBorgModule, BaseProviderBorgModule ]
+  id: WFBorgModulePhotography
+  components:
+  - type: Sprite
+    layers:
+    - state: service
+    - sprite: _WF/Photography/camera.rsi
+      state: icon
+      scale: 0.5, 0.5
+  - type: ItemBorgModule
+    moduleId: Photography
+    items:
+    - WFCameraBorg
+  - type: BorgModuleIcon
+    icon: { sprite: _WF/Photography/camera.rsi, state: icon }

@@ -70,6 +70,9 @@ public sealed partial class CEZLevelsSystem
         if (TerminatingOrDeleted(grid) || !TryComp<MapGridComponent>(grid, out _))
             return Loc.GetString("wf-liftoff-no-hull");
 
+        if (!WfIsFlyableGrid(grid))
+            return Loc.GetString("wf-liftoff-refused-ground");
+
         var transitSet = CollectTransitSet(grid);
         string? eventReason = null;
 

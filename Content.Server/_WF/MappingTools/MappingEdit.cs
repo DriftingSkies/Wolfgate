@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server.Atmos.Monitor.Components;
+using Content.Shared._WF.MappingTools;
 using Content.Shared.Access;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Monitor;
@@ -76,6 +77,9 @@ public record struct MappingEntityMove(MappingEntityRef Entity, MappingPose Old,
 
 /// <summary>A pipe painted another colour, which stays the same entity.</summary>
 public record struct MappingPipeColorChange(MappingEntityRef Entity, Color Old, Color New);
+
+/// <summary>A Tool mode state flipped on an entity that stays the same entity.</summary>
+public record struct MappingToggleChange(MappingEntityRef Entity, MappingToggle Toggle, bool Old, bool New);
 
 /// <summary>The signal links between a source and a sink before and after; an empty list is no link.</summary>
 public record struct MappingLinkChange(
@@ -193,14 +197,16 @@ public sealed class MappingEdit(string name)
     public readonly List<MappingDeviceListChange> DeviceLists = new();
     public readonly List<MappingAccessChange> Access = new();
     public readonly List<MappingThresholdChange> Thresholds = new();
+    public readonly List<MappingToggleChange> Toggles = new();
 
     public bool IsEmpty => Tiles.Count == 0 && Moves.Count == 0 && Created.Count == 0 && Deleted.Count == 0 &&
                            DecalsRemoved.Count == 0 && DecalsAdded.Count == 0 && PipeColors.Count == 0 &&
-                           Links.Count == 0 && DeviceLists.Count == 0 && Access.Count == 0 && Thresholds.Count == 0;
+                           Links.Count == 0 && DeviceLists.Count == 0 && Access.Count == 0 && Thresholds.Count == 0 &&
+                           Toggles.Count == 0;
 
-    /// <summary>Entities whose settings (colour, links, device list, access, thresholds) change without moving.</summary>
+    /// <summary>Entities whose settings (colour, links, device list, access, thresholds, toggles) change without moving.</summary>
     public int SettingChanges => PipeColors.Count + 2 * Links.Count + DeviceLists.Count + Access.Count +
-                                 Thresholds.Count;
+                                 Thresholds.Count + Toggles.Count;
 
     /// <summary>
     /// Appends another edit that happened after this one.
@@ -218,6 +224,7 @@ public sealed class MappingEdit(string name)
         DeviceLists.AddRange(other.DeviceLists);
         Access.AddRange(other.Access);
         Thresholds.AddRange(other.Thresholds);
+        Toggles.AddRange(other.Toggles);
     }
 
     /// <summary>Estimated memory the edit holds, for the history budget.</summary>

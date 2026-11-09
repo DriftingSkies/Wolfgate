@@ -791,7 +791,7 @@ namespace Content.Shared.Preferences
 
             name = name.Trim();
 
-            if (configManager.GetCVar(CCVars.RestrictedNames) && Species != "IPC")
+            if (configManager.GetCVar(CCVars.RestrictedNames) && Species != "IPC" && Species != "Synth") // WOLFGATE: Synths name themselves like IPCs
             {
                 // WOLFGATE: digits are allowed in names, as the validation regex above already allows them
                 name = Regex.Replace(name, @"[^\u0030-\u0039,\u0041-\u005A,\u0061-\u007A,\u00C0-\u00D6,\u00D8-\u00F6,\u00F8-\u00FF,\u0100-\u017F, -]", string.Empty);

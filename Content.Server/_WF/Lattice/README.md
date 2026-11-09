@@ -3,8 +3,11 @@
 The sector's boundary. Reality anchors round Caelestinus Central hold off Kyphrus's Unmooring; the further from their
 hold, the worse it gets. The field is banded Unison, Detune, Dissonance, Feedback and the Coda, whose name comes out garbled.
 Crossing into another band shows a popup and a notification chip, and radars draw the band edges in place of the
-drone rings: the band edges are the profile's (28, 40, 53 and 66 km), and the default worldgen's biomes change at the same
-distances; a map whose drone rings line up one per edge uses those instead. The full design and build order are in `Docs/_WF/Lattice/DESIGN.md`.
+drone rings: the band edges are the profile's (20, 34, 50 and 66 km), and the default worldgen's biomes change at the same
+distances (`droneRingEdges: false`, so a map's drone rings never move them). Only the six primary anchors set the bands,
+so the edges are near-circles that pull in only on the side of a lost primary. Secondary anchors (relays, a station's own)
+carry their strength negated and hold only a local well of anchored space (`WFLatticeMath.LocalHold`, about 2 km for a
+relay), so they never bend the far bands. The full design and build order are in `Docs/_WF/Lattice/DESIGN.md`.
 
 **How it works.** `WFLatticeSystem` puts `WFLatticeFieldComponent` on every map with world generation and spawns the
 profile's six primary anchors on a 3 km hexagon if the map has none. Each is a station loaded from the profile's
@@ -92,6 +95,15 @@ minute; out of the Coda it withers within 5-10 minutes; Clean Drift at a drydock
 **Drones.** Only the low tiers spawn: T0 in the inner Wilds, T1 from Detune out, rarest in the Coda. The T2 spawners are
 gone from every biome.
 
+**The rot** (`WFCodaRotSystem`). A living player out in the Coda's open space, off any hull, is warned at once ("your skin
+prickles"), again at half the grace, and when the grace (20 s) runs out: then they take 2 Cellular a second that no suit
+stops (an anchor charm halves it), are reminded every 15 s, and at 45 s an arm twists into a blade. Death out there
+rises Remade as usual. Back aboard, it stops and fades three times as fast. The Choir are exempt. `WFCodaRotCVars`
+(`wf.lattice.coda_rot*`) tune it.
+
+**Speaking of it.** A living speaker who says "Coda" stumbles on the word and feels it catch (`WFCodaTabooSystem`);
+ghosts and the Choir say it plainly.
+
 **The dead rise.** In the Coda (`riseBand`) a body that lies dead for `riseDelay` seconds (60) starts to turn Remade
 (`WFDeepRisingSystem`, through `WFRemadeConversionSystem`), unless its ship or the body itself is sheltered. If it was
 a player's, they are asked whether to rise with it and play the Remade; a no leaves it to the NPC AI.
@@ -156,11 +168,11 @@ station can't be moved. Its eight hardpoints carry `WFLatticeWardenLance`s, whic
 `WFLatticeSystem.Defence.cs` is slow to anger. Shield and core hits are counted per ship (forgiven after 60 s); ten
 (`strikeLimit`) from one ship put out a global "under fire" alert, and nothing more while the shield holds. Once the
 station's shield is down it alerts again, calls its drones, and turns every lance on the nearest ship that has fired on
-it in the last 90 s and still has a living player or NPC aboard, within 3 km; it stops when the shield comes back or the
+it in the last 20 s and still has a living player or NPC aboard, within 3 km; it stops when the shield comes back or the
 ship is dead. Shield hits are slow to anger, but damage to anything on the station itself (`WFLatticeStationPartComponent`,
 marked every 30 s) or to the core is answered at once (`Provoke`): the alert goes out, the drones come, and the lances
-fire on the attacker for 90 s whether the shield holds or not. The attacker is the ship it was hit from, or the person
-if they are on foot. Other anchor stations never count as attackers. The station also hums: `WFLatticeHumSystem` plays the
+fire on the attacker for 20 s whether the shield holds or not. The attacker is the person who fired a hand weapon,
+wherever they stand, or the ship a mounted gun fired from, so nobody else aboard is caught up in it. Other anchor stations never count as attackers. The station also hums: `WFLatticeHumSystem` plays the
 Goonstation flock reactor loop to a player within 450 m of an anchor, louder the closer they are.
 
 **Relay anchors.** The autolathe makes a relay anchor flatpack (20 shards of exotic matter). Bolted down with 30 kW,
@@ -202,6 +214,41 @@ relays, exotic matter, the stabiliser and the charm have a Lore button on examin
 **Tuning.** `Resources/Prototypes/_WF/Lattice/lattice.yml`: the `WFDefault` profile's anchor layout, reach, Drift cap
 and per-band edge, Drift rate, growth with depth, chip style and garbling.
 
+**The hex field** (`WFLatticeSystem.Hex.cs`, `WFLatticeHex`). The beams between neighbouring primary anchors make a
+ring; a beam stands while both its anchors do, and the hex is sealed while every beam stands. No Monolith crosses a
+standing beam inwards: whatever carries it (its ship and everything docked to it, or whoever holds it in open space) is set
+back outside and its inward speed is thrown back. A broken beam lets it through. A ship carrying a Scion can't jump inside a
+sealed hex, and one that arrives inside it by any jump is put back out. Each beam has a slice of the hex, from the beam
+in to Central's circle (its grid plus 60 m). A slice whose beam stands is a sanctuary: a Monolith can't be drawn on, grow
+corruption or reach anyone in it from outside. A broken beam opens its slice, and while any beam is broken Central's
+circle is open too, so the Monolith reaches Caelestinus Central; with a Lattice the main station has no sanctuary of its own.
+
+**Wards.** Each anchor keeps corruption off grids within its `ward` (primaries 600 m, relays and station anchors
+150 m). Caelestinus Central gets its own anchor (`WFLatticeCentralAnchor`, 20,000 damage, an 800 m ward) railed in at
+tile (1, 17) and a Lattice status console at (-19, -6) facing east, unless an anchor is mapped there. Damaging it names
+the attacker to the sector; destroying it is announced. Players aboard an anchor station are named as trespassers, all who came aboard in one announcement, as a silent banner at most every
+ten minutes a station, and each again only after five minutes. A station alerts the sector at most every five minutes (`alertCooldown`); only a direct hit sounds the alarm.
+
+**Ghosts** can warp to every anchor, Central's included, from the ghost menu.
+
+**Radar.** Every radar and mass scanner draws the hex (`ShuttleNavControl.Hex.cs`): violet beams, dashed red where
+broken, a faint tint inside while it is sealed, and a ring round each anchor's ward.
+
+**Status app.** The autolathe prints a Lattice status cartridge (PDA app) and a status console flatpack. Both show
+`WFLatticeStatusPanel` (client): the hex drawn as glyph nodes with comets running along standing beams and torn red ones
+where broken, Central's anchor at the heart, flesh ships circling as red motes, and readouts for state, integrity, the
+hex, Central's anchor, flesh ships, the viewer's band (garbled where the band garbles) and each anchor by name. It reads
+only the networked field (`Hex`, `HexUp`, `HexAlive`, `HexNames`, `CentralStanding`, `FleshShips`, `Unstrung`, `Tacet`).
+
+**Fading.** A lost anchor's hold doesn't vanish: it fades where it stood over `wf.lattice.anchor_fade` (20 minutes), so
+the bands creep inward instead of jumping.
+
+**The end** (`WFLatticeSystem.Endgame.cs`). When the last primary anchor falls, the Unstringing: every relay and station
+anchor lets go too, all fading the same way, so over 20 minutes the Coda, its hazards, its rot and its dead FTL engulf the
+whole sector. Some 15 to 30 minutes after it has fully set in comes Tacet: Kyphrus implodes, every bulb in the sector bursts and new ones keep failing (a quarter every 30 s),
+and clients stop drawing the black hole. `WFLatticeEndgameCVars` (`wf.lattice.tacet*`) tune it. Admins use
+`wflattice siege|unstring|tacet`.
+
 **Admins.** Spawn `WFLatticeAnchorRelayMarker` (0.4 strength) to push the field out, or delete a primary anchor to
 open a breach. A carrier's band and Drift are on its `WFDriftComponent` in VV.
 
@@ -222,18 +269,23 @@ open a breach. A carrier's band and Drift are on its `WFDriftComponent` in VV.
 - [`Content.Server/_WF/Lattice/WFCodaHazardSystem.cs`](WFCodaHazardSystem.cs)
 - [`Content.Server/_WF/Lattice/WFCodaHazardSystem.Leviathan.cs`](WFCodaHazardSystem.Leviathan.cs)
 - [`Content.Server/_WF/Lattice/WFCodaMutationSystem.cs`](WFCodaMutationSystem.cs)
+- [`Content.Server/_WF/Lattice/WFCodaRotSystem.cs`](WFCodaRotSystem.cs)
+- [`Content.Server/_WF/Lattice/WFCodaTabooSystem.cs`](WFCodaTabooSystem.cs)
 - [`Content.Server/_WF/Lattice/WFDeepRisingSystem.cs`](WFDeepRisingSystem.cs)
 - [`Content.Server/_WF/Lattice/WFDriftEffectsSystem.cs`](WFDriftEffectsSystem.cs)
 - [`Content.Server/_WF/Lattice/WFDriftEffectsSystem.Lies.cs`](WFDriftEffectsSystem.Lies.cs)
 - [`Content.Server/_WF/Lattice/WFDriftLoggerSystem.cs`](WFDriftLoggerSystem.cs)
 - [`Content.Server/_WF/Lattice/WFDriftMindSystem.cs`](WFDriftMindSystem.cs)
 - [`Content.Server/_WF/Lattice/WFHallucinateCommand.cs`](WFHallucinateCommand.cs)
+- [`Content.Server/_WF/Lattice/WFLatticeEndCommand.cs`](WFLatticeEndCommand.cs)
 - [`Content.Server/_WF/Lattice/WFLatticeShelterSystem.cs`](WFLatticeShelterSystem.cs)
 - [`Content.Server/_WF/Lattice/WFLatticeSystem.Barrier.cs`](WFLatticeSystem.Barrier.cs)
 - [`Content.Server/_WF/Lattice/WFLatticeSystem.cs`](WFLatticeSystem.cs)
 - [`Content.Server/_WF/Lattice/WFLatticeSystem.Defence.cs`](WFLatticeSystem.Defence.cs)
+- [`Content.Server/_WF/Lattice/WFLatticeSystem.Endgame.cs`](WFLatticeSystem.Endgame.cs)
 - [`Content.Server/_WF/Lattice/WFLatticeSystem.Felt.cs`](WFLatticeSystem.Felt.cs)
 - [`Content.Server/_WF/Lattice/WFLatticeSystem.Ftl.cs`](WFLatticeSystem.Ftl.cs)
+- [`Content.Server/_WF/Lattice/WFLatticeSystem.Hex.cs`](WFLatticeSystem.Hex.cs)
 - [`Content.Server/_WF/Lattice/WFLatticeSystem.LostShips.cs`](WFLatticeSystem.LostShips.cs)
 - [`Content.Server/_WF/Lattice/WFLatticeSystem.RelayFuel.cs`](WFLatticeSystem.RelayFuel.cs)
 - [`Content.Server/_WF/Lattice/WFLatticeSystem.Stations.cs`](WFLatticeSystem.Stations.cs)
@@ -248,17 +300,21 @@ open a breach. A carrier's band and Drift are on its `WFDriftComponent` in VV.
 - [`Content.Shared/_WF/Lattice/WFDriftSourceComponent.cs`](../../../Content.Shared/_WF/Lattice/WFDriftSourceComponent.cs)
 - [`Content.Shared/_WF/Lattice/WFGround.cs`](../../../Content.Shared/_WF/Lattice/WFGround.cs)
 - [`Content.Shared/_WF/Lattice/WFLatticeAnchorComponent.cs`](../../../Content.Shared/_WF/Lattice/WFLatticeAnchorComponent.cs)
+- [`Content.Shared/_WF/Lattice/WFLatticeEndgameCVars.cs`](../../../Content.Shared/_WF/Lattice/WFLatticeEndgameCVars.cs)
 - [`Content.Shared/_WF/Lattice/WFLatticeFieldComponent.cs`](../../../Content.Shared/_WF/Lattice/WFLatticeFieldComponent.cs)
 - [`Content.Shared/_WF/Lattice/WFLatticeHallucination.cs`](../../../Content.Shared/_WF/Lattice/WFLatticeHallucination.cs)
+- [`Content.Shared/_WF/Lattice/WFLatticeHex.cs`](../../../Content.Shared/_WF/Lattice/WFLatticeHex.cs)
 - [`Content.Shared/_WF/Lattice/WFLatticeMath.cs`](../../../Content.Shared/_WF/Lattice/WFLatticeMath.cs)
 - [`Content.Shared/_WF/Lattice/WFLatticeProfilePrototype.cs`](../../../Content.Shared/_WF/Lattice/WFLatticeProfilePrototype.cs)
 - [`Content.Shared/_WF/Lattice/WFLatticeShelterComponent.cs`](../../../Content.Shared/_WF/Lattice/WFLatticeShelterComponent.cs)
 - [`Content.Shared/_WF/Lattice/WFLatticeShelterSources.cs`](../../../Content.Shared/_WF/Lattice/WFLatticeShelterSources.cs)
+- [`Content.Shared/_WF/Lattice/WFLatticeStatus.cs`](../../../Content.Shared/_WF/Lattice/WFLatticeStatus.cs)
 - [`Content.Shared/_WF/Lattice/WFLeviathan.cs`](../../../Content.Shared/_WF/Lattice/WFLeviathan.cs)
 - [`Content.Shared/_WF/Lattice/WFSongExcision.cs`](../../../Content.Shared/_WF/Lattice/WFSongExcision.cs)
 
 ### Client
 
+- [`Content.Client/_WF/Lattice/ShuttleNavControl.Hex.cs`](../../../Content.Client/_WF/Lattice/ShuttleNavControl.Hex.cs)
 - [`Content.Client/_WF/Lattice/ShuttleNavControl.Lattice.cs`](../../../Content.Client/_WF/Lattice/ShuttleNavControl.Lattice.cs)
 - [`Content.Client/_WF/Lattice/WFChoirIconSystem.cs`](../../../Content.Client/_WF/Lattice/WFChoirIconSystem.cs)
 - [`Content.Client/_WF/Lattice/WFDriftOverlay.cs`](../../../Content.Client/_WF/Lattice/WFDriftOverlay.cs)
@@ -269,6 +325,8 @@ open a breach. A carrier's band and Drift are on its `WFDriftComponent` in VV.
 - [`Content.Client/_WF/Lattice/WFLatticeHumSystem.cs`](../../../Content.Client/_WF/Lattice/WFLatticeHumSystem.cs)
 - [`Content.Client/_WF/Lattice/WFLatticeRings.cs`](../../../Content.Client/_WF/Lattice/WFLatticeRings.cs)
 - [`Content.Client/_WF/Lattice/WFLatticeSkyOverlay.cs`](../../../Content.Client/_WF/Lattice/WFLatticeSkyOverlay.cs)
+- [`Content.Client/_WF/Lattice/WFLatticeStatusPanel.cs`](../../../Content.Client/_WF/Lattice/WFLatticeStatusPanel.cs)
+- [`Content.Client/_WF/Lattice/WFLatticeStatusUi.cs`](../../../Content.Client/_WF/Lattice/WFLatticeStatusUi.cs)
 - [`Content.Client/_WF/Lattice/WFLatticeViewSystem.cs`](../../../Content.Client/_WF/Lattice/WFLatticeViewSystem.cs)
 - [`Content.Client/_WF/Lattice/WFLeviathanSystem.cs`](../../../Content.Client/_WF/Lattice/WFLeviathanSystem.cs)
 
@@ -276,14 +334,17 @@ open a breach. A carrier's band and Drift are on its `WFDriftComponent` in VV.
 
 - [`Content.IntegrationTests/Tests/_WF/Lattice/WFChoirTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFChoirTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Lattice/WFCodaHazardTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFCodaHazardTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Lattice/WFCodaRotTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFCodaRotTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Lattice/WFDeepRisingTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFDeepRisingTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Lattice/WFDriftDepthTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFDriftDepthTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Lattice/WFDriftEffectsTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFDriftEffectsTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Lattice/WFDriftMindTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFDriftMindTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Lattice/WFLatticeFtlTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFLatticeFtlTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Lattice/WFLatticeHexTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFLatticeHexTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Lattice/WFLatticeShelterTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFLatticeShelterTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Lattice/WFLatticeStationTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFLatticeStationTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Lattice/WFLatticeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFLatticeTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Lattice/WFLatticeTrespassTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFLatticeTrespassTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Lattice/WFSongExcisionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Lattice/WFSongExcisionTest.cs)
 
 ### Unit tests
@@ -301,6 +362,7 @@ open a breach. A carrier's band and Drift are on its `WFDriftComponent` in VV.
 - [`Resources/Prototypes/_WF/Lattice/lattice.yml`](../../../Resources/Prototypes/_WF/Lattice/lattice.yml)
 - [`Resources/Prototypes/_WF/Lattice/reagents.yml`](../../../Resources/Prototypes/_WF/Lattice/reagents.yml)
 - [`Resources/Prototypes/_WF/Lattice/shaders.yml`](../../../Resources/Prototypes/_WF/Lattice/shaders.yml)
+- [`Resources/Prototypes/_WF/Lattice/status.yml`](../../../Resources/Prototypes/_WF/Lattice/status.yml)
 - [`Resources/Prototypes/_WF/Lattice/weapons.yml`](../../../Resources/Prototypes/_WF/Lattice/weapons.yml)
 - [`Resources/Prototypes/_WF/Lattice/worldgen.yml`](../../../Resources/Prototypes/_WF/Lattice/worldgen.yml)
 
@@ -342,7 +404,8 @@ open a breach. A carrier's band and Drift are on its `WFDriftComponent` in VV.
 - [`Content.Client/Shuttles/UI/NavScreen.xaml.cs`](../../../Content.Client/Shuttles/UI/NavScreen.xaml.cs): the ship's own position garbles too.
 - [`Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs)
   - radar contacts only this player sees.
-  - in the Coda the radar goes blind in wandering wedges.
+  - the hex field's beams and the anchors' wards.
+  - the Coda shows only as static on every scanner.
   - contact names garble out past the Lattice's hold.
 - [`Content.Server/Shuttles/Systems/ShuttleConsoleSystem.FTL.cs`](../../Shuttles/Systems/ShuttleConsoleSystem.FTL.cs)
   - drives don't work past the Lattice's hold
@@ -352,12 +415,12 @@ open a breach. A carrier's band and Drift are on its `WFDriftComponent` in VV.
 - [`Resources/Prototypes/_Mono/Entities/World/Biome/basic.yml`](../../../Resources/Prototypes/_Mono/Entities/World/Biome/basic.yml)
   - fewer rocks near home, so the good ones are a trip out
   - no high-tier drones anywhere
-  - anchored space reaches 28 km
-  - wider Lattice bands, Detune 28-40 km
+  - anchored space reaches 20 km
+  - wider Lattice bands, Detune 20-34 km
   - each band thins its own rocks
-  - wider Lattice bands, Dissonance 40-53 km
+  - wider Lattice bands, Dissonance 34-50 km
   - only the low-tier drones out past the hold
-  - wider Lattice bands, Feedback 53-66 km
+  - wider Lattice bands, Feedback 50-66 km
   - the Coda has the fewest rocks of all
   - only the low-tier drones out past the hold, rarest in the Coda
 - [`Resources/Prototypes/_NF/Guidebook/nf14.yml`](../../../Resources/Prototypes/_NF/Guidebook/nf14.yml): the bands, Drift, exotic matter and the anchors

@@ -13,6 +13,11 @@ public sealed partial class JoinProgressManager
 
     public event Action<MsgJoinDownloadInfo>? DownloadInfoReceived;
 
+    /// <summary>Which channel this connection's file transfers use; null until the server says.</summary>
+    public JoinTransferMode? TransferMode { get; private set; }
+
+    public event Action<JoinTransferMode>? TransferModeReceived;
+
     public void Initialize()
     {
         _net.RegisterNetMessage<MsgJoinDownloadInfo>(msg =>
@@ -20,7 +25,19 @@ public sealed partial class JoinProgressManager
             DownloadInfo = msg;
             DownloadInfoReceived?.Invoke(msg);
         });
-        _net.Disconnect += (_, _) => DownloadInfo = null;
-        _net.ConnectFailed += (_, _) => DownloadInfo = null;
+        _net.RegisterNetMessage<MsgJoinTransferStatus>(msg =>
+        {
+            TransferMode = msg.Mode;
+            TransferModeReceived?.Invoke(msg.Mode);
+        });
+
+        _net.Disconnect += (_, _) => Reset();
+        _net.ConnectFailed += (_, _) => Reset();
+    }
+
+    private void Reset()
+    {
+        DownloadInfo = null;
+        TransferMode = null;
     }
 }

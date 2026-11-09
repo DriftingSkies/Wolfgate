@@ -20,8 +20,10 @@ public sealed partial class WFLoreBookSystem : EntitySystem
     [Dependency] private IUserInterfaceManager _ui = default!;
     [Dependency] private TagSystem _tags = default!;
 
-    public static readonly SpriteSpecifier Icon =
-        new SpriteSpecifier.Texture(new ResPath("/Textures/_WF/LoreBook/lorebook.svg.192dpi.png"));
+    /// <summary>The book icon, loaded from the resource cache where entity systems may not be up yet.</summary>
+    public static readonly ResPath IconPath = new("/Textures/_WF/LoreBook/lorebook.svg.192dpi.png");
+
+    public static readonly SpriteSpecifier Icon = new SpriteSpecifier.Texture(IconPath);
 
     private readonly HashSet<string> _lore = new();
     private readonly Dictionary<string, ProtoId<GuideEntryPrototype>> _links = new();

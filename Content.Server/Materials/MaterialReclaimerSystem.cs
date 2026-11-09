@@ -82,7 +82,7 @@ public sealed partial class MaterialReclaimerSystem : SharedMaterialReclaimerSys
 
     private void OnInteractUsing(Entity<MaterialReclaimerComponent> entity, ref InteractUsingEvent args)
     {
-        if (args.Handled)
+        if (args.Handled || WfIsPanelTool(entity, args.Used)) // WOLFGATE(Construction): a screwdriver opens the panel instead of being recycled
             return;
 
         // if we're trying to get a solution out of the reclaimer, don't destroy it

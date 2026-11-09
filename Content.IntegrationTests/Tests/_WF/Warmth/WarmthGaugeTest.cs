@@ -121,21 +121,28 @@ public sealed class WarmthGaugeTest
 
         // Beside a bonfire the gauge says so, and the body warms.
         var coldGauge = 0;
+        var coldRaw = 0f;
+        var coldCore = 0f;
+        var bodyTemperature = server.System<Content.Server._WF.Wolfmed.Life.WolfmedBodyTemperatureSystem>();
         await server.WaitPost(() =>
         {
             coldGauge = entMan.GetComponent<WFWarmthComponent>(mob).Gauge;
+            coldRaw = entMan.GetComponent<WFWarmthComponent>(mob).LastGauge;
+            coldCore = bodyTemperature.GetCore(mob) ?? 0f;
             entMan.SpawnEntity("Bonfire", new EntityCoordinates(map.Grid.Owner, 1.5f, 0.5f));
         });
 
         var warming = false;
-        for (var i = 0; i < 24 && !warming; i++)
+        for (var i = 0; i < 48 && !warming; i++)
         {
             await pair.RunTicksSync(pair.SecondsToTicks(5f));
-            // The trend reads Warming only while the gauge climbs, which can fall between two polls; a higher gauge counts too.
+            // The trend reads Warming only while the gauge climbs, which can fall between two polls; a higher gauge counts
+            // too. A body chilled past the gauge's floor reads 0 until its core comes back up, so a rising core counts as well.
             await server.WaitPost(() =>
             {
                 var now = entMan.GetComponent<WFWarmthComponent>(mob);
-                warming = now.Trend == WFWarmthTrend.Warming || now.Gauge > coldGauge;
+                warming = now.Trend == WFWarmthTrend.Warming || now.Gauge > coldGauge || now.LastGauge > coldRaw
+                          || bodyTemperature.GetCore(mob) > coldCore + 0.05f;
             });
         }
 

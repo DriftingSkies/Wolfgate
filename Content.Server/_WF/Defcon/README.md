@@ -6,7 +6,8 @@ It informs and alerts only; no gameplay changes with the level.
 Every 30 seconds `WFDefconSystem` raises `WFDefconGatherEvent` and adds up what the sources report.
 `WFDefconSourcesSystem` scores the ADS and Reaver campaigns by tier, the war level while HOT (which also holds
 DEFCON at 3 or worse), open scheduled threat encounters and distress calls, and player deaths in the last ten
-minutes. Another module can add a source by subscribing to the event. A higher level is reached once the score has
+minutes. Another module can add a source by subscribing to the event; Ordnance scores nuclear devices held
+(`nuclearHeld`, holding DEFCON at `nuclearHeldFloor`) and armed (`nuclearArmed`, holding it at 1). A higher level is reached once the score has
 held for a minute, and it may skip levels. A lower level comes one step at a time, after ten minutes below and at
 least five minutes at the current level. All of it is tuned in the `wfDefconProfile` prototype that
 `wf.defcon.profile` names (`WFDefault`); `wf.defcon.enabled` turns it off.

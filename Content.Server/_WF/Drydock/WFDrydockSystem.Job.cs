@@ -82,7 +82,9 @@ public sealed partial class WFDrydockSystem
     /// <summary>Advances one job by a frame and returns how it ends, or None while it keeps running.</summary>
     private JobEnd TickJob(EntityUid console, WFDrydockConsoleComponent comp, WFDrydockJobComponent job, TimeSpan curTime, float frameTime)
     {
-        if (TerminatingOrDeleted(job.Ship))
+        // The last tile's lift ends the break; the hull itself is then deleted over a few ticks off its map, where the
+        // berth check below would read it as towed away.
+        if (job.HullGone || TerminatingOrDeleted(job.Ship))
             return job.HullGone ? JobEnd.Finished : JobEnd.Aborted;
 
         if (job.Lifting.Count > 0 && curTime >= job.LiftAt)

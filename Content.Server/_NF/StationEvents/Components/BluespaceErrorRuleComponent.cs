@@ -56,6 +56,12 @@ public sealed partial class BluespaceErrorRuleComponent : Component
     [DataField]
     public bool ExtendIfPopulated = true;
 
+    // WOLFGATE(LiveFixes) START: a vault guarded from nearby never left
+    /// <summary>How many times populating the grids may extend the event; null for no limit.</summary>
+    [DataField]
+    public int? WfMaxExtensions;
+    // WOLFGATE END
+
     [DataField]
     /// <summary>
     /// How much the grid is appraised at upon entering into existence, set after starting the event

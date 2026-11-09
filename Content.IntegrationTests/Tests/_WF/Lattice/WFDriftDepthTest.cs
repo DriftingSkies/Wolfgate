@@ -34,10 +34,9 @@ public sealed class WFDriftDepthTest
         EntityUid mob = default, logger = default;
         await server.WaitAssertion(() =>
         {
-            entities.EnsureComponent<WFDroneRingsComponent>(map.MapUid).Radii = new List<float> { 10000f, 12000f, 14000f, 16000f };
             lattice.Setup(map.MapUid);
             entities.EnsureComponent<Content.Server.Shuttles.Components.ShuttleComponent>(map.Grid);
-            transform.SetWorldPosition(map.Grid.Owner, new Vector2(30000f, 0f));
+            transform.SetWorldPosition(map.Grid.Owner, new Vector2(72000f, 0f));
             mob = entities.SpawnEntity("MobHuman", map.GridCoords);
             players.SetAttachedEntity(players.Sessions.Single(), mob, force: true);
             entities.EnsureComponent<WFDriftComponent>(map.Grid).Drift = 60f;

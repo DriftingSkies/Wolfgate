@@ -27,6 +27,11 @@ public sealed partial class DungeonJob
 
         for (var i = 0; i < gen.Count; i++)
         {
+            // WOLFGATE(Performance): yield between entrances so a big dungeon never finishes in one tick
+            await SuspendDungeon();
+            if (!ValidateResume())
+                return;
+
             var roomIndex = random.Next(rooms.Count);
             var room = rooms[roomIndex];
 

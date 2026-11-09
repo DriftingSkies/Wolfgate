@@ -74,7 +74,7 @@ public sealed partial class LightningSystem : SharedLightningSystem
         if (proto.TryGetComponent<LightningComponent>(out var lightningComp, EntityManager.ComponentFactory))
             spawnOnHit = lightningComp.SpawnOnHit;
 
-        ShootLightning(user, target, lightningPrototype, triggerLightningEvents);
+        ShootLightning(user, target, spawnOnHit, lightningPrototype, triggerLightningEvents); // WOLFGATE: call the private overload; the public one recursed forever
     }
 
     // Mono - for optimisation purposes

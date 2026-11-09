@@ -34,6 +34,7 @@ The warning makes the hang visible; it doesn't remove it. That takes a fallback 
 ### Shared
 
 - [`Content.Shared/_WF/JoinProgress/MsgJoinDownloadInfo.cs`](../../../Content.Shared/_WF/JoinProgress/MsgJoinDownloadInfo.cs)
+- [`Content.Shared/_WF/JoinProgress/MsgJoinTransferStatus.cs`](../../../Content.Shared/_WF/JoinProgress/MsgJoinTransferStatus.cs)
 
 ### Client
 
@@ -49,6 +50,7 @@ The warning makes the hang visible; it doesn't remove it. That takes a fallback 
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/JoinProgress/JoinProgressTest.cs`](../../../Content.IntegrationTests/Tests/_WF/JoinProgress/JoinProgressTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/JoinProgress/JoinTransferStatusTest.cs`](../../../Content.IntegrationTests/Tests/_WF/JoinProgress/JoinTransferStatusTest.cs)
 
 ### Unit tests
 

@@ -1,6 +1,9 @@
 using System.Numerics;
 using Content.Shared._Mono.Radar;
+using Content.Shared._WF.Performance; // WOLFGATE(Performance)
+using Robust.Shared.Configuration; // WOLFGATE(Performance)
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components; // WOLFGATE(Performance)
 using Robust.Shared.Timing;
 using System.Linq;
 
@@ -11,10 +14,17 @@ public sealed partial class RadarBlipsSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedTransformSystem _xform = default!;
+    [Dependency] private IConfigurationManager _wfConfig = default!; // WOLFGATE(Performance)
 
     private const double BlipStaleSeconds = 3.0;
     private TimeSpan _lastRequestTime = TimeSpan.Zero;
-    private static readonly TimeSpan RequestThrottle = TimeSpan.FromMilliseconds(500);
+
+    // WOLFGATE(Performance) START: blips arrived at 2 Hz, so a curving missile lurched between straight-line guesses.
+    // The rate is a cvar now, so a crowded fight can be dialled back without a rebuild.
+    // private static readonly TimeSpan RequestThrottle = TimeSpan.FromMilliseconds(500);
+    private TimeSpan RequestThrottle =>
+        TimeSpan.FromSeconds(1.0 / Math.Clamp(_wfConfig.GetCVar(WFRadarCVars.RequestHz), 0.5f, 20f));
+    // WOLFGATE END
 
     private TimeSpan _lastUpdatedTime;
     private List<BlipNetData> _blips = new();
@@ -25,6 +35,12 @@ public sealed partial class RadarBlipsSystem : EntitySystem
     // cached results to avoid allocating on every draw/frame
     private readonly List<BlipData> _cachedBlipData = new();
     private readonly List<MissileVectorData> _cachedMissileData = new();
+
+    // WOLFGATE(Performance) START: lookups and colours for the missile lines, which are rebuilt on every draw frame
+    private readonly Dictionary<NetEntity, BlipNetData> _wfBlipByUid = new();
+    private static readonly Color WFMissileLineColor = Color.FromHex("#00AACC");
+    private static readonly Color WFMissileArcColor = Color.FromHex("#FF0040");
+    // WOLFGATE END
 
     public override void Initialize()
     {
@@ -90,7 +106,15 @@ public sealed partial class RadarBlipsSystem : EntitySystem
             var config = _configPalette[blip.ConfigIndex];
             var rotation = blip.Rotation;
             // hijack our shape if we're on a grid and we want to do that
-            if (_map.TryFindGridAt(predictedMap, out var grid, out _) && grid != EntityUid.Invalid)
+            // WOLFGATE(Performance) START: the sent coord already names its grid, so only an off-grid blip needs the query
+            // if (_map.TryFindGridAt(predictedMap, out var grid, out _) && grid != EntityUid.Invalid)
+            var grid = HasComp<MapGridComponent>(coord.EntityId)
+                ? coord.EntityId
+                : _map.TryFindGridAt(predictedMap, out var foundGrid, out _)
+                    ? foundGrid
+                    : EntityUid.Invalid;
+            if (grid != EntityUid.Invalid)
+            // WOLFGATE END
             {
                 if (blip.OnGridConfigIndex is { } gridIdx)
                     config = _configPalette[gridIdx];
@@ -115,12 +139,24 @@ public sealed partial class RadarBlipsSystem : EntitySystem
             return _cachedMissileData;
 
         // populate the cached list instead of allocating a new one each frame
+        // WOLFGATE(Performance) START: one dictionary lookup per missile, not a scan of every blip per missile.
+        // The line colours are parsed once instead of twice per missile on every draw frame.
+        _wfBlipByUid.Clear();
+        foreach (var blip in _blips)
+        {
+            _wfBlipByUid[blip.Uid] = blip;
+        }
+
         foreach (var missile in _missiles)
         {
-            var tiedBlip = _blips.FirstOrDefault(x => x.Uid == missile.Uid);
+            // var tiedBlip = _blips.FirstOrDefault(x => x.Uid == missile.Uid);
+            if (!_wfBlipByUid.TryGetValue(missile.Uid, out var tiedBlip))
+                continue;
+
             var coord = tiedBlip.Position;
-            var color = Color.FromHex("#00AACC");
-            var colorArcs = Color.FromHex("#FF0040");
+            var color = WFMissileLineColor;
+            var colorArcs = WFMissileArcColor;
+            // WOLFGATE END
 
             var predictedPosStart = new NetCoordinates(missile.Uid, coord.Position + tiedBlip.Vel * (float)(_timing.CurTime - _lastUpdatedTime).TotalSeconds);
             var posEnd = Vector2.Create(

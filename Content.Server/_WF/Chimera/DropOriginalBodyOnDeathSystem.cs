@@ -91,11 +91,17 @@ public sealed partial class DropOriginalBodyOnDeathSystem : EntitySystem
     /// </summary>
     private void OnPolymorphed(Entity<DropOriginalBodyOnDeathComponent> ent, ref PolymorphedEvent args)
     {
-        // DropOriginal removes the polymorph before raising this, and its corpse keeps what it carries.
+        // DropOriginal removes the polymorph before raising this and drops the corpse's items itself.
         if (!args.IsRevert || !HasComp<PolymorphedEntityComponent>(ent))
             return;
 
-        if (_inventory.TryGetContainerSlotEnumerator(ent.Owner, out var slots))
+        DropCarried(ent);
+    }
+
+    /// <summary>Drops what the mob wears, holds and keeps in its internal storage to the floor.</summary>
+    private void DropCarried(EntityUid ent)
+    {
+        if (_inventory.TryGetContainerSlotEnumerator(ent, out var slots))
         {
             while (slots.MoveNext(out var slot))
             {
@@ -126,6 +132,9 @@ public sealed partial class DropOriginalBodyOnDeathSystem : EntitySystem
 
         // Removed first: a revert-on-death polymorph would otherwise swap the corpse for the body next update.
         RemComp(ent, polymorphed);
+
+        // What the fleshbeast carried falls out with the body instead of staying locked on the corpse.
+        DropCarried(ent);
 
         if (TerminatingOrDeleted(original))
             return;

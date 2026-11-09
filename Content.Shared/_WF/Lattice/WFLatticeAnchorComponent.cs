@@ -15,7 +15,15 @@ public sealed partial class WFLatticeAnchorComponent : Component
     /// <summary>One of the Lattice's original anchors, whose loss is a breach.</summary>
     [DataField]
     public bool Primary;
+
+    /// <summary>How far round it corruption can't grow while it stands, in metres; 0 for none.</summary>
+    [DataField]
+    public float Ward;
 }
+
+/// <summary>Caelestinus Central's own anchor: keeps corruption off the station while it stands.</summary>
+[RegisterComponent]
+public sealed partial class WFLatticeCentralAnchorComponent : Component;
 
 /// <summary>A player-built anchor: holds the field only while powered, anchored, parked and fed exotic matter.</summary>
 [RegisterComponent]
@@ -96,6 +104,20 @@ public sealed partial class WFLatticeAnchorStationComponent : Component
     /// <summary>When the station next marks what is on it, so a hit on any of it is noticed.</summary>
     [ViewVariables]
     public TimeSpan NextMark;
+
+    /// <summary>Players named as trespassers aboard, and when they may be named again.</summary>
+    [ViewVariables]
+    public Dictionary<EntityUid, TimeSpan> Trespassers = new();
+
+    [ViewVariables]
+    public TimeSpan NextTrespassCheck;
+
+    /// <summary>Trespassers not yet named, waiting for the next announcement, and when it may go out.</summary>
+    [ViewVariables]
+    public List<EntityUid> PendingTrespassers = new();
+
+    [ViewVariables]
+    public TimeSpan NextTrespassAlert;
 }
 
 /// <summary>Something on an anchor station whose damage the station answers at once.</summary>

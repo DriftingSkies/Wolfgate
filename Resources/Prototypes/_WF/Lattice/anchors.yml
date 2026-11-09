@@ -51,6 +51,8 @@
         acts: [ "Destruction" ]
   - type: WFLatticeAnchor
     primary: true
+    # Corruption can't grow on the station or near it.
+    ward: 600
   # The anchor holds its station still, as a station anchor does.
   - type: StationAnchor
   # The anchor powers its own station: run HV cable from under it to a substation.
@@ -247,6 +249,7 @@
   - type: WFLatticeAnchor
     active: false
     strength: 0.4
+    ward: 150
   - type: WFLatticeRelay
 
 # A crewed station's own anchor, mapped onto stations that sit past anchored space (Helios, the Syndicate FOB). It holds the station
@@ -282,3 +285,62 @@
     Plasteel: 2000
     Gold: 1000
     WFExoticMatter: 2000
+
+# Caelestinus Central's own anchor, set down on the station at round start. It holds no band and needs no power; while it
+# stands, corruption can't grow on the station or near it, whatever has happened to the hex.
+- type: entity
+  id: WFLatticeCentralAnchor
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.4,0.4,0.4"
+        density: 300
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    sprite: Structures/Machines/Anomaly/adv_anomaly_vessel.rsi
+    noRot: true
+    offset: 0,0.5
+    layers:
+    - state: base
+    - state: powered-3
+      shader: unshaded
+      color: "#d070ff"
+  - type: PointLight
+    radius: 4
+    energy: 2
+    color: "#b040e0"
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallicStrong
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 20000
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: WFLatticeAnchor
+    strength: 0.3
+    ward: 800
+  - type: WFLatticeCentralAnchor
+  # Only so a wrench can try: the attempt is refused, and answered with lightning.
+  - type: Anchorable
+    delay: 4

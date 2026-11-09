@@ -69,6 +69,12 @@ namespace Content.Server.Database
 
         public DbSet<WolfgateGameScore> WolfgateGameScore { get; set; } = null!; // WOLFGATE(GameHub): best level scores
         public DbSet<WolfgateContractStanding> WolfgateContractStanding { get; set; } = null!; // WOLFGATE(Contracts): standing with contractors
+        public DbSet<WolfgatePhoto> WolfgatePhoto { get; set; } = null!; // WOLFGATE(Photography): photo images by hash
+        public DbSet<WolfgatePhotoAlbum> WolfgatePhotoAlbum { get; set; } = null!; // WOLFGATE(Photography): albums
+        // WOLFGATE(Census) START: censuses from the SSymphony panel and the answers to them
+        public DbSet<WolfgateCensus> WolfgateCensus { get; set; } = null!;
+        public DbSet<WolfgateCensusResponse> WolfgateCensusResponse { get; set; } = null!;
+        // WOLFGATE END
         public DbSet<WolfgateOutpostSave> WolfgateOutpostSave { get; set; } = null!; // WOLFGATE(Outposts): saved outposts
         public DbSet<WolfgateOutpostPayout> WolfgateOutpostPayout { get; set; } = null!; // WOLFGATE(Outposts): round-end sales owed to offline owners
 
@@ -576,6 +582,44 @@ namespace Content.Server.Database
             modelBuilder.Entity<WolfgateCompanyApplication>()
                 .HasIndex(a => new { a.CompanyId, a.ProfileId })
                 .IsUnique();
+            // WOLFGATE END
+
+            // WOLFGATE(Photography) START: a saved album belongs to a character
+            modelBuilder.Entity<WolfgatePhotoAlbum>()
+                .HasOne(a => a.Profile)
+                .WithMany()
+                .HasForeignKey(a => a.ProfileId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<WolfgatePhotoAlbum>()
+                .HasIndex(a => a.ProfileId);
+            // WOLFGATE END
+
+            // WOLFGATE(Census) START: one answer per player and census, gone with the census
+            modelBuilder.Entity<WolfgateCensus>()
+                .Property(c => c.Description)
+                .HasDefaultValue("");
+
+            modelBuilder.Entity<WolfgateCensus>()
+                .Property(c => c.CreatedBy)
+                .HasDefaultValue("");
+
+            modelBuilder.Entity<WolfgateCensus>()
+                .Property(c => c.Anonymous)
+                .HasDefaultValue(false);
+
+            modelBuilder.Entity<WolfgateCensusResponse>()
+                .HasOne(r => r.Census)
+                .WithMany(c => c.Responses)
+                .HasForeignKey(r => r.CensusId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<WolfgateCensusResponse>()
+                .HasIndex(r => new { r.CensusId, r.PlayerUserId })
+                .IsUnique();
+
+            modelBuilder.Entity<WolfgateCensusResponse>()
+                .HasIndex(r => r.CensusId);
             // WOLFGATE END
         }
 
@@ -2231,6 +2275,108 @@ namespace Content.Server.Database
 
         [Required, MaxLength(500)]
         public string Message { get; set; } = "";
+
+        public DateTime CreatedAt { get; set; }
+    }
+    // WOLFGATE END
+
+    // WOLFGATE(Photography) START: photo images and saved albums
+    /// <summary>A photo's image, stored once under its hash.</summary>
+    public class WolfgatePhoto
+    {
+        [Key, MaxLength(64)]
+        public string Hash { get; set; } = null!;
+
+        [Required]
+        public byte[] Png { get; set; } = null!;
+
+        public int Width { get; set; }
+
+        public int Height { get; set; }
+
+        /// <summary>The player who took it, or null for a photo with no player behind it.</summary>
+        public Guid? AuthorUserId { get; set; }
+
+        public int? RoundId { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        /// <summary>When the cleanup first found nothing holding it, or null while something does.</summary>
+        public DateTime? UnusedSince { get; set; }
+    }
+
+    /// <summary>A character's photo album with its photos, saved through the round.</summary>
+    public class WolfgatePhotoAlbum
+    {
+        [Key]
+        public Guid AlbumId { get; set; }
+
+        public int ProfileId { get; set; }
+        public Profile Profile { get; set; } = null!;
+
+        /// <summary>The album entity, serialized.</summary>
+        [Required]
+        public string Data { get; set; } = null!;
+
+        public int RoundId { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
+    }
+    // WOLFGATE END
+
+    // WOLFGATE(Census) START: censuses staff set up from the SSymphony panel, and the players' answers
+    /// <summary>A census: questions put to every player once. The panel reads this table; the game writes it.</summary>
+    public class WolfgateCensus
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        public string Title { get; set; } = null!;
+
+        [Required]
+        public string Description { get; set; } = "";
+
+        /// <summary>The questions as JSON (see the Census module README).</summary>
+        [Required]
+        public string Questions { get; set; } = null!;
+
+        /// <summary>"draft", "open" or "closed". One whose closes_at has passed counts as closed.</summary>
+        [Required]
+        public string State { get; set; } = "draft";
+
+        public bool Anonymous { get; set; }
+
+        [Required]
+        public string CreatedBy { get; set; } = "";
+
+        public DateTime CreatedAt { get; set; }
+
+        /// <summary>When it first went open.</summary>
+        public DateTime? OpenedAt { get; set; }
+
+        /// <summary>When it closes by itself, or null.</summary>
+        public DateTime? ClosesAt { get; set; }
+
+        public DateTime? ClosedAt { get; set; }
+
+        public List<WolfgateCensusResponse> Responses { get; set; } = null!;
+    }
+
+    /// <summary>One player's answers to a census.</summary>
+    public class WolfgateCensusResponse
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public int CensusId { get; set; }
+        public WolfgateCensus Census { get; set; } = null!;
+
+        public Guid PlayerUserId { get; set; }
+
+        /// <summary>The answers as JSON, keyed by question id.</summary>
+        [Required]
+        public string Answers { get; set; } = null!;
 
         public DateTime CreatedAt { get; set; }
     }

@@ -135,6 +135,9 @@ public sealed partial class BluespaceErrorRule : StationEventSystem<BluespaceErr
 
                 if (component.ExtendIfPopulated)
                     _autoExtend.AutoExtend(uid, spawned);
+
+                if (component.ExtendIfPopulated && component.WfMaxExtensions is { } cap && TryComp<AutoExtendRuleComponent>(uid, out var extend)) // WOLFGATE(LiveFixes): capped events
+                    extend.MaxExtensions = cap;
             }
         }
 

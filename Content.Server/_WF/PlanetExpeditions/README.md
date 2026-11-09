@@ -47,8 +47,10 @@ sweep every two seconds for thrusters built or consoles installed afterwards.
 - [`Content.Server/Salvage/SalvageSystem.cs`](../../Salvage/SalvageSystem.cs)
 - [`Content.Server/Salvage/SalvageSystem.ExpeditionConsole.cs`](../../Salvage/SalvageSystem.ExpeditionConsole.cs)
   - a site mission is claimed in place, with no jump
+  - a ship that can't leave a planet would build the map and never arrive, stuck claimed
   - finishing a site mission gives it up
 - [`Content.Server/Salvage/SalvageSystem.Expeditions.cs`](../../Salvage/SalvageSystem.Expeditions.cs): sites on the sector's worlds are offered in place of generated maps
+- [`Content.Server/Salvage/SpawnSalvageMissionJob.cs`](../../Salvage/SpawnSalvageMissionJob.cs): a refused jump fails the spawn, which frees the console instead of leaving it claimed
 - [`Content.Shared/Salvage/Expeditions/SalvageExpeditions.cs`](../../../Content.Shared/Salvage/Expeditions/SalvageExpeditions.cs): a mission on a planet site names the site and its world for the console
 
 <!-- WOLFGATE-GENERATED END -->

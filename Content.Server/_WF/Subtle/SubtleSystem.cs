@@ -92,13 +92,17 @@ public sealed partial class SubtleSystem : EntitySystem
         if (string.IsNullOrWhiteSpace(message))
             return false;
 
+        // WOLFGATE(ChatFormatting): emphasis delimiters convert to BBCode
+        message = ChatSystem.ConvertCustomEmphasisToBBCode(message);
+
         // Emotes use the identity name, as it doesn't involve the voice.
         var identity = Identity.Entity(source, EntityManager);
         var name = FormattedMessage.EscapeText(Name(identity));
+        // WOLFGATE(ChatFormatting): message may contain BBCode from emphasis conversion; pass through unescaped
         var wrapped = Loc.GetString("wf-subtle-wrap-message",
             ("entityName", name),
             ("entity", identity),
-            ("message", FormattedMessage.EscapeText(message)));
+            ("message", message));
 
         var recipients = GetRecipients(source);
         var names = new List<string>();

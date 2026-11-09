@@ -83,7 +83,6 @@ public sealed partial class WFAdsCampaignSystem
     {
         state.BelowSince += span;
         state.TierAnnounced += span;
-        state.LastQuietBanner += span;
         state.LastFounded += span;
         state.NoNodeSince += span;
         state.NextSpread += span;

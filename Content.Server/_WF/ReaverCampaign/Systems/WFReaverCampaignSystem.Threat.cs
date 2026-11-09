@@ -111,13 +111,18 @@ public sealed partial class WFReaverCampaignSystem
         if (rising && state.Finished)
             return;
 
-        state.TierAnnounced = _timing.CurTime;
-
-        Announce(campaign, Loc.GetString(rising ? "wf-reaver-tier-rising" : "wf-reaver-tier-falling",
+        var message = Loc.GetString(rising ? "wf-reaver-tier-rising" : "wf-reaver-tier-falling",
             ("tier", TierName(tier)),
             ("strongholds", Strongholds().Count),
             ("cells", _territory.Held(_territory.SectorMap, campaign.Faction).Count),
-            ("bounty", Scaled(ByTier(campaign.StrongholdBounty, tier, 0)))), rising);
+            ("bounty", Scaled(ByTier(campaign.StrongholdBounty, tier, 0))));
+
+        // Either way it holds back the next fall; a falling threat is good news, not an alert.
+        state.TierAnnounced = _timing.CurTime;
+        if (rising)
+            Announce(campaign, message, true);
+        else
+            AnnounceRadio(message);
     }
 
     /// <summary>Sends the campaign's legend line for the sector map.</summary>

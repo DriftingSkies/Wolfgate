@@ -7,9 +7,9 @@
   - type: Projectile
     damage:
       types:
-        Radiation: 10
-        Structural: 50
-        Heat: 80
+        Radiation: 5
+        Structural: 40
+        Heat: 60
   - type: Sprite
     sprite: _Impstation/Objects/Weapons/Guns/Projectiles/energybolts.rsi
     layers:
@@ -26,11 +26,12 @@
     color: "#b040e0"
     radius: 2
     energy: 2
+  # A tight blast, so it hits what it is aimed at and not whoever stands near.
   - type: Explosive
     explosionType: Default
-    totalIntensity: 40
-    intensitySlope: 4
-    maxIntensity: 5
+    totalIntensity: 12
+    intensitySlope: 6
+    maxIntensity: 3
 
 - type: entity
   parent: WeaponTurretScylla
@@ -59,9 +60,9 @@
     maxAngle: 3
     fireRate: 1
     recoil: 0
-    burstCooldown: 4
-    burstFireRate: 10
-    shotsPerBurst: 10
+    burstCooldown: 5
+    burstFireRate: 8
+    shotsPerBurst: 6
     selectedMode: Burst
     availableModes: Burst
     shootThermalSignature: 500000

@@ -160,6 +160,12 @@ wf-lattice-defence-title = ANCHOR DEFENCE
 wf-lattice-defence-under-fire = Reality anchor {$anchor} is under fire from {$attacker}. Its shield is holding. Cease fire.
 wf-lattice-defence = Reality anchor {$anchor}'s shield is down. Defensive protocols engaged against {$attacker}. Its drones and lances will answer.
 wf-lattice-defence-unknown = an unknown vessel
+wf-lattice-defence-struck = Reality anchor {$anchor} has been struck. Its defences are on alert.
+wf-lattice-trespass = Trespassers aboard reality anchor {$anchor}: {$attacker}.
+wf-lattice-central-struck = {$attacker} is attacking Caelestinus Central's anchor.
+wf-lattice-central-struck-title = Central anchor under attack
+wf-lattice-central-tamper = {$attacker} tried to unbolt Caelestinus Central's anchor.
+wf-lattice-central-tamper-popup = The anchor lashes out at you.
 
 wf-drift-alert-name = Drift
 wf-drift-alert-desc = How far reality has slipped from you. It fills out past anchored space and drains back inside it.
@@ -263,3 +269,70 @@ ent-WFDriftLogger = drift logger
     .desc = Counts the Unmooring wherever it is carried. Station science buys its readings; the further out, the more they pay.
 ent-WFCodaFleshNode = flesh knot
     .desc = A swollen knot of grey-red flesh grown into the deck. It pulses slowly. Something in it is listening.
+
+ent-WFLatticeCentralAnchor = central anchor
+    .desc = Caelestinus Central's own reality anchor. While it stands, corruption can't grow on the station.
+
+wf-lattice-hex-turned-back = The hex field throws the Scion back. Nothing of the Monolith crosses a standing beam.
+wf-lattice-hex-ftl-refused = The FTL drive won't lock on. Something aboard can't be taken inside the hex field.
+
+wf-lattice-unstring-title = The Unstringing
+wf-lattice-unstring = The last reality anchor has fallen. The Lattice is gone. Nothing holds anywhere in the sector now, not a relay, not a station's own anchor. FTL drives are dead. Survive.
+wf-lattice-unstring-chip = The last anchor has fallen. The Coda is everywhere.
+
+wf-lattice-tacet-title = Tacet
+wf-lattice-tacet = Kyphrus has collapsed in on itself. The light it bent is gone, and every light in the sector went with it.
+wf-lattice-tacet-chip = Kyphrus has imploded. The lights are going out.
+
+wf-lattice-central-lost-title = Central anchor lost
+wf-lattice-central-lost = Caelestinus Central's anchor has been destroyed. Nothing keeps the growth off the station now.
+wf-lattice-central-lost-chip = Caelestinus Central's anchor is gone. Corruption can reach the station.
+
+cmd-wflattice-desc = Brings on the end of the Lattice, or sends a Scion's flesh ships, on your sector.
+cmd-wflattice-help = Usage: wflattice <siege|unstring|tacet>
+cmd-wflattice-no-field = No sector has a Lattice.
+cmd-wflattice-no-scion = No Scion on this sector.
+cmd-wflattice-siege-sent = Sent {$count} flesh ships.
+
+ent-WFLatticeStatusCartridge = Lattice status cartridge
+    .desc = A cartridge that hums faintly against the teeth. Something on it is listening to the anchors.
+ent-WFLatticeStatusConsole = Lattice status console
+    .desc = Its screen shows a ring of symbols that are never quite where you left them.
+ent-WFFlatpackLatticeStatusConsole = Lattice status console flatpack
+    .desc = A flatpack for a Lattice status console.
+
+wf-lattice-status-program-name = Lattice
+wf-lattice-status-window = Lattice
+wf-lattice-status-title = L A T T I C E
+wf-lattice-status-no-signal = ...nothing answers...
+wf-lattice-status-unstrung = UNSTRUNG
+wf-lattice-status-tacet = TACET
+wf-lattice-status-state = STATE
+wf-lattice-status-state-holding = holds
+wf-lattice-status-state-failing = slipping
+wf-lattice-status-state-unstrung = gone
+wf-lattice-status-integrity = HOLD
+wf-lattice-status-hex = RING
+wf-lattice-status-hex-sealed = closed
+wf-lattice-status-hex-broken = open {$count}
+wf-lattice-status-central = HEART
+wf-lattice-status-central-holding = still
+wf-lattice-status-central-lost = silent
+wf-lattice-status-flesh = FLESH
+wf-lattice-status-flesh-none = -
+wf-lattice-status-flesh-count = {$count}
+wf-lattice-status-band = HERE
+
+wf-coda-taboo-popup = The word catches in your throat.
+wf-coda-taboo-stumble-1 = {$first}-{$lower}-{$lower}o...
+wf-coda-taboo-stumble-2 = {$first}o... {$lower}od-
+wf-coda-taboo-stumble-3 = {$first}-{$lower}... the end
+wf-coda-taboo-stumble-4 = {$first}-{$lower}o-
+
+wf-coda-rot-1 = Your skin prickles, even inside the suit. Something out here is touching you.
+wf-coda-rot-2 = Something is moving under your skin. Get back aboard.
+wf-coda-rot-3 = Your flesh is coming apart. The suit isn't keeping it out.
+wf-coda-rot-reminder = You can feel yourself changing. Get off the open space, now.
+
+wf-lattice-warp-anchor = Reality anchor: {$station}
+wf-lattice-warp-central = Reality anchor: Caelestinus Central

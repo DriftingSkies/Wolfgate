@@ -14,7 +14,7 @@ public sealed partial class WFCorruptionSystem
             return null;
 
         var indices = _map.CoordinatesToTile(coordinates.EntityId, grid, coordinates);
-        if (IsCorrupted((coordinates.EntityId, grid), indices))
+        if (IsWarded(coordinates.EntityId) || IsCorrupted((coordinates.EntityId, grid), indices))
             return null;
 
         var tile = Spawn(CorruptionProto, _map.GridTileToLocal(coordinates.EntityId, grid, indices));

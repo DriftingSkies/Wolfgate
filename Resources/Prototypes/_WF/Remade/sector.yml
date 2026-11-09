@@ -131,7 +131,8 @@
   category: Distress
   icon: Ghost
   cost: 1
-  hidden: true
+  # A marker on the sector map, so crews can find it; its Scion stays dark on radar until disturbed.
+  hidden: false
   duration: 5400
   # In the Deep only, measured from the sector's centre.
   minDistance: 68000
@@ -160,7 +161,8 @@
   category: Distress
   icon: Ghost
   cost: 2
-  hidden: true
+  # A marker on the sector map, so crews can find it; its Scion stays dark on radar until disturbed.
+  hidden: false
   duration: 5400
   # In the Deep only, measured from the sector's centre.
   minDistance: 68000

@@ -28,6 +28,10 @@ Small fixes for hot spots found in live server profiles, kept as narrow hooks in
   A delta carries only the chunks changed since the client's last ack.
 - Radar requests share one walk of the blips per map per tick (`RadarBlipSystem.WFCache`), and console nav states share
   one walk of the docks for up to half a second, or until something docks or undocks (`ShuttleConsoleSystem.WFDocks`).
+- Radar consoles ask for blips at `wf.radar.request_hz` (15 a second) instead of twice a second, so a turning missile
+  stops lurching between straight-line guesses, and the console finds each blip's grid from its own coordinates instead
+  of a spatial query per blip per frame. `ShuttleNavControl`'s radar interval was zero, which divided by zero and drew
+  the sweep line to a NaN point.
 - `WFPlanetDragSystem` walks the children of planet layers instead of every grid. Suit sensors, APCs, sound spammers and
   pickup magnets look for due work every third tick, locality loaders check twice a second, and a dry auto-drain
   searches for puddles every 5 s.
@@ -80,6 +84,7 @@ Small fixes for hot spots found in live server profiles, kept as narrow hooks in
 - [`Content.Server/_WF/Performance/GCQueueSystem.WFMinAge.cs`](GCQueueSystem.WFMinAge.cs)
 - [`Content.Server/_WF/Performance/IgnitionSourceSystem.WFLit.cs`](IgnitionSourceSystem.WFLit.cs)
 - [`Content.Server/_WF/Performance/LocalityLoaderSystem.WFDespawn.cs`](LocalityLoaderSystem.WFDespawn.cs)
+- [`Content.Server/_WF/Performance/NavMapSystem.WFPlanetLayers.cs`](NavMapSystem.WFPlanetLayers.cs)
 - [`Content.Server/_WF/Performance/NavMapSystem.WFRemoved.cs`](NavMapSystem.WFRemoved.cs)
 - [`Content.Server/_WF/Performance/RadarBlipSystem.WFCache.cs`](RadarBlipSystem.WFCache.cs)
 - [`Content.Server/_WF/Performance/ShipSteererComponent.WFStagger.cs`](ShipSteererComponent.WFStagger.cs)
@@ -87,6 +92,7 @@ Small fixes for hot spots found in live server profiles, kept as narrow hooks in
 - [`Content.Server/_WF/Performance/SimpleFloorPlanPopulatorSystem.WFBudget.cs`](SimpleFloorPlanPopulatorSystem.WFBudget.cs)
 - [`Content.Server/_WF/Performance/WFAsteroidCullSystem.cs`](WFAsteroidCullSystem.cs)
 - [`Content.Server/_WF/Performance/WFDockIndexSystem.cs`](WFDockIndexSystem.cs)
+- [`Content.Server/_WF/Performance/WFGridDeleteSystem.cs`](WFGridDeleteSystem.cs)
 - [`Content.Server/_WF/Performance/WFGridDeleteWatchSystem.cs`](WFGridDeleteWatchSystem.cs)
 - [`Content.Server/_WF/Performance/WFSerializerWarmupSystem.cs`](WFSerializerWarmupSystem.cs)
 - [`Content.Server/_WF/Performance/WorldControllerSystem.WFIdleHelms.cs`](WorldControllerSystem.WFIdleHelms.cs)
@@ -104,6 +110,7 @@ Small fixes for hot spots found in live server profiles, kept as narrow hooks in
 - [`Content.Shared/_WF/Performance/WFCollectionExtensions.cs`](../../../Content.Shared/_WF/Performance/WFCollectionExtensions.cs)
 - [`Content.Shared/_WF/Performance/WFDeletedRefStateSystem.cs`](../../../Content.Shared/_WF/Performance/WFDeletedRefStateSystem.cs)
 - [`Content.Shared/_WF/Performance/WFPerformanceCVars.cs`](../../../Content.Shared/_WF/Performance/WFPerformanceCVars.cs)
+- [`Content.Shared/_WF/Performance/WFRadarCVars.cs`](../../../Content.Shared/_WF/Performance/WFRadarCVars.cs)
 - [`Content.Shared/_WF/Performance/WFTickBuckets.cs`](../../../Content.Shared/_WF/Performance/WFTickBuckets.cs)
 - [`Content.Shared/_WF/Performance/WFTickSpread.cs`](../../../Content.Shared/_WF/Performance/WFTickSpread.cs)
 
@@ -115,6 +122,8 @@ Small fixes for hot spots found in live server profiles, kept as narrow hooks in
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/Performance/GridDeleteTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Performance/GridDeleteTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Performance/NavMapPlanetLayerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Performance/NavMapPlanetLayerTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Performance/WFAroundColliderTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Performance/WFAroundColliderTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Performance/WFAsteroidCullTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Performance/WFAsteroidCullTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Performance/WFBottomlessRegenTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Performance/WFBottomlessRegenTest.cs)
@@ -157,9 +166,19 @@ Small fixes for hot spots found in live server profiles, kept as narrow hooks in
   - the raised list and the lookups that replace the all-entity query
   - walk only raised entities; one that has landed leaves the list
   - removed after the walk, which can't change the set it enumerates
+- [`Content.Client/_Mono/Radar/RadarBlipsSystem.cs`](../../../Content.Client/_Mono/Radar/RadarBlipsSystem.cs)
+  - blips arrived at 2 Hz, so a curving missile lurched between straight-line guesses.
+  - lookups and colours for the missile lines, which are rebuilt on every draw frame
+  - the sent coord already names its grid, so only an off-grid blip needs the query
+  - one dictionary lookup per missile, not a scan of every blip per missile.
 - [`Content.Client/Atmos/Consoles/AtmosMonitoringConsoleNavMapControl.cs`](../../../Content.Client/Atmos/Consoles/AtmosMonitoringConsoleNavMapControl.cs): wizden#38974, subnets carry a Color instead of a hex string
 - [`Content.Client/Pinpointer/NavMapSystem.cs`](../../../Content.Client/Pinpointer/NavMapSystem.cs): removals are named directly
-- [`Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs): distant rocks from their field lists
+- [`Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs)
+  - the sweep divided by the zero interval, so the sweep hand keeps a period of its own.
+  - the sweep hand's own timer, since the request accumulator is zeroed each frame
+  - the sweep hand turns on its own timer, so it keeps moving while requests are throttled
+  - this divided by a zero interval and drew the sweep to a NaN point every frame
+  - distant rocks from their field lists
 - [`Content.Client/Weapons/Ranged/Systems/GunSystem.cs`](../../../Content.Client/Weapons/Ranged/Systems/GunSystem.cs): wizden#36641, was EntityUid
 - [`Content.IntegrationTests/Tests/Gravity/WeightlessStatusTests.cs`](../../../Content.IntegrationTests/Tests/Gravity/WeightlessStatusTests.cs)
   - weightlessness now refreshes half a second after gravity changes
@@ -317,6 +336,7 @@ Small fixes for hot spots found in live server profiles, kept as narrow hooks in
   - idle movers skipped
   - Enum.GetValues allocated every tick per shuttle
 - [`Content.Server/Pinpointer/NavMapSystem.cs`](../../Pinpointer/NavMapSystem.cs)
+  - a planet layer grid's nav map would cover the whole world and nothing shows it
   - back in use, so no longer a removal
   - deltas name removed chunks; the rebuild below takes back any still in use
   - the history of removed chunks stays bounded
@@ -332,6 +352,11 @@ Small fixes for hot spots found in live server profiles, kept as narrow hooks in
   - UI state is pushed at 4 Hz, and only for generators with a viewer
   - ActiveUserInterfaceComponent is the engine's open-UI marker
   - skip the ActiveUserInterfaceComponent slot
+- [`Content.Server/Procedural/DungeonJob/DungeonJob.PostGenCornerClutter.cs`](../../Procedural/DungeonJob/DungeonJob.PostGenCornerClutter.cs): yield between tiles so a big dungeon never finishes in one tick
+- [`Content.Server/Procedural/DungeonJob/DungeonJob.PostGenCorridorDecalSkirting.cs`](../../Procedural/DungeonJob/DungeonJob.PostGenCorridorDecalSkirting.cs): yield between tiles so a big dungeon never finishes in one tick
+- [`Content.Server/Procedural/DungeonJob/DungeonJob.PostGenDungeonEntrance.cs`](../../Procedural/DungeonJob/DungeonJob.PostGenDungeonEntrance.cs): yield between entrances so a big dungeon never finishes in one tick
+- [`Content.Server/Procedural/DungeonJob/DungeonJob.PostGenEntranceFlank.cs`](../../Procedural/DungeonJob/DungeonJob.PostGenEntranceFlank.cs): yield between spawns so a big dungeon never finishes in one tick
+- [`Content.Server/Procedural/DungeonJob/DungeonJob.PostGenRoomEntrance.cs`](../../Procedural/DungeonJob/DungeonJob.PostGenRoomEntrance.cs): yield between rooms so a big dungeon never finishes in one tick
 - [`Content.Server/Shuttles/Systems/DockingSystem.Shuttle.cs`](../../Shuttles/Systems/DockingSystem.Shuttle.cs)
   - rule out pairs that land elsewhere before the tile walk, not after
   - chunk-first walk, same result; this ran per dock pair for every fixture

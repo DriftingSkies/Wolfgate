@@ -170,7 +170,11 @@ public sealed class ESTileFireSystem : ESSharedTileFireSystem
     [PublicAPI]
     public override bool TryDoTileFire(EntityCoordinates coords, EntityUid? originatingUser = null, int stage = 1)
     {
-        var xform = Transform(coords.EntityId);
+        // WOLFGATE START: a grid deleted mid-explosion has no transform left to fire
+        // var xform = Transform(coords.EntityId);
+        if (!TryComp<TransformComponent>(coords.EntityId, out var xform))
+            return false;
+        // WOLFGATE END
         if (xform.GridUid is not { } grid || !TryComp<MapGridComponent>(grid, out var mapGrid))
             return false;
 

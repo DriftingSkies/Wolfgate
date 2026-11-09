@@ -170,6 +170,123 @@ public static class InternetSoundDownloader
         }
     }
 
+    /// <summary>One playable entry of a playlist.</summary>
+    public sealed record PlaylistEntry(string Url, string Title, int Seconds);
+
+    /// <summary>A playlist read: the playable entries in order, and how many were passed over.</summary>
+    public sealed record PlaylistResult(List<PlaylistEntry> Entries, int Skipped);
+
+    private const string EntryPrefix = "WFENTRY ";
+
+    /// <summary>Most playlist entries read when looking for playable ones.</summary>
+    public const int MaxPlaylistScan = 50;
+
+    /// <summary>
+    /// True for a link that names a playlist rather than one track: a YouTube playlist page, a watch link with
+    /// only a list, or a SoundCloud set. A video link that also carries a list plays just the video.
+    /// </summary>
+    public static bool IsPlaylistLink(Uri uri)
+    {
+        var host = uri.Host.ToLowerInvariant();
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+
+        if (host.EndsWith("youtube.com") || host == "youtu.be")
+            return !string.IsNullOrEmpty(query["list"]) && string.IsNullOrEmpty(query["v"]) && !host.EndsWith("youtu.be");
+
+        return host.EndsWith("soundcloud.com") && uri.AbsolutePath.Contains("/sets/");
+    }
+
+    /// <summary>
+    /// Lists a playlist without downloading it and keeps the first <paramref name="max"/> entries that will play:
+    /// public, not live, with a known length within the limit. Everything after is cut off.
+    /// </summary>
+    public static async Task<PlaylistResult> ExpandPlaylist(string url, Settings settings, int max, CancellationToken cancel)
+    {
+        cancel.ThrowIfCancellationRequested();
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+        timeout.CancelAfter(TimeSpan.FromSeconds(settings.TimeoutSeconds));
+
+        var uri = new Uri(url);
+        if (uri.Scheme != Uri.UriSchemeHttps || uri.Port != 443)
+            throw new FetchException("wf-internet-sound-error-https");
+
+        await using var proxy = new InternetSoundDownloadProxy(timeout.Token,
+            maxDownloadBytes: settings.MaxDownloadBytes, onDownloadLimitExceeded: timeout.Cancel);
+
+        // Tab separated with the title last, since titles can hold anything but a newline.
+        var list = await Run(settings.YtDlpPath,
+            new[]
+            {
+                "--ignore-config", "--no-plugin-dirs", "--no-remote-components", "--no-cache-dir",
+                "--proxy", proxy.Url,
+                "--flat-playlist", "--yes-playlist", "--no-warnings", "--ignore-errors",
+                "--playlist-end", MaxPlaylistScan.ToString(),
+                "--print", $"{EntryPrefix}%(url)s\t%(duration)s\t%(live_status)s\t%(availability)s\t%(title)s",
+                "--", url,
+            },
+            "wf-internet-sound-error-ytdlp-missing",
+            timeout.Token);
+
+        if (proxy.RejectedInsecureTransport)
+            throw new FetchException("wf-internet-sound-error-https");
+        if (proxy.DeniedHost is { } denied)
+            throw new FetchException("wf-internet-sound-error-host", denied);
+
+        var entries = new List<PlaylistEntry>();
+        var skipped = 0;
+        var seen = 0;
+
+        foreach (var line in list.Output.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            if (!line.StartsWith(EntryPrefix))
+                continue;
+
+            seen++;
+            if (entries.Count >= max)
+                continue;
+
+            if (ParseEntry(line[EntryPrefix.Length..], settings.MaxDurationSeconds) is { } entry)
+                entries.Add(entry);
+            else
+                skipped++;
+        }
+
+        if (seen == 0)
+            throw new FetchException("wf-internet-sound-error-playlist-empty", LastLine(list.Error));
+
+        return new PlaylistResult(entries, skipped);
+    }
+
+    /// <summary>Reads one printed entry, or null if it won't play.</summary>
+    public static PlaylistEntry? ParseEntry(string line, int maxSeconds)
+    {
+        var parts = line.Split('\t', 5);
+        if (parts.Length < 5)
+            return null;
+
+        var (link, duration, live, availability, title) = (parts[0], parts[1], parts[2], parts[3], parts[4]);
+
+        if (!Uri.TryCreate(link, UriKind.Absolute, out var uri) || uri.Scheme != Uri.UriSchemeHttps || uri.Port != 443)
+            return null;
+
+        // Private and deleted videos list without a length; so does anything live.
+        if (!double.TryParse(duration, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out var seconds)
+            || seconds <= 0 || seconds > maxSeconds)
+            return null;
+
+        if (live is "is_live" or "is_upcoming" or "post_live")
+            return null;
+
+        if (availability is "private" or "premium_only" or "subscriber_only" or "needs_auth")
+            return null;
+
+        if (title is "[Private video]" or "[Deleted video]")
+            return null;
+
+        return new PlaylistEntry(uri.AbsoluteUri, title, (int) Math.Ceiling(seconds));
+    }
+
     /// <summary>
     /// Runs a tool with arguments passed directly (no shell), killing it on cancel.
     /// </summary>

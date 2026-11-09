@@ -1,5 +1,6 @@
 using System.Text;
 using Content.Shared._WF.JoinProgress;
+using Robust.Server.Network.Transfer;
 using Robust.Server.Upload;
 using Robust.Shared;
 using Robust.Shared.Configuration;
@@ -19,7 +20,7 @@ public sealed partial class JoinProgressManager
 
     [Dependency] private IServerNetManager _net = default!;
     [Dependency] private NetworkResourceManager _netRes = default!;
-    [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private IServerTransferStatus _transferStatus = default!;
 
     private readonly Dictionary<ResPath, long> _fileSizes = new();
     private long _totalBytes;
@@ -27,6 +28,7 @@ public sealed partial class JoinProgressManager
     public void Initialize()
     {
         _net.RegisterNetMessage<MsgJoinDownloadInfo>();
+        _net.RegisterNetMessage<MsgJoinTransferStatus>();
         _net.Connected += OnConnected;
         _netRes.ResourcesUploaded += ev => TrackFiles(ev.Files);
     }
@@ -44,6 +46,16 @@ public sealed partial class JoinProgressManager
 
     private void OnConnected(object? sender, NetChannelArgs args)
     {
+        // The engine decided the channel during the handshake, falling back when the websocket couldn't connect.
+        var mode = _transferStatus.GetMode(args.Channel.UserId) switch
+        {
+            TransferChannelMode.WebSocket => JoinTransferMode.WebSocket,
+            TransferChannelMode.WebSocketFailed => JoinTransferMode.WebSocketFailed,
+            _ => JoinTransferMode.GameConnection,
+        };
+
+        _net.ServerSendMessage(new MsgJoinTransferStatus { Mode = mode }, args.Channel);
+
         if (_fileSizes.Count == 0)
             return;
 
@@ -51,7 +63,7 @@ public sealed partial class JoinProgressManager
         {
             TotalBytes = _totalBytes + StreamOverhead,
             FileCount = _fileSizes.Count,
-            OverGameConnection = !_cfg.GetCVar(CVars.TransferHttp),
+            OverGameConnection = mode != JoinTransferMode.WebSocket,
         }, args.Channel);
     }
 }

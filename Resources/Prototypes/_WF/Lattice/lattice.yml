@@ -1,5 +1,5 @@
-# The Lattice round the sector's centre. Band edges are 28, 40, 53 and 66 km; the default worldgen's biomes change at
-# the same distances. A map whose drone rings line up one per edge uses those instead. Drift rates are per second, out of 100, and each band
+# The Lattice round the sector's centre. Band edges are 20, 34, 50 and 66 km; the default worldgen's biomes change at
+# the same distances; a map's drone rings never move them. Drift rates are per second, out of 100, and each band
 # stops at its maxDrift, so a ship climbs slowly and only the Coda reaches the worst (about 10 minutes a band). Yield
 # multiplies asteroid ore; exotic is exotic matter shards per vein.
 - type: wfLatticeProfile
@@ -9,6 +9,8 @@
   anchorAngle: 30
   reach: 4000
   driftMax: 100
+  # The edges below are the bands; a map's drone rings don't move them.
+  droneRingEdges: false
   # Hallucinations, each seen or heard by one player only: rolled every 20 s or so with no Drift, closing to every 4 s
   # at full Drift, where two or three come at once.
   effectInterval: 20
@@ -106,7 +108,7 @@
     color: "#60c0e0"
   - name: wf-lattice-band-slack
     message: wf-lattice-enter-slack
-    edge: 28000
+    edge: 20000
     drift: 0.03
     maxDrift: 20
     chip: Advisory
@@ -114,7 +116,7 @@
     yield: 1.2
   - name: wf-lattice-band-adrift
     message: wf-lattice-enter-adrift
-    edge: 40000
+    edge: 34000
     drift: 0.06
     maxDrift: 40
     chip: Warning
@@ -122,7 +124,7 @@
     yield: 1.35
   - name: wf-lattice-band-untethered
     message: wf-lattice-enter-untethered
-    edge: 53000
+    edge: 50000
     drift: 0.1
     maxDrift: 65
     chip: Warning

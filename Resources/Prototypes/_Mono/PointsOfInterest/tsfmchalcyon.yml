@@ -21,6 +21,10 @@
   spawnGroup: Required
   gridPath: /Maps/_Mono/POI/tsfmchalcyon.yml
   addComponents:
+  # WOLFGATE(Ordnance) START: the faction's ordnance terminal
+  - type: WFOrdnanceStation
+    terminal: WFOrdnanceTerminalTSF
+  # WOLFGATE END
   - type: IFF
     color: "#047abd"
     readOnly: true
@@ -86,6 +90,10 @@
   spawnGroup: Required
   gridPath: /Maps/_Mono/POI/tsfmchalcyon_hw.yml
   addComponents:
+  # WOLFGATE(Ordnance) START: the faction's ordnance terminal
+  - type: WFOrdnanceStation
+    terminal: WFOrdnanceTerminalTSF
+  # WOLFGATE END
   - type: IFF
     color: "#047abd"
     readOnly: true

@@ -100,6 +100,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Packaging/ClientPackaging.cs`](../../Content.Packaging/ClientPackaging.cs): ship the licence texts and legal notes in the client zip
 - [`Content.Server/_Crescent/ShipShields/ShipShieldsSystem.Commands.cs`](../../Content.Server/_Crescent/ShipShields/ShipShieldsSystem.Commands.cs): restore the licence header removed by Kill Spdx
 - [`Content.Server/_Crescent/ShipShields/ShipShieldsSystem.Emitter.cs`](../../Content.Server/_Crescent/ShipShields/ShipShieldsSystem.Emitter.cs): restore the licence header removed by Kill Spdx
+- [`Content.Server/_ES/TileFires/ESTileFireSystem.cs`](../../Content.Server/_ES/TileFires/ESTileFireSystem.cs): a grid deleted mid-explosion has no transform left to fire
 - [`Content.Server/_FarHorizons/Power/Generation/FissionGenerator/NuclearCentrifugeComponent.cs`](../../Content.Server/_FarHorizons/Power/Generation/FissionGenerator/NuclearCentrifugeComponent.cs): relabelled MIT as in HardLight b602e8d485
 - [`Content.Server/_FarHorizons/Power/Generation/FissionGenerator/NuclearCentrifugeSystem.cs`](../../Content.Server/_FarHorizons/Power/Generation/FissionGenerator/NuclearCentrifugeSystem.cs): relabelled MIT as in HardLight b602e8d485
 - [`Content.Server/_Goobstation/Atmos/EntitySystems/GasCanisterSignalSystem.cs`](../../Content.Server/_Goobstation/Atmos/EntitySystems/GasCanisterSignalSystem.cs): restore the licence header removed by Kill Spdx
@@ -115,6 +116,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Server/_Goobstation/Tools/WeldingSparksSystem.cs`](../../Content.Server/_Goobstation/Tools/WeldingSparksSystem.cs)
   - tells an instant do-after from a running one
   - an instant do-after has already ended, so nothing would ever delete the effect
+- [`Content.Server/_Mono/AmmoLoader/AmmoLoaderSystem.cs`](../../Content.Server/_Mono/AmmoLoader/AmmoLoaderSystem.cs): an infinite magazine reports no rounds, which hid it and blocked unloading
 - [`Content.Server/_Mono/Botany/PlantAnalyzer/PlantAnalyzerSystem.cs`](../../Content.Server/_Mono/Botany/PlantAnalyzer/PlantAnalyzerSystem.cs): was 0.01, so the slightest drift silently cancelled the scan
 - [`Content.Server/_Mono/FireControl/FireControlRotateComponent.cs`](../../Content.Server/_Mono/FireControl/FireControlRotateComponent.cs): restore the licence header removed by Kill Spdx
 - [`Content.Server/_Mono/FireControl/FireControlSystem.cs`](../../Content.Server/_Mono/FireControl/FireControlSystem.cs): restore the licence header removed by Kill Spdx
@@ -184,7 +186,9 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Server/Kitchen/EntitySystems/MicrowaveSystem.cs`](../../Content.Server/Kitchen/EntitySystems/MicrowaveSystem.cs)
   - microwaves leave emags in hand
   - an emag is used on a machine, so it stays in hand instead of going in with the food
-- [`Content.Server/Lightning/LightningSystem.cs`](../../Content.Server/Lightning/LightningSystem.cs): restore the licence header removed by Kill Spdx
+- [`Content.Server/Lightning/LightningSystem.cs`](../../Content.Server/Lightning/LightningSystem.cs)
+  - restore the licence header removed by Kill Spdx
+  - call the private overload; the public one recursed forever
 - [`Content.Server/Mind/MindSystem.cs`](../../Content.Server/Mind/MindSystem.cs): a session whose data is already gone (a client torn down mid-delete) failed the asserts with a KeyNotFoundException
 - [`Content.Server/Mining/MiningSystem.cs`](../../Content.Server/Mining/MiningSystem.cs): restore the licence header removed by Kill Spdx
 - [`Content.Server/Movement/Systems/LagCompensationSystem.cs`](../../Content.Server/Movement/Systems/LagCompensationSystem.cs): restore the licence header removed by Kill Spdx
@@ -334,6 +338,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - restore the licence header removed by Kill Spdx
   - the company is passed through the constructor
   - copies keep the company
+  - Synths name themselves like IPCs
   - digits are allowed in names, as the validation regex above already allows them
   - count downsides first so a positive trait isn't dropped by set order
   - MemberwiseEquals - Equals(other) resolved to this override and recursed forever.

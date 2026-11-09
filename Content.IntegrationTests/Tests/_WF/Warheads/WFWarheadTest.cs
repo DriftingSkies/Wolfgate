@@ -179,16 +179,23 @@ public sealed class WFWarheadTest
         var warheads = entMan.System<WFWarheadSystem>();
         var mapSys = entMan.System<SharedMapSystem>();
 
+        var target = EntityUid.Invalid;
         await server.WaitAssertion(() =>
         {
             var grid = mapSys.CreateGridEntity(map.MapId);
+            target = grid.Owner;
             mapSys.SetTile(grid, Vector2i.Zero, map.Tile.Tile);
             entMan.System<SharedTransformSystem>().SetWorldPosition(grid.Owner, new Vector2(50f, 50f));
 
             var coords = new MapCoordinates(new Vector2(50.5f, 50.5f), map.MapId);
             warheads.Detonate(coords, grid.Owner, QuietPayload(deleteGrid: true), null);
+        });
 
-            Assert.That(entMan.Deleted(grid.Owner), "the grid under a delete-grid payload is gone");
+        // The grid deleter spreads a big grid over ticks; this one goes by the end of the tick.
+        await server.WaitRunTicks(5);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entMan.Deleted(target), "the grid under a delete-grid payload is gone");
             Assert.That(entMan.EntityExists(map.Grid.Owner), "other grids are left alone");
             Assert.That(entMan.EntityExists(map.MapUid), "the map is never deleted");
         });

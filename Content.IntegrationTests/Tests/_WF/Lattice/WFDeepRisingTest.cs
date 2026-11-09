@@ -26,13 +26,12 @@ public sealed class WFDeepRisingTest
         EntityUid deep = default, safe = default, sheltered = default;
         await server.WaitAssertion(() =>
         {
-            entities.EnsureComponent<WFDroneRingsComponent>(map.MapUid).Radii = new List<float> { 18000f, 24000f, 31000f, 40000f };
             lattice.Setup(map.MapUid);
 
-            entities.System<SharedTransformSystem>().SetWorldPosition(map.Grid, new Vector2(50000f, 0f));
+            entities.System<SharedTransformSystem>().SetWorldPosition(map.Grid, new Vector2(72000f, 0f));
             sheltered = entities.SpawnEntity("MobHuman", map.GridCoords);
             entities.EnsureComponent<Content.Shared._WF.Lattice.WFLatticeShelterComponent>(sheltered);
-            deep = entities.SpawnEntity("MobHuman", new MapCoordinates(new Vector2(50100f, 0f), map.MapId));
+            deep = entities.SpawnEntity("MobHuman", new MapCoordinates(new Vector2(72100f, 0f), map.MapId));
             safe = entities.SpawnEntity("MobHuman", new MapCoordinates(new Vector2(10000f, 0f), map.MapId));
             foreach (var body in new[] { deep, safe, sheltered })
             {

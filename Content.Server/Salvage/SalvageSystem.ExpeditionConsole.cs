@@ -88,6 +88,16 @@ public sealed partial class SalvageSystem
             }
             // WOLFGATE END
 
+            // WOLFGATE(PlanetExpeditions) START: a ship that can't leave a planet would build the map and never arrive, stuck claimed
+            if (_shuttle.WfRefusesFtlDeparture(grid))
+            {
+                PlayDenySound(uid, component);
+                _popupSystem.PopupEntity(Loc.GetString("wf-expedition-leave-planet"), uid, PopupType.MediumCaution);
+                UpdateConsoles(station.Value, data);
+                return;
+            }
+            // WOLFGATE END
+
             var xform = Transform(grid);
             var bounds = xform.WorldMatrix.TransformBox(gridComp.LocalAABB).Enlarged(ShuttleFTLRange);
             var bodyQuery = GetEntityQuery<PhysicsComponent>();

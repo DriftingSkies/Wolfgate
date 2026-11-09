@@ -3,12 +3,13 @@
 - type: htnCompound
   id: XenoSlimeCompound
   branches:
-  - tasks:
-    - !type:HTNCompoundTask
-      task: XenoSlimeFoodCompound
+  # A reachable mob to feed on comes before food, which may be in sight but out of reach.
   - tasks:
     - !type:HTNCompoundTask
       task: LatchCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: XenoSlimeFoodCompound
   - tasks:
     - !type:HTNCompoundTask
       task: IdleCompound

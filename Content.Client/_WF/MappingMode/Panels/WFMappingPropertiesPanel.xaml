@@ -96,6 +96,31 @@
                 <Button Name="LinkClearButton" Text="{Loc 'wf-mapping-link-clear'}" />
             </BoxContainer>
 
+            <BoxContainer Name="ToolBox" Orientation="Vertical" SeparationOverride="2">
+                <BoxContainer Orientation="Horizontal" SeparationOverride="0">
+                    <Button Name="ToolWrenchButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenRight"
+                            Text="{Loc 'wf-mapping-tool-wrench'}"
+                            ToolTip="{Loc 'wf-mapping-tool-wrench-tooltip'}" />
+                    <Button Name="ToolBoltsButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenBoth"
+                            Text="{Loc 'wf-mapping-tool-bolts'}"
+                            ToolTip="{Loc 'wf-mapping-tool-bolts-tooltip'}" />
+                    <Button Name="ToolWeldButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenLeft"
+                            Text="{Loc 'wf-mapping-tool-weld'}"
+                            ToolTip="{Loc 'wf-mapping-tool-weld-tooltip'}" />
+                </BoxContainer>
+                <BoxContainer Orientation="Horizontal" SeparationOverride="0">
+                    <Button Name="ToolLockButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenRight"
+                            Text="{Loc 'wf-mapping-tool-lock'}"
+                            ToolTip="{Loc 'wf-mapping-tool-lock-tooltip'}" />
+                    <Button Name="ToolPanelButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenBoth"
+                            Text="{Loc 'wf-mapping-tool-panel'}"
+                            ToolTip="{Loc 'wf-mapping-tool-panel-tooltip'}" />
+                    <Button Name="ToolDoorButton" ToggleMode="True" HorizontalExpand="True" StyleClasses="OpenLeft"
+                            Text="{Loc 'wf-mapping-tool-door'}"
+                            ToolTip="{Loc 'wf-mapping-tool-door-tooltip'}" />
+                </BoxContainer>
+            </BoxContainer>
+
             <Label Text="{Loc 'wf-mapping-screen-section-levels'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
             <BoxContainer Name="LevelList" Orientation="Vertical" SeparationOverride="2" />
             <BoxContainer Orientation="Horizontal" SeparationOverride="4">

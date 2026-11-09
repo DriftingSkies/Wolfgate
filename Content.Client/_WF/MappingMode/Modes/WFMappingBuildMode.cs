@@ -73,3 +73,17 @@ public enum WFMappingLinkTool : byte
     /// <summary>The alarm thresholds of vents, scrubbers and sensors, one at a time or through their air alarm.</summary>
     Thresholds,
 }
+
+/// <summary>What Tool mode (key 0) does to the thing clicked.</summary>
+public enum WFMappingTool : byte
+{
+    /// <summary>Anchors or unanchors.</summary>
+    Wrench,
+
+    /// <summary>The rest match <see cref="Content.Shared._WF.MappingTools.MappingToggle"/>, one higher.</summary>
+    Bolts,
+    Weld,
+    Lock,
+    Panel,
+    Door,
+}

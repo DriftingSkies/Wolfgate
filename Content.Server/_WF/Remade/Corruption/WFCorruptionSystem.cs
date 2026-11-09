@@ -98,12 +98,13 @@ public sealed partial class WFCorruptionSystem : EntitySystem
     }
 
     /// <summary>
-    /// Main stations stay clean: no corruption on them and no drawing on a Monolith there. So does a grid within the
-    /// sanctuary radius of one (<see cref="WFRemadeSanctuaryCVars.Radius"/>), so a Monolith can't sit just off a station.
+    /// Where a Monolith can't reach: inside a sealed hex field, on a grid marked as a sanctuary, and, on a map with no
+    /// Lattice, a main station. A grid within the sanctuary radius of a sanctuary station counts too
+    /// (<see cref="WFRemadeSanctuaryCVars.Radius"/>), so a Monolith can't sit just off one.
     /// </summary>
     public bool IsSanctuary(EntityUid? grid)
     {
-        return grid is { } uid && (IsMainStation(uid) || NearMainStation(uid));
+        return grid is { } uid && (HoldsSanctuary(uid) || NearMainStation(uid) || Shielded(uid));
     }
 
     public override void Update(float frameTime)
@@ -147,7 +148,7 @@ public sealed partial class WFCorruptionSystem : EntitySystem
     /// <summary>Puts corruption under a Monolith that has reached Growth, once its tile is free of it.</summary>
     private void Seed(Entity<WFMonolithComponent> ent, TransformComponent xform)
     {
-        if (xform.GridUid is not { } gridUid || IsSanctuary(gridUid) || GridFull(gridUid) || OwnTiles(ent) >= MonolithLimit(ent))
+        if (xform.GridUid is not { } gridUid || IsWarded(gridUid) || GridFull(gridUid) || OwnTiles(ent) >= MonolithLimit(ent))
         {
             return;
         }
@@ -183,7 +184,7 @@ public sealed partial class WFCorruptionSystem : EntitySystem
         var source = new Entity<WFMonolithComponent>(ent.Comp.Source.Value, monolith);
         foreach (var neighbor in args.NeighborFreeTiles)
         {
-            if (IsSanctuary(neighbor.Tile.GridUid))
+            if (IsWarded(neighbor.Tile.GridUid))
                 continue;
 
             if (GridFull(neighbor.Tile.GridUid))

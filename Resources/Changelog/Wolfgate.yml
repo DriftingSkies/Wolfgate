@@ -6282,3 +6282,269 @@ Entries:
   id: 100384
   time: '2026-11-07T22:46:38.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/537
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Clearing the Remade now removes all of their corruption.
+    - type: Fix
+      message: >-
+        Fixed a rare crash when something touched the edge of a planet or
+        salvage area.
+  id: 100385
+  time: '2026-11-07T23:35:01.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/543
+- author: Stalkeros2
+  changes:
+    - type: Tweak
+      message: >-
+        Ship missiles (ASM-50, ASM-150, ASM-250) now fly on proportional
+        navigation with a finite divert budget - they turn hard off the rail,
+        lose accuracy as the diverters run dry, and can be dodged.
+    - type: Tweak
+      message: >-
+        Ship missiles leave the rail aimed at the console's aim point or their
+        lock, so gunners no longer have to lead the shot by hand.
+    - type: Tweak
+      message: >-
+        A hull crossing fast and square to a missile's line of sight can beam
+        it, breaking the lock.
+    - type: Tweak
+      message: >-
+        Radar blips refresh 15 times a second instead of twice a second, so
+        missile tracks no longer lurch. Adjustable with `wf.radar.request_hz`.
+    - type: Fix
+      message: The radar sweep line no longer draws to a NaN point every frame.
+  id: 100386
+  time: '2026-11-07T23:35:35.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/535
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        The Coda's edge sits at 66 km in every direction; relay and station
+        anchors only anchor the space right round them.
+    - type: Tweak
+      message: >-
+        Anchored space now ends at 20 km, with Detune 20-34 km, Dissonance 34-50
+        km and Feedback 50-66 km, so PDV Helios sits in Detune.
+    - type: Tweak
+      message: >-
+        Scanners show the Coda as static wherever they look at it, and nothing
+        in it can be seen.
+  id: 100387
+  time: '2026-11-07T23:47:13.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/547
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Local builds no longer fail to find the engine after the Lupine switch.
+  id: 100388
+  time: '2026-11-08T01:55:41.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/549
+- author: Balls2zawall
+  changes:
+    - type: Tweak
+      message: >-
+        Added more lights to Caelestinus Central, and did some other minor edits
+        to it as well
+  id: 100389
+  time: '2026-11-08T03:29:27.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/548
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Added the boombox, a portable speaker that plays songs and YouTube
+        playlists out loud for everyone nearby. Buy it from John Wolfgate or the
+        AutoTune vendor, or take one as a loadout item.
+  id: 100390
+  time: '2026-11-08T04:04:02.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/554
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: The rules window on first join no longer shows a parser error.
+  id: 100391
+  time: '2026-11-08T04:29:54.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/558
+- author: Balls2zawall
+  changes:
+    - type: Fix
+      message: Fixed the Comet spawning with a spaced cargo bay.
+  id: 100392
+  time: '2026-11-08T04:30:12.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/556
+- author: Balls2zawall
+  changes:
+    - type: Tweak
+      message: >-
+        Marked the TSF Contractor area on Flagship Halcyon as unsafe for those
+        not affiliated with the TSF.
+    - type: Add
+      message: Gives fire extinguishers to Flagship Halcyon.
+    - type: Fix
+      message: Removed duplicated map entities on Flagship Halcyon.
+  id: 100393
+  time: '2026-11-08T04:35:27.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/555
+- author: TheSlapper
+  changes:
+    - type: Add
+      message: Photographer trait. Keep your precious memories forever.
+  id: 100394
+  time: '2026-11-08T04:53:15.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/550
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Company fleet licences cost much less: 35 times the ship's price,
+        minimum 2,000,000.
+  id: 100395
+  time: '2026-11-08T07:26:14.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/560
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: More Coda Stuff
+    - type: Add
+      message: >-
+        Faction command can buy a tactical nuclear device at their station's
+        ordnance terminal, delivered by drop beacon with its own arming key.
+        Every purchase is announced.
+    - type: Tweak
+      message: >-
+        Arming a nuclear warhead sends DEFCON to 1 until it goes off or is
+        disarmed.
+    - type: Tweak
+      message: >-
+        Buying a nuclear device raises DEFCON sharply and holds it at 3 or worse
+        until it is used.
+  id: 100396
+  time: '2026-11-08T07:47:33.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/553
+- author: lpeapnni
+  changes:
+    - type: Add
+      message: Added basic formatting to player speech and emotes
+  id: 100397
+  time: '2026-11-08T07:54:15.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/542
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Mapping mode's key 0 is now Tools: bolt, weld, lock, open panels and
+        open doors with one click, all undoable.
+  id: 100398
+  time: '2026-11-08T08:14:35.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/557
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Judge ships now fly under Caelestinus instead of showing as
+        unaffiliated. [639]
+    - type: Fix
+      message: Joining a crew mid-round now gives you access to the crew's ship. [637]
+    - type: Tweak
+      message: >-
+        The drydock crane now lists the capacitor power saving on its own line,
+        apart from the total draw. [632] [556]
+    - type: Fix
+      message: >-
+        Synths can use numbers, dashes and quotes in their names like IPCs.
+        [630]
+    - type: Fix
+      message: >-
+        The pneumatic loader now sees the AC-35's ammo and can unload and swap
+        it. [627]
+    - type: Fix
+      message: The material reclaimer no longer eats your screwdriver or crowbar. [625]
+    - type: Fix
+      message: >-
+        A dead chimera drops what it was carrying instead of locking it on the
+        corpse. [620]
+    - type: Fix
+      message: >-
+        You can no longer fly with wings or z-flight in orbit, which caused
+        visual desync. [618]
+    - type: Fix
+      message: >-
+        The expedition console refuses a jump your ship can't make from a planet
+        instead of getting stuck. [641]
+    - type: Fix
+      message: >-
+        Solarian vaults and other bluespace events now leave soon after their
+        departure warning, even with people nearby. [643]
+    - type: Fix
+      message: >-
+        Upgrade and conversion kits come back out when you deconstruct the
+        machine. [648] [649]
+    - type: Fix
+      message: >-
+        The ahelp panel shows this round's earlier messages after you connect or
+        reconnect. [647]
+    - type: Fix
+      message: >-
+        Slimes go for a reachable mob before food out of reach, and a slime that
+        splits lets go of its meal. [652]
+  id: 100399
+  time: '2026-11-08T08:31:29.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/559
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        If the fast download channel can't connect, you now fall back to the
+        normal connection instead of hanging on the join screen.
+    - type: Add
+      message: >-
+        The connection screen shows whether the fast download channel connected
+        (green) or failed and fell back (red).
+    - type: Fix
+      message: >-
+        Big ships and grids being deleted no longer freeze the server for a
+        moment.
+    - type: Fix
+      message: >-
+        Generating dungeons and planet stations no longer causes short server
+        hitches.
+  id: 100400
+  time: '2026-11-08T09:34:03.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/561
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Better placement for wolfgate UI elements
+  id: 100401
+  time: '2026-11-08T10:20:23.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/562
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Reaver and ADS sector alerts only show a banner for major events; the
+        rest go out on the radio or not at all.
+    - type: Tweak
+      message: Faction space entry and exit notices come less often.
+    - type: Tweak
+      message: >-
+        Lattice stations only sound the alarm when hit directly, and alert less
+        often.
+    - type: Tweak
+      message: >-
+        Wandering traders call in on the radio instead of a sector-wide
+        announcement.
+  id: 100402
+  time: '2026-11-08T10:27:16.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/563
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Consoles built on a planet's ground can no longer lift the whole planet
+        into the sky.
+  id: 100403
+  time: '2026-11-09T12:18:35.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/571

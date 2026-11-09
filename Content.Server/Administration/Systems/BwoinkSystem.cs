@@ -115,12 +115,14 @@ namespace Content.Server.Administration.Systems
             SubscribeLocalEvent<GameRunLevelChangedEvent>(OnGameRunLevelChanged);
             SubscribeNetworkEvent<BwoinkClientTypingUpdated>(OnClientTypingUpdated);
             SubscribeNetworkEvent<AHelpResolveMessage>(OnAHelpResolve); // WOLFGATE(AHelpResolve): resolve button
+            WfInitializeHistory(); // WOLFGATE(AHelpResolve): ahelp history replayed on connect
             // WOLFGATE(EventStaff) START: ahelp categories reset with the round
             SubscribeLocalEvent<RoundRestartCleanupEvent>(_ =>
             {
                 _activeConversations.Clear();
                 _ahelpCategories.Clear();
                 _claimedAHelps.Clear(); // WOLFGATE(AHelpResolve): claims reset with the round
+                WfClearHistory(); // WOLFGATE(AHelpResolve): and so does the ahelp history
             });
             // SubscribeLocalEvent<RoundRestartCleanupEvent>(_ => _activeConversations.Clear());
             // WOLFGATE END
@@ -174,6 +176,9 @@ namespace Content.Server.Administration.Systems
 
         private async void OnPlayerStatusChanged(object? sender, SessionStatusEventArgs e)
         {
+            if (e.NewStatus == SessionStatus.Disconnected) // WOLFGATE(AHelpResolve): the next connection gets the history again
+                WfForgetReplay(e.Session.UserId);
+
             if (e.NewStatus == SessionStatus.Disconnected)
             {
                 if (_activeConversations.TryGetValue(e.Session.UserId, out var lastMessageTime))
@@ -217,6 +222,7 @@ namespace Content.Server.Administration.Systems
                 return;
 
             RaiseNetworkEvent(new BwoinkDiscordRelayUpdated(!string.IsNullOrWhiteSpace(_webhookUrl)), e.Session);
+            WfReplayPlayerHistory(e.Session); // WOLFGATE(AHelpResolve): a rejoining player sees their ahelp again
         }
 
         private void NotifyAdmins(ICommonSession session, string message, PlayerStatusType statusType)
@@ -806,6 +812,7 @@ namespace Content.Server.Administration.Systems
             var msg = new BwoinkTextMessage(message.UserId, senderId, bwoinkText, playSound: playSound, adminOnly: message.AdminOnly, category: category); // WOLFGATE(EventStaff)
 
             LogBwoink(msg);
+            WfRecordHistory(message.UserId, adminMsg, message.AdminOnly || _overrideClientName != string.Empty ? null : msg); // WOLFGATE(AHelpResolve): kept for replay on connect
 
             var admins = GetTargetAdmins(category); // WOLFGATE(EventStaff): gameplay ahelps reach event staff
 

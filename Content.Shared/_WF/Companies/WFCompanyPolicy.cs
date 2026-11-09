@@ -74,10 +74,10 @@ public static class WFCompanyPolicy
     public const int MaximumLicences = 3;
 
     /// <summary>A licence costs this many times the design's shipyard price.</summary>
-    public const int LicenceMultiplier = 200;
+    public const int LicenceMultiplier = 35;
 
     /// <summary>The least any licence costs.</summary>
-    public const long LicenceMinimum = 20_000_000;
+    public const long LicenceMinimum = 2_000_000;
 
     /// <summary>Registry fee per launch as a percent of the shipyard price, by how many company ships are already out.</summary>
     public static readonly int[] RegistryFeePercents = { 5, 15, 30 };

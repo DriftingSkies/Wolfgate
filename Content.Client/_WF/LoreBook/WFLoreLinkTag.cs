@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
-using Robust.Client.GameObjects;
+using Content.Client.Resources;
+using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.RichText;
@@ -28,7 +29,8 @@ public sealed class WFLoreLinkTag : IMarkupTag
             return false;
         }
 
-        var sprites = IoCManager.Resolve<IEntityManager>().System<SpriteSystem>();
+        // The rules window on first join renders this before the entity systems exist.
+        var cache = IoCManager.Resolve<IResourceCache>();
         var label = new Label
         {
             Text = text,
@@ -44,7 +46,7 @@ public sealed class WFLoreLinkTag : IMarkupTag
         };
         box.AddChild(new TextureRect
         {
-            Texture = sprites.Frame0(WFLoreBookSystem.Icon),
+            Texture = cache.GetTexture(WFLoreBookSystem.IconPath),
             TextureScale = new(0.25f, 0.25f),
             Stretch = TextureRect.StretchMode.KeepCentered,
             ModulateSelfOverride = WFLoreBookWindow.Gold,
@@ -57,7 +59,8 @@ public sealed class WFLoreLinkTag : IMarkupTag
         box.OnMouseExited += _ => label.FontColorOverride = WFLoreBookWindow.Gold;
         box.OnKeyBindDown += args =>
         {
-            if (args.Function != EngineKeyFunctions.UIClick)
+            if (args.Function != EngineKeyFunctions.UIClick
+                || IoCManager.Resolve<IEntityManager>().EntitySysManager.GetEntitySystemOrNull<WFLoreBookSystem>() == null)
                 return;
 
             IoCManager.Resolve<IUserInterfaceManager>().GetUIController<WFLoreBookUIController>().Open(link);

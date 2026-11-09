@@ -18,6 +18,7 @@
   - BorgModuleRadiationDetection
   - BorgModuleTool
   - BorgModuleSurgery # Shitmed Change
+  - WFBorgModulePhotography # WOLFGATE(Photography)
 
 - type: latheRecipePack
   id: BorgModulesDynamic

@@ -164,8 +164,8 @@ public sealed class WFReaverReinforcementTest : WFReaverTestBase
 
         await RunTicks(30);
         var lines = ChatSince(since);
-        Assert.That(lines.Any(line => line.Contains($"Reaver reinforcements are inbound to {callsign}, ETA")), Is.True,
-            "The sector watch announces it.");
+        Assert.That(lines.Any(line => line.Contains("Reaver reinforcements are inbound")), Is.False,
+            "A launch is not announced.");
     }
 
     /// <summary>A real dock raises the level, a tier's cap stops the next, and the clock restarts.</summary>
@@ -222,8 +222,7 @@ public sealed class WFReaverReinforcementTest : WFReaverTestBase
 
         await RunTicks(30);
         var lines = ChatSince(since);
-        Assert.That(lines.Any(line => line.Contains("has grown to level 1")), Is.True);
-        Assert.That(lines.Any(line => line.Contains("has grown to level 2")), Is.True);
+        Assert.That(lines.Any(line => line.Contains("has grown to level")), Is.False, "Growth is not announced.");
     }
 
     /// <summary>A hub sends its next reinforcement when its interval is up, and not before.</summary>

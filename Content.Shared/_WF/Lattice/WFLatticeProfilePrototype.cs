@@ -85,9 +85,12 @@ public sealed partial class WFLatticeProfilePrototype : IPrototype
     [DataField]
     public float StrikeWindow = 60f;
 
-    /// <summary>Seconds a ship stays an attacker after its last hit; the station only shoots at it while the shield is down.</summary>
+    /// <summary>
+    /// Seconds a ship or person stays an attacker after its last hit; the station only shoots at it while the shield is down,
+    /// so only those actively attacking are fired on.
+    /// </summary>
     [DataField]
-    public float HostileSeconds = 90f;
+    public float HostileSeconds = 20f;
 
     /// <summary>Furthest the station's lances reach for a hostile grid, in metres.</summary>
     [DataField]
@@ -95,7 +98,7 @@ public sealed partial class WFLatticeProfilePrototype : IPrototype
 
     /// <summary>Seconds between the station's alerts.</summary>
     [DataField]
-    public float AlertCooldown = 120f;
+    public float AlertCooldown = 300f;
 
     /// <summary>DEFCON score for each primary anchor lost.</summary>
     [DataField]

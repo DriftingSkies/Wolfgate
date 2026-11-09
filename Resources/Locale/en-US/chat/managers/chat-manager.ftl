@@ -25,16 +25,21 @@ chat-manager-sender-announcement-wrap-message = [font size=14][bold]{$sender} An
 # Einstein Engines - Language begin (changing colors for text based on language color in handler)
 # For the message in double quotes, the font/color/bold/italic elements are repeated twice, outside the double quotes and inside.
 # The outside elements are for formatting the double quotes, and the inside elements are for formatting the text in speech bubbles ([BubbleContent]).
+# WOLFGATE(ChatFormatting): unescaped message for emphasis BBCode
 chat-manager-entity-say-wrap-message = [BubbleHeader][bold][Name]{$entityName}[/Name][/bold][/BubbleHeader] {$verb}, [font={$fontType} size={$fontSize}]"[BubbleContent][font="{$fontType}" size={$fontSize}][color={$color}]{$message}[/color][/font][/BubbleContent]"[/font]
+# WOLFGATE(ChatFormatting): unescaped message for emphasis BBCode
 chat-manager-entity-say-bold-wrap-message = [BubbleHeader][bold][Name]{$entityName}[/Name][/bold][/BubbleHeader] {$verb}, [font={$fontType} size={$fontSize}]"[BubbleContent][font="{$fontType}" size={$fontSize}][bold][color={$color}]{$message}[/color][/font][/bold][/BubbleContent]"[/font]
 
+# WOLFGATE(ChatFormatting): unescaped message for emphasis BBCode
 chat-manager-entity-whisper-wrap-message = [font size=11][italic][BubbleHeader][Name]{$entityName}[/Name][/BubbleHeader] whispers, "[BubbleContent][color={$color}][font="{$fontType}"]{$message}[/font][/color][/BubbleContent][font size=11]"[/italic][/font]
+# WOLFGATE(ChatFormatting): unescaped message for emphasis BBCode
 chat-manager-entity-whisper-unknown-wrap-message = [font size=11][italic][BubbleHeader]Someone[/BubbleHeader] whispers, "[BubbleContent][color={$color}][font="{$fontType}"]{$message}[/color][/font][/BubbleContent][font size=11]"[/italic][/font]
 # Einstein Engines - Language end
 
 # chat-manager-language-prefix = ({ $language }){" "} - Removed so it doesn't show up, not wanted, but part of the language system.
 
 # THE() is not used here because the entity and its name can technically be disconnected if a nameOverride is passed...
+# WOLFGATE(ChatFormatting): unescaped message for emphasis BBCode
 chat-manager-entity-me-wrap-message = [italic]{ PROPER($entity) ->
     *[false] The {$entityName} {$message}[/italic]
      [true] {CAPITALIZE($entityName)} {$message}[/italic]

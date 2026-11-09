@@ -79,6 +79,9 @@
     - id: Paper
       amount: 3
     - id: Pen
+    # WOLFGATE(Photography)
+    - id: WFCamera
+    - id: WFCameraFilm
     - id: MysteryFigureBox
       prob: 0.5
     - id: MysteryFigureBox

@@ -66,6 +66,5 @@ public sealed partial class WFReaverCampaignSystem
             state.NextSpread = MaxTime(now, next - campaign.SpreadInterval * campaign.FundingShare);
 
         state.Funded++;
-        AnnounceRadio(Loc.GetString("wf-reaver-funded"));
     }
 }

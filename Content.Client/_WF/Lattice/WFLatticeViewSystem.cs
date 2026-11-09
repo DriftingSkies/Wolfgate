@@ -127,6 +127,25 @@ public sealed partial class WFLatticeViewSystem : EntitySystem
         return Math.Clamp(depth >= 0f ? MathF.Max(lost, 0.6f + 0.4f * depth) : lost, 0f, 1f);
     }
 
+    /// <summary>Whether Kyphrus has imploded (Tacet) on the local player's sector.</summary>
+    public bool Collapsed()
+    {
+        if (_player.LocalEntity is not { } viewer || Transform(viewer).MapUid is not { } map)
+            return false;
+
+        if (TryComp<WFLatticeFieldComponent>(map, out var field))
+            return field.Tacet;
+
+        CarrierDepth(out var sector);
+        return sector?.Tacet ?? false;
+    }
+
+    /// <summary>Whether the local player is Choir, to whom nothing out here reads wrong.</summary>
+    public bool SeesThrough()
+    {
+        return _player.LocalEntity is { } mob && HasComp<WFChoirMemberComponent>(mob);
+    }
+
     /// <summary>Whether the local player's ship, or they themselves, are out where the Coda's hazards reach.</summary>
     public bool InHazardBand()
     {

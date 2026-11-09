@@ -150,8 +150,13 @@ namespace Content.Client.Verbs.UI
                     _context.AddElement(popup, element);
                 }
                 // Add the category if it's not an extra (this is to avoid shuffling if we're filling from server verbs response).
-                else if (!extras.Contains(verb.Category.Text) && listedCategories.Add(verb.Category.Text))
-                    AddVerbCategory(verb.Category, popup);
+                // WOLFGATE(Photography) START: nested verb categories list under their top category
+                // else if (!extras.Contains(verb.Category.Text) && listedCategories.Add(verb.Category.Text))
+                //     AddVerbCategory(verb.Category, popup);
+                else if (RootCategory(verb.Category) is var root
+                    && !extras.Contains(root.Text) && listedCategories.Add(root.Text))
+                    AddVerbCategory(root, popup);
+                // WOLFGATE END
             }
 
             foreach (var category in ExtraCategories)
@@ -180,7 +185,8 @@ namespace Content.Client.Verbs.UI
                 }
             }
 
-            if (verbsInCategory.Count == 0 && !ExtraCategories.Contains(category))
+            // WOLFGATE(Photography): keep a category whose verbs are all in nested categories
+            if (verbsInCategory.Count == 0 && !ExtraCategories.Contains(category) && !HasVerbsUnder(category))
                 return;
 
             var style = verbsInCategory.FirstOrDefault()?.TextStyleClass ?? Verb.DefaultTextStyleClass;
@@ -199,6 +205,7 @@ namespace Content.Client.Verbs.UI
                 _context.AddElement(element.SubMenu, subElement);
             }
 
+            AddChildCategories(category, element.SubMenu); // WOLFGATE(Photography): nested verb categories
             element.SubMenu.MenuBody.Columns = category.Columns;
         }
 

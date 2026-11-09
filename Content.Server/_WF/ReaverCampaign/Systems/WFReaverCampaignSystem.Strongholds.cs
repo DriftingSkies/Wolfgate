@@ -162,10 +162,14 @@ public sealed partial class WFReaverCampaignSystem
 
         Recompute();
         var bounty = Scaled(ByTier(campaign.StrongholdBounty, state.Tier, 0));
-        AnnouncePlace(campaign, citadel ? "wf-reaver-citadel-raised" : regroup ? "wf-reaver-regrouped" : "wf-reaver-founded", true,
-            at.MapId, at.Position,
-            ("callsign", WFSectorHex.Callsign(cell)),
-            ("bounty", citadel ? (int) (bounty * campaign.CitadelBountyScale) : bounty));
+        var key = citadel ? "wf-reaver-citadel-raised" : regroup ? "wf-reaver-regrouped" : "wf-reaver-founded";
+        var args = new (string, object)[] { ("callsign", WFSectorHex.Callsign(cell)), ("bounty", citadel ? (int) (bounty * campaign.CitadelBountyScale) : bounty) };
+        // Only the first stronghold, a regroup and the citadel are banners; the rest go on the radio.
+        if (citadel || regroup || state.Founded == 1)
+            AnnouncePlace(campaign, key, true, at.MapId, at.Position, args);
+        else
+            AnnounceRadio(PlaceLine(key, at.MapId, at.Position, args));
+
         if (citadel)
             PlayCapital(campaign);
     }
@@ -470,11 +474,11 @@ public sealed partial class WFReaverCampaignSystem
 
         AfterStrongholdGone(state);
         var position = Position(encounter, comp.Lead);
-        AnnouncePlace(campaign, comp.Citadel ? "wf-reaver-citadel-fallen" : "wf-reaver-broken", false, Transform(uid).MapID, position,
-            ("callsign", WFSectorHex.Callsign(comp.Cell)),
-            ("bounty", bounty),
-            ("paid", paid),
-            ("cells", freed));
+        var args = new (string, object)[] { ("callsign", WFSectorHex.Callsign(comp.Cell)), ("bounty", bounty), ("paid", paid), ("cells", freed) };
+        if (comp.Citadel)
+            AnnouncePlace(campaign, "wf-reaver-citadel-fallen", false, Transform(uid).MapID, position, args);
+        else
+            AnnounceRadio(PlaceLine("wf-reaver-broken", Transform(uid).MapID, position, args));
         AnnounceDefeat(campaign, state);
     }
 

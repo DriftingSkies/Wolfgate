@@ -155,7 +155,7 @@ public sealed partial class WFAdsCampaignSystem
         Log.Info($"ADS sweep {ToPrettyString(uid)} turning to interdict {ToPrettyString(target)}.");
 
         var from = LeadGrid(uid, comp.Lead) is { } lead ? _transform.GetWorldPosition(lead) : comp.LastSeen;
-        WarnShip(campaign, Transform(target).MapID, target, from, "wf-ads-interdict-warning");
+        WarnShip(campaign, target, from, "wf-ads-interdict-warning");
         return true;
     }
 

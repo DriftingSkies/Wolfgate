@@ -565,7 +565,7 @@ public sealed partial class WFContractSystem
                 continue;
 
             _departures.Remove(grid);
-            QueueDel(grid);
+            EntityManager.System<Content.Server._WF.Performance.WFGridDeleteSystem>().QueueDel(grid);
         }
     }
 

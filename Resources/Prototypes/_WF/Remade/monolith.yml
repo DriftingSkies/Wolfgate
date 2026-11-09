@@ -5,6 +5,7 @@
   components:
   - type: Contraband
     severity: WFUnlawful
+  - type: WFHeavyPull
   - type: Transform
     noRot: true
   - type: Clickable
@@ -17,7 +18,8 @@
         shape:
           !type:PhysShapeAabb
           bounds: "-0.4,-0.45,0.4,0.45"
-        density: 500
+        # About four tonnes: a ship feels it, and whoever drags it crawls.
+        density: 6000
         mask:
         - MachineMask
         layer:

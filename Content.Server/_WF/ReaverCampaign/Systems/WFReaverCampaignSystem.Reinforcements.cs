@@ -112,10 +112,6 @@ public sealed partial class WFReaverCampaignSystem
         reinforcement.Overdue = _timing.CurTime + ConvoyEta(start, hubAt) * 2 + ConvoySlack;
         comp.Inbound = uid;
 
-        var minutes = Math.Max(1, (int) Math.Ceiling(Vector2.Distance(start, hubAt) / ConvoySpeed / 60f));
-        AnnounceRadio(Loc.GetString("wf-reaver-reinforcement-launched",
-            ("callsign", WFSectorHex.Callsign(comp.Cell)),
-            ("minutes", minutes)));
         Log.Info($"Reaver reinforcement {ToPrettyString(uid)} (level {reinforcement.Level}) launched for hub {ToPrettyString(stronghold)}.");
         return true;
     }
@@ -322,9 +318,6 @@ public sealed partial class WFReaverCampaignSystem
         home.Reinforcements.Add(reinforcement);
         home.NextReinforcement = _timing.CurTime + ReinforcementInterval(campaign);
         SetLevel((comp.Stronghold, home, hubEncounter), comp.Level);
-        AnnounceRadio(Loc.GetString("wf-reaver-grown",
-            ("callsign", WFSectorHex.Callsign(home.Cell)),
-            ("level", home.Level)));
         Log.Info($"Reaver stronghold {ToPrettyString(comp.Stronghold)} grew to level {home.Level}.");
         Recompute();
 

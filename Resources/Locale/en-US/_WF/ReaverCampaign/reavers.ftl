@@ -89,7 +89,6 @@ wf-reaver-clearing = Reaver space at {$cells} is clearing. Drone activity return
        *[other] {$minutes} minutes
     }. Clear the area.
 wf-reaver-defeated = The Ashfall Reavers are broken. Their strongholds are gone and the sector is clear.
-wf-reaver-funded = Smuggling money is reaching the Ashfall Reavers. Their strongholds are reinforcing and spreading faster.
 wf-reaver-retake-name = retaking {$callsign}
 wf-reaver-blockade = Reavers are moving to blockade {$station} at {$callsign}. They take the cell in {$minutes} minutes unless traffic keeps the lane.
 
@@ -124,9 +123,7 @@ wf-reaver-citadel-fallen = The Reaver citadel at {$callsign} has fallen. { $paid
         } paid.
     } The Ashfall Reavers are finished.
 
-# A hub gaining a level; $minutes is the reinforcement's reckoned flight
-wf-reaver-reinforcement-launched = Reaver reinforcements are inbound to {$callsign}, ETA {$minutes} min.
-wf-reaver-grown = The Reaver stronghold at {$callsign} has grown to level {$level}.
+# A hub's batteries and reinforcements
 wf-reaver-battery-destroyed = A Reaver gun battery at {$callsign} is destroyed. { $paid ->
         [0] No bounty was claimed.
        *[other] Bounty {$bounty} { $bounty ->
@@ -143,13 +140,11 @@ wf-reaver-reinforcement-destroyed = Reaver reinforcements bound for {$callsign} 
     }
 
 wf-reaver-raid-warning-pa = Reaver raiders are heading for {$ship}, bearing {$bearing}, {$range} km.
-wf-reaver-raid-warning-radio = Reaver raiders are heading for {$ship}, bearing {$bearing}, {$range} km.
 wf-reaver-raid-station-warning = Reaver raiders are heading for {$station}, bearing {$bearing}, {$range} km.
 wf-reaver-raid-hunting = Reaver raiders are hunting {$ship}, bearing {$bearing}, {$range} km.
 wf-reaver-intercept-warning = Reaver patrol turning to intercept {$ship}, bearing {$bearing}, {$range} km.
 
 # Another faction challenging a Reaver cell; $faction is the challenger
-wf-reaver-response-launched = Reaver gunships are scrambling to {$callsign} to drive off the intruder.
 wf-reaver-response-destroyed = Reaver gunships destroyed at {$callsign}. { $paid ->
         [0] No bounty was claimed.
        *[other] Bounty {$bounty} { $bounty ->

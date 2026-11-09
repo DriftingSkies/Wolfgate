@@ -22,6 +22,11 @@ public sealed partial class DungeonJob
 
         foreach (var tile in dungeon.CorridorTiles)
         {
+            // WOLFGATE(Performance): yield between tiles so a big dungeon never finishes in one tick
+            await SuspendDungeon();
+            if (!ValidateResume())
+                return;
+
             if (reservedTiles.Contains(tile))
                 continue;
 

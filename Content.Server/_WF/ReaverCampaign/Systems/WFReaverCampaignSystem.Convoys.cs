@@ -127,7 +127,7 @@ public sealed partial class WFReaverCampaignSystem
             }
             else
             {
-                AnnounceQuiet(campaign, launched, true);
+                AnnounceRadio(launched);
             }
             Log.Info($"Reaver {(citadel ? "citadel convoy" : "convoy")} {ToPrettyString(uid)} launched from {ToPrettyString(source.Owner)} for {WFSectorHex.Callsign(target)}.");
             convoy = uid;
@@ -295,10 +295,15 @@ public sealed partial class WFReaverCampaignSystem
         Mark(encounter.ShipHits.Keys.Select(key => key.Attacker));
         var (bounty, paid) = PayConvoyBounty(campaign, state, uid, comp.Citadel);
         state.ConvoysDestroyed++;
-        AnnounceQuiet(campaign, Loc.GetString(comp.Citadel ? "wf-reaver-citadel-convoy-destroyed" : "wf-reaver-convoy-destroyed",
+        var message = Loc.GetString(comp.Citadel ? "wf-reaver-citadel-convoy-destroyed" : "wf-reaver-convoy-destroyed",
             ("callsign", WFSectorHex.Callsign(comp.Target)),
             ("bounty", bounty),
-            ("paid", paid)), false);
+            ("paid", paid));
+        // The citadel convoy is a capital event; an ordinary one is a radio line.
+        if (comp.Citadel)
+            Announce(campaign, message, false);
+        else
+            AnnounceRadio(message);
         Recompute();
     }
 }

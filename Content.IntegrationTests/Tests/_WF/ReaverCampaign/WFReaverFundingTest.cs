@@ -1,4 +1,5 @@
 #nullable enable
+using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Content.IntegrationTests.Tests._WF.TradeGoods;
@@ -104,8 +105,7 @@ public sealed class WFReaverFundingTest : WFReaverTestBase
         });
 
         await RunTicks(30);
-        Assert.That(RadioLines(since, Funded), Is.EqualTo(2), "Each payout should be announced on the radio.");
-        Assert.That(Banners(since, Funded), Is.Zero, "A payout is a radio line, not a banner.");
+        Assert.That(ChatSince(since).Any(line => line.Contains(Funded)), Is.False, "A payout is not announced.");
     }
 
     /// <summary>Freight taken off NPC haulers funds the Reavers when fenced at the Underground, not when sold at a lawful chute.</summary>

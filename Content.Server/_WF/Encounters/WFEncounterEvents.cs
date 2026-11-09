@@ -64,3 +64,7 @@ public readonly record struct WFEncounterSimulatedHitEvent(EntityUid Victim, Ent
 /// <summary>Raised, by ref and broadcast, before each marker update goes out; a subscriber may add markers of its own.</summary>
 [ByRefEvent]
 public readonly record struct WFEncounterCollectMarkersEvent(List<WFEncounterMarker> Markers);
+
+/// <summary>Raised when an admin orders an encounter ship to attack something.</summary>
+[ByRefEvent]
+public readonly record struct WFEncounterAdminAttackEvent(EntityUid Encounter, string Key, EntityUid Ship, EntityUid Target);

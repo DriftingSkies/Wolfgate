@@ -513,10 +513,15 @@ public enum LogType
     WFAnatomy = 12490,
     // WOLFGATE END
 
+    // WOLFGATE(Photography) START: photos taken, labelled and written on
+    /// <summary>Photos taken, labelled and written on.</summary>
+    WFPhoto = 12491,
+    // WOLFGATE END
+
     // WOLFGATE(Outposts) START: founding, saving, loading and admin handling of player outposts
     /// <summary>
     /// Player outposts.
     /// </summary>
-    WFOutpost = 12491,
+    WFOutpost = 12492,
     // WOLFGATE END
 }

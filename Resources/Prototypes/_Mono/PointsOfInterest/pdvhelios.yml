@@ -16,6 +16,10 @@
   spawnGroup: Required
   gridPath: /Maps/_Mono/POI/pdvhelios.yml
   addComponents:
+  # WOLFGATE(Ordnance) START: the faction's ordnance terminal
+  - type: WFOrdnanceStation
+    terminal: WFOrdnanceTerminalPDV
+  # WOLFGATE END
   - type: IFF
     color: "#DE9E59"
     readOnly: true # mono
@@ -86,6 +90,10 @@
   spawnGroup: Required
   gridPath: /Maps/_Mono/POI/pdvhelios_hw.yml
   addComponents:
+  # WOLFGATE(Ordnance) START: the faction's ordnance terminal
+  - type: WFOrdnanceStation
+    terminal: WFOrdnanceTerminalPDV
+  # WOLFGATE END
   - type: IFF
     color: "#DE9E59"
     readOnly: true # mono

@@ -66,11 +66,9 @@ public sealed class WFDriftMindTest
         EntityUid mob = default;
         await server.WaitAssertion(() =>
         {
-            entities.EnsureComponent<Content.Shared._WF.DroneRings.WFDroneRingsComponent>(map.MapUid).Radii =
-                new System.Collections.Generic.List<float> { 10000f, 12000f, 14000f, 16000f };
             entities.System<WFLatticeSystem>().Setup(map.MapUid);
             entities.EnsureComponent<Content.Server.Shuttles.Components.ShuttleComponent>(map.Grid);
-            entities.System<SharedTransformSystem>().SetWorldPosition(map.Grid.Owner, new Vector2(30000f, 0f));
+            entities.System<SharedTransformSystem>().SetWorldPosition(map.Grid.Owner, new Vector2(72000f, 0f));
             mob = entities.SpawnEntity("MobHuman", map.GridCoords);
             players.SetAttachedEntity(players.Sessions.Single(), mob, force: true);
         });
@@ -113,11 +111,9 @@ public sealed class WFDriftMindTest
 
         await server.WaitAssertion(() =>
         {
-            entities.EnsureComponent<Content.Shared._WF.DroneRings.WFDroneRingsComponent>(map.MapUid).Radii =
-                new System.Collections.Generic.List<float> { 10000f, 12000f, 14000f, 16000f };
             entities.System<WFLatticeSystem>().Setup(map.MapUid);
             // Untethered, whose ceiling is 65.
-            entities.System<SharedTransformSystem>().SetWorldPosition(map.Grid.Owner, new Vector2(15000f, 0f));
+            entities.System<SharedTransformSystem>().SetWorldPosition(map.Grid.Owner, new Vector2(58000f, 0f));
             var mob = entities.SpawnEntity("MobHuman", map.GridCoords);
             players.SetAttachedEntity(players.Sessions.Single(), mob, force: true);
             entities.EnsureComponent<WFDriftComponent>(map.Grid).Drift = 90f;

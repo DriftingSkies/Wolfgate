@@ -16,21 +16,23 @@ matter is found only in the deep bands. All seven steps of the build order are b
 
 ## Bands
 
-Field strength at a point is the sum of every anchor's contribution, so the edges are lobed, not circles. Distances
-below are for an intact Lattice and slide inward where anchors fall.
+Field strength at a point is the sum of the six primary anchors' holds, so with the Lattice intact the edges are
+near-circles at the distances below; they slide inward on the side of a lost anchor. Relay and station anchors only
+hold a local well of anchored space round themselves and never move the far edges.
 
 | Band | About | Drone zone | Drift | Threats | Reward |
 |---|---|---|---|---|---|
-| Unison | 0-28 km | none | fades | none | baseline |
-| Detune | 28-40 km | 1 | slow | comm static, rare whispers, phantom radar blips | more ore, more metallic rocks |
-| Dissonance | 40-53 km | 2 | moderate | false hails, ghost contacts, footsteps, glimpses, screen warping | rich ore, rare exotic matter |
-| Feedback | 53-66 km | 3 | fast | hallucinated Remade, nav drift | exotic matter deposits |
+| Unison | 0-20 km | none | fades | none | baseline |
+| Detune | 20-34 km | 1 | slow | comm static, rare whispers, phantom radar blips | more ore, more metallic rocks |
+| Dissonance | 34-50 km | 2 | moderate | false hails, ghost contacts, footsteps, glimpses, screen warping | rich ore, rare exotic matter |
+| Feedback | 50-66 km | 3 | fast | hallucinated Remade, nav drift | exotic matter deposits |
 | the Coda | 66 km+ | 4 | exponential | small animals aboard turn Remade (low chance), Monolith hulks | the best salvage, dense exotic matter |
 
-- **Edges follow the drone rings.** The default worldgen (`MonoDefault`) is nearly empty inside 18 km apart from the
-  9 km asteroid ring, Cluster A and the Wilds, and its Very Far biomes start drones at 18, 24, 31 and 40 km with no
-  outer edge. The bands take the map's drone ring radii as their edges, so the Coda is the existing Very Far T2 Far
-  biome and needs no new worldgen. The Wilds hold drones inside Moored space; lore can make them a dead anchor's site.
+- **Edges are the profile's.** The default worldgen (`MonoDefault`) is nearly empty inside 20 km apart from the 9 km
+  asteroid ring, Cluster A and the Wilds, and its Very Far biomes change at 20, 34, 50 and 66 km, the same as the
+  profile's edges, so the Coda is the Very Far T2 Far biome. Drone rings no longer move the edges
+  (`droneRingEdges: false`), and only low-tier drones spawn out there. The Wilds hold drones inside Moored space; lore
+  can make them a dead anchor's site.
 - **Garbling:** the Coda's name is never shown cleanly (`the D#e$p`, `#h$ D%%@`, then noise), and popups, radar labels,
   ship names and coordinates garble on the same exponential curve with depth. Character substitution, not combining
   marks, which the game fonts may not draw.

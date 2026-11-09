@@ -69,7 +69,7 @@ public sealed class WFLatticeShelterTest
         {
             lattice.Setup(map.MapUid);
             var near = new MapCoordinates(new Vector2(5000f, 0f), map.MapId);
-            var feedback = new MapCoordinates(new Vector2(59500f, 0f), map.MapId);
+            var feedback = new MapCoordinates(new Vector2(58000f, 0f), map.MapId);
             var deep = new MapCoordinates(new Vector2(72000f, 0f), map.MapId);
             Assert.That(lattice.YieldAt(near), Is.EqualTo(1f));
             Assert.That(lattice.YieldAt(deep), Is.GreaterThan(1f));

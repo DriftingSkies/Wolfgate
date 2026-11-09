@@ -1,3 +1,4 @@
+using Content.Shared._WF.Construction;
 using Content.Shared._WF.Planets.Flight;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
@@ -14,6 +15,7 @@ public sealed partial class WFLandingThrusterKitSystem : EntitySystem
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private ThrusterSystem _thrusters = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private WFKitRefundSystem _refund = default!;
     private static readonly SoundSpecifier InstallSound = new SoundPathSpecifier("/Audio/Items/screwdriver.ogg");
 
     /// <inheritdoc/>
@@ -62,6 +64,7 @@ public sealed partial class WFLandingThrusterKitSystem : EntitySystem
         EnsureComp<WFLandingThrusterComponent>(target);
         _thrusters.WfRefreshAtmosphereThruster(target, thruster);
 
+        _refund.RecordKit(target, ent);
         QueueDel(ent.Owner);
 
         _popup.PopupEntity(Loc.GetString("wf-landing-kit-converted"), target, args.User, PopupType.Medium);

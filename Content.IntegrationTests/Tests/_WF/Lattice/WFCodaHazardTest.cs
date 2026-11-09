@@ -72,11 +72,9 @@ public sealed class WFCodaHazardTest
         EntityUid mob = default, apc = default, door = default;
         await server.WaitAssertion(() =>
         {
-            entities.EnsureComponent<Content.Shared._WF.DroneRings.WFDroneRingsComponent>(map.MapUid).Radii =
-                new System.Collections.Generic.List<float> { 10000f, 12000f, 14000f, 16000f };
             entities.System<WFLatticeSystem>().Setup(map.MapUid);
             entities.EnsureComponent<Content.Server.Shuttles.Components.ShuttleComponent>(map.Grid);
-            entities.System<SharedTransformSystem>().SetWorldPosition(map.Grid.Owner, new Vector2(30000f, 0f));
+            entities.System<SharedTransformSystem>().SetWorldPosition(map.Grid.Owner, new Vector2(72000f, 0f));
             var maps = entities.System<SharedMapSystem>();
             var gridComp = entities.GetComponent<MapGridComponent>(map.Grid);
             var floor = maps.GetTileRef(map.Grid, gridComp, new Vector2i(0, 0)).Tile;
@@ -142,11 +140,9 @@ public sealed class WFCodaHazardTest
         var tilesBefore = 0;
         await server.WaitAssertion(() =>
         {
-            entities.EnsureComponent<Content.Shared._WF.DroneRings.WFDroneRingsComponent>(map.MapUid).Radii =
-                new System.Collections.Generic.List<float> { 10000f, 12000f, 14000f, 16000f };
             entities.System<WFLatticeSystem>().Setup(map.MapUid);
             entities.EnsureComponent<Content.Server.Shuttles.Components.ShuttleComponent>(map.Grid);
-            entities.System<SharedTransformSystem>().SetWorldPosition(map.Grid.Owner, new Vector2(30000f, 0f));
+            entities.System<SharedTransformSystem>().SetWorldPosition(map.Grid.Owner, new Vector2(72000f, 0f));
 
             var gridComp = entities.GetComponent<MapGridComponent>(map.Grid);
             var floor = maps.GetTileRef(map.Grid, gridComp, new Vector2i(0, 0)).Tile;
@@ -179,8 +175,9 @@ public sealed class WFCodaHazardTest
         await pair.RunSeconds(47f);
         await server.WaitAssertion(() =>
         {
-            var node = entities.EntityQuery<WFCodaFleshNodeComponent>().Single();
-            Assert.That(node.Tiles.Count, Is.GreaterThan(3), "the flesh didn't creep out from its node.");
+            // The Coda may root another knot of its own meanwhile; the seeded one has had the longest to grow.
+            var grown = entities.EntityQuery<WFCodaFleshNodeComponent>().Max(node => node.Tiles.Count);
+            Assert.That(grown, Is.GreaterThan(3), "the flesh didn't creep out from its node.");
 
             var gridComp = entities.GetComponent<MapGridComponent>(map.Grid);
             var tilesAfter = maps.GetAllTiles(map.Grid, gridComp).Count();

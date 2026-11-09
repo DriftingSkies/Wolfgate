@@ -68,7 +68,9 @@ public sealed partial class SlimeLatchSystem : EntitySystem
                 || !TryComp<SlimeComponent>(source, out var slime)
                 || slime.LatchedTarget != uid)
             {
+                // A slime gone without unlatching left its mark too, and nothing would feed on the mob again.
                 RemCompDeferred(uid, comp);
+                RemCompDeferred<BeingLatchedComponent>(uid);
                 continue;
             }
 

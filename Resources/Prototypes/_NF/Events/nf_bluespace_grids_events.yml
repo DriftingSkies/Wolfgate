@@ -79,6 +79,8 @@
         - /Maps/_NF/Bluespace/vault.yml
     rewardAccounts:
       Nfsd: 1.0
+    # WOLFGATE(LiveFixes): guards always nearby kept the vault from ever leaving
+    wfMaxExtensions: 4
   - type: CurrencyInjectionOnBluespaceError # Mono: reward TSF with FMC for defending solarian vault
     company: TSF
     amount:
@@ -126,6 +128,8 @@
         - /Maps/_NF/Bluespace/vaultsmall.yml
     rewardAccounts:
       Nfsd: 1.0
+    # WOLFGATE(LiveFixes): guards always nearby kept the vault from ever leaving
+    wfMaxExtensions: 4
   - type: CurrencyInjectionOnBluespaceError # Mono: reward TSF with FMC for defending solarian vault
     company: TSF
     amount:

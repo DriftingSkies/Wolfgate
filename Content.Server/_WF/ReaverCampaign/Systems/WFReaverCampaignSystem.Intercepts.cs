@@ -159,7 +159,7 @@ public sealed partial class WFReaverCampaignSystem
             : comp.LastSeen;
         // Another campaign's ship has no crew to warn, and the sector is not told of a fight between machines.
         if (!HasComp<WFEncounterGridComponent>(target))
-            WarnShip(campaign, Transform(target).MapID, target, from, "wf-reaver-intercept-warning", "wf-reaver-intercept-warning");
+            WarnShip(campaign, target, from, "wf-reaver-intercept-warning");
         return true;
     }
 

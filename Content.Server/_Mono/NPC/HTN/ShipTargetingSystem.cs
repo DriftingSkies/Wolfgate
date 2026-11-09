@@ -1,5 +1,6 @@
 using Content.Server._Mono.FireControl;
 using Content.Server._Mono.Projectiles.TargetSeeking;
+using Content.Server._WF.ShipMissiles; // WOLFGATE(ShipMissiles)
 using Content.Shared._WF.Performance; // WOLFGATE(Performance)
 using Content.Shared.Weapons.Hitscan.Components;
 using Content.Shared.Weapons.Ranged.Components;
@@ -150,10 +151,22 @@ public sealed partial class ShipTargetingSystem : EntitySystem
 
                     var bulletProto = _gun.GetBulletPrototype(proto);
                     var projVel = gun.ProjectileSpeedModified;
+                    // WOLFGATE(ShipMissiles) START: a flown missile's carrier has zero thrust, so lead it on its motor instead
+                    // if (bulletProto.TryGetComponent<TargetSeekingComponent>(out var seeking, Factory))
+                    // {
+                    //     hitTime = _seeking.CalculateAdvancedTrackingTime(gunToDestVec, leadBy, seeking.Acceleration);
+                    // }
+                    var wfSeekerAccel = 0f;
                     if (bulletProto.TryGetComponent<TargetSeekingComponent>(out var seeking, Factory))
+                        wfSeekerAccel = seeking.Acceleration;
+                    if (bulletProto.TryGetComponent<WFMissileFlightComponent>(out var wfFlight, Factory))
+                        wfSeekerAccel = wfFlight.BoostAccel;
+
+                    if (wfSeekerAccel > 0f)
                     {
-                        hitTime = _seeking.CalculateAdvancedTrackingTime(gunToDestVec, leadBy, seeking.Acceleration);
+                        hitTime = _seeking.CalculateAdvancedTrackingTime(gunToDestVec, leadBy, wfSeekerAccel);
                     }
+                    // WOLFGATE END
                     else
                     {
                         var normVel = gunToDestDir * Vector2.Dot(leadBy, gunToDestDir);

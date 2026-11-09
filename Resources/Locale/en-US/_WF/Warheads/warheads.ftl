@@ -167,3 +167,7 @@ wf-nuke-designer-field-map-wide-audio = Map-wide alarm (true/false)
 wf-nuke-designer-field-map-wide-audio-tooltip = Plays the final alarm and countdown voice to the whole map rather than nearby.
 wf-nuke-designer-field-detonation-sound = Detonation sound
 wf-nuke-designer-field-detonation-sound-tooltip = Sound played to the whole map. Leave empty for none.
+
+wf-warhead-key-missing = It won't arm. Its key isn't in the keyhole.
+wf-warhead-examine-key-in = Its key is in the keyhole.
+wf-warhead-examine-key-out = It has an empty keyhole. It won't arm without its key.

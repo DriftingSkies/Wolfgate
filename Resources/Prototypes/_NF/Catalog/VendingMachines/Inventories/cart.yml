@@ -18,6 +18,9 @@
     BoxFolderBlue: 3
     BoxFolderRed: 3
     BoxFolderYellow: 3
+    # WOLFGATE(Photography)
+    WFCamera: 4
+    WFCameraFilm: 12
     HandLabeler: 4294967295 #Infinite
     BrbSign: 4294967295 #Infinite
     DeskBell: 4294967295 #Infinite

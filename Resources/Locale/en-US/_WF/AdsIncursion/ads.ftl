@@ -129,11 +129,7 @@ wf-ads-deployment-stopped = The ADS deployment bound for {$callsign} is stopped.
         } paid.
     }
 
-# Sentinels guarding a node; $count is how many now guard it
-wf-ads-sentinel-joined = An ADS sentinel has joined the node at {$callsign}. { $count ->
-        [one] {$count} sentinel guards it.
-       *[other] {$count} sentinels guard it.
-    }
+# Sentinels guarding a node
 wf-ads-sentinel-lost = ADS sentinel destroyed at {$callsign}. { $paid ->
         [0] No bounty was claimed.
        *[other] Bounty {$bounty} { $bounty ->
@@ -168,7 +164,6 @@ wf-ads-mining-declared = THREAT LOGGED. {$ship} ignored a cease-mining directive
 wf-ads-challenge-launched = ADS interdictor under way to {$callsign}, contesting space held by the {$holder}. {$range} km bearing {$bearing} from {$station}.
 wf-ads-challenge-won = {$callsign} has fallen to the Automated Defense System.
 wf-ads-challenge-lost = ADS interdictor withdraws from {$callsign}.
-wf-ads-challenge-withdrawn = The ADS interdictor bound for {$callsign} has turned back.
 wf-ads-challenge-destroyed = ADS interdictor destroyed at {$callsign}. { $paid ->
         [0] No bounty was claimed.
        *[other] Bounty {$bounty} { $bounty ->

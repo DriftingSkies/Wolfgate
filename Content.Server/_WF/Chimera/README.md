@@ -2,7 +2,7 @@
 
 Changes to Mono's chimera fleshbeasts. When a fleshbeast converted by Letoferol dies or is gibbed, the body the person
 had before the conversion falls out of it and takes back their mind, so they can be revived or cloned as themselves.
-The fleshbeast's corpse and anything it carried stay behind, renamed back to "chimera fleshbeast". The dropped body is
+The fleshbeast's corpse stays behind, renamed back to "chimera fleshbeast", and anything it wore, held or kept in its flesh pocket falls to the floor. The dropped body is
 purged of both kinds of Letoferol so it doesn't turn again; it keeps the damage it had when it turned.
 
 The dropped body can't be turned again for 3 minutes (`turnCooldown` on `DropOriginalBodyOnDeath`), so other

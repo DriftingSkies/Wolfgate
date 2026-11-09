@@ -189,6 +189,14 @@ public sealed partial class AmmoLoaderSystem : EntitySystem
             RaiseLocalEvent(gunUid, ref ev, false);
             ammoCount = ev.Count;
             ammoCapacity = ev.Capacity;
+            // WOLFGATE START: an infinite magazine reports no rounds, which hid it and blocked unloading
+            if (itemSlots?.Slots.GetValueOrDefault("gun_magazine")?.Item is { } infinite &&
+                TryComp<BallisticAmmoProviderComponent>(infinite, out var infiniteAmmo) && infiniteAmmo.InfiniteUnspawned)
+            {
+                ammoCapacity = Math.Max(1, infiniteAmmo.Capacity);
+                ammoCount = ammoCapacity;
+            }
+            // WOLFGATE END
             return true;
         }
 

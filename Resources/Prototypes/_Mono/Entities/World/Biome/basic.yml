@@ -479,7 +479,7 @@
 - type: spaceBiome
   id: MonoEmptyFallback # We need nothing to generate under 18000, but Far Reaches 4 would generate instead, so we need a useless thing.
   priority: 1
-  distanceRange: 0, 28000 # WOLFGATE(Lattice): anchored space reaches 28 km
+  distanceRange: 0, 20000 # WOLFGATE(Lattice): anchored space reaches 20 km
   noiseRanges: {}
 
 # 9km Ring
@@ -641,7 +641,7 @@
 - type: spaceBiome
   id: MonoRareAsteroidsFallback
   priority: 1
-  distanceRange: 0, 28000 # WOLFGATE(Lattice): anchored space reaches 28 km
+  distanceRange: 0, 20000 # WOLFGATE(Lattice): anchored space reaches 20 km
   noiseRanges: {}
   chunkComponents:
   - type: DebrisFeaturePlacerController
@@ -690,7 +690,7 @@
   id: MonoWorldgenVeryFarT1
   parent: NFBiomeBase
   priority: -1
-  distanceRange: 28000, 40000 # WOLFGATE(Lattice): wider Lattice bands, Detune 28-40 km
+  distanceRange: 20000, 34000 # WOLFGATE(Lattice): wider Lattice bands, Detune 20-34 km
   chunkComponents:
   - type: DebrisFeaturePlacerController
     densityNoiseChannel: WFDensityDetune # WOLFGATE(Lattice): each band thins its own rocks
@@ -818,7 +818,7 @@
   id: MonoWorldgenVeryFarT2Inner
   parent: MonoWorldgenVeryFarT1
   priority: -2
-  distanceRange: 40000, 53000 # WOLFGATE(Lattice): wider Lattice bands, Dissonance 40-53 km
+  distanceRange: 34000, 50000 # WOLFGATE(Lattice): wider Lattice bands, Dissonance 34-50 km
   chunkComponents:
   # WOLFGATE(Lattice) START: each band thins its own rocks
   - type: DebrisFeaturePlacerController
@@ -853,7 +853,7 @@
   id: MonoWorldgenVeryFarT2Middle
   parent: MonoWorldgenVeryFarT1
   priority: -3
-  distanceRange: 53000, 66000 # WOLFGATE(Lattice): wider Lattice bands, Feedback 53-66 km
+  distanceRange: 50000, 66000 # WOLFGATE(Lattice): wider Lattice bands, Feedback 50-66 km
   chunkComponents:
   # WOLFGATE(Lattice) START: each band thins its own rocks
   - type: DebrisFeaturePlacerController

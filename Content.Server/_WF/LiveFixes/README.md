@@ -31,13 +31,20 @@ Lupine engine fork; see `Docs/_WF/Engine/README.md`.
 ## Non-modular edits
 
 - [`Content.Server/_CE/ZLevels/Chat/CEZLevelsSpeakingSystem.cs`](../../_CE/ZLevels/Chat/CEZLevelsSpeakingSystem.cs): the speaker can be deleted with its map before this fires
-- [`Content.Server/_Mono/StationEvents/AutoExtendRuleSystem.cs`](../../_Mono/StationEvents/AutoExtendRuleSystem.cs): a watched grid can be deleted before the rule ends
+- [`Content.Server/_Mono/StationEvents/AutoExtendRuleComponent.cs`](../../_Mono/StationEvents/AutoExtendRuleComponent.cs): guards near a vault kept it from ever leaving after its departure warning
+- [`Content.Server/_Mono/StationEvents/AutoExtendRuleSystem.cs`](../../_Mono/StationEvents/AutoExtendRuleSystem.cs)
+  - extensions are capped
+  - a watched grid can be deleted before the rule ends
+  - count each extension against the cap
+- [`Content.Server/_NF/StationEvents/Components/BluespaceErrorRuleComponent.cs`](../../_NF/StationEvents/Components/BluespaceErrorRuleComponent.cs): a vault guarded from nearby never left
 - [`Content.Server/_NF/StationEvents/Events/BluespaceCargoRule.cs`](../../_NF/StationEvents/Events/BluespaceCargoRule.cs)
   - with no free tile, the grid's own coordinates were on the map and could anchor to another grid
   - pass the map, since terrain with no tracked air reads its mixture from there
   - check every tile before skipping the crate, since random picks can miss a sparse grid
   - the random search's tile checks, for the search of every tile
-- [`Content.Server/_NF/StationEvents/Events/BluespaceErrorRule.cs`](../../_NF/StationEvents/Events/BluespaceErrorRule.cs): a grid destroyed in play is normal and must not stop the rest of the cleanup
+- [`Content.Server/_NF/StationEvents/Events/BluespaceErrorRule.cs`](../../_NF/StationEvents/Events/BluespaceErrorRule.cs)
+  - capped events
+  - a grid destroyed in play is normal and must not stop the rest of the cleanup
 - [`Content.Server/_NF/StationEvents/EventSystems/LinkedLifecycleGridSystem.cs`](../../_NF/StationEvents/EventSystems/LinkedLifecycleGridSystem.cs): observers and other mobs that can't pull have no puller
 - [`Content.Server/Administration/Commands/PlayTimeCommands.cs`](../../Administration/Commands/PlayTimeCommands.cs): this async void command threw unobserved while the player's times were loading
 - [`Content.Server/Damage/Systems/ExaminableDamageSystem.cs`](../../Damage/Systems/ExaminableDamageSystem.cs): indestructible scenery has no damage level
@@ -57,6 +64,7 @@ Lupine engine fork; see `Docs/_WF/Engine/README.md`.
 - [`Content.Shared/Station/SharedStationSpawningSystem.cs`](../../../Content.Shared/Station/SharedStationSpawningSystem.cs): a mob deleted during spawn can't take gear
 - [`Content.Shared/Store/Components/StoreComponent.cs`](../../../Content.Shared/Store/Components/StoreComponent.cs): not saved; a ship copy can't reference the map it left, and a loaded copy has no refund map
 - [`Resources/Maps/_Mono/POI/pdvhelios.yml`](../../../Resources/Maps/_Mono/POI/pdvhelios.yml): Removed saved configurator lists that held invalid entity references.
+- [`Resources/Prototypes/_NF/Events/nf_bluespace_grids_events.yml`](../../../Resources/Prototypes/_NF/Events/nf_bluespace_grids_events.yml): guards always nearby kept the vault from ever leaving
 - [`Resources/Prototypes/_NF/Procedural/dungeon_configs.yml`](../../../Resources/Prototypes/_NF/Procedural/dungeon_configs.yml): NFPlanetBase needs this key, and its junction step was skipped with an error
 - [`Resources/Prototypes/Entities/Mobs/Player/guardian.yml`](../../../Resources/Prototypes/Entities/Mobs/Player/guardian.yml): the holoclown has hands and tried actions it couldn't start
 

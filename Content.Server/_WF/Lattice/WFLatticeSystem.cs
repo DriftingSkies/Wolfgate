@@ -59,11 +59,18 @@ public sealed partial class WFLatticeSystem : EntitySystem
             _seen.Clear();
             _ovals.Clear();
             _nextLostShip.Clear();
+            _hex.Clear();
+            _scionLast.Clear();
+            _beamPopup.Clear();
+            _central.Clear();
+            _tacetAt.Clear();
+            _fading.Clear();
         });
         InitializeStations();
         InitializeDefence();
         InitializeFtl();
         InitializeRelayFuel();
+        InitializeEndgame();
     }
 
     public override void Update(float frameTime)
@@ -71,6 +78,7 @@ public sealed partial class WFLatticeSystem : EntitySystem
         base.Update(frameTime);
         UpdateDefence(frameTime);
         HoldBarriers();
+        HoldScions();
 
         _accumulator += frameTime;
         if (_accumulator < Interval)
@@ -280,6 +288,9 @@ public sealed partial class WFLatticeSystem : EntitySystem
 
         GatherAnchors(map);
         SyncAnchors(map);
+        SyncHex(map);
+        PlaceCentral(map);
+        UpdateEndgame(map);
         RollLostShip(map, profile);
         foreach (var gone in _seen.Keys.Where(uid => TerminatingOrDeleted(uid)).ToList())
         {
@@ -416,17 +427,25 @@ public sealed partial class WFLatticeSystem : EntitySystem
     private void GatherAnchors(EntityUid map)
     {
         _anchors.Clear();
-        var query = EntityQueryEnumerator<WFLatticeAnchorComponent, TransformComponent>();
         _primaries = 0;
-        while (query.MoveNext(out _, out var anchor, out var xform))
-        {
-            if (xform.MapUid != map || !anchor.Active)
-                continue;
 
-            _anchors.Add((_transform.GetWorldPosition(xform), anchor.Strength));
-            if (anchor.Primary)
-                _primaries++;
+        // Unstrung, nothing new holds: not a relay, not a station's own anchor. What held fades out below.
+        if (!(TryComp<WFLatticeFieldComponent>(map, out var unstrung) && unstrung.Unstrung))
+        {
+            var query = EntityQueryEnumerator<WFLatticeAnchorComponent, TransformComponent>();
+            while (query.MoveNext(out _, out var anchor, out var xform))
+            {
+                if (xform.MapUid != map || !anchor.Active)
+                    continue;
+
+                // Secondary anchors carry their strength negated: they hold a local well, not the bands.
+                _anchors.Add((_transform.GetWorldPosition(xform), anchor.Primary ? anchor.Strength : -anchor.Strength));
+                if (anchor.Primary)
+                    _primaries++;
+            }
         }
+
+        AddFading(map);
     }
 
     private void Notify(ICommonSession session, EntityUid mob, WFLatticeBand band, float depth)

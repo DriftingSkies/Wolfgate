@@ -4,6 +4,8 @@ using Content.Server._WF.Encounters.Systems;
 using Content.Server._WF.NpcCrew.Systems;
 using Content.Server._WF.Remade.Director;
 using Content.Server._WF.Remade.Monolith;
+using Content.Server._WF.Warheads;
+using Content.Server.Destructible;
 using Content.Server.Chat.Managers;
 using Content.Server.Chat.Systems;
 using Content.Shared._NF.BountyContracts;
@@ -20,8 +22,8 @@ using Robust.Shared.Timing;
 namespace Content.Server._WF.Remade.Counterplay;
 
 /// <summary>
-/// The end of an outbreak. A Monolith that roots at the Crescendo becomes the Prime: it gets armour, a sector bounty and a verse
-/// every ten minutes while it stands. When any Monolith is destroyed it leaves a husk and its Remade go feral, and a Prime pays
+/// The end of an outbreak. A Monolith that roots at the Crescendo becomes the Prime: nothing short of a nuclear detonation
+/// harms it, it carries a sector bounty and it sings a verse every ten minutes while it stands. When any Monolith is destroyed it leaves a husk and its Remade go feral, and a Prime pays
 /// its bounty to the players who brought it down.
 /// </summary>
 public sealed class WFPrimeSystem : EntitySystem
@@ -29,6 +31,7 @@ public sealed class WFPrimeSystem : EntitySystem
     [Dependency] private BountyContractSystem _board = default!;
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private DestructibleSystem _destructible = default!;
     [Dependency] private IChatManager _chatManager = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPlayerManager _players = default!;
@@ -49,6 +52,43 @@ public sealed class WFPrimeSystem : EntitySystem
         SubscribeLocalEvent<WFMonolithComponent, WFMonolithRootedEvent>(OnRooted);
         SubscribeLocalEvent<WFMonolithComponent, DestructionEventArgs>(OnDestroyed);
         SubscribeLocalEvent<WFPrimeComponent, DamageChangedEvent>(OnDamaged);
+        SubscribeLocalEvent<WFPrimeComponent, BeforeDamageChangedEvent>(OnBeforeDamage);
+        SubscribeLocalEvent<WFNuclearDetonatedEvent>(OnNuclear);
+    }
+
+    /// <summary>Nothing hurts the Prime; only a nuclear blast close by ends it.</summary>
+    private void OnBeforeDamage(Entity<WFPrimeComponent> ent, ref BeforeDamageChangedEvent args)
+    {
+        foreach (var amount in args.Damage.DamageDict.Values)
+        {
+            if (amount > 0)
+            {
+                args.Cancelled = true;
+                return;
+            }
+        }
+    }
+
+    /// <summary>Destroys every Prime within a nuclear blast's kill radius, crediting whoever set it off.</summary>
+    private void OnNuclear(ref WFNuclearDetonatedEvent args)
+    {
+        var query = EntityQueryEnumerator<WFPrimeComponent, TransformComponent>();
+        var killed = new List<(EntityUid, WFPrimeComponent)>();
+        while (query.MoveNext(out var uid, out var prime, out var xform))
+        {
+            if (xform.MapID == args.Coordinates.MapId
+                && (_transform.GetWorldPosition(xform) - args.Coordinates.Position).Length() <= args.KillRadius)
+                killed.Add((uid, prime));
+        }
+
+        foreach (var (uid, prime) in killed)
+        {
+            if (args.Cause is { } cause && !TerminatingOrDeleted(cause) && _crew.Wielder(cause) is var attacker
+                && !TerminatingOrDeleted(attacker) && TryComp<ActorComponent>(attacker, out var actor))
+                prime.Hits[actor.PlayerSession.UserId] = prime.Hits.GetValueOrDefault(actor.PlayerSession.UserId) + 1f;
+
+            _destructible.DestroyEntity(uid);
+        }
     }
 
     private void OnRooted(Entity<WFMonolithComponent> ent, ref WFMonolithRootedEvent args)

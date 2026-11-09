@@ -69,8 +69,8 @@ window and the Companies tab. A player whose selected character isn't in a compa
 to switch to it.
 
 **Hangar.** The owner buys fleet licences (up to 3) for civilian designs any character may fly, or for the company-only
-Mercenary and Mieyo designs, at 200x the shipyard
-price and at least 20,000,000, from the account; selling one refunds nothing. A member with Launch presses Launch on the
+Mercenary and Mieyo designs, at 35x the shipyard
+price and at least 2,000,000, from the account; selling one refunds nothing. A member with Launch presses Launch on the
 Hangar tab: that creates a Crew Setup ship crew for the design, flying under the company, with the design fixed and no
 crew payment. When the ship actually spawns, the account pays the registry fee (5%, 15% then 30% of the shipyard price
 by how many company ships are already out) and the launching character pays the owner's launch fee into the account;

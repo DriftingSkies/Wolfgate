@@ -304,6 +304,10 @@ public sealed class SpawnSalvageMissionJob : Job<bool>
             var shuttle = _entManager.GetComponent<ShuttleComponent>(shuttleUid.Value);
             MassAdjustFTLExpedStartup(shuttleUid, out var massStartupTime);
             _shuttle.FTLToCoordinates(shuttleUid.Value, shuttle, new EntityCoordinates(mapUid, coords), 0f, massStartupTime, HyperSpaceTime);
+            // WOLFGATE(PlanetExpeditions) START: a refused jump fails the spawn, which frees the console instead of leaving it claimed
+            if (!_entManager.HasComponent<FTLComponent>(shuttleUid.Value))
+                throw new InvalidOperationException($"{_entManager.ToPrettyString(shuttleUid.Value)} could not jump to its expedition.");
+            // WOLFGATE END
         }
 
         List<Vector2i> reservedTiles = new();

@@ -62,12 +62,16 @@ public sealed class AsteroidMiningTest
     }
 
     /// <summary>Rocks on their own asteroid grids, leaving out boulders.</summary>
-    private static List<WFAsteroidComponent> GridRocks(IEntityManager em)
+    /// <summary>The rocks that are their own asteroid grid; on one map only, given one, since a dirty pair keeps other tests' rocks.</summary>
+    private static List<WFAsteroidComponent> GridRocks(IEntityManager em, MapId? map = null)
     {
         var rocks = new List<WFAsteroidComponent>();
         var query = em.EntityQueryEnumerator<WFAsteroidComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var comp, out var xform))
         {
+            if (map != null && xform.MapID != map)
+                continue;
+
             if (xform.GridUid is { } grid && em.TryGetComponent(grid, out WFAsteroidGridComponent? builder) &&
                 builder.RockUid == uid)
                 rocks.Add(comp);
@@ -157,7 +161,7 @@ public sealed class AsteroidMiningTest
 
         await server.WaitAssertion(() =>
         {
-            var fragments = GridRocks(em);
+            var fragments = GridRocks(em, map.MapId);
             Assert.That(em.Deleted(passenger), Is.False, "Things left on a cracked asteroid should stay behind in space.");
             var boulders = Boulders(em);
             Assert.Multiple(() =>
@@ -266,7 +270,7 @@ public sealed class AsteroidMiningTest
         {
             Assert.Multiple(() =>
             {
-                Assert.That(GridRocks(em), Has.Count.EqualTo(2), "The rock should split into two fragments.");
+                Assert.That(GridRocks(em, map.MapId), Has.Count.EqualTo(2), "The rock should split into two fragments.");
                 Assert.That(AllMatch(), Is.True, "Each fragment's grid should carry the look it inherited.");
             });
         });
@@ -410,7 +414,7 @@ public sealed class AsteroidMiningTest
 
         await server.WaitAssertion(() =>
         {
-            var rocks = GridRocks(em);
+            var rocks = GridRocks(em, map.MapId);
             Assert.Multiple(() =>
             {
                 Assert.That(em.Deleted(marker), Is.True, "The marker should remove itself once it has spawned its rocks.");
@@ -516,7 +520,7 @@ public sealed class AsteroidMiningTest
 
         await server.WaitAssertion(() =>
         {
-            var rocks = GridRocks(em);
+            var rocks = GridRocks(em, map.MapId);
             Assert.Multiple(() =>
             {
                 Assert.That(rocks, Is.Not.Empty, "The cluster should spawn rocks.");

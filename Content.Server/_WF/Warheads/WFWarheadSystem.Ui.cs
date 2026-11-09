@@ -38,7 +38,8 @@ public sealed partial class WFWarheadSystem
 
     private void OnArmMessage(Entity<WFWarheadComponent> ent, ref WFWarheadArmMessage args)
     {
-        if (!TryComp<WFTimerFuzeComponent>(ent, out var fuze) || ent.Comp.State != WFWarheadState.Safe)
+        if (!TryComp<WFTimerFuzeComponent>(ent, out var fuze) || ent.Comp.State != WFWarheadState.Safe
+            || !KeyIn(ent, args.Actor))
             return;
 
         _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, args.Actor, fuze.ArmDelay,
@@ -52,7 +53,8 @@ public sealed partial class WFWarheadSystem
     private void OnTurnKeyMessage(Entity<WFWarheadComponent> ent, ref WFWarheadTurnKeyMessage args)
     {
         if (!TryComp<WFTwoPersonArmingComponent>(ent, out var keys)
-            || ent.Comp.State is not (WFWarheadState.Safe or WFWarheadState.Armed))
+            || ent.Comp.State is not (WFWarheadState.Safe or WFWarheadState.Armed)
+            || !KeyIn(ent, args.Actor))
             return;
 
         TurnKey((ent, keys), ent, args.Actor);
@@ -64,7 +66,7 @@ public sealed partial class WFWarheadSystem
             return;
 
         var wanted = args.Safe ? WFWarheadState.Armed : WFWarheadState.Safe;
-        if (ent.Comp.State != wanted)
+        if (ent.Comp.State != wanted || !args.Safe && !KeyIn(ent, args.Actor))
             return;
 
         _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, args.Actor, remote.SafetyDelay,

@@ -110,6 +110,12 @@ public sealed partial class WFEncounterSystem
                         new() { Kind = WFCrewObjectiveKind.Hold },
                     }))
                     return Loc.GetString("wf-encounter-admin-order-failed");
+                if (attack)
+                {
+                    var ordered = new WFEncounterAdminAttackEvent(encounter.Owner, key, ship.Grid, mark);
+                    RaiseLocalEvent(ref ordered);
+                }
+
                 break;
 
             case WFEncounterAdminOrder.ComeToMe:

@@ -172,6 +172,11 @@ public sealed partial class MappingToolsSystem
             Add(change.Monitor.Uid);
         }
 
+        foreach (var change in edit.Toggles)
+        {
+            Add(change.Entity.Uid);
+        }
+
         return maps;
     }
 

@@ -24,10 +24,6 @@ public sealed partial class WFAdsCampaignComponent : Component
     [ViewVariables]
     public TimeSpan? TierAnnounced;
 
-    /// <summary>When a quiet banner was last sent.</summary>
-    [ViewVariables]
-    public TimeSpan? LastQuietBanner;
-
     /// <summary>When the last node was founded; a deployment counts when it arrives.</summary>
     [ViewVariables]
     public TimeSpan? LastFounded;

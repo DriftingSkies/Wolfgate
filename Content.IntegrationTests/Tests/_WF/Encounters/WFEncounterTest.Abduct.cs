@@ -389,14 +389,19 @@ public sealed partial class WFEncounterTest
 
         await Until(() => abduct.Phase != WFAbductPhase.Close && abduct.Phase != WFAbductPhase.Dock, 240, "The abductor docks with the ship it was sent at.");
         await Server.WaitAssertion(() => Assert.That(ship.Boarded, Is.EqualTo(mark)));
+        // Checked as the ransom starts: Ransom begins with them in the chair, and a prisoner may then get out of it in
+        // the cell and stew there, so a look up to 10 s later sometimes found the chair empty.
         var story = new System.Text.StringBuilder();
-        for (var i = 0; i < 20 && abduct.Phase != WFAbductPhase.Ransom; i++)
+        for (var i = 0; i < 400 && abduct.Phase != WFAbductPhase.Ransom; i++)
         {
-            await RunTicks(600);
+            await RunTicks(30);
+            if (i % 20 != 19 || abduct.Phase == WFAbductPhase.Ransom)
+                continue;
+
             await Server.WaitPost(() =>
             {
                 var at = SEntMan.GetComponent<TransformComponent>(body);
-                story.Append($"\n{i * 10}s {abduct.Phase} body on {at.GridUid} {at.LocalPosition} cuffs {SEntMan.GetComponent<CuffableComponent>(body).CuffedHandCount} ");
+                story.Append($"\n{(i + 1) / 2}s {abduct.Phase} body on {at.GridUid} {at.LocalPosition} cuffs {SEntMan.GetComponent<CuffableComponent>(body).CuffedHandCount} ");
                 story.Append($"stamina {SEntMan.GetComponent<StaminaComponent>(body).StaminaDamage} puller {SEntMan.GetComponent<Content.Shared.Movement.Pulling.Components.PullableComponent>(body).Puller}");
                 var crew = SEntMan.EntityQueryEnumerator<WFCrewGrabberComponent, TransformComponent>();
                 while (crew.MoveNext(out var uid, out var job, out var where))

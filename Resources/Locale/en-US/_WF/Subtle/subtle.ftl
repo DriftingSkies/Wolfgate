@@ -4,6 +4,7 @@ wf-subtle-dialog-title = Subtle emote
 wf-subtle-dialog-prompt = Action
 wf-subtle-cannot-emote = You can't do that right now.
 
+# WOLFGATE(ChatFormatting): unescaped message for emphasis BBCode
 wf-subtle-wrap-message = [italic][color=#c9a9d6]{ PROPER($entity) ->
     *[false] The {$entityName} {$message}[/color][/italic]
      [true] {CAPITALIZE($entityName)} {$message}[/color][/italic]

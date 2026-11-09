@@ -30,9 +30,13 @@ decision.
 | `identical-result perf fixes` | Entities, physics, serialization | `Component` and `FixtureProxy` hash by a stored counter instead of the runtime's slow first identity hash (mass spawns). `IsEntityOrParentInContainer` stops at the first grid or map parent (runs on every move). `CollideContacts` skips a sleeping pair before touching transforms. The island list is partitioned, not sorted. Paused awake bodies sleep until unpaused (`physics.sleep_paused_bodies`). The server precompiles the serializer's write delegates for every component on a worker thread after PostInit (`serialization.precompile`), so the first ship save no longer stalls 2 s. |
 | `broadphase margin, traversal fast path, anchored swap-remove` | Physics, map | Behaviour-changing, each behind a cvar. **Off by default, opt-in for a test-server round:** the broadphase tree stores a fat box (`physics.broadphase_margin`, 0 = exact; 0.1 made the swept ship-round test detonate behind its wall, cause not yet found) so a body is reinserted and re-paired only when its exact box leaves it, with lookup queries kept exact; a body over a non-empty tile of its own grid skips the map-wide grid lookup (`physics.traversal_tile_fast_path`, off: it keeps the current grid where two overlap, and content's gravity test encodes the lookup's choice). **On:** removing an anchored entity from a tile swap-removes (`map.anchored_swap_remove`), which changes enumeration order on that tile. |
 | `net: serialise broadcasts once, decrypt batches in parallel` | Network | A message to many clients is serialised once and the bytes copied per recipient (`net.broadcast_serialize_once`, on). Each tick's packets are read as a batch and the encrypted ones can be decrypted with `Parallel.For` before being handled in order (`net.parallel_decrypt`, **off** until a test server has run it, batches of at least `net.parallel_decrypt_min`). Integration tests use an in-memory network, so neither path is covered by them; the dev server boot covers the broadcast path with one client. |
+| `pvs eviction sweeps a slice of the table` | PVS | A full scan of the entity table per player every 5 s cost 24 ms/s at 100 players. Each sweep now scans `net.pvs_evict_scan` slots (16384) from where the last stopped, once a second. |
+| `transfer: fall back to the game connection when the socket can't connect` | Transfer | A joining client that hasn't reached the websocket channel within `transfer.http_fallback_seconds` (8) is sent a second transfer init without the websocket; the stock client takes it and switches to the game connection, so the join no longer hangs. The API lock stops a fallback after the socket connected. A player whose socket failed, dropped, or who left with "Error in transfer socket" gets the game connection straight away on later joins until restart (`transfer.http_fallback_remember`). `IServerTransferStatus` tells content which channel each player got; the join console shows it as a green or red fast-file-channel row. A stock client whose socket drops mid-session still disconnects itself once; the remembering makes that a one-off. |
+| `broadphase: skip moved grids without a body instead of throwing every tick` | Physics | Round 317: content lifted a planet map (its terrain is the map's own grid, with no physics body) into a transit map. `FindGridContacts` threw on the missing body every substep and physics stopped for every map for 12 minutes. Moved grids without a body or fixtures are now dropped from the moved set with one error log each. |
 
 Tests: `Robust.Server.IntegrationTests/GameStates/PvsEvictionTest.cs`, `PvsRangeLimitedGridTest.cs`,
-`Robust.Shared.IntegrationTests/Physics/FarOriginPrecision_Test.cs`, `PausedBodySleep_Test.cs`.
+`Robust.Server.IntegrationTests/Network/TransferFallbackTest.cs`,
+`Robust.Shared.IntegrationTests/Physics/FarOriginPrecision_Test.cs`, `PausedBodySleep_Test.cs`, `BodilessMovedGrid_Test.cs`.
 
 ## Working on Lupine
 
@@ -56,5 +60,6 @@ None.
 ## Non-modular edits
 
 - [`.gitmodules`](../../../.gitmodules): The engine submodule points at the Lupine fork (branch wolfgate/v291) instead of space-wizards.
+- [`BuildChecker/git_helper.py`](../../../BuildChecker/git_helper.py): pick up the Lupine URL in clones made before the submodule moved off space-wizards
 
 <!-- WOLFGATE-GENERATED END -->

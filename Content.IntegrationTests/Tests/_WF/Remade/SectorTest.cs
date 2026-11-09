@@ -161,7 +161,7 @@ public sealed class SectorTest
             Assert.That(entMan.EntityQuery<WFRemadeComponent>(), Is.Empty);
 
             var comp = entMan.GetComponent<WFEncounterComponent>(encounter);
-            Assert.That(comp.Hidden, Is.True, "the site is on the sector map.");
+            Assert.That(comp.Hidden, Is.False, "the site has no marker on the sector map.");
             Assert.That(Collect(entMan), Is.Empty, "a dormant Scion shows on the radar.");
             Assert.That(sites.WildCount(), Is.EqualTo(1));
             Assert.That(sites.CanStartWild(0f, 0f, out _), Is.False, "a second wild Scion is allowed.");
@@ -375,6 +375,8 @@ public sealed class SectorTest
         await server.WaitPost(() =>
         {
             crewman = WFRemadeDirectorTest.SpawnCrewman(pair, WFRemadeDirectorTest.At(map, 0, 0));
+            // The Director only wakes for a living crewman, and the carp sometimes died under CI load before it got there.
+            entMan.System<Content.Shared.Damage.Systems.SharedGodmodeSystem>().EnableGodmode(crewman);
             var site = server.ResolveDependency<IPrototypeManager>().Index<WFRemadeSitePrototype>(Adrift);
             Assert.That(sites.TryStartSite(site, Far(map), false, out encounter), Is.True, "the adrift site didn't start.");
         });
@@ -450,7 +452,8 @@ public sealed class SectorTest
         await WFRemadeDirectorTest.RunUntil(pair, () => director.Seeded, 15);
         await server.WaitAssertion(() =>
         {
-            Assert.That(director.Seeded, Is.True, "the Director never woke for the crew.");
+            Assert.That(director.Seeded, Is.True, $"the Director never woke for the crew: crewman {entMan.GetComponent<Content.Shared.Mobs.Components.MobStateComponent>(crewman).CurrentState}, "
+                + $"{(transforms.GetWorldPosition(crewman) - transforms.GetWorldPosition(scion)).Length():F1} m from a {monolith.Stage} stone.");
             Assert.That(director.Biomass, Is.GreaterThan(0f));
             entMan.System<WFEncounterSystem>().End(encounter);
             server.PlayerMan.SetAttachedEntity(pair.Player!, null);
@@ -618,7 +621,7 @@ public sealed class SectorTest
             var ships = entMan.GetComponent<WFEncounterComponent>(encounter).Ships;
             ship = ships["choir"].Grid;
             Assert.That(ships["choir"].HasOrders, Is.True);
-            Assert.That(entMan.GetComponent<WFEncounterComponent>(encounter).Hidden, Is.True);
+            Assert.That(entMan.GetComponent<WFEncounterComponent>(encounter).Hidden, Is.False);
             transforms.Unanchor(scion);
             // A player's ship takes the Scion off the hulk.
             transforms.SetCoordinates(scion, WFRemadeDirectorTest.At(map, 6, 0));

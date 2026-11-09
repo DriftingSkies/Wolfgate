@@ -81,7 +81,7 @@ public sealed partial class WFLoreBookWindow : BaseWindow, ILinkClickHandler
         ContentsRule.PanelOverride = new StyleBoxFlat { BackgroundColor = Gold.WithAlpha(0.6f) };
         PageRule.PanelOverride = new StyleBoxFlat { BackgroundColor = Gold.WithAlpha(0.6f) };
 
-        TitleIcon.Texture = _entMan.System<SpriteSystem>().Frame0(WFLoreBookSystem.Icon);
+        TitleIcon.Texture = _cache.GetTexture(WFLoreBookSystem.IconPath);
         TitleIcon.ModulateSelfOverride = Gold;
         BookTitle.FontOverride = _cache.GetFont(FontPath, 24);
         BookTitle.FontColorOverride = GoldBright;
