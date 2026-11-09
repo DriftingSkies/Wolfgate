@@ -1,5 +1,5 @@
-# The outpost power pack. Every gizmo here feeds the LV network straight from the cable under it, so a wire run powers
-# an outpost's machines without an APC. Those modelled on a stock machine run at 0.6 of it (OutpostPowerTest):
+# The outpost power pack. Every generator and battery here sits on the MV cable under it, as on a ship: an APC on a
+# wall turns that MV into LV for the outpost's machines. Those modelled on a stock machine run at 0.6 of it (OutpostPowerTest):
 # the compact RTG of the RTG, the A.W. generator of the S.U.P.E.R.P.A.C.M.A.N., the large battery of the SMES and the
 # small one of the substation. Wind turbines and solar strings answer to the sky instead (WFOutpostPowerSystem).
 
@@ -36,9 +36,9 @@
     nodes:
       output:
         !type:CableDeviceNode
-        nodeGroupID: Apc
+        nodeGroupID: MVPower
   - type: PowerSupplier
-    voltage: Apc
+    voltage: Medium
     supplyRate: 0
     supplyRampRate: 500
     supplyRampTolerance: 500
@@ -54,7 +54,7 @@
   parent: WFBaseOutpostPack
   id: WFOutpostWindTurbinePack
   name: wind turbine pack
-  description: A folded wind turbine. Use it in hand facing your outpost's floor, over an LV cable, to set it up there.
+  description: A folded wind turbine. Use it in hand facing your outpost's floor, over an MV cable, to set it up there.
   components:
   - type: Sprite
     sprite: _WF/Outposts/Colony/wind_turbine.rsi
@@ -69,7 +69,7 @@
   parent: WFBaseOutpostGenerator
   id: WFOutpostWindTurbine
   name: wind turbine
-  description: Turns whatever breeze blows over it into power for the LV cable underneath, the more in a storm. It must stand under open sky, and there must be air.
+  description: Turns whatever breeze blows over it into power for the MV cable underneath, the more in a storm. It must stand under open sky, and there must be air.
   components:
   - type: Sprite
     sprite: _WF/Outposts/Colony/wind_turbine.rsi
@@ -89,7 +89,7 @@
   parent: WFBaseOutpostPack
   id: WFOutpostSolarStringPack
   name: solar string pack
-  description: A folded string of solar panels. Use it in hand facing your outpost's floor, over an LV cable, to lay it out there.
+  description: A folded string of solar panels. Use it in hand facing your outpost's floor, over an MV cable, to lay it out there.
   components:
   - type: Sprite
     sprite: _WF/Outposts/Colony/solar_string.rsi
@@ -104,7 +104,7 @@
   parent: WFBaseOutpostGenerator
   id: WFOutpostSolarString
   name: solar string
-  description: A string of panels feeding the LV cable underneath. Strongest at noon, idle at night and under a roof.
+  description: A string of panels feeding the MV cable underneath. Strongest at noon, idle at night and under a roof.
   components:
   - type: Sprite
     sprite: _WF/Outposts/Colony/solar_string.rsi
@@ -136,7 +136,7 @@
   parent: WFBaseOutpostPack
   id: WFOutpostCompactRTGPack
   name: compact RTG pack
-  description: A packed compact RTG. Use it in hand facing your outpost's floor, over an LV cable, to set it up there.
+  description: A packed compact RTG. Use it in hand facing your outpost's floor, over an MV cable, to set it up there.
   components:
   - type: Sprite
     sprite: _WF/Outposts/Colony/rtg.rsi
@@ -152,7 +152,7 @@
   parent: WFBaseOutpostGenerator
   id: WFOutpostCompactRTG
   name: compact RTG
-  description: A small radioisotope generator for outposts. Feeds the LV cable underneath, day and night, for as long as it stands.
+  description: A small radioisotope generator for outposts. Feeds the MV cable underneath, day and night, for as long as it stands.
   components:
   - type: Sprite
     sprite: _WF/Outposts/Colony/rtg.rsi
@@ -177,7 +177,7 @@
   parent: WFBaseOutpostPack
   id: WFOutpostFuelGeneratorPack
   name: A.W. generator pack
-  description: A packed A.W. micro-reactor. Use it in hand facing your outpost's floor, over an LV cable, to set it up there.
+  description: A packed A.W. micro-reactor. Use it in hand facing your outpost's floor, over an MV cable, to set it up there.
   components:
   - type: Sprite
     sprite: _WF/Outposts/Colony/fuel_generator.rsi
@@ -193,7 +193,7 @@
   parent: WFBaseOutpostGenerator
   id: WFOutpostFuelGenerator
   name: A.W. generator
-  description: An Atomic Whisperer, a bolted-down micro-reactor that burns a uranium fuel rod into the LV cable underneath, shielded well enough to stand beside. Load a rod and start it up.
+  description: An Atomic Whisperer, a bolted-down micro-reactor that burns a uranium fuel rod into the MV cable underneath, shielded well enough to stand beside. Load a rod and start it up.
   components:
   - type: Sprite
     sprite: _WF/Outposts/Colony/fuel_generator.rsi
@@ -250,6 +250,18 @@
   - type: StaticPrice
     price: 300
 
+# What the ready-made outposts with an A.W. start with to run it.
+- type: entity
+  parent: CrateRadiation
+  id: WFCrateOutpostFuelRods
+  name: fuel rod crate
+  description: Two uranium fuel rods for an A.W. generator.
+  components:
+  - type: StorageFill
+    contents:
+    - id: UraniumReactorFuelRod
+      amount: 2
+
 # Batteries
 
 - type: entity
@@ -281,15 +293,15 @@
     nodes:
       input:
         !type:CableDeviceNode
-        nodeGroupID: Apc
+        nodeGroupID: MVPower
       output:
         !type:CableDeviceNode
-        nodeGroupID: Apc
+        nodeGroupID: MVPower
   - type: BatteryDischarger
-    voltage: Apc
+    voltage: Medium
     node: output
   - type: BatteryCharger
-    voltage: Apc
+    voltage: Medium
     node: input
   - type: PowerMonitoringDevice
     group: SMES
@@ -309,7 +321,7 @@
   parent: WFBaseOutpostPack
   id: WFOutpostBatterySmallPack
   name: small battery pack
-  description: A packed small stationary battery. Use it in hand facing your outpost's floor, over an LV cable, to set it up there.
+  description: A packed small stationary battery. Use it in hand facing your outpost's floor, over an MV cable, to set it up there.
   components:
   - type: Sprite
     sprite: _WF/Outposts/Colony/battery_small.rsi
@@ -324,7 +336,7 @@
   parent: WFBaseOutpostBattery
   id: WFOutpostBatterySmall
   name: small stationary battery
-  description: Stores power from the LV cable underneath and gives it back when the outpost draws more than it makes.
+  description: Stores power from the MV cable underneath and gives it back when the outpost draws more than it makes.
   components:
   - type: Battery
     maxCharge: 1500000
@@ -347,7 +359,7 @@
   parent: WFBaseOutpostPack
   id: WFOutpostBatteryLargePack
   name: large battery pack
-  description: A packed large stationary battery. Use it in hand facing your outpost's floor, over an LV cable, to set it up there.
+  description: A packed large stationary battery. Use it in hand facing your outpost's floor, over an MV cable, to set it up there.
   components:
   - type: Sprite
     sprite: _WF/Outposts/Colony/battery_large.rsi
@@ -363,7 +375,7 @@
   parent: WFBaseOutpostBattery
   id: WFOutpostBatteryLarge
   name: large stationary battery
-  description: A big store of power for the LV cable underneath, enough to carry an outpost through the night.
+  description: A big store of power for the MV cable underneath, enough to carry an outpost through the night.
   components:
   - type: Battery
     maxCharge: 4800000

@@ -5,7 +5,7 @@ meta:
   forkId: wolfgate-mapping
   forkVersion: 20261020-040257-874e52c-tm294-a26dc02e
   time: 10/20/2026 23:08:58
-  entityCount: 78
+  entityCount: 101
 maps: []
 grids:
 - 1
@@ -40,41 +40,41 @@ entities:
             id: DirtLight
           decals:
             0: 10,8
-            2: 4,5
-            3: 8,1
+            1: 4,5
+            2: 8,1
         - node:
             color: '#FFFFFFFF'
             id: DirtMedium
           decals:
-            1: 10,7
+            3: 10,7
     - type: GridAtmosphere
       version: 2
       data:
         tiles:
-          2,2:
-            1: 57856
-            0: 4607
-          1,2:
-            0: 65535
+          2,0:
+            1: 784
+          1,0:
+            1: 51200
           1,1:
-            0: 65280
             1: 63
-          2,1:
             0: 65280
+          2,1:
             1: 1
+            0: 65280
           0,1:
             1: 128
             0: 52224
-          1,0:
-            1: 51200
-          2,0:
-            1: 784
-          0,2:
-            0: 52428
-          3,2:
-            0: 17
           3,1:
             0: 4352
+          0,2:
+            0: 52428
+          1,2:
+            0: 65535
+          2,2:
+            0: 4607
+            1: 57856
+          3,2:
+            0: 17
           2,3:
             1: 8
         uniqueMixes:
@@ -93,6 +93,14 @@ entities:
         0,1: 4244438268
         1,0: 2242511139453796352
         1,1: 16850719
+- proto: APCBasic
+  entities:
+  - uid: 79
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 5.5,6.5
+      parent: 1
 - proto: Bed
   entities:
   - uid: 11
@@ -249,6 +257,108 @@ entities:
     - type: Transform
       pos: 11.5,12.5
       parent: 1
+  - uid: 100
+    components:
+    - type: Transform
+      pos: 7.5,10.5
+      parent: 1
+  - uid: 101
+    components:
+    - type: Transform
+      pos: 6.5,10.5
+      parent: 1
+- proto: CableMV
+  entities:
+  - uid: 80
+    components:
+    - type: Transform
+      pos: 10.5,11.5
+      parent: 1
+  - uid: 81
+    components:
+    - type: Transform
+      pos: 5.5,4.5
+      parent: 1
+  - uid: 82
+    components:
+    - type: Transform
+      pos: 6.5,4.5
+      parent: 1
+  - uid: 83
+    components:
+    - type: Transform
+      pos: 5.5,7.5
+      parent: 1
+  - uid: 84
+    components:
+    - type: Transform
+      pos: 5.5,10.5
+      parent: 1
+  - uid: 85
+    components:
+    - type: Transform
+      pos: 9.5,11.5
+      parent: 1
+  - uid: 86
+    components:
+    - type: Transform
+      pos: 11.5,11.5
+      parent: 1
+  - uid: 87
+    components:
+    - type: Transform
+      pos: 7.5,4.5
+      parent: 1
+  - uid: 88
+    components:
+    - type: Transform
+      pos: 5.5,5.5
+      parent: 1
+  - uid: 89
+    components:
+    - type: Transform
+      pos: 8.5,4.5
+      parent: 1
+  - uid: 90
+    components:
+    - type: Transform
+      pos: 5.5,11.5
+      parent: 1
+  - uid: 91
+    components:
+    - type: Transform
+      pos: 5.5,8.5
+      parent: 1
+  - uid: 92
+    components:
+    - type: Transform
+      pos: 6.5,11.5
+      parent: 1
+  - uid: 93
+    components:
+    - type: Transform
+      pos: 11.5,12.5
+      parent: 1
+  - uid: 94
+    components:
+    - type: Transform
+      pos: 5.5,6.5
+      parent: 1
+  - uid: 95
+    components:
+    - type: Transform
+      pos: 5.5,9.5
+      parent: 1
+  - uid: 96
+    components:
+    - type: Transform
+      pos: 7.5,11.5
+      parent: 1
+  - uid: 97
+    components:
+    - type: Transform
+      pos: 8.5,11.5
+      parent: 1
 - proto: ChairWood
   entities:
   - uid: 24
@@ -297,6 +407,13 @@ entities:
     - type: Transform
       pos: 5.5,5.5
       parent: 1
+- proto: WFOutpostCo2Cracker
+  entities:
+  - uid: 98
+    components:
+    - type: Transform
+      pos: 6.5,10.5
+      parent: 1
 - proto: WFOutpostConsole
   entities:
   - uid: 30
@@ -329,6 +446,13 @@ entities:
     components:
     - type: Transform
       pos: 11.5,8.5
+      parent: 1
+- proto: WFOutpostTemperatureRegulator
+  entities:
+  - uid: 99
+    components:
+    - type: Transform
+      pos: 7.5,10.5
       parent: 1
 - proto: WFOutpostTradeHub
   entities:
@@ -366,7 +490,7 @@ entities:
       pos: 8.5,8.5
       parent: 1
       rot: 1.5707963267948966 rad
-- proto: WFPrefabWall
+- proto: WFPrefabWallFixed
   entities:
   - uid: 3
     components:

@@ -17,7 +17,7 @@ wf-prime-bounty-name = The Prime Monolith
 wf-prime-bounty-author = Sector Watch
 wf-prime-bounty-place-unknown = unknown
 wf-prime-bounty-description = A Monolith has rooted at {$place}. Destroy it. Fire, a plasma cutter and necrotoxin work on its Remade. Only blasts and heavy cutting hurt the Monolith itself. Paid to whoever brings it down, by how much damage they dealt.
-wf-prime-bounty-paid = The Prime is down. Sector Watch has paid {$amount} spesos into your account.
+wf-prime-bounty-paid = The Prime is down. Sector Watch has paid {$amount} thalers into your account.
 wf-prime-verse-announcement = All ships: the Prime is still standing. It has sung {$verse} times. More is coming. It will keep coming until the Monolith is destroyed.
 wf-prime-fallen-announcement = All ships: the Prime has been destroyed. Its corruption is dying. The {$freed} Remade still alive are cut loose, hurt and slower, and will waste away if they are not killed. Do not let them reach anyone.
 

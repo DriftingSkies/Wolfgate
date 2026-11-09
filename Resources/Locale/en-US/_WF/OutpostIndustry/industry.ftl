@@ -23,6 +23,6 @@ wf-industry-gate-cap = [color=gray]It is idle: the outpost has made all it may t
 wf-industry-press-cost = Each box takes { $cost }.
 wf-industry-press-cost-entry = { $amount } { $material }
 
-wf-industry-exporter-credit = It holds [color=yellow]{ $amount }[/color] spesos of credit.
+wf-industry-exporter-credit = It holds [color=yellow]{ $amount }[/color] thalers of credit.
 wf-industry-exporter-cash-out = Cash out
-wf-industry-exporter-paid = It pays out { $amount } spesos.
+wf-industry-exporter-paid = It pays out { $amount } thalers.

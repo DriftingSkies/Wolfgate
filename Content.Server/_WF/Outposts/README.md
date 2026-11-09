@@ -96,7 +96,8 @@ Fabricator (`fabricator.yml`, `construction.yml`, `recipes.yml`): the outpost fa
 slow as an autolathe and with no parts to upgrade; like a stock lathe it links ore and fabrication silos and shows
 sheets going in (its `inserting` state is drawn in `build_colony.py`), and plays Nova's start, loop and end sounds
 while its queue runs (`WFLatheRunningSoundSystem`). It prints foundation plates, roof panels, prefab walls, doors and
-shutters (gizmos that pack up again), window and airlock kits (colony-pattern ones that come apart as stock ones),
+shutters (gizmos that pack up again; a wall welded in place, `WFPrefabWallFixed` through `WFPrefabWallGraph`, no longer
+does until its welds are cut), window and airlock kits (colony-pattern ones that come apart as stock ones),
 colony floor tiles (`floors.yml`), another fabricator, the powered driver, the arc welder (it makes its own fuel) and
 the stock parts, electronics and cables. The gizmo and prefab art in `Textures/_WF/Outposts/Colony` is NovaSector's
 colony fabricator set (CC BY-SA 3.0), adapted to our 3/4 view: the prefab wall and window are the stock solid wall
@@ -114,8 +115,9 @@ disk (autolathe, ore processor, biogenerator, gas recycler) 30%, the T3 advanced
 ChemMaster, chem dispenser) 10%. Each Wolfgate recipe's product is worth at least its
 materials (`OutpostFabricatorTest`); the stock recipes keep upstream's prices.
 
-Power (`power.yml`, `WFOutpostPowerSystem`): every power gizmo feeds the LV network through the cable on its tile, so
-a wire run powers an outpost's machines with no APC. Wind turbines (`WFWindTurbineComponent`) make their calm power
+Power (`power.yml`, `WFOutpostPowerSystem`): every generator and battery sits on the MV cable on its tile, as on a ship,
+so an outpost needs an APC on a wall to turn that into LV for its machines; the kit brings the APC electronics, steel and
+MV cable to build one. A power exporter's 30 kW is more than one APC gives, so it wants two on its LV run. Wind turbines (`WFWindTurbineComponent`) make their calm power
 under open sky in air of 5 kPa or more, up to twice that as the weather's wind rises to storm strength, and nothing
 under a roof. Solar strings (`WFSolarStringComponent`) follow the planet clock: nothing at night (`IsNight`), rising
 from dawn to a noon peak. Both are set once a second. The gizmos modelled on stock machines run at 0.6 of them
@@ -128,7 +130,8 @@ low, mid or high blocks it.
 Trade (`trade.yml`, `WFOutpostSystem.Trade.cs`): the console's Trade tab lists the cargo products in the `WFOutpost`
 group. The owner pays from their bank with the cargo console's tax split (`taxAccounts` on the console), up to five
 orders at once. After `wf.outposts.trade_lead_time` seconds a flare (`WFTradeDropFlare`) lights on the outpost's
-universal trade hub (`WFUniversalTradeHubComponent`, a 1 kW gizmo that takes orders only with power and open sky) and
+universal trade hub (`WFUniversalTradeHubComponent`, a 1 kW gizmo that takes orders only with power and open sky; its colony-style pad, `trade_hub.rsi`, is drawn by
+`build_trade_hub.py`, its corner beacons lit while powered) and
 the order comes down onto it by parachute: `WFTradeDropSystem` spawns a `WFTradeDropDescent` there, which
 `WFTradeDropVisualsSystem` draws as the product sinking under a canopy over a growing shadow, and after 8 seconds swaps
 it for the product with a thud and a puff of dust. If the hub's tile is roofed or blocked, it lands on the nearest
@@ -213,8 +216,10 @@ Its value at claiming (`ClaimBaseline`, saved) is taken off its sale value, so a
 
 Presets (`WFOutpostPresetPrototype`, `presets.yml`, grids in `Resources/SharedMaps/_WF/Outposts`): ready-made outposts,
 the homestead, workshop, farmstead and bastion, each with a console, pods, a trade hub under open sky and its own power.
-They use the colony prefab walls, windows, doors and floors players make at the fabricator, lay plates only where
-something stands, and are laid out as rooms added on over time, so they read as player-built.
+They use the colony prefab walls (welded in place), windows, doors and floors players make at the fabricator, lay plates
+only where something stands, run their generators on MV to an APC, keep a CO2 cracker and a temperature regulator in
+the living area, start those with an A.W. on a crate of two uranium fuel rods (`WFCrateOutpostFuelRods`), and are laid
+out as rooms added on over time, so they read as player-built.
 The console's Saves tab lists them after the slots (`TryStartPresetLoad`, in place of a fresh outpost like a load) and an
 Outpost crew's page lists them after the host's saves (`TryQueuePresetDrop`). Both stage the grid like a save, for the
 preset's fixed price, and land it as no slot under the preset's name; it is saved only when its owner chooses. Clients
@@ -422,6 +427,7 @@ its placement, claims and saves never reach below it.
 - [`Resources/Textures/_WF/Outposts/Colony/shutters.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/shutters.rsi/)
 - [`Resources/Textures/_WF/Outposts/Colony/solar_string.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/solar_string.rsi/)
 - [`Resources/Textures/_WF/Outposts/Colony/synthesizers.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/synthesizers.rsi/)
+- [`Resources/Textures/_WF/Outposts/Colony/trade_hub.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/trade_hub.rsi/)
 - [`Resources/Textures/_WF/Outposts/Colony/wind_turbine.rsi/`](../../../Resources/Textures/_WF/Outposts/Colony/wind_turbine.rsi/)
 - [`Resources/Textures/_WF/Outposts/console.rsi/`](../../../Resources/Textures/_WF/Outposts/console.rsi/)
 - [`Resources/Textures/_WF/Outposts/Effects/drop_shadow.rsi/`](../../../Resources/Textures/_WF/Outposts/Effects/drop_shadow.rsi/)
@@ -447,6 +453,7 @@ its placement, claims and saves never reach below it.
 
 - [`Tools/_WF/Outposts/build_colony.py`](../../../Tools/_WF/Outposts/build_colony.py)
 - [`Tools/_WF/Outposts/build_plates.py`](../../../Tools/_WF/Outposts/build_plates.py)
+- [`Tools/_WF/Outposts/build_trade_hub.py`](../../../Tools/_WF/Outposts/build_trade_hub.py)
 - [`Tools/_WF/Outposts/build_walls.py`](../../../Tools/_WF/Outposts/build_walls.py)
 
 ### Docs

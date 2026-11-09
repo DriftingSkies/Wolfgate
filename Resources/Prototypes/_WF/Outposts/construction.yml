@@ -1,6 +1,6 @@
 # Prefab building for outposts, printed at the outpost fabricator. Each panel or kit deploys in hand onto the outpost
-# floor tile in front of you. Prefab walls, doors and shutters pack up again as they are; prefab windows and airlocks
-# are taken apart the usual way, as stock ones.
+# floor tile in front of you. Prefab walls, doors and shutters pack up again as they are, until a wall is welded in
+# place; prefab windows and airlocks are taken apart the usual way, as stock ones.
 
 - type: entity
   parent: WFBaseOutpostPack
@@ -22,10 +22,10 @@
     price: 20
 
 - type: entity
+  abstract: true
   parent: BaseWall
-  id: WFPrefabWall
+  id: WFBasePrefabWall
   name: prefab wall
-  description: A bolted-together wall section. Softer than a welded wall, but it packs up again.
   components:
   - type: Transform
     anchored: true
@@ -53,11 +53,50 @@
           collection: MetalSlam
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
+  - type: StaticPrice
+    price: 20
+
+- type: entity
+  parent: WFBasePrefabWall
+  id: WFPrefabWall
+  description: A bolted-together wall section. It packs up again, or weld its seams to fix it in place.
+  components:
   - type: WFRepackable
     pack: WFPrefabWallPanel
     delay: 2
-  - type: StaticPrice
-    price: 20
+  - type: Construction
+    graph: WFPrefabWallGraph
+    node: loose
+
+# A welded prefab wall no longer packs up; welding its seams open again frees it.
+- type: entity
+  parent: WFBasePrefabWall
+  id: WFPrefabWallFixed
+  suffix: Welded
+  description: A prefab wall section with its seams welded, fixed in place. Cut the welds to pack it up again.
+  components:
+  - type: Construction
+    graph: WFPrefabWallGraph
+    node: fixed
+
+- type: constructionGraph
+  id: WFPrefabWallGraph
+  start: loose
+  graph:
+  - node: loose
+    entity: WFPrefabWall
+    edges:
+    - to: fixed
+      steps:
+      - tool: Welding
+        doAfter: 3
+  - node: fixed
+    entity: WFPrefabWallFixed
+    edges:
+    - to: loose
+      steps:
+      - tool: Welding
+        doAfter: 5
 
 - type: entity
   parent: WFBaseOutpostPack

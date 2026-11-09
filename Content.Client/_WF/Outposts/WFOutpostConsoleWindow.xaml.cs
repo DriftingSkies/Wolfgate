@@ -117,6 +117,44 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
         return card;
     }
 
+    /// <summary>
+    /// A card with its heading and buttons on the top line and its lines below at the card's full width, so a long line
+    /// neither runs under the buttons nor wraps into the line after it.
+    /// </summary>
+    private static PanelContainer ButtonCard(string heading, IEnumerable<Control> lines, params Control[] buttons)
+    {
+        var top = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal, SeparationOverride = 8 };
+        var label = new Label
+        {
+            Text = heading,
+            ClipText = true,
+            HorizontalExpand = true,
+            VerticalAlignment = VAlignment.Center,
+        };
+        label.AddStyleClass("LabelKeyText");
+        top.AddChild(label);
+        foreach (var button in buttons)
+        {
+            top.AddChild(button);
+        }
+
+        var column = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Vertical, SeparationOverride = 2 };
+        column.AddChild(top);
+        foreach (var line in lines)
+        {
+            column.AddChild(line);
+        }
+
+        return Card(column);
+    }
+
+    private static Label Secondary(string text)
+    {
+        var label = new Label { Text = text };
+        label.AddStyleClass("LabelSecondaryColor");
+        return label;
+    }
+
     private void BuildLegend()
     {
         foreach (var (color, text) in new[]
@@ -211,74 +249,27 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
 
     private Control BuildPreset(WFOutpostPresetPrototype preset, bool locked)
     {
-        var row = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal, SeparationOverride = 8 };
-        var text = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Vertical, HorizontalExpand = true };
-        row.AddChild(text);
-        var heading = new Label { Text = Loc.GetString(preset.Name), ClipText = true };
-        heading.AddStyleClass("LabelKeyText");
-        text.AddChild(heading);
-        // The description wraps rather than running under the buttons.
+        var preview = new Button { Text = Loc.GetString("wf-outpost-console-preview") };
+        preview.OnPressed += _ => PreviewBox.ShowPreset(preset);
+
+        var load = new Button { Text = Loc.GetString("wf-outpost-console-load"), Disabled = locked };
+        load.OnPressed += _ => OnLoadPreset?.Invoke(preset.ID);
+
         var description = new FormattedMessage();
         description.PushColor(Color.DarkGray);
         description.AddText(Loc.GetString(preset.Description));
         description.Pop();
-        var descriptionLabel = new RichTextLabel { HorizontalExpand = true };
+        var descriptionLabel = new RichTextLabel();
         descriptionLabel.SetMessage(description);
-        text.AddChild(descriptionLabel);
-        var price = new Label { Text = Loc.GetString("wf-outpost-console-slot-price", ("price", preset.Price)) };
-        price.AddStyleClass("LabelSecondaryColor");
-        text.AddChild(price);
 
-        var preview = new Button
-        {
-            Text = Loc.GetString("wf-outpost-console-preview"),
-            VerticalAlignment = VAlignment.Center,
-        };
-        preview.OnPressed += _ => PreviewBox.ShowPreset(preset);
-        row.AddChild(preview);
-
-        var load = new Button
-        {
-            Text = Loc.GetString("wf-outpost-console-load"),
-            Disabled = locked,
-            VerticalAlignment = VAlignment.Center,
-        };
-        load.OnPressed += _ => OnLoadPreset?.Invoke(preset.ID);
-        row.AddChild(load);
-        return Card(row);
+        var price = Secondary(Loc.GetString("wf-outpost-console-slot-price", ("price", preset.Price)));
+        return ButtonCard(Loc.GetString(preset.Name), new Control[] { descriptionLabel, price }, preview, load);
     }
 
     private Control BuildSlot(int index, WFOutpostSaveSlot? slot, bool locked, bool isOwner)
     {
-        var row = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal, SeparationOverride = 8 };
-        var text = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Vertical, HorizontalExpand = true };
-        row.AddChild(text);
-
         var title = Loc.GetString("wf-outpost-console-slot", ("slot", index + 1));
         var name = slot?.Name ?? Loc.GetString("wf-outpost-console-slot-empty");
-        var heading = new Label { Text = $"{title}: {name}", ClipText = true };
-        heading.AddStyleClass("LabelKeyText");
-        text.AddChild(heading);
-
-        if (slot != null)
-        {
-            var details = new Label
-            {
-                Text = Loc.GetString("wf-outpost-console-slot-details", ("tiles", slot.Tiles), ("entities", slot.Entities),
-                    ("saved", slot.Saved.ToLocalTime().ToString("g"))),
-            };
-            details.AddStyleClass("LabelSecondaryColor");
-            text.AddChild(details);
-
-            var price = new Label
-            {
-                Text = slot.InUse
-                    ? Loc.GetString("wf-outpost-console-slot-in-use")
-                    : Loc.GetString("wf-outpost-console-slot-price", ("price", slot.Price)),
-            };
-            price.AddStyleClass("LabelSecondaryColor");
-            text.AddChild(price);
-        }
 
         var save = new ConfirmButton
         {
@@ -286,25 +277,27 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
             Disabled = locked,
         };
         save.OnPressed += _ => OnSave?.Invoke(index);
-        row.AddChild(save);
 
         if (slot == null)
-            return Card(row);
+            return ButtonCard($"{title}: {name}", Array.Empty<Control>(), save);
 
         // A preview reads the viewer's own saves, so only the owner gets one of these.
         var preview = new Button { Text = Loc.GetString("wf-outpost-console-preview"), Disabled = !isOwner };
         preview.OnPressed += _ => PreviewBox.ShowSlot(index, slot.Name);
-        row.AddChild(preview);
 
         var load = new Button { Text = Loc.GetString("wf-outpost-console-load"), Disabled = locked || slot.InUse };
         load.OnPressed += _ => OnLoad?.Invoke(index);
-        row.AddChild(load);
 
         var delete = new ConfirmButton { Text = Loc.GetString("wf-outpost-console-delete"), Disabled = locked };
         delete.AddStyleClass("Caution");
         delete.OnPressed += _ => OnDelete?.Invoke(index);
-        row.AddChild(delete);
-        return Card(row);
+
+        var details = Secondary(Loc.GetString("wf-outpost-console-slot-details", ("tiles", slot.Tiles),
+            ("entities", slot.Entities), ("saved", slot.Saved.ToLocalTime().ToString("g"))));
+        var price = Secondary(slot.InUse
+            ? Loc.GetString("wf-outpost-console-slot-in-use")
+            : Loc.GetString("wf-outpost-console-slot-price", ("price", slot.Price)));
+        return ButtonCard($"{title}: {name}", new Control[] { details, price }, save, preview, load, delete);
     }
 
     /// <summary>One row per listing in the outpost trade group, by category and then name.</summary>

@@ -3,7 +3,7 @@ wf-stranger-hail-title = { $name } wants a word
 wf-stranger-hail-talk = Talk
 wf-stranger-hail-ignore = Ignore
 wf-stranger-dialogue-close = Leave
-wf-stranger-option-cost = { $text } ({ $cost } spesos)
+wf-stranger-option-cost = { $text } ({ $cost } thalers)
 
 wf-stranger-dealer-hail = Psst. Hey. You. Over here.
 wf-stranger-dealer-pitch = You look like you've had a long day. I can make it shorter. Or longer. Whatever you need.

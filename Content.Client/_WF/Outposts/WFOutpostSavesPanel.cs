@@ -113,16 +113,8 @@ public sealed class WFOutpostSavesPanel : BoxContainer
 
     private Control BuildPresetRow(WFOutpostPresetPrototype preset, Action<string> choose)
     {
-        var row = new BoxContainer { Orientation = LayoutOrientation.Horizontal, SeparationOverride = 8 };
-        var text = new BoxContainer { Orientation = LayoutOrientation.Vertical, HorizontalExpand = true };
-        row.AddChild(text);
-        text.AddChild(new Label { Text = Loc.GetString(preset.Name), ClipText = true });
-        text.AddChild(Secondary(Loc.GetString(preset.Description)));
-        text.AddChild(Secondary(Loc.GetString("wf-outpost-console-slot-price", ("price", preset.Price))));
-
         var preview = new Button { Text = Loc.GetString("wf-outpost-console-preview") };
         preview.OnPressed += _ => _preview.ShowPreset(preset);
-        row.AddChild(preview);
 
         var chosen = _chosenPreset == preset.ID;
         var pick = new Button
@@ -132,27 +124,30 @@ public sealed class WFOutpostSavesPanel : BoxContainer
             Name = "OutpostChoosePreset" + preset.ID,
         };
         pick.OnPressed += _ => choose(preset.ID);
-        row.AddChild(pick);
-        return row;
+
+        var description = new FormattedMessage();
+        description.PushColor(Color.DarkGray);
+        description.AddText(Loc.GetString(preset.Description));
+        description.Pop();
+        var descriptionLabel = new RichTextLabel();
+        descriptionLabel.SetMessage(description);
+
+        var price = Secondary(Loc.GetString("wf-outpost-console-slot-price", ("price", preset.Price)));
+        return ButtonRow(Loc.GetString(preset.Name), new Control[] { descriptionLabel, price }, preview, pick);
     }
 
     private Control BuildRow(int index, WFOutpostSaveSlot slot)
     {
-        var row = new BoxContainer { Orientation = LayoutOrientation.Horizontal, SeparationOverride = 8 };
-        var text = new BoxContainer { Orientation = LayoutOrientation.Vertical, HorizontalExpand = true };
-        row.AddChild(text);
-
         var title = Loc.GetString("wf-outpost-console-slot", ("slot", index + 1));
-        text.AddChild(new Label { Text = $"{title}: {slot.Name}", ClipText = true });
-        text.AddChild(Secondary(Loc.GetString("wf-outpost-console-slot-details", ("tiles", slot.Tiles),
-            ("entities", slot.Entities), ("saved", slot.Saved.ToLocalTime().ToString("g")))));
-        text.AddChild(Secondary(slot.InUse
+        var details = Secondary(Loc.GetString("wf-outpost-console-slot-details", ("tiles", slot.Tiles),
+            ("entities", slot.Entities), ("saved", slot.Saved.ToLocalTime().ToString("g"))));
+        var price = Secondary(slot.InUse
             ? Loc.GetString("wf-outpost-console-slot-in-use")
-            : Loc.GetString("wf-outpost-console-slot-price", ("price", slot.Price))));
+            : Loc.GetString("wf-outpost-console-slot-price", ("price", slot.Price)));
+        var lines = new Control[] { details, price };
 
         var preview = new Button { Text = Loc.GetString("wf-outpost-console-preview") };
         preview.OnPressed += _ => _preview.ShowSlot(index, slot.Name);
-        row.AddChild(preview);
 
         if (_choose is { } choose)
         {
@@ -164,13 +159,40 @@ public sealed class WFOutpostSavesPanel : BoxContainer
                 Name = "OutpostChoose" + index,
             };
             pick.OnPressed += _ => choose(index);
-            row.AddChild(pick);
-            return row;
+            return ButtonRow($"{title}: {slot.Name}", lines, preview, pick);
         }
 
         var delete = new ConfirmButton { Text = Loc.GetString("wf-outpost-console-delete") };
         delete.OnPressed += _ => _entities.System<WFOutpostSavesSystem>().RequestDelete(index);
-        row.AddChild(delete);
+        return ButtonRow($"{title}: {slot.Name}", lines, preview, delete);
+    }
+
+    /// <summary>
+    /// A row with its title and buttons on the top line and its lines below at the full width, so a long line neither
+    /// runs under the buttons nor wraps into the line after it.
+    /// </summary>
+    private static Control ButtonRow(string title, IEnumerable<Control> lines, params Control[] buttons)
+    {
+        var top = new BoxContainer { Orientation = LayoutOrientation.Horizontal, SeparationOverride = 8 };
+        top.AddChild(new Label
+        {
+            Text = title,
+            ClipText = true,
+            HorizontalExpand = true,
+            VerticalAlignment = VAlignment.Center,
+        });
+        foreach (var button in buttons)
+        {
+            top.AddChild(button);
+        }
+
+        var row = new BoxContainer { Orientation = LayoutOrientation.Vertical, SeparationOverride = 2 };
+        row.AddChild(top);
+        foreach (var line in lines)
+        {
+            row.AddChild(line);
+        }
+
         return row;
     }
 

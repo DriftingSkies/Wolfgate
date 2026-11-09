@@ -9,11 +9,9 @@
   description: A folded universal trade hub. Use it in hand facing your outpost's floor, near an LV cable, to set it up there.
   components:
   - type: Sprite
+    sprite: _WF/Outposts/Colony/trade_hub.rsi
     layers:
-    - state: base
-    - state: overlay
-      color: "#A46106"
-    - state: icon-default
+    - state: packed
   - type: WFDeployable
     machine: WFOutpostTradeHub
     face: false
@@ -31,18 +29,21 @@
   - type: Transform
     anchored: true
   - type: Sprite
-    sprite: Structures/cargo_telepad.rsi
+    sprite: _WF/Outposts/Colony/trade_hub.rsi
     drawdepth: FloorObjects
     layers:
-    - state: offline
+    - state: base
+    - state: lights
       map: [ "enum.PowerDeviceVisualLayers.Powered" ]
+      shader: unshaded
+      visible: false
   - type: Appearance
   - type: GenericVisualizer
     visuals:
       enum.PowerDeviceVisuals.Powered:
         enum.PowerDeviceVisualLayers.Powered:
-          True: { state: idle }
-          False: { state: offline }
+          True: { visible: true }
+          False: { visible: false }
   - type: Clickable
   - type: InteractionOutline
   - type: ApcPowerReceiver
@@ -141,7 +142,7 @@
   parent: CrateGenericSteel
   id: WFCratePlanetOutpostKit
   name: Planet Outpost Kit
-  description: Everything to start a planet outpost and live off it - console, trade hub, fabricator, wind and sun power, a battery, cable, plates and roofing.
+  description: Everything to start a planet outpost and live off it - console, trade hub, fabricator, wind and sun power, a battery, the makings of an APC, cable, plates and roofing.
   components:
   - type: StorageFill
     contents:
@@ -151,6 +152,9 @@
     - id: WFOutpostWindTurbinePack
     - id: WFOutpostSolarStringPack
     - id: WFOutpostBatterySmallPack
+    - id: APCElectronics
+    - id: SheetSteel10
+    - id: CableMVStack
     - id: CableApcStack
     - id: WFOutpostFoundationPlate10
     - id: WFOutpostRoofPanel10
@@ -190,7 +194,7 @@
   parent: CrateGenericSteel
   id: WFCrateOutpostPower
   name: outpost power crate
-  description: A wind turbine, two solar strings, a small battery and cable, for an outpost that runs on the weather.
+  description: A wind turbine, two solar strings, a small battery and MV and LV cable, for an outpost that runs on the weather.
   components:
   - type: StorageFill
     contents:
@@ -198,6 +202,7 @@
     - id: WFOutpostSolarStringPack
       amount: 2
     - id: WFOutpostBatterySmallPack
+    - id: CableMVStack
     - id: CableApcStack
   - type: StaticPrice
     vendPrice: 2300

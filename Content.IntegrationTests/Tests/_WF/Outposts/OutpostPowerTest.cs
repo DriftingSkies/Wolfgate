@@ -6,6 +6,8 @@ using Content.Server._WF.Planets;
 using Content.Server.Power.Components;
 using Content.Shared._WF.Planets;
 using Content.Shared._WF.WolfWeather;
+using Content.Shared.NodeContainer;
+using Content.Shared.NodeContainer.NodeGroups;
 using Content.Shared.Power.Generator;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -165,6 +167,41 @@ public sealed class OutpostPowerTest
                     Assert.That(ours.MaxSupply, Is.EqualTo(Scale * theirs.MaxSupply).Within(1f), $"{outpost} supply");
                     Assert.That(ours.MaxChargeRate, Is.EqualTo(Scale * theirs.MaxChargeRate).Within(1f), $"{outpost} charge rate");
                 }
+            });
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// Outpost generators and batteries sit on MV, as on a ship, so an outpost's machines need an APC to turn it into LV.
+    /// </summary>
+    [Test]
+    public async Task GeneratorsAndBatteriesFeedMediumVoltage([Values(
+        "WFOutpostWindTurbine", "WFOutpostSolarString", "WFOutpostCompactRTG", "WFOutpostFuelGenerator",
+        "WFOutpostBatterySmall", "WFOutpostBatteryLarge")] string id)
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var factory = server.ResolveDependency<IComponentFactory>();
+
+        await server.WaitAssertion(() =>
+        {
+            var proto = server.ProtoMan.Index(id);
+            Assert.That(proto.TryGetComponent<NodeContainerComponent>(out var nodes, factory), $"{id} has no nodes.");
+            Assert.Multiple(() =>
+            {
+                foreach (var (name, node) in nodes!.Nodes)
+                {
+                    Assert.That(node.NodeGroupID, Is.EqualTo(NodeGroupID.MVPower), $"{id}'s {name} node isn't on MV.");
+                }
+
+                if (proto.TryGetComponent<PowerSupplierComponent>(out var supplier, factory))
+                    Assert.That(supplier.Voltage, Is.EqualTo(Voltage.Medium), $"{id} doesn't supply MV.");
+                if (proto.TryGetComponent<BatteryDischargerComponent>(out var discharger, factory))
+                    Assert.That(discharger.Voltage, Is.EqualTo(Voltage.Medium), $"{id} doesn't discharge onto MV.");
+                if (proto.TryGetComponent<BatteryChargerComponent>(out var charger, factory))
+                    Assert.That(charger.Voltage, Is.EqualTo(Voltage.Medium), $"{id} doesn't charge from MV.");
             });
         });
 
