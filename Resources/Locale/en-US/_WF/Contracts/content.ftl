@@ -451,7 +451,7 @@ wf-contract-ussp-faction-ammo-brief = The Commissariat is arming the brigade and
 wf-contract-goods-seeds = seed packets
 wf-contract-goods-machine-boards = machine circuit boards
 wf-contract-goods-computer-boards = computer circuit boards
-wf-contract-goods-ammo = loaded magazines or ammo boxes
+wf-contract-goods-ammo = full magazines or ammo boxes
 
 wf-contract-target-smuggler-convoy = Smuggler convoy {$designation}
 wf-contract-target-ace = Ace {$designation}

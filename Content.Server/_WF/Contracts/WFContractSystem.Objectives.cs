@@ -257,7 +257,9 @@ public sealed partial class WFContractSystem
             && HasComp(uid, registration.Type))
             return TryComp<StackComponent>(uid, out var count) ? count.Count : 1;
 
-        if (goods.Ammo && TryComp<BallisticAmmoProviderComponent>(uid, out var ammo) && ammo.Count > 0 && !HasComp<GunComponent>(uid))
+        // Full only, so a magazine stripped to one round isn't worth a full one.
+        if (goods.Ammo && TryComp<BallisticAmmoProviderComponent>(uid, out var ammo) && ammo.Count >= ammo.Capacity
+            && !HasComp<GunComponent>(uid))
             return 1;
 
         return 0;
@@ -864,8 +866,25 @@ public sealed partial class WFContractSystem
     /// <summary>Whether a hostile site can be found now, so a crowded sector posts no bounty it couldn't start.</summary>
     private bool SiteAvailable(EntityUid station, float min, float max, float clearance)
     {
-        return PickSite(station, min, max, clearance, quiet: true) != null;
+        // One search per band per tick; a crowded sector otherwise pays the full search for every offer it rolls.
+        if (_siteChecksTick != _timing.CurTick)
+        {
+            _siteChecks.Clear();
+            _siteChecksTick = _timing.CurTick;
+        }
+
+        var key = (station, min, max, clearance);
+        if (!_siteChecks.TryGetValue(key, out var found))
+        {
+            found = PickSite(station, min, max, clearance, quiet: true) != null;
+            _siteChecks[key] = found;
+        }
+
+        return found;
     }
+
+    private readonly Dictionary<(EntityUid, float, float, float), bool> _siteChecks = new();
+    private Robust.Shared.Timing.GameTick _siteChecksTick;
 
     /// <summary>Metres from a station's largest grid to a site.</summary>
     private float SiteDistance(EntityUid station, MapCoordinates site)

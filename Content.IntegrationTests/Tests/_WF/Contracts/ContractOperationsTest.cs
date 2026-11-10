@@ -178,7 +178,7 @@ public sealed class ContractOperationsTest
                 "A chain link was posted without its first link.");
         });
 
-        // Ammunition drive: loaded magazines and ammo boxes of any calibre count; empty magazines and guns don't.
+        // Ammunition drive: full magazines and ammo boxes of any calibre count; short or empty magazines and guns don't.
         await server.WaitAssertion(() =>
         {
             var ammo = new WFContract { Prototype = "WFContractTSFFactionAmmo", Goods = { (0, 6) } };
@@ -189,7 +189,13 @@ public sealed class ContractOperationsTest
             {
                 Assert.That(storage.Insert(entMan.SpawnEntity(item, at), crate), Is.True);
             }
-            Assert.That(contracts.Packed(ammo, crate).Single(), Is.EqualTo(2));
+
+            var shortMag = entMan.SpawnEntity("Magazine9x19mmPistolFMJ", at);
+            var provider = entMan.GetComponent<Content.Shared.Weapons.Ranged.Components.BallisticAmmoProviderComponent>(shortMag);
+            Assert.That(provider.UnspawnedCount, Is.GreaterThan(0), "Precondition: the magazine has unspawned rounds to take.");
+            provider.UnspawnedCount--;
+            Assert.That(storage.Insert(shortMag, crate), Is.True);
+            Assert.That(contracts.Packed(ammo, crate).Single(), Is.EqualTo(2), "Only the full magazine and the box count.");
         });
 
         // Buoys: one per point, counted only once set adrift in open space near an unlogged point.

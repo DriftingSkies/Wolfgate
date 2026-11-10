@@ -288,7 +288,7 @@ public sealed partial class WFContractGoods
     [DataField]
     public string? Component;
 
-    /// <summary>Any loaded magazine, speed loader or ammunition box of any calibre; guns don't count.</summary>
+    /// <summary>Any full magazine, speed loader or ammunition box of any calibre; guns don't count.</summary>
     [DataField]
     public bool Ammo;
 

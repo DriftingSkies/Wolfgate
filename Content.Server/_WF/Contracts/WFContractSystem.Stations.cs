@@ -101,18 +101,40 @@ public sealed partial class WFContractSystem
         if (SiloOf(station) is { } silo && _materials.TryInsertMaterialEntity(silo, goods, silo))
             return;
 
-        if (crate == null && Anchor(station) is { } at)
+        if (Anchor(station) is not { } at)
         {
-            crate = Spawn(ReceivingCrate, at);
-            var lockComp = EnsureComp<WFContractReceivingComponent>(crate.Value);
-            lockComp.Companies = companies;
-            Dirty(crate.Value, lockComp);
-            // Anchored, and only its faction may unanchor or pull it, so outsiders can't haul it off to sell.
-            _transform.AnchorEntity(crate.Value);
+            Del(goods);
+            return;
         }
 
-        if (crate is not { } receiving || !_entityStorage.Insert(goods, receiving))
+        // The pad's standing crate takes the goods while it has room; a full one gets a fresh crate beside it.
+        crate ??= PadCrate(at, companies);
+        if (crate is { } standing && _entityStorage.Insert(goods, standing))
+            return;
+
+        crate = Spawn(ReceivingCrate, at);
+        var lockComp = EnsureComp<WFContractReceivingComponent>(crate.Value);
+        lockComp.Companies = companies;
+        Dirty(crate.Value, lockComp);
+        // Anchored, and only its faction may unanchor or pull it, so outsiders can't haul it off to sell.
+        _transform.AnchorEntity(crate.Value);
+        if (!_entityStorage.Insert(goods, crate.Value))
             Del(goods);
+    }
+
+    /// <summary>A receiving crate already standing at the pad for the same factions.</summary>
+    private EntityUid? PadCrate(EntityCoordinates at, List<ProtoId<CompanyPrototype>> companies)
+    {
+        var pad = _transform.ToMapCoordinates(at);
+        var crates = EntityQueryEnumerator<WFContractReceivingComponent, TransformComponent>();
+        while (crates.MoveNext(out var uid, out var comp, out var xform))
+        {
+            if (xform.Anchored && xform.MapID == pad.MapId && comp.Companies.ToHashSet().SetEquals(companies)
+                && (_transform.GetWorldPosition(xform) - pad.Position).Length() < 1.5f)
+                return uid;
+        }
+
+        return null;
     }
 
     /// <summary>Who may open a station's receiving crate: the delivering contractor's faction, else every faction homed there.</summary>
