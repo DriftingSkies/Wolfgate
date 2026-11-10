@@ -203,7 +203,7 @@ public sealed partial class WFOutpostSystem
             }
         }
 
-        if (CountAllTiles(outpost) + fresh - 1 > _cfg.GetCVar(OutpostCVars.MaxTiles))
+        if (CountAllTiles(outpost) + fresh - 1 > TileCap(outpost))
         {
             reason = "wf-outpost-plate-full";
             return false;
@@ -265,7 +265,7 @@ public sealed partial class WFOutpostSystem
                 return false;
             }
 
-            if (CountAllTiles(outpost) >= _cfg.GetCVar(OutpostCVars.MaxTiles))
+            if (CountAllTiles(outpost) >= TileCap(outpost))
             {
                 reason = "wf-outpost-plate-full";
                 return false;

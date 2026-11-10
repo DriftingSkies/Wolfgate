@@ -6,7 +6,9 @@ using Content.Server.Station.Systems;
 using Content.Shared._WF.Outposts;
 using Content.Shared.Database;
 using Content.Shared.GameTicking;
+using Content.Server.Database;
 using Content.Shared.Mobs.Components;
+using Content.Shared.Preferences;
 using Content.Shared.Roles;
 using Content.Shared.Station;
 using Robust.Shared.Network;
@@ -23,6 +25,8 @@ public sealed partial class WFOutpostSystem
 {
     [Dependency] private StationSystem _stations = default!;
     [Dependency] private WFRoundSetupSystem _roundSetup = default!;
+    [Dependency] private WFCrashScenarioSystem _crash = default!;
+    [Dependency] private Content.Server.Preferences.Managers.IServerPreferencesManager _prefs = default!;
 
     /// <summary>Cryopods an outpost holds at most.</summary>
     public const int MaxPods = 6;
@@ -97,15 +101,116 @@ public sealed partial class WFOutpostSystem
         return false;
     }
 
-    /// <summary>The name of the outpost a player in the lobby can join the round at, or null if there is none.</summary>
+    /// <summary>
+    /// What a player in the lobby can join the round at: their standing outpost with a free pod, or else their latest save
+    /// to land and wake in, with its price. Null if neither.
+    /// </summary>
     public string? GetJoinOffer(ICommonSession session)
     {
         if (_ticker.RunLevel != GameRunLevel.InRound
-            || _ticker.PlayerGameStatuses.GetValueOrDefault(session.UserId) == PlayerGameStatus.JoinedGame
-            || !TryGetOutpost(session.UserId, out var outpost) || !TryGetFreePod(session.UserId, out _))
+            || _ticker.PlayerGameStatuses.GetValueOrDefault(session.UserId) == PlayerGameStatus.JoinedGame)
             return null;
 
-        return Name(outpost);
+        if (TryGetOutpost(session.UserId, out var outpost))
+            return TryGetFreePod(session.UserId, out _) ? Name(outpost) : null;
+
+        if (_landing.Contains(session.UserId) || !TryGetLandingSlot(session.UserId, out _, out var save))
+            return null;
+
+        return Loc.GetString("wf-outpost-join-land", ("outpost", save.Name), ("price", LoadPrice(save.Appraisal)));
+    }
+
+    /// <summary>Accounts whose save is on its way down for them to wake in.</summary>
+    private readonly HashSet<NetUserId> _landing = new();
+
+    /// <summary>The account's most recently saved outpost that can still drop this round.</summary>
+    private bool TryGetLandingSlot(NetUserId owner, out int slot, out WFStoredOutpostSave save)
+    {
+        slot = -1;
+        save = default!;
+        if (GetSlots(owner) is not { } slots)
+            return false;
+
+        for (var i = 0; i < slots.Length; i++)
+        {
+            if (slots[i] is not { } candidate || !CanDrop(owner, i, out _))
+                continue;
+
+            if (slot < 0 || candidate.Saved > save.Saved)
+            {
+                slot = i;
+                save = candidate;
+            }
+        }
+
+        return slot >= 0;
+    }
+
+    /// <summary>
+    /// Lands the player's latest save on a world, for its load price, and wakes them in one of its pods once it is down.
+    /// They wait in the lobby meanwhile. <paramref name="reason"/> is a loc id when it can't start.
+    /// </summary>
+    private bool TryLandAndJoin(ICommonSession session, out string reason)
+    {
+        var owner = session.UserId;
+        if (!TryGetLandingSlot(owner, out var slot, out var save))
+        {
+            reason = "wf-outpost-join-no-outpost";
+            return false;
+        }
+
+        if (!_crash.TryChooseGround(out var ground))
+        {
+            reason = "wf-outpost-drop-no-site";
+            return false;
+        }
+
+        var price = LoadPrice(save.Appraisal);
+        var prefs = _prefs.GetPreferences(owner);
+        if (prefs.SelectedCharacter is not HumanoidCharacterProfile profile
+            || price > 0 && !_bank.TryBankWithdraw(session, prefs, profile, price, out _))
+        {
+            reason = "wf-outpost-load-cannot-afford";
+            return false;
+        }
+
+        var name = profile.Name;
+        _landing.Add(owner);
+        if (!TryQueueDrop(owner, name, slot, ground, (outpost, why) => OnLanded(session, price, outpost, why), out reason))
+        {
+            _landing.Remove(owner);
+            Refund(session, price);
+            return false;
+        }
+
+        _chat.DispatchServerMessage(session, Loc.GetString("wf-outpost-join-landing", ("outpost", save.Name)));
+        _adminLog.Add(LogType.WFOutpost, LogImpact.Medium, $"{session:player} is landing outpost save {save.Name} (slot {slot}) to join at, for {price}");
+        reason = string.Empty;
+        return true;
+    }
+
+    private void OnLanded(ICommonSession session, int price, EntityUid? outpost, string reason)
+    {
+        _landing.Remove(session.UserId);
+        if (outpost == null)
+        {
+            Refund(session, price);
+            _chat.DispatchServerMessage(session, Loc.GetString("wf-outpost-join-land-failed", ("reason", Loc.GetString(reason))));
+            return;
+        }
+
+        if (!TryJoin(session, out var why))
+            _chat.DispatchServerMessage(session, Loc.GetString("wf-outpost-join-land-failed", ("reason", Loc.GetString(why))));
+    }
+
+    private void Refund(ICommonSession session, int price)
+    {
+        if (price <= 0)
+            return;
+
+        var prefs = _prefs.GetPreferences(session.UserId);
+        if (prefs.SelectedCharacter is HumanoidCharacterProfile profile)
+            _bank.TryBankDeposit(session, prefs, profile, price, out _);
     }
 
     /// <summary>
@@ -121,10 +226,7 @@ public sealed partial class WFOutpostSystem
         }
 
         if (!TryGetOutpost(session.UserId, out var outpost))
-        {
-            reason = "wf-outpost-join-no-outpost";
-            return false;
-        }
+            return TryLandAndJoin(session, out reason);
 
         if (!TryGetFreePod(session.UserId, out var pod))
         {

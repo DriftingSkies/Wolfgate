@@ -1,0 +1,60 @@
+# A level with a prefab leaves one of these at the console; its prefab and name are set when it is handed out.
+- type: entity
+  parent: BaseItem
+  id: WFHideoutSurveyStake
+  name: module survey stake
+  description: Marks out a finished module. Use it on open ground inside your outpost's claim; the module is laid there, its front toward you.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/station_beacon.rsi
+    layers:
+    - state: icon
+      color: "#E8C15A"
+  - type: Item
+    size: Normal
+  - type: WFHideoutStake
+  - type: StaticPrice
+    price: 0
+
+# The hangar's own pad: laid with the hangar apron, it runs off the apron's own supply and saves its owner's ship.
+- type: entity
+  parent: WFBaseLandingPad
+  id: WFHideoutHangarPad
+  name: hangar beacon
+  description: Guides ships with access to this outpost down onto the hangar apron and back up. The owner's registered ship is saved every time it lands here.
+  components:
+  - type: ApcPowerReceiver
+    needsPower: false
+  - type: WFLandingPad
+    size: 9
+    widest: 9
+  - type: WFHideoutHangar
+
+# The outpost registry at Central: found an outpost on a world's plots, land your save, or ride down to it.
+- type: entity
+  parent: BaseComputer
+  id: WFHideoutRegistryConsole
+  name: outpost registry console
+  description: Founds outposts on the worlds' outpost plots, brings saved outposts back down to their home worlds, and sends their owners down to them.
+  components:
+  - type: Sprite
+    sprite: _NF/Structures/Machines/computers.rsi
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: shipyard
+    - map: ["computerLayerKeys"]
+      state: telesci_key
+  - type: Anchorable
+    flags:
+    - Anchorable
+  - type: WFHideoutRegistryConsole
+  - type: ActivatableUI
+    key: enum.WFHideoutRegistryUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.WFHideoutRegistryUiKey.Key:
+        type: WFHideoutRegistryBoundUserInterface

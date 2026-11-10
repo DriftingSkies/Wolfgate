@@ -77,7 +77,9 @@ public sealed partial class WFPlanetPoiSystem : EntitySystem
             return;
         }
 
-        args.Holds.Add(PlaceAsync(args.Ground, comp, args.Centre, args.Radius, table, args.Claims));
+        // Points of interest keep inside the world's radius; the band past it is the outposts'.
+        var band = Math.Clamp(surface.OutpostBand, 0, (int) args.Radius / 2);
+        args.Holds.Add(PlaceAsync(args.Ground, comp, args.Centre, args.Radius - band, table, args.Claims, band));
     }
 
     /// <summary>

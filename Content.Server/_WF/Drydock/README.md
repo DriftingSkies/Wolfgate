@@ -50,6 +50,12 @@ console sets. A rebuilt gun mounts on its hardpoint and rejoins the ship's fire 
 refresh, within a minute. A part whose spot now holds something else, such as a gun swapped onto its hardpoint, isn't
 rebuilt or charged, the same check the ship repair tool makes.
 
+Other modules can queue three more kinds of work through `StartJob`: `Remove` takes a part off, `Install` puts a
+prototype on at a position and rotation (raising `WFDrydockPartInstalledEvent` on the ship), and `Inspect` changes
+nothing and raises `WFDrydockPartInspectedEvent`. Their crane time is the entity work time times the item's
+`WorkScale`, and a console hears that its job ended through `WFDrydockJobEndedEvent`. The Hideouts module's shipwright
+bay builds and refits ships with them.
+
 ## Pricing
 
 A credit console also offers Clean Drift when the berthed hull has soaked up Drift in the Coda (Lattice module): it

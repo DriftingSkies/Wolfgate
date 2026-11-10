@@ -12,7 +12,7 @@ namespace Content.Server._WF.Outposts;
 
 /// <summary>
 /// Foundation plates: the outpost grows a tile at a time onto open ground anywhere in its claim, so its floor may lie in
-/// separate patches, as long as the whole spans no more than <see cref="OutpostCVars.MaxSpan"/> tiles either way.
+/// separate patches, as long as the whole spans no more than <see cref="SpanCap"/> tiles either way.
 /// </summary>
 public sealed partial class WFOutpostSystem
 {
@@ -86,13 +86,13 @@ public sealed partial class WFOutpostSystem
             return false;
         }
 
-        if (!WithinSpan(gridComp, index))
+        if (!WithinSpan(outpost, gridComp, index))
         {
             reason = "wf-outpost-plate-too-wide";
             return false;
         }
 
-        if (CountAllTiles((outpost, outpost.Comp, gridComp)) >= _cfg.GetCVar(OutpostCVars.MaxTiles))
+        if (CountAllTiles((outpost, outpost.Comp, gridComp)) >= TileCap(outpost))
         {
             reason = "wf-outpost-plate-full";
             return false;
@@ -148,13 +148,13 @@ public sealed partial class WFOutpostSystem
     }
 
     /// <summary>Whether the outpost's floor, with a tile added at <paramref name="index"/>, still spans no more than the cap either way.</summary>
-    private bool WithinSpan(MapGridComponent grid, Vector2i index)
+    private bool WithinSpan(EntityUid outpost, MapGridComponent grid, Vector2i index)
     {
         var local = grid.LocalAABB;
         var size = grid.TileSize;
         var min = Vector2i.ComponentMin(new Vector2i((int) MathF.Floor(local.Left / size), (int) MathF.Floor(local.Bottom / size)), index);
         var max = Vector2i.ComponentMax(new Vector2i((int) MathF.Ceiling(local.Right / size) - 1, (int) MathF.Ceiling(local.Top / size) - 1), index);
-        var span = _cfg.GetCVar(OutpostCVars.MaxSpan);
+        var span = SpanCap(outpost);
         return max.X - min.X < span && max.Y - min.Y < span;
     }
 }

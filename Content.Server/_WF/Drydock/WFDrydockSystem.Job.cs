@@ -196,7 +196,7 @@ public sealed partial class WFDrydockSystem
             if (finished.Kind == WFDrydockWorkKind.Break)
                 ApplyBreak(console, job, slot, finished);
             else
-                ApplyItem(job.Ship, finished);
+                ApplyItem(job.Ship, finished, console);
             job.Done++;
             slot.Item = null;
             changed = true;
@@ -327,7 +327,7 @@ public sealed partial class WFDrydockSystem
         return kind switch
         {
             WFDrydockWorkKind.Tile or WFDrydockWorkKind.Break => comp.HullWorkSound,
-            WFDrydockWorkKind.Entity => comp.PartWorkSound,
+            WFDrydockWorkKind.Entity or WFDrydockWorkKind.Install or WFDrydockWorkKind.Remove => comp.PartWorkSound,
             WFDrydockWorkKind.Heal => comp.DamageWorkSound,
             _ => comp.RefitWorkSound,
         };
@@ -813,6 +813,8 @@ public sealed partial class WFDrydockSystem
         if (!job.Break)
             RecordRefits(job, end);
 
+        var ended = new WFDrydockJobEndedEvent(job.Ship, end == JobEnd.Finished, job.Skipped);
+        RaiseLocalEvent(console, ref ended);
         RemComp<WFDrydockJobComponent>(console);
         ParkCranes(console, comp);
         UpdateUi(console, comp);

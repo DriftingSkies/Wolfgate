@@ -183,7 +183,7 @@ public sealed class WFLandingPadSystem : EntitySystem
     /// the pad is free.
     /// </summary>
     public bool TryPlace(EntityUid hull, MapGridComponent hullGrid, Entity<WFLandingPadComponent> pad, EntityUid outpost,
-        [NotNullWhen(true)] out PadPlacement? placement, out string reason)
+        [NotNullWhen(true)] out PadPlacement? placement, out string reason, bool needPower = true)
     {
         placement = null;
         if (pad.Comp.Guiding || pad.Comp.Parked is { } parked && !TerminatingOrDeleted(parked))
@@ -192,7 +192,7 @@ public sealed class WFLandingPadSystem : EntitySystem
             return false;
         }
 
-        if (!_power.IsPowered(pad))
+        if (needPower && !_power.IsPowered(pad))
         {
             reason = Loc.GetString("wf-pad-unpowered");
             return false;
@@ -369,12 +369,20 @@ public sealed class WFLandingPadSystem : EntitySystem
         SetGuiding(pad, true);
     }
 
+    /// <summary>Rests a hull that already stands on the pad there, as if the pad had guided it down.</summary>
+    public void Park(EntityUid hull, Entity<WFLandingPadComponent> pad)
+    {
+        Dock(hull, pad);
+    }
+
     private void Dock(EntityUid hull, Entity<WFLandingPadComponent> pad)
     {
         EnsureComp<WFPadDockedComponent>(hull).Pad = pad;
         pad.Comp.Parked = hull;
         // Static, it rests over the outpost's static floor without the two pushing each other apart.
         _shuttle.Disable(hull);
+        var docked = new WFPadDockedEvent(hull);
+        RaiseLocalEvent(pad, ref docked);
     }
 
     private void SetGuiding(Entity<WFLandingPadComponent> pad, bool guiding)
@@ -446,7 +454,7 @@ public sealed class WFLandingPadSystem : EntitySystem
         foreach (var step in new[] { 2, -2 })
         {
             var size = pad.Comp.Size + step;
-            if (size < WFLandingPadComponent.MinSize || size > WFLandingPadComponent.MaxSize)
+            if (size < WFLandingPadComponent.MinSize || size > pad.Comp.Widest)
                 continue;
 
             args.Verbs.Add(new AlternativeVerb

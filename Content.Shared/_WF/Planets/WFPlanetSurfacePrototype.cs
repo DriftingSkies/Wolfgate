@@ -48,6 +48,17 @@ public sealed partial class WFPlanetSurfacePrototype : IPrototype
     [DataField]
     public ProtoId<WFPlanetPoiTablePrototype>? Pois;
 
+    /// <summary>Whether players may found, claim or drop outposts on the world.</summary>
+    [DataField]
+    public bool Outposts = true;
+
+    /// <summary>
+    /// Tiles of ground past <see cref="Radius"/> kept for outposts: the world's bounds grow by it, and its points of
+    /// interest stay inside the radius, so outpost plots never take from their pool. 0 for none.
+    /// </summary>
+    [DataField]
+    public int OutpostBand;
+
     /// <summary>How many bare fall-through air layers sit between the ground and the cloud layer.</summary>
     [DataField]
     public int AirLayers = 2;

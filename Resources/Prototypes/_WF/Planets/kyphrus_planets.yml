@@ -19,6 +19,8 @@
   gravity: 0.9
   radius: 256
   pois: WFPoisFervidus
+  # A ring of outpost plots past the points of interest (WFPlanetPoiSystem.PlaceOutpostBandAsync).
+  outpostBand: 96
   seed: 20260914
   networkComponents:
   - type: MapAtmosphere
@@ -85,6 +87,8 @@
   gravity: 1.15
   radius: 320
   pois: WFPoisMerak
+  # A ring of outpost plots past the points of interest (WFPlanetPoiSystem.PlaceOutpostBandAsync).
+  outpostBand: 96
   seed: 20260915
   networkComponents:
   - type: MapAtmosphere
@@ -151,6 +155,8 @@
   gravity: 3
   radius: 192
   pois: WFPoisAerumna
+  # A ring of outpost plots past the points of interest (WFPlanetPoiSystem.PlaceOutpostBandAsync).
+  outpostBand: 96
   seed: 20260916
   networkComponents:
   - type: MapAtmosphere
@@ -218,6 +224,8 @@
   gravity: 1.25
   radius: 256
   pois: WFPoisThrascias
+  # A ring of outpost plots past the points of interest (WFPlanetPoiSystem.PlaceOutpostBandAsync).
+  outpostBand: 96
   seed: 20260917
   networkComponents:
   - type: MapAtmosphere

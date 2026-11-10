@@ -1,0 +1,658 @@
+# The shipwright bay: custom ships on a refit point budget. See Docs/_WF/Hideouts/DESIGN.md, Shipwright.
+
+- type: wfShipwrightRules
+  id: WFShipwrightRules
+  weaponPoints:
+    Superlight: 1
+    Light: 2
+    Medium: 4
+    Heavy: 8
+    Superheavy: 16
+  # A hardpoint takes points of its own on top of its gun; a frame's own hardpoints are free.
+  mountPoints:
+    Superlight: 1
+    Light: 1
+    Medium: 2
+    Heavy: 3
+    Superheavy: 6
+  mountPrices:
+    Superlight: 1500
+    Light: 2500
+    Medium: 5000
+    Heavy: 10000
+    Superheavy: 25000
+  baseMounts: 2
+  tilesPerMount: 12
+  weaponMarkup: 1.5
+  labour: 250
+  certifyPrice: 750
+  customPoints: 8
+  tilesPerPoint: 10
+  sizePointsCap: 30
+  # The Tanuki's floor, the largest frame's: no bigger hull built by hand registers.
+  customMaxTiles: 346
+  frameWorkScale: 0.5
+  customWorkScale: 1.5
+
+# Frames: stock hulls the cranes build without their guns and systems. A frame costs about 60% of the stock ship and
+# refits three times as fast as a hull built by hand. The largest frame's points and floor are the ceiling for every
+# custom ship (WFShipwrightSystem.Ceiling).
+- type: wfShipwrightFrame
+  id: WFFrameGuppy
+  name: wf-shipwright-frame-guppy
+  description: wf-shipwright-frame-guppy-desc
+  grid: /SharedMaps/_Mono/Shuttles/Civilian/guppy.yml
+  price: 13000
+  points: 10
+  order: 0
+
+- type: wfShipwrightFrame
+  id: WFFrameQJ340
+  name: wf-shipwright-frame-qj340
+  description: wf-shipwright-frame-qj340-desc
+  grid: /SharedMaps/_Mono/Shuttles/CivilianMil/qj340.yml
+  price: 30000
+  points: 14
+  order: 1
+
+- type: wfShipwrightFrame
+  id: WFFrameTalon
+  name: wf-shipwright-frame-talon
+  description: wf-shipwright-frame-talon-desc
+  grid: /SharedMaps/_Mono/Shuttles/CivilianMil/talon.yml
+  price: 42000
+  points: 18
+  order: 2
+
+- type: wfShipwrightFrame
+  id: WFFrameCaracara
+  name: wf-shipwright-frame-caracara
+  description: wf-shipwright-frame-caracara-desc
+  grid: /SharedMaps/_Mono/Shuttles/Civilian/caracara.yml
+  price: 54000
+  points: 24
+  order: 3
+
+- type: wfShipwrightFrame
+  id: WFFrameFemur
+  name: wf-shipwright-frame-femur
+  description: wf-shipwright-frame-femur-desc
+  grid: /SharedMaps/_Mono/Shuttles/CivilianMil/femur.yml
+  price: 60000
+  points: 30
+  order: 4
+
+- type: wfShipwrightFrame
+  id: WFFrameRook
+  name: wf-shipwright-frame-rook
+  description: wf-shipwright-frame-rook-desc
+  grid: /SharedMaps/_WF/OldVessels/Carrier/rook.yml
+  price: 12500
+  points: 12
+  order: 5
+
+- type: wfShipwrightFrame
+  id: WFFrameZephyr
+  name: wf-shipwright-frame-zephyr
+  description: wf-shipwright-frame-zephyr-desc
+  grid: /SharedMaps/_WF/OldVessels/Carrier/zephyr.yml
+  price: 17500
+  points: 14
+  order: 6
+
+- type: wfShipwrightFrame
+  id: WFFramePorter
+  name: wf-shipwright-frame-porter
+  description: wf-shipwright-frame-porter-desc
+  grid: /SharedMaps/_WF/Asf/porter.yml
+  price: 24000
+  points: 15
+  order: 7
+
+- type: wfShipwrightFrame
+  id: WFFramePlutomkii
+  name: wf-shipwright-frame-plutomkii
+  description: wf-shipwright-frame-plutomkii-desc
+  grid: /SharedMaps/_WF/OldVessels/plutomkii.yml
+  price: 27000
+  points: 15
+  order: 8
+
+- type: wfShipwrightFrame
+  id: WFFrameBorer
+  name: wf-shipwright-frame-borer
+  description: wf-shipwright-frame-borer-desc
+  grid: /SharedMaps/_WF/OldVessels/borer.yml
+  price: 22500
+  points: 13
+  order: 9
+
+- type: wfShipwrightFrame
+  id: WFFrameHorsefly
+  name: wf-shipwright-frame-horsefly
+  description: wf-shipwright-frame-horsefly-desc
+  grid: /SharedMaps/_Mono/Shuttles/Scrapyard/horsefly.yml
+  price: 31000
+  points: 13
+  order: 10
+
+- type: wfShipwrightFrame
+  id: WFFrameLightning
+  name: wf-shipwright-frame-lightning
+  description: wf-shipwright-frame-lightning-desc
+  grid: /SharedMaps/_Mono/Shuttles/CSec/lightning.yml
+  price: 42500
+  points: 20
+  order: 11
+
+- type: wfShipwrightFrame
+  id: WFFrameSunrise
+  name: wf-shipwright-frame-sunrise
+  description: wf-shipwright-frame-sunrise-desc
+  grid: /SharedMaps/_WF/OldVessels/sunrise.yml
+  price: 50500
+  points: 23
+  order: 12
+
+- type: wfShipwrightFrame
+  id: WFFrameStubby
+  name: wf-shipwright-frame-stubby
+  description: wf-shipwright-frame-stubby-desc
+  grid: /SharedMaps/_Mono/Shuttles/CivilianMed/stubby.yml
+  price: 23000
+  points: 16
+  order: 13
+
+- type: wfShipwrightFrame
+  id: WFFrameTalonuran
+  name: wf-shipwright-frame-talonuran
+  description: wf-shipwright-frame-talonuran-desc
+  grid: /SharedMaps/_Mono/Shuttles/VG/talonuran.yml
+  price: 41000
+  points: 19
+  order: 14
+
+- type: wfShipwrightFrame
+  id: WFFrameKresta
+  name: wf-shipwright-frame-kresta
+  description: wf-shipwright-frame-kresta-desc
+  grid: /SharedMaps/_Mono/Shuttles/PDV/kresta.yml
+  price: 43000
+  points: 15
+  order: 15
+
+- type: wfShipwrightFrame
+  id: WFFrameDuran
+  name: wf-shipwright-frame-duran
+  description: wf-shipwright-frame-duran-desc
+  grid: /SharedMaps/_Mono/Shuttles/CivilianExp/duran.yml
+  price: 36500
+  points: 24
+  order: 16
+
+- type: wfShipwrightFrame
+  id: WFFrameThorax
+  name: wf-shipwright-frame-thorax
+  description: wf-shipwright-frame-thorax-desc
+  grid: /SharedMaps/_WF/OldVessels/thorax.yml
+  price: 64500
+  points: 30
+  order: 17
+
+- type: wfShipwrightFrame
+  id: WFFramePaladin
+  name: wf-shipwright-frame-paladin
+  description: wf-shipwright-frame-paladin-desc
+  grid: /SharedMaps/_Mono/Shuttles/TSF/paladin.yml
+  price: 39500
+  points: 32
+  order: 18
+
+- type: wfShipwrightFrame
+  id: WFFrameGadfly
+  name: wf-shipwright-frame-gadfly
+  description: wf-shipwright-frame-gadfly-desc
+  grid: /SharedMaps/_Mono/Shuttles/PDV/gadfly.yml
+  price: 41000
+  points: 21
+  order: 19
+
+- type: wfShipwrightFrame
+  id: WFFrameStrayk
+  name: wf-shipwright-frame-strayk
+  description: wf-shipwright-frame-strayk-desc
+  grid: /SharedMaps/_Mono/Shuttles/USSP/strayk.yml
+  price: 39500
+  points: 17
+  order: 20
+
+- type: wfShipwrightFrame
+  id: WFFrameBetelgeuse
+  name: wf-shipwright-frame-betelgeuse
+  description: wf-shipwright-frame-betelgeuse-desc
+  grid: /SharedMaps/_WF/OldVessels/betelgeuse.yml
+  price: 37500
+  points: 18
+  order: 21
+
+- type: wfShipwrightFrame
+  id: WFFrameBluefin
+  name: wf-shipwright-frame-bluefin
+  description: wf-shipwright-frame-bluefin-desc
+  grid: /SharedMaps/_Mono/Shuttles/Underground/bluefin.yml
+  price: 60000
+  points: 25
+  order: 22
+
+- type: wfShipwrightFrame
+  id: WFFrameTanuki
+  name: wf-shipwright-frame-tanuki
+  description: wf-shipwright-frame-tanuki-desc
+  grid: /SharedMaps/_WF/OldVessels/tanuki.yml
+  price: 91000
+  points: 35
+  order: 23
+
+- type: wfShipwrightFrame
+  id: WFFrameVelios
+  name: wf-shipwright-frame-velios
+  description: wf-shipwright-frame-velios-desc
+  grid: /SharedMaps/_Mono/Shuttles/CivilianMed/velios.yml
+  price: 74000
+  points: 27
+  order: 24
+
+- type: wfShipwrightFrame
+  id: WFFrameSellsword
+  name: wf-shipwright-frame-sellsword
+  description: wf-shipwright-frame-sellsword-desc
+  grid: /SharedMaps/_Mono/Shuttles/CivilianMil/sellsword.yml
+  price: 43000
+  points: 21
+  order: 25
+
+# Systems. Points come out of the same budget as guns; a mounted system (mining lasers, harpoons) goes on a hardpoint.
+- type: wfShipwrightSystem
+  id: WFSystemShieldLight
+  name: wf-shipwright-system-shield-light
+  description: wf-shipwright-system-shield-light-desc
+  category: Defence
+  points: 6
+  price: 18000
+  install: ShieldGeneratorSmall
+  prototypes: [ ShieldGeneratorSmall ]
+  limit: 1
+  order: 0
+
+- type: wfShipwrightSystem
+  id: WFSystemShield
+  name: wf-shipwright-system-shield
+  description: wf-shipwright-system-shield-desc
+  category: Defence
+  points: 12
+  price: 45000
+  install: ShieldGeneratorMedium
+  prototypes: [ ShieldGeneratorMedium ]
+  limit: 1
+  order: 1
+
+- type: wfShipwrightSystem
+  id: WFSystemShieldHeavy
+  name: wf-shipwright-system-shield-heavy
+  description: wf-shipwright-system-shield-heavy-desc
+  category: Defence
+  points: 20
+  price: 90000
+  install: ShieldGenerator
+  # Any other shield emitter a hull carries counts as heavy.
+  components: [ ShipShieldEmitter ]
+  limit: 1
+  order: 2
+
+- type: wfShipwrightSystem
+  id: WFSystemMiningLaser
+  name: wf-shipwright-system-mining-laser
+  description: wf-shipwright-system-mining-laser-desc
+  category: Industry
+  points: 3
+  price: 4500
+  install: WFWeaponTurretMiningLaserSmall
+  prototypes: [ WFWeaponTurretMiningLaserSmall ]
+  order: 10
+
+- type: wfShipwrightSystem
+  id: WFSystemMiningBeam
+  name: wf-shipwright-system-mining-beam
+  description: wf-shipwright-system-mining-beam-desc
+  category: Industry
+  points: 6
+  price: 12000
+  install: WFWeaponTurretMiningBeam
+  components: [ WFMiningBeamEmitter ]
+  order: 11
+
+- type: wfShipwrightSystem
+  id: WFSystemSalvageMagnet
+  name: wf-shipwright-system-salvage-magnet
+  description: wf-shipwright-system-salvage-magnet-desc
+  category: Industry
+  points: 5
+  price: 9000
+  install: SalvageMagnet
+  components: [ SalvageMagnet ]
+  limit: 1
+  order: 12
+
+- type: wfShipwrightSystem
+  id: WFSystemTractorBeam
+  name: wf-shipwright-system-tractor-beam
+  description: wf-shipwright-system-tractor-beam-desc
+  category: Industry
+  points: 4
+  price: 8000
+  install: WFTractorBeamEmitterSmall
+  components: [ TractorBeamEmitter ]
+  limit: 2
+  order: 13
+
+- type: wfShipwrightSystem
+  id: WFSystemOreProcessor
+  name: wf-shipwright-system-ore-processor
+  description: wf-shipwright-system-ore-processor-desc
+  category: Industry
+  points: 3
+  price: 6000
+  install: OreProcessor
+  prototypes: [ OreProcessor, OreProcessorIndustrial ]
+  limit: 1
+  order: 14
+
+- type: wfShipwrightSystem
+  id: WFSystemAutolathe
+  name: wf-shipwright-system-autolathe
+  description: wf-shipwright-system-autolathe-desc
+  category: Industry
+  points: 3
+  price: 5000
+  install: Autolathe
+  prototypes: [ Autolathe ]
+  limit: 1
+  order: 15
+
+- type: wfShipwrightSystem
+  id: WFSystemFabricator
+  name: wf-shipwright-system-fabricator
+  description: wf-shipwright-system-fabricator-desc
+  category: Industry
+  points: 5
+  price: 12000
+  install: Protolathe
+  # Every other lathe a hull carries counts as a fabricator.
+  components: [ Lathe ]
+  limit: 2
+  order: 16
+
+- type: wfShipwrightSystem
+  id: WFSystemMedbay
+  name: wf-shipwright-system-medbay
+  description: wf-shipwright-system-medbay-desc
+  category: Utility
+  points: 4
+  price: 9000
+  install: MedicalScanner
+  components: [ MedicalScanner ]
+  limit: 1
+  order: 20
+
+- type: wfShipwrightSystem
+  id: WFSystemCryo
+  name: wf-shipwright-system-cryo
+  description: wf-shipwright-system-cryo-desc
+  category: Utility
+  points: 4
+  price: 10000
+  install: CryoPod
+  components: [ CryoPod ]
+  limit: 2
+  order: 21
+
+- type: wfShipwrightSystem
+  id: WFSystemCargoTelepad
+  name: wf-shipwright-system-cargo-telepad
+  description: wf-shipwright-system-cargo-telepad-desc
+  category: Utility
+  points: 4
+  price: 9000
+  install: CargoTelepad
+  components: [ CargoTelepad ]
+  limit: 1
+  order: 22
+
+- type: wfShipwrightSystem
+  id: WFSystemResearch
+  name: wf-shipwright-system-research
+  description: wf-shipwright-system-research-desc
+  category: Utility
+  points: 6
+  price: 15000
+  install: ResearchAndDevelopmentServer
+  components: [ ResearchServer ]
+  limit: 1
+  order: 23
+
+- type: wfShipwrightSystem
+  id: WFSystemStrongbox
+  name: wf-shipwright-system-strongbox
+  description: wf-shipwright-system-strongbox-desc
+  category: Utility
+  points: 3
+  price: 60000
+  install: WFShipStrongbox
+  prototypes: [ WFShipStrongbox ]
+  limit: 2
+  order: 25
+
+- type: wfShipwrightSystem
+  id: WFSystemHarpoon
+  name: wf-shipwright-system-harpoon
+  description: wf-shipwright-system-harpoon-desc
+  category: Utility
+  points: 4
+  price: 6000
+  install: WFHackHarpoonGun
+  components: [ ShipHarpoonTurret ]
+  order: 24
+
+- type: wfShipwrightSystem
+  id: WFSystemFtl
+  name: wf-shipwright-system-ftl
+  description: wf-shipwright-system-ftl-desc
+  category: Mobility
+  points: 6
+  price: 20000
+  install: MachineFTLDrive25S
+  prototypes: [ MachineFTLDrive25S ]
+  limit: 1
+  order: 30
+
+- type: wfShipwrightSystem
+  id: WFSystemFtlLong
+  name: wf-shipwright-system-ftl-long
+  description: wf-shipwright-system-ftl-long-desc
+  category: Mobility
+  points: 10
+  price: 40000
+  install: MachineFTLDrive50
+  # Any other FTL drive a hull carries counts as long range.
+  components: [ FTLDrive ]
+  limit: 1
+  order: 31
+
+# The bay's console, pad and cranes, laid by the Shipwright bay prefab.
+- type: entity
+  parent: WFComputerDrydock
+  id: WFHideoutShipwrightConsole
+  name: shipwright console
+  description: Builds frames on the bay, and fits guns and systems to its owner's ship within its refit points.
+  components:
+  - type: WFDrydockConsole
+    minFee: 0
+    feeFraction: 0
+    maxDuration: 480
+    maxRefitDuration: 480
+  - type: WFShipwrightConsole
+  - type: ActivatableUI
+    key: enum.WFShipwrightConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.WFShipwrightConsoleUiKey.Key:
+        type: WFShipwrightConsoleBoundUserInterface
+      enum.WFDrydockConsoleUiKey.Key:
+        type: WFDrydockConsoleBoundUserInterface
+
+# The faction hangar's refit console: guns on a stock ship's own hardpoints and strongboxes, within its stock firepower.
+- type: entity
+  parent: WFHideoutShipwrightConsole
+  id: WFHideoutHangarConsole
+  name: hangar refit console
+  description: Swaps the guns on your faction ship's own hardpoints, within its stock firepower, and fits strongboxes.
+  components:
+  - type: WFShipwrightConsole
+    faction: true
+
+- type: entity
+  parent: WFHideoutHangarPad
+  id: WFHideoutShipwrightPad
+  name: shipwright bay beacon
+  description: Guides ships with access to this outpost down onto the shipwright bay and back up. The owner's shipwright ship is saved every time it lands here, if it passes its points.
+  components:
+  - type: WFLandingPad
+    size: 17
+    widest: 17
+  - type: WFShipwrightBay
+
+# The bay's cranes run off the outpost's own supply, like its beacon.
+- type: entity
+  parent: WFDrydockCrane
+  id: WFHideoutShipwrightCrane
+  name: shipwright crane
+  components:
+  - type: PowerConsumer
+    voltage: High
+    drawRate: 0
+  - type: WFDrydockCrane
+    maxArm: 27
+    berthGap: 1
+    sections: 4
+    sectionLength: 5
+    extension: 5
+    idleLoad: 0
+    workingLoad: 0
+
+- type: entity
+  parent: WFDrydockCraneMirrored
+  id: WFHideoutShipwrightCraneMirrored
+  name: shipwright crane
+  components:
+  - type: PowerConsumer
+    voltage: High
+    drawRate: 0
+  - type: WFDrydockCrane
+    mirrored: true
+    maxArm: 27
+    berthGap: 1
+    sections: 4
+    sectionLength: 5
+    extension: 5
+    idleLoad: 0
+    workingLoad: 0
+
+# A ship's strongbox: the one store aboard a hangar ship that is saved with it, when it lands in its hangar. It keeps
+# out what a safety deposit box keeps out, and what an outpost already keeps.
+- type: entity
+  parent: [ BaseStructure, BaseBagOpenClose ]
+  id: WFShipStrongbox
+  name: ship strongbox
+  description: A bolted-down strongbox. What it holds stays with the ship whenever it lands in its hangar; the rest of the cargo doesn't.
+  components:
+  - type: Sprite
+    sprite: _WF/SafetyDepositBox/Objects/Economy/depositboxlarge.rsi
+    state: icon
+    noRot: true
+  - type: GenericVisualizer
+    visuals:
+      enum.StorageVisuals.Open:
+        base:
+          True: { state: icon-open }
+          False: { state: icon }
+  - type: Appearance
+  - type: Storage
+    maxItemSize: Large
+    grid:
+    - 0,0,7,5
+    blacklist:
+      components:
+      - IdCard
+      - Currency
+      - Store
+      - EncryptionKey
+      - Headset
+      - SubdermalImplant
+      - Storage
+      - SafetyDepositBox
+      - ShipyardVoucher
+      - SecretStash
+      - Implanter
+      - OverwatchConsole
+      - GhostRoleMobSpawner
+      - DoorRemote
+      - SolutionContainerManager
+      - NukeDisk
+      - Contraband
+      - ThiefUndeterminedBackpack
+      - AccessOverrider
+      - Pda
+      - Pill
+      - MachineBoard
+      - Flatpack
+      - WFSaveOrigin # Saved with an outpost, so it comes back with the outpost
+      tags:
+      - Unstashable
+      - SafetyDepositBlacklist
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+  - type: WFShipStash
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.4,-0.4,0.4,0.4"
+        density: 300
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: InteractionOutline
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallicStrong
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 1500
+      behaviors:
+      - !type:EmptyAllContainersBehaviour
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+  - type: StaticPrice
+    price: 20000

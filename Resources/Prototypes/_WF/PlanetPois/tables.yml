@@ -10,6 +10,8 @@
 - type: wfPlanetPoiTable
   id: WFPoisAsclepiu
   outpostLots: 3
+  # Plots in the world's outpost band; the band sets how many fit.
+  outpostLotSize: 80
   residents: WFStrangerHouseSpawner
   residentHome: WFStrangerHouseHome
   residentChance: 0.6
@@ -271,6 +273,8 @@
 - type: wfPlanetPoiTable
   id: WFPoisMerak
   outpostLots: 3
+  # Plots in the world's outpost band; the band sets how many fit.
+  outpostLotSize: 80
   residents: WFStrangerHouseSpawner
   residentHome: WFStrangerHouseHome
   residentChance: 0.6
@@ -474,6 +478,8 @@
 - type: wfPlanetPoiTable
   id: WFPoisFervidus
   outpostLots: 3
+  # Plots in the world's outpost band; the band sets how many fit.
+  outpostLotSize: 80
   residents: WFStrangerHouseSpawner
   residentHome: WFStrangerHouseHome
   residentChance: 0.6
@@ -590,6 +596,8 @@
 - type: wfPlanetPoiTable
   id: WFPoisThrascias
   outpostLots: 3
+  # Plots in the world's outpost band; the band sets how many fit.
+  outpostLotSize: 80
   residents: WFStrangerHouseSpawner
   residentHome: WFStrangerHouseHome
   residentChance: 0.6
@@ -706,6 +714,8 @@
 - type: wfPlanetPoiTable
   id: WFPoisAerumna
   outpostLots: 3
+  # Plots in the world's outpost band; the band sets how many fit.
+  outpostLotSize: 80
   residents: WFStrangerHouseSpawner
   residentHome: WFStrangerHouseHome
   residentChance: 0.6
@@ -831,7 +841,7 @@
     type: WFPoiTypeMine
 - type: wfPlanetPoiTable
   id: WFPoisCarcinoma
-  outpostLots: 3
+  outpostLots: 0
   residents: WFStrangerHouseSpawner
   residentHome: WFStrangerHouseHome
   residentChance: 0.6

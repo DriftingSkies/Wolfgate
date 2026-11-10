@@ -6,6 +6,8 @@
   ground: WFAsclepiuSurface
   radius: 384
   pois: WFPoisAsclepiu
+  # A ring of outpost plots past the points of interest (WFPlanetPoiSystem.PlaceOutpostBandAsync).
+  outpostBand: 96
   # No cloud layer: its opaque deck hides the ground from orbit. Four air layers hold Crocus's upper levels (WFCityCrocus).
   airLayers: 4
   cloudLayer: false

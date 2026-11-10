@@ -92,6 +92,7 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
         Tabs.SetTabTitle(3, Loc.GetString("wf-outpost-console-tab-sell"));
         Tabs.SetTabTitle(4, Loc.GetString("wf-outpost-console-tab-development"));
         Tabs.SetTabTitle(5, Loc.GetString("wf-outpost-console-tab-access"));
+        Tabs.SetTabTitle(6, Loc.GetString("wf-outpost-console-tab-hideout"));
         Tabs.SetTabVisible(4, false);
         NameEdit.IsValid = text => text.Length <= WFOutpostLimits.NameLength;
         RenameButton.OnPressed += _ => OnRename?.Invoke(NameEdit.Text);
@@ -237,6 +238,8 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
         UpdateSale(state.Sale, isOwner, state.Busy || state.Pending != null);
         DevelopmentTab.UpdateState(state.Development);
         Tabs.SetTabVisible(4, state.Development != null);
+        HideoutTab.UpdateState(state.Hideout, isOwner);
+        Tabs.SetTabVisible(6, state.Hideout != null);
 
         ReadingLabel.Visible = state.Slots == null;
         var locked = !isOwner || state.Busy || state.Pending != null;

@@ -397,7 +397,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
     }
 
     /// <summary>Applies one work item to the ship. Re-checks the item first, so repeats are harmless.</summary>
-    public void ApplyItem(EntityUid ship, WFDrydockWorkItem item)
+    public void ApplyItem(EntityUid ship, WFDrydockWorkItem item, EntityUid console = default)
     {
         switch (item.Kind)
         {
@@ -413,7 +413,37 @@ public sealed partial class WFDrydockSystem : EntitySystem
             case WFDrydockWorkKind.Upgrade:
                 ApplyUpgrade(item);
                 break;
+            case WFDrydockWorkKind.Remove:
+                if (!TerminatingOrDeleted(item.Target))
+                    QueueDel(item.Target);
+                break;
+            case WFDrydockWorkKind.Install:
+                ApplyInstall(ship, item, console);
+                break;
+            case WFDrydockWorkKind.Inspect:
+                if (!TerminatingOrDeleted(item.Target))
+                {
+                    var inspected = new WFDrydockPartInspectedEvent(item.Target, console);
+                    RaiseLocalEvent(ship, ref inspected);
+                }
+                break;
         }
+    }
+
+    /// <summary>Puts an install's part on the ship, anchored where it can be, and tells the ship.</summary>
+    private void ApplyInstall(EntityUid ship, WFDrydockWorkItem item, EntityUid console)
+    {
+        if (item.Prototype is not { } proto || TerminatingOrDeleted(ship))
+            return;
+
+        var part = Spawn(proto, new EntityCoordinates(ship, item.LocalPos));
+        var xform = Transform(part);
+        _transform.SetLocalRotation(part, item.Rotation, xform);
+        if (!xform.Anchored && TryComp<MapGridComponent>(ship, out var grid))
+            _transform.AnchorEntity((part, xform), (ship, grid));
+
+        var installed = new WFDrydockPartInstalledEvent(part, console);
+        RaiseLocalEvent(ship, ref installed);
     }
 
     private void ApplyTile(EntityUid ship, WFDrydockWorkItem item)
@@ -662,6 +692,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
                     state.MissingTiles++;
                     break;
                 case WFDrydockWorkKind.Entity:
+                case WFDrydockWorkKind.Install:
                     state.MissingParts++;
                     break;
                 case WFDrydockWorkKind.Heal:
@@ -976,7 +1007,8 @@ public sealed partial class WFDrydockSystem : EntitySystem
         {
             item.WorkTime = item.Kind switch
             {
-                WFDrydockWorkKind.Tile => comp.TileWorkTime,
+                WFDrydockWorkKind.Remove or WFDrydockWorkKind.Install or WFDrydockWorkKind.Inspect => comp.EntityWorkTime * item.WorkScale,
+                WFDrydockWorkKind.Tile => comp.TileWorkTime * item.WorkScale,
                 WFDrydockWorkKind.Entity => comp.EntityWorkTime,
                 WFDrydockWorkKind.Heal => comp.HealWorkTime,
                 WFDrydockWorkKind.Break => item.WorkTime,

@@ -33,7 +33,7 @@ public sealed partial class WFPlanetPoiSystem
 
     /// <summary>Builds and validates every site and route before releasing the terrain hold.</summary>
     private async Task PlaceAsync(EntityUid ground, WFPlanetNetworkComponent network, Vector2 centre, float radius, WFPlanetPoiTablePrototype table,
-        List<Task> claims)
+        List<Task> claims, int band = 0)
     {
         var record = EnsureComp<WFPlanetPoiComponent>(ground);
         var created = new HashSet<EntityUid>();
@@ -205,7 +205,10 @@ public sealed partial class WFPlanetPoiSystem
                     RollBackSite(ground, created, createdBefore, createdDecals, decalsStart, changed, changedBefore, originalTiles, originalRoof, initialPins);
                 }
             }
-            await PlaceOutpostLotsAsync((ground, biome, grid), centre, radius, table, record, reserved, approaches, changed);
+            if (band > 0)
+                await PlaceOutpostBandAsync((ground, biome, grid), centre, radius, band, table, record, changed);
+            else
+                await PlaceOutpostLotsAsync((ground, biome, grid), centre, radius, table, record, reserved, approaches, changed);
             Report(ground, WFWorldFormingStage.Roads, 0.6f);
             await _preload.Breathe();
             if (table.Roads is { } roads && record.Sites.Any(site => site.Sockets.Count > 0))

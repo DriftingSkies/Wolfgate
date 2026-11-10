@@ -9,6 +9,8 @@ wf-outpost-found-not-natural = The outpost needs open, natural ground under ever
 wf-outpost-found-blocked = Something is in the way. Clear the ground first.
 wf-outpost-found-occupied = Something already stands there.
 wf-outpost-found-reserved = That ground is spoken for: a road, a site or a cave mouth.
+wf-outpost-found-no-plot = Every outpost plot on that world is taken.
+wf-outpost-found-forbidden-world = No outpost stands on this world.
 wf-outpost-found-claimed = That ground is claimed by another outpost.
 wf-outpost-found-too-close = Too close to a road, a site or a cave mouth. An outpost needs clear ground around it.
 wf-outpost-claimed = This ground is claimed by {$outpost}.
@@ -44,6 +46,10 @@ wf-outpost-plate-outside-claim = A foundation plate has to go inside your outpos
 wf-outpost-plate-too-wide = Your outpost can't spread any wider than that.
 wf-outpost-plate-taken = There's already floor there.
 wf-outpost-plate-full = Your outpost is as big as an outpost can be.
+wf-outpost-prefab-not-builder = You don't build on that outpost.
+wf-outpost-prefab-failed = The module couldn't be laid out.
+wf-outpost-prefab-overlaps = The module would overlap the outpost's floor. Point it at open ground.
+wf-outpost-prefab-too-many = The outpost holds too many objects to take the module.
 wf-outpost-plate-claimed = That ground is claimed by another outpost.
 
 wf-outpost-hatch-done = You open a hatch in the floor and sink a ladder into the room dug below.
@@ -295,3 +301,7 @@ wf-fuel-rod-examine-charge = {$percent ->
     [0] It is spent.
    *[other] It has [color=yellow]{$percent}%[/color] of its fuel left.
 }
+
+wf-outpost-join-land = {$outpost} (it lands on its home world first, {$price} thalers)
+wf-outpost-join-landing = {$outpost} is coming down on its home world. You'll wake in one of its cryopods once it lands.
+wf-outpost-join-land-failed = Your outpost couldn't land: {$reason} Anything you paid has been returned.

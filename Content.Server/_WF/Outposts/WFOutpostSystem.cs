@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using Content.Server._Mono.Cleanup;
@@ -118,6 +119,14 @@ public sealed partial class WFOutpostSystem : EntitySystem
     /// <summary>Whether another module lets a player found, claim or drop an outpost on a ground map.</summary>
     public bool MayFound(NetUserId owner, EntityUid? user, EntityUid ground, out string reason)
     {
+        if (TryComp<WFPlanetLayerComponent>(ground, out var layer) && TryGetEntity(layer.Network, out var network)
+            && TryComp<WFPlanetNetworkComponent>(network, out var planet)
+            && _proto.TryIndex(planet.Surface, out var surface) && !surface.Outposts)
+        {
+            reason = "wf-outpost-found-forbidden-world";
+            return false;
+        }
+
         var attempt = new WFOutpostFoundAttemptEvent(owner, user, ground);
         RaiseLocalEvent(ref attempt);
         reason = attempt.Refusal ?? string.Empty;
@@ -163,43 +172,7 @@ public sealed partial class WFOutpostSystem : EntitySystem
             || !MayFound(owner, user, ground, out reason))
             return false;
 
-        var mapId = Transform(ground).MapID;
-        var grid = _maps.CreateGridEntity(mapId);
-        _transform.SetWorldPositionRotation(grid.Owner,
-            Vector2.Transform(origin, _transform.GetWorldMatrix(ground)),
-            _transform.GetWorldRotation(ground));
-
-        var floor = new Tile(_tiles[kit.Comp.Tile].TileId);
-        var tiles = new List<(Vector2i, Tile)>();
-        for (var x = 0; x < kit.Comp.Size; x++)
-        for (var y = 0; y < kit.Comp.Size; y++)
-            tiles.Add((new Vector2i(x, y), floor));
-        _maps.SetTiles(grid.Owner, grid.Comp, tiles);
-
-        HoldDown(grid);
-
-        var ownerName = MetaData(user).EntityName;
-        var comp = EnsureComp<WFOutpostComponent>(grid);
-        comp.Owner = owner;
-        comp.OwnerName = ownerName;
-        comp.Ground = ground;
-        comp.FoundingTiles = kit.Comp.Size * kit.Comp.Size;
-        comp.Lineage = Guid.NewGuid().ToString();
-        _metaData.SetEntityName(grid, Loc.GetString("wf-outpost-default-name", ("owner", ownerName)));
-
-        var middle = kit.Comp.Size / 2 + 0.5f;
-        var console = Spawn(kit.Comp.Console, new EntityCoordinates(grid, middle, middle));
-        EnsureComp<CleanupImmuneComponent>(console);
-        EnsureComp<WFOutpostConsoleComponent>(console).Outpost = grid;
-        comp.Console = console;
-
-        var all = new List<Vector2i>();
-        for (var x = 0; x < kit.Comp.Size; x++)
-        for (var y = 0; y < kit.Comp.Size; y++)
-            all.Add(new Vector2i(x, y));
-        CarveUnder((grid, comp, grid.Comp), all);
-        RebuildPortals((grid, comp, grid.Comp));
-        SetupAccess((grid, comp), user);
+        var grid = CreateOutpost(owner, MetaData(user).EntityName, ground, origin, kit.Comp, user);
         QueueDel(kit);
 
         _adminLog.Add(LogType.WFOutpost, LogImpact.Medium,
@@ -209,6 +182,140 @@ public sealed partial class WFOutpostSystem : EntitySystem
         outpost = grid;
         reason = string.Empty;
         return true;
+    }
+
+    /// <summary>
+    /// Founds an account's outpost on a free plot of a world's outpost band, as a kit used there would: nobody has to stand
+    /// on the world. <paramref name="reason"/> is a loc id when no plot is free or the world takes no outposts.
+    /// </summary>
+    public bool TryFoundOnPlot(NetUserId owner, string ownerName, EntityUid ground, EntityUid? founder,
+        [NotNullWhen(true)] out EntityUid? outpost, out string reason)
+    {
+        outpost = null;
+        if (!_cfg.GetCVar(OutpostCVars.Enabled))
+        {
+            reason = "wf-outpost-found-disabled";
+            return false;
+        }
+
+        if (TryGetOutpost(owner, out _))
+        {
+            reason = "wf-outpost-found-already-own";
+            return false;
+        }
+
+        if (!MayFound(owner, founder, ground, out reason))
+            return false;
+
+        if (!_proto.TryIndex(KitPrototype, out var kitProto)
+            || !kitProto.TryGetComponent<WFOutpostKitComponent>(out var kit, EntityManager.ComponentFactory)
+            || !TryComp<MapGridComponent>(ground, out var groundGrid)
+            || !TryGetFreePlot((ground, groundGrid), kit.Size, out var origin))
+        {
+            reason = "wf-outpost-found-no-plot";
+            return false;
+        }
+
+        outpost = CreateOutpost(owner, ownerName, ground, origin, kit, founder);
+        _adminLog.Add(LogType.WFOutpost, LogImpact.Medium, $"Outpost {ToPrettyString(outpost.Value):grid} of {owner} was founded on a plot at {origin}");
+        reason = string.Empty;
+        return true;
+    }
+
+    /// <summary>
+    /// A free plot of the world's outpost band: the corner of a founding square at its middle, with no outpost standing
+    /// on the plot and the square open ground.
+    /// </summary>
+    public bool TryGetFreePlot(Entity<MapGridComponent> ground, int size, out Vector2i origin)
+    {
+        origin = default;
+        if (!TryComp<Content.Server._WF.PlanetPois.WFPlanetPoiComponent>(ground, out var pois))
+            return false;
+
+        foreach (var lot in pois.OutpostLots)
+        {
+            if (!IsPlotFree(ground, lot))
+                continue;
+
+            var centre = new Vector2i((lot.Left + lot.Right) / 2, (lot.Bottom + lot.Top) / 2);
+            var corner = centre - new Vector2i(size / 2, size / 2);
+            var open = true;
+            for (var x = 0; x < size && open; x++)
+            for (var y = 0; y < size && open; y++)
+                open = IsOpenGround(ground, corner + new Vector2i(x, y), null, out _);
+            if (!open)
+                continue;
+
+            origin = corner;
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>The world's outpost plots and whether each is free.</summary>
+    public List<(Box2i Lot, bool Free)> Plots(Entity<MapGridComponent> ground)
+    {
+        var list = new List<(Box2i, bool)>();
+        if (TryComp<Content.Server._WF.PlanetPois.WFPlanetPoiComponent>(ground, out var pois))
+        {
+            foreach (var lot in pois.OutpostLots)
+                list.Add((lot, IsPlotFree(ground, lot)));
+        }
+
+        return list;
+    }
+
+    private bool IsPlotFree(Entity<MapGridComponent> ground, Box2i lot)
+    {
+        var box = new Box2(lot.Left, lot.Bottom, lot.Right, lot.Top);
+        _grids.Clear();
+        _maps.FindGridsIntersecting(Transform(ground).MapID, _transform.GetWorldMatrix(ground).TransformBox(box), ref _grids,
+            includeMap: false);
+        return !_grids.Any(grid => HasComp<WFOutpostComponent>(grid));
+    }
+
+    /// <summary>Lays a founding square for an account at <paramref name="origin"/> on its ground, with the kit's console in it.</summary>
+    private EntityUid CreateOutpost(NetUserId owner, string ownerName, EntityUid ground, Vector2i origin, WFOutpostKitComponent kit,
+        EntityUid? founder)
+    {
+        var mapId = Transform(ground).MapID;
+        var grid = _maps.CreateGridEntity(mapId);
+        _transform.SetWorldPositionRotation(grid.Owner,
+            Vector2.Transform(origin, _transform.GetWorldMatrix(ground)),
+            _transform.GetWorldRotation(ground));
+
+        var floor = new Tile(_tiles[kit.Tile].TileId);
+        var tiles = new List<(Vector2i, Tile)>();
+        for (var x = 0; x < kit.Size; x++)
+        for (var y = 0; y < kit.Size; y++)
+            tiles.Add((new Vector2i(x, y), floor));
+        _maps.SetTiles(grid.Owner, grid.Comp, tiles);
+
+        HoldDown(grid);
+
+        var comp = EnsureComp<WFOutpostComponent>(grid);
+        comp.Owner = owner;
+        comp.OwnerName = ownerName;
+        comp.Ground = ground;
+        comp.FoundingTiles = kit.Size * kit.Size;
+        comp.Lineage = Guid.NewGuid().ToString();
+        _metaData.SetEntityName(grid, Loc.GetString("wf-outpost-default-name", ("owner", ownerName)));
+
+        var middle = kit.Size / 2 + 0.5f;
+        var console = Spawn(kit.Console, new EntityCoordinates(grid, middle, middle));
+        EnsureComp<CleanupImmuneComponent>(console);
+        EnsureComp<WFOutpostConsoleComponent>(console).Outpost = grid;
+        comp.Console = console;
+
+        var all = new List<Vector2i>();
+        for (var x = 0; x < kit.Size; x++)
+        for (var y = 0; y < kit.Size; y++)
+            all.Add(new Vector2i(x, y));
+        CarveUnder((grid, comp, grid.Comp), all);
+        RebuildPortals((grid, comp, grid.Comp));
+        SetupAccess((grid, comp), founder);
+        return grid;
     }
 
     /// <summary>Holds a grid down as an outpost: anchored, static, kept from cleanup, open to the sky until roofed.</summary>
@@ -468,8 +575,8 @@ public sealed partial class WFOutpostSystem : EntitySystem
             pending = new WFOutpostPendingLoad(load.Name, load.Price, load.Lands);
 
         var state = new WFOutpostConsoleState(Name(grid), outpost.OwnerName, outpost.Owner,
-            CountAllTiles((grid, outpost, gridComp)), _cfg.GetCVar(OutpostCVars.MaxTiles),
-            CountAllEntities((grid, outpost)), _cfg.GetCVar(OutpostCVars.MaxEntities),
+            CountAllTiles((grid, outpost, gridComp)), TileCap(grid),
+            CountAllEntities((grid, outpost)), EntityCap(grid),
             GetSlotViews(outpost.Owner), IsBusy(outpost.Owner), pending, GetTradeView((grid, outpost)),
             GetSaleView(console, (grid, outpost, gridComp)));
         if (Transform(grid).MapUid is { } map && _raidWindow.TryGetWindowOn(map, out var active, out var until))

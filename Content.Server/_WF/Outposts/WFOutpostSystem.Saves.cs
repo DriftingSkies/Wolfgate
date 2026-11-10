@@ -129,10 +129,16 @@ public sealed partial class WFOutpostSystem
     }
 
     /// <summary>
-    /// Whether a save keeps an entity: players, mobs, cash, deeds, ghost roles and raid loot are left out of its value, and taken
-    /// off the copy when it is loaded.
+    /// Whether a save keeps an entity: players, mobs, cash, deeds, ghost roles, raid loot and what a hangar ship's strongbox
+    /// keeps are left out of its value, and taken off the copy when it is loaded.
     /// </summary>
     public bool IsKept(EntityUid uid)
+    {
+        return IsKeptAnywhere(uid) && !HasComp<Content.Shared._WF.Hideouts.WFShipSaveOriginComponent>(uid);
+    }
+
+    /// <summary>Whether any save keeps an entity: what <see cref="IsKept"/> keeps, and what a hangar ship's strongbox keeps.</summary>
+    public bool IsKeptAnywhere(EntityUid uid)
     {
         return !HasComp<ActorComponent>(uid)
                && !HasComp<MobStateComponent>(uid)
@@ -211,7 +217,7 @@ public sealed partial class WFOutpostSystem
         }
 
         var entities = CountAllEntities(outpost);
-        if (entities > _cfg.GetCVar(OutpostCVars.MaxEntities))
+        if (entities > EntityCap(outpost))
         {
             reason = "wf-outpost-save-too-big";
             return false;
@@ -562,7 +568,7 @@ public sealed partial class WFOutpostSystem
         if (!TrySave(args.Actor, (grid, outpost), args.Slot, out var reason))
         {
             var text = reason == "wf-outpost-save-too-big"
-                ? Loc.GetString(reason, ("count", CountAllEntities((grid, outpost))), ("max", _cfg.GetCVar(OutpostCVars.MaxEntities)),
+                ? Loc.GetString(reason, ("count", CountAllEntities((grid, outpost))), ("max", EntityCap(grid)),
                     ("big", DescribeBig(grid)))
                 : Loc.GetString(reason);
             _popup.PopupEntity(text, args.Actor, args.Actor);

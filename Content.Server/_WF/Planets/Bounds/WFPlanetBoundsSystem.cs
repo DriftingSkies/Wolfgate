@@ -48,7 +48,9 @@ public sealed partial class WFPlanetBoundsSystem : EntitySystem
             return 0;
 
         var cvar = _cfg.GetCVar(PlanetCVars.Radius);
-        return Math.Max(cvar > 0 ? cvar : surface.Radius, 0);
+        var radius = Math.Max(cvar > 0 ? cvar : surface.Radius, 0);
+        // The outpost band rings the world outside its points of interest.
+        return radius > 0 ? radius + Math.Max(surface.OutpostBand, 0) : 0;
     }
 
     private void OnNetworkBuilt(ref WFPlanetNetworkBuiltEvent args)

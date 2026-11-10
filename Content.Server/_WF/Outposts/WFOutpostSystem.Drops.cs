@@ -248,6 +248,14 @@ public sealed partial class WFOutpostSystem
     /// <summary>Stages a read drop and brings it down on the first clear site found, or gives it up.</summary>
     private void LandDrop(PendingDrop drop)
     {
+        // A module may send the save to the world it calls home.
+        if (drop.Yaml != null)
+        {
+            var world = new WFOutpostDropWorldEvent(drop.Owner, drop.Yaml, drop.Ground);
+            RaiseLocalEvent(ref world);
+            drop.Ground = world.Ground;
+        }
+
         if (TerminatingOrDeleted(drop.Ground) || !TryComp<BiomeComponent>(drop.Ground, out var biome)
             || !TryComp<MapGridComponent>(drop.Ground, out var groundGrid))
         {

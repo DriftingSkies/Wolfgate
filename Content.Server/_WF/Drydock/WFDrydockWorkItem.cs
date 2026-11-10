@@ -13,10 +13,20 @@ public enum WFDrydockWorkKind : byte
     Heal,
     Upgrade,
     Break,
+
+    /// <summary>Takes a part off the ship; ranked before installs, so a mount is cleared before its new gun goes on.</summary>
+    Remove,
+
+    /// <summary>Puts a new part on the ship: <see cref="WFDrydockWorkItem.Prototype"/> at its position and rotation.</summary>
+    Install,
+
+    /// <summary>Looks a part over and changes nothing; whoever ordered the job hears of it.</summary>
+    Inspect,
 }
 
 /// <summary>
-/// One unit of drydock work: a hull tile, a missing entity, a heal, a refit tier, or a hull tile to break.
+/// One unit of drydock work: a hull tile, a missing entity, a heal, a refit tier, a hull tile to break, or a part to take
+/// off, put on or look over.
 /// </summary>
 public sealed class WFDrydockWorkItem
 {
@@ -76,7 +86,25 @@ public sealed class WFDrydockWorkItem
 
     /// <summary>Seconds one crane spends on this item, set when the job starts.</summary>
     public float WorkTime;
+
+    /// <summary>Rotation of a part an install puts on, in the ship's frame.</summary>
+    public Angle Rotation;
+
+    /// <summary>Multiplies an install's, removal's or inspection's work time, so a job can run faster or slower than a repair.</summary>
+    public float WorkScale = 1f;
 }
+
+/// <summary>Raised on a ship when a drydock install puts a part on it.</summary>
+[ByRefEvent]
+public readonly record struct WFDrydockPartInstalledEvent(EntityUid Part, EntityUid Console);
+
+/// <summary>Raised on a ship when a drydock inspection reaches one of its parts.</summary>
+[ByRefEvent]
+public readonly record struct WFDrydockPartInspectedEvent(EntityUid Part, EntityUid Console);
+
+/// <summary>Raised on a drydock console when its job ends, finished or not, before its cranes park.</summary>
+[ByRefEvent]
+public readonly record struct WFDrydockJobEndedEvent(EntityUid Ship, bool Finished, int Skipped);
 
 /// <summary>Units of a refit line an item brings to a tier, paid in full, by the tier each reaches now.</summary>
 public sealed record WFDrydockRefitUnits(string Refit, int Tier, int[] Full);

@@ -43,6 +43,13 @@ public record struct WFOutpostLotsEvent(Robust.Shared.Network.NetUserId Owner, E
     public int? Preferred;
 }
 
+/// <summary>
+/// Raised as a drop is about to land, with the save's YAML; a module that sets <see cref="Ground"/> to another world's
+/// ground layer has it land there instead.
+/// </summary>
+[ByRefEvent]
+public record struct WFOutpostDropWorldEvent(Robust.Shared.Network.NetUserId Owner, string Yaml, EntityUid Ground);
+
 /// <summary>Raised on an outpost handed to a new owner, which makes it a new outpost.</summary>
 [ByRefEvent]
 public record struct WFOutpostTransferredEvent;
@@ -58,3 +65,11 @@ public record struct WFOutpostPodLimitEvent(int Limit);
 /// <summary>Raised on an outpost as its console's state is built, for other modules' parts of it.</summary>
 [ByRefEvent]
 public record struct WFOutpostConsoleStateEvent(Content.Shared._WF.Outposts.WFOutpostConsoleState State);
+
+/// <summary>Raised on an outpost for the most floor it may have, the most a save of it may hold, and how far across it may spread.</summary>
+[ByRefEvent]
+public record struct WFOutpostCapsEvent(int Tiles, int Entities, int Span);
+
+/// <summary>Raised on a landing pad once a hull has come to rest on it.</summary>
+[ByRefEvent]
+public record struct WFPadDockedEvent(EntityUid Hull);

@@ -1,4 +1,5 @@
 using Content.Shared._WF.Colonies;
+using Content.Shared._WF.Hideouts;
 using Content.Shared._WF.Outposts;
 using Content.Shared._WF.ShipAccess;
 using Robust.Client.UserInterface;
@@ -39,6 +40,15 @@ public sealed class WFOutpostConsoleBoundUserInterface : BoundUserInterface
         development.OnPermit += (holder, granted) => SendMessage(new WFColonyPermitMessage(holder, granted));
         development.OnBerth += (holder, open) => SendMessage(new WFColonyBerthMessage(holder, open));
         development.OnYardKit += () => SendMessage(new WFColonyYardKitMessage());
+
+        var hideout = _window.HideoutTab;
+        hideout.OnBuild += module => SendMessage(new WFHideoutBuildMessage(module));
+        hideout.OnRegister += () => SendMessage(new WFHideoutRegisterShipMessage());
+        hideout.OnUnregister += () => SendMessage(new WFHideoutUnregisterShipMessage());
+        hideout.OnRecall += () => SendMessage(new WFHideoutRecallShipMessage());
+        hideout.OnInsure += () => SendMessage(new WFHideoutInsureMessage());
+        hideout.OnClaim += () => SendMessage(new WFHideoutClaimMessage());
+        hideout.OnMoveHome += world => SendMessage(new WFHideoutMoveHomeMessage(world));
 
         var access = _window.AccessTab;
         access.ModeChanged += mode => SendMessage(new WFShipAccessSetModeMessage(mode));

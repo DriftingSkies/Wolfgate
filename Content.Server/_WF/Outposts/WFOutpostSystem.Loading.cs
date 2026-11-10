@@ -374,6 +374,12 @@ public sealed partial class WFOutpostSystem
     /// <summary>Takes off the copy what a save never keeps (<see cref="IsKept"/>), wherever it sits.</summary>
     private void Strip(EntityUid grid)
     {
+        Strip(grid, IsKept);
+    }
+
+    /// <summary>Takes off a loaded copy whatever <paramref name="kept"/> doesn't keep, wherever it sits.</summary>
+    private void Strip(EntityUid grid, Func<EntityUid, bool> kept)
+    {
         var strip = new List<EntityUid>();
         var pending = new Stack<EntityUid>();
         pending.Push(grid);
@@ -382,7 +388,7 @@ public sealed partial class WFOutpostSystem
             var children = Transform(uid).ChildEnumerator;
             while (children.MoveNext(out var child))
             {
-                if (IsKept(child))
+                if (kept(child))
                     pending.Push(child);
                 else
                     strip.Add(child);
@@ -471,6 +477,7 @@ public sealed partial class WFOutpostSystem
 
     public override void Update(float frameTime)
     {
+        UpdateMarks();
         base.Update(frameTime);
         RestoreCaverns();
         UpdateAutosave();

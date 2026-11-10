@@ -2456,6 +2456,61 @@ namespace Content.Server.Database.Migrations.Sqlite
                     b.ToTable("wolfgate_game_score", (string)null);
                 });
 
+            modelBuilder.Entity("Content.Server.Database.WolfgateHideoutShip", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("wolfgate_hideout_ship_id");
+
+                    b.Property<byte[]>("Data")
+                        .IsRequired()
+                        .HasColumnType("BLOB")
+                        .HasColumnName("data");
+
+                    b.Property<byte[]>("InsuredData")
+                        .HasColumnType("BLOB")
+                        .HasColumnName("insured_data");
+
+                    b.Property<int>("InsuredValue")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("insured_value");
+
+                    b.Property<bool>("Lost")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("lost");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("name");
+
+                    b.Property<Guid>("PlayerUserId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("player_user_id");
+
+                    b.Property<DateTime>("Saved")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("saved");
+
+                    b.Property<int>("SavedRound")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("saved_round");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id")
+                        .HasName("PK_wolfgate_hideout_ship");
+
+                    b.HasIndex("PlayerUserId")
+                        .IsUnique();
+
+                    b.ToTable("wolfgate_hideout_ship", (string)null);
+                });
+
             modelBuilder.Entity("Content.Server.Database.WolfgateOutpostPayout", b =>
                 {
                     b.Property<int>("Id")

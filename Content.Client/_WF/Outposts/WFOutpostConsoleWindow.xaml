@@ -3,8 +3,9 @@
                       xmlns:outposts="clr-namespace:Content.Client._WF.Outposts"
                       xmlns:access="clr-namespace:Content.Client._WF.ShipAccess"
                       xmlns:colonies="clr-namespace:Content.Client._WF.Colonies"
-                      MinSize="640 460"
-                      SetSize="900 640"
+                      xmlns:hideouts="clr-namespace:Content.Client._WF.Hideouts"
+                      MinSize="1000 600"
+                      SetSize="1120 720"
                       Title="{Loc 'wf-outpost-console-title'}">
     <TabContainer Name="Tabs" Margin="8">
         <BoxContainer Name="OverviewTab" Orientation="Horizontal" Margin="8" SeparationOverride="8">
@@ -14,7 +15,7 @@
                     <BoxContainer Name="MapLegend" Orientation="Horizontal" SeparationOverride="14" HorizontalAlignment="Center"/>
                 </BoxContainer>
             </PanelContainer>
-            <BoxContainer Orientation="Vertical" MinWidth="270" MaxWidth="300" SeparationOverride="8">
+            <BoxContainer Orientation="Vertical" MinWidth="300" MaxWidth="340" SeparationOverride="8">
                 <PanelContainer StyleClasses="AngleRect">
                     <BoxContainer Orientation="Vertical" Margin="10" SeparationOverride="4">
                         <Label Text="{Loc 'wf-outpost-console-name'}" StyleClasses="LabelSubText"/>
@@ -141,5 +142,6 @@
         </BoxContainer>
         <colonies:WFColonyDevelopmentPanel Name="DevelopmentTab" Access="Public"/>
         <access:ShipAccessScreen Name="AccessTab" Access="Public" Margin="8"/>
+        <hideouts:WFHideoutPanel Name="HideoutTab" Access="Public"/>
     </TabContainer>
 </controls:FancyWindow>

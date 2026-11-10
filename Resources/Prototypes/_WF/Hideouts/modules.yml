@@ -1,0 +1,323 @@
+# Outpost modules, after Escape from Tarkov's hideout. Each level costs money, materials (stacks: sheets and cable, by
+# stack type) and parts (by prototype), all taken from what lies on the outpost, crates and lockers included. A full
+# personal outpost is about 17 million thalers, the company wing 12 million more. Build times only run while the outpost
+# stands in a round. Founding an outpost takes only its kit, bought with credits.
+
+# A home's upkeep in place of the outpost load markup, and the fee for moving its home world.
+- type: wfHideoutRules
+  id: WFHideoutRules
+  homeMarkup: 0.1
+  moveFee: 250000
+  # Founding from the registry at Central costs credits only; riding its drop down to your outpost costs a fee.
+  foundPrice: 15000
+  rideFee: 2500
+
+- type: wfHideoutModule
+  id: WFHideoutGroundworks
+  name: wf-hideout-module-groundworks
+  description: wf-hideout-module-groundworks-desc
+  order: 0
+  levels:
+  - price: 25000
+    buildTime: 60
+    summary: wf-hideout-level-groundworks-1
+    stacks: { Steel: 50 }
+  - price: 150000
+    buildTime: 300
+    summary: wf-hideout-level-groundworks-2
+    stacks: { Steel: 200, Plasteel: 50, CableHV: 30 }
+    tiles: 1000
+    entities: 250
+    span: 32
+    grants: [ WFOutpostFoundationPlate, WFOutpostFoundationPlate ]
+  - price: 600000
+    buildTime: 900
+    summary: wf-hideout-level-groundworks-3
+    stacks: { Steel: 400, Plasteel: 150, ReinforcedGlass: 100 }
+    parts: { APCElectronics: 4 }
+    tiles: 2000
+    entities: 500
+    span: 32
+    grants: [ WFOutpostFoundationPlate, WFOutpostFoundationPlate, WFOutpostFoundationPlate ]
+  - price: 2000000
+    buildTime: 1800
+    summary: wf-hideout-level-groundworks-4
+    stacks: { Steel: 800, Plasteel: 400, Gold: 20, Silver: 20 }
+    parts: { SMESMachineCircuitboard: 2 }
+    tiles: 4000
+    entities: 1000
+    span: 64
+    grants: [ WFOutpostFoundationPlate, WFOutpostFoundationPlate, WFOutpostFoundationPlate, WFOutpostFoundationPlate ]
+
+- type: wfHideoutModule
+  id: WFHideoutHangar
+  name: wf-hideout-module-hangar
+  description: wf-hideout-module-hangar-desc
+  order: 1
+  levels:
+  - price: 120000
+    buildTime: 300
+    summary: wf-hideout-level-hangar-1
+    stacks: { Steel: 150, CableHV: 30 }
+    parts: { PowerCellHigh: 2 }
+    requires: { WFHideoutGroundworks: 1 }
+    prefab: /SharedMaps/_WF/Hideouts/hangar.yml
+    hangarSize: 9
+    insurancePremium: 0.25
+    insuranceDeductible: 0.2
+  - price: 400000
+    buildTime: 600
+    summary: wf-hideout-level-hangar-2
+    stacks: { Plasteel: 100 }
+    parts: { CapacitorStockPart: 4, MicroManipulatorStockPart: 4 }
+    requires: { WFHideoutGroundworks: 2 }
+    hangarSize: 13
+    insurancePremium: 0.2
+    insuranceDeductible: 0.2
+    grants: [ WFOutpostFoundationPlate, WFOutpostFoundationPlate ]
+  - price: 1200000
+    buildTime: 1200
+    summary: wf-hideout-level-hangar-3
+    stacks: { Plasteel: 250, Gold: 10 }
+    parts: { PowerCellHyper: 4 }
+    requires: { WFHideoutGroundworks: 3, WFHideoutPowerhouse: 2 }
+    hangarSize: 17
+    insurancePremium: 0.15
+    insuranceDeductible: 0.15
+    grants: [ WFOutpostFoundationPlate, WFOutpostFoundationPlate, WFOutpostFoundationPlate ]
+  - price: 3500000
+    buildTime: 2400
+    summary: wf-hideout-level-hangar-4
+    stacks: { Plasteel: 500, Gold: 30, Silver: 30 }
+    parts: { SMESMachineCircuitboard: 2 }
+    requires: { WFHideoutGroundworks: 4, WFHideoutWorkshop: 3 }
+    hangarSize: 21
+    insurancePremium: 0.1
+    insuranceDeductible: 0.1
+    grants: [ WFOutpostFoundationPlate, WFOutpostFoundationPlate, WFOutpostFoundationPlate, WFOutpostFoundationPlate ]
+
+- type: wfHideoutModule
+  id: WFHideoutPowerhouse
+  name: wf-hideout-module-powerhouse
+  description: wf-hideout-module-powerhouse-desc
+  order: 2
+  levels:
+  - price: 75000
+    buildTime: 180
+    summary: wf-hideout-level-powerhouse-1
+    stacks: { Steel: 100, CableMV: 30 }
+    parts: { PowerCellMedium: 4 }
+    requires: { WFHideoutGroundworks: 1 }
+    prefab: /SharedMaps/_WF/Hideouts/powerhouse.yml
+  - price: 300000
+    buildTime: 600
+    summary: wf-hideout-level-powerhouse-2
+    stacks: { CableHV: 60 }
+    parts: { PowerCellHigh: 4, CapacitorStockPart: 6, JugWeldingFuel: 2 }
+    requires: { WFHideoutGroundworks: 2 }
+    grants: [ WFOutpostCompactRTGPack, WFOutpostBatteryLargePack ]
+  - price: 1000000
+    buildTime: 1500
+    summary: wf-hideout-level-powerhouse-3
+    stacks: { Uranium: 30 }
+    parts: { PowerCellHyper: 6, SMESMachineCircuitboard: 1 }
+    requires: { WFHideoutGroundworks: 3 }
+    grants: [ WFOutpostCompactRTGPack, WFOutpostCompactRTGPack, WFOutpostFuelGeneratorPack, WFOutpostBatteryLargePack ]
+
+- type: wfHideoutModule
+  id: WFHideoutQuarters
+  name: wf-hideout-module-quarters
+  description: wf-hideout-module-quarters-desc
+  order: 3
+  levels:
+  - price: 60000
+    buildTime: 180
+    summary: wf-hideout-level-quarters-1
+    stacks: { Steel: 80, WoodPlank: 30, Cloth: 20 }
+    requires: { WFHideoutGroundworks: 1 }
+    prefab: /SharedMaps/_WF/Hideouts/quarters.yml
+    pods: 1
+  - price: 250000
+    buildTime: 600
+    summary: wf-hideout-level-quarters-2
+    stacks: { Cloth: 40 }
+    parts: { ComputerTelevision: 1, FoodTinBeans: 10 }
+    requires: { WFHideoutPowerhouse: 1 }
+    pods: 2
+    grants: [ WFOutpostCryopodPack, WFOutpostCryopodPack, WFOutpostSustenanceDispenserPack ]
+  - price: 900000
+    buildTime: 1200
+    summary: wf-hideout-level-quarters-3
+    stacks: { WoodPlank: 80, Cloth: 80 }
+    parts: { RadioHandheld: 2 }
+    requires: { WFHideoutGroundworks: 3, WFHideoutMedbay: 1 }
+    pods: 3
+    grants: [ WFOutpostCryopodPack, WFOutpostCryopodPack, WFOutpostCryopodPack, WFOutpostRangePack, WFOutpostRationsPrinterPack ]
+
+- type: wfHideoutModule
+  id: WFHideoutWorkshop
+  name: wf-hideout-module-workshop
+  description: wf-hideout-module-workshop-desc
+  order: 4
+  levels:
+  - price: 90000
+    buildTime: 240
+    summary: wf-hideout-level-workshop-1
+    stacks: { Steel: 150 }
+    parts: { ToolboxMechanicalFilled: 1 }
+    requires: { WFHideoutPowerhouse: 1 }
+    prefab: /SharedMaps/_WF/Hideouts/workshop.yml
+  - price: 350000
+    buildTime: 900
+    summary: wf-hideout-level-workshop-2
+    stacks: { Plasteel: 80 }
+    parts: { ToolboxElectricalFilled: 1, Multitool: 1, MicroManipulatorStockPart: 4 }
+    requires: { WFHideoutGroundworks: 2, WFHideoutPowerhouse: 2 }
+    grants: [ WFOutpostPartsPressPack, WFOutpostFabricationSiloPack, WFOutpostOreSiloPack ]
+  - price: 1100000
+    buildTime: 1800
+    summary: wf-hideout-level-workshop-3
+    stacks: { Gold: 15 }
+    parts: { MatterBinStockPart: 8, CapacitorStockPart: 8 }
+    requires: { WFHideoutGroundworks: 3, WFHideoutPowerhouse: 3 }
+    grants: [ WFOutpostMiningBotDockPack, WFOutpostPowerExporterPack ]
+
+- type: wfHideoutModule
+  id: WFHideoutMedbay
+  name: wf-hideout-module-medbay
+  description: wf-hideout-module-medbay-desc
+  order: 5
+  levels:
+  - price: 110000
+    buildTime: 240
+    summary: wf-hideout-level-medbay-1
+    stacks: { Steel: 100, Glass: 50 }
+    parts: { MedkitFilled: 2 }
+    requires: { WFHideoutQuarters: 1, WFHideoutPowerhouse: 1 }
+    prefab: /SharedMaps/_WF/Hideouts/medbay.yml
+  - price: 450000
+    buildTime: 900
+    summary: wf-hideout-level-medbay-2
+    stacks: { Plastic: 60 }
+    parts: { MedkitBruteFilled: 2, MedkitBurnFilled: 2 }
+    requires: { WFHideoutGroundworks: 2 }
+    grants: [ WFOutpostOrganicsPrinterPack, WFOutpostNutrientSynthesizerPack ]
+
+- type: wfHideoutModule
+  id: WFHideoutVault
+  name: wf-hideout-module-vault
+  description: wf-hideout-module-vault-desc
+  order: 6
+  levels:
+  - price: 200000
+    buildTime: 300
+    summary: wf-hideout-level-vault-1
+    stacks: { Plasteel: 150 }
+    parts: { DoorElectronics: 2 }
+    requires: { WFHideoutGroundworks: 2 }
+    prefab: /SharedMaps/_WF/Hideouts/vault.yml
+  - price: 800000
+    buildTime: 1200
+    summary: wf-hideout-level-vault-2
+    stacks: { Plasteel: 400, Gold: 20, Silver: 20 }
+    requires: { WFHideoutGroundworks: 3 }
+    entities: 250
+    grants: [ WFOutpostDepositTerminalPack ]
+
+- type: wfHideoutModule
+  id: WFHideoutDefences
+  name: wf-hideout-module-defences
+  description: wf-hideout-module-defences-desc
+  order: 7
+  levels:
+  - price: 180000
+    buildTime: 300
+    summary: wf-hideout-level-defences-1
+    stacks: { Plasteel: 80, CableHV: 40 }
+    requires: { WFHideoutPowerhouse: 1 }
+    grants: [ WFOutpostWarningMastPack, WFOutpostTurretPack, WFOutpostTurretPack ]
+  - price: 700000
+    buildTime: 900
+    summary: wf-hideout-level-defences-2
+    stacks: { Plasteel: 200 }
+    parts: { PowerCellHigh: 6, CapacitorStockPart: 6 }
+    requires: { WFHideoutPowerhouse: 2 }
+    grants: [ WFOutpostLongRangeMastPack, WFOutpostTurretPack, WFOutpostTurretPack, WFOutpostTurretPack, WFOutpostTurretPack ]
+  - price: 2500000
+    buildTime: 1800
+    summary: wf-hideout-level-defences-3
+    stacks: { Plasteel: 500, Uranium: 40 }
+    parts: { PowerCellHyper: 8 }
+    requires: { WFHideoutPowerhouse: 3, WFHideoutGroundworks: 3 }
+    grants: [ WFOutpostSensorUplinkPack, WFOutpostFlakBatteryPack, WFOutpostFlakBatteryPack, WFOutpostDefenceBatteryPack ]
+
+# The shipwright bay: custom ships on refit points, built from frames or by hand. Levels widen the bay and add points.
+- type: wfHideoutModule
+  id: WFHideoutShipwright
+  name: wf-hideout-module-shipwright
+  description: wf-hideout-module-shipwright-desc
+  order: 2
+  levels:
+  - price: 350000
+    buildTime: 600
+    summary: wf-hideout-level-shipwright-1
+    stacks: { Steel: 300, Plasteel: 100, CableHV: 60 }
+    parts: { MicroManipulatorStockPart: 6 }
+    requires: { WFHideoutGroundworks: 2, WFHideoutPowerhouse: 1 }
+    prefab: /SharedMaps/_WF/Hideouts/shipwright_bay.yml
+    shipwrightSize: 17
+    insurancePremium: 0.25
+    insuranceDeductible: 0.2
+  - price: 1000000
+    buildTime: 1200
+    summary: wf-hideout-level-shipwright-2
+    stacks: { Plasteel: 300, Gold: 15 }
+    parts: { MatterBinStockPart: 8 }
+    requires: { WFHideoutGroundworks: 3, WFHideoutWorkshop: 2 }
+    shipwrightSize: 21
+    shipwrightPoints: 8
+  - price: 3000000
+    buildTime: 2400
+    summary: wf-hideout-level-shipwright-3
+    stacks: { Plasteel: 600, Gold: 40, Uranium: 20 }
+    parts: { PowerCellHyper: 6 }
+    requires: { WFHideoutGroundworks: 4, WFHideoutWorkshop: 3, WFHideoutPowerhouse: 3 }
+    shipwrightSize: 25
+    shipwrightPoints: 16
+
+# Company outposts: only an outpost founded under a company builds these.
+- type: wfHideoutModule
+  id: WFHideoutCompanyWing
+  name: wf-hideout-module-company-wing
+  description: wf-hideout-module-company-wing-desc
+  order: 20
+  company: true
+  levels:
+  - price: 1500000
+    buildTime: 900
+    summary: wf-hideout-level-company-wing-1
+    stacks: { Steel: 600, Plasteel: 300, Cloth: 60 }
+    requires: { WFHideoutGroundworks: 2, WFHideoutPowerhouse: 2 }
+    prefab: /SharedMaps/_WF/Hideouts/company_wing.yml
+    tiles: 600
+    entities: 250
+    pods: 3
+  - price: 4000000
+    buildTime: 1800
+    summary: wf-hideout-level-company-wing-2
+    stacks: { Plasteel: 600, Gold: 40 }
+    parts: { RadioHandheld: 4 }
+    requires: { WFHideoutGroundworks: 3, WFHideoutDefences: 2 }
+    tiles: 600
+    entities: 250
+    pods: 3
+    grants: [ WFOutpostCryopodPack, WFOutpostCryopodPack, WFOutpostCryopodPack, WFOutpostDescentJammerPack ]
+  - price: 6500000
+    buildTime: 3600
+    summary: wf-hideout-level-company-wing-3
+    stacks: { Plasteel: 1200, Gold: 80, Silver: 80 }
+    requires: { WFHideoutGroundworks: 4, WFHideoutDefences: 3 }
+    tiles: 800
+    entities: 500
+    pods: 6
+    grants: [ WFOutpostCryopodPack, WFOutpostCryopodPack, WFOutpostCryopodPack, WFOutpostCryopodPack, WFOutpostCryopodPack, WFOutpostCryopodPack ]

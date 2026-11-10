@@ -16,6 +16,10 @@ public sealed partial class WFLandingPadComponent : Component
     [DataField, AutoNetworkedField]
     public int Size = 9;
 
+    /// <summary>The widest its builders may set it.</summary>
+    [DataField, AutoNetworkedField]
+    public int Widest = MaxSize;
+
     /// <summary>True when any pilot may land on it, not only the outpost's owner and allow list.</summary>
     [DataField, AutoNetworkedField]
     public bool Public;

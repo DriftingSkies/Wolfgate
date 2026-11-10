@@ -68,6 +68,50 @@ public sealed partial class WFPlanetPoiSystem
         }
     }
 
+    /// <summary>
+    /// Lays the world's outpost plots in the band past its points of interest: as many lots as fit, evenly round the
+    /// ring, each laid with the world's own ground and pinned so no growth takes it. Nothing else of the world's is placed
+    /// there, so the plots never take from the sites' pool.
+    /// </summary>
+    private async Task PlaceOutpostBandAsync(Entity<BiomeComponent, MapGridComponent> ground, Vector2 centre, float inner, int band,
+        WFPlanetPoiTablePrototype table, WFPlanetPoiComponent record, HashSet<Vector2i> changed)
+    {
+        var size = Math.Min(table.OutpostLotSize, band - LotEdge * 2);
+        if (size <= 8)
+            return;
+
+        var half = size / 2;
+        var ring = inner + band / 2f;
+        var spacing = size * MathF.Sqrt(2) + LotGap;
+        var count = (int) MathF.Floor(2 * MathF.PI * ring / spacing);
+        for (var i = 0; i < count; i++)
+        {
+            await _preload.Breathe();
+            if (TerminatingOrDeleted(ground))
+                return;
+
+            var at = centre + new Angle(2 * Math.PI * i / count).ToVec() * ring;
+            var origin = new Vector2i((int) MathF.Floor(at.X) - half, (int) MathF.Floor(at.Y) - half);
+            var lot = new Box2i(origin, origin + new Vector2i(size, size));
+            var tiles = new HashSet<Vector2i>();
+            var open = new List<(Vector2i, Tile)>();
+            for (var x = lot.Left; x < lot.Right; x++)
+            for (var y = lot.Bottom; y < lot.Top; y++)
+            {
+                var tile = new Vector2i(x, y);
+                tiles.Add(tile);
+                if (_maps.GetTileRef(ground, ground.Comp2, tile).Tile.IsEmpty
+                    && _biome.TryGetBiomeTile(ground, ground.Comp2, tile, out var natural))
+                    open.Add((tile, natural.Value));
+            }
+
+            changed.UnionWith(tiles);
+            _maps.SetTiles(ground, ground.Comp2, open);
+            _biome.WfPinTiles((ground, ground.Comp1), tiles);
+            record.OutpostLots.Add(lot);
+        }
+    }
+
     private bool TryLotOrigin(Entity<BiomeComponent, MapGridComponent> ground, Vector2 centre, float radius, float reach,
         WFPlanetPoiTablePrototype table, Box2i footprint, List<Box2i> reserved, List<Box2i> approaches, out Box2i lot)
     {

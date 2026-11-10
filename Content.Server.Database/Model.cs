@@ -77,6 +77,7 @@ namespace Content.Server.Database
         // WOLFGATE END
         public DbSet<WolfgateOutpostSave> WolfgateOutpostSave { get; set; } = null!; // WOLFGATE(Outposts): saved outposts
         public DbSet<WolfgateOutpostPayout> WolfgateOutpostPayout { get; set; } = null!; // WOLFGATE(Outposts): round-end sales owed to offline owners
+        public DbSet<WolfgateHideoutShip> WolfgateHideoutShip { get; set; } = null!; // WOLFGATE(Hideouts): the ship an account keeps in its outpost's hangar
         // WOLFGATE(Colonies) START: world development scores, charters, yard platforms and yard builds
         public DbSet<WolfgateWorldDevelopment> WolfgateWorldDevelopment { get; set; } = null!;
         public DbSet<WolfgateWorldCharter> WolfgateWorldCharter { get; set; } = null!;
@@ -529,6 +530,12 @@ namespace Content.Server.Database
 
             modelBuilder.Entity<WolfgateOutpostPayout>()
                 .HasIndex(p => p.PlayerUserId);
+            // WOLFGATE END
+
+            // WOLFGATE(Hideouts) START: one hangar ship per account
+            modelBuilder.Entity<WolfgateHideoutShip>()
+                .HasIndex(s => s.PlayerUserId)
+                .IsUnique();
             // WOLFGATE END
 
             // WOLFGATE(Colonies) START: one score per holder and world; one charter and one yard per world
@@ -2211,6 +2218,38 @@ namespace Content.Server.Database
         public int Amount { get; set; }
 
         public DateTime Sold { get; set; }
+    }
+    // WOLFGATE END
+
+    // WOLFGATE(Hideouts) START: the ship an account keeps in its outpost's hangar, as it last landed and as it was insured
+    public class WolfgateHideoutShip
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public Guid PlayerUserId { get; set; }
+
+        [Required, MaxLength(64)]
+        public string Name { get; set; } = "";
+
+        /// <summary>What the ship was worth when it last landed.</summary>
+        public int Value { get; set; }
+
+        /// <summary>The ship as it last landed, as packed YAML.</summary>
+        public byte[] Data { get; set; } = default!;
+
+        public int SavedRound { get; set; }
+
+        public DateTime Saved { get; set; }
+
+        /// <summary>The ship was destroyed; only an insurance claim brings it back.</summary>
+        public bool Lost { get; set; }
+
+        /// <summary>What the ship was worth when it was insured, 0 with no policy.</summary>
+        public int InsuredValue { get; set; }
+
+        /// <summary>The ship as it was insured, as packed YAML; null with no policy.</summary>
+        public byte[]? InsuredData { get; set; }
     }
     // WOLFGATE END
 

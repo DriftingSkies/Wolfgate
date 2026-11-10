@@ -49,6 +49,9 @@ public sealed class WFOutpostConsoleState : BoundUserInterfaceState
     /// <summary>The outpost's world's development, for the Development tab; null while colonies are off.</summary>
     public WFWorldDevelopmentView? Development;
 
+    /// <summary>The outpost's modules and hangar, for the Hideout tab; null while hideouts are off.</summary>
+    public Content.Shared._WF.Hideouts.WFHideoutView? Hideout;
+
     public WFOutpostConsoleState(string name, string ownerName, NetUserId owner, int tiles, int maxTiles, int entities, int maxEntities,
         List<WFOutpostSaveSlot?>? slots, bool busy, WFOutpostPendingLoad? pending, WFOutpostTradeView trade, WFOutpostSaleView sale)
     {

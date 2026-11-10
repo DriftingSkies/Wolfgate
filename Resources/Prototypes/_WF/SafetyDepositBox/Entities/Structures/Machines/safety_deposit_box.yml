@@ -39,6 +39,7 @@
       - MachineBoard # lets you lockbox TSF servers and shit :face_holding_back_tears:
       - Flatpack # ditto
       - WFSaveOrigin # Saved with an outpost, so it comes back with the outpost
+      - WFShipSaveOrigin # Saved in a hangar ship's strongbox, so it comes back with the ship
       tags:
       - Unstashable
       - SafetyDepositBlacklist

@@ -35,6 +35,7 @@
   orbitRange: 2000
   buildAtRoundStart: true
   sanctioned: false
+  outposts: false
   climate: wf-planet-scan-climate-carcinoma
   hazards:
   - wf-planet-scan-hazard-blood-storms

@@ -77,6 +77,10 @@ public sealed partial class PersistentProfileSystem
             if (HasComp<Content.Shared._WF.Outposts.WFSaveOriginComponent>(entity))
                 continue;
 
+            // WOLFGATE(Hideouts): something saved in a hangar ship's strongbox comes back with the ship
+            if (HasComp<Content.Shared._WF.Hideouts.WFShipSaveOriginComponent>(entity))
+                continue;
+
             var sticky = false;
             if (TryComp(entity, out PersistAtRoundEndComponent? persistence) &&
                 (persistence.Sticky || persistence.Once))
