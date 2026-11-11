@@ -215,8 +215,8 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - shared with a client moved to a new grid
 - [`Content.Server/Research/Systems/ResearchSystem.Server.cs`](../../Content.Server/Research/Systems/ResearchSystem.Server.cs): a server's clients follow its grid
 - [`Content.Server/Sandbox/Commands/ColorNetworkCommand.cs`](../../Content.Server/Sandbox/Commands/ColorNetworkCommand.cs): missing return after the no-access error
-- [`Content.Server/Shuttles/Components/ShuttleComponent.cs`](../../Content.Server/Shuttles/Components/ShuttleComponent.cs): PDV pack, partial revert of Monolith speed cap (50->20)
-- [`Content.Server/Shuttles/Components/ThrusterComponent.cs`](../../Content.Server/Shuttles/Components/ThrusterComponent.cs): PDV pack, partial revert of Monolith thrust nerf (200->100)
+- [`Content.Server/Shuttles/Components/ShuttleComponent.cs`](../../Content.Server/Shuttles/Components/ShuttleComponent.cs): revert Monolith speed cap (50->20)
+- [`Content.Server/Shuttles/Components/ThrusterComponent.cs`](../../Content.Server/Shuttles/Components/ThrusterComponent.cs): revert Monolith thrust nerf (200->100)
 - [`Content.Server/Shuttles/Systems/DockingSystem.cs`](../../Content.Server/Shuttles/Systems/DockingSystem.cs)
   - copy of the dock set in UndockDocks and RedockDocks
   - undock handlers call GetDocks, which refills _dockingSet mid-loop; iterate a copy.
