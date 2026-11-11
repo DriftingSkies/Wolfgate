@@ -59,6 +59,11 @@ public sealed partial class CargoSystem
 
     private void OnCargoAnimComplete(EntityUid uid, CargoTelepadComponent component, AnimationCompletedEvent args)
     {
+        // WOLFGATE START: Stop() raises this mid-OnChangeData; re-entering it played the beam twice and crashed the client
+        if (!args.Finished)
+            return;
+        // WOLFGATE END
+
         OnChangeData(uid);
     }
 

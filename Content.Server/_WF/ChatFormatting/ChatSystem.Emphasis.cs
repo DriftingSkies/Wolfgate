@@ -5,10 +5,22 @@ namespace Content.Server.Chat.Systems;
 public partial class ChatSystem
 {
     private static readonly Regex Pattern = new(
-        @"~([|+^])|([|+^])((?:~.|(?!\2).)+?)\2",
-        RegexOptions.Compiled | RegexOptions.Singleline);
+        @"~([|+^])|([|+^])((?:~.|(?!\2)[^~])+?)\2",
+        RegexOptions.Compiled | RegexOptions.Singleline,
+        TimeSpan.FromMilliseconds(50));
 
-    public static string ConvertCustomEmphasisToBBCode(string message) => Parse(message);
+    /// <summary>Converts |italic|, +bold+ and ^small^ to BBCode; returns the message unchanged if parsing times out.</summary>
+    public static string ConvertCustomEmphasisToBBCode(string message)
+    {
+        try
+        {
+            return Parse(message);
+        }
+        catch (RegexMatchTimeoutException)
+        {
+            return message;
+        }
+    }
 
     private static string Parse(string input)
     {

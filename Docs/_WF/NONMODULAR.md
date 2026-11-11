@@ -23,6 +23,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - the medical assembler is a lathe now, so show its lathe recipe
 - [`Content.Client/_RMC14/Weapons/Ranged/Prediction/GunPredictionSystem.cs`](../../Content.Client/_RMC14/Weapons/Ranged/Prediction/GunPredictionSystem.cs): restore the licence header removed by Kill Spdx
 - [`Content.Client/Atmos/EntitySystems/FireVisualizerSystem.cs`](../../Content.Client/Atmos/EntitySystems/FireVisualizerSystem.cs): a mob that arrives burning would get its light child before it is initialised itself; the appearance update queued at startup lays it.
+- [`Content.Client/Cargo/Systems/CargoSystem.Telepad.cs`](../../Content.Client/Cargo/Systems/CargoSystem.Telepad.cs): Stop() raises this mid-OnChangeData; re-entering it played the beam twice and crashed the client
 - [`Content.Client/CharacterInfo/CharacterInfoSystem.cs`](../../Content.Client/CharacterInfo/CharacterInfoSystem.cs)
   - replays skip the character info request
   - Replay spectators have a local entity but no server to answer this request.
