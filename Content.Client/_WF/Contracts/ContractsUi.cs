@@ -12,14 +12,20 @@ namespace Content.Client._WF.Contracts;
 public sealed partial class ContractsUi : UIFragment
 {
     private ContractsUiFragment? _fragment;
+    private BoundUserInterface? _owner;
 
     public override Control GetUIFragmentRoot()
     {
         return _fragment!;
     }
 
+    /// <summary>Reuses the fragment when the PDA calls this again for the same window.</summary>
     public override void Setup(BoundUserInterface userInterface, EntityUid? fragmentOwner)
     {
+        if (_fragment != null && _owner == userInterface && !_fragment.Disposed)
+            return;
+
+        _owner = userInterface;
         _fragment = new ContractsUiFragment();
         _fragment.OnAbandon += id => userInterface.SendMessage(new CartridgeUiMessage(new WFContractCartridgeAbandonMessage(id)));
     }
