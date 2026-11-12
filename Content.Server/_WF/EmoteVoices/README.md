@@ -117,6 +117,8 @@ the species' own when there is none. `MessageSoundTest` fails when a playable sp
 - [`Resources/Audio/_WF/EmoteVoices/Talk/wawa_exclaim.ogg`](../../../Resources/Audio/_WF/EmoteVoices/Talk/wawa_exclaim.ogg)
 - [`Resources/Audio/_WF/EmoteVoices/Talk/wawa_question.ogg`](../../../Resources/Audio/_WF/EmoteVoices/Talk/wawa_question.ogg)
 - [`Resources/Audio/_WF/EmoteVoices/Talk/wawa_statement.ogg`](../../../Resources/Audio/_WF/EmoteVoices/Talk/wawa_statement.ogg)
+- [`Resources/Audio/_WF/EmoteVoices/Weh/attributions.yml`](../../../Resources/Audio/_WF/EmoteVoices/Weh/attributions.yml)
+- [`Resources/Audio/_WF/EmoteVoices/Weh/weh.ogg`](../../../Resources/Audio/_WF/EmoteVoices/Weh/weh.ogg)
 
 ## Non-modular edits
 
@@ -131,6 +133,10 @@ the species' own when there is none. `MessageSoundTest` fails when a playable sp
   - copies keep the chosen voices
   - an unknown message sound becomes the species' own
 - [`Resources/Audio/_FarHorizons/Voice/`](../../../Resources/Audio/_FarHorizons/Voice/): Robotic voice packs for the scream and laugh picker, ported from HardLight (Far Horizons).
+- [`Resources/Prototypes/_HL/Voice/speech_emote_sounds.yml`](../../../Resources/Prototypes/_HL/Voice/speech_emote_sounds.yml): Meridian weh
+- [`Resources/Prototypes/_Mono/Voice/speech_emote_sounds.yml`](../../../Resources/Prototypes/_Mono/Voice/speech_emote_sounds.yml): Meridian weh
 - [`Resources/Prototypes/Entities/Mobs/Species/moth.yml`](../../../Resources/Prototypes/Entities/Mobs/Species/moth.yml): HardLight's moth chatter as the species' message sound
+- [`Resources/Prototypes/SoundCollections/emotes.yml`](../../../Resources/Prototypes/SoundCollections/emotes.yml): Meridian weh for every species
+- [`Resources/Prototypes/Voice/speech_emotes.yml`](../../../Resources/Prototypes/Voice/speech_emotes.yml): *weh triggers, ported from Meridian
 
 <!-- WOLFGATE-GENERATED END -->

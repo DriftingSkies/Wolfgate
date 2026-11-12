@@ -1,0 +1,4 @@
+- files: ["weh.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Taken from Nova Sector (originally Skyrat-tg) via Meridian"
+  source: "https://github.com/NovaSector/NovaSector/tree/7499f47bfc6b768a72c922be46971ebfccf794a1/modular_nova/modules/emotes/sound/voice"

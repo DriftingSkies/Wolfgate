@@ -103,6 +103,9 @@
       path: /Audio/_Starlight/Effects/avali_scream.ogg
     Laugh:
       path: /Audio/_Starlight/Voice/Avali/avali_laugh.ogg
+    # WOLFGATE(EmoteVoices): Meridian weh
+    Weh:
+      path: /Audio/_WF/EmoteVoices/Weh/weh.ogg
     Bark: # HardLight - JuiceThatMakesYouBark
       collection: VulpkaninBarks
     Hiss:

@@ -370,6 +370,10 @@
   blacklist:
     components:
       - BorgChassis
+  # WOLFGATE(EmoteVoices): *weh triggers, ported from Meridian
+  chatTriggers:
+    - weh
+    - wehs
 
 - type: emote
   id: Hew

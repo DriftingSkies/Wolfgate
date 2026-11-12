@@ -96,7 +96,10 @@
 - type: soundCollection
   id: Weh
   files:
-  - /Audio/Items/Toys/weh.ogg
+  # WOLFGATE(EmoteVoices) START: Meridian weh for every species
+  # - /Audio/Items/Toys/weh.ogg
+  - /Audio/_WF/EmoteVoices/Weh/weh.ogg
+  # WOLFGATE END
 
 - type: soundCollection
   id: Hew
