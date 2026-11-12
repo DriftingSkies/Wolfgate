@@ -2,6 +2,7 @@ using System.Linq;
 using Content.Client.Clothing;
 using Content.Client.Inventory;
 using Content.Shared._WF.ClothingLayer;
+using Content.Shared._WF.NeckSuits;
 using Content.Shared.Clothing;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Humanoid;
@@ -53,6 +54,10 @@ public sealed partial class ClothingLayerSystem : EntitySystem
         index = 0;
         if (TryComp<WFClothingLayerComponent>(equipment, out var layer))
             return TryGetIndex(wearer, slots, layer.Layer, layer.Below, out index);
+
+        // A suit worn at the neck draws over the worn suit, as SS13 draws NECK_LAYER over SUIT_LAYER.
+        if (HasComp<WFNeckSuitComponent>(equipment))
+            return TryGetIndex(wearer, slots, Suit, false, out index);
 
         if (slot != Uniform)
             return false;
