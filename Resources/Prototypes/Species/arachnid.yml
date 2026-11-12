@@ -68,13 +68,13 @@
       required: true
       defaultMarkings: [ ArachnidCheliceraeDownwards ]
     Chest:
-      points: 4 # WOLFGATE(Species): was 1, more marking slots
+      points: 8 # WOLFGATE(Species): was 1, more marking slots
       required: false
     Legs:
-      points: 8 # imp 2<8
+      points: 16 # imp 2<8 # WOLFGATE(Species): was 8, more marking slots
       required: false
     Arms:
-      points: 8 # imp 2<8
+      points: 16 # imp 2<8 # WOLFGATE(Species): was 8, more marking slots
       required: false
 
 - type: humanoidBaseSprite

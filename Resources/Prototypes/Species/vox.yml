@@ -60,16 +60,16 @@
       defaultMarkings: [ VoxBeak ]
     Arms:
       # WOLFGATE(Species): was 6, more marking slots
-      points: 8 # Mono 4<6
+      points: 16 # Mono 4<6
       required: true
       defaultMarkings: [ VoxLArmScales, VoxRArmScales, VoxRHandScales, VoxLHandScales ]
     Legs:
       # WOLFGATE(Species): was 6, more marking slots
-      points: 8 # Mono 4<6
+      points: 16 # Mono 4<6
       required: true
       defaultMarkings: [ VoxLLegScales, VoxRLegScales, VoxRFootScales, VoxLFootScales ]
     Chest:
-      points: 4 # Mono 1<4
+      points: 8 # Mono 1<4 # WOLFGATE(Species): was 4, more marking slots
       required: false
     Overlay: # imp
       points: 4

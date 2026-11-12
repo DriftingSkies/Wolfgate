@@ -56,11 +56,11 @@
       required: false # WOLFGATE(Species): the head tuft is optional, so removing it in the editor sticks
       defaultMarkings: [ HarpyEarsDefault ]
     Chest:
-      points: 4 # WOLFGATE(Species): was 1, more marking slots
+      points: 8 # WOLFGATE(Species): was 1, more marking slots
       required: true
       defaultMarkings: [ HarpyChestDefault ]
     Legs:
-      points: 8 # imp/mono 2<8
+      points: 16 # imp/mono 2<8 # WOLFGATE(Species): was 8, more marking slots
       required: false
     Arms:
       points: 1

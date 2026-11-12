@@ -72,10 +72,10 @@
       points: 10
       required: false
     Legs:
-      points: 10
+      points: 16 # WOLFGATE(Species): was 10, more marking slots
       required: false
     Arms:
-      points: 10
+      points: 16 # WOLFGATE(Species): was 10, more marking slots
       required: false
 
 - type: humanoidBaseSprite

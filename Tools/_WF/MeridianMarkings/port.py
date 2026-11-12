@@ -17,6 +17,8 @@ What the SS13 art becomes here:
     wagging     A tail with wagging states gets an <id>Animated variant with the same sprites.
     body        One marking per body part, like the markings already here. Art the foot or hand
                 sprite would cover is cut out of the limb; a leg's foot art is its own marking.
+                A set with any part ported keeps all of them, and its left and right parts go to
+                the same species.
     hair        One sprite per style, with the ponytails and braids SS13 layers around headwear
                 laid over it. The human hair here was redrawn from the same SS13 styles, so a style is
                 also dropped when one of the same name or state is here and sits in the same place.
@@ -212,6 +214,10 @@ class Port:
             decisions = yaml.safe_load(f) or {}
         self.same = decisions.get("same") or {}
         self.new = set(decisions.get("new") or [])
+        self.extra_species = decisions.get("species") or {}
+        unknown = sorted({s for extra in self.extra_species.values() for s in extra} - set(self.bodies.species))
+        if unknown:
+            raise SystemExit("decisions.yml offers markings to species that are gone: %s" % ", ".join(unknown))
         anthro = next((m.species for m in self.existing if m.id == ANTHRO_EXAMPLE), None)
         if not anthro:
             raise SystemExit("%s is gone; the anthro species list has to come from somewhere else" % ANTHRO_EXAMPLE)
@@ -242,6 +248,50 @@ class Port:
             candidates.sort(key=lambda c: -sum(1 for s in c.sprites if s.parent is None and s.tinted))
             self._keep(kind, candidates)
         self._keep(None, self._body_candidates())
+        self._complete_sets()
+        self._match_sides()
+
+    def _complete_sets(self):
+        """
+        A body marking with any part ported gets every part under its own name. Parts are compared one at a
+        time, so without this a set loses the limbs that happen to look like some other marking: Husky's
+        right leg went to Rodentia, its hands to the basic hand. A part stays dropped when its set already
+        has one for that body part, or the marking it is goes by the set's name ("Tajaran (Chest)").
+        """
+        names = wg.marking_names()
+        by_id = {p.id: p for p in self.planned}
+        by_set = {}
+        for outcome in self.outcomes:
+            if outcome.candidate.kind == "body":
+                by_set.setdefault(outcome.candidate.typepath, []).append(outcome)
+        for typepath, outcomes in by_set.items():
+            covered = {o.candidate.key: o.detail for o in outcomes if o.verdict == "ported"}
+            if not covered:
+                continue
+            for outcome in outcomes:
+                candidate = outcome.candidate
+                if outcome.verdict not in ("existing", "alias") or candidate.key in self.same:
+                    continue
+                target = outcome.detail.split(" ")[0]
+                other = by_id.get(target) if outcome.verdict == "alias" else None
+                if other is not None and other.candidate.typepath == typepath:
+                    continue
+                if outcome.verdict == "existing" and _plain(names.get(target, "").split(" (")[0]) == _plain(candidate.name):
+                    continue
+                if other is not None and candidate.name in other.also:
+                    other.also.remove(candidate.name)
+                if candidate.key in covered:
+                    # A second candidate for a part the set already has, such as a leg's foot art beside the foot.
+                    if other is not None:
+                        by_id[covered[candidate.key]].also.append(candidate.name)
+                        outcome.detail = covered[candidate.key]
+                    continue
+                planned = self._plan(None, candidate)
+                by_id[planned.id] = planned
+                covered[candidate.key] = planned.id
+                outcome.verdict = "ported"
+                outcome.detail = planned.id
+                outcome.near = ["completes its set; was %s" % target]
 
     def _hair_here(self):
         """Hair already in the repository by what it is called: {category: {name or SS13 state: [marking]}}."""
@@ -416,8 +466,24 @@ class Port:
             planned = self._plan_body(candidate)
         else:
             planned = self._plan_accessory(kind, candidate)
+        extra = self.extra_species.get(candidate.key, ())
+        if planned.species:
+            planned.species = planned.species + [s for s in extra if s not in planned.species]
         self.planned.append(planned)
         return planned
+
+    def _match_sides(self):
+        """The left and right part of a body marking go to the same species, so nobody gets half a pair."""
+        sides = {}
+        for planned in self.planned:
+            candidate = planned.candidate
+            if candidate.kind == "body" and planned.species:
+                key = (candidate.typepath, PARTS[candidate.zone].family, candidate.feminine)
+                sides.setdefault(key, []).append(planned)
+        for group in sides.values():
+            species = sorted({s for planned in group for s in planned.species})
+            for planned in group:
+                planned.species = species
 
     def _unique_id(self, wanted):
         marking_id, n = wanted, 2

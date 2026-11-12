@@ -341,6 +341,20 @@
     state: bovine_spot_r_foot
 
 - type: marking
+  id: WFMeridianMarkingBurntOffGrayscaleLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: burnt_off_grayscale_l_foot
+
+- type: marking
   id: WFMeridianMarkingBurntOffGrayscaleLLeg
   bodyPart: LLeg
   markingCategory: Legs
@@ -367,6 +381,20 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: burnt_off_grayscale_r_foot
+
+- type: marking
+  id: WFMeridianMarkingBurntOffGrayscaleRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: burnt_off_grayscale_r_leg
 
 - type: marking
   id: WFMeridianMarkingChitinLFoot
@@ -457,6 +485,70 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: color_bands_r_leg
+
+- type: marking
+  id: WFMeridianMarkingCorgiLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: corgi_l_foot
+
+- type: marking
+  id: WFMeridianMarkingCorgiLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: corgi_l_leg
+
+- type: marking
+  id: WFMeridianMarkingCorgiRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: corgi_r_foot
+
+- type: marking
+  id: WFMeridianMarkingCorgiRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: corgi_r_leg
 
 - type: marking
   id: WFMeridianMarkingCorvidLLeg
@@ -619,6 +711,190 @@
     state: datashark_r_leg
 
 - type: marking
+  id: WFMeridianMarkingDeathheadGrayscaleLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: deathhead_grayscale_l_foot
+
+- type: marking
+  id: WFMeridianMarkingDeathheadGrayscaleLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: deathhead_grayscale_l_leg
+
+- type: marking
+  id: WFMeridianMarkingDeathheadGrayscaleRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: deathhead_grayscale_r_foot
+
+- type: marking
+  id: WFMeridianMarkingDeathheadGrayscaleRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: deathhead_grayscale_r_leg
+
+- type: marking
+  id: WFMeridianMarkingDeerLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: deer_l_foot
+
+- type: marking
+  id: WFMeridianMarkingDeerLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: deer_l_leg
+
+- type: marking
+  id: WFMeridianMarkingDeerRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: deer_r_foot
+
+- type: marking
+  id: WFMeridianMarkingDeerRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: deer_r_leg
+
+- type: marking
+  id: WFMeridianMarkingDogLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: dog_l_foot
+
+- type: marking
+  id: WFMeridianMarkingDogLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: dog_l_leg
+
+- type: marking
+  id: WFMeridianMarkingDogRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: dog_r_foot
+
+- type: marking
+  id: WFMeridianMarkingDogRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: dog_r_leg
+
+- type: marking
   id: WFMeridianMarkingDogSpotLFoot
   bodyPart: LFoot
   markingCategory: Legs
@@ -651,6 +927,22 @@
     state: dog_spot_r_foot
 
 - type: marking
+  id: WFMeridianMarkingFennecLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: fennec_l_foot
+
+- type: marking
   id: WFMeridianMarkingFennecLLeg
   bodyPart: LLeg
   markingCategory: Legs
@@ -667,6 +959,22 @@
     state: fennec_l_leg
 
 - type: marking
+  id: WFMeridianMarkingFennecRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: fennec_r_foot
+
+- type: marking
   id: WFMeridianMarkingFennecRLeg
   bodyPart: RLeg
   markingCategory: Legs
@@ -681,6 +989,70 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: fennec_r_leg
+
+- type: marking
+  id: WFMeridianMarkingFlooferSockLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: floofer_sock_l_foot
+
+- type: marking
+  id: WFMeridianMarkingFlooferSockLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: floofer_sock_l_leg
+
+- type: marking
+  id: WFMeridianMarkingFlooferSockRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: floofer_sock_r_foot
+
+- type: marking
+  id: WFMeridianMarkingFlooferSockRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: floofer_sock_r_leg
 
 - type: marking
   id: WFMeridianMarkingFoxLLeg
@@ -715,6 +1087,20 @@
     state: fox_r_leg
 
 - type: marking
+  id: WFMeridianMarkingGothicGrayscaleLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: gothic_grayscale_l_foot
+
+- type: marking
   id: WFMeridianMarkingGothicGrayscaleLLeg
   bodyPart: LLeg
   markingCategory: Legs
@@ -727,6 +1113,20 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: gothic_grayscale_l_leg
+
+- type: marking
+  id: WFMeridianMarkingGothicGrayscaleRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: gothic_grayscale_r_foot
 
 - type: marking
   id: WFMeridianMarkingGothicGrayscaleRLeg
@@ -805,6 +1205,70 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: guilmon_mark_r_leg
+
+- type: marking
+  id: WFMeridianMarkingHarlequinLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: harlequin_l_foot
+
+- type: marking
+  id: WFMeridianMarkingHarlequinLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: harlequin_l_leg
+
+- type: marking
+  id: WFMeridianMarkingHarlequinReversedRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: harlequin_reversed_r_foot
+
+- type: marking
+  id: WFMeridianMarkingHarlequinReversedRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: harlequin_reversed_r_leg
 
 - type: marking
   id: WFMeridianMarkingHarpyClawsLFoot
@@ -939,6 +1403,22 @@
     state: hawk_r_leg
 
 - type: marking
+  id: WFMeridianMarkingHawkTalonLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: hawk_talon_l_foot
+
+- type: marking
   id: WFMeridianMarkingHawkTalonLLeg
   bodyPart: LLeg
   markingCategory: Legs
@@ -955,6 +1435,54 @@
     state: hawk_talon_l_leg
 
 - type: marking
+  id: WFMeridianMarkingHawkTalonRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: hawk_talon_r_foot
+
+- type: marking
+  id: WFMeridianMarkingHawkTalonRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: hawk_talon_r_leg
+
+- type: marking
+  id: WFMeridianMarkingHuskyLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: husky_l_foot
+
+- type: marking
   id: WFMeridianMarkingHuskyLLeg
   bodyPart: LLeg
   markingCategory: Legs
@@ -969,6 +1497,38 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: husky_l_leg
+
+- type: marking
+  id: WFMeridianMarkingHuskyRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: husky_r_foot
+
+- type: marking
+  id: WFMeridianMarkingHuskyRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: husky_r_leg
 
 - type: marking
   id: WFMeridianMarkingHyenaLFoot
@@ -1035,6 +1595,62 @@
     state: hyena_r_leg
 
 - type: marking
+  id: WFMeridianMarkingJungleGrayscaleLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: jungle_grayscale_l_foot
+
+- type: marking
+  id: WFMeridianMarkingJungleGrayscaleLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: jungle_grayscale_l_leg
+
+- type: marking
+  id: WFMeridianMarkingJungleGrayscaleRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: jungle_grayscale_r_foot
+
+- type: marking
+  id: WFMeridianMarkingJungleGrayscaleRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: jungle_grayscale_r_leg
+
+- type: marking
   id: WFMeridianMarkingLegBandLLeg
   bodyPart: LLeg
   markingCategory: Legs
@@ -1051,6 +1667,62 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: leg_band_r_leg
+
+- type: marking
+  id: WFMeridianMarkingLightbearerLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: lightbearer_l_foot
+
+- type: marking
+  id: WFMeridianMarkingLightbearerLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: lightbearer_l_leg
+
+- type: marking
+  id: WFMeridianMarkingLightbearerRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: lightbearer_r_foot
+
+- type: marking
+  id: WFMeridianMarkingLightbearerRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: lightbearer_r_leg
 
 - type: marking
   id: WFMeridianMarkingLoversGrayscaleLFoot
@@ -1081,6 +1753,78 @@
     state: lovers_grayscale_l_leg
 
 - type: marking
+  id: WFMeridianMarkingLoversGrayscaleRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: lovers_grayscale_r_foot
+
+- type: marking
+  id: WFMeridianMarkingLoversGrayscaleRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: lovers_grayscale_r_leg
+
+- type: marking
+  id: WFMeridianMarkingLowerLimbLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: lower_limb_l_foot
+
+- type: marking
+  id: WFMeridianMarkingLowerLimbLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: lower_limb_l_leg
+
+- type: marking
+  id: WFMeridianMarkingLowerLimbRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: lower_limb_r_foot
+
+- type: marking
   id: WFMeridianMarkingLowerLimbRLeg
   bodyPart: RLeg
   markingCategory: Legs
@@ -1095,6 +1839,118 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: lower_limb_r_leg
+
+- type: marking
+  id: WFMeridianMarkingMoonflyGrayscaleLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: moonfly_grayscale_l_foot
+
+- type: marking
+  id: WFMeridianMarkingMoonflyGrayscaleLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: moonfly_grayscale_l_leg
+
+- type: marking
+  id: WFMeridianMarkingMoonflyGrayscaleRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: moonfly_grayscale_r_foot
+
+- type: marking
+  id: WFMeridianMarkingMoonflyGrayscaleRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: moonfly_grayscale_r_leg
+
+- type: marking
+  id: WFMeridianMarkingOakwormGrayscaleLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: oakworm_grayscale_l_foot
+
+- type: marking
+  id: WFMeridianMarkingOakwormGrayscaleLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: oakworm_grayscale_l_leg
+
+- type: marking
+  id: WFMeridianMarkingOakwormGrayscaleRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: oakworm_grayscale_r_foot
+
+- type: marking
+  id: WFMeridianMarkingOakwormGrayscaleRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: oakworm_grayscale_r_leg
 
 - type: marking
   id: WFMeridianMarkingOtieLFoot
@@ -1129,6 +1985,22 @@
     state: otie_r_foot
 
 - type: marking
+  id: WFMeridianMarkingOtieSpotLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: otie_spot_l_foot
+
+- type: marking
   id: WFMeridianMarkingOtieSpotLLeg
   bodyPart: LLeg
   markingCategory: Legs
@@ -1143,6 +2015,22 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: otie_spot_l_leg
+
+- type: marking
+  id: WFMeridianMarkingOtieSpotRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: otie_spot_r_foot
 
 - type: marking
   id: WFMeridianMarkingOtieSpotRLeg
@@ -1289,6 +2177,70 @@
     state: raccoon_r_leg
 
 - type: marking
+  id: WFMeridianMarkingRaccoonSpotLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: raccoon_spot_l_foot
+
+- type: marking
+  id: WFMeridianMarkingRaccoonSpotLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: raccoon_spot_l_leg
+
+- type: marking
+  id: WFMeridianMarkingRaccoonSpotRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: raccoon_spot_r_foot
+
+- type: marking
+  id: WFMeridianMarkingRaccoonSpotRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: raccoon_spot_r_leg
+
+- type: marking
   id: WFMeridianMarkingRaggedGrayscaleLFoot
   bodyPart: LFoot
   markingCategory: Legs
@@ -1345,6 +2297,70 @@
     state: ragged_grayscale_r_leg
 
 - type: marking
+  id: WFMeridianMarkingRatPawLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: rat_paw_l_foot
+
+- type: marking
+  id: WFMeridianMarkingRatPawLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: rat_paw_l_leg
+
+- type: marking
+  id: WFMeridianMarkingRatPawRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: rat_paw_r_foot
+
+- type: marking
+  id: WFMeridianMarkingRatPawRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: rat_paw_r_leg
+
+- type: marking
   id: WFMeridianMarkingRatSpotLLeg
   bodyPart: LLeg
   markingCategory: Legs
@@ -1377,6 +2393,22 @@
     state: rat_spot_r_leg
 
 - type: marking
+  id: WFMeridianMarkingRedPandaLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: red_panda_l_foot
+
+- type: marking
   id: WFMeridianMarkingRedPandaLLeg
   bodyPart: LLeg
   markingCategory: Legs
@@ -1391,6 +2423,22 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: red_panda_l_leg
+
+- type: marking
+  id: WFMeridianMarkingRedPandaRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: red_panda_r_foot
 
 - type: marking
   id: WFMeridianMarkingRedPandaRLeg
@@ -1545,6 +2593,22 @@
     state: scolipede_l_foot
 
 - type: marking
+  id: WFMeridianMarkingScolipedeLLeg
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: scolipede_l_leg
+
+- type: marking
   id: WFMeridianMarkingScolipedeRFoot
   bodyPart: RFoot
   markingCategory: Legs
@@ -1559,6 +2623,22 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: scolipede_r_foot
+
+- type: marking
+  id: WFMeridianMarkingScolipedeRLeg
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Rodentia, SlimePerson, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: scolipede_r_leg
 
 - type: marking
   id: WFMeridianMarkingShepherdLLeg
@@ -1873,6 +2953,20 @@
     state: upper_limb_r_leg
 
 - type: marking
+  id: WFMeridianMarkingWhiteflyGrayscaleLFoot
+  bodyPart: LFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: whitefly_grayscale_l_foot
+
+- type: marking
   id: WFMeridianMarkingWhiteflyGrayscaleLLeg
   bodyPart: LLeg
   markingCategory: Legs
@@ -1885,6 +2979,20 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_legs.rsi
     state: whitefly_grayscale_l_leg
+
+- type: marking
+  id: WFMeridianMarkingWhiteflyGrayscaleRFoot
+  bodyPart: RFoot
+  markingCategory: Legs
+  speciesRestriction: [Arachnid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Human, Oni, Protogen, Rodentia, Skeleton, Skrell, SlimePerson, Tajaran, Thaven, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_legs.rsi
+    state: whitefly_grayscale_r_foot
 
 - type: marking
   id: WFMeridianMarkingWhiteflyGrayscaleRLeg

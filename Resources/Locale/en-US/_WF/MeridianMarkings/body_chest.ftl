@@ -61,6 +61,9 @@ marking-WFMeridianMarkingColorBandsChest-color_bands_chest = Color Bands (Chest)
 marking-WFMeridianMarkingCorgiChest = Corgi (Chest)
 marking-WFMeridianMarkingCorgiChest-corgi_chest = Corgi (Chest)
 
+marking-WFMeridianMarkingCorvidChest = Corvid (Chest)
+marking-WFMeridianMarkingCorvidChest-corvid_chest = Corvid (Chest)
+
 marking-WFMeridianMarkingCorvidChestFeminine = Corvid (Chest, Feminine)
 marking-WFMeridianMarkingCorvidChestFeminine-corvid_chest_f = Corvid (Chest, Feminine)
 
@@ -69,6 +72,9 @@ marking-WFMeridianMarkingDalmatianChest-dalmatian_chest = Dalmatian (Chest)
 
 marking-WFMeridianMarkingDatasharkChest = Datashark (Chest)
 marking-WFMeridianMarkingDatasharkChest-datashark_chest = Datashark (Chest)
+
+marking-WFMeridianMarkingDeathheadGrayscaleChest = Deathhead Grayscale (Chest)
+marking-WFMeridianMarkingDeathheadGrayscaleChest-deathhead_grayscale_chest = Deathhead Grayscale (Chest)
 
 marking-WFMeridianMarkingDeerChest = Deer (Chest)
 marking-WFMeridianMarkingDeerChest-deer_chest = Deer (Chest)
@@ -124,6 +130,12 @@ marking-WFMeridianMarkingHarlequinReversedChestFeminine-harlequin_reversed_chest
 marking-WFMeridianMarkingHawkChest = Hawk (Chest)
 marking-WFMeridianMarkingHawkChest-hawk_chest = Hawk (Chest)
 
+marking-WFMeridianMarkingHuskyChest = Husky (Chest)
+marking-WFMeridianMarkingHuskyChest-husky_chest = Husky (Chest)
+
+marking-WFMeridianMarkingHuskyChestFeminine = Husky (Chest, Feminine)
+marking-WFMeridianMarkingHuskyChestFeminine-husky_chest_f = Husky (Chest, Feminine)
+
 marking-WFMeridianMarkingHyenaChest = Hyena (Chest)
 marking-WFMeridianMarkingHyenaChest-hyena_chest = Hyena (Chest)
 
@@ -160,11 +172,20 @@ marking-WFMeridianMarkingLightBellyChest-light_belly_chest = Light Belly (Chest)
 marking-WFMeridianMarkingLightbearerChest = Lightbearer (Chest)
 marking-WFMeridianMarkingLightbearerChest-lightbearer_chest = Lightbearer (Chest)
 
+marking-WFMeridianMarkingLoversGrayscaleChest = Lovers Grayscale (Chest)
+marking-WFMeridianMarkingLoversGrayscaleChest-lovers_grayscale_chest = Lovers Grayscale (Chest)
+
 marking-WFMeridianMarkingMoonflyGrayscaleChest = Moonfly Grayscale (Chest)
 marking-WFMeridianMarkingMoonflyGrayscaleChest-moonfly_grayscale_chest = Moonfly Grayscale (Chest)
 
 marking-WFMeridianMarkingOakwormGrayscaleChest = Oakworm Grayscale (Chest)
 marking-WFMeridianMarkingOakwormGrayscaleChest-oakworm_grayscale_chest = Oakworm Grayscale (Chest)
+
+marking-WFMeridianMarkingOrcaChest = Orca (Chest)
+marking-WFMeridianMarkingOrcaChest-orca_chest = Orca (Chest)
+
+marking-WFMeridianMarkingOrcaChestFeminine = Orca (Chest, Feminine)
+marking-WFMeridianMarkingOrcaChestFeminine-orca_chest_f = Orca (Chest, Feminine)
 
 marking-WFMeridianMarkingOtieChest = Otie (Chest)
 marking-WFMeridianMarkingOtieChest-otie_chest = Otie (Chest)
@@ -177,6 +198,12 @@ marking-WFMeridianMarkingOtieSpotChest-otie_spot_chest = Otie Spot (Chest)
 
 marking-WFMeridianMarkingOtieSpotChestFeminine = Otie Spot (Chest, Feminine)
 marking-WFMeridianMarkingOtieSpotChestFeminine-otie_spot_chest_f = Otie Spot (Chest, Feminine)
+
+marking-WFMeridianMarkingOtterChest = Otter (Chest)
+marking-WFMeridianMarkingOtterChest-otter_chest = Otter (Chest)
+
+marking-WFMeridianMarkingOtterChestFeminine = Otter (Chest, Feminine)
+marking-WFMeridianMarkingOtterChestFeminine-otter_chest_f = Otter (Chest, Feminine)
 
 marking-WFMeridianMarkingPantherChest = Panther (Chest)
 marking-WFMeridianMarkingPantherChest-panther_chest = Panther (Chest)
@@ -250,11 +277,23 @@ marking-WFMeridianMarkingSynthCollarLightsChest-synth_collar_lights_chest = Synt
 marking-WFMeridianMarkingSynthLightsChest = Synth Lights (Chest)
 marking-WFMeridianMarkingSynthLightsChest-synth_lights_chest = Synth Lights (Chest)
 
+marking-WFMeridianMarkingSynthPecsChest = Synth Pecs (Chest)
+marking-WFMeridianMarkingSynthPecsChest-synth_pecs_chest = Synth Pecs (Chest)
+
 marking-WFMeridianMarkingSynthPecsChestFeminine = Synth Pecs (Chest, Feminine)
 marking-WFMeridianMarkingSynthPecsChestFeminine-synth_pecs_chest_f = Synth Pecs (Chest, Feminine)
 
+marking-WFMeridianMarkingSynthScutesChest = Synth Scutes (Chest)
+marking-WFMeridianMarkingSynthScutesChest-synth_scutes_chest = Synth Scutes (Chest)
+
 marking-WFMeridianMarkingSynthScutesChestFeminine = Synth Scutes (Chest, Feminine)
 marking-WFMeridianMarkingSynthScutesChestFeminine-synth_scutes_chest_f = Synth Scutes (Chest, Feminine)
+
+marking-WFMeridianMarkingTajaranChest = Tajaran (Chest)
+marking-WFMeridianMarkingTajaranChest-tajaran_chest = Tajaran (Chest)
+
+marking-WFMeridianMarkingTajaranChestFeminine = Tajaran (Chest, Feminine)
+marking-WFMeridianMarkingTajaranChestFeminine-tajaran_chest_f = Tajaran (Chest, Feminine)
 
 marking-WFMeridianMarkingTattooButterflyChest = Tattoo - Butterfly (Chest)
 marking-WFMeridianMarkingTattooButterflyChest-tattoo_butterfly_chest = Tattoo - Butterfly (Chest)
@@ -273,6 +312,9 @@ marking-WFMeridianMarkingTattooTigerChest-tattoo_tiger_chest = Tattoo - Tiger (C
 
 marking-WFMeridianMarkingTattooTigerGroinChest = Tattoo - Tiger (Groin) (Chest)
 marking-WFMeridianMarkingTattooTigerGroinChest-tattoo_tiger_groin_chest = Tattoo - Tiger (Groin) (Chest)
+
+marking-WFMeridianMarkingTigerSpotChest = Tiger Spot (Chest)
+marking-WFMeridianMarkingTigerSpotChest-tiger_spot_chest = Tiger Spot (Chest)
 
 marking-WFMeridianMarkingTigerSpotChestFeminine = Tiger Spot (Chest, Feminine)
 marking-WFMeridianMarkingTigerSpotChestFeminine-tiger_spot_chest_f = Tiger Spot (Chest, Feminine)

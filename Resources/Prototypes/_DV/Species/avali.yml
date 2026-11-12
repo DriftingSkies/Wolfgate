@@ -80,13 +80,13 @@
       required: true
       defaultMarkings: [ AvaliEarsBase ]
     Chest:
-      points: 6
+      points: 8 # WOLFGATE(Species): was 6, more marking slots
       required: false
     Legs:
-      points: 8 # WOLFGATE(Species): was 6, more marking slots
+      points: 16 # WOLFGATE(Species): was 6, more marking slots
       required: false
     Arms:
-      points: 8 # WOLFGATE(Species): was 6, more marking slots
+      points: 16 # WOLFGATE(Species): was 6, more marking slots
       required: false
 
 - type: humanoidBaseSprite

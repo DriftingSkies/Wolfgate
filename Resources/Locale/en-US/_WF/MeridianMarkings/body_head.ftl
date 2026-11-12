@@ -10,6 +10,15 @@ marking-WFMeridianMarkingAnimeEyesInnerHead-anime_eyes_inner_head = Anime Eyes (
 marking-WFMeridianMarkingBackStripeHead = Back Stripe (Head)
 marking-WFMeridianMarkingBackStripeHead-back_stripe_head = Back Stripe (Head)
 
+marking-WFMeridianMarkingBatHead = Bat (Head)
+marking-WFMeridianMarkingBatHead-bat_head = Bat (Head)
+
+marking-WFMeridianMarkingBeeHead = Bee (Head)
+marking-WFMeridianMarkingBeeHead-bee_head = Bee (Head)
+
+marking-WFMeridianMarkingBellySlimHead = Belly Slim (Head)
+marking-WFMeridianMarkingBellySlimHead-belly_slim_head = Belly Slim (Head)
+
 marking-WFMeridianMarkingBlankRoundFaceUseWithMonsterMouthHead = Blank round face (use with monster mouth) (Head)
 marking-WFMeridianMarkingBlankRoundFaceUseWithMonsterMouthHead-blank_round_face_use_with_monster_mouth_head = Blank round face (use with monster mouth) (Head)
 
@@ -36,6 +45,9 @@ marking-WFMeridianMarkingCorvidHead-corvid_head = Corvid (Head)
 
 marking-WFMeridianMarkingDalmatianHead = Dalmatian (Head)
 marking-WFMeridianMarkingDalmatianHead-dalmatian_head = Dalmatian (Head)
+
+marking-WFMeridianMarkingDatasharkHead = Datashark (Head)
+marking-WFMeridianMarkingDatasharkHead-datashark_head = Datashark (Head)
 
 marking-WFMeridianMarkingDeathheadGrayscaleHead = Deathhead Grayscale (Head)
 marking-WFMeridianMarkingDeathheadGrayscaleHead-deathhead_grayscale_head = Deathhead Grayscale (Head)
@@ -64,6 +76,9 @@ marking-WFMeridianMarkingEyelinerHead-eyeliner_head = Eyeliner (Head)
 marking-WFMeridianMarkingFennecHead = Fennec (Head)
 marking-WFMeridianMarkingFennecHead-fennec_head = Fennec (Head)
 
+marking-WFMeridianMarkingFloofHead = Floof (Head)
+marking-WFMeridianMarkingFloofHead-floof_head = Floof (Head)
+
 marking-WFMeridianMarkingFlushedCheeksHead = Flushed Cheeks (Head)
 marking-WFMeridianMarkingFlushedCheeksHead-flushed_cheeks_head = Flushed Cheeks (Head)
 
@@ -79,11 +94,17 @@ marking-WFMeridianMarkingGothicGrayscaleHead-gothic_grayscale_head = Gothic Gray
 marking-WFMeridianMarkingGuilmonMarkHead = Guilmon Mark (Head)
 marking-WFMeridianMarkingGuilmonMarkHead-guilmon_mark_head = Guilmon Mark (Head)
 
+marking-WFMeridianMarkingHarlequinHead = Harlequin (Head)
+marking-WFMeridianMarkingHarlequinHead-harlequin_head = Harlequin (Head)
+
 marking-WFMeridianMarkingHarlequinReversedHead = Harlequin Reversed (Head)
 marking-WFMeridianMarkingHarlequinReversedHead-harlequin_reversed_head = Harlequin Reversed (Head)
 
 marking-WFMeridianMarkingHawkHead = Hawk (Head)
 marking-WFMeridianMarkingHawkHead-hawk_head = Hawk (Head)
+
+marking-WFMeridianMarkingHuskyHead = Husky (Head)
+marking-WFMeridianMarkingHuskyHead-husky_head = Husky (Head)
 
 marking-WFMeridianMarkingHyenaHead = Hyena (Head)
 marking-WFMeridianMarkingHyenaHead-hyena_head = Hyena (Head)
@@ -102,6 +123,9 @@ marking-WFMeridianMarkingLargeEyesHead-large_eyes_head = Large Eyes (Head)
 
 marking-WFMeridianMarkingLightbearerHead = Lightbearer (Head)
 marking-WFMeridianMarkingLightbearerHead-lightbearer_head = Lightbearer (Head)
+
+marking-WFMeridianMarkingLoversGrayscaleHead = Lovers Grayscale (Head)
+marking-WFMeridianMarkingLoversGrayscaleHead-lovers_grayscale_head = Lovers Grayscale (Head)
 
 marking-WFMeridianMarkingMonsterMouthHead = Monster Mouth (Head)
 marking-WFMeridianMarkingMonsterMouthHead-monster_mouth_head = Monster Mouth (Head)

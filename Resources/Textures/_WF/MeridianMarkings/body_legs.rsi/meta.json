@@ -1,7 +1,7 @@
 {
   "version": 1,
   "license": "CC-BY-SA-3.0",
-  "copyright": "Taken from Meridian Rift at https://github.com/Aphelion-Moon/Meridian-Rift/tree/0fd8e40910402f2745e5e5e4adc7d37bd45fed40 (modular_nova/master_files/icons/mob/body_markings/akula_markings.dmi, modular_nova/master_files/icons/mob/body_markings/moth_grayscale_markings.dmi, modular_nova/master_files/icons/mob/body_markings/other_markings.dmi, modular_nova/master_files/icons/mob/body_markings/secondary_markings.dmi, modular_nova/master_files/icons/mob/body_markings/tattoo_markings.dmi, modular_nova/master_files/icons/mob/body_markings/tertiary_markings.dmi), which carries the art of NovaSector, Skyrat-tg and tgstation. Layers merged per colour and centred for Wolfgate by Tools/_WF/MeridianMarkings/port.py.",
+  "copyright": "Taken from Meridian Rift at https://github.com/Aphelion-Moon/Meridian-Rift/tree/fdcdc313c1305968dbb344f1e0330cbf4c3e20e3 (modular_nova/master_files/icons/mob/body_markings/akula_markings.dmi, modular_nova/master_files/icons/mob/body_markings/moth_grayscale_markings.dmi, modular_nova/master_files/icons/mob/body_markings/moth_markings.dmi, modular_nova/master_files/icons/mob/body_markings/other_markings.dmi, modular_nova/master_files/icons/mob/body_markings/secondary_markings.dmi, modular_nova/master_files/icons/mob/body_markings/tattoo_markings.dmi, modular_nova/master_files/icons/mob/body_markings/tertiary_markings.dmi), which carries the art of NovaSector, Skyrat-tg and tgstation. Layers merged per colour and centred for Wolfgate by Tools/_WF/MeridianMarkings/port.py.",
   "size": {
     "x": 32,
     "y": 32
@@ -104,11 +104,19 @@
       "directions": 4
     },
     {
+      "name": "burnt_off_grayscale_l_foot",
+      "directions": 4
+    },
+    {
       "name": "burnt_off_grayscale_l_leg",
       "directions": 4
     },
     {
       "name": "burnt_off_grayscale_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "burnt_off_grayscale_r_leg",
       "directions": 4
     },
     {
@@ -152,6 +160,22 @@
       "directions": 4
     },
     {
+      "name": "corgi_l_foot",
+      "directions": 4
+    },
+    {
+      "name": "corgi_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "corgi_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "corgi_r_leg",
+      "directions": 4
+    },
+    {
       "name": "corvid_l_leg",
       "directions": 4
     },
@@ -192,6 +216,54 @@
       "directions": 4
     },
     {
+      "name": "deathhead_grayscale_l_foot",
+      "directions": 4
+    },
+    {
+      "name": "deathhead_grayscale_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "deathhead_grayscale_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "deathhead_grayscale_r_leg",
+      "directions": 4
+    },
+    {
+      "name": "deer_l_foot",
+      "directions": 4
+    },
+    {
+      "name": "deer_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "deer_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "deer_r_leg",
+      "directions": 4
+    },
+    {
+      "name": "dog_l_foot",
+      "directions": 4
+    },
+    {
+      "name": "dog_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "dog_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "dog_r_leg",
+      "directions": 4
+    },
+    {
       "name": "dog_spot_l_foot",
       "directions": 4
     },
@@ -200,11 +272,35 @@
       "directions": 4
     },
     {
+      "name": "fennec_l_foot",
+      "directions": 4
+    },
+    {
       "name": "fennec_l_leg",
       "directions": 4
     },
     {
+      "name": "fennec_r_foot",
+      "directions": 4
+    },
+    {
       "name": "fennec_r_leg",
+      "directions": 4
+    },
+    {
+      "name": "floofer_sock_l_foot",
+      "directions": 4
+    },
+    {
+      "name": "floofer_sock_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "floofer_sock_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "floofer_sock_r_leg",
       "directions": 4
     },
     {
@@ -216,7 +312,15 @@
       "directions": 4
     },
     {
+      "name": "gothic_grayscale_l_foot",
+      "directions": 4
+    },
+    {
       "name": "gothic_grayscale_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "gothic_grayscale_r_foot",
       "directions": 4
     },
     {
@@ -237,6 +341,22 @@
     },
     {
       "name": "guilmon_mark_r_leg",
+      "directions": 4
+    },
+    {
+      "name": "harlequin_l_foot",
+      "directions": 4
+    },
+    {
+      "name": "harlequin_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "harlequin_reversed_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "harlequin_reversed_r_leg",
       "directions": 4
     },
     {
@@ -288,11 +408,35 @@
       "directions": 4
     },
     {
+      "name": "hawk_talon_l_foot",
+      "directions": 4
+    },
+    {
       "name": "hawk_talon_l_leg",
       "directions": 4
     },
     {
+      "name": "hawk_talon_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "hawk_talon_r_leg",
+      "directions": 4
+    },
+    {
+      "name": "husky_l_foot",
+      "directions": 4
+    },
+    {
       "name": "husky_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "husky_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "husky_r_leg",
       "directions": 4
     },
     {
@@ -312,11 +456,43 @@
       "directions": 4
     },
     {
+      "name": "jungle_grayscale_l_foot",
+      "directions": 4
+    },
+    {
+      "name": "jungle_grayscale_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "jungle_grayscale_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "jungle_grayscale_r_leg",
+      "directions": 4
+    },
+    {
       "name": "leg_band_l_leg",
       "directions": 4
     },
     {
       "name": "leg_band_r_leg",
+      "directions": 4
+    },
+    {
+      "name": "lightbearer_l_foot",
+      "directions": 4
+    },
+    {
+      "name": "lightbearer_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "lightbearer_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "lightbearer_r_leg",
       "directions": 4
     },
     {
@@ -328,7 +504,59 @@
       "directions": 4
     },
     {
+      "name": "lovers_grayscale_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "lovers_grayscale_r_leg",
+      "directions": 4
+    },
+    {
+      "name": "lower_limb_l_foot",
+      "directions": 4
+    },
+    {
+      "name": "lower_limb_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "lower_limb_r_foot",
+      "directions": 4
+    },
+    {
       "name": "lower_limb_r_leg",
+      "directions": 4
+    },
+    {
+      "name": "moonfly_grayscale_l_foot",
+      "directions": 4
+    },
+    {
+      "name": "moonfly_grayscale_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "moonfly_grayscale_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "moonfly_grayscale_r_leg",
+      "directions": 4
+    },
+    {
+      "name": "oakworm_grayscale_l_foot",
+      "directions": 4
+    },
+    {
+      "name": "oakworm_grayscale_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "oakworm_grayscale_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "oakworm_grayscale_r_leg",
       "directions": 4
     },
     {
@@ -340,7 +568,15 @@
       "directions": 4
     },
     {
+      "name": "otie_spot_l_foot",
+      "directions": 4
+    },
+    {
       "name": "otie_spot_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "otie_spot_r_foot",
       "directions": 4
     },
     {
@@ -380,6 +616,22 @@
       "directions": 4
     },
     {
+      "name": "raccoon_spot_l_foot",
+      "directions": 4
+    },
+    {
+      "name": "raccoon_spot_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "raccoon_spot_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "raccoon_spot_r_leg",
+      "directions": 4
+    },
+    {
       "name": "ragged_grayscale_l_foot",
       "directions": 4
     },
@@ -396,6 +648,22 @@
       "directions": 4
     },
     {
+      "name": "rat_paw_l_foot",
+      "directions": 4
+    },
+    {
+      "name": "rat_paw_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "rat_paw_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "rat_paw_r_leg",
+      "directions": 4
+    },
+    {
       "name": "rat_spot_l_leg",
       "directions": 4
     },
@@ -404,7 +672,15 @@
       "directions": 4
     },
     {
+      "name": "red_panda_l_foot",
+      "directions": 4
+    },
+    {
       "name": "red_panda_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "red_panda_r_foot",
       "directions": 4
     },
     {
@@ -448,7 +724,15 @@
       "directions": 4
     },
     {
+      "name": "scolipede_l_leg",
+      "directions": 4
+    },
+    {
       "name": "scolipede_r_foot",
+      "directions": 4
+    },
+    {
+      "name": "scolipede_r_leg",
       "directions": 4
     },
     {
@@ -540,7 +824,15 @@
       "directions": 4
     },
     {
+      "name": "whitefly_grayscale_l_foot",
+      "directions": 4
+    },
+    {
       "name": "whitefly_grayscale_l_leg",
+      "directions": 4
+    },
+    {
+      "name": "whitefly_grayscale_r_foot",
       "directions": 4
     },
     {

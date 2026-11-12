@@ -4,7 +4,9 @@ Character markings ported from [Meridian Rift](https://github.com/Aphelion-Moon/
 server on the NovaSector codebase: hairstyles, facial hair, tails, ears, snouts, horns, frills, wings,
 fluff, head and neck accessories, antennae, Skrell hair, xeno parts and body markings. Players pick them
 in the character editor like any other marking; ids start with `WFMeridian`. Only markings Wolfgate did
-not already have are here, so the Floof, HardLight and upstream sets are not repeated.
+not already have are here, so the Floof, HardLight and upstream sets are not repeated. A body marking is the
+exception: once any of its parts is ported, every part is, so a set is never split across other names, and
+its left and right parts go to the same species.
 
 Everything in the module's `Resources` folders is generated. To change it, edit the generator in
 `Tools/_WF/MeridianMarkings` and run it again from the repository root against a Meridian Rift checkout:
@@ -22,7 +24,9 @@ what became of each source marking.
   and names. Its header says what the SS13 art becomes here and what is left out.
 - `source.py` and `ss13.py` read Meridian Rift's datums and DMI sheets.
 - `dedupe.py` and `wolfgate.py` compare each marking with the ones already in the repository.
-- `decisions.yml` holds the calls made by eye where that comparison could not settle a marking.
+- `decisions.yml` holds the calls made by eye where that comparison could not settle a marking, and the
+  species a marking keeps although the art no longer fits their body (the leg markings Vulpkanin and Canine
+  wore before they moved to digitigrade legs).
 
 A marking on the tail layers (tails and wings) follows the rules in `Content.Server/_WF/Genitals`: art below
 the body is a second sprite on `TailBehind` that follows the first one's colour, and south-facing art that

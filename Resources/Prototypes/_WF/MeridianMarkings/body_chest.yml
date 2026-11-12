@@ -298,6 +298,22 @@
     state: corgi_chest
 
 - type: marking
+  id: WFMeridianMarkingCorvidChest
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: corvid_chest
+
+- type: marking
   id: WFMeridianMarkingCorvidChestFeminine
   bodyPart: Chest
   markingCategory: Chest
@@ -345,6 +361,20 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: datashark_chest
+
+- type: marking
+  id: WFMeridianMarkingDeathheadGrayscaleChest
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: deathhead_grayscale_chest
 
 - type: marking
   id: WFMeridianMarkingDeerChest
@@ -635,6 +665,39 @@
     state: hawk_chest
 
 - type: marking
+  id: WFMeridianMarkingHuskyChest
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: husky_chest
+
+- type: marking
+  id: WFMeridianMarkingHuskyChestFeminine
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Yowie]
+  sexRestriction: [Female]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: husky_chest_f
+
+- type: marking
   id: WFMeridianMarkingHyenaChest
   bodyPart: Chest
   markingCategory: Chest
@@ -808,6 +871,20 @@
     state: lightbearer_chest
 
 - type: marking
+  id: WFMeridianMarkingLoversGrayscaleChest
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: lovers_grayscale_chest
+
+- type: marking
   id: WFMeridianMarkingMoonflyGrayscaleChest
   bodyPart: Chest
   markingCategory: Chest
@@ -834,6 +911,39 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: oakworm_grayscale_chest
+
+- type: marking
+  id: WFMeridianMarkingOrcaChest
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: orca_chest
+
+- type: marking
+  id: WFMeridianMarkingOrcaChestFeminine
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Yowie]
+  sexRestriction: [Female]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: orca_chest_f
 
 - type: marking
   id: WFMeridianMarkingOtieChest
@@ -900,6 +1010,39 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: otie_spot_chest_f
+
+- type: marking
+  id: WFMeridianMarkingOtterChest
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: otter_chest
+
+- type: marking
+  id: WFMeridianMarkingOtterChestFeminine
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Yowie]
+  sexRestriction: [Female]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: otter_chest_f
 
 - type: marking
   id: WFMeridianMarkingPantherChest
@@ -1250,6 +1393,22 @@
     state: synth_lights_chest
 
 - type: marking
+  id: WFMeridianMarkingSynthPecsChest
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: synth_pecs_chest
+
+- type: marking
   id: WFMeridianMarkingSynthPecsChestFeminine
   bodyPart: Chest
   markingCategory: Chest
@@ -1267,6 +1426,22 @@
     state: synth_pecs_chest_f
 
 - type: marking
+  id: WFMeridianMarkingSynthScutesChest
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: synth_scutes_chest
+
+- type: marking
   id: WFMeridianMarkingSynthScutesChestFeminine
   bodyPart: Chest
   markingCategory: Chest
@@ -1282,6 +1457,39 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: synth_scutes_chest_f
+
+- type: marking
+  id: WFMeridianMarkingTajaranChest
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: tajaran_chest
+
+- type: marking
+  id: WFMeridianMarkingTajaranChestFeminine
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Reptilian, Rodentia, Synth, Yowie]
+  sexRestriction: [Female]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: tajaran_chest_f
 
 - type: marking
   id: WFMeridianMarkingTattooButterflyChest
@@ -1366,6 +1574,22 @@
   sprites:
   - sprite: _WF/MeridianMarkings/body_chest.rsi
     state: tattoo_tiger_groin_chest
+
+- type: marking
+  id: WFMeridianMarkingTigerSpotChest
+  bodyPart: Chest
+  markingCategory: Chest
+  speciesRestriction: [Asakim, Chitinid, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, SlimePerson, Synth, Tajaran, Vulpkanin, WFCanine, Yowie]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WF/MeridianMarkings/body_chest.rsi
+    state: tiger_spot_chest
 
 - type: marking
   id: WFMeridianMarkingTigerSpotChestFeminine

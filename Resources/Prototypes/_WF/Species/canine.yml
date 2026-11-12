@@ -78,10 +78,10 @@
       points: 4
       required: false
     Legs:
-      points: 8
+      points: 16
       required: false
     Arms:
-      points: 8
+      points: 16
       required: false
     Snout:
       # Unlike Vulpkanin this is a real slot: the head has no muzzle of its own, so the snout marking is

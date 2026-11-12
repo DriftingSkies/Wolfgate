@@ -1,5 +1,11 @@
+marking-WFMeridianMarkingAkulaLArm = Akula (Left Arm)
+marking-WFMeridianMarkingAkulaLArm-akula_l_arm = Akula (Left Arm)
+
 marking-WFMeridianMarkingAkulaLHand = Akula (Left Hand)
 marking-WFMeridianMarkingAkulaLHand-akula_l_hand = Akula (Left Hand)
+
+marking-WFMeridianMarkingAkulaRArm = Akula (Right Arm)
+marking-WFMeridianMarkingAkulaRArm-akula_r_arm = Akula (Right Arm)
 
 marking-WFMeridianMarkingAkulaRHand = Akula (Right Hand)
 marking-WFMeridianMarkingAkulaRHand-akula_r_hand = Akula (Right Hand)
@@ -13,8 +19,14 @@ marking-WFMeridianMarkingAkulaHighlightRArm-akula_highlight_r_arm = Akula Highli
 marking-WFMeridianMarkingBandsAndStripesAltLArm = Bands and Stripes (Alt) (Left Arm)
 marking-WFMeridianMarkingBandsAndStripesAltLArm-bands_and_stripes_alt_l_arm = Bands and Stripes (Alt) (Left Arm)
 
+marking-WFMeridianMarkingBandsAndStripesAltLHand = Bands and Stripes (Alt) (Left Hand)
+marking-WFMeridianMarkingBandsAndStripesAltLHand-bands_and_stripes_alt_l_hand = Bands and Stripes (Alt) (Left Hand)
+
 marking-WFMeridianMarkingBandsAndStripesAltRArm = Bands and Stripes (Alt) (Right Arm)
 marking-WFMeridianMarkingBandsAndStripesAltRArm-bands_and_stripes_alt_r_arm = Bands and Stripes (Alt) (Right Arm)
+
+marking-WFMeridianMarkingBandsAndStripesAltRHand = Bands and Stripes (Alt) (Right Hand)
+marking-WFMeridianMarkingBandsAndStripesAltRHand-bands_and_stripes_alt_r_hand = Bands and Stripes (Alt) (Right Hand)
 
 marking-WFMeridianMarkingBandsAndStripesLArm = Bands and Stripes (Left Arm)
 marking-WFMeridianMarkingBandsAndStripesLArm-bands_and_stripes_l_arm = Bands and Stripes (Left Arm)
@@ -37,8 +49,14 @@ marking-WFMeridianMarkingBeeRArm-bee_r_arm = Bee (Right Arm)
 marking-WFMeridianMarkingBovineLArm = Bovine (Left Arm)
 marking-WFMeridianMarkingBovineLArm-bovine_l_arm = Bovine (Left Arm)
 
+marking-WFMeridianMarkingBovineLHand = Bovine (Left Hand)
+marking-WFMeridianMarkingBovineLHand-bovine_l_hand = Bovine (Left Hand)
+
 marking-WFMeridianMarkingBovineRArm = Bovine (Right Arm)
 marking-WFMeridianMarkingBovineRArm-bovine_r_arm = Bovine (Right Arm)
+
+marking-WFMeridianMarkingBovineRHand = Bovine (Right Hand)
+marking-WFMeridianMarkingBovineRHand-bovine_r_hand = Bovine (Right Hand)
 
 marking-WFMeridianMarkingBurntOffGrayscaleLArm = Burnt Off Grayscale (Left Arm)
 marking-WFMeridianMarkingBurntOffGrayscaleLArm-burnt_off_grayscale_l_arm = Burnt Off Grayscale (Left Arm)
@@ -76,6 +94,18 @@ marking-WFMeridianMarkingColorBandsRArm-color_bands_r_arm = Color Bands (Right A
 marking-WFMeridianMarkingColorBandsRHand = Color Bands (Right Hand)
 marking-WFMeridianMarkingColorBandsRHand-color_bands_r_hand = Color Bands (Right Hand)
 
+marking-WFMeridianMarkingCorgiLArm = Corgi (Left Arm)
+marking-WFMeridianMarkingCorgiLArm-corgi_l_arm = Corgi (Left Arm)
+
+marking-WFMeridianMarkingCorgiLHand = Corgi (Left Hand)
+marking-WFMeridianMarkingCorgiLHand-corgi_l_hand = Corgi (Left Hand)
+
+marking-WFMeridianMarkingCorgiRArm = Corgi (Right Arm)
+marking-WFMeridianMarkingCorgiRArm-corgi_r_arm = Corgi (Right Arm)
+
+marking-WFMeridianMarkingCorgiRHand = Corgi (Right Hand)
+marking-WFMeridianMarkingCorgiRHand-corgi_r_hand = Corgi (Right Hand)
+
 marking-WFMeridianMarkingDalmatianLArm = Dalmatian (Left Arm)
 marking-WFMeridianMarkingDalmatianLArm-dalmatian_l_arm = Dalmatian (Left Arm)
 
@@ -94,8 +124,32 @@ marking-WFMeridianMarkingDatasharkLArm-datashark_l_arm = Datashark (Left Arm)
 marking-WFMeridianMarkingDatasharkRArm = Datashark (Right Arm)
 marking-WFMeridianMarkingDatasharkRArm-datashark_r_arm = Datashark (Right Arm)
 
+marking-WFMeridianMarkingDeathheadGrayscaleLArm = Deathhead Grayscale (Left Arm)
+marking-WFMeridianMarkingDeathheadGrayscaleLArm-deathhead_grayscale_l_arm = Deathhead Grayscale (Left Arm)
+
+marking-WFMeridianMarkingDeathheadGrayscaleRArm = Deathhead Grayscale (Right Arm)
+marking-WFMeridianMarkingDeathheadGrayscaleRArm-deathhead_grayscale_r_arm = Deathhead Grayscale (Right Arm)
+
+marking-WFMeridianMarkingDeerLArm = Deer (Left Arm)
+marking-WFMeridianMarkingDeerLArm-deer_l_arm = Deer (Left Arm)
+
+marking-WFMeridianMarkingDeerLHand = Deer (Left Hand)
+marking-WFMeridianMarkingDeerLHand-deer_l_hand = Deer (Left Hand)
+
+marking-WFMeridianMarkingDeerRArm = Deer (Right Arm)
+marking-WFMeridianMarkingDeerRArm-deer_r_arm = Deer (Right Arm)
+
+marking-WFMeridianMarkingDeerRHand = Deer (Right Hand)
+marking-WFMeridianMarkingDeerRHand-deer_r_hand = Deer (Right Hand)
+
+marking-WFMeridianMarkingDogLArm = Dog (Left Arm)
+marking-WFMeridianMarkingDogLArm-dog_l_arm = Dog (Left Arm)
+
 marking-WFMeridianMarkingDogLHand = Dog (Left Hand)
 marking-WFMeridianMarkingDogLHand-dog_l_hand = Dog (Left Hand)
+
+marking-WFMeridianMarkingDogRArm = Dog (Right Arm)
+marking-WFMeridianMarkingDogRArm-dog_r_arm = Dog (Right Arm)
 
 marking-WFMeridianMarkingDogRHand = Dog (Right Hand)
 marking-WFMeridianMarkingDogRHand-dog_r_hand = Dog (Right Hand)
@@ -115,14 +169,26 @@ marking-WFMeridianMarkingDrakeBoneRHand-drake_bone_r_hand = Drake Bone (Right Ha
 marking-WFMeridianMarkingFennecLArm = Fennec (Left Arm)
 marking-WFMeridianMarkingFennecLArm-fennec_l_arm = Fennec (Left Arm)
 
+marking-WFMeridianMarkingFennecLHand = Fennec (Left Hand)
+marking-WFMeridianMarkingFennecLHand-fennec_l_hand = Fennec (Left Hand)
+
 marking-WFMeridianMarkingFennecRArm = Fennec (Right Arm)
 marking-WFMeridianMarkingFennecRArm-fennec_r_arm = Fennec (Right Arm)
+
+marking-WFMeridianMarkingFennecRHand = Fennec (Right Hand)
+marking-WFMeridianMarkingFennecRHand-fennec_r_hand = Fennec (Right Hand)
 
 marking-WFMeridianMarkingFlooferSockLArm = Floofer Sock (Left Arm)
 marking-WFMeridianMarkingFlooferSockLArm-floofer_sock_l_arm = Floofer Sock (Left Arm)
 
+marking-WFMeridianMarkingFlooferSockLHand = Floofer Sock (Left Hand)
+marking-WFMeridianMarkingFlooferSockLHand-floofer_sock_l_hand = Floofer Sock (Left Hand)
+
 marking-WFMeridianMarkingFlooferSockRArm = Floofer Sock (Right Arm)
 marking-WFMeridianMarkingFlooferSockRArm-floofer_sock_r_arm = Floofer Sock (Right Arm)
+
+marking-WFMeridianMarkingFlooferSockRHand = Floofer Sock (Right Hand)
+marking-WFMeridianMarkingFlooferSockRHand-floofer_sock_r_hand = Floofer Sock (Right Hand)
 
 marking-WFMeridianMarkingGothicGrayscaleLArm = Gothic Grayscale (Left Arm)
 marking-WFMeridianMarkingGothicGrayscaleLArm-gothic_grayscale_l_arm = Gothic Grayscale (Left Arm)
@@ -154,17 +220,41 @@ marking-WFMeridianMarkingGuilmonMarkRArm-guilmon_mark_r_arm = Guilmon Mark (Righ
 marking-WFMeridianMarkingGuilmonMarkRHand = Guilmon Mark (Right Hand)
 marking-WFMeridianMarkingGuilmonMarkRHand-guilmon_mark_r_hand = Guilmon Mark (Right Hand)
 
+marking-WFMeridianMarkingHarlequinLArm = Harlequin (Left Arm)
+marking-WFMeridianMarkingHarlequinLArm-harlequin_l_arm = Harlequin (Left Arm)
+
+marking-WFMeridianMarkingHarlequinLHand = Harlequin (Left Hand)
+marking-WFMeridianMarkingHarlequinLHand-harlequin_l_hand = Harlequin (Left Hand)
+
+marking-WFMeridianMarkingHarlequinReversedRArm = Harlequin Reversed (Right Arm)
+marking-WFMeridianMarkingHarlequinReversedRArm-harlequin_reversed_r_arm = Harlequin Reversed (Right Arm)
+
+marking-WFMeridianMarkingHarlequinReversedRHand = Harlequin Reversed (Right Hand)
+marking-WFMeridianMarkingHarlequinReversedRHand-harlequin_reversed_r_hand = Harlequin Reversed (Right Hand)
+
 marking-WFMeridianMarkingHuskyLArm = Husky (Left Arm)
 marking-WFMeridianMarkingHuskyLArm-husky_l_arm = Husky (Left Arm)
+
+marking-WFMeridianMarkingHuskyLHand = Husky (Left Hand)
+marking-WFMeridianMarkingHuskyLHand-husky_l_hand = Husky (Left Hand)
 
 marking-WFMeridianMarkingHuskyRArm = Husky (Right Arm)
 marking-WFMeridianMarkingHuskyRArm-husky_r_arm = Husky (Right Arm)
 
+marking-WFMeridianMarkingHuskyRHand = Husky (Right Hand)
+marking-WFMeridianMarkingHuskyRHand-husky_r_hand = Husky (Right Hand)
+
 marking-WFMeridianMarkingHyenaLArm = Hyena (Left Arm)
 marking-WFMeridianMarkingHyenaLArm-hyena_l_arm = Hyena (Left Arm)
 
+marking-WFMeridianMarkingHyenaLHand = Hyena (Left Hand)
+marking-WFMeridianMarkingHyenaLHand-hyena_l_hand = Hyena (Left Hand)
+
 marking-WFMeridianMarkingHyenaRArm = Hyena (Right Arm)
 marking-WFMeridianMarkingHyenaRArm-hyena_r_arm = Hyena (Right Arm)
+
+marking-WFMeridianMarkingHyenaRHand = Hyena (Right Hand)
+marking-WFMeridianMarkingHyenaRHand-hyena_r_hand = Hyena (Right Hand)
 
 marking-WFMeridianMarkingInsectoidTrimLArm = Insectoid Trim (Left Arm)
 marking-WFMeridianMarkingInsectoidTrimLArm-insectoid_trim_l_arm = Insectoid Trim (Left Arm)
@@ -184,6 +274,12 @@ marking-WFMeridianMarkingJackalBackFurAccentsLArm-jackal_back_fur_accents_l_arm 
 marking-WFMeridianMarkingJackalBackFurAccentsRArm = Jackal Back Fur Accents (Right Arm)
 marking-WFMeridianMarkingJackalBackFurAccentsRArm-jackal_back_fur_accents_r_arm = Jackal Back Fur Accents (Right Arm)
 
+marking-WFMeridianMarkingJungleGrayscaleLArm = Jungle Grayscale (Left Arm)
+marking-WFMeridianMarkingJungleGrayscaleLArm-jungle_grayscale_l_arm = Jungle Grayscale (Left Arm)
+
+marking-WFMeridianMarkingJungleGrayscaleRArm = Jungle Grayscale (Right Arm)
+marking-WFMeridianMarkingJungleGrayscaleRArm-jungle_grayscale_r_arm = Jungle Grayscale (Right Arm)
+
 marking-WFMeridianMarkingLeopardLArm = Leopard (Left Arm)
 marking-WFMeridianMarkingLeopardLArm-leopard_l_arm = Leopard (Left Arm)
 
@@ -195,6 +291,12 @@ marking-WFMeridianMarkingLeopardRArm-leopard_r_arm = Leopard (Right Arm)
 
 marking-WFMeridianMarkingLeopardRHand = Leopard (Right Hand)
 marking-WFMeridianMarkingLeopardRHand-leopard_r_hand = Leopard (Right Hand)
+
+marking-WFMeridianMarkingLightbearerLArm = Lightbearer (Left Arm)
+marking-WFMeridianMarkingLightbearerLArm-lightbearer_l_arm = Lightbearer (Left Arm)
+
+marking-WFMeridianMarkingLightbearerRArm = Lightbearer (Right Arm)
+marking-WFMeridianMarkingLightbearerRArm-lightbearer_r_arm = Lightbearer (Right Arm)
 
 marking-WFMeridianMarkingLoversGrayscaleLArm = Lovers Grayscale (Left Arm)
 marking-WFMeridianMarkingLoversGrayscaleLArm-lovers_grayscale_l_arm = Lovers Grayscale (Left Arm)
@@ -208,6 +310,12 @@ marking-WFMeridianMarkingLowerLimbLArm-lower_limb_l_arm = Lower Limb (Left Arm)
 marking-WFMeridianMarkingLowerLimbRArm = Lower Limb (Right Arm)
 marking-WFMeridianMarkingLowerLimbRArm-lower_limb_r_arm = Lower Limb (Right Arm)
 
+marking-WFMeridianMarkingMoonflyGrayscaleLArm = Moonfly Grayscale (Left Arm)
+marking-WFMeridianMarkingMoonflyGrayscaleLArm-moonfly_grayscale_l_arm = Moonfly Grayscale (Left Arm)
+
+marking-WFMeridianMarkingMoonflyGrayscaleRArm = Moonfly Grayscale (Right Arm)
+marking-WFMeridianMarkingMoonflyGrayscaleRArm-moonfly_grayscale_r_arm = Moonfly Grayscale (Right Arm)
+
 marking-WFMeridianMarkingOakwormGrayscaleLArm = Oakworm Grayscale (Left Arm)
 marking-WFMeridianMarkingOakwormGrayscaleLArm-oakworm_grayscale_l_arm = Oakworm Grayscale (Left Arm)
 
@@ -219,6 +327,18 @@ marking-WFMeridianMarkingOtieLHand-otie_l_hand = Otie (Left Hand)
 
 marking-WFMeridianMarkingOtieRHand = Otie (Right Hand)
 marking-WFMeridianMarkingOtieRHand-otie_r_hand = Otie (Right Hand)
+
+marking-WFMeridianMarkingOtieSpotLArm = Otie Spot (Left Arm)
+marking-WFMeridianMarkingOtieSpotLArm-otie_spot_l_arm = Otie Spot (Left Arm)
+
+marking-WFMeridianMarkingOtieSpotLHand = Otie Spot (Left Hand)
+marking-WFMeridianMarkingOtieSpotLHand-otie_spot_l_hand = Otie Spot (Left Hand)
+
+marking-WFMeridianMarkingOtieSpotRArm = Otie Spot (Right Arm)
+marking-WFMeridianMarkingOtieSpotRArm-otie_spot_r_arm = Otie Spot (Right Arm)
+
+marking-WFMeridianMarkingOtieSpotRHand = Otie Spot (Right Hand)
+marking-WFMeridianMarkingOtieSpotRHand-otie_spot_r_hand = Otie Spot (Right Hand)
 
 marking-WFMeridianMarkingPantherLArm = Panther (Left Arm)
 marking-WFMeridianMarkingPantherLArm-panther_l_arm = Panther (Left Arm)
@@ -235,8 +355,14 @@ marking-WFMeridianMarkingPantherRHand-panther_r_hand = Panther (Right Hand)
 marking-WFMeridianMarkingPilotLArm = Pilot (Left Arm)
 marking-WFMeridianMarkingPilotLArm-pilot_l_arm = Pilot (Left Arm)
 
+marking-WFMeridianMarkingPilotLHand = Pilot (Left Hand)
+marking-WFMeridianMarkingPilotLHand-pilot_l_hand = Pilot (Left Hand)
+
 marking-WFMeridianMarkingPilotRArm = Pilot (Right Arm)
 marking-WFMeridianMarkingPilotRArm-pilot_r_arm = Pilot (Right Arm)
+
+marking-WFMeridianMarkingPilotRHand = Pilot (Right Hand)
+marking-WFMeridianMarkingPilotRHand-pilot_r_hand = Pilot (Right Hand)
 
 marking-WFMeridianMarkingPossumSockLHand = Possum Sock (Left Hand)
 marking-WFMeridianMarkingPossumSockLHand-possum_sock_l_hand = Possum Sock (Left Hand)
@@ -265,8 +391,14 @@ marking-WFMeridianMarkingRaggedGrayscaleRArm-ragged_grayscale_r_arm = Ragged Gra
 marking-WFMeridianMarkingRatPawLArm = Rat Paw (Left Arm)
 marking-WFMeridianMarkingRatPawLArm-rat_paw_l_arm = Rat Paw (Left Arm)
 
+marking-WFMeridianMarkingRatPawLHand = Rat Paw (Left Hand)
+marking-WFMeridianMarkingRatPawLHand-rat_paw_l_hand = Rat Paw (Left Hand)
+
 marking-WFMeridianMarkingRatPawRArm = Rat Paw (Right Arm)
 marking-WFMeridianMarkingRatPawRArm-rat_paw_r_arm = Rat Paw (Right Arm)
+
+marking-WFMeridianMarkingRatPawRHand = Rat Paw (Right Hand)
+marking-WFMeridianMarkingRatPawRHand-rat_paw_r_hand = Rat Paw (Right Hand)
 
 marking-WFMeridianMarkingRatSpotLArm = Rat Spot (Left Arm)
 marking-WFMeridianMarkingRatSpotLArm-rat_spot_l_arm = Rat Spot (Left Arm)
@@ -277,8 +409,14 @@ marking-WFMeridianMarkingRatSpotRArm-rat_spot_r_arm = Rat Spot (Right Arm)
 marking-WFMeridianMarkingRedPandaLArm = Red Panda (Left Arm)
 marking-WFMeridianMarkingRedPandaLArm-red_panda_l_arm = Red Panda (Left Arm)
 
+marking-WFMeridianMarkingRedPandaLHand = Red Panda (Left Hand)
+marking-WFMeridianMarkingRedPandaLHand-red_panda_l_hand = Red Panda (Left Hand)
+
 marking-WFMeridianMarkingRedPandaRArm = Red Panda (Right Arm)
 marking-WFMeridianMarkingRedPandaRArm-red_panda_r_arm = Red Panda (Right Arm)
+
+marking-WFMeridianMarkingRedPandaRHand = Red Panda (Right Hand)
+marking-WFMeridianMarkingRedPandaRHand-red_panda_r_hand = Red Panda (Right Hand)
 
 marking-WFMeridianMarkingReddishGrayscaleLArm = Reddish Grayscale (Left Arm)
 marking-WFMeridianMarkingReddishGrayscaleLArm-reddish_grayscale_l_arm = Reddish Grayscale (Left Arm)
@@ -297,6 +435,18 @@ marking-WFMeridianMarkingSabresuneRArm-sabresune_r_arm = Sabresune (Right Arm)
 
 marking-WFMeridianMarkingSabresuneRHand = Sabresune (Right Hand)
 marking-WFMeridianMarkingSabresuneRHand-sabresune_r_hand = Sabresune (Right Hand)
+
+marking-WFMeridianMarkingScolipedeLArm = Scolipede (Left Arm)
+marking-WFMeridianMarkingScolipedeLArm-scolipede_l_arm = Scolipede (Left Arm)
+
+marking-WFMeridianMarkingScolipedeLHand = Scolipede (Left Hand)
+marking-WFMeridianMarkingScolipedeLHand-scolipede_l_hand = Scolipede (Left Hand)
+
+marking-WFMeridianMarkingScolipedeRArm = Scolipede (Right Arm)
+marking-WFMeridianMarkingScolipedeRArm-scolipede_r_arm = Scolipede (Right Arm)
+
+marking-WFMeridianMarkingScolipedeRHand = Scolipede (Right Hand)
+marking-WFMeridianMarkingScolipedeRHand-scolipede_r_hand = Scolipede (Right Hand)
 
 marking-WFMeridianMarkingShepherdLArm = Shepherd (Left Arm)
 marking-WFMeridianMarkingShepherdLArm-shepherd_l_arm = Shepherd (Left Arm)
