@@ -1,19 +1,25 @@
 using Content.Server.Atmos.Components;
 using Content.Server.Temperature.Components;
-using Content.Shared.Stunnable;
 using Content.Shared._WF.ArmorDeflection;
 using Content.Shared._WF.ArmorSpecialization;
 using Content.Shared._WF.NeckSuits;
+using Content.Shared._WF.RMCClothing.Ghillie;
 using Content.Shared._WF.SoftShield;
+using Content.Shared._WF.SuitTank;
 using Content.Shared.Armor;
 using Content.Shared.Clothing;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Clothing.EntitySystems;
+using Content.Shared.Damage.Components;
 using Content.Shared.Examine;
 using Content.Shared.Explosion.Components;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
+using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
+using Content.Shared.Slippery;
+using Content.Shared.StepTrigger.Components;
+using Content.Shared.Stunnable;
 using Content.Shared.Verbs;
 using Content.Shared.Weapons.Reflect;
 using Robust.Shared.Prototypes;
@@ -29,6 +35,8 @@ public sealed partial class WFNeckSuitSystem : EntitySystem
     [Dependency] private ClothingSystem _clothing = default!;
     [Dependency] private IComponentFactory _factory = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private MovementSpeedModifierSystem _speed = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
 
     private static readonly SpriteSpecifier VerbIcon =
@@ -42,11 +50,45 @@ public sealed partial class WFNeckSuitSystem : EntitySystem
         typeof(ClothingSpeedModifierComponent),
         typeof(ExplosionResistanceComponent),
         typeof(StaminaDamageResistanceComponent),
+        typeof(FireProtectionComponent),
+        typeof(ProtectedFromStepTriggersComponent),
+        typeof(DamageOnInteractProtectionComponent),
+        typeof(NoSlipComponent),
         typeof(WFArmorDeflectComponent),
         typeof(WFWoundWardComponent),
     };
 
-    private const string SpecializationNamespace = "Content.Shared._WF.ArmorSpecialization";
+    /// <summary>
+    /// Suits with any of these are functional only, as Meridian Rift's <c>only_functional</c>: space suits, and
+    /// suits whose effect is more than stats (reflection, shields, stealth, tank storage, armor specializations).
+    /// </summary>
+    private static readonly Type[] FunctionalOnly =
+    {
+        typeof(PressureProtectionComponent),
+        typeof(ReflectComponent),
+        typeof(WFSoftShieldComponent),
+        typeof(WFGhillieSuitComponent),
+        typeof(WFSuitTankStorageComponent),
+        typeof(WFLimbLockComponent),
+        typeof(WFPainDampenerComponent),
+        typeof(WFAblativeCoatComponent),
+        typeof(WFAutoTourniquetComponent),
+        typeof(WFPlasmaReserveComponent),
+        typeof(WFSteadyHandsComponent),
+        typeof(WFSterileWeaveComponent),
+        typeof(WFStasisWeaveComponent),
+        typeof(WFServoAssistComponent),
+        typeof(WFRadSinkComponent),
+        typeof(WFEmpHardenedComponent),
+        typeof(WFHaulFrameComponent),
+        typeof(WFWildlifePaddingComponent),
+        typeof(WFBlastLinerComponent),
+        typeof(WFSuitThrustersComponent),
+        typeof(WFLivingTissueComponent),
+        typeof(WFHonkOnHitComponent),
+        typeof(WFVowOfSilenceComponent),
+        typeof(WFDeconCoatingComponent),
+    };
 
     public override void Initialize()
     {
@@ -56,27 +98,18 @@ public sealed partial class WFNeckSuitSystem : EntitySystem
         SubscribeLocalEvent<ClothingComponent, ExaminedEvent>(OnExamined);
     }
 
-    /// <summary>
-    /// Whether this outer suit can be adjusted. Space suits and suits with special effects (reflection, shields,
-    /// armor specializations) are functional only, as on Meridian Rift.
-    /// </summary>
+    /// <summary>Whether this suit can be adjusted: an outer suit, or one already in neck mode.</summary>
     public bool CanAdjust(Entity<ClothingComponent> ent)
     {
         if (HasComp<WFNeckSuitComponent>(ent))
             return true;
 
-        if ((ent.Comp.Slots & SlotFlags.OUTERCLOTHING) == 0
-            || HasComp<PressureProtectionComponent>(ent)
-            || HasComp<ReflectComponent>(ent)
-            || HasComp<WFSoftShieldComponent>(ent))
-        {
+        if ((ent.Comp.Slots & SlotFlags.OUTERCLOTHING) == 0)
             return false;
-        }
 
-        foreach (var comp in EntityManager.GetComponents(ent))
+        foreach (var type in FunctionalOnly)
         {
-            var type = comp.GetType();
-            if (type.Namespace == SpecializationNamespace && type != typeof(WFWoundWardComponent))
+            if (HasComp(ent, type))
                 return false;
         }
 
@@ -111,13 +144,15 @@ public sealed partial class WFNeckSuitSystem : EntitySystem
         });
     }
 
-    /// <summary>Adjusts the suit for neck (non-functional) or suit (functional) use.</summary>
-    public void SetNeckMode(Entity<ClothingComponent> ent, bool neck, EntityUid? user = null)
+    /// <summary>
+    /// Adjusts the suit for neck (non-functional) or suit (functional) use. Refused while it's worn, as on Meridian
+    /// Rift, so a suit never changes slot or protection while in one.
+    /// </summary>
+    public bool SetNeckMode(Entity<ClothingComponent> ent, bool neck, EntityUid? user = null)
     {
-        if (HasComp<WFNeckSuitComponent>(ent) == neck)
-            return;
+        if (HasComp<WFNeckSuitComponent>(ent) == neck || _inventory.TryGetContainingSlot(ent.Owner, out _))
+            return false;
 
-        var proto = MetaData(ent).EntityPrototype;
         if (neck)
         {
             foreach (var type in Functional)
@@ -132,7 +167,7 @@ public sealed partial class WFNeckSuitSystem : EntitySystem
         else
         {
             var slots = SlotFlags.OUTERCLOTHING;
-            if (proto != null)
+            if (MetaData(ent).EntityPrototype is { } proto)
             {
                 if (proto.Components.TryGetValue(_factory.GetComponentName<ClothingComponent>(), out var clothing))
                     slots = ((ClothingComponent) clothing.Component).Slots;
@@ -148,10 +183,16 @@ public sealed partial class WFNeckSuitSystem : EntitySystem
             RemComp<WFNeckSuitComponent>(ent);
         }
 
-        if (user == null)
-            return;
+        // A held suit's slowdown is mirrored onto its holder.
+        if (_inventory.TryGetContainingEntity(ent.Owner, out var holder))
+            _speed.RefreshMovementSpeedModifiers(holder.Value);
 
-        _popup.PopupEntity(Loc.GetString(neck ? "wf-neck-suit-popup-cosmetic" : "wf-neck-suit-popup-functional",
-            ("item", ent.Owner)), user.Value, user.Value);
+        if (user != null)
+        {
+            _popup.PopupEntity(Loc.GetString(neck ? "wf-neck-suit-popup-cosmetic" : "wf-neck-suit-popup-functional",
+                ("item", ent.Owner)), user.Value, user.Value);
+        }
+
+        return true;
     }
 }

@@ -56,8 +56,8 @@ public sealed partial class ClothingLayerSystem : EntitySystem
             return TryGetIndex(wearer, slots, layer.Layer, layer.Below, out index);
 
         // A suit worn at the neck draws over the worn suit, as SS13 draws NECK_LAYER over SUIT_LAYER.
-        if (HasComp<WFNeckSuitComponent>(equipment))
-            return TryGetIndex(wearer, slots, Suit, false, out index);
+        if (IsNeckSuit(equipment))
+            return TryGetNeckSuitIndex(wearer, slot, slots, out index);
 
         if (slot != Uniform)
             return false;
@@ -86,6 +86,40 @@ public sealed partial class ClothingLayerSystem : EntitySystem
             if (_sprite.LayerMapTryGet(wearer.AsNullable(), hand, out var handIndex, false)
                 && handIndex > uniform && handIndex < index)
                 return false;
+        }
+
+        return true;
+    }
+
+    private bool IsNeckSuit(EntityUid item)
+    {
+        return TryComp<WFNeckSuitComponent>(item, out var comp) && comp.LifeStage <= ComponentLifeStage.Running;
+    }
+
+    /// <summary>
+    /// Just above the worn suit and above neck suits in earlier slots, so two neck suits always stack in slot order
+    /// whichever was drawn last.
+    /// </summary>
+    private bool TryGetNeckSuitIndex(Entity<SpriteComponent> wearer, string slot, InventorySlotsComponent slots,
+        out int index)
+    {
+        if (!TryGetIndex(wearer, slots, Suit, false, out index))
+            return false;
+
+        var enumerator = _inventory.GetSlotEnumerator(wearer.Owner);
+        while (enumerator.NextItem(out var item, out var itemSlot))
+        {
+            if (itemSlot.Name == slot)
+                break;
+
+            if (!IsNeckSuit(item) || !slots.VisualLayerKeys.TryGetValue(itemSlot.Name, out var drawn))
+                continue;
+
+            foreach (var key in drawn)
+            {
+                if (_sprite.LayerMapTryGet(wearer.AsNullable(), key, out var i, false) && i > index)
+                    index = i;
+            }
         }
 
         return true;

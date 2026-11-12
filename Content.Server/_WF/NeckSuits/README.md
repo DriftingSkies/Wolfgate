@@ -2,14 +2,16 @@
 
 Meridian Rift's functional toggle (Nova's `functional_toggle.dm`): a coat or jacket can be worn as a cosmetic layer
 over real armor. A player holding an outer suit right-clicks it and picks "Adjust for non-functional use". The suit
-then goes in a neck slot instead of the suit slot, and loses its armor, temperature protection, slowdown, explosion
-and stamina resistance, deflection and wound ward. "Adjust for functional use" puts it back, restoring those from its
-prototype. As on Meridian, it can only be adjusted while held, and space suits and suits with special effects
-(reflection, soft shields, armor specializations) can't be adjusted at all.
+then goes in a neck slot instead of the suit slot, and loses everything that protects or slows (the `Functional` list
+in `WFNeckSuitSystem`: armor, temperature, fire, explosion and stamina protection, step-trigger, interaction-damage and
+slip immunity, slowdown, deflection and wound ward). "Adjust for functional use" puts it back, restoring those from
+its prototype, so runtime changes to them reset. As on Meridian, it can only be adjusted while held, never while worn.
+Suits whose effect is more than stats can't be adjusted at all (the `FunctionalOnly` list: space suits, reflection,
+soft shields, ghillie stealth, suit tank storage and the armor specializations); add a new effect component there.
 
 Worn at the neck, the suit draws with its outer-suit sprites and displacement, just above the worn outer suit and
-under hair, hats, real neckwear and tails, as SS13 draws `NECK_LAYER` over `SUIT_LAYER`. Hiding still follows the
-normal rules: a hardsuit that hides the neck slots hides it too.
+under hair, hats, real neckwear and tails, as SS13 draws `NECK_LAYER` over `SUIT_LAYER`. Two neck suits stack in slot
+order (`neck` under `neck2`). Hiding still follows the normal rules: a hardsuit that hides the neck slots hides it too.
 
 Entry points: `WFNeckSuitSystem` (server; verb, examine hint, `SetNeckMode`), `WFNeckSuitComponent` (shared; marks a
 suit in neck mode and saves with it), `WFNeckSuitVisualsSystem` (client; sprite slot and displacement) and the

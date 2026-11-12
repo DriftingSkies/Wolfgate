@@ -23,6 +23,7 @@ public sealed partial class WFNeckSuitVisualsSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<WFNeckSuitComponent, ComponentStartup>(OnStartup);
+        SubscribeLocalEvent<WFNeckSuitComponent, ComponentShutdown>(OnShutdown);
     }
 
     /// <summary>
@@ -30,21 +31,41 @@ public sealed partial class WFNeckSuitVisualsSystem : EntitySystem
     /// </summary>
     private void OnStartup(Entity<WFNeckSuitComponent> ent, ref ComponentStartup args)
     {
-        if (_inventory.TryGetContainingEntity(ent.Owner, out var wearer) && TryComp(wearer, out InventoryComponent? inventory))
+        Redraw(ent);
+    }
+
+    private void OnShutdown(Entity<WFNeckSuitComponent> ent, ref ComponentShutdown args)
+    {
+        Redraw(ent);
+    }
+
+    /// <summary>Redraws the wearer's clothes, only while the suit is in an inventory slot rather than held.</summary>
+    private void Redraw(EntityUid suit)
+    {
+        if (TerminatingOrDeleted(suit) || !_inventory.TryGetContainingSlot(suit, out _))
+            return;
+
+        if (_inventory.TryGetContainingEntity(suit, out var wearer) && TryComp(wearer, out InventoryComponent? inventory))
             _clothing.InitClothing(wearer.Value, inventory);
+    }
+
+    /// <summary>Whether the item is a suit in neck mode; false once the component is shutting down.</summary>
+    public bool IsNeckSuit(EntityUid item)
+    {
+        return TryComp<WFNeckSuitComponent>(item, out var comp) && comp.LifeStage <= ComponentLifeStage.Running;
     }
 
     /// <summary>The slot whose sprite states and clothing visuals this item draws with.</summary>
     public string GetVisualSlot(EntityUid item, string slot)
     {
-        return HasComp<WFNeckSuitComponent>(item) ? SuitSlot : slot;
+        return IsNeckSuit(item) ? SuitSlot : slot;
     }
 
     /// <summary>The outer-suit displacement map for a neck suit, else the one already picked.</summary>
     public DisplacementData? GetDisplacement(EntityUid wearer, EntityUid item, InventoryComponent inventory,
         DisplacementData? current)
     {
-        if (!HasComp<WFNeckSuitComponent>(item))
+        if (!IsNeckSuit(item))
             return current;
 
         var data = CompOrNull<HumanoidAppearanceComponent>(wearer)?.Sex switch

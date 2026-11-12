@@ -9,6 +9,7 @@ using Content.Shared.Armor;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Humanoid;
 using Content.Shared.Inventory;
+using Content.Shared.StepTrigger.Components;
 using Robust.Client.GameObjects;
 using Robust.Shared.GameObjects;
 
@@ -34,7 +35,7 @@ public sealed class WFNeckSuitTest : InteractionTest
             var system = SEntMan.System<WFNeckSuitSystem>();
             Assert.That(system.CanAdjust((coat, clothing)), Is.True);
 
-            system.SetNeckMode((coat, clothing), true);
+            Assert.That(system.SetNeckMode((coat, clothing), true), Is.True);
             Assert.That(clothing.Slots, Is.EqualTo(SlotFlags.NECK));
             Assert.That(SEntMan.HasComponent<WFNeckSuitComponent>(coat), Is.True);
             Assert.That(SEntMan.HasComponent<ArmorComponent>(coat), Is.False, "Neck mode kept the armor.");
@@ -45,6 +46,10 @@ public sealed class WFNeckSuitTest : InteractionTest
             Assert.That(inventory.CanEquip(mob, coat, "outerClothing", out _), Is.False,
                 "A neck-mode suit went in the suit slot.");
             Assert.That(inventory.TryEquip(mob, coat, "neck", force: true), Is.True);
+
+            Assert.That(system.SetNeckMode((coat, clothing), false), Is.False,
+                "A worn neck-mode suit was adjusted back in its slot.");
+            Assert.That(SEntMan.HasComponent<ArmorComponent>(coat), Is.False);
         });
         await RunTicks(5);
 
@@ -72,7 +77,7 @@ public sealed class WFNeckSuitTest : InteractionTest
         {
             Assert.That(SEntMan.System<InventorySystem>().TryUnequip(mob, "neck", force: true), Is.True);
             var clothing = SEntMan.GetComponent<ClothingComponent>(coat);
-            SEntMan.System<WFNeckSuitSystem>().SetNeckMode((coat, clothing), false);
+            Assert.That(SEntMan.System<WFNeckSuitSystem>().SetNeckMode((coat, clothing), false), Is.True);
             Assert.That(clothing.Slots & SlotFlags.OUTERCLOTHING, Is.Not.EqualTo(SlotFlags.NONE));
             Assert.That(SEntMan.HasComponent<WFNeckSuitComponent>(coat), Is.False);
             Assert.That(SEntMan.HasComponent<ArmorComponent>(coat), Is.True, "Adjusting back didn't restore the armor.");
@@ -81,14 +86,79 @@ public sealed class WFNeckSuitTest : InteractionTest
         });
     }
 
-    [Test]
-    public async Task SpaceSuitsAreFunctionalOnly()
+    /// <summary>Protection beyond armor goes too: fire resistance and step-trigger immunity.</summary>
+    [TestCase("ClothingOuterVestWebElite", typeof(FireProtectionComponent))]
+    [TestCase("ClothingOuterArmorHeavy", typeof(ProtectedFromStepTriggersComponent))]
+    public async Task NeckModeStripsProtection(string suitId, Type protection)
     {
         await Server.WaitAssertion(() =>
         {
-            var suit = SEntMan.SpawnEntity("ClothingOuterHardsuitEngineering", SEntMan.GetCoordinates(TargetCoords));
+            var suit = SEntMan.SpawnEntity(suitId, SEntMan.GetCoordinates(TargetCoords));
+            var clothing = SEntMan.GetComponent<ClothingComponent>(suit);
+            var system = SEntMan.System<WFNeckSuitSystem>();
+
+            Assert.That(system.SetNeckMode((suit, clothing), true), Is.True);
+            Assert.That(SEntMan.HasComponent(suit, protection), Is.False, $"Neck mode kept {protection.Name}.");
+            Assert.That(system.SetNeckMode((suit, clothing), false), Is.True);
+            Assert.That(SEntMan.HasComponent(suit, protection), Is.True, $"Adjusting back lost {protection.Name}.");
+        });
+    }
+
+    [TestCase("ClothingOuterHardsuitEngineering")]
+    [TestCase("WFRMCGhillie")]
+    public async Task SpecialSuitsAreFunctionalOnly(string suitId)
+    {
+        await Server.WaitAssertion(() =>
+        {
+            var suit = SEntMan.SpawnEntity(suitId, SEntMan.GetCoordinates(TargetCoords));
             var clothing = SEntMan.GetComponent<ClothingComponent>(suit);
             Assert.That(SEntMan.System<WFNeckSuitSystem>().CanAdjust((suit, clothing)), Is.False);
         });
+    }
+
+    /// <summary>Two neck suits stack in slot order, however often the lower one is redrawn.</summary>
+    [Test]
+    public async Task TwoNeckSuitsKeepSlotOrder()
+    {
+        var target = await SpawnTarget("MobHuman");
+        var mob = ToServer(target);
+
+        await Server.WaitAssertion(() =>
+        {
+            var inventory = SEntMan.System<InventorySystem>();
+            var system = SEntMan.System<WFNeckSuitSystem>();
+            foreach (var slot in new[] { "neck2", "neck" })
+            {
+                var coat = SEntMan.SpawnEntity(Coat, SEntMan.GetCoordinates(TargetCoords));
+                system.SetNeckMode((coat, SEntMan.GetComponent<ClothingComponent>(coat)), true);
+                Assert.That(inventory.TryEquip(mob, coat, slot, force: true), Is.True);
+            }
+        });
+        await RunTicks(5);
+
+        await Client.WaitAssertion(() =>
+        {
+            var wearer = ToClient(target);
+            var inventory = CEntMan.GetComponent<InventoryComponent>(wearer);
+            var clothing = CEntMan.System<Content.Client.Clothing.ClientClothingSystem>();
+
+            // Redraw everything twice; neck must stay under neck2 either way.
+            for (var i = 0; i < 2; i++)
+            {
+                clothing.InitClothing(wearer, inventory);
+                Assert.That(TopIndex(wearer, "neck"), Is.LessThan(TopIndex(wearer, "neck2")),
+                    "The neck slot's suit drew over neck2's.");
+            }
+        });
+    }
+
+    private int TopIndex(EntityUid wearer, string slot)
+    {
+        var sprite = CEntMan.GetComponent<SpriteComponent>(wearer);
+        var slots = CEntMan.GetComponent<InventorySlotsComponent>(wearer);
+        var sprites = CEntMan.System<SpriteSystem>();
+        Assert.That(slots.VisualLayerKeys.TryGetValue(slot, out var keys) && keys.Count > 0, Is.True,
+            $"Nothing drawn in {slot}.");
+        return keys!.Max(k => sprites.LayerMapTryGet((wearer, sprite), k, out var i, false) ? i : -1);
     }
 }
