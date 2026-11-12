@@ -14,7 +14,8 @@ under hair, hats, real neckwear and tails, as SS13 draws `NECK_LAYER` over `SUIT
 order (`neck` under `neck2`). Hiding still follows the normal rules: a hardsuit that hides the neck slots hides it too.
 
 Entry points: `WFNeckSuitSystem` (server; verb, examine hint, `SetNeckMode`), `WFNeckSuitComponent` (shared; marks a
-suit in neck mode and saves with it), `WFNeckSuitVisualsSystem` (client; sprite slot and displacement) and the
+suit in neck mode and saves with it), `WFNeckSuitSlotsSystem` (shared; swaps its slot flags on both sides when the
+component comes and goes, as clothing slots aren't networked), `WFNeckSuitVisualsSystem` (client; sprite slot and displacement) and the
 neck-suit case in `ClothingLayerSystem.TryGetIndex`.
 
 <!-- WOLFGATE-GENERATED START -->
@@ -29,6 +30,7 @@ neck-suit case in `ClothingLayerSystem.TryGetIndex`.
 ### Shared
 
 - [`Content.Shared/_WF/NeckSuits/WFNeckSuitComponent.cs`](../../../Content.Shared/_WF/NeckSuits/WFNeckSuitComponent.cs)
+- [`Content.Shared/_WF/NeckSuits/WFNeckSuitSlotsSystem.cs`](../../../Content.Shared/_WF/NeckSuits/WFNeckSuitSlotsSystem.cs)
 
 ### Client
 

@@ -71,6 +71,10 @@ public sealed class WFNeckSuitTest : InteractionTest
             Assert.That(sprites.LayerMapTryGet((wearer, sprite), HumanoidVisualLayers.Hair, out var hair, false), Is.True);
             Assert.That(index, Is.GreaterThan(suit), "The neck-mode suit drew under the suit slot.");
             Assert.That(index, Is.LessThan(hair), "The neck-mode suit drew over the hair.");
+
+            // The client predicts equips from these slots.
+            Assert.That(CEntMan.GetComponent<ClothingComponent>(ToClient(coat)).Slots, Is.EqualTo(SlotFlags.NECK),
+                "The client doesn't know the suit goes in a neck slot.");
         });
 
         await Server.WaitAssertion(() =>
@@ -83,6 +87,13 @@ public sealed class WFNeckSuitTest : InteractionTest
             Assert.That(SEntMan.HasComponent<ArmorComponent>(coat), Is.True, "Adjusting back didn't restore the armor.");
             Assert.That(SEntMan.HasComponent<TemperatureProtectionComponent>(coat), Is.True,
                 "Adjusting back didn't restore the temperature protection.");
+        });
+        await RunTicks(5);
+
+        await Client.WaitAssertion(() =>
+        {
+            Assert.That(CEntMan.GetComponent<ClothingComponent>(ToClient(coat)).Slots & SlotFlags.OUTERCLOTHING,
+                Is.Not.EqualTo(SlotFlags.NONE), "The client doesn't know the suit is back in the suit slot.");
         });
     }
 

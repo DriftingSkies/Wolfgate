@@ -32,7 +32,6 @@ namespace Content.Server._WF.NeckSuits;
 /// </summary>
 public sealed partial class WFNeckSuitSystem : EntitySystem
 {
-    [Dependency] private ClothingSystem _clothing = default!;
     [Dependency] private IComponentFactory _factory = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
     [Dependency] private InventorySystem _inventory = default!;
@@ -161,17 +160,13 @@ public sealed partial class WFNeckSuitSystem : EntitySystem
                     RemComp(ent, type);
             }
 
-            _clothing.SetSlots(ent, SlotFlags.NECK, ent.Comp);
+            // WFNeckSuitSlotsSystem moves it to the neck slot, on the client too.
             AddComp<WFNeckSuitComponent>(ent);
         }
         else
         {
-            var slots = SlotFlags.OUTERCLOTHING;
             if (MetaData(ent).EntityPrototype is { } proto)
             {
-                if (proto.Components.TryGetValue(_factory.GetComponentName<ClothingComponent>(), out var clothing))
-                    slots = ((ClothingComponent) clothing.Component).Slots;
-
                 foreach (var type in Functional)
                 {
                     if (proto.Components.TryGetValue(_factory.GetComponentName(type), out var entry))
@@ -179,7 +174,6 @@ public sealed partial class WFNeckSuitSystem : EntitySystem
                 }
             }
 
-            _clothing.SetSlots(ent, slots, ent.Comp);
             RemComp<WFNeckSuitComponent>(ent);
         }
 
