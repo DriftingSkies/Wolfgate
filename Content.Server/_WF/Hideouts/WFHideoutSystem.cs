@@ -5,11 +5,14 @@ using Content.Server._WF.Outposts.Components;
 using Content.Server.Administration.Logs;
 using Content.Shared._Mono.Company;
 using Content.Shared._WF.Hideouts;
+using Content.Shared._WF.Hideouts.Blueprint;
 using Content.Shared._WF.Outposts;
 using Content.Shared.Database;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
+using Content.Shared.Examine;
 using Content.Shared.Interaction.Events;
+using Content.Shared.Verbs;
 using Robust.Server.Player;
 using Robust.Shared.Configuration;
 using Robust.Shared.Map;
@@ -51,8 +54,11 @@ public sealed partial class WFHideoutSystem : EntitySystem
         SubscribeLocalEvent<WFHideoutComponent, WFOutpostPodLimitEvent>(OnPodLimit);
         SubscribeLocalEvent<WFHideoutComponent, WFOutpostFingerprintEvent>(OnFingerprint);
         SubscribeLocalEvent<WFHideoutComponent, WFOutpostSettledEvent>(OnSettled);
+        SubscribeLocalEvent<WFHideoutComponent, WFOutpostWantsSlotEvent>(OnWantsSlot);
         SubscribeLocalEvent<WFHideoutStakeComponent, AfterInteractEvent>(OnStakeAfterInteract);
         SubscribeLocalEvent<WFHideoutStakeComponent, UseInHandEvent>(OnStakeUseInHand);
+        SubscribeLocalEvent<WFHideoutStakeComponent, GetVerbsEvent<AlternativeVerb>>(OnStakeVerbs);
+        SubscribeLocalEvent<WFHideoutStakeComponent, ExaminedEvent>(OnStakeExamined);
         Subs.BuiEvents<WFOutpostConsoleComponent>(WFOutpostConsoleUiKey.Key, subs =>
         {
             subs.Event<WFHideoutBuildMessage>(OnBuildMessage);
@@ -62,6 +68,8 @@ public sealed partial class WFHideoutSystem : EntitySystem
             subs.Event<WFHideoutInsureMessage>(OnInsureMessage);
             subs.Event<WFHideoutClaimMessage>(OnClaimMessage);
             subs.Event<WFHideoutMoveHomeMessage>(OnMoveHomeMessage);
+            subs.Event<WFBlueprintCanvasRequestMessage>(OnCanvasRequest);
+            subs.Event<WFBlueprintApplyMessage>(OnBlueprintApply);
         });
         InitializeHangar();
         InitializeHome();
@@ -202,12 +210,7 @@ public sealed partial class WFHideoutSystem : EntitySystem
                 Spawn(grant, at);
             }
 
-            if (level.Prefab is { } prefab)
-            {
-                var stake = Spawn(StakePrototype, at);
-                Comp<WFHideoutStakeComponent>(stake).Prefab = prefab;
-                _metaData.SetEntityName(stake, Loc.GetString("wf-hideout-stake-name", ("module", Loc.GetString(module.Name))));
-            }
+            SpawnStake(module, level, at);
 
             _popup.PopupEntity(Loc.GetString("wf-hideout-build-finished", ("module", Loc.GetString(module.Name)), ("level", index + 1)), console);
         }
@@ -215,6 +218,38 @@ public sealed partial class WFHideoutSystem : EntitySystem
         ApplyHangar(outpost);
         _adminLog.Add(LogType.WFOutpost, LogImpact.Low, $"Outpost {ToPrettyString(outpost):grid} finished {id} level {index + 1}");
         _outposts.RefreshConsole((outpost, outpost.Comp2));
+    }
+
+    private static readonly EntProtoId TradeHubPack = "WFHideoutTradeHubPack";
+
+    /// <summary>Leaves a packed trade hub at a newly founded outpost's console, so its Trade tab can be used from the start.</summary>
+    public void LeaveTradeHub(EntityUid outpost)
+    {
+        if (TryComp<WFOutpostComponent>(outpost, out var comp) && !TerminatingOrDeleted(comp.Console))
+            Spawn(TradeHubPack, Transform(comp.Console).Coordinates);
+    }
+
+    /// <summary>Leaves the survey stake a level hands out, set to the level's prefab; null for a level with none.</summary>
+    public EntityUid? SpawnStake(WFHideoutModulePrototype module, WFHideoutModuleLevel level, EntityCoordinates at)
+    {
+        if (level.Prefab is not { } prefab)
+            return null;
+
+        var stake = Spawn(StakePrototype, at);
+        var comp = Comp<WFHideoutStakeComponent>(stake);
+        comp.Prefab = prefab;
+        comp.Layouts = level.Layouts;
+        _metaData.SetEntityName(stake, Loc.GetString("wf-hideout-stake-name", ("module", Loc.GetString(module.Name))));
+        return stake;
+    }
+
+    /// <summary>What a theme swaps a prefab's parts for as it is laid; null for no theme.</summary>
+    public WFPrefabSkin? Skin(WFHideoutThemePrototype? theme)
+    {
+        return theme == null
+            ? null
+            : new WFPrefabSkin(theme.Entities.ToDictionary(pair => pair.Key.Id, pair => pair.Value.Id),
+                theme.Tiles.ToDictionary(pair => pair.Key.Id, pair => pair.Value.Id));
     }
 
     /// <summary>Finishes the level an outpost is building at once; for admins and tests.</summary>
@@ -246,6 +281,84 @@ public sealed partial class WFHideoutSystem : EntitySystem
 
     /// <summary>How long a stake's mark-out outline stays on the ground.</summary>
     private const float MarkSeconds = 10f;
+
+    /// <summary>Switches a stake between laying its module whole and laying it as a shell.</summary>
+    private void OnStakeVerbs(Entity<WFHideoutStakeComponent> stake, ref GetVerbsEvent<AlternativeVerb> args)
+    {
+        if (!args.CanAccess || !args.CanInteract || stake.Comp.Prefab == null)
+            return;
+
+        var user = args.User;
+        args.Verbs.Add(new AlternativeVerb
+        {
+            Text = Loc.GetString(stake.Comp.Shell ? "wf-hideout-stake-verb-whole" : "wf-hideout-stake-verb-shell"),
+            Act = () =>
+            {
+                stake.Comp.Shell = !stake.Comp.Shell;
+                _popup.PopupEntity(Loc.GetString(stake.Comp.Shell ? "wf-hideout-stake-now-shell" : "wf-hideout-stake-now-whole"), user, user);
+            },
+        });
+
+        // One verb a layout, the one the stake is set to left out.
+        foreach (var layout in stake.Comp.Layouts)
+        {
+            if (layout.Prefab == stake.Comp.Prefab)
+                continue;
+
+            var picked = layout;
+            args.Verbs.Add(new AlternativeVerb
+            {
+                Text = Loc.GetString(picked.Name),
+                Category = LayoutCategory,
+                Act = () =>
+                {
+                    stake.Comp.Prefab = picked.Prefab;
+                    _popup.PopupEntity(Loc.GetString("wf-hideout-stake-now-layout", ("layout", Loc.GetString(picked.Name))), user, user);
+                },
+            });
+        }
+
+        // One verb a theme, the one the stake is set to left out.
+        foreach (var theme in _proto.EnumeratePrototypes<WFHideoutThemePrototype>().OrderBy(theme => theme.Order).ThenBy(theme => theme.ID))
+        {
+            if (theme.ID == (stake.Comp.Theme ?? DefaultTheme))
+                continue;
+
+            var picked = theme;
+            args.Verbs.Add(new AlternativeVerb
+            {
+                Text = Loc.GetString("wf-hideout-stake-verb-theme", ("theme", Loc.GetString(picked.Name)), ("price", picked.Price)),
+                Category = ThemeCategory,
+                Priority = -picked.Order,
+                Act = () =>
+                {
+                    stake.Comp.Theme = picked.ID;
+                    _popup.PopupEntity(Loc.GetString("wf-hideout-stake-now-theme", ("theme", Loc.GetString(picked.Name)), ("price", picked.Price)), user, user);
+                },
+            });
+        }
+    }
+
+    /// <summary>The theme a stake lays in until it is set to another: the prefab as drawn.</summary>
+    public const string DefaultTheme = "WFHideoutThemeColony";
+
+    private static readonly VerbCategory ThemeCategory = new("wf-hideout-stake-verb-themes", null);
+    private static readonly VerbCategory LayoutCategory = new("wf-hideout-stake-verb-layouts", null);
+
+    /// <summary>The theme a stake is set to, if it changes anything.</summary>
+    private WFHideoutThemePrototype? Theme(WFHideoutStakeComponent stake)
+    {
+        return stake.Theme != null && _proto.TryIndex<WFHideoutThemePrototype>(stake.Theme, out var theme) ? theme : null;
+    }
+
+    private void OnStakeExamined(Entity<WFHideoutStakeComponent> stake, ref ExaminedEvent args)
+    {
+        args.PushMarkup(Loc.GetString(stake.Comp.Shell ? "wf-hideout-stake-examine-shell" : "wf-hideout-stake-examine-whole"));
+        if (stake.Comp.Layouts.Find(layout => layout.Prefab == stake.Comp.Prefab) is { } current)
+            args.PushMarkup(Loc.GetString("wf-hideout-stake-examine-layout", ("layout", Loc.GetString(current.Name))));
+        if (Theme(stake.Comp) is { } theme)
+            args.PushMarkup(Loc.GetString("wf-hideout-stake-examine-theme", ("theme", Loc.GetString(theme.Name)), ("price", theme.Price)));
+    }
 
     /// <summary>Used in hand, a stake outlines its module on the tile in front of its user, facing the way they face.</summary>
     private void OnStakeUseInHand(Entity<WFHideoutStakeComponent> stake, ref UseInHandEvent args)
@@ -294,13 +407,42 @@ public sealed partial class WFHideoutSystem : EntitySystem
         }
 
         var facing = _transform.GetWorldRotation(user).GetCardinalDir();
-        if (!_outposts.TryStampPrefab(user, outpost, prefab, target, facing, out reason))
+        // A theme's fee is taken first and paid back if the module can't go there.
+        var theme = Theme(stake.Comp);
+        var fee = theme?.Price ?? 0;
+        if (fee > 0 && !_bank.TryBankWithdraw(user, fee))
+        {
+            reason = "wf-hideout-cannot-afford";
             return false;
+        }
+
+        var skin = Skin(theme);
+        if (!_outposts.TryStampPrefab(user, outpost, prefab, target, facing, out reason, stake.Comp.Shell, skin))
+        {
+            if (fee > 0)
+                _bank.TryBankDeposit(user, fee, tax: false);
+            return false;
+        }
+
+        // A bay's console takes the cranes laid with it.
+        var shipwright = EntityManager.System<Shipwright.WFShipwrightSystem>();
+        var consoles = EntityQueryEnumerator<Shipwright.WFShipwrightConsoleComponent, TransformComponent>();
+        while (consoles.MoveNext(out var console, out var consoleComp, out var xform))
+        {
+            if (xform.GridUid == outpost.Owner)
+                shipwright.LinkCranes((console, consoleComp));
+        }
 
         QueueDel(stake);
         ApplyHangar(outpost);
         _outposts.RefreshConsole(outpost);
         return true;
+    }
+
+    /// <summary>A hideout keeps itself: it is saved from the start, with no manifest to file.</summary>
+    private void OnWantsSlot(Entity<WFHideoutComponent> outpost, ref WFOutpostWantsSlotEvent args)
+    {
+        args.Wanted |= _cfg.GetCVar(HideoutCVars.Enabled);
     }
 
     private void OnCaps(Entity<WFHideoutComponent> outpost, ref WFOutpostCapsEvent args)

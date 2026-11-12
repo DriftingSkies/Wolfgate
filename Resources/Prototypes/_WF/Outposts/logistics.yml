@@ -30,7 +30,8 @@
   components:
   - type: Sprite
     sprite: Structures/Machines/computers.rsi
-    snapCardinals: true
+    # The computer sprite has four directions, which a cardinal-snapped sprite can't have.
+    snapCardinals: false
     layers:
     - state: computer
     - state: generic_keyboard
@@ -85,7 +86,8 @@
   components:
   - type: Sprite
     sprite: Structures/Machines/computers.rsi
-    snapCardinals: true
+    # The computer sprite has four directions, which a cardinal-snapped sprite can't have.
+    snapCardinals: false
     layers:
     - state: computer
     - state: generic_keyboard

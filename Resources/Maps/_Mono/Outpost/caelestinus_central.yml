@@ -5,7 +5,7 @@ meta:
   forkId: ""
   forkVersion: ""
   time: 11/08/2026 01:19:15
-  entityCount: 10980
+  entityCount: 10981
 maps:
 - 10888
 grids:
@@ -25803,6 +25803,14 @@ entities:
       powerLoad: 5
     - type: Battery
       startingCharge: 0
+- proto: WFHideoutRegistryConsole
+  entities:
+  - uid: 10981
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: -9.5,13.5
+      parent: 1
 - proto: computerBodyScanner
   entities:
   - uid: 6572

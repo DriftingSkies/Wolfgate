@@ -1,5 +1,6 @@
 using Content.Shared._WF.Colonies;
 using Content.Shared._WF.Hideouts;
+using Content.Shared._WF.Hideouts.Blueprint;
 using Content.Shared._WF.Outposts;
 using Content.Shared._WF.ShipAccess;
 using Robust.Client.UserInterface;
@@ -50,6 +51,10 @@ public sealed class WFOutpostConsoleBoundUserInterface : BoundUserInterface
         hideout.OnClaim += () => SendMessage(new WFHideoutClaimMessage());
         hideout.OnMoveHome += world => SendMessage(new WFHideoutMoveHomeMessage(world));
 
+        var blueprint = _window.BlueprintTab;
+        blueprint.OnRequestCanvas += () => SendMessage(new WFBlueprintCanvasRequestMessage());
+        blueprint.OnApply += strokes => SendMessage(new WFBlueprintApplyMessage(strokes));
+
         var access = _window.AccessTab;
         access.ModeChanged += mode => SendMessage(new WFShipAccessSetModeMessage(mode));
         access.LockedChanged += locked => SendMessage(new WFShipAccessSetLockedMessage(locked));
@@ -63,6 +68,13 @@ public sealed class WFOutpostConsoleBoundUserInterface : BoundUserInterface
         access.ShipCodeChanged += code => SendMessage(new WFShipAccessSetShipCodeMessage(code));
         access.DoorCodeChanged += (door, code) => SendMessage(new WFShipAccessSetDoorCodeMessage(door, code));
         _window.SetConsole(Owner, EntMan.GetComponent<TransformComponent>(Owner).GridUid);
+    }
+
+    protected override void ReceiveMessage(BoundUserInterfaceMessage message)
+    {
+        base.ReceiveMessage(message);
+        if (message is WFBlueprintCanvasMessage canvas)
+            _window?.BlueprintTab.SetCanvas(canvas);
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)

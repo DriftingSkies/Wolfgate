@@ -11,6 +11,13 @@ using Robust.Shared.Serialization.Markdown;
 using Robust.Shared.Serialization.Markdown.Mapping;
 using Robust.Shared.Utility;
 
+using Content.Server.Decals;
+using Content.Server.Power.Components;
+using Content.Shared.Decals;
+using Content.Shared.Doors.Components;
+using Content.Shared.Tag;
+using Robust.Shared.Prototypes;
+
 namespace Content.Server._WF.Outposts;
 
 /// <summary>
@@ -19,6 +26,12 @@ namespace Content.Server._WF.Outposts;
 /// </summary>
 public sealed partial class WFOutpostSystem
 {
+    [Dependency] private TagSystem _tags = default!;
+    [Dependency] private DecalSystem _decals = default!;
+
+    private static readonly ProtoId<TagPrototype> WallTag = "Wall";
+    private static readonly ProtoId<TagPrototype> WindowTag = "Window";
+
     /// <summary>The most floor an outpost may have.</summary>
     public int TileCap(EntityUid outpost)
     {
@@ -63,9 +76,121 @@ public sealed partial class WFOutpostSystem
     /// when it fails.
     /// </summary>
     public bool TryStampPrefab(EntityUid user, Entity<WFOutpostComponent> outpost, ResPath path, EntityCoordinates target,
-        Direction facing, out string reason)
+        Direction facing, out string reason, bool shell = false, WFPrefabSkin? skin = null)
     {
-        return TryLayPrefab(user, outpost, path, target, facing, false, out _, out reason);
+        _shell = shell;
+        _skin = skin;
+        try
+        {
+            return TryLayPrefab(user, outpost, path, target, facing, false, out _, out reason);
+        }
+        finally
+        {
+            _shell = false;
+            _skin = null;
+        }
+    }
+
+    /// <summary>What the prefab being laid has its parts swapped for.</summary>
+    private WFPrefabSkin? _skin;
+
+    /// <summary>A prefab tile as its skin lays it.</summary>
+    private Tile Skinned(Tile tile)
+    {
+        if (_skin == null || !_skin.Tiles.TryGetValue(_tiles[tile.TypeId].ID, out var into) || !_tiles.TryGetDefinition(into, out var def))
+            return tile;
+
+        return new Tile(def.TileId);
+    }
+
+    /// <summary>Swaps a staged prefab's walls, windows, doors and the like for its skin's, where each stands.</summary>
+    private void Reskin(EntityUid source)
+    {
+        if (_skin == null || _skin.Entities.Count == 0)
+            return;
+
+        var swaps = new List<(EntityUid Old, string Into)>();
+        var children = Transform(source).ChildEnumerator;
+        while (children.MoveNext(out var child))
+        {
+            if (MetaData(child).EntityPrototype?.ID is { } id && _skin.Entities.TryGetValue(id, out var into))
+                swaps.Add((child, into));
+        }
+
+        foreach (var (old, into) in swaps)
+        {
+            var xform = Transform(old);
+            var coords = xform.Coordinates;
+            var rotation = xform.LocalRotation;
+            Del(old);
+            var ent = SpawnAtPosition(into, coords);
+            _transform.SetLocalRotation(ent, rotation);
+        }
+    }
+
+    /// <summary>Copies a staged prefab's floor decals onto the outpost, turned with it.</summary>
+    private void LayDecals(EntityUid source, EntityUid outpost, Vector2 from, Vector2 to, Angle angle)
+    {
+        if (!TryComp<DecalGridComponent>(source, out var decals))
+            return;
+
+        EnsureComp<DecalGridComponent>(outpost);
+        var half = new Vector2(0.5f);
+        foreach (var chunk in decals.ChunkCollection.ChunkCollection.Values)
+        {
+            foreach (var decal in chunk.Decals.Values)
+            {
+                var position = to + angle.RotateVec(decal.Coordinates + half - from) - half;
+                _decals.TryAddDecal(decal.Id, new EntityCoordinates(outpost, position), out _, decal.Color, decal.Angle + angle,
+                    decal.ZIndex, decal.Cleanable);
+            }
+        }
+    }
+
+    /// <summary>Whether the prefab being laid is laid as a shell.</summary>
+    private bool _shell;
+
+    /// <summary>
+    /// Whether a prefab's entity is part of its shell: floor fixtures, walls, windows, doors, power, lights and the
+    /// working parts of a bay, as opposed to furniture and machines.
+    /// </summary>
+    private bool IsShell(EntityUid uid)
+    {
+        if (TryComp<TagComponent>(uid, out var tags) && (_tags.HasTag(tags, WallTag) || _tags.HasTag(tags, WindowTag)))
+            return true;
+
+        return HasComp<DoorComponent>(uid) || HasComp<CableComponent>(uid) || HasComp<ApcComponent>(uid)
+               || HasComp<PoweredLightComponent>(uid) || HasComp<WFLandingPadComponent>(uid)
+               || HasComp<Content.Shared._WF.Drydock.WFDrydockCraneComponent>(uid)
+               || HasComp<Content.Shared._WF.Drydock.WFDrydockConsoleComponent>(uid);
+    }
+
+    /// <summary>
+    /// Takes what a shell leaves out off a prefab before it is laid: a machine comes packed to set out by hand, and what
+    /// any other furniture was worth is paid to the builder to furnish it themselves.
+    /// </summary>
+    private void Unfurnish(EntityUid user, EntityUid source, EntityCoordinates packs)
+    {
+        var leave = new List<EntityUid>();
+        var children = Transform(source).ChildEnumerator;
+        while (children.MoveNext(out var child))
+        {
+            if (!IsShell(child))
+                leave.Add(child);
+        }
+
+        var refund = 0.0;
+        foreach (var ent in leave)
+        {
+            if (TryComp<WFRepackableComponent>(ent, out var repack))
+                Spawn(repack.Pack, packs);
+            else
+                refund += _pricing.GetPrice(ent);
+            Del(ent);
+        }
+
+        if (refund >= 1)
+            _bank.TryBankDeposit(user, (int) refund, tax: false);
     }
 
     /// <summary>
@@ -149,7 +274,7 @@ public sealed partial class WFOutpostSystem
 
         var anchor = new Vector2i((min.X + max.X) / 2, min.Y);
         var origin = _maps.TileIndicesFor(outpost, gridComp, _transform.ToMapCoordinates(target));
-        var placed = tiles.Select(tile => (Index: origin + Turn(tile.Index - anchor, turns), tile.Tile)).ToList();
+        var placed = tiles.Select(tile => (Index: origin + Turn(tile.Index - anchor, turns), Tile: Skinned(tile.Tile))).ToList();
         if (!IsClearForPrefab((outpost, outpost.Comp, gridComp), (ground, groundGrid), origin, placed.Select(tile => tile.Index), out reason)
             || !FitsCaps((outpost, outpost.Comp, gridComp), placed.Count, CountEntities(source), out reason))
         {
@@ -165,6 +290,10 @@ public sealed partial class WFOutpostSystem
             return true;
         }
 
+        Reskin(source);
+        if (_shell)
+            Unfurnish(user, source, target);
+
         _maps.SetTiles(outpost, gridComp, placed);
         if (TryComp<RoofComponent>(source, out var sourceRoof) && TryComp<RoofComponent>(outpost, out var roof))
         {
@@ -178,6 +307,9 @@ public sealed partial class WFOutpostSystem
         var from = (Vector2) anchor + new Vector2(0.5f);
         var to = (Vector2) origin + new Vector2(0.5f);
         var angle = new Angle(turns * Math.PI / 2);
+        if (!_shell)
+            LayDecals(source, outpost, from, to, angle);
+
         var moving = new List<EntityUid>();
         var children = Transform(source).ChildEnumerator;
         while (children.MoveNext(out var child))
@@ -319,3 +451,6 @@ public sealed partial class WFOutpostSystem
         return index;
     }
 }
+
+/// <summary>What a prefab's parts are swapped for as it is laid: entity prototypes and floor tiles, each by id.</summary>
+public sealed record WFPrefabSkin(IReadOnlyDictionary<string, string> Entities, IReadOnlyDictionary<string, string> Tiles);

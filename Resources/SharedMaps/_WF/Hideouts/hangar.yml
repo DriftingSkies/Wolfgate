@@ -4,7 +4,7 @@ meta:
   engineVersion: 277.0.0
   forkId: ''
   forkVersion: ''
-  entityCount: 9
+  entityCount: 15
 maps: []
 grids:
 - 1
@@ -42,31 +42,147 @@ entities:
           version: 7
     - type: Roof
       data: {}
+    - type: DecalGrid
+      chunkCollection:
+        version: 2
+        nodes:
+        - node:
+            id: Bot
+            angle: 0 rad
+          decals:
+            0: -8,10
+            2: 0,10
+            3: 8,10
+        - node:
+            id: Delivery
+            angle: 0 rad
+          decals:
+            1: 0,-1
+        - node:
+            id: WarnLineN
+            angle: 0 rad
+          decals:
+            4: -10,-11
+            6: -9,-11
+            8: -8,-11
+            10: -7,-11
+            12: -6,-11
+            14: -5,-11
+            16: -4,-11
+            18: -3,-11
+            20: -2,-11
+            22: -1,-11
+            24: 0,-11
+            26: 1,-11
+            28: 2,-11
+            30: 3,-11
+            32: 4,-11
+            34: 5,-11
+            36: 6,-11
+            38: 7,-11
+            40: 8,-11
+            42: 9,-11
+            44: 10,-11
+        - node:
+            id: WarnLineW
+            angle: 0 rad
+          decals:
+            5: -10,9
+            7: -9,9
+            9: -8,9
+            11: -7,9
+            13: -6,9
+            15: -5,9
+            17: -4,9
+            19: -3,9
+            21: -2,9
+            23: -1,9
+            25: 0,9
+            27: 1,9
+            29: 2,9
+            31: 3,9
+            33: 4,9
+            35: 5,9
+            37: 6,9
+            39: 7,9
+            41: 8,9
+            43: 9,9
+            45: 10,9
+        - node:
+            id: WarnLineS
+            angle: 0 rad
+          decals:
+            46: -10,-11
+            48: -10,-10
+            50: -10,-9
+            52: -10,-8
+            54: -10,-7
+            56: -10,-6
+            58: -10,-5
+            60: -10,-4
+            62: -10,-3
+            64: -10,-2
+            66: -10,-1
+            68: -10,0
+            70: -10,1
+            72: -10,2
+            74: -10,3
+            76: -10,4
+            78: -10,5
+            80: -10,6
+            82: -10,7
+            84: -10,8
+            86: -10,9
+        - node:
+            id: WarnLineE
+            angle: 0 rad
+          decals:
+            47: 10,-11
+            49: 10,-10
+            51: 10,-9
+            53: 10,-8
+            55: 10,-7
+            57: 10,-6
+            59: 10,-5
+            61: 10,-4
+            63: 10,-3
+            65: 10,-2
+            67: 10,-1
+            69: 10,0
+            71: 10,1
+            73: 10,2
+            75: 10,3
+            77: 10,4
+            79: 10,5
+            81: 10,6
+            83: 10,7
+            85: 10,8
+            87: 10,9
 - proto: WFOutpostFloodlight
   entities:
   - uid: 2
     components:
     - type: Transform
       parent: 1
-      pos: -10.5,11.5
+      pos: -10.5,-11.5
       anchored: true
   - uid: 3
     components:
     - type: Transform
       parent: 1
-      pos: 11.5,11.5
+      pos: -10.5,11.5
       anchored: true
-  - uid: 8
-    components:
-    - type: Transform
-      parent: 1
-      pos: -10.5,-11.5
-      anchored: true
-  - uid: 9
+  - uid: 14
     components:
     - type: Transform
       parent: 1
       pos: 11.5,-11.5
+      anchored: true
+  - uid: 15
+    components:
+    - type: Transform
+      parent: 1
+      pos: 11.5,11.5
       anchored: true
 - proto: WFHideoutShipwrightCrane
   entities:
@@ -76,9 +192,59 @@ entities:
       parent: 1
       pos: -9.5,10.5
       anchored: true
-- proto: WFHideoutHangarConsole
+- proto: Rack
   entities:
   - uid: 5
+    components:
+    - type: Transform
+      parent: 1
+      pos: -8.5,10.5
+      anchored: true
+  - uid: 11
+    components:
+    - type: Transform
+      parent: 1
+      pos: 9.5,10.5
+      anchored: true
+- proto: ToolboxMechanicalFilled
+  entities:
+  - uid: 6
+    components:
+    - type: Transform
+      parent: 1
+      pos: -8.5,10.5
+      anchored: false
+  - uid: 12
+    components:
+    - type: Transform
+      parent: 1
+      pos: 9.5,10.5
+      anchored: false
+- proto: CrateGenericSteel
+  entities:
+  - uid: 7
+    components:
+    - type: Transform
+      parent: 1
+      pos: -7.5,10.5
+      anchored: true
+  - uid: 10
+    components:
+    - type: Transform
+      parent: 1
+      pos: 8.5,10.5
+      anchored: true
+- proto: WFHideoutHangarPad
+  entities:
+  - uid: 8
+    components:
+    - type: Transform
+      parent: 1
+      pos: 0.5,-0.5
+      anchored: true
+- proto: WFHideoutHangarConsole
+  entities:
+  - uid: 9
     components:
     - type: Transform
       parent: 1
@@ -86,17 +252,9 @@ entities:
       anchored: true
 - proto: WFHideoutShipwrightCraneMirrored
   entities:
-  - uid: 6
+  - uid: 13
     components:
     - type: Transform
       parent: 1
       pos: 10.5,10.5
-      anchored: true
-- proto: WFHideoutHangarPad
-  entities:
-  - uid: 7
-    components:
-    - type: Transform
-      parent: 1
-      pos: 0.5,-0.5
       anchored: true

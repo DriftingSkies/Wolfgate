@@ -4,8 +4,9 @@
                       xmlns:access="clr-namespace:Content.Client._WF.ShipAccess"
                       xmlns:colonies="clr-namespace:Content.Client._WF.Colonies"
                       xmlns:hideouts="clr-namespace:Content.Client._WF.Hideouts"
-                      MinSize="1000 600"
-                      SetSize="1120 720"
+                      xmlns:blueprint="clr-namespace:Content.Client._WF.Hideouts.Blueprint"
+                      MinSize="1100 600"
+                      SetSize="1240 760"
                       Title="{Loc 'wf-outpost-console-title'}">
     <TabContainer Name="Tabs" Margin="8">
         <BoxContainer Name="OverviewTab" Orientation="Horizontal" Margin="8" SeparationOverride="8">
@@ -143,5 +144,6 @@
         <colonies:WFColonyDevelopmentPanel Name="DevelopmentTab" Access="Public"/>
         <access:ShipAccessScreen Name="AccessTab" Access="Public" Margin="8"/>
         <hideouts:WFHideoutPanel Name="HideoutTab" Access="Public"/>
+        <blueprint:WFBlueprintPanel Name="BlueprintTab" Access="Public"/>
     </TabContainer>
 </controls:FancyWindow>

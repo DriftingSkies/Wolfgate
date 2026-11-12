@@ -61,6 +61,10 @@ public sealed partial class WFHideoutModuleLevel
     [DataField]
     public ResPath? Prefab;
 
+    /// <summary>The layouts the stake can be set to, the prefab among them; empty when there is only the prefab.</summary>
+    [DataField]
+    public List<WFHideoutLayout> Layouts = new();
+
     /// <summary>Things left at the console when the level is done.</summary>
     [DataField]
     public List<EntProtoId> Grants = new();
@@ -100,4 +104,16 @@ public sealed partial class WFHideoutModuleLevel
     /// <summary>The share of the insured value a claim costs; the lowest among the built levels counts.</summary>
     [DataField]
     public float? InsuranceDeductible;
+}
+
+/// <summary>One of the layouts a module's stake can lay.</summary>
+[DataDefinition]
+public sealed partial class WFHideoutLayout
+{
+    [DataField(required: true)]
+    public LocId Name;
+
+    /// <summary>The layout's grid; under SharedMaps.</summary>
+    [DataField(required: true)]
+    public ResPath Prefab;
 }

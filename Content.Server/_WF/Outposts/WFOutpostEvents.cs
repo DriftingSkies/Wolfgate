@@ -8,6 +8,13 @@ public record struct WFOutpostSavingEvent;
 [ByRefEvent]
 public record struct WFOutpostSavedEvent;
 
+/// <summary>
+/// Raised on an outpost that has never been saved: a system that sets <see cref="Wanted"/> has it given a free save
+/// slot of its owner's and autosaved from then on, without the owner filing it by hand.
+/// </summary>
+[ByRefEvent]
+public record struct WFOutpostWantsSlotEvent(bool Wanted);
+
 /// <summary>Raised on a loaded save once it has settled on its ground as its owner's outpost.</summary>
 [ByRefEvent]
 public record struct WFOutpostSettledEvent;

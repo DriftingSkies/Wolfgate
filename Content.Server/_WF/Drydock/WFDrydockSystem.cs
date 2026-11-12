@@ -791,6 +791,25 @@ public sealed partial class WFDrydockSystem : EntitySystem
         return TryStartWork(console, comp, ship, actor, null);
     }
 
+    /// <summary>Starts the next tier of one of the console's refit lines on the ship, charged to the actor.</summary>
+    public bool TryStartRefit(EntityUid console, WFDrydockConsoleComponent comp, EntityUid ship, EntityUid actor, string refit)
+    {
+        return comp.Refits.Any(id => id.Id == refit) && TryStartWork(console, comp, ship, actor, refit);
+    }
+
+    /// <summary>The console's refit lines as they stand on the ship: owned tier, next tier and its price.</summary>
+    public List<WFDrydockUpgradeEntry> RefitEntries(WFDrydockConsoleComponent comp, EntityUid ship)
+    {
+        var entries = new List<WFDrydockUpgradeEntry>();
+        foreach (var id in comp.Refits)
+        {
+            if (_prototype.TryIndex(id, out var proto))
+                entries.Add(BuildRefitEntry(proto, ship, comp, null, new List<EntityUid>(), scan: true));
+        }
+
+        return entries;
+    }
+
     /// <summary>Validates and charges a repair (null upgrade) or refit, then starts its job on the ship.</summary>
     private bool TryStartWork(EntityUid console, WFDrydockConsoleComponent comp, EntityUid ship, EntityUid actor, string? upgrade, bool booked = false)
     {

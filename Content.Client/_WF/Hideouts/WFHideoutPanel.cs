@@ -42,18 +42,87 @@ public sealed class WFHideoutPanel : BoxContainer
         Margin = new Thickness(8);
     }
 
+    /// <summary>The list's scroll container and body, kept across updates so the list stays where it was scrolled to.</summary>
+    private ScrollContainer? _scroll;
+    private BoxContainer? _body;
+
+    /// <summary>What the list was last built from; the console sends its state every second, and a rebuild is only for a change.</summary>
+    private string? _built;
+
+    /// <summary>Everything the list shows, as one string to compare; the build's end is left out, its countdown runs by itself.</summary>
+    private static string Shown(WFHideoutView view, bool isOwner)
+    {
+        // Built piece by piece: one Join over this many values compiles to an inline array, which the client sandbox refuses.
+        var shown = new System.Text.StringBuilder();
+        void Add(object? value) => shown.Append(value).Append('|');
+
+        Add(isOwner);
+        Add(view.Building);
+        Add(view.Balance);
+        Add(view.Company);
+        Add(view.HomeWorld);
+        Add(view.MoveFee);
+        foreach (var (module, level) in view.Levels.OrderBy(pair => pair.Key))
+        {
+            Add(module);
+            Add(level);
+        }
+
+        foreach (var (thing, count) in view.Held.OrderBy(pair => pair.Key))
+        {
+            Add(thing);
+            Add(count);
+        }
+
+        foreach (var world in view.Worlds)
+        {
+            Add(world.Id);
+        }
+
+        var hangar = view.Hangar;
+        Add(hangar.HasPad);
+        Add(hangar.Status);
+        Add(hangar.ShipName);
+        Add(hangar.Value);
+        Add(hangar.InsuredValue);
+        Add(hangar.Premium);
+        Add(hangar.Deductible);
+        Add(hangar.Unregistered);
+        Add(hangar.Busy);
+        return shown.ToString();
+    }
+
     public void UpdateState(WFHideoutView? view, bool isOwner)
     {
         _view = view;
-        _building = null;
-        RemoveAllChildren();
         if (view == null)
+        {
+            _building = null;
+            _built = null;
+            _scroll = null;
+            _body = null;
+            RemoveAllChildren();
+            return;
+        }
+
+        var shown = Shown(view, isOwner);
+        if (shown == _built && _body != null)
             return;
 
-        var scroll = new ScrollContainer { VerticalExpand = true, HScrollEnabled = false };
-        var body = new BoxContainer { Orientation = LayoutOrientation.Vertical, SeparationOverride = 8 };
-        scroll.AddChild(body);
-        AddChild(scroll);
+        _built = shown;
+        _building = null;
+        if (_scroll == null || _body == null)
+        {
+            RemoveAllChildren();
+            _scroll = new ScrollContainer { VerticalExpand = true, HScrollEnabled = false };
+            _body = new BoxContainer { Orientation = LayoutOrientation.Vertical, SeparationOverride = 8 };
+            _scroll.AddChild(_body);
+            AddChild(_scroll);
+        }
+
+        // Only the body is rebuilt, inside the same scroll container, so a change doesn't jump the list back to its top.
+        var body = _body;
+        body.RemoveAllChildren();
 
         body.AddChild(Card(Home(view, isOwner)));
         body.AddChild(Card(Hangar(view.Hangar, view.Balance, isOwner)));

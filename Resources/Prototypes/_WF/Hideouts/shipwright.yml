@@ -500,6 +500,13 @@
     feeFraction: 0
     maxDuration: 480
     maxRefitDuration: 480
+    # Armour plating and machine part tiers, sold on the console's Upgrades list.
+    refits:
+    - WFRefitThrusters
+    - WFRefitGyroscopes
+    - WFRefitPower
+    - WFRefitLandingThrusters
+    - WFRefitDurasteel
   - type: WFShipwrightConsole
   - type: ActivatableUI
     key: enum.WFShipwrightConsoleUiKey.Key

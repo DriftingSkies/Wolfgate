@@ -109,6 +109,11 @@
     parts: { PowerCellMedium: 4 }
     requires: { WFHideoutGroundworks: 1 }
     prefab: /SharedMaps/_WF/Hideouts/powerhouse.yml
+    layouts:
+    - name: wf-hideout-layout-powerhouse-a
+      prefab: /SharedMaps/_WF/Hideouts/powerhouse.yml
+    - name: wf-hideout-layout-powerhouse-b
+      prefab: /SharedMaps/_WF/Hideouts/powerhouse_b.yml
   - price: 300000
     buildTime: 600
     summary: wf-hideout-level-powerhouse-2
@@ -136,6 +141,13 @@
     stacks: { Steel: 80, WoodPlank: 30, Cloth: 20 }
     requires: { WFHideoutGroundworks: 1 }
     prefab: /SharedMaps/_WF/Hideouts/quarters.yml
+    layouts:
+    - name: wf-hideout-layout-quarters-a
+      prefab: /SharedMaps/_WF/Hideouts/quarters.yml
+    - name: wf-hideout-layout-quarters-b
+      prefab: /SharedMaps/_WF/Hideouts/quarters_b.yml
+    - name: wf-hideout-layout-quarters-c
+      prefab: /SharedMaps/_WF/Hideouts/quarters_c.yml
     pods: 1
   - price: 250000
     buildTime: 600
@@ -167,6 +179,11 @@
     parts: { ToolboxMechanicalFilled: 1 }
     requires: { WFHideoutPowerhouse: 1 }
     prefab: /SharedMaps/_WF/Hideouts/workshop.yml
+    layouts:
+    - name: wf-hideout-layout-workshop-a
+      prefab: /SharedMaps/_WF/Hideouts/workshop.yml
+    - name: wf-hideout-layout-workshop-b
+      prefab: /SharedMaps/_WF/Hideouts/workshop_b.yml
   - price: 350000
     buildTime: 900
     summary: wf-hideout-level-workshop-2
@@ -195,6 +212,11 @@
     parts: { MedkitFilled: 2 }
     requires: { WFHideoutQuarters: 1, WFHideoutPowerhouse: 1 }
     prefab: /SharedMaps/_WF/Hideouts/medbay.yml
+    layouts:
+    - name: wf-hideout-layout-medbay-a
+      prefab: /SharedMaps/_WF/Hideouts/medbay.yml
+    - name: wf-hideout-layout-medbay-b
+      prefab: /SharedMaps/_WF/Hideouts/medbay_b.yml
   - price: 450000
     buildTime: 900
     summary: wf-hideout-level-medbay-2
@@ -216,6 +238,11 @@
     parts: { DoorElectronics: 2 }
     requires: { WFHideoutGroundworks: 2 }
     prefab: /SharedMaps/_WF/Hideouts/vault.yml
+    layouts:
+    - name: wf-hideout-layout-vault-a
+      prefab: /SharedMaps/_WF/Hideouts/vault.yml
+    - name: wf-hideout-layout-vault-b
+      prefab: /SharedMaps/_WF/Hideouts/vault_b.yml
   - price: 800000
     buildTime: 1200
     summary: wf-hideout-level-vault-2
@@ -299,6 +326,11 @@
     stacks: { Steel: 600, Plasteel: 300, Cloth: 60 }
     requires: { WFHideoutGroundworks: 2, WFHideoutPowerhouse: 2 }
     prefab: /SharedMaps/_WF/Hideouts/company_wing.yml
+    layouts:
+    - name: wf-hideout-layout-company-wing-a
+      prefab: /SharedMaps/_WF/Hideouts/company_wing.yml
+    - name: wf-hideout-layout-company-wing-b
+      prefab: /SharedMaps/_WF/Hideouts/company_wing_b.yml
     tiles: 600
     entities: 250
     pods: 3
@@ -321,3 +353,95 @@
     entities: 500
     pods: 6
     grants: [ WFOutpostCryopodPack, WFOutpostCryopodPack, WFOutpostCryopodPack, WFOutpostCryopodPack, WFOutpostCryopodPack, WFOutpostCryopodPack ]
+
+# Living spaces: one level each, laid from a stake in any of their layouts.
+
+- type: wfHideoutModule
+  id: WFHideoutCanteen
+  name: wf-hideout-module-canteen
+  description: wf-hideout-module-canteen-desc
+  order: 8
+  levels:
+  - price: 90000
+    buildTime: 240
+    summary: wf-hideout-level-canteen-1
+    stacks: { Steel: 80, Glass: 20, WoodPlank: 20 }
+    requires: { WFHideoutGroundworks: 1, WFHideoutPowerhouse: 1 }
+    prefab: /SharedMaps/_WF/Hideouts/canteen.yml
+    layouts:
+    - name: wf-hideout-layout-canteen-a
+      prefab: /SharedMaps/_WF/Hideouts/canteen.yml
+    - name: wf-hideout-layout-canteen-b
+      prefab: /SharedMaps/_WF/Hideouts/canteen_b.yml
+
+- type: wfHideoutModule
+  id: WFHideoutFarm
+  name: wf-hideout-module-farm
+  description: wf-hideout-module-farm-desc
+  order: 9
+  levels:
+  - price: 120000
+    buildTime: 300
+    summary: wf-hideout-level-farm-1
+    stacks: { Steel: 60, Glass: 60, Plastic: 20 }
+    requires: { WFHideoutGroundworks: 1, WFHideoutPowerhouse: 1 }
+    prefab: /SharedMaps/_WF/Hideouts/farm.yml
+    layouts:
+    - name: wf-hideout-layout-farm-a
+      prefab: /SharedMaps/_WF/Hideouts/farm.yml
+    - name: wf-hideout-layout-farm-b
+      prefab: /SharedMaps/_WF/Hideouts/farm_b.yml
+
+- type: wfHideoutModule
+  id: WFHideoutGarden
+  name: wf-hideout-module-garden
+  description: wf-hideout-module-garden-desc
+  order: 10
+  levels:
+  - price: 40000
+    buildTime: 120
+    summary: wf-hideout-level-garden-1
+    stacks: { WoodPlank: 20 }
+    requires: { WFHideoutGroundworks: 1 }
+    prefab: /SharedMaps/_WF/Hideouts/garden.yml
+    layouts:
+    - name: wf-hideout-layout-garden-a
+      prefab: /SharedMaps/_WF/Hideouts/garden.yml
+    - name: wf-hideout-layout-garden-b
+      prefab: /SharedMaps/_WF/Hideouts/garden_b.yml
+
+- type: wfHideoutModule
+  id: WFHideoutLounge
+  name: wf-hideout-module-lounge
+  description: wf-hideout-module-lounge-desc
+  order: 11
+  levels:
+  - price: 150000
+    buildTime: 300
+    summary: wf-hideout-level-lounge-1
+    stacks: { Steel: 60, WoodPlank: 60, Cloth: 30 }
+    requires: { WFHideoutQuarters: 1, WFHideoutPowerhouse: 1 }
+    prefab: /SharedMaps/_WF/Hideouts/lounge.yml
+    layouts:
+    - name: wf-hideout-layout-lounge-a
+      prefab: /SharedMaps/_WF/Hideouts/lounge.yml
+    - name: wf-hideout-layout-lounge-b
+      prefab: /SharedMaps/_WF/Hideouts/lounge_b.yml
+
+- type: wfHideoutModule
+  id: WFHideoutLibrary
+  name: wf-hideout-module-library
+  description: wf-hideout-module-library-desc
+  order: 12
+  levels:
+  - price: 100000
+    buildTime: 240
+    summary: wf-hideout-level-library-1
+    stacks: { Steel: 40, WoodPlank: 80, Cloth: 10 }
+    requires: { WFHideoutQuarters: 1 }
+    prefab: /SharedMaps/_WF/Hideouts/library.yml
+    layouts:
+    - name: wf-hideout-layout-library-a
+      prefab: /SharedMaps/_WF/Hideouts/library.yml
+    - name: wf-hideout-layout-library-b
+      prefab: /SharedMaps/_WF/Hideouts/library_b.yml

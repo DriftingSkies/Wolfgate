@@ -12,6 +12,19 @@ hideout: a fixed list of modules, each with levels, each level with a price, a b
 Outposts (PR 570) already give the base: founding, building, saves, access, pads, presets, raids, world development.
 Hideouts adds the progression on top and changes nothing about how an outpost is founded or saved.
 
+## Getting an outpost
+
+Nobody has to fly down and claim ground. The **outpost registry** console at Caelestinus Central, on the public side of
+the shipyard trader's counter, founds an outpost on a free plot of the world the player picks, for credits only
+(15,000). The world becomes its home. The same console lands a player's saved outpost back on its home world, and
+sends them down to their standing outpost for a small fee (2,500). A kit used on open ground still founds one by hand.
+
+**The outpost band.** Every world but Carcinoma keeps a ring of ground past its points of interest for outposts
+(`outpostBand`, 96 tiles): the world's bounds grow by it, and its sites, roads, wrecks and camps stay inside the old
+radius, so the plots never take from their pool. The plots (80 tiles square) are laid evenly round the ring, cleared
+and pinned. Outposts sprawl from their plot into the band round it. The band costs preload time, since the world's disc
+is larger.
+
 ## A round with an outpost
 
 1. An outpost is its own grid over carved-out ground, never the planet's tiles, so nobody digs or builds into it from
@@ -32,6 +45,10 @@ Every module level costs money and goods, after Tarkov: sheets and cable (`stack
 by prototype): stock parts, power cells, medkits, toolboxes, boards, gold and uranium for the late levels. Whatever lies
 on the outpost counts, in crates and lockers too, and starting the level uses it up. The Hideout tab shows each
 requirement as held / needed. Founding an outpost takes only its kit, bought with credits.
+
+**Shells.** Alt-use on a module's stake switches it to lay a shell: floors, walls, windows, doors, power and lighting,
+and a bay's cranes and console. Its machines come packed to set out by hand, and what its furniture was worth is paid
+back to furnish it as the owner likes. The prefabs are a basis to build on, not a finished room.
 
 **Sprawl.** Groundworks is what lets an outpost grow into a RimWorld-sized base: each level adds floor (1,000, 2,000,
 4,000), objects, and how far across the outpost may spread (64 tiles at first, then 96, 128 and 192). The rest is built
@@ -161,6 +178,10 @@ it **certified**: the cranes look each part over, for 750 a part, and only if it
 - Counting goes through containers, so a gun packed in a crate still counts.
 - Refits cost money: the part (guns at 1.5 times their price) plus labour for every crane item, removals included.
 
+**Upgrades.** Both refit consoles also sell the drydock's refit lines on the parked ship: durasteel armour plating,
+thruster, gyroscope and power part tiers, and atmospheric thrusters, fitted by the cranes at the drydock's prices.
+Anything else a ship needs is built aboard by hand, and certified at the bay on a custom ship.
+
 **The console.** The bay console lists the hull's hardpoints with a gun picker each, the systems with a count each, the
 points before and after, and the price, and enables Apply when the refit fits. With the bay empty it lists the frames.
 
@@ -169,11 +190,100 @@ points before and after, and the price, and enables Apply when the refit fits. W
 A module stake used in hand outlines its building on the tile in front of its user, facing the way they face, for ten
 seconds (the outline drawn for a save on its way down), or says why it wouldn't fit. Used on that tile, it lays it.
 
+## Prefabs and themes
+
+The module prefabs are drawn in `Tools/_WF/Hideouts/build_prefabs.py` after the planetary hospital: rooms with a floor
+each, windows along the outer walls, a porch out front, and furniture, clutter and floor decals (hazard lines, marked
+bays, scuffs) so a module looks lived in the moment it lands. `Docs/_WF/Hideouts/prefabs.png` is the review sheet.
+A prefab's decals are laid with it, turned the way it is; a shell leaves them out with the furniture.
+
+A module has several layouts (a level's `layouts` in `modules.yml`): alt-click the stake and pick one under Layout.
+Every layout of a module holds the same machines; they differ in rooms and furniture. Quarters come as a bunkhouse, a
+cabin or a dormitory; the workshop as a machine shop or a garage; the powerhouse as a battery house or a generator
+shed; the medbay as a ward or a clinic; the vault as a strongroom or a counting house; the company wing as a hall or a
+lodge.
+
+Living spaces are modules of one level each, with two layouts apiece: a canteen (mess hall, diner), a farm (greenhouse,
+open field), a garden (courtyard, walk), a lounge (bar, rec room) and a library (reading room, study).
+
+An APC hangs on the wall beside its room, as the hospital's do, with its cables under that wall, and the MV feed comes
+out at the front door for the owner to tie in. The generator stops if a cable doesn't reach the APC.
+
+A stake lays its module in a theme (`wfHideoutTheme`, `themes.yml`): alt-click the stake and pick one under Materials.
+A theme swaps the prefab's walls, windows, doors and its floors (main, accent, clean and the porch) as they are laid,
+for its price on top of the module, taken when the stake is used and paid back if the module can't go there. The
+prefabs are drawn in the colony materials, the theme that costs nothing; the others are brick and parquet, a timber
+lodge, station steel, concrete and reinforced plating. Machines, furniture, cranes and pads are the same in each.
+
+## The blueprint
+
+The console's Blueprint tab is a plan of the outpost to paint on, after a map editor: its floor drawn tile by tile,
+what stands on it marked (walls, windows, doors, other things), and the claim's edge. A palette of brushes
+(`wfBlueprintBrush`, `blueprint.yml`) lists floors, walls and windows, doors, power and light, furniture, and the roof
+and removal tools. Left paints with the brush, box or outline tool, right drags the view, the wheel zooms; entity
+brushes face the way the Facing button says. Strokes collect on a plan, with undo, up to 800 at a time, and the plan's
+price shows as it grows. Build plan has it built at once, paid from the builder's bank.
+
+- Floor painted over the outpost's floor re-lays it; painted past its edge it extends the outpost, under the rules
+  foundation plates follow (inside the claim, open ground, the span and the tile cap).
+- An entity brush sets its entity on a floor tile nothing else stands on, within the object cap. Cables and carpets
+  lie under whatever else is there.
+- Roof and open-sky brushes set a tile's roof. The removal brush takes away what the brushes lay, nothing else, and
+  pays nothing back.
+- The whole plan's price is taken first; what a refused stroke cost is paid back, and the first refusal is reported.
+- A brush costs its listed price, and an entity brush never less than one and a half times what its entity sells for,
+  so nothing painted sells at a profit.
+
+The owner and the outpost's listed builders can build from it.
+
+The palette borrows from the mapping tools: a search box, a section filter, and each brush shown with its own
+sprite. Besides the brushes listed by hand (`wfBlueprintBrush`), catalogue shelves (`wfBlueprintCatalogue`,
+`blueprint_catalogue.yml`) list entities, floor tiles and decals straight from the game's prototypes, each a brush
+named as its prototype is, at the shelf's price: seating, more furniture, plants and trees, street lights and lamps,
+statues and fountains, fences and railings, fires and hearths, banners and curtains, wall art (paintings, posters,
+signs), rugs, and floor decals (markings, trim, flowers and bushes, wear). Adding a decoration is one line on a shelf.
+A shelf marked `under` shares a tile with whatever else stands there: rugs, and what hangs on a wall. Decals are laid
+turned the way the plan faces, up to eight a tile, and a Remove decals brush takes them off.
+
+The shipwright console and the faction hangar's console have an Interior button that opens the same blueprint over
+the hull in the bay. On a ship, floor only re-lays the hull's own tiles and roofs can't be painted; walls, doors,
+furniture, decorations and decals go anywhere on it. Nothing a brush lays is a gun or a system, so the fit and its
+points are untouched.
+
+## Saving and loading
+
+A hideout keeps itself: it is given a free save slot of its owner's without a manifest being filed, so the console's
+Manifests tab is hidden while hideouts are on. Where every slot already holds another outpost it is not saved.
+
+Serialising an outpost costs main-thread time for every object on it, so an autosave is spread over ticks
+(`WFOutpostSystem.SlicedSave`), the way a sold hull is copied. The first tick takes the outpost itself and everything
+loose on it, so what moves is saved as it stood that tick; the anchored structures, which are most of an outpost,
+follow at 3 ms a tick, each with what it holds. A save is torn if a structure is gone before its turn or something
+already saved has since moved into one; a torn save is dropped and tried again in 30 seconds, and after two the
+outpost is saved at once. The round's last saves are taken at once. In the integration test a warmed-up save of 136
+objects took 46 ms over 10 ticks, 13 ms the longest, against 54 ms in one tick saved at once.
+
+Loading is still done at once, on a paused staging map, when the owner's outpost lands: about 0.16 ms an object, once
+a round for each outpost. The engine's deserialiser has no way to load part of a file, so spreading it would mean
+saving an outpost as several files and landing them in turn.
+
+## Trade
+
+Every outpost founded from the registry comes with a hideout trade hub packed at its console. It runs off its own
+supply, like the hangar beacon, so the Trade tab works under open sky before there is any power. The Trade tab no
+longer lists the wall-panel crate or the foundation crate, which the blueprint replaces, nor the trade hub, which
+could only be ordered with a hub already standing.
+
 ## Testing
 
 `wfhideouttest` (admin) builds a world of its own, stands the caller on it beside a founded outpost with every module
 built, the shipwright bay (at its widest), the faction hangar, quarters and workshop laid, a stock Guppy on the hangar
 pad to register, and 50 million thalers.
+
+`wfhideouttest gallery` builds the same world as a gallery instead: paved streets round the outpost with every layout
+of every module along them (the two aprons left out), each laid in the next material theme, a survey stake of every
+module at the caller's feet to try layouts and themes with, and the same money for the Blueprint tab. Either way the
+command grows the ground under its patch first, since a world only grows ground near players.
 
 ## Company outposts
 

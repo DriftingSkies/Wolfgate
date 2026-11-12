@@ -58,3 +58,26 @@
     interfaces:
       enum.WFHideoutRegistryUiKey.Key:
         type: WFHideoutRegistryBoundUserInterface
+
+# A hideout's own trade hub: every outpost founded from the registry comes with one packed, and it runs off the
+# outpost's own supply like the hangar beacon, so the Trade tab works before there is any power to speak of.
+- type: entity
+  parent: WFOutpostTradeHubPack
+  id: WFHideoutTradeHubPack
+  name: hideout trade hub pack
+  description: A folded trade hub with its own supply. Use it in hand facing your outpost's floor, under open sky, to set it up there.
+  components:
+  - type: WFDeployable
+    machine: WFHideoutTradeHub
+    face: false
+
+- type: entity
+  parent: WFOutpostTradeHub
+  id: WFHideoutTradeHub
+  name: hideout trade hub
+  description: A drop beacon for your outpost's Trade orders, which come down on it by parachute, a flare marking the spot. It needs open sky, and runs off its own supply.
+  components:
+  - type: ApcPowerReceiver
+    needsPower: false
+  - type: WFRepackable
+    pack: WFHideoutTradeHubPack

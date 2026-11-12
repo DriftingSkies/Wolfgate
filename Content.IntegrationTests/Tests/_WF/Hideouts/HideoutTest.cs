@@ -209,15 +209,15 @@ public sealed class HideoutTest
                 var grid = entMan.GetComponent<MapGridComponent>(outpost);
                 var floor = outposts.CountTiles((outpost, grid));
                 UseStake(pair, user, ground, new Vector2i(6, -3));
-                Assert.That(outposts.CountTiles((outpost, grid)), Is.EqualTo(floor + 63), "The bunkhouse's 9x7 floor joined the outpost.");
+                Assert.That(outposts.CountTiles((outpost, grid)), Is.EqualTo(floor + 102), "The bunkhouse's floor and porch joined the outpost.");
 
                 var pod = Children(entMan, outpost).Single(e => entMan.GetComponent<MetaDataComponent>(e).EntityPrototype?.ID == "WFOutpostCryopod");
                 var xform = entMan.GetComponent<TransformComponent>(pod);
                 Assert.That(xform.Anchored, Is.True, "The cryopod came loose.");
-                // Facing south, the bunkhouse runs south from the stake and its back row, with the pod, is the far one.
+                // Facing south, the bunkhouse runs south from the stake and is turned about: the pod, two rows in on its west side, lands east.
                 var at = server.System<SharedTransformSystem>().GetWorldPosition(pod);
-                Assert.That(at.Y, Is.EqualTo(-7.5f).Within(0.01f), "The prefab wasn't turned to face its user.");
-                Assert.That(at.X, Is.EqualTo(3.5f).Within(0.01f));
+                Assert.That(at.Y, Is.EqualTo(-4.5f).Within(0.01f), "The prefab wasn't turned to face its user.");
+                Assert.That(at.X, Is.EqualTo(11.5f).Within(0.01f));
             });
         }
         finally
@@ -258,16 +258,29 @@ public sealed class HideoutTest
                     foreach (var grant in level.Grants)
                         Assert.That(protos.HasIndex(grant), Is.True, $"{module.ID} level {i + 1} grants unknown {grant}.");
 
-                    if (level.Prefab is not { } prefab)
+                    if (level.Prefab is not { } first)
+                    {
+                        Assert.That(level.Layouts, Is.Empty, $"{module.ID} level {i + 1} has layouts but no prefab.");
                         continue;
+                    }
 
-                    Assert.That(loader.TryLoadGrid(map.MapId, prefab, out var grid), Is.True, $"{prefab} failed to load.");
-                    var tiles = 0;
-                    var enumerator = maps.GetAllTilesEnumerator(grid.Value.Owner, grid.Value.Comp);
-                    while (enumerator.MoveNext(out _))
-                        tiles++;
-                    Assert.That(tiles, Is.GreaterThan(0), $"{prefab} has no floor.");
-                    entMan.DeleteEntity(grid.Value.Owner);
+                    if (level.Layouts.Count > 0)
+                    {
+                        Assert.That(level.Layouts.Select(layout => layout.Prefab), Does.Contain(first),
+                            $"{module.ID} level {i + 1}'s prefab isn't among its layouts.");
+                    }
+
+                    // The prefab and every layout the stake can be set to.
+                    foreach (var prefab in level.Layouts.Select(layout => layout.Prefab).Append(first).Distinct())
+                    {
+                        Assert.That(loader.TryLoadGrid(map.MapId, prefab, out var grid), Is.True, $"{prefab} failed to load.");
+                        var tiles = 0;
+                        var enumerator = maps.GetAllTilesEnumerator(grid.Value.Owner, grid.Value.Comp);
+                        while (enumerator.MoveNext(out _))
+                            tiles++;
+                        Assert.That(tiles, Is.GreaterThan(0), $"{prefab} has no floor.");
+                        entMan.DeleteEntity(grid.Value.Owner);
+                    }
                 }
             }
         });

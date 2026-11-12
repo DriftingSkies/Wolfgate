@@ -67,6 +67,9 @@ public sealed partial class WFShipwrightSystem
             subs.Event<WFShipwrightRegisterMessage>(OnRegisterMessage);
             subs.Event<WFShipwrightCertifyMessage>(OnCertifyMessage);
             subs.Event<WFShipwrightRefitMessage>(OnRefitMessage);
+            subs.Event<WFShipwrightUpgradeMessage>(OnUpgradeMessage);
+            subs.Event<Content.Shared._WF.Hideouts.Blueprint.WFBlueprintCanvasRequestMessage>(OnInteriorCanvas);
+            subs.Event<Content.Shared._WF.Hideouts.Blueprint.WFBlueprintApplyMessage>(OnInteriorApply);
         });
     }
 
@@ -192,7 +195,11 @@ public sealed partial class WFShipwrightSystem
             if (_players.TryGetSessionById(owner, out var session))
                 _bank.TryGetBalance(session, out state.Balance);
             if (TryGetBay(console, out var pad) && pad.Comp.Parked is { } hull && !TerminatingOrDeleted(hull))
+            {
                 state.Hull = console.Comp.Faction ? FactionHullView(hull, outpost) : HullView(hull, outpost);
+                if (TryComp<WFDrydockConsoleComponent>(console, out var dock) && !state.Working)
+                    state.Upgrades = _drydock.RefitEntries(dock, hull);
+            }
         }
 
         _ui.SetUiState(console.Owner, WFShipwrightConsoleUiKey.Key, state);
@@ -1016,6 +1023,100 @@ public sealed partial class WFShipwrightSystem
         }
 
         Report(console, args.Actor, TryRefit(args.Actor, console, args.Mounts, args.Systems, args.Hardpoints, args.Placements, out var reason), reason);
+    }
+
+    /// <summary>
+    /// Has the cranes bring one of the owner's hull's refit lines up a tier, at the drydock's price. <paramref name="reason"/>
+    /// is a loc id when it can't start.
+    /// </summary>
+    public bool TryUpgrade(EntityUid user, Entity<WFShipwrightConsoleComponent> console, string refit, out string reason)
+    {
+        if (Blocked(console, out var dock) is { } blocked)
+        {
+            reason = blocked;
+            return false;
+        }
+
+        TryOutpost(console, out var outpost);
+        TryGetBay(console, out var pad);
+        if (!_outposts.IsOwnerOf(user, outpost.Comp) || pad.Comp.Parked is not { } hull || TerminatingOrDeleted(hull)
+            || !TryComp<WFHideoutShipComponent>(hull, out var owned) || owned.Owner != outpost.Comp.Owner)
+        {
+            reason = "wf-shipwright-not-registered";
+            return false;
+        }
+
+        console.Comp.Job = WFShipwrightJob.Refit;
+        console.Comp.Orderer = user;
+        if (_drydock.TryStartRefit(console, dock!, hull, user, refit))
+        {
+            reason = string.Empty;
+            return true;
+        }
+
+        console.Comp.Job = WFShipwrightJob.None;
+        console.Comp.Orderer = null;
+        // The drydock says why itself.
+        reason = string.Empty;
+        return false;
+    }
+
+    private void OnUpgradeMessage(Entity<WFShipwrightConsoleComponent> console, ref WFShipwrightUpgradeMessage args)
+    {
+        Report(console, args.Actor, TryUpgrade(args.Actor, console, args.Refit, out var reason), reason);
+    }
+
+    /// <summary>How many more objects one interior plan may add to a ship.</summary>
+    private const int InteriorRoom = 400;
+
+    /// <summary>The hull parked in a console's bay.</summary>
+    private bool TryGetParked(Entity<WFShipwrightConsoleComponent> console, out EntityUid hull)
+    {
+        hull = default;
+        if (!TryGetBay(console, out var pad) || pad.Comp.Parked is not { } parked || TerminatingOrDeleted(parked))
+            return false;
+
+        hull = parked;
+        return true;
+    }
+
+    private void OnInteriorCanvas(Entity<WFShipwrightConsoleComponent> console, ref Content.Shared._WF.Hideouts.Blueprint.WFBlueprintCanvasRequestMessage args)
+    {
+        if (TryGetParked(console, out var hull))
+            _hideouts.SendCanvas(console, WFShipwrightConsoleUiKey.Key, hull, args.Actor);
+    }
+
+    /// <summary>
+    /// The outpost's owner has a plan built on the hull in the bay: floor over the hull's own tiles, walls, furniture,
+    /// decorations and decals. Nothing a brush lays is a gun or a system, so the fit and its points are untouched.
+    /// </summary>
+    private void OnInteriorApply(Entity<WFShipwrightConsoleComponent> console, ref Content.Shared._WF.Hideouts.Blueprint.WFBlueprintApplyMessage args)
+    {
+        var user = args.Actor;
+        if (!TryOutpost(console, out var outpost) || !_outposts.IsOwnerOf(user, outpost.Comp))
+        {
+            _popup.PopupEntity(Loc.GetString("wf-blueprint-not-builder"), console, user);
+            return;
+        }
+
+        if (HasComp<WFDrydockJobComponent>(console) || !TryGetParked(console, out var hull) || !TryComp<MapGridComponent>(hull, out var grid))
+        {
+            _popup.PopupEntity(Loc.GetString("wf-blueprint-ship-not-ready"), console, user);
+            return;
+        }
+
+        var built = _hideouts.ApplyPlan(user, hull, grid, args.Strokes,
+            (IReadOnlyList<(Vector2i Index, string Tile)> cells, out string? refused) => _hideouts.RelayFloor(hull, grid, cells, out refused),
+            null, InteriorRoom, out var spent, out var reason);
+        if (built > 0)
+        {
+            _adminLog.Add(Content.Shared.Database.LogType.WFOutpost, Content.Shared.Database.LogImpact.Low,
+                $"{ToPrettyString(user):user} built an interior plan of {built} strokes on {ToPrettyString(hull):grid} for {spent}");
+        }
+
+        _hideouts.ReportBlueprint(user, built, spent, reason);
+        _hideouts.SendCanvas(console, WFShipwrightConsoleUiKey.Key, hull, user);
+        UpdateUi(console);
     }
 
     private void Report(Entity<WFShipwrightConsoleComponent> console, EntityUid user, bool ok, string reason)

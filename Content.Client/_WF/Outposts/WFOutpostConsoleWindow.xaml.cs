@@ -93,6 +93,7 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
         Tabs.SetTabTitle(4, Loc.GetString("wf-outpost-console-tab-development"));
         Tabs.SetTabTitle(5, Loc.GetString("wf-outpost-console-tab-access"));
         Tabs.SetTabTitle(6, Loc.GetString("wf-outpost-console-tab-hideout"));
+        Tabs.SetTabTitle(7, Loc.GetString("wf-blueprint-tab"));
         Tabs.SetTabVisible(4, false);
         NameEdit.IsValid = text => text.Length <= WFOutpostLimits.NameLength;
         RenameButton.OnPressed += _ => OnRename?.Invoke(NameEdit.Text);
@@ -240,6 +241,11 @@ public sealed partial class WFOutpostConsoleWindow : FancyWindow
         Tabs.SetTabVisible(4, state.Development != null);
         HideoutTab.UpdateState(state.Hideout, isOwner);
         Tabs.SetTabVisible(6, state.Hideout != null);
+
+        // A hideout keeps itself from the start, so there are no manifests to file.
+        Tabs.SetTabVisible(1, state.Hideout == null);
+        BlueprintTab.SetOutpost(state.Hideout != null ? _grid : null, state.ClaimMargin, true);
+        Tabs.SetTabVisible(7, state.Hideout != null);
 
         ReadingLabel.Visible = state.Slots == null;
         var locked = !isOwner || state.Busy || state.Pending != null;

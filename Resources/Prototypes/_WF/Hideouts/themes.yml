@@ -1,0 +1,85 @@
+# Module themes: the materials a survey stake lays its module in. A theme swaps the prefab's walls, windows, doors and
+# its floors (main, accent, clean and the porch) as they are laid, for its price on top of the module. Alt-click a stake
+# to pick one. The prefabs themselves are drawn in the colony materials (Tools/_WF/Hideouts/build_prefabs.py).
+
+- type: wfHideoutTheme
+  id: WFHideoutThemeColony
+  name: wf-hideout-theme-colony
+  order: 0
+  price: 0
+
+# After the planetary hospital: brick walls, wood and parquet floors, timber doors.
+- type: wfHideoutTheme
+  id: WFHideoutThemeBrick
+  name: wf-hideout-theme-brick
+  order: 1
+  price: 20000
+  entities:
+    WFPrefabWallFixed: WallBrick
+    WFPrefabWindow: Window
+    WFPrefabDoor: WoodDoor
+  tiles:
+    WFFloorColonyGrey: FloorWood
+    WFFloorColonyGreyTexture: FloorWoodParquetDark
+    WFFloorColonyWhite: FloorWhiteMono
+    WFFloorColonyWhiteBolts: FloorGrayConcreteSmooth
+
+- type: wfHideoutTheme
+  id: WFHideoutThemeTimber
+  name: wf-hideout-theme-timber
+  order: 2
+  price: 25000
+  entities:
+    WFPrefabWallFixed: WallWood
+    WFPrefabWindow: Window
+    WFPrefabDoor: WoodDoor
+  tiles:
+    WFFloorColonyGrey: FloorWoodLarge
+    WFFloorColonyGreyTexture: FloorWoodParquetDark
+    WFFloorColonyWhite: FloorWoodParquetLight
+    WFFloorColonyWhiteBolts: FloorWoodLarge
+
+- type: wfHideoutTheme
+  id: WFHideoutThemeSteel
+  name: wf-hideout-theme-steel
+  order: 3
+  price: 30000
+  entities:
+    WFPrefabWallFixed: WallSolid
+    WFPrefabWindow: Window
+    WFPrefabDoor: MetalDoor
+  tiles:
+    WFFloorColonyGrey: FloorSteel
+    WFFloorColonyGreyTexture: FloorDark
+    WFFloorColonyWhite: FloorWhite
+    WFFloorColonyWhiteBolts: FloorSteel
+
+- type: wfHideoutTheme
+  id: WFHideoutThemeConcrete
+  name: wf-hideout-theme-concrete
+  order: 4
+  price: 45000
+  entities:
+    WFPrefabWallFixed: WallConcrete
+    WFPrefabWindow: ReinforcedWindow
+    WFPrefabDoor: MetalDoor
+  tiles:
+    WFFloorColonyGrey: FloorGrayConcreteSmooth
+    WFFloorColonyGreyTexture: FloorDarkPlastic
+    WFFloorColonyWhite: FloorWhitePlastic
+    WFFloorColonyWhiteBolts: FloorGrayConcreteSmooth
+
+- type: wfHideoutTheme
+  id: WFHideoutThemeReinforced
+  name: wf-hideout-theme-reinforced
+  order: 5
+  price: 120000
+  entities:
+    WFPrefabWallFixed: WallReinforced
+    WFPrefabWindow: ReinforcedWindow
+    WFPrefabDoor: MetalDoor
+  tiles:
+    WFFloorColonyGrey: FloorDarkMono
+    WFFloorColonyGreyTexture: FloorDark
+    WFFloorColonyWhite: FloorWhite
+    WFFloorColonyWhiteBolts: FloorDarkMono

@@ -77,8 +77,12 @@ public sealed partial class WFPlanetPoiSystem : EntitySystem
             return;
         }
 
-        // Points of interest keep inside the world's radius; the band past it is the outposts'.
-        var band = Math.Clamp(surface.OutpostBand, 0, (int) args.Radius / 2);
+        // Points of interest keep inside the world's radius; the band past it is the outposts'. Only a world whose bounds
+        // were grown by its band has one: a radius handed in without them is all the sites'.
+        var band = surface.OutpostBand > 0 && TryComp<WFPlanetBoundsComponent>(args.Ground, out var bounds)
+                   && MathF.Abs(bounds.Radius - args.Radius) < 0.5f && args.Radius > surface.OutpostBand * 2
+            ? surface.OutpostBand
+            : 0;
         args.Holds.Add(PlaceAsync(args.Ground, comp, args.Centre, args.Radius - band, table, args.Claims, band));
     }
 

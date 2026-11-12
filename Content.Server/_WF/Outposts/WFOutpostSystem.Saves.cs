@@ -446,13 +446,15 @@ public sealed partial class WFOutpostSystem
     }
 
     /// <summary>
-    /// Autosaves at most one changed outpost a second into the slot it was last saved into or loaded from, every
-    /// <c>wf.outposts.autosave_interval</c> seconds. Outposts never saved have no slot and are left alone.
+    /// Autosaves one changed outpost at a time into the slot it was last saved into or loaded from, every
+    /// <c>wf.outposts.autosave_interval</c> seconds, a few milliseconds a tick (<see cref="TryBeginSlicedSave"/>). An
+    /// outpost never saved is given a free slot where something asks for it (<see cref="EnsureSlot"/>), else left alone.
     /// </summary>
     private void UpdateAutosave()
     {
+        UpdateSlicedSave();
         var now = _timing.CurTime;
-        if (now < _nextAutosaveCheck)
+        if (now < _nextAutosaveCheck || _sliced != null)
             return;
 
         _nextAutosaveCheck = now + TimeSpan.FromSeconds(1);
@@ -460,16 +462,25 @@ public sealed partial class WFOutpostSystem
         var query = EntityQueryEnumerator<WFOutpostComponent, MapGridComponent>();
         while (query.MoveNext(out var uid, out var outpost, out var grid))
         {
-            if (outpost.Slot is not { } slot || outpost.Abandoned || outpost.NextAutosave > now || IsBusy(outpost.Owner)
-                || HasComp<WFOutpostPendingLoadComponent>(uid))
+            if (outpost.Abandoned || outpost.NextAutosave > now || IsBusy(outpost.Owner)
+                || HasComp<WFOutpostPendingLoadComponent>(uid) || !EnsureSlot(uid, outpost) || outpost.Slot is not { } slot)
                 continue;
 
             outpost.NextAutosave = now + interval;
             if (Fingerprint((uid, grid)) == outpost.SavedFingerprint)
                 continue;
 
-            if (TrySaveInto((uid, outpost), slot, null, out _))
+            // Spread over the ticks to come; an outpost whose sliced saves keep tearing is saved at once instead.
+            if (_torn.GetValueOrDefault(uid) >= TornLimit)
+            {
+                _torn.Remove(uid);
+                if (TrySaveInto((uid, outpost), slot, null, out _))
+                    break;
+            }
+            else if (TryBeginSlicedSave((uid, outpost), slot))
+            {
                 break;
+            }
         }
     }
 
@@ -480,9 +491,15 @@ public sealed partial class WFOutpostSystem
             return;
 
         SellAtRoundEnd();
+
+        // The round's last saves are taken at once: nothing is left to stall, and nothing may be left half saved.
+        AbortSlicedSave();
         var query = EntityQueryEnumerator<WFOutpostComponent, MapGridComponent>();
         while (query.MoveNext(out var uid, out var outpost, out var grid))
         {
+            if (!outpost.Abandoned && !TerminatingOrDeleted(uid))
+                EnsureSlot(uid, outpost);
+
             if (outpost.Slot is { } slot && !outpost.Abandoned && !TerminatingOrDeleted(uid)
                 && Fingerprint((uid, grid)) != outpost.SavedFingerprint)
                 TrySaveInto((uid, outpost), slot, null, out _);

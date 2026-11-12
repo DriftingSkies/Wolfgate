@@ -19,6 +19,17 @@ Prefabs: a level with a `prefab` leaves a survey stake (`WFHideoutSurveyStake`) 
 the outpost's claim (`TryUseStake`), it lays the prefab's grid onto the outpost with `WFOutpostSystem.TryStampPrefab`:
 the prefab's bottom middle tile lands on the tile pointed at and it extends the way the user faces, with its roofs and
 everything on it. The prefab grids are written by `Tools/_WF/Hideouts/build_prefabs.py` from the layouts in it.
+A level may list `layouts`, other grids its stake can be set to from the same menu. A stake set to a theme (`wfHideoutTheme` in `themes.yml`, picked from the stake's alt-click menu) passes a
+`WFPrefabSkin` that swaps the prefab's walls, windows, doors and floors as they are laid, for the theme's price.
+
+The blueprint (`WFHideoutSystem.Blueprint`, the console's Blueprint tab, `WFBlueprintPanel` and `WFBlueprintCanvas`):
+a builder paints brushes (`wfBlueprintBrush` in `blueprint.yml`) onto a plan of the outpost and has it built at once
+for its price (`TryApplyBlueprint`). Floor goes through `WFOutpostSystem.PaintFloor`, roof through `PaintRoof`.
+The palette is every `wfBlueprintBrush` and every prototype on a `wfBlueprintCatalogue` shelf (`WFBlueprintCatalog`).
+`ApplyPlan` builds a plan on any grid; the shipwright consoles use it for a hull's interior (`OnInteriorApply`).
+
+Saving: a hideout answers `WFOutpostWantsSlotEvent`, so its outpost is given a save slot and autosaved without a
+manifest, over ticks (`WFOutpostSystem.SlicedSave`). `LeaveTradeHub` leaves a packed `WFHideoutTradeHub` at founding.
 
 The hangar (`WFHideoutSystem.Hangar`): the Hangar module's prefab is an apron with a hangar beacon
 (`WFHideoutHangarPad`, a landing pad that needs no power), whose widest size follows the module's level. The owner
@@ -77,6 +88,8 @@ up. The shares are the lowest `insurancePremium` and `insuranceDeductible` among
 - [`Content.Server/_WF/Hideouts/Shipwright/WFShipwrightSystem.Faction.cs`](Shipwright/WFShipwrightSystem.Faction.cs)
 - [`Content.Server/_WF/Hideouts/WFHideoutCommand.cs`](WFHideoutCommand.cs)
 - [`Content.Server/_WF/Hideouts/WFHideoutComponents.cs`](WFHideoutComponents.cs)
+- [`Content.Server/_WF/Hideouts/WFHideoutRegistrySystem.cs`](WFHideoutRegistrySystem.cs)
+- [`Content.Server/_WF/Hideouts/WFHideoutSystem.Blueprint.cs`](WFHideoutSystem.Blueprint.cs)
 - [`Content.Server/_WF/Hideouts/WFHideoutSystem.cs`](WFHideoutSystem.cs)
 - [`Content.Server/_WF/Hideouts/WFHideoutSystem.Hangar.cs`](WFHideoutSystem.Hangar.cs)
 - [`Content.Server/_WF/Hideouts/WFHideoutSystem.Home.cs`](WFHideoutSystem.Home.cs)
@@ -85,31 +98,45 @@ up. The shares are the lowest `insurancePremium` and `insuranceDeductible` among
 
 ### Shared
 
+- [`Content.Shared/_WF/Hideouts/Blueprint/WFBlueprintCatalog.cs`](../../../Content.Shared/_WF/Hideouts/Blueprint/WFBlueprintCatalog.cs)
+- [`Content.Shared/_WF/Hideouts/Blueprint/WFBlueprintUi.cs`](../../../Content.Shared/_WF/Hideouts/Blueprint/WFBlueprintUi.cs)
 - [`Content.Shared/_WF/Hideouts/HideoutCVars.cs`](../../../Content.Shared/_WF/Hideouts/HideoutCVars.cs)
 - [`Content.Shared/_WF/Hideouts/Shipwright/WFShipwrightPrototypes.cs`](../../../Content.Shared/_WF/Hideouts/Shipwright/WFShipwrightPrototypes.cs)
 - [`Content.Shared/_WF/Hideouts/Shipwright/WFShipwrightUi.cs`](../../../Content.Shared/_WF/Hideouts/Shipwright/WFShipwrightUi.cs)
 - [`Content.Shared/_WF/Hideouts/WFHideoutModulePrototype.cs`](../../../Content.Shared/_WF/Hideouts/WFHideoutModulePrototype.cs)
+- [`Content.Shared/_WF/Hideouts/WFHideoutRegistryUi.cs`](../../../Content.Shared/_WF/Hideouts/WFHideoutRegistryUi.cs)
 - [`Content.Shared/_WF/Hideouts/WFHideoutRulesPrototype.cs`](../../../Content.Shared/_WF/Hideouts/WFHideoutRulesPrototype.cs)
+- [`Content.Shared/_WF/Hideouts/WFHideoutThemePrototype.cs`](../../../Content.Shared/_WF/Hideouts/WFHideoutThemePrototype.cs)
 - [`Content.Shared/_WF/Hideouts/WFHideoutUi.cs`](../../../Content.Shared/_WF/Hideouts/WFHideoutUi.cs)
 - [`Content.Shared/_WF/Hideouts/WFShipSaveOriginComponent.cs`](../../../Content.Shared/_WF/Hideouts/WFShipSaveOriginComponent.cs)
 
 ### Client
 
+- [`Content.Client/_WF/Hideouts/Blueprint/WFBlueprintCanvas.cs`](../../../Content.Client/_WF/Hideouts/Blueprint/WFBlueprintCanvas.cs)
+- [`Content.Client/_WF/Hideouts/Blueprint/WFBlueprintIcons.cs`](../../../Content.Client/_WF/Hideouts/Blueprint/WFBlueprintIcons.cs)
+- [`Content.Client/_WF/Hideouts/Blueprint/WFBlueprintPanel.cs`](../../../Content.Client/_WF/Hideouts/Blueprint/WFBlueprintPanel.cs)
 - [`Content.Client/_WF/Hideouts/Shipwright/WFShipwrightConsoleBoundUserInterface.cs`](../../../Content.Client/_WF/Hideouts/Shipwright/WFShipwrightConsoleBoundUserInterface.cs)
 - [`Content.Client/_WF/Hideouts/Shipwright/WFShipwrightConsoleWindow.cs`](../../../Content.Client/_WF/Hideouts/Shipwright/WFShipwrightConsoleWindow.cs)
 - [`Content.Client/_WF/Hideouts/Shipwright/WFShipwrightHullMap.cs`](../../../Content.Client/_WF/Hideouts/Shipwright/WFShipwrightHullMap.cs)
 - [`Content.Client/_WF/Hideouts/WFHideoutPanel.cs`](../../../Content.Client/_WF/Hideouts/WFHideoutPanel.cs)
+- [`Content.Client/_WF/Hideouts/WFHideoutRegistryBoundUserInterface.cs`](../../../Content.Client/_WF/Hideouts/WFHideoutRegistryBoundUserInterface.cs)
+- [`Content.Client/_WF/Hideouts/WFHideoutRegistryWindow.cs`](../../../Content.Client/_WF/Hideouts/WFHideoutRegistryWindow.cs)
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WF/Hideouts/BlueprintTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Hideouts/BlueprintTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Hideouts/HideoutTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Hideouts/HideoutTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Hideouts/RegistryTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Hideouts/RegistryTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Hideouts/ShipwrightTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Hideouts/ShipwrightTest.cs)
 
 ### Prototypes
 
+- [`Resources/Prototypes/_WF/Hideouts/blueprint.yml`](../../../Resources/Prototypes/_WF/Hideouts/blueprint.yml)
+- [`Resources/Prototypes/_WF/Hideouts/blueprint_catalogue.yml`](../../../Resources/Prototypes/_WF/Hideouts/blueprint_catalogue.yml)
 - [`Resources/Prototypes/_WF/Hideouts/entities.yml`](../../../Resources/Prototypes/_WF/Hideouts/entities.yml)
 - [`Resources/Prototypes/_WF/Hideouts/modules.yml`](../../../Resources/Prototypes/_WF/Hideouts/modules.yml)
 - [`Resources/Prototypes/_WF/Hideouts/shipwright.yml`](../../../Resources/Prototypes/_WF/Hideouts/shipwright.yml)
+- [`Resources/Prototypes/_WF/Hideouts/themes.yml`](../../../Resources/Prototypes/_WF/Hideouts/themes.yml)
 
 ### Localization
 
@@ -117,14 +144,31 @@ up. The shares are the lowest `insurancePremium` and `insuranceDeductible` among
 
 ### Shared maps
 
+- [`Resources/SharedMaps/_WF/Hideouts/canteen.yml`](../../../Resources/SharedMaps/_WF/Hideouts/canteen.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/canteen_b.yml`](../../../Resources/SharedMaps/_WF/Hideouts/canteen_b.yml)
 - [`Resources/SharedMaps/_WF/Hideouts/company_wing.yml`](../../../Resources/SharedMaps/_WF/Hideouts/company_wing.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/company_wing_b.yml`](../../../Resources/SharedMaps/_WF/Hideouts/company_wing_b.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/farm.yml`](../../../Resources/SharedMaps/_WF/Hideouts/farm.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/farm_b.yml`](../../../Resources/SharedMaps/_WF/Hideouts/farm_b.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/garden.yml`](../../../Resources/SharedMaps/_WF/Hideouts/garden.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/garden_b.yml`](../../../Resources/SharedMaps/_WF/Hideouts/garden_b.yml)
 - [`Resources/SharedMaps/_WF/Hideouts/hangar.yml`](../../../Resources/SharedMaps/_WF/Hideouts/hangar.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/library.yml`](../../../Resources/SharedMaps/_WF/Hideouts/library.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/library_b.yml`](../../../Resources/SharedMaps/_WF/Hideouts/library_b.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/lounge.yml`](../../../Resources/SharedMaps/_WF/Hideouts/lounge.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/lounge_b.yml`](../../../Resources/SharedMaps/_WF/Hideouts/lounge_b.yml)
 - [`Resources/SharedMaps/_WF/Hideouts/medbay.yml`](../../../Resources/SharedMaps/_WF/Hideouts/medbay.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/medbay_b.yml`](../../../Resources/SharedMaps/_WF/Hideouts/medbay_b.yml)
 - [`Resources/SharedMaps/_WF/Hideouts/powerhouse.yml`](../../../Resources/SharedMaps/_WF/Hideouts/powerhouse.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/powerhouse_b.yml`](../../../Resources/SharedMaps/_WF/Hideouts/powerhouse_b.yml)
 - [`Resources/SharedMaps/_WF/Hideouts/quarters.yml`](../../../Resources/SharedMaps/_WF/Hideouts/quarters.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/quarters_b.yml`](../../../Resources/SharedMaps/_WF/Hideouts/quarters_b.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/quarters_c.yml`](../../../Resources/SharedMaps/_WF/Hideouts/quarters_c.yml)
 - [`Resources/SharedMaps/_WF/Hideouts/shipwright_bay.yml`](../../../Resources/SharedMaps/_WF/Hideouts/shipwright_bay.yml)
 - [`Resources/SharedMaps/_WF/Hideouts/vault.yml`](../../../Resources/SharedMaps/_WF/Hideouts/vault.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/vault_b.yml`](../../../Resources/SharedMaps/_WF/Hideouts/vault_b.yml)
 - [`Resources/SharedMaps/_WF/Hideouts/workshop.yml`](../../../Resources/SharedMaps/_WF/Hideouts/workshop.yml)
+- [`Resources/SharedMaps/_WF/Hideouts/workshop_b.yml`](../../../Resources/SharedMaps/_WF/Hideouts/workshop_b.yml)
 
 ### Tools
 
@@ -142,5 +186,6 @@ up. The shares are the lowest `insurancePremium` and `insuranceDeductible` among
   - one hangar ship per account
   - the ship an account keeps in its outpost's hangar, as it last landed and as it was insured
 - [`Content.Server/_Mono/Persistence/PersistentProfileSystem.Items.cs`](../../_Mono/Persistence/PersistentProfileSystem.Items.cs): something saved in a hangar ship's strongbox comes back with the ship
+- [`Resources/Maps/_Mono/Outpost/caelestinus_central.yml`](../../../Resources/Maps/_Mono/Outpost/caelestinus_central.yml): Mapped the outpost registry console on the public side of the shipyard trader's counter.
 
 <!-- WOLFGATE-GENERATED END -->

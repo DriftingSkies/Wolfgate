@@ -38,6 +38,9 @@ public sealed class WFShipwrightConsoleState : BoundUserInterfaceState
 
     /// <summary>The console works a faction hangar: guns on the ship's own hardpoints and strongboxes only.</summary>
     public bool Faction;
+
+    /// <summary>The drydock refit lines the console offers on the hull: armour plating, thruster, gyroscope and power tiers.</summary>
+    public List<Content.Shared._WF.Drydock.WFDrydockUpgradeEntry> Upgrades = new();
 }
 
 /// <summary>A hull as the console sees it.</summary>
@@ -91,6 +94,13 @@ public sealed class WFShipwrightCatalogueMessage(List<WFShipwrightGunView> guns,
 public sealed class WFShipwrightBuildFrameMessage(string frame) : BoundUserInterfaceMessage
 {
     public readonly string Frame = frame;
+}
+
+/// <summary>The owner has the cranes bring one of the hull's refit lines up a tier.</summary>
+[Serializable, NetSerializable]
+public sealed class WFShipwrightUpgradeMessage(string refit) : BoundUserInterfaceMessage
+{
+    public readonly string Refit = refit;
 }
 
 /// <summary>The owner registers the hull on the pad as their shipwright ship.</summary>

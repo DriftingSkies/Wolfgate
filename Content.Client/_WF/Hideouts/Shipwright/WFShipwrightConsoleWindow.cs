@@ -27,7 +27,14 @@ public sealed class WFShipwrightConsoleWindow : DefaultWindow
     public event Action? OnCertify;
     public event Action<Dictionary<NetEntity, string>, Dictionary<string, int>, Dictionary<NetEntity, string>, List<WFShipwrightPlacement>>? OnRefit;
 
-    private readonly Label _status = new();
+    /// <summary>The owner has the cranes bring a refit line up a tier.</summary>
+    public event Action<string>? OnUpgrade;
+
+    /// <summary>The owner opens the plan of the hull's interior.</summary>
+    public event Action? OnInterior;
+
+    private readonly Label _status = new() { HorizontalExpand = true, ClipText = true };
+    private readonly Button _interior = new();
     private readonly BoxContainer _body = new() { Orientation = BoxContainer.LayoutOrientation.Vertical, SeparationOverride = 6 };
 
     private List<WFShipwrightGunView> _guns = new();
@@ -59,7 +66,13 @@ public sealed class WFShipwrightConsoleWindow : DefaultWindow
         Title = Loc.GetString("wf-shipwright-ui-title");
         MinSize = new System.Numerics.Vector2(720, 620);
         var root = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Vertical, SeparationOverride = 6 };
-        root.AddChild(_status);
+        var top = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal, SeparationOverride = 8 };
+        top.AddChild(_status);
+        _interior.Text = Loc.GetString("wf-shipwright-ui-interior");
+        _interior.ToolTip = Loc.GetString("wf-shipwright-ui-interior-tip");
+        _interior.OnPressed += _ => OnInterior?.Invoke();
+        top.AddChild(_interior);
+        root.AddChild(top);
         var scroll = new ScrollContainer { VerticalExpand = true, HScrollEnabled = false };
         scroll.AddChild(_body);
         root.AddChild(scroll);
@@ -86,6 +99,7 @@ public sealed class WFShipwrightConsoleWindow : DefaultWindow
         else if (state.Blocked != null)
             status.Append("   ").Append(Loc.GetString(state.Blocked));
         _status.Text = status.ToString();
+        _interior.Disabled = state.Hull == null || state.Working;
 
         // Rebuilt only when the hull itself changes, so picks aren't lost to the once-a-second refresh.
         var key = Key(state);
@@ -117,6 +131,8 @@ public sealed class WFShipwrightConsoleWindow : DefaultWindow
                 key.Append(id).Append(count);
             foreach (var (id, count) in hull.Unfitted.OrderBy(p => p.Key))
                 key.Append(id).Append(count);
+            foreach (var upgrade in state.Upgrades)
+                key.Append(upgrade.Id).Append(upgrade.Tier).Append(upgrade.NextTier).Append(upgrade.NextPrice);
         }
 
         return key.ToString();
@@ -206,6 +222,7 @@ public sealed class WFShipwrightConsoleWindow : DefaultWindow
         BuildMounts(hull, locked);
 
         BuildSystems(hull, locked);
+        BuildUpgrades(state, locked);
 
         _points = new Label();
         _body.AddChild(_points);
@@ -465,6 +482,30 @@ public sealed class WFShipwrightConsoleWindow : DefaultWindow
             if (hull.Unfitted.GetValueOrDefault(system.ID) is var loose and > 0)
                 row.AddChild(new Label { Text = Loc.GetString("wf-shipwright-ui-system-unfitted", ("count", loose)), FontColorOverride = BadColor });
             _body.AddChild(row);
+        }
+    }
+
+    /// <summary>The drydock refit lines on the hull: armour plating and machine part tiers.</summary>
+    private void BuildUpgrades(WFShipwrightConsoleState state, bool locked)
+    {
+        if (state.Upgrades.Count == 0)
+            return;
+
+        _body.AddChild(Heading(Loc.GetString("wf-shipwright-ui-upgrades")));
+        _body.AddChild(Secondary(Loc.GetString("wf-shipwright-ui-upgrades-help")));
+        foreach (var upgrade in state.Upgrades)
+        {
+            var id = upgrade.Id;
+            var name = new Label
+            {
+                Text = Loc.GetString("wf-shipwright-ui-upgrade", ("name", upgrade.Name), ("tier", upgrade.Tier), ("max", upgrade.MaxTier)),
+                HorizontalExpand = true,
+            };
+            Control action = upgrade.NextTier > 0
+                ? Button(Loc.GetString("wf-shipwright-ui-upgrade-buy", ("next", upgrade.NextTier), ("price", upgrade.NextPrice)),
+                    locked || upgrade.NextPrice > state.Balance, () => OnUpgrade?.Invoke(id))
+                : new Label { Text = Loc.GetString("wf-shipwright-ui-upgrade-done"), FontColorOverride = GoodColor };
+            _body.AddChild(Row(name, action));
         }
     }
 

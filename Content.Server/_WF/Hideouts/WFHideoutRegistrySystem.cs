@@ -172,6 +172,7 @@ public sealed class WFHideoutRegistrySystem : EntitySystem
             return false;
         }
 
+        _hideouts.LeaveTradeHub(outpost.Value);
         _adminLog.Add(LogType.WFOutpost, LogImpact.Medium, $"{ToPrettyString(user):user} founded outpost {ToPrettyString(outpost.Value):grid} on {world} from the registry for {price}");
         reason = string.Empty;
         return true;

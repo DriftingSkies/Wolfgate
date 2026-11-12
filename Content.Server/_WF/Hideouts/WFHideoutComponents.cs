@@ -1,3 +1,4 @@
+using Content.Shared._WF.Hideouts;
 using Robust.Shared.Network;
 using Robust.Shared.Utility;
 
@@ -30,6 +31,18 @@ public sealed partial class WFHideoutStakeComponent : Component
 {
     [DataField]
     public ResPath? Prefab;
+
+    /// <summary>Whether the stake lays its module as a shell: floors, walls, doors, power and lights, to furnish by hand.</summary>
+    [DataField]
+    public bool Shell;
+
+    /// <summary>The layouts the stake can be set to; picking one sets <see cref="Prefab"/>.</summary>
+    [DataField]
+    public List<WFHideoutLayout> Layouts = new();
+
+    /// <summary>The theme the stake lays its module in; null lays the prefab as drawn.</summary>
+    [DataField]
+    public string? Theme;
 }
 
 /// <summary>The landing pad of an outpost's hangar: the owner's registered ship is saved whenever it lands here.</summary>

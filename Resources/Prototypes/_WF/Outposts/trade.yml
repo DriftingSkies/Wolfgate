@@ -327,42 +327,12 @@
 
 - type: cargoProduct
   parent: WFBaseOutpostListing
-  id: WFOutpostListingShell
-  icon:
-    sprite: Structures/Storage/Crates/generic.rsi
-    state: icon
-  product: WFCrateOutpostShell
-  cost: 550
-  category: wf-outpost-trade-category-building
-
-- type: cargoProduct
-  parent: WFBaseOutpostListing
-  id: WFOutpostListingFoundation
-  icon:
-    sprite: Objects/Materials/Sheets/metal.rsi
-    state: steel
-  product: WFCrateOutpostFoundation
-  cost: 650
-  category: wf-outpost-trade-category-building
-
-- type: cargoProduct
-  parent: WFBaseOutpostListing
   id: WFOutpostListingFabricator
   icon:
     sprite: Objects/Devices/flatpack.rsi
     state: icon-default
   product: WFOutpostFabricatorPack
   cost: 300
-  category: wf-outpost-trade-category-building
-
-- type: cargoProduct
-  parent: WFBaseOutpostListing
-  id: WFOutpostListingTradeHub
-  icon:
-    sprite: Structures/cargo_telepad.rsi
-    state: offline
-  product: WFOutpostTradeHubPack
-  cost: 450
   category: wf-outpost-trade-category-building
 
 - type: cargoProduct

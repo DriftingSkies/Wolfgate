@@ -1,0 +1,616 @@
+# Blueprint brushes: what the outpost console's Blueprint tab paints. A tile of a brush costs its price; an entity
+# brush never costs less than one and a half times what its entity sells for, worked out by the server.
+# A brush marked `under` lies beneath whatever else stands on its tile.
+
+- type: wfBlueprintBrush
+  id: WFBlueprintColonyGrey
+  name: wf-blueprint-brush-colony-grey
+  group: wf-blueprint-group-floors
+  order: 0
+  kind: Floor
+  tile: WFFloorColonyGrey
+  price: 100
+  color: "#767A80"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintColonyTexture
+  name: wf-blueprint-brush-colony-texture
+  group: wf-blueprint-group-floors
+  order: 1
+  kind: Floor
+  tile: WFFloorColonyGreyTexture
+  price: 100
+  color: "#8A8478"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintColonyBolts
+  name: wf-blueprint-brush-colony-bolts
+  group: wf-blueprint-group-floors
+  order: 2
+  kind: Floor
+  tile: WFFloorColonyGreyBolts
+  price: 100
+  color: "#60646C"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintColonyWhite
+  name: wf-blueprint-brush-colony-white
+  group: wf-blueprint-group-floors
+  order: 3
+  kind: Floor
+  tile: WFFloorColonyWhite
+  price: 100
+  color: "#C4C8CC"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintSteel
+  name: wf-blueprint-brush-steel
+  group: wf-blueprint-group-floors
+  order: 4
+  kind: Floor
+  tile: FloorSteel
+  price: 120
+  color: "#8E949C"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintDark
+  name: wf-blueprint-brush-dark
+  group: wf-blueprint-group-floors
+  order: 5
+  kind: Floor
+  tile: FloorDark
+  price: 120
+  color: "#44464E"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWhite
+  name: wf-blueprint-brush-white
+  group: wf-blueprint-group-floors
+  order: 6
+  kind: Floor
+  tile: FloorWhite
+  price: 120
+  color: "#D8DADC"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWood
+  name: wf-blueprint-brush-wood
+  group: wf-blueprint-group-floors
+  order: 7
+  kind: Floor
+  tile: FloorWood
+  price: 150
+  color: "#96683C"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWoodLarge
+  name: wf-blueprint-brush-wood-large
+  group: wf-blueprint-group-floors
+  order: 8
+  kind: Floor
+  tile: FloorWoodLarge
+  price: 150
+  color: "#A8784A"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintParquetDark
+  name: wf-blueprint-brush-parquet-dark
+  group: wf-blueprint-group-floors
+  order: 9
+  kind: Floor
+  tile: FloorWoodParquetDark
+  price: 180
+  color: "#6A4A2E"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintParquetLight
+  name: wf-blueprint-brush-parquet-light
+  group: wf-blueprint-group-floors
+  order: 10
+  kind: Floor
+  tile: FloorWoodParquetLight
+  price: 180
+  color: "#C09868"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintConcrete
+  name: wf-blueprint-brush-concrete
+  group: wf-blueprint-group-floors
+  order: 11
+  kind: Floor
+  tile: FloorGrayConcreteSmooth
+  price: 120
+  color: "#9A9A96"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintDarkPlastic
+  name: wf-blueprint-brush-dark-plastic
+  group: wf-blueprint-group-floors
+  order: 12
+  kind: Floor
+  tile: FloorDarkPlastic
+  price: 120
+  color: "#3A3C44"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWhitePlastic
+  name: wf-blueprint-brush-white-plastic
+  group: wf-blueprint-group-floors
+  order: 13
+  kind: Floor
+  tile: FloorWhitePlastic
+  price: 120
+  color: "#E4E6E8"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWhiteMono
+  name: wf-blueprint-brush-white-mono
+  group: wf-blueprint-group-floors
+  order: 14
+  kind: Floor
+  tile: FloorWhiteMono
+  price: 150
+  color: "#EEF0F2"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintDarkMono
+  name: wf-blueprint-brush-dark-mono
+  group: wf-blueprint-group-floors
+  order: 15
+  kind: Floor
+  tile: FloorDarkMono
+  price: 150
+  color: "#2E3038"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintPlating
+  name: wf-blueprint-brush-plating
+  group: wf-blueprint-group-floors
+  order: 16
+  kind: Floor
+  tile: Plating
+  price: 60
+  color: "#484A50"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWallPrefab
+  name: wf-blueprint-brush-wall-prefab
+  group: wf-blueprint-group-walls
+  order: 17
+  kind: Entity
+  entity: WFPrefabWallFixed
+  price: 150
+  color: "#5A6070"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWallBrick
+  name: wf-blueprint-brush-wall-brick
+  group: wf-blueprint-group-walls
+  order: 18
+  kind: Entity
+  entity: WallBrick
+  price: 250
+  color: "#9A4A3A"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWallWood
+  name: wf-blueprint-brush-wall-wood
+  group: wf-blueprint-group-walls
+  order: 19
+  kind: Entity
+  entity: WallWood
+  price: 200
+  color: "#7A5230"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWallSolid
+  name: wf-blueprint-brush-wall-solid
+  group: wf-blueprint-group-walls
+  order: 20
+  kind: Entity
+  entity: WallSolid
+  price: 250
+  color: "#6E747E"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWallConcrete
+  name: wf-blueprint-brush-wall-concrete
+  group: wf-blueprint-group-walls
+  order: 21
+  kind: Entity
+  entity: WallConcrete
+  price: 300
+  color: "#8C8C88"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWallReinforced
+  name: wf-blueprint-brush-wall-reinforced
+  group: wf-blueprint-group-walls
+  order: 22
+  kind: Entity
+  entity: WallReinforced
+  price: 700
+  color: "#3E4450"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWindowPrefab
+  name: wf-blueprint-brush-window-prefab
+  group: wf-blueprint-group-walls
+  order: 23
+  kind: Entity
+  entity: WFPrefabWindow
+  price: 200
+  color: "#8CC8E8"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWindow
+  name: wf-blueprint-brush-window
+  group: wf-blueprint-group-walls
+  order: 24
+  kind: Entity
+  entity: Window
+  price: 250
+  color: "#6FB6E0"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWindowReinforced
+  name: wf-blueprint-brush-window-reinforced
+  group: wf-blueprint-group-walls
+  order: 25
+  kind: Entity
+  entity: ReinforcedWindow
+  price: 500
+  color: "#4A90C0"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintDoorPrefab
+  name: wf-blueprint-brush-door-prefab
+  group: wf-blueprint-group-doors
+  order: 26
+  kind: Entity
+  entity: WFPrefabDoor
+  price: 400
+  color: "#C08040"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintDoorWood
+  name: wf-blueprint-brush-door-wood
+  group: wf-blueprint-group-doors
+  order: 27
+  kind: Entity
+  entity: WoodDoor
+  price: 400
+  color: "#A06830"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintDoorMetal
+  name: wf-blueprint-brush-door-metal
+  group: wf-blueprint-group-doors
+  order: 28
+  kind: Entity
+  entity: MetalDoor
+  price: 500
+  color: "#B0A090"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintAirlockPrefab
+  name: wf-blueprint-brush-airlock-prefab
+  group: wf-blueprint-group-doors
+  order: 29
+  kind: Entity
+  entity: WFPrefabAirlock
+  price: 900
+  color: "#E08C32"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintShuttersPrefab
+  name: wf-blueprint-brush-shutters-prefab
+  group: wf-blueprint-group-doors
+  order: 30
+  kind: Entity
+  entity: WFPrefabShutters
+  price: 600
+  color: "#C8B060"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintLightSmall
+  name: wf-blueprint-brush-light-small
+  group: wf-blueprint-group-power
+  order: 31
+  kind: Entity
+  entity: PoweredSmallLight
+  price: 250
+  color: "#F0E090"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintLight
+  name: wf-blueprint-brush-light
+  group: wf-blueprint-group-power
+  order: 32
+  kind: Entity
+  entity: Poweredlight
+  price: 350
+  color: "#FFF0A0"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintApc
+  name: wf-blueprint-brush-apc
+  group: wf-blueprint-group-power
+  order: 33
+  kind: Entity
+  entity: APCBasic
+  under: true
+  price: 1500
+  color: "#60C060"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintCableLv
+  name: wf-blueprint-brush-cable-lv
+  group: wf-blueprint-group-power
+  order: 34
+  kind: Entity
+  entity: CableApcExtension
+  under: true
+  price: 30
+  color: "#5AC85A"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintCableMv
+  name: wf-blueprint-brush-cable-mv
+  group: wf-blueprint-group-power
+  order: 35
+  kind: Entity
+  entity: CableMV
+  under: true
+  price: 40
+  color: "#E6C83C"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintCableHv
+  name: wf-blueprint-brush-cable-hv
+  group: wf-blueprint-group-power
+  order: 36
+  kind: Entity
+  entity: CableHV
+  under: true
+  price: 50
+  color: "#E07030"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintBed
+  name: wf-blueprint-brush-bed
+  group: wf-blueprint-group-furniture
+  order: 37
+  kind: Entity
+  entity: Bed
+  price: 300
+  color: "#A07850"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintTableWood
+  name: wf-blueprint-brush-table-wood
+  group: wf-blueprint-group-furniture
+  order: 38
+  kind: Entity
+  entity: TableWood
+  price: 200
+  color: "#8A6038"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintTableReinforced
+  name: wf-blueprint-brush-table-reinforced
+  group: wf-blueprint-group-furniture
+  order: 39
+  kind: Entity
+  entity: TableReinforced
+  price: 250
+  color: "#7A808A"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintCounterWood
+  name: wf-blueprint-brush-counter-wood
+  group: wf-blueprint-group-furniture
+  order: 40
+  kind: Entity
+  entity: TableCounterWood
+  price: 250
+  color: "#9A7048"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintChairWood
+  name: wf-blueprint-brush-chair-wood
+  group: wf-blueprint-group-furniture
+  order: 41
+  kind: Entity
+  entity: ChairWood
+  price: 150
+  color: "#B08858"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintChair
+  name: wf-blueprint-brush-chair
+  group: wf-blueprint-group-furniture
+  order: 42
+  kind: Entity
+  entity: Chair
+  price: 120
+  color: "#909090"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintChairOffice
+  name: wf-blueprint-brush-chair-office
+  group: wf-blueprint-group-furniture
+  order: 43
+  kind: Entity
+  entity: ChairOfficeDark
+  price: 200
+  color: "#505868"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintArmchair
+  name: wf-blueprint-brush-armchair
+  group: wf-blueprint-group-furniture
+  order: 44
+  kind: Entity
+  entity: ComfyChair
+  price: 300
+  color: "#A05050"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintBench
+  name: wf-blueprint-brush-bench
+  group: wf-blueprint-group-furniture
+  order: 45
+  kind: Entity
+  entity: WoodenBench
+  price: 200
+  color: "#98704A"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintDresser
+  name: wf-blueprint-brush-dresser
+  group: wf-blueprint-group-furniture
+  order: 46
+  kind: Entity
+  entity: Dresser
+  price: 350
+  color: "#7C5A3A"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintWardrobe
+  name: wf-blueprint-brush-wardrobe
+  group: wf-blueprint-group-furniture
+  order: 47
+  kind: Entity
+  entity: WardrobeMixed
+  price: 400
+  color: "#6A6A9A"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintBookshelf
+  name: wf-blueprint-brush-bookshelf
+  group: wf-blueprint-group-furniture
+  order: 48
+  kind: Entity
+  entity: Bookshelf
+  price: 350
+  color: "#70502E"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintRack
+  name: wf-blueprint-brush-rack
+  group: wf-blueprint-group-furniture
+  order: 49
+  kind: Entity
+  entity: Rack
+  price: 200
+  color: "#8088A0"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintCrate
+  name: wf-blueprint-brush-crate
+  group: wf-blueprint-group-furniture
+  order: 50
+  kind: Entity
+  entity: CrateGenericSteel
+  price: 300
+  color: "#7890A0"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintCarpetBlue
+  name: wf-blueprint-brush-carpet-blue
+  group: wf-blueprint-group-furniture
+  order: 51
+  kind: Entity
+  entity: CarpetBlue
+  under: true
+  price: 120
+  color: "#466096"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintCarpetGreen
+  name: wf-blueprint-brush-carpet-green
+  group: wf-blueprint-group-furniture
+  order: 52
+  kind: Entity
+  entity: CarpetGreen
+  under: true
+  price: 120
+  color: "#3C7848"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintCarpetBlack
+  name: wf-blueprint-brush-carpet-black
+  group: wf-blueprint-group-furniture
+  order: 53
+  kind: Entity
+  entity: CarpetBlack
+  under: true
+  price: 120
+  color: "#2A2A30"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintPlant
+  name: wf-blueprint-brush-plant
+  group: wf-blueprint-group-furniture
+  order: 54
+  kind: Entity
+  entity: PottedPlant1
+  price: 250
+  color: "#48A048"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintCurtains
+  name: wf-blueprint-brush-curtains
+  group: wf-blueprint-group-furniture
+  order: 55
+  kind: Entity
+  entity: HospitalCurtainsOpen
+  price: 250
+  color: "#9AD0C8"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintRailing
+  name: wf-blueprint-brush-railing
+  group: wf-blueprint-group-furniture
+  order: 56
+  kind: Entity
+  entity: Railing
+  price: 150
+  color: "#B8B8C0"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintRoof
+  name: wf-blueprint-brush-roof
+  group: wf-blueprint-group-tools
+  order: 900
+  kind: Roof
+  price: 60
+  color: "#5070B0"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintSky
+  name: wf-blueprint-brush-sky
+  group: wf-blueprint-group-tools
+  order: 901
+  kind: Sky
+  price: 0
+  color: "#80D0F0"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintErase
+  name: wf-blueprint-brush-erase
+  group: wf-blueprint-group-tools
+  order: 902
+  kind: Erase
+  price: 0
+  color: "#E05A4F"
+
+- type: wfBlueprintBrush
+  id: WFBlueprintCleanDecals
+  name: wf-blueprint-brush-clean-decals
+  group: wf-blueprint-group-tools
+  order: 903
+  kind: CleanDecals
+  price: 0
+  color: "#E05A4F"

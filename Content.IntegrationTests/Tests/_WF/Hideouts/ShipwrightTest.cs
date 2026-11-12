@@ -176,6 +176,7 @@ public sealed class ShipwrightTest
                 Assert.That(bay.Comp.Size, Is.EqualTo(17), "Shipwright 1 sets the bay to 17 tiles.");
                 // Keep the test short; the work is sped up to fit.
                 dock.MaxDuration = 15f;
+                dock.MaxRefitDuration = 15f;
 
                 var before = Balance();
                 Assert.That(shipwright.TryBuildFrame(user, console, "WFFrameGuppy", out reason), Is.True, $"The frame was refused: {reason}.");
@@ -303,13 +304,25 @@ public sealed class ShipwrightTest
                 Assert.That(survey.Certified, Is.True, "The hull fails after the hardpoint refit.");
             });
 
+            // Upgrades: the drydock's refit lines are on the console, and the cranes bring one up a tier.
+            await server.WaitAssertion(() =>
+            {
+                Assert.That(shipwright.TryUpgrade(user, console, "WFRefitThrusters", out var reason), Is.True, $"The upgrade was refused: {reason}.");
+            });
+
+            await RunJob(console);
+
+            await server.WaitAssertion(() =>
+                Assert.That(server.System<Content.Server._WF.Drydock.WFShipRefitSystem>().GetRefit(hull, "WFRefitThrusters").Tier, Is.GreaterThan(0),
+                    "The thruster upgrade wasn't recorded."));
+
             // Outposts: a stake marks its module out on the ground, and the outline goes when its time is up.
             await server.WaitAssertion(() =>
             {
                 Assert.That(outposts.TryMarkPrefab(user, outpost, new Robust.Shared.Utility.ResPath("/SharedMaps/_WF/Hideouts/vault.yml"),
                     new EntityCoordinates(ground, 10.5f, 3.5f), Direction.East, 1f, out var reason), Is.True, $"Marking out was refused: {reason}.");
                 var pending = entMan.GetComponent<WFOutpostPendingLoadComponent>(outpost);
-                Assert.That(pending.Tiles, Has.Count.EqualTo(42), "The vault's 7x6 outline wasn't marked.");
+                Assert.That(pending.Tiles, Has.Count.EqualTo(61), "The vault's outline, porch and all, wasn't marked.");
                 Assert.That(entMan.GetComponent<MapGridComponent>(outpost.Owner), Is.Not.Null);
             });
             await ClearBirds();
@@ -402,6 +415,56 @@ public sealed class ShipwrightTest
             var (_, slot) = shipwright.Hardpoints(ship)[0];
             Assert.That(slot.anchoring, Is.Not.Null, "The swapped gun isn't on its hardpoint.");
             Assert.That(shipwright.FactionSpent(ship), Is.LessThanOrEqualTo(shipwright.FactionBudget(ship)));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>The test world command's gallery lays every layout of every module along its streets, and leaves a stake of each.</summary>
+    [Test]
+    public async Task TheGalleryLaysEveryLayout()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        await EnableFeature(pair);
+        var map = await pair.CreateTestMap();
+        var body = await AttachViewer(pair, map.MapUid, System.Numerics.Vector2.Zero);
+        await Fund(pair, body, 0);
+        var owner = pair.Player.UserId;
+        var outposts = server.System<WFOutpostSystem>();
+        var protos = server.ResolveDependency<Robust.Shared.Prototypes.IPrototypeManager>();
+
+        await server.WaitPost(() => server.ResolveDependency<Robust.Shared.Console.IConsoleHost>().ExecuteCommand(pair.Player, "wfhideouttest gallery"));
+        await RunClearingBirds(pair, 8);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(outposts.TryGetOutpost(owner, out var outpost), Is.True, "The command founded no outpost.");
+            var standing = new Dictionary<string, int>();
+            var children = entMan.GetComponent<TransformComponent>(outpost).ChildEnumerator;
+            while (children.MoveNext(out var child))
+            {
+                if (entMan.GetComponent<MetaDataComponent>(child).EntityPrototype?.ID is { } id)
+                    standing[id] = standing.GetValueOrDefault(id) + 1;
+            }
+
+            // Every layout but the two aprons: each has an APC but the gardens, which have a fountain.
+            var modules = protos.EnumeratePrototypes<Content.Shared._WF.Hideouts.WFHideoutModulePrototype>()
+                .Where(module => module.ID is not ("WFHideoutHangar" or "WFHideoutShipwright")).ToList();
+            var layouts = modules.Sum(module => module.Levels.Where(level => level.Prefab != null).Take(1)
+                .Sum(level => Math.Max(1, level.Layouts.Count)));
+            Assert.That(standing.GetValueOrDefault("APCBasic") + standing.GetValueOrDefault("DarkPackFountain"), Is.EqualTo(layouts),
+                "Not every layout was laid.");
+            Assert.That(standing.GetValueOrDefault("WallBrick"), Is.GreaterThan(0), "Nothing was laid in the brick theme.");
+            Assert.That(standing.GetValueOrDefault("WFPrefabWallFixed"), Is.GreaterThan(0), "Nothing was laid in the colony theme.");
+
+            var stakes = 0;
+            var query = entMan.EntityQueryEnumerator<WFHideoutStakeComponent>();
+            while (query.MoveNext(out _, out _))
+                stakes++;
+            Assert.That(stakes, Is.EqualTo(modules.Count(module => module.Levels.Any(level => level.Prefab != null)) + 2),
+                "A module's stake is missing.");
         });
 
         await pair.CleanReturnAsync();
