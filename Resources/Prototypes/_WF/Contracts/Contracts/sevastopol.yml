@@ -65,7 +65,7 @@
   reward: 13750, 17500
   deposit: 2000
   minutes: 50
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractCourier
     package: WFContractFreightComponents
     count: 2, 3
@@ -81,10 +81,10 @@
   tier: 2
   title: wf-contract-sev-hardware
   briefing: wf-contract-sev-hardware-brief
-  reward: 11250, 15000
+  reward: 19700, 26250
   deposit: 1000
   minutes: 50
-  weight: 1.5
+  weight: 3
   objective: !type:WFContractSupply
     pick: 2
     premium: 1.5
@@ -174,10 +174,10 @@
   tier: 2
   title: wf-contract-sev-electronics
   briefing: wf-contract-sev-electronics-brief
-  reward: 12500, 16500
+  reward: 21900, 28900
   deposit: 1000
   minutes: 55
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractSupply
     premium: 1.25
     goods:

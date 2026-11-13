@@ -10,7 +10,7 @@
   reward: 25000, 32500
   deposit: 5000
   minutes: 60
-  weight: 1.2
+  weight: 2.4
   harms:
     WFContractorCamelot: 1
   objective: !type:WFContractCourier
@@ -31,7 +31,7 @@
   reward: 45000, 57500
   deposit: 10000
   minutes: 70
-  weight: 0.6
+  weight: 1.2
   minPlayers: 4
   harms:
     WFContractorCamelot: 1
@@ -69,10 +69,10 @@
   tier: 2
   title: wf-contract-tsf-med-supply
   briefing: wf-contract-tsf-med-supply-brief
-  reward: 17500, 22500
+  reward: 30600, 39400
   deposit: 1000
   minutes: 50
-  weight: 1.5
+  weight: 3
   objective: !type:WFContractSupply
     pick: 2
     premium: 1.5
@@ -96,10 +96,10 @@
   tier: 3
   title: wf-contract-tsf-armour-stock
   briefing: wf-contract-tsf-armour-stock-brief
-  reward: 22500, 30000
+  reward: 39400, 52500
   deposit: 3000
   minutes: 60
-  weight: 1
+  weight: 2
   harms:
     WFContractorCamelot: 1
   objective: !type:WFContractSupply
@@ -219,10 +219,10 @@
   tier: 2
   title: wf-contract-halcyon-shipwright
   briefing: wf-contract-halcyon-shipwright-brief
-  reward: 15000, 20000
+  reward: 26250, 35000
   deposit: 1500
   minutes: 60
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractSupply
     premium: 1.25
     goodsCap: 15000

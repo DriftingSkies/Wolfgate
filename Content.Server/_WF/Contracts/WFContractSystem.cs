@@ -69,7 +69,7 @@ public sealed partial class WFContractSystem : EntitySystem
     public const int MaxStanding = 40;
 
     /// <summary>How long a contractor waits to post again after an offer leaves the board.</summary>
-    private static readonly TimeSpan RefillDelay = TimeSpan.FromSeconds(90);
+    private static readonly TimeSpan RefillDelay = TimeSpan.FromSeconds(30);
 
     private static readonly TimeSpan OfferLifetimeMin = TimeSpan.FromMinutes(20);
     private static readonly TimeSpan OfferLifetimeMax = TimeSpan.FromMinutes(35);

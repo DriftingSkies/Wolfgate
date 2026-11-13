@@ -7,7 +7,7 @@
   employer: wf-contractor-cael-port-employer
   color: "#37946e"
   stations: [ Frontier ]
-  offers: 5
+  offers: 24
   order: 0
 
 - type: wfContractor
@@ -17,7 +17,7 @@
   employer: wf-contractor-cael-marshals-employer
   color: "#4d8fd6"
   stations: [ Frontier ]
-  offers: 3
+  offers: 10
   order: 1
 
 - type: wfContractor
@@ -27,7 +27,7 @@
   employer: wf-contractor-mmc-employer
   color: "#d9d9d9"
   stations: [ Hokkaido ]
-  offers: 4
+  offers: 22
   order: 2
 
 - type: wfContractor
@@ -37,7 +37,7 @@
   employer: wf-contractor-sevastopol-employer
   color: "#009dff"
   stations: [ Sevastopol ]
-  offers: 3
+  offers: 16
   order: 3
 
 - type: wfContractor
@@ -47,7 +47,7 @@
   employer: wf-contractor-stellar-blessing-employer
   color: "#5fb0e0"
   stations: [ TSFMCIndustry ]
-  offers: 3
+  offers: 18
   order: 4
 
 - type: wfContractor
@@ -57,7 +57,7 @@
   employer: wf-contractor-halcyon-employer
   color: "#5b7fe0"
   stations: [ TSFMCHalcyon ]
-  offers: 3
+  offers: 16
   order: 5
 
 - type: wfContractor
@@ -67,7 +67,7 @@
   employer: wf-contractor-camelot-employer
   color: "#d0573f"
   stations: [ USSPCamelot ]
-  offers: 3
+  offers: 16
   order: 6
 
 - type: wfContractor
@@ -77,7 +77,7 @@
   employer: wf-contractor-anomalous-lab-employer
   color: "#a07fff"
   stations: [ AnomalousLab ]
-  offers: 3
+  offers: 18
   order: 7
 
 # Faction boards: members only.
@@ -91,7 +91,7 @@
   stations: [ TSFMCHalcyon ]
   board: TSF
   companies: [ TSF, TSFCivilian, TSFHighComm ]
-  offers: 4
+  offers: 20
   order: 10
 
 - type: wfContractor
@@ -103,7 +103,7 @@
   stations: [ USSPCamelot ]
   board: USSP
   companies: [ USSP ]
-  offers: 4
+  offers: 18
   order: 11
 
 - type: wfContractor
@@ -115,7 +115,7 @@
   stations: [ HeliosFortress ]
   board: PDV
   companies: [ PDV, PDVCivilian, PDVHighComm ]
-  offers: 4
+  offers: 16
   order: 12
 
 - type: wfContractor
@@ -127,7 +127,7 @@
   stations: [ TSFMCIndustry ]
   board: Colony
   companies: [ TSFCivilian ]
-  offers: 4
+  offers: 16
   order: 13
 
 - type: wfContractor
@@ -139,7 +139,7 @@
   stations: [ WFAsfLantern ]
   board: ASF
   companies: [ WFAsf ]
-  offers: 4
+  offers: 16
   order: 14
 
 - type: wfContractor
@@ -149,7 +149,7 @@
   employer: wf-contractor-colonial-development-employer
   color: "#7aa35a"
   stations: [ Frontier ]
-  offers: 2
+  offers: 6
   order: 15
 
 - type: wfContractor
@@ -161,5 +161,5 @@
   stations: [ USSPCamelot ]
   board: VG
   companies: [ TheViperGroup ]
-  offers: 4
+  offers: 8
   order: 16

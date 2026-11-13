@@ -7,10 +7,10 @@
   tier: 1
   title: wf-contract-mmc-iron-quota
   briefing: wf-contract-mmc-iron-quota-brief
-  reward: 7500, 10500
+  reward: 13100, 18400
   minutes: 50
   crewBonus: 0.5
-  weight: 2.5
+  weight: 5
   objective: !type:WFContractSupply
     premium: 2
     goods:
@@ -24,10 +24,10 @@
   tier: 1
   title: wf-contract-mmc-bulk-minerals
   briefing: wf-contract-mmc-bulk-minerals-brief
-  reward: 7000, 10000
+  reward: 12250, 17500
   minutes: 50
   crewBonus: 0.5
-  weight: 2
+  weight: 4
   objective: !type:WFContractSupply
     pick: 2
     premium: 2
@@ -46,11 +46,11 @@
   tier: 2
   title: wf-contract-mmc-precious-ore
   briefing: wf-contract-mmc-precious-ore-brief
-  reward: 15000, 20000
+  reward: 26250, 35000
   deposit: 1000
   minutes: 55
   crewBonus: 0.5
-  weight: 1.5
+  weight: 3
   objective: !type:WFContractSupply
     pick: 2
     premium: 2
@@ -69,11 +69,11 @@
   tier: 2
   title: wf-contract-mmc-plasma-ore
   briefing: wf-contract-mmc-plasma-ore-brief
-  reward: 16250, 21250
+  reward: 28450, 37200
   deposit: 1000
   minutes: 55
   crewBonus: 0.5
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractSupply
     premium: 2
     goods:
@@ -87,11 +87,11 @@
   tier: 3
   title: wf-contract-mmc-lithium
   briefing: wf-contract-mmc-lithium-brief
-  reward: 25000, 35000
+  reward: 43750, 61250
   deposit: 3000
   minutes: 60
   crewBonus: 0.5
-  weight: 1
+  weight: 2
   objective: !type:WFContractSupply
     premium: 2
     goods:
@@ -105,11 +105,11 @@
   tier: 3
   title: wf-contract-mmc-rare-ore
   briefing: wf-contract-mmc-rare-ore-brief
-  reward: 30000, 40000
+  reward: 52500, 70000
   deposit: 3000
   minutes: 60
   crewBonus: 0.5
-  weight: 0.8
+  weight: 1.6
   harms:
     WFContractorAnomalousLab: 1
   objective: !type:WFContractSupply
@@ -130,10 +130,10 @@
   tier: 2
   title: wf-contract-mmc-refined
   briefing: wf-contract-mmc-refined-brief
-  reward: 12500, 17500
+  reward: 21900, 30600
   deposit: 1000
   minutes: 50
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractSupply
     pick: 2
     premium: 1.5
@@ -157,7 +157,7 @@
   reward: 13750, 17500
   deposit: 2000
   minutes: 50
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractCourier
     package: WFContractFreightComponents
     count: 2, 4
@@ -231,11 +231,11 @@
   tier: 1
   title: wf-contract-mmc-bulk-ore
   briefing: wf-contract-mmc-bulk-ore-brief
-  reward: 20000, 26000
+  reward: 35000, 45500
   minutes: 75
   minCrew: 2
   crewBonus: 0.4
-  weight: 2
+  weight: 4
   objective: !type:WFContractSupply
     premium: 1.5
     goodsCap: 18000
@@ -254,12 +254,12 @@
   tier: 2
   title: wf-contract-mmc-deep-core
   briefing: wf-contract-mmc-deep-core-brief
-  reward: 52000, 62000
+  reward: 91000, 108500
   deposit: 3000
   minutes: 90
   minCrew: 2
   crewBonus: 0.35
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractSupply
     pick: 3
     premium: 1.5
@@ -281,12 +281,12 @@
   tier: 3
   title: wf-contract-mmc-strip-claim
   briefing: wf-contract-mmc-strip-claim-brief
-  reward: 125000, 145000
+  reward: 218750, 253750
   deposit: 5000
   minutes: 105
   minCrew: 3
   crewBonus: 0.3
-  weight: 0.8
+  weight: 1.6
   objective: !type:WFContractSupply
     premium: 1.5
     goodsCap: 56000
@@ -337,12 +337,12 @@
   tier: 2
   title: wf-contract-mmc-motherlode
   briefing: wf-contract-mmc-motherlode-brief
-  reward: 70000, 85000
+  reward: 122500, 143000
   deposit: 4000
   minutes: 150
   minCrew: 2
   crewBonus: 0.35
-  weight: 0.8
+  weight: 1.6
   objective: !type:WFContractSupply
     premium: 1.25
     goodsCap: 60000
@@ -361,12 +361,12 @@
   tier: 3
   title: wf-contract-mmc-annual-quota
   briefing: wf-contract-mmc-annual-quota-brief
-  reward: 175000, 205000
+  reward: 306250, 358750
   deposit: 7500
   minutes: 180
   minCrew: 3
   crewBonus: 0.3
-  weight: 0.5
+  weight: 1
   objective: !type:WFContractSupply
     premium: 1.25
     goodsCap: 90000

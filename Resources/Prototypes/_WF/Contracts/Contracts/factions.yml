@@ -47,9 +47,9 @@
   tier: 2
   title: wf-contract-tsf-faction-materiel
   briefing: wf-contract-tsf-faction-materiel-brief
-  reward: 12500, 16500
+  reward: 21900, 28900
   minutes: 55
-  weight: 1.5
+  weight: 3
   credits: 10
   creditEntity: FederationMilitaryCredit1
   harms:
@@ -78,7 +78,7 @@
   briefing: wf-contract-tsf-faction-colony-run-brief
   reward: 13750, 17500
   minutes: 50
-  weight: 1.5
+  weight: 3
   credits: 10
   creditEntity: FederationMilitaryCredit1
   objective: !type:WFContractCourier
@@ -139,9 +139,9 @@
   tier: 1
   title: wf-contract-ussp-faction-rations
   briefing: wf-contract-ussp-faction-rations-brief
-  reward: 8750, 12000
+  reward: 15300, 21000
   minutes: 55
-  weight: 2
+  weight: 4
   objective: !type:WFContractSupply
     pick: 2
     premium: 1.5
@@ -160,10 +160,10 @@
   tier: 2
   title: wf-contract-ussp-faction-reactor
   briefing: wf-contract-ussp-faction-reactor-brief
-  reward: 16250, 21250
+  reward: 28450, 37200
   deposit: 1000
   minutes: 60
-  weight: 1.5
+  weight: 3
   harms:
     WFContractorTSFRequisitions: 1
   objective: !type:WFContractSupply
@@ -274,9 +274,9 @@
   tier: 2
   title: wf-contract-pdv-faction-armoury
   briefing: wf-contract-pdv-faction-armoury-brief
-  reward: 15000, 20000
+  reward: 26250, 35000
   minutes: 60
-  weight: 1.5
+  weight: 3
   credits: 10
   creditEntity: Doubloon1
   harms:
@@ -325,12 +325,12 @@
   tier: 2
   title: wf-contract-tsf-faction-ore
   briefing: wf-contract-tsf-faction-ore-brief
-  reward: 50000, 60000
+  reward: 87500, 105000
   deposit: 2000
   minutes: 90
   minCrew: 2
   crewBonus: 0.35
-  weight: 1
+  weight: 2
   credits: 20
   creditEntity: FederationMilitaryCredit1
   harms:
@@ -385,12 +385,12 @@
   tier: 2
   title: wf-contract-ussp-faction-ore
   briefing: wf-contract-ussp-faction-ore-brief
-  reward: 50000, 60000
+  reward: 87500, 105000
   deposit: 2000
   minutes: 90
   minCrew: 2
   crewBonus: 0.35
-  weight: 1
+  weight: 2
   harms:
     WFContractorTSFRequisitions: 1
   objective: !type:WFContractSupply
@@ -414,9 +414,9 @@
   tier: 2
   title: wf-contract-tsf-faction-ammo
   briefing: wf-contract-tsf-faction-ammo-brief
-  reward: 15000, 20000
+  reward: 26250, 35000
   minutes: 55
-  weight: 1.2
+  weight: 2.4
   credits: 15
   creditEntity: FederationMilitaryCredit1
   harms:
@@ -437,9 +437,9 @@
   tier: 2
   title: wf-contract-ussp-faction-ammo
   briefing: wf-contract-ussp-faction-ammo-brief
-  reward: 15000, 20000
+  reward: 26250, 35000
   minutes: 55
-  weight: 1.2
+  weight: 2.4
   harms:
     WFContractorTSFRequisitions: 1
   objective: !type:WFContractSupply
@@ -510,9 +510,9 @@
   tier: 1
   title: wf-contract-ussp-faction-clinic
   briefing: wf-contract-ussp-faction-clinic-brief
-  reward: 7000, 9500
+  reward: 12250, 16600
   minutes: 50
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractSupply
     pick: 2
     premium: 1.5
@@ -830,7 +830,7 @@
   reward: 14000, 18000
   deposit: 2000
   minutes: 60
-  weight: 1.2
+  weight: 2.4
   credits: 12
   creditEntity: Doubloon1
   harms:
@@ -872,9 +872,9 @@
   tier: 2
   title: wf-contract-pdv-faction-black-market
   briefing: wf-contract-pdv-faction-black-market-brief
-  reward: 15000, 20000
+  reward: 26250, 35000
   minutes: 55
-  weight: 1.2
+  weight: 2.4
   credits: 10
   creditEntity: Doubloon1
   harms:
@@ -977,12 +977,12 @@
   tier: 2
   title: wf-contract-pdv-faction-levy
   briefing: wf-contract-pdv-faction-levy-brief
-  reward: 50000, 60000
+  reward: 87500, 105000
   deposit: 2000
   minutes: 90
   minCrew: 2
   crewBonus: 0.35
-  weight: 1
+  weight: 2
   credits: 20
   creditEntity: Doubloon1
   objective: !type:WFContractSupply
@@ -1271,9 +1271,9 @@
   tier: 2
   title: wf-contract-tsf-faction-gunnery
   briefing: wf-contract-tsf-faction-gunnery-brief
-  reward: 15000, 20000
+  reward: 26250, 35000
   minutes: 55
-  weight: 1.2
+  weight: 2.4
   credits: 12
   creditEntity: FederationMilitaryCredit1
   harms:
@@ -1662,7 +1662,7 @@
   tier: 4
   title: wf-contract-outpost-commission
   briefing: wf-contract-outpost-commission-brief
-  reward: 135000, 145000
+  reward: 236250, 253750
   minutes: 40
   weight: 0
   minCrew: 2

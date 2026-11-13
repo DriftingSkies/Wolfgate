@@ -29,7 +29,7 @@
   reward: 12500, 16250
   deposit: 1500
   minutes: 55
-  weight: 1.5
+  weight: 3
   objective: !type:WFContractCourier
     package: WFContractFreightScience
     count: 2, 3
@@ -45,10 +45,10 @@
   tier: 3
   title: wf-contract-lab-cores
   briefing: wf-contract-lab-cores-brief
-  reward: 22500, 30000
+  reward: 39400, 52500
   deposit: 2000
   minutes: 60
-  weight: 1
+  weight: 2
   objective: !type:WFContractSupply
     premium: 1.5
     goods:
@@ -64,10 +64,10 @@
   tier: 2
   title: wf-contract-lab-fragments
   briefing: wf-contract-lab-fragments-brief
-  reward: 12500, 17500
+  reward: 21900, 30600
   deposit: 1000
   minutes: 60
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractSupply
     premium: 1.5
     goods:
@@ -81,9 +81,9 @@
   tier: 1
   title: wf-contract-lab-materials
   briefing: wf-contract-lab-materials-brief
-  reward: 7500, 10000
+  reward: 13100, 17500
   minutes: 50
-  weight: 1.5
+  weight: 3
   objective: !type:WFContractSupply
     pick: 2
     premium: 1.5
@@ -104,11 +104,11 @@
   tier: 3
   title: wf-contract-lab-exotic-ore
   briefing: wf-contract-lab-exotic-ore-brief
-  reward: 30000, 40000
+  reward: 52500, 70000
   deposit: 3000
   minutes: 60
   crewBonus: 0.5
-  weight: 0.8
+  weight: 1.6
   harms:
     WFContractorMMC: 1
   objective: !type:WFContractSupply

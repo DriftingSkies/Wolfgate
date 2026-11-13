@@ -7,9 +7,9 @@
   tier: 1
   title: wf-contract-camelot-provisions
   briefing: wf-contract-camelot-provisions-brief
-  reward: 8500, 10000
+  reward: 14900, 17500
   minutes: 55
-  weight: 2
+  weight: 4
   objective: !type:WFContractSupply
     pick: 2
     premium: 1.5
@@ -32,10 +32,10 @@
   tier: 2
   title: wf-contract-camelot-fuel
   briefing: wf-contract-camelot-fuel-brief
-  reward: 12500, 17500
+  reward: 21900, 30600
   deposit: 1500
   minutes: 60
-  weight: 1.5
+  weight: 3
   harms:
     WFContractorHalcyon: 1
   objective: !type:WFContractSupply
@@ -57,9 +57,9 @@
   tier: 1
   title: wf-contract-camelot-scrap-stock
   briefing: wf-contract-camelot-scrap-stock-brief
-  reward: 7500, 10500
+  reward: 13100, 18400
   minutes: 55
-  weight: 1.5
+  weight: 3
   objective: !type:WFContractSupply
     pick: 2
     premium: 1.5
@@ -82,7 +82,7 @@
   reward: 22500, 30000
   deposit: 5000
   minutes: 70
-  weight: 1.2
+  weight: 2.4
   harms:
     WFContractorHalcyon: 1
   objective: !type:WFContractCourier
@@ -103,7 +103,7 @@
   reward: 12500, 16250
   deposit: 2000
   minutes: 60
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractCourier
     package: WFContractFreightLuxury
     count: 2, 4
@@ -248,7 +248,7 @@
   reward: 15000, 19000
   deposit: 2500
   minutes: 60
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractCourier
     package: WFContractFreightPlasma
     count: 3, 5

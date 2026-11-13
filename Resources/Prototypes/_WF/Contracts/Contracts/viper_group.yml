@@ -190,10 +190,10 @@
   tier: 2
   title: wf-contract-vg-arms
   briefing: wf-contract-vg-arms-brief
-  reward: 15000, 20000
+  reward: 26250, 35000
   deposit: 0
   minutes: 55
-  weight: 1.1
+  weight: 2.2
   credits: 1
   creditEntity: TradeGoodShipComponents
   objective: !type:WFContractSupply

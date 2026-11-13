@@ -51,9 +51,9 @@
   tier: 1
   title: wf-contract-asf-lenses
   briefing: wf-contract-asf-lenses-brief
-  reward: 7000, 9500
+  reward: 12250, 16600
   minutes: 50
-  weight: 1.2
+  weight: 2.4
   credits: 6
   creditEntity: WFAsfRewardGrant1
   objective: !type:WFContractSupply
@@ -182,11 +182,11 @@
   tier: 2
   title: wf-contract-asf-exotic-samples
   briefing: wf-contract-asf-exotic-samples-brief
-  reward: 17500, 22500
+  reward: 30600, 39400
   deposit: 1500
   minutes: 60
   crewBonus: 0.5
-  weight: 1
+  weight: 2
   credits: 20
   creditEntity: WFAsfRewardGrant1
   objective: !type:WFContractSupply
@@ -227,10 +227,10 @@
   tier: 3
   title: wf-contract-asf-cores
   briefing: wf-contract-asf-cores-brief
-  reward: 22500, 30000
+  reward: 39400, 52500
   deposit: 2000
   minutes: 60
-  weight: 0.8
+  weight: 1.6
   credits: 30
   creditEntity: WFAsfRewardGrant1
   objective: !type:WFContractSupply

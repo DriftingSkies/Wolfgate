@@ -7,9 +7,9 @@
   tier: 1
   title: wf-contract-colony-seed-drive
   briefing: wf-contract-colony-seed-drive-brief
-  reward: 6000, 8500
+  reward: 10500, 14900
   minutes: 50
-  weight: 1.5
+  weight: 3
   objective: !type:WFContractSupply
     premium: 1.5
     goods:
@@ -25,9 +25,9 @@
   tier: 1
   title: wf-contract-colony-rations
   briefing: wf-contract-colony-rations-brief
-  reward: 6000, 8500
+  reward: 10500, 14900
   minutes: 45
-  weight: 1.5
+  weight: 3
   objective: !type:WFContractSupply
     premium: 1.5
     goods:
@@ -43,9 +43,9 @@
   tier: 1
   title: wf-contract-colony-medical
   briefing: wf-contract-colony-medical-brief
-  reward: 7000, 9500
+  reward: 12250, 16600
   minutes: 50
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractSupply
     pick: 2
     premium: 1.5
@@ -65,10 +65,10 @@
   tier: 2
   title: wf-contract-colony-greenhouse
   briefing: wf-contract-colony-greenhouse-brief
-  reward: 12500, 16500
+  reward: 21900, 28900
   deposit: 1000
   minutes: 55
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractSupply
     premium: 1.25
     goods:
@@ -89,7 +89,7 @@
   reward: 11000, 14000
   deposit: 1500
   minutes: 55
-  weight: 1.2
+  weight: 2.4
   objective: !type:WFContractCourier
     package: WFContractFreightSupplies
     count: 3, 5
