@@ -936,6 +936,11 @@ namespace Content.Server.Database.Migrations.Sqlite
                         .HasColumnType("TEXT")
                         .HasColumnName("chat_font");
 
+                    b.Property<string>("CombatMusic")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("combat_music");
+
                     b.Property<string>("Company")
                         .IsRequired()
                         .HasColumnType("TEXT")

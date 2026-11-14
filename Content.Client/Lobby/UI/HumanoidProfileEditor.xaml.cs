@@ -331,6 +331,7 @@ namespace Content.Client.Lobby.UI
 
             InitializeEmoteVoices(); // WOLFGATE(EmoteVoices)
             InitializeSpeechVoice(); // WOLFGATE(Voice)
+            InitializeCombatMusic(); // WOLFGATE(CombatMusic)
             InitializeSizePercent(); // WOLFGATE(Humanoid): typed percentages for height and width
             InitializeBloodColour(); // WOLFGATE(BloodColour)
 
@@ -1447,6 +1448,7 @@ namespace Content.Client.Lobby.UI
             UpdateEyePickers();
             UpdateEmoteVoiceControls(); // WOLFGATE(EmoteVoices)
             UpdateSpeechVoiceControls(); // WOLFGATE(Voice)
+            UpdateCombatMusicControls(); // WOLFGATE(CombatMusic)
             UpdateBloodColour(); // WOLFGATE(BloodColour)
             UpdateSaveButton();
             UpdateMarkings();
@@ -2060,6 +2062,7 @@ namespace Content.Client.Lobby.UI
             _anatomySaveConfirm = null;
             // WOLFGATE END
             CloseHeadshotWindow(); // WOLFGATE(Headshot)
+            DisposeCombatMusic(); // WOLFGATE(CombatMusic): stop any preview
             CloseCustomMarkings(); // WOLFGATE(CustomMarkings)
 
             // Mono start

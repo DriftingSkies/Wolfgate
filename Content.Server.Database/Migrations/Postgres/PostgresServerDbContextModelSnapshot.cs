@@ -990,6 +990,11 @@ namespace Content.Server.Database.Migrations.Postgres
                         .HasColumnType("text")
                         .HasColumnName("chat_font");
 
+                    b.Property<string>("CombatMusic")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("combat_music");
+
                     b.Property<string>("Company")
                         .IsRequired()
                         .HasColumnType("text")

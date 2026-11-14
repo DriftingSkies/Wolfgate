@@ -713,6 +713,9 @@ namespace Content.Server.Database
         // WOLFGATE(ChatFont): the wfChatFont prototype id, empty for the default.
         [Column("chat_font")] public string ChatFont { get; set; } = "";
 
+        // WOLFGATE(CombatMusic): the combat playlist, comma-separated wfCombatTrack ids, empty for the faction's own.
+        [Column("combat_music")] public string CombatMusic { get; set; } = "";
+
         // WOLFGATE(TypingBubble): the typingIndicator prototype id, null for the species' own.
         [Column("typing_indicator")] public string? TypingIndicator { get; set; }
 
