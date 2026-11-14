@@ -1,3 +1,5 @@
+using System.Linq;
+using Content.Client.Gameplay;
 using Content.Shared._WF.CombatMusic;
 using Robust.Shared.Audio;
 
@@ -10,43 +12,44 @@ namespace Content.Client.Audio;
 public sealed partial class ContentAudioSystem
 {
     private readonly List<string> _wfCombatBag = new();
+    private readonly List<string> _wfCombatPool = new();
     private EntityUid? _wfCombatStream;
-    private float _wfCombatElapsed;
     private string? _wfCombatLast;
-    private int _wfCombatPlaylistHash;
 
     /// <summary>Starts the next combat track. False when there is nothing to play.</summary>
     private bool WfPlayCombatTrack()
     {
         if (WfNextCombatPath() is not { } path)
+        {
+            _wfCombatStream = null;
             return false;
+        }
 
         PlayMusicTrack(path, _musicProto?.Sound.Params.Volume ?? 0f, _combatMusicFadeInTime, true);
         _wfCombatStream = _ambientMusicStream;
-        _wfCombatElapsed = 0f;
         return true;
     }
 
-    /// <summary>Moves on to another track when the current one ends, while still in combat.</summary>
-    private void WfUpdateCombatPlaylist(float frameTime)
+    /// <summary>
+    /// Moves on to another track once the one this playlist started has played out. Anything else that stops or
+    /// replaces it (round end, the lobby, an expedition countdown, leaving combat) ends the playlist instead.
+    /// </summary>
+    private void WfUpdateCombatPlaylist()
     {
-        if (_currentlyPlaying != MusicType.Combat || !_isCombatMusicPlaying)
+        if (_wfCombatStream is not { } stream)
+            return;
+
+        if (_ambientMusicStream != stream ||
+            _currentlyPlaying != MusicType.Combat ||
+            !_isCombatMusicPlaying ||
+            _state.CurrentState is not GameplayState)
         {
             _wfCombatStream = null;
             return;
         }
 
-        if (_wfMusicPauseReasons != WfMusicPauseReason.None)
-            return;
-
-        if (_ambientMusicStream != _wfCombatStream)
-        {
-            _wfCombatStream = _ambientMusicStream;
-            _wfCombatElapsed = 0f;
-        }
-
-        _wfCombatElapsed += frameTime;
-        if (_wfCombatElapsed >= _timeUntilNextAmbientTrack)
+        // A finished track despawns itself; a paused one doesn't.
+        if (Deleted(stream))
             WfPlayCombatTrack();
     }
 
@@ -57,10 +60,10 @@ public sealed partial class ContentAudioSystem
         if (pool.Count == 0)
             return null;
 
-        var hash = string.Join('|', pool).GetHashCode();
-        if (hash != _wfCombatPlaylistHash)
+        if (!pool.SequenceEqual(_wfCombatPool))
         {
-            _wfCombatPlaylistHash = hash;
+            _wfCombatPool.Clear();
+            _wfCombatPool.AddRange(pool);
             _wfCombatBag.Clear();
         }
 

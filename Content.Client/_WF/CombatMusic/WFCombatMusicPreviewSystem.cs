@@ -55,9 +55,18 @@ public sealed partial class WFCombatMusicPreviewSystem : EntitySystem
     {
         base.FrameUpdate(frameTime);
 
+        if (Playing == null)
+            return;
+
         // The track ran out on its own.
-        if (Playing != null && (_stream is not { } stream || Deleted(stream)))
+        if (_stream is not { } stream || Deleted(stream))
+        {
             Stop();
+            return;
+        }
+
+        // Music that starts mid-preview, such as the next lobby song, gets paused too.
+        _music.EnforceMusicPauseWolfgate();
     }
 
     private void StopStream()

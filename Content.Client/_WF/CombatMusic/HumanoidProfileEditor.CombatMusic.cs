@@ -45,6 +45,14 @@ public sealed partial class HumanoidProfileEditor
             preview.Play(track);
     }
 
+    /// <summary>Closing the editor only hides it, so a preview has to stop here too.</summary>
+    protected override void VisibilityChanged(bool newVisible)
+    {
+        base.VisibilityChanged(newVisible);
+        if (!newVisible && _entManager.TrySystem<WFCombatMusicPreviewSystem>(out var preview))
+            preview.Stop();
+    }
+
     /// <summary>Stops any preview and lets go of the preview system when the editor goes away.</summary>
     private void DisposeCombatMusic()
     {

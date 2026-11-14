@@ -1095,7 +1095,7 @@ namespace Content.Shared.Preferences
             hashCode.Add(LaughVoice); // WOLFGATE(EmoteVoices)
             hashCode.Add(MessageSound); // WOLFGATE(EmoteVoices)
             hashCode.Add(SpeechVoice); // WOLFGATE(Voice)
-            hashCode.Add(CombatMusic.Count); // WOLFGATE(CombatMusic)
+            foreach (var track in CombatMusic) hashCode.Add(track); // WOLFGATE(CombatMusic)
             return hashCode.ToHashCode();
         }
 
