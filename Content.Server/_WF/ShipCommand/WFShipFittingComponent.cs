@@ -19,6 +19,26 @@ public sealed partial class WFShipFittingComponent : Component
     [DataField]
     public float SiloRange = 150f;
 
+    /// <summary>Make the ship's guns, hardpoints and sentry turrets indestructible.</summary>
+    [DataField]
+    public bool IndestructibleArms;
+
+    /// <summary>Make every door aboard unpryable, by hand, crowbar, jaws or claws.</summary>
+    [DataField]
+    public bool UnpryableDoors;
+
+    /// <summary>Multiplier on each ship gun's battery capacity; it starts full.</summary>
+    [DataField]
+    public float GunChargeScale = 1f;
+
+    /// <summary>Multiplier on each ship gun's recharge rate, from its own recharger and from the grid.</summary>
+    [DataField]
+    public float GunRechargeScale = 1f;
+
+    /// <summary>Speed multiplier for drydock cranes that take no part upgrades; null leaves them as built.</summary>
+    [DataField]
+    public float? CraneSpeed;
+
     /// <summary>Set once the fitting pass has run, so a reload or a second start doesn't repeat it.</summary>
     [DataField]
     public bool Fitted;

@@ -69,7 +69,10 @@ public sealed partial class WFCrewTest
         });
     }
 
-    /// <summary>Crew spawned on a ship set its access up and lose their key when deleted; other grids stay unmanaged.</summary>
+    /// <summary>
+    /// Crew spawned on a ship set its access up and lose their key when they die (back if revived) or are deleted;
+    /// other grids stay unmanaged.
+    /// </summary>
     [Test]
     public async Task CrewAccessSetsUpShipsOnly()
     {
@@ -90,8 +93,12 @@ public sealed partial class WFCrewTest
             var access = SEntMan.GetComponent<WFShipAccessComponent>(ship);
             Assert.That(access.AllowList, Has.Count.EqualTo(1), "A ship is set up and its crew enrolled.");
 
-            Server.System<MobStateSystem>().ChangeMobState(crew, MobState.Dead);
-            Assert.That(access.AllowList, Has.Count.EqualTo(1), "A dead crewman's card keeps its access.");
+            // A dead crewman's card opens nothing, so a looted card or a dragged body can't let anyone in.
+            var mobState = Server.System<MobStateSystem>();
+            mobState.ChangeMobState(crew, MobState.Dead);
+            Assert.That(access.AllowList, Is.Empty, "A dead crewman's card loses its access.");
+            mobState.ChangeMobState(crew, MobState.Alive);
+            Assert.That(access.AllowList, Has.Count.EqualTo(1), "A revived crewman's card gets it back.");
             SEntMan.DeleteEntity(crew);
             Assert.That(access.AllowList, Is.Empty, "A deleted crewman's card is revoked.");
         });

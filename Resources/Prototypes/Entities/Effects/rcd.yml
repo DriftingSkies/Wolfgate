@@ -16,6 +16,13 @@
     tags:
     - HideContextMenu
   - type: AnimationPlayer
+  # WOLFGATE(InteractionParticles) START: RCD effects spray welding sparks
+  - type: ESSparkOnTrigger
+    sparkPrototype: WFEffectSparksWelding
+  - type: RepeatingTrigger
+    delay: 1
+  - type: TriggerOnSpawn
+  # WOLFGATE END
 
 - type: entity
   parent: EffectRCDBase

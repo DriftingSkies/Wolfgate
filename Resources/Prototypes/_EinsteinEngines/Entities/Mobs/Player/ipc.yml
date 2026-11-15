@@ -60,6 +60,7 @@
     understands:
     - TauCetiBasic
     - RobotTalk
+    - Machine # WOLFGATE(Synthetics): synths and IPCs understand each other
   - type: HarpySinger
   - type: Instrument
     allowPercussion: true

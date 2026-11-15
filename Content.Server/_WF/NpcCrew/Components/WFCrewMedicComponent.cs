@@ -63,6 +63,9 @@ public enum WFCrewMedicAction : byte
     Brute,
     Burn,
 
+    /// <summary>Closed cuts and punctures with a suture.</summary>
+    Suture,
+
     /// <summary>A surgeon put the patient in the autodoc and started a run.</summary>
     Surgery,
 
@@ -106,7 +109,11 @@ public sealed partial class WFCrewMedicComponent : Component
 
     /// <summary>The item whose effect patches burns.</summary>
     [DataField]
-    public EntProtoId Ointment = "Ointment";
+    public EntProtoId Ointment = "RegenerativeMesh";
+
+    /// <summary>The item whose effect closes cuts and punctures, which a bruise pack leaves open.</summary>
+    [DataField]
+    public EntProtoId Suture = "MedicatedSuture";
 
     /// <summary>Given to the unconscious, at most once a minute.</summary>
     [DataField]

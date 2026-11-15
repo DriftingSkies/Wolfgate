@@ -44,10 +44,11 @@ public sealed partial class WFCompanyWindow
         {
             var registry = WFCompanyPolicy.RegistryFee(licence.ShipyardPrice, own.LaunchedThisRound);
             var info = Column(2);
-            info.AddChild(new Label { Text = licence.ShipName.Length > 0 ? Text("profile-ship", ("name", licence.ShipName), ("design", licence.Name)) : licence.Name,
-                StyleClasses = { "LabelHeading" } });
+            // Clipped, so a long ship name can't widen the row and push its buttons out of the window.
+            var title = licence.ShipName.Length > 0 ? Text("profile-ship", ("name", licence.ShipName), ("design", licence.Name)) : licence.Name;
+            info.AddChild(new Label { Text = title, ToolTip = title, ClipText = true, StyleClasses = { "LabelHeading" } });
             info.AddChild(new Label { Text = licence.Launched ? Text("hangar-out") : Text("hangar-ready", ("registry", Credits(registry)),
-                ("fee", Credits(own.LaunchFee))) });
+                ("fee", Credits(own.LaunchFee))), ClipText = true });
             var row = Row(info, Button("hangar-preview", () => PreviewVessel(licence.Vessel), !_prototypes.HasIndex<VesselPrototype>(licence.Vessel)));
             info.HorizontalExpand = true;
             if (canLaunch)

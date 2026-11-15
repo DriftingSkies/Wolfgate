@@ -34,6 +34,10 @@
   - type: WFShipShieldStrengthControl
   - type: ShipShieldEmitter
     shieldColor: "#9FE7D0"
+  # Powers itself: the field holds whatever happens to the ship's grid.
+  - type: ApcPowerReceiver
+    needsPower: false
+    powerLoad: 80000
   - type: Sprite
     sprite: _Mono/Structures/ShuttleComponents/fobshield.rsi
     snapCardinals: true
@@ -72,3 +76,18 @@
   - type: Thruster
     baseThrust: 200000
     thrust: 200000
+
+# The Lupercal's sentries: heavy turrets on a faction hostile to nobody, which fire only on whoever the crew have turned
+# on (ShipCommand's WFShipSentry); the fitting pass makes them indestructible.
+- type: npcFaction
+  id: WFShipSentry
+
+- type: entity
+  parent: BallisticTurretHeavyBase
+  id: WFLupercalSentry
+  suffix: Admin, Lupercal
+  components:
+  - type: NpcFactionMember
+    factions:
+    - WFShipSentry
+  - type: WFShipSentry

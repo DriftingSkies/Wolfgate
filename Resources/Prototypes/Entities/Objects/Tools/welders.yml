@@ -115,6 +115,11 @@
     price: 20 # Frontier 40<20
   - type: IgnitionSource
     temperature: 700
+  # WOLFGATE(InteractionParticles) START: welding tools spark when toggled on
+  - type: ESSparkOnItemToggle
+    count: 1
+    sparkPrototype: WFEffectSparksSilent
+  # WOLFGATE END
   - type: WeldingHealing # EE IPCs
     damageContainers:
       - Silicon

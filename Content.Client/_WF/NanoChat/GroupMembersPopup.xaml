@@ -1,0 +1,47 @@
+<DefaultWindow xmlns="https://spacestation14.io"
+               Title="{Loc nano-chat-group-members}"
+               MinSize="320 380">
+    <PanelContainer StyleClasses="AngleRect">
+        <BoxContainer Orientation="Vertical" Margin="4">
+            <BoxContainer Name="RenameRow"
+                          Orientation="Horizontal"
+                          Margin="0 0 0 6">
+                <LineEdit Name="NameInput"
+                          HorizontalExpand="True"
+                          StyleClasses="OpenRight" />
+                <Button Name="RenameButton"
+                        Text="{Loc nano-chat-group-rename}"
+                        StyleClasses="OpenLeft" />
+            </BoxContainer>
+            <Label Name="CompanyNote"
+                   Text="{Loc nano-chat-company-group-note}"
+                   StyleClasses="LabelSubText"
+                   Margin="0 0 0 6"
+                   Visible="False" />
+            <Label Text="{Loc nano-chat-group-members}"
+                   StyleClasses="LabelHeading" />
+            <ScrollContainer VerticalExpand="True"
+                             MinHeight="120"
+                             HScrollEnabled="False">
+                <BoxContainer Name="MemberList"
+                              Orientation="Vertical" />
+            </ScrollContainer>
+            <BoxContainer Name="AddSection"
+                          Orientation="Vertical">
+                <Label Text="{Loc nano-chat-group-add}"
+                       StyleClasses="LabelHeading"
+                       Margin="0 6 0 0" />
+                <ScrollContainer MinHeight="90"
+                                 HScrollEnabled="False">
+                    <BoxContainer Name="AddList"
+                                  Orientation="Vertical" />
+                </ScrollContainer>
+            </BoxContainer>
+            <Button Name="LeaveButton"
+                    Text="{Loc nano-chat-group-leave}"
+                    StyleClasses="Caution"
+                    HorizontalAlignment="Right"
+                    Margin="0 8 0 0" />
+        </BoxContainer>
+    </PanelContainer>
+</DefaultWindow>

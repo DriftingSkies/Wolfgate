@@ -1,5 +1,6 @@
 ﻿using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes; // WOLFGATE(InteractionParticles)
 
 namespace Content.Shared.Teleportation.Components;
 
@@ -53,6 +54,14 @@ public sealed partial class PortalComponent : Component
     /// </summary>
     [DataField, AutoNetworkedField, ViewVariables(VVAccess.ReadWrite)]
     public bool RandomTeleport = true;
+
+    // WOLFGATE(InteractionParticles) START: effect spawned where the subject arrives
+    /// <summary>
+    /// The effect spawned on the subject when the destination is not another portal, such as on a random teleport.
+    /// </summary>
+    [DataField]
+    public EntProtoId TeleportEffect = "EffectFlashBluespace";
+    // WOLFGATE END
 }
 
 // WOLFGATE(Species) START: ported from HardLight/Starlight - lets systems veto a portal teleport

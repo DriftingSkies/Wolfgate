@@ -247,9 +247,9 @@ public sealed partial class ShipAccessScreen : BoxContainer
     {
         _entManager.TryGetComponent<WFShipAccessComponent>(_grid, out var comp);
         var local = _player.LocalEntity;
-        // The deed, or the ship being registered to this player, decides who edits; a ship without the component yet
-        // still lets its deed holder open the tab.
-        var isOwner = _grid != null && local != null && _access.IsOwner(local.Value, _grid.Value);
+        // The deed, the ship being registered to this player, or a manager (an admin at a commanded ship) decides who
+        // edits; a ship without the component yet still lets its deed holder open the tab.
+        var isOwner = _grid != null && local != null && _access.CanManage(local.Value, _grid.Value);
 
         var sb = new StringBuilder();
         sb.Append(isOwner).Append('|');

@@ -357,12 +357,18 @@ bought at a bargain less its discount, as a shipyard does.
 
 ## Non-modular edits
 
+- [`Content.Client/_Mono/NaniteOverlay/NaniteOverlaySystem.cs`](../../../Content.Client/_Mono/NaniteOverlay/NaniteOverlaySystem.cs)
+  - a repaired entity drops out of the query, so its tint is undone here
+  - the condition was inverted, so a repaired entity kept its damage tint
+  - an entity deleted while tinted has no sprite to restore
+  - gives an entity back its own colour, once
 - [`Content.Server/_Crescent/Hardpoint/HardpointSystem.cs`](../../_Crescent/Hardpoint/HardpointSystem.cs): a queued grid with no fire control (a station, debris) returned instead of skipping,
 - [`Content.Shared/_Crescent/Hardpoints/SharedHardpointSystem.cs`](../../../Content.Shared/_Crescent/Hardpoints/SharedHardpointSystem.cs): a destroyed gun leaves a dead entry behind, which blocked rebuilt guns
 - [`Content.Shared/Construction/SharedFlatpackSystem.cs`](../../../Content.Shared/Construction/SharedFlatpackSystem.cs): salvaged hardware unpacks damaged
 - [`Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml)
   - single use, so a drydock repair undercuts printing another card
   - single use; the renewable parent would give 12
+- [`Resources/Prototypes/_Mono/Entities/Structures/Power/apc.yml`](../../../Resources/Prototypes/_Mono/Entities/Structures/Power/apc.yml): a drydock or repair tool rebuilds a destroyed LAPC like any APC
 - [`Resources/Prototypes/_Mono/Entities/Structures/Power/Generators/generators.yml`](../../../Resources/Prototypes/_Mono/Entities/Structures/Power/Generators/generators.yml): build cost the drydock prices the reactor's rebuild and salvage from
 - [`Resources/Prototypes/Catalog/Cargo/cargo_engines.yml`](../../../Resources/Prototypes/Catalog/Cargo/cargo_engines.yml): above the ~10k a drydock break pays for the controller, mostly its fissile; was 6000
 - [`Resources/Prototypes/Entities/Structures/Power/Generation/ame.yml`](../../../Resources/Prototypes/Entities/Structures/Power/Generation/ame.yml): build cost the drydock prices the controller's rebuild and salvage from

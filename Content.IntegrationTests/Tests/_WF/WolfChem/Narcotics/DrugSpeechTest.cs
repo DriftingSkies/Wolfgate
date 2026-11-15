@@ -7,7 +7,7 @@ using Robust.Shared.GameObjects;
 namespace Content.IntegrationTests.Tests._WF.WolfChem.Narcotics;
 
 /// <summary>
-/// A heavy stimulant high rushes speech and a heavy opioid high trails it off; the voice speeds up or slows down with
+/// Heavy highs change what is said (rushed, trailed, hazy, gushing or muddled); the voice speeds up or slows down with
 /// the phase, and a sober speaker's voice is left alone.
 /// </summary>
 [TestFixture]
@@ -36,6 +36,22 @@ public sealed class DrugSpeechTest
                 var trailed = speech.Trail("I feel fine, really fine.", false);
                 Assert.That(trailed, Does.EndWith("fine..."), trailed);
                 Assert.That(trailed, Does.StartWith("I"), trailed);
+
+                var runOn = speech.Rush("Wait, we need to go now, right now.", true);
+                Assert.That(runOn, Does.Not.Contain(",").And.Not.Contain("."), runOn);
+
+                var dropped = speech.Trail("I feel really fine, really fine.", true);
+                Assert.That(dropped, Does.StartWith("I").And.EndWith("fine..."), dropped);
+
+                var hazed = speech.Haze("So the thing is we should go.", false);
+                Assert.That(hazed, Does.StartWith("So "), hazed);
+
+                var gushed = speech.Gush("That was so good. Thank you.", false);
+                Assert.That(gushed, Does.EndWith("~").And.Not.Contain("."), gushed);
+
+                const string line = "the stars are singing to me now";
+                var muddled = speech.Muddle(line);
+                Assert.That(muddled.Split(' '), Is.EquivalentTo(line.Split(' ')), "Muddling only moves words.");
             }
 
             var mob = entMan.SpawnEntity("MobHuman", map.GridCoords);

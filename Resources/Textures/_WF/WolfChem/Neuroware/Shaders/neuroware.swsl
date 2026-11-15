@@ -1,6 +1,7 @@
 // The world through a synthetic's optics while a neuroware program runs: one look per drug family in three phases,
 // digital where the organic high is bodily. A light program grades the feed under faint scanlines, heavy brings the
-// family's artefacts, and an overdose corrupts the feed: rows of blocks slip, pixels die. A kick flashes a frame in
+// family's artefacts, and an overdose corrupts the feed: rows of blocks slip, pixels die. The world bends the way the
+// organic high bends it. A kick flashes a frame in
 // the family's colour; a crash is a weak grey signal. Time is frozen under reduced motion.
 // Families: 0 stimulant, 1 opioid, 2 psychedelic, 3 empathogen, 4 cannabinoid, 5 combat, anything else none.
 
@@ -32,6 +33,21 @@ highp vec2 wfPixelate(highp vec2 uv, highp float block) {
     return (floor(uv / size) + 0.5) * size;
 }
 
+// A heartbeat: a sharp double thump each period, or a steady half under reduced motion.
+highp float wfBeat(highp float t, highp float rate) {
+    if (motion < 0.5)
+        return 0.5;
+    highp float phase = fract(t * rate * 0.5);
+    return max(pow(max(sin(phase * 6.28318), 0.0), 8.0), 0.6 * pow(max(sin(phase * 6.28318 - 0.9), 0.0), 8.0));
+}
+
+// Rotates a centred, aspect-corrected offset.
+highp vec2 wfRotate(highp vec2 d, highp float angle) {
+    highp float s = sin(angle);
+    highp float c = cos(angle);
+    return vec2(d.x * c - d.y * s, d.x * s + d.y * c);
+}
+
 // Edge strength round uv, for traced outlines.
 highp float wfEdge(highp vec2 uv) {
     highp vec2 px = SCREEN_PIXEL_SIZE.xy * 1.5;
@@ -54,38 +70,76 @@ void fragment() {
     int f = int(family + 0.5);
     highp vec2 px = SCREEN_PIXEL_SIZE.xy;
 
+    // The world bends as it does for an organic high: a little when light, fully when heavy, further in an overdose.
+    highp float bend = i * (0.3 + 0.7 * h + 0.8 * o) * mix(0.35, 1.0, motion);
+    highp vec2 d = (uv - vec2(0.5)) * vec2(aspect, 1.0);
+    highp float r = length(d);
+    if (f == 0) {
+        // Stimulant: the world swells a touch with each heartbeat.
+        d *= 1.0 - 0.02 * wfBeat(t, pulseRate * (1.0 + o)) * bend;
+    } else if (f == 1) {
+        // Opioid: a slow breathing fisheye.
+        d *= 1.0 - 0.28 * bend * (0.75 + 0.25 * sin(t * 0.6)) * (1.0 - smoothstep(0.0, 0.9, r));
+    } else if (f == 2) {
+        // Psychedelic: a swirl and a ripple.
+        d = wfRotate(d, bend * (0.5 + 1.1 * o) * sin(t * 0.25 + 0.6) * (1.0 - smoothstep(0.0, 0.85, r)));
+        d += vec2(sin(d.y * 16.0 + t * 1.9), cos(d.x * 13.0 + t * 1.6)) * 0.009 * bend;
+    } else if (f == 3) {
+        // Empathogen: slow melting waves.
+        d.y += sin(d.x * 5.0 + t * 1.1) * 0.016 * bend;
+        d.x += sin(d.y * 4.0 + t * 0.9) * 0.008 * bend;
+    } else if (f == 4) {
+        // Cannabinoid: a tilt and a drift.
+        d = wfRotate(d, 0.06 * bend * sin(t * 0.33));
+        d *= 1.0 + 0.03 * bend * sin(t * 0.21);
+    } else if (f == 5) {
+        // Combat: a tunnel lens.
+        d *= 1.0 + 0.35 * bend * r * r;
+    }
+
+    // The kick: a punch-in zoom that settles as it fades.
+    highp vec2 w = vec2(0.5) + d / vec2(aspect, 1.0) * (1.0 - 0.07 * k * k * motion);
+
     // Overdose corruption for every family: now and then a row of blocks slips sideways for a few frames.
     highp float frame = floor(t * 8.0);
     highp float row = floor(uv.y / (px.y * 16.0));
     highp float slips = step(1.0 - 0.15 * o, wfHash(vec2(row, frame)));
-    highp vec2 p = uv + vec2((wfHash(vec2(row * 3.1, frame)) - 0.5) * 0.1 * slips * o * motion, 0.0);
+    highp vec2 p = w + vec2((wfHash(vec2(row * 3.1, frame)) - 0.5) * 0.1 * slips * o * motion, 0.0);
 
     highp vec3 col = sampleScreen(p);
     highp vec3 flash = vec3(1.0);
 
     if (f == 0) {
-        // Stimulant: overclocked. Light: harder contrast and edges traced in cyan. Heavy: a refresh line races down
-        // with the pulse. Overdose: the traces flare and the highlights clip.
+        // Stimulant: overclocked. Light: the feed brightens and edges are traced in cyan. Heavy: a refresh line races
+        // down with the pulse. Overdose: the image trembles by a pixel, the traces flare and the highlights clip.
         flash = vec3(0.7, 1.0, 1.0);
+        highp float tick = floor(t * 30.0);
+        p += (vec2(wfHash(vec2(tick, 1.0)), wfHash(vec2(tick, 2.0))) - 0.5) * px * 2.0 * o * motion;
+        col = sampleScreen(p);
         highp float edge = wfEdge(p);
-        col = (col - 0.5) * (1.0 + (0.2 + 0.3 * h + 0.4 * o) * i) + 0.5;
+        // Lifts the shadows more than the highlights, so dim rooms open up instead of sinking.
+        col = pow(max(col, vec3(0.0)), vec3(1.0 / (1.0 + (0.12 + 0.12 * h + 0.1 * o) * i)));
         col += vec3(0.3, 0.9, 1.0) * edge * (0.25 + 0.45 * h + 0.6 * o) * i;
         highp float sweep = 1.0 - fract(t * pulseRate * 0.5);
         highp float line = 1.0 - smoothstep(0.0, 0.012, abs(uv.y - sweep));
         col += vec3(0.5, 0.9, 1.0) * line * (0.2 * h + 0.2 * o) * i * motion;
         col = mix(col, min(col * 1.5, vec3(1.0)), 0.5 * o);
     } else if (f == 1) {
-        // Opioid: power saving. Light: the feed dims, cools and loses colour depth. Heavy: it drops resolution and
-        // interlaces. Overdose: it falls into standby, the frame going dark for seconds at a time.
-        flash = vec3(0.6, 0.7, 1.0);
+        // Opioid: power saving, in the organic high's muted brown. Light: the feed loses colour depth and settles
+        // into amber. Heavy: it drops resolution and interlaces. Overdose: the colour drains cold and it falls into
+        // standby, the frame dimming for seconds at a time. The shadows are lifted first so fewer colour levels never
+        // crush dim rooms to black.
+        flash = vec3(1.0, 0.85, 0.6);
         highp float block = 1.0 + floor((2.0 * h + 4.0 * o) * i);
         col = sampleScreen(wfPixelate(p, block));
-        col = mix(col, wfPosterize(col, mix(24.0, 5.0, (0.2 + 0.3 * h + 0.5 * o) * i)), i);
-        col = mix(col, vec3(zGrayscale(col)) * vec3(0.8, 0.9, 1.1), (0.3 + 0.3 * h + 0.3 * o) * i);
-        col *= 1.0 - 0.12 * i - 0.1 * h;
-        col *= 1.0 - mod(floor(FRAGCOORD.y), 2.0) * 0.25 * h;
+        col = pow(max(col, vec3(0.0)), vec3(1.0 / (1.0 + 0.25 * i)));
+        col = mix(col, wfPosterize(col, mix(24.0, 8.0, (0.2 + 0.3 * h + 0.5 * o) * i)), i);
+        highp vec3 amber = mix(vec3(zGrayscale(col)), col, 0.6) * vec3(1.2, 1.0, 0.72) + vec3(0.04, 0.02, 0.0);
+        col = mix(col, amber, i * (1.0 - o));
+        col = mix(col, vec3(zGrayscale(col)) * vec3(0.8, 0.9, 1.1), 0.9 * o);
+        col *= 1.0 - mod(floor(FRAGCOORD.y), 2.0) * 0.12 * h;
         highp float standby = motion > 0.5 ? smoothstep(0.55, 1.0, sin(t * 0.5)) : 0.3;
-        col *= 1.0 - standby * 0.85 * o;
+        col *= 1.0 - standby * 0.45 * o;
     } else if (f == 2) {
         // Psychedelic: false colour. Light: brightness maps onto a slowly cycling palette. Heavy: blocks smear out of
         // place and the channels split. Overdose: the palette spins and the frame mirrors on itself.
@@ -116,7 +170,7 @@ void fragment() {
         highp float heat = zGrayscale(col);
         highp vec3 thermal = mix(vec3(0.25, 0.0, 0.2), vec3(1.0, 0.45, 0.1), smoothstep(0.1, 0.6, heat));
         thermal = mix(thermal, vec3(1.0, 0.95, 0.8), smoothstep(0.6, 0.95, heat));
-        col = mix(col, thermal, 0.75 * o);
+        col = mix(col, thermal, 0.62 * o);
     } else if (f == 4) {
         // Cannabinoid: green phosphor. Light: the feed fades towards an old green terminal. Heavy: a soft ghost
         // image and a bright band rolling slowly up. Overdose: monochrome green, the ghost wide and heavy.

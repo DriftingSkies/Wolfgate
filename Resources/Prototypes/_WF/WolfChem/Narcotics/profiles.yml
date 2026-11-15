@@ -4,6 +4,8 @@
 # metabolismRate sets how long the high lasts, and overdoseHalfLife flushes the blood above the overdose tier faster.
 # Level fed directly, by a neuroware program, decays by decay, which matches the reagent's metabolismRate so the twin
 # lasts as long as the drug.
+# neuroware.amount is the level one full load of the twin delivers (8 unless set): about a vial where the drug comes
+# in one, and enough to reach the heavy tier where it has no rush to carry it there.
 # rushGain is the peak of a fresh dose: extra level per level added to the blood, halving every rushHalfLife (45 s),
 # so one line hits heavy for a moment and settles. It never reaches the overdose tier; only the blood does.
 # Numbers are starting values to tune in playtests.
@@ -65,9 +67,7 @@
     statusEffects:
     - key: Drowsiness
       component: Drowsiness
-    effects:
-    - !type:TakeStaminaDamage
-      amount: 1
+    stamina: 1
   neuroware:
     program: wf-neuroware-whiteline
     banner: wf-neuroware-whiteline-banner
@@ -127,9 +127,7 @@
     statusEffects:
     - key: Drowsiness
       component: Drowsiness
-    effects:
-    - !type:TakeStaminaDamage
-      amount: 2
+    stamina: 2
   neuroware:
     program: wf-neuroware-whiteline
     banner: wf-neuroware-whiteline-banner
@@ -241,9 +239,8 @@
     duration: 90
     perSecondAbove: 0.3
     speed: 0.9
+    stamina: 1
     effects:
-    - !type:TakeStaminaDamage
-      amount: 1
     - !type:PopupMessage
       probability: 0.04
       messages: [ wf-drug-popup-comedown-1, wf-drug-popup-comedown-2 ]
@@ -282,16 +279,15 @@
     statusEffects:
     - key: Drowsiness
       component: Drowsiness
-    effects:
-    - !type:TakeStaminaDamage
-      amount: 2
+    stamina: 2
   neuroware:
+    amount: 10
     program: wf-neuroware-burst
     banner: wf-neuroware-burst-banner
     faults: [ wf-neuroware-burst-fault-1, wf-neuroware-burst-fault-2 ]
 
 # Redline: offence. A light dose gives part of the speed; the full speed and stun resistance need a heavy one. Every
-# second high strains the heart, and when it ends the body collapses for a minute plus half the time spent high.
+# second high strains the heart; when it ends the body collapses once, then drags for a minute plus half the time high.
 - type: wfDrugProfile
   id: WFRedline
   family: Combat
@@ -349,10 +345,11 @@
     maxDuration: 180
     speed: 0.5
     overlay: 0.8
-    effects:
-    - !type:TakeStaminaDamage
-      amount: 5
+    collapse: 10
+    stamina: 5
+    staminaCap: 0.8
   neuroware:
+    amount: 10
     program: wf-neuroware-redline
     banner: wf-neuroware-redline-banner
     faults: [ wf-neuroware-redline-fault-1, wf-neuroware-redline-fault-2 ]
@@ -401,6 +398,7 @@
     speed: 0.9
     overlay: 0.6
   neuroware:
+    amount: 10
     program: wf-neuroware-damper
     banner: wf-neuroware-damper-banner
     faults: [ wf-neuroware-damper-fault-1, wf-neuroware-damper-fault-2 ]
@@ -442,6 +440,7 @@
       component: Pacified
       time: 5
   neuroware:
+    amount: 10
     program: wf-neuroware-choir
     banner: wf-neuroware-choir-banner
     faults: [ wf-neuroware-choir-fault-1, wf-neuroware-choir-fault-2 ]
@@ -493,21 +492,23 @@
     duration: 60
     perSecondAbove: 0.2
     overlay: 0.6
+    stamina: 1
     effects:
-    - !type:TakeStaminaDamage
-      amount: 1
     - !type:PopupMessage
       probability: 0.06
       messages: [ wf-drug-popup-halo-crash-1, wf-drug-popup-halo-crash-2, wf-drug-popup-halo-crash-3 ]
   neuroware:
+    amount: 10
     program: wf-neuroware-halo
     banner: wf-neuroware-halo-banner
     faults: [ wf-neuroware-halo-fault-1, wf-neuroware-halo-fault-2 ]
 
-# Cannabis (THC and hash): the reagent keeps its own effects; the profile adds the overlay and the twin.
+# Cannabis (THC and hash): the reagent keeps its own effects; the profile adds the overlay and the twin. It is legal,
+# and so is its twin, Idle.
 - type: wfDrugProfile
   id: WFCannabis
   family: Cannabinoid
+  legal: true
   decay: 0.02
   overdoseHalfLife: 120
   dependenceGain: 0.003
@@ -520,6 +521,7 @@
     overlay: 0.7
     speed: 0.9
   neuroware:
+    amount: 14
     program: wf-neuroware-idle
     banner: wf-neuroware-idle-banner
     faults: [ wf-neuroware-idle-fault-1, wf-neuroware-idle-fault-2 ]

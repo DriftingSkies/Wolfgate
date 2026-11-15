@@ -1,4 +1,5 @@
 using Content.IntegrationTests.Tests._WF.EngineCompat;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Content.Server._WF.Xenobiology;
@@ -222,6 +223,33 @@ public sealed class XenobiologyTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>The adamantine extract's plasteel stays below what mining makes.</summary>
+    [Test]
+    public async Task AdamantineExtractMakesTwoPlasteel()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entities = server.ResolveDependency<IEntityManager>();
+
+        await server.WaitPost(() =>
+        {
+            var extract = entities.SpawnEntity("AdamantineSlimeExtract", map.GridCoords);
+            entities.System<ReactiveSystem>().DoEntityReaction(extract, new Solution("Plasma", FixedPoint2.New(5)), ReactionMethod.Injection);
+        });
+
+        await server.WaitRunTicks(2);
+        await server.WaitAssertion(() =>
+        {
+            var sheets = entities.EntityQuery<Content.Shared.Stacks.StackComponent>()
+                .Where(s => s.StackTypeId == "Plasteel" && OnMap(entities, s.Owner, map.MapId))
+                .Sum(s => s.Count);
+            Assert.That(sheets, Is.EqualTo(2));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     [Test]
     public async Task GrinderTurnsDeadSlimesIntoExtracts()
     {
@@ -331,8 +359,9 @@ public sealed class XenobiologyTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>Steroid and boost jelly are capped on the slime that is dosed and stop there, so a line can't snowball.</summary>
     [Test]
-    public async Task PurpleJellyMakesASlimeYieldMore()
+    public async Task JellyBonusIsCappedAndNotInherited()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -340,20 +369,44 @@ public sealed class XenobiologyTest
         var entities = server.ResolveDependency<IEntityManager>();
 
         EntityUid slime = default;
-        var before = 0;
+        int extracts = 0, offspring = 0;
         await server.WaitPost(() =>
         {
             slime = SpawnGrey(entities, map.GridCoords);
-            before = entities.GetComponent<SlimeComponent>(slime).ExtractsProduced;
-            Assert.That(entities.System<BloodstreamSystem>().TryAddToChemicals(slime,
-                new Solution("XenobioJellyPurple", FixedPoint2.New(2))), Is.True);
+            var comp = entities.GetComponent<SlimeComponent>(slime);
+            extracts = comp.ExtractsProduced;
+            offspring = comp.MaxOffspring;
+
+            // Twice the dose the caps allow.
+            var jelly = new Solution("XenobioJellyPurple", FixedPoint2.New(XenobiologySystem.MaxJellyExtracts * 2));
+            jelly.AddReagent("XenobioJellyCerulean", FixedPoint2.New(XenobiologySystem.MaxJellyOffspring));
+            Assert.That(entities.System<BloodstreamSystem>().TryAddToChemicals(slime, jelly), Is.True);
         });
 
-        await server.WaitRunTicks(150);
+        await server.WaitRunTicks(450);
         await server.WaitAssertion(() =>
         {
-            Assert.That(entities.GetComponent<SlimeComponent>(slime).ExtractsProduced, Is.GreaterThan(before),
-                "The slime metabolises the steroid jelly.");
+            var comp = entities.GetComponent<SlimeComponent>(slime);
+            Assert.Multiple(() =>
+            {
+                Assert.That(comp.ExtractsProduced, Is.EqualTo(extracts + XenobiologySystem.MaxJellyExtracts),
+                    "Steroid jelly adds extracts up to its cap.");
+                Assert.That(comp.MaxOffspring, Is.EqualTo(offspring + XenobiologySystem.MaxJellyOffspring),
+                    "Boost jelly adds offspring up to its cap.");
+            });
+
+            entities.System<XenobiologySystem>().DoMitosis((slime, comp));
+            var children = entities.EntityQuery<SlimeComponent>().Where(s => s.Uid() != slime && OnMap(entities, s.Uid(), map.MapId)).ToList();
+            Assert.That(children, Is.Not.Empty);
+            foreach (var child in children)
+            {
+                Assert.Multiple(() =>
+                {
+                    Assert.That(child.ExtractsProduced, Is.EqualTo(extracts), "Offspring don't inherit the steroid bonus.");
+                    Assert.That(child.MaxOffspring, Is.EqualTo(offspring), "Offspring don't inherit the boost bonus.");
+                });
+                entities.DeleteEntity(child.Uid());
+            }
         });
 
         await pair.CleanReturnAsync();
@@ -404,8 +457,49 @@ public sealed class XenobiologyTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>One board per research server: a second console adds no bounties, and a skip swaps only the one skipped.</summary>
     [Test]
-    public async Task BountyConsoleListsBountiesAndChecksItems()
+    public async Task BountyBoardIsSharedByAServersConsoles()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entities = server.ResolveDependency<IEntityManager>();
+
+        await server.WaitAssertion(() =>
+        {
+            entities.SpawnEntity("ResearchAndDevelopmentServer", map.GridCoords);
+            var first = entities.SpawnEntity("ComputerScienceXenobiologyBounty", map.GridCoords);
+            var second = entities.SpawnEntity("ComputerScienceXenobiologyBounty", map.GridCoords);
+            var system = entities.System<XenobiologyBountyConsoleSystem>();
+
+            Assert.That(system.TryGetBoard(first, out _, out var board), Is.True, "A console links to its grid's research server.");
+            Assert.That(system.TryGetBoard(second, out _, out var other), Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(other, Is.SameAs(board), "Both consoles show the server's one board.");
+                Assert.That(board!.Bounties, Has.Count.EqualTo(board.BoardSize));
+                Assert.That(board.Bounties.Select(b => b.Bounty).Distinct().Count(), Is.EqualTo(board.BoardSize));
+            });
+
+            var skipped = board!.Bounties[0];
+            var kept = board.Bounties.Skip(1).Select(b => b.Id).ToList();
+            Assert.That(system.TrySkip(board, skipped.Id, first), Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(board.Bounties, Has.Count.EqualTo(board.BoardSize), "A skip swaps the bounty for another.");
+                Assert.That(board.Bounties.Select(b => b.Bounty), Does.Not.Contain(skipped.Bounty));
+                Assert.That(kept.All(id => board.Bounties.Any(b => b.Id == id)), Is.True, "A skip leaves the other bounties alone.");
+                Assert.That(system.TrySkip(board, board.Bounties[0].Id, first), Is.False, "Skipping has a cooldown.");
+            });
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A spent extract isn't worth points, and a bounty handed in stays off the board until the next refresh.</summary>
+    [Test]
+    public async Task BountyPaysOnceForUnspentExtracts()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -415,21 +509,46 @@ public sealed class XenobiologyTest
 
         await server.WaitAssertion(() =>
         {
+            var research = entities.SpawnEntity("ResearchAndDevelopmentServer", map.GridCoords);
             var console = entities.SpawnEntity("ComputerScienceXenobiologyBounty", map.GridCoords);
-            var comp = entities.GetComponent<XenobiologyBountyConsoleComponent>(console);
-            Assert.That(comp.Bounties, Has.Count.EqualTo(protos.EnumeratePrototypes<XenobiologyBountyPrototype>().Count()));
+            var system = entities.System<XenobiologyBountyConsoleSystem>();
+            var any = protos.Index(BountyExtractAnyThreeProto);
+            Assert.That(system.TryGetBoard(console, out _, out var board), Is.True);
+            board!.Bounties.Clear();
+            board.Bounties.Add(new XenobiologyBountyData(any, 1));
+            var id = board.Bounties[0].Id;
 
             var bag = entities.SpawnEntity("ClothingBackpack", map.GridCoords);
             var storage = entities.System<Content.Shared.Storage.EntitySystems.SharedStorageSystem>();
+            var extracts = new List<EntityUid>();
             for (var i = 0; i < 3; i++)
             {
-                storage.Insert(bag, entities.SpawnEntity("GreySlimeExtract", map.GridCoords), out _, playSound: false);
+                extracts.Add(entities.SpawnEntity("GreySlimeExtract", map.GridCoords));
+                storage.Insert(bag, extracts[i], out _, playSound: false);
             }
 
-            var any = protos.Index<XenobiologyBountyPrototype>(BountyExtractAnyThreeProto);
-            var system = entities.System<XenobiologyBountyConsoleSystem>();
             Assert.That(system.IsBountyComplete(bag, any.Entries, out var handedIn), Is.True);
             Assert.That(handedIn, Has.Count.EqualTo(3));
+
+            var points = entities.GetComponent<Content.Shared.Research.Components.ResearchServerComponent>(research);
+            var before = points.Points;
+            var spent = entities.GetComponent<SlimeExtractComponent>(extracts[0]);
+            spent.Spent = true;
+            entities.EventBus.RaiseLocalEvent(console, new XenobiologyBountyFulfillMessage(id) { Actor = bag });
+            Assert.Multiple(() =>
+            {
+                Assert.That(system.IsBountyComplete(bag, any.Entries, out _), Is.False, "A spent extract doesn't count.");
+                Assert.That(points.Points, Is.EqualTo(before));
+                Assert.That(board.Bounties, Has.Count.EqualTo(1));
+            });
+
+            spent.Spent = false;
+            entities.EventBus.RaiseLocalEvent(console, new XenobiologyBountyFulfillMessage(id) { Actor = bag });
+            Assert.Multiple(() =>
+            {
+                Assert.That(points.Points, Is.EqualTo(before + (int) any.PointsAwarded));
+                Assert.That(board.Bounties, Is.Empty, "A bounty handed in isn't replaced before the refresh.");
+            });
         });
 
         await pair.CleanReturnAsync();

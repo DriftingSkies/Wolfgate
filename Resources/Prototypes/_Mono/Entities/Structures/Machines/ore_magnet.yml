@@ -88,6 +88,7 @@
       tags:
       - Ore
       - ArtifactFragment
+      - WFOreMagnetPickup # WOLFGATE(Lattice): exotic matter mined from asteroids
   - type: UserInterface
     interfaces:
       enum.StorageUiKey.Key:

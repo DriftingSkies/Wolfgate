@@ -1,4 +1,6 @@
 using Content.Shared._WF.NpcCrew;
+using Content.Server._WF.ShipAccess;
+using Content.Shared._WF.ShipAccess;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 
@@ -68,6 +70,10 @@ public sealed partial class WFCrewComponent : Component
     [DataField]
     public WFCrewSkill Skill = WFCrewSkill.Veteran;
 
+    /// <summary>The crewman's gun refills itself when it runs dry, so he never falls back to his fists.</summary>
+    [DataField]
+    public bool InfiniteAmmo;
+
     /// <summary>When this crew stops attacking another ship.</summary>
     [DataField]
     public WFCrewDisengage Disengage = WFCrewDisengage.Disable;
@@ -87,6 +93,14 @@ public sealed partial class WFCrewComponent : Component
     /// <summary>The ship whose allow list holds this crewman's card, so deleting him revokes it.</summary>
     [ViewVariables]
     public EntityUid? AccessShip;
+
+    /// <summary>The card key enrolled on <see cref="AccessShip"/>, kept so it is revoked even once the card is taken.</summary>
+    [ViewVariables]
+    public WFShipAccessKey? AccessKey;
+
+    /// <summary><see cref="AccessKey"/>'s entry and door lists while he is dead, put back if he is revived.</summary>
+    [ViewVariables]
+    public WFShipAccessHold? AccessHold;
 
     /// <summary>Whether the role title has been put in front of the name.</summary>
     [ViewVariables]

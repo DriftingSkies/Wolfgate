@@ -31,6 +31,13 @@ namespace Content.Shared.Interaction
         /// </summary>
         public EntityUid Target { get; }
 
+        // WOLFGATE(InteractionParticles) START: set to false when the interaction should not play a particle
+        /// <summary>
+        ///     Whether this interaction should spawn an interaction particle.
+        /// </summary>
+        public bool InteractionParticle = true;
+        // WOLFGATE END
+
         public InteractHandEvent(EntityUid user, EntityUid target)
         {
             User = user;

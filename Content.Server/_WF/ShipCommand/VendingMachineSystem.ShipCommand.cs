@@ -42,8 +42,12 @@ public sealed partial class VendingMachineSystem
     private void WfShipCommandRecord(EntityUid vendor, EntityUid customer, EntityPrototype proto, int charged)
     {
         _wfShipServices.Record(vendor, customer, WFShipServiceKind.Vending, proto.Name, _wfShipBasePrice, charged, _wfShipRule);
-        if (charged < _wfShipBasePrice)
-            _wfShipBargains[vendor] = (_wfShipBasePrice, charged);
+
+        // A free machine (an expedition's) quotes nothing, so its vends would resell at full value: an endless money
+        // tap with restock boxes. They are bargains against what the item is worth.
+        var worth = charged <= 0 && _wfShipBasePrice <= 0 ? (int) _pricing.GetEstimatedPrice(proto) : _wfShipBasePrice;
+        if (charged < worth)
+            _wfShipBargains[vendor] = (worth, charged);
         else
             _wfShipBargains.Remove(vendor);
     }

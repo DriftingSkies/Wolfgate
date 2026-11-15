@@ -82,7 +82,7 @@
     openSound:
       path: /Audio/Machines/airlock_open.ogg
     closeSound:
-      path: /Audio/Machines/airlock_close.ogg
+      path: /Audio/_WF/InteractionParticles/airlock_close.ogg # WOLFGATE(InteractionParticles): better door timings
     denySound:
       path: /Audio/Machines/airlock_deny.ogg
   - type: ContainerContainer
@@ -199,6 +199,11 @@
     repairCost: 6
   - type: WeldingSparksAnimation # Goobstation
     startingOffset: 0, 0.5
+  # WOLFGATE(InteractionParticles) START: electrical structures spark when damaged
+  - type: ESSparkOnHit
+    prob: 0.25
+    count: 2
+  # WOLFGATE END
   placement:
     mode: SnapgridCenter
 

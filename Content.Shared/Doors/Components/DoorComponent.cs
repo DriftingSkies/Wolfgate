@@ -137,10 +137,21 @@ public sealed partial class DoorComponent : Component
 
     #region Graphics
 
+    // WOLFGATE(InteractionParticles) START: one animation key per door state so animations do not stop each other
+    public const string OpenKey = "door_animation_open";
+
+    public const string CloseKey = "door_animation_close";
+
     /// <summary>
-    /// The key used when playing door opening/closing/emagging/deny animations.
+    /// The key used when playing door deny animations.
     /// </summary>
-    public const string AnimationKey = "door_animation";
+    public const string DenyKey = "door_animation_deny";
+
+    /// <summary>
+    /// The key used when playing door emag animations.
+    /// </summary>
+    public const string EmagKey = "door_animation_emag";
+    // WOLFGATE END
 
     /// <summary>
     /// The sprite state used for the door when it's open.

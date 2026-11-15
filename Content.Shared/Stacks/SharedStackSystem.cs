@@ -104,6 +104,7 @@ namespace Content.Shared.Stacks
             }
 
             _storage.PlayPickupAnimation(args.Used, popupPos, userCoords, localRotation, args.User);
+            args.InteractionParticle = false; // WOLFGATE(InteractionParticles)
         }
 
         private bool TryMergeStacks(

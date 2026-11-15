@@ -1,6 +1,8 @@
 using Content.Shared._WF.Photography;
 using Content.Shared.GameTicking;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Inventory;
+using Content.Shared.Storage.EntitySystems;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server._WF.Photography;
@@ -9,6 +11,8 @@ namespace Content.Server._WF.Photography;
 public sealed partial class PhotographerSystem : EntitySystem
 {
     [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private SharedStorageSystem _storage = default!;
 
     private static readonly EntProtoId Camera = "WFCameraPersonal";
 
@@ -45,6 +49,12 @@ public sealed partial class PhotographerSystem : EntitySystem
 
     private void Equip(EntityUid mob)
     {
-        _hands.PickupOrDrop(mob, Spawn(Camera, Transform(mob).Coordinates), checkActionBlocker: false);
+        // Spawned next to the mob, not at its coordinates: a crew member who spawns in a cryo pod is inside it.
+        var camera = SpawnNextToOrDrop(Camera, mob);
+        if (_inventory.TryGetSlotEntity(mob, "back", out var back)
+            && _storage.Insert(back.Value, camera, out _, playSound: false))
+            return;
+
+        _hands.PickupOrDrop(mob, camera, checkActionBlocker: false);
     }
 }

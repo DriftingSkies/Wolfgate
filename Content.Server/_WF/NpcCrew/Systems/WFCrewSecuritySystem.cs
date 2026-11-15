@@ -56,6 +56,11 @@ public sealed partial class WFCrewSecuritySystem : EntitySystem
     /// <summary>Whether the current security rule explicitly targets this visitor.</summary>
     public bool IsHostileVisitor(EntityUid crew, EntityUid visitor) => _ownedHostiles.Contains((crew, visitor));
 
+    /// <summary>Whether any crewman standing on this grid holds a visitor hostile under its boarding rule.</summary>
+    public bool OwnsHostile(EntityUid grid, EntityUid visitor) =>
+        _ownedHostiles.Any(pair => pair.Visitor == visitor && !TerminatingOrDeleted(pair.Crew)
+            && Transform(pair.Crew).GridUid == grid);
+
     /// <summary>Explicit docking hostility overrides faction friendship for the current ship threat.</summary>
     public bool IsHostileDockingTarget(EntityUid grid, string group, EntityUid visitor) =>
         _hostileDocks.TryGetValue((grid, group, visitor), out var until) && _timing.CurTime < until;
@@ -102,12 +107,15 @@ public sealed partial class WFCrewSecuritySystem : EntitySystem
             if (!TryComp<FactionExceptionComponent>(uid, out var exceptions) || !exceptions.Hostiles.Any(target => target == visitor))
                 _ownedHostiles.Add((uid, visitor));
             _factions.AggroEntity(uid, visitor);
+            var answered = new WFCrewAttackAnsweredEvent(crew.Group, visitor, Sighting: true);
+            RaiseLocalEvent(grid, ref answered);
         }
         // A person told to leave has a while to go before the crew's fighters turn on him; animals are let be.
         if (boarding == WFCrewSecurityResponse.Warn
             && (HasComp<ActorComponent>(visitor) || HasComp<HumanoidAppearanceComponent>(visitor)))
         {
-            _warned.TryAdd((grid, crew.Group, visitor), (_timing.CurTime + rules.WarnTime, false));
+            if (_warned.TryAdd((grid, crew.Group, visitor), (_timing.CurTime + rules.WarnTime, false)))
+                Challenge(uid, visitor, grid, rules.WarnTime);
         }
         // The crew's cowards don't wait to see how it turns out: a stranger seen aboard is alarm enough, for as long
         // as he is seen.
@@ -301,6 +309,7 @@ public sealed partial class WFCrewSecuritySystem : EntitySystem
                 }
             }
         }
+        LastWarnings(seen);
         CheckWarnings(strangers, seen);
         if (_ownedHostiles.Count > 0)
         {
@@ -344,6 +353,7 @@ public sealed partial class WFCrewSecuritySystem : EntitySystem
                 continue;
 
             _warned[key] = (warning.Deadline, true);
+            Engaging(key);
             Respond(key.Grid, key.Group, key.Visitor, WFCrewSecurityResponse.Hostile, docking: false);
         }
     }

@@ -2,6 +2,7 @@ using System.Numerics;
 using Content.Server.Fluids.EntitySystems;
 using Content.Shared._WF.Xenobiology;
 using Content.Shared._WF.Xenobiology.Components;
+using Content.Shared._WF.Xenobiology.Systems;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Coordinates.Helpers;
 using Content.Shared.Chemistry.EntitySystems;
@@ -311,9 +312,15 @@ public sealed partial class XenobioModifySlime : EntityEffect
         if (!args.EntityManager.TryGetComponent<SlimeComponent>(args.TargetEntity, out var slime))
             return;
 
+        // Extract and offspring bonuses are capped per slime and tracked, so its offspring don't inherit them.
+        var extracts = Math.Clamp(ExtractBonus, 0, Math.Max(0, XenobiologySystem.MaxJellyExtracts - slime.JellyExtracts));
+        var offspring = Math.Clamp(OffspringBonus, 0, Math.Max(0, XenobiologySystem.MaxJellyOffspring - slime.JellyOffspring));
+
         slime.MutationChance = Math.Clamp(slime.MutationChance + ChanceModifier, 0f, 1f);
-        slime.ExtractsProduced = Math.Max(1, slime.ExtractsProduced + ExtractBonus);
-        slime.MaxOffspring = Math.Max(1, slime.MaxOffspring + OffspringBonus);
+        slime.JellyExtracts += extracts;
+        slime.ExtractsProduced += extracts;
+        slime.JellyOffspring += offspring;
+        slime.MaxOffspring += offspring;
         args.EntityManager.Dirty(args.TargetEntity, slime);
     }
 }

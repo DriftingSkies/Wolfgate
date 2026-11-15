@@ -195,6 +195,20 @@ public sealed partial class WFShipAccessServerSystem
         }
     }
 
+    /// <summary>The doors on the ship whose own list holds a key.</summary>
+    private List<EntityUid> DoorsListing(EntityUid grid, WFShipAccessKey key)
+    {
+        var doors = new List<EntityUid>();
+        var children = Transform(grid).ChildEnumerator;
+        while (children.MoveNext(out var child))
+        {
+            if (TryComp<WFDoorAccessRuleComponent>(child, out var rule) && rule.Players.Contains(key))
+                doors.Add(child);
+        }
+
+        return doors;
+    }
+
     /// <summary>Empties every door list on the ship, after the allow list was cleared.</summary>
     private void ClearDoorPlayers(EntityUid grid)
     {

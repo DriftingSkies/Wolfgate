@@ -42,6 +42,7 @@
       methods: [Touch]
       effects:
       - !type:WashCreamPieReaction
+      - !type:WashChemicalBurns # WOLFGATE(Wolfmed): rinses caustic residue off, as on the humanoid base
   # Damage (Self)
   - type: Bloodstream
     bloodReagent: CopperBlood

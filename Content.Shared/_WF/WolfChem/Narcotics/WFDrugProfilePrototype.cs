@@ -84,7 +84,11 @@ public sealed partial class WFDrugProfilePrototype : IPrototype
     [DataField]
     public float DependenceGain;
 
-    /// <summary>Display strings for the neuroware twin of this drug.</summary>
+    /// <summary>The drug is legal, so a stick written with its twin carries no narcotic marks.</summary>
+    [DataField]
+    public bool Legal;
+
+    /// <summary>The neuroware twin of this drug: its display strings and the size of a load.</summary>
     [DataField]
     public WFNeurowareStrings? Neuroware;
 
@@ -181,6 +185,18 @@ public sealed partial class WFDrugCrash
     [DataField(serverOnly: true)]
     public List<EntityEffect> Effects = new();
 
+    /// <summary>Stamina damage a second, held at <see cref="StaminaCap"/> so the crash wears the body down without knocking it over.</summary>
+    [DataField]
+    public float Stamina;
+
+    /// <summary>Share of the crit threshold the crash's stamina damage stops at; below half it doesn't jitter.</summary>
+    [DataField]
+    public float StaminaCap = 0.45f;
+
+    /// <summary>A single knockdown as the crash starts.</summary>
+    [DataField]
+    public TimeSpan Collapse;
+
     [DataField]
     public float Speed = 1f;
 
@@ -203,7 +219,7 @@ public sealed partial class WFDrugStatusEffect
     public string? Component;
 }
 
-/// <summary>How a drug's neuroware twin is named and shown on a synthetic's HUD.</summary>
+/// <summary>How a drug's neuroware twin is named, dosed and shown on a synthetic's HUD.</summary>
 [DataDefinition]
 public sealed partial class WFNeurowareStrings
 {
@@ -218,4 +234,8 @@ public sealed partial class WFNeurowareStrings
     /// <summary>Shown when the program loads.</summary>
     [DataField]
     public LocId? Banner;
+
+    /// <summary>Level a full load delivers.</summary>
+    [DataField]
+    public float Amount = 8f;
 }

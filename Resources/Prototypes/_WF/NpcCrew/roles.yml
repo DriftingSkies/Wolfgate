@@ -65,6 +65,16 @@
   components:
   - type: WFCrewEngineer
 
+# Mops up puddles and washes dirt off the floors across the ship, back at his post when it's clean.
+- type: wfCrewRole
+  id: WFCrewJanitor
+  kit: WFCrewKitJanitor
+  mob: WFMobCrewJanitor
+  duty: Janitor
+  engagement: WhenAttacked
+  title: wf-crew-role-janitor
+  order: 45
+
 - type: wfCrewRole
   id: WFCrewDeckhand
   kit: WFCrewKitDeckhand

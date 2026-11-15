@@ -76,6 +76,7 @@ namespace Content.Server.Database
         public DbSet<WolfgateCensusResponse> WolfgateCensusResponse { get; set; } = null!;
         // WOLFGATE END
         public DbSet<WolfgateShipCommandPreset> WolfgateShipCommandPreset { get; set; } = null!; // WOLFGATE(ShipCommand): players' ship presets
+        public DbSet<WolfgateNanoChatNumber> WolfgateNanoChatNumber { get; set; } = null!; // WOLFGATE(NanoChat): each character's number
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -612,6 +613,18 @@ namespace Content.Server.Database
             // WOLFGATE(ShipCommand) START: one preset per player, vessel design and name
             modelBuilder.Entity<WolfgateShipCommandPreset>()
                 .HasIndex(p => new { p.PlayerUserId, p.Vessel, p.Name })
+                .IsUnique();
+            // WOLFGATE END
+
+            // WOLFGATE(NanoChat) START: a number belongs to one character, gone with it
+            modelBuilder.Entity<WolfgateNanoChatNumber>()
+                .HasOne(n => n.Profile)
+                .WithMany()
+                .HasForeignKey(n => n.ProfileId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<WolfgateNanoChatNumber>()
+                .HasIndex(n => n.Number)
                 .IsUnique();
             // WOLFGATE END
         }
@@ -2346,6 +2359,18 @@ namespace Content.Server.Database
         public string Data { get; set; } = "";
 
         public DateTime Saved { get; set; }
+    }
+    // WOLFGATE END
+
+    // WOLFGATE(NanoChat) START: the NanoChat number a character keeps from round to round
+    /// <summary>A character's NanoChat number.</summary>
+    public class WolfgateNanoChatNumber
+    {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int ProfileId { get; set; }
+        public Profile Profile { get; set; } = null!;
+
+        public int Number { get; set; }
     }
     // WOLFGATE END
 }

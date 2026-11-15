@@ -32,6 +32,10 @@ public sealed partial class ChameleonProjectorSystem : SharedChameleonProjectorS
     private void OnHandleState(Entity<ChameleonDisguiseComponent> ent, ref AfterAutoHandleStateEvent args)
     {
         CopyComp<SpriteComponent>(ent);
+        // WOLFGATE START: the source's hover outline came along as a post-shader with no prototype, which threw on init
+        if (_spriteQuery.TryComp(ent, out var copied))
+            EntityManager.System<SpriteSystem>().ClearPostShaders(copied);
+        // WOLFGATE END
         CopyComp<GenericVisualizerComponent>(ent);
         CopyComp<SolutionContainerVisualsComponent>(ent);
         CopyComp<BurnStateVisualsComponent>(ent);

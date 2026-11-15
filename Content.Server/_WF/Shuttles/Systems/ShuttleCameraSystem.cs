@@ -368,6 +368,8 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
             // PVS is measured around each viewer, so the range has to grow on the camera, not the pilot.
             _eye.SetPvsScale(camera, pvsScale);
             _eye.SetPvsScale(pilot, 1f);
+            if (TryComp<EyeComponent>(pilot, out var pilotEye) && pilotEye.Target != camera)
+                comp.PreviousTarget = pilotEye.Target;
             _eye.SetTarget(pilot, camera);
         }
 
@@ -494,8 +496,11 @@ public sealed partial class ShuttleCameraSystem : EntitySystem
 
         comp.Camera = null;
 
+        // Back to what the eye followed before, so a station AI keeps its remote eye.
+        var previous = comp.PreviousTarget;
+        comp.PreviousTarget = null;
         if (TryComp<EyeComponent>(pilot, out var eye) && eye.Target == camera)
-            _eye.SetTarget(pilot, null, eye);
+            _eye.SetTarget(pilot, previous is { } back && !TerminatingOrDeleted(back) ? back : null, eye);
 
         if (TerminatingOrDeleted(camera))
             return;

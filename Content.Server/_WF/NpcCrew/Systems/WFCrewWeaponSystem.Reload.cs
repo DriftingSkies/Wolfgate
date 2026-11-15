@@ -403,10 +403,11 @@ public sealed partial class WFCrewWeaponSystem
         return ev.Count;
     }
 
+    /// <summary>Whether the crewman wearing this gun can reload it: a spare magazine, or never-dry ammo it can refill.</summary>
     private bool FindMagazineForOwner(EntityUid gun)
     {
-        return Transform(gun).ParentUid is var owner && HasComp<WFCrewComponent>(owner)
-            && FindMagazine(owner, gun, out _, out _);
+        return Transform(gun).ParentUid is var owner && TryComp<WFCrewComponent>(owner, out var crew)
+            && (crew.InfiniteAmmo && RefillHolder(gun) != null || FindMagazine(owner, gun, out _, out _));
     }
 
     private bool FindMagazine(EntityUid owner, EntityUid gun, out EntityUid magazine, out string equipmentSlot)
@@ -439,6 +440,14 @@ public sealed partial class WFCrewWeaponSystem
             return true;
         }
 
+        if (TryComp<WFCrewComponent>(uid, out var crew) && crew.InfiniteAmmo && Refill(gun))
+        {
+            EntityManager.System<WFCrewSpeechSystem>().Say(uid, "reload");
+            ReadyChamber(uid, gun);
+            return AmmoCount(gun) > 0;
+        }
+
+        Unwield(uid, gun);
         if (FindMagazine(uid, gun, out var magazine, out var equipmentSlot)
             && TakeMagazine(uid, magazine, equipmentSlot))
         {
@@ -452,6 +461,7 @@ public sealed partial class WFCrewWeaponSystem
                     EntityManager.System<WFCrewSpeechSystem>().Say(uid, "reload");
                     ReadyChamber(uid, gun);
                     _hands.TrySelect(uid, gun);
+                    Wield(uid, gun);
                     return AmmoCount(gun) > 0;
                 }
             }
@@ -466,6 +476,29 @@ public sealed partial class WFCrewWeaponSystem
         TryHolster(uid);
         TryDraw(uid);
         return false;
+    }
+
+    /// <summary>Fills the gun's own box or its loaded magazine back to capacity, for crew who never run dry.</summary>
+    private bool Refill(EntityUid gun)
+    {
+        if (RefillHolder(gun) is not { } holder || !TryComp<BallisticAmmoProviderComponent>(holder, out var ammo))
+            return false;
+
+        var missing = ammo.Capacity - ammo.Container.ContainedEntities.Count;
+        if (missing <= 0)
+            return false;
+
+        _guns.SetBallisticUnspawned((holder, ammo), missing);
+        return true;
+    }
+
+    /// <summary>What <see cref="Refill"/> tops up: the gun's own ballistic store, else the magazine in it.</summary>
+    private EntityUid? RefillHolder(EntityUid gun)
+    {
+        if (HasComp<BallisticAmmoProviderComponent>(gun))
+            return gun;
+        return _slots.TryGetSlot(gun, MagazineSlot, out var slot) && slot.Item is { } magazine
+            && HasComp<BallisticAmmoProviderComponent>(magazine) ? magazine : null;
     }
 
     private bool TakeMagazine(EntityUid uid, EntityUid magazine, string slot)

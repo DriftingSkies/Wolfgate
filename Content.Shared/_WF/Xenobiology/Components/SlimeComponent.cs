@@ -66,6 +66,18 @@ public sealed partial class SlimeComponent : Component
     public int ExtractsProduced = 1;
 
     /// <summary>
+    /// How much of <see cref="ExtractsProduced"/> came from steroid jelly; offspring don't inherit it.
+    /// </summary>
+    [DataField]
+    public int JellyExtracts;
+
+    /// <summary>
+    /// How much of <see cref="MaxOffspring"/> came from boost jelly; offspring don't inherit it.
+    /// </summary>
+    [DataField]
+    public int JellyOffspring;
+
+    /// <summary>
     /// Chance, per offspring, of mutating.
     /// </summary>
     [DataField, AutoNetworkedField]

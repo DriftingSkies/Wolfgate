@@ -1,0 +1,23 @@
+# Ported from Delta-V; the ID is Delta-V's.
+- type: entity
+  parent: NFBasePDACartridge
+  id: NanoChatCartridge
+  name: ColoTalk cartridge
+  description: A PDA messenger. Messages go to the number on another ID card, wherever there is signal.
+  components:
+  - type: Sprite
+    sprite: _WF/NanoChat/cartridge.rsi
+    state: cart-chat
+  - type: Icon
+    sprite: _WF/NanoChat/cartridge.rsi
+    state: cart-chat
+  - type: UIFragment
+    ui: !type:NanoChatUi
+  - type: Cartridge
+    programName: nano-chat-program-name
+    icon: { sprite: _WF/NanoChat/program_icon.rsi, state: nanochat }
+    readonly: true
+  - type: NanoChatCartridge
+  - type: StaticPrice
+    price: 50
+    vendPrice: 500

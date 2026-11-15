@@ -17,6 +17,7 @@
     storedRotation: -90
   - type: Access
   - type: IdCard
+  - type: NanoChatCard # WOLFGATE(NanoChat): the card holds its NanoChat number and messages
   - type: StationRecordKeyStorage
   - type: Tag
     tags:

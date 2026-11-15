@@ -30,9 +30,11 @@
     speaks:
     - TauCetiBasic # WOLFGATE(Species): HardLight's GalacticCommon is TauCetiBasic here
     - Machine
+    - RobotTalk # WOLFGATE(Synthetics): synths and IPCs understand each other
     understands:
     - TauCetiBasic
     - Machine
+    - RobotTalk # WOLFGATE(Synthetics): synths and IPCs understand each other
   - type: Sprite
     sprite: _HL/Mobs/Species/Synth/organs.rsi
     state: brain

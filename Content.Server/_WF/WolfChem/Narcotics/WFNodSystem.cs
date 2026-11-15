@@ -14,7 +14,8 @@ namespace Content.Server._WF.WolfChem.Narcotics;
 /// <summary>
 /// Nodding off on a heavy opioid high: every so often the eyes shut for a few seconds while the body stays up and
 /// conscious, drifting at a crawl. The client closes the screen and muffles sound; others sometimes see it in chat.
-/// An overdose nods more often and for longer, on top of its real sleep.
+/// An overdose nods more often and for longer, on top of its real sleep. A neuroware host running an opioid program
+/// stalls the same way.
 /// </summary>
 public sealed class WFNodSystem : EntitySystem
 {
@@ -82,8 +83,7 @@ public sealed class WFNodSystem : EntitySystem
         if (now < comp.NextNod)
             return;
 
-        if (!_mobState.IsAlive(ent) || HasComp<SleepingComponent>(ent) || HasComp<ForcedSleepingComponent>(ent)
-            || _intoxication.IsNeurowareHost(ent))
+        if (!_mobState.IsAlive(ent) || HasComp<SleepingComponent>(ent) || HasComp<ForcedSleepingComponent>(ent))
         {
             comp.NextNod = now + Seconds(pace.Interval);
             return;
@@ -97,7 +97,7 @@ public sealed class WFNodSystem : EntitySystem
 
         if (_random.Prob(EmoteChance))
         {
-            _chat.TrySendInGameICMessage(ent, Loc.GetString($"wf-nod-emote-{_random.Next(1, EmoteLines + 1)}"),
+            _chat.TrySendInGameICMessage(ent, Loc.GetString($"{Prefix(ent)}emote-{_random.Next(1, EmoteLines + 1)}"),
                 InGameICChatType.Emote, ChatTransmitRange.Normal, ignoreActionBlocker: true);
         }
     }
@@ -108,7 +108,13 @@ public sealed class WFNodSystem : EntitySystem
         ent.Comp.NodEnd = TimeSpan.Zero;
         Dirty(ent);
         _movement.RefreshMovementSpeedModifiers(ent);
-        _popup.PopupEntity(Loc.GetString($"wf-nod-wake-{_random.Next(1, WakeLines + 1)}"), ent, ent);
+        _popup.PopupEntity(Loc.GetString($"{Prefix(ent)}wake-{_random.Next(1, WakeLines + 1)}"), ent, ent);
+    }
+
+    /// <summary>A neuroware host's nod is a stall in standby, and reads like one.</summary>
+    private string Prefix(EntityUid uid)
+    {
+        return _intoxication.IsNeurowareHost(uid) ? "wf-nod-host-" : "wf-nod-";
     }
 
     private TimeSpan Seconds(Vector2 range)

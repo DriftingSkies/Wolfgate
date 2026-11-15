@@ -2,7 +2,7 @@
 
 # Narcotics and Neuroware
 
-Street drugs are cooked, grown and sold all over the sector, and every one of them is Class 3 contraband. Synthetics can't use them and run neuroware instead, which is at the bottom of this page.
+Street drugs are cooked, grown and sold all over the sector, and every one of them is Class 3 contraband except cannabis and hash, which are legal. Synthetics can't use them and run neuroware instead, which is at the bottom of this page.
   <Box>
     <GuideEntityEmbed Entity="WFBaggieCocaine"/>
     <GuideEntityEmbed Entity="WFCrackRock"/>
@@ -48,7 +48,7 @@ An overdose does real harm, and the body clears the excess quickly, but not quic
 
 Heavy on opioids you [bold]nod off[/bold]: every so often your eyes shut for a few seconds. You stay on your feet and can still act, but you can't see and barely move, and people nearby may notice. In an overdose it happens more often and you can pass out.
 
-When the drug drops below a light dose, the [bold]crash[/bold] begins. Most crashes grow with the time you spent high. Taking more pauses a crash but doesn't cancel it. Being on Redline and Anvil at once damages the heart.
+When the drug drops below a light dose, the [bold]crash[/bold] begins. Most crashes grow with the time you spent high. A crash wears your stamina down but never far enough to drop you, and a stimulant crash makes you nod off now and then. Taking more pauses a crash but doesn't cancel it. Being on Redline and Anvil at once damages the heart.
 
 A health analyzer's [bold]Conditions[/bold] tab lists every high, crash and habit, the reagents behind each, how long they take to clear and what clears them faster.
 
@@ -79,7 +79,7 @@ These clear the drug from the blood. The crash still comes, and so does the Pois
 
 Regular use builds [bold]dependence[/bold], one meter for each family. A light habit fades within the shift. Past halfway it fades four times slower, so a real habit takes an hour or more clean to shake.
 
-Above the halfway mark, going without for five minutes starts [bold]withdrawal[/bold]: cravings first, then shakes, a stamina cap and aches, and for opioids and stimulants, nausea and drowsiness at the worst. Nicotine never gets past cravings. A taste won't end it: you have to get properly high on the same family, and tolerance means that takes more each time. While you are, a habit pays you back with a little stamina. Withdrawal never kills.
+Above the halfway mark, going without for five minutes starts [bold]withdrawal[/bold]: cravings first, then shakes, a stamina cap and a constant ache that painkillers dull, and at the worst a deeper ache and, for opioids and stimulants, nausea and drowsiness. Nicotine never gets past cravings. A taste won't end it: you have to get properly high on the same family, and tolerance means that takes more each time. While you are, a habit pays you back with a little stamina. Withdrawal never kills.
 
 Use also builds [bold]tolerance[/bold], up to double. The same dose hits softer, so it takes more to get as high, or to overdose. Tolerance fades slowly while clean. Take your old dose after a long break and it can kill you.
 
@@ -91,7 +91,7 @@ Any reagent can carry a [bold]grade[/bold], from 0 to 100%. Anything from a disp
 
 A dose at 60% works like 60% of the amount, and the other 40% is impurity that the body takes as Poison. Overdose limits count the working part only, so a weak batch won't overdose you sooner. It will just poison you.
 
-Grade sets the price as well. The price falls faster than the grade: a rock at half grade sells for a quarter, so cutting loses money at the market.
+Grade sets the price as well: a rock at half grade sells for half. Cutting stretches a batch into more doses but doesn't raise what it sells for.
 
 A ChemMaster shows the percentage beside any graded reagent, and so do health analyzers and chemical goggles. A [bold]purity tester[/bold] does the same for any container or item it touches. It prints at a protolathe or medical techfab, and the dealers carry it too.
   <Box>
@@ -127,12 +127,14 @@ A program gives the same high, crash and habit as the drug it copies, shown on t
 - [bold]Burst[/bold]: crystal.
 - [bold]Damper[/bold]: Anvil.
 - [bold]Choir.sig[/bold]: Chorus.
-- [bold]Idle[/bold]: cannabis.
+- [bold]Idle[/bold]: cannabis, and legal like it.
 - [bold]Halo[/bold] and [bold]Redline[/bold] go by their own names. On a synthetic, Redline costs charge and heat instead of the heart.
 
-Sticks have [bold]integrity[/bold], which works like grade. A weak stick delivers less, and the missing part makes the program glitch with brief stuns, forced beeps, scrambled speech and fake faults. Using a loaded stick on a blank copies it at 85% of the original's integrity, with one load. The original loses nothing, so a build spreads as far as you have blanks, a little worse each generation. Street copies are several generations down.
+Sticks have [bold]integrity[/bold], which works like grade. A weak stick delivers less, and the missing part makes the program glitch with brief stuns, forced beeps, scrambled speech and fake faults. Using a loaded stick on a blank copies it at 85% of the original's integrity, with one load. Each copy uses up one of the original's loads and a tenth of its integrity, so a stick makes no more copies than it has loads, and a copy's single load can be run or copied, not both. Street copies are several generations down.
 
-Blank and loaded sticks turn up in maintenance and salvage, and the dealers sell both.
+A blank can also read the real thing. Use a blank stick on a baggie, a rock, a brick, a vial or a beaker of a drug and hold still for three seconds: the drug is used up and the stick holds its program, with the drug's grade as its integrity and up to three loads. Good product makes a good stick.
+
+Blank sticks print at an autolathe. Blank and loaded sticks also turn up in maintenance and salvage, and the dealers sell both.
 
 A synthetic with the Wolfmed HUD sees what is running as fault lines. A [bold]reboot[/bold] from the chassis panel kills every running program and ends the high, but not the habit.
 

@@ -30,6 +30,13 @@ namespace Content.Shared.Interaction
         /// </summary>
         public EntityCoordinates ClickLocation { get; }
 
+        // WOLFGATE(InteractionParticles) START: set to false when the interaction should not play a particle
+        /// <summary>
+        ///     Whether this interaction should spawn an interaction particle.
+        /// </summary>
+        public bool InteractionParticle = true;
+        // WOLFGATE END
+
         public InteractUsingEvent(EntityUid user, EntityUid used, EntityUid target, EntityCoordinates clickLocation)
         {
             // Interact using should not have the same used and target.

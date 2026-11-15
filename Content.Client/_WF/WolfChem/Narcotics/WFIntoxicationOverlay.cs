@@ -14,8 +14,7 @@ namespace Content.Client._WF.WolfChem.Narcotics;
 /// Draws the local player's strongest high and any crash with one shader. Each phase has its own look: light is a
 /// steady grade with a slight bend, heavy adds the family's motion, warp and ghost trails, and the overdose pushes it
 /// to an extreme; strength builds with the level inside each phase, and stepping up a phase kicks the screen. Static
-/// and trail-free under reduced motion. A neuroware host sees its programs through a digital shader of its own,
-/// without trails.
+/// and trail-free under reduced motion. A neuroware host sees its programs through a digital shader of its own.
 /// </summary>
 public sealed class WFIntoxicationOverlay : Overlay
 {
@@ -126,7 +125,7 @@ public sealed class WFIntoxicationOverlay : Overlay
         _kick = Math.Max(0f, _kick - args.DeltaSeconds * KickFade);
 
         var targetTrail = 0f;
-        if (!_synthetic && Trails.TryGetValue(_family, out var trail))
+        if (Trails.TryGetValue(_family, out var trail))
             targetTrail = (trail.Heavy * _heavy + (trail.Overdose - trail.Heavy) * _overdose) * (0.5f + 0.5f * _intensity);
         _trail += (targetTrail - _trail) * phaseStep;
     }

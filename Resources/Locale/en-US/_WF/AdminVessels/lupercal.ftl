@@ -11,6 +11,11 @@ wf-lupercal-zone-engineering-staff = Power and atmos (staff)
 wf-lupercal-zone-cargo-public = Cargo, salvage and vehicles (public)
 wf-lupercal-zone-cargo-staff = Cargo, salvage and vehicles (staff)
 
+ent-WFHoloDoor = hard-light barrier
+    .desc = A field that parts for those cleared to pass and stops everyone else.
+ent-WFLupercalSentry = Lupercal sentry
+    .desc = A heavy turret that holds its fire until the crew have marked a target.
+
 wf-lupercal-job-supervisors = the Lupercal's owner and command
 wf-lupercal-job-pilot = Lupercal Pilot
 wf-lupercal-job-pilot-desc = Fly the Lupercal from its bridge on its owner's orders.
@@ -26,6 +31,8 @@ wf-lupercal-job-engineer = Lupercal Engineer
 wf-lupercal-job-engineer-desc = Keep the Lupercal's power, air and machines running.
 wf-lupercal-job-deckhand = Lupercal Deckhand
 wf-lupercal-job-deckhand-desc = Keep the docks and halls in order and lend a hand wherever the ship needs one.
+wf-lupercal-job-janitor = Lupercal Janitor
+wf-lupercal-job-janitor-desc = Keep the Lupercal's decks clean, from the docks to the bridge.
 wf-lupercal-job-paramedic = Lupercal Paramedic
 wf-lupercal-job-paramedic-desc = Bring the hurt in to Medical, from anywhere aboard or from a ship docked to the ring.
 wf-lupercal-job-surgeon = Lupercal Surgeon

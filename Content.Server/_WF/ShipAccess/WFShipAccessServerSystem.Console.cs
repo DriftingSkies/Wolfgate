@@ -139,7 +139,7 @@ public sealed partial class WFShipAccessServerSystem
         if (Transform(console.Owner).GridUid is not { } grid)
             return false;
 
-        if (!_access.IsOwner(actor, grid))
+        if (!IsOwner(actor, grid))
         {
             Popup(console, actor, "ship-access-not-owner");
             return false;

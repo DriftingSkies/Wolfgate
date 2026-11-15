@@ -21,6 +21,7 @@ public static class WFCrewDuties
     public const string Guard = "Guard";
     public const string Pilot = "Pilot";
     public const string Gunnery = "Gunnery";
+    public const string Janitor = "Janitor";
 }
 
 /// <summary>The role prototypes the planner hands out.</summary>

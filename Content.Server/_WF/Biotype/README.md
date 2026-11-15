@@ -99,6 +99,9 @@ markings) stays keyed on the species.
 - [`Content.Server.Database/Model.cs`](../../../Content.Server.Database/Model.cs): organic or synthetic body, 0 for the species' own.
 - [`Content.Server/Database/ServerDbBase.cs`](../../Database/ServerDbBase.cs)
 - [`Content.Server/Station/Systems/StationSpawningSystem.cs`](../../Station/Systems/StationSpawningSystem.cs): converts the body before the loadout is equipped on it
+- [`Content.Shared/_EinsteinEngines/Silicon/Components/SiliconComponent.cs`](../../../Content.Shared/_EinsteinEngines/Silicon/Components/SiliconComponent.cs)
+  - a synthetic biotype adds this at runtime; the client predicted no slowdown without it
+  - the networked state copies into it on the client
 - [`Content.Shared/Humanoid/SharedHumanoidAppearanceSystem.cs`](../../../Content.Shared/Humanoid/SharedHumanoidAppearanceSystem.cs): converts the body before the profile-load handlers see it
 - [`Content.Shared/Preferences/HumanoidCharacterProfile.cs`](../../../Content.Shared/Preferences/HumanoidCharacterProfile.cs)
   - Default and unknown values become the species' own

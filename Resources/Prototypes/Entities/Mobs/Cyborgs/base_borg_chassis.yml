@@ -79,6 +79,12 @@
         type: BorgSelectTypeUserInterface
       enum.RadarConsoleUiKey.Key: # Mono
         type: RadarConsoleBoundUserInterface
+      # WOLFGATE(Cyborgs) START: the built-in PDA's window and ringtone picker
+      enum.PdaUiKey.Key:
+        type: PdaBoundUserInterface
+      enum.RingerUiKey.Key:
+        type: RingerBoundUserInterface
+      # WOLFGATE END
   - type: ActivatableUI
     key: enum.BorgUiKey.Key
   - type: SiliconLawBound
@@ -131,6 +137,7 @@
       cell_slot: !type:ContainerSlot { }
       borg_module: !type:Container { }
       part-container: !type:Container
+      program-container: !type:Container # WOLFGATE(Cyborgs): the built-in PDA's installed apps
   - type: PowerCellSlot
     cellSlotId: cell_slot
     fitsInCharger: true
@@ -142,6 +149,36 @@
   # WOLFGATE(Cyborgs) START: buckle into seats and climb onto tables
   - type: Buckle
   - type: Climbing
+  # WOLFGATE END
+  # WOLFGATE(Cyborgs) START: a built-in PDA with a vagrant's apps, opened from an action
+  # Its slots stay locked: the apps read the cyborg's issued ID card wherever it carries it.
+  - type: Pda
+    idSlot:
+      locked: true
+    penSlot:
+      locked: true
+    paiSlot:
+      locked: true
+  - type: WFBorgPda
+  - type: WFGameHubInstaller
+  - type: Ringer
+  - type: CartridgeLoader
+    uiKey: enum.PdaUiKey.Key
+    # The same apps as a vagrant's PDA (BasePDA): GameHub comes from WFGameHubInstaller, and Market, Contracts and
+    # NanoChat are added to every PDA in code.
+    preinstalled:
+    - CrewManifestCartridge
+    - NotekeeperCartridge
+    - NewsReaderCartridge
+    - BountyContractsCartridge
+    - AstroNavCartridge
+    cartridgeSlot:
+      locked: true
+      priority: -1
+      name: device-pda-slot-component-slot-name-cartridge
+      whitelist:
+        components:
+        - Cartridge
   # WOLFGATE END
   - type: ItemToggle
     onActivate: false # You should not be able to turn off a borg temporarily.
@@ -330,6 +367,10 @@
     uis:
       enum.RadarConsoleUiKey.Key:
         toggleAction: ActionObserverShowRadar
+      # WOLFGATE(Cyborgs) START: the action that opens the built-in PDA
+      enum.PdaUiKey.Key:
+        toggleAction: WFActionBorgOpenPda
+      # WOLFGATE END
   - type: RadarConsole
     followEntity: true
     noRotate: true

@@ -19,6 +19,7 @@ wf-crew-medic-doing-stimulant = {CAPITALIZE(THE($medic))} gives {THE($patient)} 
 wf-crew-medic-doing-antitoxin = {CAPITALIZE(THE($medic))} gives {THE($patient)} an antitoxin.
 wf-crew-medic-doing-brute = {CAPITALIZE(THE($medic))} patches up {THE($patient)}'s injuries.
 wf-crew-medic-doing-burn = {CAPITALIZE(THE($medic))} treats {THE($patient)}'s burns.
+wf-crew-medic-doing-suture = {CAPITALIZE(THE($medic))} sutures {THE($patient)}'s wounds.
 
 # M3: the surgeon and the autodoc.
 wf-crew-surgeon-take-in-1 = You need the autodoc. Let's go.

@@ -55,6 +55,8 @@
     traits:
     - WFDependentStimulant
     - WFDependentOpioid
+    - WFDependentEmpathogen
+    - WFDependentCannabinoid
     - WFDependentNicotine
   - name: wf-trait-group-light-sensitivity
     traits:

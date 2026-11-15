@@ -6,6 +6,8 @@ using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
 using Content.Shared.Weapons.Melee;
 using Content.Shared.Weapons.Ranged.Components;
+using Content.Shared.Wieldable;
+using Content.Shared.Wieldable.Components;
 
 namespace Content.Server._WF.NpcCrew.Systems;
 
@@ -17,6 +19,7 @@ public sealed partial class WFCrewWeaponSystem : EntitySystem
 {
     [Dependency] private InventorySystem _inventory = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private SharedWieldableSystem _wieldable = default!;
 
     /// <summary>Slots searched for a weapon, in the order ties are broken.</summary>
     private static readonly string[] WeaponSlots = { "back", "suitstorage", "belt", "pocket1", "pocket2" };
@@ -79,10 +82,25 @@ public sealed partial class WFCrewWeaponSystem : EntitySystem
 
         // The combat compounds shoot with the active hand.
         _hands.TrySelect(uid, item.Value);
+        Wield(uid, item.Value);
         weapon.Drawn = item;
         weapon.HolsterSlot = slot;
         EntityManager.System<WFCrewSpeechSystem>().Say(uid, "engage");
         return true;
+    }
+
+    /// <summary>Takes a two-handed weapon in both hands, so a rifle fires with its wielded spread.</summary>
+    public void Wield(EntityUid uid, EntityUid item)
+    {
+        if (TryComp<WieldableComponent>(item, out var wield) && !wield.Wielded)
+            _wieldable.TryWield(item, wield, uid);
+    }
+
+    /// <summary>Frees the second hand, for a reload.</summary>
+    public void Unwield(EntityUid uid, EntityUid item)
+    {
+        if (TryComp<WieldableComponent>(item, out var wield) && wield.Wielded)
+            _wieldable.TryUnwield(item, wield, uid, force: true);
     }
 
     /// <summary>Whether the crewman has in hand, or would draw, a gun he can fire.</summary>

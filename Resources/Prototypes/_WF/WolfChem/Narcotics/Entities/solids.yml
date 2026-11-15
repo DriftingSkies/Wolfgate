@@ -1,10 +1,10 @@
-# Solid drugs. Each keeps its solution's grade, is a narcotic at the market (WFNarcoticMarks), and can be ground
-# back down.
+# Solid drugs. Each keeps its solution's grade and can be ground back down. All but hash are narcotics at the market
+# (WFNarcoticMarks); hash is legal, like the cannabis it is pressed from.
 
 - type: entity
   abstract: true
-  parent: [ BaseItem, WFNarcoticMarks ]
-  id: WFBaseDrugSolid
+  parent: BaseItem
+  id: WFBaseSolid
   components:
   - type: Item
     size: Tiny
@@ -17,6 +17,16 @@
   - type: ExaminableSolution
     solution: food
   # Fits pipe and bong bowls, and baggies.
+  - type: Tag
+    tags:
+    - Smokable
+    - WFBaggable
+
+- type: entity
+  abstract: true
+  parent: [ WFBaseSolid, WFNarcoticMarks ]
+  id: WFBaseDrugSolid
+  components:
   - type: Tag
     tags:
     - Smokable
@@ -69,7 +79,7 @@
           Quantity: 5
 
 - type: entity
-  parent: WFBaseDrugSolid
+  parent: WFBaseSolid
   id: WFHashBrick
   components:
   - type: Sprite

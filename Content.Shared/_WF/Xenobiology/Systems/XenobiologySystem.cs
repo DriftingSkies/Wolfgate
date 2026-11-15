@@ -47,6 +47,16 @@ public sealed partial class XenobiologySystem : EntitySystem
     /// </summary>
     public const int MinOffspring = 2;
 
+    /// <summary>
+    /// Most extracts steroid jelly can add to one slime.
+    /// </summary>
+    public const int MaxJellyExtracts = 2;
+
+    /// <summary>
+    /// Most offspring boost jelly can add to one slime's split.
+    /// </summary>
+    public const int MaxJellyOffspring = 2;
+
     private readonly List<Entity<SlimeComponent>> _splitting = new();
     private readonly List<Entity<PendingSlimeSpawnComponent>> _pending = new();
 
@@ -199,8 +209,9 @@ public sealed partial class XenobiologySystem : EntitySystem
 
             child.Comp.Tamer = ent.Comp.Tamer;
             child.Comp.MutationChance = ent.Comp.MutationChance;
-            child.Comp.MaxOffspring = ent.Comp.MaxOffspring;
-            child.Comp.ExtractsProduced = ent.Comp.ExtractsProduced;
+            // What jelly added stays with the slime that was dosed.
+            child.Comp.MaxOffspring = ent.Comp.MaxOffspring - ent.Comp.JellyOffspring;
+            child.Comp.ExtractsProduced = ent.Comp.ExtractsProduced - ent.Comp.JellyExtracts;
             Dirty(child);
         }
 

@@ -88,6 +88,7 @@
   - type: Construction
     graph: bed
     node: medicalbed
+  - type: WFMedicalBed # WOLFGATE(NpcCrew): NPC paramedics take patients to medical beds only
   - type: GuideHelp
     guides:
     - MedicalDoctor

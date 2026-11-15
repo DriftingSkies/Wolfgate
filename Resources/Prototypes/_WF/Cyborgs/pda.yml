@@ -1,0 +1,14 @@
+# Opens a cyborg's built-in PDA.
+- type: entity
+  id: WFActionBorgOpenPda
+  name: Open PDA
+  description: Use the PDA built into your chassis.
+  components:
+  - type: InstantAction
+    checkCanInteract: false
+    itemIconStyle: NoItem
+    icon:
+      sprite: Objects/Devices/pda.rsi
+      state: pda
+    event: !type:ToggleIntrinsicUIEvent { key: enum.PdaUiKey.Key }
+    useDelay: 0.5

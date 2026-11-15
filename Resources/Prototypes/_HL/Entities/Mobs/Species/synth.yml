@@ -14,9 +14,11 @@
     speaks:
     - TauCetiBasic # WOLFGATE(Species): HardLight's GalacticCommon is TauCetiBasic here
     - Machine
+    - RobotTalk # WOLFGATE(Synthetics): synths and IPCs understand each other
     understands:
     - TauCetiBasic
     - Machine
+    - RobotTalk # WOLFGATE(Synthetics): synths and IPCs understand each other
   - type: Icon # It will not have an icon in the adminspawn menu without this. Body parts seem fine for whatever reason.
     sprite: _HL/Mobs/Species/Synth/parts.rsi
     state: full

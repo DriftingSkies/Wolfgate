@@ -23,7 +23,7 @@ overdose one). Other upstream status effects from reagents (rainbows, muting, dr
 where a reagent's old length must stay (mute toxin, chloral hydrate, fentanyl); the recreational ones clear slower
 so they last as long as they used to.
 `WFDependenceSystem` builds a per-family habit with tolerance and withdrawal, which only reaching the family's first tier ends; a meter above the withdrawal mark
-fades at a quarter of the rate, and three traits start a character dependent with a first dose in hand. The client draws one overlay per family and tints incoming chat (`WFDrugChatSystem`) and changes world sounds (`WFDrugAudioSystem`);
+fades at a quarter of the rate, and five habit traits (stimulant, opioid, Halo, cannabis, nicotine) start a character dependent with a first fix in hand, a copied program stick for a neuroware host; cannabis and nicotine withdrawal stop at cravings. The client draws one overlay per family and tints incoming chat (`WFDrugChatSystem`) and changes world sounds (`WFDrugAudioSystem`);
 `WFDrugSpeechSystem` rushes stimulant speech and trails opioid speech off, and `WFNodSystem` makes a heavy opioid high
 nod off: the eyes shut and sound muffles for a few seconds while the body stays up and crawls (`WFNodOverlay`). `WFAnalyzerConditionsSystem` fills the health analyzer's
 Conditions tab: each drug level, held status effect, crash and habit, with the reagents behind it, their clearance
@@ -43,8 +43,8 @@ and hold it through a nod; cannabis softens the brakes and the turn; alcohol mak
 
 Substances are grown (coca, the opium poppy, cannabis pressed into hash) or cooked through graded reactions, and the
 solids keep their grade. Flour cuts cocaine and heroin (`fillers` on `wfReactionPurity`). `WFDeliverySystem` adds powder lines from a baggie and the bong; `WFSecondhandSmokeSystem` puts smoke
-gas and a share of everything smoked into the air, and doses whoever breathes it nearby. Products are Class 3
-contraband with grade-scaled prices, a sale tax and a sold alert, and `WFNarcoticGoodsSystem` gives the same marks
+gas and a share of everything smoked into the air, and doses whoever breathes it nearby. Products other than hash,
+which is legal like cannabis, are Class 3 contraband with grade-scaled prices, a sale tax and a sold alert, and `WFNarcoticGoodsSystem` gives the same marks
 (`WFNarcoticMarks`) to any item or movable structure while one of its solutions holds a priced narcotic, a beaker, pill or storage tank as much as a baggie, and to a blank stick that takes a copy; the Strangers dealer sells cut stock, a Reaver
 runner (`WFEncounterReaverDealer`, a trader encounter) sells full grade and buys nothing, the bong is
 crafted from glass and plastic, and the uplink chemicals tab lists a few. The Bench has three laws
@@ -60,7 +60,7 @@ A purity grade (0-100%) that any reagent in any solution can carry. A reagent wi
 untouched chemistry looks and behaves exactly as before. A graded reagent works at its grade when metabolised (60%
 medicine heals 60%), its impure fraction deals Poison (`wf.purity.impurity_damage` per unit, default 1.0;
 `wf.purity.narcotic_impurity_damage`, default 6.0, for the Narcotics reagent group), overdose thresholds count
-effective units (units x grade), and it sells at its grade squared.
+effective units (units x grade), and it sells at its grade.
 
 Grades live in a side table on `Solution` (`Solution.Purity`, keyed by reagent prototype; see `Solution.Purity.cs`),
 which `Solution`'s add, split, transfer and remove methods keep in step. They come from:
@@ -79,13 +79,17 @@ Dispensers give standard grade. Touch reactions, tile reactions and fuel ignore 
 
 Drugs for synthetics. A body whose brain organ has `WFNeurowareHost` (the positronic brains) ignores chemical doses
 and takes data sticks instead: using a stick on a host loads its program (2 s on yourself, 4 s on someone else),
-which feeds the twin drug profile's level at the stick's integrity, so highs, crashes and dependence all come from
-the Narcotics part. Copying a stick onto a blank leaves the source as it was and gives the copy one load at 85% of
-its integrity; the missing share makes a running program glitch (stun, a forced beep, scrambled speech, a false HUD
-fault). The Wolfmed synthetic HUD lists what is running as fault lines and its shader is driven by the tier,
+which feeds the twin drug profile's level at the stick's integrity and gives the drug's rush, so highs, crashes and
+dependence all come from the Narcotics part. A full load is the profile's `neuroware.amount`. Copying a stick onto a
+blank gives the copy one load at 85% of the source's integrity and costs the source a load and a tenth of its
+integrity, so a stick yields at most as many sticks as it has loads; the missing
+share makes a running program glitch (stun, a forced beep, scrambled speech, a false HUD fault). A blank used on
+anything that holds a drug with a twin (3 s) reads it in and uses it up: the stick's integrity is the drug's grade,
+and it takes up to three loads, none larger than a full one. Blanks print at the autolathe. A written stick is a
+narcotic at the market unless its profile is `legal`, as cannabis and its twin Idle are. The Wolfmed synthetic HUD lists what is running as fault lines and its shader is driven by the tier,
 Redline's speed costs charge and heat, and a chassis panel reboot stops every program and clears the levels.
 
-Entry points: `WFNeurowareSystem` (`TryStartLoad`, `Load`, `TryCopy`, `Tick`), `WFNeurowareStickComponent`, and the
+Entry points: `WFNeurowareSystem` (`TryStartLoad`, `Load`, `TryCopy`, `TryStartEncode`, `Encode`, `Tick`), `WFNeurowareStickComponent`, and the
 client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/Prototypes/_WF/WolfChem/Neuroware`.
 
 <!-- WOLFGATE-GENERATED START -->
@@ -205,6 +209,7 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
 - [`Resources/Prototypes/_WF/WolfChem/Narcotics/shaders.yml`](../../../Resources/Prototypes/_WF/WolfChem/Narcotics/shaders.yml)
 - [`Resources/Prototypes/_WF/WolfChem/Narcotics/tags.yml`](../../../Resources/Prototypes/_WF/WolfChem/Narcotics/tags.yml)
 - [`Resources/Prototypes/_WF/WolfChem/Narcotics/traits.yml`](../../../Resources/Prototypes/_WF/WolfChem/Narcotics/traits.yml)
+- [`Resources/Prototypes/_WF/WolfChem/Neuroware/lathe.yml`](../../../Resources/Prototypes/_WF/WolfChem/Neuroware/lathe.yml)
 - [`Resources/Prototypes/_WF/WolfChem/Neuroware/loot.yml`](../../../Resources/Prototypes/_WF/WolfChem/Neuroware/loot.yml)
 - [`Resources/Prototypes/_WF/WolfChem/Neuroware/shaders.yml`](../../../Resources/Prototypes/_WF/WolfChem/Neuroware/shaders.yml)
 - [`Resources/Prototypes/_WF/WolfChem/Neuroware/sticks.yml`](../../../Resources/Prototypes/_WF/WolfChem/Neuroware/sticks.yml)
@@ -220,6 +225,7 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
 - [`Resources/Locale/en-US/_WF/WolfChem/Narcotics/dependence.ftl`](../../../Resources/Locale/en-US/_WF/WolfChem/Narcotics/dependence.ftl)
 - [`Resources/Locale/en-US/_WF/WolfChem/Narcotics/guidebook.ftl`](../../../Resources/Locale/en-US/_WF/WolfChem/Narcotics/guidebook.ftl)
 - [`Resources/Locale/en-US/_WF/WolfChem/Narcotics/intoxication.ftl`](../../../Resources/Locale/en-US/_WF/WolfChem/Narcotics/intoxication.ftl)
+- [`Resources/Locale/en-US/_WF/WolfChem/Narcotics/speech.ftl`](../../../Resources/Locale/en-US/_WF/WolfChem/Narcotics/speech.ftl)
 - [`Resources/Locale/en-US/_WF/WolfChem/Narcotics/substances.ftl`](../../../Resources/Locale/en-US/_WF/WolfChem/Narcotics/substances.ftl)
 - [`Resources/Locale/en-US/_WF/WolfChem/Narcotics/twins.ftl`](../../../Resources/Locale/en-US/_WF/WolfChem/Narcotics/twins.ftl)
 - [`Resources/Locale/en-US/_WF/WolfChem/Neuroware/neuroware.ftl`](../../../Resources/Locale/en-US/_WF/WolfChem/Neuroware/neuroware.ftl)
@@ -262,7 +268,7 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
   - read before the removal prunes it
   - a digested reagent keeps its grade
 - [`Content.Server/Botany/Systems/BotanySystem.Produce.cs`](../../Botany/Systems/BotanySystem.Produce.cs): narcotic produce is graded by potency
-- [`Content.Server/Cargo/Systems/PricingSystem.cs`](../../Cargo/Systems/PricingSystem.cs): a reagent is worth its grade squared
+- [`Content.Server/Cargo/Systems/PricingSystem.cs`](../../Cargo/Systems/PricingSystem.cs): a reagent is worth its grade
 - [`Content.Server/Chemistry/EntitySystems/ChemMasterSystem.cs`](../../Chemistry/EntitySystems/ChemMasterSystem.cs)
   - read before the removal prunes it
   - the reagent keeps its grade on the way out of the buffer
@@ -295,6 +301,7 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
 - [`Resources/Prototypes/_EinsteinEngines/Entities/Mobs/Player/silicon_base.yml`](../../../Resources/Prototypes/_EinsteinEngines/Entities/Mobs/Player/silicon_base.yml): neuroware twins apply these to a synthetic's own body
 - [`Resources/Prototypes/_ES/Reagents/gases.yml`](../../../Resources/Prototypes/_ES/Reagents/gases.yml): thin haze from smoking is harmless; fire-thick smoke still chokes
 - [`Resources/Prototypes/_Impstation/Reagents/biological.yml`](../../../Resources/Prototypes/_Impstation/Reagents/biological.yml): held while it is in the blood instead of piling up each tick
+- [`Resources/Prototypes/_Mono/Catalogs/Fills/Lockers/salvmaint_locker.yml`](../../../Resources/Prototypes/_Mono/Catalogs/Fills/Lockers/salvmaint_locker.yml): neuroware sticks turn up in maintenance lockers
 - [`Resources/Prototypes/_Mono/Entities/Objects/Misc/solids.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Misc/solids.yml): fits a baggie
 - [`Resources/Prototypes/_Mono/Reagents/letoferol.yml`](../../../Resources/Prototypes/_Mono/Reagents/letoferol.yml): drunkenness follows the units in the blood
 - [`Resources/Prototypes/_Mono/Reagents/medicine.yml`](../../../Resources/Prototypes/_Mono/Reagents/medicine.yml)
@@ -365,6 +372,7 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
   - held while it is in the blood instead of piling up each tick
   - held at the units left, as long as it used to pile up to
   - clears slower so the high lasts as long as before
+- [`Resources/Prototypes/Recipes/Lathes/Packs/engineering.yml`](../../../Resources/Prototypes/Recipes/Lathes/Packs/engineering.yml): blank data sticks print at the autolathe
 - [`Resources/Prototypes/Recipes/Lathes/Packs/medical.yml`](../../../Resources/Prototypes/Recipes/Lathes/Packs/medical.yml): purity testers print with the chemistry kit
 
 <!-- WOLFGATE-GENERATED END -->

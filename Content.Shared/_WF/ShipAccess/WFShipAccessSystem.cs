@@ -187,6 +187,20 @@ public sealed partial class WFShipAccessSystem : EntitySystem
         return TryComp<WFShipAccessComponent>(grid, out var comp) && (IsRegisteredTo(user, comp) || HasOwnerCard(user, comp));
     }
 
+    /// <summary>
+    /// Who may manage the ship's access (the access tab, the lock verbs, console locks): its owner, or someone another
+    /// system lets in (<see cref="WFShipManagerEvent"/>). Raised on both sides, so the client's tab matches the server.
+    /// </summary>
+    public bool CanManage(EntityUid user, EntityUid grid)
+    {
+        if (IsOwner(user, grid))
+            return true;
+
+        var ev = new WFShipManagerEvent(user);
+        RaiseLocalEvent(grid, ref ev);
+        return ev.Allowed;
+    }
+
     /// <summary>Whether a held or worn ID card carries one of the ship's owner record keys.</summary>
     private bool HasOwnerCard(EntityUid user, WFShipAccessComponent comp)
     {

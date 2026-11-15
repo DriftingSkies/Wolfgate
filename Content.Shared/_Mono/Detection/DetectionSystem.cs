@@ -44,6 +44,8 @@ public sealed partial class DetectionSystem : EntitySystem
         var visualRadius = visualSig * comp.VisualMultiplier * _visualMul;
 
         var thermalSig = TryComp<ThermalSignatureComponent>(grid, out var sigComp) ? MathF.Max(sigComp.TotalHeat, 0f) : 0f;
+        if (!float.IsFinite(thermalSig)) // WOLFGATE: a NaN or infinite heat made a grid undetectable, so radar dropped its hull
+            thermalSig = 0f;
         var thermalRadius = MathF.Sqrt(thermalSig) * comp.InfraredMultiplier * _thermalMul;
 
         if (TryComp<DetectedAtRangeMultiplierComponent>(grid, out var compAt))

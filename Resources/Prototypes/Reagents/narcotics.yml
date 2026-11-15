@@ -6,7 +6,7 @@
   physicalDesc: reagent-physical-desc-translucent
   flavor: bitter
   color: "#FAFAFA"
-  pricePerUnit: 120 # WOLFGATE(WolfChem): crystal sells by grade
+  pricePerUnit: 580 # WOLFGATE(WolfChem): crystal sells by grade
   boilingPoint: 212.0  # Dexosyephedrine vape when?
   meltingPoint: 170.0
   metabolisms:

@@ -125,7 +125,7 @@ Check that `Solution`'s net serialisation carries the new field to clients; the 
   compares `GetTotalPrototypeQuantity`. Switch it to `GetEffectiveQuantity` under a marker. This shifts every
   existing overdose threshold for graded reagents only.
 - **Price.** `PricingSystem` prices solutions at `Content.Server/Cargo/Systems/PricingSystem.cs:113-150`; multiply
-  each reagent's value by its grade squared, so top grade earns a premium and cutting loses money at the market.
+  each reagent's value by its grade, so cutting stretches a batch without changing what it is worth.
 - **Not scaled yet:** touch and ingestion reactions (`ReactiveSystem`), tile reactions, and reagents consumed as
   fuel. Leave them until someone needs them.
 
@@ -158,10 +158,10 @@ Prototype kind `wfDrugProfile`:
 | `family` | `Stimulant`, `Opioid`, `Psychedelic`, `Empathogen`, `Cannabinoid`, `Combat`, `Nicotine`. Dependence and overlays key on it |
 | `decay` | Level lost per second |
 | `tiers` | Ordered list of `{ min, effects, speed, statusEffects, overlay }`. The highest tier whose `min` is at or below the level applies. The last tier is the overdose |
-| `crash` | `{ after, duration, effects, speed, overlay }`: applied when the level falls below the first tier after having spent `after` seconds above it |
+| `crash` | `{ after, duration, effects, speed, overlay, stamina, staminaCap, collapse }`: applied when the level falls below the first tier after having spent `after` seconds above it. `stamina` drains per second but stops at `staminaCap` of the crit threshold (0.45), since every hit resets regen and an uncapped drain stun-locks; `collapse` is one knockdown as it starts. A crash's `Drowsiness` nods 1-2 s every 1-2 minutes |
 | `dependenceGain` | Dependence added per unit of level gained |
 | `rushGain`, `rushHalfLife` | The peak of a fresh dose: extra level per level added to the blood, halving every `rushHalfLife` seconds. It never reaches the overdose tier |
-| `neuroware` | Display strings for the twin: program name, HUD fault lines, banner |
+| `neuroware` | The twin: program name, HUD fault lines, banner, and `amount`, the level a full load delivers (8 unless set) |
 
 `effects` are ordinary `EntityEffect`s run with base args, so they must not use `ReagentThreshold` or `OrganType`
 (both throw outside a reagent context). Tiers replace thresholds.
@@ -191,8 +191,9 @@ Prototype kind `wfDrugProfile`:
   and speeds a fed level's `decay` by as much. Every tier threshold, the overdose included, effectively rises with
   it, as does heroin's sedation (`WFSedation`), so the pull is toward dosing more.
 - Withdrawal starts when a family's meter is above 0.5 and no profile of that family has been above its first
-  tier for 5 minutes. Stages by meter: popups and cravings; then jitter, a stamina cap and pain; `Opioid` and
-  `Stimulant` add vomiting and drowsiness at the top stage, and `Nicotine` stops at cravings. Only reaching the
+  tier for 5 minutes. Stages by meter: popups and cravings; then jitter, a stamina cap and torso pain held at 40
+  (75 at the top stage; Downed is 128, and painkillers relieve it); `Opioid` and `Stimulant` add vomiting and a
+  1-2 s nod every 1-2 minutes at the top stage, and `Nicotine` and `Cannabinoid` stop at cravings. Only reaching the
   first tier again ends it, so a taste doesn't, and tolerance raises what it takes. A dependent body that is high
   on its family sheds 1 stamina damage a second. Withdrawal never kills.
 - Round scope: the components live on the body. Cloning or a new body starts clean. Nothing is written to the
@@ -223,10 +224,15 @@ A heavy opioid high nods every 30 to 90 s for 1.5 to 3 s, an overdose every 15 t
 (`WFNodSystem`). The body stays standing and conscious and can still act, but moves at x0.2. The networked
 `NodStart`/`NodEnd` on the intoxication component drive the client: `WFNodOverlay` closes soft-edged lids over the
 view in 0.6 s and opens them at the end, and `WFDrugAudioSystem` occludes world sounds by up to 7. A third of nods
-show to others as an emote, and waking pops a line to the player. Nobody asleep, dead or running neuroware nods. The
-overdose keeps its real forced sleep on top.
+show to others as an emote, and waking pops a line to the player. Nobody asleep or dead nods. A neuroware host on an
+opioid program nods too, as a stall in standby: its feed dims to about half instead of closing, with its own emote
+and wake lines. The overdose keeps its real forced
+sleep on top.
 
 ### Chat and speech
+
+A neuroware host gets all of this, the sound below and Chorus's hallucinations from its programs, as an organic
+does from the drug.
 
 - **Reading** (`WFDrugChatSystem`, client). Incoming speech, radio and emotes are rewritten on the high player's
   screen only, from the same strongest high the overlay draws (`WFIntoxicationSystem.DominantHigh`): psychedelics
@@ -234,10 +240,19 @@ overdose keeps its real forced sleep on top.
   opioids grey the text, empathogens tint it pink and cannabinoids green, stronger with the look. The change is
   made as the message arrives, so lines read while high stay that way in the log. Hooked from
   `ChatUIController.ProcessChatMessage` before codewords and highlights, which would split the message text.
-- **Speaking** (`WFDrugSpeechSystem`, server, an accent on `WFIntoxicationComponent`). A heavy stimulant high
-  doubles 15% of words and turns full stops into exclamations; an overdose doubles 30% and shouts 30%. A heavy
-  opioid high puts a pause after 12% of words (25% overdosed) and trails the end off. Chorus's top tier keeps its
-  scrambled accent, and its `Mimic` hallucination already puts lines nobody said into local chat.
+- **Speaking** (`WFDrugSpeechSystem`, server, an accent on `WFIntoxicationComponent`). Light highs only change
+  the voice; from heavy on, each family changes the words, and families stack:
+  - Stimulant: doubles 25% of words, stutters 15% on the first letter ("g-g-go") and turns full stops into
+    exclamations. Overdosed: 45% doubled, 40% shouted, 20% stuttered and commas dropped so it runs on.
+  - Opioid: a drunk-style slur (o→u, s→sh, a→ah, u→oo, c→k, dragged letters), a pause after 25% of words, and
+    the end trails off. Overdosed: twice the slur, pauses after 40%, and 12% of mid-sentence words drop out.
+  - Cannabinoid: a filler ("uh", "like", ...) before 10% of words and a 40% chance the end drifts off ("...,
+    man..."). Overdosed: 20% fillers, and a 35% chance the sentence stops halfway ("so the thing is... yeah.").
+  - Empathogen: draws out the last vowel of 15% of words ("sooo") and softens full stops into "~". Overdosed: 30%
+    stretched and a 40% chance of a gushing line on the end.
+  - Psychedelic: at heavy, swaps 15% of neighbouring word pairs; Chorus's top tier scrambles every word through
+    its `ScrambledAccent` status instead. Its `Mimic` hallucination already puts lines nobody said into local chat.
+  - Combat (Redline, Anvil) leaves speech alone. Filler, tail and gush lines are in `speech.ftl`.
 - **Voice** (`WFDrugSpeechSystem` on the Voice module's `SpeechVoiceModifyEvent`). The character voice changes per
   line, for everyone who hears it, by each family's phase; families stack and the result stays in the creator's
   ranges. Syllable time is a multiplier, so lower is faster:
@@ -314,7 +329,7 @@ aboard).
 | `WFOpium` | Opium | Opioid | Social downer | Moderate pain relief, calm | Drowsiness | Smoked |
 | `WFHeroin` | Heroin | Opioid | Hard downer | Strong pain relief through `WolfmedPainRelief`, euphoria | Slow movement; nodding off (eyes shut, still standing) when heavy, and brief forced sleep in an overdose. Overdose is Wolfmed's sedation airloss through `WFSedation`, graded and blunted by tolerance. Naloxone reverses it | Injected, smoked |
 | Desoxyephedrine (existing) | Crystal | Stimulant | Combat stimulant | Speed x1.25 from the profile; halved stuns and knockdowns, stamina-crit resistance and no slowdown from damage need a heavy dose (level 8), as profile traits, so tolerance blunts them and Burst has them; the reagent keeps its jitter and pain relief | Unchanged Poison; adds a long crash | Smoked as crystal, or as today |
-| `WFRedline` | Redline | Combat | Offence | Speed x1.3, stun and knockdown resistance, no slowdown from damage, pain immunity | Heart damage every tick; can't sprint-stop cleanly (jitter); when it ends, a 60 s collapse at speed x0.5 with a stamina cap. Overdose: cardiac arrest | Injected |
+| `WFRedline` | Redline | Combat | Offence | Speed x1.3, stun and knockdown resistance, no slowdown from damage, pain immunity | Heart damage every tick; can't sprint-stop cleanly (jitter); when it ends, a 10 s knockdown, then 60 s or more at speed x0.5 with stamina held at 80%. Overdose: cardiac arrest | Injected |
 | `WFAnvil` | Anvil | Combat | Endurance | Incoming Brute and Burn reduced 30%, pain immunity, stamina-crit resistance | Speed x0.85; the user's own damage readout is hidden while high; damage avoided is repaid at 40% as Poison over the crash. Overdose: organ damage | Injected |
 | `WFChorus` | Chorus | Psychedelic | Social, prospecting | Lattice hallucinations scaling with tier: whispers and blips, then glimpses and phantoms, then mimics and doubles. A light on the screen points to the nearest rock holding exotic matter, at the cost of faster Drift | Disorientation, scrambled speech at the top tier. No physical overdose; the top tier adds brief `Pacified` | Swallowed tab |
 | `WFHalo` | Halo | Empathogen | Social | Glow overlay, light pain relief, warm popups, laugh and hug emotes | Rising body temperature while high; a crash of sadness popups and low stamina. Overdose: overheating | Pill |
@@ -384,19 +399,30 @@ the first strains the heart by 0.1 a second.
 
 ### Items
 
-- `WFNeurowareStick`: `profile`, `integrity` (0-1), `loads` remaining, `amount` (level added per load), `rate`
-  (level per second while loading).
+- `WFNeurowareStick`: `profile`, `integrity` (0-1), `loads` remaining, `amount` (level added per load; unset takes
+  the profile's `neuroware.amount`), `rate` (level per second while loading).
 - Using a stick on a host starts a do-after: 2 s on yourself, 4 s on someone else, with a popup to the target, as
   `WolfmedFluidPackSystem` does (`Content.Server/_WF/Wolfmed/Medical/WolfmedFluidPackSystem.cs`). A non-host gets
   a "no port" popup.
 - Loading adds a running program to `WFNeurowareComponent` on the body. Each second it adds
-  `rate x integrity` to the profile's level until `amount` is delivered. Everything after that is
+  `rate x integrity` to the profile's level until `amount` is delivered, and the same to its rush
+  (`WFIntoxicationSystem.AddRush`), so a load peaks the way a dose in the blood does. Everything after that is
   `WFIntoxicationSystem`.
-- **Copying.** Using a stick on a blank stick copies it at `integrity x 0.85` with one load and leaves the source's loads alone, and the blank shows a strip of tape.
-  Pristine builds come from dealers, the uplink and rare loot, so a street copy is a few generations down.
-- **Sources.** The Reaver dealer sells blanks and pristine builds, the planet dealer sells street copies, and
-  `WFNeurowareStickLoot` (mostly blanks, some copies, rarely a pristine build) rolls in maintenance fluff and
-  uncommon salvage treasure.
+- **Load size.** A full load is 8, as much as a heavy line or two; 10 for the drugs that come in a 10 u vial and for
+  Crystal, and 14 for Idle, which have no rush to carry a load into the heavy tier.
+- **Copying.** Using a stick on a blank stick copies it at `integrity x 0.85` with one load, and the blank shows a strip of tape.
+  Each copy spends one of the source's loads and a tenth of its integrity, so a stick yields at most as many sticks
+  as it has loads, run or copied, and a one-load copy is either run or copied once. Pristine builds come from
+  dealers, the uplink and rare loot, so a street copy is a few generations down.
+- **Encoding.** Using a blank on anything that holds a drug with a twin, other than a body, starts a 3 s do-after
+  that reads the drug in and uses it up: integrity is the drug's grade, the level taken is `units x perUnit` up to
+  three full loads, split into the fewest loads that are no larger than a full one. A solid goes with its drug and a
+  vessel is left with the rest. This is the synthetic's supply line: whoever grows or cooks for organics can supply
+  a synthetic at the same grade.
+- **Sources.** Blanks print at the autolathe for a sheet of steel and one of plastic and are priced under that. The
+  Reaver dealer sells blanks and pristine builds, the planet dealer sells a street copy of the buyer's choice, and
+  `WFNeurowareStickLoot` (mostly blanks, some copies, rarely a pristine build) rolls in maintenance fluff, both the
+  upstream table and the Mono locker one, and uncommon salvage treasure.
 - Sprites: `Resources/Textures/_WF/WolfChem/Neuroware/Objects/stick.rsi`, a USB stick with a tinted body, a printed label for
   pristine builds and tape for copies.
 
@@ -409,19 +435,21 @@ stun, a forced Beep or Buzz emote, ten seconds of `ScrambledAccent`, or a false 
 ### Presentation
 
 `WFIntoxicationOverlay` draws a host's strongest high with its own shader, `WFNeuroware`
-(`Resources/Textures/_WF/WolfChem/Neuroware/Shaders/neuroware.swsl`), and no trails: the program corrupts the optics feed
-instead of the senses. Stimulants trace edges in cyan under a racing refresh line, opioids drop resolution and
-colour depth into standby, psychedelics map brightness onto a cycling false-colour palette and smear blocks,
+(`Resources/Textures/_WF/WolfChem/Neuroware/Shaders/neuroware.swsl`), over the same ghost trails: the program corrupts the
+optics feed instead of the senses. Stimulants trace edges in cyan under a racing refresh line, opioids settle into the organic
+high's muted amber and drop resolution and colour depth into standby, psychedelics map brightness onto a cycling false-colour palette and smear blocks,
 empathogens bloom warm into a thermal view, cannabinoids fade to green phosphor with a ghost image, and combat
 programs leave a red targeting circle with traced edges outside it. Every program lays scanlines; an overdose slips
-rows of blocks and flickers dead pixels; a crash is a weak grey signal. Its profile state also shows through the
+rows of blocks and flickers dead pixels; a crash is a weak grey signal. The world bends and the phase kick zooms as
+they do for an organic high, and the stimulant feed lifts the shadows rather than crushing them. Its profile state also shows through the
 synthetic HUD (`Content.Server/_WF/Wolfmed/Hud/WolfmedSyntheticHudSystem.cs`, client in
 `Content.Client/_WF/Wolfmed/Overlays/`):
 
 - The HUD system raises a collect event during `Refresh` so `Neuroware` can add fault lines from the profile's
   `neuroware` strings ("UNSIGNED PROCESS: whiteline.d", "THERMAL GOVERNOR OVERRIDDEN").
-- The screen shader's `tint`, `glitch` and `slice` are driven from the active tier, and the HUD shows even on an
-  undamaged chassis while a program runs. Today glitch motion runs only at the Heavy strain tier.
+- The screen shader's `glitch` and `slice` are driven from the active tier (a strong program tears the screen), and
+  the HUD shows even on an undamaged chassis while a program runs. The red `tint` rim is left to damage; the
+  program's own shader carries its colour.
 - Withdrawal shows as recurring faults ("HABIT LOOP: process not found") with the same gameplay penalties.
 - Synthetics without the Wolfmed HUD still get popups and speech effects.
 
@@ -450,13 +478,14 @@ synthetic HUD (`Content.Server/_WF/Wolfmed/Hud/WolfmedSyntheticHudSystem.cs`, cl
 
 ## Economy and law
 
-- Every product carries `Contraband` with `Class3Chem`. Confirm the severity's examine text and turn-in values
-  work, since nothing uses it today.
+- Every product carries `Contraband` with `Class3Chem`, except hash: it is legal like the cannabis it is pressed
+  from, and THC has no price, so nothing holding it is marked either.
 - Solid products get a `StaticPrice` scaled by grade, and the `ItemTax` and `SoldAlert` setup that
   `FentanylSolidified` uses (`Resources/Prototypes/_Mono/Entities/Objects/Misc/solids.yml`).
 - The contraband is the reagent, not the container: any item or anchorable structure holding a priced narcotic in a
   solution (beaker, jug, syringe, pill, baggie, vial, storage tank) gains the same tag, contraband, tax and sold alert (`WFNarcoticGoodsSystem`,
-  `WFNarcoticMarks`) and loses them when emptied. A blank stick that takes a copy gains them for good.
+  `WFNarcoticMarks`) and loses them when emptied. A blank stick that takes a copy gains them for good, unless the
+  program's profile is `legal` (cannabis, whose twin is Idle).
   Narcotics sold on a cargo pallet fund the Reaver campaign by value (`fundingGoodsValue`).
 - The Strangers dealer (`Resources/Prototypes/_WF/Strangers/dialogues.yml:7`) sells low-grade product, seeds,
   the purity tester and neuroware copies. The Reaver runner (`WFEncounterReaverDealer`, a trader ship flying

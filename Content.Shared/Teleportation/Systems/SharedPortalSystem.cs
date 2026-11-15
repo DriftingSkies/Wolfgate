@@ -5,6 +5,7 @@ using Content.Shared.Movement.Pulling.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Projectiles;
 using Content.Shared.Teleportation.Components;
+using Content.Shared._WF.InteractionParticles; // WOLFGATE(InteractionParticles)
 using Content.Shared.Weapons.Misc;
 using Content.Shared.Verbs;
 using Robust.Shared.Audio;
@@ -34,6 +35,7 @@ public abstract partial class SharedPortalSystem : EntitySystem
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedGrapplingGunSystem _grappling = default!;
     [Dependency] private SharedJointSystem _joints = default!;
+    [Dependency] private EntityQuery<PortalBlacklistComponent> _portalBlacklistQuery; // WOLFGATE(InteractionParticles)
 
     private const string PortalFixture = "portalFixture";
     private const string ProjectileFixture = "projectile";
@@ -101,6 +103,11 @@ public abstract partial class SharedPortalSystem : EntitySystem
         var attempt = new OnAttemptPortalEvent(subject);
         RaiseLocalEvent(uid, attempt);
         if (attempt.Cancelled)
+            return;
+        // WOLFGATE END
+
+        // WOLFGATE(InteractionParticles) START: effects and their sparks must not be teleported by the portal they spawned on
+        if (_portalBlacklistQuery.HasComp(subject))
             return;
         // WOLFGATE END
 
@@ -228,7 +235,13 @@ public abstract partial class SharedPortalSystem : EntitySystem
             return;
 
         _audio.PlayPredicted(departureSound, portal, subject);
-        _audio.PlayPredicted(arrivalSound, subject, subject);
+
+        // WOLFGATE(InteractionParticles) START: a portal destination keeps its arrival sound, anything else gets the effect
+        if (!HasComp<PortalComponent>(targetEntity))
+            PredictedSpawnAtPosition(portalComponent.TeleportEffect, Transform(subject).Coordinates);
+        else
+            _audio.PlayPredicted(arrivalSound, subject, subject);
+        // WOLFGATE END
     }
 
     private void TeleportRandomly(EntityUid portal, EntityUid subject, PortalComponent? component = null)

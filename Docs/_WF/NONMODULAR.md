@@ -57,6 +57,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Client/MachineLinking/UI/SignalTimerBoundUserInterface.cs`](../../Content.Client/MachineLinking/UI/SignalTimerBoundUserInterface.cs): restore the licence header removed by Kill Spdx
 - [`Content.Client/MachineLinking/UI/SignalTimerWindow.xaml.cs`](../../Content.Client/MachineLinking/UI/SignalTimerWindow.xaml.cs): restore the licence header removed by Kill Spdx
 - [`Content.Client/Parallax/ParallaxSystem.cs`](../../Content.Client/Parallax/ParallaxSystem.cs): a map without a Parallax component falls back to this name, so load it or space is black
+- [`Content.Client/Polymorph/Systems/ChameleonProjectorSystem.cs`](../../Content.Client/Polymorph/Systems/ChameleonProjectorSystem.cs): the source's hover outline came along as a post-shader with no prototype, which threw on init
 - [`Content.Client/Projectiles/ProjectileSystem.cs`](../../Content.Client/Projectiles/ProjectileSystem.cs): restore the licence header removed by Kill Spdx
 - [`Content.Client/Shuttles/UI/BaseShuttleControl.xaml.cs`](../../Content.Client/Shuttles/UI/BaseShuttleControl.xaml.cs)
   - v291 Box2 asserts on inverted corners in debug builds; order them
@@ -125,6 +126,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - an instant do-after has already ended, so nothing would ever delete the effect
 - [`Content.Server/_Mono/AmmoLoader/AmmoLoaderSystem.cs`](../../Content.Server/_Mono/AmmoLoader/AmmoLoaderSystem.cs): an infinite magazine reports no rounds, which hid it and blocked unloading
 - [`Content.Server/_Mono/Botany/PlantAnalyzer/PlantAnalyzerSystem.cs`](../../Content.Server/_Mono/Botany/PlantAnalyzer/PlantAnalyzerSystem.cs): was 0.01, so the slightest drift silently cancelled the scan
+- [`Content.Server/_Mono/Detection/ThermalSignatureSystem.cs`](../../Content.Server/_Mono/Detection/ThermalSignatureSystem.cs): one bad source must not poison a grid's heat for good
 - [`Content.Server/_Mono/FireControl/FireControlRotateComponent.cs`](../../Content.Server/_Mono/FireControl/FireControlRotateComponent.cs): restore the licence header removed by Kill Spdx
 - [`Content.Server/_Mono/FireControl/FireControlSystem.cs`](../../Content.Server/_Mono/FireControl/FireControlSystem.cs): restore the licence header removed by Kill Spdx
 - [`Content.Server/_Mono/Projectiles/TargetSeeking/Events.cs`](../../Content.Server/_Mono/Projectiles/TargetSeeking/Events.cs): restore the licence header removed by Kill Spdx
@@ -205,6 +207,12 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Server/Mind/MindSystem.cs`](../../Content.Server/Mind/MindSystem.cs): a session whose data is already gone (a client torn down mid-delete) failed the asserts with a KeyNotFoundException
 - [`Content.Server/Mining/MiningSystem.cs`](../../Content.Server/Mining/MiningSystem.cs): restore the licence header removed by Kill Spdx
 - [`Content.Server/Movement/Systems/LagCompensationSystem.cs`](../../Content.Server/Movement/Systems/LagCompensationSystem.cs): restore the licence header removed by Kill Spdx
+- [`Content.Server/NPC/HTN/PrimitiveTasks/Operators/MoveToOperator.cs`](../../Content.Server/NPC/HTN/PrimitiveTasks/Operators/MoveToOperator.cs)
+  - set when Startup found no target
+  - a target dropped since planning, or on a map since deleted, threw and stopped every NPC that tick
+  - the target went before the move started
+  - a lost target is forgotten with the move
+- [`Content.Server/NPC/Systems/NPCSteeringSystem.Context.cs`](../../Content.Server/NPC/Systems/NPCSteeringSystem.Context.cs): a path over a grid deleted since it was found threw and put the NPC to sleep; repath instead
 - [`Content.Server/Nutrition/EntitySystems/DrinkSystem.cs`](../../Content.Server/Nutrition/EntitySystems/DrinkSystem.cs): restore the licence header removed by Kill Spdx
 - [`Content.Server/Nutrition/EntitySystems/FoodSystem.cs`](../../Content.Server/Nutrition/EntitySystems/FoodSystem.cs): restore the licence header removed by Kill Spdx
 - [`Content.Server/Polymorph/Systems/PolymorphSystem.cs`](../../Content.Server/Polymorph/Systems/PolymorphSystem.cs): skip the copy when either body isn't humanoid, as when an artifact turns a monkey into a lizard
@@ -297,6 +305,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
   - document the armed action's flat damage bonus
   - flat bonus added after melee modifiers, about 100 with a bare fist
 - [`Content.Shared/_Mono/BlackFlash/BlackFlashSystem.cs`](../../Content.Shared/_Mono/BlackFlash/BlackFlashSystem.cs): apply configured flat damage after melee modifiers
+- [`Content.Shared/_Mono/Detection/DetectionSystem.cs`](../../Content.Shared/_Mono/Detection/DetectionSystem.cs): a NaN or infinite heat made a grid undetectable, so radar dropped its hull
 - [`Content.Shared/_Mono/Economy/SharedCreditReceiverSystem.cs`](../../Content.Shared/_Mono/Economy/SharedCreditReceiverSystem.cs): _log was never assigned, so every log line in TryCashPayment threw a NullReferenceException
 - [`Content.Shared/_Mono/ShipGuns/ShipGunClassComponent.cs`](../../Content.Shared/_Mono/ShipGuns/ShipGunClassComponent.cs): restore the licence header removed by Kill Spdx
 - [`Content.Shared/_Mono/Traits/Physical/BionicLegsComponent.cs`](../../Content.Shared/_Mono/Traits/Physical/BionicLegsComponent.cs): restore the licence header removed by Kill Spdx
@@ -342,6 +351,8 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Shared/DisplacementMap/DisplacementData.cs`](../../Content.Shared/DisplacementMap/DisplacementData.cs): wizden#38042, the stencil one draws nothing in UI sprite views
 - [`Content.Shared/DoAfter/SharedDoAfterSystem.Update.cs`](../../Content.Shared/DoAfter/SharedDoAfterSystem.Update.cs)
   - drifting doesn't interrupt work on yourself
+  - a finishing do-after can start one on another entity, which added to the query mid-loop and threw
+  - the do-afters to update this tick, taken before any runs
   - drifting isn't moving, so it doesn't interrupt work on yourself or something you carry
   - skipped while drifting
 - [`Content.Shared/Gibbing/Systems/GibbingSystem.cs`](../../Content.Shared/Gibbing/Systems/GibbingSystem.cs)
@@ -385,6 +396,9 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Content.Shared/Weapons/Melee/Events/MeleeHitEvent.cs`](../../Content.Shared/Weapons/Melee/Events/MeleeHitEvent.cs): support hit damage that bypasses melee modifier sets
 - [`Content.Shared/Weapons/Melee/SharedMeleeWeaponSystem.cs`](../../Content.Shared/Weapons/Melee/SharedMeleeWeaponSystem.cs): apply configured damage after melee modifier sets
 - [`Content.Shared/Weapons/Ranged/Events/RequestShootEvent.cs`](../../Content.Shared/Weapons/Ranged/Events/RequestShootEvent.cs): restore the licence header removed by Kill Spdx
+- [`Content.Shared/Weapons/Ranged/Systems/BatteryWeaponFireModesSystem.cs`](../../Content.Shared/Weapons/Ranged/Systems/BatteryWeaponFireModesSystem.cs)
+  - wielding goes first and doesn't also switch the mode
+  - a use that wielded the gun isn't a mode switch
 - [`Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.Revolver.cs`](../../Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.Revolver.cs): C# % keeps the sign, index 0 gave -1 and crashed the server
 - [`LEGAL.md`](../../LEGAL.md)
   - licence files live in LICENSES/
@@ -688,6 +702,7 @@ Standalone edits outside `_WF` that serve no module: files with an untagged `WOL
 - [`Resources/Textures/_NF/Clothing/Head/Hats/stc_cap.rsi/equipped-HELMET-vulpkanin.png`](../../Resources/Textures/_NF/Clothing/Head/Hats/stc_cap.rsi/equipped-HELMET-vulpkanin.png): The vulpkanin state was a winter coat hood; it now draws the cap itself.
 - [`Resources/Textures/_NF/Effects/mobspawn.rsi/`](../../Resources/Textures/_NF/Effects/mobspawn.rsi/): Licence corrected to CC-BY-NC-SA-3.0, as the sprite is taken from Goonstation, whose assets are BY-NC-SA.
 - [`Resources/Textures/_NF/Structures/Machines/scrap_processor.rsi/`](../../Resources/Textures/_NF/Structures/Machines/scrap_processor.rsi/): Licence corrected to CC-BY-NC-SA-3.0, as the sprite is taken from Goonstation, whose assets are BY-NC-SA.
+- [`Resources/Textures/Mobs/Animals/mothroach/displacement.rsi/`](../../Resources/Textures/Mobs/Animals/mothroach/displacement.rsi/): Displacement pixels whose source falls outside the frame are transparent, so worn items stop sampling neighbouring atlas art.
 - [`Resources/Textures/Objects/Fun/rubber_hammer.rsi/`](../../Resources/Textures/Objects/Fun/rubber_hammer.rsi/): Licence corrected to CC-BY-NC-SA-3.0, as the sprite is taken from Goonstation, whose assets are BY-NC-SA.
 - [`Resources/Textures/Objects/Misc/chopstick.rsi/`](../../Resources/Textures/Objects/Misc/chopstick.rsi/): Licence corrected to CC-BY-NC-SA-3.0, as the sprite is taken from Goonstation, whose assets are BY-NC-SA.
 - [`Resources/Textures/Structures/Power/cell_recharger.rsi/`](../../Resources/Textures/Structures/Power/cell_recharger.rsi/): Licence corrected to CC-BY-NC-SA-3.0, as the sprite is taken from Goonstation, whose assets are BY-NC-SA.

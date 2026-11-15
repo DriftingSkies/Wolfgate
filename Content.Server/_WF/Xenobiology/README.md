@@ -22,12 +22,18 @@ prototypes.
   effects Wolfgate lacks are written here: spawn, relay to nearby, smoke, delayed effects, timed stealth, faction
   change and component grants, random teleport, and the extract bookkeeping.
 - Slimes use Wolfgate hunger with Goob's satiation thresholds, and sell for 500, half a normal simple mob.
-- The bounty board lives on each console instead of the station, since ships are their own stations here.
+- The bounty board lives on the research server instead of the station, since ships are their own stations here, and
+  every console linked to that server shows it. It draws five random bounties every twelve minutes, a skip swaps one of
+  them, and spent extracts aren't accepted. A fully served board pays about two data farms' worth of research.
+- Steroid and boost jelly add at most two extracts or two offspring to the slime that is dosed, and its offspring don't
+  inherit the bonus. Goob stacks both without limit and passes them on, which doubles a line's yield every generation.
+- The purple extract makes 5u of omnizine, not 15u; no chemical reaction makes omnizine here.
 - Wolfgate has no species change, so the green jelly and the human, felinid and advanced mutation toxins are gone; the
   green extract makes unstable mutagen instead and the black extract keeps only its failing reactions. The light pink
   extract's DNA scramble, the sepia chronofield and the red extract's clothing coating are gone too.
-- Trauma's adamantine bar only matters to its forging system, so the adamantine extract gives ten plasteel
-  sheets (not PDV composite, which is the PDV's currency). The volatile organ is a self-charging power cell.
+- Trauma's adamantine bar only matters to its forging system, so the adamantine extract gives two plasteel
+  sheets (not PDV composite, which is the PDV's currency); more would out-produce mining. The volatile organ is a self-charging power cell with a
+  hyper cell's charge and a microreactor's recharge.
 - Gold extract mob spawners only list mobs Wolfgate has. The dark blue jelly grants heat immunity, without ash storm
   immunity.
 

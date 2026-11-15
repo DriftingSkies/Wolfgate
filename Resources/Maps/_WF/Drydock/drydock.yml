@@ -4,8 +4,8 @@ meta:
   engineVersion: 291.0.4
   forkId: wolfgate-mapping
   forkVersion: 20261112-103730-dc9573c-239153a5
-  time: 11/13/2026 18:10:46
-  entityCount: 2736
+  time: 11/14/2026 16:31:49
+  entityCount: 2740
 maps: []
 grids:
 - 2
@@ -4371,6 +4371,51 @@ entities:
     - type: Transform
       parent: 2
       pos: 4.5,7.5
+  - uid: 2487
+    components:
+    - type: Transform
+      parent: 2
+      pos: 21.5,21.5
+  - uid: 2488
+    components:
+    - type: Transform
+      parent: 2
+      pos: 26.5,9.5
+  - uid: 2489
+    components:
+    - type: Transform
+      parent: 2
+      pos: 25.5,9.5
+  - uid: 2490
+    components:
+    - type: Transform
+      parent: 2
+      pos: 24.5,9.5
+  - uid: 2496
+    components:
+    - type: Transform
+      parent: 2
+      pos: 23.5,9.5
+  - uid: 2497
+    components:
+    - type: Transform
+      parent: 2
+      pos: 22.5,9.5
+  - uid: 2498
+    components:
+    - type: Transform
+      parent: 2
+      pos: 21.5,9.5
+  - uid: 2499
+    components:
+    - type: Transform
+      parent: 2
+      pos: 23.5,21.5
+  - uid: 2533
+    components:
+    - type: Transform
+      parent: 2
+      pos: 24.5,21.5
   - uid: 2675
     components:
     - type: Transform
@@ -4496,6 +4541,11 @@ entities:
     - type: Transform
       parent: 2
       pos: -24.5,16.5
+  - uid: 2710
+    components:
+    - type: Transform
+      parent: 2
+      pos: 25.5,21.5
   - uid: 2711
     components:
     - type: Transform
@@ -4601,6 +4651,16 @@ entities:
     - type: Transform
       parent: 2
       pos: -19.5,26.5
+  - uid: 2739
+    components:
+    - type: Transform
+      parent: 2
+      pos: 26.5,21.5
+  - uid: 2740
+    components:
+    - type: Transform
+      parent: 2
+      pos: 22.5,21.5
 - proto: CableHV
   entities:
   - uid: 15
@@ -6923,7 +6983,7 @@ entities:
       startingCharge: 0
 - proto: ComputerWallmountWithdrawBankATM
   entities:
-  - uid: 2533
+  - uid: 2577
     components:
     - type: Transform
       parent: 2
@@ -9409,7 +9469,6 @@ entities:
       pos: -2.5,13.5
       anchored: False
     - type: Physics
-      canCollide: True
       bodyType: Dynamic
     - type: AtmosPipeColor
       color: '#0055CCFF'
@@ -14122,22 +14181,24 @@ entities:
     components:
     - type: Transform
       parent: 2
-      pos: -17.5,32.5
+      pos: -14.5,29.5
   - uid: 2478
     components:
     - type: Transform
       parent: 2
-      pos: -17.5,31.5
+      rot: 3.141592653589793 rad
+      pos: 15.5,29.5
   - uid: 2479
     components:
     - type: Transform
       parent: 2
-      pos: -17.5,30.5
+      pos: -14.5,2.5
   - uid: 2480
     components:
     - type: Transform
       parent: 2
-      pos: -17.5,29.5
+      rot: 3.141592653589793 rad
+      pos: 15.5,2.5
   - uid: 2481
     components:
     - type: Transform
@@ -14168,26 +14229,6 @@ entities:
     - type: Transform
       parent: 2
       pos: -14.5,23.5
-  - uid: 2487
-    components:
-    - type: Transform
-      parent: 2
-      pos: -17.5,-0.5
-  - uid: 2488
-    components:
-    - type: Transform
-      parent: 2
-      pos: -17.5,0.5
-  - uid: 2489
-    components:
-    - type: Transform
-      parent: 2
-      pos: -17.5,1.5
-  - uid: 2490
-    components:
-    - type: Transform
-      parent: 2
-      pos: -17.5,2.5
   - uid: 2491
     components:
     - type: Transform
@@ -14213,30 +14254,6 @@ entities:
     - type: Transform
       parent: 2
       pos: -14.5,7.5
-  - uid: 2496
-    components:
-    - type: Transform
-      parent: 2
-      rot: 3.141592653589793 rad
-      pos: 18.5,-0.5
-  - uid: 2497
-    components:
-    - type: Transform
-      parent: 2
-      rot: 3.141592653589793 rad
-      pos: 18.5,0.5
-  - uid: 2498
-    components:
-    - type: Transform
-      parent: 2
-      rot: 3.141592653589793 rad
-      pos: 18.5,1.5
-  - uid: 2499
-    components:
-    - type: Transform
-      parent: 2
-      rot: 3.141592653589793 rad
-      pos: 18.5,2.5
   - uid: 2500
     components:
     - type: Transform
@@ -18104,8 +18121,6 @@ entities:
     - type: Transform
       parent: 2
       pos: -24.5,17.5
-    - type: WFDrydockConsole
-      berth: West
     - type: DeviceLinkSource
       linkedPorts:
         613:
@@ -18264,16 +18279,16 @@ entities:
             points: 1
             defaultMarkings: []
         markings:
-          Hair:
-          - markingColor:
-            - '#8A3B1CFF'
-            visible: True
-            markingId: HumanHairBalding
           FacialHair:
           - markingColor:
             - '#8A3B1CFF'
             visible: True
             markingId: HumanFacialHairDwarf
+          Hair:
+          - markingColor:
+            - '#8A3B1CFF'
+            visible: True
+            markingId: HumanHairBalding
       gender: Male
       eyeColor: '#4A5D7AFF'
       biotype: Organic

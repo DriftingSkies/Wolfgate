@@ -21,6 +21,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
     [Dependency] private SharedPopupSystem _popupSystem = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
     [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private SharedInteractionSystem _interaction = default!; // WOLFGATE(InteractionParticles)
 
     public override void Initialize()
     {
@@ -72,7 +73,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
 
         args.Verbs.Add(new ActivationVerb
         {
-            Act = () => InteractUI(args.User, uid, component),
+            Act = () => InteractUI(args.User, (uid, component)), // WOLFGATE(InteractionParticles)
             Text = Loc.GetString(component.VerbText),
             // TODO VERB ICON find a better icon
             Icon = new SpriteSpecifier.Texture(new ResPath("/Textures/Interface/VerbIcons/settings.svg.192dpi.png")),
@@ -86,7 +87,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
 
         args.Verbs.Add(new Verb
         {
-            Act = () => InteractUI(args.User, uid, component),
+            Act = () => InteractUI(args.User, (uid, component)), // WOLFGATE(InteractionParticles)
             Text = Loc.GetString(component.VerbText),
             // TODO VERB ICON find a better icon
             Icon = new SpriteSpecifier.Texture(new ResPath("/Textures/Interface/VerbIcons/settings.svg.192dpi.png")),
@@ -130,7 +131,8 @@ public sealed partial class ActivatableUISystem : EntitySystem
         if (component.RequiredItems != null)
             return;
 
-        args.Handled = InteractUI(args.User, uid, component);
+        var interactionParticle = false; // WOLFGATE(InteractionParticles)
+        args.Handled = InteractUI(args.User, uid, component, ref interactionParticle); // WOLFGATE(InteractionParticles)
     }
 
     private void OnActivate(EntityUid uid, ActivatableUIComponent component, ActivateInWorldEvent args)
@@ -144,7 +146,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
         if (component.RequiredItems != null)
             return;
 
-        args.Handled = InteractUI(args.User, uid, component);
+        args.Handled = InteractUI(args.User, uid, component, ref args.InteractionParticle); // WOLFGATE(InteractionParticles)
     }
 
     private void OnInteractUsing(EntityUid uid, ActivatableUIComponent component, InteractUsingEvent args)
@@ -161,7 +163,7 @@ public sealed partial class ActivatableUISystem : EntitySystem
         if (_whitelistSystem.IsWhitelistFail(component.RequiredItems, args.Used))
             return;
 
-        args.Handled = InteractUI(args.User, uid, component);
+        args.Handled = InteractUI(args.User, uid, component, ref args.InteractionParticle); // WOLFGATE(InteractionParticles)
     }
 
     private void OnUIClose(EntityUid uid, ActivatableUIComponent component, BoundUIClosedEvent args)
@@ -177,13 +179,26 @@ public sealed partial class ActivatableUISystem : EntitySystem
         SetCurrentSingleUser(uid, null, component);
     }
 
-    private bool InteractUI(EntityUid user, EntityUid uiEntity, ActivatableUIComponent aui)
+    // WOLFGATE(InteractionParticles) START: verbs and the button handlers share one UI opener, which plays the particle
+    private void InteractUI(EntityUid user, Entity<ActivatableUIComponent> ui)
+    {
+        var interactionParticle = false;
+
+        if (!InteractUI(user, ui, ui, ref interactionParticle))
+            return;
+
+        _interaction.DoContactInteraction(user, ui, null, true, interactionParticles: interactionParticle);
+    }
+    // WOLFGATE END
+
+    private bool InteractUI(EntityUid user, EntityUid uiEntity, ActivatableUIComponent aui, ref bool interactionParticle) // WOLFGATE(InteractionParticles)
     {
         if (aui.Key == null || !_uiSystem.HasUi(uiEntity, aui.Key))
             return false;
 
         if (_uiSystem.IsUiOpen(uiEntity, aui.Key, user))
         {
+            interactionParticle = false; // WOLFGATE(InteractionParticles)
             _uiSystem.CloseUi(uiEntity, aui.Key, user);
             return true;
         }
@@ -243,6 +258,8 @@ public sealed partial class ActivatableUISystem : EntitySystem
         //Let the component know a user opened it so it can do whatever it needs to do
         var aae = new AfterActivatableUIOpenEvent(user, user);
         RaiseLocalEvent(uiEntity, aae);
+
+        interactionParticle = aae.InteractionParticle; // WOLFGATE(InteractionParticles)
 
         return true;
     }

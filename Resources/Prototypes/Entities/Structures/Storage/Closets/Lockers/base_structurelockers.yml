@@ -74,6 +74,10 @@
     node: done
     containers:
     - entity_storage
+  # WOLFGATE(InteractionParticles): electrical structures spark when damaged
+  - type: ESSparkOnHit
+    prob: 0.25
+    count: 2
 
 - type: entity
   id: LockerBaseSecure

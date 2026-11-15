@@ -195,7 +195,7 @@ public sealed class DeliveryTest
             var brick = entMan.SpawnEntity("WFHashBrick", map.GridCoords);
             solutions.TryGetSolution(brick, "food", out var brickSoln, out _);
             solutions.SplitSolution(brickSoln!.Value, FixedPoint2.New(1));
-            Assert.That(Marked(brick), Is.True, "Hash stays a narcotic though THC has no price.");
+            Assert.That(Marked(brick), Is.False, "Hash is legal, and THC has no price to mark it by.");
 
             var neuroware = server.System<WFNeurowareSystem>();
             var source = entMan.SpawnEntity("WFNeurowareStickWhiteline", map.GridCoords);

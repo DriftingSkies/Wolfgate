@@ -1,6 +1,7 @@
 # Names
 wf-crew-name-format = {$title} {$name}
 wf-crew-role-deckhand = Deckhand
+wf-crew-role-janitor = Janitor
 wf-crew-role-engineer = Engineer
 wf-crew-role-marine = Marine
 wf-crew-role-pilot = First Officer
@@ -275,4 +276,7 @@ wf-crew-shove = {CAPITALIZE(THE($user))} shoves {THE($crate)} aside.
 wf-crew-conduct-brandish-warn = Put that weapon away. You have ten seconds.
 wf-crew-conduct-brandish-complied = Good. Keep it that way.
 wf-crew-conduct-brandish-hostile = That's it. Take them down!
+wf-crew-conduct-haul-warn = Put our crewman down. You have ten seconds.
+wf-crew-conduct-haul-complied = Leave them. Our medics will see to them.
+wf-crew-conduct-haul-hostile = They're taking our people! Take them down!
 wf-crew-conduct-theft = Thief! Put that back!

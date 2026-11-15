@@ -27,10 +27,16 @@ public sealed class WFGroundFireSystem : EntitySystem
         SubscribeLocalEvent<WFGroundFireComponent, EntityTerminatingEvent>(OnTerminating);
     }
 
-    /// <summary>Whether a fire may start another one. Fires off planet ground are never limited.</summary>
+    /// <summary>Whether a fire may start another one. Fires off planet ground are only limited on a no-spread grid.</summary>
     public bool CanSpread(Entity<ESTileFireComponent> fire)
     {
-        if (Transform(fire).GridUid is not { } grid || !HasComp<WFTerrainAtmosphereComponent>(grid))
+        if (Transform(fire).GridUid is not { } grid)
+            return true;
+
+        if (HasComp<WFNoFireSpreadComponent>(grid))
+            return false;
+
+        if (!HasComp<WFTerrainAtmosphereComponent>(grid))
             return true;
 
         if (!TryComp(fire, out WFGroundFireComponent? ground))

@@ -42,7 +42,9 @@ public sealed partial class CEZLevelsSystem
 
                 var xform = Transform(stander);
                 var parent = xform.ParentUid;
-                if (xform.Anchored || parent == hull || hulls.Contains(parent) || xform.MapUid is null)
+                // GridTraversal off opts out of riding hulls, as the orbit marker does; adopting it carried the
+                // planet's marker off on the first ship to lift off over it.
+                if (xform.Anchored || !xform.GridTraversal || parent == hull || hulls.Contains(parent) || xform.MapUid is null)
                     continue;
 
                 // Only what rests directly on the ground layer or its map; never another ship's deck.

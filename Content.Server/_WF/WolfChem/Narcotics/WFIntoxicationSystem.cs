@@ -1,9 +1,14 @@
+using System.Numerics;
 using Content.Server._WF.Lattice;
 using Content.Shared._WF.WolfChem.Narcotics;
+using Content.Shared.Damage.Components;
+using Content.Shared.Damage.Systems;
+using Content.Shared.Drowsiness;
 using Content.Shared.EntityEffects;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
 using Content.Shared.StatusEffect;
+using Content.Shared.Stunnable;
 using Robust.Server.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -24,12 +29,20 @@ public sealed partial class WFIntoxicationSystem : SharedWFIntoxicationSystem
     [Dependency] private WFDriftEffectsSystem _drift = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private StaminaSystem _stamina = default!;
+    [Dependency] private SharedStunSystem _stun = default!;
 
     /// <summary>Seconds between ticks.</summary>
     public const float TickSeconds = 1f;
 
     /// <summary>How long a tier's status effects outlast the tick that set them.</summary>
     private static readonly TimeSpan StatusTime = TimeSpan.FromSeconds(TickSeconds * 2.5f);
+
+    /// <summary>Seconds between the nods of a crash or withdrawal Drowsiness, (min, max).</summary>
+    public static readonly Vector2 DrowsyGap = new(60f, 120f);
+
+    /// <summary>Seconds each nod puts the body to sleep, (min, max).</summary>
+    public static readonly Vector2 DrowsyLength = new(1f, 2f);
 
     private TimeSpan _nextTick;
     private readonly List<ProtoId<WFDrugProfilePrototype>> _profiles = new();
@@ -118,6 +131,9 @@ public sealed partial class WFIntoxicationSystem : SharedWFIntoxicationSystem
             }
             else if (comp.TimeAbove.Remove(profile, out var above) && proto.Crash is { } crash && above >= crash.After)
             {
+                if (alive && !comp.Crashes.ContainsKey(profile))
+                    _stun.TryKnockdown(uid, crash.Collapse, true);
+
                 // A redose paused any crash still running; the new one adds to it.
                 var duration = comp.Crashes.GetValueOrDefault(profile) + crash.Duration.TotalSeconds + crash.PerSecondAbove * above;
                 comp.Crashes[profile] = (float) Math.Min(duration, crash.MaxDuration.TotalSeconds);
@@ -144,8 +160,13 @@ public sealed partial class WFIntoxicationSystem : SharedWFIntoxicationSystem
             }
 
             comp.Crashes[profile] = left;
-            if (alive)
-                Apply(uid, args, proto.Crash.Effects, proto.Crash.StatusEffects);
+            if (!alive)
+                continue;
+
+            Apply(uid, args, proto.Crash.Effects, proto.Crash.StatusEffects);
+            Drain(uid, proto.Crash, seconds);
+            if (proto.Crash.StatusEffects.Exists(s => s.Key == SharedDrowsinessSystem.DrowsinessKey))
+                TameDrowsiness(uid);
         }
 
         UpdateTraits(ent, seconds, alive);
@@ -166,6 +187,18 @@ public sealed partial class WFIntoxicationSystem : SharedWFIntoxicationSystem
     public static float Decayed(WFDrugProfilePrototype proto, float level, float seconds)
     {
         return Math.Max(0f, level - proto.Decay * seconds);
+    }
+
+    /// <summary>Gives a fresh dose's rush for level fed without the blood, as a neuroware program feeds it.</summary>
+    public void AddRush(EntityUid uid, ProtoId<WFDrugProfilePrototype> profile, float level)
+    {
+        if (level <= 0f
+            || !Proto.TryIndex(profile, out var proto)
+            || proto.RushGain <= 0f
+            || !TryComp<WFIntoxicationComponent>(uid, out var comp))
+            return;
+
+        comp.Rush[profile] = comp.Rush.GetValueOrDefault(profile) + level * proto.RushGain;
     }
 
     /// <summary>
@@ -248,12 +281,36 @@ public sealed partial class WFIntoxicationSystem : SharedWFIntoxicationSystem
         }
     }
 
+    /// <summary>Wears stamina down at a crash's rate, never past its cap: every hit resets regen, so an uncapped drain stun-locks.</summary>
+    private void Drain(EntityUid uid, WFDrugCrash crash, float seconds)
+    {
+        if (crash.Stamina <= 0f || !TryComp<StaminaComponent>(uid, out var stamina) || stamina.Critical)
+            return;
+
+        var room = stamina.CritThreshold * crash.StaminaCap - stamina.StaminaDamage;
+        if (room > 0f)
+            _stamina.TakeStaminaDamage(uid, Math.Min(crash.Stamina * seconds, room), stamina, visual: false, immediate: false);
+    }
+
+    /// <summary>
+    /// Turns a Drowsiness status into a short nod every minute or two. Its defaults sleep the body for seconds at a
+    /// time every few seconds.
+    /// </summary>
+    public void TameDrowsiness(EntityUid uid)
+    {
+        if (!TryComp<DrowsinessComponent>(uid, out var drowsy) || drowsy.TimeBetweenIncidents == DrowsyGap)
+            return;
+
+        drowsy.TimeBetweenIncidents = DrowsyGap;
+        drowsy.DurationOfIncident = DrowsyLength;
+        drowsy.NextIncidentTime = _timing.CurTime + TimeSpan.FromSeconds(_random.NextFloat(DrowsyGap.X, DrowsyGap.Y));
+    }
+
     private void Hallucinate(EntityUid uid, WFDrugTier tier)
     {
         if (tier.Hallucinations.Count == 0
             || !_random.Prob(tier.HallucinationChance)
-            || !_players.TryGetSessionByEntity(uid, out var session)
-            || IsNeurowareHost(uid))
+            || !_players.TryGetSessionByEntity(uid, out var session))
             return;
 
         _drift.Show(session, uid, _random.Pick(tier.Hallucinations));

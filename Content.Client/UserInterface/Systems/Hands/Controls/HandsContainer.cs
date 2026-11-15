@@ -38,9 +38,27 @@ public sealed class HandsContainer : ItemSlotUIContainer<HandButton>
             _grid.AddChild(newButton);
         }
 
+        // WOLFGATE(Wolfmed) START: a hand reattached after the other keeps its side; right, middle, then left
+        var before = 0;
+        foreach (var child in _grid.Children)
+        {
+            if (child != newButton && child is HandButton other && Rank(other.HandLocation) <= Rank(newButton.HandLocation))
+                before++;
+        }
+        newButton.SetPositionInParent(before);
+        // WOLFGATE END
+
         _grid.Columns = Math.Min(_grid.ChildCount, MaxButtonsPerRow);
         return base.AddButton(newButton);
     }
+
+    // WOLFGATE(Wolfmed): the hand bar's order, as the server sorts hands
+    private static int Rank(Content.Shared.Hands.Components.HandLocation location) => location switch
+    {
+        Content.Shared.Hands.Components.HandLocation.Right => 0,
+        Content.Shared.Hands.Components.HandLocation.Middle => 1,
+        _ => 2,
+    };
 
     public override void RemoveButton(string handName)
     {

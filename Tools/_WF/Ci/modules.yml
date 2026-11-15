@@ -16,6 +16,9 @@ external:
 # Edits outside _WF that can't hold a WOLFGATE marker: JSON, images, audio, rich-text .txt and map files.
 # Each entry has a path (a file, a folder or a glob), the module it serves (null for a standalone edit) and a reason.
 unmarked:
+  - path: Resources/Textures/Mobs/Animals/mothroach/displacement.rsi/
+    module: null
+    reason: Displacement pixels whose source falls outside the frame are transparent, so worn items stop sampling neighbouring atlas art.
   - path: Resources/Textures/_NF/Clothing/Head/Hats/stc_cap.rsi/equipped-HELMET-vulpkanin.png
     module: null
     reason: The vulpkanin state was a winter coat hood; it now draws the cap itself.

@@ -5,6 +5,7 @@ using Content.Shared._Mono.Company;
 using Content.Shared._WF.Encounters;
 using Content.Shared.Physics;
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Prototypes;
 
@@ -12,7 +13,8 @@ namespace Content.Server._WF.NpcCrew.Systems;
 
 /// <summary>
 /// Clean shots: a gun holds its fire while a ship that is not hostile to its crew lies between it and its target, a
-/// bystander or a friend, rather than put rounds through it. Companies with reckless fire in their standing shoot
+/// bystander or a friend, rather than put rounds through it; nor while one lies past the target in the line of a miss,
+/// or near enough the aim point to be caught in the blast. Companies with reckless fire in their standing shoot
 /// through whatever is in the way.
 /// </summary>
 public sealed partial class WFGunnerDutySystem
@@ -23,6 +25,15 @@ public sealed partial class WFGunnerDutySystem
     private static readonly TimeSpan LineInterval = TimeSpan.FromSeconds(0.5);
 
     private readonly Dictionary<(EntityUid Gun, EntityUid Target), (TimeSpan Next, bool Clear)> _lines = new();
+
+    /// <summary>How far past the aim point the line must be clear, in metres.</summary>
+    private const float Overshoot = 80f;
+
+    /// <summary>How near the aim point a spared ship may be, for the heaviest ship rounds' blasts.</summary>
+    private const float SplashRadius = 20f;
+
+    [Dependency] private SharedMapSystem _map = default!;
+    private List<Entity<MapGridComponent>> _splashGrids = new();
 
     /// <summary>The guns of a list that have a clean line to the aim point on the target.</summary>
     public List<EntityUid> ClearGuns(EntityUid grid, string group, IEnumerable<EntityUid> guns, EntityUid target, MapCoordinates at)
@@ -78,11 +89,25 @@ public sealed partial class WFGunnerDutySystem
             return true;
 
         var mapUid = Transform(grid).MapUid;
+        // Past the aim point too: a miss, or a round that goes through, carries on into whatever lies behind.
         var ray = new CollisionRay(from.Position, offset / length, (int) (CollisionGroup.Opaque | CollisionGroup.Impassable));
-        return !_physics.IntersectRayWithPredicate(from.MapId, ray, (grid, group, target, mapUid),
+        if (_physics.IntersectRayWithPredicate(from.MapId, ray, (grid, group, target, mapUid),
             (hit, state) => Transform(hit).GridUid is not { } other || other == state.grid || other == state.target
                             || other == state.mapUid || Hostile(state.grid, state.group, other),
-            length, returnOnFirstHit: true).Any();
+            length + Overshoot, returnOnFirstHit: true).Any())
+            return false;
+
+        // And no ship it must spare inside the blast of a round that lands at the aim point.
+        _splashGrids.Clear();
+        _map.FindGridsIntersecting(at.MapId, Box2.CenteredAround(at.Position, new Vector2(SplashRadius * 2f)), ref _splashGrids,
+            approx: true, includeMap: false);
+        foreach (var other in _splashGrids)
+        {
+            if (other.Owner != grid && other.Owner != target && !Hostile(grid, group, other.Owner))
+                return false;
+        }
+
+        return true;
     }
 
     /// <summary>Whether a crew may put rounds into a ship: one it is fighting, set on or warning off as hostile.</summary>

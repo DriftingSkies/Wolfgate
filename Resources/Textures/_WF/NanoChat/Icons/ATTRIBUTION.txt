@@ -1,0 +1,11 @@
+Taken from Delta-V (https://github.com/DeltaV-Station/Delta-v), Resources/Textures/_DV/Interface/VerbIcons.
+
+bell.svg.png taken from https://coreui.io/icons/
+Licensed under CC BY 4.0
+
+bell_muted.png edited from bell.svg.png, CC BY 4.0
+
+edit.svg.png by H2D2 Design under MIT License
+https://www.svgrepo.com/svg/453928/edit
+
+colotalk_logo.png made for Wolfgate, CC-BY-SA-3.0

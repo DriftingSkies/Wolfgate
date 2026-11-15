@@ -83,6 +83,7 @@
       methods: [ Touch ]
       effects:
       - !type:WashCreamPieReaction
+      - !type:WashChemicalBurns # WOLFGATE(Wolfmed): rinses caustic residue off, as on the humanoid base
     - reagents: [ Milk, MilkGoat, MilkSoy, MilkSpoiled ]
       # add new types of milk to reagents as they appear, oat milk isn't on the list
       # because turns out oat milk has 1/30th the amount of calcium in it compared to the rest

@@ -18,6 +18,11 @@
   description: A centralized, reinforced substation terminal for the vessel's electrical systems. Tranforms current from HV to LV in bulk. Useful for shield generators and the like.
   components:
   - type: StationAiWhitelist
+  # WOLFGATE(Drydock) START: a drydock or repair tool rebuilds a destroyed LAPC like any APC
+  - type: ShipRepairable
+    repairTime: 3
+    repairCost: 10
+  # WOLFGATE END
   - type: AmbientOnPowered
   - type: AmbientSound
     volume: -9

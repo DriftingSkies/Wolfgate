@@ -1,3 +1,5 @@
+using Robust.Shared.Prototypes;
+
 namespace Content.Shared._WF.WolfChem.Narcotics;
 
 /// <summary>
@@ -49,6 +51,14 @@ public abstract partial class WFDependentTraitComponent : Component
     /// <summary>The meter never decays below this.</summary>
     [DataField]
     public float Floor = 0.55f;
+
+    /// <summary>The first fix put in an organic body's hand.</summary>
+    [DataField]
+    public EntProtoId? Gear;
+
+    /// <summary>The first fix put in a neuroware host's hand instead: the family's program on a stick.</summary>
+    [DataField]
+    public EntProtoId? HostGear;
 }
 
 [RegisterComponent]
@@ -67,4 +77,16 @@ public sealed partial class WFDependentOpioidComponent : WFDependentTraitCompone
 public sealed partial class WFDependentNicotineComponent : WFDependentTraitComponent
 {
     public override WFDrugFamily Family => WFDrugFamily.Nicotine;
+}
+
+[RegisterComponent]
+public sealed partial class WFDependentEmpathogenComponent : WFDependentTraitComponent
+{
+    public override WFDrugFamily Family => WFDrugFamily.Empathogen;
+}
+
+[RegisterComponent]
+public sealed partial class WFDependentCannabinoidComponent : WFDependentTraitComponent
+{
+    public override WFDrugFamily Family => WFDrugFamily.Cannabinoid;
 }

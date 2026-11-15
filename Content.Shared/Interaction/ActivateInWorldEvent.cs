@@ -28,6 +28,13 @@ public sealed class ActivateInWorldEvent : HandledEntityEventArgs, ITargetedInte
     /// </summary>
     public bool WasLogged { get; set; }
 
+    // WOLFGATE(InteractionParticles) START: set to false when the interaction should not play a particle
+    /// <summary>
+    ///     Whether this interaction should spawn an interaction particle.
+    /// </summary>
+    public bool InteractionParticle = true;
+    // WOLFGATE END
+
     public ActivateInWorldEvent(EntityUid user, EntityUid target, bool complex)
     {
         User = user;

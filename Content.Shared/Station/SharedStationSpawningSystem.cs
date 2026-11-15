@@ -220,6 +220,12 @@ public abstract partial class SharedStationSpawningSystem : EntitySystem
                         _storage.Insert(slotEnt.Value, spawnedEntity, out _, storageComp: storage, playSound: false);
                     }
                 }
+                // WOLFGATE(Roles) START: a slot without storage (a modsuit on the back) no longer loses its starting items
+                else if (inventoryComp != null)
+                {
+                    WfStoreElsewhere(entity, entProtos, coords);
+                }
+                // WOLFGATE END
             }
         }
 

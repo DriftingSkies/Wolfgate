@@ -224,15 +224,16 @@ public sealed partial class WolfmedSurgeryConditionSystem : EntitySystem
         if (InProgress(args.Part, ent.Owner))
             return;
 
-        // Damaged but still alive: OrganHealthSystem.Update destroys any organ at Health <= 0 on the next tick,
-        // so a dead organ is an insert job, not a heal job (P4-D24). The brain is the exception, because
-        // OrganHealthSystem kills the mob instead of destroying it, and BRAIN's repair surgery wants it.
+        // Damaged, or failed and kept in its slot at 0 health (WolfmedOrganFailureSystem) for this surgery to mend.
+        // A failed organ the body doesn't keep is destroyed on the next tick, so only a kept one is found at 0. The
+        // brain is the exception: at 0 it belongs to BRAIN's repair surgery, which asks for it with Destroyed.
         var found = TryFindOrgan(args.Part, ent.Comp.Slot, out var organ);
         var treatable = ent.Comp.AnyDamage
             ? found && organ.Comp.Health < organ.Comp.MaxHealth
             : ent.Comp.Destroyed
                 ? found && organ.Comp.Health <= FixedPoint2.Zero
-                : found && organ.Comp.Health > FixedPoint2.Zero && organ.Comp.Health < organ.Comp.MaxHealth;
+                : found && organ.Comp.Health < organ.Comp.MaxHealth
+                  && (organ.Comp.Health > FixedPoint2.Zero || ent.Comp.Slot != "brain");
 
         // M6: a repair that has already fixed the organ stays listed until its closing step has run.
         var part = args.Part;

@@ -43,6 +43,25 @@ public sealed partial class WFShipRosterComponent : Component
     [DataField]
     public WFCrewSecurityResponse DockingResponse = WFCrewSecurityResponse.Ignore;
 
+    /// <summary>How well the ship's crew shoot, lay guns and fly, and how much punishment they take.</summary>
+    [DataField]
+    public WFCrewSkill Skill = WFCrewSkill.Veteran;
+
+    /// <summary>The crew are ordered to repair the ship on their own whenever they have nothing else queued.</summary>
+    [DataField]
+    public bool AutoRepair;
+
+    /// <summary>How often an idle crew is set to repairs.</summary>
+    [DataField]
+    public TimeSpan RepairInterval = TimeSpan.FromSeconds(60);
+
+    [ViewVariables]
+    public TimeSpan NextRepairCheck;
+
+    /// <summary>The crew's guns refill themselves when they run dry.</summary>
+    [DataField]
+    public bool InfiniteAmmo;
+
     /// <summary>Every post is staffed when the ship spawns.</summary>
     [DataField]
     public bool StaffOnSpawn = true;

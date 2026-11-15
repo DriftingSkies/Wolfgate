@@ -33,6 +33,7 @@ PENIS = [
     ("Nondescript", "nondescript", "Nondescript", None, ["Sheath", "Slit"], 20),
     ("Knotted", "knotted", "Knotted", "knotted", ["Sheath", "Slit"], 30),
     ("Flared", "flared", "Flared", "flared", ["Sheath", "Slit"], 40),
+    ("Barbed", "barbed", "Barbed", "barbed", ["Sheath", "Slit"], 45),
     ("BarbKnot", "barbknot", "Barbed, knotted", "barbed and knotted", ["Sheath", "Slit"], 50),
     ("Tapered", "tapered", "Tapered", "tapered", ["Sheath", "Slit"], 60),
     ("Hemi", "hemi", "Hemipenes", "paired (hemipenes)", ["Slit"], 70),  # hemipenes retract into a slit

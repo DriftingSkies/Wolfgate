@@ -54,13 +54,13 @@ stack-sepia-tile = sepia tile
 ## Reagents
 
 xenobio-reagent-jelly-purple-name = slime steroid
-xenobio-reagent-jelly-purple-desc = Makes a slime produce one more extract when processed. Only works on live slimes.
+xenobio-reagent-jelly-purple-desc = Makes a live slime produce one more extract when processed, up to two more. Its offspring don't keep the bonus.
 xenobio-reagent-jelly-blue-name = slime stabilizer
 xenobio-reagent-jelly-blue-desc = Lowers a slime's mutation chance by 25 percent. Carries over to its offspring.
 xenobio-reagent-jelly-darkblue-name = slime chilling jelly
 xenobio-reagent-jelly-darkblue-desc = Makes whoever drinks it immune to heat for a while.
 xenobio-reagent-jelly-cerulean-name = slime boost
-xenobio-reagent-jelly-cerulean-desc = Makes a slime produce more offspring when it splits.
+xenobio-reagent-jelly-cerulean-desc = Lets a slime split into up to two more offspring. The offspring don't keep the bonus.
 xenobio-reagent-jelly-red-name = slime destabilizer
 xenobio-reagent-jelly-red-desc = Raises a slime's mutation chance by 25 percent. Carries over to its offspring.
 xenobio-reagent-jelly-pink-name = slime docility extract

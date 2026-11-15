@@ -50,6 +50,13 @@ namespace Content.Shared.Interaction
     /// </summary>
     public sealed class AfterInteractEvent : InteractEvent
     {
+        // WOLFGATE(InteractionParticles) START: set to false when the interaction should not play a particle
+        /// <summary>
+        ///     Whether this interaction should spawn an interaction particle.
+        /// </summary>
+        public bool SpawnInteractionParticles = true;
+        // WOLFGATE END
+
         public AfterInteractEvent(EntityUid user, EntityUid used, EntityUid? target,
             EntityCoordinates clickLocation, bool canReach) : base(user, used, target, clickLocation, canReach)
         { }
@@ -61,6 +68,13 @@ namespace Content.Shared.Interaction
     /// </summary>
     public sealed class AfterInteractUsingEvent : InteractEvent
     {
+        // WOLFGATE(InteractionParticles) START: set to false when the interaction should not play a particle
+        /// <summary>
+        ///     Whether this interaction should spawn an interaction particle.
+        /// </summary>
+        public bool SpawnInteractionParticles = true;
+        // WOLFGATE END
+
         public AfterInteractUsingEvent(EntityUid user, EntityUid used, EntityUid? target,
             EntityCoordinates clickLocation, bool canReach) : base(user, used, target, clickLocation, canReach)
         { }

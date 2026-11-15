@@ -23,9 +23,12 @@ public sealed class PlanetCVars
     /// <summary>
     /// Whether planet layers other than orbit are sent to a client only while a viewer is on or near them, instead
     /// of every planet tile going to every client on join. Needs the Lupine engine; applies to existing planets too.
+    /// Off by default: a layer a client leaves is deleted there, and coming back (stairs, a sinkhole, a vehicle drop)
+    /// left its walls and objects unrendered until relog. On again once the engine re-sends a returning layer's
+    /// children whole.
     /// </summary>
     public static readonly CVarDef<bool> PvsRangeLimited =
-        CVarDef.Create("wf.planet_pvs_range_limited", true, CVar.SERVERONLY);
+        CVarDef.Create("wf.planet_pvs_range_limited", false, CVar.SERVERONLY);
 
     /// <summary>
     /// Whether planet ground gets an atmosphere, so rooms built on it hold their own air. Bare ground keeps the

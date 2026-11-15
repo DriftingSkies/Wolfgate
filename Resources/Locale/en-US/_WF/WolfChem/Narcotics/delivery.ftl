@@ -1,4 +1,5 @@
 wf-baggie-empty = The baggie is empty.
+wf-baggie-powder-hint = Tip it onto a table to lay out a line, or pour it into a beaker.
 wf-baggie-line-placed = You tip out a neat line.
 wf-baggie-refused = The baggie only takes powder. { $reagents } won't go in.
 wf-baggie-solid-in = You tuck { THE($item) } into the baggie.

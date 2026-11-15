@@ -189,7 +189,10 @@ public sealed partial class WFCrewWorkSystem : EntitySystem
         var crewQuery = EntityQueryEnumerator<WFCrewComponent, TransformComponent>();
         while (crewQuery.MoveNext(out var uid, out var crew, out var xform))
         {
-            if (crew.Group != group || crew.Role != WFCrewRoles.Deckhand || !_mobs.IsAlive(uid) || HasComp<ActorComponent>(uid))
+            // Engineers carry the same repair kit as deckhands and work repairs beside them.
+            var worksHere = crew.Role == WFCrewRoles.Deckhand
+                            || kind == WFCrewObjectiveKind.Repair && crew.Role == WFCrewRoles.Engineer;
+            if (crew.Group != group || !worksHere || !_mobs.IsAlive(uid) || HasComp<ActorComponent>(uid))
                 continue;
             handsLeft = true;
             if (xform.GridUid == grid && (crew.Post?.EntityId ?? xform.GridUid) == grid
