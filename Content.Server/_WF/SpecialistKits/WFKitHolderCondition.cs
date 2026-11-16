@@ -1,3 +1,4 @@
+using Content.Server._WF.ShipTiers;
 using Content.Shared.Store;
 using Robust.Shared.Prototypes;
 
@@ -11,6 +12,6 @@ public sealed partial class WFKitHolderCondition : ListingCondition
 
     public override bool Condition(ListingConditionArgs args)
     {
-        return args.EntityManager.System<WFSpecialistKitSystem>().Holds(args.Buyer, Kit);
+        return args.EntityManager.System<WFSpecialistKitSystem>().Holds(WFListingBuyer.Body(args), Kit);
     }
 }

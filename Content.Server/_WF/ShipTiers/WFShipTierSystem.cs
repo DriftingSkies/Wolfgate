@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server.Chat.Systems;
+using Content.Server.GameTicking.Events;
 using Content.Server.Shuttles.Systems;
 using Content.Shared._Mono.Company;
 using Content.Shared._Mono.Ships.Components;
@@ -32,13 +33,21 @@ public sealed class WFShipTierSystem : EntitySystem
 
     private TimeSpan _nextCheck;
 
+    /// <summary>Set from round-restart cleanup until the next round starts, while the old round's grids are flushed.</summary>
+    private bool _flushing;
+
     public override void Initialize()
     {
         base.Initialize();
         SubscribeLocalEvent<AttemptShipyardShuttlePurchaseEvent>(OnAttemptPurchase);
         SubscribeLocalEvent<ShipyardShuttlePurchaseEvent>(OnPurchased);
         SubscribeLocalEvent<WFCapitalShipComponent, EntityTerminatingEvent>(OnTerminating);
-        SubscribeLocalEvent<RoundRestartCleanupEvent>(_ => _lockouts.Clear());
+        SubscribeLocalEvent<RoundRestartCleanupEvent>(_ =>
+        {
+            _lockouts.Clear();
+            _flushing = true;
+        });
+        SubscribeLocalEvent<RoundStartingEvent>(_ => _flushing = false);
     }
 
     /// <summary>Capital slots the faction may fill with this many members online.</summary>
@@ -125,8 +134,8 @@ public sealed class WFShipTierSystem : EntitySystem
 
     private void OnTerminating(Entity<WFCapitalShipComponent> ent, ref EntityTerminatingEvent args)
     {
-        // A sale deletes the ship while it is docked; anything else that deletes it is a loss.
-        if (!ent.Comp.Lost && !IsDocked(ent))
+        // A sale deletes the ship while it is docked, and a round restart flushes every grid; anything else is a loss.
+        if (!_flushing && !ent.Comp.Lost && !IsDocked(ent))
             Lose(ent);
     }
 
@@ -155,10 +164,20 @@ public sealed class WFShipTierSystem : EntitySystem
                 continue;
             }
 
-            // A wreck adrift: Mono's activity check finds no powered consoles and nobody is docking it home.
-            if (!capital.Lost
-                && TryComp<ShipActivityComponent>(uid, out var activity)
-                && activity.InactivePastThreshold
+            if (capital.Lost || !TryComp<ShipActivityComponent>(uid, out var activity))
+                continue;
+
+            // Mono's InactivePastThreshold never clears, and a capital sits unpowered while it is built, so the live
+            // count is read instead, and only once the ship has flown since construction.
+            if (!activity.InactiveLastCheck)
+            {
+                capital.SeenActive = true;
+                continue;
+            }
+
+            // A wreck adrift: no powered consoles for the threshold, and nobody docking it home.
+            if (capital.SeenActive
+                && activity.GetMinutesInactive() >= activity.InactiveThresholdMinutes
                 && !IsDocked(uid))
             {
                 Lose((uid, capital));

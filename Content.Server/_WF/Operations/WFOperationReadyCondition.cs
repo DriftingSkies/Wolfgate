@@ -1,3 +1,4 @@
+using Content.Server._WF.ShipTiers;
 using Content.Shared._WF.Operations;
 using Content.Shared.Store;
 using Robust.Shared.Prototypes;
@@ -12,6 +13,6 @@ public sealed partial class WFOperationReadyCondition : ListingCondition
 
     public override bool Condition(ListingConditionArgs args)
     {
-        return args.EntityManager.System<WFOperationSystem>().CanCall(args.Buyer, Operation);
+        return args.EntityManager.System<WFOperationSystem>().CanCall(WFListingBuyer.Body(args), Operation);
     }
 }

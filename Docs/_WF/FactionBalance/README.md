@@ -47,6 +47,7 @@ Balance Rework doc.
   - also made on the PDV lathe; trimmed to the uplink cap
   - folded into the infiltration kit (_WF/FactionBalance/supplies.yml)
   - duplicate 7.62x39mm ammo; the FMJ magazine box stays
+  - unchanged; marked because the diff pairs it with the trimmed listings above
   - a whole specialist kit, sold past the kit limit; drawn from the specialist vendor instead
   - T0 is free and T1 a token cost for both factions (was 25)
   - a free T0 has a per-player cooldown so it can't be printed endlessly

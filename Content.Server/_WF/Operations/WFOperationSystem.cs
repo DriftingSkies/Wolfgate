@@ -66,6 +66,9 @@ public sealed class WFOperationSystem : EntitySystem
 
     private TimeSpan _nextCheck;
 
+    /// <summary>How long after arrival a PvE site keeps picking up guards its map spawns late.</summary>
+    private static readonly TimeSpan GuardScanWindow = TimeSpan.FromSeconds(30);
+
     public override void Initialize()
     {
         base.Initialize();
@@ -204,6 +207,10 @@ public sealed class WFOperationSystem : EntitySystem
                 continue;
             }
 
+            // Spawners on the map can produce their mobs a moment after the grid loads.
+            if (op.Reward > 0 && !active.Paid && active.Grid is { } scanned && _timing.CurTime < active.ArrivedAt + GuardScanWindow)
+                AddMapGuards(active, scanned);
+
             // A cleared PvE site pays at once and stays until its time is up, for the loot.
             if (!active.Paid && active.Npcs.Count > 0 && active.Npcs.All(npc => !Exists(npc) || _mobState.IsIncapacitated(npc)))
             {
@@ -220,6 +227,12 @@ public sealed class WFOperationSystem : EntitySystem
             {
                 Refund(op, op.FailRefund);
                 Announce("wf-operation-failed", op, active);
+            }
+            else if (op.Reward > 0 && !active.Paid)
+            {
+                // A PvE site that never had a guard to clear: the caller gets its whole stake back.
+                Refund(op, 1f);
+                Announce("wf-operation-ended", op, active);
             }
             else
             {
@@ -272,13 +285,11 @@ public sealed class WFOperationSystem : EntitySystem
             Spawn(replacement, coords);
         }
 
+        ent.Comp.ArrivedAt = _timing.CurTime;
+
         // On a PvE site, NPCs the map spawns itself guard it too.
-        var npcs = EntityQueryEnumerator<HTNComponent, MobStateComponent, TransformComponent>();
-        while (op.Reward > 0 && npcs.MoveNext(out var npc, out _, out _, out var npcXform))
-        {
-            if (npcXform.GridUid == grid.Value.Owner && !HasComp<ActorComponent>(npc))
-                ent.Comp.Npcs.Add(npc);
-        }
+        if (op.Reward > 0)
+            AddMapGuards(ent.Comp, grid.Value.Owner);
 
         var tiles = OpenTiles(grid.Value);
         if (tiles.Count == 0)
@@ -312,6 +323,17 @@ public sealed class WFOperationSystem : EntitySystem
 
         var stay = ent.Comp.EndsAt - _timing.CurTime;
         Announce(op.Reward > 0 ? "wf-operation-arrived-pve" : "wf-operation-arrived", op, ent.Comp, ("minutes", (int) Math.Round(stay.TotalMinutes)));
+    }
+
+    /// <summary>Counts the NPCs standing on the site's grid among its guards.</summary>
+    private void AddMapGuards(WFActiveOperationComponent active, EntityUid grid)
+    {
+        var npcs = EntityQueryEnumerator<HTNComponent, MobStateComponent, TransformComponent>();
+        while (npcs.MoveNext(out var npc, out _, out _, out var xform))
+        {
+            if (xform.GridUid == grid && !HasComp<ActorComponent>(npc) && !active.Npcs.Contains(npc))
+                active.Npcs.Add(npc);
+        }
     }
 
     /// <summary>Drops a cleared site's spoils at its warp point, or on open tiles.</summary>

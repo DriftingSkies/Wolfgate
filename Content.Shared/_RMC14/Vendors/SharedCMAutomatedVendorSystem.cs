@@ -413,6 +413,11 @@ public abstract class SharedCMAutomatedVendorSystem : EntitySystem
         {
             EntityManager.AddComponents(actor, change.AddComponents);
         }
+
+        // WOLFGATE(SpecialistKits) START: a kit is counted against its faction's limit only once it is handed out
+        var wfKitVended = new Content.Shared._WF.SpecialistKits.WFSpecialistKitVendedEvent(actor, entry.Id);
+        RaiseLocalEvent(ref wfKitVended);
+        // WOLFGATE END
     }
 
     private void Vend(EntityUid vendor, EntityUid player, EntProtoId toVend, Vector2 offset, SlotFlags? replaceSlot = null)

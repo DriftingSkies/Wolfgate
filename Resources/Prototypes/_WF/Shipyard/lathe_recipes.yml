@@ -9,6 +9,6 @@
   materials:
     WFShipParts: 120000
     PdvComposite: 4000
-    Steel: 20000
-    Plasteel: 10000
-    UraniumFissile: 1000
+    Steel: 10000
+    Plasteel: 5000
+    UraniumFissile: 150

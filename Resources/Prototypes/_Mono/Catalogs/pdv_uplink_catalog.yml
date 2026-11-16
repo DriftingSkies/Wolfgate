@@ -837,9 +837,7 @@
 #     whitelist:
 #       tags:
 #       - PirateUplink
-# WOLFGATE END
-
-# WOLFGATE(FactionBalance) START: duplicate 7.62x39mm ammo; the FMJ magazine box stays
+#
 # - type: listing
 #   id: UplinkPirateBoxSubsonic
 #   name: uplink-subsonic-box-name
@@ -856,6 +854,7 @@
 #       - PirateUplink
 # WOLFGATE END
 
+# WOLFGATE(FactionBalance): unchanged; marked because the diff pairs it with the trimmed listings above
 - type: listing
   id: UplinkPirateBoxMagazine9x19mmFMJ
   name: uplink-pirate-box-magazine-pistol-name

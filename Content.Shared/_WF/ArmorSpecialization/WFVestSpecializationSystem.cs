@@ -2,11 +2,15 @@ using Content.Shared._Goobstation.DoAfter;
 using Content.Shared._Mono.MotionDetector.Components;
 using Content.Shared.Damage;
 using Content.Shared.Examine;
+using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
+using Content.Shared.Inventory.Events;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
 using Content.Shared.ProximityDetection;
+using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Weapons.Ranged.Events;
+using Content.Shared.Weapons.Ranged.Systems;
 using Robust.Shared.Network;
 using Robust.Shared.Timing;
 
@@ -20,6 +24,8 @@ public sealed class WFVestSpecializationSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private SharedGunSystem _gun = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
     [Dependency] private MovementSpeedModifierSystem _movementSpeed = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
@@ -37,6 +43,8 @@ public sealed class WFVestSpecializationSystem : EntitySystem
         SubscribeLocalEvent<InventoryComponent, GunRefreshModifiersEvent>(OnGunRefresh);
 
         SubscribeLocalEvent<WFSecondWindComponent, InventoryRelayedEvent<RefreshMovementSpeedModifiersEvent>>(OnSecondWindSpeed);
+        SubscribeLocalEvent<WFUnrestrictedComponent, GotEquippedEvent>((_, _, args) => RefreshHeldGuns(args.Equipee));
+        SubscribeLocalEvent<WFUnrestrictedComponent, GotUnequippedEvent>((_, _, args) => RefreshHeldGuns(args.Equipee));
 
         SubscribeLocalEvent<WFFastHandsComponent, ExaminedEvent>((_, _, args) => args.PushMarkup(Loc.GetString("wf-armor-spec-fast-hands-examine")));
         SubscribeLocalEvent<WFLowSignatureComponent, ExaminedEvent>((_, _, args) => args.PushMarkup(Loc.GetString("wf-armor-spec-low-signature-examine")));
@@ -72,6 +80,16 @@ public sealed class WFVestSpecializationSystem : EntitySystem
         args.AngleIncrease *= free.Spread;
     }
 
+    /// <summary>Recomputes the spread of every gun the wearer holds, as an unrestricted vest goes on or comes off.</summary>
+    private void RefreshHeldGuns(EntityUid wearer)
+    {
+        foreach (var held in _hands.EnumerateHeld(wearer))
+        {
+            if (TryComp<GunComponent>(held, out var gun))
+                _gun.RefreshModifiers((held, gun), wearer);
+        }
+    }
+
     private void OnSecondWindSpeed(Entity<WFSecondWindComponent> ent, ref InventoryRelayedEvent<RefreshMovementSpeedModifiersEvent> args)
     {
         if (_timing.CurTime < ent.Comp.ActiveUntil)
@@ -89,7 +107,11 @@ public sealed class WFVestSpecializationSystem : EntitySystem
         var query = EntityQueryEnumerator<WFSecondWindComponent>();
         while (query.MoveNext(out var uid, out var wind))
         {
-            if (!_inventory.TryGetContainingEntity(uid, out var wearer) || !TryComp<DamageableComponent>(wearer, out var damage))
+            // Worn, not carried: a vest in hand gets no speed from the relay, so it mustn't spend its charge.
+            if (!_inventory.TryGetContainingEntity(uid, out var wearer)
+                || !_inventory.TryGetSlotEntity(wearer.Value, Slot, out var worn)
+                || worn != uid
+                || !TryComp<DamageableComponent>(wearer, out var damage))
                 continue;
 
             if (wind.ActiveUntil != TimeSpan.Zero && _timing.CurTime >= wind.ActiveUntil)

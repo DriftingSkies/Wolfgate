@@ -54,7 +54,9 @@ Entry points: `WFSpecialistKitSystem`, `WFSpecialistKitComponent` on each kit's 
 
 ## Non-modular edits
 
-- [`Content.Shared/_RMC14/Vendors/SharedCMAutomatedVendorSystem.cs`](../../../Content.Shared/_RMC14/Vendors/SharedCMAutomatedVendorSystem.cs): specialist kit limits that scale with faction members online
+- [`Content.Shared/_RMC14/Vendors/SharedCMAutomatedVendorSystem.cs`](../../../Content.Shared/_RMC14/Vendors/SharedCMAutomatedVendorSystem.cs)
+  - specialist kit limits that scale with faction members online
+  - a kit is counted against its faction's limit only once it is handed out
 - [`Resources/Maps/_Mono/POI/pdvhelios.yml`](../../../Resources/Maps/_Mono/POI/pdvhelios.yml): Mapped the Vanguard specialist rack against the east wall of the spawn hall.
 - [`Resources/Maps/_Mono/POI/pdvhelios_hw.yml`](../../../Resources/Maps/_Mono/POI/pdvhelios_hw.yml): Mapped the Vanguard specialist rack against the east wall of the spawn hall.
 - [`Resources/Maps/_Mono/POI/tsfmchalcyon.yml`](../../../Resources/Maps/_Mono/POI/tsfmchalcyon.yml): Mapped the TSFMC specialist rack against the west wall of the marine ready room, where TSF players spawn.

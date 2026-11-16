@@ -33,6 +33,7 @@ public sealed class WFSpecialistKitSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<WFSpecialistKitVendAttemptEvent>(OnVendAttempt);
+        SubscribeLocalEvent<WFSpecialistKitVendedEvent>(OnVended);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(_ => _holders.Clear());
     }
 
@@ -63,16 +64,23 @@ public sealed class WFSpecialistKitSystem : EntitySystem
             || !TryComp<ActorComponent>(args.User, out var actor))
             return;
 
-        var key = (company.CompanyName.Id, args.Entry.Id);
-        var holders = _holders.GetOrNew(key);
+        var holders = _holders.GetOrNew((company.CompanyName.Id, args.Entry.Id));
         if (kit.Limited
+            && !holders.Contains(actor.PlayerSession.UserId)
             && Active(holders, company.CompanyName) >= Limit(kit, _shipTiers.MembersOnline(company.CompanyName)))
-        {
             args.Cancelled = true;
-            return;
-        }
+    }
 
-        holders.Add(actor.PlayerSession.UserId);
+    /// <summary>Records the holder once the vendor has handed the kit out, so a vend its own checks refuse costs no slot.</summary>
+    private void OnVended(ref WFSpecialistKitVendedEvent args)
+    {
+        if (!_protos.TryIndex(args.Entry, out var proto)
+            || !proto.TryGetComponent(out WFSpecialistKitComponent? _, _factory)
+            || !TryComp<CompanyComponent>(args.User, out var company)
+            || !TryComp<ActorComponent>(args.User, out var actor))
+            return;
+
+        _holders.GetOrNew((company.CompanyName.Id, args.Entry.Id)).Add(actor.PlayerSession.UserId);
     }
 
     /// <summary>Whether this player drew the kit this round, for buying a replacement.</summary>

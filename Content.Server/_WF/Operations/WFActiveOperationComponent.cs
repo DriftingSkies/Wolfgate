@@ -31,6 +31,10 @@ public sealed partial class WFActiveOperationComponent : Component
     [DataField]
     public List<EntityUid> Npcs = new();
 
+    /// <summary>When the site arrived, for picking up guards its map spawns a little later.</summary>
+    [DataField, AutoPausedField]
+    public TimeSpan ArrivedAt;
+
     /// <summary>Set once a cleared PvE site has paid the caller.</summary>
     [DataField]
     public bool Paid;

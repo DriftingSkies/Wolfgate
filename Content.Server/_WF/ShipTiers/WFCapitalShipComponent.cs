@@ -15,6 +15,10 @@ public sealed partial class WFCapitalShipComponent : Component
     [DataField, AutoPausedField]
     public TimeSpan? ReadyAt;
 
+    /// <summary>Set once the ship has been powered and crewed since construction ended; only then can it go adrift.</summary>
+    [DataField]
+    public bool SeenActive;
+
     /// <summary>Set once the ship has been lost, so its lockout starts only once.</summary>
     [DataField]
     public bool Lost;

@@ -19,6 +19,7 @@ Entry points: `WFShipTierSystem` (the cap on `AttemptShipyardShuttlePurchaseEven
 ### Server
 
 - [`Content.Server/_WF/ShipTiers/WFCapitalShipComponent.cs`](WFCapitalShipComponent.cs)
+- [`Content.Server/_WF/ShipTiers/WFListingBuyer.cs`](WFListingBuyer.cs)
 - [`Content.Server/_WF/ShipTiers/WFListingCooldownSystem.cs`](WFListingCooldownSystem.cs)
 - [`Content.Server/_WF/ShipTiers/WFShipTierSystem.cs`](WFShipTierSystem.cs)
 
@@ -26,6 +27,10 @@ Entry points: `WFShipTierSystem` (the cap on `AttemptShipyardShuttlePurchaseEven
 
 - [`Content.Shared/_WF/ShipTiers/WFListingCooldownEvent.cs`](../../../Content.Shared/_WF/ShipTiers/WFListingCooldownEvent.cs)
 - [`Content.Shared/_WF/ShipTiers/WFShipTiersPrototype.cs`](../../../Content.Shared/_WF/ShipTiers/WFShipTiersPrototype.cs)
+
+### Integration tests
+
+- [`Content.IntegrationTests/Tests/_WF/ShipTiers/WFListingBuyerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ShipTiers/WFListingBuyerTest.cs)
 
 ### Unit tests
 

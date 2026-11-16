@@ -96,9 +96,9 @@
     # UraniumFissile: 250
     WFShipParts: 50000
     Plastitanium: 2000
-    Steel: 10000
-    Plasteel: 5000
-    UraniumFissile: 250
+    Steel: 5000
+    Plasteel: 2500
+    UraniumFissile: 50
     # WOLFGATE END
 
 - type: latheRecipe
@@ -123,9 +123,9 @@
     # UraniumFissile: 1000
     WFShipParts: 120000
     Plastitanium: 4000
-    Steel: 20000
-    Plasteel: 10000
-    UraniumFissile: 1000
+    Steel: 10000
+    Plasteel: 5000
+    UraniumFissile: 150
     # WOLFGATE END
 
 # PDV
@@ -177,9 +177,9 @@
     # PdvComposite: 9000 # WOLFGATE: PDV pack, composite cost 12000->9000
     WFShipParts: 50000
     PdvComposite: 2000
-    Steel: 10000
-    Plasteel: 5000
-    UraniumFissile: 250
+    Steel: 5000
+    Plasteel: 2500
+    UraniumFissile: 50
     # WOLFGATE END
 
 - type: latheRecipe
@@ -193,9 +193,9 @@
     # PdvComposite: 9000 # WOLFGATE: PDV pack, composite cost 12000->9000
     WFShipParts: 50000
     PdvComposite: 2000
-    Steel: 10000
-    Plasteel: 5000
-    UraniumFissile: 250
+    Steel: 5000
+    Plasteel: 2500
+    UraniumFissile: 50
     # WOLFGATE END
 
 - type: latheRecipe
@@ -209,9 +209,9 @@
     # PdvComposite: 18000 # WOLFGATE: PDV pack, composite cost 23000->18000
     WFShipParts: 120000
     PdvComposite: 4000
-    Steel: 20000
-    Plasteel: 10000
-    UraniumFissile: 1000
+    Steel: 10000
+    Plasteel: 5000
+    UraniumFissile: 150
     # WOLFGATE END
 
 - type: latheRecipe

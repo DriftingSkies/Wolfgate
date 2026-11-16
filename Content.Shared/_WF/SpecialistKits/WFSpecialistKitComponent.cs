@@ -34,3 +34,7 @@ public record struct WFSpecialistKitVendAttemptEvent(EntityUid User, EntProtoId 
     /// <summary>Why it was refused, shown to the user.</summary>
     public LocId Reason = "wf-specialist-kit-full";
 }
+
+/// <summary>Raised (broadcast) once a vendor has handed out an entry, after every check of its own passed.</summary>
+[ByRefEvent]
+public record struct WFSpecialistKitVendedEvent(EntityUid User, EntProtoId Entry);

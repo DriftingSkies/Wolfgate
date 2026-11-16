@@ -9,9 +9,9 @@
   materials:
     WFShipParts: 50000
     Plastitanium: 2000
-    Steel: 10000
-    Plasteel: 5000
-    UraniumFissile: 250
+    Steel: 5000
+    Plasteel: 2500
+    UraniumFissile: 50
 
 # The Andromeda was a T2 LPC with no recipe; at T3 it costs what the Altair does.
 - type: latheRecipe
@@ -22,9 +22,9 @@
   materials:
     WFShipParts: 50000
     Plastitanium: 2000
-    Steel: 10000
-    Plasteel: 5000
-    UraniumFissile: 250
+    Steel: 5000
+    Plasteel: 2500
+    UraniumFissile: 50
 
 - type: latheRecipe
   parent: BaseVoucherRecipe
@@ -34,9 +34,9 @@
   materials:
     WFShipParts: 120000
     Plastitanium: 4000
-    Steel: 20000
-    Plasteel: 10000
-    UraniumFissile: 1000
+    Steel: 10000
+    Plasteel: 5000
+    UraniumFissile: 150
 
 - type: latheRecipe
   parent: BaseVoucherRecipe
