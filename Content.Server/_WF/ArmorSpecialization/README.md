@@ -45,6 +45,16 @@ in a fight and not only on paper. Each is one component on the suit, and each re
   - `WFLivingTissue`: closes small bleeds.
   - `WFHonkOnHit`: the clown's honk.
 
+- `WFVestSpecializationSystem` (shared) gives vests and armor without spaceproofing what a sealed suit can't have,
+  each read off the wearer's outer clothing slot:
+  - `WFFastHands`: the wearer's do-afters run 20% faster (`GetDoAfterDelayMultiplierEvent`).
+  - `WFLowSignature`: motion trackers skip the wearer (`ProximityDetectionAttemptEvent`).
+  - `WFUnrestricted`: guns the wearer holds spread 20% less (`GunRefreshModifiersEvent`).
+  - `WFSecondWind`: past 100 damage, a 30% speed burst for 6 seconds, ready again once healed below half that.
+  - Terrain runner is upstream's `SpeedModifierContactCapClothing`, which the snow slowdown in `GroundCover` now
+    respects too; modular plates are Mono's armor plate holder (`ClothingArmorPlate`); webbing is a storage grid.
+  The RMC armors get theirs from `Tools/_WF/RMCClothing/port.py` (`SPECIALTIES`).
+
 `WFArmorSpecializationTest` covers each one through the real Wolfmed paths.
 
 <!-- WOLFGATE-GENERATED START -->
@@ -63,10 +73,13 @@ in a fight and not only on paper. Each is one component on the suit, and each re
 - [`Content.Shared/_WF/ArmorSpecialization/WFArmorSpecializationComponents.cs`](../../../Content.Shared/_WF/ArmorSpecialization/WFArmorSpecializationComponents.cs)
 - [`Content.Shared/_WF/ArmorSpecialization/WFArmorSpecializationSystem.cs`](../../../Content.Shared/_WF/ArmorSpecialization/WFArmorSpecializationSystem.cs)
 - [`Content.Shared/_WF/ArmorSpecialization/WFCivilianSpecializationSystem.cs`](../../../Content.Shared/_WF/ArmorSpecialization/WFCivilianSpecializationSystem.cs)
+- [`Content.Shared/_WF/ArmorSpecialization/WFVestSpecializationComponents.cs`](../../../Content.Shared/_WF/ArmorSpecialization/WFVestSpecializationComponents.cs)
+- [`Content.Shared/_WF/ArmorSpecialization/WFVestSpecializationSystem.cs`](../../../Content.Shared/_WF/ArmorSpecialization/WFVestSpecializationSystem.cs)
 
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/ArmorSpecialization/WFArmorSpecializationTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ArmorSpecialization/WFArmorSpecializationTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/ArmorSpecialization/WFVestSpecializationTest.cs`](../../../Content.IntegrationTests/Tests/_WF/ArmorSpecialization/WFVestSpecializationTest.cs)
 
 ### Prototypes
 

@@ -273,6 +273,17 @@ public abstract class SharedCMAutomatedVendorSystem : EntitySystem
                 user.TakeOne.Remove(takeOne);
         }
 
+        // WOLFGATE(SpecialistKits) START: specialist kit limits that scale with faction members online
+        var wfKitAttempt = new Content.Shared._WF.SpecialistKits.WFSpecialistKitVendAttemptEvent(actor, entry.Id);
+        RaiseLocalEvent(ref wfKitAttempt);
+        if (wfKitAttempt.Cancelled)
+        {
+            ResetChoices();
+            _popup.PopupEntity(Loc.GetString(wfKitAttempt.Reason), vendor, actor);
+            return;
+        }
+        // WOLFGATE END
+
         if (section.SharedSpecLimit is { } globalLimit && !HasComp<IgnoreSpecLimitsComponent>(actor))
         {
             if (TryComp<RMCVendorSpecialistComponent>(vendor, out var thisSpecVendor))

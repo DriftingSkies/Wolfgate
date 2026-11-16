@@ -54,6 +54,7 @@ LABELS = {
 KINDS = {
     "armor_m": ("OuterClothing", "outerClothing", "equipped-OUTERCLOTHING", {"*": "ClothingOuterArmorBPVestMedium"}),
     "armor_l": ("OuterClothing", "outerClothing", "equipped-OUTERCLOTHING", {"*": "ClothingOuterArmorBPVestLight"}),
+    "armor_h": ("OuterClothing", "outerClothing", "equipped-OUTERCLOTHING", {"*": "ClothingOuterArmorBPVestHeavy"}),
     "ghillie": ("OuterClothing", "outerClothing", "equipped-OUTERCLOTHING", {"*": "ClothingOuterArmorBPVestLight"}),
     "jacket": ("OuterClothing", "outerClothing", "equipped-OUTERCLOTHING", {"*": "ClothingOuterStorageBase"}),
     "winter": ("OuterClothing", "outerClothing", "equipped-OUTERCLOTHING", {"*": "ClothingOuterWinterCoat"}),
@@ -82,6 +83,68 @@ KINDS = {
     "eyes": ("Eyes", "eyes", "equipped-EYES",
              {"tsf": "ClothingEyesHudNfsd", "pdv": "ClothingEyesHudSecurity", "both": "ClothingEyesHudSecurity"}),
 }
+
+# Armour specializations (ArmorSpecialization, FactionBalance): the components each armour family adds on top of its
+# vest stat line. PLATES also makes the armour a plate carrier (Mono's ArmorPlateHolder) holding a trauma plate.
+PLATES = "ClothingArmorPlateBlunt_Slash"
+WEBBING = ["  - type: Storage", "    maxItemSize: Small", "    grid:", "    - 0,0,3,1",
+           "  - type: ContainerContainer", "    containers:", "      storagebase: !type:Container",
+           "        ents: []", "  - type: UserInterface", "    interfaces:", "      enum.StorageUiKey.Key:",
+           "        type: StorageBoundUserInterface"]
+FAST_HANDS = ["  - type: WFFastHands"]
+LOW_SIGNATURE = ["  - type: WFLowSignature"]
+UNRESTRICTED = ["  - type: WFUnrestricted"]
+SECOND_WIND = ["  - type: WFSecondWind"]
+TERRAIN_RUNNER = ["  - type: SpeedModifierContactCapClothing", "    maxContactSprintSlowdown: 1",
+                  "    maxContactWalkSlowdown: 1"]
+BLAST_LINER = ["  - type: WFBlastLiner"]
+SPALL_LINER = ["  - type: WFWoundWard", "    examine: wf-armor-spec-spall-liner-examine", "    blocks:",
+               "    - WFWolfmedLodgedRoundWound", "    - WFWolfmedShrapnelWound"]
+CONCUSSION_WARD = ["  - type: WFWoundWard", "    examine: wf-armor-spec-concussion-ward-examine", "    blocks:",
+                   "    - WFWolfmedConcussionWound"]
+IMPACT_DAMPERS = ["  - type: WFWoundWard", "    examine: wf-armor-spec-impact-dampers-examine", "    blockRules:",
+                  "    - WFWolfmedRuleDislocationThrown", "    hardens:", "      WFWolfmedConcussionWound: 2"]
+# One WFWoundWard per suit: an entity holds a component once, so no family gets two wards.
+FIRE_RATED = ["  - type: WFAblativeCoat", "    damageType: Heat", "    maxCharge: 80", "    charge: 80",
+              "    regenRate: 10", "    examine: wf-armor-spec-fire-rated-examine", "  - type: FireProtection",
+              "    reduction: 0.5"]
+MOTION_TRACKER = ["  - type: ItemToggle", "  - type: ProximityDetector", "    criteria:", "      components:",
+                  "      - MindContainer", "      - Damageable", "    range: 15", "    updateRate: 0.5",
+                  "  - type: ProximityBeeper", "  - type: MotionDetectorIgnoreHolder", "  - type: Beeper",
+                  "    isMuted: true", "    minBeepInterval: 0.25", "    maxBeepInterval: 1.5", "    beepSound:",
+                  "      path: /Audio/_RMC14/Effects/motion_detector.ogg"]
+
+# family id: (extra parent or None, components)
+SPECIALTIES = {
+    "ArmorM3": (PLATES, []),
+    "ArmorM3L": (None, UNRESTRICTED + WEBBING),
+    "ArmorM3XL": (None, UNRESTRICTED),
+    "ArmorM3EOD": (None, BLAST_LINER + FAST_HANDS),
+    "ArmorM3T": (None, BLAST_LINER + FAST_HANDS),
+    "ArmorB12": (None, CONCUSSION_WARD + WEBBING),
+    "ArmorM3G4": (None, BLAST_LINER + IMPACT_DAMPERS),
+    "ArmorM35": (None, FIRE_RATED),
+    "ArmorML66A": (None, WEBBING),
+    "ArmorXM4": (None, MOTION_TRACKER),
+    "ArmorM3CO": (None, CONCUSSION_WARD + WEBBING),
+    "ArmorM3Officer": (None, CONCUSSION_WARD + WEBBING),
+    "ArmorM4": (None, WEBBING),
+    "ArmorM3Scout": (None, LOW_SIGNATURE + TERRAIN_RUNNER),
+    "ArmorM70Flak": (PLATES, SPALL_LINER),
+    "ArmorUM5": (PLATES, []),
+    "ArmorB80": (None, LOW_SIGNATURE + TERRAIN_RUNNER),
+    "ArmorUM5CU": (None, UNRESTRICTED + WEBBING),
+    "ArmorUH7": (None, BLAST_LINER + IMPACT_DAMPERS),
+    "ArmorUL6": (None, FAST_HANDS + WEBBING),
+    "ArmorCCC5": (None, LOW_SIGNATURE + UNRESTRICTED),
+    "ArmorCCC5Heavy": (PLATES, SPALL_LINER),
+    "ArmorCCC5Plated": (PLATES, SPALL_LINER),
+    "ArmorMilitiaHauberk": (None, SECOND_WIND + WEBBING),
+    "ArmorMilitiaPartial": (None, SECOND_WIND + WEBBING),
+    "ArmorMilitiaBrace": (None, SECOND_WIND),
+    "ArmorMilitiaVest": (None, SECOND_WIND + WEBBING),
+}
+
 
 # Loadout groups per (faction, loadout slot); "cmd" items go only to command groups.
 GROUPS = {
@@ -144,18 +207,18 @@ def spec():
           "Standard-issue TSFMC body armor, drawn in the pattern of the theatre it ships to.", camo=True),
         F("ArmorM3L", "armor_l", "tsf", A + "m3/light/padded", "TSFMC M3-L pattern light armor",
           "A lighter cut of the M3 for marines who would rather run than stop a round.", camo=True),
-        F("ArmorM3EOD", "armor_m", "tsf", A + "m3/eod/padded", "TSFMC M3-EOD pattern armor",
+        F("ArmorM3EOD", "armor_h", "tsf", A + "m3/eod/padded", "TSFMC M3-EOD pattern armor",
           "Bulky M3 plates with extra padding, built for breaching and ordnance work.", camo=True, roles=ENGINEER),
         F("ArmorM3T", "armor_m", "tsf", A + "m3/t", "TSFMC M3-T demolitions armor",
           "M3 armor with blast skirts, built for demolitions teams.", camo=True, roles=ENGINEER),
         F("ArmorB12", "armor_m", "tsf", A + "m3/b12", "TSFMC B12 pattern armor",
           "Heavy shoulder guards over an M3 frame, favoured by frontline squad leaders.", camo=True,
           roles=FTL + ["JobBailiff"]),
-        F("ArmorM3G4", "armor_m", "tsf", A + "m3/g4", "TSFMC M3-G4 grenadier armor",
+        F("ArmorM3G4", "armor_h", "tsf", A + "m3/g4", "TSFMC M3-G4 grenadier armor",
           "M3 armor with bandoliers and reinforced plates for grenadiers.", camo=True, roles=FTL),
         F("ArmorM35", "armor_m", "tsf", A + "m35", "TSFMC M35 pyrotechnician armor",
           "Flame-resistant panels over an M3 frame, worn by marines who carry the fire.", camo=True, roles=FTL),
-        F("ArmorML66A", "armor_m", "tsf", A + "ml66a", "TSFMC ML66A combat harness",
+        F("ArmorML66A", "armor_h", "tsf", A + "ml66a", "TSFMC ML66A combat harness",
           "A heavy harness with a support arm for crew-served weapons.", camo=True, roles=FTL),
         F("ArmorXM4", "armor_m", "tsf", A + "io", "TSFMC XM4 pattern recon armor",
           "A trial armor for reconnaissance marines, with extra pouches for maps and data.", camo=True, roles=FTL),
@@ -192,11 +255,11 @@ def spec():
     s += [
         F("ArmorUM5", "armor_m", "pdv", S + "spp.rsi", "PD-VI UM5 personal armor",
           "Standard plate armor of the Vanguard's line infantry."),
-        F("ArmorB80", "armor_m", "pdv", S + "army.rsi", "PD-VI 6B80 body armor",
+        F("ArmorB80", "armor_l", "pdv", S + "army.rsi", "PD-VI 6B80 body armor",
           "Older army armor, still common in the Vanguard's reserve units."),
-        F("ArmorUM5CU", "armor_m", "pdv", S + "commando.rsi", "PD-VI UM5CU commando armor",
+        F("ArmorUM5CU", "armor_l", "pdv", S + "commando.rsi", "PD-VI UM5CU commando armor",
           "UM5 armor cut down for raids and boarding actions."),
-        F("ArmorUH7", "armor_m", "pdv", S + "heavy.rsi", "PD-VI UH7 heavy plated armor",
+        F("ArmorUH7", "armor_h", "pdv", S + "heavy.rsi", "PD-VI UH7 heavy plated armor",
           "Thick overlapping plates for assault troops."),
         F("ArmorUL6", "armor_l", "pdv", S + "support.rsi", "PD-VI UL6 support armor",
           "Light armor for medics, signallers and engineers."),
@@ -712,6 +775,9 @@ def entity_yaml(item):
     fam = item.fam
     kinds = KINDS[item.kind][3]
     parent = kinds.get(fam.faction, kinds.get("*"))
+    extra_parent, specialty = SPECIALTIES.get(fam.fid, (None, []))
+    if extra_parent:
+        parent = "[ %s, %s ]" % (parent, extra_parent)
     sprite = "_WF/%s/Clothing/%s" % (MODULE, item.rsi)
     out = ["- type: entity", "  parent: " + parent, "  id: " + item.id, "  components:",
            "  - type: Sprite", "    sprite: " + sprite, "    state: icon"]
@@ -723,6 +789,7 @@ def entity_yaml(item):
         out += ["  - type: Clothing", "    sprite: " + sprite]
     if fam.kind in ("ghillie", "cloak"):
         out += ["  - type: WFGhillieSuit"]
+    out += specialty
     if item.patterns:
         out += ["  - type: WFCamoPattern", "    patterns:"]
         for look in item.patterns:

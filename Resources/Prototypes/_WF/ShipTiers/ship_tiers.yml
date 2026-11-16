@@ -1,0 +1,21 @@
+# Capital rules for the TSF and PDV. Read by WFShipTierSystem.
+
+- type: wfShipTiers
+  id: Default
+  companies:
+  - TSF
+  - PDV
+  capitals:
+  - Luda
+  - Flyssa
+  - Saturn
+  - WFFoxtrotII
+  thresholds:
+  - members: 0
+    slots: 1
+  - members: 8
+    slots: 2
+  - members: 16
+    slots: 3
+  buildTime: 600 # 10 minutes
+  lockout: 2700 # 45 minutes

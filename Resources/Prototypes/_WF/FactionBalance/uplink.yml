@@ -1,0 +1,497 @@
+# Uplink additions so both factions can buy what the other can: the TSF's mid and top hardsuits and its lathe
+# weapons, plus plates, medkits and gunnery chips. Names and descriptions come from the product entity.
+
+- type: listing
+  id: WFUplinkTsfHardsuitM82c
+  productEntity: ClothingOuterHardsuitM82c
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityHardsuits
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfHardsuitM82b
+  productEntity: ClothingOuterHardsuitM82b
+  cost:
+    FederationMilitaryCredit: 45
+  categories:
+  - UplinkSecurityHardsuits
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfHardsuitM86
+  productEntity: ClothingOuterHardsuitM86
+  cost:
+    FederationMilitaryCredit: 45
+  categories:
+  - UplinkSecurityHardsuits
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfHardsuitM92X
+  productEntity: ClothingOuterHardsuitNfsdExperimental
+  cost:
+    FederationMilitaryCredit: 90
+  categories:
+  - UplinkSecurityHardsuits
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfRifleLecter
+  productEntity: WeaponRifleLecter
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfSmgDrozd
+  productEntity: WeaponSubMachineGunDrozd
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfShotgunKammerer
+  productEntity: WeaponShotgunKammerer
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfShotgunEnforcer
+  productEntity: WeaponShotgunEnforcer
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfRevolverMateba
+  productEntity: WeaponRevolverMateba
+  cost:
+    FederationMilitaryCredit: 10
+  categories:
+  - UplinkSecurityWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfRifleRiversong
+  productEntity: WeaponRifleRiversong
+  cost:
+    FederationMilitaryCredit: 45
+  categories:
+  - UplinkSecurityWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfLmgGrizzly
+  productEntity: WeaponLMGGrizzly
+  cost:
+    FederationMilitaryCredit: 90
+  categories:
+  - UplinkSecurityWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfAmrShenzhen
+  productEntity: WeaponAMRShenzhen
+  cost:
+    FederationMilitaryCredit: 90
+  categories:
+  - UplinkSecurityWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfAmmoBox45
+  productEntity: AmmoBox45_ACPFMJ
+  cost:
+    FederationMilitaryCredit: 4
+  categories:
+  - UplinkSecurityAmmo
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfAmmoBox762
+  productEntity: AmmoBox762x39mmFMJ
+  cost:
+    FederationMilitaryCredit: 4
+  categories:
+  - UplinkSecurityAmmo
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfMagazineDrozd
+  productEntity: Magazine45_ACPSubMachineGunFMJ
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - UplinkSecurityAmmo
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfMagazineAnnie
+  productEntity: Magazine762x39mmFMJ
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - UplinkSecurityAmmo
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfMedkitFilled
+  productEntity: MedkitFilled
+  cost:
+    FederationMilitaryCredit: 5
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfMedkitBrute
+  productEntity: MedkitBruteFilled
+  cost:
+    FederationMilitaryCredit: 8
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfMedkitBurn
+  productEntity: MedkitBurnFilled
+  cost:
+    FederationMilitaryCredit: 8
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfMedkitAdvanced
+  productEntity: MedkitAdvancedFilled
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfBloodpack
+  productEntity: Bloodpack
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfBinoculars
+  productEntity: Binoculars
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfPlateTrauma
+  productEntity: ArmorPlateBlunt_Slash
+  cost:
+    FederationMilitaryCredit: 10
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfPlateBallistic
+  productEntity: ArmorPlatePierce
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfPlateHeat
+  productEntity: ArmorPlateHeat
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfPlateSpeed
+  productEntity: ArmorPlateSpeed
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfGunneryChip
+  productEntity: WFGunneryChipMilitary
+  cost:
+    FederationMilitaryCredit: 20
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfLandMine
+  productEntity: LandMineExplosive
+  cost:
+    FederationMilitaryCredit: 5
+  categories:
+  - UplinkSecurityExplosives
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkPdvPlateTrauma
+  productEntity: ArmorPlateBlunt_Slash
+  cost:
+    Doubloon: 10
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WFUplinkPdvPlateBallistic
+  productEntity: ArmorPlatePierce
+  cost:
+    Doubloon: 15
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WFUplinkPdvPlateHeat
+  productEntity: ArmorPlateHeat
+  cost:
+    Doubloon: 15
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WFUplinkPdvPlateSpeed
+  productEntity: ArmorPlateSpeed
+  cost:
+    Doubloon: 15
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WFUplinkPdvGunneryChip
+  productEntity: WFGunneryChipMilitary
+  cost:
+    Doubloon: 20
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WFUplinkPdvBinoculars
+  productEntity: Binoculars
+  cost:
+    Doubloon: 2
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WFUplinkPdvLandMine
+  productEntity: LandMineExplosive
+  cost:
+    Doubloon: 5
+  categories:
+  - UplinkPirateExplosives
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+# Plastitanium at the PDV composite rate (5 a sheet), so the TSF can buy its T2 material as the PDV does.
+- type: listing
+  id: WFUplinkTsfPlastitanium5
+  productEntity: WFSheetPlastitanium5
+  cost:
+    FederationMilitaryCredit: 25
+  categories:
+  - UplinkSecurityMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfPlastitanium10
+  productEntity: SheetPlastitanium10
+  cost:
+    FederationMilitaryCredit: 50
+  categories:
+  - UplinkSecurityMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WFUplinkTsfPlastitanium15
+  productEntity: SheetPlastitanium
+  cost:
+    FederationMilitaryCredit: 75
+  categories:
+  - UplinkSecurityMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink

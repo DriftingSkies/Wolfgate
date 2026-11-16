@@ -1,5 +1,5 @@
 - type: entity
-  parent: ClothingOuterArmorBPVestMedium
+  parent: [ ClothingOuterArmorBPVestMedium, ClothingArmorPlateBlunt_Slash ]
   id: WFRMCArmorM3
   components:
   - type: Sprite
@@ -29,6 +29,19 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_m3_l/jungle.rsi
+  - type: WFUnrestricted
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,3,1
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
   - type: WFCamoPattern
     patterns:
     - name: jungle
@@ -43,7 +56,7 @@
       look: WFRMCLookArmorM3LClassic
 
 - type: entity
-  parent: ClothingOuterArmorBPVestMedium
+  parent: ClothingOuterArmorBPVestHeavy
   id: WFRMCArmorM3EOD
   components:
   - type: Sprite
@@ -51,6 +64,8 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_m3_eod/jungle.rsi
+  - type: WFBlastLiner
+  - type: WFFastHands
   - type: WFCamoPattern
     patterns:
     - name: jungle
@@ -73,6 +88,8 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_m3_t/jungle.rsi
+  - type: WFBlastLiner
+  - type: WFFastHands
   - type: WFCamoPattern
     patterns:
     - name: jungle
@@ -95,6 +112,22 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_b12/jungle.rsi
+  - type: WFWoundWard
+    examine: wf-armor-spec-concussion-ward-examine
+    blocks:
+    - WFWolfmedConcussionWound
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,3,1
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
   - type: WFCamoPattern
     patterns:
     - name: jungle
@@ -109,7 +142,7 @@
       look: WFRMCLookArmorB12Classic
 
 - type: entity
-  parent: ClothingOuterArmorBPVestMedium
+  parent: ClothingOuterArmorBPVestHeavy
   id: WFRMCArmorM3G4
   components:
   - type: Sprite
@@ -117,6 +150,13 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_m3_g4/jungle.rsi
+  - type: WFBlastLiner
+  - type: WFWoundWard
+    examine: wf-armor-spec-impact-dampers-examine
+    blockRules:
+    - WFWolfmedRuleDislocationThrown
+    hardens:
+      WFWolfmedConcussionWound: 2
   - type: WFCamoPattern
     patterns:
     - name: jungle
@@ -139,6 +179,14 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_m35/jungle.rsi
+  - type: WFAblativeCoat
+    damageType: Heat
+    maxCharge: 80
+    charge: 80
+    regenRate: 10
+    examine: wf-armor-spec-fire-rated-examine
+  - type: FireProtection
+    reduction: 0.5
   - type: WFCamoPattern
     patterns:
     - name: jungle
@@ -153,7 +201,7 @@
       look: WFRMCLookArmorM35Classic
 
 - type: entity
-  parent: ClothingOuterArmorBPVestMedium
+  parent: ClothingOuterArmorBPVestHeavy
   id: WFRMCArmorML66A
   components:
   - type: Sprite
@@ -161,6 +209,18 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_ml66_a/jungle.rsi
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,3,1
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
   - type: WFCamoPattern
     patterns:
     - name: jungle
@@ -183,6 +243,22 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_xm4/jungle.rsi
+  - type: ItemToggle
+  - type: ProximityDetector
+    criteria:
+      components:
+      - MindContainer
+      - Damageable
+    range: 15
+    updateRate: 0.5
+  - type: ProximityBeeper
+  - type: MotionDetectorIgnoreHolder
+  - type: Beeper
+    isMuted: true
+    minBeepInterval: 0.25
+    maxBeepInterval: 1.5
+    beepSound:
+      path: /Audio/_RMC14/Effects/motion_detector.ogg
   - type: WFCamoPattern
     patterns:
     - name: jungle
@@ -205,6 +281,22 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_m3_co/jungle.rsi
+  - type: WFWoundWard
+    examine: wf-armor-spec-concussion-ward-examine
+    blocks:
+    - WFWolfmedConcussionWound
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,3,1
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
   - type: WFCamoPattern
     patterns:
     - name: jungle
@@ -227,6 +319,7 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_m3_xl/jungle.rsi
+  - type: WFUnrestricted
   - type: WFCamoPattern
     patterns:
     - name: jungle
@@ -249,6 +342,10 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_m3_scout/jungle.rsi
+  - type: WFLowSignature
+  - type: SpeedModifierContactCapClothing
+    maxContactSprintSlowdown: 1
+    maxContactWalkSlowdown: 1
   - type: WFCamoPattern
     patterns:
     - name: jungle
@@ -263,7 +360,7 @@
       look: WFRMCLookArmorM3ScoutClassic
 
 - type: entity
-  parent: ClothingOuterArmorBPVestLight
+  parent: [ ClothingOuterArmorBPVestLight, ClothingArmorPlateBlunt_Slash ]
   id: WFRMCArmorM70Flak
   components:
   - type: Sprite
@@ -271,6 +368,11 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_m70_flak/jungle.rsi
+  - type: WFWoundWard
+    examine: wf-armor-spec-spall-liner-examine
+    blocks:
+    - WFWolfmedLodgedRoundWound
+    - WFWolfmedShrapnelWound
   - type: WFCamoPattern
     patterns:
     - name: jungle
@@ -289,6 +391,22 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_m3_officer/jungle.rsi
+  - type: WFWoundWard
+    examine: wf-armor-spec-concussion-ward-examine
+    blocks:
+    - WFWolfmedConcussionWound
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,3,1
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
   - type: WFCamoPattern
     patterns:
     - name: jungle
@@ -367,7 +485,7 @@
     sprite: _WF/RMCClothing/Clothing/OuterClothing/coat_dress_general.rsi
 
 - type: entity
-  parent: ClothingOuterArmorBPVestMedium
+  parent: [ ClothingOuterArmorBPVestMedium, ClothingArmorPlateBlunt_Slash ]
   id: WFRMCArmorUM5
   components:
   - type: Sprite
@@ -377,7 +495,7 @@
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_um5.rsi
 
 - type: entity
-  parent: ClothingOuterArmorBPVestMedium
+  parent: ClothingOuterArmorBPVestLight
   id: WFRMCArmorB80
   components:
   - type: Sprite
@@ -385,9 +503,13 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_b80.rsi
+  - type: WFLowSignature
+  - type: SpeedModifierContactCapClothing
+    maxContactSprintSlowdown: 1
+    maxContactWalkSlowdown: 1
 
 - type: entity
-  parent: ClothingOuterArmorBPVestMedium
+  parent: ClothingOuterArmorBPVestLight
   id: WFRMCArmorUM5CU
   components:
   - type: Sprite
@@ -395,9 +517,22 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_um5_cu.rsi
+  - type: WFUnrestricted
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,3,1
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
 
 - type: entity
-  parent: ClothingOuterArmorBPVestMedium
+  parent: ClothingOuterArmorBPVestHeavy
   id: WFRMCArmorUH7
   components:
   - type: Sprite
@@ -405,6 +540,13 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_uh7.rsi
+  - type: WFBlastLiner
+  - type: WFWoundWard
+    examine: wf-armor-spec-impact-dampers-examine
+    blockRules:
+    - WFWolfmedRuleDislocationThrown
+    hardens:
+      WFWolfmedConcussionWound: 2
 
 - type: entity
   parent: ClothingOuterArmorBPVestLight
@@ -415,6 +557,19 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_ul6.rsi
+  - type: WFFastHands
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,3,1
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
 
 - type: entity
   parent: ClothingOuterArmorBPVestLight
@@ -425,9 +580,11 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_ccc5.rsi
+  - type: WFLowSignature
+  - type: WFUnrestricted
 
 - type: entity
-  parent: ClothingOuterArmorBPVestMedium
+  parent: [ ClothingOuterArmorBPVestMedium, ClothingArmorPlateBlunt_Slash ]
   id: WFRMCArmorCCC5Heavy
   components:
   - type: Sprite
@@ -435,9 +592,14 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_ccc5_heavy.rsi
+  - type: WFWoundWard
+    examine: wf-armor-spec-spall-liner-examine
+    blocks:
+    - WFWolfmedLodgedRoundWound
+    - WFWolfmedShrapnelWound
 
 - type: entity
-  parent: ClothingOuterArmorBPVestMedium
+  parent: [ ClothingOuterArmorBPVestMedium, ClothingArmorPlateBlunt_Slash ]
   id: WFRMCArmorCCC5Plated
   components:
   - type: Sprite
@@ -445,6 +607,11 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_ccc5_plated.rsi
+  - type: WFWoundWard
+    examine: wf-armor-spec-spall-liner-examine
+    blocks:
+    - WFWolfmedLodgedRoundWound
+    - WFWolfmedShrapnelWound
 
 - type: entity
   parent: ClothingOuterStorageBase
@@ -545,6 +712,19 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_militia_hauberk.rsi
+  - type: WFSecondWind
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,3,1
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
 
 - type: entity
   parent: ClothingOuterArmorBPVestLight
@@ -555,6 +735,19 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_militia_partial.rsi
+  - type: WFSecondWind
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,3,1
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
 
 - type: entity
   parent: ClothingOuterArmorBPVestLight
@@ -565,6 +758,7 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_militia_brace.rsi
+  - type: WFSecondWind
 
 - type: entity
   parent: ClothingOuterArmorBPVestLight
@@ -575,6 +769,19 @@
     state: icon
   - type: Clothing
     sprite: _WF/RMCClothing/Clothing/OuterClothing/armor_militia_vest.rsi
+  - type: WFSecondWind
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,3,1
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
 
 - type: entity
   parent: ClothingOuterArmorBPVestLight

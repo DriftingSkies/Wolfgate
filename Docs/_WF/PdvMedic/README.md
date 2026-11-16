@@ -37,7 +37,9 @@ Rakhshan art.
 - [`Resources/Maps/_Mono/POI/pdvhelios.yml`](../../../Resources/Maps/_Mono/POI/pdvhelios.yml): Mapped Jarrah spawn markers by the other PDV spawns.
 - [`Resources/Maps/_Mono/POI/pdvhelios_hw.yml`](../../../Resources/Maps/_Mono/POI/pdvhelios_hw.yml): Mapped Jarrah spawn markers by the other PDV spawns.
 - [`Resources/Maps/_Mono/Supercapitals/jupiter_hw.yml`](../../../Resources/Maps/_Mono/Supercapitals/jupiter_hw.yml): Mapped Jarrah spawn markers by the other PDV spawns.
-- [`Resources/Prototypes/_Mono/PointsOfInterest/pdvhelios.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/pdvhelios.yml): PDV field medic slots
+- [`Resources/Prototypes/_Mono/PointsOfInterest/pdvhelios.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/pdvhelios.yml)
+  - PDV field medic slots, 2 -> 5 for a 130-player population
+  - PDV field medic slots
 - [`Resources/Prototypes/_Mono/PointsOfInterest/Supercapitals/jupiter_hw.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/Supercapitals/jupiter_hw.yml): PDV field medic slots
 - [`Resources/Prototypes/_NF/Roles/Jobs/departments.yml`](../../../Resources/Prototypes/_NF/Roles/Jobs/departments.yml): PDV field medic
 

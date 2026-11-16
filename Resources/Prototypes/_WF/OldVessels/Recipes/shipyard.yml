@@ -7,16 +7,11 @@
   result: ShipVoucherAltair
   completetime: 100
   materials:
-    Steel: 40000
-    Plasteel: 20000
-    Plastic: 30000
-    Glass: 10000
-    Plasma: 5000
-    Plastitanium: 2500 # TSF Balance Pack: halving the price from 4000 -> 2000 so it needs only 4 exotic crates, but gaining a plastitanium requirement
-    UraniumFissile: 600
-    UraniumDepleted: 2000 # TSF Balance Pack: halving the price from 4000 -> 2000 so it needs only 4 exotic crates, but gaining a plastitanium requirement
-    Silver: 10000
-    Gold: 5000
+    WFShipParts: 50000
+    Plastitanium: 2000
+    Steel: 10000
+    Plasteel: 5000
+    UraniumFissile: 250
 
 # The Andromeda was a T2 LPC with no recipe; at T3 it costs what the Altair does.
 - type: latheRecipe
@@ -25,16 +20,11 @@
   result: ShipVoucherAndromeda
   completetime: 100
   materials:
-    Steel: 40000
-    Plasteel: 20000
-    Plastic: 30000
-    Glass: 10000
-    Plasma: 5000
-    Plastitanium: 2500 # TSF Balance Pack: halving the price from 4000 -> 2000 so it needs only 4 exotic crates, but gaining a plastitanium requirement
-    UraniumFissile: 600
-    UraniumDepleted: 2000 # TSF Balance Pack: halving the price from 4000 -> 2000 so it needs only 4 exotic crates, but gaining a plastitanium requirement
-    Silver: 10000
-    Gold: 5000
+    WFShipParts: 50000
+    Plastitanium: 2000
+    Steel: 10000
+    Plasteel: 5000
+    UraniumFissile: 250
 
 - type: latheRecipe
   parent: BaseVoucherRecipe
@@ -42,16 +32,11 @@
   result: ShipVoucherFlyssa
   completetime: 130
   materials:
-    Steel: 40000
-    Plasteel: 55000
-    Plastic: 50000
-    Glass: 9000
-    Plasma: 500
-    Plastitanium: 3000 # TSF Balance Pack: decreasing the depleted uranium cost, but introducing a plastitanium cost to compensate as with the Altair and Polaris
+    WFShipParts: 120000
+    Plastitanium: 4000
+    Steel: 20000
+    Plasteel: 10000
     UraniumFissile: 1000
-    UraniumDepleted: 3000 # TSF Balance Pack: decreasing the depleted uranium cost, but introducing a plastitanium cost to compensate as with the Altair and Polaris
-    Silver: 5000
-    Gold: 5000
 
 - type: latheRecipe
   parent: BaseVoucherRecipe

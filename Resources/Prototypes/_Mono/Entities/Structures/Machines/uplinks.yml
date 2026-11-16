@@ -40,6 +40,7 @@
     - UplinkSecurityBundles
     - UplinkSecurityVouchers # Mono
     - UplinkSecurityMaterials
+    - WFUplinkSecurityOperations # WOLFGATE(Operations): the uplink tab operations are called in from
     balance:
       FederationMilitaryCredit: 0
   - type: AccessReader

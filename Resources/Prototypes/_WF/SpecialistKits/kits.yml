@@ -1,0 +1,298 @@
+# Specialist kits: one free per player per round from the faction's specialist vendor (vendors.yml).
+# Open kits are limited per faction by members online; job-locked kits are held to their job.
+
+- type: entity
+  id: WFKitTsfBreacher
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCArmorM3G4
+    - WeaponShotgunEnforcer
+    - AmmoBox12_gaugeBuckshot
+    - AmmoBox12_gaugeSlug
+    - BreachingCharge
+    - BreachingCharge
+    - TelescopicShield
+    - GrenadeFlashBang
+    - GrenadeFlashBang
+  - type: WFSpecialistKit
+
+- type: entity
+  id: WFKitTsfCombatEngineer
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCArmorM3T
+    - WeaponSubMachineGunDrozd
+    - Magazine45_ACPSubMachineGunFMJ
+    - Magazine45_ACPSubMachineGunFMJ
+    - WeaponTurretMk290Packed
+    - WelderIndustrial
+    - SheetPlasteel
+    - SheetSteel
+    - ArmorPlateBlunt_Slash
+  - type: WFSpecialistKit
+    limited: false
+    jobs:
+    - TsfEngineer
+
+- type: entity
+  id: WFKitTsfCorpsman
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - ClothingOuterHardsuitM82b
+    - WeaponPistolMk58
+    - Magazine45_ACPPistolFMJ
+    - ClothingBackpackDuffelSurgeryAdvancedFilled
+    - MedkitCombatFilled
+    - Bloodpack
+    - Bloodpack
+  - type: WFSpecialistKit
+    limited: false
+    jobs:
+    - Brigmedic
+
+- type: entity
+  id: WFKitTsfMarksman
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCGhillie
+    - WeaponRifleRiversong
+    - Magazine68x52mmCaseless
+    - Magazine68x52mmCaseless
+    - Binoculars
+    - SmokeGrenade
+  - type: WFSpecialistKit
+
+- type: entity
+  id: WFKitTsfPyrotechnician
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCArmorM35
+    - WeaponShotgunEnforcer
+    - AmmoBox12_gaugeIncendiary
+    - AmmoBox12_gaugeIncendiary
+    - GrenadeIncendiaryNfsd
+    - GrenadeIncendiaryNfsd
+    - GrenadeIncendiaryNfsd
+  - type: WFSpecialistKit
+
+- type: entity
+  id: WFKitTsfRecon
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCArmorXM4
+    - WeaponSubMachineGunDrozd
+    - Magazine45_ACPSubMachineGunFMJ
+    - Magazine45_ACPSubMachineGunFMJ
+    - ClothingNeckWearableCameraTSF
+    - JetpackBlackFilled
+    - Binoculars
+  - type: WFSpecialistKit
+
+- type: entity
+  id: WFKitTsfHeavyGunner
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCArmorML66A
+    - WeaponLMGGrizzly
+    - AmmoBox68x52mmCaseless
+    - AmmoBox68x52mmCaseless
+    - TelescopicShield
+  - type: WFSpecialistKit
+    limited: false
+    jobs:
+    - SeniorOfficer
+
+- type: entity
+  id: WFKitTsfShipGunner
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCArmorM3L
+    - WeaponPistolMk58
+    - Magazine45_ACPPistolFMJ
+    - WFGunneryChipMilitary
+    - ClothingShoesBootsMag
+  - type: WFSpecialistKit
+
+- type: entity
+  id: WFKitPdvBoarder
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCArmorUM5CU
+    - WeaponSubMachineGunMla73
+    - EnergyCutlass
+    - SyndicateJawsOfLife
+    - AccessBreaker
+    - SmokeGrenade
+    - SmokeGrenade
+  - type: WFSpecialistKit
+
+- type: entity
+  id: WFKitPdvArtificer
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCArmorUL6
+    - WeaponRifleAk
+    - Magazine762x39mmFMJ
+    - Magazine762x39mmFMJ
+    - ClothingBackpackDuffelPDVC4tBundle
+    - LandMineExplosive
+    - LandMineExplosive
+    - WelderIndustrial
+    - SheetPlasteel
+  - type: WFSpecialistKit
+    limited: false
+    jobs:
+    - WFPdvArtificer
+
+- type: entity
+  id: WFKitPdvFieldMedic
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - ClothingOuterHardsuitPDVMedic
+    - WeaponPistolViper
+    - Magazine9x19mmPistolFMJ
+    - HypopenBox
+    - NaniteApplicatorSyndicate
+    - Bloodpack
+    - Bloodpack
+  - type: WFSpecialistKit
+    limited: false
+    jobs:
+    - WFPdvJarrah
+
+- type: entity
+  id: WFKitPdvSharpshooter
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCGhillieUDEP
+    - BriefcaseSyndieSniperBundleFilled
+    - Binoculars
+    - SmokeGrenade
+  - type: WFSpecialistKit
+
+- type: entity
+  id: WFKitPdvHeavy
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCArmorUH7
+    - ClothingBackpackDuffelPDVFilledLMG
+    - TelescopicShield
+  - type: WFSpecialistKit
+    limited: false
+    jobs:
+    - PDVDenasvar
+
+- type: entity
+  id: WFKitPdvBurner
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCArmorMilitiaHauberk
+    - ClothingBackpackDuffelPDVBurner
+    - GrenadeIncendiaryNfsd
+    - GrenadeIncendiaryNfsd
+    - GrenadeIncendiaryNfsd
+  - type: WFSpecialistKit
+
+- type: entity
+  id: WFKitPdvAkinciRaider
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCArmorCCC5
+    - WeaponRifleVympel
+    - Magazine556x45mmFMJ
+    - Magazine556x45mmFMJ
+    - ChameleonPDA
+    - ClothingBackpackChameleon
+    - RadioJammer
+  - type: WFSpecialistKit
+
+- type: entity
+  id: WFKitPdvTopcu
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - WFRMCArmorUL6
+    - WeaponPistolViper
+    - Magazine9x19mmPistolFMJ
+    - WFGunneryChipMilitary
+    - ClothingShoesBootsMag
+  - type: WFSpecialistKit

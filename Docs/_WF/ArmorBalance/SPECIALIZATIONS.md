@@ -271,3 +271,29 @@ specializations at most": their extras are tools for treating others, not more p
   hardsuits get a spall liner.
 - The mime hardsuit used to inherit from the clown hardsuit. It now inherits from the base hardsuit with the clown's
   protection copied over, so it doesn't get comedic padding, anti-slip treads or the honk.
+
+## Vests and armor without spaceproofing
+
+Vests take more armor than before for having no spaceproofing (light 0.75 / 0.75 / 0.45 / 0.75, medium 0.65 / 0.6 /
+0.35 / 0.65, heavy Heat 0.75), and their specializations do what a sealed suit can't. The ported RMC armors take a
+light, medium or heavy vest line and these, set in `Tools/_WF/RMCClothing/port.py`:
+
+| Armor | Line | Specialization |
+|---|---|---|
+| M3, UM5 | Medium | Modular plates (a trauma plate in Mono's plate holder) |
+| M3-L, UM5CU | Light | Unrestricted + webbing |
+| M3-XL | Light | Unrestricted |
+| M3 Scout, 6B80 | Light | Low signature + terrain runner |
+| M3-EOD | Heavy | Blast liner + fast hands |
+| M3-T | Medium | Blast liner + fast hands |
+| M3-G4, UH7 | Heavy | Blast liner + impact dampers |
+| M35 | Medium | Fire-rated |
+| ML66A | Heavy | Webbing |
+| XM4 | Medium | Motion tracker |
+| B12, M3-CO, M3 officer | Medium | Concussion ward + webbing |
+| M4 | Medium | Webbing |
+| M70 flak, CCC5 heavy, CCC5 plated | Light / Medium | Modular plates + spall liner |
+| UL6 | Light | Fast hands + webbing |
+| CCC5 | Light | Low signature + unrestricted |
+| Militia hauberk, partial, vest | Light | Second wind + webbing |
+| Militia brace | Light | Second wind |

@@ -48,10 +48,28 @@ unmarked:
     reason: Mapped the TSFMC field outfitter in the marine ready room.
   - path: Resources/Maps/_Mono/POI/pdvhelios.yml
     module: RMCClothing
-    reason: Mapped two Vanguard field outfitters in the spawn hall.
+    reason: Mapped two Vanguard field outfitters flush against the spawn hall's west and east walls.
   - path: Resources/Maps/_Mono/POI/pdvhelios_hw.yml
     module: RMCClothing
-    reason: Mapped two Vanguard field outfitters in the spawn hall.
+    reason: Mapped two Vanguard field outfitters flush against the spawn hall's west and east walls.
+  - path: Resources/Maps/_Mono/POI/pdvhelios.yml
+    module: PdvArtificer
+    reason: Mapped two Artificer spawn markers beside the Jarrah's.
+  - path: Resources/Maps/_Mono/POI/pdvhelios_hw.yml
+    module: PdvArtificer
+    reason: Mapped two Artificer spawn markers beside the Jarrah's.
+  - path: Resources/Maps/_Mono/POI/pdvhelios.yml
+    module: SpecialistKits
+    reason: Mapped the Vanguard specialist rack against the east wall of the spawn hall.
+  - path: Resources/Maps/_Mono/POI/pdvhelios_hw.yml
+    module: SpecialistKits
+    reason: Mapped the Vanguard specialist rack against the east wall of the spawn hall.
+  - path: Resources/Maps/_Mono/POI/tsfmchalcyon.yml
+    module: SpecialistKits
+    reason: Mapped the TSFMC specialist rack against the west wall of the marine ready room, where TSF players spawn.
+  - path: Resources/Maps/_Mono/POI/tsfmchalcyon_hw.yml
+    module: SpecialistKits
+    reason: Mapped the TSFMC specialist rack against the west wall of the marine ready room, where TSF players spawn.
   - path: Resources/Maps/Shuttles/dart.yml
     module: Cloning
     reason: Mapped a genetic database and a body scanner console, linked to the scanner and pod.

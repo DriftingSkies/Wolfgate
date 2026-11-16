@@ -145,7 +145,7 @@ public sealed partial class WFArmorSpecializationSystem : EntitySystem
         var query = EntityQueryEnumerator<WFAblativeCoatComponent>();
         while (query.MoveNext(out var uid, out var coat))
         {
-            if (coat.Charge >= coat.MaxCharge || now < coat.LastHit + coat.RecoveryDelay)
+            if (coat.RegenRate <= 0f || coat.Charge >= coat.MaxCharge || now < coat.LastHit + coat.RecoveryDelay)
                 continue;
 
             coat.Charge = MathF.Min(coat.Charge + coat.RegenRate * (float) CoatRecoveryInterval.TotalSeconds, coat.MaxCharge);

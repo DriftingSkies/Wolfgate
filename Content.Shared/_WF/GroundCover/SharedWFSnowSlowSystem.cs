@@ -1,4 +1,5 @@
 using Content.Shared.Movement.Components;
+using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
 using Robust.Shared.Audio;
 using Robust.Shared.Map.Components;
@@ -208,6 +209,13 @@ public abstract class SharedWFSnowSlowSystem : EntitySystem
     private void OnRefresh(Entity<MovementSpeedModifierComponent> ent, ref RefreshMovementSpeedModifiersEvent args)
     {
         var speed = GetSpeed(ent);
+        if (speed >= 1f)
+            return;
+
+        // Gear that caps contact slowdowns, such as a vest's terrain runner, caps snow the same way.
+        var cap = new GetSpeedModifierContactCapEvent();
+        RaiseLocalEvent(ent, ref cap);
+        speed = MathF.Max(speed, cap.MaxWalkSlowdown);
         if (speed < 1f)
             args.ModifySpeed(speed);
     }

@@ -66,12 +66,17 @@
           availableJobs:
             # PdvCivilian: [ -1, -1 ]
             PirateCaptain: [ 1, 1 ]
-            PirateFirstMate: [ 1, 1 ]
-            PDVDenasvar: [ 3, 3 ]
-            WFPdvJarrah: [ 2, 2 ] # WOLFGATE(PdvMedic): PDV field medic slots
+            # WOLFGATE(FactionBalance) START: more leader and specialist slots for a 130-player population
+            # PirateFirstMate: [ 1, 1 ]
+            # PDVDenasvar: [ 3, 3 ]
+            PirateFirstMate: [ 2, 2 ]
+            PDVDenasvar: [ 6, 6 ]
+            # WOLFGATE END
+            WFPdvJarrah: [ 5, 5 ] # WOLFGATE(PdvMedic): PDV field medic slots, 2 -> 5 for a 130-player population
+            WFPdvArtificer: [ 4, 4 ] # WOLFGATE(PdvArtificer): PDV engineer slots
             # PDVInfiltrator: [ 2, 2 ]
             Pirate: [ -1, -1 ]
-            PdvBorg: [ 2, 2 ]
+            PdvBorg: [ 3, 3 ] # WOLFGATE(FactionBalance): 2 -> 3 for a 130-player population
           tags:
           - GrandVizier
         - type: StationDeadDropReporting

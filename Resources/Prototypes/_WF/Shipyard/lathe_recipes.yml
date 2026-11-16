@@ -7,4 +7,8 @@
   completetime: 240
   materialDiscountScale: 0.2
   materials:
-    PdvComposite: 9000
+    WFShipParts: 120000
+    PdvComposite: 4000
+    Steel: 20000
+    Plasteel: 10000
+    UraniumFissile: 1000

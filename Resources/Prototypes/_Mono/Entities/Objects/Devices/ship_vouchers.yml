@@ -107,9 +107,9 @@
       color: "#05ffff"
       shader: unshaded
   - type: ShipyardVoucher
-    destroyOnEmpty: false # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
-    redemptionsLeft: 12 # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
-    cooldown: 1800 # 30 minutes
+    destroyOnEmpty: true # WOLFGATE(FactionBalance): single-use, each ship costs a card (was false)
+    redemptionsLeft: 1 # WOLFGATE(FactionBalance): single-use (was 12)
+    cooldown: 0 # WOLFGATE(FactionBalance): no cooldown, the card is single-use (was 1800)
     companyName: TSF
     vessels:
     - Calypso
@@ -131,9 +131,9 @@
       color: "#05ffff"
       shader: unshaded
   - type: ShipyardVoucher
-    destroyOnEmpty: false # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
-    redemptionsLeft: 12 # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
-    cooldown: 3600 # one hour
+    destroyOnEmpty: true # WOLFGATE(FactionBalance): single-use, each ship costs a card (was false)
+    redemptionsLeft: 1 # WOLFGATE(FactionBalance): single-use (was 12)
+    cooldown: 0 # WOLFGATE(FactionBalance): no cooldown, the card is single-use (was 3600)
     companyName: TSF
     vessels:
     - Fujian
@@ -165,9 +165,9 @@
   - type: Item
     heldPrefix: tsf
   - type: ShipyardVoucher
-    destroyOnEmpty: false # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
-    redemptionsLeft: 12 # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
-    cooldown: 5100 # hour and 25 minutes
+    destroyOnEmpty: true # WOLFGATE(FactionBalance): single-use, each ship costs a card (was false)
+    redemptionsLeft: 1 # WOLFGATE(FactionBalance): single-use (was 12)
+    cooldown: 0 # WOLFGATE(FactionBalance): no cooldown, the card is single-use (was 5100)
     companyName: TSF
     vessels:
     - TSFNPolaris
@@ -190,10 +190,10 @@
   - type: Item
     heldPrefix: tsf
   - type: ShipyardVoucher
-    destroyOnEmpty: false # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
-    redemptionsLeft: 12 # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
+    destroyOnEmpty: true # WOLFGATE(FactionBalance): single-use, each ship costs a card (was false)
+    redemptionsLeft: 1 # WOLFGATE(FactionBalance): single-use (was 12)
     companyName: TSF
-    cooldown: 14400 # two hour
+    cooldown: 0 # WOLFGATE(FactionBalance): no cooldown, the card is single-use (was 14400)
     vessels:
     - Luda
 
@@ -278,9 +278,9 @@
       color: "#1eff00"
       shader: unshaded
   - type: ShipyardVoucher
-    redemptionsLeft: 1 # WOLFGATE(Drydock): single use; the renewable parent would give 12
-    destroyOnEmpty: false
-    cooldown: 1800 # 30 minutes
+    redemptionsLeft: 1 # WOLFGATE(FactionBalance): single-use (was 1)
+    destroyOnEmpty: true # WOLFGATE(FactionBalance): single-use, each ship costs a card (was false)
+    cooldown: 0 # WOLFGATE(FactionBalance): no cooldown, the card is single-use (was 1800)
     companyName: PDV
     vessels:
     - Layak
@@ -308,8 +308,9 @@
       color: "#1eff00"
       shader: unshaded
   - type: ShipyardVoucher
-    destroyOnEmpty: false
-    cooldown: 3600 # one hour
+    destroyOnEmpty: true # WOLFGATE(FactionBalance): single-use, each ship costs a card (was false)
+    cooldown: 0 # WOLFGATE(FactionBalance): no cooldown, the card is single-use (was 3600)
+    redemptionsLeft: 1 # WOLFGATE(FactionBalance): single-use
     companyName: PDV
     vessels:
     - MotleyAnne
@@ -335,8 +336,9 @@
       color: "#1eff00"
       shader: unshaded
   - type: ShipyardVoucher
-    destroyOnEmpty: false
-    cooldown: 5400 # 1.5 hours
+    destroyOnEmpty: true # WOLFGATE(FactionBalance): single-use, each ship costs a card (was false)
+    cooldown: 0 # WOLFGATE(FactionBalance): no cooldown, the card is single-use (was 5400)
+    redemptionsLeft: 1 # WOLFGATE(FactionBalance): single-use
     companyName: PDV
     vessels:
     - KortikR
@@ -363,8 +365,9 @@
   - type: Item
     heldPrefix: pdv
   - type: ShipyardVoucher
-    destroyOnEmpty: false
-    cooldown: 5400 # 1 & 1/2 hours
+    destroyOnEmpty: true # WOLFGATE(FactionBalance): single-use, each ship costs a card (was false)
+    cooldown: 0 # WOLFGATE(FactionBalance): no cooldown, the card is single-use (was 5400)
+    redemptionsLeft: 1 # WOLFGATE(FactionBalance): single-use
     companyName: PDV
     vessels:
     - KortikR
@@ -389,8 +392,9 @@
   - type: Item
     heldPrefix: pdv
   - type: ShipyardVoucher
-    destroyOnEmpty: false
-    cooldown: 5400 # 1 & 1/2 hours
+    destroyOnEmpty: true # WOLFGATE(FactionBalance): single-use, each ship costs a card (was false)
+    cooldown: 0 # WOLFGATE(FactionBalance): no cooldown, the card is single-use (was 5400)
+    redemptionsLeft: 1 # WOLFGATE(FactionBalance): single-use
     companyName: PDV
     vessels:
     - Europa
@@ -415,9 +419,10 @@
   - type: Item
     heldPrefix: pdv
   - type: ShipyardVoucher
-    destroyOnEmpty: false
+    destroyOnEmpty: true # WOLFGATE(FactionBalance): single-use, each ship costs a card (was false)
+    redemptionsLeft: 1 # WOLFGATE(FactionBalance): single-use
     companyName: PDV
-    cooldown: 14400 # two hour
+    cooldown: 0 # WOLFGATE(FactionBalance): no cooldown, the card is single-use (was 14400)
     vessels:
     - Saturn
 

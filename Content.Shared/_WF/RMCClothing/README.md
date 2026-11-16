@@ -11,7 +11,8 @@ of a hidden `WFRMCLook...` prototype per pattern. Colour variants (ties, armband
 
 Every item is a reskin: it takes the TSF or PDV item it replaces as its parent (armor takes the bulletproof vests'
 stats, packs and belts their storage, snow suits a winter coat's warmth, goggles the faction HUD) and only swaps the
-sprite, name and description. Players pick them in the faction loadout groups; the single-choice glove, glasses and
+sprite, name and description. Armor is the exception: each family takes a light, medium or heavy vest line and the specializations in the
+generator's `SPECIALTIES` table (`ArmorSpecialization`), listed in `Docs/_WF/ArmorBalance/SPECIALIZATIONS.md`. Players pick them in the faction loadout groups; the single-choice glove, glasses and
 PDV jumpsuit groups are now visible. The Crocus infantry kits are left uniform. Marine armor is kept to one plate
 style per cut; RMC's other plate styles only repeat the same silhouette.
 
@@ -627,8 +628,8 @@ python Tools/_WF/Ci/modules.py --write
 
 ## Non-modular edits
 
-- [`Resources/Maps/_Mono/POI/pdvhelios.yml`](../../../Resources/Maps/_Mono/POI/pdvhelios.yml): Mapped two Vanguard field outfitters in the spawn hall.
-- [`Resources/Maps/_Mono/POI/pdvhelios_hw.yml`](../../../Resources/Maps/_Mono/POI/pdvhelios_hw.yml): Mapped two Vanguard field outfitters in the spawn hall.
+- [`Resources/Maps/_Mono/POI/pdvhelios.yml`](../../../Resources/Maps/_Mono/POI/pdvhelios.yml): Mapped two Vanguard field outfitters flush against the spawn hall's west and east walls.
+- [`Resources/Maps/_Mono/POI/pdvhelios_hw.yml`](../../../Resources/Maps/_Mono/POI/pdvhelios_hw.yml): Mapped two Vanguard field outfitters flush against the spawn hall's west and east walls.
 - [`Resources/Maps/_Mono/POI/tsfmchalcyon.yml`](../../../Resources/Maps/_Mono/POI/tsfmchalcyon.yml): Mapped the TSFMC field outfitter in the marine ready room.
 - [`Resources/Maps/_Mono/POI/tsfmchalcyon_hw.yml`](../../../Resources/Maps/_Mono/POI/tsfmchalcyon_hw.yml): Mapped the TSFMC field outfitter in the marine ready room.
 - [`Resources/Prototypes/_Mono/Loadouts/PDV/universal_groups.yml`](../../../Resources/Prototypes/_Mono/Loadouts/PDV/universal_groups.yml)

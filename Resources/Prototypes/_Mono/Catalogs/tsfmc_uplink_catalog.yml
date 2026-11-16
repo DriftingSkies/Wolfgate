@@ -273,7 +273,7 @@
   description: uplink-security-t0-voucher-desc
   productEntity: ShipVoucherTsfT0
   cost:
-    FederationMilitaryCredit: 25
+    FederationMilitaryCredit: 0 # WOLFGATE(FactionBalance): T0 is free and T1 a token cost for both factions (was 25)
   categories:
   - UplinkSecurityVouchers
   conditions:
@@ -281,6 +281,13 @@
     whitelist:
       tags:
       - FactionStaticUplinkTsf
+  # WOLFGATE(FactionBalance) START: a free T0 has a per-player cooldown so it can't be printed endlessly
+  - !type:WFListingCooldownCondition
+    key: T0Voucher
+  productEvent: !type:WFListingCooldownEvent
+    key: T0Voucher
+  raiseProductEventOnUser: true
+  # WOLFGATE END
 
 - type: listing
   id: UplinkSecurityT1Voucher
@@ -288,7 +295,7 @@
   description: uplink-security-t1-voucher-desc
   productEntity: ShipVoucherTsfT1
   cost:
-    FederationMilitaryCredit: 90
+    FederationMilitaryCredit: 10 # WOLFGATE(FactionBalance): T0 is free and T1 a token cost for both factions (was 90)
   categories:
   - UplinkSecurityVouchers
   conditions:
@@ -297,20 +304,22 @@
       tags:
       - FactionStaticUplinkTsf
 
-- type: listing
-  id: UplinkSecurityT2Voucher
-  name:  uplink-security-t2-voucher-name
-  description: uplink-security-t2-voucher-desc
-  productEntity: ShipVoucherTsfT2
-  cost:
-    FederationMilitaryCredit: 150
-  categories:
-  - UplinkSecurityVouchers
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - FactionStaticUplinkTsf
+# WOLFGATE(FactionBalance) START: T2 and up are printed at the faction lathe from the same materials for both factions
+# - type: listing
+#   id: UplinkSecurityT2Voucher
+#   name:  uplink-security-t2-voucher-name
+#   description: uplink-security-t2-voucher-desc
+#   productEntity: ShipVoucherTsfT2
+#   cost:
+#     FederationMilitaryCredit: 150
+#   categories:
+#   - UplinkSecurityVouchers
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - FactionStaticUplinkTsf
+# WOLFGATE END
 
 # Misc
 

@@ -55,3 +55,10 @@ wf-armor-spec-thrusters-gravity = Your thrusters only work in zero gravity.
 wf-armor-spec-thrusters-fired = Your suit's thrusters fire!
 wf-armor-spec-living-tissue-examine = [color=#8fb7d6]Living Tissue:[/color] Small bleeding wounds under the suit close up on their own. Arterial bleeds still need a medic.
 wf-armor-spec-vow-examine = [color=#8fb7d6]Vow of Silence:[/color] You make no sound when you're hurt, and your footsteps are muffled.
+
+# Vest specializations
+wf-armor-spec-fast-hands-examine = [color=#8fb7d6]Fast hands:[/color] nothing binds your wrists, so reloads, cuffs, bandages and tool work finish faster.
+wf-armor-spec-low-signature-examine = [color=#8fb7d6]Low signature:[/color] motion trackers don't pick up the wearer.
+wf-armor-spec-unrestricted-examine = [color=#8fb7d6]Unrestricted:[/color] free shoulders, so the guns you hold spread less.
+wf-armor-spec-second-wind-examine = [color=#8fb7d6]Second wind:[/color] once you're badly hurt, a burst of speed to get clear. It comes back once you've healed.
+wf-armor-spec-second-wind-popup = A second wind carries you forward!
