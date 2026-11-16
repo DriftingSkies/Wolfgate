@@ -16,6 +16,7 @@ using Content.Shared.Verbs;
 using Content.Shared.Climbing.Events;
 using Content.Shared.Carrying;
 using Content.Shared.Contests;
+using Content.Shared._WF.Modsuits.Modules; // WOLFGATE(Modsuits)
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Standing;
@@ -258,6 +259,12 @@ namespace Content.Server.Carrying
                         * _contests.MassContest(carriedPhysics, carrierPhysics, false, 4f)
                         * _contests.StaminaContest(carrier, carried)
                         * (_standingState.IsDown(carried) ? 0.5f : 1);
+
+            // WOLFGATE(Modsuits) START: the quick-carry module shortens the pickup
+            var carryEv = new ModifyCarryDurationEvent(carried, 1f);
+            RaiseLocalEvent(carrier, ref carryEv);
+            length *= carryEv.Multiplier;
+            // WOLFGATE END
 
             // Frontier: sanitize pickup time duration regardless of CVars - no near-instant pickups.
             var duration = TimeSpan.FromSeconds(

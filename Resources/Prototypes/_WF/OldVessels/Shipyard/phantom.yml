@@ -13,7 +13,7 @@
   price: 155146
   category: Small
   group: Medical
-  access: Command # DoC exclusive.
+  access: CaelestinusCommand # DoC exclusive.
   limit: 2
   shuttlePath: /SharedMaps/_WF/OldVessels/phantom.yml
   tags:

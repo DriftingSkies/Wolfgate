@@ -35,6 +35,7 @@ when a filter first reveals it.
 - [`Content.Client/_WF/ChatTabs/ChannelFilterPopup.Tabs.cs`](ChannelFilterPopup.Tabs.cs)
 - [`Content.Client/_WF/ChatTabs/ChatBox.Tabs.cs`](ChatBox.Tabs.cs)
 - [`Content.Client/_WF/ChatTabs/ChatLogPopoutUIController.cs`](ChatLogPopoutUIController.cs)
+- [`Content.Client/_WF/ChatTabs/ChatLogSaver.cs`](ChatLogSaver.cs)
 - [`Content.Client/_WF/ChatTabs/ChatLogWindow.cs`](ChatLogWindow.cs)
 - [`Content.Client/_WF/ChatTabs/ChatTab.cs`](ChatTab.cs)
 - [`Content.Client/_WF/ChatTabs/ChatTabBar.cs`](ChatTabBar.cs)

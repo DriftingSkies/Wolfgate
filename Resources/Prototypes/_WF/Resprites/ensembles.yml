@@ -1,0 +1,147 @@
+# Command ensembles from GoobStation's cloak and mantle resprites.
+
+- type: entity
+  parent: [ClothingNeckBase, BaseCommandContraband]
+  id: ClothingNeckEnsembleChiefEngineerWhite
+  components:
+  - type: Item
+    size: Small
+    heldPrefix: both
+    inhandVisuals:
+      left:
+      - state: inhand-left
+      right:
+      - state: inhand-right
+  - type: Sprite
+    sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/ChiefEngineer/whitece.rsi
+  - type: Clothing
+    sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/ChiefEngineer/whitece.rsi
+    equippedPrefix: both
+    slots:
+    - Neck
+  - type: StealTarget
+    stealGroup:
+    - HeadCloak
+  - type: ItemSwitch
+    state: both
+    showLabel: true
+    states:
+      both: !type:ItemSwitchState
+        verb: itemswitch-state-both
+        sprite:
+          sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/ChiefEngineer/whitece.rsi
+          state: icon
+      mantle: !type:ItemSwitchState
+        verb: itemswitch-state-mantle
+        sprite:
+          sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/ChiefEngineer/whitece.rsi
+          state: mantle-icon
+      cloak: !type:ItemSwitchState
+        verb: itemswitch-state-cloak
+        sprite:
+          sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/ChiefEngineer/whitece.rsi
+          state: cloak-icon
+
+- type: entity
+  parent: [ClothingNeckBase, BaseCommandContraband]
+  id: ClothingNeckEnsembleChiefEngineerGreen
+  components:
+  - type: Item
+    size: Small
+    heldPrefix: both
+    inhandVisuals:
+      left:
+      - state: inhand-left
+      right:
+      - state: inhand-right
+  - type: Sprite
+    sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/ChiefEngineer/greence.rsi
+  - type: Clothing
+    sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/ChiefEngineer/greence.rsi
+    equippedPrefix: both
+    slots:
+    - Neck
+  - type: StealTarget
+    stealGroup:
+    - HeadCloak
+  - type: ItemSwitch
+    state: both
+    showLabel: true
+    states:
+      both: !type:ItemSwitchState
+        verb: itemswitch-state-both
+        sprite:
+          sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/ChiefEngineer/greence.rsi
+          state: icon
+      mantle: !type:ItemSwitchState
+        verb: itemswitch-state-mantle
+        sprite:
+          sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/ChiefEngineer/greence.rsi
+          state: mantle-icon
+      cloak: !type:ItemSwitchState
+        verb: itemswitch-state-cloak
+        sprite:
+          sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/ChiefEngineer/greence.rsi
+          state: cloak-icon
+
+- type: entity
+  parent: [ClothingNeckBase, BaseCommandContraband]
+  id: ClothingNeckEnsembleChiefMedicalOfficer
+  components:
+  - type: Item
+    size: Small
+    heldPrefix: all
+    inhandVisuals:
+      left:
+      - state: inhand-left
+      right:
+      - state: inhand-right
+  - type: Sprite
+    sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/cmo.rsi
+  - type: Clothing
+    sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/cmo.rsi
+    equippedPrefix: all
+    slots:
+    - Neck
+  - type: StealTarget
+    stealGroup:
+    - HeadCloak
+  - type: ItemSwitch
+    state: all
+    showLabel: true
+    states:
+      all: !type:ItemSwitchState
+        verb: itemswitch-state-all
+        sprite:
+          sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/cmo.rsi
+          state: icon
+      mantle: !type:ItemSwitchState
+        verb: itemswitch-state-mantle
+        sprite:
+          sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/cmo.rsi
+          state: mantle-icon
+      cloak: !type:ItemSwitchState
+        verb: itemswitch-state-cloak
+        sprite:
+          sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/cmo.rsi
+          state: cloak-icon
+      wings: !type:ItemSwitchState
+        verb: itemswitch-state-wings
+        sprite:
+          sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/cmo.rsi
+          state: wings-icon
+      cloakmantle: !type:ItemSwitchState
+        verb: itemswitch-state-cloakmantle
+        sprite:
+          sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/cmo.rsi
+          state: cloakmantle-icon
+      cloakwings: !type:ItemSwitchState
+        verb: itemswitch-state-cloakwings
+        sprite:
+          sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/cmo.rsi
+          state: cloakwings-icon
+      mantlewings: !type:ItemSwitchState
+        verb: itemswitch-state-mantlewings
+        sprite:
+          sprite: _WF/Resprites/Goobstation/Clothing/Neck/Ensembles/cmo.rsi
+          state: mantlewings-icon

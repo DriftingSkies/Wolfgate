@@ -7,7 +7,9 @@ using Content.Shared._WF.NpcCrew;
 using Content.Shared._WF.ShipAccess;
 using Content.Shared.Access.Systems;
 using Content.Shared.Inventory;
+using Content.Shared.Mobs;
 using Content.Shared.Station.Components;
+using Content.Shared.Tag;
 using Content.Shared.StationRecords;
 using Robust.Shared.Prototypes;
 
@@ -25,7 +27,10 @@ public sealed partial class WFCrewAccessSystem : EntitySystem
     [Dependency] private StationRecordKeyStorageSystem _keys = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
 
+    [Dependency] private TagSystem _tags = default!;
+
     private static readonly EntProtoId CrewCard = "PassengerIDCard";
+    private static readonly ProtoId<TagPrototype> DoorBumpTag = "DoorBumpOpener";
 
     public override void Initialize()
     {
@@ -77,8 +82,12 @@ public sealed partial class WFCrewAccessSystem : EntitySystem
             _keys.AssignKey(card, key, storage);
         }
 
-        if (_ships.TryAddCard(ship, card, Name(uid)) && TryComp<WFCrewComponent>(uid, out var crew))
+        if (_ships.TryAddCard(ship, card, Name(uid)) && TryComp<WFCrewComponent>(uid, out var crew)
+            && _access.TryGetKey(card, out var enrolled))
+        {
             crew.AccessShip = grid;
+            crew.AccessKey = enrolled;
+        }
     }
 
     /// <summary>Writes a crewman's name and post on the card he wears.</summary>
@@ -95,12 +104,48 @@ public sealed partial class WFCrewAccessSystem : EntitySystem
             _id.TryChangeJobTitle(id, title);
     }
 
-    /// <summary>A deleted crewman's card key comes off the ship's allow list; a dead one keeps it, as a looted card would.</summary>
+    /// <summary>
+    /// A downed crewman no longer bumps doors open, so nobody drags his body through them; a dead one's card also comes
+    /// off his ship's allow list, so it opens nothing looted. Both come back if he is revived.
+    /// </summary>
+    public void SetDown(EntityUid uid, WFCrewComponent crew, MobState state)
+    {
+        if (state == MobState.Alive)
+            _tags.AddTag(uid, DoorBumpTag);
+        else
+            _tags.RemoveTag(uid, DoorBumpTag);
+
+        if (crew.AccessShip is not { } grid || TerminatingOrDeleted(grid)
+            || !TryComp<WFShipAccessComponent>(grid, out var ship))
+            return;
+
+        // The stored key is held off the list even if the card was taken off him while he was down.
+        if (state == MobState.Dead && crew.AccessKey is { } enrolled && crew.AccessHold == null)
+            crew.AccessHold = _ships.SuspendEntry((grid, ship), enrolled);
+        else if (state == MobState.Alive && _access.TryGetWornCard(uid, out var card) && _access.TryGetKey(card, out var key))
+            Reenroll(uid, crew, (grid, ship), card, key);
+    }
+
+    /// <summary>A revived crewman's worn card goes back on the list with its door lists; a card he no longer wears comes off.</summary>
+    private void Reenroll(EntityUid uid, WFCrewComponent crew, Entity<WFShipAccessComponent> ship, EntityUid card, WFShipAccessKey key)
+    {
+        if (crew.AccessKey is { } old && old != key && crew.AccessHold == null)
+            _ships.RemoveEntry(ship, old);
+
+        if (crew.AccessHold is { } hold && hold.Entry.Key == key)
+            _ships.RestoreEntry(ship, hold);
+        else
+            _ships.TryAddCard(ship, card, Name(uid));
+
+        crew.AccessKey = key;
+        crew.AccessHold = null;
+    }
+
+    /// <summary>A deleted crewman's card key comes off the ship's allow list.</summary>
     private void OnCrewTerminating(Entity<WFCrewComponent> ent, ref EntityTerminatingEvent args)
     {
         if (ent.Comp.AccessShip is not { } grid || TerminatingOrDeleted(grid)
-            || !TryComp<WFShipAccessComponent>(grid, out var ship)
-            || !_access.TryGetWornCard(ent, out var card) || !_access.TryGetKey(card, out var key))
+            || !TryComp<WFShipAccessComponent>(grid, out var ship) || ent.Comp.AccessKey is not { } key)
             return;
 
         _ships.RemoveEntry((grid, ship), key);

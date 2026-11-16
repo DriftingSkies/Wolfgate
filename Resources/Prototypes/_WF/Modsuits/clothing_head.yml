@@ -1,0 +1,743 @@
+- type: entity
+  abstract: true
+  # Used to put pressureProtection, layers blocker and etc components into ModSealedComponents
+  id: BaseClothingModsuitHelmet
+  name: base modsuit helmet
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    state: icon
+  - type: Clickable
+  - type: InteractionOutline
+  - type: GroupExamine
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    quickEquip: false
+    equippedPrefix: off
+    slots: [ HEAD ]
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-vulpkanin
+      head-feroxi:
+      - state: equipped-HEAD-feroxi
+      head-hydrakin:
+      - state: equipped-HEAD-hydrakin
+  - type: Tag
+    tags:
+    - WhitelistChameleon
+  - type: Armor
+    coverage:
+    - Head
+  - type: HideLayerClothing
+    slots:
+    - Hair
+    - Snout
+    - HeadTop
+    - HeadSide
+- type: entity
+  abstract: true
+  parent: BaseClothingModsuitHelmet
+  # Used for helmets that hide your identity even if it's not sealed
+  id: BaseClothingModsuitHelmetHideIdentity
+  name: base modsuit helmet
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: IdentityBlocker
+  - type: IngestionBlocker
+  - type: HideLayerClothing
+    slots:
+    - Hair
+    - Snout
+    - HeadTop
+    - HeadSide
+
+- type: entity
+  parent: BaseClothingModsuitHelmet
+  id: ClothingModsuitHelmetStandard
+  name: standard modsuit helmet
+  description: A special modular suit spaceproof helmet designed for compact folding inside modular suit control.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: Sprite
+    sprite: _Goobstation/Clothing/Head/Modsuits/standard.rsi
+    layers:
+    - state: helmet
+    - state: helmet-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: HideLayerClothing
+    slots:
+    - Snout
+    hideOnToggle: true
+  - type: ContainerContainer
+    containers:
+      mod-part-stored: !type:ContainerSlot
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-helmet
+    sealDownPopup: modsuit-part-seal-down-helmet
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      head-resomi:
+      - state: equipped-HEAD-sealed-resomi
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed-vulpkanin
+      head-feroxi:
+      - state: equipped-HEAD-sealed-feroxi
+      head-hydrakin:
+      - state: equipped-HEAD-sealed-hydrakin
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.85
+        Heat: 0.85
+        Radiation: 0.2
+  - type: ModSealedComponents
+    components:
+    - type: BreathMask
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: IdentityBlocker
+    - type: IngestionBlocker
+    - type: HideLayerClothing
+      slots:
+      - Hair
+      - Snout
+      - HeadTop
+      - HeadSide
+  - type: PointLight
+    enabled: false
+    radius: 5
+    energy: 3
+    lightMask: ConeSingle
+    autoRot: true
+    netsync: true
+- type: entity
+  parent: BaseClothingModsuitHelmet
+  id: ClothingModsuitHelmetSecurity
+  name: soldat modsuit helmet
+  description: A robust brain bucket for holding your brain in place just enough for it to be salvageable.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: Clothing
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-vulpkanin
+      head-feroxi:
+      - state: equipped-HEAD-feroxi
+      head-hydrakin:
+      - state: equipped-HEAD-hydrakin
+  - type: Sprite
+    sprite: _Goobstation/Clothing/Head/Modsuits/security.rsi
+    layers:
+    - state: helmet
+    - state: helmet-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: HideLayerClothing
+    slots:
+    - Snout
+  - type: ContainerContainer
+    containers:
+      mod-part-stored: !type:ContainerSlot
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-helmet
+    sealDownPopup: modsuit-part-seal-down-helmet
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      head-resomi:
+      - state: equipped-HEAD-sealed-resomi
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed-vulpkanin
+      head-feroxi:
+      - state: equipped-HEAD-sealed-feroxi
+      head-hydrakin:
+      - state: equipped-HEAD-sealed-hydrakin
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.65
+        Heat: 0.65
+        Radiation: 0.6
+  - type: ModSealedComponents
+    components:
+    - type: BreathMask
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: IdentityBlocker
+    - type: IngestionBlocker
+    - type: HideLayerClothing
+      slots:
+      - Hair
+      - Snout
+      - HeadTop
+      - HeadSide
+  - type: PointLight
+    enabled: false
+    radius: 5
+    energy: 3
+    lightMask: ConeSingle
+    autoRot: true
+    netsync: true
+
+- type: entity
+  parent: [BaseClothingModsuitHelmet, BaseClothingModsuitHelmetHideIdentity]
+  id: ClothingModsuitHelmetHeadOfSecurity
+  name: bulwark modsuit helmet
+  description: Put on the HEAD of security.. How do you see out of this thing?
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: Clothing
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-vulpkanin
+      head-feroxi:
+      - state: equipped-HEAD-feroxi
+      head-hydrakin:
+      - state: equipped-HEAD-hydrakin
+  - type: Sprite
+    sprite: _Goobstation/Clothing/Head/Modsuits/headofsecurity.rsi
+    layers:
+    - state: helmet
+    - state: helmet-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: IdentityBlocker
+  - type: IngestionBlocker
+  - type: ContainerContainer
+    containers:
+      mod-part-stored: !type:ContainerSlot
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-helmet
+    sealDownPopup: modsuit-part-seal-down-helmet
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      head-resomi:
+      - state: equipped-HEAD-sealed-resomi
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed-vulpkanin
+      head-feroxi:
+      - state: equipped-HEAD-sealed-feroxi
+      head-hydrakin:
+      - state: equipped-HEAD-sealed-hydrakin
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.55
+        Slash: 0.55
+        Piercing: 0.5
+        Heat: 0.55
+        Caustic: 0.5
+        Radiation: 0.5
+  - type: ModSealedComponents
+    components:
+    - type: BreathMask
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: PointLight
+    enabled: false
+    radius: 5
+    energy: 3
+    lightMask: ConeSingle
+    autoRot: true
+    netsync: true
+
+- type: entity
+  parent: [BaseClothingModsuitHelmet, BaseClothingModsuitHelmetHideIdentity]
+  id: ClothingModsuitHelmetParamedic
+  name: sanitater modsuit helmet
+  description: A robust brain bucket for working on barely salvageable brains.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: Sprite
+    sprite: _Goobstation/Clothing/Head/Modsuits/paramedic.rsi
+    layers:
+    - state: helmet
+    - state: helmet-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: IdentityBlocker
+  - type: IngestionBlocker
+  - type: ContainerContainer
+    containers:
+      mod-part-stored: !type:ContainerSlot
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-helmet
+    sealDownPopup: modsuit-part-seal-down-helmet
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      head-resomi:
+      - state: equipped-HEAD-sealed
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed-vulpkanin
+      head-feroxi:
+      - state: equipped-HEAD-sealed-feroxi
+      head-hydrakin:
+      - state: equipped-HEAD-sealed-hydrakin
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 0.85
+        Heat: 0.8
+        Caustic: 0.6
+        Radiation: 0.3
+  - type: ModSealedComponents
+    components:
+    - type: BreathMask
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: PointLight
+    enabled: false
+    radius: 5
+    energy: 3
+    lightMask: ConeSingle
+    autoRot: true
+    netsync: true
+
+- type: entity
+  parent: [BaseClothingModsuitHelmet, BaseClothingModsuitHelmetHideIdentity]
+  id: ClothingModsuitHelmetEngineer
+  name: sapper modsuit helmet
+  description: A flat plate with cameras allowing your vision. turns you into an aero-cuck, but not like that matters in space.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: Sprite
+    sprite: _Goobstation/Clothing/Head/Modsuits/engineer.rsi
+    layers:
+    - state: helmet
+    - state: helmet-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: HideLayerClothing
+    hideOnToggle: true
+  - type: IdentityBlocker
+  - type: IngestionBlocker
+  - type: ContainerContainer
+    containers:
+      mod-part-stored: !type:ContainerSlot
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-helmet
+    sealDownPopup: modsuit-part-seal-down-helmet
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      head-resomi:
+      - state: equipped-HEAD-sealed
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed-vulpkanin
+      head-feroxi:
+      - state: equipped-HEAD-sealed-feroxi
+      head-hydrakin:
+      - state: equipped-HEAD-sealed-hydrakin
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.7
+        Shock: 0.8
+        Caustic: 0.5
+        Radiation: 0.01
+  - type: ModSealedComponents
+    components:
+    - type: BreathMask
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: PointLight
+    enabled: false
+    radius: 5
+    energy: 3
+    lightMask: ConeSingle
+    autoRot: true
+    netsync: true
+
+- type: entity
+  parent: BaseClothingModsuitHelmet
+  id: ClothingModsuitHelmetAtmostech
+  name: aeolus modsuit helmet
+  description: A specialised gas helmet to provide oxygen more efficiently.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: Sprite
+    sprite: _Goobstation/Clothing/Head/Modsuits/atmostech.rsi
+    layers:
+    - state: helmet
+    - state: helmet-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: HideLayerClothing
+    slots:
+    - Snout
+  - type: IngestionBlocker
+  - type: Clothing
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-vulpkanin
+      # The atmostech RSI has no Feroxi state; the generic head layer is used instead.
+      head-hydrakin:
+      - state: equipped-HEAD-hydrakin
+  - type: ContainerContainer
+    containers:
+      mod-part-stored: !type:ContainerSlot
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-helmet
+    sealDownPopup: modsuit-part-seal-down-helmet
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      # The atmostech RSI has no Resomi or Feroxi states; the generic head layer is used instead.
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed-vulpkanin
+      head-hydrakin:
+      - state: equipped-HEAD-sealed-hydrakin
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.85
+        Piercing: 0.85
+        Heat: 0.2
+        Radiation: 0.05
+  - type: ModSealedComponents
+    components:
+    - type: BreathMask
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.005
+      coolingCoefficient: 0.005
+    - type: IdentityBlocker
+    - type: HideLayerClothing
+      slots:
+      - Hair
+      - Snout
+      - HeadTop
+      - HeadSide
+  - type: PointLight
+    enabled: false
+    radius: 5
+    energy: 3
+    lightMask: ConeSingle
+    autoRot: true
+    netsync: true
+  - type: FireProtection
+    reduction: 0.25
+
+- type: entity
+  parent: [BaseClothingModsuitHelmet, BaseClothingModsuitHelmetHideIdentity]
+  id: ClothingModsuitHelmetResearchDirector
+  name: minerva modsuit helmet
+  description: A dark dark dark visor protecting your precious face from shrap and blast.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: Sprite
+    sprite: _Goobstation/Clothing/Head/Modsuits/researchdirector.rsi
+    layers:
+    - state: helmet
+    - state: helmet-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: HideLayerClothing
+    slots:
+    - Hair
+    - Snout
+    - HeadTop
+    - HeadSide
+    hideOnToggle: true
+  - type: IdentityBlocker
+  - type: IngestionBlocker
+  - type: ContainerContainer
+    containers:
+      mod-part-stored: !type:ContainerSlot
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-helmet
+    sealDownPopup: modsuit-part-seal-down-helmet
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      head-resomi:
+      - state: equipped-HEAD-sealed
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed-vulpkanin
+      head-feroxi:
+      - state: equipped-HEAD-sealed-feroxi
+      head-hydrakin:
+      - state: equipped-HEAD-sealed-hydrakin
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.8
+        Piercing: 0.9
+        Heat: 0.3
+        Shock: 0.75
+        Caustic: 0.25
+        Radiation: 0.01
+  - type: ModSealedComponents
+    components:
+    - type: BreathMask
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+  - type: PointLight
+    enabled: false
+    radius: 5
+    energy: 3
+    lightMask: ConeSingle
+    autoRot: true
+    netsync: true
+
+- type: entity
+  parent: BaseClothingModsuitHelmet
+  id: ClothingModsuitHelmetCaptain
+  name: magnate modsuit helmet
+  description: The visor is made from 10,000 year old amythest.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: Clothing
+    clothingVisuals:
+      head-feroxi:
+      - state: equipped-HEAD
+      head-vulpkanin:
+      - state: equipped-HEAD
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD-vox
+      head-hydrakin:
+      - state: equipped-HEAD-hydrakin
+  - type: Sprite
+    sprite: _Goobstation/Clothing/Head/Modsuits/captain.rsi
+    layers:
+    - state: helmet
+    - state: helmet-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: HideLayerClothing
+    slots:
+    - Snout
+  - type: ContainerContainer
+    containers:
+      mod-part-stored: !type:ContainerSlot
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-helmet
+    sealDownPopup: modsuit-part-seal-down-helmet
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      head-resomi:
+      - state: equipped-HEAD-sealed-resomi
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed-vulpkanin
+      head-feroxi:
+      - state: equipped-HEAD-sealed-feroxi
+      head-hydrakin:
+      - state: equipped-HEAD-sealed-hydrakin
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.6
+        Heat: 0.6
+        Radiation: 0.1
+        Caustic: 0.55
+  - type: ModSealedComponents
+    components:
+    - type: BreathMask
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: IdentityBlocker
+    - type: IngestionBlocker
+    - type: HideLayerClothing
+      slots:
+      - Hair
+      - Snout
+      - HeadTop
+      - HeadSide
+  - type: PointLight
+    enabled: false
+    radius: 5
+    energy: 3
+    lightMask: ConeSingle
+    autoRot: true
+    netsync: true
+
+- type: entity
+  parent: BaseClothingModsuitHelmet
+  id: ClothingModsuitHelmetBrigMed
+  name: trauma modsuit helmet
+  description: Cool helmet without eye lenses. Eyes aren't needed for surgery.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: Clothing
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-vulpkanin
+      head-feroxi:
+      - state: equipped-HEAD-feroxi
+      head-hydrakin:
+      - state: equipped-HEAD-hydrakin
+  - type: Sprite
+    sprite: _Goobstation/Clothing/Head/Modsuits/brigmed.rsi
+    layers:
+    - state: helmet
+    - state: helmet-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: HideLayerClothing
+    slots:
+    - Snout
+  - type: ContainerContainer
+    containers:
+      mod-part-stored: !type:ContainerSlot
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-helmet
+    sealDownPopup: modsuit-part-seal-down-helmet
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      head-resomi:
+      - state: equipped-HEAD-sealed
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed-vulpkanin
+      head-feroxi:
+      - state: equipped-HEAD-sealed-feroxi
+      head-hydrakin:
+      - state: equipped-HEAD-sealed-hydrakin
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.75
+        Slash: 0.75
+        Piercing: 0.75
+        Heat: 0.75
+        Radiation: 0.6
+  - type: ModSealedComponents
+    components:
+    - type: BreathMask
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: IdentityBlocker
+    - type: IngestionBlocker
+    - type: HideLayerClothing
+      slots:
+      - Hair
+      - Snout
+      - HeadTop
+      - HeadSide
+  - type: PointLight
+    enabled: false
+    radius: 5
+    energy: 3
+    lightMask: ConeSingle
+    autoRot: true
+    netsync: true

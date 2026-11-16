@@ -10,7 +10,7 @@
   purchasable: false # voucher only - T0
   category: Medium
   group: BlackMarket
-  access: Pirate
+  access: PDV
   shuttlePath: /SharedMaps/_WF/OldVessels/BlackMarket/metis.yml
   tags:
   - WFClassicVessel

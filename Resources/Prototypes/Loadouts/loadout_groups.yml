@@ -1980,7 +1980,11 @@
   minLimit: 0
   loadouts:
   - ChiefEngineerCloak
+  - ChiefEngineerCloakGreen # WOLFGATE(Resprites): GoobStation cloak resprite added the green variant
   - ChiefEngineerMantle
+  - ChiefEngineerMantleOrange # WOLFGATE(Resprites): GoobStation mantle resprite added the orange variant
+  - WFChiefEngineerEnsembleWhite # WOLFGATE(Resprites): GoobStation ensemble
+  - WFChiefEngineerEnsembleGreen # WOLFGATE(Resprites): GoobStation ensemble
   # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
   - WFMeridianLoadoutClothingAccessoryMedalSilverEmergencyServicesEngineering
   - WFMeridianLoadoutClothingNeckCloakSkillRewardConstruction
@@ -2862,6 +2866,7 @@
   loadouts:
   - ChiefMedicalOfficerCloak
   - ChiefMedicalOfficerMantle
+  - WFChiefMedicalOfficerEnsemble # WOLFGATE(Resprites): GoobStation ensemble
   # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
   - WFMeridianLoadoutClothingAccessoryMedalSilverEmergencyServicesMedical
   - WFMeridianLoadoutClothingNeckTieBunnytieCmo

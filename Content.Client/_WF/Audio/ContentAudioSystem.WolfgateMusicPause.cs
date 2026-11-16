@@ -10,10 +10,11 @@ public enum WfMusicPauseReason : byte
     None = 0,
     InternetSound = 1 << 0,
     SoundtrackMute = 1 << 1,
+    CombatMusicPreview = 1 << 2,
 }
 
 /// <summary>
-/// Lets internet sounds and the soundtrack mute pause ambient, combat and lobby music, then resume it.
+/// Lets internet sounds, the soundtrack mute and combat music previews pause ambient, combat and lobby music, then resume it.
 /// A partial so the music systems stay untouched.
 /// </summary>
 public sealed partial class ContentAudioSystem

@@ -26,6 +26,14 @@
     interfaces:
       enum.WFWarheadUiKey.Key:
         type: WFWarheadBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WFNuclearWiresBoundUserInterface
+  # Disarmed only by its fuze wires: unscrew the panel, cut one of two. A multitool no longer stops it.
+  - type: WiresPanel
+  - type: Wires
+    boardName: wf-warhead-wires-board
+    layoutId: WFWarheadFuze
+    alwaysRandomize: true
   - type: Anchorable
     delay: 5
   - type: Pullable
@@ -78,7 +86,6 @@
     payload: WFPayloadTactical
     yieldClass: wf-warhead-class-tactical
     timer: 60
-    disarmDelay: 15
   - type: WFTimerFuze
     options: [ 10, 30, 60, 120, 300 ]
   - type: WFRemoteFuze
@@ -150,7 +157,6 @@
     payload: WFPayloadStrategic
     yieldClass: wf-warhead-class-strategic
     timer: 300
-    disarmDelay: 60
   - type: WFTwoPersonArming
     window: 5
 
@@ -214,3 +220,10 @@
     - WFDeadManReleased
   - type: StaticPrice
     price: 500
+
+# A warhead's fuze wires: one makes it safe, the other sets it off. Colours are random per warhead.
+- type: wireLayout
+  id: WFWarheadFuze
+  wires:
+  - !type:WFWarheadDisarmWireAction
+  - !type:WFWarheadDetonateWireAction

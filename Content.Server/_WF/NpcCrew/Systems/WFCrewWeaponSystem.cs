@@ -4,8 +4,12 @@ using Content.Server.NPC.Components;
 using Content.Shared.GameTicking;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
+using Content.Shared.Inventory.VirtualItem;
+using Content.Shared.Explosion.Components;
 using Content.Shared.Weapons.Melee;
 using Content.Shared.Weapons.Ranged.Components;
+using Content.Shared.Wieldable;
+using Content.Shared.Wieldable.Components;
 
 namespace Content.Server._WF.NpcCrew.Systems;
 
@@ -17,9 +21,10 @@ public sealed partial class WFCrewWeaponSystem : EntitySystem
 {
     [Dependency] private InventorySystem _inventory = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private SharedWieldableSystem _wieldable = default!;
 
-    /// <summary>Slots searched for a weapon, in the order ties are broken.</summary>
-    private static readonly string[] WeaponSlots = { "back", "suitstorage", "belt", "pocket1", "pocket2" };
+    /// <summary>Slots searched for a weapon, in the order ties are broken. Grenades are carried in the same slots.</summary>
+    public static readonly string[] WeaponSlots = { "back", "suitstorage", "belt", "pocket1", "pocket2" };
 
     public override void Initialize()
     {
@@ -29,6 +34,8 @@ public sealed partial class WFCrewWeaponSystem : EntitySystem
         {
             _advancing.Clear();
             _threats.Clear();
+            _blastHolds.Clear();
+            _braces.Clear();
         });
     }
 
@@ -36,7 +43,7 @@ public sealed partial class WFCrewWeaponSystem : EntitySystem
     private void OnRangedInit(EntityUid uid, NPCRangedCombatComponent component, ComponentInit args)
     {
         if (TryComp<WFCrewComponent>(uid, out var crew))
-            component.ShootDelay = WFCrewSkills.Of(crew.Skill).ShootDelay;
+            component.ShootDelay = WFCrewSkills.Of(crew).ShootDelay;
     }
 
     /// <summary>Whether the drawn weapon is still in hand.</summary>
@@ -79,10 +86,38 @@ public sealed partial class WFCrewWeaponSystem : EntitySystem
 
         // The combat compounds shoot with the active hand.
         _hands.TrySelect(uid, item.Value);
+        Wield(uid, item.Value);
         weapon.Drawn = item;
         weapon.HolsterSlot = slot;
         EntityManager.System<WFCrewSpeechSystem>().Say(uid, "engage");
         return true;
+    }
+
+    /// <summary>Takes a two-handed weapon in both hands, so a rifle fires with its wielded spread.</summary>
+    public void Wield(EntityUid uid, EntityUid item)
+    {
+        if (TryComp<WieldableComponent>(item, out var wield) && !wield.Wielded)
+            _wieldable.TryWield(item, wield, uid);
+    }
+
+    /// <summary>
+    /// Frees the second hand at once. Unwielding only queues the grip's placeholder for deletion, which would keep
+    /// the hand full for the rest of the tick.
+    /// </summary>
+    public void Unwield(EntityUid uid, EntityUid item)
+    {
+        if (!TryComp<WieldableComponent>(item, out var wield) || !wield.Wielded)
+            return;
+
+        _wieldable.TryUnwield(item, wield, uid, force: true);
+        var grips = new List<EntityUid>();
+        foreach (var held in _hands.EnumerateHeld(uid))
+        {
+            if (TryComp<VirtualItemComponent>(held, out var virt) && virt.BlockingEntity == item)
+                grips.Add(held);
+        }
+        foreach (var grip in grips)
+            Del(grip);
     }
 
     /// <summary>Whether the crewman has in hand, or would draw, a gun he can fire.</summary>
@@ -140,10 +175,10 @@ public sealed partial class WFCrewWeaponSystem : EntitySystem
         return item != null;
     }
 
-    /// <summary>Longarms over sidearms over anything that swings; everything else is not a weapon.</summary>
+    /// <summary>Longarms over sidearms over anything that swings; everything else, grenades included, is not a weapon.</summary>
     private int Score(EntityUid item, string slot)
     {
-        if (HasComp<Content.Shared.Atmos.Components.GasTankComponent>(item))
+        if (HasComp<Content.Shared.Atmos.Components.GasTankComponent>(item) || HasComp<OnUseTimerTriggerComponent>(item))
             return 0;
         if (HasComp<GunComponent>(item))
             return AmmoCount(item) > 0 || FindMagazineForOwner(item) ? (slot == "back" ? 3 : 2) : 0;

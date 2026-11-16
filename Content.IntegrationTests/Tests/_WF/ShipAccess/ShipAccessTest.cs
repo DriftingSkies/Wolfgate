@@ -52,7 +52,7 @@ public sealed class ShipAccessTest
     private const string LockerProto = "LockerFreezer";
 
     /// <summary>A lockable button mapped with <see cref="SecureAccess"/>.</summary>
-    private const string ButtonProto = "LockableButtonCaptain";
+    private const string ButtonProto = "LockableButtonArmory";
     private const string HumanProto = "MobHuman";
     private const string CardProto = "PassengerIDCard";
     private const string AdminGhostProto = "AdminObserver";
@@ -61,10 +61,10 @@ public sealed class ShipAccessTest
     private const string Company = "PDV";
 
     /// <summary>One of the levels in the PDV access group.</summary>
-    private const string CompanyAccess = "Pirate";
+    private const string CompanyAccess = "PDV";
 
     /// <summary>Access a secure locker brought aboard might ask for.</summary>
-    private const string SecureAccess = "Captain";
+    private const string SecureAccess = "TsfmcArmory";
 
     [Test]
     public async Task OwnerAddsHeldCardWithoutItsHolder()
@@ -303,6 +303,9 @@ public sealed class ShipAccessTest
         {
             door = entMan.SpawnEntity(DoorProto, map.GridCoords);
             turbine = entMan.SpawnEntity("TurbineUnaffiliatedSmall", map.GridCoords);
+            // Its prototype has no lock since the access refactor; give it one nobody aboard holds.
+            entMan.System<AccessReaderSystem>().SetAccesses(turbine, entMan.GetComponent<AccessReaderComponent>(turbine),
+                new List<ProtoId<AccessLevelPrototype>> { SecureAccess });
             (buyer, _) = SpawnPersonWithCard(entMan, hands, map, "Ada Vance", 1);
             entMan.EnsureComponent<ShuttleDeedComponent>(grid);
             // Mono's own reader, as its purchase sweep leaves it; this module keeps it switched off.
@@ -358,10 +361,10 @@ public sealed class ShipAccessTest
                 foreach (var uid in new[] { door, laterDoor, locker })
                     Assert.That(ReaderLocked(entMan, uid), Is.False, $"Unlocking must restore the reader on {entMan.ToPrettyString(uid)}.");
 
-                // Feedback report 372: a Captain-locked turbine admits the ship's owner on an unlocked ship.
+                // Feedback report 372: a locked turbine admits the ship's owner on an unlocked ship.
                 var turbineReader = entMan.GetComponent<AccessReaderComponent>(turbine);
                 Assert.That(ReaderLocked(entMan, turbine), Is.False);
-                Assert.That(turbineReader.AccessLists.Single(), Does.Contain(new ProtoId<AccessLevelPrototype>("Captain")));
+                Assert.That(turbineReader.AccessLists.Single(), Does.Contain(new ProtoId<AccessLevelPrototype>(SecureAccess)));
                 Assert.That(entMan.System<AccessReaderSystem>().IsAllowed(buyer, turbine), Is.True, "The owner's card must open the turbine's lock.");
             });
         });

@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "license": "CC-BY-4.0",
+  "copyright": "Font Awesome Free 6 icon glyphs by Fonticons, Inc. (https://fontawesome.com), rendered from tgstation's html/font-awesome webfonts. Fonts are SIL OFL 1.1; icons are CC BY 4.0.",
+  "size": {
+    "x": 16,
+    "y": 16
+  },
+  "states": [
+    {
+      "name": "power-off"
+    },
+    {
+      "name": "lock"
+    },
+    {
+      "name": "lock-open"
+    },
+    {
+      "name": "wifi"
+    },
+    {
+      "name": "arrow-up"
+    },
+    {
+      "name": "arrow-down"
+    },
+    {
+      "name": "eject"
+    },
+    {
+      "name": "plug"
+    },
+    {
+      "name": "lightbulb"
+    },
+    {
+      "name": "bolt"
+    },
+    {
+      "name": "save"
+    },
+    {
+      "name": "cog"
+    },
+    {
+      "name": "thumbtack"
+    },
+    {
+      "name": "check-square-o"
+    },
+    {
+      "name": "square-o"
+    },
+    {
+      "name": "exclamation-triangle"
+    },
+    {
+      "name": "paint-brush"
+    }
+  ]
+}

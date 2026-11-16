@@ -148,7 +148,7 @@ public sealed class StrangerTest
         await server.WaitAssertion(() =>
         {
             var hands = server.System<SharedHandsSystem>();
-            var cash = entMan.SpawnEntity("SpaceCash2500", entMan.GetComponent<TransformComponent>(player).Coordinates);
+            var cash = entMan.SpawnEntity("SpaceCash10000", entMan.GetComponent<TransformComponent>(player).Coordinates);
             Assert.That(hands.TryPickupAnyHand(player, cash), Is.True);
             var dealer = entMan.SpawnEntity("WFStrangerDealer", new EntityCoordinates(map.Grid.Owner, 1.5f, 0.5f));
             var stranger = entMan.GetComponent<WFStrangerComponent>(dealer);
@@ -158,7 +158,7 @@ public sealed class StrangerTest
             strangers.Choose((dealer, stranger), player, 0);
             strangers.Choose((dealer, stranger), player, 1);
 
-            Assert.That(entMan.GetComponent<StackComponent>(cash).Count, Is.EqualTo(1300));
+            Assert.That(entMan.GetComponent<StackComponent>(cash).Count, Is.EqualTo(3000));
             var bought = hands.EnumerateHeld(player).FirstOrDefault(item => item != cash);
             Assert.That(bought, Is.Not.EqualTo(default(EntityUid)), "Nothing was handed over.");
             var solutions = server.System<SharedSolutionContainerSystem>();

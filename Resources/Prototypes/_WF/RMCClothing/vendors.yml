@@ -8,7 +8,7 @@
   - type: VendingMachine
     pack: WFRMCTsfOutfitterInventory
   - type: AccessReader
-    access: [["Security"]]
+    access: [["Tsfmc"]]
 
 - type: entity
   parent: VendingMachineYarrrDrobe
@@ -20,4 +20,4 @@
   - type: Advertise
     pack: YarrrDrobeAds
   - type: AccessReader
-    access: [["Pirate"]]
+    access: [["PDV"]]

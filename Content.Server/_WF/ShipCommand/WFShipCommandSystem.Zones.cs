@@ -1,12 +1,16 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server._WF.NpcCrew.Components;
+using Content.Server._WF.NpcCrew.Systems;
 using Content.Server._WF.ShipAccess;
 using Content.Server.Storage.Components;
 using Content.Shared._WF.ShipAccess;
 using Content.Shared._WF.ShipCommand;
 using Content.Shared.Database;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.StationRecords;
+using Robust.Shared.Map.Components;
 
 namespace Content.Server._WF.ShipCommand;
 
@@ -17,6 +21,9 @@ public sealed partial class WFShipCommandSystem
 
     /// <summary>The keys each ship's zone doors were last written with.</summary>
     private readonly Dictionary<EntityUid, ZoneKeys> _zoneKeys = new();
+
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private SharedMapSystem _map = default!;
 
     private TimeSpan _zoneKeyTimer;
 
@@ -31,6 +38,26 @@ public sealed partial class WFShipCommandSystem
         SubscribeLocalEvent<WFShipZonesComponent, MapInitEvent>(OnZonesMapInit);
         SubscribeLocalEvent<WFShipZonesComponent, ComponentShutdown>(OnZonesShutdown);
         SubscribeLocalEvent<WFShipZonesComponent, WFDoorZoneKeysEvent>(OnZoneDoorKeys);
+        SubscribeLocalEvent<WFShipZonesComponent, WFCrewPlaceNameEvent>(OnPlaceName);
+        SubscribeLocalEvent<MobStateChangedEvent>(OnMobStateChanged);
+    }
+
+    /// <summary>A crewman's death or revival changes who his ship's zones admit at once, not at the next sweep.</summary>
+    private void OnMobStateChanged(MobStateChangedEvent args)
+    {
+        if (TryComp<WFCrewComponent>(args.Target, out var crew) && _crew.HomeGrid(args.Target, crew) is { } home)
+            RefreshZoneKeys(home);
+    }
+
+    /// <summary>The crew name the zone a trespasser stands in when they challenge him.</summary>
+    private void OnPlaceName(Entity<WFShipZonesComponent> grid, ref WFCrewPlaceNameEvent args)
+    {
+        if (args.Name != null || !TryComp<MapGridComponent>(grid, out var mapGrid))
+            return;
+
+        var tile = _map.TileIndicesFor(grid, mapGrid, Transform(args.Visitor).Coordinates);
+        if (TryGetZoneAt(grid.Comp, tile, out var zone))
+            args.Name = Loc.GetString(zone.Name);
     }
 
     /// <summary>A spawned ship's doors take the rules of the modes its zones were saved with.</summary>
@@ -240,11 +267,12 @@ public sealed partial class WFShipCommandSystem
         AddKeys(command.Staff, staff);
         staff.ExceptWith(barred);
 
-        // The ship's own NPC crew walk its Staff and Locked zones with the cards they were issued.
+        // The ship's own living NPC crew walk its Staff and Locked zones with the cards they were issued.
         var crew = EntityQueryEnumerator<WFCrewComponent>();
         while (crew.MoveNext(out var mob, out var member))
         {
-            if (_crew.HomeGrid(mob, member) == grid && _access.TryGetCard(mob, out var card) && _access.TryGetKey(card, out var crewKey))
+            if (_crew.HomeGrid(mob, member) == grid && !_mobState.IsDead(mob)
+                && _access.TryGetCard(mob, out var card) && _access.TryGetKey(card, out var crewKey))
             {
                 var record = _access.ToRecordKey(crewKey);
                 staff.Add(record);

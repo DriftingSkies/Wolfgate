@@ -9,8 +9,11 @@ using InstrumentTheme = Content.Client._WF.CombatConsole.WFInstrumentTheme;
 
 namespace Content.Client._WF.ShipShields;
 
-public sealed partial class WFShipShieldShuntScreen
+public sealed partial class WFShipShieldShuntScreen : IWFCockpitOptionalPage
 {
+    /// <summary>The cockpit shows shield controls only while the ship has a shield generator.</summary>
+    bool IWFCockpitOptionalPage.Available => _state is { Available: true };
+
     private Action<WFShipShieldGeneratorStats>? _wfCockpitShowStats;
     private bool _wfCockpitCompact;
     /// <summary>Retains the live shield dial, deployment and power slider in the permanent HUD.</summary>
@@ -81,9 +84,9 @@ public sealed partial class WFShipShieldShuntScreen
             if (!stats.Disposed)
                 stats.Orphan();
         });
-        return WFCockpitMfdLayout.Details(InstrumentTheme.Column(telemetry, InstrumentTheme.Label("wf-console-shield-vector"),
+        return new WFCockpitOptionalHost(this, WFCockpitMfdLayout.Details(InstrumentTheme.Column(telemetry, InstrumentTheme.Label("wf-console-shield-vector"),
             InstrumentTheme.Label("wf-shield-helm-bearing"), lease.Take(_direction),
             lease.Take(_stats), lease.Take(_status), lease.Take(_recovery, restoreVisibility: false),
-            lease.Take(_draft), lease.Take(_reset), lease.Take(_unprotected, restoreVisibility: false), specifications));
+            lease.Take(_draft), lease.Take(_reset), lease.Take(_unprotected, restoreVisibility: false), specifications)));
     }
 }

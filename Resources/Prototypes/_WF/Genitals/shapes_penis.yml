@@ -64,6 +64,22 @@
   legacyToken: flared
 
 - type: genitalShape
+  id: WFGenitalShapePenisBarbed
+  slot: Penis
+  name: wf-genitals-shape-penis-barbed
+  examineName: wf-genitals-shape-penis-barbed-examine
+  sprite: Mobs/Customization/Markings/Genital/cocks.rsi
+  state: "penis_barbed_{size}_{aroused}_{layer}"
+  sizes: [1, 2, 3, 4, 5]
+  arousedSizes: [1, 2, 3, 4, 5]
+  behindSizes: [1, 2, 3, 4, 5]
+  behindArousedSizes: []
+  allowedSheaths: [Sheath, Slit]
+  region: Groin
+  sortOrder: 45
+  legacyToken: barbed
+
+- type: genitalShape
   id: WFGenitalShapePenisBarbKnot
   slot: Penis
   name: wf-genitals-shape-penis-barbknot

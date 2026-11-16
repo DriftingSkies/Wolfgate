@@ -27,15 +27,12 @@
         next: sold
         broke: broke
       - text: wf-stranger-dealer-buy-hard
-        cost: 1200
+        cost: 7000
         items: [ WFBaggieCocaineCut, WFBaggieHeroinCut, WFCrackRockCut, WFCrystalShardCut ]
         next: sold
         broke: broke
       - text: wf-stranger-dealer-buy-stick
-        cost: 1350
-        items: [ WFNeurowareStickWhitelineCopy, WFNeurowareStickNullLoopCopy, WFNeurowareStickBurstCopy, WFNeurowareStickIdleCopy ]
-        next: sold
-        broke: broke
+        next: sticks
       - text: wf-stranger-dealer-buy-seeds
         cost: 300
         items: [ WFCocaSeeds, WFOpiumPoppySeeds ]
@@ -44,6 +41,31 @@
       - text: wf-stranger-dealer-buy-tester
         cost: 150
         items: [ WFPurityTester ]
+        next: sold
+        broke: broke
+      - text: wf-stranger-dealer-pass
+        next: shrug
+    sticks:
+      line: wf-stranger-dealer-sticks
+      options:
+      - text: wf-stranger-dealer-stick-whiteline
+        cost: 1350
+        items: [ WFNeurowareStickWhitelineCopy ]
+        next: sold
+        broke: broke
+      - text: wf-stranger-dealer-stick-null-loop
+        cost: 1350
+        items: [ WFNeurowareStickNullLoopCopy ]
+        next: sold
+        broke: broke
+      - text: wf-stranger-dealer-stick-burst
+        cost: 1350
+        items: [ WFNeurowareStickBurstCopy ]
+        next: sold
+        broke: broke
+      - text: wf-stranger-dealer-stick-idle
+        cost: 1350
+        items: [ WFNeurowareStickIdleCopy ]
         next: sold
         broke: broke
       - text: wf-stranger-dealer-pass

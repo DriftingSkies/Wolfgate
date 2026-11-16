@@ -11,6 +11,7 @@ CASC Lightning or Hornet at the Frontier Staff Shipyard. The Roswell and Petra s
 ### Prototypes
 
 - [`Resources/Prototypes/_WF/Judges/loadouts.yml`](../../../Resources/Prototypes/_WF/Judges/loadouts.yml)
+- [`Resources/Prototypes/_WF/Judges/overseer_belt.yml`](../../../Resources/Prototypes/_WF/Judges/overseer_belt.yml)
 - [`Resources/Prototypes/_WF/Judges/vouchers.yml`](../../../Resources/Prototypes/_WF/Judges/vouchers.yml)
 
 ## Non-modular edits
@@ -21,6 +22,7 @@ CASC Lightning or Hornet at the Frontier Staff Shipyard. The Roswell and Petra s
   - additional security jumpsuits for judges
 - [`Resources/Prototypes/_Mono/Outpost/caelestinus.yml`](../../../Resources/Prototypes/_Mono/Outpost/caelestinus.yml): judge cap raised from 3 to 5
 - [`Resources/Prototypes/_NF/Loadouts/role_loadouts.yml`](../../../Resources/Prototypes/_NF/Loadouts/role_loadouts.yml)
+  - optional chest rig, none by default
   - gaiters are picked in SecurityGuardFace now
   - face slot is a visible choice
   - Judges pick neckwear from the HoS group

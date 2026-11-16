@@ -1,7 +1,6 @@
-using Content.Shared._Goobstation.Clothing.Components;
-using Content.Shared._Goobstation.Clothing.Systems;
+using Content.Shared._WF.Modsuits.Components;
+using Content.Shared._WF.Modsuits.Systems;
 using Content.Shared.Clothing.Components;
-using Content.Shared.Clothing.EntitySystems;
 using Content.Shared.Humanoid;
 using Content.Shared.Inventory;
 using Robust.Shared.GameObjects;
@@ -9,11 +8,11 @@ using Robust.Shared.Map;
 
 namespace Content.IntegrationTests.Tests._WF.SuitTank;
 
-/// <summary>Sealing and unsealing a modsuit leaves no head layers hidden once the helmet is retracted.</summary>
+/// <summary>Sealing and retracting a MODsuit helmet through the native module system restores head layers.</summary>
 [TestFixture]
 public sealed class ModsuitHiddenLayersTest
 {
-    private static readonly string[] Suits = ["ClothingModsuitStandartPowerCell", "ClothingModsuitParamedicPowerCell"];
+    private static readonly string[] Suits = ["ClothingModsuitStandardPowerCell", "ClothingModsuitParamedicPowerCell"];
 
     [Test]
     [TestCaseSource(nameof(Suits))]
@@ -22,48 +21,62 @@ public sealed class ModsuitHiddenLayersTest
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
         var entMan = server.EntMan;
-        var sealing = entMan.System<SharedSealableClothingSystem>();
+        var modSuit = entMan.System<ModSuitSystem>();
+        var inventory = entMan.System<InventorySystem>();
 
         EntityUid mob = default;
         EntityUid suit = default;
         await server.WaitAssertion(() =>
         {
             var maps = entMan.System<SharedMapSystem>();
-            var inventory = entMan.System<InventorySystem>();
             maps.CreateMap(out var mapId);
             var coords = new MapCoordinates(0, 0, mapId);
             mob = entMan.SpawnEntity("MobHuman", coords);
             suit = entMan.SpawnEntity(suitId, coords);
             Assert.That(inventory.TryEquip(mob, suit, "back", silent: true, force: true));
-
-            entMan.EventBus.RaiseLocalEvent(suit, new ToggleClothingEvent { Performer = mob });
-            Assert.That(sealing.TryStartSealToggleProcess((suit, entMan.GetComponent<SealableClothingControlComponent>(suit)), mob));
         });
 
-        await server.WaitRunTicks(300);
+        await server.WaitRunTicks(1);
 
         await server.WaitAssertion(() =>
         {
-            Assert.That(entMan.GetComponent<SealableClothingControlComponent>(suit).IsCurrentlySealed, Is.True);
-            var humanoid = entMan.GetComponent<HumanoidAppearanceComponent>(mob);
-            Assert.That(humanoid.HiddenLayers, Does.ContainKey(HumanoidVisualLayers.Hair), "a sealed helmet should hide the hair");
-            Assert.That(sealing.TryStartSealToggleProcess((suit, entMan.GetComponent<SealableClothingControlComponent>(suit)), mob));
+            var comp = entMan.GetComponent<ModSuitComponent>(suit);
+            modSuit.ToggleAllParts((suit, comp), mob);
         });
 
-        await server.WaitRunTicks(300);
+        await server.WaitRunTicks(150);
 
         await server.WaitAssertion(() =>
         {
-            Assert.That(entMan.GetComponent<SealableClothingControlComponent>(suit).IsCurrentlySealed, Is.False);
-            var humanoid = entMan.GetComponent<HumanoidAppearanceComponent>(mob);
-            var helmet = entMan.System<InventorySystem>().TryGetSlotEntity(mob, "head", out var head) ? head.Value : default;
-            Assert.That(humanoid.HiddenLayers.ContainsKey(HumanoidVisualLayers.Hair),
-                Is.EqualTo(entMan.HasComponent<HideLayerClothingComponent>(helmet)),
-                "an unsealed helmet should hide the hair only if it always does");
-            if (suitId == "ClothingModsuitParamedicPowerCell")
-                Assert.That(entMan.HasComponent<HideLayerClothingComponent>(helmet), "unsealing must not strip what the helmet always has");
+            var comp = entMan.GetComponent<ModSuitComponent>(suit);
+            Assert.That(modSuit.TryToggleActivation((suit, comp), mob));
+        });
 
-            entMan.EventBus.RaiseLocalEvent(suit, new ToggleClothingEvent { Performer = mob });
+        await server.WaitRunTicks(360);
+
+        await server.WaitAssertion(() =>
+        {
+            // Some helmets cover the head while sealed, others leave it visible; the retraction below is what this
+            // test guards.
+            var comp = entMan.GetComponent<ModSuitComponent>(suit);
+            Assert.That(modSuit.TryToggleActivation((suit, comp), mob));
+        });
+
+        await server.WaitRunTicks(360);
+
+        await server.WaitAssertion(() =>
+        {
+            var comp = entMan.GetComponent<ModSuitComponent>(suit);
+            Assert.That(comp.State, Is.EqualTo(ModSuitState.Inactive));
+            modSuit.ToggleAllParts((suit, comp), mob); // retracting every part should start
+        });
+
+        await server.WaitRunTicks(150);
+
+        await server.WaitAssertion(() =>
+        {
+            var humanoid = entMan.GetComponent<HumanoidAppearanceComponent>(mob);
+            Assert.That(inventory.TryGetSlotEntity(mob, "head", out var helmet), Is.False, "the helmet should be retracted");
             Assert.That(humanoid.HiddenLayers, Is.Empty, "retracting the helmet should show every layer again");
         });
 

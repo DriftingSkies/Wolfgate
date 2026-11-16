@@ -1,12 +1,15 @@
 using System.Numerics;
+using Content.Shared._WF.Modsuits.Components;
 using Content.Shared._WF.SuitTank;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Systems;
 using Content.Shared.Inventory;
+using Content.Shared.Storage;
 using Content.Shared.Storage.EntitySystems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._WF.SuitTank;
 
@@ -130,6 +133,73 @@ public sealed class WFSuitTankTest
                 "Internals move to the other suit tank once the connected one runs out.");
             Assert.That(entities.GetComponent<GasTankComponent>(second).User, Is.Null);
             Assert.That(internals.AreInternalsWorking(mob));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Every MODsuit chestplate carries the same 2x2 tank storage as a hardsuit.</summary>
+    [Test]
+    public async Task EveryModsuitChestplateHasTankStorage()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var prototypes = server.ResolveDependency<IPrototypeManager>();
+        var factory = server.ResolveDependency<IComponentFactory>();
+
+        await server.WaitAssertion(() =>
+        {
+            foreach (var proto in prototypes.EnumeratePrototypes<EntityPrototype>())
+            {
+                if (proto.Abstract
+                    || (!proto.ID.Contains("ModsuitChestplate", StringComparison.Ordinal)
+                        && !proto.ID.Contains("ModsuitBody", StringComparison.Ordinal))
+                    || !proto.TryComp<ModPartComponent>(out _, factory))
+                {
+                    continue;
+                }
+
+                Assert.That(proto.TryComp<WFSuitTankStorageComponent>(out _, factory), Is.True,
+                    $"{proto.ID} should have a suit tank storage");
+                Assert.That(proto.TryComp<StorageComponent>(out _, factory), Is.True,
+                    $"{proto.ID} should have a suit tank storage grid");
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A tank in a worn MODsuit chestplate feeds internals like a hardsuit tank.</summary>
+    [Test]
+    public async Task ModsuitChestplateTankFeedsInternals()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entities = server.ResolveDependency<IEntityManager>();
+        var inventory = entities.System<InventorySystem>();
+        var storage = entities.System<SharedStorageSystem>();
+        var internals = entities.System<SharedInternalsSystem>();
+
+        EntityUid mob = default;
+        EntityUid tank = default;
+
+        await server.WaitAssertion(() =>
+        {
+            var coords = new EntityCoordinates(map.Grid, new Vector2(0.5f, 0.5f));
+            mob = entities.SpawnEntity("MobHuman", coords);
+            var chestplate = entities.SpawnEntity("ClothingModsuitChestplateStandard", coords);
+            tank = entities.SpawnEntity("OxygenTankFilled", coords);
+            var mask = entities.SpawnEntity("ClothingMaskBreath", coords);
+            var crowbar = entities.SpawnEntity("Crowbar", coords);
+
+            Assert.That(inventory.TryEquip(mob, mask, "mask", silent: true, force: true));
+            Assert.That(inventory.TryEquip(mob, chestplate, "outerClothing", silent: true, force: true));
+
+            Assert.That(storage.CanInsert(chestplate, crowbar, out _), Is.False,
+                "Only gas tanks go in the chestplate tank storage.");
+            Assert.That(storage.Insert(chestplate, tank, out _, playSound: false));
+            Assert.That(internals.FindBestGasTank(mob)?.Owner, Is.EqualTo(tank));
         });
 
         await pair.CleanReturnAsync();

@@ -253,7 +253,7 @@ public sealed class WFFeedbackBatch1112SpriteTest
             wearer = entMan.SpawnEntity(mob, map.GridCoords);
             var helmet = entMan.SpawnEntity("ClothingModsuitHelmetAtmostech", map.GridCoords);
             Assert.That(entMan.System<Content.Shared.Inventory.InventorySystem>().TryEquip(wearer, helmet, "head", force: true), Is.True);
-            entMan.System<SharedAppearanceSystem>().SetData(helmet, Content.Shared._Goobstation.Clothing.SealableClothingVisuals.Sealed, true);
+            entMan.System<SharedAppearanceSystem>().SetData(helmet, Content.Shared._WF.Modsuits.Components.ModSuitVisuals.Sealed, true);
         });
         await pair.RunTicksSync(10);
 

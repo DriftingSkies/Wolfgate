@@ -54,6 +54,9 @@
     destroyOnEmpty: true
     access:
     - Janitor
+    # WOLFGATE(Shipyard): Mono vouchers only list their vessels, access alone offers nothing
+    vessels:
+    - Bucket
 
 - type: entity
   parent: ShipVoucherFrontierJanitor
@@ -68,6 +71,9 @@
   - type: ShipyardVoucher
     access:
     - Mail
+    # WOLFGATE(Shipyard): the mail ship, not the janitor's
+    vessels:
+    - Hermes
 
 - type: entity
   parent: ShipVoucherFrontierJanitor

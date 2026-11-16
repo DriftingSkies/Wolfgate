@@ -8,13 +8,17 @@ in `WFOrdnanceStation`. It is a vehicle shop terminal open only to that faction'
 whole sector under the faction's name.
 
 **The beacon** (`WFOrdnanceBeaconTactical`, `WFOrdnanceSystem.Beacon.cs`). Before it is planted, its verbs set it up:
-the fuze (timer, remote, or both), the warhead's timer (30 s to 10 min) and the drop delay (30 s to 5 min). Used in
+the fuze (timer, remote, or both), the warhead's timer (90 s to 10 min) and the drop delay (30 s to 5 min). Used in
 hand on any deck or planet ground (not Caelestinus Central's), it is set down and beeps; a rumble warns 8 s out, then a
 pod lands on it with a `WFWarheadTacticalKeyed` fuzed as set up, its `WFNukeKey`, and for a remote fuze a dead-man
 switch linked to it. The key and switch go to whoever planted it if they are within 12 m.
 
 **The key.** A keyed warhead (`WFWarheadKeyLock`, Warheads module) won't start its timer, take its safety off or turn
 keys without its own key in its keyhole (an item slot). The key is cut for that one warhead.
+
+**Defusing.** While armed, the warhead sounds a klaxon that only carries about 20 m (`WFOrdnanceKlaxon`,
+`WFOrdnanceSystem.Klaxon.cs`). Its countdown is never under 90 s, the remote fuze's included. Like every warhead, it is
+disarmed only by its fuze wires (see the Warheads module).
 
 **DEFCON.** Arming any warhead (`WFWarheadArmedEvent`) sends DEFCON straight to 1 unless an admin has locked it, and
 while any warhead or station nuke is armed the level can't fall from 1. Each bought device not yet set off (a beacon or
@@ -35,10 +39,12 @@ at once.
 - [`Content.Server/_WF/Ordnance/WFOrdnanceComponents.cs`](WFOrdnanceComponents.cs)
 - [`Content.Server/_WF/Ordnance/WFOrdnanceSystem.Beacon.cs`](WFOrdnanceSystem.Beacon.cs)
 - [`Content.Server/_WF/Ordnance/WFOrdnanceSystem.cs`](WFOrdnanceSystem.cs)
+- [`Content.Server/_WF/Ordnance/WFOrdnanceSystem.Klaxon.cs`](WFOrdnanceSystem.Klaxon.cs)
 
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/Ordnance/WFOrdnanceTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Ordnance/WFOrdnanceTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Ordnance/WFOrdnanceTimerKlaxonTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Ordnance/WFOrdnanceTimerKlaxonTest.cs)
 
 ### Prototypes
 
@@ -47,6 +53,11 @@ at once.
 ### Localization
 
 - [`Resources/Locale/en-US/_WF/Ordnance/ordnance.ftl`](../../../Resources/Locale/en-US/_WF/Ordnance/ordnance.ftl)
+
+### Audio
+
+- [`Resources/Audio/_WF/Ordnance/attributions.yml`](../../../Resources/Audio/_WF/Ordnance/attributions.yml)
+- [`Resources/Audio/_WF/Ordnance/nukeklaxon.ogg`](../../../Resources/Audio/_WF/Ordnance/nukeklaxon.ogg)
 
 ## Non-modular edits
 

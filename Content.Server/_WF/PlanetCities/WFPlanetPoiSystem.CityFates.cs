@@ -36,7 +36,8 @@ public sealed partial class WFPlanetPoiSystem
         var indoors = picked.IndoorShare > 0
             ? CityPools(floors, floor => floor.Depth == 0 || (picked.UpperLevels && floor.Depth > 0), floor => floor.Indoor)
             : new List<CityPool>();
-        var streets = CityPools(floors, floor => floor == ground, floor => floor.Tiles.Except(floor.Indoor)).FirstOrDefault();
+        // A camp's fire on an entrance road would cut the city off the world's roads.
+        var streets = CityPools(floors, floor => floor == ground, floor => floor.Tiles.Except(floor.Indoor).Except(floor.Paved)).FirstOrDefault();
         if (indoors.Count == 0 && streets == null)
             return;
 

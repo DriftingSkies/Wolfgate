@@ -9,7 +9,7 @@
   purchasable: false # voucher only - T0
   category: Small
   group: Security
-  access: Security
+  access: Tsfmc
   shuttlePath: /SharedMaps/_WF/OldVessels/Nfsd/hoplite.yml
   tags:
   - WFClassicVessel

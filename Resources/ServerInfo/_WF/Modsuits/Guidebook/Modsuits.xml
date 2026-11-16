@@ -1,0 +1,57 @@
+<Document>
+  # Modular Outerwear Devices
+
+  MODsuits are back-mounted sealed suits that deploy a helmet, chestplate, gauntlets and boots from a
+  control unit. Parts, plating, cores and modules are printed at the [bold]Exosuit Fabricator[/bold] after
+  researching [bold]Modular Technologies[/bold]; department-specific modules and plating are printed at the
+  department techfabs.
+
+  ## Assembling a MODsuit
+
+  1. Print a [bold]MOD shell[/bold], [bold]MOD core[/bold], [bold]MOD helmet[/bold], [bold]MOD chestplate[/bold],
+     [bold]MOD gauntlets[/bold], [bold]MOD boots[/bold] and a [bold]plating[/bold].
+  2. Click the shell with the core to insert it, then [bold]screwdriver[/bold] the core in place.
+  3. Click the shell with the helmet, then the chestplate, the gauntlets and the boots.
+  4. [bold]Wrench[/bold] the assembly, then [bold]screwdriver[/bold] it.
+  5. Add the plating, then wrench the finished unit. The plating decides the suit's appearance, armour and
+     complexity cap.
+  6. Wear the control unit on your back.
+
+  ## Using the suit
+
+  - Right-click the control unit and pick [bold]MOD interface[/bold] to see its parts, modules, complexity and
+    charge. The interface works while worn or on the ground.
+  - Use the [bold]Deploy MOD parts[/bold] action to deploy or retract the four parts, then
+    [bold]Toggle MOD activation[/bold] to seal the suit.
+  - All parts must be deployed before sealing, and modules cannot be installed or removed while the suit is
+    active. The maintenance panel also has to be open.
+  - Modules require the parts they list and count against the suit's complexity. A module cannot be installed
+    if it duplicates an existing one or would exceed the cap.
+  - The suit's drain plus every module's idle and active draw comes out of the battery in the core. When the
+    battery empties the suit cuts power and slows the wearer until it is charged or replaced.
+  - To swap the cell, open the panel with a [bold]screwdriver[/bold] and use the [bold]Remove power cell[/bold]
+    verb. To take the core out, open the panel and hit the unit with a [bold]wrench[/bold].
+
+  ## Cores
+
+  - [bold]Standard core[/bold]: takes a power cell and holds 1 MJ at full charge.
+  - [bold]Microreactor core[/bold]: sealed, holds 1.08 MJ and slowly recharges itself.
+  - [bold]Plasma core[/bold]: holds 720 kJ and is refuelled by feeding it plasma sheets.
+
+  ## Modules
+
+  Modules are printed at the Exosuit Fabricator and unlocked by research. They include storage, flashlights,
+  welding and medical visors, health analysers, GPS, injectors, defibrillators, patient transport, jetpacks,
+  magboots, clamps, drills, holsters, cloaks, energy shields, EMP shielding, radiation protection, t-ray
+  scanners, a chameleon projector and many more. Department techfabs sell their own themed modules and
+  plating, and some themes come with built-in modules that cannot be removed.
+
+  ## Built-in themes
+
+  - [bold]Loader[/bold]: hydraulic arms, a loader clamp and a hydraulic magnet, worn by the Quartermaster.
+  - [bold]Mining[/bold]: sphere transform and ash accretion, for asteroid work.
+  - [bold]Syndicate[/bold] and [bold]Elite[/bold]: flash protection, night vision and insulation built in.
+
+  The [bold]MOD interface[/bold] lists every installed module, its complexity and draw, and lets you use,
+  toggle, pin or eject it.
+</Document>

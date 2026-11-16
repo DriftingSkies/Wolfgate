@@ -57,6 +57,7 @@ links, hand-on, the merge) and the marked edits in `SharedShipRepairSystem.Tool`
   - never rebuild under another grid, where a detached section belongs, or onto something anchored there since.
   - a grid, or something anchored, may have moved into the spot while the repair ran.
   - an unhandled query blocks unless the original is debris of this hull.
+  - the snapshot only holds anchored entities, but some prototypes spawn loose.
   - a grid may have moved into the spot, or the hull beside it gone, while the repair ran.
 
 <!-- WOLFGATE-GENERATED END -->

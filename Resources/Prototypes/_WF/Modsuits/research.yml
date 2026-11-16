@@ -1,0 +1,177 @@
+# WOLFGATE(Modsuits): MODsuit construction and module research, ported from GoobStation.
+
+- type: technology
+  id: ModsuitsTech
+  name: research-technology-modsuits
+  entityIcon: ModsuitCoreStandard
+  discipline: Experimental
+  tier: 1
+  cost: 5000
+  recipeUnlocks:
+  - ModsuitChestplate
+  - ModsuitBoots
+  - ModsuitHelmet
+  - ModsuitGauntlets
+  - ModsuitShell
+  - ModsuitPlatingExternal
+  - ModsuitCoreStandard
+  - ModsuitModuleStorageCompact
+  - ModsuitModuleStorageCase
+  - ModsuitModuleFlashlight
+  position: -4,-2
+  technologyPrerequisites:
+  - MagnetsTech
+
+- type: technology
+  id: ModsuitEquipmentTech
+  name: research-technology-modsuit-equipment
+  entityIcon: ModsuitModuleThermalRegulator
+  discipline: Experimental
+  tier: 1
+  cost: 7500
+  recipeUnlocks:
+  - ModsuitCorePlasma
+  - ModsuitCoreStandardMicroreactor
+  - ModsuitModuleStorageLarge
+  - ModsuitModuleStorageBluespace
+  - ModsuitModuleStorageHolding
+  - ModsuitModuleWelding
+  - ModsuitModuleThermalRegulator
+  - ModsuitModuleGps
+  - ModsuitModuleVisorDiagnostic
+  - ModsuitModuleReagentScanner
+  - ModsuitModuleJointTorsion
+  - ModsuitModuleGloveTranslator
+  - ModsuitModulePlasmaStabilizer
+  - ModsuitModuleHatStabilizer
+  - ModsuitModuleRecycler
+  - ModsuitModuleDonkRecycler
+  - ModsuitModuleKinesis
+  position: -5,-2
+  technologyPrerequisites:
+  - ModsuitsTech
+
+- type: technology
+  id: ModsuitEngineeringTech
+  name: research-technology-modsuit-engineering
+  entityIcon: ModsuitModuleMagboots
+  discipline: Industrial
+  tier: 2
+  cost: 10000
+  recipeUnlocks:
+  - ModsuitPlatingEngineer
+  - ModsuitModuleMagboots
+  - ModsuitModuleTRay
+  - ModsuitModuleTether
+  - ModsuitModuleMister
+  - ModsuitModuleHeadProtector
+  position: -3,-4
+  technologyPrerequisites:
+  - ModsuitsTech
+
+- type: technology
+  id: ModsuitAdvancedEngineeringTech
+  name: research-technology-modsuit-advanced-engineering
+  entityIcon: ModsuitModuleJetpack
+  discipline: Industrial
+  tier: 3
+  cost: 15000
+  recipeUnlocks:
+  - ModsuitPlatingAtmostech
+  - ModsuitModuleJetpack
+  - ModsuitModuleRadProtection
+  - ModsuitModuleResinMister
+  - ModsuitModuleAntiGravity
+  - ModsuitModuleJetpackAdvanced
+  - ModsuitModuleMagbootsAdvanced
+  - ModsuitModuleJumpJet
+  - ModsuitModuleEmpShieldAdvanced
+  position: -3,-5
+  technologyPrerequisites:
+  - ModsuitEngineeringTech
+
+- type: technology
+  id: ModsuitSupplyTech
+  name: research-technology-modsuit-supply
+  entityIcon: ModsuitModuleDrill
+  discipline: Industrial
+  tier: 2
+  cost: 7500
+  recipeUnlocks:
+  - ModsuitPlatingMining
+  - ModsuitModuleDrill
+  - ModsuitModuleCandelaSpool
+  - ModsuitModuleOreBag
+  - ModsuitModuleClamp
+  position: -4,-4
+  technologyPrerequisites:
+  - ModsuitsTech
+
+- type: technology
+  id: ModsuitMedicalTech
+  name: research-technology-modsuit-medical
+  entityIcon: ModsuitModuleHealthAnalyzer
+  discipline: CivilianServices
+  tier: 2
+  cost: 10000
+  recipeUnlocks:
+  - ModsuitPlatingParamedic
+  - ModsuitModuleHealthAnalyzer
+  - ModsuitModuleVisorMedical
+  - ModsuitModuleQuickCarry
+  - ModsuitModuleInjector
+  - ModsuitModuleDefibrillator
+  - ModsuitModulePatientTransport
+  - ModsuitModuleQuickCarryAdvanced
+  - ModsuitModuleNightVisor
+  position: 3,6
+  technologyPrerequisites:
+  - ModsuitsTech
+
+- type: technology
+  id: ModsuitServiceTech
+  name: research-technology-modsuit-service
+  entityIcon: ModsuitModuleBikeHorn
+  discipline: CivilianServices
+  tier: 2
+  cost: 5000
+  recipeUnlocks:
+  - ModsuitModuleBikeHorn
+  - ModsuitModuleWaddle
+  - ModsuitModuleJanitorMister
+  - ModsuitModuleMouthhole
+  - ModsuitModuleBurgerDispenser
+  - ModsuitModulePaperDispenser
+  - ModsuitModuleBalloonBlower
+  - ModsuitModuleStamper
+  - ModsuitModuleFishingGlove
+  position: 4,7
+  technologyPrerequisites:
+  - ModsuitsTech
+
+- type: technology
+  id: ModsuitSecurityTech
+  name: research-technology-modsuit-security
+  entityIcon: ModsuitModuleVisorSecurity
+  discipline: Arsenal
+  tier: 2
+  cost: 10000
+  recipeUnlocks:
+  - ModsuitModuleVisorSecurity
+  - ModsuitModuleHolster
+  - ModsuitModuleMegaphone
+  - ModsuitModulePepperShoulders
+  - ModsuitModuleRestraintAssist
+  - ModsuitModuleBulwark
+  - ModsuitModuleEmpShield
+  - ModsuitModuleThermalVisor
+  - ModsuitModuleShockAbsorber
+  - ModsuitModuleCriminalCapture
+  - ModsuitModuleMagneticHarness
+  - ModsuitModuleProjectileDampener
+  - ModsuitModuleShootingAssistant
+  - ModsuitPlatingSecurity
+  - ModsuitPlatingBrigMed
+  position: 4,1
+  technologyPrerequisites:
+  - ModsuitsTech

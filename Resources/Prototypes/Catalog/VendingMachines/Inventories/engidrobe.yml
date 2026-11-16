@@ -75,8 +75,8 @@
     ClothingOuterWinterCE: 1
     ClothingShoesBootsWinterChiefEngineer: 1
     ClothingHeadHatBeretEngineering: 1
-    ClothingNeckCloakCe: 1
-    ClothingNeckMantleCE: 1
+    ClothingNeckCloakWhiteCe: 1 # WOLFGATE(Resprites): GoobStation resprites renamed the chief engineer's cloak and mantle
+    ClothingNeckMantleWhiteCE: 1 # WOLFGATE(Resprites): GoobStation resprites renamed the chief engineer's cloak and mantle
     ClothingHeadsetAltEngineering: 1
     RubberStampCE: 1
     # End Frontier

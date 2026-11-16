@@ -40,7 +40,6 @@
   category: Physical
   cost: -4
   mutuallyExclusiveTraits:
-  - DermalArmor
   - HardenedLymphocytes
   - WFRadFiend
   components:
@@ -60,7 +59,6 @@
   cost: 6
   # Each of these is its own DamageProtectionBuff, and a mob holds only one.
   mutuallyExclusiveTraits:
-  - DermalArmor
   - HardenedLymphocytes
   - WFFragility
   components:

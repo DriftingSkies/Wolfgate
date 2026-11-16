@@ -99,7 +99,7 @@ public sealed partial class NavScreen
         radar.VerticalExpand = true;
         var layers = ScopeLayers(radar, Vector2.Zero);
         var keys = new WFCockpitRadarKeys(Key(IFFToggle, "shuttle-console-iff-toggle-short"),
-            Key(IFFDetailedToggle, "shuttle-console-iff-detailed-short"), Key(DockToggle, "shuttle-console-dock-toggle-short"));
+            Key(IFFDetailedToggle, "shuttle-console-iff-detailed-short"));
         layers.AddChild(keys);
         LayoutContainer.SetAnchorAndMarginPreset(keys, LayoutContainer.LayoutPreset.Wide);
         return layers;

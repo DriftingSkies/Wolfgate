@@ -22,8 +22,8 @@
   - type: ContainerFill
     containers:
       key_slots:
+      - WFAsfEncryptionKey # first key's default channel wins
       - EncryptionKeyCommon
-      - WFAsfEncryptionKey
 
 - type: entity
   parent: DoorElectronics

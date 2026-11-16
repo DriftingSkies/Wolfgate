@@ -13,7 +13,7 @@
   purchasable: false # voucher only - T3
   category: Large
   group: Security
-  access: Armory
+  access: TsfmcArmory
   shuttlePath: /SharedMaps/_WF/OldVessels/Nfsd/andromeda.yml
   tags:
   - WFClassicVessel

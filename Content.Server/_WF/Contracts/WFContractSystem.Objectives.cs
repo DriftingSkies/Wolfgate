@@ -701,6 +701,11 @@ public sealed partial class WFContractSystem
 
         var needed = contract.Goods.Select(g => g.Count).ToList();
         var faction = contract.Destination is { } station && HousesFaction(station) ? station : (EntityUid?) null;
+        // A member supplying their own faction would find the goods in its receiving crate and could deliver them
+        // again; the faction uses them up instead.
+        var companies = faction is { } receiving ? ReceivingCompanies(receiving, contract) : null;
+        if (companies != null && contract.Company is { } own && companies.Any(c => c.Id == own))
+            faction = null;
         EntityUid? received = null;
         foreach (var uid in storage.Contents.ContainedEntities.ToList())
         {
@@ -716,7 +721,7 @@ public sealed partial class WFContractSystem
                 if (faction is not { } home)
                     Del(uid);
                 else
-                    Receive(home, uid, ReceivingCompanies(home, contract), ref received);
+                    Receive(home, uid, companies!, ref received);
                 break;
             }
         }

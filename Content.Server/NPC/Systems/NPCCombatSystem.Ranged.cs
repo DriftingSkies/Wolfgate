@@ -193,6 +193,7 @@ public sealed partial class NPCCombatSystem
                 _audio.PlayPvs(comp.SoundTargetInLOS, uid);
             }
 
+            CrewSighted(uid, comp, !oldInLos); // WOLFGATE(NpcCrew): crew fire sooner on a target they saw moments ago or braced for
             comp.ShootAccumulator += frameTime;
 
             if (comp.ShootAccumulator < comp.ShootDelay)

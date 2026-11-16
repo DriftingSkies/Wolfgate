@@ -93,6 +93,8 @@
                         <Button Name="IFFDetailedToggle" Access="Public" Text="{Loc 'shuttle-console-iff-detailed-short'}"
                                 StyleClasses="ButtonSquare" HorizontalExpand="True" Margin="4 4" ToggleMode="True"/>
                     </PanelContainer>
+                    <!-- WOLFGATE(RadarLabels) START: radars mark no docks, so there is nothing to toggle -->
+                    <!--
                     <PanelContainer VerticalExpand="False" HorizontalExpand="True">
                         <PanelContainer.PanelOverride>
                             <gfx:StyleBoxFlat BorderThickness="4" BorderColor="#2e2e2e" BackgroundColor="#1c1c1c" />
@@ -100,6 +102,8 @@
                         <Button Name="DockToggle" Access="Public" Text="{Loc 'shuttle-console-dock-toggle-short'}"
                                 StyleClasses="ButtonSquare" HorizontalExpand="True" Margin="4 4" ToggleMode="True"/>
                     </PanelContainer>
+                    -->
+                    <!-- WOLFGATE END -->
                 </BoxContainer>
             </PanelContainer>
 

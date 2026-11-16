@@ -10,6 +10,10 @@ public sealed partial class WFTimerFuzeComponent : Component
     [DataField]
     public List<float> Options = new() { 30f, 60f, 120f, 300f, 600f };
 
+    /// <summary>Shortest timer, in seconds, that can be set; below the final phase it has no effect.</summary>
+    [DataField]
+    public float MinTimer;
+
     /// <summary>Do-after, in seconds, to start the countdown.</summary>
     [DataField]
     public float ArmDelay = 5f;

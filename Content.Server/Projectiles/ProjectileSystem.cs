@@ -32,6 +32,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+using System.Numerics; // WOLFGATE(Weapons)
 using Content.Server.Destructible;
 using Content.Server._WF.ShipShields; // WOLFGATE(ShipShields)
 using Content.Shared.Damage;
@@ -220,11 +221,14 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
             if (!_fixQuery.TryComp(uid, out var fix) || !fix.Fixtures.TryGetValue(ProjectileFixture, out var projFix))
                 continue;
 
-            var hits = _physics.IntersectRay(xform.MapID,
-                new CollisionRay(lastPosition, rayDirection, projFix.CollisionMask),
-                rayDistance,
-                uid, // Entity to ignore (self)
-                false); // IncludeNonHard = false
+            // WOLFGATE(Weapons) START: sweep each moving grid with the velocity relative to it, so a closing hull is not skipped
+            // var hits = _physics.IntersectRay(xform.MapID,
+            //     new CollisionRay(lastPosition, rayDirection, projFix.CollisionMask),
+            //     rayDistance,
+            //     uid, // Entity to ignore (self)
+            //     false); // IncludeNonHard = false
+            var hits = WfSweep(uid, lastMap, currentVelocity, parentVel, frameTime, projFix.CollisionMask);
+            // WOLFGATE END
 
             // do not process other grid velocity if we are gridded
             if (!ProcessHits(hits) && projectileComp.RaycastResetVelocity != null)
@@ -233,14 +237,22 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
                 projectileComp.RaycastResetVelocity = null;
             }
 
-            bool ProcessHits(IEnumerable<RayCastResults> hits)
+            // WOLFGATE(Weapons) START: the first hit is the soonest, as each grid's ray has its own direction and speed
+            // bool ProcessHits(IEnumerable<RayCastResults> hits)
+            bool ProcessHits(List<WfSweepHit> hits)
+            // WOLFGATE END
             {
                 // Process the closest hit
                 // IntersectRay results are not guaranteed to be sorted by distance, so we go through them all.
-                (EntityUid? Uid, float Distance) minHit = (null, float.MaxValue);
+                // WOLFGATE(Weapons) START: track the soonest hit and its ray
+                // (EntityUid? Uid, float Distance) minHit = (null, float.MaxValue);
+                (EntityUid? Uid, float Distance, Vector2 Direction, float Time) minHit = (null, 0f, rayDirection, float.MaxValue);
+                // WOLFGATE END
                 foreach (var hit in hits)
                 {
-                    var hitEnt = hit.HitEntity;
+                    // WOLFGATE(Weapons): sweep hits name their entity directly
+                    // var hitEnt = hit.HitEntity;
+                    var hitEnt = hit.Entity;
 
                     if (!_physQuery.TryComp(hitEnt, out var otherBody) || !_fixQuery.TryComp(hitEnt, out var otherFix))
                         continue;
@@ -267,15 +279,21 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
                     if (otherEv.Cancelled)
                         continue;
 
-                    if (hit.Distance < minHit.Distance)
-                        minHit = (hitEnt, hit.Distance);
+                    // WOLFGATE(Weapons) START: the soonest hit, along its own ray
+                    // if (hit.Distance < minHit.Distance)
+                    //     minHit = (hitEnt, hit.Distance);
+                    if (hit.Time < minHit.Time)
+                        minHit = (hitEnt, hit.Distance, hit.Direction, hit.Time);
+                    // WOLFGATE END
                 }
                 if (minHit.Uid == null)
                     return false;
 
                 // teleport us so we hit it
                 var hitXform = Transform(minHit.Uid.Value);
-                var hitMapCoord = lastMap.Offset(rayDirection * minHit.Distance);
+                // WOLFGATE(Weapons): a grid's hit lies along the ray relative to it, at the grid's place this tick
+                // var hitMapCoord = lastMap.Offset(rayDirection * minHit.Distance);
+                var hitMapCoord = lastMap.Offset(minHit.Direction * minHit.Distance);
                 // WOLFGATE(ShipShields) START: consume confirmed shield ray hits without relying on a later edge contact
                 var shieldHit = new WFShipShieldProjectileRayHitEvent(uid, projectileComp, hitMapCoord);
                 RaiseLocalEvent(minHit.Uid.Value, ref shieldHit);

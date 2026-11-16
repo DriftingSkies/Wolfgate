@@ -1,5 +1,13 @@
 - type: loadout
   id: MdMedicClothingModsuitParamedicPowerCell
-  price: 12500
+  price: 5000 #WOLFGATE(Modsuits): Adjust price for loadouts
   equipment:
     back: ClothingModsuitParamedicPowerCell
+
+# WOLFGATE(Modsuits) START: Add sanitater and standard modsuit to loadouts
+- type: loadout
+  id: MdClothingModsuitStandardPowerCell
+  price: 5000
+  equipment:
+    back: ClothingModsuitStandardPowerCell
+# WOLFGATE END

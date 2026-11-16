@@ -21,6 +21,8 @@
         Healium: stationNO
         Nitrium: danger
         Pluoxium: ignore
+        # WOLFGATE: a gas missing from this list crashed the air alarm UI
+        Smoke: ESStationSmoke
         
 - type: entity
   abstract: true
@@ -45,6 +47,8 @@
         Healium: ignore
         Nitrium: ignore
         Pluoxium: ignore
+        # WOLFGATE: a gas missing from this list crashed the air alarm UI
+        Smoke: ignore
 
 #gas mining/general atmos work storage
 - type: entity

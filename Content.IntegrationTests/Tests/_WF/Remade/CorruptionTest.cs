@@ -197,7 +197,10 @@ public sealed class CorruptionTest
             return null;
         }
 
-        await Settle(pair, () => GrowthOn(east) != null && GrowthOn(west) != null, 300);
+        // Corruption can round a wall and reach its far side first; wait until it is beside the wall's west side too.
+        var appearance = entMan.System<SharedAppearanceSystem>();
+        await Settle(pair, () => GrowthOn(east) is { } eastGrowth && GrowthOn(west) != null
+            && appearance.TryGetData<int>(eastGrowth, WFCorruptionVisuals.Mask, out var eastMask) && (eastMask & 8) != 0, 300);
 
         await server.WaitAssertion(() =>
         {

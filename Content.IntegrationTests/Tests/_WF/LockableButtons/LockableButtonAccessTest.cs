@@ -14,12 +14,12 @@ namespace Content.IntegrationTests.Tests._WF.LockableButtons;
 /// </summary>
 public sealed class LockableButtonAccessTest : InteractionTest
 {
-    private const string Access = "Captain";
+    private const string Access = "TsfmcArmory";
 
     [Test]
     public async Task LockedButtonFiresOnlyWithAccess()
     {
-        await SpawnTarget("LockableButtonCaptain");
+        await SpawnTarget("LockableButtonArmory");
         var button = STarget!.Value;
         var lockSys = SEntMan.System<LockSystem>();
         var readers = SEntMan.System<AccessReaderSystem>();

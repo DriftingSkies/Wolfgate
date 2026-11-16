@@ -15,7 +15,7 @@ public enum WFNeurowareStickVisuals : byte
 
 /// <summary>
 /// A data stick holding one drug profile's neuroware twin. Loading it into a host runs the program; using it on a
-/// blank stick copies it, a little worse each generation.
+/// blank stick copies it, a little worse each generation, and a blank used on a drug reads it in.
 /// </summary>
 [RegisterComponent]
 public sealed partial class WFNeurowareStickComponent : Component
@@ -32,9 +32,9 @@ public sealed partial class WFNeurowareStickComponent : Component
     [DataField]
     public int Loads = 3;
 
-    /// <summary>Level a load delivers in total.</summary>
+    /// <summary>Level a load delivers in total, or null for the twin's full load.</summary>
     [DataField]
-    public float Amount = 8f;
+    public float? Amount;
 
     /// <summary>Level delivered a second while loading.</summary>
     [DataField]
@@ -45,6 +45,10 @@ public sealed partial class WFNeurowareStickComponent : Component
 
     [DataField]
     public TimeSpan OtherDelay = TimeSpan.FromSeconds(4);
+
+    /// <summary>How long a blank takes to read a drug in.</summary>
+    [DataField]
+    public TimeSpan EncodeDelay = TimeSpan.FromSeconds(3);
 }
 
 /// <summary>Neuroware running on a host body.</summary>
@@ -81,3 +85,6 @@ public sealed partial class WFNeurowareProgram
 
 [Serializable, NetSerializable]
 public sealed partial class WFNeurowareLoadDoAfterEvent : SimpleDoAfterEvent;
+
+[Serializable, NetSerializable]
+public sealed partial class WFNeurowareEncodeDoAfterEvent : SimpleDoAfterEvent;

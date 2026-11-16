@@ -25,6 +25,7 @@ Client controls other Wolfgate UI is built from.
 - [`Content.Client/_WF/UserInterface/WindowPopout/WindowPopoutUIController.cs`](WindowPopout/WindowPopoutUIController.cs)
 - [`Content.Client/_WF/UserInterface/WindowPopout/WolfgatePopoutButton.cs`](WindowPopout/WolfgatePopoutButton.cs)
 - [`Content.Client/_WF/UserInterface/WindowPopout/WolfgatePopoutWindow.cs`](WindowPopout/WolfgatePopoutWindow.cs)
+- [`Content.Client/_WF/UserInterface/WindowPopout/WolfgateSaveButton.cs`](WindowPopout/WolfgateSaveButton.cs)
 
 ### Integration tests
 
@@ -41,6 +42,7 @@ Client controls other Wolfgate UI is built from.
 - [`Resources/Textures/_WF/UserInterface/Interface/Window/attributions.yml`](../../../Resources/Textures/_WF/UserInterface/Interface/Window/attributions.yml)
 - [`Resources/Textures/_WF/UserInterface/Interface/Window/dock.png`](../../../Resources/Textures/_WF/UserInterface/Interface/Window/dock.png)
 - [`Resources/Textures/_WF/UserInterface/Interface/Window/popout.png`](../../../Resources/Textures/_WF/UserInterface/Interface/Window/popout.png)
+- [`Resources/Textures/_WF/UserInterface/Interface/Window/save.png`](../../../Resources/Textures/_WF/UserInterface/Interface/Window/save.png)
 
 ## Non-modular edits
 

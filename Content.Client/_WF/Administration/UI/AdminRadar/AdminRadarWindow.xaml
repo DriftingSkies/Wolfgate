@@ -24,6 +24,12 @@
                 ToggleMode="True"
                 HorizontalAlignment="Left"
                 Pressed="True" />
+        <Button Name="DockToggle"
+                Text="{Loc 'shuttle-console-dock-toggle-short'}"
+                TextAlign="Center"
+                StyleClasses="ButtonSquare"
+                ToggleMode="True"
+                HorizontalAlignment="Left" />
         <Button Name="TrueIffToggle"
                 Text="{Loc 'wf-admin-radar-true-iff'}"
                 ToolTip="{Loc 'wf-admin-radar-true-iff-tooltip'}"
@@ -34,13 +40,6 @@
         <Button Name="PlayersToggle"
                 Text="{Loc 'wf-admin-radar-players'}"
                 ToolTip="{Loc 'wf-admin-radar-players-tooltip'}"
-                TextAlign="Center"
-                StyleClasses="ButtonSquare"
-                ToggleMode="True"
-                HorizontalAlignment="Left" />
-        <Button Name="EncountersToggle"
-                Text="{Loc 'wf-admin-radar-encounters'}"
-                ToolTip="{Loc 'wf-admin-radar-encounters-tooltip'}"
                 TextAlign="Center"
                 StyleClasses="ButtonSquare"
                 ToggleMode="True"

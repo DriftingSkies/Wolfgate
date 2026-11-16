@@ -57,8 +57,7 @@
           availableJobs:
             TsfCivilian: [ -1, -1 ]
           tags:
-          - HeadOfPersonnel
-          - HeadOfSecurity
+          - TsfmcColonel
 #        - type: StationDeadDropReporting
 #          messageSet: Nfsd
 #        - type: StationDeadDropHintExempt

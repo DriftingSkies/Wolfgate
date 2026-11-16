@@ -45,3 +45,5 @@
     FTLDriveFlatpack: 4294967295 # Infinite
     WFVendingMachineLuvvitsFlatpack: 4294967295 # WOLFGATE(BritishFood): the pie vendor is bought here, as tg's imported vendors are by cargo
     WFFlatpackShieldDeflector: 4294967295 # WOLFGATE(ShipShields): the Parasol deflector is an off-the-shelf fitting
+    AmmoLoaderSmallFlatpack: 4294967295 # Infinite
+    AmmoLoaderFlatpack: 4294967295 # Infinite

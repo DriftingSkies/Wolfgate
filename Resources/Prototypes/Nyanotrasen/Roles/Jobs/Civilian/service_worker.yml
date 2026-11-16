@@ -1,3 +1,4 @@
+# WOLFGATE: Caelestinus Expansion I (#675) reverted
 - type: job
   id: CCServiceWorker
   name: job-name-caelestinus-worker # Mono
@@ -17,8 +18,7 @@
   access:
   - Maintenance
   - External # Frontier
-  - Service
-  - Frontier # Frontier
+  - Caelestinus
   special:
 # - !type:AddImplantSpecial # Mono: remove TSFMC implant
 #   implants: [ MindShieldImplant ]

@@ -18,6 +18,6 @@ public sealed partial class ChatSystem
     private (string Message, string Wrapped) WfDeafHeard(EntityUid source, string name, string perceived, LanguagePrototype language, Robust.Shared.Prototypes.ProtoId<Content.Shared.Speech.SpeechVerbPrototype>? speechVerb)
     {
         var heard = ObfuscateMessageReadability(perceived, WfDeafReadability);
-        return (heard, WrapPublicMessage(source, name, heard, language, speechVerb));
+        return (heard, WrapPublicMessage(source, name, heard, language, speechVerb: speechVerb));
     }
 }

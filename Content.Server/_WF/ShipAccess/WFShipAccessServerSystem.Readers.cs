@@ -164,6 +164,11 @@ public sealed partial class WFShipAccessServerSystem
 
         TryComp<WFDoorAccessRuleComponent>(uid, out var rule);
         var ruleKind = rule?.Rule ?? WFDoorAccessRule.Default;
+
+        // On a public ship every door that follows the ship admits anyone. Lockers and doors with a rule keep theirs.
+        if (ruleKind == WFDoorAccessRule.Default && ship.Comp.Mode == WFShipAccessMode.Public && IsRuledDoor(uid))
+            ruleKind = WFDoorAccessRule.Public;
+
         var lists = reader.Comp.AccessLists;
         var keys = reader.Comp.AccessKeys;
 

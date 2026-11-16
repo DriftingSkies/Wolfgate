@@ -16,6 +16,8 @@
     - Unanchorable
   - type: Rotatable
     rotateWhileAnchored: false
+  # Bolts down only on the first hull it is bolted to; see the HullBond README.
+  - type: WFHullBond
   - type: WiresPanel
   # No fee, and no cap on a repair's work, so its bill is never scaled below what breaking the same work pays.
   - type: WFDrydockConsole
@@ -75,6 +77,8 @@
     rotateWhileAnchored: false
   # Dragged into place while unbolted, like a 2x2 frame.
   - type: Pullable
+  # Bolts down only on the first hull it is bolted to; see the HullBond README.
+  - type: WFHullBond
   # 26 tiles of berth after a 3-tile gap; 4 sections of 4 reach 13 tiles across.
   - type: WFDrydockCrane
     maxArm: 29

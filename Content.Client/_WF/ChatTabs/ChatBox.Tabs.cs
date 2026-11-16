@@ -1,4 +1,5 @@
 using Content.Client._WF.ChatTabs;
+using Content.Client.UserInterface.Systems.Chat;
 using Content.Shared.Chat;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
@@ -72,6 +73,7 @@ public partial class ChatBox
 
         _wfTabBar = new ChatTabBar();
         _wfTabBar.PopoutButton.OnPressed += _ => _wfPopout.Toggle(this);
+        _wfTabBar.SaveButton.OnPressed += _ => SaveChatLog();
         ChatInput.Parent!.AddChild(_wfTabBar);
         _wfTabBar.SetPositionFirst();
         Contents.Margin = new Thickness(8, 2, 8, 4);
@@ -268,5 +270,25 @@ public partial class ChatBox
 
         ChatInput.Parent!.AddChild(_wfPlaceholder);
         _wfPlaceholder.SetPositionFirst();
+    }
+
+    private async void SaveChatLog()
+    {
+        var fileDialog = IoCManager.Resolve<IFileDialogManager>();
+        var filters = new FileDialogFilters(new FileDialogFilters.Group("html"));
+        var file = await fileDialog.SaveFile(filters);
+        if (file == null)
+            return;
+
+        var controller = UserInterfaceManager.GetUIController<ChatUIController>();
+        var tab = _wfTabs.SelectedTab;
+        try
+        {
+            await ChatLogSaver.SaveChatLogAsync(file.Value.fileStream, controller, tab);
+        }
+        catch (Exception e)
+        {
+            Logger.GetSawmill("wf.chat").Error($"Failed to save client chat log: {e}");
+        }
     }
 }

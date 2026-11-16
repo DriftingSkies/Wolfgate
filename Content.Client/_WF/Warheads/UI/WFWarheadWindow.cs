@@ -59,7 +59,6 @@ public sealed class WFWarheadWindow : FancyWindow
     private readonly BoxContainer _impactSection = Section();
 
     private readonly GridContainer _specs = new() { Columns = 2, HorizontalExpand = true };
-    private readonly Label _footer = new() { HorizontalAlignment = HAlignment.Center };
 
     public WFWarheadWindow()
     {
@@ -69,8 +68,6 @@ public sealed class WFWarheadWindow : FancyWindow
 
         _classLabel.FontColorOverride = WFWarheadPalette.Hazard;
         _displayCaption.FontColorOverride = Color.Gray;
-        _footer.FontColorOverride = Color.Gray;
-        _footer.Text = Loc.GetString("wf-warhead-ui-footer");
 
         BuildTimerSection();
         BuildKeySection();
@@ -126,7 +123,6 @@ public sealed class WFWarheadWindow : FancyWindow
                 _impactSection,
                 Heading("wf-warhead-ui-specs-heading"),
                 _specs,
-                _footer,
             },
         };
 
@@ -403,9 +399,10 @@ public sealed class WFWarheadWindow : FancyWindow
         _display.Flash = state.State == WFWarheadState.Final;
         _displayCaption.Text = Loc.GetString(counting ? "wf-warhead-ui-caption-counting" : "wf-warhead-ui-caption-timer");
 
-        foreach (var button in _timerButtons)
+        for (var i = 0; i < _timerButtons.Count; i++)
         {
-            button.Disabled = !safe;
+            var delta = TimerSteps[i].Delta;
+            _timerButtons[i].Disabled = !safe || (delta < 0 && state.Timer + delta < state.MinTimer);
         }
 
         foreach (var child in _presetRow.Children)

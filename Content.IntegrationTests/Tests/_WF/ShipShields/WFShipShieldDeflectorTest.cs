@@ -16,14 +16,14 @@ using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._WF.ShipShields;
 
-/// <summary>Checks the deflector halves solid rounds and lets them through, and stops missiles and energy bolts.</summary>
+/// <summary>Checks the deflector weakens solid rounds and lets them through, and stops missiles and energy bolts.</summary>
 [TestFixture]
 public sealed class WFShipShieldDeflectorTest
 {
     private const string Deflector = "WFShieldGeneratorDeflector";
 
     [Test]
-    public async Task ShellsPassAtHalfDamageAndMissilesAreStopped()
+    public async Task ShellsPassWeakenedAndMissilesAreStopped()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = false, Dirty = true });
         var server = pair.Server;
@@ -50,7 +50,9 @@ public sealed class WFShipShieldDeflectorTest
             var shield = entities.GetComponent<ShipShieldedComponent>(map.Grid.Owner).Shield;
             entities.GetComponent<ShipShieldComponent>(shield).Source = generator;
 
-            // A high-explosive shell loses half its hit and half its blast, and keeps flying.
+            // A high-explosive shell loses the field's share of its hit and blast, and keeps flying.
+            var kept = 1f - entities.GetComponent<WFShipShieldDeflectorComponent>(generator).Reduction;
+            Assert.That(kept, Is.EqualTo(0.3f).Within(0.001f));
             var shooter = entities.SpawnEntity(null, map.GridCoords);
             var shellUid = entities.SpawnEntity("220mmBulletHE", map.GridCoords);
             var shell = entities.GetComponent<ProjectileComponent>(shellUid);
@@ -65,11 +67,11 @@ public sealed class WFShipShieldDeflectorTest
             projectiles.ProjectileCollide((shellUid, shell, shellBody), shield);
             Assert.That(shell.ProjectileSpent, Is.False);
             Assert.That(entities.IsQueuedForDeletion(shellUid), Is.False);
-            Assert.That((float) shell.Damage.GetTotal(), Is.EqualTo(hit / 2f).Within(0.01f));
-            Assert.That(explosive.TotalIntensity, Is.EqualTo(intensity / 2f).Within(0.01f));
-            Assert.That(explosive.MaxIntensity, Is.EqualTo(peak / 2f).Within(0.01f));
-            Assert.That(explosive.IntensitySlope, Is.EqualTo(slope / 2f).Within(0.01f));
-            Assert.That(emitter.Damage, Is.EqualTo((hit + blast) / 2f).Within(1f));
+            Assert.That((float) shell.Damage.GetTotal(), Is.EqualTo(hit * kept).Within(0.01f));
+            Assert.That(explosive.TotalIntensity, Is.EqualTo(intensity * kept).Within(0.01f));
+            Assert.That(explosive.MaxIntensity, Is.EqualTo(peak * kept).Within(0.01f));
+            Assert.That(explosive.IntensitySlope, Is.EqualTo(slope * kept).Within(0.01f));
+            Assert.That(emitter.Damage, Is.EqualTo((hit + blast) * (1f - kept)).Within(1f));
 
             // The field lets the slowed shell through and never charges for it twice.
             var charged = emitter.Damage;
@@ -83,7 +85,7 @@ public sealed class WFShipShieldDeflectorTest
             projectiles.ProjectileCollide((shellUid, shell, shellBody), shield);
             Assert.That(emitter.Damage, Is.EqualTo(charged));
             Assert.That(shell.ProjectileSpent, Is.False);
-            Assert.That((float) shell.Damage.GetTotal(), Is.EqualTo(hit / 2f).Within(0.01f));
+            Assert.That((float) shell.Damage.GetTotal(), Is.EqualTo(hit * kept).Within(0.01f));
 
             // Missiles and energy bolts are stopped as by any shield.
             foreach (var stopped in new[] { "ShipMissileASM150", "ShipMediumPlasmaProjectile" })

@@ -133,10 +133,7 @@
   - ThrusterMachineCircuitboard
   - GyroscopeMachineCircuitboard
   - MiniGravityGeneratorCircuitboard
-  # WOLFGATE(Drydock) START: mobile drydock boards
-  - WFComputerMobileDrydockCircuitboard
-  - WFMobileDrydockCraneMachineCircuitboard
-  # WOLFGATE END
+  - WFMobileDrydockCraneMachineCircuitboard # WOLFGATE(Drydock): extra cranes for ships sold with a mobile drydock
 
 - type: latheRecipePack
   id: AiCoreBoard

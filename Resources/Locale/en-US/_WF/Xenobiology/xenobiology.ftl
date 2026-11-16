@@ -54,13 +54,13 @@ stack-sepia-tile = sepia tile
 ## Reagents
 
 xenobio-reagent-jelly-purple-name = slime steroid
-xenobio-reagent-jelly-purple-desc = Makes a slime produce one more extract when processed. Only works on live slimes.
+xenobio-reagent-jelly-purple-desc = Makes a live slime produce one more extract when processed, up to two more. Its offspring don't keep the bonus.
 xenobio-reagent-jelly-blue-name = slime stabilizer
 xenobio-reagent-jelly-blue-desc = Lowers a slime's mutation chance by 25 percent. Carries over to its offspring.
 xenobio-reagent-jelly-darkblue-name = slime chilling jelly
 xenobio-reagent-jelly-darkblue-desc = Makes whoever drinks it immune to heat for a while.
 xenobio-reagent-jelly-cerulean-name = slime boost
-xenobio-reagent-jelly-cerulean-desc = Makes a slime produce more offspring when it splits.
+xenobio-reagent-jelly-cerulean-desc = Lets a slime split into up to two more offspring. The offspring don't keep the bonus.
 xenobio-reagent-jelly-red-name = slime destabilizer
 xenobio-reagent-jelly-red-desc = Raises a slime's mutation chance by 25 percent. Carries over to its offspring.
 xenobio-reagent-jelly-pink-name = slime docility extract
@@ -112,3 +112,20 @@ bounty-item-black-extract = Black Slime Extract
 bounty-item-adamantine-extract = Adamantine Slime Extract
 
 guide-entry-wf-xenobiology = Xenobiology
+
+## Slime heart
+
+wf-slime-heart-examine-beating = It is [color=lime]beating[/color], and will go hungry in about { $minutes } { $minutes ->
+    [one] minute
+   *[other] minutes
+}.
+wf-slime-heart-examine-loose = It is fed for about { $minutes } { $minutes ->
+    [one] minute
+   *[other] minutes
+}, but does nothing until it is [color=yellow]bolted to a hull[/color].
+wf-slime-heart-examine-outbeaten = It lies [color=yellow]idle[/color]: another slime heart already beats in this hull.
+wf-slime-heart-examine-dormant = It is [color=red]dormant[/color]. Feed it an extract of its own breed.
+wf-slime-heart-feed = The heart swallows the extract and beats harder.
+wf-slime-heart-feed-full = The heart is too full to eat that yet.
+wf-slime-heart-feed-spent = The heart ignores the dried-out extract.
+wf-slime-heart-anchor-second = Another slime heart already beats in this hull.

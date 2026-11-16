@@ -20,6 +20,9 @@ The hooks for the SSymphony panel. It is the one module outside `_WF`: its files
 - Censuses: the panel reads `wolfgate_census` and `wolfgate_census_response`, lists and saves censuses through
   `/symphony/census` (GET and POST) and deletes one through `/symphony/census/delete`; opening one tells the players
   online. Laid out in the [Census module](../_WF/Census/README.md).
+- Server log: `/symphony/logs?after=<seq>` answers the server's latest log lines (the last 5000, what its console
+  prints), each with a sequence number so the panel asks only for what is new. A line repeated straight after itself is
+  counted on one entry. Kept in memory by `SymphonyLogBuffer`; the panel's own polls are left out of it.
 - `/status` reports the hook version, the round clock and the test merges the build carries (`SymphonyTestMerges`,
   read from `Resources/Symphony/testmerges.json`, which `Tools/_WF/Ci/test_merge.py` writes). On a test merge build,
   `SymphonyTestMergeSystem` also announces the merged pull requests at round start and to each player joining the
@@ -48,6 +51,7 @@ ticket table, the feedback table, the census tables or any of the endpoints chan
 - [`Content.Server/Symphony/SymphonyHubSystem.cs`](SymphonyHubSystem.cs)
 - [`Content.Server/Symphony/SymphonyLinkTickets.cs`](SymphonyLinkTickets.cs)
 - [`Content.Server/Symphony/SymphonyLobbySystem.cs`](SymphonyLobbySystem.cs)
+- [`Content.Server/Symphony/SymphonyLogsSystem.cs`](SymphonyLogsSystem.cs)
 - [`Content.Server/Symphony/SymphonyPlayersSystem.cs`](SymphonyPlayersSystem.cs)
 - [`Content.Server/Symphony/SymphonyRolesSystem.cs`](SymphonyRolesSystem.cs)
 - [`Content.Server/Symphony/SymphonyStatusSystem.cs`](SymphonyStatusSystem.cs)

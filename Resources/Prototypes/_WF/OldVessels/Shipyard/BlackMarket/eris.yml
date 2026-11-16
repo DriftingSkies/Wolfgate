@@ -12,7 +12,7 @@
   category: Small
   hyperwarTimelock: 0
   group: BlackMarket
-  access: Pirate
+  access: PDV
   shuttlePath: /SharedMaps/_WF/OldVessels/BlackMarket/eris.yml
   tags:
   - WFClassicVessel

@@ -10,7 +10,7 @@
   purchasable: false # voucher only - T0
   category: Medium # 371 tiles
   group: Security
-  access: Security
+  access: Tsfmc
   shuttlePath: /SharedMaps/_WF/Shipyard/Shuttles/TSF/welder.yml
   guidebookPage: null
   class:

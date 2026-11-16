@@ -6,26 +6,55 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Back/Modsuits/ussp-varyag.rsi
-  - type: ToggleableClothing
-    clothingPrototypes:
+  # WOLFGATE(Modsuits) START: the native module system owns the suit parts
+  # - type: ToggleableClothing
+  #   clothingPrototypes:
+  #     head: ClothingModsuitHelmetUSSPVaryag
+  #     gloves: ClothingModsuitGauntletsUSSPVaryag
+  #     outerClothing: ClothingModsuitChestplateUSSPVaryag
+  #     shoes: ClothingModsuitBootsUSSPVaryag
+  - type: ModSuit
+    theme: ModThemeStandard
+    parts:
       head: ClothingModsuitHelmetUSSPVaryag
       gloves: ClothingModsuitGauntletsUSSPVaryag
       outerClothing: ClothingModsuitChestplateUSSPVaryag
       shoes: ClothingModsuitBootsUSSPVaryag
+  # WOLFGATE END
 
 - type: entity
   parent: ClothingModsuitUSSPVaryag
   id: ClothingModsuitUSSPVaryagPowerCell
   suffix: High-Capacity Battery
   components:
+  # WOLFGATE(Modsuits) START: premade suits come with basic modules, crafted ones come empty
+  - type: ModSuit
+    startingModules:
+    - ModsuitModuleStorageCompact
+    - ModsuitModuleFlashlight
+    - ModsuitModuleJetpack
+    - ModsuitModulePepperShoulders
+    - ModsuitModuleRestraintAssist
+    - ModsuitModuleHeadProtector
+  # WOLFGATE END
+  # WOLFGATE(Modsuits) START: a MOD core replaces the power cell
+  # - type: ItemSlots
+  #   slots:
+  #     cell_slot:
+  #       name: power-cell-slot-component-slot-name-default
+  #       startingItem: PowerCellHigh
+  #       whitelist:
+  #         components:
+  #           - PowerCell
   - type: ItemSlots
     slots:
-      cell_slot:
-        name: power-cell-slot-component-slot-name-default
-        startingItem: PowerCellHigh
+      mod-core:
+        name: modsuit-core-slot-name
+        startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:
-            - PowerCell
+          - ModCore
+  # WOLFGATE END
 
 - type: entity
   parent: ClothingModsuitBase
@@ -35,26 +64,56 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Back/Modsuits/ussp-zastavnik.rsi
-  - type: ToggleableClothing
-    clothingPrototypes:
+  # WOLFGATE(Modsuits) START: the native module system owns the suit parts
+  # - type: ToggleableClothing
+  #   clothingPrototypes:
+  #     head: ClothingModsuitHelmetUSSPZastavnik
+  #     gloves: ClothingModsuitGauntletsUSSPZastavnik
+  #     outerClothing: ClothingModsuitChestplateUSSPZastavnik
+  #     shoes: ClothingModsuitBootsUSSPZastavnik
+  - type: ModSuit
+    theme: ModThemeStandard
+    parts:
       head: ClothingModsuitHelmetUSSPZastavnik
       gloves: ClothingModsuitGauntletsUSSPZastavnik
       outerClothing: ClothingModsuitChestplateUSSPZastavnik
       shoes: ClothingModsuitBootsUSSPZastavnik
+  # WOLFGATE END
 
 - type: entity
   parent: ClothingModsuitUSSPZastavnik
   id: ClothingModsuitUSSPZastavnikPowerCell
   suffix: High-Capacity Battery
   components:
+  # WOLFGATE(Modsuits) START: premade suits come with basic modules, crafted ones come empty
+  - type: ModSuit
+    startingModules:
+    - ModsuitModuleStorageLarge
+    - ModsuitModuleFlashlight
+    - ModsuitModuleJetpack
+    - ModsuitModuleMegaphone
+    - ModsuitModulePepperShoulders
+    - ModsuitModuleRestraintAssist
+    - ModsuitModuleHeadProtector
+  # WOLFGATE END
+  # WOLFGATE(Modsuits) START: a MOD core replaces the power cell
+  # - type: ItemSlots
+  #   slots:
+  #     cell_slot:
+  #       name: power-cell-slot-component-slot-name-default
+  #       startingItem: PowerCellHigh
+  #       whitelist:
+  #         components:
+  #           - PowerCell
   - type: ItemSlots
     slots:
-      cell_slot:
-        name: power-cell-slot-component-slot-name-default
-        startingItem: PowerCellHigh
+      mod-core:
+        name: modsuit-core-slot-name
+        startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:
-            - PowerCell
+          - ModCore
+  # WOLFGATE END
 
 - type: entity
   parent: ClothingModsuitBase
@@ -64,16 +123,27 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Back/Modsuits/rogue.rsi
-  - type: Storage # Extra space - Mono
-    grid:
-    - 0,0,7,3
-    maxItemSize: Huge
-  - type: ToggleableClothing
-    clothingPrototypes:
+  # WOLFGATE(Modsuits) START: the native module system owns suit storage
+  # - type: Storage # Extra space - Mono
+  #   grid:
+  #   - 0,0,7,3
+  #   maxItemSize: Huge
+  # WOLFGATE END
+  # WOLFGATE(Modsuits) START: the native module system owns the suit parts
+  # - type: ToggleableClothing
+  #   clothingPrototypes:
+  #     head: ClothingModsuitHelmetRogue
+  #     gloves: ClothingModsuitGauntletsRogue
+  #     outerClothing: ClothingModsuitChestplateRogue
+  #     shoes: ClothingModsuitBootsRogue
+  - type: ModSuit
+    theme: ModThemeStandard
+    parts:
       head: ClothingModsuitHelmetRogue
       gloves: ClothingModsuitGauntletsRogue
       outerClothing: ClothingModsuitChestplateRogue
       shoes: ClothingModsuitBootsRogue
+  # WOLFGATE END
   - type: PowerCellDraw
     drawRate: 0.2 # Sealed draw rate
     useRate: 0.5 # Draw rate for sealing
@@ -86,14 +156,34 @@
   id: ClothingModsuitRoguePowerCell
   suffix: High-Capacity Battery
   components:
+  # WOLFGATE(Modsuits) START: premade suits come with basic modules, crafted ones come empty
+  - type: ModSuit
+    startingModules:
+    - ModsuitModuleStorageSyndicate
+    - ModsuitModuleFlashlight
+    - ModsuitModuleEmpShield
+    - ModsuitModuleJetpack
+    - ModsuitModuleDnaLock
+    - ModsuitModuleRestraintAssist
+  # WOLFGATE END
+  # WOLFGATE(Modsuits) START: a MOD core replaces the power cell
+  # - type: ItemSlots
+  #   slots:
+  #     cell_slot:
+  #       name: power-cell-slot-component-slot-name-default
+  #       startingItem: PowerCellHigh
+  #       whitelist:
+  #         components:
+  #           - PowerCell
   - type: ItemSlots
     slots:
-      cell_slot:
-        name: power-cell-slot-component-slot-name-default
-        startingItem: PowerCellHigh
+      mod-core:
+        name: modsuit-core-slot-name
+        startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:
-            - PowerCell
+          - ModCore
+  # WOLFGATE END
 
 # Volta
 - type: entity
@@ -104,23 +194,43 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Back/Modsuits/tsfmc-volta.rsi
-  - type: Storage # Extra space - Mono
-    grid:
-    - 0,0,7,3
-    maxItemSize: Huge
-  - type: ToggleableClothing
-    clothingPrototypes:
+  # WOLFGATE(Modsuits) START: the native module system owns suit storage
+  # - type: Storage # Extra space - Mono
+  #   grid:
+  #   - 0,0,7,3
+  #   maxItemSize: Huge
+  # WOLFGATE END
+  # WOLFGATE(Modsuits) START: the native module system owns the suit parts
+  # - type: ToggleableClothing
+  #   clothingPrototypes:
+  #     head: ClothingModsuitHelmetVolta
+  #     gloves: ClothingModsuitGauntletsVolta
+  #     outerClothing: ClothingModsuitChestplateVolta
+  #     shoes: ClothingModsuitBootsVolta
+  - type: ModSuit
+    theme: ModThemeStandard
+    parts:
       head: ClothingModsuitHelmetVolta
       gloves: ClothingModsuitGauntletsVolta
       outerClothing: ClothingModsuitChestplateVolta
       shoes: ClothingModsuitBootsVolta
-  - type: SealableClothingVisuals
+  # WOLFGATE END
+  # WOLFGATE(Modsuits) START: the native module system sets its own sealed appearance
+  # - type: SealableClothingVisuals
+  #   spriteLayer: sealed
+  #   clothingVisuals:
+  #     back:
+  #     - state: equipped-BACKPACK-sealed
+  #     back-resomi:
+  #     - state: equipped-BACKPACK-sealed-resomi
+  - type: ModSuitSealedVisuals
     spriteLayer: sealed
     clothingVisuals:
       back:
       - state: equipped-BACKPACK-sealed
       back-resomi:
       - state: equipped-BACKPACK-sealed-resomi
+  # WOLFGATE END
   - type: Construction
     graph: Modsuit
     node: engineer
@@ -130,14 +240,35 @@
   id: ClothingModsuitVoltaPowerCell
   suffix: High-Capacity Battery
   components:
+  # WOLFGATE(Modsuits) START: premade suits come with basic modules, crafted ones come empty
+  - type: ModSuit
+    startingModules:
+    - ModsuitModuleStorageCompact
+    - ModsuitModuleWelding
+    - ModsuitModuleFlashlight
+    - ModsuitModuleRadProtection
+    - ModsuitModuleTether
+    - ModsuitModuleMagboots
+    - ModsuitModuleHeadProtector
+  # WOLFGATE END
+  # WOLFGATE(Modsuits) START: a MOD core replaces the power cell
+  # - type: ItemSlots
+  #   slots:
+  #     cell_slot:
+  #       name: power-cell-slot-component-slot-name-default
+  #       startingItem: PowerCellHigh
+  #       whitelist:
+  #         components:
+  #           - PowerCell
   - type: ItemSlots
     slots:
-      cell_slot:
-        name: power-cell-slot-component-slot-name-default
-        startingItem: PowerCellHigh
+      mod-core:
+        name: modsuit-core-slot-name
+        startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:
-            - PowerCell
+          - ModCore
+  # WOLFGATE END
 
 # Gallóglach
 
@@ -149,23 +280,43 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Back/Modsuits/mercenary.rsi
-  - type: Storage # Extra space - Mono
-    grid:
-    - 0,0,7,3
-    maxItemSize: Huge
-  - type: ToggleableClothing
-    clothingPrototypes:
+  # WOLFGATE(Modsuits) START: the native module system owns suit storage
+  # - type: Storage # Extra space - Mono
+  #   grid:
+  #   - 0,0,7,3
+  #   maxItemSize: Huge
+  # WOLFGATE END
+  # WOLFGATE(Modsuits) START: the native module system owns the suit parts
+  # - type: ToggleableClothing
+  #   clothingPrototypes:
+  #     head: ClothingModsuitHelmetMercenary
+  #     gloves: ClothingModsuitGauntletsMercenary
+  #     outerClothing: ClothingModsuitChestplateMercenary
+  #     shoes: ClothingModsuitBootsMercenary
+  - type: ModSuit
+    theme: ModThemeStandard
+    parts:
       head: ClothingModsuitHelmetMercenary
       gloves: ClothingModsuitGauntletsMercenary
       outerClothing: ClothingModsuitChestplateMercenary
       shoes: ClothingModsuitBootsMercenary
-  - type: SealableClothingVisuals
+  # WOLFGATE END
+  # WOLFGATE(Modsuits) START: the native module system sets its own sealed appearance
+  # - type: SealableClothingVisuals
+  #   spriteLayer: sealed
+  #   clothingVisuals:
+  #     back:
+  #     - state: equipped-BACKPACK-sealed
+  #     back-resomi:
+  #     - state: equipped-BACKPACK-sealed-resomi
+  - type: ModSuitSealedVisuals
     spriteLayer: sealed
     clothingVisuals:
       back:
       - state: equipped-BACKPACK-sealed
       back-resomi:
       - state: equipped-BACKPACK-sealed-resomi
+  # WOLFGATE END
   - type: Construction
     graph: Modsuit
     node: mercenary
@@ -175,11 +326,31 @@
   id: ClothingModsuitMercenaryPowerCell
   suffix: High-Capacity Battery
   components:
+  # WOLFGATE(Modsuits) START: premade suits come with basic modules, crafted ones come empty
+  - type: ModSuit
+    startingModules:
+    - ModsuitModuleStorageCompact
+    - ModsuitModuleFlashlight
+    - ModsuitModuleEmpShield
+    - ModsuitModuleQuickCarry
+    - ModsuitModuleVisorDiagnostic
+    - ModsuitModuleRestraintAssist
+  # WOLFGATE END
+  # WOLFGATE(Modsuits) START: a MOD core replaces the power cell
+  # - type: ItemSlots
+  #   slots:
+  #     cell_slot:
+  #       name: power-cell-slot-component-slot-name-default
+  #       startingItem: PowerCellHigh
+  #       whitelist:
+  #         components:
+  #           - PowerCell
   - type: ItemSlots
     slots:
-      cell_slot:
-        name: power-cell-slot-component-slot-name-default
-        startingItem: PowerCellHigh
+      mod-core:
+        name: modsuit-core-slot-name
+        startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:
-            - PowerCell
+          - ModCore
+  # WOLFGATE END

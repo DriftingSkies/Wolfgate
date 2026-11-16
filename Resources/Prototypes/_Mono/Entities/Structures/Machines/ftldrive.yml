@@ -33,6 +33,7 @@
     - type: FTLDrive
       range: 5000
       thermalSignature: 2000000 # ~2828m range
+    - type: WFHullBond # WOLFGATE(HullBond): a bluespace drive only bolts down on its first hull
     - type: ThermalSignature
     - type: Destructible
       thresholds:

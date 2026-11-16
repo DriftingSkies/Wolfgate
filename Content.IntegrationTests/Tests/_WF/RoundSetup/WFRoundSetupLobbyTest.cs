@@ -533,8 +533,8 @@ public sealed partial class WFRoundSetupLobbyTest
                 Assert.That(em.GetComponent<MetaDataComponent>(hull).EntityName, Does.Contain("Wayfarer"));
                 Assert.That(card.Comp.LocalizedJobTitle, Is.EqualTo("Captain"), "Crew titles reach the ID without replacing the real job.");
                 if (selectedJob == "MdMedic")
-                    Assert.That(em.GetComponent<AccessComponent>(card.Owner).Tags, Does.Contain("Medical"),
-                        "Responders retain their real medical access when spawning aboard a crew ship.");
+                    Assert.That(em.GetComponent<AccessComponent>(card.Owner).Tags, Does.Contain("Caelestinus"),
+                        "Responders retain their real Caelestinus access when spawning aboard a crew ship.");
                 Assert.That(em.GetComponent<ShuttleDeedComponent>(hull).ShuttleUid, Is.EqualTo(hull));
                 Assert.That(((HumanoidCharacterProfile) preferences.GetPreferences(player.UserId).Characters[slot]).BankBalance,
                     Is.EqualTo(10000), "The selected character must pay the listing price exactly once.");

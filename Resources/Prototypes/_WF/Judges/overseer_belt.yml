@@ -1,0 +1,12 @@
+# The Overseer's optional belt: the judges' carriers, none by default.
+
+- type: loadoutGroup
+  id: WFOverseerBelt
+  name: loadout-group-contractor-belt
+  minLimit: 0
+  loadouts:
+  - MonoSecurityGuardWebbing
+  - MonoSecurityGuardAssaultBelt
+  - MonoSecurityGuardSecurityCarrier
+  - MonoSecurityGuardSecurityCarrierLarge
+  - ContractorClothingBeltHolster

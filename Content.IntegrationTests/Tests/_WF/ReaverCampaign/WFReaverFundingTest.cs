@@ -137,12 +137,15 @@ public sealed class WFReaverFundingTest : WFReaverTestBase
             Assert.That(State().Funding, Is.Zero);
             Assert.That(State().FundingGoods, Is.Zero, "An ordinary good funded the Reavers.");
 
+            // A baggie may be worth more than a crate's share; the rest of its value waits toward the next one.
             var baggie = SEntMan.SpawnEntity("WFBaggieCocaine", MapData.GridCoords);
             var price = pricing.GetPrice(baggie);
-            Assert.That(price, Is.GreaterThan(0).And.LessThan(campaign.FundingGoodsValue));
+            Assert.That(price, Is.GreaterThan(0));
+            var crates = (int) (price / campaign.FundingGoodsValue);
             Sell(baggie);
-            Assert.That(State().Funding, Is.Zero);
-            Assert.That(State().FundingGoods, Is.EqualTo(price).Within(0.01), "A small sale waits toward the next crate.");
+            Assert.That(State().Funding, Is.EqualTo(crates));
+            Assert.That(State().FundingGoods, Is.EqualTo(price - crates * campaign.FundingGoodsValue).Within(0.01),
+                "What is left of a sale waits toward the next crate.");
 
             var more = (int) (campaign.FundingGoodsValue / price) + 1;
             var goods = new EntityUid[more];

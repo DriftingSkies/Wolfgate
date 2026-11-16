@@ -15,7 +15,8 @@ public sealed partial class WFEncounterSystem
     private void Retarget(Entity<WFEncounterComponent> encounter)
     {
         var comp = encounter.Comp;
-        if (comp.Resolution != null || !_prototypes.TryIndex(comp.Prototype, out var prototype))
+        // An encounter set up by hand, as tests do, has no prototype; TryIndex throws on that.
+        if (comp.Resolution != null || string.IsNullOrEmpty(comp.Prototype.Id) || !_prototypes.TryIndex(comp.Prototype, out var prototype))
             return;
 
         foreach (var (key, ship) in comp.Ships)

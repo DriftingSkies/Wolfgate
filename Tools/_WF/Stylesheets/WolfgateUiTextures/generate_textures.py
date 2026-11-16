@@ -458,11 +458,28 @@ def window_icons():
             d.line([(x * s, y * s) for x, y in line], fill=WHITE, width=w)
         return im.resize((22, 22), Image.LANCZOS)
 
+    def poly_icon(*polylines):
+        im = Image.new("RGBA", (22 * s, 22 * s), CLEAR)
+        d = ImageDraw.Draw(im)
+        for pts in polylines:
+            d.line([(x * s, y * s) for x, y in pts], fill=WHITE, width=w, joint="curve")
+            # round the endpoints so strokes don't end in square stubs
+            for x, y in (pts[0], pts[-1]):
+                r = w / 2
+                d.ellipse([x * s - r, y * s - r, x * s + r, y * s + r], fill=WHITE)
+        return im.resize((22, 22), Image.LANCZOS)
+
     icon(((9, 13), (19, 3)), (((12, 3), (19, 3)), ((19, 3), (19, 10)))).save(os.path.join(out, "popout.png"))
     icon(((19, 3), (9, 13)), (((9, 6), (9, 13)), ((9, 13), (16, 13)))).save(os.path.join(out, "dock.png"))
+
+    # Floppy disk
+    body    = [(3, 3), (16, 3), (19, 6), (19, 19), (3, 19), (3, 3)]
+    shutter = [(7, 3), (7, 8), (14, 8), (14, 3)]
+    label   = [(6, 19), (6, 13), (16, 13), (16, 19)]
+    poly_icon(body, shutter, label).save(os.path.join(out, "save.png"))
     with open(os.path.join(out, "attributions.yml"), "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join([
-            '- files: ["popout.png", "dock.png"]',
+            '- files: ["popout.png", "dock.png", "save.png"]',
             '  license: "CC-BY-SA-3.0"',
             '  copyright: "Generated for Wolfgate by Tools/_WF/Stylesheets/WolfgateUiTextures/generate_textures.py"',
             '  source: "https://github.com/Aphelion-Moon/Wolfgate"',

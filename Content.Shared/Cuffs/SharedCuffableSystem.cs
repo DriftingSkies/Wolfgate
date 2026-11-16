@@ -508,6 +508,12 @@ namespace Content.Shared.Cuffs
             if (HasComp<DisarmProneComponent>(target))
                 cuffTime = 0.0f; // cuff them instantly.
 
+            // WOLFGATE(Modsuits) START: restraint-assist modules shorten the cuff do-after.
+            var cuffEv = new Content.Shared._WF.Modsuits.Modules.ModifyCuffDurationEvent(target, cuffTime);
+            RaiseLocalEvent(user, ref cuffEv);
+            cuffTime = cuffEv.Duration;
+            // WOLFGATE END
+
             var doAfterEventArgs = new DoAfterArgs(EntityManager, user, cuffTime, new AddCuffDoAfterEvent(), handcuff, target, handcuff)
             {
                 BreakOnMove = true,

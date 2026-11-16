@@ -171,12 +171,12 @@ public sealed class SubstanceTest
 
     private static readonly string[] Products =
     {
-        "WFCrackRock", "WFCrystalShard", "WFOpiumResin", "WFHashBrick", "WFBaggieCocaine", "WFBaggieHeroin",
+        "WFCrackRock", "WFCrystalShard", "WFOpiumResin", "WFBaggieCocaine", "WFBaggieHeroin",
     };
 
     /// <summary>
-    /// Products and programmed sticks are Class 3 contraband that tips off security when sold, blanks are legal, and cut
-    /// stock is worth less.
+    /// Products and programmed sticks are Class 3 contraband that tips off security when sold, hash and blanks are legal,
+    /// and cut stock is worth less.
     /// </summary>
     [Test]
     public async Task ContrabandAndPriceTest()
@@ -207,6 +207,13 @@ public sealed class SubstanceTest
                     Assert.That(entMan.HasComponent<ItemTaxComponent>(uid), Is.True, id);
                 }
 
+                foreach (var id in new[] { "WFHashBrick", "WFNeurowareStickIdle", "WFNeurowareStickIdleCopy" })
+                {
+                    var uid = entMan.SpawnEntity(id, map.GridCoords);
+                    Assert.That(entMan.HasComponent<ContrabandComponent>(uid), Is.False, $"{id} is legal.");
+                    Assert.That(entMan.HasComponent<SoldAlertComponent>(uid), Is.False, $"Selling {id} tips nobody off.");
+                }
+
                 var blank = entMan.SpawnEntity("WFNeurowareStick", map.GridCoords);
                 Assert.That(entMan.HasComponent<ContrabandComponent>(blank), Is.False, "A blank stick is legal.");
                 Assert.That(pricing.GetPrice(entMan.SpawnEntity("WFNeurowareStickWhitelineCopy", map.GridCoords)),
@@ -215,7 +222,7 @@ public sealed class SubstanceTest
                 var full = pricing.GetPrice(entMan.SpawnEntity("WFBaggieCocaine", map.GridCoords));
                 var cut = pricing.GetPrice(entMan.SpawnEntity("WFBaggieCocaineCut", map.GridCoords));
                 Assert.That(full, Is.GreaterThan(0));
-                Assert.That(cut, Is.EqualTo(full * 0.55 * 0.55).Within(1), "Cut stock sells at its grade squared.");
+                Assert.That(cut, Is.EqualTo(full * 0.55).Within(1), "Cut stock sells at its grade.");
             });
         });
 

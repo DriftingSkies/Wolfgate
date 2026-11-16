@@ -40,6 +40,14 @@ public sealed partial class NightVisionSystem : SharedNightVisionSystem
 
     private void OnHandleState(Entity<NightVisionComponent> ent, ref AfterAutoHandleStateEvent args)
     {
+        // WOLFGATE: relayed gear sits on the item, so refresh the local wearer instead
+        if (ent.Comp.RelayOverlay)
+        {
+            if (_player.LocalSession?.AttachedEntity is { } localPlayer)
+                RefreshOverlay(localPlayer);
+            return;
+        }
+
         RefreshOverlay(ent);
     }
 

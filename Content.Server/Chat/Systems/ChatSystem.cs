@@ -607,7 +607,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         // WOLFGATE(ChatFormatting): emphasis delimiters convert to BBCode after obfuscation (so ~ replacement doesn't corrupt tags)
         obfuscated = ConvertCustomEmphasisToBBCode(obfuscated);
         // The language-obfuscated message wrapped in a "x says y" string.
-        var wrappedObfuscated = WrapPublicMessage(source, name, obfuscated, language: language, speechVerb: speechVerb); // WOLFGATE: speech style
+        var wrappedObfuscated = WrapPublicMessage(source, name, obfuscated, language: language, obfuscated: true, speechVerb: speechVerb); // WOLFGATE: speech style
         // WOLFGATE(ChatFormatting): also convert the non-obfuscated wrap so listeners who understand the language get BBCode
         wrappedMessage = ConvertCustomEmphasisToBBCode(wrappedMessage);
         // Einstein Engines - Language end
@@ -710,7 +710,7 @@ public sealed partial class ChatSystem : SharedChatSystem
                 result = perceivedMessage;
                 // WOLFGATE(ChatFormatting): emphasis delimiters convert to BBCode after obfuscation
                 result = ConvertCustomEmphasisToBBCode(result);
-                wrappedMessage = WrapWhisperMessage(source, "chat-manager-entity-whisper-wrap-message", name, result, language, speechVerb); // WOLFGATE: speech style
+                wrappedMessage = WrapWhisperMessage(source, "chat-manager-entity-whisper-wrap-message", name, result, language, speechVerb: speechVerb); // WOLFGATE: speech style
             }
             else if (_examineSystem.InRangeUnOccluded(source, listener, WhisperMuffledRange)) // UNEDIT FROM Einstein Engines - Language // They are out of date, this has been reverted to current ChatSystem
             {
@@ -718,7 +718,7 @@ public sealed partial class ChatSystem : SharedChatSystem
                 result = ObfuscateMessageReadability(perceivedMessage);
                 // WOLFGATE(ChatFormatting): emphasis delimiters convert to BBCode after obfuscation
                 result = ConvertCustomEmphasisToBBCode(result);
-                wrappedMessage = WrapWhisperMessage(source, "chat-manager-entity-whisper-wrap-message", nameIdentity, result, language, speechVerb); // WOLFGATE: speech style
+                wrappedMessage = WrapWhisperMessage(source, "chat-manager-entity-whisper-wrap-message", nameIdentity, result, language, speechVerb: speechVerb); // WOLFGATE: speech style
             }
             else
             {
@@ -726,13 +726,13 @@ public sealed partial class ChatSystem : SharedChatSystem
                 result = ObfuscateMessageReadability(perceivedMessage);
                 // WOLFGATE(ChatFormatting): emphasis delimiters convert to BBCode after obfuscation
                 result = ConvertCustomEmphasisToBBCode(result);
-                wrappedMessage = WrapWhisperMessage(source, "chat-manager-entity-whisper-unknown-wrap-message", string.Empty, result, language, speechVerb); // WOLFGATE: speech style
+                wrappedMessage = WrapWhisperMessage(source, "chat-manager-entity-whisper-unknown-wrap-message", string.Empty, result, language, speechVerb: speechVerb); // WOLFGATE: speech style
             }
 
             _chatManager.ChatMessageToOne(ChatChannel.Whisper, result, wrappedMessage, source, false, session.Channel);
         }
 
-        var replayWrap = WrapWhisperMessage(source, "chat-manager-entity-whisper-wrap-message", name, message, language, speechVerb); // WOLFGATE: speech style
+        var replayWrap = WrapWhisperMessage(source, "chat-manager-entity-whisper-wrap-message", name, message, language, speechVerb: speechVerb); // WOLFGATE: speech style
         _replay.RecordServerMessage(new ChatMessage(ChatChannel.Whisper, message, replayWrap, GetNetEntity(source), null, MessageRangeHideChatForReplay(range)));
         // Einstein Engines - Languages end
 
@@ -806,7 +806,7 @@ public sealed partial class ChatSystem : SharedChatSystem
                 !HasComp<GhostComponent>(listener))
                 continue;
 
-            var wrappedMessage = WrapWhisperMessage(source, "chat-manager-entity-whisper-wrap-message", name, perceivedMessage, language, speechVerb); // WOLFGATE: speech style
+            var wrappedMessage = WrapWhisperMessage(source, "chat-manager-entity-whisper-wrap-message", name, perceivedMessage, language, speechVerb: speechVerb); // WOLFGATE: speech style
             _chatManager.ChatMessageToOne(ChatChannel.CollectiveMind, message, wrappedMessage, source, false, session.Channel);
         }
 
@@ -1142,25 +1142,25 @@ public sealed partial class ChatSystem : SharedChatSystem
     /// <summary>
     ///     Wraps a message sent by the specified entity into an "x says y" string.
     /// </summary>
-    public string WrapPublicMessage(EntityUid source, string name, string message, LanguagePrototype? language = null, ProtoId<SpeechVerbPrototype>? speechVerb = null) // WOLFGATE: speech style
+    public string WrapPublicMessage(EntityUid source, string name, string message, LanguagePrototype? language = null, bool? obfuscated = false, ProtoId<SpeechVerbPrototype>? speechVerb = null) // WOLFGATE: speech style
     {
         // WOLFGATE: a speech style decides the bold too
         var wrapId = (_prototypeManager.TryIndex(speechVerb, out var style) ? style : GetSpeechVerb(source, message)).Bold ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message";
-        return WrapMessage(wrapId, InGameICChatType.Speak, source, name, message, language, speechVerb); // WOLFGATE: speech style
+        return WrapMessage(wrapId, InGameICChatType.Speak, source, name, message, language, obfuscated, speechVerb); // WOLFGATE: speech style
     }
 
     /// <summary>
     ///     Wraps a message whispered by the specified entity into an "x whispers y" string.
     /// </summary>
-    public string WrapWhisperMessage(EntityUid source, LocId defaultWrap, string entityName, string message, LanguagePrototype? language = null, ProtoId<SpeechVerbPrototype>? speechVerb = null) // WOLFGATE: speech style
+    public string WrapWhisperMessage(EntityUid source, LocId defaultWrap, string entityName, string message, LanguagePrototype? language = null, bool? obfuscated = false, ProtoId<SpeechVerbPrototype>? speechVerb = null) // WOLFGATE: speech style
     {
-        return WrapMessage(defaultWrap, InGameICChatType.Whisper, source, entityName, message, language, speechVerb); // WOLFGATE: speech style
+        return WrapMessage(defaultWrap, InGameICChatType.Whisper, source, entityName, message, language, obfuscated, speechVerb); // WOLFGATE: speech style
     }
 
     /// <summary>
     ///     Wraps a message sent by the specified entity into the specified wrap string.
     /// </summary>
-    public string WrapMessage(LocId wrapId, InGameICChatType chatType, EntityUid source, string entityName, string message, LanguagePrototype? language, ProtoId<SpeechVerbPrototype>? speechVerb = null) // WOLFGATE: speech style
+    public string WrapMessage(LocId wrapId, InGameICChatType chatType, EntityUid source, string entityName, string message, LanguagePrototype? language, bool? obfuscated = false, ProtoId<SpeechVerbPrototype>? speechVerb = null) // WOLFGATE: speech style
     {
         language ??= _language.GetLanguage(source);
         if (language.SpeechOverride.MessageWrapOverrides.TryGetValue(chatType, out var wrapOverride))
@@ -1178,23 +1178,29 @@ public sealed partial class ChatSystem : SharedChatSystem
         var color = DefaultSpeakColor;
         if (language.SpeechOverride.Color is { } colorOverride)
             color = Color.InterpolateBetween(color, colorOverride, colorOverride.A);
-        var languageDisplay = language.IsVisibleLanguage
-            ? Loc.GetString("chat-manager-language-prefix", ("language", language.ChatName))
-            : "";
+
+        var namestring = entityName; // Starlight: Language icons
+        if (_language.GetLanguageIcon(language, obfuscated ?? false))
+            namestring = $"[icon src=\"{language.Icon}\" tooltip=\"{language.Name}\"] {entityName}";
+
+        // WOLFGATE(ChatFont) START: a language's font, then the character's picked font, then the speech font
+        // var fonttype = language.SpeechOverride.FontId ?? speech.FontId;
+        // if ((language.SpeechOverride.ObfuscationFont ?? false) && (!obfuscated ?? false))
+        //     fonttype = speech.FontId;
+        var languageFont = language.SpeechOverride.FontId;
+        if ((language.SpeechOverride.ObfuscationFont ?? false) && (!obfuscated ?? false))
+            languageFont = null;
+        var chatFont = languageFont == null ? CompOrNull<WFChatFontComponent>(source) : null;
+        // WOLFGATE END
 
         // WOLFGATE(ChatFormatting): message may contain BBCode from emphasis conversion; pass through unescaped
         return Loc.GetString(wrapId,
             ("color", color),
-            ("entityName", entityName),
+            ("entityName", namestring),
             ("verb", Loc.GetString(verbId)),
-            ("fontType", language.SpeechOverride.FontId ?? CompOrNull<WFChatFontComponent>(source)?.Font ?? speech.FontId), // WOLFGATE(ChatFont): the character's picked font, under a language's own
-            // WOLFGATE(ChatFont) START: the picked font's size scale, unless a language's own font wins
-            // ("fontSize", language.SpeechOverride.FontSize ?? speech.FontSize),
-            ("fontSize", WFChatFontRules.ScaleSize(language.SpeechOverride.FontSize ?? speech.FontSize,
-                language.SpeechOverride.FontId == null ? CompOrNull<WFChatFontComponent>(source) : null)),
-            // WOLFGATE END
-            ("message", message),
-            ("language", languageDisplay));
+            ("fontType", languageFont ?? chatFont?.Font ?? speech.FontId), // WOLFGATE(ChatFont): the character's picked font, under a language's own
+            ("fontSize", WFChatFontRules.ScaleSize(language.SpeechOverride.FontSize ?? speech.FontSize, chatFont)), // WOLFGATE(ChatFont): the picked font's size scale
+            ("message", message));
     }
     // Einstein Engines - Language end
 

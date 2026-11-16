@@ -1,4 +1,4 @@
-- files: ["popout.png", "dock.png"]
+- files: ["popout.png", "dock.png", "save.png"]
   license: "CC-BY-SA-3.0"
   copyright: "Generated for Wolfgate by Tools/_WF/Stylesheets/WolfgateUiTextures/generate_textures.py"
   source: "https://github.com/Aphelion-Moon/Wolfgate"

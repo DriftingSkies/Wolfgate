@@ -18,6 +18,12 @@ keeps a grid-held entity in that grid's frame even off its tiles. Before, a shel
 queued in map coordinates and spawned a tick later, so a ship closing faster than a wall's width per tick carried the
 blast inside an intact wall. `WFHullImpactTest` covers flat and diagonal walls at closing speeds up to 40 m/s.
 
+The sweep also casts each moving grid near a round's path with the round's velocity relative to that grid
+(`ProjectileSystem.GridSweep.cs`). A single ray in the round's own frame covers only its own travel, so a hull closing
+faster than its thickness per tick could pass the round between two ticks and leave it inside the ship. The soonest hit
+across all rays wins. `ShellStopsAtClosingHullFromAnyRange` fires from starts across a whole tick of closing at 40 and 60
+m/s.
+
 A ship gun with `WFLoaderAutoFeed` refills from its linked ammo loaders after each shot, so a single-round gun such as
 the CHARON keeps firing without a click in the loader window per slug. `WFLoaderAutoFeedTest` covers the CHARON.
 
@@ -32,6 +38,7 @@ predicted on their own client; this only cuts the audio entities other players r
 
 ### Server
 
+- [`Content.Server/_WF/Weapons/Projectiles/ProjectileSystem.GridSweep.cs`](Projectiles/ProjectileSystem.GridSweep.cs)
 - [`Content.Server/_WF/Weapons/Ranged/Components/WFGunshotAudioThrottleComponent.cs`](Ranged/Components/WFGunshotAudioThrottleComponent.cs)
 - [`Content.Server/_WF/Weapons/Ranged/Systems/GunSystem.Prediction.cs`](Ranged/Systems/GunSystem.Prediction.cs)
 - [`Content.Server/_WF/Weapons/Ranged/Systems/GunSystem.WFGunshotAudio.cs`](Ranged/Systems/GunSystem.WFGunshotAudio.cs)
@@ -68,6 +75,8 @@ predicted on their own client; this only cuts the audio entities other players r
 
 ### Audio
 
+- [`Resources/Audio/_WF/Weapons/Guns/attributions.yml`](../../../Resources/Audio/_WF/Weapons/Guns/attributions.yml)
+- [`Resources/Audio/_WF/Weapons/Guns/pulse_rifle.ogg`](../../../Resources/Audio/_WF/Weapons/Guns/pulse_rifle.ogg)
 - [`Resources/Audio/_WF/Weapons/Impacts/attributions.yml`](../../../Resources/Audio/_WF/Weapons/Impacts/attributions.yml)
 - [`Resources/Audio/_WF/Weapons/Impacts/impact_flesh_01.ogg`](../../../Resources/Audio/_WF/Weapons/Impacts/impact_flesh_01.ogg)
 - [`Resources/Audio/_WF/Weapons/Impacts/impact_flesh_02.ogg`](../../../Resources/Audio/_WF/Weapons/Impacts/impact_flesh_02.ogg)
@@ -190,6 +199,12 @@ predicted on their own client; this only cuts the audio entities other players r
   - a handled hit returns before the shared Dirty, so network the spent flag here
   - an item that is only a projectile once shot is not swept while unfired or inside a container
   - a held hit velocity is restored even when the projectile has no relative speed
+  - sweep each moving grid with the velocity relative to it, so a closing hull is not skipped
+  - the first hit is the soonest, as each grid's ray has its own direction and speed
+  - track the soonest hit and its ray
+  - sweep hits name their entity directly
+  - the soonest hit, along its own ray
+  - a grid's hit lies along the ray relative to it, at the grid's place this tick
   - hold every hit on the struck grid, so an impact blast moves with the ship it hit.
 - [`Content.Server/Weapons/Ranged/Systems/GunSystem.cs`](../../Weapons/Ranged/Systems/GunSystem.cs)
   - seeded so the shooter's client predicts the same spread
@@ -234,6 +249,7 @@ predicted on their own client; this only cuts the audio entities other players r
 - [`Resources/Prototypes/_Mono/Research/Organizations/mieyo.yml`](../../../Resources/Prototypes/_Mono/Research/Organizations/mieyo.yml): the Sakura needs its .160 smart magazine
 - [`Resources/Prototypes/_Nuclear14/Entities/Structures/Decoration/floordecor.yml`](../../../Resources/Prototypes/_Nuclear14/Entities/Structures/Decoration/floordecor.yml): material bullet impacts
 - [`Resources/Prototypes/Entities/Mobs/base.yml`](../../../Resources/Prototypes/Entities/Mobs/base.yml): material bullet impacts
+- [`Resources/Prototypes/Entities/Objects/Weapons/Guns/Battery/battery_guns.yml`](../../../Resources/Prototypes/Entities/Objects/Weapons/Guns/Battery/battery_guns.yml): own pulse rifle shot
 - [`Resources/Prototypes/Entities/Objects/Weapons/Guns/Projectiles/projectiles.yml`](../../../Resources/Prototypes/Entities/Objects/Weapons/Guns/Projectiles/projectiles.yml): untagged targets sound like metal
 - [`Resources/Prototypes/Entities/Structures/barricades.yml`](../../../Resources/Prototypes/Entities/Structures/barricades.yml): material bullet impacts
 - [`Resources/Prototypes/Entities/Structures/Doors/MaterialDoors/material_doors.yml`](../../../Resources/Prototypes/Entities/Structures/Doors/MaterialDoors/material_doors.yml): material bullet impacts

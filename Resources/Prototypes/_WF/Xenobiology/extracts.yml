@@ -73,10 +73,11 @@
         - !type:XenobioSpawnEntity
           entity: MobSlimeXenobioBabyGreySpawner
           number: 3
+    # Injected only: blood splashed across a lab floor set off every loose extract, and showers nearby rehydrated
+    # the cubes into monkeys, a monkey farm that ran itself.
     - reagents:
       - Blood
       methods:
-      - Touch
       - Injection
       effects:
       - !type:XenobioReaction
@@ -309,7 +310,7 @@
         effects:
         - !type:XenobioAdjustSolution
           reagent: Omnizine
-          amount: 15
+          amount: 5
   - type: Tag
     tags:
     - XenobiologyPurpleExtract
@@ -958,7 +959,8 @@
         base: XenobioExtractReaction
         effects:
         - !type:XenobioSpawnEntity
-          entity: SheetPlasteel10 # PDV composite is the PDV's currency
+          entity: SheetPlasteel1 # PDV composite is the PDV's currency
+          number: 2
     - reagents:
       - Blood
       methods:
@@ -966,7 +968,11 @@
       - Injection
       effects:
       - !type:XenobioReaction
-        base: XenobioExtractFail
+        base: XenobioExtractReaction
+        effects:
+        - !type:XenobioSpawnEntity
+          entity: WFSlimeHeartAdamantineFlatpack
+          offset: 0
   - type: Tag
     tags:
     - XenobiologyAdamantineExtract

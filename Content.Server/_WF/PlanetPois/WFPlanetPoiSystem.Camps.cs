@@ -43,8 +43,8 @@ public sealed partial class WFPlanetPoiSystem
     /// <summary>Tiles a roadside camp keeps along the road from its bends, junctions and ends.</summary>
     private const int CampRoadClear = 16;
 
-    /// <summary>Stretches of road tried for a roadside camp before it goes out in the open instead.</summary>
-    private const int RoadsideAttempts = 64;
+    /// <summary>Spots beside the road tried for a roadside camp before it goes out in the open instead.</summary>
+    private const int RoadsideAttempts = 1024;
 
     /// <summary>Hulls picked for a camp before it is left out.</summary>
     private const int CampAttempts = 4;
@@ -185,10 +185,17 @@ public sealed partial class WFPlanetPoiSystem
 
         // The ring's edge a tile off the shoulder's.
         var off = roads.Width / 2 + roads.ShoulderWidth + camped + 2f;
-        for (var attempt = 0; attempt < RoadsideAttempts; attempt++)
+        // Each side of each straight tile once, in a random order: random picks alone could miss the few free ones.
+        var sides = new List<(Vector2i Tile, Vector2i Across)>(straight.Count * 2);
+        foreach (var (tile, axis) in straight)
         {
-            var (tile, axis) = _random.Pick(straight);
-            var across = WFRoadDressingPlanner.Across(axis) * (_random.Prob(0.5f) ? 1 : -1);
+            sides.Add((tile, WFRoadDressingPlanner.Across(axis)));
+            sides.Add((tile, -WFRoadDressingPlanner.Across(axis)));
+        }
+        _random.Shuffle(sides);
+        for (var attempt = 0; attempt < Math.Min(RoadsideAttempts, sides.Count); attempt++)
+        {
+            var (tile, across) = sides[attempt];
             var candidate = new Vector2(tile.X + 0.5f, tile.Y + 0.5f) + (Vector2) across * off;
             var distance = Vector2.Distance(candidate, centre);
             if (distance + camped > radius - 2f || distance - camped < table.CentreClear || !CampGroundFree(ground, candidate, camped + 1f))

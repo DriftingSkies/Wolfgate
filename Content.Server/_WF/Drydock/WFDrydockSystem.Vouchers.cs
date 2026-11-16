@@ -181,10 +181,14 @@ public sealed partial class WFDrydockSystem
         return true;
     }
 
-    /// <summary>Hands an aborted voucher job's voucher back to its payer, bound to the ship it was for.</summary>
+    /// <summary>
+    /// Hands an aborted voucher job's voucher back to its payer, bound to the ship it was for. A job that already
+    /// repaired something has used the voucher: handing it back made every voucher an endless free repair.
+    /// </summary>
     private void ReturnVoucher(WFDrydockJobComponent job)
     {
-        if (job.Voucher is not { Length: > 0 } voucher || job.Payer is not { } payer || TerminatingOrDeleted(payer))
+        if (job.Voucher is not { Length: > 0 } voucher || job.Done - job.Skipped > 0
+            || job.Payer is not { } payer || TerminatingOrDeleted(payer))
             return;
 
         var item = Spawn(voucher, Transform(payer).Coordinates);

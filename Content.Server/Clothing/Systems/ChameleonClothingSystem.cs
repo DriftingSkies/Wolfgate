@@ -41,7 +41,7 @@ public sealed class ChameleonClothingSystem : SharedChameleonClothingSystem
     /// <summary>
     ///     Change chameleon items name, description and sprite to mimic other entity prototype.
     /// </summary>
-    public void SetSelectedPrototype(EntityUid uid, string? protoId, bool forceUpdate = false,
+    public override void SetSelectedPrototype(EntityUid uid, string? protoId, bool forceUpdate = false, // WOLFGATE(Modsuits): shared base forwards chameleon changes
         ChameleonClothingComponent? component = null)
     {
         if (!Resolve(uid, ref component, false))

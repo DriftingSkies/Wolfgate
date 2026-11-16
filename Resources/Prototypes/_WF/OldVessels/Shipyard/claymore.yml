@@ -14,7 +14,6 @@
   price: 200000 # BIG BOI TAX
   category: Large
   group: Shipyard
-  access: Mercenary
   shuttlePath: /SharedMaps/_WF/OldVessels/claymore.yml
   tags:
   - WFClassicVessel

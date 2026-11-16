@@ -1,5 +1,5 @@
 - type: entity
-  parent: BaseClothingModsuitHelmet
+  parent: ClothingModsuitHelmetStandard
   id: ClothingModsuitHelmetUSSPVaryag
   name: Shlem Varyaga
   description: Sealed, reinforced, and intimidating.
@@ -49,7 +49,7 @@
         isLooped: true
 
 - type: entity
-  parent: [BaseClothingModsuitHelmet, ShowMedicalIcons, ShowSecurityIcons]
+  parent: [ClothingModsuitHelmetStandard, ShowMedicalIcons, ShowSecurityIcons]
   id: ClothingModsuitHelmetUSSPZastavnik
   name: Shlem Zastavnik
   description: A reinforced helmet with deep armor plating and visor shielding. Favored by serzhants for frontline presence.
@@ -66,27 +66,6 @@
         Piercing: 0.95
         Heat: 0.95
         Radiation: 0.8
-  - type: ComponentToggler
-    components:
-    - type: BreathMask
-    - type: FlashImmunity
-    - type: EyeProtection
-      protectionTime: 5
-    - type: PressureProtection
-      highPressureMultiplier: 0.3
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
-    - type: IdentityBlocker
-    - type: IngestionBlocker
-    - type: HideLayerClothing
-      slots:
-      - Hair
-      - Snout
-      - HeadTop
-      - HeadSide
-    #THIS WILL BE REPLACED WITH MODULE ↓↓
   - type: ToggleableVisuals
     spriteLayer: light
   - type: PointLight
@@ -120,7 +99,7 @@
         isLooped: true
 
 - type: entity
-  parent: [BaseClothingModsuitHelmet, ShowMedicalIcons, ShowSecurityIcons]
+  parent: [ClothingModsuitHelmetStandard, ShowMedicalIcons, ShowSecurityIcons]
   id: ClothingModsuitHelmetRogue
   name: RX-01 modsuit helmet
   description: Does not currently feature an AI companion- note to self, sell helmet AI as separate purchase.
@@ -128,6 +107,26 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Head/Modsuits/rogue.rsi
+  # WOLFGATE(Modsuits) START: the rsi only has the default and vox states, so other species drew an error sprite
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    quickEquip: false
+    equippedPrefix: off
+    slots: [ HEAD ]
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD-vox
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+  # WOLFGATE END
   - type: Armor
     coverage: [Head] # WOLFGATE(Wolfmed): P6, P3-D6: locational armour coverage
     modifiers:
@@ -151,27 +150,6 @@
     viewCircleSpacing: 260
     phosphorColor: "#41D7D9"
     lightingColor: "#FFFFFF32"
-  - type: ComponentToggler
-    components:
-    - type: FlashImmunity
-    - type: EyeProtection
-      protectionTime: 5
-    - type: BreathMask
-    - type: PressureProtection
-      highPressureMultiplier: 0.3
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
-    - type: IdentityBlocker
-    - type: IngestionBlocker
-    - type: HideLayerClothing
-      slots:
-      - Hair
-      - Snout
-      - HeadTop
-      - HeadSide
-  #THIS WILL BE REPLACED WITH MODULE ↓↓
   - type: ToggleableVisuals
     spriteLayer: light
   - type: PointLight
@@ -206,7 +184,7 @@
 
 # Volta
 - type: entity
-  parent: [BaseClothingModsuitHelmet, ShowSecurityIcons]
+  parent: [ClothingModsuitHelmetStandard, ShowSecurityIcons]
   id: ClothingModsuitHelmetVolta
   name: Volta Modsuit Helmet
   description: A reinforced sapper's plate, reimburced with higher quality CCTV and military-grade flashlight, doesn't make you look any better though.
@@ -223,25 +201,6 @@
         Piercing: 0.90
         Heat: 0.90
         Radiation: 0.5
-  - type: ComponentToggler
-    components:
-    - type: BreathMask
-    - type: EyeProtection
-    - type: PressureProtection
-      highPressureMultiplier: 0.3
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
-    - type: IdentityBlocker
-    - type: IngestionBlocker
-    - type: HideLayerClothing
-      slots:
-      - Hair
-      - Snout
-      - HeadTop
-      - HeadSide
-  #THIS WILL BE REPLACED WITH MODULE ↓↓
   - type: ToggleableVisuals
     spriteLayer: light
   - type: PointLight
@@ -276,7 +235,7 @@
 
 # Gallóglach
 - type: entity
-  parent: BaseClothingModsuitHelmet
+  parent: ClothingModsuitHelmetStandard
   id: ClothingModsuitHelmetMercenary
   name: mercenary modsuit helmet
   description: The visor is sky blue, so your enemies don't realize you haven't put them on their backs yet. Comes with a built in Mass Scanner in its HUD.

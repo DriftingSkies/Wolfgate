@@ -1,0 +1,33 @@
+# A construction kit for a first MODsuit, sold from the cargo console. The four platings let the buyer pick a
+# civilian look; the tools are included so the crate is self-contained.
+
+- type: entity
+  id: WFCrateModsuitKit
+  parent: CrateEngineering
+  name: MODsuit construction crate
+  description: A MOD shell, a powered standard core, the four suit parts, four platings and the tools to assemble them.
+  components:
+  - type: StorageFill
+    contents:
+    - id: ModsuitShell
+    - id: ModsuitCoreStandardHighCapacity
+    - id: ModsuitHelmet
+    - id: ModsuitChestplate
+    - id: ModsuitGauntlets
+    - id: ModsuitBoots
+    - id: ModsuitPlatingExternal
+    - id: ModsuitPlatingParamedic
+    - id: ModsuitPlatingEngineer
+    - id: ModsuitPlatingAtmostech
+    - id: Screwdriver
+    - id: Wrench
+
+- type: cargoProduct
+  id: WFModsuitKit
+  icon:
+    sprite: _Goobstation/Objects/Specific/Robotics/modsuit_parts.rsi
+    state: shell
+  product: WFCrateModsuitKit
+  cost: 5000
+  category: cargoproduct-category-name-engineering
+  group: market

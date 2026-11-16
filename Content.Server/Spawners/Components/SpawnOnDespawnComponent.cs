@@ -16,8 +16,9 @@ public sealed partial class SpawnOnDespawnComponent : Component
     public EntProtoId Prototype = string.Empty;
 
     /// <summary>
-    /// Mono: How many Entity prototypes to spawn.
+    /// Mono: how many extra entities to spawn after the first.
     /// </summary>
+    // WOLFGATE: default to one spawn so prototypes without a count do not duplicate
     [DataField]
-    public int Count = 1;
+    public int Count = 0;
 }

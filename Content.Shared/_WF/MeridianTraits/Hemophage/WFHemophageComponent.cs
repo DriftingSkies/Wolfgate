@@ -89,8 +89,11 @@ public sealed partial class WFHemophageComponent : Component
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoPausedField]
     public TimeSpan? SatiatedUntil;
 
-    /// <summary>Blood regained per second under Master of the House.</summary>
-    [DataField] public float MasterRegenPerSecond = 0.02f / 560f;
+    /// <summary>
+    /// Blood regained per second under Master of the House, as a fraction of a normal bloodstream: 0.25u of 560 a
+    /// second, about half an hour from empty. It was 0.02u, which read as the drain merely stopping.
+    /// </summary>
+    [DataField] public float MasterRegenPerSecond = 0.25f / 560f;
 
     /// <summary>The most one bite drains.</summary>
     [DataField] public float BiteRatio = 50f / 560f;

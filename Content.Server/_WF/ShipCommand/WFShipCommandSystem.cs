@@ -31,6 +31,14 @@ public sealed partial class WFShipCommandSystem : EntitySystem
         InitializeZones();
         InitializeCrew();
         InitializeWires();
+        SubscribeLocalEvent<WFShipCommandComponent, WFShipManagerEvent>(OnShipManager);
+    }
+
+    /// <summary>Whoever configures the ship, admins included, also manages its access tab and console locks.</summary>
+    private void OnShipManager(Entity<WFShipCommandComponent> grid, ref WFShipManagerEvent args)
+    {
+        if (!args.Allowed && CanConfigure(args.User, grid))
+            args.Allowed = true;
     }
 
     public override void Update(float frameTime)

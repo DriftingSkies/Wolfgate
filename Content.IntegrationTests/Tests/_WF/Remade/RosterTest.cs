@@ -18,6 +18,8 @@ using Robust.Client.GameObjects;
 using Robust.Client.ResourceManagement;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Physics;
+using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
@@ -291,8 +293,12 @@ public sealed class RosterTest
         {
             WFRemadeDirectorTest.LayDeck(pair, map);
             var shooter = entMan.SpawnEntity("MobCarp", WFRemadeDirectorTest.At(map, 12, 0));
+            // Held in place: awake, they would set off after the shooter and break up the row before the blast reached them.
             for (var i = 0; i < 5; i++)
+            {
                 row.Add(entMan.SpawnEntity(i % 2 == 0 ? Exploder : ExploderEnhanced, WFRemadeDirectorTest.At(map, i, 0)));
+                server.System<SharedPhysicsSystem>().SetBodyType(row[^1], BodyType.Static);
+            }
 
             LimbsTest.Hit(pair, row[0], "Piercing", 40, TargetBodyPart.LeftArm, shooter);
         });
@@ -302,7 +308,8 @@ public sealed class RosterTest
         {
             Assert.That(entMan.GetComponent<WFRemadeExploderComponent>(row[0]).Detonated, Is.True, "the shot one didn't burst.");
             Assert.That(entMan.Deleted(row[1]) || LimbsTest.Total(pair, row[1]) > 0f, Is.True, "the blast didn't touch the exploder beside it.");
-            Assert.That(entMan.Deleted(row[2]) || LimbsTest.Total(pair, row[2]) > 0f, Is.True, "the blast didn't reach two tiles.");
+            Assert.That(entMan.Deleted(row[2]) || LimbsTest.Total(pair, row[2]) > 0f, Is.True,
+                $"the blast didn't reach two tiles; the row stood at {string.Join(", ", row.Select(uid => entMan.Deleted(uid) ? "gone" : entMan.GetComponent<TransformComponent>(uid).LocalPosition.ToString()))}.");
         });
         await pair.CleanReturnAsync();
     }

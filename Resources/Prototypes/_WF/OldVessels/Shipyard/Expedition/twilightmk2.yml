@@ -13,7 +13,6 @@
   price: 98942 # its not more expensive because 2/3s of the ship is actively spaced.
   category: Medium
   group: Expedition
-  access: Mercenary
   shuttlePath: /SharedMaps/_WF/OldVessels/Expedition/twilightmk2.yml
   tags:
   - WFClassicVessel

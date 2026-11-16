@@ -352,8 +352,8 @@ public sealed partial class WolfmedSyntheticHudOverlaySystem : EntitySystem
             _ => 0f,
         };
 
-        // Neuroware: the tint follows the program's tier, and a strong one tears the screen as heavy damage does.
-        tint = MathF.Max(tint, neuroware * 0.5f);
+        // Neuroware: a strong program tears the screen as heavy damage does. The rim stays for damage; the program's own
+        // shader carries its colour.
         var tearing = tier == WolfmedSyntheticTier.Heavy || neuroware >= WFNeurowareGlitchAt;
         strain = MathF.Max(strain, neuroware);
 

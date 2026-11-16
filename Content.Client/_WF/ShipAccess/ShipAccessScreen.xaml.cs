@@ -247,9 +247,9 @@ public sealed partial class ShipAccessScreen : BoxContainer
     {
         _entManager.TryGetComponent<WFShipAccessComponent>(_grid, out var comp);
         var local = _player.LocalEntity;
-        // The deed, or the ship being registered to this player, decides who edits; a ship without the component yet
-        // still lets its deed holder open the tab.
-        var isOwner = _grid != null && local != null && _access.IsOwner(local.Value, _grid.Value);
+        // The deed, the ship being registered to this player, or a manager (an admin at a commanded ship) decides who
+        // edits; a ship without the component yet still lets its deed holder open the tab.
+        var isOwner = _grid != null && local != null && _access.CanManage(local.Value, _grid.Value);
 
         var sb = new StringBuilder();
         sb.Append(isOwner).Append('|');
@@ -425,6 +425,7 @@ public sealed partial class ShipAccessScreen : BoxContainer
             WFShipAccessMode.Crew => "ship-access-mode-crew",
             WFShipAccessMode.Company => "ship-access-mode-company",
             WFShipAccessMode.Faction => "ship-access-mode-faction",
+            WFShipAccessMode.Public => "ship-access-mode-public",
             _ => "ship-access-mode-private",
         });
         ModeLabel.Visible = !isOwner;
@@ -435,7 +436,10 @@ public sealed partial class ShipAccessScreen : BoxContainer
         ShipModeButton.AddItem(Loc.GetString("ship-access-mode-company"), (int) WFShipAccessMode.Company);
         if (faction)
             ShipModeButton.AddItem(Loc.GetString("ship-access-mode-faction"), (int) WFShipAccessMode.Faction);
-        ShipModeButton.SelectId((int) mode);
+        // Staff set Public; it is only listed while it is on, so the owner sees it and can switch away.
+        if (mode == WFShipAccessMode.Public)
+            ShipModeButton.AddItem(Loc.GetString("ship-access-mode-public"), (int) WFShipAccessMode.Public);
+        ShipModeButton.TrySelectId((int) mode);
         ShipModeButton.ToolTip = Loc.GetString("ship-access-mode-hint") + "\n" + (comp?.CrewName == null
             ? Loc.GetString("ship-access-no-crew")
             : Loc.GetString("ship-access-linked-crew", ("name", comp.CrewName), ("count", comp.CrewKeys.Count)))

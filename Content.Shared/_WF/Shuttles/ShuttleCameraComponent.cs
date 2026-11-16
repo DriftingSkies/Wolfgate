@@ -55,6 +55,10 @@ public sealed partial class ShuttleCameraComponent : Component
     [DataField, AutoNetworkedField]
     public EntityUid? Camera;
 
+    /// <summary>What the eye followed before the camera took it, such as a station AI's remote eye. Server only.</summary>
+    [ViewVariables]
+    public EntityUid? PreviousTarget;
+
     /// <summary>
     /// The grid being flown while in the external view, which the pan is measured on. Null otherwise.
     /// </summary>

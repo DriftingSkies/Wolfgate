@@ -8,10 +8,10 @@
   - type: LanguageKnowledge
     speaks:
     - TauCetiBasic
-    - Scratch # WOLFGATE(Species): Resomi share the Avali language
+    - Scratch
     understands:
     - TauCetiBasic
-    - Scratch # WOLFGATE(Species)
+    - Scratch
    # Einstein Engines - End
   - type: Fixtures
     fixtures:

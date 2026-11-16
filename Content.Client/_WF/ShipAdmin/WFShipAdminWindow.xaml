@@ -1,0 +1,47 @@
+<DefaultWindow xmlns="https://spacestation14.io"
+               xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+               xmlns:ui="clr-namespace:Content.Client._WF.ShipAdmin"
+               Title="{Loc wf-ship-admin-title}"
+               MinSize="900 540"
+               SetSize="1080 700">
+    <BoxContainer Orientation="Vertical" SeparationOverride="4">
+        <BoxContainer Orientation="Horizontal" SeparationOverride="8" VerticalExpand="True">
+            <BoxContainer Orientation="Vertical" SetWidth="340" SeparationOverride="4">
+                <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                    <LineEdit Name="SearchBar" PlaceHolder="{Loc wf-ship-admin-search}" HorizontalExpand="True" />
+                    <Button Name="RefreshButton" Text="{Loc wf-ship-admin-refresh}" StyleClasses="ButtonSquare" />
+                </BoxContainer>
+                <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                    <Button Name="PlayerShipsButton" Text="{Loc wf-ship-admin-filter-ships}" ToggleMode="True" StyleClasses="OpenRight" HorizontalExpand="True" />
+                    <Button Name="AllGridsButton" Text="{Loc wf-ship-admin-filter-all}" ToggleMode="True" StyleClasses="OpenLeft" HorizontalExpand="True" />
+                </BoxContainer>
+                <ui:WFShipAdminDropdown Name="SortButton" Access="Public" HorizontalExpand="True" />
+                <PanelContainer VerticalExpand="True">
+                    <PanelContainer.PanelOverride>
+                        <gfx:StyleBoxFlat BackgroundColor="#141414" BorderColor="#333333" BorderThickness="1" />
+                    </PanelContainer.PanelOverride>
+                    <ScrollContainer HScrollEnabled="False" VerticalExpand="True" Margin="2">
+                        <BoxContainer Name="ShipList" Access="Public" Orientation="Vertical" SeparationOverride="2" />
+                    </ScrollContainer>
+                </PanelContainer>
+                <Label Name="CountLabel" StyleClasses="LabelSubText" ClipText="True" />
+            </BoxContainer>
+
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="4">
+                <Label Name="NoShipLabel" Text="{Loc wf-ship-admin-none-selected}" StyleClasses="LabelSubText" Margin="8" />
+                <BoxContainer Name="ShipBox" Orientation="Vertical" VerticalExpand="True" SeparationOverride="4" Visible="False">
+                    <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                        <Label Name="ShipNameLabel" Access="Public" StyleClasses="LabelHeading" ClipText="True" HorizontalExpand="True" />
+                        <ui:WFShipAdminCompass Name="HeaderCompass" />
+                        <Label Name="HeaderDistance" StyleClasses="LabelSubText" SetWidth="70" Align="Right" />
+                    </BoxContainer>
+                    <ui:WFShipAdminText Name="ShipSummaryLabel" />
+                    <TabContainer Name="Tabs" Access="Public" VerticalExpand="True" />
+                </BoxContainer>
+            </BoxContainer>
+        </BoxContainer>
+
+        <PanelContainer StyleClasses="LowDivider" />
+        <ui:WFShipAdminText Name="ResultLabel" Access="Public" />
+    </BoxContainer>
+</DefaultWindow>

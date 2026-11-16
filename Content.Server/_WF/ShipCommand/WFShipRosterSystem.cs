@@ -32,6 +32,7 @@ public sealed class WFShipRosterSystem : EntitySystem
     [Dependency] private TraderSystem _traders = default!;
     [Dependency] private WFCrewSystem _crew = default!;
     [Dependency] private WFCrewSetupSystem _setup = default!;
+    [Dependency] private WFCrewObjectiveSystem _objectives = default!;
     [Dependency] private WFShipBehaviourSystem _behaviour = default!;
 
     private static readonly TimeSpan Hour = TimeSpan.FromHours(1);
@@ -302,6 +303,8 @@ public sealed class WFShipRosterSystem : EntitySystem
 
             mob = crewman;
             _setup.ApplyMission(mob, grid, Mission(grid.Comp));
+            if (grid.Comp.InfiniteAmmo && TryComp<WFCrewComponent>(mob, out var crewComp))
+                crewComp.InfiniteAmmo = true;
             fromBay = arrival != slot.Post;
             if (fromBay)
                 _crew.SetPost(mob, slot.Post);
@@ -319,6 +322,8 @@ public sealed class WFShipRosterSystem : EntitySystem
         _behaviour.ApplyTo(grid, mob);
         var staffed = new WFShipPostStaffedEvent(mob, grid, slot.Id, fromBay);
         RaiseLocalEvent(mob, ref staffed, true);
+        // The newcomer's card opens the zone doors now, not at the next two-second sweep.
+        EntityManager.System<WFShipCommandSystem>().RefreshZoneKeys(grid);
         return true;
     }
 
@@ -331,6 +336,7 @@ public sealed class WFShipRosterSystem : EntitySystem
             BoardingResponse = roster.BoardingResponse,
             DockingResponse = roster.DockingResponse,
             Order = WFPilotOrder.Hold,
+            Skill = roster.Skill,
         };
     }
 
@@ -370,6 +376,7 @@ public sealed class WFShipRosterSystem : EntitySystem
         var query = EntityQueryEnumerator<WFShipRosterComponent>();
         while (query.MoveNext(out var uid, out var roster))
         {
+            UpdateAutoRepair((uid, roster), now);
             if (!roster.AutoRestaff)
                 continue;
 
@@ -389,6 +396,24 @@ public sealed class WFShipRosterSystem : EntitySystem
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// With <see cref="WFShipRosterComponent.AutoRepair"/>, every <see cref="WFShipRosterComponent.RepairInterval"/> a
+    /// crew with nothing queued is given a repair order: its deckhands and engineers rebuild what's missing from the
+    /// ship's repair record and mend what's damaged, and the order ends at once when there's nothing to do.
+    /// </summary>
+    private void UpdateAutoRepair(Entity<WFShipRosterComponent> grid, TimeSpan now)
+    {
+        if (!grid.Comp.AutoRepair || now < grid.Comp.NextRepairCheck)
+            return;
+
+        grid.Comp.NextRepairCheck = now + grid.Comp.RepairInterval;
+        if (_objectives.TryGetQueue(grid, grid.Comp.Group, out var queued) && queued.Count > 0)
+            return;
+
+        _objectives.SetQueue(grid, grid.Comp.Group,
+            new List<WFCrewObjective> { new() { Kind = WFCrewObjectiveKind.Repair } }, append: true);
     }
 
     /// <summary>Relieved crew leave the ship once they reach the crew bay, or when their time runs out.</summary>

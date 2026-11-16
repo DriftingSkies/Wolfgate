@@ -77,8 +77,7 @@ public sealed partial class NaniteOverlaySystem : EntitySystem
 
         foreach (var entry in toRemove)
         {
-            _sprite.SetColor(entry, _modifiedEntities[entry]);
-            _modifiedEntities.Remove(entry);
+            Restore(entry); // WOLFGATE(Drydock)
         }
 
         // 1. Find entities that have Repairable, Damageable (SpriteComponent too but everything has that)
@@ -92,6 +91,14 @@ public sealed partial class NaniteOverlaySystem : EntitySystem
                 _entities.Add(GetNetEntity(entity));
             }
         }
+
+        // WOLFGATE(Drydock) START: a repaired entity drops out of the query, so its tint is undone here
+        foreach (var tinted in _modifiedEntities.Keys.ToList())
+        {
+            if (!_entities.Contains(GetNetEntity(tinted)))
+                Restore(tinted);
+        }
+        // WOLFGATE END
 
         // 2. Ask the server for their damage threshold
         RaiseNetworkEvent(new NaniteOverlayMessage(_entities.ToArray()));
@@ -113,12 +120,8 @@ public sealed partial class NaniteOverlaySystem : EntitySystem
                 ShowOverlay(GetEntity(message.Targets[i]), response);
             else if (response == 0) // entity was repaired and is at full health
             {
-                var uid = GetEntity(message.Targets[i]);
-                if (!uid.Valid || TerminatingOrDeleted(uid) && _modifiedEntities.ContainsKey(uid))
-                {
-                    _sprite.SetColor(uid, _modifiedEntities[uid]);
-                    _modifiedEntities.Remove(uid);
-                }
+                // WOLFGATE(Drydock): the condition was inverted, so a repaired entity kept its damage tint
+                Restore(GetEntity(message.Targets[i]));
             }
         }
     }
@@ -181,11 +184,24 @@ public sealed partial class NaniteOverlaySystem : EntitySystem
 
     private void ClearOverlays()
     {
-        foreach (var ent in _modifiedEntities)
+        // WOLFGATE(Drydock) START: an entity deleted while tinted has no sprite to restore
+        foreach (var ent in _modifiedEntities.Keys.ToList())
         {
-            _sprite.SetColor(ent.Key, ent.Value);
+            Restore(ent);
         }
+        // WOLFGATE END
 
         _modifiedEntities.Clear();
     }
+
+    // WOLFGATE(Drydock) START: gives an entity back its own colour, once
+    private void Restore(EntityUid uid)
+    {
+        if (!_modifiedEntities.Remove(uid, out var color) || TerminatingOrDeleted(uid))
+            return;
+
+        if (TryComp<SpriteComponent>(uid, out var sprite))
+            _sprite.SetColor((uid, sprite), color);
+    }
+    // WOLFGATE END
 }

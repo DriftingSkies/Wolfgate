@@ -220,6 +220,7 @@
         Heat: 0.9
 
 #Security Hardsuit
+# WOLFGATE START: Caelestinus Expansion I (#675) reverted
 - type: entity
   parent: [ ClothingHeadHardsuitBase, ClothingHeadSuitWithLightBase ]
   id: ClothingHeadHelmetHardsuitSecurity
@@ -243,6 +244,7 @@
         Slash: 0.9
         Piercing: 0.9
         Heat: 0.9
+# WOLFGATE END
 
 #Brigmedic Hardsuit
 - type: entity
@@ -384,6 +386,7 @@
     lightingColor: "#FFFFFF32"
 
 #Head of Security's hardsuit
+# WOLFGATE START: Caelestinus Expansion I (#675) reverted
 - type: entity
   parent: [ ClothingHeadHardsuitBase, ClothingHeadSuitWithLightBase ]
   id: ClothingHeadHelmetHardsuitSecurityRed
@@ -407,6 +410,7 @@
         Slash: 0.9
         Piercing: 0.9
         Heat: 0.9
+# WOLFGATE END
 
 #Luxury Mining Hardsuit
 - type: entity

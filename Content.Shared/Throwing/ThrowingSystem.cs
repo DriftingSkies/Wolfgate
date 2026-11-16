@@ -170,9 +170,11 @@ public sealed partial class ThrowingSystem : EntitySystem
 
         var comp = new ThrownItemComponent
         {
-            Thrower = user,
+            Thrower = user is { } thrower && TerminatingOrDeleted(thrower) ? null : user, // WOLFGATE(Throwing): a thrower already being deleted isn't recorded
             Animate = animated,
         };
+        if (comp.Thrower is { } tracked) // WOLFGATE(Throwing): cleared if the thrower is deleted mid-flight
+            EntityManager.System<Content.Shared._WF.Throwing.WFThrowerSystem>().Track(tracked, uid); // WOLFGATE(Throwing)
 
         // if not given, get the default friction value for distance calculation
         var tileFriction = friction ?? _frictionModifier * TileFrictionMod;

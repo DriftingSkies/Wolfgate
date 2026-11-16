@@ -6,7 +6,9 @@ shuttle console's orbit button (an unsanctioned world asks first), descend throu
 thrusters, lift off again, and land hard, skid, break up or crash when lift is lost. Hulls that stop keeping station
 fall out of orbit, and a world's gravity well pulls adrift hulls in from the sector.
 
-Every layer but orbit is range-limited in PVS (`WFPlanetPvsSystem`, `wf.planet_pvs_range_limited`): a client gets a
+With `wf.planet_pvs_range_limited` on (off by default: a client returning to a layer it left saw its walls and
+objects missing until the engine re-sends a returning layer whole), every layer but orbit is range-limited in PVS
+(`WFPlanetPvsSystem`): a client gets a
 layer's map and terrain only while a viewer is on or near it, instead of every planet tile on every join. The orbit
 layer stays sent to everyone, so radar, the FTL target and parked hulls work from anywhere; the ground is deleted on
 a client that leaves and arrives as new when it returns, so client code resolves layer references with `TryGetEntity`.
@@ -486,6 +488,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetGroundTakeoffTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetGroundTakeoffTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetLakeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetLakeTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetLayerNamesTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetLayerNamesTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Planets/PlanetLayerReturnTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetLayerReturnTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetNetworkTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetNetworkTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetOreMarkerTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetOreMarkerTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Planets/PlanetPathWakeTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Planets/PlanetPathWakeTest.cs)

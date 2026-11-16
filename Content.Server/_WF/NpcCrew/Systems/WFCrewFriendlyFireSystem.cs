@@ -157,13 +157,13 @@ public sealed partial class WFCrewFriendlyFireSystem : EntitySystem
     private float SkillScale(EntityUid victim, EntityUid? origin)
     {
         if (TryComp<WFCrewComponent>(victim, out var crew) && !HasComp<ActorComponent>(victim))
-            return WFCrewSkills.Of(crew.Skill).DamageTaken;
+            return WFCrewSkills.Of(crew).DamageTaken;
 
         if (origin is { } source && !TerminatingOrDeleted(source))
         {
             var attacker = _crew.Wielder(source);
             if (TryComp<WFCrewComponent>(attacker, out var dealer) && !HasComp<ActorComponent>(attacker))
-                return WFCrewSkills.Of(dealer.Skill).DamageDealt;
+                return WFCrewSkills.Of(dealer).DamageDealt;
         }
 
         return 1f;

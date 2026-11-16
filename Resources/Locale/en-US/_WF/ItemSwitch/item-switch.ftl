@@ -1,0 +1,12 @@
+itemswitch-state-both = cloak and mantle
+itemswitch-state-mantle = mantle
+itemswitch-state-cloak = cloak
+itemswitch-state-all = cloak, mantle and wings
+itemswitch-state-wings = wings
+itemswitch-state-cloakmantle = cloak and mantle
+itemswitch-state-cloakwings = cloak and wings
+itemswitch-state-mantlewings = mantle and wings
+itemswitch-state-cloakblackmantle = black cloak and mantle
+itemswitch-state-cloakwhitemantle = white cloak and mantle
+itemswitch-state-cloakwhite = white cloak
+itemswitch-state-cloakblack = black cloak

@@ -13,7 +13,6 @@
   price: 139176 # 134176 base
   category: medium
   group: Scrap
-  access: Mercenary
   shuttlePath: /SharedMaps/_WF/OldVessels/Scrap/scallywag.yml
   tags:
   - WFClassicVessel

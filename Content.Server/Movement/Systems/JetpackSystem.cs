@@ -4,6 +4,7 @@ using Content.Server._Mono.Radar;
 using Content.Shared._WF.Planets.Jetpack; // WOLFGATE(Planets)
 using Content.Shared.Atmos.Components;
 using Content.Shared.Movement.Components;
+using Content.Shared._WF.Modsuits.Modules; // WOLFGATE(Modsuits)
 using Content.Shared.Movement.Systems;
 using Robust.Shared.Collections;
 using Robust.Shared.Timing;
@@ -31,6 +32,11 @@ public sealed partial class JetpackSystem : SharedJetpackSystem
         // WOLFGATE(Planets) START: an atmospheric pack burns welding fuel from a solution, not gas from a tank.
         if (TryComp<WFAtmosphericJetpackComponent>(uid, out var wfAtmospheric))
             return base.CanEnable(uid, user, component) && _wfAtmosphericJetpack.CanFly((uid, wfAtmospheric), user);
+        // WOLFGATE END
+
+        // WOLFGATE(Modsuits) START: the ion jetpack module burns the suit core, not a gas tank
+        if (HasComp<ModJetpackModuleComponent>(uid))
+            return base.CanEnable(uid, user, component);
         // WOLFGATE END
 
         return base.CanEnable(uid, user, component) &&

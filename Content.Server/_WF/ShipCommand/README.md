@@ -12,7 +12,11 @@ against the ship: Owner (ShipAccess's owner: the deed, or a player an admin tool
 by their ID card's record key, their player or both, and either matches. Each person has one standing, so adding
 them to a list takes them off the other two; the barred list wins over the staff and officer lists, never over an
 admin or the owner. `CanConfigure` is the owner, and admins while `AdminsAtConsole`; `CanOperate` adds officers.
-Admins share the owner's powers by default, each a switch on the component: zones, the console, never targeted
+ShipAccess asks this module through `WFShipManagerEvent` before refusing a non-owner its access tab, lock verbs or
+console locks, and whoever may configure the ship, admins included, is let through; the client's
+`WFShipCommandClientSystem` answers the same event from its own admin flags, so the access tab shows admins its
+controls. Admins share the owner's powers
+by default, each a switch on the component: zones, the console, never targeted
 by the crew, served free. Where the owner turns one off, an admin stands where the lists put them
 (`GetAuthority(user, grid, out listed)`): an admin on the officers list still operates the ship and is still the
 crew's Boss. The lists are round state.
@@ -106,6 +110,15 @@ or held by a player who took its job (below). A relieved crewman says a word, dr
 bay, where he leaves the ship (or after `ReliefTimeout`); a relieved trader closes his counter and goes at once.
 Each staffing raises `WFShipPostStaffedEvent` (broadcast, with whether he came aboard at the crew bay), and each relief
 `WFShipPostRelievedEvent` on the crewman, which a system that has him say his own word marks as spoken (CrewBarks).
+Staffing refreshes the zone keys at once, so a newcomer's card opens his zones without waiting for the sweep. The
+roster also sets its crew's `Skill` and `InfiniteAmmo` (NpcCrew), and with `AutoRepair` gives a crew with nothing
+queued a Repair objective every `RepairInterval`, which its deckhands and engineers work.
+
+Sentries (`WFShipSentryComponent`, `WFShipSentrySystem`) are turrets on a faction hostile to nobody: when the crew turn
+on someone (NpcCrew's `WFCrewAttackAnsweredEvent` on the grid) every sentry aboard aggroes on him, and each lets go of
+targets that are down or off the ship. A target raised only by a boarding sighting is also let go once no crewman
+aboard holds him hostile any more (`WFCrewSecuritySystem.OwnsHostile`), as after a policy edit clears him; an attacker
+is kept.
 
 ## Player jobs
 
@@ -193,7 +206,10 @@ every five seconds: the admin fabricators use it, everyone else draws from the s
 ejecting it is refused through Remade's `WFMatterEjectAttemptEvent`, it is emptied before a deconstructed or destroyed
 machine drops its contents, it adds nothing to the machine's price, and every print gets `WFBottomlessPrintComponent`,
 which sells for nothing. A print merged into a stack already lying there loses the mark, and a recycler still takes a
-print apart for its materials.
+print apart for its materials. The same pass optionally hardens the ship: `IndestructibleArms` puts godmode on every
+ship gun, hardpoint and sentry turret, `UnpryableDoors` clears `CanPry` on every door, `GunChargeScale` and
+`GunRechargeScale` multiply each gun's battery and recharge (filled at once), and `CraneSpeed` sets the speed of
+berth cranes that take no part upgrades.
 
 ## Unrestricted FTL
 
@@ -243,6 +259,8 @@ sector, no mass penalty and short timings.
 - [`Content.Server/_WF/ShipCommand/WFShipRosterComponent.cs`](WFShipRosterComponent.cs)
 - [`Content.Server/_WF/ShipCommand/WFShipRosterEvents.cs`](WFShipRosterEvents.cs)
 - [`Content.Server/_WF/ShipCommand/WFShipRosterSystem.cs`](WFShipRosterSystem.cs)
+- [`Content.Server/_WF/ShipCommand/WFShipSentryComponent.cs`](WFShipSentryComponent.cs)
+- [`Content.Server/_WF/ShipCommand/WFShipSentrySystem.cs`](WFShipSentrySystem.cs)
 - [`Content.Server/_WF/ShipCommand/WFShipServiceLedgerComponent.cs`](WFShipServiceLedgerComponent.cs)
 - [`Content.Server/_WF/ShipCommand/WFShipServiceSystem.cs`](WFShipServiceSystem.cs)
 - [`Content.Server/_WF/ShipCommand/WFShipShieldControlSystem.cs`](WFShipShieldControlSystem.cs)
@@ -266,6 +284,7 @@ sector, no mass penalty and short timings.
 
 - [`Content.Client/_WF/ShipCommand/WFRecoveryPadBoundUserInterface.cs`](../../../Content.Client/_WF/ShipCommand/WFRecoveryPadBoundUserInterface.cs)
 - [`Content.Client/_WF/ShipCommand/WFRecoveryPadWindow.cs`](../../../Content.Client/_WF/ShipCommand/WFRecoveryPadWindow.cs)
+- [`Content.Client/_WF/ShipCommand/WFShipCommandClientSystem.cs`](../../../Content.Client/_WF/ShipCommand/WFShipCommandClientSystem.cs)
 - [`Content.Client/_WF/ShipCommand/WFShipConsoleBoundUserInterface.cs`](../../../Content.Client/_WF/ShipCommand/WFShipConsoleBoundUserInterface.cs)
 - [`Content.Client/_WF/ShipCommand/WFShipConsoleWindow.cs`](../../../Content.Client/_WF/ShipCommand/WFShipConsoleWindow.cs)
 

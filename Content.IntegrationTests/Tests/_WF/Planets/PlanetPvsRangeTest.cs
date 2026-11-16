@@ -49,7 +49,11 @@ public sealed class PlanetPvsRangeTest
         clientMapLog.Level = LogLevel.Error;
 
         // The pool runs without PVS culling, which would send every planet layer to everyone regardless.
-        await server.WaitPost(() => server.CfgMan.SetCVar(CVars.NetPVS, true));
+        await server.WaitPost(() =>
+        {
+            server.CfgMan.SetCVar(CVars.NetPVS, true);
+            server.CfgMan.SetCVar(PlanetCVars.PvsRangeLimited, true); // off by default until the engine re-sends a returning layer whole
+        });
         await pair.RunTicksSync(2);
 
         await EnableFeature(pair);
@@ -127,7 +131,7 @@ public sealed class PlanetPvsRangeTest
             clientMapLog.Level = clientMapLogLevel;
             await server.WaitPost(() =>
             {
-                server.CfgMan.SetCVar(PlanetCVars.PvsRangeLimited, true);
+                server.CfgMan.SetCVar(PlanetCVars.PvsRangeLimited, false);
                 server.CfgMan.SetCVar(CVars.NetPVS, false);
             });
             await Teardown(pair, layers);

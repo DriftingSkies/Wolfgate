@@ -6,7 +6,7 @@ namespace Content.Client._WF.WolfChem.Narcotics;
 
 /// <summary>
 /// Eyelids for an opioid nod: the local player's view closes from the top and bottom, with soft edges, and snaps open
-/// when the nod ends.
+/// when the nod ends. A neuroware host has no lids; its feed dims into standby instead.
 /// </summary>
 public sealed class WFNodOverlay : Overlay
 {
@@ -21,8 +21,12 @@ public sealed class WFNodOverlay : Overlay
     /// <summary>How far shut the lids get; a sliver of light stays.</summary>
     private const float MaxClosure = 0.97f;
 
+    /// <summary>How dark a neuroware host's feed gets at a full nod.</summary>
+    private const float HostDim = 0.55f;
+
     private readonly WFIntoxicationSystem _system;
     private float _closure;
+    private bool _host;
 
     public override OverlaySpace Space => OverlaySpace.ScreenSpace;
 
@@ -38,6 +42,8 @@ public sealed class WFNodOverlay : Overlay
         if (_closure <= 0f)
             return false;
 
+        _host = _player.LocalEntity is { } local && _system.IsNeurowareHost(local);
+
         return _entities.TryGetComponent(_player.LocalEntity, out EyeComponent? eye) && args.Viewport.Eye == eye.Eye;
     }
 
@@ -45,6 +51,12 @@ public sealed class WFNodOverlay : Overlay
     {
         var handle = args.ScreenHandle;
         var box = args.ViewportBounds;
+        if (_host)
+        {
+            handle.DrawRect(box, Color.Black.WithAlpha(_closure * HostDim));
+            return;
+        }
+
         float top = box.Top;
         float bottom = box.Bottom;
         var height = bottom - top;

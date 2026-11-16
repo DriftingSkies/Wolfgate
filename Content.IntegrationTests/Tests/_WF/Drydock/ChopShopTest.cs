@@ -8,7 +8,9 @@ using Content.Server._WF.Encounters.Components;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._NF.Shipyard.Prototypes;
 using Content.Shared.Station.Components;
+using Content.Shared._Mono.Company;
 using Content.Shared._Mono.Ships.Components;
+using Content.Shared._WF.Companies;
 using Content.Shared._WF.Drydock;
 using Content.Shared.Cargo.Components;
 using Content.Shared.Materials;
@@ -259,6 +261,56 @@ public sealed class ChopShopTest
             deed.ShuttleOwner = "Jo Breaker";
 #pragma warning restore RA0002
             Assert.That(drydock.IsLawfulProperty(chop, deeded, breaker), Is.False, "The breaker's own ship is theirs to break.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// A faction's ship can't be broken by its own faction, so a faction can't strip its own hulls for their materials,
+    /// even under a player company's flag, but another faction or a factionless breaker can break it.
+    /// </summary>
+    [Test]
+    public async Task OwnFactionCantBreakFactionHull()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var em = server.EntMan;
+        var map = await pair.CreateTestMap();
+        var drydock = server.System<WFDrydockSystem>();
+
+        await server.WaitAssertion(() =>
+        {
+            var ship = DrydockTest.CreateShip(pair, map.MapId, new Vector2(100f, 0f));
+            var shipFaction = em.AddComponent<CompanyComponent>(ship);
+            shipFaction.CompanyName = "TSF";
+
+            EntityUid Breaker(string faction)
+            {
+                var mob = em.SpawnEntity("MobHuman", new MapCoordinates(0, 0, map.MapId));
+                em.EnsureComponent<CompanyComponent>(mob).CompanyName = faction;
+                return mob;
+            }
+
+            var own = Breaker("TSF");
+            var rival = Breaker("PDV");
+            var none = Breaker("None");
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(drydock.FactionBreakRefusal(ship, own), Is.Not.Null, "Its own faction can't break a faction hull.");
+                Assert.That(drydock.FactionBreakRefusal(ship, rival), Is.Null, "Another faction can break a faction hull.");
+                Assert.That(drydock.FactionBreakRefusal(ship, none), Is.Null, "A factionless breaker can break a faction hull.");
+            });
+
+            // A player company's flag clears the ship's faction and keeps it aside.
+            shipFaction.CompanyName = string.Empty;
+            em.AddComponent<WFCompanyShipComponent>(ship).PreviousFaction = "TSF";
+            Assert.That(drydock.FactionBreakRefusal(ship, own), Is.Not.Null, "A company flag doesn't hide the hull's faction.");
+
+            var factionless = DrydockTest.CreateShip(pair, map.MapId, new Vector2(-100f, 0f));
+            em.AddComponent<CompanyComponent>(factionless).CompanyName = "None";
+            Assert.That(drydock.FactionBreakRefusal(factionless, own), Is.Null, "A factionless hull is anyone's to break.");
         });
 
         await pair.CleanReturnAsync();

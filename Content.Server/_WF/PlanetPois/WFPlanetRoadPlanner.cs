@@ -214,6 +214,20 @@ public static class WFPlanetRoadPlanner
                           && impassable?.Invoke(tile) != true;
             return tileCache[tile] = allowed;
         }
+        string WhyBlocked(Vector2i tile)
+        {
+            var distance = Vector2.Distance(new Vector2(tile.X + 0.5f, tile.Y + 0.5f), centre);
+            if (distance + 0.707107f > radius)
+                return "outside the world";
+            if (centreClear > 0 && distance - 0.707107f < centreClear)
+                return "in the clear centre";
+            if (blocked.Contains(tile))
+                return "pinned";
+            var site = sites.FirstOrDefault(site => Inside(tile, site.Bounds) && !(approaches.TryGetValue(site, out var near) && near.Contains(tile)));
+            if (site != null)
+                return $"inside the site at {site.Bounds}";
+            return impassable?.Invoke(tile) == true ? "water" : "unknown";
+        }
         var clearanceCache = new Dictionary<Vector2i, bool>();
         bool Allowed(Vector2i point)
         {
@@ -240,7 +254,7 @@ public static class WFPlanetRoadPlanner
                 {
                     var lane = point + new Vector2i(-direction.Y, direction.X) * side;
                     if (!TileAllowed(lane))
-                        return Fail($"The approach from the entrance at {socket.Position} is blocked or outside the world at {lane}.", socket.Position);
+                        return Fail($"The approach from the entrance at {socket.Position} is blocked at {lane} ({WhyBlocked(lane)}).", socket.Position);
                 }
             }
             if (!Allowed(start))

@@ -13,8 +13,10 @@
     allowedDepartments: [ WFAsf ]
   - type: Sprite
     sprite: _WF/Asf/Clothing/Back/modsuit.rsi
-  - type: ToggleableClothing
-    clothingPrototypes:
+  # WOLFGATE(Modsuits): the native module system owns the suit parts
+  - type: ModSuit
+    theme: ModThemeResearch
+    parts:
       head: WFAsfClothingModsuitHelmetField
       gloves: WFAsfClothingModsuitGauntletsField
       outerClothing: WFAsfClothingModsuitChestplateField
@@ -27,14 +29,23 @@
   id: WFAsfClothingModsuitFieldPowerCell
   suffix: High-Capacity Battery
   components:
+  - type: ModSuit
+    startingModules:
+    - ModsuitModuleStorageCompact
+    - ModsuitModuleFlashlight
+    - ModsuitModuleJetpack
+    - ModsuitModulePepperShoulders
+    - ModsuitModuleRestraintAssist
+    - ModsuitModuleHeadProtector
+  # WOLFGATE(Modsuits): a MOD core replaces the power cell
   - type: ItemSlots
     slots:
-      cell_slot:
-        name: power-cell-slot-component-slot-name-default
-        startingItem: PowerCellHigh
+      mod-core:
+        name: modsuit-core-slot-name
+        startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:
-          - PowerCell
+          - ModCore
 
 - type: entity
   parent: ClothingModsuitHelmetResearchDirector
@@ -120,8 +131,10 @@
       Doubloon: 45
   - type: Sprite
     sprite: _WF/Asf/Clothing/Back/modsuit_aegis.rsi
-  - type: ToggleableClothing
-    clothingPrototypes:
+  # WOLFGATE(Modsuits): the native module system owns the suit parts
+  - type: ModSuit
+    theme: ModThemeResearch
+    parts:
       head: WFAsfClothingModsuitHelmetAegis
       gloves: WFAsfClothingModsuitGauntletsAegis
       outerClothing: WFAsfClothingModsuitChestplateAegis
@@ -165,14 +178,23 @@
   id: WFAsfClothingModsuitAegisPowerCell
   suffix: High-Capacity Battery
   components:
+  - type: ModSuit
+    startingModules:
+    - ModsuitModuleStorageCompact
+    - ModsuitModuleFlashlight
+    - ModsuitModuleJetpack
+    - ModsuitModulePepperShoulders
+    - ModsuitModuleRestraintAssist
+    - ModsuitModuleHeadProtector
+  # WOLFGATE(Modsuits): a MOD core replaces the power cell
   - type: ItemSlots
     slots:
-      cell_slot:
-        name: power-cell-slot-component-slot-name-default
-        startingItem: PowerCellHigh
+      mod-core:
+        name: modsuit-core-slot-name
+        startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:
-          - PowerCell
+          - ModCore
 
 - type: entity
   parent: WFAsfClothingModsuitHelmetField

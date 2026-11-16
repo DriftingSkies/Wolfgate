@@ -1,9 +1,5 @@
 # WOLFGATE(Species): ported from HardLight
 - type: font
-  id: Scratch
-  path: /Fonts/_Starlight/Scratch.ttf
-
-- type: font
   id: Octatrax
   path: /Fonts/_Starlight/Octatrax.ttf
 

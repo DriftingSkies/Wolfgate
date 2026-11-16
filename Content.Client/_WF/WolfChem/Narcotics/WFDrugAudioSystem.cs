@@ -102,7 +102,6 @@ public sealed class WFDrugAudioSystem : EntitySystem
     {
         if (_player.LocalEntity is not { } local
             || !TryComp<WFIntoxicationComponent>(local, out var comp)
-            || _intoxication.IsNeurowareHost(local)
             || _intoxication.DominantHigh(comp) is not { } high
             || !Sounds.TryGetValue(high.Family, out var sound))
             return (null, 1f);

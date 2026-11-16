@@ -1,9 +1,0 @@
-# WOLFGATE(Species): icon and obfuscation font fields dropped
-# Wolfgate's language system has neither.
-- type: language
-  id: Scratch
-  speech:
-    color: "#fc7921"
-    # fontId: Scratch # WOLFGATE(Species): Scratch is a cipher font, unreadable to listeners who understand it
-  obfuscation:
-    !type:RandomObfuscation

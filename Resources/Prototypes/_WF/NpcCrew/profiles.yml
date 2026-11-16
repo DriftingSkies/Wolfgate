@@ -341,6 +341,7 @@
     shoes: ClothingShoesBootsPirate
     gloves: ClothingHandsGlovesColorBlack
     back: WeaponRifleLecter
+    belt: ExGrenade
     pocket1: Magazine68x52mmCaseless
     pocket2: Magazine68x52mmCaseless
     ears: WFCrewHeadset
@@ -399,6 +400,10 @@
     WFCrewRadioOperator: [ WFCrewPirateOfficer ]
     WFCrewCaptain: [ WFCrewPirateOfficer ]
     WFCrewGunner: [ WFCrewPirateOfficer, WFCrewPirateHand ]
+  # Hands are the crew's least seasoned, officers its most (WFCrewSkills).
+  skillOffsets:
+    WFCrewPirateHand: -1
+    WFCrewPirateOfficer: 1
 
 # Remnants of the Union's fleet: still in uniform, still armed, nobody's friends.
 - type: startingGear

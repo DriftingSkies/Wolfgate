@@ -35,3 +35,13 @@
     solution: food
     reagents:
       Desoxyephedrine: 0.5
+
+# Only a habit trait hands this out; the dealers sell Halo at full grade.
+- type: entity
+  parent: WFVialHalo
+  id: WFVialHaloCut
+  components:
+  - type: WFSolutionPurity
+    solution: beaker
+    reagents:
+      WFHalo: 0.5

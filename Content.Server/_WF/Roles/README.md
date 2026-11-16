@@ -28,6 +28,7 @@ job's `AddComponentSpecial`, has `WFRadioOnJoinSystem` report the arrival on a r
 - [`Content.Shared/_WF/Roles/CustomJobTitlePrototype.cs`](../../../Content.Shared/_WF/Roles/CustomJobTitlePrototype.cs)
 - [`Content.Shared/_WF/Roles/CustomJobTitleRules.cs`](../../../Content.Shared/_WF/Roles/CustomJobTitleRules.cs)
 - [`Content.Shared/_WF/Roles/SharedJobSystem.CustomJobTitle.cs`](../../../Content.Shared/_WF/Roles/SharedJobSystem.CustomJobTitle.cs)
+- [`Content.Shared/_WF/Roles/SharedStationSpawningSystem.StorageFallback.cs`](../../../Content.Shared/_WF/Roles/SharedStationSpawningSystem.StorageFallback.cs)
 
 ### Client
 
@@ -58,12 +59,14 @@ job's `AddComponentSpecial`, has `WFRadioOnJoinSystem` report the arrival on a r
   - it edits the same role loadout
   - close the custom job title window
 - [`Content.Server.Database/Model.cs`](../../../Content.Server.Database/Model.cs): custom job title
+- [`Content.Server/_Mono/LoadoutEncryptionKeySlottingSystem.cs`](../../_Mono/LoadoutEncryptionKeySlottingSystem.cs): keys land in a hand when no worn storage takes them (a modsuit on the back)
 - [`Content.Server/_NF/Shipyard/Systems/ShipyardSystem.Consoles.cs`](../../_NF/Shipyard/Systems/ShipyardSystem.Consoles.cs): a company rank or custom title stays on the ID
 - [`Content.Server/Administration/Systems/AdminSystem.cs`](../../Administration/Systems/AdminSystem.cs): real job plus custom title
 - [`Content.Server/Database/ServerDbBase.cs`](../../Database/ServerDbBase.cs)
 - [`Content.Server/GameTicking/GameTicker.Spawning.cs`](../../GameTicking/GameTicker.Spawning.cs): custom title
 - [`Content.Shared/Preferences/Loadouts/RoleLoadout.cs`](../../../Content.Shared/Preferences/Loadouts/RoleLoadout.cs): player-written job title, for roles with a custom job title prototype
 - [`Content.Shared/Roles/Jobs/SharedJobSystem.cs`](../../../Content.Shared/Roles/Jobs/SharedJobSystem.cs): custom job title
+- [`Content.Shared/Station/SharedStationSpawningSystem.cs`](../../../Content.Shared/Station/SharedStationSpawningSystem.cs): a slot without storage (a modsuit on the back) no longer loses its starting items
 - [`Resources/Prototypes/_Mono/Roles/Jobs/Mieyo/employee.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/Mieyo/employee.yml): reports arrivals on the MMC radio, since the job spawner skips the station announcement
 - [`Resources/Prototypes/_Mono/Roles/Jobs/Mieyo/liason.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/Mieyo/liason.yml): reports arrivals on the MMC radio, since the job spawner skips the station announcement
 - [`Resources/Prototypes/_Mono/Roles/Jobs/Mieyo/security.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/Mieyo/security.yml): reports arrivals on the MMC radio, since the job spawner skips the station announcement

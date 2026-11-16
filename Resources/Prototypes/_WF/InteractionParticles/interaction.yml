@@ -1,0 +1,27 @@
+# Ported from Starlight's Resources/Prototypes/_ST/Entities/Effects/interaction.yml.
+
+- type: entity
+  id: WFInteractionParticleUse
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: TimedDespawn
+    lifetime: 1.1
+  - type: Transform
+    noRot: true
+  - type: Sprite
+    sprite: _WF/InteractionParticles/interaction.rsi
+    state: hand
+    drawdepth: Effects
+  - type: EffectVisuals
+  - type: Tag
+    tags:
+    - HideContextMenu
+
+- type: entity
+  parent: WFInteractionParticleUse
+  id: WFInteractionParticlePull
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    state: pulling
+    loop: false

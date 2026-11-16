@@ -2,7 +2,7 @@
 # neuroware twin and the reagent stay identical. Effects that need reagent args, such as sedation, stay here.
 # The high follows the units left in the blood, so metabolismRate sets how long it lasts. At
 # 0.01 a 2.5 u line stays about 4 minutes; crack and the combat drugs clear at 0.02.
-# pricePerUnit is street value at full grade; pricing scales it by the grade squared.
+# pricePerUnit is street value at full grade; pricing scales it by the grade.
 
 - type: reagent
   id: WFCocaAlkaloid
@@ -28,7 +28,7 @@
   physicalDesc: reagent-physical-desc-powdery
   flavor: bitter
   color: "#f4f4f0"
-  pricePerUnit: 150
+  pricePerUnit: 1000
   metabolisms:
     Narcotic:
       metabolismRate: 0.01
@@ -45,7 +45,7 @@
   physicalDesc: reagent-physical-desc-crystalline
   flavor: bitter
   color: "#e8dcc0"
-  pricePerUnit: 180
+  pricePerUnit: 1300
   metabolisms:
     Narcotic:
       metabolismRate: 0.02
@@ -62,7 +62,7 @@
   physicalDesc: reagent-physical-desc-sticky
   flavor: bitter
   color: "#4a2a14"
-  pricePerUnit: 50
+  pricePerUnit: 250
   metabolisms:
     Narcotic:
       metabolismRate: 0.01
@@ -79,7 +79,7 @@
   physicalDesc: reagent-physical-desc-powdery
   flavor: bitter
   color: "#c9b79c"
-  pricePerUnit: 180
+  pricePerUnit: 630
   metabolisms:
     Narcotic:
       metabolismRate: 0.01
@@ -112,7 +112,7 @@
   physicalDesc: reagent-physical-desc-glowing
   flavor: bitter
   color: "#e0202a"
-  pricePerUnit: 220
+  pricePerUnit: 770
   metabolisms:
     Narcotic:
       metabolismRate: 0.02
@@ -139,7 +139,7 @@
   physicalDesc: reagent-physical-desc-ferrous
   flavor: metallic
   color: "#38404a"
-  pricePerUnit: 220
+  pricePerUnit: 770
   metabolisms:
     Narcotic:
       metabolismRate: 0.02
@@ -182,7 +182,7 @@
   physicalDesc: reagent-physical-desc-shiny
   flavor: chalky
   color: "#c79cff"
-  pricePerUnit: 300
+  pricePerUnit: 1050
   metabolisms:
     Narcotic:
       metabolismRate: 0.01
@@ -209,7 +209,7 @@
   physicalDesc: reagent-physical-desc-soothing
   flavor: sweet
   color: "#ffe28a"
-  pricePerUnit: 180
+  pricePerUnit: 740
   metabolisms:
     Narcotic:
       metabolismRate: 0.01

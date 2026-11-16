@@ -1,0 +1,101 @@
+- type: loadout
+  id: WFContractorClothingUniformJumpsuitBlueshieldOfficer
+  price: 0
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitBlueshieldOfficer
+
+- type: loadout
+  id: WFContractorClothingUniformJumpskirtBlueshieldOfficer
+  price: 0
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtBlueshieldOfficer
+
+- type: loadout
+  id: WFContractorClothingUniformJumpsuitBlueshieldShirt
+  price: 0
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitBlueshieldShirt
+
+- type: loadout
+  id: WFContractorClothingOuterBlueshieldArmourVest
+  price: 0
+  equipment:
+    outerClothing: ClothingBlueshieldArmourVest
+
+- type: loadout
+  id: WFContractorClothingOuterBlueshieldArmoredJacket
+  price: 0
+  equipment:
+    outerClothing: ClothingBlueshieldArmoredJacket
+
+- type: loadout
+  id: WFContractorClothingHeadHatCowboyBlueshield
+  price: 0
+  equipment:
+    head: ClothingHeadHatCowboyBlueshield
+
+- type: loadout
+  id: WFContractorClothingNeckMantleBlueshield
+  price: 0
+  equipment:
+    neck: ClothingNeckMantleBlueshield
+
+- type: loadout
+  id: WFContractorClothingNeckEnsembleBlueshield
+  price: 0
+  equipment:
+    neck: ClothingNeckEnsembleBlueshield
+
+- type: loadout
+  id: WFContractorClothingShoesBootsWinterSnowjackBso
+  price: 0
+  equipment:
+    shoes: ClothingShoesBootsWinterSnowjackBso
+
+- type: loadout
+  id: WFContractorClothingBeltMilitaryWebbingBSO
+  price: 0
+  equipment:
+    belt: ClothingBeltMilitaryWebbingBSO
+
+- type: loadout
+  id: WFContractorClothingBackpackBlueshield
+  price: 0
+  equipment:
+    back: ClothingBackpackBlueshield
+
+- type: loadout
+  id: WFContractorClothingBackpackDuffelBlueshield
+  price: 0
+  equipment:
+    back: ClothingBackpackDuffelBlueshield
+
+- type: loadout
+  id: WFContractorClothingBackpackSatchelBlueshield
+  price: 0
+  equipment:
+    back: ClothingBackpackSatchelBlueshield
+
+- type: loadout
+  id: WFContractorClothingBackpackMessengerBlueshield
+  price: 0
+  equipment:
+    back: ClothingBackpackMessengerBlueshield
+
+- type: loadout
+  id: WFContractorClothingHeadsetAltBlueshield
+  price: 0
+  equipment:
+    ears: ClothingHeadsetAltBlueshield
+
+- type: loadout
+  id: WFContractorClothingEyesGlassesBSO
+  price: 0
+  equipment:
+    eyes: ClothingEyesGlassesBSO
+
+- type: loadout
+  id: WFContractorClothingMaskGasSwatBSO
+  price: 0
+  equipment:
+    mask: ClothingBSOMaskGasSwat

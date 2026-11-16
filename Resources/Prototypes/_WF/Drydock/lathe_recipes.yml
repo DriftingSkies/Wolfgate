@@ -1,9 +1,5 @@
-# Lathe recipes for the mobile drydock boards. Listed in the ShuttleBoards pack and Shuttlecraft tech.
-
-- type: latheRecipe
-  parent: BaseCircuitboardRecipe
-  id: WFComputerMobileDrydockCircuitboard
-  result: WFComputerMobileDrydockCircuitboard
+# Lathe recipe for the mobile drydock crane board. Listed in the ShuttleBoards pack and Shuttlecraft tech.
+# The console board has none: a mobile drydock console comes only with the ship that carries one.
 
 - type: latheRecipe
   parent: BaseCircuitboardRecipe

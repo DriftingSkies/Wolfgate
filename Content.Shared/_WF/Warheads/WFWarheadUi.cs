@@ -28,6 +28,9 @@ public sealed class WFWarheadBoundUserInterfaceState : BoundUserInterfaceState
     public bool HasTimerFuze;
     public List<float> TimerOptions = new();
 
+    /// <summary>Shortest timer the panel may set.</summary>
+    public float MinTimer;
+
     public bool HasTwoPerson;
     public float KeyWindow;
 

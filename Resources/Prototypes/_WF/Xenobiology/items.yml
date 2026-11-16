@@ -16,10 +16,10 @@
   - type: Item
     size: Normal
   - type: Battery
-    maxCharge: 5200
-    startingCharge: 5200
+    maxCharge: 1800
+    startingCharge: 1800
   - type: BatterySelfRecharger
-    autoRechargeRate: 40
+    autoRechargeRate: 12
   - type: Extractable
     juiceSolution:
       reagents:

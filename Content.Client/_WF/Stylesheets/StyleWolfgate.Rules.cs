@@ -290,6 +290,12 @@ public sealed partial class StyleWolfgate
                 .Prop(Control.StylePropertyModulateSelf, Accent),
             Element<TextureButton>().Class(WolfgatePopoutButton.StyleClassWindowPopoutButton).Pseudo(TextureButton.StylePseudoClassPressed)
                 .Prop(Control.StylePropertyModulateSelf, AccentDim),
+            Element<TextureButton>().Class(WolfgateSaveButton.StyleClassSaveButton)
+                .Prop(Control.StylePropertyModulateSelf, EdgeLight),
+            Element<TextureButton>().Class(WolfgateSaveButton.StyleClassSaveButton).Pseudo(TextureButton.StylePseudoClassHover)
+                .Prop(Control.StylePropertyModulateSelf, Accent),
+            Element<TextureButton>().Class(WolfgateSaveButton.StyleClassSaveButton).Pseudo(TextureButton.StylePseudoClassPressed)
+                .Prop(Control.StylePropertyModulateSelf, AccentDim),
             Element<PanelContainer>().Class(StyleBase.ClassLowDivider)
                 .Prop(PanelContainer.StylePropertyPanel, lowDivider),
             Element<PanelContainer>().Class(StyleBase.ClassHighDivider)

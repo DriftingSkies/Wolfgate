@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Made for Wolfgate; the cradle's steel palette follows gravity_generator_mini.rsi.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "dormant"
+    },
+    {
+      "name": "beating",
+      "delays": [
+        [
+          0.45,
+          0.11,
+          0.14,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "mending",
+      "delays": [
+        [
+          0.2,
+          0.08,
+          0.1,
+          0.12
+        ]
+      ]
+    }
+  ]
+}

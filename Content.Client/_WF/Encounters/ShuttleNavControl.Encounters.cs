@@ -9,17 +9,14 @@ namespace Content.Client.Shuttles.UI;
 
 public partial class ShuttleNavControl
 {
-    /// <summary>Whether encounter markers, zones and NPC crew tags are drawn. The admin scanner can turn them off.</summary>
-    public bool WfShowEncounters = true;
-
-    /// <summary>The labels placed so far this frame, so ships of one encounter do not draw over each other.</summary>
-    private readonly List<Box2> _encounterLabels = new();
-
     /// <summary>The ships of one side of one encounter, gathered for a frame.</summary>
     private readonly Dictionary<(NetEntity Encounter, string Side), (Vector2 Sum, int Count, bool Named, bool OnScope, Color Color, WFEncounterIcon Icon, WFEncounterCategory Category, float Warn, float Attack)> _encounterGroups = new();
 
     /// <summary>Where each side's ships were drawn this frame, for the spread of its zone envelope.</summary>
     private readonly Dictionary<(NetEntity Encounter, string Side), List<Vector2>> _encounterPoints = new();
+
+    /// <summary>The ship each side's name hangs on this frame: its on-scope ship with the lowest grid id, whatever order the markers came in.</summary>
+    private readonly Dictionary<(NetEntity Encounter, string Side), NetEntity> _encounterNamers = new();
 
     private static readonly ResPath MarkerGlyphs = new("/Textures/_WF/Encounters/markers.rsi");
     private readonly Dictionary<WFEncounterIcon, Texture> _encounterGlyphs = new();
@@ -48,15 +45,28 @@ public partial class ShuttleNavControl
     private void DrawEncounterMarkers(DrawingHandleScreen handle, TransformComponent consoleXform, Matrix3x2 worldToView)
     {
         var system = EntManager.System<WFEncounterMarkerClientSystem>();
-        if (!WfShowEncounters || system.Markers.Count == 0)
+        // Encounters are radar contacts like any other: the IFF toggle hides them too.
+        if (!ShowIFF || system.Markers.Count == 0)
             return;
 
         var centre = MidPointVector;
         var rim = MathF.Min(PixelSize.X, PixelSize.Y) / 2f - 20f * UIScale;
         var size = 6f * UIScale;
-        _encounterLabels.Clear();
         _encounterGroups.Clear();
         _encounterPoints.Clear();
+        _encounterNamers.Clear();
+        var here = _transform.GetWorldPosition(consoleXform);
+        foreach (var marker in system.Markers)
+        {
+            if (marker.Map != consoleXform.MapID
+                || (Vector2.Transform(system.GetPosition(marker), worldToView) - centre).Length() > rim)
+                continue;
+
+            var key = (marker.Encounter, marker.Side);
+            if (!_encounterNamers.TryGetValue(key, out var namer) || marker.Grid.Id < namer.Id)
+                _encounterNamers[key] = marker.Grid;
+        }
+
         foreach (var marker in system.Markers)
         {
             if (marker.Map != consoleXform.MapID)
@@ -82,23 +92,29 @@ public partial class ShuttleNavControl
                 handle.DrawLine(point + new Vector2(size, 0f), point + new Vector2(0f, size), color);
                 handle.DrawLine(point + new Vector2(0f, size), point + new Vector2(-size, 0f), color);
                 handle.DrawLine(point + new Vector2(-size, 0f), point + new Vector2(0f, -size), color);
-                if (!group.Named)
+                if (!group.Named && _encounterNamers.GetValueOrDefault(key) == marker.Grid)
                 {
                     // Above the ship: its own IFF label hangs below and to the right, and the admin crew tag sits between.
-                    // The threat rank follows the name on the same line.
-                    var dimensions = handle.GetDimensions(Font, marker.Name, UIScale * 0.8f);
-                    var rank = dimensions.Y;
+                    // The threat rank follows the name on the same line, in a stack too.
+                    // Named anywhere only when close enough to matter, like any other ship; else under the cursor.
+                    var close = (system.GetPosition(marker) - here).Length() <= WfTagCloseRange;
+                    WfBeginTag(point, point + new Vector2(10f, -54f) * UIScale, 2, always: close, key: HashCode.Combine(marker.Encounter, marker.Side));
+                    WfTagLine(handle, marker.Name, UIScale * 0.8f, color);
+                    var rank = handle.GetDimensions(Font, marker.Name, UIScale * 0.8f).Y;
                     var width = WFEncounterRanks.Width(marker.Threat, rank);
-                    var at = PlaceEncounterLabel(point + new Vector2(10f, -54f) * UIScale,
-                        dimensions + new Vector2(width > 0f ? width + 3f * UIScale : 0f, 0f));
-                    handle.DrawString(Font, at, marker.Name, UIScale * 0.8f, color);
-                    EncounterRanks.Draw(handle, at + new Vector2(dimensions.X + 3f * UIScale, 0f), marker.Threat, rank);
+                    if (width > 0f)
+                    {
+                        var threat = marker.Threat;
+                        WfTagHeadExtra(width + 3f * UIScale,
+                            (h, at) => EncounterRanks.Draw(h, at + new Vector2(3f * UIScale, 0f), threat, rank));
+                    }
                 }
             }
 
             // Any ship of the side with a glyph of its own names the side's; the category's glyph is only a fallback at drawing.
             var icon = group.Icon != WFEncounterIcon.Category ? group.Icon : marker.Icon;
-            _encounterGroups[key] = (group.Sum + point, group.Count + 1, group.Named || onScope, group.OnScope || onScope, color, icon, group.Category,
+            var named = onScope && _encounterNamers.GetValueOrDefault(key) == marker.Grid;
+            _encounterGroups[key] = (group.Sum + point, group.Count + 1, group.Named || named, group.OnScope || onScope, color, icon, group.Category,
                 MathF.Max(group.Warn, marker.WarnRange), MathF.Max(group.Attack, marker.AttackRange));
         }
 
@@ -159,32 +175,6 @@ public partial class ShuttleNavControl
             WFEncounterCategory.Distress => WFEncounterIcon.Cross,
             _ => WFEncounterIcon.Crate,
         };
-    }
-
-    /// <summary>Moves a label down until it clears the ones already placed, and records where it ends up.</summary>
-    private Vector2 PlaceEncounterLabel(Vector2 position, Vector2 size)
-    {
-        for (var attempt = 0; attempt < 8; attempt++)
-        {
-            var box = Box2.FromDimensions(position, size);
-            var clear = true;
-            foreach (var placed in _encounterLabels)
-            {
-                if (!placed.Intersects(box))
-                    continue;
-
-                clear = false;
-                break;
-            }
-
-            if (clear)
-                break;
-
-            position.Y += size.Y + 2f * UIScale;
-        }
-
-        _encounterLabels.Add(Box2.FromDimensions(position, size));
-        return position;
     }
 
     /// <summary>

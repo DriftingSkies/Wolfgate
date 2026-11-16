@@ -49,7 +49,7 @@
     - RogueHardsuit
 
 - type: entity
-  parent: [ ClothingOuterHardsuitSyndie, BaseFactionGearPDVT2 ]
+  parent: [ BaseFactionGearPDVT2, ClothingOuterHardsuitSyndie ]
   id: ClothingOuterHardsuitAshen
   name: PDV CV-32 combat hardsuit
   description: A combat hardsuit designed by the Phaethon Dynasty. Heavier, but still general-purpose, it sacrifices some of its protection for reinforced ballistic plating. # WOLFGATE(ArmorBalance): grammar pass.

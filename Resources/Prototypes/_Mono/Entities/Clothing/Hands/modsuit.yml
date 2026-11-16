@@ -1,5 +1,6 @@
 - type: entity
-  parent: ClothingModsuitGauntletsBase
+  # WOLFGATE(Modsuits): MODsuit parts use the native module system.
+  parent: ClothingModsuitGauntletsStandard
   id: ClothingModsuitGauntletsUSSPVaryag
   name: Ruki Varyaga
   description: Pressure-sealing and shock-resistant gauntlets.
@@ -7,16 +8,26 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Hands/Modsuits/ussp-varyag.rsi
-  - type: SealableClothingVisuals
+  # WOLFGATE(Modsuits) START: the native module system sets its own sealed appearance
+  # - type: SealableClothingVisuals
+  #   spriteLayer: sealed
+  #   clothingVisuals:
+  #     gloves:
+  #     - state: equipped-HAND-sealed
+  #     gloves-vox:
+  #     - state: equipped-HAND-sealed-vox
+  - type: ModSuitSealedVisuals
     spriteLayer: sealed
     clothingVisuals:
       gloves:
       - state: equipped-HAND-sealed
       gloves-vox:
       - state: equipped-HAND-sealed-vox
+  # WOLFGATE END
 
 - type: entity
-  parent: ClothingModsuitGauntletsBase
+  # WOLFGATE(Modsuits): MODsuit parts use the native module system.
+  parent: ClothingModsuitGauntletsStandard
   id: ClothingModsuitGauntletsUSSPZastavnik
   name: Kuvshiny Zastavnika
   description: Oversized gauntlets with reinforced knuckles and integrated crush dampeners.
@@ -24,16 +35,26 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Hands/Modsuits/ussp-zastavnik.rsi
-  - type: SealableClothingVisuals
+  # WOLFGATE(Modsuits) START: the native module system sets its own sealed appearance
+  # - type: SealableClothingVisuals
+  #   spriteLayer: sealed
+  #   clothingVisuals:
+  #     gloves:
+  #     - state: equipped-HAND-sealed
+  #     gloves-vox:
+  #     - state: equipped-HAND-sealed-vox
+  - type: ModSuitSealedVisuals
     spriteLayer: sealed
     clothingVisuals:
       gloves:
       - state: equipped-HAND-sealed
       gloves-vox:
       - state: equipped-HAND-sealed-vox
+  # WOLFGATE END
 
 - type: entity
-  parent: ClothingModsuitGauntletsBase
+  # WOLFGATE(Modsuits): MODsuit parts use the native module system.
+  parent: ClothingModsuitGauntletsStandard
   id: ClothingModsuitGauntletsRogue
   name: RX-01 modsuit gauntlets
   description: Non-conductive mesh, pressure-sealed seams. Surprisingly legal. Proudly produced in Sector by Ullman Industries.
@@ -41,18 +62,28 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Hands/Modsuits/rogue.rsi
-  - type: SealableClothingVisuals
+  # WOLFGATE(Modsuits) START: the native module system sets its own sealed appearance
+  # - type: SealableClothingVisuals
+  #   spriteLayer: sealed
+  #   clothingVisuals:
+  #     gloves:
+  #     - state: equipped-HAND-sealed
+  #     gloves-vox:
+  #     - state: equipped-HAND-sealed-vox
+  - type: ModSuitSealedVisuals
     spriteLayer: sealed
     clothingVisuals:
       gloves:
       - state: equipped-HAND-sealed
       gloves-vox:
       - state: equipped-HAND-sealed-vox
+  # WOLFGATE END
 
 # Volta
 # Uses exact same gloves as sapper ones, feel free to make them more unique
 - type: entity
-  parent: ClothingModsuitGauntletsBase
+  # WOLFGATE(Modsuits): MODsuit parts use the native module system.
+  parent: ClothingModsuitGauntletsStandard
   id: ClothingModsuitGauntletsVolta
   name: Volta Modsuit Gauntlets
   description: Oil stained modular suit gloves for easily pushing buttons on an RCD.
@@ -60,16 +91,26 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Hands/Modsuits/tsfmc-volta.rsi
-  - type: SealableClothingVisuals
+  # WOLFGATE(Modsuits) START: the native module system sets its own sealed appearance
+  # - type: SealableClothingVisuals
+  #   spriteLayer: sealed
+  #   clothingVisuals:
+  #     gloves:
+  #     - state: equipped-HAND-sealed
+  #     gloves-vox:
+  #     - state: equipped-HAND-sealed-vox
+  - type: ModSuitSealedVisuals
     spriteLayer: sealed
     clothingVisuals:
       gloves:
       - state: equipped-HAND-sealed
       gloves-vox:
       - state: equipped-HAND-sealed-vox
+  # WOLFGATE END
 # Gallóglach
 - type: entity
-  parent: ClothingModsuitGauntletsBase
+  # WOLFGATE(Modsuits): MODsuit parts use the native module system.
+  parent: ClothingModsuitGauntletsStandard
   id: ClothingModsuitGauntletsMercenary
   name: mercenary modsuit gauntlets
   description: The knuckle guards glow when you seal the suit...for no apparent reason. Doubles as literal Finger Guns chambered in .45, so they literally pack a punch and then some.
@@ -77,13 +118,22 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Hands/Modsuits/mercenary.rsi
-  - type: SealableClothingVisuals
+  # WOLFGATE(Modsuits) START: the native module system sets its own sealed appearance
+  # - type: SealableClothingVisuals
+  #   spriteLayer: sealed
+  #   clothingVisuals:
+  #     gloves:
+  #     - state: equipped-HAND-sealed
+  #     gloves-vox:
+  #     - state: equipped-HAND-sealed-vox
+  - type: ModSuitSealedVisuals
     spriteLayer: sealed
     clothingVisuals:
       gloves:
       - state: equipped-HAND-sealed
       gloves-vox:
       - state: equipped-HAND-sealed-vox
+  # WOLFGATE END
   - type: Gun
     fireRate: 2
     selectedMode: SemiAuto
@@ -102,3 +152,4 @@
     containers:
       ballistic-ammo: !type:Container
         ents: []
+      mod-part-stored: !type:ContainerSlot

@@ -85,6 +85,7 @@ public sealed partial class WFCrewConductSystem : EntitySystem
             return;
 
         _next = now + Interval;
+        UpdateHauling(now);
         _armed.Clear();
         _seen.Clear();
 

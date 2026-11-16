@@ -18,6 +18,9 @@
       BZ: danger  #Funky
       Healium: stationNO #Funky 
       Nitrium: danger #Funky
+      # WOLFGATE: a gas missing from this list crashed the air alarm UI
+      Pluoxium: ignore
+      Smoke: ESStationSmoke
 
 - type: entity
   parent: [AirSensorVoxBase, AirSensor]

@@ -40,7 +40,7 @@
     jumpsuit: ClothingUniformJumpsuitChiefEngineer
     shoes: ClothingShoesColorWhite
     head: ClothingHeadHatBeretEngineering
-    neck: ClothingNeckCloakCe
+    neck: ClothingNeckCloakWhiteCe # WOLFGATE(Resprites): GoobStation cloak resprite renamed the chief engineer's cloak
     id: VisitorPDA
     belt: ClothingBeltChiefEngineerFilled
     back: ClothingBackpackDuffelEngineering
@@ -54,7 +54,7 @@
     jumpsuit: ClothingUniformJumpsuitChiefEngineerTurtle
     shoes: ClothingShoesColorWhite
     head: ClothingHeadHatBeretEngineering
-    neck: ClothingNeckMantleCE
+    neck: ClothingNeckMantleWhiteCE # WOLFGATE(Resprites): GoobStation mantle resprite renamed the chief engineer's mantle
     id: VisitorPDA
     belt: ClothingBeltChiefEngineerFilled
     back: ClothingBackpackSatchelEngineering
@@ -1673,7 +1673,7 @@
     jumpsuit: ClothingUniformJumpsuitChiefEngineer
     shoes: ClothingShoesColorWhite
     head: ClothingHeadHatBeretEngineering
-    neck: ClothingNeckCloakCe
+    neck: ClothingNeckCloakWhiteCe # WOLFGATE(Resprites): GoobStation cloak resprite renamed the chief engineer's cloak
     id: VisitorPDA
     #belt: ClothingBeltChiefEngineerFilled # probably too strong?
     back: ClothingBackpackDuffelEngineering
@@ -1687,7 +1687,7 @@
     jumpsuit: ClothingUniformJumpsuitChiefEngineerTurtle
     shoes: ClothingShoesColorWhite
     head: ClothingHeadHatBeretEngineering
-    neck: ClothingNeckMantleCE
+    neck: ClothingNeckMantleWhiteCE # WOLFGATE(Resprites): GoobStation mantle resprite renamed the chief engineer's mantle
     id: VisitorPDA
     belt: ClothingBeltChiefEngineerFilled
     back: ClothingBackpackSatchelEngineering

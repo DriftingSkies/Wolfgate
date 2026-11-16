@@ -26,7 +26,7 @@ public sealed class RadarDisplaySettingsTest
         var cfg = client.ResolveDependency<IConfigurationManager>();
         var ui = client.ResolveDependency<IUserInterfaceManager>();
         var original = (cfg.GetCVar(WolfgateCVars.RadarShowIff), cfg.GetCVar(WolfgateCVars.RadarShowIffDetailed),
-            cfg.GetCVar(WolfgateCVars.RadarShowDocks), cfg.GetCVar(WolfgateCVars.RadarAzimuth));
+            cfg.GetCVar(WolfgateCVars.RadarAzimuth));
         RadarConsoleWindow scanner = default!;
         try
         {
@@ -34,14 +34,14 @@ public sealed class RadarDisplaySettingsTest
             {
                 cfg.SetCVar(WolfgateCVars.RadarShowIff, true);
                 cfg.SetCVar(WolfgateCVars.RadarShowIffDetailed, true);
-                cfg.SetCVar(WolfgateCVars.RadarShowDocks, true);
                 cfg.SetCVar(WolfgateCVars.RadarAzimuth, 0);
 
                 scanner = new RadarConsoleWindow();
                 scanner.OpenCentered();
                 var radar = scanner.FindControl<ShuttleNavControl>("RadarScreen");
                 var detailed = scanner.FindControl<Button>("IFFDetailedToggle");
-                Assert.That((radar.ShowIFF, radar.ShowIFFDetailed, radar.ShowDocks), Is.EqualTo((true, true, true)));
+                // No player radar marks docks.
+                Assert.That((radar.ShowIFF, radar.ShowIFFDetailed, radar.ShowDocks), Is.EqualTo((true, true, false)));
                 Assert.That(detailed.Pressed, Is.True);
 
                 // The mass scanner's own handler, as a click on the toggle runs it.
@@ -72,20 +72,9 @@ public sealed class RadarDisplaySettingsTest
                 Assert.That(gunnery.FindControl<ShuttleNavControl>("NavRadar").ShowIFFDetailed, Is.False,
                     "The gunnery console shares the choice.");
                 Assert.That(gunnery.FindControl<Button>("IFFDetailedToggle").Pressed, Is.False);
-
-                // A screen with no docks toggle always shows docks and leaves the saved choice alone.
-                cfg.SetCVar(WolfgateCVars.RadarShowDocks, false);
-                scanner = new RadarConsoleWindow();
-                scanner.OpenCentered();
-                Assert.That(scanner.FindControl<ShuttleNavControl>("RadarScreen").ShowDocks, Is.True);
-                using var docksOff = new NavScreen();
-                Assert.That(docksOff.FindControl<ShuttleNavControl>("NavRadar").ShowDocks, Is.False);
-                Assert.That(docksOff.FindControl<Button>("DockToggle").Pressed, Is.False);
+                Assert.That(helm.FindControl<ShuttleNavControl>("NavRadar").ShowDocks, Is.False, "The helm marks no docks.");
+                Assert.That(gunnery.FindControl<ShuttleNavControl>("NavRadar").ShowDocks, Is.False, "Nor does gunnery.");
             });
-            await pair.RunTicksSync(5);
-            await client.WaitAssertion(() =>
-                Assert.That(cfg.GetCVar(WolfgateCVars.RadarShowDocks), Is.False,
-                    "A radar with no docks toggle must not overwrite the saved docks choice."));
         }
         finally
         {
@@ -94,8 +83,7 @@ public sealed class RadarDisplaySettingsTest
                 scanner?.Teardown();
                 cfg.SetCVar(WolfgateCVars.RadarShowIff, original.Item1);
                 cfg.SetCVar(WolfgateCVars.RadarShowIffDetailed, original.Item2);
-                cfg.SetCVar(WolfgateCVars.RadarShowDocks, original.Item3);
-                cfg.SetCVar(WolfgateCVars.RadarAzimuth, original.Item4);
+                cfg.SetCVar(WolfgateCVars.RadarAzimuth, original.Item3);
             });
         }
 

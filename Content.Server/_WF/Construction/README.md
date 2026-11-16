@@ -52,5 +52,9 @@ when the machine is deconstructed (`WFKitRefundSystem`).
 - [`Content.Client/Construction/UI/ConstructionMenuPresenter.cs`](../../../Content.Client/Construction/UI/ConstructionMenuPresenter.cs): repeat-craft buttons
 - [`Content.Server/Materials/MaterialReclaimerSystem.cs`](../../Materials/MaterialReclaimerSystem.cs): a screwdriver opens the panel instead of being recycled
 - [`Content.Shared/_DV/Construction/UpgradeKitSystem.cs`](../../../Content.Shared/_DV/Construction/UpgradeKitSystem.cs): deconstructing the machine gives the kit back
+- [`Content.Shared/Construction/EntitySystems/AnchorableSystem.cs`](../../../Content.Shared/Construction/EntitySystems/AnchorableSystem.cs)
+  - wrenching past a wall light
+  - wfAnchoring skips wall lights
+  - a wall light doesn't block anchoring under it
 
 <!-- WOLFGATE-GENERATED END -->

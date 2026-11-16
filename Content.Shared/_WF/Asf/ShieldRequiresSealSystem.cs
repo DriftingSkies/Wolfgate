@@ -1,5 +1,5 @@
-using Content.Shared._Goobstation.Clothing.Components;
-using Content.Shared._Goobstation.Clothing.Systems;
+using Content.Shared._WF.Modsuits;
+using Content.Shared._WF.Modsuits.Components;
 using Content.Shared.Item.ItemToggle;
 using Content.Shared.Item.ItemToggle.Components;
 
@@ -16,21 +16,21 @@ public sealed partial class ShieldRequiresSealSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<ShieldRequiresSealComponent, ItemToggleActivateAttemptEvent>(OnActivateAttempt);
-        SubscribeLocalEvent<ShieldRequiresSealComponent, ClothingControlSealCompleteEvent>(OnSealComplete);
+        SubscribeLocalEvent<ShieldRequiresSealComponent, ModSuitUpdatedEvent>(OnSuitUpdated);
     }
 
     private void OnActivateAttempt(Entity<ShieldRequiresSealComponent> ent, ref ItemToggleActivateAttemptEvent args)
     {
-        if (args.Cancelled || TryComp<SealableClothingControlComponent>(ent, out var control) && control.IsCurrentlySealed)
+        if (args.Cancelled || TryComp<ModSuitComponent>(ent, out var suit) && suit.State == ModSuitState.Active)
             return;
 
         args.Cancelled = true;
         args.Popup = Loc.GetString(ent.Comp.UnsealedPopup);
     }
 
-    private void OnSealComplete(Entity<ShieldRequiresSealComponent> ent, ref ClothingControlSealCompleteEvent args)
+    private void OnSuitUpdated(Entity<ShieldRequiresSealComponent> ent, ref ModSuitUpdatedEvent args)
     {
-        if (!args.IsSealed)
+        if (!TryComp<ModSuitComponent>(ent, out var suit) || suit.State != ModSuitState.Active)
             _toggle.TryDeactivate(ent.Owner);
     }
 }

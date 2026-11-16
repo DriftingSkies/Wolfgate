@@ -1,6 +1,7 @@
 using Content.Shared.DoAfter;
 using Content.Shared.Gravity;
 using Content.Shared.Input;
+using Content.Shared.Inventory; // WOLFGATE(Modsuits)
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Standing;
@@ -18,6 +19,7 @@ public abstract partial class SharedLayingDownSystem : EntitySystem
     [Dependency] private StandingStateSystem _standing = default!;
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
     [Dependency] private SharedGravitySystem _gravity = default!;
+    [Dependency] private InventorySystem _inventory = default!; // WOLFGATE(Modsuits)
     public override void Initialize()
     {
         CommandBinds.Builder
@@ -136,7 +138,19 @@ public abstract partial class SharedLayingDownSystem : EntitySystem
             return false;
         }
 
-        var args = new DoAfterArgs(EntityManager, uid, layingDown.StandingUpTime, new StandingUpDoAfterEvent(), uid)
+        // WOLFGATE(Modsuits) START: worn gear can shorten the stand-up do-after
+        var standingEv = new Content.Shared._WF.Modsuits.Support.GetStandingUpTimeMultiplierEvent();
+        if (TryComp<InventoryComponent>(uid, out var inventory))
+            _inventory.RelayEvent((uid, inventory), ref standingEv);
+
+        var multiplier = standingEv.Multiplier;
+        if (multiplier <= 0f || !float.IsFinite(multiplier))
+            multiplier = 1f;
+
+        var standTime = MathF.Max(0.1f, layingDown.StandingUpTime * multiplier);
+        // WOLFGATE END
+
+        var args = new DoAfterArgs(EntityManager, uid, standTime, new StandingUpDoAfterEvent(), uid)
         {
             BreakOnDamage = true,
             BreakOnHandChange = false,

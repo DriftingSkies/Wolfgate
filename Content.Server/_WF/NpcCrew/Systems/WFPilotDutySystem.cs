@@ -697,7 +697,7 @@ public sealed partial class WFPilotDutySystem : EntitySystem
         steerer.RangeTolerance = mode == ShipSteeringMode.Orbit ? 0f : null;
         steerer.InRangeMaxSpeed = speed;
         steerer.AvoidCollisions = avoid;
-        var skill = WFCrewSkills.Of(CompOrNull<WFCrewComponent>(ent)?.Skill ?? WFCrewSkill.Veteran);
+        var skill = TryComp<WFCrewComponent>(ent, out var pilotCrew) ? WFCrewSkills.Of(pilotCrew) : WFCrewSkills.Of(WFCrewSkill.Veteran);
         steerer.AvoidProjectiles = skill.DodgesFire && duty.Orders is not (WFPilotOrder.Dock or WFPilotOrder.Hold);
         steerer.EvasionBuffer = duty.Orders == WFPilotOrder.Dock ? duty.Navigation.DockEvasionBuffer : duty.Navigation.EvasionBuffer;
         steerer.BaseEvasionTime = duty.Orders == WFPilotOrder.Dock ? duty.Navigation.DockEvasionLookahead : duty.Navigation.EvasionLookahead * skill.Evasion;

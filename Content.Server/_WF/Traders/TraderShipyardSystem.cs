@@ -76,6 +76,17 @@ public sealed partial class TraderShipyardSystem : EntitySystem
 
         var traderEnt = (ent.Owner, trader);
 
+        // Asking again with a listing still open: the card in it comes back before the next one goes in.
+        // The key is cleared first so closing the old listing doesn't end this conversation.
+        if (ent.Comp.ActiveKey is { } oldKey)
+        {
+            ent.Comp.ActiveKey = null;
+            ent.Comp.ActiveConsole = null;
+            _trader.ReturnHeldItems(traderEnt);
+            _shipyard.ClearHostedConsole(ent.Owner);
+            _ui.CloseUi(ent.Owner, oldKey, args.Customer);
+        }
+
         if (args.Argument is not { } argument
             || !ent.Comp.Consoles.Any(listing => listing.Console.Id == argument))
         {

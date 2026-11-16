@@ -166,13 +166,13 @@ public sealed partial class FireControlWindow
         ServerStatus.HorizontalAlignment = HAlignment.Stretch;
         ServerStatus.ClipText = true;
         var header = Row(Label("wf-console-fire-title", Accent), ServerStatus, RefreshButton);
-        foreach (var button in new[] { IFFToggle, IFFDetailedToggle, DockToggle })
+        foreach (var button in new[] { IFFToggle, IFFDetailedToggle })
         {
             button.SetWidth = 72;
             button.AddStyleClass("WfCompact");
             button.Margin = new Thickness(0);
         }
-        var footer = Row(IFFToggle, IFFDetailedToggle, DockToggle);
+        var footer = Row(IFFToggle, IFFDetailedToggle);
         footer.HorizontalExpand = false;
         footer.HorizontalAlignment = HAlignment.Right;
         var body = Column(header, instruments, footer);

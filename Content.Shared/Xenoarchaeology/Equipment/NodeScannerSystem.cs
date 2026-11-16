@@ -39,6 +39,13 @@ public sealed class NodeScannerSystem : EntitySystem
             connected.NextUpdate = _timing.CurTime + connected.LinkUpdateInterval;
 
             var attachedArtifact = connected.AttachedTo;
+            // An artifact deleted without its destroyed event threw here and stopped every scanner.
+            if (TerminatingOrDeleted(attachedArtifact))
+            {
+                RemCompDeferred(uid, connected);
+                continue;
+            }
+
             var artifactCoordinates = Transform(attachedArtifact).Coordinates;
             if (!_transform.InRange(artifactCoordinates, transform.Coordinates, scanner.MaxLinkedRange))
             {

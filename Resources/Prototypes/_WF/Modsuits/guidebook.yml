@@ -1,0 +1,7 @@
+# WOLFGATE(Modsuits): MODsuit guidebook page.
+
+- type: guideEntry
+  id: WFModsuits
+  name: guide-entry-wf-modsuits
+  text: "/ServerInfo/_WF/Modsuits/Guidebook/Modsuits.xml"
+  priority: 2

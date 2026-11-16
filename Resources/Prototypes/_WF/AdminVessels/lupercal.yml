@@ -26,6 +26,8 @@
     preventFloorPlacement: true
     preventRCDUse: true
   - type: WFBlastproofFloors
+  # A fire burns out where it starts: the crew can't fight one that spreads.
+  - type: WFNoFireSpread
   # Only the staff list and up open maintenance panels or use an emag aboard: no hacking its doors and machines.
   - type: WFShipCommand
     staffOnlyWires: true
@@ -36,13 +38,28 @@
     marineOrders: Rounds
     gunnerPolicy: DefendDocked
     pilotStance: FaceThreats
+    # The fallen are replaced: a post frees two minutes after its crewman dies.
+    autoRestaff: true
+    restaffsPerHour: 30
+    # Deckhands and engineers turn to repairs on their own once a fight is over.
+    autoRepair: true
+    # The flagship's crew: sharp shots who never run dry.
+    skill: Elite
+    infiniteAmmo: true
   # Mother Base manners (CrewBarks): the crew salute the Boss, take a punch with thanks and talk among themselves.
   - type: WFCrewBarks
     voices:
       WFLupercalDockmaster: dockmaster
       WFLupercalQuartermaster: quartermaster
       WFLupercalApothecary: apothecary
+  # Best parts everywhere; guns, hardpoints and turrets that can't be destroyed, with four times the battery and
+  # recharge; doors nobody pries; cranes at the mobile crane's top speed.
   - type: WFShipFitting
+    indestructibleArms: true
+    unpryableDoors: true
+    gunChargeScale: 4
+    gunRechargeScale: 4
+    craneSpeed: 3
   # Every job starts closed (the gameMap below); a player who takes one relieves the NPC at the matching post and
   # stands on the command list named here while they hold it.
   - type: WFShipJobs
@@ -54,6 +71,7 @@
       WFLupercalMarine: { role: WFCrewMarine, standing: Staff }
       WFLupercalEngineer: { role: WFCrewEngineer, standing: Staff }
       WFLupercalDeckhand: { role: WFCrewDeckhand, standing: Staff }
+      WFLupercalJanitor: { role: WFCrewJanitor, standing: Staff }
       WFLupercalParamedic: { role: WFCrewParamedic, standing: Staff }
       WFLupercalSurgeon: { role: WFCrewSurgeon, standing: Staff }
       WFLupercalAi: {}
@@ -70,6 +88,8 @@
       components:
         - type: StationNameSetup
           mapNameTemplate: 'Lupercal'
+        # Marks the round-start variation passes as done, so no trash or puddles are strewn over the ship.
+        - type: StationVariationHasRun
         # What the cargo order and bounty consoles read; a plain vessel station has neither.
         - type: StationCargoOrderDatabase
         - type: StationCargoBountyDatabase
@@ -106,6 +126,7 @@
             WFLupercalMarine: [ 0, 0 ]
             WFLupercalEngineer: [ 0, 0 ]
             WFLupercalDeckhand: [ 0, 0 ]
+            WFLupercalJanitor: [ 0, 0 ]
             WFLupercalParamedic: [ 0, 0 ]
             WFLupercalSurgeon: [ 0, 0 ]
             WFLupercalAi: [ 0, 0 ]

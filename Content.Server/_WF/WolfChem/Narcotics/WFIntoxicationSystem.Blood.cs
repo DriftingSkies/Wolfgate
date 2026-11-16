@@ -68,6 +68,12 @@ public sealed partial class WFIntoxicationSystem
         return BloodDrugs().TryGetValue(reagent, out var doses) && doses.Exists(dose => dose.Profile == profile);
     }
 
+    /// <summary>The profiles a reagent doses in the blood, with the level a unit gives each.</summary>
+    public IReadOnlyList<(ProtoId<WFDrugProfilePrototype> Profile, float PerUnit)> Doses(string reagent)
+    {
+        return BloodDrugs().TryGetValue(reagent, out var doses) ? doses : Array.Empty<(ProtoId<WFDrugProfilePrototype>, float)>();
+    }
+
     /// <summary>
     /// Reads the drugs in a body's chemical stream into <see cref="_blood"/> and <see cref="_bloodEntries"/>. Returns
     /// the stream, or null for a body without one or a neuroware host, whose blood gives no level.

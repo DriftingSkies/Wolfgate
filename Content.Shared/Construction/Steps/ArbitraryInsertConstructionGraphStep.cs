@@ -1,4 +1,6 @@
 ﻿using Content.Shared.Examine;
+using Robust.Shared.IoC; // WOLFGATE: step names may be loc keys or plain text
+using Robust.Shared.Localization; // WOLFGATE: step names may be loc keys or plain text
 using Robust.Shared.Utility;
 
 namespace Content.Shared.Construction.Steps
@@ -14,7 +16,10 @@ namespace Content.Shared.Construction.Steps
             if (string.IsNullOrEmpty(Name))
                 return;
 
-            examinedEvent.PushMarkup(Loc.GetString("construction-insert-arbitrary-entity", ("stepName", Name)));
+            // WOLFGATE: step names may be loc keys or plain text
+            var localization = IoCManager.Resolve<ILocalizationManager>();
+            var stepName = localization.TryGetString(Name, out var localized) ? localized : Name;
+            examinedEvent.PushMarkup(Loc.GetString("construction-insert-arbitrary-entity", ("stepName", stepName)));
         }
 
         public override ConstructionGuideEntry GenerateGuideEntry()

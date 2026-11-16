@@ -123,13 +123,16 @@ the character's profile. Nothing keys on a species or a mob prototype.
 - [`Resources/Prototypes/_EinsteinEngines/Entities/Mobs/Player/ipc.yml`](../../../Resources/Prototypes/_EinsteinEngines/Entities/Mobs/Player/ipc.yml)
   - slow hydraulic regeneration, as the synthetic biotype overlay
   - room for contaminants; WFChassisFilter flushes everything the pump can't process
+  - synths and IPCs understand each other
   - only contaminants stay in the chemical stream
+- [`Resources/Prototypes/_HL/Body/Organs/synth.yml`](../../../Resources/Prototypes/_HL/Body/Organs/synth.yml): synths and IPCs understand each other
 - [`Resources/Prototypes/_HL/Body/Parts/synth.yml`](../../../Resources/Prototypes/_HL/Body/Parts/synth.yml)
   - lego limbs, chassis amputation thresholds; WFWolfmedPartIpcArm must stay FIRST
   - lego limbs, chassis amputation thresholds; WFWolfmedPartIpcHand must stay FIRST
   - lego limbs, chassis amputation thresholds; WFWolfmedPartIpcLeg must stay FIRST
   - lego limbs, chassis amputation thresholds; WFWolfmedPartIpcFoot must stay FIRST
 - [`Resources/Prototypes/_HL/Body/Prototypes/synth.yml`](../../../Resources/Prototypes/_HL/Body/Prototypes/synth.yml): soaks up radiation instead of the body
+- [`Resources/Prototypes/_HL/Entities/Mobs/Species/synth.yml`](../../../Resources/Prototypes/_HL/Entities/Mobs/Species/synth.yml): synths and IPCs understand each other
 - [`Resources/Prototypes/_Mono/Reagents/letoferol.yml`](../../../Resources/Prototypes/_Mono/Reagents/letoferol.yml): a synthetic chassis takes it too, shorting out while flesh grows over the frame
 - [`Resources/Prototypes/_NF/Loadouts/contractor_loadout_groups.yml`](../../../Resources/Prototypes/_NF/Loadouts/contractor_loadout_groups.yml): a synthetic body's box, in place of the breather ones
 - [`Resources/Prototypes/_NF/Loadouts/nfsd_loadout_groups.yml`](../../../Resources/Prototypes/_NF/Loadouts/nfsd_loadout_groups.yml): a synthetic body's box, in place of the breather ones

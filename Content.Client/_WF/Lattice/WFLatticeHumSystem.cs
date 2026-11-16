@@ -23,7 +23,7 @@ public sealed partial class WFLatticeHumSystem : EntitySystem
 
     /// <summary>The hum's loudness at the edge of its range and beside the anchor, in decibels.</summary>
     private const float Faint = -28f;
-    private const float Near = -4f;
+    private const float Near = -12f;
 
     private EntityUid? _playing;
 

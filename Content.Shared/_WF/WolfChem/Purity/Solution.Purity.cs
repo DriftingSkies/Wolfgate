@@ -60,11 +60,10 @@ public sealed partial class Solution
         return Purity == null ? quantity : quantity * GetPurity(prototype);
     }
 
-    /// <summary>The share of its list price a reagent sells for: the square of its grade, so cutting loses money.</summary>
+    /// <summary>The share of its list price a reagent sells for: its grade, so cutting neither earns nor loses money.</summary>
     public float GetPriceFactor(string prototype)
     {
-        var grade = GetPurity(prototype);
-        return grade * grade;
+        return GetPurity(prototype);
     }
 
     /// <summary>Adds a reagent at the given grade.</summary>

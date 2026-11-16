@@ -420,6 +420,12 @@
                     <BoxContainer Name="SpeechVoiceContainer" Orientation="Vertical" HorizontalExpand="True" />
                 </ScrollContainer>
             </BoxContainer>
+            <!-- WOLFGATE(CombatMusic): combat playlist tab, filled in by HumanoidProfileEditor.CombatMusic.cs -->
+            <BoxContainer Name="CombatMusicTab" Orientation="Vertical" Margin="8">
+                <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
+                    <BoxContainer Name="CombatMusicContainer" Orientation="Vertical" HorizontalExpand="True" />
+                </ScrollContainer>
+            </BoxContainer>
         </TabContainer>
     </BoxContainer>
     <!-- Preview column -->

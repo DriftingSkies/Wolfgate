@@ -57,11 +57,24 @@ public sealed partial class WFCockpitView
     }
 
     /// <summary>
+    /// Splits the lower row between communications and the shield panel; without shields, communications takes all of it.
+    /// </summary>
+    private (float Comms, float Shields) SplitRow(float rowWidth) =>
+        _shields.Visible ? WFCockpitPanelLayout.SplitRow(rowWidth, _shieldNeed) : (rowWidth, 0);
+
+    /// <summary>
     /// Shows an optional page's selector only while it has something to show. A page that goes away while open hands the
     /// MFD back to the default page, and opens again if it returns before the player picks another.
     /// </summary>
     private void SyncOptionalPages()
     {
+        var shields = _shieldContent is not IWFCockpitOptionalPage { Available: false };
+        if (_shields.Visible != shields)
+        {
+            _shields.Visible = shields;
+            InvalidateMeasure();
+        }
+
         foreach (var (key, content) in _pages)
         {
             if (content is not IWFCockpitOptionalPage optional || _selectors[key].Visible == optional.Available)

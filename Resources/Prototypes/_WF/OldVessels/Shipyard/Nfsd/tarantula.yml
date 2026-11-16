@@ -12,7 +12,7 @@
   purchasable: false # voucher only - T2
   category: Medium
   group: Security
-  access: Security
+  access: Tsfmc
   shuttlePath: /SharedMaps/_WF/OldVessels/Nfsd/tarantula.yml
   tags:
   - WFClassicVessel

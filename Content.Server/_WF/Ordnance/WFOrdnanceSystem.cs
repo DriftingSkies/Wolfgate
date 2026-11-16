@@ -42,12 +42,14 @@ public sealed partial class WFOrdnanceSystem : EntitySystem
         SubscribeLocalEvent<WFWarheadArmedEvent>(OnWarheadArmed);
         SubscribeLocalEvent<WFDefconGatherEvent>(OnDefconGather);
         InitializeBeacon();
+        InitializeKlaxon();
     }
 
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
         UpdateBeacons();
+        UpdateKlaxons();
 
         var now = _timing.CurTime;
         if (now < _nextPlace)

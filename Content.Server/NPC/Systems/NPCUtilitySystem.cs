@@ -46,6 +46,8 @@ using Content.Shared.StatusEffect; // Frontier
 using Content.Server._WF.Xenonids.Parasite.AI; // WOLFGATE(Xenonids)
 using Content.Shared._WF.Xenonids.Parasite; // WOLFGATE(Xenonids)
 using Content.Server._WF.Fauna; // WOLFGATE(Fauna)
+using Content.Server._WF.NpcCrew.HTN; // WOLFGATE(NpcCrew)
+using Content.Server._WF.NpcCrew.Systems; // WOLFGATE(NpcCrew)
 
 namespace Content.Server.NPC.Systems;
 
@@ -457,6 +459,13 @@ public sealed partial class NPCUtilitySystem : EntitySystem
             {
                 return TryComp<FaunaCorpseEaterComponent>(owner, out var eater)
                        && _faunaEater.CanEat((owner, eater), targetUid) ? 1f : 0f;
+            }
+            // WOLFGATE END
+            // WOLFGATE(NpcCrew) START: crew keep their chores on the ship they serve
+            case WFTargetOnHomeGridCon:
+            {
+                var home = EntityManager.System<WFCrewSystem>().HomeGrid(owner) ?? Transform(owner).GridUid;
+                return home != null && Transform(targetUid).GridUid == home ? 1f : 0f;
             }
             // WOLFGATE END
             default:

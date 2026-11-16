@@ -44,7 +44,7 @@ namespace Content.IntegrationTests.Tests._WF.Feedback;
 [TestFixture]
 public sealed class WFFeedbackBatch1107bTest
 {
-    /// <summary>Report 614: the MMC liaison can use the cargo bounty console, an ordinary crewman cannot.</summary>
+    /// <summary>Report 614: the MMC liaison can use the cargo bounty console. Since Monolith#5030 so can anyone.</summary>
     [Test]
     public async Task LiaisonUsesBountyConsole()
     {
@@ -61,7 +61,7 @@ public sealed class WFFeedbackBatch1107bTest
             var crew = SpawnWithCard(server, map.GridCoords, "Maintenance");
 
             Assert.That(access.IsAllowed(liaison, console), Is.True, "The liaison is denied.");
-            Assert.That(access.IsAllowed(crew, console), Is.False, "Anyone can skip bounties.");
+            Assert.That(access.IsAllowed(crew, console), Is.True, "Any crewman may skip bounties.");
         });
 
         await pair.CleanReturnAsync();

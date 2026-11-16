@@ -126,7 +126,7 @@ public sealed partial class PricingSystem : EntitySystem
                     continue;
 
                 // TODO check ReagentData for price information?
-                price += (float) quantity * reagentProto.PricePerUnit * solution.GetPriceFactor(reagent.Prototype); // WOLFGATE(WolfChem): a reagent is worth its grade squared
+                price += (float) quantity * reagentProto.PricePerUnit * solution.GetPriceFactor(reagent.Prototype); // WOLFGATE(WolfChem): a reagent is worth its grade
             }
         }
 
@@ -145,7 +145,7 @@ public sealed partial class PricingSystem : EntitySystem
                     continue;
 
                 // TODO check ReagentData for price information?
-                price += (float) quantity * reagentProto.PricePerUnit * prototype.GetPriceFactor(reagent.Prototype); // WOLFGATE(WolfChem): a reagent is worth its grade squared
+                price += (float) quantity * reagentProto.PricePerUnit * prototype.GetPriceFactor(reagent.Prototype); // WOLFGATE(WolfChem): a reagent is worth its grade
             }
         }
 

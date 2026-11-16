@@ -1,7 +1,8 @@
-# Neuroware sticks. A blank takes copies; the named ones are pristine builds. Copying leaves the source's loads
-# alone, so a build spreads as far as there are blanks, 15% worse each generation. A stick's price doesn't follow
-# what is copied onto it, so copying doesn't print money. A blank that takes a copy becomes a narcotic at the market
-# like the program base (WFNarcoticMarks).
+# Neuroware sticks. A blank takes copies or reads a drug in; the named ones are pristine builds. Copying leaves the
+# source's loads alone and costs it a tenth of its integrity, and the copy is 15% worse than the source was. A blank
+# prints at the autolathe (lathe.yml) and is priced under its materials, and a stick's price doesn't follow what is
+# written onto it, so neither printing nor copying prints money. A written blank becomes a narcotic at the market
+# like the program base (WFNarcoticMarks), unless the program's drug is legal (Idle).
 
 - type: entity
   parent: BaseItem
@@ -36,21 +37,28 @@
   - type: WFNeurowareStick
     loads: 0
   - type: StaticPrice
-    price: 75
+    price: 15
 
-# A stick with a program on it. It sells like any drug.
+# A stick with a program on it.
 - type: entity
   abstract: true
-  parent: [ WFNeurowareStick, WFNarcoticMarks ]
-  id: WFNeurowareStickProgramBase
+  parent: WFNeurowareStick
+  id: WFNeurowareStickProgramLegalBase
   components:
   - type: WFNeurowareStick
     loads: 3
+  - type: StaticPrice
+    price: 2200
+
+# A stick with an illegal drug's program on it. It sells like any drug.
+- type: entity
+  abstract: true
+  parent: [ WFNeurowareStickProgramLegalBase, WFNarcoticMarks ]
+  id: WFNeurowareStickProgramBase
+  components:
   - type: Tag
     tags:
     - WFNarcotic
-  - type: StaticPrice
-    price: 2200
 
 - type: entity
   parent: WFNeurowareStickProgramBase
@@ -157,8 +165,9 @@
   - type: WFNeurowareStick
     profile: WFHalo
 
+# Idle is cannabis's twin, and legal like it.
 - type: entity
-  parent: WFNeurowareStickProgramBase
+  parent: WFNeurowareStickProgramLegalBase
   id: WFNeurowareStickIdle
   components:
   - type: Sprite
@@ -217,6 +226,24 @@
     layers:
     - state: body
       color: "#9fdcff"
+    - state: plug
+    - state: tape
+    - state: led
+      shader: unshaded
+  - type: WFNeurowareStick
+    integrity: 0.72
+    loads: 1
+  - type: StaticPrice
+    price: 600
+
+- type: entity
+  parent: WFNeurowareStickHalo
+  id: WFNeurowareStickHaloCopy
+  components:
+  - type: Sprite
+    layers:
+    - state: body
+      color: "#d9b85e"
     - state: plug
     - state: tape
     - state: led

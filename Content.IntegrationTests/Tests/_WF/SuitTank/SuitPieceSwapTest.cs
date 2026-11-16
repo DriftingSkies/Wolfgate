@@ -1,4 +1,5 @@
-using Content.Shared.Clothing.Components;
+using Content.Shared._WF.Modsuits.Components;
+using Content.Shared._WF.Modsuits.Systems;
 using Content.Shared.Clothing.EntitySystems;
 using Content.Shared.Inventory;
 using Robust.Shared.GameObjects;
@@ -21,6 +22,7 @@ public sealed class SuitPieceSwapTest
         {
             var maps = entMan.System<SharedMapSystem>();
             var inventory = entMan.System<InventorySystem>();
+            var modSuitSystem = entMan.System<ModSuitSystem>();
             maps.CreateMap(out var mapId);
             var coords = new MapCoordinates(0, 0, mapId);
             var mob = entMan.SpawnEntity("MobHuman", coords);
@@ -32,13 +34,22 @@ public sealed class SuitPieceSwapTest
             Assert.That(inventory.TryEquip(mob, modsuit, "back", silent: true, force: true));
 
             entMan.EventBus.RaiseLocalEvent(hardsuit, new ToggleClothingEvent { Performer = mob });
-            entMan.EventBus.RaiseLocalEvent(modsuit, new ToggleClothingEvent { Performer = mob });
-            Assert.That(inventory.TryGetSlotEntity(mob, "head", out var head)
-                && entMan.TryGetComponent<AttachedClothingComponent>(head, out var piece) && piece.AttachedUid == modsuit,
+            Assert.That(inventory.TryGetSlotEntity(mob, "head", out var hardsuitHelmet), Is.True);
+
+            var modsuitComp = entMan.GetComponent<ModSuitComponent>(modsuit);
+            Assert.That(modSuitSystem.TryDeployPart((modsuit, modsuitComp), "head", mob), Is.True,
+                "the modsuit helmet should deploy over the hardsuit helmet");
+            var modsuitHelmet = modSuitSystem.GetPart((modsuit, modsuitComp), "head");
+            Assert.That(modsuitHelmet, Is.Not.Null);
+            Assert.That(inventory.TryGetSlotEntity(mob, "head", out var head) && head == modsuitHelmet, Is.True,
                 "the modsuit helmet should replace the hardsuit helmet");
 
-            entMan.EventBus.RaiseLocalEvent(modsuit, new ToggleClothingEvent { Performer = mob });
-            Assert.That(inventory.TryGetSlotEntity(mob, "head", out var after) && after == hat, "the beret should be back on");
+            Assert.That(modSuitSystem.TryRetractPart((modsuit, modsuitComp), "head", mob), Is.True);
+            Assert.That(inventory.TryGetSlotEntity(mob, "head", out var after) && after == hardsuitHelmet, Is.True,
+                "the hardsuit helmet should come back");
+
+            entMan.EventBus.RaiseLocalEvent(hardsuit, new ToggleClothingEvent { Performer = mob });
+            Assert.That(inventory.TryGetSlotEntity(mob, "head", out var beret) && beret == hat, "the beret should be back on");
         });
         await pair.CleanReturnAsync();
     }

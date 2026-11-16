@@ -548,7 +548,8 @@ public sealed partial class WFPlanetPoiSystem
             EnsureComp<RoofComponent>(target);
             await SetRoofsAsync((target, targetGrid, null), tiles, roofs);
 
-            floors.Add(new CityFloor(level.Depth, (target, targetGrid), tiles, tiles.Where(roofs.Contains).ToHashSet()));
+            floors.Add(new CityFloor(level.Depth, (target, targetGrid), tiles, tiles.Where(roofs.Contains).ToHashSet(),
+                level.Paved.Select(tile => tile + origin).ToHashSet()));
             if (TryComp<BiomeComponent>(target, out var targetBiome))
             {
                 using (_preload.Time($"pinning {tiles.Count} tiles of {ToPrettyString(target)}"))

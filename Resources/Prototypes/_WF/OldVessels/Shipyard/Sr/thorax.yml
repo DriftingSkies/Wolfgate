@@ -11,7 +11,7 @@
   price: 107500 # appraised at 97307 with hardpoints; classic reprice
   category: Medium
   group: Sr
-  access: Brig
+  access: Caelestinus
   mapchecker_group_override: Security
   shuttlePath: /SharedMaps/_WF/OldVessels/thorax.yml
   tags:

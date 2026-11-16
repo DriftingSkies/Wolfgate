@@ -38,6 +38,8 @@
     - RawMaterial
     # Too valuable to bank between rounds.
     - SafetyDepositBlacklist
+    # An ore magnet collects it with the ore it is mined alongside.
+    - WFOreMagnetPickup
   - type: Stack
     stackType: WFExoticMatter
     baseLayer: base
@@ -210,3 +212,6 @@
   materials:
     Gold: 100
     WFExoticMatter: 100
+
+- type: Tag
+  id: WFOreMagnetPickup

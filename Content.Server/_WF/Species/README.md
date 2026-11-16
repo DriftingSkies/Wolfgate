@@ -267,7 +267,7 @@ it back up to Okay after any drain, a Kelotane overdose included, before their d
   - HardLight circle squeeze fields
   - unused once sneak state moved onto the networked component fields directly
 - [`Content.Shared/_DV/Abilities/SharedCrawlUnderObjectsSystem.cs`](../../../Content.Shared/_DV/Abilities/SharedCrawlUnderObjectsSystem.cs): rewritten as a shared, predicted system with HardLight's squeeze geometry
-- [`Content.Shared/_EinsteinEngines/Language/ObfuscationMethods.cs`](../../../Content.Shared/_EinsteinEngines/Language/ObfuscationMethods.cs): ported from HardLight/Starlight, needed by the Avali "Scratch" language
+- [`Content.Shared/_EinsteinEngines/Language/ObfuscationMethods.cs`](../../../Content.Shared/_EinsteinEngines/Language/ObfuscationMethods.cs): the message is upper-cased first, so lower-case chars never matched and nothing scrambled
 - [`Content.Shared/_FarHorizons/Damage/HealModifyEvent.cs`](../../../Content.Shared/_FarHorizons/Damage/HealModifyEvent.cs): heal modifiers, ported from HardLight
 - [`Content.Shared/_FarHorizons/Damage/UniversalHealModifierComponent.cs`](../../../Content.Shared/_FarHorizons/Damage/UniversalHealModifierComponent.cs): heal modifiers, ported from HardLight
 - [`Content.Shared/_FarHorizons/Damage/UniversalHealModifierSystem.cs`](../../../Content.Shared/_FarHorizons/Damage/UniversalHealModifierSystem.cs): heal modifiers, ported from HardLight
@@ -425,6 +425,7 @@ it back up to Okay after any drain, a Kelotane overdose included, before their d
 - [`Resources/Locale/en-US/_Starlight/accessories/avali-crest.ftl`](../../../Resources/Locale/en-US/_Starlight/accessories/avali-crest.ftl): ported from HardLight
 - [`Resources/Locale/en-US/_Starlight/Avali/stasis.ftl`](../../../Resources/Locale/en-US/_Starlight/Avali/stasis.ftl): ported from HardLight
 - [`Resources/Locale/en-US/_Starlight/chat/managers/chat-manager.ftl`](../../../Resources/Locale/en-US/_Starlight/chat/managers/chat-manager.ftl): ported from HardLight (Thaven speech verb)
+- [`Resources/Locale/en-US/_Starlight/Language/languages.ftl`](../../../Resources/Locale/en-US/_Starlight/Language/languages.ftl): Scratch's strings live in _WF/Species, where Avali share it
 - [`Resources/Locale/en-US/_Starlight/markings/avali.ftl`](../../../Resources/Locale/en-US/_Starlight/markings/avali.ftl): ported from HardLight
 - [`Resources/Locale/en-US/_Starlight/markings/shadekin.ftl`](../../../Resources/Locale/en-US/_Starlight/markings/shadekin.ftl): ported from HardLight
 - [`Resources/Locale/en-US/_Starlight/markings/vulpkanin.ftl`](../../../Resources/Locale/en-US/_Starlight/markings/vulpkanin.ftl): ported from HardLight
@@ -536,7 +537,6 @@ it back up to Okay after any drain, a Kelotane overdose included, before their d
 - [`Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro.yml`](../../../Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro.yml): ported from HardLight
 - [`Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_ears.yml`](../../../Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_ears.yml): ported from HardLight
 - [`Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_tails.yml`](../../../Resources/Prototypes/_Floof/Entities/Mobs/Customization/Markings/anthro_tails.yml): ported from HardLight
-- [`Resources/Prototypes/_Goobstation/Entities/Clothing/Head/modsuit.yml`](../../../Resources/Prototypes/_Goobstation/Entities/Clothing/Head/modsuit.yml): not every helmet has these states; the generic layer picks them up where it does
 - [`Resources/Prototypes/_Goobstation/Species/tajaran.yml`](../../../Resources/Prototypes/_Goobstation/Species/tajaran.yml)
   - tails are optional so players can go without one
   - was 1, more marking slots
@@ -616,9 +616,7 @@ it back up to Okay after any drain, a Kelotane overdose included, before their d
 - [`Resources/Prototypes/_Impstation/Species/Thavens/Moods/yes_and.yml`](../../../Resources/Prototypes/_Impstation/Species/Thavens/Moods/yes_and.yml): ported from HardLight
 - [`Resources/Prototypes/_Impstation/tags.yml`](../../../Resources/Prototypes/_Impstation/tags.yml): ported from HardLight
 - [`Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/tattoos.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Customization/Markings/tattoos.yml): eye markings get their own points (was Head)
-- [`Resources/Prototypes/_Moffstation/Entities/Mobs/Player/resomi.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Player/resomi.yml): Resomi share the Avali language
 - [`Resources/Prototypes/_Moffstation/Entities/Mobs/Species/resomi.yml`](../../../Resources/Prototypes/_Moffstation/Entities/Mobs/Species/resomi.yml)
-  - Resomi share the Avali language
   - hands and feet over the limbs as on a human, so markings drawn there (protogen lights) show
   - moved from above the limbs
 - [`Resources/Prototypes/_Moffstation/Species/resomi.yml`](../../../Resources/Prototypes/_Moffstation/Species/resomi.yml)
@@ -706,9 +704,6 @@ it back up to Okay after any drain, a Kelotane overdose included, before their d
   - ShadekinSystem turns this on in the dark
 - [`Resources/Prototypes/_StarLight/fonts.yml`](../../../Resources/Prototypes/_StarLight/fonts.yml): ported from HardLight
 - [`Resources/Prototypes/_StarLight/Language/Animals/carptongue.yml`](../../../Resources/Prototypes/_StarLight/Language/Animals/carptongue.yml): icon and obfuscation font fields dropped
-- [`Resources/Prototypes/_StarLight/Language/Galactic/scratch.yml`](../../../Resources/Prototypes/_StarLight/Language/Galactic/scratch.yml)
-  - icon and obfuscation font fields dropped
-  - Scratch is a cipher font, unreadable to listeners who understand it
 - [`Resources/Prototypes/_StarLight/Language/generic.yml`](../../../Resources/Prototypes/_StarLight/Language/generic.yml)
   - icon and obfuscation font fields dropped
   - ported from HardLight

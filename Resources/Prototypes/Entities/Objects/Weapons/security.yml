@@ -39,6 +39,10 @@
         Blunt: 7
     bluntStaminaDamageFactor: 2.0
     animation: WeaponArcSlash
+  # WOLFGATE(InteractionParticles) START: stun batons spark when toggled on
+  - type: ESSparkOnItemToggle
+    count: 1
+  # WOLFGATE END
   - type: StaminaDamageOnHit # goob edited
     damage: 15
     overtime: 40

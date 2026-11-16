@@ -16,10 +16,17 @@
   - type: CargoSellBlacklist
 
 # A tactical warhead with a keyhole. Its fuzes are cut down on delivery to what the beacon was set up for.
+# No countdown under 90 s, and a klaxon while armed.
 - type: entity
   parent: WFWarheadTactical
   id: WFWarheadTacticalKeyed
   components:
+  - type: WFTimerFuze
+    options: [ 90, 120, 300, 600 ]
+    minTimer: 90
+  - type: WFRemoteFuze
+    signalTimer: 90
+  - type: WFOrdnanceKlaxon
   - type: AccessReader
     access: []
   - type: WFWarheadKeyLock
@@ -95,7 +102,7 @@
   id: WFOrdnanceTerminalTSF
   components:
   - type: AccessReader
-    access: [["HeadOfSecurity"]]
+    access: [["TsfmcColonel"]]
   - type: WFOrdnanceTerminal
     faction: wf-ordnance-faction-tsf
 

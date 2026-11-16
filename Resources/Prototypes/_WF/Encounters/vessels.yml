@@ -8,7 +8,7 @@
   purchasable: false
   category: Large
   group: Security
-  access: Security
+  access: Tsfmc
   shuttlePath: /SharedMaps/_WF/Encounters/chengdu.yml
   guidebookPage: null
   class:

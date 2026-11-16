@@ -40,15 +40,29 @@
   startingGear: EngineeringBeret
 
 # Neck
+# WOLFGATE(Resprites) START: GoobStation cloak and mantle resprites split the chief engineer's set into white and green/orange variants.
 - type: loadout
   id: ChiefEngineerCloak
   equipment:
-    neck: ClothingNeckCloakCe
+    neck: ClothingNeckCloakWhiteCe
+
+- type: loadout
+  id: ChiefEngineerCloakGreen
+  equipment:
+    neck: ClothingNeckCloakGreenCe
 
 - type: loadout
   id: ChiefEngineerMantle
   equipment:
-    neck: ClothingNeckMantleCE
+    neck: ClothingNeckMantleWhiteCE
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: MasterCE
+
+- type: loadout
+  id: ChiefEngineerMantleOrange
+  equipment:
+    neck: ClothingNeckMantleOrangeCE
   effects:
   - !type:GroupLoadoutEffect
     proto: MasterCE
@@ -56,7 +70,8 @@
 - type: startingGear
   id: ChiefEngineerMantle
   equipment:
-    neck: ClothingNeckMantleCE
+    neck: ClothingNeckMantleWhiteCE
+# WOLFGATE END
 
 # OuterClothing
 - type: loadout

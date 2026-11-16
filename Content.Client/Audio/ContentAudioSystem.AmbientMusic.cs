@@ -118,6 +118,7 @@ public sealed partial class ContentAudioSystem
             return;
 
         WfUpdatePlanetMusic(); // WOLFGATE(Planets): planet soundscapes replace ordinary ambient music.
+        WfUpdateCombatPlaylist(); // WOLFGATE(CombatMusic): the next combat track once one ends
 
         if (_initialStationMusicBool)
         {
@@ -314,9 +315,12 @@ public sealed partial class ContentAudioSystem
 
                 _currentlyPlaying = MusicType.Combat;
 
-                SoundCollectionPrototype soundcol = _proto.Index<SoundCollectionPrototype>(_musicProto.ID);
-                string path = _random.Pick(soundcol.PickFiles).ToString();
-                PlayMusicTrack(path, _musicProto.Sound.Params.Volume, _combatMusicFadeInTime, true);
+                // WOLFGATE(CombatMusic) START: the character's playlist, else the faction's tracks shuffled
+                WfPlayCombatTrack();
+                // SoundCollectionPrototype soundcol = _proto.Index<SoundCollectionPrototype>(_musicProto.ID);
+                // string path = _random.Pick(soundcol.PickFiles).ToString();
+                // PlayMusicTrack(path, _musicProto.Sound.Params.Volume, _combatMusicFadeInTime, true);
+                // WOLFGATE END
                 return;
             }
             else

@@ -19,6 +19,7 @@ using Content.Server.Power.Generator;
 using Content.Server.Station.Systems;
 using Content.Server.Storage.Components;
 using Content.Shared._Crescent.ShipShields;
+using Content.Shared._WF.AdminVessels;
 using Content.Shared._FarHorizons.Power.Generation.FissionGenerator;
 using Content.Shared._NF.Bank.Components;
 using Content.Shared._NF.Shipyard.Prototypes;
@@ -148,7 +149,10 @@ public sealed class LupercalContentTest
                 Does.Contain(OfProto(em, grid, "GasTurbineMonitor").Single()), "The turbine monitor is linked.");
 
             // The mech bays' sortie locks (v0.22): each door bolts the other while it stands open.
-            var outers = OfProto(em, grid, "AirlockExternalGlass");
+            // (v0.29: the docks' inner line is external airlocks too, unlinked.)
+            var outers = OfProto(em, grid, "AirlockExternalGlass")
+                .Where(door => em.TryGetComponent<DeviceLinkSourceComponent>(door, out var source) && source.LinkedPorts.Count > 0)
+                .ToList();
             Assert.That(outers, Has.Count.EqualTo(4), "A sortie lock in each mech bay.");
             foreach (var outer in outers)
             {
@@ -157,16 +161,17 @@ public sealed class LupercalContentTest
                 Assert.That(em.GetComponent<DeviceLinkSourceComponent>(inner).LinkedPorts.Keys, Does.Contain(outer), "The interlock runs both ways.");
             }
 
-            // The core's four gates (v0.27): command doors in pairs, each bolting the other while it stands open.
+            // The core's four gates (v0.27): command doors in pairs, interlocked (v0.29: no longer by bolting links,
+            // which could hold both open).
             var gates = OfProto(em, grid, "AirlockCommandGlass")
-                .Where(door => em.TryGetComponent<DeviceLinkSourceComponent>(door, out var source) && source.LinkedPorts.Count > 0)
+                .Where(door => em.HasComponent<WFDoorInterlockComponent>(door))
                 .ToList();
             Assert.That(gates, Has.Count.EqualTo(8), "Two interlocked doors at each of the core's four gates.");
             foreach (var door in gates)
             {
-                var other = em.GetComponent<DeviceLinkSourceComponent>(door).LinkedPorts.Keys.Single();
-                Assert.That(gates, Does.Contain(other), "A gate door bolts the gate's other door.");
-                Assert.That(em.GetComponent<DeviceLinkSourceComponent>(other).LinkedPorts.Keys, Does.Contain(door), "The interlock runs both ways.");
+                var other = em.GetComponent<WFDoorInterlockComponent>(door).Partner!.Value;
+                Assert.That(gates, Does.Contain(other), "A gate door is interlocked with the gate's other door.");
+                Assert.That(em.GetComponent<WFDoorInterlockComponent>(other).Partner, Is.EqualTo(door), "The interlock runs both ways.");
             }
 
             // (v0.28) Built to hold: indestructible walls and windows only, and floors no crowbar, RCD or blast takes.
@@ -267,8 +272,9 @@ public sealed class LupercalContentTest
                 Assert.That(roster.PilotStance, Is.EqualTo(WFShipPilotStance.FaceThreats), "The pilot holds and faces the attacker.");
 
                 var zones = em.GetComponent<WFShipZonesComponent>(grid);
-                Assert.That(zones.Zones.Single(z => z.Id == "docks").Mode, Is.EqualTo(WFShipZoneMode.Public), "Docks are open by default.");
-                Assert.That(server.System<WFShipCommandSystem>().ZoneDoors(grid, "docks"), Has.Count.EqualTo(12), "Three doors across each arm.");
+                Assert.That(zones.Zones.Single(z => z.Id == "docks").Mode, Is.EqualTo(WFShipZoneMode.Locked), "Docks spawn locked down (v0.29).");
+                Assert.That(server.System<WFShipCommandSystem>().ZoneDoors(grid, "docks"), Has.Count.EqualTo(20),
+                    "Three external airlocks across each arm and its two docking airlocks.");
 
                 var station = server.System<StationSystem>().GetOwningStation(grid);
                 Assert.That(station, Is.Not.Null, "The ship is its own station.");

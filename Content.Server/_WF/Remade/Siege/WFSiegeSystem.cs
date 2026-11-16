@@ -79,6 +79,7 @@ public sealed class WFSiegeSystem : EntitySystem
     /// <summary>Most boarders alive on one station from one ship, and how far from the core they land, in tiles.</summary>
     private const int MaxBoarders = 6;
     private const int BoardReach = 12;
+    private static readonly TimeSpan BoardRetry = TimeSpan.FromSeconds(1);
 
     private TimeSpan _next;
 
@@ -377,8 +378,8 @@ public sealed class WFSiegeSystem : EntitySystem
 
             if (now >= ship.NextBoard)
             {
-                ship.NextBoard = now + TimeSpan.FromSeconds(_config.GetCVar(WFSiegeCVars.BoardInterval));
-                Board(ship);
+                // A boarding that found no open floor tries again shortly instead of a full interval later.
+                ship.NextBoard = now + (Board(ship) ? TimeSpan.FromSeconds(_config.GetCVar(WFSiegeCVars.BoardInterval)) : BoardRetry);
             }
         }
     }
@@ -407,13 +408,17 @@ public sealed class WFSiegeSystem : EntitySystem
         return false;
     }
 
-    /// <summary>Puts two Remade on open floor near the core, while the ship has fewer than its share alive there.</summary>
-    private void Board(WFNecroticShipComponent ship)
+    /// <summary>
+    /// Puts two Remade on open floor near the core, while the ship has fewer than its share alive there.
+    /// False when it wanted to board and found no floor.
+    /// </summary>
+    private bool Board(WFNecroticShipComponent ship)
     {
         ship.Boarders.RemoveAll(b => TerminatingOrDeleted(b) || _mobs.IsDead(b));
         if (ship.Boarders.Count >= MaxBoarders || !TryComp<MapGridComponent>(ship.Station, out var grid))
-            return;
+            return true;
 
+        var landed = false;
         var centre = _maps.TileIndicesFor(ship.Station, grid, Transform(ship.Core).Coordinates);
         for (var i = 0; i < 2 && ship.Boarders.Count < MaxBoarders; i++)
         {
@@ -426,8 +431,11 @@ public sealed class WFSiegeSystem : EntitySystem
 
                 var boarder = Spawn(_random.Pick(Boarders), _maps.GridTileToLocal(ship.Station, grid, tile));
                 ship.Boarders.Add(boarder);
+                landed = true;
                 break;
             }
         }
+
+        return landed;
     }
 }

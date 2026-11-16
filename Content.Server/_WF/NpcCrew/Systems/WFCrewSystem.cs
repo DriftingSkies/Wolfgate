@@ -219,6 +219,8 @@ public sealed partial class WFCrewSystem : EntitySystem
             _wanted[(grid, group)] = wanted = new Dictionary<EntityUid, TimeSpan>();
         wanted[attacker] = _timing.CurTime + WantedTime;
         ReportShip(grid, group, attacker);
+        var answered = new WFCrewAttackAnsweredEvent(group, attacker);
+        RaiseLocalEvent(grid, ref answered);
     }
 
     /// <summary>How long after his last attack on a crew an attacker's ship is taken for an enemy vessel.</summary>
@@ -340,6 +342,7 @@ public sealed partial class WFCrewSystem : EntitySystem
     private void OnMobStateChanged(EntityUid uid, WFCrewComponent component, MobStateChangedEvent args)
     {
         EntityManager.System<WFCrewEscortSystem>().Invalidate();
+        _crewAccess.SetDown(uid, component, args.NewMobState);
         if (args.NewMobState == MobState.Alive)
             return;
 

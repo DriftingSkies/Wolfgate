@@ -88,6 +88,9 @@ namespace Content.Shared.Verbs
 
         public static readonly VerbCategory PowerLevel = new("verb-categories-power-level", null);
 
+        // WOLFGATE(ItemSwitch): category for switching an item's appearance state
+        public static readonly VerbCategory Switch = new("verb-categories-switch", null);
+
         public static readonly VerbCategory Pen =
             new("verb-categories-pen", "/Textures/Interface/pencil.png");
 

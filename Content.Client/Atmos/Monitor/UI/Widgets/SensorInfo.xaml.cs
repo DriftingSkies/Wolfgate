@@ -42,18 +42,24 @@ public sealed partial class SensorInfo : BoxContainer
 
         foreach (var (gas, amount) in data.Gases)
         {
+            // WOLFGATE START: a device whose threshold list lacks this gas crashed the window
+            if (!data.GasThresholds.TryGetValue(gas, out var threshold))
+                continue;
+            // WOLFGATE END
+
             var label = new RichTextLabel();
 
             var fractionGas = amount / data.TotalMoles;
             label.SetMarkup(Loc.GetString("air-alarm-ui-gases-indicator",
                 ("gas", $"{gas}"),
-                ("color", AirAlarmWindow.ColorForThreshold(fractionGas, data.GasThresholds[gas])),
+                ("color", AirAlarmWindow.ColorForThreshold(fractionGas, threshold)), // WOLFGATE: use the checked threshold
                 ("amount", $"{amount:0.####}"),
                 ("percentage", $"{(100 * fractionGas):0.##}")));
             GasContainer.AddChild(label);
             _gasLabels.Add(gas, label);
 
-            var threshold = data.GasThresholds[gas];
+            // WOLFGATE: threshold is looked up above
+            // var threshold = data.GasThresholds[gas];
             var gasThresholdControl = new ThresholdControl(Loc.GetString($"air-alarm-ui-thresholds-gas-title", ("gas", $"{gas}")), threshold, AtmosMonitorThresholdType.Gas, gas, 100);
             gasThresholdControl.Margin = new Thickness(20, 2, 2, 2);
             gasThresholdControl.ThresholdDataChanged += (type, alarmThreshold, arg3) =>

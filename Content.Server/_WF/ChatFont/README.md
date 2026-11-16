@@ -57,12 +57,14 @@ through `WFChatFontTags`, the bubble only for a speaker with a picked font.
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs)
 - [`Content.Server.Database/Model.cs`](../../../Content.Server.Database/Model.cs): the wfChatFont prototype id, empty for the default.
 - [`Content.Server/Chat/Systems/ChatSystem.cs`](../../Chat/Systems/ChatSystem.cs)
+  - a language's font, then the character's picked font, then the speech font
   - the character's picked font, under a language's own
-  - the picked font's size scale, unless a language's own font wins
+  - the picked font's size scale
 - [`Content.Server/Database/ServerDbBase.cs`](../../Database/ServerDbBase.cs)
 - [`Content.Server/Radio/EntitySystems/RadioSystem.cs`](../../Radio/EntitySystems/RadioSystem.cs)
+  - a language's font, then the speaker's picked font, then the speech font
   - the speaker's picked font, under a language's own
-  - the picked font's size scale, unless a language's own font wins
+  - the picked font's size scale
 - [`Content.Server/Telephone/TelephoneSystem.cs`](../../Telephone/TelephoneSystem.cs)
   - the caller's picked font
   - the picked font's size scale

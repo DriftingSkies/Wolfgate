@@ -2,6 +2,8 @@ using Content.Shared.Clothing.Components;
 using Content.Shared.Clothing.EntitySystems;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
+using Content.Shared._WF.Modsuits.Components; // WOLFGATE(Modsuits)
+using Content.Shared._WF.Modsuits.Modules; // WOLFGATE(Modsuits)
 using Robust.Client.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -31,6 +33,11 @@ public sealed partial class JetpackSystem : SharedJetpackSystem
 
     private void OnJetpackAppearance(EntityUid uid, JetpackComponent component, ref AppearanceChangeEvent args)
     {
+        // WOLFGATE(Modsuits) START: MOD jetpack modules keep their own module sprite, which has no jetpack icon states
+        if (HasComp<ModModuleComponent>(uid))
+            return;
+        // WOLFGATE END
+
         Appearance.TryGetData<bool>(uid, JetpackVisuals.Enabled, out var enabled, args.Component);
 
         var state = "icon" + (enabled ? "-on" : "");
@@ -64,14 +71,34 @@ public sealed partial class JetpackSystem : SharedJetpackSystem
 
     private void CreateParticles(EntityUid uid)
     {
-        var uidXform = Transform(uid);
-        // Don't show particles unless the user is moving.
-        if (Container.TryGetContainingContainer((uid, uidXform, null), out var container) &&
-            TryComp<PhysicsComponent>(container.Owner, out var body) &&
-            body.LinearVelocity.LengthSquared() < 1f)
+        var particleSource = uid;
+
+        // WOLFGATE(Modsuits) START: a MOD jetpack module sits inside the suit, so use the wearer's body for position and velocity.
+        if (HasComp<ModJetpackModuleComponent>(uid)
+            && TryComp<JetpackComponent>(uid, out var jetpack)
+            && jetpack.JetpackUser is { } wearer)
+        {
+            particleSource = wearer;
+        }
+
+        var uidXform = Transform(particleSource);
+
+        if (particleSource == uid)
+        {
+            // Don't show particles unless the user is moving.
+            if (Container.TryGetContainingContainer((uid, uidXform, null), out var container) &&
+                TryComp<PhysicsComponent>(container.Owner, out var body) &&
+                body.LinearVelocity.LengthSquared() < 1f)
+            {
+                return;
+            }
+        }
+        else if (TryComp<PhysicsComponent>(particleSource, out var body) &&
+                 body.LinearVelocity.LengthSquared() < 1f)
         {
             return;
         }
+        // WOLFGATE END
 
         var coordinates = uidXform.Coordinates;
         var gridUid = _transform.GetGrid(coordinates);

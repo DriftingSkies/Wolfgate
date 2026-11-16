@@ -26,7 +26,7 @@
       - id: WFCameraFilm
         amount: 2
   - type: AccessReader
-    access: [["Detective"]]
+    access: [["Tsfmc"]]
 
 - type: entity
   id: NFLockerSecurityFilled
@@ -53,7 +53,7 @@
   parent: GunSafe
   id: GunSafeTurrets
   name: turret safe
-  suffix: TSFMC, Filled
+  suffix: Caelestinus, Filled
   components:
   - type: StorageFill
     contents:
@@ -64,7 +64,7 @@
     - id: WeaponCaseHeavyAsmgt
       amount: 1
   - type: AccessReader
-    access: [["Security"]]
+    access: [["Caelestinus"]]
 
 - type: entity
   parent: GunSafe
@@ -77,4 +77,4 @@
     - id: WeaponCaseHeavyCdet
       amount: 1
   - type: AccessReader
-    access: [["Security"]]
+    access: [["Caelestinus"]]

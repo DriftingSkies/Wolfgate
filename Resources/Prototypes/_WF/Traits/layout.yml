@@ -4,11 +4,8 @@
   groups:
   - name: wf-trait-group-toughness
     traits:
-    - Vigor
-    - Tenacity
     - WillToLive
     - Steadfast
-    - DermalArmor
   - name: wf-trait-group-healing
     traits:
     - PlateletFactories
@@ -32,7 +29,6 @@
   - name: wf-trait-group-skills
     traits:
     - Thieving
-    - TrapAvoider
     - SelfAware
     - Voracious
     - Helmsmanship
@@ -55,6 +51,8 @@
     traits:
     - WFDependentStimulant
     - WFDependentOpioid
+    - WFDependentEmpathogen
+    - WFDependentCannabinoid
     - WFDependentNicotine
   - name: wf-trait-group-light-sensitivity
     traits:
@@ -147,11 +145,16 @@
     - SignLanguage
     - SiikMaas
     - NovuNederic
-    - MonoNekomimetic
     - MonoElyran
     - MonoCanilunzt
     - MonoFelyaic
     - MonoClassical
+    - MonoMoffic
+    - MonoScratch
+    - MonoSqueakish
+    - MonoNovaCygniClassical
+    - MonoDraconic
+    - MonoAzaziba
   - name: wf-trait-group-language-drawbacks
     traits:
     - Foreigner

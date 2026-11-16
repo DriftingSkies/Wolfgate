@@ -12,7 +12,7 @@
   purchasable: false # voucher only - T3
   category: Large
   group: Security
-  access: Security
+  access: Tsfmc
   shuttlePath: /SharedMaps/_WF/OldVessels/Nfsd/altair.yml
   tags:
   - WFClassicVessel

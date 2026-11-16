@@ -59,6 +59,15 @@
 
 - type: entity
   parent: WFShipCrewPostBase
+  id: WFShipCrewPostJanitor
+  name: command crew post (janitor)
+  description: A commanded ship's roster post. The roster staffs it; nothing spawns here on its own.
+  components:
+  - type: WFShipCrewPost
+    role: WFCrewJanitor
+
+- type: entity
+  parent: WFShipCrewPostBase
   id: WFShipCrewPostEngineer
   name: command crew post (engineer)
   description: A commanded ship's roster post. The roster staffs it; nothing spawns here on its own.

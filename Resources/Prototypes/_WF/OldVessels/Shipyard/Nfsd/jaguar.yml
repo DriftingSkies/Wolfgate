@@ -11,7 +11,7 @@
   category: Small
   group: Custom # was Security; Custom keeps it off every shipyard console
   mapchecker_group_override: Security
-  access: Security
+  access: Tsfmc
   shuttlePath: /SharedMaps/_WF/OldVessels/Nfsd/jaguar.yml
   tags:
   - WFClassicVessel

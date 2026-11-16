@@ -93,10 +93,10 @@ public sealed partial class WFWarheadSystem : EntitySystem
             $"{(user != null ? ToPrettyString(user.Value) : "Unknown")} started {ToPrettyString(ent):warhead} counting down from {time}s at {_transform.GetMapCoordinates(ent)}");
     }
 
-    /// <summary>Stops a countdown, or puts the safety back on.</summary>
-    public void Disarm(Entity<WFWarheadComponent> ent, EntityUid? user)
+    /// <summary>Stops a countdown, or puts the safety back on. Only <paramref name="force"/> stops the final seconds.</summary>
+    public void Disarm(Entity<WFWarheadComponent> ent, EntityUid? user, bool force = false)
     {
-        if (ent.Comp.State == WFWarheadState.Final)
+        if (ent.Comp.State == WFWarheadState.Final && !force)
             return;
 
         ent.Comp.State = WFWarheadState.Safe;

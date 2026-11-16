@@ -52,11 +52,12 @@ public sealed partial class BwoinkSystem
             RaiseNetworkEvent(adminMsg, channel);
         }
 
+        var playerMsg = new BwoinkTextMessage(msg.Channel, SystemUserId, Loc.GetString("wf-bwoink-resolved-player"), playSound: false);
         if (_playerManager.TryGetSessionById(msg.Channel, out var player) && !admins.Contains(player.Channel))
-        {
-            var playerMsg = new BwoinkTextMessage(msg.Channel, SystemUserId, Loc.GetString("wf-bwoink-resolved-player"), playSound: false);
             RaiseNetworkEvent(playerMsg, player.Channel);
-        }
+
+        // Kept with the ahelp, so staff who connect later see it was resolved instead of an open ticket.
+        WfRecordHistory(msg.Channel, adminMsg, playerMsg);
 
         _sawmill.Info($"{args.SenderSession.Name} resolved the ahelp of {msg.Channel}");
     }

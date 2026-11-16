@@ -65,7 +65,6 @@ wf-warhead-ui-spec-grid-value = DESTROYED OUTRIGHT
 wf-warhead-ui-spec-tiles = ~{$tiles} tiles
 wf-warhead-ui-spec-fallout-value = {$sources} sources over ~{$tiles} tiles
 wf-warhead-ui-spec-none = none
-wf-warhead-ui-footer = To abort, use a multitool on the device. Not possible in the last 10 seconds.
 
 wf-warhead-armed = Countdown started: {$seconds} seconds.
 wf-warhead-key-denied = Your key doesn't fit.
@@ -74,6 +73,9 @@ wf-warhead-safety-off = Safety off. It will go off on a signal.
 wf-warhead-safety-on = Safety on.
 wf-warhead-disarmed = Countdown stopped. Safety on.
 wf-warhead-disarm-too-late = Too late. It can't be stopped now.
+wf-warhead-wires-board = W-9 FUZING ASSEMBLY
+wf-warhead-wire-name = FUZE
+wf-warhead-wire-disarmed = The countdown dies. The warhead is safe.
 
 wf-deadman-verb-grip = Grip the switch
 wf-deadman-verb-release = Ease off the grip

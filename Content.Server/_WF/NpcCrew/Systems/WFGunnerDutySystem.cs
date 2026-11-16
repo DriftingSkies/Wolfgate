@@ -210,7 +210,7 @@ public sealed partial class WFGunnerDutySystem : EntitySystem
             if (selection.Target is { } hostile && _driven.Add(grid))
             {
                 // A less skilled gunner lays the guns off the target and leads it poorly.
-                var skill = WFCrewSkills.Of(crew.Skill);
+                var skill = WFCrewSkills.Of(crew);
                 if (_timing.CurTime >= duty.NextAimError)
                 {
                     duty.NextAimError = _timing.CurTime + TimeSpan.FromSeconds(3);

@@ -11,7 +11,7 @@
   price: 42230
   category: Small
   group: Sr
-  access: Brig
+  access: Caelestinus
   mapchecker_group_override: Security
   shuttlePath: /SharedMaps/_WF/OldVessels/spitfire.yml
   tags:

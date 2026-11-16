@@ -1,3 +1,4 @@
+# WOLFGATE(Modsuits) START: MODsuit tags moved to _WF/Modsuits.
 - type: Tag
   id: Magazine762x39mmSubsonic
 
@@ -143,30 +144,6 @@
   id: MilitaryPowerCellSMG
 
 - type: Tag
-  id: ModsuitPart
-
-- type: Tag
-  id: ModsuitShell
-
-- type: Tag
-  id: ModsuitGauntlets
-
-- type: Tag
-  id: ModsuitHelmet
-
-- type: Tag
-  id: ModsuitBoots
-
-- type: Tag
-  id: ModsuitChestplate
-
-- type: Tag
-  id: ModsuitCore
-
-- type: Tag
-  id: ModsuitPlatingExternal
-
-- type: Tag
   id: StasisBattery
 
 - type: Tag
@@ -204,3 +181,4 @@
 
 - type: Tag
   id: CD
+# WOLFGATE END

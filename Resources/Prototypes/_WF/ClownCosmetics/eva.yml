@@ -1,4 +1,4 @@
-﻿# Black mime hardsuit (Impstation)
+# Black mime hardsuit (Impstation)
 
 - type: entity
   parent: ClothingOuterHardsuitBase
@@ -113,8 +113,10 @@
   components:
   - type: Sprite
     sprite: _WF/ClownCosmetics/Clothing/EVA/Modsuit/clown_control.rsi
-  - type: ToggleableClothing
-    clothingPrototypes:
+  # WOLFGATE(Modsuits): the native module system owns the suit parts
+  - type: ModSuit
+    theme: ModThemeStandard
+    parts:
       head: ADTClothingHeadHelmetModsuitClown
       gloves: ADTClothingHandsModsuitClown
       outerClothing: ADTClothingOuterModsuitBodyClown
@@ -124,14 +126,20 @@
   parent: ADTClothingModsuitBackClown
   id: ADTClothingModsuitBackClownPowerCell
   components:
+  - type: ModSuit
+    startingModules:
+    - ModsuitModuleStorageCompact
+    - ModsuitModuleFlashlight
+    - ModsuitModuleWaddle
+    - ModsuitModuleBikeHorn
   - type: ItemSlots
     slots:
-      cell_slot:
-        name: power-cell-slot-component-slot-name-default
-        startingItem: PowerCellHigh
+      mod-core:
+        name: modsuit-core-slot-name
+        startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:
-          - PowerCell
+          - ModCore
 
 - type: entity
   parent: ClothingModsuitHelmetStandard
@@ -153,7 +161,7 @@
       - state: equipped-HEAD
       head-vulpkanin:
       - state: equipped-HEAD
-  - type: SealableClothingVisuals
+  - type: ModSuitSealedVisuals
     spriteLayer: sealed
     clothingVisuals:
       head:
@@ -180,22 +188,11 @@
     - Snout
     - HeadTop
     - HeadSide
-  - type: ComponentToggler
-    components:
-    - type: BreathMask
-    - type: PressureProtection
-      highPressureMultiplier: 0.3
-      lowPressureMultiplier: 1000
-    - type: TemperatureProtection
-      heatingCoefficient: 0.01
-      coolingCoefficient: 0.01
-    - type: IdentityBlocker
-    - type: IngestionBlocker
   - type: PointLight
     color: "#ff66cc"
 
 - type: entity
-  parent: ClothingModsuitGauntletsBase
+  parent: ClothingModsuitGauntletsStandard
   id: ADTClothingHandsModsuitClown
   categories: [ HideSpawnMenu ]
   components:
@@ -203,13 +200,13 @@
     sprite: _WF/ClownCosmetics/Clothing/EVA/Modsuit/clown_gauntlets.rsi
 
 - type: entity
-  parent: ClothingModsuitChestplateBase
+  parent: ClothingModsuitChestplateStandard
   id: ADTClothingOuterModsuitBodyClown
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: _WF/ClownCosmetics/Clothing/EVA/Modsuit/clown_chestplate.rsi
-  - type: SealableClothingVisuals
+  - type: ModSuitSealedVisuals
     spriteLayer: sealed
     clothingVisuals:
       outerClothing:
@@ -230,7 +227,7 @@
     sprintModifier: 1
 
 - type: entity
-  parent: ClothingModsuitBootsBase
+  parent: ClothingModsuitBootsStandard
   id: ADTClothingModsuitShoesClown
   categories: [ HideSpawnMenu ]
   components:

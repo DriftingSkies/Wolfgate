@@ -16,6 +16,16 @@
     pocket2: Magazine45_ACPPistolFMJ
 
 - type: startingGear
+  id: WFCrewJanitorGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitJanitor
+    shoes: ClothingShoesGaloshes
+    ears: WFCrewHeadset
+    gloves: ClothingHandsGlovesJanitor
+    belt: WeaponPistolMk58
+    pocket1: Magazine45_ACPPistolFMJ
+
+- type: startingGear
   id: WFCrewMarineGear
   equipment:
     jumpsuit: ClothingUniformJumpsuitColorGrey

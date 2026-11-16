@@ -51,7 +51,6 @@ Entry points: `WFSuitTankStorageComponent` (marks a suit whose `Storage` feeds i
 - [`Content.Server/Atmos/EntitySystems/GasTankSystem.cs`](../../Atmos/EntitySystems/GasTankSystem.cs): a tank in the user's worn suit stays connected
 - [`Content.Shared/Atmos/EntitySystems/SharedGasTankSystem.cs`](../../../Content.Shared/Atmos/EntitySystems/SharedGasTankSystem.cs): a tank in a worn suit's storage belongs to the suit's wearer
 - [`Content.Shared/Body/Systems/SharedInternalsSystem.cs`](../../../Content.Shared/Body/Systems/SharedInternalsSystem.cs): a tank in the worn suit's storage comes next
-- [`Resources/Prototypes/_Goobstation/Entities/Clothing/OuterClothing/modsuit.yml`](../../../Resources/Prototypes/_Goobstation/Entities/Clothing/OuterClothing/modsuit.yml): 2x2 storage for air tanks that feed internals
 - [`Resources/Prototypes/_Mono/Entities/Clothing/base_shielding.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/base_shielding.yml): tanks in its existing 2x2 storage feed internals
 - [`Resources/Prototypes/Entities/Clothing/OuterClothing/base_clothingouter.yml`](../../../Resources/Prototypes/Entities/Clothing/OuterClothing/base_clothingouter.yml): 2x2 storage for air tanks that feed internals
 - [`Resources/Prototypes/Entities/Clothing/OuterClothing/softsuits.yml`](../../../Resources/Prototypes/Entities/Clothing/OuterClothing/softsuits.yml): both parents bring a ContainerContainer; keep the helmet and tank storage containers

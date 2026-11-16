@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared._NF.LoggingExtensions;
+using Content.Shared._WF.InteractionParticles; // WOLFGATE(InteractionParticles)
 using Content.Shared._WF.Traders; // WOLFGATE(Traders)
 using Content.Shared._WF.Xenonids.Devour; // WOLFGATE(Xenonids)
 using Content.Shared.ActionBlocker;
@@ -535,7 +536,7 @@ namespace Content.Shared.Interaction
             var extraLogs = LoggingExtensions.GetExtraLogs(EntityManager, target);
 
             _adminLogger.Add(LogType.InteractHand, LogImpact.Low, $"{ToPrettyString(user):user} interacted with {ToPrettyString(target):target}{extraLogs}");
-            DoContactInteraction(user, target, message);
+            DoContactInteraction(user, target, null, true, message, interactionParticles: message.InteractionParticle); // WOLFGATE(InteractionParticles)
             if (message.Handled)
                 return true;
 
@@ -581,7 +582,7 @@ namespace Content.Shared.Interaction
                 RaiseLocalEvent(target.Value, rangedMsg, true);
 
                 // We contact the USED entity, but not the target.
-                DoContactInteraction(user, used, rangedMsg);
+                DoContactInteraction(user, used, null, true, rangedMsg); // WOLFGATE(InteractionParticles)
                 if (rangedMsg.Handled)
                     return;
             }
@@ -1018,7 +1019,7 @@ namespace Content.Shared.Interaction
                 return false;
 
             // We contact the USED entity, but not the target.
-            DoContactInteraction(user, used, ev);
+            DoContactInteraction(user, used, null, true, ev); // WOLFGATE(InteractionParticles)
             return ev.Handled;
         }
 
@@ -1066,8 +1067,8 @@ namespace Content.Shared.Interaction
             // all interactions should only happen when in range / unobstructed, so no range check is needed
             var interactUsingEvent = new InteractUsingEvent(user, used, target, clickLocation);
             RaiseLocalEvent(target, interactUsingEvent, true);
-            DoContactInteraction(user, used, interactUsingEvent);
-            DoContactInteraction(user, target, interactUsingEvent);
+            DoContactInteraction(user, used, null, true, interactUsingEvent, interactionParticles: false); // WOLFGATE(InteractionParticles): the target contact below shows the particle
+            DoContactInteraction(user, target, used, true, interactUsingEvent, interactionParticles: interactUsingEvent.InteractionParticle); // WOLFGATE(InteractionParticles)
             // Contact interactions are currently only used for forensics, so we don't raise used -> target
             if (interactUsingEvent.Handled)
                 return true;
@@ -1099,10 +1100,10 @@ namespace Content.Shared.Interaction
 
             var afterInteractEvent = new AfterInteractEvent(user, used, target, clickLocation, canReach);
             RaiseLocalEvent(used, afterInteractEvent);
-            DoContactInteraction(user, used, afterInteractEvent);
+            DoContactInteraction(user, used, null, true, afterInteractEvent, interactionParticles: afterInteractEvent.SpawnInteractionParticles && !(canReach && target != null)); // WOLFGATE(InteractionParticles): one particle per click
             if (canReach)
             {
-                DoContactInteraction(user, target, afterInteractEvent);
+                DoContactInteraction(user, target, used, true, afterInteractEvent, interactionParticles: afterInteractEvent.SpawnInteractionParticles); // WOLFGATE(InteractionParticles)
                 // Contact interactions are currently only used for forensics, so we don't raise used -> target
             }
 
@@ -1120,10 +1121,10 @@ namespace Content.Shared.Interaction
             var afterInteractUsingEvent = new AfterInteractUsingEvent(user, used, target, clickLocation, canReach);
             RaiseLocalEvent(target.Value, afterInteractUsingEvent);
 
-            DoContactInteraction(user, used, afterInteractUsingEvent);
+            DoContactInteraction(user, used, null, true, afterInteractUsingEvent, interactionParticles: afterInteractUsingEvent.SpawnInteractionParticles && !canReach); // WOLFGATE(InteractionParticles): one particle per click
             if (canReach)
             {
-                DoContactInteraction(user, target, afterInteractUsingEvent);
+                DoContactInteraction(user, target, used, true, afterInteractUsingEvent, interactionParticles: afterInteractUsingEvent.SpawnInteractionParticles); // WOLFGATE(InteractionParticles)
                 // Contact interactions are currently only used for forensics, so we don't raise used -> target
             }
 
@@ -1186,7 +1187,7 @@ namespace Content.Shared.Interaction
             RaiseLocalEvent(used, activateMsg, true);
             if (activateMsg.Handled)
             {
-                DoContactInteraction(user, used);
+                DoContactInteraction(user, used, null, true, interactionParticles: activateMsg.InteractionParticle); // WOLFGATE(InteractionParticles)
                 if (!activateMsg.WasLogged)
                     _adminLogger.Add(LogType.InteractActivate, LogImpact.Low, $"{ToPrettyString(user):user} activated {ToPrettyString(used):used}");
 
@@ -1201,7 +1202,7 @@ namespace Content.Shared.Interaction
             if (!userEv.Handled)
                 return false;
 
-            DoContactInteraction(user, used);
+            DoContactInteraction(user, used, null, true); // WOLFGATE(InteractionParticles)
             // Still need to call this even without checkUseDelay in case this gets relayed from Activate.
             if (delayComponent != null)
                 _useDelay.TryResetDelay(used, component: delayComponent);
@@ -1242,7 +1243,7 @@ namespace Content.Shared.Interaction
             RaiseLocalEvent(used, useMsg, true);
             if (useMsg.Handled)
             {
-                DoContactInteraction(user, used, useMsg);
+                DoContactInteraction(user, used, null, true, useMsg, interactionParticleType: InteractionParticleType.InHand); // WOLFGATE(InteractionParticles)
                 if (delayComponent != null && useMsg.ApplyDelay)
                     _useDelay.TryResetDelay((used, delayComponent));
                 return true;
@@ -1430,7 +1431,24 @@ namespace Content.Shared.Interaction
         /// <summary>
         ///     Simple convenience function to raise contact events (disease, forensics, etc).
         /// </summary>
+        // WOLFGATE(InteractionParticles) START: callers that do not know about particles keep the plain contact
         public void DoContactInteraction(EntityUid uidA, EntityUid? uidB, HandledEntityEventArgs? args = null)
+        {
+            DoContactInteraction(uidA, uidB, null, true, args, interactionParticles: false);
+        }
+        // WOLFGATE END
+
+        /// <summary>
+        ///     Simple convenience function to raise contact events (disease, forensics, etc).
+        /// </summary>
+        /// <param name="uidA">The entity doing the contacting.</param>
+        /// <param name="uidB">The entity being contacted.</param>
+        /// <param name="used">The entity used to contact <paramref name="uidB"/>.</param>
+        /// <param name="predicted">Whether this interaction is predicted. <paramref name="uidA"/> is assumed to be the client entity.</param>
+        /// <param name="args">Optional handleable entity event to check.</param>
+        /// <param name="interactionParticles">Whether to spawn interaction particles on this contact.</param>
+        /// <param name="interactionParticleType">The type of interaction particle to spawn for this event.</param>
+        public void DoContactInteraction(EntityUid uidA, EntityUid? uidB, EntityUid? used, bool predicted, HandledEntityEventArgs? args = null, bool interactionParticles = true, InteractionParticleType interactionParticleType = InteractionParticleType.Use) // WOLFGATE(InteractionParticles)
         {
             if (uidB == null || args?.Handled == false)
                 return;
@@ -1450,6 +1468,11 @@ namespace Content.Shared.Interaction
 
             ev.Other = uidA;
             RaiseLocalEvent(uidB.Value, ev);
+
+            // WOLFGATE(InteractionParticles) START: ported from Starlight's interaction particles
+            if (interactionParticles)
+                SpawnInteractionParticle(uidA, uidB.Value, used, predicted, interactionParticleType);
+            // WOLFGATE END
         }
 
 

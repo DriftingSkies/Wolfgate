@@ -101,6 +101,13 @@ public sealed partial class ShipyardSystem
     /// </summary>
     public void ClearHostedConsole(EntityUid host)
     {
+        // Removing the console shuts its card slot down, which would delete a card still in it.
+        if (TryComp<ShipyardConsoleComponent>(host, out var console) && console.TargetIdSlot.HasItem)
+        {
+            _wfItemSlots.SetLock(host, console.TargetIdSlot, false);
+            _wfItemSlots.TryEject(host, console.TargetIdSlot, null, out _);
+        }
+
         RemComp<ShipyardConsoleComponent>(host);
         RemComp<ShipyardListingComponent>(host);
         RemComp<AccessReaderComponent>(host);

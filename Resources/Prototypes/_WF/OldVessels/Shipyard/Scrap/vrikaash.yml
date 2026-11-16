@@ -13,7 +13,6 @@
   price: 224000 # 130~k base marked up by 80~%
   category: medium
   group: Scrap
-  access: Mercenary
   shuttlePath: /SharedMaps/_WF/OldVessels/Scrap/vrikaash.yml
   tags:
   - WFClassicVessel

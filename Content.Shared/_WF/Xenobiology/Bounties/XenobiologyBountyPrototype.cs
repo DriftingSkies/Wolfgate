@@ -103,29 +103,11 @@ public readonly partial record struct XenobiologyBountyHistoryData
 }
 
 /// <summary>
-/// A console that lists xenobiology bounties and pays research points to its research server.
+/// A console that shows its research server's xenobiology bounty board and pays research points to that server.
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentPause]
 public sealed partial class XenobiologyBountyConsoleComponent : Component
 {
-    [DataField]
-    public List<XenobiologyBountyData> Bounties = new();
-
-    [DataField]
-    public List<XenobiologyBountyHistoryData> History = new();
-
-    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoPausedField]
-    public TimeSpan NextSkipTime = TimeSpan.Zero;
-
-    [DataField]
-    public TimeSpan SkipDelay = TimeSpan.FromMinutes(10);
-
-    [DataField]
-    public TimeSpan RefreshDelay = TimeSpan.FromMinutes(12);
-
-    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoPausedField]
-    public TimeSpan NextRefresh = TimeSpan.Zero;
-
     [DataField]
     public SoundSpecifier FulfillSound = new SoundPathSpecifier("/Audio/Effects/Cargo/ping.ogg");
 

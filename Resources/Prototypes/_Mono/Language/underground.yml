@@ -1,6 +1,6 @@
 - type: language
   id: UndergroundCodespeak
-  isVisibleLanguage: true
+  iconNotUnderstood: false
   chatPrefix: cds
   # WOLFGATE: codespeak gets its own chat colour so speakers can tell it from Common
   speech:

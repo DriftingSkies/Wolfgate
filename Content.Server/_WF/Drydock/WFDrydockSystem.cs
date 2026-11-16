@@ -19,6 +19,7 @@ using Content.Shared._WF.Drydock;
 using Content.Shared._WF.ShipRepair;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
+using Content.Shared.Maps;
 using Content.Shared.Materials;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Preferences;
@@ -61,6 +62,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
     [Dependency] private DestructibleSystem _destructible = default!;
     [Dependency] private WFTradeMarketSystem _tradeMarket = default!;
     [Dependency] private WFShipServiceSystem _shipServices = default!;
+    [Dependency] private ITileDefinitionManager _tileDefs = default!;
 
     /// <summary>Upper bound on ship tiles kept for ambient sparks.</summary>
     private const int MaxSparkTiles = 512;
@@ -231,6 +233,26 @@ public sealed partial class WFDrydockSystem : EntitySystem
     }
 
     /// <summary>
+    /// The same work unpriced and uncapped, for staff: hull tiles and missing entities when the ship has a repair
+    /// snapshot, and heals either way. Owned refits are reapplied as each entity is rebuilt.
+    /// </summary>
+    public List<WFDrydockWorkItem> BuildFreeRepairItems(EntityUid ship)
+    {
+        var items = new List<WFDrydockWorkItem>();
+        if (!TryComp<MapGridComponent>(ship, out var grid))
+            return items;
+
+        if (TryComp<ShipRepairDataComponent>(ship, out var data))
+        {
+            AddMissingTiles(ship, grid, data, null, items);
+            AddMissingEntities(ship, data, null, items);
+        }
+
+        AddHeals(ship, grid, null, items);
+        return items;
+    }
+
+    /// <summary>
     /// The ship's value for fees and caps: its shipyard price when it was bought at one, else the price of rebuilding
     /// it whole from its repair snapshot. Vessel is false for the rebuild price; (0, false) without a snapshot.
     /// </summary>
@@ -292,7 +314,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
     }
 
     /// <summary>Adds a tile item for each stored hull tile the ship no longer has.</summary>
-    private void AddMissingTiles(EntityUid ship, MapGridComponent grid, ShipRepairDataComponent data, WFDrydockConsoleComponent comp, List<WFDrydockWorkItem> items)
+    private void AddMissingTiles(EntityUid ship, MapGridComponent grid, ShipRepairDataComponent data, WFDrydockConsoleComponent? comp, List<WFDrydockWorkItem> items)
     {
         var size = data.ChunkSize;
         foreach (var (chunkPos, chunk) in data.Chunks)
@@ -304,7 +326,10 @@ public sealed partial class WFDrydockSystem : EntitySystem
                     continue;
 
                 var index = new Vector2i(chunkPos.X * size + i % size, chunkPos.Y * size + i / size);
-                if (_map.GetTileRef(ship, grid, index).Tile.TypeId == stored)
+                var current = _map.GetTileRef(ship, grid, index).Tile.TypeId;
+
+                // Free work only re-lays hull that is gone or stripped to its sub-floor; a floor laid in its place stays.
+                if (current == stored || (comp == null && !IsRemnant(current, stored)))
                     continue;
 
                 items.Add(new WFDrydockWorkItem
@@ -312,15 +337,43 @@ public sealed partial class WFDrydockSystem : EntitySystem
                     Kind = WFDrydockWorkKind.Tile,
                     TileIndex = index,
                     TileType = stored,
-                    Cost = comp.TilePrice,
+                    Cost = comp?.TilePrice ?? 0,
                     LocalPos = new Vector2(index.X + 0.5f, index.Y + 0.5f),
                 });
             }
         }
     }
 
+    /// <summary>
+    /// Whether a free tile item still has hull to lay: the tile there is gone or down to one of its base turfs. False
+    /// once it is laid, or once another floor was laid there after the item was listed.
+    /// </summary>
+    public bool IsHullMissing(EntityUid ship, WFDrydockWorkItem item)
+    {
+        return TryComp<MapGridComponent>(ship, out var grid)
+               && IsRemnant(_map.GetTileRef(ship, grid, item.TileIndex).Tile.TypeId, item.TileType);
+    }
+
+    /// <summary>Whether a tile is what is left of another once it is pried up or blown down: nothing, or one of its base turfs.</summary>
+    private bool IsRemnant(int current, int stored)
+    {
+        if (current == Tile.Empty.TypeId)
+            return true;
+
+        // Base turfs end at space within a few steps; the cap only guards against a looping definition.
+        var def = _tileDefs[stored] as ContentTileDefinition;
+        for (var depth = 0; depth < 8 && def != null && !string.IsNullOrEmpty(def.BaseTurf); depth++)
+        {
+            def = _tileDefs[def.BaseTurf] as ContentTileDefinition;
+            if (def?.TileId == current)
+                return true;
+        }
+
+        return false;
+    }
+
     /// <summary>Adds a rebuild item for each snapshot entity the ship is missing.</summary>
-    private void AddMissingEntities(EntityUid ship, ShipRepairDataComponent data, WFDrydockConsoleComponent comp, List<WFDrydockWorkItem> items)
+    private void AddMissingEntities(EntityUid ship, ShipRepairDataComponent data, WFDrydockConsoleComponent? comp, List<WFDrydockWorkItem> items)
     {
         foreach (var (chunkPos, chunk) in data.Chunks)
         {
@@ -335,7 +388,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
                     Kind = WFDrydockWorkKind.Entity,
                     ChunkPos = chunkPos,
                     SpecId = specId,
-                    Cost = RebuildPrice(comp, proto),
+                    Cost = comp != null ? RebuildPrice(comp, proto) : 0,
                     Prototype = proto.ID,
                     Mounted = proto.TryComp<HardpointAnchorableOnlyComponent>(out _, Factory),
                     LocalPos = spec.LocalPosition,
@@ -345,7 +398,7 @@ public sealed partial class WFDrydockSystem : EntitySystem
     }
 
     /// <summary>Adds a heal item for each anchored part of the ship that has damage.</summary>
-    private void AddHeals(EntityUid ship, MapGridComponent grid, WFDrydockConsoleComponent comp, List<WFDrydockWorkItem> items)
+    private void AddHeals(EntityUid ship, MapGridComponent grid, WFDrydockConsoleComponent? comp, List<WFDrydockWorkItem> items)
     {
         var damaged = new HashSet<Entity<DamageableComponent>>();
         _lookup.GetLocalEntitiesIntersecting(ship, grid.LocalAABB, damaged);
@@ -365,13 +418,14 @@ public sealed partial class WFDrydockSystem : EntitySystem
 
             // Patching a part costs its rebuild price times the share of its health lost, never more than rebuilding it.
             var proto = MetaData(ent).EntityPrototype;
-            int? rebuild = proto != null ? RebuildPrice(comp, proto) : null;
+            int? rebuild = proto != null && comp != null ? RebuildPrice(comp, proto) : null;
             int cost;
-            if (rebuild is { } full && _destructible.TryGetDestroyedAt(ent.Owner, out var destroyedAt) && destroyedAt > FixedPoint2.Zero)
-                cost = (int) Math.Ceiling(full * Math.Min(1f, total.Float() / destroyedAt.Value.Float()));
+            if (comp == null)
+                cost = 0;
+            else if (rebuild is { } full && _destructible.TryGetDestroyedAt(ent.Owner, out var destroyedAt) && destroyedAt > FixedPoint2.Zero)
+                cost = Math.Max(1, (int) Math.Ceiling(full * Math.Min(1f, total.Float() / destroyedAt.Value.Float())));
             else
-                cost = Math.Min((int) Math.Ceiling(total.Float() * comp.DamagePrice), rebuild ?? int.MaxValue);
-            cost = Math.Max(1, cost);
+                cost = Math.Max(1, Math.Min((int) Math.Ceiling(total.Float() * comp.DamagePrice), rebuild ?? int.MaxValue));
 
             items.Add(new WFDrydockWorkItem
             {
@@ -445,6 +499,9 @@ public sealed partial class WFDrydockSystem : EntitySystem
 
         var entity = Spawn(data.EntityPalette[spec.ProtoIndex].Id, new EntityCoordinates(ship, spec.LocalPosition));
         _transform.SetLocalRotation(entity, spec.Rotation);
+        // The snapshot only holds anchored entities, but some prototypes, such as the mobile drydock crane, spawn loose.
+        if (!Transform(entity).Anchored)
+            _transform.AnchorEntity(entity);
         spec.OriginalEntity = GetNetEntity(entity);
         Dirty(ship, data);
         // Rebuilds spawn stock; reapply the ship's owned refits, which the quote charged for. A refit that replaces the

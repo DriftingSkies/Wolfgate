@@ -13,7 +13,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._WF.Shipyard;
 
-/// <summary>Buying a ship titles the card Captain, unless its holder chose a title of their own.</summary>
+/// <summary>Buying a ship leaves the card's job title alone, and keeps a title its holder chose.</summary>
 [TestFixture]
 [TestOf(typeof(ShipyardSystem))]
 public sealed class ShipPurchaseTitleTest
@@ -21,7 +21,7 @@ public sealed class ShipPurchaseTitleTest
     private const string VesselProto = "Guppy";
     private const string RankTitle = "Quartermaster";
 
-    [TestCase(false, "Captain")]
+    [TestCase(false, "Passenger")]
     [TestCase(true, RankTitle)]
     public async Task PurchaseTitlesCard(bool customTitle, string expected)
     {

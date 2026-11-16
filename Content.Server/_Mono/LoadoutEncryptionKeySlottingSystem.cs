@@ -17,6 +17,7 @@ public sealed partial class LoadoutEncryptionKeySlottingSystem : EntitySystem
     [Dependency] private InventorySystem _inventory = default!;
     [Dependency] private SharedContainerSystem _container = default!;
     [Dependency] private SharedStorageSystem _storage = default!;
+    [Dependency] private Content.Shared.Hands.EntitySystems.SharedHandsSystem _hands = default!; // WOLFGATE(Roles)
 
     public override void Initialize()
     {
@@ -77,6 +78,14 @@ public sealed partial class LoadoutEncryptionKeySlottingSystem : EntitySystem
                 }
             }
         }
+
+        // WOLFGATE(Roles) START: keys land in a hand when no worn storage takes them (a modsuit on the back)
+        foreach (var held in _hands.EnumerateHeld(character))
+        {
+            if (HasComp<EncryptionKeyComponent>(held))
+                encryptionKeys.Add(held);
+        }
+        // WOLFGATE END
 
         return encryptionKeys;
     }

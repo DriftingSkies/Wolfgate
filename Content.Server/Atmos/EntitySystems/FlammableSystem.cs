@@ -292,6 +292,10 @@ namespace Content.Server.Atmos.EntitySystems
 
         private void OnTileFire(Entity<FlammableComponent> ent, ref TileFireEvent args)
         {
+            // WOLFGATE(Modsuits): the plasma stabilizer module filters gas ignition.
+            if (HasComp<Content.Shared._WF.Modsuits.Modules.ModPlasmaStabilizerComponent>(ent))
+                return;
+
             var tempDelta = args.Temperature - ent.Comp.MinIgnitionTemperature;
 
             _fireEvents.TryGetValue(ent, out var maxTemp);

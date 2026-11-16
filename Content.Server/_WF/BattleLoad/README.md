@@ -5,7 +5,9 @@ Keeps big ship fights and mass grid events cheap for the server. Settings are th
 
 - Bullet-sized explosions (total intensity up to 10, tile intensity up to 2, on a grid) skip the explosion queue.
   The next update damages the epicentre tile and its four neighbours through the same per-tile code as a full
-  explosion. These skip the visual, sound, camera shake and admin log, like any other bullet hit.
+  explosion. These skip the visual, sound, camera shake and admin log, like any other bullet hit. A blast inside a
+  standing wall reaches only the neighbours on the sides the wall leaves open, so an autocannon shell bursting on a
+  hull's face can't hurt the room behind it (`MicroExplosionInAWallStaysInIt`).
 - Small queued explosions on the same grid merge from up to 3 m apart, until the merged one reaches 150 intensity.
 - Grids that split off with 4 tiles or fewer and nobody aboard are deleted on the next tick.
 - `WFBattleHeatSystem` counts explosions. While 150 or more have gone off within 2 km in the last minute, encounters

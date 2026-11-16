@@ -10,9 +10,13 @@
   assignedCompany: PDV
   canBeAntag: false
   icon: JobIconBorg
+  hideConsoleVisibility: true
   supervisors: job-supervisors-hire
   jobEntity: PlayerBorgPDV
   applyTraits: false
+  # WOLFGATE(Cyborgs): stamped on the issued card so the PDV shipyard sells to it
+  access:
+  - PDV
   guides:
   - PDV_Entry
   special:

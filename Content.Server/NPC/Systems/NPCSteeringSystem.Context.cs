@@ -197,6 +197,14 @@ public sealed partial class NPCSteeringSystem
             return false;
         }
 
+        // WOLFGATE(NpcCrew) START: crew out of a fight hold short of a burning tile rather than walk through the fire
+        if (!directMove && IsCrewFireAhead(uid, targetCoordinates))
+        {
+            steering.Status = SteeringStatus.NoPath;
+            return false;
+        }
+        // WOLFGATE END
+
         var direction = targetMap.Position - ourMap.Position;
 
         // Need to be pretty close if it's just a node to make sure LOS for door bashes or the likes.
@@ -491,6 +499,13 @@ public sealed partial class NPCSteeringSystem
         for (var i = 0; i < nodes.Count; i++)
         {
             var node = nodes[i];
+            // WOLFGATE START: a path over a grid deleted since it was found threw and put the NPC to sleep; repath instead
+            if (TerminatingOrDeleted(node.GraphUid))
+            {
+                nodes.Clear();
+                return;
+            }
+            // WOLFGATE END
             var matrix = _transform.GetWorldMatrix(node.GraphUid);
 
             // Always want to prune the poly itself so we point to the next poly and don't backtrack.

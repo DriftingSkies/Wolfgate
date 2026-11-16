@@ -75,8 +75,21 @@ public sealed class WFBaggieSystem : EntitySystem
 
     private void OnUseInHand(Entity<WFBaggieComponent> ent, ref UseInHandEvent args)
     {
-        if (args.Handled || !TryTakeSolid(ent, out var solid))
+        if (args.Handled)
             return;
+
+        if (!TryTakeSolid(ent, out var solid))
+        {
+            // Powder has no use in hand; say how it comes out instead of doing nothing.
+            if (_solution.TryGetSolution(ent.Owner, ent.Comp.Solution, out _, out var powder)
+                && powder.Volume > 0)
+            {
+                args.Handled = true;
+                _popup.PopupClient(Loc.GetString("wf-baggie-powder-hint"), ent, args.User);
+            }
+
+            return;
+        }
 
         args.Handled = true;
         _hands.PickupOrDrop(args.User, solid, dropNear: true);

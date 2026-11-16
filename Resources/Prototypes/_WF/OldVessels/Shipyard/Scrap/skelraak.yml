@@ -13,7 +13,6 @@
   price: 418500 # appraised at 380405 with hardpoints; classic reprice
   category: large
   group: Scrap
-  access: Mercenary
   shuttlePath: /SharedMaps/_WF/OldVessels/Scrap/skelraak.yml
   tags:
   - WFClassicVessel

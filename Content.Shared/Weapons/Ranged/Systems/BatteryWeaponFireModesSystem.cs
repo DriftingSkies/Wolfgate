@@ -22,7 +22,7 @@ public sealed partial class BatteryWeaponFireModesSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<BatteryWeaponFireModesComponent, UseInHandEvent>(OnUseInHandEvent);
+        SubscribeLocalEvent<BatteryWeaponFireModesComponent, UseInHandEvent>(OnUseInHandEvent, after: new[] { typeof(Content.Shared.Wieldable.SharedWieldableSystem) }); // WOLFGATE: wielding goes first and doesn't also switch the mode
         SubscribeLocalEvent<BatteryWeaponFireModesComponent, GetVerbsEvent<Verb>>(OnGetVerb);
         SubscribeLocalEvent<BatteryWeaponFireModesComponent, ExaminedEvent>(OnExamined);
     }
@@ -82,12 +82,13 @@ public sealed partial class BatteryWeaponFireModesSystem : EntitySystem
 
     private void OnUseInHandEvent(EntityUid uid, BatteryWeaponFireModesComponent component, UseInHandEvent args)
     {
-        if (component.FireModes.Count < 2)
+        if (args.Handled || component.FireModes.Count < 2) // WOLFGATE: a use that wielded the gun isn't a mode switch
             return;
 
         if (TryComp<AccessReaderComponent>(uid, out var accessReader) && !_accessReaderSystem.IsAllowed(args.User, uid, accessReader))
             return;
 
+        args.Handled = true; // WOLFGATE: a use that wielded the gun isn't a mode switch
         CycleFireMode(uid, component, args.User);
     }
 

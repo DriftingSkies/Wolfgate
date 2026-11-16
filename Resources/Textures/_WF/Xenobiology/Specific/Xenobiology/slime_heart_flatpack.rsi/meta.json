@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "license": "CC0-1.0",
+  "copyright": "Flatpack base and label by EmoGarbage404 (github) for SS14, from Objects/Devices/flatpack.rsi; slime coating and icon made for Wolfgate.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "adamantine"
+    }
+  ]
+}

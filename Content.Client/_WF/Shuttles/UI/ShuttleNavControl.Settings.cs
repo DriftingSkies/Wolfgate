@@ -10,16 +10,14 @@ public partial class ShuttleNavControl
 
     private bool _wfSavedIff;
     private bool _wfSavedIffDetailed;
-    private bool _wfSavedDocks;
     private RadarAzimuthMode _wfSavedAzimuth;
-    private bool _wfDocksPinned;
 
-    /// <summary>Starts the radar with the player's saved contact labels, dock markers and bearing ring.</summary>
+    /// <summary>Starts the radar with the player's saved contact labels and bearing ring. It marks no docks: only the admin radar can.</summary>
     private void WfLoadDisplaySettings()
     {
         ShowIFF = _wfSavedIff = _wfSettingsCfg.GetCVar(WolfgateCVars.RadarShowIff);
         ShowIFFDetailed = _wfSavedIffDetailed = _wfSettingsCfg.GetCVar(WolfgateCVars.RadarShowIffDetailed);
-        ShowDocks = _wfSavedDocks = _wfSettingsCfg.GetCVar(WolfgateCVars.RadarShowDocks);
+        ShowDocks = false;
         _azimuthMode = _wfSavedAzimuth = _wfSettingsCfg.GetCVar(WolfgateCVars.RadarAzimuth) switch
         {
             1 => RadarAzimuthMode.Ring,
@@ -28,24 +26,15 @@ public partial class ShuttleNavControl
         };
     }
 
-    /// <summary>For a radar screen with no docks toggle: docks always show and its state is never saved.</summary>
-    public void WfPinDocks()
-    {
-        _wfDocksPinned = true;
-        ShowDocks = true;
-    }
-
     /// <summary>Saves a display choice when the player changes it.</summary>
     private void WfSaveDisplaySettings()
     {
-        var docks = _wfDocksPinned ? _wfSavedDocks : ShowDocks;
-        if (ShowIFF == _wfSavedIff && ShowIFFDetailed == _wfSavedIffDetailed && docks == _wfSavedDocks &&
+        if (ShowIFF == _wfSavedIff && ShowIFFDetailed == _wfSavedIffDetailed &&
             _azimuthMode == _wfSavedAzimuth)
             return;
 
         _wfSettingsCfg.SetCVar(WolfgateCVars.RadarShowIff, _wfSavedIff = ShowIFF);
         _wfSettingsCfg.SetCVar(WolfgateCVars.RadarShowIffDetailed, _wfSavedIffDetailed = ShowIFFDetailed);
-        _wfSettingsCfg.SetCVar(WolfgateCVars.RadarShowDocks, _wfSavedDocks = docks);
         _wfSettingsCfg.SetCVar(WolfgateCVars.RadarAzimuth, (int) (_wfSavedAzimuth = _azimuthMode));
         _wfSettingsCfg.SaveToFile();
     }

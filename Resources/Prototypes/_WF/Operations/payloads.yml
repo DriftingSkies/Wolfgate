@@ -99,7 +99,7 @@
   description: Materials recovered by a TSF operation, sealed to Federation access.
   components:
   - type: AccessReader
-    access: [ [ "Security" ] ]
+    access: [ [ "Tsfmc" ] ]
   - type: StorageFill
     contents:
     - id: WFSheetPlastitanium5
@@ -111,7 +111,7 @@
   description: Materials recovered by a PDV operation, sealed to Vanguard access.
   components:
   - type: AccessReader
-    access: [ [ "Pirate" ] ]
+    access: [ [ "PDV" ] ]
   - type: StorageFill
     contents:
     - id: SheetPdvComposite5
@@ -123,7 +123,7 @@
   description: Materials recovered by a TSF operation, sealed to Federation access.
   components:
   - type: AccessReader
-    access: [ [ "Security" ] ]
+    access: [ [ "Tsfmc" ] ]
   - type: StorageFill
     contents:
     - id: SheetPlastitanium10
@@ -148,7 +148,7 @@
   description: Materials recovered by a PDV operation, sealed to Vanguard access.
   components:
   - type: AccessReader
-    access: [ [ "Pirate" ] ]
+    access: [ [ "PDV" ] ]
   - type: StorageFill
     contents:
     - id: SheetPdvComposite10

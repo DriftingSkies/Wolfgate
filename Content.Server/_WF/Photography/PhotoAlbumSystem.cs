@@ -8,6 +8,7 @@ using Content.Shared._WF.Photography;
 using Content.Shared.GameTicking;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
+using Content.Shared.Preferences;
 using Content.Shared.Storage.EntitySystems;
 using Robust.Shared.Configuration;
 using Robust.Shared.Containers;
@@ -200,7 +201,7 @@ public sealed partial class PhotoAlbumSystem : EntitySystem
         var mob = args.Mob;
         var user = args.Player.UserId;
         if (!_preferences.TryGetCachedPreferences(user, out var preferences)
-            || !preferences.TryIndexOfCharacter(args.Profile, out var slot))
+            || !TryFindSlot(preferences, args.Profile, out var slot))
             return;
 
         Dictionary<int, int> profileIds;
@@ -229,6 +230,34 @@ public sealed partial class PhotoAlbumSystem : EntitySystem
 
         if (HasComp<PhotographerComponent>(mob))
             GivePersonalAlbum(mob, profileId, albums.Count);
+    }
+
+    /// <summary>
+    /// Finds the spawned profile's slot. Paying for loadout items at spawn replaces the cached profile with one holding
+    /// the new balance, so the spawned one is matched by its contents, ignoring the balance.
+    /// </summary>
+    public static bool TryFindSlot(PlayerPreferences preferences, HumanoidCharacterProfile profile, out int slot)
+    {
+        if (preferences.TryIndexOfCharacter(profile, out slot))
+            return true;
+
+        // Two identical characters can't be told apart; the selected one is the one that spawned, else none.
+        var matches = new List<int>();
+        foreach (var (index, candidate) in preferences.Characters)
+        {
+            if (candidate is HumanoidCharacterProfile humanoid
+                && profile.WithBankBalance(humanoid.BankBalance).MemberwiseEquals(humanoid))
+                matches.Add(index);
+        }
+
+        if (matches.Count == 1)
+            slot = matches[0];
+        else if (matches.Contains(preferences.SelectedCharacterIndex))
+            slot = preferences.SelectedCharacterIndex;
+        else
+            return false;
+
+        return true;
     }
 
     /// <summary>Gives a saved album back, unless a copy of it is in the world.</summary>
@@ -270,7 +299,7 @@ public sealed partial class PhotoAlbumSystem : EntitySystem
         if (savedCount > 0 && carried == null)
             return;
 
-        var album = carried ?? Spawn(Album, Transform(mob).Coordinates);
+        var album = carried ?? SpawnNextToOrDrop(Album, mob);
         var owner = AddComp<PhotoAlbumOwnerComponent>(album);
         owner.AlbumId = Guid.NewGuid().ToString();
         owner.ProfileId = profileId;

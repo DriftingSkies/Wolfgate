@@ -1,0 +1,419 @@
+# Blueshield Officer clothing ported from GoobStation.
+
+# Back
+- type: entity
+  parent: [ClothingBackpack, BaseCentcommContraband]
+  id: ClothingBackpackBlueshield
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Back/Backpacks/blueshield.rsi
+
+- type: entity
+  parent: [ClothingBackpackDuffel, BaseCentcommContraband]
+  id: ClothingBackpackDuffelBlueshield
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Back/Duffels/blueshield.rsi
+
+- type: entity
+  parent: [ClothingBackpackSatchel, BaseCentcommContraband]
+  id: ClothingBackpackSatchelBlueshield
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Back/Satchels/blueshield.rsi
+
+- type: entity
+  parent: [NFClothingMessenger, BaseCentcommContraband]
+  id: ClothingBackpackMessengerBlueshield
+  components:
+  - type: Sprite
+    sprite: _NF/Clothing/Back/Messenger/color.rsi
+    layers:
+    - state: icon-base
+      color: "#404040"
+    - state: icon-sling
+      color: "#004281"
+    - state: icon-clasp
+      color: "#005DBF"
+  - type: Clothing
+    sprite: _NF/Clothing/Back/Messenger/color.rsi
+    clothingVisuals:
+      back:
+      - state: base-equipped-BACKPACK
+        color: "#404040"
+      - state: sling-equipped-BACKPACK
+        color: "#004281"
+      - state: clasp-equipped-BACKPACK
+        color: "#005DBF"
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: base-inhand-left
+        color: "#404040"
+      - state: clasp-inhand-left
+        color: "#eca615"
+      right:
+      - state: base-inhand-right
+        color: "#404040"
+      - state: clasp-inhand-right
+        color: "#eca615"
+
+# Belt
+- type: entity
+  parent: [ClothingBeltStorageBase, ContentsExplosionResistanceBase, BaseCentcommContraband]
+  id: ClothingBeltMilitaryWebbingBSO
+  suffix: Empty
+  components:
+  - type: Sprite
+    sprite: Clothing/Belt/militarywebbing.rsi
+  - type: Clothing
+    sprite: Clothing/Belt/militarywebbing.rsi
+  - type: ExplosionResistance
+    damageCoefficient: 0.05
+
+# Ears
+- type: entity
+  parent: [ClothingHeadsetAlt, BaseCentcommContraband]
+  id: ClothingHeadsetAltBlueshield
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyCommand
+      - EncryptionKeyCentCom
+      - EncryptionKeyCommon
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Ears/Headsets/blueshield.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Ears/Headsets/blueshield.rsi
+
+# Eyes
+- type: entity
+  parent: [ClothingEyesBase, BaseCentcommContraband, ClothingEyesGlassesSunglasses]
+  id: ClothingEyesGlassesBSO
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Eyes/Glasses/bsoglasses.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Eyes/Glasses/bsoglasses.rsi
+  - type: ShowHealthBars
+    damageContainers:
+    - Biological
+    - Inorganic
+  - type: ShowHealthIcons
+    damageContainers:
+    - Biological
+  - type: ShowJobIcons
+  - type: ShowMindShieldIcons
+  - type: ShowHungerIcons
+  - type: ShowThirstIcons
+
+# Head
+- type: entity
+  abstract: true
+  parent: ClothingHeadBase
+  id: WFClothingHeadHatArmoredCC
+  components:
+  - type: Armor
+    coverage: [Head]
+    modifiers:
+      coefficients:
+        Blunt: 0.3
+        Slash: 0.3
+        Piercing: 0.3
+        Heat: 0.3
+        Radiation: 0.75
+        Caustic: 0.75
+  - type: ExplosionResistance
+    damageCoefficient: 0.75
+
+- type: entity
+  parent: [WFClothingHeadHatArmoredCC, BaseCentcommContraband]
+  id: ClothingHeadHatBeretBlueshield
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Head/Hats/blueshield_beret.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Head/Hats/blueshield_beret.rsi
+  - type: Tag
+    tags:
+    - ClothMade
+    - WhitelistChameleon
+
+- type: entity
+  parent: [WFClothingHeadHatArmoredCC, BaseCentcommContraband]
+  id: ClothingHeadHatCowboyBlueshield
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Head/Hats/cowboyhatbso.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Head/Hats/cowboyhatbso.rsi
+  - type: Tag
+    tags:
+    - ClothMade
+    - WhitelistChameleon
+
+- type: entity
+  parent: [WFClothingHeadHatArmoredCC, BaseFoldable, BaseCentcommContraband]
+  id: ClothingHeadHatUshankaBlueshield
+  components:
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Head/Hats/blueshield_ushanka.rsi
+  - type: Appearance
+  - type: Foldable
+    canFoldInsideContainer: true
+  - type: FoldableClothing
+    foldedEquippedPrefix: up
+    foldedHeldPrefix: up
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Head/Hats/blueshield_ushanka.rsi
+    layers:
+    - state: icon
+      map: [ "unfoldedLayer" ]
+    - state: icon-up
+      map: [ "foldedLayer" ]
+      visible: false
+
+- type: entity
+  parent: ClothingHeadHatHoodWinterBase
+  id: ClothingHeadHatHoodWinterBso
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Head/Hoods/bso_winter_hood.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Head/Hoods/bso_winter_hood.rsi
+
+- type: entity
+  parent: [ClothingHeadHardsuitBase, ClothingHeadSuitWithLightBase]
+  id: ClothingHeadHelmetHardsuitBlueshield
+  components:
+  - type: BreathMask
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Head/Hardsuits/bso.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Head/Hardsuits/bso.rsi
+  - type: PointLight
+    color: "#4d7ae3"
+    rotation: 30
+    energy: 10
+    radius: 5
+  - type: PressureProtection
+    highPressureMultiplier: 0.525
+    lowPressureMultiplier: 1000
+  - type: Armor
+    coverage: [Head]
+    modifiers:
+      coefficients:
+        Blunt: 0.65
+        Slash: 0.65
+        Piercing: 0.7
+        Heat: 0.7
+
+# Mask
+- type: entity
+  parent: [ClothingMaskGas, BaseCentcommContraband]
+  id: ClothingBSOMaskGasSwat
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Mask/bsoswat.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Mask/bsoswat.rsi
+  - type: Tag
+    tags:
+    - WhitelistChameleon
+    - IPCMaskWearable
+  - type: HideLayerClothing
+    slots:
+    - Hair
+    - Snout
+    - HeadTop
+
+# Neck
+- type: entity
+  parent: [ClothingNeckBase, BaseCentcommContraband]
+  id: ClothingNeckMantleBlueshield
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Neck/Mantle/bsomantle.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Neck/Mantle/bsomantle.rsi
+
+- type: entity
+  parent: [ClothingNeckBase, BaseCentcommContraband]
+  id: ClothingNeckEnsembleBlueshield
+  components:
+  - type: Item
+    size: Small
+    heldPrefix: cloakblackmantle
+    inhandVisuals:
+      left:
+      - state: inhand-left
+      right:
+      - state: inhand-right
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Neck/Ensembles/bso.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Neck/Ensembles/bso.rsi
+    equippedPrefix: cloakblackmantle
+    slots:
+    - Neck
+  - type: ItemSwitch
+    state: cloakblackmantle
+    showLabel: true
+    states:
+      cloakblackmantle: !type:ItemSwitchState
+        verb: itemswitch-state-cloakblackmantle
+        sprite:
+          sprite: _WF/Blueshield/Clothing/Neck/Ensembles/bso.rsi
+          state: icon
+      cloakwhitemantle: !type:ItemSwitchState
+        verb: itemswitch-state-cloakwhitemantle
+        sprite:
+          sprite: _WF/Blueshield/Clothing/Neck/Ensembles/bso.rsi
+          state: cloakwhitemantle-icon
+      cloakwhite: !type:ItemSwitchState
+        verb: itemswitch-state-cloakwhite
+        sprite:
+          sprite: _WF/Blueshield/Clothing/Neck/Ensembles/bso.rsi
+          state: cloakwhite-icon
+      cloakblack: !type:ItemSwitchState
+        verb: itemswitch-state-cloakblack
+        sprite:
+          sprite: _WF/Blueshield/Clothing/Neck/Ensembles/bso.rsi
+          state: cloakblack-icon
+      mantle: !type:ItemSwitchState
+        verb: itemswitch-state-mantle
+        sprite:
+          sprite: _WF/Blueshield/Clothing/Neck/Ensembles/bso.rsi
+          state: mantle-icon
+
+# Outer clothing
+- type: entity
+  parent: [BaseCentcommContraband, ClothingOuterArmorCaptainCarapace]
+  id: ClothingBlueshieldArmourVest
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Armor/bso_armour.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Armor/bso_armour.rsi
+  - type: Item
+    size: Normal
+
+- type: entity
+  parent: ClothingBlueshieldArmourVest
+  id: ClothingBlueshieldArmoredJacket
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/OuterClothing/Armor/blueshield_jacket.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/OuterClothing/Armor/blueshield_jacket.rsi
+
+- type: entity
+  parent: ClothingBlueshieldArmourVest
+  id: ClothingBlueshieldArmoredCowboyJacket
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/OuterClothing/Armor/blueshield_cowboy_jacket.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/OuterClothing/Armor/blueshield_cowboy_jacket.rsi
+
+- type: entity
+  parent: [BaseCentcommContraband, ClothingOuterArmorCaptainCarapace, ClothingOuterWinterCoatToggleable]
+  id: ClothingOuterWinterBlueshield
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/OuterClothing/Wintercoats/bso_winter_coat.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/OuterClothing/Wintercoats/bso_winter_coat.rsi
+  - type: Item
+    size: Normal
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.4
+        Slash: 0.4
+        Piercing: 0.5
+        Heat: 0.4
+        Caustic: 0.65
+  - type: ToggleableClothing
+    clothingPrototypes:
+      head: ClothingHeadHatHoodWinterBso
+
+- type: entity
+  parent: [ClothingOuterHardsuitBase, BaseCentcommContraband]
+  id: ClothingOuterHardsuitBlueshieldLight
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/OuterClothing/Hardsuits/bsolight.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/OuterClothing/Hardsuits/bsolight.rsi
+  - type: PressureProtection
+    highPressureMultiplier: 0.05
+    lowPressureMultiplier: 1000
+  - type: ExplosionResistance
+    damageCoefficient: 0.65
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.65
+        Heat: 0.65
+        Radiation: 0.6
+        Caustic: 0.6
+  - type: ClothingSpeedModifier
+    sprintModifier: 0.9
+    walkModifier: 0.9
+  - type: HeldSpeedModifier
+  - type: ToggleableClothing
+    clothingPrototypes:
+      head: ClothingHeadHelmetHardsuitBlueshield
+  - type: StaminaDamageResistance
+    coefficient: 0.6
+
+# Shoes
+- type: entity
+  parent: [ClothingShoesMilitaryBase, ClothingShoesBaseWinterBoots, BaseCentcommContraband]
+  id: ClothingShoesBootsWinterSnowjackBso
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Shoes/Boots/bso_snowjacks.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Shoes/Boots/bso_snowjacks.rsi
+  - type: ClothingSlowOnDamageModifier
+    modifier: 0.6
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.95
+        Slash: 0.95
+        Piercing: 0.95
+
+# Uniforms
+- type: entity
+  parent: ClothingUniformBase
+  id: ClothingUniformJumpsuitBlueshieldOfficer
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Uniforms/Jumpsuit/Centcom/blueshield_officer.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Uniforms/Jumpsuit/Centcom/blueshield_officer.rsi
+
+- type: entity
+  parent: ClothingUniformBase
+  id: ClothingUniformJumpsuitBlueshieldShirt
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Uniforms/Jumpsuit/Centcom/blueshield_shirt.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Uniforms/Jumpsuit/Centcom/blueshield_shirt.rsi
+
+- type: entity
+  parent: ClothingUniformBase
+  id: ClothingUniformJumpskirtBlueshieldOfficer
+  components:
+  - type: Sprite
+    sprite: _WF/Blueshield/Clothing/Uniforms/Jumpskirt/Centcom/blueshield_officer.rsi
+  - type: Clothing
+    sprite: _WF/Blueshield/Clothing/Uniforms/Jumpskirt/Centcom/blueshield_officer.rsi

@@ -12,6 +12,8 @@
                 <!-- Quality -->
                 <Label Text="{Loc 'ui-options-quality-label'}" StyleClasses="LabelKeyText"/>
                 <ui:OptionDropDown Name="DropDownLightingQuality" Title="{Loc 'ui-options-lighting-label'}" />
+                <!-- WOLFGATE(InteractionParticles): interaction particle visibility -->
+                <ui:OptionDropDown Name="DropDownInteractionParticles" Title="{Loc 'ui-options-interaction-particles'}" ToolTip="{Loc 'ui-options-interaction-particles-tooltip'}" />
                 <CheckBox Name="ViewportLowResCheckBox" Text="{Loc 'ui-options-vp-low-res'}" />
                 <CheckBox Name="ParallaxLowQualityCheckBox" Text="{Loc 'ui-options-parallax-low-quality'}" />
                 <CheckBox Name="AmbientOcclusionCheckBox" Text="{Loc 'ui-options-ambient-occlusion'}" />

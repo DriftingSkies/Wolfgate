@@ -115,13 +115,22 @@ public partial class ShuttleNavControl
                 : Loc.GetString("wf-planet-signals-marker-vessel", ("name", WFPlanetSignalsWindow.NameOf(signal)),
                     ("layer", WFPlanetSignalsWindow.LayerOf(signal)));
             var labelSize = handle.GetDimensions(Font, label, UIScale * 0.8f);
-            handle.DrawString(Font, point + new Vector2(size * 2f, -labelSize.Y / 2f), label, UIScale * 0.8f, color);
+            WfBeginTag(point, point + new Vector2(size * 2f, -labelSize.Y / 2f), mine ? 2 : 0, always: mine);
+            WfTagLine(handle, label, UIScale * 0.8f, color);
         }
+    }
+
+    /// <summary>Lets a world pinned to the scope's rim, which has no tag, be clicked by its blip alone.</summary>
+    private void WfAddPlanetBlipHit(EntityUid body, Vector2 uiPosition)
+    {
+        if (EntManager.HasComponent<WFPlanetSignalsComponent>(body))
+            _wfPlanetHits.Add((body, uiPosition * UIScale, 16f * UIScale, default));
     }
 
     /// <summary>
     /// Over a world's name on the radar out in space: how many vessels, sites and people it holds, and whether the ship's
-    /// expedition is there. A world drawn here is off the scope or has no scope circle, so only its blip and name take a click.
+    /// expedition is there, added to the name's tag. A world drawn here is off the scope or has no scope circle, so only
+    /// its blip and name take a click.
     /// </summary>
     private void WfDrawPlanetSignalTag(DrawingHandleScreen handle, EntityUid body, Vector2 uiPosition, Vector2 labelOffset, string label)
     {
@@ -152,26 +161,20 @@ public partial class ShuttleNavControl
         if (vessels == 0 && sites == 0 && signals.People == 0)
             return;
 
-        // Stacked upward from the name, so the detailed lines below it keep their place.
-        var at = labelAt;
+        // Stacked upward from the name, so the detailed lines below it keep their place. They show while the name
+        // stands alone; in a stack only the name is listed.
         var tag = Loc.GetString("wf-planet-signals-tag", ("vessels", vessels), ("sites", sites), ("people", signals.People));
-        at.Y -= handle.GetDimensions(Font, tag, UIScale * 0.7f).Y;
-        handle.DrawString(Font, at, tag, UIScale * 0.7f, WfSiteColor);
+        WfTagAbove(handle, tag, UIScale * 0.7f, WfSiteColor);
 
         // A cargo depot on the world is named over it, in the depots' colour.
         foreach (var depot in _wfDepots)
         {
             var line = Loc.GetString("wf-planet-signals-tag-depot", ("depot", Loc.GetString(depot)));
-            at.Y -= handle.GetDimensions(Font, line, UIScale * 0.8f).Y;
-            handle.DrawString(Font, at, line, UIScale * 0.8f, WFPlanetCargoHubSites.Colour);
+            WfTagAbove(handle, line, UIScale * 0.8f, WFPlanetCargoHubSites.Colour);
         }
 
-        if (!mine)
-            return;
-
-        var expedition = Loc.GetString("wf-planet-signals-tag-expedition");
-        at.Y -= handle.GetDimensions(Font, expedition, UIScale * 0.7f).Y;
-        handle.DrawString(Font, at, expedition, UIScale * 0.7f, WfExpeditionColor);
+        if (mine)
+            WfTagAbove(handle, Loc.GetString("wf-planet-signals-tag-expedition"), UIScale * 0.7f, WfExpeditionColor);
     }
 
     /// <summary>

@@ -168,6 +168,7 @@ NAV plot (`WFCockpitAimLines`) and the ship cam (`WFCockpitAimOverlay`, added wh
 - [`Content.Client/_WF/Cockpit/WFCockpitInstrumentSizing.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitInstrumentSizing.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitLease.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitLease.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitMfdLayout.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitMfdLayout.cs)
+- [`Content.Client/_WF/Cockpit/WFCockpitOptionalHost.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitOptionalHost.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitPanCommand.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitPanCommand.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitPanDiagnosticSystem.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitPanDiagnosticSystem.cs)
 - [`Content.Client/_WF/Cockpit/WFCockpitPanelLayout.cs`](../../../Content.Client/_WF/Cockpit/WFCockpitPanelLayout.cs)

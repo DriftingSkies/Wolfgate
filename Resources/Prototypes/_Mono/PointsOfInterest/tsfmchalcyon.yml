@@ -81,8 +81,7 @@
             TsfBorg: [ 3, 3 ]
             # WOLFGATE END
           tags:
-          - HeadOfPersonnel
-          - HeadOfSecurity
+          - TsfmcColonel
         - type: StationDeadDropReporting
           messageSet: Nfsd
         - type: StationDeadDropHintExempt

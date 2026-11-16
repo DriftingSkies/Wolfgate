@@ -55,8 +55,12 @@ wf-withdrawal-host-craving-nicotine-2 = HABIT LOOP: idle.
 wf-withdrawal-host-craving-nicotine-3 = HABIT LOOP: idle.
 
 trait-wf-dependent-stimulant-name = Stimulant habit
-trait-wf-dependent-stimulant-desc = You start every shift already hooked on stimulants, with one cut baggie to your name. Go more than a few minutes without and the shakes and exhaustion set in. Stay clean long enough and they ease to cravings, but the habit never fades.
+trait-wf-dependent-stimulant-desc = You start every shift already hooked on stimulants, with one cut baggie to your name, or a copied Whiteline stick if you run neuroware. Go more than a few minutes without and the shakes and exhaustion set in. Stay clean long enough and they ease to cravings, but the habit never fades.
 trait-wf-dependent-opioid-name = Opioid habit
-trait-wf-dependent-opioid-desc = You start every shift already hooked on opioids, with one cut baggie to your name. Go more than a few minutes without and the shakes and exhaustion set in. Stay clean long enough and they ease to cravings, but the habit never fades.
+trait-wf-dependent-opioid-desc = You start every shift already hooked on opioids, with one cut baggie to your name, or a copied Null Loop stick if you run neuroware. Go more than a few minutes without and the shakes and exhaustion set in. Stay clean long enough and they ease to cravings, but the habit never fades.
+trait-wf-dependent-empathogen-name = Empathogen habit
+trait-wf-dependent-empathogen-desc = You start every shift already hooked on Halo, with one cut vial to your name, or a copied Halo stick if you run neuroware. Go more than a few minutes without and the shakes and exhaustion set in. Stay clean long enough and they ease to cravings, but the habit never fades.
+trait-wf-dependent-cannabinoid-name = Stoner
+trait-wf-dependent-cannabinoid-desc = You start every shift wanting to be high, with a joint to your name, or a copied Idle stick if you run neuroware. Go too long without and the craving nags at you until you light up.
 trait-wf-dependent-nicotine-name = Smoker
 trait-wf-dependent-nicotine-desc = You start every shift craving nicotine. Go too long without a smoke and the craving nags at you until you finish one.

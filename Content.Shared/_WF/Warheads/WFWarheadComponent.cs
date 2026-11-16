@@ -32,9 +32,9 @@ public sealed partial class WFWarheadComponent : Component
     [DataField]
     public float DisarmDelay = 30f;
 
-    /// <summary>Tool quality that disarms it.</summary>
+    /// <summary>Tool quality that disarms it outright; null, the default, leaves only its fuze wires.</summary>
     [DataField]
-    public string DisarmQuality = "Pulsing";
+    public string? DisarmQuality;
 
     /// <summary>When the countdown reaches zero.</summary>
     [DataField, AutoNetworkedField]

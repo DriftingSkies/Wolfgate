@@ -642,7 +642,7 @@
     requiredCompanies:
     - Colonial
   - type: AccessReader
-    access: [["HeadOfPersonnel"]]
+    access: [["CaelestinusCommand"]]
 
 - type: entity
   parent: BaseComputerTabletopStationAdminBankATM
@@ -656,7 +656,7 @@
     requiredCompanies:
     - TSF
   - type: AccessReader
-    access: [["HeadOfSecurity"]]
+    access: [["TsfmcCaptain"], ["TsfmcArmory"]] # WOLFGATE: the access refactor took the payroll console from Fireteam Leaders
 
 - type: entity
   parent: BaseComputerTabletopStationAdminBankATM
@@ -670,7 +670,7 @@
     requiredCompanies:
     - Colonial # WOLFGATE: Medical Dispatch staff are Colonial since Monolith#4807
   - type: AccessReader
-    access: [["ChiefMedicalOfficer"]]
+    access: [["CaelestinusCommand"]]
 
 - type: entity
   parent: [BaseStructureIndestructible, BaseStructureComputerTabletop, ComputerContrabandPalletConsole]

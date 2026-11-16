@@ -26,9 +26,11 @@ public static class SharedSymphony
     /// off for every client, and the list of them in /symphony/lobby. Version 12 added {"clear": true} there, which takes
     /// them all away. Version 13 added stealth to each player in /symphony/players, so the panel can count the staff on
     /// for players without giving a stealthed admin away. Version 16 added the census: wolfgate_census and
-    /// wolfgate_census_response, which the panel reads, and /symphony/census, /symphony/census/delete.
+    /// wolfgate_census_response, which the panel reads, and /symphony/census, /symphony/census/delete. Version 19 added
+    /// /symphony/logs: the server's own latest log lines, every level it logs at, for the panel's live server log (17 and
+    /// 18 are kept for the character creator).
     /// </summary>
-    public const int ModuleVersion = 16;
+    public const int ModuleVersion = 19;
 
     /// <summary>
     /// Key of the one-time Discord link URL in a whitelist refusal's structured properties.

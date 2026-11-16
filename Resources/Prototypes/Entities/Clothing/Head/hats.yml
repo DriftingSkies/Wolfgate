@@ -149,9 +149,9 @@
   description: A beret with the cargo's insignia emblazoned on it. For quartermasters that are more inclined towards style.
   components:
   - type: Sprite
-    sprite: Clothing/Head/Hats/beret_qm.rsi
+    sprite: _WF/Resprites/Goobstation/Clothing/Head/Hats/beret_qm.rsi # WOLFGATE(Resprites): GoobStation beret resprite
   - type: Clothing
-    sprite: Clothing/Head/Hats/beret_qm.rsi
+    sprite: _WF/Resprites/Goobstation/Clothing/Head/Hats/beret_qm.rsi # WOLFGATE(Resprites): GoobStation beret resprite
   - type: Tag
     tags:
     - ClothMade

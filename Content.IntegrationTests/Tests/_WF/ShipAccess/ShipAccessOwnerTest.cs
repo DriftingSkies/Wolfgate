@@ -70,7 +70,7 @@ public sealed class ShipAccessOwnerTest
 ";
 
     /// <summary>Access a faction ship's doors might be mapped with.</summary>
-    private const string FactionAccess = "Pirate";
+    private const string FactionAccess = "PDV";
 
     /// <summary>An access group holding <see cref="FactionAccess"/>.</summary>
     private const string FactionGroup = "PDV";

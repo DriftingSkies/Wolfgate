@@ -114,6 +114,14 @@ public abstract class SharedChameleonClothingSystem : EntitySystem
     protected virtual void UpdateSprite(EntityUid uid, EntityPrototype proto) { }
 
     /// <summary>
+    ///     Changes the entity the chameleon item copies. Implemented on the server.
+    /// </summary>
+    // WOLFGATE(Modsuits) START: MOD chameleon modules drive the disguise from shared code
+    public virtual void SetSelectedPrototype(EntityUid uid, string? protoId, bool forceUpdate = false,
+        ChameleonClothingComponent? component = null) { }
+    // WOLFGATE END
+
+    /// <summary>
     ///     Check if this entity prototype is valid target for chameleon item.
     /// </summary>
     public bool IsValidTarget(EntityPrototype proto, SlotFlags chameleonSlot = SlotFlags.NONE, string? requiredTag = null)

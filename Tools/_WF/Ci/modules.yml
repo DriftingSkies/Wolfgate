@@ -16,6 +16,87 @@ external:
 # Edits outside _WF that can't hold a WOLFGATE marker: JSON, images, audio, rich-text .txt and map files.
 # Each entry has a path (a file, a folder or a glob), the module it serves (null for a standalone edit) and a reason.
 unmarked:
+  - path: Resources/Maps/_Mono/POI/anomalouslab.yml
+    module: null
+    reason: Caelestinus Expansion I (#675) reverted.
+  - path: Resources/Textures/_Mono/Structures/Decoration/banner.rsi/
+    module: null
+    reason: Caelestinus Expansion I (#675) reverted.
+  - path: Resources/Textures/_Mono/Structures/Machines/server.rsi/
+    module: null
+    reason: Caelestinus Expansion I (#675) reverted.
+  - path: Resources/Audio/_Goobstation/Items/Modsuit/ballin.ogg
+    module: Modsuits
+    reason: MODsuit module sounds ported from GoobStation.
+  - path: Resources/Audio/_Goobstation/Items/Modsuit/ballout.ogg
+    module: Modsuits
+    reason: MODsuit module sounds ported from GoobStation.
+  - path: Resources/Audio/_Goobstation/Items/Modsuit/gravhit.ogg
+    module: Modsuits
+    reason: MODsuit module sounds ported from GoobStation.
+  - path: Resources/Audio/_Goobstation/Items/Modsuit/loader_charge.ogg
+    module: Modsuits
+    reason: MODsuit module sounds ported from GoobStation.
+  - path: Resources/Audio/_Goobstation/Items/Modsuit/loader_launch.ogg
+    module: Modsuits
+    reason: MODsuit module sounds ported from GoobStation.
+  - path: Resources/Audio/_Goobstation/Items/Modsuit/rolling_ball_loop.ogg
+    module: Modsuits
+    reason: MODsuit module sounds ported from GoobStation.
+  - path: Resources/Audio/_Goobstation/Items/Modsuit/sonic_jackhammer.ogg
+    module: Modsuits
+    reason: MODsuit module sounds ported from GoobStation.
+  - path: Resources/Audio/_Goobstation/Machines/ErrorBeep2.wav
+    module: Modsuits
+    reason: MODsuit module sounds ported from GoobStation.
+  - path: Resources/Audio/_Goobstation/Machines/MaxTempAlertCut.wav
+    module: Modsuits
+    reason: MODsuit module sounds ported from GoobStation.
+  - path: Resources/Textures/_Goobstation/Clothing/Back/Modsuits/brigmed.rsi/
+    module: Modsuits
+    reason: MODsuit sprites ported from GoobStation.
+  - path: Resources/Textures/_Goobstation/Clothing/Hands/Modsuits/brigmed.rsi/
+    module: Modsuits
+    reason: MODsuit sprites ported from GoobStation.
+  - path: Resources/Textures/_Goobstation/Clothing/Head/Modsuits/brigmed.rsi/
+    module: Modsuits
+    reason: MODsuit sprites ported from GoobStation.
+  - path: Resources/Textures/_Goobstation/Clothing/OuterClothing/Modsuits/brigmed.rsi/
+    module: Modsuits
+    reason: MODsuit sprites ported from GoobStation.
+  - path: Resources/Textures/_Goobstation/Clothing/OuterClothing/Modsuits/contractor.rsi/
+    module: Modsuits
+    reason: MODsuit sprites ported from GoobStation.
+  - path: Resources/Textures/_Goobstation/Clothing/OuterClothing/Modsuits/corporate.rsi/
+    module: Modsuits
+    reason: MODsuit sprites ported from GoobStation.
+  - path: Resources/Textures/_Goobstation/Clothing/OuterClothing/Modsuits/elite.rsi/
+    module: Modsuits
+    reason: MODsuit sprites ported from GoobStation.
+  - path: Resources/Textures/_Goobstation/Clothing/OuterClothing/Modsuits/loader.rsi/
+    module: Modsuits
+    reason: MODsuit sprites ported from GoobStation.
+  - path: Resources/Textures/_Goobstation/Clothing/OuterClothing/Modsuits/mining.rsi/
+    module: Modsuits
+    reason: MODsuit sprites ported from GoobStation.
+  - path: Resources/Textures/_Goobstation/Clothing/OuterClothing/Modsuits/nct.rsi/
+    module: Modsuits
+    reason: MODsuit sprites ported from GoobStation.
+  - path: Resources/Textures/_Goobstation/Clothing/OuterClothing/Modsuits/syndicate.rsi/
+    module: Modsuits
+    reason: MODsuit sprites ported from GoobStation.
+  - path: Resources/Textures/_Goobstation/Clothing/Shoes/Modsuits/brigmed.rsi/
+    module: Modsuits
+    reason: MODsuit sprites ported from GoobStation.
+  - path: Resources/Textures/_Goobstation/Objects/Specific/Robotics/mod_modules.rsi/
+    module: Modsuits
+    reason: MODsuit sprites ported from GoobStation.
+  - path: Resources/Textures/_EinsteinEngines/Clothing/NanoTrasen/Modsuits/
+    module: Modsuits
+    reason: Einstein Engines emergency-response MODsuit sprites, ported from GoobStation along with their meta.json files.
+  - path: Resources/Textures/Mobs/Animals/mothroach/displacement.rsi/
+    module: null
+    reason: Displacement pixels whose source falls outside the frame are transparent, so worn items stop sampling neighbouring atlas art.
   - path: Resources/Textures/_NF/Clothing/Head/Hats/stc_cap.rsi/equipped-HELMET-vulpkanin.png
     module: null
     reason: The vulpkanin state was a winter coat hood; it now draws the cap itself.
@@ -2233,9 +2314,6 @@ unmarked:
   - path: Resources/Prototypes/_CE/Entities/Structures/Architecture/Ladders/base.yml
     module: EngineCompat
     reason: Engine v286 Box2 rejects inverted bounds; fixture bounds normalized. Engine v287 occluders dropped boundingBox; the default polygon matches.
-  - path: Resources/Prototypes/_Goobstation/Entities/Clothing/Head/modsuit.yml
-    module: EngineCompat
-    reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.
   - path: Resources/Prototypes/_Mono/Entities/Clothing/Head/modsuit.yml
     module: EngineCompat
     reason: Engine v291 replaced PointLight mask paths with lightMask prototypes.

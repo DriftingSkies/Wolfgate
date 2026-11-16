@@ -136,11 +136,15 @@
                              TextAlign="Center"
                              StyleClasses="ButtonSquare"
                              ToggleMode="True"/>
+                    <!-- WOLFGATE(RadarLabels) START: radars mark no docks, so there is nothing to toggle -->
+                    <!--
                     <controls:Button Name="DockToggle"
                             Text="{controls:Loc 'shuttle-console-dock-toggle'}"
                             TextAlign="Center"
                             StyleClasses="ButtonSquare"
                             ToggleMode="True"/>
+                    -->
+                    <!-- WOLFGATE END -->
                     <!-- WOLFGATE(Planets): enter/leave planet orbit, which needs no FTL drive (xmlns:wf above). -->
                     <wf:WFOrbitButton Name="WfOrbitButton"/>
                         </controls:BoxContainer>

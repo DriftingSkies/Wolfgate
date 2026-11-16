@@ -44,7 +44,7 @@
     balance:
       FederationMilitaryCredit: 0
   - type: AccessReader
-    access: [["Security"]]
+    access: [["Tsfmc"]]
   - type: CompanyAccessReader
     requiredCompanies:
     - TSF
@@ -94,7 +94,7 @@
     balance:
       Doubloon: 0
   - type: AccessReader
-    access: [["Pirate"]]
+    access: [["PDV"]]
   - type: CompanyAccessReader
     requiredCompanies:
     - PDV

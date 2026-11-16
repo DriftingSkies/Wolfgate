@@ -13,7 +13,7 @@
   purchasable: false # voucher only - T2
   category: Large
   group: BlackMarket
-  access: Pirate
+  access: PDV
   shuttlePath: /SharedMaps/_WF/OldVessels/BlackMarket/ganymede.yml
   tags:
   - WFClassicVessel

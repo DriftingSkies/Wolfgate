@@ -26,6 +26,10 @@ public sealed partial class WFCrewProfilePrototype : IPrototype
     [DataField]
     public Dictionary<ProtoId<WFCrewRolePrototype>, List<ProtoId<StartingGearPrototype>>> Loadouts = new();
 
+    /// <summary>Skill tiers a crewman with this loadout stands above (or, negative, below) the crew's skill.</summary>
+    [DataField]
+    public Dictionary<ProtoId<StartingGearPrototype>, int> SkillOffsets = new();
+
     /// <summary>Roles that fight differently from their role's default.</summary>
     [DataField]
     public Dictionary<ProtoId<WFCrewRolePrototype>, WFCrewEngagement> Engagement = new();

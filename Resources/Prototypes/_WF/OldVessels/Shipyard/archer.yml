@@ -13,7 +13,6 @@
   price: 98773 # the plasma and plastitanium tax is real...
   category: Medium
   group: Shipyard
-  access: Mercenary
   shuttlePath: /SharedMaps/_WF/OldVessels/archer.yml
   tags:
   - WFClassicVessel

@@ -539,7 +539,7 @@
     proto: ContractorT3
   price: 0 # Mono
   equipment:
-    neck: ClothingNeckCloakCe
+    neck: ClothingNeckCloakWhiteCe # WOLFGATE(Resprites): GoobStation cloak resprite renamed the chief engineer's cloak
 
 - type: loadout
   id: ContractorClothingNeckMantleCE
@@ -548,7 +548,7 @@
     proto: ContractorT3
   price: 0 # Mono
   equipment:
-    neck: ClothingNeckMantleCE
+    neck: ClothingNeckMantleWhiteCE # WOLFGATE(Resprites): GoobStation mantle resprite renamed the chief engineer's mantle
 
 - type: loadout
   id: ContractorClothingNeckCloakVoid

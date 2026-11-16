@@ -207,7 +207,7 @@
     jumpsuit: ClothingUniformJumpsuitChiefEngineer
     shoes: ClothingShoesColorWhite
     head: ClothingHeadHatBeretEngineering
-    neck: ClothingNeckCloakCe
+    neck: ClothingNeckCloakWhiteCe # WOLFGATE(Resprites): GoobStation cloak resprite renamed the chief engineer's cloak
     outerClothing: ClothingOuterVestHazard
 
 - type: startingGear
@@ -216,7 +216,7 @@
     jumpsuit: ClothingUniformJumpsuitChiefEngineerTurtle
     shoes: ClothingShoesColorWhite
     head: ClothingHeadHatBeretEngineering
-    neck: ClothingNeckMantleCE
+    neck: ClothingNeckMantleWhiteCE # WOLFGATE(Resprites): GoobStation mantle resprite renamed the chief engineer's mantle
     outerClothing: ClothingOuterWinterCE
 
 - type: startingGear

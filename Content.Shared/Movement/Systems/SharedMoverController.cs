@@ -188,6 +188,8 @@ public abstract partial class SharedMoverController : VirtualController
         if (!XformQuery.TryComp(entity.Owner, out var xform))
             return;
 
+        WfTrackGrid(uid, xform); // WOLFGATE(GridMomentum): before the returns below, so a mob pulled off a ship keeps its speed
+
         RelayTargetQuery.TryComp(uid, out var relayTarget);
         var relaySource = relayTarget?.Source;
 
@@ -309,10 +311,18 @@ public abstract partial class SharedMoverController : VirtualController
             friction = Math.Min(friction, accel);
         friction = Math.Max(friction, _minDamping);
         var minimumFrictionSpeed = moveSpeedComponent?.MinimumFrictionSpeed ?? MovementSpeedModifierComponent.DefaultMinimumFrictionSpeed;
+        // WOLFGATE(GridMomentum) START: off a grid, slow down and push off relative to the grid the mob left, not the map
+        var wfFrame = WfGridFrame(uid, xform);
+        if (!weightless && !inAirHelpless)
+            wfFrame = Vector2.Zero;
+        velocity -= wfFrame;
+        // WOLFGATE END
         Friction(minimumFrictionSpeed, frameTime, friction, ref velocity);
 
         if (!weightless || touching)
             Accelerate(ref velocity, in wishDir, accel, frameTime);
+
+        velocity += wfFrame; // WOLFGATE(GridMomentum)
 
         SetWishDir((uid, mover), wishDir);
 

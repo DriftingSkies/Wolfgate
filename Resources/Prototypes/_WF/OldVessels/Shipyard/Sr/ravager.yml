@@ -11,7 +11,7 @@
   price: 712000 # appraised at 378473 after the classic downgrade; 1.88x markup
   category: Large
   group: Sr
-  access: Security # Shouldn't be buyable with sec voucher.
+  access: Caelestinus # Shouldn't be buyable with sec voucher.
   mapchecker_group_override: Security
   shuttlePath: /SharedMaps/_WF/OldVessels/ravager.yml
   tags:

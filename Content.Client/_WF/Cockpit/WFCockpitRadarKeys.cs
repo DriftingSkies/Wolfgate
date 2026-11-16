@@ -20,7 +20,7 @@ public sealed class WFCockpitRadarKeys : Control
     public static readonly Vector2 Key = new(52, 32);
 
     /// <summary>The box the mode buttons take at the scope's bottom left.</summary>
-    public static readonly Vector2 Modes = new(176, 32);
+    public static readonly Vector2 Modes = new(212, 32);
 
     private readonly BoxContainer _row = new() { Name = "CockpitRadarKeyRow", SeparationOverride = (int) Gap };
 

@@ -936,6 +936,11 @@ namespace Content.Server.Database.Migrations.Sqlite
                         .HasColumnType("TEXT")
                         .HasColumnName("chat_font");
 
+                    b.Property<string>("CombatMusic")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("combat_music");
+
                     b.Property<string>("Company")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -2456,6 +2461,25 @@ namespace Content.Server.Database.Migrations.Sqlite
                     b.ToTable("wolfgate_game_score", (string)null);
                 });
 
+            modelBuilder.Entity("Content.Server.Database.WolfgateNanoChatNumber", b =>
+                {
+                    b.Property<int>("ProfileId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("profile_id");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("number");
+
+                    b.HasKey("ProfileId")
+                        .HasName("PK_wolfgate_nano_chat_number");
+
+                    b.HasIndex("Number")
+                        .IsUnique();
+
+                    b.ToTable("wolfgate_nano_chat_number", (string)null);
+                });
+
             modelBuilder.Entity("Content.Server.Database.WolfgatePhoto", b =>
                 {
                     b.Property<string>("Hash")
@@ -3318,6 +3342,18 @@ namespace Content.Server.Database.Migrations.Sqlite
                         .HasConstraintName("FK_wolfgate_custom_marking_art");
 
                     b.Navigation("Art");
+                });
+
+            modelBuilder.Entity("Content.Server.Database.WolfgateNanoChatNumber", b =>
+                {
+                    b.HasOne("Content.Server.Database.Profile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_wolfgate_nano_chat_number_profile_profile_id");
+
+                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("Content.Server.Database.WolfgatePhotoAlbum", b =>

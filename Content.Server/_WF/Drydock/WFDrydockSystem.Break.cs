@@ -9,6 +9,8 @@ using Content.Server.Construction;
 using Content.Server.Construction.Components;
 using Content.Server.Materials;
 using Content.Shared._Crescent.Hardpoints;
+using Content.Shared._Mono.Company;
+using Content.Shared._WF.Companies;
 using Content.Shared._Mono.ShipRepair.Components;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WF.Drydock;
@@ -46,6 +48,9 @@ public sealed partial class WFDrydockSystem
 
     /// <summary>Container a computer keeps its board in.</summary>
     private const string ComputerBoardContainer = "board";
+
+    /// <summary>Company of a player or ship with no faction.</summary>
+    private static readonly ProtoId<CompanyPrototype> NoFaction = "None";
 
     /// <summary>Damage type salvaged hardware unpacks with.</summary>
     private static readonly ProtoId<DamageTypePrototype> SalvageDamage = "Blunt";
@@ -105,6 +110,9 @@ public sealed partial class WFDrydockSystem
 
         if (BreakRefusal(console, comp, ship) is { } refusal)
             return Deny(console, comp, actor, refusal);
+
+        if (FactionBreakRefusal(ship, actor) is { } factionRefusal)
+            return Deny(console, comp, actor, factionRefusal);
 
         if (!CranesReady(console, comp, actor, out var cranes))
             return false;
@@ -191,6 +199,29 @@ public sealed partial class WFDrydockSystem
             return Loc.GetString("drydock-console-break-indestructible");
 
         return null;
+    }
+
+    /// <summary>
+    /// Why a breaker can't break a ship of their own faction, or null: a faction can't strip its own hulls for their
+    /// materials, so only other factions can break them.
+    /// </summary>
+    public string? FactionBreakRefusal(EntityUid ship, EntityUid breaker)
+    {
+        if (ShipFaction(ship) is not { } shipFaction
+            || !TryComp<CompanyComponent>(breaker, out var faction) || faction.CompanyName != shipFaction)
+            return null;
+
+        return Loc.GetString("drydock-console-break-own-faction");
+    }
+
+    /// <summary>The faction a ship flies for, including one a player company's flag hides, or null.</summary>
+    private string? ShipFaction(EntityUid ship)
+    {
+        var faction = CompOrNull<CompanyComponent>(ship)?.CompanyName.Id;
+        if (string.IsNullOrEmpty(faction))
+            faction = CompOrNull<WFCompanyShipComponent>(ship)?.PreviousFaction;
+
+        return string.IsNullOrEmpty(faction) || faction == NoFaction ? null : faction;
     }
 
     /// <summary>

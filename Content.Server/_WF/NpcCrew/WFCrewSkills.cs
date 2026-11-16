@@ -1,33 +1,113 @@
+using Content.Server._WF.NpcCrew.Components;
 using Content.Shared._WF.NpcCrew;
 
 namespace Content.Server._WF.NpcCrew;
 
 /// <summary>
-/// What a crew skill level means in numbers. NPC crew are meant to lose to a player of equal kit: at every level
-/// they take more damage than they should, do less, and are slow on the trigger.
+/// What a crew skill level means in numbers and in tactics. NPC crew are meant to lose to a player of equal kit who
+/// moves and spends ammunition: their handicaps are the ones a player can see (stray aim, a slow first shot, softer
+/// hits), and how much they can take is left to the armour they wear.
 /// </summary>
 public static class WFCrewSkills
 {
-    /// <param name="AimError">Degrees a hand weapon shot may stray to either side.</param>
-    /// <param name="ShootDelay">Seconds with a target in sight before the first shot.</param>
-    /// <param name="GunneryError">Metres ship guns may be laid off the target, re-rolled every few seconds.</param>
-    /// <param name="Leading">How well ship guns lead a moving target, 0 to 1.</param>
-    /// <param name="Handling">Multiplier on thrust and turn rate at the helm.</param>
-    /// <param name="Evasion">Multiplier on how far ahead the pilot looks for collisions and incoming fire.</param>
-    /// <param name="DodgesFire">Whether the pilot steers out of the way of ship weapon fire.</param>
-    /// <param name="DamageTaken">Multiplier on damage the crewman takes. NPC crew go down faster than players.</param>
-    /// <param name="DamageDealt">Multiplier on damage the crewman does to anyone who is not NPC crew.</param>
-    public readonly record struct Profile(float AimError, float ShootDelay, float GunneryError, float Leading, float Handling,
-        float Evasion, bool DodgesFire, float DamageTaken, float DamageDealt);
+    /// <summary>The numbers and tactics of one skill level.</summary>
+    public readonly record struct Profile
+    {
+        /// <summary>Degrees a hand weapon shot may stray to either side.</summary>
+        public float AimError { get; init; }
+
+        /// <summary>Seconds with a target in sight before the first shot.</summary>
+        public float ShootDelay { get; init; }
+
+        /// <summary>Seconds before firing on a target seen moments ago or braced for.</summary>
+        public float ReacquireDelay { get; init; }
+
+        /// <summary>Metres ship guns may be laid off the target, re-rolled every few seconds.</summary>
+        public float GunneryError { get; init; }
+
+        /// <summary>How well ship guns lead a moving target, 0 to 1.</summary>
+        public float Leading { get; init; }
+
+        /// <summary>Multiplier on thrust and turn rate at the helm.</summary>
+        public float Handling { get; init; }
+
+        /// <summary>Multiplier on how far ahead the pilot looks for collisions and incoming fire.</summary>
+        public float Evasion { get; init; }
+
+        /// <summary>Whether the pilot steers out of the way of ship weapon fire.</summary>
+        public bool DodgesFire { get; init; }
+
+        /// <summary>Multiplier on damage the crewman takes.</summary>
+        public float DamageTaken { get; init; }
+
+        /// <summary>Multiplier on damage the crewman does to anyone who is not NPC crew.</summary>
+        public float DamageDealt { get; init; }
+
+        /// <summary>Whether he covers the approach to a hostile he knows of but cannot see, instead of going back to work.</summary>
+        public bool Braces { get; init; }
+
+        /// <summary>Whether he throws the grenades he carries.</summary>
+        public bool Throws { get; init; }
+
+        /// <summary>Seconds he holds an armed grenade before throwing it.</summary>
+        public float CookTime { get; init; }
+
+        /// <summary>Whether he steps to a neighbouring tile between shots.</summary>
+        public bool Sidesteps { get; init; }
+
+        /// <summary>Whether, badly hurt in a fight, he breaks contact to patch himself up.</summary>
+        public bool FallsBack { get; init; }
+
+        /// <summary>How many crewmen go looking together for a hostile nobody can see.</summary>
+        public int HuntParty { get; init; }
+    }
+
+    private static readonly Profile Green = new()
+    {
+        AimError = 18f, ShootDelay = 1.4f, ReacquireDelay = 0.5f, GunneryError = 30f, Leading = 0.3f, Handling = 0.7f,
+        Evasion = 0.4f, DodgesFire = false, DamageTaken = 1.3f, DamageDealt = 0.35f,
+        Braces = false, Throws = false, CookTime = 0f, Sidesteps = false, FallsBack = false, HuntParty = 1,
+    };
+
+    private static readonly Profile Regular = new()
+    {
+        AimError = 9f, ShootDelay = 0.9f, ReacquireDelay = 0.25f, GunneryError = 14f, Leading = 0.7f, Handling = 0.9f,
+        Evasion = 0.75f, DodgesFire = true, DamageTaken = 1.15f, DamageDealt = 0.46f,
+        Braces = true, Throws = true, CookTime = 0f, Sidesteps = false, FallsBack = false, HuntParty = 1,
+    };
+
+    private static readonly Profile Veteran = new()
+    {
+        AimError = 4f, ShootDelay = 0.5f, ReacquireDelay = 0.15f, GunneryError = 5f, Leading = 1f, Handling = 1f,
+        Evasion = 1f, DodgesFire = true, DamageTaken = 1f, DamageDealt = 0.63f,
+        Braces = true, Throws = true, CookTime = 1f, Sidesteps = true, FallsBack = true, HuntParty = 2,
+    };
+
+    private static readonly Profile Elite = new()
+    {
+        AimError = 0f, ShootDelay = 0.25f, ReacquireDelay = 0.1f, GunneryError = 0f, Leading = 1f, Handling = 1.1f,
+        Evasion = 1.25f, DodgesFire = true, DamageTaken = 1f, DamageDealt = 0.86f,
+        Braces = true, Throws = true, CookTime = 1.3f, Sidesteps = true, FallsBack = true, HuntParty = 2,
+    };
 
     public static Profile Of(WFCrewSkill skill)
     {
         return skill switch
         {
-            WFCrewSkill.Green => new Profile(18f, 1.4f, 30f, 0.3f, 0.7f, 0.4f, false, 2.6f, 0.35f),
-            WFCrewSkill.Regular => new Profile(9f, 0.9f, 14f, 0.7f, 0.9f, 0.75f, true, 2.1f, 0.46f),
-            WFCrewSkill.Elite => new Profile(0f, 0.25f, 0f, 1f, 1.1f, 1.25f, true, 1.13f, 0.86f),
-            _ => new Profile(4f, 0.5f, 5f, 1f, 1f, 1f, true, 1.55f, 0.63f),
+            WFCrewSkill.Green => Green,
+            WFCrewSkill.Regular => Regular,
+            WFCrewSkill.Elite => Elite,
+            _ => Veteran,
         };
     }
+
+    /// <summary>The crewman's own level: his crew's skill moved by his <see cref="WFCrewComponent.SkillOffset"/>.</summary>
+    public static WFCrewSkill Effective(WFCrewComponent crew)
+    {
+        var level = Math.Clamp((int) crew.Skill + crew.SkillOffset, (int) WFCrewSkill.Green, (int) WFCrewSkill.Elite);
+        return (WFCrewSkill) level;
+    }
+
+    /// <summary>The profile of the crewman's own level.</summary>
+    public static Profile Of(WFCrewComponent crew) => Of(Effective(crew));
 }

@@ -62,6 +62,7 @@ public sealed partial class SiliconComponent : Component
     ///     If true, should go along with a battery component. One will not be added automatically.
     /// </remarks>
     [DataField]
+    [AutoNetworkedField] // WOLFGATE(Biotype): a synthetic biotype adds this at runtime; the client predicted no slowdown without it
     public bool BatteryPowered = false;
 
     /// <summary>
@@ -101,7 +102,8 @@ public sealed partial class SiliconComponent : Component
     ///     The amount the Silicon will be slowed at each charge state.
     /// </summary>
     [DataField(required: true)]
-    public Dictionary<int, float> SpeedModifierThresholds = default!;
+    [AutoNetworkedField] // WOLFGATE(Biotype): a synthetic biotype adds this at runtime; the client predicted no slowdown without it
+    public Dictionary<int, float> SpeedModifierThresholds = new(); // WOLFGATE(Biotype): the networked state copies into it on the client
 
     [DataField]
     public float FireStackMultiplier = 1f;

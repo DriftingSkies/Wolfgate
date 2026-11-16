@@ -4,6 +4,7 @@ using Content.Server._WF.NpcCrew.Components;
 using Content.Server._WF.NpcCrew.Systems;
 using Content.Server.NPC.Components;
 using Content.Server.NPC.Systems;
+using Content.Shared._WF.NpcCrew;
 using Content.Shared.Damage;
 using Content.Shared.Hands.EntitySystems;
 using Robust.Shared.GameObjects;
@@ -59,9 +60,12 @@ public sealed partial class WFCrewTest
         });
     }
 
-    /// <summary>Asking whether crew may fight claims nothing; one plan takes the hunt for an unseen hostile and the rest hold.</summary>
+    /// <summary>
+    /// Asking whether crew may fight claims nothing; the hunt for an unseen hostile takes as many as the opener's skill
+    /// allows (one for a regular, two for a veteran) and the rest hold.
+    /// </summary>
     [Test]
-    public async Task UnseenHostileIsHuntedByOneCrewmanAtATime()
+    public async Task UnseenHostileIsHuntedByAPartySizedBySkill()
     {
         var deck = await CreateDeck(new Vector2(6, 0), 25, gravity: true);
         await Server.WaitAssertion(() =>
@@ -82,8 +86,22 @@ public sealed partial class WFCrewTest
 
             weapons.ClaimAdvance(first, hostile);
             Assert.That(weapons.CanEngage(first, hostile), Is.True, "The claimant goes looking.");
-            Assert.That(weapons.CanEngage(second, hostile), Is.False, "The rest hold.");
+            Assert.That(weapons.CanEngage(second, hostile), Is.True, "A veteran hunt has room for two.");
+            weapons.ClaimAdvance(second, hostile);
+            Assert.That(weapons.CanEngage(second, hostile), Is.True, "The second claimant goes looking.");
             Assert.That(weapons.CanEngage(third, hostile), Is.False, "The rest hold.");
+
+            var other = SEntMan.SpawnAtPosition(Hostile, new EntityCoordinates(deck, new Vector2(22.5f, 20.5f)));
+            foreach (var member in new[] { first, second, third })
+            {
+                var crew = SEntMan.GetComponent<WFCrewComponent>(member);
+                crew.Skill = WFCrewSkill.Regular;
+                crew.RadioSightings[other] = heard;
+            }
+
+            weapons.ClaimAdvance(third, other);
+            Assert.That(weapons.CanEngage(third, other), Is.True, "A regular opens a hunt of one.");
+            Assert.That(weapons.CanEngage(first, other), Is.False, "The rest hold.");
         });
     }
 }

@@ -1,0 +1,127 @@
+# WOLFGATE(Modsuits): MODsuit actions, ported from GoobStation.
+
+- type: entity
+  id: ActionModSuitActivate
+  name: Toggle MOD activation
+  description: Seal or unseal your MODsuit. All parts must be deployed first.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    checkCanInteract: true
+    checkConsciousness: true
+    itemIconStyle: NoItem
+    icon:
+      sprite: _Goobstation/Actions/modsuit.rsi
+      state: activate
+    event: !type:ModSuitActivateActionEvent
+
+- type: entity
+  id: ActionModSuitDeploy
+  name: Deploy MOD parts
+  description: Deploy or retract every part of your MODsuit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    checkCanInteract: true
+    itemIconStyle: BigItem
+    event: !type:ModSuitDeployActionEvent
+
+- type: entity
+  id: ActionModModule
+  name: Use MOD module
+  description: Use or toggle this MODsuit module.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    itemIconStyle: BigItem
+    event: !type:ModModuleActionEvent
+
+- type: entity
+  id: ActionModPowerKick
+  name: Power kick
+  description: Launch yourself at a target with a devastating kick.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EntityWorldTargetAction
+    checkCanInteract: true
+    itemIconStyle: BigItem
+    checkCanAccess: false
+    canTargetSelf: false
+    range: 7
+    event: !type:ModPowerKickActionEvent
+
+- type: entity
+  id: ActionModHydraulicLaunch
+  name: Hydraulic launch
+  description: Charge the hydraulic arms and launch yourself at a target.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EntityWorldTargetAction
+    checkCanInteract: true
+    itemIconStyle: BigItem
+    checkCanAccess: false
+    canTargetSelf: false
+    range: 10
+    event: !type:ModPowerKickActionEvent
+
+- type: entity
+  id: ActionModMagnet
+  name: Hydraulic magnet
+  description: Pull a crate or locker to you, or fling the one you're dragging at a target.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WorldTargetAction
+    checkCanInteract: true
+    itemIconStyle: BigItem
+    checkCanAccess: false
+    range: 7
+    event: !type:ModMagnetActionEvent
+
+- type: entity
+  id: ActionModSphereMissiles
+  name: Launch micromissiles
+  description: Fire a volley of mining micromissiles at the target.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WorldTargetAction
+    icon:
+      sprite: _Goobstation/Objects/Specific/Robotics/mod_modules.rsi
+      state: mine_missile
+    useDelay: 3
+    checkCanInteract: false
+    checkCanAccess: false
+    range: 8
+    event: !type:ModSphereMissileActionEvent
+
+- type: entity
+  id: ActionModRecyclerUnload
+  name: Unload recycler
+  description: Dump everything the recycler has collected at your feet.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    itemIconStyle: BigItem
+    checkCanInteract: false
+    event: !type:ModRecyclerUnloadActionEvent
+
+- type: entity
+  id: ActionModShootingMode
+  name: Cycle shooting mode
+  description: Switch the shooting assistant between off, stormtrooper and sharpshooter modes.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    itemIconStyle: BigItem
+    checkCanInteract: false
+    event: !type:ModShootingModeActionEvent
+
+- type: entity
+  id: ActionModSelectDevice
+  name: Select module tool
+  description: Choose which tool this MOD module deploys.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    itemIconStyle: BigItem
+    checkCanInteract: false
+    event: !type:ModSelectDeviceActionEvent

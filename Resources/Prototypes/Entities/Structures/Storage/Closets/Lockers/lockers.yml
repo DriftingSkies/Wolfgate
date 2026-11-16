@@ -58,7 +58,7 @@
   - type: Sprite
     sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-captain.rsi
   - type: AccessReader
-    access: [ [ "Captain" ] ]
+  #  access: [["Captain"]] # Mono
 
 # Head of Personnel
 - type: entity
@@ -69,7 +69,7 @@
   - type: Sprite
     sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-service.rsi
   - type: AccessReader
-    access: [ [ "HeadOfPersonnel" ] ]
+    access: [["CaelestinusCommand"]] # Mono
 
 # Chief Engineer
 - type: entity
@@ -258,7 +258,7 @@
   - type: Sprite
     sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-medical.rsi
   - type: AccessReader
-#    access: [ [ "ChiefMedicalOfficer" ] ] # Frontier
+    access: [ [ "CaelestinusCommand" ] ] # Mono
 
 # Research Director
 - type: entity
@@ -291,7 +291,7 @@
   - type: Sprite
     sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-security.rsi
   - type: AccessReader
-    access: [["Security"]]
+    access: [["CaelestinusCommand"]] # Mono
 
 # Warden
 - type: entity
@@ -302,29 +302,29 @@
   - type: Sprite
     sprite: _WF/Resprites/Wizden/Storage/Closets/security-secure-warden.rsi
   - type: AccessReader
-    access: [["Armory"]]
+    access: [["TsfmcArmory"]] # Mono
 
 # Brigmedic
 - type: entity
   id: LockerBrigmedic
   parent: LockerBaseSecure
-  name: brigmedic's locker
+  name: corpsman's locker
   components:
   - type: Sprite
     sprite: _WF/Resprites/Wizden/Storage/Closets/misc-secure-brigmedic.rsi
   - type: AccessReader
-    access: [["Security"]]
+    access: [["Tsfmc"]] # Mono
 
 # Security Officer
 - type: entity
   id: LockerSecurity
   parent: LockerBaseSecure
-  name: security officer's locker
+  name: judge's locker
   components:
   - type: Sprite
     sprite: _WF/Resprites/Wizden/Storage/Closets/security-secure-officer.rsi
   - type: AccessReader
-    access: [["Security"]]
+    access: [["Caelestinus"]] # Mono
 
 - type: entity
   id: GunSafe
@@ -364,7 +364,7 @@
   suffix: Armory, Locked
   components:
   - type: AccessReader
-    access: [["Armory"]]
+    access: [["TsfmcArmory"]] # Mono
 
 # Detective
 - type: entity
@@ -374,7 +374,7 @@
   description: Usually cold and empty... like your heart.
   components:
   - type: AccessReader
-    access: [["Detective"]]
+    access: [["Tsfmc"]] # Mono
 
 - type: entity
   id: LockerEvidence
@@ -383,7 +383,7 @@
   description: To store bags of bullet casings and detainee belongings.
   components:
   - type: AccessReader
-    access: [["Security"]]
+    access: [["Caelestinus"]] # Mono
 
 # Syndicate
 - type: entity
@@ -452,7 +452,8 @@
   components:
   - type: AccessReader
 #    access: [["Command"]]
-    access: [["HeadOfPersonnel"]] # Frontier
+#   access: [["HeadOfPersonnel"]] # Frontier
+    access: [["CaelestinusCommand"]] # Mono
   - type: Sprite
     sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-service.rsi
 # WOLFGATE END

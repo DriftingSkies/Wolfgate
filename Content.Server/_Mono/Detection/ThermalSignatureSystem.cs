@@ -129,6 +129,8 @@ public sealed partial class ThermalSignatureSystem : EntitySystem
 
                 sigComp.StoredHeat += ev.Signature * sliceSeconds;
                 sigComp.StoredHeat *= MathF.Pow(sigComp.HeatDissipation, sliceSeconds);
+                if (!float.IsFinite(sigComp.StoredHeat)) // WOLFGATE: one bad source must not poison a grid's heat for good
+                    sigComp.StoredHeat = 0f;
             }
             // WOLFGATE END
 

@@ -24,7 +24,7 @@
       - id: ClothingUniformJumpskirtChiefEngineerTurtle
       - id: ClothingHeadHatBeretEngineering
       - id: ClothingOuterWinterCE
-      - id: ClothingNeckCloakCe
+      - id: ClothingNeckCloakWhiteCe # WOLFGATE(Resprites): GoobStation cloak resprite renamed the chief engineer's cloak
 
 - type: entity
   id: DresserChiefMedicalOfficerFilled

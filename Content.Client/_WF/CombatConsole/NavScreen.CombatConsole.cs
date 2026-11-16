@@ -98,7 +98,7 @@ public sealed partial class NavScreen
         var rangeInput = MaximumIFFDistanceValue.GetChild(0).GetChild(1);
         rangeInput.MinWidth = 72;
         rangeInput.HorizontalExpand = false;
-        var sensorControls = Column(IFFToggle, IFFDetailedToggle, DockToggle, IffSearchBox, MaximumIFFDistanceBox);
+        var sensorControls = Column(IFFToggle, IFFDetailedToggle, IffSearchBox, MaximumIFFDistanceBox);
         sensorControls.SeparationOverride = WfPanelGap;
         var sensors = Panel("wf-console-sensors", sensorControls, padding: WfPanelPadding, gap: 2);
         NetworkPortsBox.Columns = 2;

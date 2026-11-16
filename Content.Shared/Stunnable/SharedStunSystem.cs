@@ -238,6 +238,13 @@ public abstract partial class SharedStunSystem : EntitySystem
         if (!Resolve(uid, ref status, false))
             return false;
 
+        // WOLFGATE(Modsuits) START: rolling MOD spheres shrug off knockdowns
+        var knockdownAttempt = new Content.Shared._WF.Modsuits.Modules.KnockDownAttemptEvent();
+        RaiseLocalEvent(uid, ref knockdownAttempt);
+        if (knockdownAttempt.Cancelled)
+            return false;
+        // WOLFGATE END
+
         if (!_statusEffect.TryAddStatusEffect<KnockedDownComponent>(uid, "KnockedDown", time, refresh))
             return false;
 

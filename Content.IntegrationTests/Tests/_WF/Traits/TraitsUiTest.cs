@@ -167,8 +167,8 @@ public sealed class TraitsUiTest
                 "A blocking species restriction should be shown inline.");
 
             // Traits sit in their layout subgroup, and sorting by points orders each subgroup by cost.
-            var vigor = entries.First(entry => entry.Trait.ID == "Vigor");
-            var tenacity = entries.First(entry => entry.Trait.ID == "Tenacity");
+            var vigor = entries.First(entry => entry.Trait.ID == "WillToLive");
+            var tenacity = entries.First(entry => entry.Trait.ID == "Steadfast");
             Assert.That(vigor.Parent, Is.SameAs(tenacity.Parent), "Toughness traits should share a subgroup.");
             Assert.That(vigor.Parent, Is.Not.SameAs(clown.Parent), "Different subgroups should be separate.");
 

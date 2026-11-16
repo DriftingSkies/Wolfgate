@@ -164,6 +164,7 @@
     - NuclearOperative
     - SyndicateAgent
     - Xenoborg
+    - WFShipLocked # WOLFGATE(ShipAccess): the admin remote opens locked ships and zones, as an aghost does
 
 - type: entity
   parent: DoorRemoteDefault

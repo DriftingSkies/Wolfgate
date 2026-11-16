@@ -1,10 +1,10 @@
-# The deflector: a Sentinel-sized field on a fifth of the power. It slows solid shot instead of stopping it.
+# The deflector: a Sentinel-sized field on a fifth of the power. It slows solid shot to 30% instead of stopping it.
 
 - type: entity
   id: WFShieldGeneratorDeflector
   parent: ShieldGeneratorSmall
   name: MD-10 "Parasol" Deflector Generator
-  description: A micrometeorite reflector for long hauls with a low power consumption to save costs while providing minimum protection. In a pinch its field can absorb some kinetic damage off incoming projectiles, and still stops missiles and energy fire outright.
+  description: A micrometeorite reflector for long hauls with a low power consumption to save costs while providing minimum protection. In a pinch its field can absorb most of the kinetic damage off incoming projectiles, and still stops missiles and energy fire outright.
   components:
   - type: ShipShieldEmitter
     # Same capacity as the MS-100: the draw limits and the power modifier shrink together.
@@ -13,7 +13,7 @@
     powerModifier: 0.1
     shieldColor: "#FFFFFF"
   - type: WFShipShieldDeflector
-    reduction: 0.5
+    reduction: 0.7
     maxArc: 180
     stopped:
     # Missiles, rockets and anything else with a fuze of its own.

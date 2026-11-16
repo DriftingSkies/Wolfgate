@@ -1,0 +1,86 @@
+# Living ship fittings grown from top-tier slime extracts. One beats per hull.
+
+- type: entity
+  abstract: true
+  parent: BaseStructureDynamic
+  id: WFSlimeHeartBase
+  components:
+  - type: Sprite
+    noRot: true
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WFSlimeHeartVisuals.State:
+        enum.WFSlimeHeartVisualLayers.Heart:
+          Dormant: { state: dormant }
+          Beating: { state: beating }
+          Mending: { state: mending }
+  - type: Anchorable
+  - type: WFHullBond
+  - type: PointLight
+    enabled: false
+    radius: 2.5
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Slime
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: gib
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  parent: WFSlimeHeartBase
+  id: WFSlimeHeartAdamantine
+  name: adamantine slime heart
+  description: A fist of living adamantine slime that roots itself into a ship's hull. While it is bolted down and fed adamantine extracts, everything damaged that is bolted to the hull slowly knits itself back together, from walls and windows to thrusters and guns.
+  components:
+  - type: Sprite
+    sprite: _WF/Xenobiology/Specific/Xenobiology/slime_heart.rsi
+    layers:
+    - state: dormant
+      map: [ "enum.WFSlimeHeartVisualLayers.Heart" ]
+  - type: PointLight
+    color: "#2fd68a"
+  - type: WFSlimeHeart
+    food: XenobiologyAdamantineExtract
+    regrowEffect: WFEffectSlimeRegrowAdamantine
+
+- type: entity
+  parent: BaseFlatpack
+  id: WFSlimeHeartAdamantineFlatpack
+  name: slimy flatpack
+  description: A flatpack oozing adamantine slime. Something inside it is beating faintly. Unpack it with a multitool.
+  components:
+  - type: Sprite
+    sprite: _WF/Xenobiology/Specific/Xenobiology/slime_heart_flatpack.rsi
+    layers:
+    - state: adamantine
+  - type: Flatpack
+    entity: WFSlimeHeartAdamantine
+
+- type: entity
+  id: WFEffectSlimeRegrowAdamantine
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: TimedDespawn
+    lifetime: 0.48
+  - type: Sprite
+    drawdepth: Effects
+    noRot: true
+    layers:
+    - shader: unshaded
+      map: ["enum.EffectLayers.Unshaded"]
+      sprite: _WF/Xenobiology/Specific/Xenobiology/slime_regrow.rsi
+      state: regrow
+  - type: EffectVisuals
+  - type: Tag
+    tags:
+    - HideContextMenu
+  - type: AnimationPlayer

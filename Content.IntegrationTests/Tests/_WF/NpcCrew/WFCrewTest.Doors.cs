@@ -16,7 +16,10 @@ using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.Doors.Components;
 using Content.Shared.Inventory;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.Prying.Components;
+using Content.Shared.StationRecords;
 using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -148,6 +151,53 @@ public sealed partial class WFCrewTest
             crewSystem.SetDuty(crew, WFCrewDuties.Guard);
             Assert.That(other.AllowList, Is.Empty, "Walking aboard another ship must never enroll crew there.");
             Assert.That(readers.IsAllowed(crew, otherDoor), Is.False);
+        });
+    }
+
+    /// <summary>Death holds a crewman's card and door lists off the ship; revival restores both, and a swapped card replaces the old.</summary>
+    [Test]
+    public async Task CrewAccessSurvivesDeathAndCardSwaps()
+    {
+        var crewSystem = Server.System<WFCrewSystem>();
+        var access = Server.System<WFShipAccessSystem>();
+        var ships = Server.System<WFShipAccessServerSystem>();
+        var inventory = Server.System<InventorySystem>();
+        var mobs = Server.System<MobStateSystem>();
+        var deck = await CreateDeck(new Vector2(6f, 0f), 9, gravity: true);
+        await Server.WaitAssertion(() =>
+        {
+            var ship = SEntMan.EnsureComponent<WFShipAccessComponent>(deck);
+            var door = SEntMan.SpawnAtPosition(TestDock, new EntityCoordinates(deck, new Vector2(4.5f, 4.5f)));
+            var crew = crewSystem.SpawnCrewman(WFCrewRoles.Deckhand,
+                new EntityCoordinates(deck, new Vector2(3.5f, 4.5f)), "crew")!.Value;
+            SEntMan.GetComponent<HTNComponent>(crew).Enabled = false;
+            Assert.That(access.TryGetWornCard(crew, out var card), Is.True);
+            Assert.That(access.TryGetKey(card, out var key), Is.True);
+            Assert.That(ships.SetDoorPlayer((deck, ship), door, key, true), Is.True);
+            ship.AllowList.Single().Builder = true;
+            var rule = SEntMan.GetComponent<WFDoorAccessRuleComponent>(door);
+
+            mobs.ChangeMobState(crew, MobState.Dead);
+            Assert.That(ship.AllowList, Is.Empty, "A dead crewman's card opens nothing.");
+            Assert.That(rule.Players, Is.Empty);
+
+            mobs.ChangeMobState(crew, MobState.Alive);
+            Assert.That(ship.AllowList.Select(e => e.Key), Is.EqualTo(new[] { key }), "Revival restores the card.");
+            Assert.That(ship.AllowList.Single().Builder, Is.True, "Its entry comes back as it was.");
+            Assert.That(rule.Players, Does.Contain(key), "Revival restores the door lists the card was on.");
+
+            // Card A comes off him while he is down and card B goes on; revived, only B stays listed.
+            mobs.ChangeMobState(crew, MobState.Critical);
+            Assert.That(inventory.TryUnequip(crew, "id", silent: true, force: true), Is.True);
+            var swapped = SEntMan.SpawnAtPosition("PassengerIDCard", new EntityCoordinates(deck, new Vector2(3.5f, 4.5f)));
+            Server.System<StationRecordKeyStorageSystem>().AssignKey(swapped, new StationRecordKey(9001, deck));
+            Assert.That(inventory.TryEquip(crew, swapped, "id", silent: true, force: true), Is.True);
+            Assert.That(access.TryGetKey(swapped, out var swappedKey), Is.True);
+            mobs.ChangeMobState(crew, MobState.Alive);
+            Assert.That(ship.AllowList.Select(e => e.Key), Is.EqualTo(new[] { swappedKey }), "The card he lost comes off.");
+
+            mobs.ChangeMobState(crew, MobState.Dead);
+            Assert.That(ship.AllowList, Is.Empty, "Death holds off the card he now wears.");
         });
     }
 }

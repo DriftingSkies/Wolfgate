@@ -1,5 +1,5 @@
 ent-WFNeurowareStick = data stick
-    .desc = A small data stick with an unlabelled port. This one looks blank.
+    .desc = A small data stick with an unlabelled port and a sampling pin. This one looks blank.
 
 ent-WFNeurowareStickWhiteline = data stick (Whiteline)
     .desc = A data stick with a hand-written label. The port only fits a synthetic's maintenance jack.
@@ -35,6 +35,8 @@ wf-neuroware-no-port = { CAPITALIZE(THE($target)) } has no port for this.
 wf-neuroware-load-target = { CAPITALIZE(THE($user)) } is plugging something into your maintenance jack!
 wf-neuroware-copy-done = You copy the program onto the blank stick.
 wf-neuroware-copy-fail = You need a loaded stick and a blank one.
+wf-neuroware-encode-done = The stick reads { THE($source) } in and writes it down as { $program }.
+wf-neuroware-encode-short = There is too little in { THE($source) } for the stick to read.
 
 ## Synthetic HUD lines
 

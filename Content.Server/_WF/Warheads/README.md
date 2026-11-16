@@ -27,8 +27,13 @@ payload readout (rough blast radius, flash, fallout, EMP, grid deletion).
 Arming mechanisms are separate components: `WFTimerFuze` (set a timer, start the countdown), `WFTwoPersonArming`
 (two different people with access turn keys within a few seconds), `WFRemoteFuze` (take the safety off, then a
 signal on the Detonate port starts a short countdown; link a remote signaller or a `WFDeadManSwitch`), and
-`WFImpactFuze` (goes off when triggered). A multitool disarms a counting warhead until its final phase. Link
-signallers while the safety is on, since a multitool on an armed warhead starts disarming it.
+`WFImpactFuze` (goes off when triggered).
+
+**Defusing.** A multitool no longer disarms a warhead (`DisarmQuality` is null unless a prototype sets one). Unscrew its
+panel and cut one of two fuze wires in the stock wires window, repainted as a fuzing assembly
+(`WFNuclearWiresBoundUserInterface`, `WiresMenu.Nuclear.cs`, wire layout `WFWarheadFuze`). One wire
+(`WFWarheadDisarmWireAction`) makes it safe, even in the final seconds; the other (`WFWarheadDetonateWireAction`) sets
+it off. Colours are random per warhead, so it is a coin flip. Cutting a wire on a safe warhead does nothing.
 
 The station nuke uses Skyrat's sprites and alarm, and `WFNukePayload` gives it the countdown display, the voice and
 the detonation effects on top of its own blast (one marked call in `NukeSystem.ActivateBomb`).
@@ -64,6 +69,7 @@ Entry points: `WFWarheadSystem` (countdowns, detonation, arming, designer spawns
 - [`Content.Server/_WF/Warheads/WFWarheadSystem.Designer.cs`](WFWarheadSystem.Designer.cs)
 - [`Content.Server/_WF/Warheads/WFWarheadSystem.Erase.cs`](WFWarheadSystem.Erase.cs)
 - [`Content.Server/_WF/Warheads/WFWarheadSystem.Ui.cs`](WFWarheadSystem.Ui.cs)
+- [`Content.Server/_WF/Warheads/WFWarheadWireActions.cs`](WFWarheadWireActions.cs)
 
 ### Shared
 
@@ -77,9 +83,11 @@ Entry points: `WFWarheadSystem` (countdowns, detonation, arming, designer spawns
 
 ### Client
 
+- [`Content.Client/_WF/Warheads/UI/WFNuclearWiresBoundUserInterface.cs`](../../../Content.Client/_WF/Warheads/UI/WFNuclearWiresBoundUserInterface.cs)
 - [`Content.Client/_WF/Warheads/UI/WFWarheadBoundUserInterface.cs`](../../../Content.Client/_WF/Warheads/UI/WFWarheadBoundUserInterface.cs)
 - [`Content.Client/_WF/Warheads/UI/WFWarheadControls.cs`](../../../Content.Client/_WF/Warheads/UI/WFWarheadControls.cs)
 - [`Content.Client/_WF/Warheads/UI/WFWarheadWindow.cs`](../../../Content.Client/_WF/Warheads/UI/WFWarheadWindow.cs)
+- [`Content.Client/_WF/Warheads/UI/WiresMenu.Nuclear.cs`](../../../Content.Client/_WF/Warheads/UI/WiresMenu.Nuclear.cs)
 - [`Content.Client/_WF/Warheads/WFCountdownOverlay.cs`](../../../Content.Client/_WF/Warheads/WFCountdownOverlay.cs)
 - [`Content.Client/_WF/Warheads/WFNuclearBlastOverlay.cs`](../../../Content.Client/_WF/Warheads/WFNuclearBlastOverlay.cs)
 - [`Content.Client/_WF/Warheads/WFNuclearFlashOverlay.cs`](../../../Content.Client/_WF/Warheads/WFNuclearFlashOverlay.cs)
@@ -90,6 +98,7 @@ Entry points: `WFWarheadSystem` (countdowns, detonation, arming, designer spawns
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WF/Warheads/WFWarheadTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Warheads/WFWarheadTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Warheads/WFWarheadWiresTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Warheads/WFWarheadWiresTest.cs)
 
 ### Prototypes
 

@@ -1,0 +1,53 @@
+<nanoChat:NanoChatMessageBubble
+    xmlns="https://spacestation14.io"
+    xmlns:nanoChat="clr-namespace:Content.Client._WF.NanoChat"
+    xmlns:graphics="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    HorizontalExpand="True">
+    <BoxContainer Name="MessageContainer"
+                  Orientation="Horizontal"
+                  HorizontalExpand="True">
+        <Control Name="LeftSpacer"
+                 MinSize="12 0" />
+        <BoxContainer Name="MessageBox"
+                      Orientation="Vertical"
+                      MaxWidth="320"
+                      HorizontalExpand="True">
+            <Label Name="SenderLabel"
+                   StyleClasses="LabelSmall"
+                   ClipText="True"
+                   Margin="10 0 10 1"
+                   Visible="False" />
+            <PanelContainer Name="MessagePanel"
+                            MaxWidth="320"
+                            HorizontalExpand="True">
+                <PanelContainer.PanelOverride>
+                    <graphics:StyleBoxFlat
+                        ContentMarginLeftOverride="10"
+                        ContentMarginRightOverride="10"
+                        ContentMarginTopOverride="6"
+                        ContentMarginBottomOverride="6"
+                        BorderThickness="1" />
+                </PanelContainer.PanelOverride>
+                <BoxContainer Orientation="Vertical"
+                              HorizontalExpand="True">
+                    <RichTextLabel Name="MessageText"
+                                   HorizontalExpand="True" />
+                    <nanoChat:NanoChatEffectText Name="EffectText"
+                                                 HorizontalExpand="True"
+                                                 Visible="False" />
+                </BoxContainer>
+            </PanelContainer>
+            <Label Name="DeliveryFailedLabel"
+                   Text="{Loc nano-chat-delivery-failed}"
+                   StyleClasses="LabelSmall"
+                   HorizontalExpand="True"
+                   HorizontalAlignment="Right"
+                   Margin="10 2 10 0"
+                   Visible="False" />
+        </BoxContainer>
+        <Control Name="RightSpacer"
+                 MinSize="12 0" />
+        <Control Name="FlexSpace"
+                 HorizontalExpand="True" />
+    </BoxContainer>
+</nanoChat:NanoChatMessageBubble>

@@ -800,6 +800,11 @@ GoonSetpiecesBloodwall: TauCetiMeatlandWall
 TgMineralBamboo: null
 # WOLFGATE END
 
+# WOLFGATE(Resprites) START: GoobStation command cloak and mantle resprites renamed the chief engineer's set
+ClothingNeckCloakCe: ClothingNeckCloakWhiteCe
+ClothingNeckMantleCE: ClothingNeckMantleWhiteCE
+# WOLFGATE END
+
 # WOLFGATE(ShipArmor) START: adamantite walls renamed to durasteel
 # 2026-11-03
 WFWallAdamantite: WFWallDurasteel

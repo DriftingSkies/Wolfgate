@@ -6,11 +6,13 @@ using Content.Server._WF.Encounters.Systems;
 using Content.Server._WF.NpcCrew.Components;
 using Content.Shared._WF.Encounters;
 using Content.Shared._WF.NpcCrew;
+using Content.Shared._WF.ShipAccess;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._WF.Encounters;
@@ -68,6 +70,9 @@ public sealed partial class WFEncounterTest
             Assert.That(comp.Resolution, Is.EqualTo(WFEncounterResolution.Completed), "With its only ship gone, the encounter is over.");
             Assert.That(SEntMan.HasComponent<WFEncounterGridComponent>(ship), Is.False, "The ship belongs to no encounter.");
             Assert.That(SEntMan.HasComponent<CleanupImmuneComponent>(ship), Is.True, "No cleanup takes it.");
+            var user = SEntMan.GetComponent<ActorComponent>(SEntMan.GetEntity(Player)).PlayerSession.UserId;
+            Assert.That(SEntMan.TryGetComponent<WFShipAccessComponent>(ship, out var access) && access.OwnerUsers.Contains(user),
+                Is.True, "The claimant owns the ship's access.");
 
             Server.System<WFEncounterSystem>().End(encounter);
         });

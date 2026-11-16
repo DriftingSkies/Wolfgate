@@ -28,6 +28,7 @@ using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Weapons.Ranged.Events;
 using Content.Shared.Whitelist;
 using Content.Shared._RMC14.Weapons.Ranged.Prediction;
+using Content.Shared._WF.Modsuits.Modules; // WOLFGATE(Modsuits)
 using Content.Shared._WF.Tether.Harpoon; // WOLFGATE(Tether): manned turret gun relay
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
@@ -630,6 +631,14 @@ public abstract partial class SharedGunSystem : EntitySystem
         projectile.Weapon = gunUid;
 
         TransformSystem.SetWorldRotation(uid, direction.ToWorldAngle() + projectile.Angle);
+
+        // WOLFGATE(Modsuits) START: the shooting assistant module reacts to player-fired projectiles.
+        if (user is { } shotBy)
+        {
+            var shotEv = new PlayerShotProjectileEvent(uid, shotBy);
+            RaiseLocalEvent(ref shotEv);
+        }
+        // WOLFGATE END
     }
 
     // Mono - handle hitscan

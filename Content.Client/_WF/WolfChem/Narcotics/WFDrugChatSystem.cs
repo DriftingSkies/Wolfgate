@@ -37,27 +37,34 @@ public sealed class WFDrugChatSystem : EntitySystem
     /// <summary>Rewrites a message's text in place, if the local player is high on something that changes chat.</summary>
     public void Distort(ChatMessage msg)
     {
-        if ((msg.Channel & Distorted) == 0
-            || string.IsNullOrEmpty(msg.Message)
-            || _player.LocalEntity is not { } local
-            || !TryComp<WFIntoxicationComponent>(local, out var comp)
-            || _intoxication.IsNeurowareHost(local)
-            || _intoxication.DominantHigh(comp) is not { } high)
+        if ((msg.Channel & Distorted) == 0 || string.IsNullOrEmpty(msg.Message))
             return;
 
         var start = msg.WrappedMessage.LastIndexOf(msg.Message, StringComparison.Ordinal);
-        if (start < 0)
-            return;
-
-        string body;
-        if (high.Family == WFDrugFamily.Psychedelic)
-            body = Kaleidoscope(msg.Message, high, new Random(msg.WrappedMessage.GetHashCode()));
-        else if (Tints.TryGetValue(high.Family, out var tint))
-            body = $"[color={Color.InterpolateBetween(Color.White, tint, 0.35f + 0.65f * high.Strength).ToHex()}]{msg.Message}[/color]";
-        else
+        if (start < 0 || DistortMarkup(msg.Message, msg.WrappedMessage.GetHashCode()) is not { } body)
             return;
 
         msg.WrappedMessage = msg.WrappedMessage.Remove(start, msg.Message.Length).Insert(start, body);
+    }
+
+    /// <summary>
+    /// Markup as the local player sees it through their high, or null when they aren't high on something that changes
+    /// text. The same seed gives the same result.
+    /// </summary>
+    public string? DistortMarkup(string markup, int seed)
+    {
+        if (_player.LocalEntity is not { } local
+            || !TryComp<WFIntoxicationComponent>(local, out var comp)
+            || _intoxication.DominantHigh(comp) is not { } high)
+            return null;
+
+        if (high.Family == WFDrugFamily.Psychedelic)
+            return Kaleidoscope(markup, high, new Random(seed));
+
+        if (Tints.TryGetValue(high.Family, out var tint))
+            return $"[color={Color.InterpolateBetween(Color.White, tint, 0.35f + 0.65f * high.Strength).ToHex()}]{markup}[/color]";
+
+        return null;
     }
 
     /// <summary>Colours each word along a drifting hue and, when heavy, shuffles the middle letters of a few.</summary>

@@ -19,8 +19,8 @@ public sealed partial class WFPlanetPoiSystem
 
     private readonly HashSet<EntityUid> _overhang = new();
 
-    /// <summary>One level of a built city as it stands on its world: its grid, every floor tile and the roofed ones.</summary>
-    private sealed record CityFloor(int Depth, Entity<MapGridComponent> Grid, HashSet<Vector2i> Tiles, HashSet<Vector2i> Indoor);
+    /// <summary>One level of a built city as it stands on its world: its grid, every floor tile, the roofed ones and its entrance roads.</summary>
+    private sealed record CityFloor(int Depth, Entity<MapGridComponent> Grid, HashSet<Vector2i> Tiles, HashSet<Vector2i> Indoor, HashSet<Vector2i> Paved);
 
     /// <summary>Free tiles of one level that people may be put on.</summary>
     private sealed class CityPool(CityFloor floor, List<Vector2i> tiles)

@@ -143,10 +143,13 @@ public sealed partial class WFShipAccessServerSystem : EntitySystem
         return true;
     }
 
-    /// <summary>Console verb bridge: whether the user holds the ship's deed, a voucher with it included, or the ship is registered to them.</summary>
+    /// <summary>
+    /// Console verb bridge: whether the user holds the ship's deed, a voucher with it included, or the ship is
+    /// registered to them; or another system lets them manage it (<see cref="WFShipManagerEvent"/>).
+    /// </summary>
     public bool IsOwner(EntityUid user, EntityUid grid)
     {
-        return _access.IsOwner(user, grid);
+        return _access.CanManage(user, grid);
     }
 
     /// <summary>Sets the lock and rewrites every door and locker reader on the grid to match.</summary>
@@ -215,6 +218,37 @@ public sealed partial class WFShipAccessServerSystem : EntitySystem
         RefreshShip(ship);
         _adminLog.Add(LogType.Action, LogImpact.Low,
             $"{entry.Name} was removed from the allow list of {ToPrettyString(ship.Owner):grid}");
+        return true;
+    }
+
+    /// <summary>Takes a key off the allow list and every door list, keeping both for <see cref="RestoreEntry"/>; null when it was not on it.</summary>
+    public WFShipAccessHold? SuspendEntry(Entity<WFShipAccessComponent> ship, WFShipAccessKey key)
+    {
+        if (!_access.TryGetEntry(ship.Comp, key, out var entry))
+            return null;
+
+        var doors = DoorsListing(ship.Owner, key);
+        RemoveEntry(ship, key);
+        return new WFShipAccessHold(entry, doors);
+    }
+
+    /// <summary>Puts a held entry back on the allow list and on the doors still aboard; false when its key is listed already.</summary>
+    public bool RestoreEntry(Entity<WFShipAccessComponent> ship, WFShipAccessHold hold)
+    {
+        if (_access.TryGetEntry(ship.Comp, hold.Entry.Key, out _))
+            return false;
+
+        ship.Comp.AllowList.Add(hold.Entry);
+        Dirty(ship);
+        foreach (var door in hold.Doors)
+        {
+            if (!TerminatingOrDeleted(door) && Transform(door).ParentUid == ship.Owner)
+                SetDoorPlayer(ship, door, hold.Entry.Key, true);
+        }
+
+        RefreshShip(ship);
+        _adminLog.Add(LogType.Action, LogImpact.Low,
+            $"{hold.Entry.Name} was restored to the allow list of {ToPrettyString(ship.Owner):grid}");
         return true;
     }
 

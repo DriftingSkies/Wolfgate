@@ -823,6 +823,7 @@
   name: loadout-group-contractor-outerclothing
   minLimit: 1
   loadouts:
+  - TsfmcClothingOuterHardsuitM86
   - TsfmcClothingOuterArmorBPVestLight
   - TsfmcClothingOuterArmorBPVestMedium
   - TsfmcClothingOuterArmorWintercoat
@@ -856,7 +857,7 @@
   - WFRMCLoadoutCoatWindbreakerExpedition
   # WOLFGATE END
   fallbacks:
-  - TsfmcClothingOuterArmorBPVestLight
+  - TsfmcClothingOuterHardsuitM86
 
 - type: loadoutGroup
   id: TsfmcOuterClothingInfantry

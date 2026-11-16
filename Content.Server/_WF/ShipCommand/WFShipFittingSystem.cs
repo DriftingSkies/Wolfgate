@@ -1,12 +1,23 @@
 using System.Linq;
+using Content.Server._Mono.SpaceArtillery.Components;
+using Content.Server._WF.Drydock;
 using Content.Server._WF.Remade.Gifts;
 using Content.Server.Cargo.Systems;
 using Content.Server.Construction;
 using Content.Server.Construction.Components;
+using Content.Server.Damage.Systems;
 using Content.Server.Materials;
+using Content.Server.Power.Components;
+using Content.Server.Power.EntitySystems;
+using Content.Shared._Crescent.Hardpoints;
+using Content.Shared._Mono.ShipGuns;
+using Content.Shared._WF.Drydock;
 using Content.Shared.Construction;
 using Content.Shared.Construction.Components;
 using Content.Shared.Destructible;
+using Content.Shared.Doors.Components;
+using Content.Shared.Power.Components;
+using Content.Shared.Turrets;
 using Content.Shared.Examine;
 using Content.Shared.Materials;
 using Content.Shared.Materials.OreSilo;
@@ -17,8 +28,9 @@ using Robust.Shared.Prototypes;
 namespace Content.Server._WF.ShipCommand;
 
 /// <summary>
-/// Fits out a commanded ship: best-tier parts in every machine and every ordinary lathe on the ship's ore silo, in one
-/// pass the tick after the ship's machines have built their stock parts; and keeps bottomless storages topped up. A
+/// Fits out a commanded ship: best-tier parts in every machine and every ordinary lathe on the ship's ore silo, and
+/// optionally hardened guns and doors, bigger gun batteries and faster cranes, in one pass the tick after the ship's
+/// machines have built their stock parts; and keeps bottomless storages topped up. A
 /// bottomless storage's stock stays in it: it won't eject, drops nothing when the machine is taken apart or destroyed,
 /// adds nothing to the machine's price, and what it prints sells for nothing.
 /// </summary>
@@ -32,6 +44,8 @@ public sealed class WFShipFittingSystem : EntitySystem
     [Dependency] private SharedPopupSystem _popup = default!;
 
     [Dependency] private IComponentFactory _factory = default!;
+    [Dependency] private BatterySystem _battery = default!;
+    [Dependency] private GodmodeSystem _godmode = default!;
 
     /// <summary>The highest-rated part of each kind, read from the prototypes the first time it's needed.</summary>
     private Dictionary<string, (int Rating, EntProtoId Proto)>? _bestParts;
@@ -113,6 +127,8 @@ public sealed class WFShipFittingSystem : EntitySystem
                 silo ??= child;
             else if (HasComp<OreSiloClientComponent>(child) && !HasComp<WFBottomlessMaterialsComponent>(child))
                 clients.Add(child);
+
+            FitArms(grid.Comp, child);
         }
 
         if (grid.Comp.LinkSilo && silo is { } s)
@@ -122,6 +138,45 @@ public sealed class WFShipFittingSystem : EntitySystem
         }
 
         return upgraded;
+    }
+
+    /// <summary>Hardens and charges one entity aboard: guns, hardpoints, turrets, doors and cranes.</summary>
+    private void FitArms(WFShipFittingComponent fitting, EntityUid child)
+    {
+        var isGun = HasComp<ShipGunTypeComponent>(child);
+        if (fitting.IndestructibleArms && (isGun || HasComp<HardpointComponent>(child)
+            || HasComp<DeployableTurretComponent>(child) || HasComp<WFShipSentryComponent>(child)))
+            _godmode.EnableGodmode(child);
+
+        if (fitting.UnpryableDoors && TryComp<DoorComponent>(child, out var door) && door.CanPry)
+        {
+            door.CanPry = false;
+            Dirty(child, door);
+        }
+
+        if (isGun)
+        {
+            if (TryComp<BatteryComponent>(child, out var battery) && !MathHelper.CloseTo(fitting.GunChargeScale, 1f))
+            {
+                _battery.SetMaxCharge(child, battery.MaxCharge * fitting.GunChargeScale, battery);
+                _battery.SetCharge(child, battery.MaxCharge, battery);
+            }
+
+            if (!MathHelper.CloseTo(fitting.GunRechargeScale, 1f))
+            {
+                if (TryComp<BatterySelfRechargerComponent>(child, out var recharger))
+                    recharger.AutoRechargeRate *= fitting.GunRechargeScale;
+                if (TryComp<SpaceArtilleryComponent>(child, out var artillery))
+                    artillery.PowerChargeRate = (int) (artillery.PowerChargeRate * fitting.GunRechargeScale);
+            }
+        }
+
+        if (fitting.CraneSpeed is { } speed && TryComp<WFDrydockCraneComponent>(child, out var crane)
+            && !HasComp<WFDrydockCraneUpgradesComponent>(child))
+        {
+            crane.SpeedMultiplier = speed;
+            Dirty(child, crane);
+        }
     }
 
     /// <summary>Swaps each of a machine's parts for the best part of its kind. False when nothing changed.</summary>

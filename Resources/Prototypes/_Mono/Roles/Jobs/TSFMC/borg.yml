@@ -9,10 +9,14 @@
       time: 43200
   assignedCompany: TSF
   canBeAntag: false
+  hideConsoleVisibility: true
   icon: JobIconBorg
   supervisors: job-supervisors-hire
   jobEntity: PlayerBorgTSF
   applyTraits: false
+  # WOLFGATE(Cyborgs): stamped on the issued card so the TSFMC shipyard sells to it
+  access:
+  - Tsfmc
   guides:
   - TSFMC_Entry
   special:

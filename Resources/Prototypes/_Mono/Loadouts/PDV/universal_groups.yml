@@ -202,6 +202,8 @@
   name: loadout-group-contractor-outerclothing
   minLimit: 1
   loadouts:
+  - PDVClothingOuterArmorCV32
+  - PDVClothingOuterArmorCV53
   - PDVClothingOuterArmorBPVestLight
   - PDVClothingOuterArmorBPVestMedium
   # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
@@ -233,7 +235,7 @@
   - WFRMCLoadoutCoatWindbreakerExpedition
   # WOLFGATE END
   fallbacks:
-  - PDVClothingOuterArmorBPVestLight
+  - PDVClothingOuterArmorCV32
 
 - type: loadoutGroup
   id: PDVOuterClothingVizier

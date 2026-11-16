@@ -95,6 +95,7 @@
       enum.WFShipShieldUiKey.Key:
         type: WFShipShieldGeneratorBoundUserInterface
   # WOLFGATE END
+  - type: WFHullBond # WOLFGATE(HullBond): a shield generator only bolts down on its first hull
   - type: ApcPowerReceiver
     powerLoad: 60000
   - type: Appearance

@@ -12,7 +12,8 @@
     xmlns:planets="clr-namespace:Content.Client._WF.Planets.Administration"
     Margin="4"
     MinSize="50 50">
-    <BoxContainer Orientation="Vertical">
+    <!-- The menu sizes itself for its first tab. This one grows it to fit (see the code-behind) and scrolls if it can't. -->
+    <ScrollContainer HScrollEnabled="False" ReturnMeasure="True" VerticalExpand="True" HorizontalExpand="True">
         <GridContainer Columns="3">
             <cc:UICommandButton Command="wf_crew" Text="{Loc wf-crew-setup-title}" WindowType="{x:Type crew:WFCrewSetupWindow}" />
             <cc:UICommandButton Command="wf_vehiclecrew" Text="{Loc wf-vehiclecrew-panel-title}" WindowType="{x:Type vehiclecrew:WFVehicleCrewPanel}" />
@@ -26,6 +27,7 @@
             <cc:UICommandButton Command="planetcontrol" Text="{Loc wf-admin-tab-planet-control}" WindowType="{x:Type planets:PlanetControlWindow}" />
             <cc:CommandButton Command="testdummies" Text="{Loc wf-test-dummy-button}" />
             <cc:CommandButton Command="nukedesigner" Text="{Loc wf-nuke-designer-button}" />
+            <cc:CommandButton Command="shipmaster" Text="{Loc wf-ship-admin-button}" />
         </GridContainer>
-    </BoxContainer>
+    </ScrollContainer>
 </Control>

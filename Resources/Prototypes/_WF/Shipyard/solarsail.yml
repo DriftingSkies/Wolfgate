@@ -8,7 +8,7 @@
   price: 23829 #appraised at 20721, 15% markup
   category: Small
   group: Sr
-  access: HeadOfPersonnel
+  access: CaelestinusCommand
   shuttlePath: /SharedMaps/_WF/Shipyard/Shuttles/solarsail.yml
   guidebookPage: Null
   class:

@@ -3,8 +3,9 @@
 - type: entity
   id: CrateEngineeringAMEShielding
   parent: CrateEngineeringSecure
-  name: packaged antimatter reactor crate
-  description: 9 parts for the main body of an antimatter reactor, or for expanding an existing one.
+  # WOLFGATE: the IRE rebrand missed this crate
+  name: isotopes reaction engine (IRE) shielding crate
+  description: 9 shielding parts for the main body of an isotopes reaction engine, or for expanding an existing one.
   components:
   - type: StorageFill
     contents:

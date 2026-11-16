@@ -36,7 +36,8 @@ public sealed partial class ShipyardSystem
     /// <param name="existingStation">A caller-owned station that already contains the owner record.</param>
     /// <param name="vessel">Design the ship was built from, if it is still known.</param>
     /// <param name="shipName">Name to keep, for a ship that already had one. Null takes the design's.</param>
-    public bool TryAssignDeed(EntityUid shuttleUid, EntityUid idCard, ICommonSession owner, VesselPrototype? vessel, string? shipName = null, EntityUid? existingStation = null)
+    /// <param name="cardFaction">False leaves the hull's faction as the caller set it; a purchase takes the card's.</param>
+    public bool TryAssignDeed(EntityUid shuttleUid, EntityUid idCard, ICommonSession owner, VesselPrototype? vessel, string? shipName = null, EntityUid? existingStation = null, bool cardFaction = true)
     {
         if (!HasComp<ShuttleComponent>(shuttleUid) || !TryComp<IdCardComponent>(idCard, out var card))
             return false;
@@ -45,7 +46,7 @@ public sealed partial class ShipyardSystem
         var ownerName = ownerEntity != null ? Name(ownerEntity.Value).Trim() : owner.Name;
         var name = vessel?.Name ?? Name(shuttleUid);
 
-        if (!string.IsNullOrEmpty(card.CompanyName))
+        if (cardFaction && !string.IsNullOrEmpty(card.CompanyName))
         {
             var company = EnsureComp<CompanyComponent>(shuttleUid);
             company.CompanyName = card.CompanyName;

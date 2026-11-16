@@ -26,6 +26,11 @@ public sealed class AfterActivatableUIOpenEvent : EntityEventArgs
     public EntityUid User { get; }
     public readonly EntityUid Actor;
 
+    /// <summary>
+    /// WOLFGATE(InteractionParticles): whether opening this UI should play an interaction particle.
+    /// </summary>
+    public bool InteractionParticle;
+
     public AfterActivatableUIOpenEvent(EntityUid who, EntityUid actor)
     {
         User = who;

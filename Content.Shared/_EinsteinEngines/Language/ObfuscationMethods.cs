@@ -32,27 +32,28 @@ public abstract partial class ObfuscationMethod
     }
 }
 
-// WOLFGATE(Species) START: ported from HardLight/Starlight, needed by the Avali "Scratch" language
 /// <summary>
-///     Obfuscates the letters and digits of a message into random ones, keeping spaces and
-///     punctuation intact.
+///  Obfuscate the string letters/numbers to random, keeps special characters and spaces.
 /// </summary>
-public partial class RandomObfuscation : ObfuscationMethod
+public sealed partial class RandomObfuscation : ObfuscationMethod
 {
+    [DataField]
+    // WOLFGATE(Species): the message is upper-cased first, so lower-case chars never matched and nothing scrambled
+    // public string Chars = "abcdefghijklmnopqrstuvwxyz";
+    public string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
     internal override void Obfuscate(StringBuilder builder, string message, SharedLanguageSystem context)
     {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         message = message.ToUpper();
 
-        for (var i = 0; i < chars.Length; i++)
+        for (var i = 0; i < Chars.Length; i++)
         {
-            message = message.Replace(chars[i], chars[context.PseudoRandomNumber(message.GetHashCode() + i, 0, chars.Length - 1)]);
+            message = message.Replace(Chars[i], Chars[context.PseudoRandomNumber(message.GetHashCode() + i, 0, Chars.Length - 1)]);
         }
 
         builder.Append(message);
     }
 }
-// WOLFGATE END
 
 /// <summary>
 ///     The most primitive method of obfuscation - replaces the entire message with one random replacement phrase.

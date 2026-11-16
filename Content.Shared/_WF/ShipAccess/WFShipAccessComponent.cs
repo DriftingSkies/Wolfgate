@@ -76,7 +76,10 @@ public sealed partial class WFShipAccessComponent : Component
     public List<WFShipAccessKey> CompanyKeys = new();
 }
 
-/// <summary>Private admits owners and guests; Faction adds company access, and Crew adds current crew cards.</summary>
+/// <summary>
+/// Private admits owners and guests; Faction adds company access, and Crew adds current crew cards. Public admits
+/// anyone through every door that follows the ship; staff set it from Shipmaster.
+/// </summary>
 [Serializable, NetSerializable]
 public enum WFShipAccessMode : byte
 {
@@ -84,6 +87,7 @@ public enum WFShipAccessMode : byte
     Faction,
     Crew,
     Company,
+    Public,
 }
 
 /// <summary>A crew record key as the ship access lists hold it: the record's station and id, as written on an ID card.</summary>

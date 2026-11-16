@@ -1,0 +1,54 @@
+# Head of Security cloak and mantle, resprited by the Resprites module, for the Vagrant neck group.
+
+- type: loadout
+  id: WFContractorClothingNeckCloakHos
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT3
+  price: 0
+  equipment:
+    neck: ClothingNeckCloakHos
+
+- type: loadout
+  id: WFContractorClothingNeckMantleHOS
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT3
+  price: 0
+  equipment:
+    neck: ClothingNeckMantleHOS
+
+# GoobStation ensembles: the chief engineer's white and green sets, and the chief medical officer's set.
+
+- type: loadoutEffectGroup
+  id: GrandMasterCE
+  effects:
+  - !type:JobRequirementLoadoutEffect
+    requirement:
+      !type:RoleTimeRequirement
+      role: JobChiefEngineer
+      time: 360000 # 100 hrs
+
+- type: loadout
+  id: WFChiefEngineerEnsembleWhite
+  equipment:
+    neck: ClothingNeckEnsembleChiefEngineerWhite
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: GrandMasterCE
+
+- type: loadout
+  id: WFChiefEngineerEnsembleGreen
+  equipment:
+    neck: ClothingNeckEnsembleChiefEngineerGreen
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: GrandMasterCE
+
+- type: loadout
+  id: WFChiefMedicalOfficerEnsemble
+  equipment:
+    neck: ClothingNeckEnsembleChiefMedicalOfficer
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: MasterCMO

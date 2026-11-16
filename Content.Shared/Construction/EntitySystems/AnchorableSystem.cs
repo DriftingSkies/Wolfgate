@@ -292,14 +292,14 @@ public sealed partial class AnchorableSystem : EntitySystem
             return false;
 
         var tileIndices = _map.TileIndicesFor((gridUid.Value, grid), coordinates);
-        return TileFree((gridUid.Value, grid), tileIndices, anchorBody.CollisionLayer, anchorBody.CollisionMask);
+        return TileFree((gridUid.Value, grid), tileIndices, anchorBody.CollisionLayer, anchorBody.CollisionMask, wfAnchoring: true); // WOLFGATE(Construction): wrenching past a wall light
     }
 
     /// <summary>
     /// Returns true if no hard anchored entities match the collision layer or mask specified.
     /// </summary>
     /// <param name="grid"></param>
-    public bool TileFree(Entity<MapGridComponent> grid, Vector2i gridIndices, int collisionLayer = 0, int collisionMask = 0)
+    public bool TileFree(Entity<MapGridComponent> grid, Vector2i gridIndices, int collisionLayer = 0, int collisionMask = 0, bool wfAnchoring = false) // WOLFGATE(Construction): wfAnchoring skips wall lights
     {
         var enumerator = _map.GetAnchoredEntitiesEnumerator(grid, grid.Comp, gridIndices);
 
@@ -311,6 +311,9 @@ public sealed partial class AnchorableSystem : EntitySystem
             {
                 continue;
             }
+
+            if (wfAnchoring && HasComp<Content.Shared.Light.Components.PoweredLightComponent>(ent)) // WOLFGATE(Construction): a wall light doesn't block anchoring under it
+                continue; // WOLFGATE(Construction)
 
             if ((body.CollisionMask & collisionLayer) != 0x0 ||
                 (body.CollisionLayer & collisionMask) != 0x0)

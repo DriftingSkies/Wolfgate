@@ -1,0 +1,284 @@
+- type: constructionGraph
+  id: Modsuit
+  start: start
+  graph:
+  - node: start
+    entity: ModsuitShell
+    edges:
+    - to: shell-core
+      steps:
+      - tag: ModsuitCore
+        name: construction-graph-tag-mod-core
+        store: mod-core
+        completed:
+        - !type:PlaySound
+          sound: /Audio/Items/screwdriver2.ogg
+
+  - node: shell-core
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: start
+      steps:
+      - tool: Prying
+        completed:
+          - !type:EmptyContainer
+            container: mod-core
+    - to: shell-core-secured
+      steps:
+      - tool: Screwing
+        doAfter: 1
+
+  - node: shell-core-secured
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: shell-helmet
+      steps:
+      - tag: ModsuitHelmet
+        name: construction-graph-tag-mod-helmet
+        doAfter: 1
+        completed:
+        - !type:PlaySound
+          sound: /Audio/Items/screwdriver2.ogg
+
+  - node: shell-helmet
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: shell-chestplate
+      steps:
+      - tag: ModsuitChestplate
+        name: construction-graph-tag-mod-chestplate
+        doAfter: 1
+        completed:
+        - !type:PlaySound
+          sound: /Audio/Items/screwdriver2.ogg
+
+  - node: shell-chestplate
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: shell-gauntlets
+      steps:
+      - tag: ModsuitGauntlets
+        name: construction-graph-tag-mod-gauntlets
+        doAfter: 1
+        completed:
+        - !type:PlaySound
+          sound: /Audio/Items/screwdriver2.ogg
+
+  - node: shell-gauntlets
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: shell-boots
+      steps:
+      - tag: ModsuitBoots
+        name: construction-graph-tag-mod-boots
+        doAfter: 1
+        completed:
+        - !type:PlaySound
+          sound: /Audio/Items/screwdriver2.ogg
+
+  - node: shell-boots
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: shell-secured
+      steps:
+      - tool: Anchoring
+        doAfter: 1
+
+      - tool: Screwing
+        doAfter: 1
+
+  - node: shell-secured
+    actions:
+    - !type:AppearanceChange
+    edges:
+    - to: standard
+      steps:
+        - tag: ModsuitPlatingExternal
+          name: construction-graph-tag-mod-plating
+          doAfter: 1
+          completed:
+          - !type:PlaySound
+            sound: /Audio/Items/screwdriver2.ogg
+
+        - tool: Anchoring
+          doAfter: 1
+
+    - to: paramedic
+      steps:
+        - tag: ModsuitPlatingParamedic
+          name: construction-graph-tag-mod-plating
+          doAfter: 1
+          completed:
+          - !type:PlaySound
+            sound: /Audio/Items/screwdriver2.ogg
+
+        - tool: Anchoring
+          doAfter: 1
+
+    - to: engineer
+      steps:
+        - tag: ModsuitPlatingEngineer
+          name: construction-graph-tag-mod-plating
+          doAfter: 1
+          completed:
+          - !type:PlaySound
+            sound: /Audio/Items/screwdriver2.ogg
+
+        - tool: Anchoring
+          doAfter: 1
+
+    - to: mining
+      steps:
+        - tag: ModsuitPlatingMining
+          name: construction-graph-tag-mod-plating
+          doAfter: 1
+          completed:
+          - !type:PlaySound
+            sound: /Audio/Items/screwdriver2.ogg
+
+        - tool: Anchoring
+          doAfter: 1
+
+    - to: loader
+      steps:
+        - tag: ModsuitPlatingLoader
+          name: construction-graph-tag-mod-plating
+          doAfter: 1
+          completed:
+          - !type:PlaySound
+            sound: /Audio/Items/screwdriver2.ogg
+
+        - tool: Anchoring
+          doAfter: 1
+
+    - to: atmostech
+      steps:
+        - tag: ModsuitPlatingAtmostech
+          name: construction-graph-tag-mod-plating
+          doAfter: 1
+          completed:
+          - !type:PlaySound
+            sound: /Audio/Items/screwdriver2.ogg
+
+        - tool: Anchoring
+          doAfter: 1
+
+    - to: security
+      steps:
+        - tag: ModsuitPlatingSecurity
+          name: construction-graph-tag-mod-plating
+          doAfter: 1
+          completed:
+          - !type:PlaySound
+            sound: /Audio/Items/screwdriver2.ogg
+
+        - tool: Anchoring
+          doAfter: 1
+
+    - to: headofsecurity
+      steps:
+        - tag: ModsuitPlatingHeadOfSecurity
+          name: construction-graph-tag-mod-plating
+          doAfter: 1
+          completed:
+          - !type:PlaySound
+            sound: /Audio/Items/screwdriver2.ogg
+
+        - tool: Anchoring
+          doAfter: 1
+
+    - to: captain
+      steps:
+        - tag: ModsuitPlatingCaptain
+          name: construction-graph-tag-mod-plating
+          doAfter: 1
+          completed:
+          - !type:PlaySound
+            sound: /Audio/Items/screwdriver2.ogg
+
+        - tool: Anchoring
+          doAfter: 1
+
+    - to: rd
+      steps:
+        - tag: ModsuitPlatingRD
+          name: construction-graph-tag-mod-plating
+          doAfter: 1
+          completed:
+          - !type:PlaySound
+            sound: /Audio/Items/screwdriver2.ogg
+
+        - tool: Anchoring
+          doAfter: 1
+
+    - to: brigmed
+      steps:
+        - tag: ModsuitPlatingBrigMed
+          name: construction-graph-tag-mod-plating
+          doAfter: 1
+          completed:
+          - !type:PlaySound
+            sound: /Audio/Items/screwdriver2.ogg
+
+        - tool: Anchoring
+          doAfter: 1
+
+    - to: praetorian
+      steps:
+        - tag: ModsuitPlatingPraetorian
+          name: construction-graph-tag-mod-plating
+          doAfter: 1
+          completed:
+          - !type:PlaySound
+            sound: /Audio/Items/screwdriver2.ogg
+
+        - tool: Anchoring
+          doAfter: 1
+
+  - node: standard
+    entity: ClothingModsuitStandard
+
+  - node: security
+    entity: ClothingModsuitSecurity
+
+  - node: paramedic
+    entity: ClothingModsuitParamedic
+
+  - node: headofsecurity
+    entity: ClothingModsuitHeadOfSecurity
+
+  - node: engineer
+    entity: ClothingModsuitEngineer
+
+  - node: atmostech
+    entity: ClothingModsuitAtmostech
+
+  - node: mining
+    entity: ClothingModsuitMining
+
+  - node: loader
+    entity: ClothingModsuitLoader
+
+  - node: rd
+    entity: ClothingModsuitResearchDirector
+
+  - node: captain
+    entity: ClothingModsuitCaptain
+
+  - node: brigmed
+    entity: ClothingModsuitBrigMed
+
+  - node: praetorian
+    entity: ClothingModsuitPraetorian
+
+  - node: rogue
+    entity: ClothingModsuitRogue
+
+  - node: mercenary
+    entity: ClothingModsuitMercenary

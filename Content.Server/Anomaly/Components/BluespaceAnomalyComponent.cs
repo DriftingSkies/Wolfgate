@@ -1,5 +1,6 @@
 ﻿using Content.Server.Anomaly.Effects;
 using Robust.Shared.Audio;
+using Robust.Shared.Prototypes; // WOLFGATE(InteractionParticles)
 
 namespace Content.Server.Anomaly.Components;
 
@@ -31,9 +32,11 @@ public sealed partial class BluespaceAnomalyComponent : Component
     [DataField("superCriticalTeleportRadius"), ViewVariables(VVAccess.ReadWrite)]
     public float SupercriticalTeleportRadius = 50f;
 
+    // WOLFGATE(InteractionParticles) START: the sound is replaced by the bluespace effect, which sparks
     /// <summary>
-    /// The sound played after players are shuffled/teleported around
+    /// The effect spawned after players are shuffled/teleported around.
     /// </summary>
-    [DataField("teleportSound"), ViewVariables(VVAccess.ReadWrite)]
-    public SoundSpecifier TeleportSound = new SoundPathSpecifier("/Audio/Effects/teleport_arrival.ogg");
+    [DataField]
+    public EntProtoId TeleportEffect = "EffectFlashBluespace";
+    // WOLFGATE END
 }

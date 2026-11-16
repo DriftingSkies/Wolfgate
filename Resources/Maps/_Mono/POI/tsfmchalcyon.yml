@@ -71240,7 +71240,7 @@ entities:
       pos: 8.5,-45.5
     - type: DeltaPressure
       gridUid: 1
-- proto: WindoorSecureBrigLocked
+- proto: WindoorSecureTsfmcLocked
   entities:
   - uid: 10673
     components:

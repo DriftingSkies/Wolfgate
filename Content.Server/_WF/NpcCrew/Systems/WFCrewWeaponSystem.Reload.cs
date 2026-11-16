@@ -58,6 +58,11 @@ public sealed partial class WFCrewWeaponSystem
                 if (_timing.CurTime >= cached.Until)
                     _threats.Remove(mob);
             }
+            foreach (var (mob, cached) in _braces)
+            {
+                if (_timing.CurTime >= cached.Until)
+                    _braces.Remove(mob);
+            }
             PruneAdvance();
         }
         // Only awake crew are swept, each on its own jittered schedule.
@@ -72,7 +77,7 @@ public sealed partial class WFCrewWeaponSystem
                 continue;
             // Components made before the skill changed keep up; new ones start with it (OnRangedInit).
             if (TryComp<Content.Server.NPC.Components.NPCRangedCombatComponent>(uid, out var ranged) && TryComp<WFCrewComponent>(uid, out var shooter))
-                ranged.ShootDelay = WFCrewSkills.Of(shooter.Skill).ShootDelay;
+                ranged.ShootDelay = WFCrewSkills.Of(shooter).ShootDelay;
             if (TryComp<HTNComponent>(uid, out var plan)
                 && plan.Blackboard.TryGetValue<EntityUid>("Target", out var target, EntityManager))
             {
@@ -87,7 +92,11 @@ public sealed partial class WFCrewWeaponSystem
                 else
                     HoldAdvance(uid, target);
             }
-            if (HasLiveThreat(uid))
+            Track((uid, weapon), plan, now);
+            // Mid-throw both hands are spoken for; the grenade system gives the gun back.
+            if (HasComp<WFCrewArmedGrenadeComponent>(uid))
+                continue;
+            if (HasLiveThreat(uid) || IsBracing((uid, weapon)))
                 TryReloadOrSwitch(uid);
             // A grabber's baton is out for someone who isn't a threat; holstering it here also restarts its cooldown for good.
             else if (!HasComp<WFCrewGrabberComponent>(uid))
@@ -143,23 +152,26 @@ public sealed partial class WFCrewWeaponSystem
     }
 
     /// <summary>Crew defend their assigned ship without pursuing targets across docking connections.</summary>
-    public bool CanEngage(EntityUid uid, EntityUid target)
+    public bool CanEngage(EntityUid uid, EntityUid target) => Assess(uid, target) == WFCrewEngage.Engage;
+
+    /// <summary>Whether the crewman fights a hostile, covers the approach to it unseen, or leaves it be.</summary>
+    public WFCrewEngage Assess(EntityUid uid, EntityUid target)
     {
         if (TerminatingOrDeleted(target) || !_mobs.IsAlive(target) || Transform(uid).GridUid is not { } grid)
-            return false;
+            return WFCrewEngage.No;
 
         // Someone it has finished with, or a boarding party's mark that has not hit it (NpcIntents).
         if (_factions.IsIgnored(uid, target) || EntityManager.System<Content.Server._WF.NpcIntents.WFNpcIntentSystem>().HoldsFireOn(uid, target))
-            return false;
+            return WFCrewEngage.No;
 
         if (HasComp<WFCrewNonLethalComponent>(uid) && CompOrNull<Content.Shared.Cuffs.Components.CuffableComponent>(target)?.CuffedHandCount > 0)
-            return false;
+            return WFCrewEngage.No;
 
         TryComp<WFCrewComponent>(uid, out var crew);
         if (OnSight(uid, crew, grid, target))
-            return true;
+            return WFCrewEngage.Engage;
         if (Transform(target).GridUid != grid)
-            return false;
+            return WFCrewEngage.No;
 
         var attacked = WasAttackedBy(uid, target);
         // Off his post's grid a crewman starts nothing. He answers whoever attacked him, in sight, only when sent
@@ -167,23 +179,25 @@ public sealed partial class WFCrewWeaponSystem
         // one who only defends his ship goes home instead of following anyone off it.
         var away = crew?.Post is { } post && post.EntityId != grid;
         if (away && (!attacked || !OnErrand(uid, crew!, grid) && !IsFactionEnemy(uid, target)))
-            return false;
+            return WFCrewEngage.No;
         if (IsStationCrew(uid) && !attacked)
-            return false;
+            return WFCrewEngage.No;
         if (CanSee(uid, target))
-            return true;
+            return WFCrewEngage.Engage;
         if (away)
-            return false;
+            return WFCrewEngage.No;
 
-        // Out of sight. Whoever was shot at goes after the shooter; of the rest one at a time goes looking while
-        // the others hold where they are. Nobody leaves good air to follow anyone into a spaced compartment.
+        // Out of sight. Whoever was shot at goes after the shooter; of the rest the hunt party goes looking while the
+        // others brace where they are. Nobody leaves good air to follow anyone into a spaced compartment, and nobody
+        // walks into a grenade's blast.
         if (!attacked && !EntityManager.System<WFCrewCommsSystem>().Knows(uid, target))
-            return false;
-        if (crew is { Pursues: false } || HasAir(uid) && !HasAir(target))
-            return false;
+            return WFCrewEngage.No;
+        var hold = crew != null && MayBrace(uid, crew, target) ? WFCrewEngage.Brace : WFCrewEngage.No;
+        if (crew is { Pursues: false } || HasAir(uid) && !HasAir(target) || BlastHeld(target))
+            return hold;
 
         // Only a fresh attack sends him straight after someone he cannot see; an old grudge waits its turn in the hunt.
-        return RecentlyAttackedBy(uid, target) || AdvanceFree(uid, target);
+        return RecentlyAttackedBy(uid, target) || AdvanceFree(uid, target) ? WFCrewEngage.Engage : hold;
     }
 
     /// <summary>How long after an attack a crewman goes after an attacker he cannot see, outside the one-man hunt.</summary>
@@ -228,21 +242,85 @@ public sealed partial class WFCrewWeaponSystem
                && EntityManager.System<WFCrewObjectiveSystem>().IsRaiding(post.EntityId, crew.Group, grid);
     }
 
-    /// <summary>The longest one crewman keeps the hunt for an unseen hostile without getting sight of it.</summary>
+    /// <summary>The longest one crewman keeps his place in the hunt for an unseen hostile without getting sight of it.</summary>
     private static readonly TimeSpan AdvanceLease = TimeSpan.FromSeconds(15);
 
-    private readonly Dictionary<EntityUid, (EntityUid Crew, TimeSpan Until)> _advancing = new();
+    /// <summary>The crewmen hunting each hostile nobody can see, and how many the party admits.</summary>
+    private readonly Dictionary<EntityUid, HuntParty> _advancing = new();
 
-    /// <summary>Whether the hunt for a hostile is open to this crewman: nobody holds it, the lease ran out, or it is his.</summary>
+    /// <summary>Hostiles a grenade is about to go off beside: nobody goes after them until it has.</summary>
+    private readonly Dictionary<EntityUid, TimeSpan> _blastHolds = new();
+
+    private sealed class HuntParty
+    {
+        /// <summary>Set by whoever opens the hunt: his skill's <see cref="WFCrewSkills.Profile.HuntParty"/>.</summary>
+        public int Size = 1;
+
+        public readonly List<(EntityUid Crew, TimeSpan Until)> Members = new();
+    }
+
+    /// <summary>Whether a hunt member's lease still holds.</summary>
+    private bool Live((EntityUid Crew, TimeSpan Until) member, TimeSpan now)
+    {
+        return now < member.Until && !TerminatingOrDeleted(member.Crew) && _mobs.IsAlive(member.Crew);
+    }
+
+    /// <summary>Whether the hunt for a hostile is open to this crewman: he is in it, or the party has room.</summary>
     private bool AdvanceFree(EntityUid uid, EntityUid target)
     {
-        return !_advancing.TryGetValue(target, out var slot) || slot.Crew == uid || _timing.CurTime >= slot.Until
-            || TerminatingOrDeleted(slot.Crew) || !_mobs.IsAlive(slot.Crew);
+        if (!_advancing.TryGetValue(target, out var party))
+            return true;
+
+        var now = _timing.CurTime;
+        var live = 0;
+        foreach (var member in party.Members)
+        {
+            if (member.Crew == uid)
+                return true;
+            if (Live(member, now))
+                live++;
+        }
+
+        return live == 0 || live < party.Size;
+    }
+
+    /// <summary>Whether this crewman holds a live place in the hunt for a hostile.</summary>
+    private bool InHunt(EntityUid uid, EntityUid target, TimeSpan now, out TimeSpan until)
+    {
+        until = default;
+        if (!_advancing.TryGetValue(target, out var party))
+            return false;
+
+        foreach (var member in party.Members)
+        {
+            if (member.Crew != uid || !Live(member, now))
+                continue;
+            until = member.Until;
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>Puts this crewman in the hunt until a time, opening it at his party size if nobody is in it.</summary>
+    private void SetHunt(EntityUid uid, EntityUid target, TimeSpan until)
+    {
+        var now = _timing.CurTime;
+        if (!_advancing.TryGetValue(target, out var party))
+        {
+            party = new HuntParty();
+            _advancing[target] = party;
+        }
+
+        party.Members.RemoveAll(member => member.Crew == uid || !Live(member, now));
+        if (party.Members.Count == 0)
+            party.Size = TryComp<WFCrewComponent>(uid, out var crew) ? Math.Max(1, WFCrewSkills.Of(crew).HuntParty) : 1;
+        party.Members.Add((uid, until));
     }
 
     /// <summary>
-    /// Takes the one place in the hunt for a hostile nobody can see. Only a plan that commits to the target calls
-    /// this; an existing lease is never extended here, so a holder who gets nowhere lets go after the lease.
+    /// Takes a place in the hunt for a hostile nobody can see. Only a plan that commits to the target calls this; an
+    /// existing lease is never extended here, so a holder who gets nowhere lets go after the lease.
     /// </summary>
     public void ClaimAdvance(EntityUid uid, EntityUid target)
     {
@@ -250,15 +328,15 @@ public sealed partial class WFCrewWeaponSystem
             return;
 
         var now = _timing.CurTime;
-        if (_advancing.TryGetValue(target, out var slot) && slot.Crew == uid && now < slot.Until)
+        if (InHunt(uid, target, now, out _))
             return;
 
-        _advancing[target] = (uid, now + AdvanceLease);
+        SetHunt(uid, target, now + AdvanceLease);
     }
 
     /// <summary>
-    /// A crewman fighting a hostile in sight keeps the hunt for it, so nobody else sets out meanwhile. One who
-    /// cannot find a way to an unseen hostile gives the hunt up.
+    /// A crewman fighting a hostile in sight keeps his place in the hunt for it, so nobody else sets out meanwhile.
+    /// One who cannot find a way to an unseen hostile gives his place up.
     /// </summary>
     private void HoldAdvance(EntityUid uid, EntityUid target)
     {
@@ -266,15 +344,28 @@ public sealed partial class WFCrewWeaponSystem
             return;
 
         var now = _timing.CurTime;
-        var held = _advancing.TryGetValue(target, out var slot) && slot.Crew == uid && now < slot.Until;
+        var held = InHunt(uid, target, now, out var heldUntil);
         if (CanSee(uid, target))
         {
             var until = now + AdvanceLease;
-            _advancing[target] = (uid, held && slot.Until > until ? slot.Until : until);
+            SetHunt(uid, target, held && heldUntil > until ? heldUntil : until);
         }
         else if (held && (Unreachable(uid)
                      || TryComp<NPCSteeringComponent>(uid, out var steering) && steering.Status == SteeringStatus.NoPath))
-            _advancing[target] = (uid, now);
+            SetHunt(uid, target, now);
+    }
+
+    /// <summary>Keeps everyone off a hostile until a grenade thrown at it has gone off.</summary>
+    public void HoldHunt(EntityUid target, TimeSpan until)
+    {
+        if (!_blastHolds.TryGetValue(target, out var held) || held < until)
+            _blastHolds[target] = until;
+    }
+
+    /// <summary>Whether a grenade is about to go off beside the hostile.</summary>
+    public bool BlastHeld(EntityUid target)
+    {
+        return _blastHolds.TryGetValue(target, out var until) && _timing.CurTime < until;
     }
 
     private bool Unreachable(EntityUid uid)
@@ -283,15 +374,21 @@ public sealed partial class WFCrewWeaponSystem
             || TryComp<NPCMeleeCombatComponent>(uid, out var melee) && melee.Status == CombatStatus.TargetUnreachable;
     }
 
-    /// <summary>Drops leases that ran out and those whose crewman or hostile is gone.</summary>
+    /// <summary>Drops leases that ran out and those whose crewman or hostile is gone, and spent blast holds.</summary>
     private void PruneAdvance()
     {
         var now = _timing.CurTime;
-        foreach (var (target, slot) in _advancing)
+        foreach (var (target, party) in _advancing)
         {
-            if (now >= slot.Until || TerminatingOrDeleted(target) || !_mobs.IsAlive(target)
-                || TerminatingOrDeleted(slot.Crew) || !_mobs.IsAlive(slot.Crew))
+            party.Members.RemoveAll(member => !Live(member, now));
+            if (party.Members.Count == 0 || TerminatingOrDeleted(target) || !_mobs.IsAlive(target))
                 _advancing.Remove(target);
+        }
+
+        foreach (var (target, until) in _blastHolds)
+        {
+            if (now >= until || TerminatingOrDeleted(target))
+                _blastHolds.Remove(target);
         }
     }
 
@@ -327,8 +424,19 @@ public sealed partial class WFCrewWeaponSystem
             predicate: blocker => !Transform(blocker).Anchored);
 
     /// <summary>Chooses a living hostile aboard the crewman's own ship.</summary>
-    public EntityUid? PickTarget(EntityUid uid)
+    public EntityUid? PickTarget(EntityUid uid) => Pick(uid, WFCrewEngage.Engage);
+
+    /// <summary>Chooses a hostile aboard whose approach the crewman covers because he may not go after it.</summary>
+    public EntityUid? PickBraceTarget(EntityUid uid) => Pick(uid, WFCrewEngage.Brace);
+
+    /// <summary>Chooses a hostile the crewman would fight that he can see right now.</summary>
+    public EntityUid? PickVisibleTarget(EntityUid uid) => Pick(uid, WFCrewEngage.Engage, mustSee: true);
+
+    /// <summary>The first known hostile the crewman would deal with as <paramref name="wanted"/>, and can see if asked.</summary>
+    private EntityUid? Pick(EntityUid uid, WFCrewEngage wanted, bool mustSee = false)
     {
+        bool Wanted(EntityUid target) => Assess(uid, target) == wanted && (!mustSee || CanSee(uid, target));
+
         TryComp<NpcFactionMemberComponent>(uid, out var member);
         if (member != null)
         {
@@ -339,7 +447,7 @@ public sealed partial class WFCrewWeaponSystem
                 NearbyHostiles(uid, member, nearby);
                 foreach (var target in nearby)
                 {
-                    if (CanEngage(uid, target))
+                    if (Wanted(target))
                         return target;
                 }
             }
@@ -351,7 +459,7 @@ public sealed partial class WFCrewWeaponSystem
 
             foreach (var target in _factions.GetHostiles(uid))
             {
-                if (!_factions.IsIgnored(uid, target) && CanEngage(uid, target))
+                if (!_factions.IsIgnored(uid, target) && Wanted(target))
                     return target;
             }
         }
@@ -360,12 +468,12 @@ public sealed partial class WFCrewWeaponSystem
             return null;
         foreach (var target in EntityManager.System<WFCrewAlertSystem>().GetSharedHostiles(grid, crew.Group))
         {
-            if (IsHostile(uid, member, target) && CanEngage(uid, target))
+            if (IsHostile(uid, member, target) && Wanted(target))
                 return target;
         }
         foreach (var target in crew.RadioSightings.Keys)
         {
-            if (IsHostile(uid, member, target) && CanEngage(uid, target))
+            if (IsHostile(uid, member, target) && Wanted(target))
                 return target;
         }
         return null;
@@ -403,10 +511,11 @@ public sealed partial class WFCrewWeaponSystem
         return ev.Count;
     }
 
+    /// <summary>Whether the crewman wearing this gun can reload it: a spare magazine, or never-dry ammo it can refill.</summary>
     private bool FindMagazineForOwner(EntityUid gun)
     {
-        return Transform(gun).ParentUid is var owner && HasComp<WFCrewComponent>(owner)
-            && FindMagazine(owner, gun, out _, out _);
+        return Transform(gun).ParentUid is var owner && TryComp<WFCrewComponent>(owner, out var crew)
+            && (crew.InfiniteAmmo && RefillHolder(gun) != null || FindMagazine(owner, gun, out _, out _));
     }
 
     private bool FindMagazine(EntityUid owner, EntityUid gun, out EntityUid magazine, out string equipmentSlot)
@@ -439,26 +548,22 @@ public sealed partial class WFCrewWeaponSystem
             return true;
         }
 
-        if (FindMagazine(uid, gun, out var magazine, out var equipmentSlot)
-            && TakeMagazine(uid, magazine, equipmentSlot))
+        if (TryComp<WFCrewComponent>(uid, out var crew) && crew.InfiniteAmmo && Refill(gun))
         {
-            _hands.TrySelect(uid, magazine);
-            if (_slots.TryGetSlot(gun, MagazineSlot, out var slot)
-                && (!slot.HasItem || _slots.TryEject(gun, slot, uid, out _)))
-            {
-                _interaction.InteractUsing(uid, magazine, gun, Transform(uid).Coordinates);
-                if (slot.Item == magazine)
-                {
-                    EntityManager.System<WFCrewSpeechSystem>().Say(uid, "reload");
-                    ReadyChamber(uid, gun);
-                    _hands.TrySelect(uid, gun);
-                    return AmmoCount(gun) > 0;
-                }
-            }
-            _inventory.TryEquip(uid, magazine, equipmentSlot, silent: true);
-            _hands.TrySelect(uid, gun);
+            EntityManager.System<WFCrewSpeechSystem>().Say(uid, "reload");
+            ReadyChamber(uid, gun);
+            return AmmoCount(gun) > 0;
         }
 
+        if (FindMagazine(uid, gun, out var magazine, out var equipmentSlot)
+            && SwapMagazine(uid, gun, magazine, equipmentSlot))
+        {
+            EntityManager.System<WFCrewSpeechSystem>().Say(uid, "reload");
+            ReadyChamber(uid, gun);
+            return AmmoCount(gun) > 0;
+        }
+
+        Unwield(uid, gun);
         RemCompDeferred<NPCRangedCombatComponent>(uid);
         if (TryComp<HTNComponent>(uid, out var htn))
             EntityManager.System<HTNSystem>().Replan(htn);
@@ -468,15 +573,51 @@ public sealed partial class WFCrewWeaponSystem
         return false;
     }
 
-    private bool TakeMagazine(EntityUid uid, EntityUid magazine, string slot)
+    /// <summary>Fills the gun's own box or its loaded magazine back to capacity, for crew who never run dry.</summary>
+    private bool Refill(EntityUid gun)
     {
-        if (_hands.TryPickupAnyHand(uid, magazine, animateUser: false))
-            return true;
-        if (!_inventory.TryUnequip(uid, slot, silent: true))
+        if (RefillHolder(gun) is not { } holder || !TryComp<BallisticAmmoProviderComponent>(holder, out var ammo))
             return false;
-        if (_hands.TryPickupAnyHand(uid, magazine, animateUser: false))
-            return true;
-        _inventory.TryEquip(uid, magazine, slot, silent: true);
-        return false;
+
+        var missing = ammo.Capacity - ammo.Container.ContainedEntities.Count;
+        if (missing <= 0)
+            return false;
+
+        _guns.SetBallisticUnspawned((holder, ammo), missing);
+        return true;
+    }
+
+    /// <summary>What <see cref="Refill"/> tops up: the gun's own ballistic store, else the magazine in it.</summary>
+    private EntityUid? RefillHolder(EntityUid gun)
+    {
+        if (HasComp<BallisticAmmoProviderComponent>(gun))
+            return gun;
+        return _slots.TryGetSlot(gun, MagazineSlot, out var slot) && slot.Item is { } magazine
+            && HasComp<BallisticAmmoProviderComponent>(magazine) ? magazine : null;
+    }
+
+    /// <summary>
+    /// Loads a spare magazine straight from its equipment slot into the gun, without hands, so a wielded gun stays
+    /// wielded. The spent magazine takes the spare's slot, or falls at his feet if it doesn't fit.
+    /// </summary>
+    private bool SwapMagazine(EntityUid uid, EntityUid gun, EntityUid magazine, string equipmentSlot)
+    {
+        if (!_slots.TryGetSlot(gun, MagazineSlot, out var slot)
+            || !_inventory.TryUnequip(uid, equipmentSlot, silent: true, force: true))
+            return false;
+
+        EntityUid? spent = null;
+        if (slot.HasItem && !_slots.TryEject(gun, slot, uid, out spent)
+            || !_slots.TryInsert(gun, slot, magazine, uid))
+        {
+            if (spent != null)
+                _slots.TryInsert(gun, slot, spent.Value, null);
+            _inventory.TryEquip(uid, magazine, equipmentSlot, silent: true, force: true);
+            return false;
+        }
+
+        if (spent != null)
+            _inventory.TryEquip(uid, spent.Value, equipmentSlot, silent: true);
+        return true;
     }
 }

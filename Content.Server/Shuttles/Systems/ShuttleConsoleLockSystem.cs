@@ -122,6 +122,7 @@ public sealed partial class ShuttleConsoleLockSystem : SharedShuttleConsoleLockS
 
         // Show unlock/lock verb only for users with ID cards or vouchers
         var hasIdOrVoucher = idCards.Count > 0 || vouchers.Count > 0;
+        hasIdOrVoucher |= WfIsManager(uid, args.User); // WOLFGATE(ShipAdmin): account owners and admins get the lock verbs with empty hands
 
         // Get the effective lock state for use throughout this method
         var effectiveLocked = GetEffectiveLockState(uid, component);
@@ -244,6 +245,11 @@ public sealed partial class ShuttleConsoleLockSystem : SharedShuttleConsoleLockS
     private void TryToggleLock(EntityUid uid, EntityUid user, ShuttleConsoleLockComponent component)
     {
         var effectiveLocked = GetEffectiveLockState(uid, component);
+
+        // WOLFGATE(ShipAdmin) START: a manager with no deed card toggles the helm lock, and is not made a guest
+        if (WfTryManagerToggle(uid, user, component, effectiveLocked))
+            return;
+        // WOLFGATE END
 
         // If locked, try to unlock
         if (effectiveLocked)

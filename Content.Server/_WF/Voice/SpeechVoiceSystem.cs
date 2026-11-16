@@ -67,13 +67,19 @@ public sealed partial class SpeechVoiceSystem : EntitySystem
     {
         base.Update(frameTime);
 
-        foreach (var (key, radio) in _radio)
+        // Cleared even if a send throws: a line left queued threw again every tick and silenced radio voices.
+        try
         {
-            SendRadio(key, radio);
+            foreach (var (key, radio) in _radio)
+            {
+                SendRadio(key, radio);
+            }
         }
-
-        _radio.Clear();
-        _lines.Clear();
+        finally
+        {
+            _radio.Clear();
+            _lines.Clear();
+        }
     }
 
     private void OnPlayerSpawnComplete(PlayerSpawnCompleteEvent args)
@@ -185,7 +191,8 @@ public sealed partial class SpeechVoiceSystem : EntitySystem
         foreach (var receiver in radio.Receivers)
         {
             // Ghosts hear every channel, which would fill their voice cap. They still get the text.
-            if (_ghostQuery.HasComp(receiver))
+            // A receiver deleted since the line went out has nothing to play it on.
+            if (TerminatingOrDeleted(receiver) || _ghostQuery.HasComp(receiver))
                 continue;
 
             if (_speakerQuery.HasComp(receiver))

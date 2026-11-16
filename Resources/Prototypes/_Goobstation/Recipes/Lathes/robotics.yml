@@ -1,62 +1,9 @@
+# WOLFGATE(Modsuits): MODsuit recipes moved to _WF/Modsuits.
 # SPDX-FileCopyrightText: 2025 GoobBot <uristmchands@proton.me>
 # SPDX-FileCopyrightText: 2025 ImHoks <imhokzzzz@gmail.com>
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-- type: latheRecipe
-  id: ModsuitChestplate
-  result: ModsuitChestplate
-  completetime: 5
-  materials:
-    Steel: 250
-
-- type: latheRecipe
-  id: ModsuitBoots
-  result: ModsuitBoots
-  completetime: 5
-  materials:
-    Steel: 250
-
-- type: latheRecipe
-  id: ModsuitHelmet
-  result: ModsuitHelmet
-  completetime: 5
-  materials:
-    Steel: 250
-
-- type: latheRecipe
-  id: ModsuitGauntlets
-  result: ModsuitGauntlets
-  completetime: 5
-  materials:
-    Steel: 250
-
-- type: latheRecipe
-  id: ModsuitShell
-  result: ModsuitShell
-  completetime: 5
-  materials:
-    Steel: 500
-    Plasma: 250
-
-- type: latheRecipe
-  id: ModsuitPlatingExternal
-  result: ModsuitPlatingExternal
-  completetime: 5
-  materials:
-    Steel: 300
-    Glass: 150
-    Plasma: 50
-
-- type: latheRecipe
-  id: ModsuitCoreStandard
-  result: ModsuitCoreStandard
-  completetime: 5
-  materials:
-    Glass: 550
-    Plasma: 250
-
-# AI
 - type: latheRecipe
   id: AiRemoteBrain
   result: AiRemoteBrain

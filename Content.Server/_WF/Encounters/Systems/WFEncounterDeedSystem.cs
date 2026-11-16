@@ -1,9 +1,11 @@
 using Content.Server._WF.Encounters.Components;
+using Content.Server._WF.ShipAccess;
 using Content.Server.Popups;
 using Content.Shared.Database;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Mobs;
 using Content.Server.Administration.Logs;
+using Robust.Shared.Player;
 
 namespace Content.Server._WF.Encounters.Systems;
 
@@ -17,6 +19,7 @@ public sealed partial class WFEncounterDeedSystem : EntitySystem
     [Dependency] private MetaDataSystem _meta = default!;
     [Dependency] private PopupSystem _popup = default!;
     [Dependency] private IAdminLogManager _adminLog = default!;
+    [Dependency] private WFShipAccessServerSystem _shipAccess = default!;
 
     public override void Initialize()
     {
@@ -59,6 +62,10 @@ public sealed partial class WFEncounterDeedSystem : EntitySystem
             _popup.PopupEntity(Loc.GetString("wf-encounter-deed-already", ("ship", Name(ship))), args.User, args.User);
             return;
         }
+
+        // The claimant's account owns it now, so their card opens it rather than the dead crew's.
+        if (TryComp<ActorComponent>(args.User, out var actor))
+            _shipAccess.SetupRegisteredShip(ship, Name(args.User), new[] { actor.PlayerSession.UserId });
 
         _adminLog.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(args.User):player} claimed encounter ship {ToPrettyString(ship):grid} with its deed");
         _popup.PopupEntity(Loc.GetString("wf-encounter-deed-done", ("ship", Name(ship))), args.User, args.User);

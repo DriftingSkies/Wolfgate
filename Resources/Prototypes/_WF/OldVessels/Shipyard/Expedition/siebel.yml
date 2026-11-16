@@ -11,7 +11,6 @@
   price: 137000 # appraised at 110278 after the classic downgrade; 1.24x markup
   category: Medium
   group: Expedition
-  access: Mercenary
   shuttlePath: /SharedMaps/_WF/OldVessels/Expedition/siebel.yml
   tags:
   - WFClassicVessel

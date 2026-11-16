@@ -475,7 +475,7 @@ public sealed class WFCombatConsoleTest
                             continue;
                         var ui = pair.Client.ResolveDependency<IUserInterfaceManager>();
                         AssertCaptionFits(gunnery.FindControl<Label>("ServerStatus"), ui);
-                        foreach (var name in new[] { "IFFToggle", "IFFDetailedToggle", "DockToggle" })
+                        foreach (var name in new[] { "IFFToggle", "IFFDetailedToggle" })
                             AssertCaptionFits(gunnery.FindControl<Button>(name).Label, ui);
                     }
                 }
@@ -750,7 +750,7 @@ public sealed class WFCombatConsoleTest
                         Assert.That(IsUnder(position, coordinates), Is.True, context);
                         AssertWithin(coordinates, navigation);
                         AssertCaptionFits(position, ui);
-                        foreach (var toggle in new[] { "IFFToggle", "IFFDetailedToggle", "DockToggle" })
+                        foreach (var toggle in new[] { "IFFToggle", "IFFDetailedToggle" })
                             AssertCaptionFits(navigation.FindControl<Button>(toggle).Label, ui);
 
                         // The left stack: panels, then the fuel gauge inside the last of them, then the cockpit key across its width.

@@ -13,7 +13,6 @@
   price: 262000 # 146K base x 1.8 -> 262K (80% markup for high gunnery).
   category: medium
   group: Scrap
-  access: Mercenary
   shuttlePath: /SharedMaps/_WF/OldVessels/Scrap/serkesh.yml
   tags:
   - WFClassicVessel

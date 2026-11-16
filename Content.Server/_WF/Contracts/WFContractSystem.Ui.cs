@@ -63,7 +63,7 @@ public sealed partial class WFContractSystem
 
     private void OnCartridgeReady(Entity<WFContractCartridgeComponent> ent, ref CartridgeUiReadyEvent args)
     {
-        var holder = Transform(args.Loader).ParentUid;
+        var holder = LoaderViewer(args.Loader);
         if (HolderOf(holder) is { } who)
             PayOwed(who);
 
@@ -77,11 +77,17 @@ public sealed partial class WFContractSystem
 
         var loader = GetEntity(args.LoaderUid);
         // Only the PDA's carrier may abandon from it.
-        if (Transform(loader).ParentUid != args.Actor || HolderOf(args.Actor) is not { } holder)
+        if (LoaderViewer(loader) != args.Actor || HolderOf(args.Actor) is not { } holder)
             return;
 
         TryAbandon(holder, abandon.Id);
         _cartridgeLoader.UpdateCartridgeUiState(loader, new WFContractCartridgeUiState(State(args.Actor)));
+    }
+
+    /// <summary>Whose contracts a PDA shows: a cyborg's built-in one is the cyborg, any other its carrier.</summary>
+    private EntityUid LoaderViewer(EntityUid loader)
+    {
+        return HolderOf(loader) != null ? loader : Transform(loader).ParentUid;
     }
 
     private void SendBoard(EntityUid board, EntityUid actor, Dictionary<string, EntityUid>? homes = null)
@@ -111,7 +117,7 @@ public sealed partial class WFContractSystem
                 continue;
 
             _cartridgeLoader.UpdateCartridgeUiState(loader,
-                new WFContractCartridgeUiState(State(Transform(loader).ParentUid, homes: homes ??= ContractorHomes())), loader: loaderComp);
+                new WFContractCartridgeUiState(State(LoaderViewer(loader), homes: homes ??= ContractorHomes())), loader: loaderComp);
         }
     }
 

@@ -178,6 +178,7 @@ public sealed partial class WFCrewMedicSystem : EntitySystem
         _accumulator = 0f;
         var now = _timing.CurTime;
         PruneCare(now);
+        UpdateSelfCare();
         var medics = EntityQueryEnumerator<WFCrewMedicComponent, WFCrewComponent>();
         while (medics.MoveNext(out var uid, out var medic, out var crew))
         {
@@ -482,6 +483,8 @@ public sealed partial class WFCrewMedicSystem : EntitySystem
 
         if (NeedsItem(medic, patient, medic.Comp.Brutepack))
             return WFCrewMedicAction.Brute;
+        if (NeedsItem(medic, patient, medic.Comp.Suture))
+            return WFCrewMedicAction.Suture;
         if (NeedsItem(medic, patient, medic.Comp.Ointment))
             return WFCrewMedicAction.Burn;
 
@@ -579,6 +582,8 @@ public sealed partial class WFCrewMedicSystem : EntitySystem
                 return Heal(medic, patient, null, medic.Comp.Brutepack);
             case WFCrewMedicAction.Burn:
                 return Heal(medic, patient, null, medic.Comp.Ointment);
+            case WFCrewMedicAction.Suture:
+                return Heal(medic, patient, null, medic.Comp.Suture);
             case WFCrewMedicAction.TableSurgery:
                 return FinishStep(medic, patient);
             default:
@@ -672,7 +677,7 @@ public sealed partial class WFCrewMedicSystem : EntitySystem
             var beds = EntityQueryEnumerator<HealOnBuckleComponent, StrapComponent, TransformComponent>();
             while (beds.MoveNext(out var uid, out _, out var strap, out var xform))
             {
-                if (strap.BuckledEntities.Count == 0 && !HasComp<OperatingTableComponent>(uid))
+                if (strap.BuckledEntities.Count == 0 && !HasComp<OperatingTableComponent>(uid) && CareBed(uid))
                     Consider(uid, xform);
             }
         }
@@ -863,7 +868,7 @@ public sealed partial class WFCrewMedicSystem : EntitySystem
             return 1;
         if (Down(patient))
             return _life.GetBleedRate(patient) > 0f ? 2 : 3;
-        if (_callForHelp.IsFlagged(patient))
+        if (_callForHelp.IsFlagged(patient) || WantsMedic(patient))
             return 4;
         return onBed ? 5 : null;
     }
@@ -904,10 +909,34 @@ public sealed partial class WFCrewMedicSystem : EntitySystem
         return CompOrNull<PullableComponent>(patient)?.Puller == mob;
     }
 
-    /// <summary>Lying in a bed that heals, as the beds in Medical do.</summary>
+    /// <summary>Lying in a bed in Medical; on a grid with no medical beds, in any bed that heals.</summary>
     public bool OnBed(EntityUid patient)
     {
-        return CompOrNull<BuckleComponent>(patient)?.BuckledTo is { } strap && HasComp<HealOnBuckleComponent>(strap);
+        return CompOrNull<BuckleComponent>(patient)?.BuckledTo is { } strap && CareBed(strap);
+    }
+
+    /// <summary>
+    /// A bed a patient is taken to: a medical bed (<see cref="WFMedicalBedComponent"/>), or any bed that heals on a grid
+    /// that has none, so a ship mapped with plain beds still has somewhere.
+    /// </summary>
+    private bool CareBed(EntityUid bed)
+    {
+        if (HasComp<WFMedicalBedComponent>(bed))
+            return true;
+
+        return HasComp<HealOnBuckleComponent>(bed) && Transform(bed).GridUid is { } grid && !HasMedicalBeds(grid);
+    }
+
+    private bool HasMedicalBeds(EntityUid grid)
+    {
+        var beds = EntityQueryEnumerator<WFMedicalBedComponent, TransformComponent>();
+        while (beds.MoveNext(out _, out _, out var xform))
+        {
+            if (xform.GridUid == grid && xform.Anchored)
+                return true;
+        }
+
+        return false;
     }
 
     private bool Unconscious(EntityUid patient)

@@ -275,6 +275,9 @@ public abstract partial class SharedShipRepairSystem : EntitySystem
 
             var spawned = Spawn(protoId, coords);
             _transform.SetLocalRotation(spawned, spec.Rotation);
+            // WOLFGATE(ShipRepair): the snapshot only holds anchored entities, but some prototypes spawn loose.
+            if (!Transform(spawned).Anchored)
+                _transform.AnchorEntity(spawned);
 
             spec.OriginalEntity = GetNetEntity(spawned);
 

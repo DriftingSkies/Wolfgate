@@ -33,6 +33,7 @@ public sealed partial class WFBorgIdCardServerSystem : EntitySystem
     private static readonly EntProtoId IssuedCard = "WFBorgIdCard";
 
     [Dependency] private IPrototypeManager _proto = default!;
+    [Dependency] private SharedAccessSystem _access = default!;
     [Dependency] private HandPlaceholderSystem _placeholder = default!;
     [Dependency] private IdCardOwnerSystem _idOwner = default!;
     [Dependency] private SectorServiceSystem _sectorService = default!;
@@ -66,7 +67,7 @@ public sealed partial class WFBorgIdCardServerSystem : EntitySystem
 
     /// <summary>
     /// Issues a cyborg that spawned into a job its card in the chassis, since it has no tool module to carry one
-    /// until it picks a type.
+    /// until it picks a type. The card takes the job's access, so a faction cyborg can buy its faction's ships.
     /// </summary>
     private void OnSpawnComplete(PlayerSpawnCompleteEvent args)
     {
@@ -76,6 +77,9 @@ public sealed partial class WFBorgIdCardServerSystem : EntitySystem
         _container.EnsureContainer<Container>(args.Mob, WFBorgIdCardSystem.ContainerId);
         if (!TrySpawnInContainer(IssuedCard, args.Mob, WFBorgIdCardSystem.ContainerId, out var card))
             return;
+
+        if (args.JobId != null && _proto.TryIndex<JobPrototype>(args.JobId, out var job))
+            _access.SetAccessToJob(card.Value, job, extended: false);
 
         EnsureRecord(args.Mob, card.Value);
         _idOwner.Stamp(card.Value, args.Mob);

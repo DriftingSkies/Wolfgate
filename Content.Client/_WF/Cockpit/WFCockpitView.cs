@@ -195,6 +195,7 @@ public sealed partial class WFCockpitView : Control
         InitializeScanner(viewport);
         LayoutContainer.SetAnchorPreset(this, LayoutContainer.LayoutPreset.Wide);
         screen.AddChild(this);
+        SyncOptionalPages();
         LoadLayout();
         console.WfSendCockpitGunnery(new Content.Shared._WF.Cockpit.WFCockpitGunnerySessionMessage(true));
         console.WfSetCockpitActive(true);
@@ -261,7 +262,7 @@ public sealed partial class WFCockpitView : Control
         MeasureHud(frame, availableSize);
         _shieldContent.Measure(new Vector2(frame.Row.Width, float.PositiveInfinity));
         _shieldNeed = _shieldContent.DesiredSize.X + ShieldChrome;
-        var (comms, shields) = WFCockpitPanelLayout.SplitRow(frame.Row.Width, _shieldNeed);
+        var (comms, shields) = SplitRow(frame.Row.Width);
         _comms.Measure(new Vector2(comms, bottom));
         _shields.Measure(new Vector2(shields, bottom));
         return availableSize;
@@ -294,7 +295,7 @@ public sealed partial class WFCockpitView : Control
         if (frame.WorldShown)
             _world.Arrange(frame.World);
         ArrangeHud(frame);
-        var (comms, shields) = WFCockpitPanelLayout.SplitRow(frame.Row.Width, _shieldNeed);
+        var (comms, shields) = SplitRow(frame.Row.Width);
         _comms.Arrange(UIBox2.FromDimensions(frame.Row.TopLeft, new Vector2(comms, bottom)));
         _shields.Arrange(UIBox2.FromDimensions(frame.Row.TopLeft + new Vector2(comms + WFCockpitPanelLayout.Gap, 0), new Vector2(shields, bottom)));
         return size;

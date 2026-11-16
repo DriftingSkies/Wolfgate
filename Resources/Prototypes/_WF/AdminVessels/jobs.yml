@@ -110,6 +110,21 @@
   - GeneralAccess
 
 - type: job
+  id: WFLupercalJanitor
+  name: wf-lupercal-job-janitor
+  description: wf-lupercal-job-janitor-desc
+  playTimeTracker: JobWFLupercalJanitor
+  supervisors: wf-lupercal-job-supervisors
+  icon: JobIconJanitor
+  setPreference: false
+  canBeAntag: false
+  weight: 1
+  displayWeight: 5
+  startingGear: WFLupercalJanitorGear
+  accessGroups:
+  - GeneralAccess
+
+- type: job
   id: WFLupercalParamedic
   name: wf-lupercal-job-paramedic
   description: wf-lupercal-job-paramedic-desc
@@ -192,6 +207,9 @@
   id: JobWFLupercalDeckhand
 
 - type: playTimeTracker
+  id: JobWFLupercalJanitor
+
+- type: playTimeTracker
   id: JobWFLupercalParamedic
 
 - type: playTimeTracker
@@ -256,6 +274,16 @@
     ears: ClothingHeadsetGrey
     back: ClothingBackpack
     id: PassengerPDA
+
+- type: startingGear
+  id: WFLupercalJanitorGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitJanitor
+    shoes: ClothingShoesGaloshes
+    gloves: ClothingHandsGlovesJanitor
+    ears: ClothingHeadsetGrey
+    back: ClothingBackpack
+    id: JanitorPDA
 
 - type: startingGear
   id: WFLupercalParamedicGear

@@ -28,6 +28,11 @@ public sealed class ChatTabBar : BoxContainer
     /// </summary>
     public readonly WolfgatePopoutButton PopoutButton;
 
+    /// <summary>
+    /// Saves the chat log to a file.
+    /// </summary>
+    public readonly WolfgateSaveButton SaveButton;
+
     public ChatTabBar()
     {
         _tabs = UserInterfaceManager.GetUIController<ChatTabsUIController>();
@@ -61,6 +66,9 @@ public sealed class ChatTabBar : BoxContainer
         };
         _addButton.OnPressed += _ => AddTab();
         AddChild(_addButton);
+
+        SaveButton = new WolfgateSaveButton();
+        AddChild(SaveButton);
 
         PopoutButton = new WolfgatePopoutButton();
         AddChild(PopoutButton);

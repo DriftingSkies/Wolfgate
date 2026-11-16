@@ -5,7 +5,8 @@ on:
     types: [review_requested]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  # WOLFGATE(Ci): on pull_request_target the ref is the base branch, so every PR shared one group and cancelled the others
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:

@@ -7,7 +7,7 @@
   purchasable: false
   category: Medium
   group: Sr
-  access: Brig
+  access: Caelestinus
   mapchecker_group_override: Security
   shuttlePath: /SharedMaps/_WF/TractorBeam/Shuttles/roswell.yml
   guidebookPage: null

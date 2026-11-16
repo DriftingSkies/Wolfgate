@@ -43,14 +43,25 @@ entry ids from 100000).
   - our changes. Monolith.yml fills itself from upstream merges.
   - keep our ids above Monolith's so the client's read marker follows this file.
 - [`.github/workflows/discord-pr-notify.yml`](../../../.github/workflows/discord-pr-notify.yml)
-- [`.github/workflows/labeler-conflict.yml`](../../../.github/workflows/labeler-conflict.yml): default token permissions are read-only
-- [`.github/workflows/labeler-needsreview.yml`](../../../.github/workflows/labeler-needsreview.yml): default token permissions are read-only
+- [`.github/workflows/labeler-conflict.yml`](../../../.github/workflows/labeler-conflict.yml)
+  - on pull_request_target the ref is the base branch, so every PR shared one group and cancelled the others
+  - default token permissions are read-only
+- [`.github/workflows/labeler-needsreview.yml`](../../../.github/workflows/labeler-needsreview.yml)
+  - on pull_request_target the ref is the base branch, so every PR shared one group and cancelled the others
+  - default token permissions are read-only
+- [`.github/workflows/labeler-pr.yml`](../../../.github/workflows/labeler-pr.yml): on pull_request_target the ref is the base branch, so every PR shared one group and cancelled the others
 - [`.github/workflows/labeler-review.yml`](../../../.github/workflows/labeler-review.yml)
   - our repo
   - our team, was content-maintainers,junior-maintainers
-- [`.github/workflows/labeler-size.yml`](../../../.github/workflows/labeler-size.yml): default token permissions are read-only
-- [`.github/workflows/labeler-stable.yml`](../../../.github/workflows/labeler-stable.yml): default token permissions are read-only
-- [`.github/workflows/labeler-staging.yml`](../../../.github/workflows/labeler-staging.yml): default token permissions are read-only
+- [`.github/workflows/labeler-size.yml`](../../../.github/workflows/labeler-size.yml)
+  - on pull_request_target the ref is the base branch, so every PR shared one group and cancelled the others
+  - default token permissions are read-only
+- [`.github/workflows/labeler-stable.yml`](../../../.github/workflows/labeler-stable.yml)
+  - on pull_request_target the ref is the base branch, so every PR shared one group and cancelled the others
+  - default token permissions are read-only
+- [`.github/workflows/labeler-staging.yml`](../../../.github/workflows/labeler-staging.yml)
+  - on pull_request_target the ref is the base branch, so every PR shared one group and cancelled the others
+  - default token permissions are read-only
 - [`.github/workflows/labeler-untriaged.yml`](../../../.github/workflows/labeler-untriaged.yml): default token permissions are read-only
 - [`.github/workflows/nf-mapchecker.yml`](../../../.github/workflows/nf-mapchecker.yml)
   - Wolfgate entities, vessels and map prototypes, which sit in module folders

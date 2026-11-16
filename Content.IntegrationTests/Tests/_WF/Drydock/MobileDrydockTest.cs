@@ -37,7 +37,7 @@ public sealed class MobileDrydockTest
     private static readonly EntProtoId ShuttleWall = "WallShuttle";
 
     private static readonly ProtoId<TechnologyPrototype> Shuttlecraft = "Shuttlecraft";
-    private static readonly ProtoId<LatheRecipePrototype> ConsoleBoardRecipe = "WFComputerMobileDrydockCircuitboard";
+    private static readonly EntProtoId ConsoleBoard = "WFComputerMobileDrydockCircuitboard";
     private static readonly ProtoId<LatheRecipePrototype> CraneBoardRecipe = "WFMobileDrydockCraneMachineCircuitboard";
 
     /// <summary>Spawns a host grid with a mobile crane, a material console, and MV power from a substation on the HV debug generator.</summary>
@@ -415,7 +415,7 @@ public sealed class MobileDrydockTest
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>The mobile crane's board builds it, and the Shuttlecraft tech unlocks both of its boards.</summary>
+    /// <summary>The mobile crane's board builds it and Shuttlecraft unlocks it; no lathe recipe prints the console board.</summary>
     [Test]
     public async Task CraneIsConstructible()
     {
@@ -433,13 +433,15 @@ public sealed class MobileDrydockTest
             Assert.That(em.GetComponent<MachineBoardComponent>(board).FrameSize, Is.EqualTo("2x2"),
                 "The crane board should only fit the 2x2 frame its crane occupies.");
 
-            var unlocks = protos.Index(Shuttlecraft).RecipeUnlocks;
+            var consoleRecipes = protos.EnumeratePrototypes<LatheRecipePrototype>()
+                .Where(recipe => recipe.Result == ConsoleBoard)
+                .Select(recipe => recipe.ID);
             Assert.Multiple(() =>
             {
-                Assert.That(unlocks, Does.Contain(ConsoleBoardRecipe), "Shuttlecraft should unlock the console board.");
-                Assert.That(unlocks, Does.Contain(CraneBoardRecipe), "Shuttlecraft should unlock the crane board.");
-                Assert.That(protos.HasIndex(ConsoleBoardRecipe), Is.True, "The console board recipe should exist.");
                 Assert.That(protos.HasIndex(CraneBoardRecipe), Is.True, "The crane board recipe should exist.");
+                Assert.That(protos.Index(Shuttlecraft).RecipeUnlocks, Does.Contain(CraneBoardRecipe),
+                    "Shuttlecraft should unlock the crane board.");
+                Assert.That(consoleRecipes, Is.Empty, "A mobile drydock console comes with its ship; its board must not be printable.");
             });
         });
 

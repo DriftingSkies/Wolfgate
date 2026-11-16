@@ -58,8 +58,9 @@ public sealed partial class WFOrdnanceBeaconComponent : Component
     [DataField]
     public float Timer = 120f;
 
+    /// <summary>Timer choices; none under 90 s, so there is time to find the warhead and open its panel.</summary>
     [DataField]
-    public List<float> TimerOptions = new() { 30f, 60f, 120f, 300f, 600f };
+    public List<float> TimerOptions = new() { 90f, 120f, 300f, 600f };
 
     /// <summary>Seconds from planting to touchdown.</summary>
     [DataField]
@@ -99,4 +100,22 @@ public sealed partial class WFOrdnanceBeaconComponent : Component
 
     [ViewVariables]
     public EntityUid? PlantedBy;
+}
+
+/// <summary>A klaxon that sounds around the warhead, for nearby players only, while it is armed.</summary>
+[RegisterComponent]
+public sealed partial class WFOrdnanceKlaxonComponent : Component
+{
+    [DataField]
+    public SoundSpecifier Sound = new SoundPathSpecifier("/Audio/_WF/Ordnance/nukeklaxon.ogg");
+
+    /// <summary>How far it carries, in metres.</summary>
+    [DataField]
+    public float Range = 20f;
+
+    [DataField]
+    public float Volume = 2f;
+
+    [ViewVariables]
+    public EntityUid? Stream;
 }

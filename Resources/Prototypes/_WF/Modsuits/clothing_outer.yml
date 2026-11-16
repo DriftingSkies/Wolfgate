@@ -1,0 +1,645 @@
+## Parent File to easily add more attributes, here it's used for plasmaman mostly
+- type: entity
+  parent: ClothingOuterBase
+  id: ClothingOuterModsuitBase
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: AllowSuitStorage
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/standard.rsi
+    layers:
+    - state: chestplate
+    - state: chestplate-sealed
+      visible: false
+      map: [ "sealed" ]
+- type: entity
+  abstract: true
+  parent: ClothingOuterBase
+  id: ClothingModsuitChestplateBase
+  components:
+  - type: AllowSuitStorage
+  - type: WFSuitTankStorage
+  - type: Storage
+    grid:
+    - 0,0,1,1
+    maxItemSize: Normal
+    whitelist:
+      components:
+      - GasTank
+    blacklist:
+      components:
+      - Jetpack
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
+  - type: ContainerContainer
+    containers:
+      mod-part-stored: !type:ContainerSlot
+      storagebase: !type:Container
+        ents: []
+
+- type: entity
+  parent: ClothingModsuitChestplateBase
+  id: ClothingModsuitChestplateStandard
+  name: standard modsuit chestplate
+  description: A special modular suit spaceproof cover designed for compact folding inside modular suit control.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: AllowSuitStorage
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/standard.rsi
+    layers:
+    - state: chestplate
+    - state: chestplate-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    slots: [ outerClothing ]
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-chestplate
+    sealDownPopup: modsuit-part-seal-down-chestplate
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-resomi:
+      - state: equipped-OUTERCLOTHING-sealed-resomi
+  - type: StaminaDamageResistance
+    coefficient: 0.9
+  - type: Armor
+    coverage:
+    - Torso
+    - Torso
+    - Arm
+    - Hand
+    - Leg
+    - Foot
+    - Tail
+    - Other
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.85
+        Heat: 0.85
+        Radiation: 0.2
+  - type: ModSealedComponents
+    components:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      coolingCoefficient: 0.01
+      heatingCoefficient: 0.01
+  - type: FireProtection
+    reduction: 0.5
+
+- type: entity
+  parent: ClothingModsuitChestplateBase
+  id: ClothingModsuitChestplateSecurity
+  name: soldat modsuit chestplate
+  description: A robust modular suit cover with ceramic inserts for extra protection.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: AllowSuitStorage
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/security.rsi
+    layers:
+    - state: chestplate
+    - state: chestplate-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    slots: [ outerClothing ]
+  - type: ClothingSpeedModifier
+    walkModifier: 0.95
+    sprintModifier: 0.95
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-chestplate
+    sealDownPopup: modsuit-part-seal-down-chestplate
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-resomi:
+      - state: equipped-OUTERCLOTHING-sealed-resomi
+      outerClothing-vox:
+      - state: equipped-OUTERCLOTHING-sealed-vox
+      outerClothing-hydrakin:
+      - state: equipped-OUTERCLOTHING-sealed-hydrakin
+  - type: ExplosionResistance
+    damageCoefficient: 0.4
+  - type: StaminaDamageResistance
+    coefficient: 0.7
+  - type: Armor
+    coverage:
+    - Torso
+    - Torso
+    - Arm
+    - Hand
+    - Leg
+    - Foot
+    - Tail
+    - Other
+    modifiers:
+      coefficients:
+        Blunt: 0.6
+        Slash: 0.6
+        Piercing: 0.6
+        Heat: 0.6
+        Radiation: 0.6
+  - type: ModSealedComponents
+    components:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      coolingCoefficient: 0.01
+      heatingCoefficient: 0.01
+  - type: FireProtection
+    reduction: 0.5
+
+- type: entity
+  parent: ClothingModsuitChestplateBase
+  id: ClothingModsuitChestplateHeadOfSecurity
+  name: bulwark modsuit chestplate
+  description: A robust modular suit cover with EXTRA ceramic inserts for slightly more protection.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: AllowSuitStorage
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/headofsecurity.rsi
+    layers:
+    - state: chestplate
+    - state: chestplate-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    slots: [ outerClothing ]
+  - type: ClothingSpeedModifier
+    walkModifier: 0.95
+    sprintModifier: 0.95
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-chestplate
+    sealDownPopup: modsuit-part-seal-down-chestplate
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-resomi:
+      - state: equipped-OUTERCLOTHING-sealed-resomi
+      outerClothing-vox:
+      - state: equipped-OUTERCLOTHING-sealed-vox
+      outerClothing-hydrakin:
+      - state: equipped-OUTERCLOTHING-sealed-hydrakin
+  - type: ExplosionResistance
+    damageCoefficient: 0.4
+  - type: StaminaDamageResistance
+    coefficient: 0.7
+  - type: Armor
+    coverage:
+    - Torso
+    - Torso
+    - Arm
+    - Hand
+    - Leg
+    - Foot
+    - Tail
+    - Other
+    modifiers:
+      coefficients:
+        Blunt: 0.5
+        Slash: 0.5
+        Piercing: 0.45
+        Heat: 0.5
+        Caustic: 0.5
+        Radiation: 0.5
+  - type: ModSealedComponents
+    components:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      coolingCoefficient: 0.01
+      heatingCoefficient: 0.01
+  - type: FireProtection
+    reduction: 0.5
+
+- type: entity
+  parent: ClothingModsuitChestplateBase
+  id: ClothingModsuitChestplateParamedic
+  name: sanitater modsuit chestplate
+  description: A white and blue-ish-grey steel plate for keeping out the harsh void of space and the occasional bullet.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: AllowSuitStorage
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/paramedic.rsi
+    layers:
+    - state: chestplate
+    - state: chestplate-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    slots: [ outerClothing ]
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-chestplate
+    sealDownPopup: modsuit-part-seal-down-chestplate
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-resomi:
+      - state: equipped-OUTERCLOTHING-sealed-resomi
+      outerClothing-vox:
+      - state: equipped-OUTERCLOTHING-sealed-vox
+      outerClothing-hydrakin:
+      - state: equipped-OUTERCLOTHING-sealed-hydrakin
+  - type: ExplosionResistance
+    damageCoefficient: 0.85
+  - type: Armor
+    coverage:
+    - Torso
+    - Torso
+    - Arm
+    - Hand
+    - Leg
+    - Foot
+    - Tail
+    - Other
+    modifiers:
+      coefficients:
+        Blunt: 0.9
+        Slash: 0.9
+        Piercing: 0.85
+        Heat: 0.8
+        Caustic: 0.6
+        Radiation: 0.3
+  - type: ModSealedComponents
+    components:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      coolingCoefficient: 0.01
+      heatingCoefficient: 0.01
+    - type: StaminaDamageResistance
+      coefficient: 0.9
+  - type: FireProtection
+    reduction: 0.5
+
+- type: entity
+  parent: ClothingModsuitChestplateBase
+  id: ClothingModsuitChestplateEngineer
+  name: sapper modsuit chestplate
+  description: A tough armor plate to defend against harsh atmospheric conditions and shockwaves.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: AllowSuitStorage
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/engineer.rsi
+    layers:
+    - state: chestplate
+    - state: chestplate-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    slots: [ outerClothing ]
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-chestplate
+    sealDownPopup: modsuit-part-seal-down-chestplate
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-resomi:
+      - state: equipped-OUTERCLOTHING-sealed-resomi
+      outerClothing-vox:
+      - state: equipped-OUTERCLOTHING-sealed-vox
+      outerClothing-hydrakin:
+      - state: equipped-OUTERCLOTHING-sealed-hydrakin
+  - type: ExplosionResistance
+    damageCoefficient: 0.35
+  - type: Armor
+    coverage:
+    - Torso
+    - Torso
+    - Arm
+    - Hand
+    - Leg
+    - Foot
+    - Tail
+    - Other
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.7
+        Shock: 0.8
+        Caustic: 0.5
+        Radiation: 0.01
+  - type: ModSealedComponents
+    components:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      coolingCoefficient: 0.01
+      heatingCoefficient: 0.01
+    - type: StaminaDamageResistance
+      coefficient: 0.9
+  - type: FireProtection
+    reduction: 0.7
+
+- type: entity
+  parent: ClothingModsuitChestplateBase
+  id: ClothingModsuitChestplateAtmostech
+  name: aeolus modsuit chestplate
+  description: A fire-proof armor plate to defend against harsh atmospheric conditions.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: AllowSuitStorage
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/atmostech.rsi
+    layers:
+    - state: chestplate
+    - state: chestplate-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    slots: [ outerClothing ]
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-chestplate
+    sealDownPopup: modsuit-part-seal-down-chestplate
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-resomi:
+      - state: equipped-OUTERCLOTHING-sealed-resomi
+      outerClothing-vox:
+      - state: equipped-OUTERCLOTHING-sealed-vox
+      outerClothing-hydrakin:
+      - state: equipped-OUTERCLOTHING-sealed-hydrakin
+  - type: ExplosionResistance
+    damageCoefficient: 0.45
+  - type: Armor
+    coverage:
+    - Torso
+    - Torso
+    - Arm
+    - Hand
+    - Leg
+    - Foot
+    - Tail
+    - Other
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.85
+        Piercing: 0.85
+        Heat: 0.2
+        Radiation: 0.05
+  - type: ModSealedComponents
+    components:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      coolingCoefficient: 0.001
+      heatingCoefficient: 0.001
+    - type: StaminaDamageResistance
+      coefficient: 0.9
+  - type: FireProtection
+    reduction: 0.75
+
+- type: entity
+  parent: ClothingModsuitChestplateBase
+  id: ClothingModsuitChestplateResearchDirector
+  name: minerva modsuit chestplate
+  description: A bulky bomb and bat proof chunk of steel.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: AllowSuitStorage
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/researchdirector.rsi
+    layers:
+    - state: chestplate
+    - state: chestplate-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    slots: [ outerClothing ]
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-chestplate
+    sealDownPopup: modsuit-part-seal-down-chestplate
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-resomi:
+      - state: equipped-OUTERCLOTHING-sealed-resomi
+      outerClothing-vox:
+      - state: equipped-OUTERCLOTHING-sealed-vox
+      outerClothing-hydrakin:
+      - state: equipped-OUTERCLOTHING-sealed-hydrakin
+  - type: ExplosionResistance
+    damageCoefficient: 0.1
+  - type: Armor
+    coverage:
+    - Torso
+    - Torso
+    - Arm
+    - Hand
+    - Leg
+    - Foot
+    - Tail
+    - Other
+    modifiers:
+      coefficients:
+        Blunt: 0.55
+        Slash: 0.75
+        Piercing: 0.85
+        Heat: 0.25
+        Shock: 0.75
+        Caustic: 0.25
+        Radiation: 0.01
+  - type: ModSealedComponents
+    components:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      coolingCoefficient: 0.01
+      heatingCoefficient: 0.01
+    - type: StaminaDamageResistance
+      coefficient: 0.5
+  - type: FireProtection
+    reduction: 0.5
+  - type: GroupExamine
+
+- type: entity
+  parent: ClothingModsuitChestplateBase
+  id: ClothingModsuitChestplateCaptain
+  name: magnate modsuit chestplate
+  description: This shit is made out of DIAMONDS, man, this armor was forged with GEMS.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: AllowSuitStorage
+  - type: GroupExamine
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/captain.rsi
+    layers:
+    - state: chestplate
+    - state: chestplate-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    slots: [ outerClothing ]
+  - type: ClothingSpeedModifier
+    walkModifier: 0.95
+    sprintModifier: 0.95
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-chestplate
+    sealDownPopup: modsuit-part-seal-down-chestplate
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-resomi:
+      - state: equipped-OUTERCLOTHING-sealed-resomi
+      outerClothing-vox:
+      - state: equipped-OUTERCLOTHING-sealed-vox
+      outerClothing-hydrakin:
+      - state: equipped-OUTERCLOTHING-sealed-hydrakin
+  - type: ExplosionResistance
+    damageCoefficient: 0.5
+  - type: Armor
+    coverage:
+    - Torso
+    - Torso
+    - Arm
+    - Hand
+    - Leg
+    - Foot
+    - Tail
+    - Other
+    modifiers:
+      coefficients:
+        Blunt: 0.7
+        Slash: 0.7
+        Piercing: 0.55
+        Heat: 0.5
+        Radiation: 0.1
+        Caustic: 0.5
+  - type: ModSealedComponents
+    components:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      coolingCoefficient: 0.01
+      heatingCoefficient: 0.01
+    - type: StaminaDamageResistance
+      coefficient: 0.6
+  - type: FireProtection
+    reduction: 0.5
+
+- type: entity
+  parent: ClothingModsuitChestplateBase
+  id: ClothingModsuitChestplateBrigMed
+  name: trauma modsuit chestplate
+  description: A robust modular suit cover with white ceramic inserts for extra drip.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Appearance
+  - type: AllowSuitStorage
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/brigmed.rsi
+    layers:
+    - state: chestplate
+    - state: chestplate-sealed
+      visible: false
+      map: [ "sealed" ]
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    slots: [ outerClothing ]
+  - type: ModPart
+    sealUpPopup: modsuit-part-seal-up-chestplate
+    sealDownPopup: modsuit-part-seal-down-chestplate
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-resomi:
+      - state: equipped-OUTERCLOTHING-sealed-resomi
+      outerClothing-vox:
+      - state: equipped-OUTERCLOTHING-sealed-vox
+  - type: ExplosionResistance
+    damageCoefficient: 0.4
+  - type: StaminaDamageResistance
+    coefficient: 0.7
+  - type: Armor
+    coverage:
+    - Torso
+    - Torso
+    - Arm
+    - Hand
+    - Leg
+    - Foot
+    - Tail
+    - Other
+    modifiers:
+      coefficients:
+        Blunt: 0.72
+        Slash: 0.72
+        Piercing: 0.72
+        Heat: 0.72
+        Radiation: 0.6
+  - type: ModSealedComponents
+    components:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      coolingCoefficient: 0.01
+      heatingCoefficient: 0.01
+  - type: FireProtection
+    reduction: 0.5

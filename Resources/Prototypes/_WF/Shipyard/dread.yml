@@ -8,7 +8,7 @@
   price: 477013 # appraised at 366933, 30% markup, it's a beeg combat ship
   category: Large # 1116 tiles
   group: Sr
-  access: HeadOfPersonnel # Overseer only, because they're the goat
+  access: CaelestinusCommand # Overseer only, because they're the goat
   shuttlePath: /SharedMaps/_WF/Shipyard/Shuttles/dread.yml
   guidebookPage: null
   class:
