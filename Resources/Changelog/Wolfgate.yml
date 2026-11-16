@@ -7818,3 +7818,47 @@ Entries:
   id: 100495
   time: '2026-11-16T14:24:11.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/687
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        The ghost warp menu can be sorted by faction or by place, with players
+        and ships listed under the faction they fly for or the world they're on.
+    - type: Tweak
+      message: >-
+        The nuke and its disk only show in the ghost warp menu while something
+        is happening with them.
+    - type: Remove
+      message: Encounter ships are no longer listed in the ghost warp menu.
+  id: 100496
+  time: '2026-11-16T20:38:14.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/707
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Shields, drives and other fittings taken off NPC ships can now be bolted
+        down on your own ship.
+  id: 100497
+  time: '2026-11-16T20:40:00.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/703
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Radar option to show only contact icons, with names hidden until you
+        hover over a contact.
+    - type: Add
+      message: Radar option to turn off revealing names by hovering.
+  id: 100498
+  time: '2026-11-16T20:40:13.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/708
+- author: Balls2zawall
+  changes:
+    - type: Add
+      message: >-
+        Added the Despot, Ketch, Huolian, Jackal, Molly, Pibb, and Renegade to
+        the reavers ship roster.
+  id: 100499
+  time: '2026-11-16T20:42:03.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/709

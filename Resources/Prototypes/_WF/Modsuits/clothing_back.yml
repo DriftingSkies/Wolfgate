@@ -208,6 +208,8 @@
     sprite: _Goobstation/Clothing/Back/Modsuits/paramedic.rsi
   - type: ModSuit
     theme: ModThemeMedical
+    inbuiltModules:
+    - ModsuitModuleBuiltinHealingHands
     parts:
       head: ClothingModsuitHelmetParamedic
       gloves: ClothingModsuitGauntletsParamedic

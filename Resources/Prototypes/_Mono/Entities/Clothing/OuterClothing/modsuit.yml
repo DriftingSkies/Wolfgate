@@ -15,6 +15,15 @@
       WFWolfmedDislocationWound: 2
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Modsuits/ussp-varyag.rsi
+  # WOLFGATE(Modsuits) START: the rsi only has the default and vox states, so sealed species drew an error sprite
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-vox:
+      - state: equipped-OUTERCLOTHING-sealed-vox
+  # WOLFGATE END
   # WOLFGATE(Modsuits) START: heavy MODsuit chestplates add at most 5% on top of the control unit's 5%
   - type: ClothingSpeedModifier
     walkModifier: 0.95
@@ -52,6 +61,15 @@
     - WFWolfmedShrapnelWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Modsuits/ussp-zastavnik.rsi
+  # WOLFGATE(Modsuits) START: the rsi only has the default and vox states, so sealed species drew an error sprite
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-vox:
+      - state: equipped-OUTERCLOTHING-sealed-vox
+  # WOLFGATE END
   # WOLFGATE(Modsuits) START: heavy MODsuit chestplates add at most 5% on top of the control unit's 5%
   - type: ClothingSpeedModifier
     walkModifier: 0.95

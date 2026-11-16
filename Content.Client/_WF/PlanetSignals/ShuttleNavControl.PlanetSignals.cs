@@ -178,28 +178,38 @@ public partial class ShuttleNavControl
     }
 
     /// <summary>
-    /// Opens the signal list of the world under a click. False when nothing was hit, the press was a drag, this radar's
-    /// clicks aim guns, or a grid is under the click: a ship or drone over a world's circle is what was clicked.
+    /// Answers a left click: the signal list of the world under it, else the radar menu (RadarMenu). False when the
+    /// press was a drag or this radar's clicks aim guns. A ship or drone over a world's circle is what was clicked.
     /// </summary>
     private bool WfTryOpenPlanetSignals(Vector2 pixel, Vector2 relative)
     {
         var pressed = _wfPressedAt;
         _wfPressedAt = null;
-        if (OnRadarClick != null || pressed is not { } down || (down - pixel).Length() > 6f * UIScale
-            || WfGridUnderClick(relative))
+        if (OnRadarClick != null || pressed is not { } down || (down - pixel).Length() > 6f * UIScale)
             return false;
 
-        foreach (var (body, centre, radius, label) in _wfPlanetHits)
+        if (!WfGridUnderClick(relative))
         {
-            if ((pixel - centre).Length() > radius && !label.Contains(pixel))
-                continue;
+            foreach (var (body, centre, radius, label) in _wfPlanetHits)
+            {
+                if ((pixel - centre).Length() > radius && !label.Contains(pixel))
+                    continue;
 
-            _wfSignalsWindow ??= new WFPlanetSignalsWindow();
-            _wfSignalsWindow.Show(body, WfOurGrid());
-            return true;
+                // The world's menu lists its signals among the rest; a radar without it lists them at once.
+                if (!WfOpenWorldMenu(body))
+                    WfShowPlanetSignals(body);
+                return true;
+            }
         }
 
-        return false;
+        return WfOpenRadarMenu(relative);
+    }
+
+    /// <summary>Opens the signal list of a world.</summary>
+    private void WfShowPlanetSignals(EntityUid body)
+    {
+        _wfSignalsWindow ??= new WFPlanetSignalsWindow();
+        _wfSignalsWindow.Show(body, WfOurGrid());
     }
 
     /// <summary>
@@ -213,7 +223,8 @@ public partial class ShuttleNavControl
         var transform = EntManager.System<SharedTransformSystem>();
         foreach (var grid in _grids)
         {
-            if (EntManager.HasComponent<MapComponent>(grid.Owner))
+            // Only a grid the radar shows can be what was clicked; a hidden one leaves the world clickable.
+            if (EntManager.HasComponent<MapComponent>(grid.Owner) || !WfContactShown(grid.Owner))
                 continue;
 
             var gridToView = transform.GetWorldMatrix(grid.Owner) * _wfWorldToView;

@@ -42,9 +42,9 @@ Fuel shares the existing one-second ship-status sweep, including the lightweight
 hull survey taken when a grid gets its first pilot leaves it out.
 
 Every radar screen (helm, cockpit, mass scanner, gunnery console, admin radar) opens with the display choices the
-player last made on any of them: contact labels (IFF), their detail lines (D.IFF), dock markers and the bearing
-marks' mode, kept in the client cvars `wf.radar_show_iff`, `wf.radar_show_iff_detailed`, `wf.radar_show_docks` and
-`wf.radar_azimuth` by `ShuttleNavControl.Settings.cs`. A screen with no docks toggle always shows docks. The
+player last made on any of them: contact labels (IFF), their detail lines (D.IFF) and the bearing marks' mode, kept
+in the client cvars `wf.radar_show_iff`, `wf.radar_show_iff_detailed` and `wf.radar_azimuth` by
+`ShuttleNavControl.Settings.cs`. Docks always show on player radars. The
 rotation and anchor modes still start from each console's own defaults.
 
 Autopilot arrival, cancellation and manual takeover use the supplied disengagement cue credited to gandalf.
@@ -136,6 +136,7 @@ A jump's mass-scaled startup, travel and cooldown times use the mass of every gr
 - [`Content.Client/_WF/Shuttles/UI/ShuttleFlightHudOverlay.cs`](../../../Content.Client/_WF/Shuttles/UI/ShuttleFlightHudOverlay.cs)
 - [`Content.Client/_WF/Shuttles/UI/ShuttleHullRoofOverlay.cs`](../../../Content.Client/_WF/Shuttles/UI/ShuttleHullRoofOverlay.cs)
 - [`Content.Client/_WF/Shuttles/UI/ShuttleLowLightOverlay.cs`](../../../Content.Client/_WF/Shuttles/UI/ShuttleLowLightOverlay.cs)
+- [`Content.Client/_WF/Shuttles/UI/ShuttleNavControl.Docks.cs`](../../../Content.Client/_WF/Shuttles/UI/ShuttleNavControl.Docks.cs)
 - [`Content.Client/_WF/Shuttles/UI/ShuttleNavControl.Settings.cs`](../../../Content.Client/_WF/Shuttles/UI/ShuttleNavControl.Settings.cs)
 - [`Content.Client/_WF/Shuttles/UI/ShuttleNavControl.ZoomToMouse.cs`](../../../Content.Client/_WF/Shuttles/UI/ShuttleNavControl.ZoomToMouse.cs)
 - [`Content.Client/_WF/Shuttles/UI/ShuttlePoiPointerOverlay.cs`](../../../Content.Client/_WF/Shuttles/UI/ShuttlePoiPointerOverlay.cs)
@@ -214,6 +215,8 @@ A jump's mass-scaled startup, travel and cooldown times use the mass of every gr
   - start with the player's saved radar display choices.
   - zoom toward the cursor toggle.
   - keep a changed radar display choice for the next radar.
+  - a dock marker keeps a small minimum size on screen, and hides when zoomed far out
+  - dock names only up close, so they don't crowd the contacts
 - [`Content.Server/_Mono/Detection/ApplyIFFFlagsToDockedShipsSystem.cs`](../../_Mono/Detection/ApplyIFFFlagsToDockedShipsSystem.cs)
   - the host can be grid B, since docking orders the pair by entity id.
   - the host can be grid B, since grid A is the side that undocked, usually the ship.

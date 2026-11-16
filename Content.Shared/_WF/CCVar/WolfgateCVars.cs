@@ -101,6 +101,14 @@ public sealed class WolfgateCVars
     public static readonly CVarDef<bool> RadarSmartTags =
         CVarDef.Create("wf.radar_smart_tags", true, CVar.CLIENTONLY | CVar.ARCHIVE);
 
+    /// <summary>Radar contacts show as icons alone: no name or crowd count unless revealed by the cursor or the all-names toggle.</summary>
+    public static readonly CVarDef<bool> RadarIconsOnly =
+        CVarDef.Create("wf.radar_icons_only", false, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>Hovering the radar reveals tags: the lens round the cursor, or with icons only, the contact under it.</summary>
+    public static readonly CVarDef<bool> RadarHoverReveal =
+        CVarDef.Create("wf.radar_hover_reveal", true, CVar.CLIENTONLY | CVar.ARCHIVE);
+
     /// <summary>
     /// The player's chat tabs: <c>name=channel,channel</c> entries separated by <c>|</c>, with <c>*</c> for every
     /// channel. Empty means the default tabs.

@@ -151,12 +151,36 @@ public sealed partial class WFHullBondSystem : EntitySystem
     private void OnGridSplit(ref GridSplitEvent args)
     {
         // The pieces of a broken hull are still that hull.
-        if (HullId(args.Grid) is not { } id)
+        if (!TryComp<WFHullBondIdComponent>(args.Grid, out var source))
             return;
 
         foreach (var grid in args.NewGrids)
         {
-            EnsureComp<WFHullBondIdComponent>(grid).Id = id;
+            var piece = EnsureComp<WFHullBondIdComponent>(grid);
+            piece.Id = source.Id;
+            piece.Loose = source.Loose;
+        }
+    }
+
+    /// <summary>
+    /// Makes a hull loose: the fittings already bonded to it lose their bond, and nothing bonds to it again. A stripped
+    /// fitting then bonds to the first other hull it is bolted to.
+    /// </summary>
+    public void Loosen(EntityUid grid)
+    {
+        var id = EnsureComp<WFHullBondIdComponent>(grid);
+        id.Loose = true;
+        if (id.Id.Length == 0)
+            return;
+
+        var query = EntityQueryEnumerator<WFHullBondComponent>();
+        while (query.MoveNext(out _, out var bond))
+        {
+            if (bond.Hull != id.Id)
+                continue;
+
+            bond.Hull = null;
+            bond.HullName = null;
         }
     }
 
@@ -171,6 +195,9 @@ public sealed partial class WFHullBondSystem : EntitySystem
             return;
 
         var id = EnsureComp<WFHullBondIdComponent>(grid);
+        if (id.Loose)
+            return;
+
         if (id.Id.Length == 0)
             id.Id = Guid.NewGuid().ToString("N");
 

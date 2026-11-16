@@ -236,11 +236,13 @@ tool selector is ported under `RadialSelector`, and the EMP ward and glove trans
 - [`Resources/Prototypes/_Mono/Entities/Clothing/Hands/modsuit.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/Hands/modsuit.yml)
   - MODsuit parts use the native module system.
   - the native module system sets its own sealed appearance
-- [`Resources/Prototypes/_Mono/Entities/Clothing/Head/modsuit.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/Head/modsuit.yml): the rsi only has the default and vox states, so other species drew an error sprite
+- [`Resources/Prototypes/_Mono/Entities/Clothing/Head/modsuit.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/Head/modsuit.yml)
+  - the rsi only has the default and vox states, so other species drew an error sprite
+  - the rsi only has the default, vox and vulpkanin states, so other species drew an error sprite
 - [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/modsuit.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/modsuit.yml)
   - MODsuit parts use the native module system.
-  - heavy MODsuit chestplates add at most 5% on top of the control unit's 5%
   - the rsi only has the default and vox states, so sealed species drew an error sprite
+  - heavy MODsuit chestplates add at most 5% on top of the control unit's 5%
   - light MODsuit chestplates add no slowdown; the control unit supplies the 5% cap
   - the native module system sets its own sealed appearance
   - the rsi has no resomi state, so sealed Resomi drew an error sprite

@@ -157,6 +157,52 @@ public sealed class HullBondTest
     }
 
     [Test]
+    public async Task LooseHullFittingsBondElsewhere()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var map = await pair.CreateTestMap();
+        var hullBond = server.System<WFHullBondSystem>();
+
+        await server.WaitAssertion(() =>
+        {
+            var raider = CreateHull(pair, map.MapId, new Vector2(40, 40), "Raider");
+            var bravo = CreateHull(pair, map.MapId, new Vector2(60, 60), "Bravo");
+
+            var drive = entMan.SpawnEntity(Drive, At(raider, 1, 1));
+            var bond = entMan.GetComponent<WFHullBondComponent>(drive);
+            Assert.That(bond.Hull, Is.Not.Null, "The drive bonds to the hull it spawned on.");
+
+            // An encounter ship is loosened once its hull is built.
+            hullBond.Loosen(raider);
+            Assert.That(bond.Hull, Is.Null, "Loosening a hull frees the fittings bonded to it.");
+
+            var shield = entMan.SpawnEntity(Drive, At(raider, 2, 2));
+            Assert.That(entMan.GetComponent<WFHullBondComponent>(shield).Hull, Is.Null, "Nothing bonds to a loose hull.");
+
+            Carry(pair, drive, bravo, 1, 1);
+            Assert.That(Refused(pair, drive), Is.False, "A fitting stripped off a loose hull bolts down on another.");
+            Bolt(pair, drive);
+            Assert.Multiple(() =>
+            {
+                Assert.That(entMan.GetComponent<TransformComponent>(drive).Anchored, "The stolen fitting stays bolted down.");
+                Assert.That(bond.Hull, Is.Not.Null.And.EqualTo(HullId(pair, bravo)), "It bonds to the hull it was bolted to.");
+            });
+
+            Carry(pair, drive, raider, 1, 1);
+            Assert.That(Refused(pair, drive), Is.True, "Once bonded elsewhere, it must not go back on the loose hull.");
+
+            // A piece broken off a loose hull stays loose.
+            var split = new GridSplitEvent(new[] { bravo }, raider);
+            entMan.EventBus.RaiseEvent(EventSource.Local, ref split);
+            Assert.That(entMan.GetComponent<WFHullBondIdComponent>(bravo).Loose, "A piece split off a loose hull is loose.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
     public async Task UnboltedFittingBondsWhereFirstBolted()
     {
         await using var pair = await PoolManager.GetServerClient();

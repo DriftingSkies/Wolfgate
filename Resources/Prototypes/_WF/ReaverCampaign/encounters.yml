@@ -227,15 +227,15 @@
     # Retrofitted civilian hulls at the low tiers, gunships from tier 3, the full black-market line from tier 4.
     tiers:
     - minTier: 0
-      vessels: [ Spessbite, Victoria, Sakuratsu, Pillbox, Noble, Caracara, Takeaway ]
+      vessels: [ WFPibb, WFDespot, Sakuratsu, WFKetch, WFJackal, Caracara, Takeaway ]
       skills: [ Green ]
       retrofit: WFPirateRetrofitLight
     - minTier: 2
-      vessels: [ Peregrine, Shuilian, Arribane, Autumn, Zeros, WFDredger ]
+      vessels: [ Peregrine, WFHuolian, Arribane, WFMolly, Zeros, WFDredger ]
       skills: [ Green, Regular ]
       retrofit: WFPirateRetrofitMedium
     - minTier: 3
-      vessels: [ Windreign, Zhuangzi, Rosetta, WFDredger, Kalisto, Metis, Bastion, Garm ]
+      vessels: [ Windreign, WFRenegade, WFDredger, Kalisto, Metis, Bastion, Garm ]
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHeavy
     - minTier: 4
@@ -320,23 +320,23 @@
     # Retrofitted civilian hulls at the low tiers, gunships from tier 3, the full black-market line from tier 4.
     tiers:
     - minTier: 0
-      vessels: [ Spessbite, Victoria, Sakuratsu, Pillbox, Noble, Caracara, Takeaway ]
+      vessels: [ WFPibb, WFDespot, Sakuratsu, WFKetch, WFJackal, Caracara, Takeaway ]
       skills: [ Green ]
       retrofit: WFPirateRetrofitLight
     - minTier: 2
-      vessels: [ Peregrine, Shuilian, Arribane, Autumn, Zeros, WFDredger ]
+      vessels: [ Peregrine, Arribane, WFMolly, Zeros, WFDredger, Windreign, WFJackal ]
       skills: [ Green, Regular ]
       retrofit: WFPirateRetrofitMedium
     - minTier: 3
-      vessels: [ Windreign, Zhuangzi, Rosetta, WFDredger, Kalisto, Metis, Bastion, Garm ]
+      vessels: [ WFRenegade, WFHuolian, Kalisto, Metis, Bastion, Garm, WFJackal ]
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHeavy
     - minTier: 4
-      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon, WFHuolian, WFRenegade ]
       skills: [ Regular, Veteran ]
       retrofit: WFPirateRetrofitGrime
     - minTier: 5
-      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon, WFHuolian ]
       skills: [ Veteran ]
       retrofit: WFPirateRetrofitGrime
     deckhands: 3
@@ -407,15 +407,15 @@
     # Retrofitted civilian hulls at the low tiers, gunships from tier 3, the full black-market line from tier 4.
     tiers:
     - minTier: 0
-      vessels: [ Spessbite, Victoria, Sakuratsu, Pillbox, Noble, Caracara, Takeaway ]
+      vessels: [ WFPibb, WFDespot, Sakuratsu, WFKetch, WFJackal, Caracara, Takeaway ]
       skills: [ Green ]
       retrofit: WFPirateRetrofitLight
     - minTier: 2
-      vessels: [ Peregrine, Shuilian, Arribane, Autumn, Zeros, WFDredger ]
+      vessels: [ Peregrine, WFHuolian, Arribane, WFMolly, Zeros, WFDredger ]
       skills: [ Green, Regular ]
       retrofit: WFPirateRetrofitMedium
     - minTier: 3
-      vessels: [ Windreign, Zhuangzi, Rosetta, WFDredger, Kalisto, Metis, Bastion, Garm ]
+      vessels: [ Windreign, WFRenegade, Rosetta, WFDredger, Kalisto, Metis, Bastion, Garm ]
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHeavy
     - minTier: 4
@@ -499,11 +499,11 @@
     vessels: [ Hazel, Metis, Mudskipper ]
     tiers:
     - minTier: 0
-      vessels: [ Spessbite, Takeaway, Caracara ]
+      vessels: [ WFPibb, Takeaway, Caracara ]
       skills: [ Green ]
       retrofit: WFPirateRetrofitLight
     - minTier: 2
-      vessels: [ Takeaway, Arribane, Zeros, Peregrine ]
+      vessels: [ WFPibb, Arribane, Zeros, Peregrine ]
       skills: [ Green, Regular ]
       retrofit: WFPirateRetrofitMedium
     - minTier: 4
@@ -539,15 +539,15 @@
     # Retrofitted civilian hulls at the low tiers, gunships from tier 3, the full black-market line from tier 4.
     tiers:
     - minTier: 0
-      vessels: [ Spessbite, Victoria, Sakuratsu, Pillbox, Noble, Caracara, Takeaway ]
+      vessels: [ WFPibb, WFDespot, Sakuratsu, WFKetch, WFJackal, Caracara, Takeaway ]
       skills: [ Green ]
       retrofit: WFPirateRetrofitLight
     - minTier: 2
-      vessels: [ Peregrine, Shuilian, Arribane, Autumn, Zeros, WFDredger ]
+      vessels: [ Peregrine, WFHuolian, Arribane, WFMolly, Zeros, WFDredger ]
       skills: [ Green, Regular ]
       retrofit: WFPirateRetrofitMedium
     - minTier: 3
-      vessels: [ Windreign, Zhuangzi, Rosetta, WFDredger, Kalisto, Metis, Bastion, Garm ]
+      vessels: [ Windreign, WFRenegade, WFDredger, Kalisto, Metis, Bastion, Garm ]
       skills: [ Regular ]
       retrofit: WFPirateRetrofitHeavy
     - minTier: 4

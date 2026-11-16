@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Numerics;
-using Content.Client._WF.Encounters;
 using Content.Client._WF.Stylesheets;
 using Content.Client.Stylesheets;
 using Content.Client.UserInterface.Controls;
@@ -19,7 +18,9 @@ using Robust.Shared.Utility;
 namespace Content.Client._WF.Ghost;
 
 /// <summary>
-/// Categorised, searchable ghost warp menu in the style of TG's orbit menu. Replaces GhostTargetWindow.
+/// Searchable ghost warp menu in the style of TG's orbit menu, replacing GhostTargetWindow. Two views: by faction, where
+/// players and ships sit under the faction they fly for, and by place, where everything sits under the sector, the world
+/// or the transit it is in.
 /// </summary>
 [GenerateTypedNameReferences]
 public sealed partial class GhostOrbitWindow : FancyWindow
@@ -33,12 +34,17 @@ public sealed partial class GhostOrbitWindow : FancyWindow
     private static readonly SpriteSpecifier ShipIcon = new SpriteSpecifier.Texture(new ResPath("/Textures/Interface/VerbIcons/anchor.svg.192dpi.png"));
     private static readonly SpriteSpecifier LocationIcon = new SpriteSpecifier.Texture(new ResPath("/Textures/Interface/home.png"));
 
-    /// <summary>Collapsed sections, kept for the whole client session.</summary>
-    private static readonly HashSet<GhostOrbitCategory> Collapsed = new() { GhostOrbitCategory.Npc };
+    private const string NpcSection = "npc";
+    private const string GhostSection = "ghost";
+
+    /// <summary>Collapsed sections by key, kept for the whole client session.</summary>
+    private static readonly HashSet<string> Collapsed = new() { NpcSection, GhostSection };
+
+    /// <summary>The view last chosen, kept for the whole client session.</summary>
+    private static bool _byPlace;
 
     private readonly List<Section> _sections = new();
     private List<GhostOrbitTarget> _targets = new();
-    private List<GhostOrbitEncounterShip> _encounters = new();
     private int _burrowedLarva;
     private string _search = string.Empty;
     private TimeSpan _nextRefresh;
@@ -59,6 +65,14 @@ public sealed partial class GhostOrbitWindow : FancyWindow
         SearchBar.OnTextEntered += _ => OrbitFirstMatch();
         MostFollowedButton.OnPressed += _ => OnGhostnadoClicked?.Invoke();
         RefreshButton.OnPressed += _ => RequestTargets();
+
+        var views = new ButtonGroup();
+        FactionViewButton.Group = views;
+        PlaceViewButton.Group = views;
+        FactionViewButton.Pressed = !_byPlace;
+        PlaceViewButton.Pressed = _byPlace;
+        FactionViewButton.OnPressed += _ => SetView(false);
+        PlaceViewButton.OnPressed += _ => SetView(true);
     }
 
     /// <summary>
@@ -105,12 +119,20 @@ public sealed partial class GhostOrbitWindow : FancyWindow
     {
         _entMan.System<Content.Client._WF.NpcCrew.WFCrewUiDiagnosticsSystem>().DisplayGhost(ev.Targets.Count, IsOpen);
         // Live refresh would otherwise rebuild every tile and drop the hovered tooltip for nothing.
-        if (_burrowedLarva == ev.BurrowedLarva && _targets.SequenceEqual(ev.Targets) && _encounters.SequenceEqual(ev.Encounters))
+        if (_burrowedLarva == ev.BurrowedLarva && _targets.SequenceEqual(ev.Targets))
             return;
 
         _targets = ev.Targets;
-        _encounters = ev.Encounters;
         _burrowedLarva = ev.BurrowedLarva;
+        Rebuild();
+    }
+
+    private void SetView(bool byPlace)
+    {
+        if (_byPlace == byPlace)
+            return;
+
+        _byPlace = byPlace;
         Rebuild();
     }
 
@@ -121,59 +143,157 @@ public sealed partial class GhostOrbitWindow : FancyWindow
 
         var skin = WolfgateSkins.Get(_cfg.GetCVar(WolfgateCVars.UiStyle));
         var sprite = _entMan.System<SpriteSystem>();
-
-        // Encounter ships sit in a section of their own among the rest, each in its side's colour.
-        var colors = new Dictionary<NetEntity, Color>();
-        var all = new List<GhostOrbitTarget>(_targets);
-        foreach (var ship in _encounters
-                     .OrderBy(s => s.Encounter, StringComparer.CurrentCultureIgnoreCase)
-                     .ThenBy(s => s.Ship, StringComparer.CurrentCultureIgnoreCase))
-        {
-            colors[ship.Grid] = ship.Color ?? WFEncounterColors.Category(ship.Category);
-            all.Add(new GhostOrbitTarget
-            {
-                Entity = ship.Grid,
-                Name = ship.Ship,
-                Category = GhostOrbitCategory.Encounter,
-                Detail = Loc.GetString(ship.Hidden ? "wf-ghost-orbit-encounter-detail-hidden" : "wf-ghost-orbit-encounter-detail",
-                    ("encounter", ship.Encounter), ("side", ship.Side)),
-                Followers = ship.Followers,
-            });
-        }
-
-        foreach (var group in all.GroupBy(t => t.Category).OrderBy(g => g.Key))
-        {
-            var accent = CategoryColor(group.Key, skin);
-            var section = new Section(group.Key, accent, skin);
-            if (group.Key == GhostOrbitCategory.Xenonid && _burrowedLarva > 0)
-                section.Note = Loc.GetString("wf-ghost-orbit-xenonid-larva", ("count", _burrowedLarva));
-            section.Header.OnPressed += _ => ToggleSection(section);
-
-            // Encounter ships keep the order they were given: by encounter, then by ship.
-            // Xenos go queen first, then by tier and caste.
-            var ordered = group.Key switch
-            {
-                GhostOrbitCategory.Encounter => group.AsEnumerable(),
-                GhostOrbitCategory.Xenonid => group.OrderBy(t => t.Order)
-                    .ThenBy(t => t.Detail, StringComparer.CurrentCultureIgnoreCase)
-                    .ThenBy(t => t.Name, StringComparer.CurrentCultureIgnoreCase),
-                _ => group.OrderBy(t => t.Name, StringComparer.CurrentCultureIgnoreCase),
-            };
-            foreach (var target in ordered)
-            {
-                var color = group.Key == GhostOrbitCategory.Encounter && colors.TryGetValue(target.Entity, out var side) ? side : accent;
-                var tile = new GhostOrbitTile(target, GetIcon(target, sprite), color, skin);
-                tile.OnPressed += _ => Orbit(target.Entity);
-                section.Tiles.Add(tile);
-                section.Body.AddChild(tile);
-            }
-
-            _sections.Add(section);
-            Sections.AddChild(section.Root);
-        }
+        foreach (var plan in _byPlace ? PlaceView(skin) : FactionView(skin))
+            AddSection(plan, skin, sprite);
 
         UpdateSummary();
         ApplyFilter();
+    }
+
+    /// <summary>
+    /// Players and ships under the faction they fly for, the unaligned last; then xenonids, places, live events, NPCs
+    /// and ghosts. Admins keep antagonists on top.
+    /// </summary>
+    private IEnumerable<SectionPlan> FactionView(WolfgateSkin skin)
+    {
+        var antagonists = _targets.Where(t => t.Category == GhostOrbitCategory.Antagonist).ToList();
+        if (antagonists.Count > 0)
+            yield return Fixed(GhostOrbitCategory.Antagonist, antagonists, skin);
+
+        var independent = Loc.GetString("wf-ghost-orbit-faction-independent");
+        var members = _targets.Where(t => t.Category is GhostOrbitCategory.Alive or GhostOrbitCategory.Critical
+            or GhostOrbitCategory.Disconnected or GhostOrbitCategory.Dead or GhostOrbitCategory.Ship);
+        foreach (var faction in members
+                     .GroupBy(t => t.Faction ?? string.Empty)
+                     .OrderBy(g => g.Key.Length == 0)
+                     .ThenBy(g => g.Key, StringComparer.CurrentCultureIgnoreCase))
+        {
+            var name = faction.Key.Length > 0 ? faction.Key : independent;
+            var accent = faction.First().FactionColor ?? skin.Text;
+            yield return new SectionPlan($"faction:{faction.Key}", name, accent,
+                faction.OrderBy(StatusRank).ThenBy(t => t.Name, StringComparer.CurrentCultureIgnoreCase).ToList());
+        }
+
+        var xenos = _targets.Where(t => t.Category == GhostOrbitCategory.Xenonid).ToList();
+        if (xenos.Count > 0)
+            yield return XenoSection(xenos, skin);
+
+        var places = _targets.Where(t => t.Category is GhostOrbitCategory.Location or GhostOrbitCategory.PlanetPoi)
+            .OrderBy(t => t.PlaceOrder)
+            .ThenBy(t => t.Place, StringComparer.CurrentCultureIgnoreCase)
+            .ThenBy(t => t.Name, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
+        if (places.Count > 0)
+            yield return new SectionPlan("places", Loc.GetString("wf-ghost-orbit-section-places"), skin.Caution, places);
+
+        foreach (var plan in Trailing(skin))
+            yield return plan;
+    }
+
+    /// <summary>
+    /// Everything under where it is: the sector first, then each world, then transit. Within a place: its stations and
+    /// sites, live events, ships, then players by status. NPCs and ghosts keep sections of their own.
+    /// </summary>
+    private IEnumerable<SectionPlan> PlaceView(WolfgateSkin skin)
+    {
+        var unknown = Loc.GetString("wf-ghost-orbit-place-unknown");
+        var located = _targets.Where(t => t.Category is not (GhostOrbitCategory.Npc or GhostOrbitCategory.Ghost));
+        foreach (var place in located
+                     .GroupBy(t => (t.PlaceOrder, Name: t.Place ?? unknown))
+                     .OrderBy(g => g.Key.PlaceOrder)
+                     .ThenBy(g => g.Key.Name, StringComparer.CurrentCultureIgnoreCase))
+        {
+            yield return new SectionPlan($"place:{place.Key.Name}", place.Key.Name, PlaceColor(place.Key.PlaceOrder, skin),
+                place.OrderBy(PlaceRank).ThenBy(t => t.Order).ThenBy(t => t.Name, StringComparer.CurrentCultureIgnoreCase).ToList());
+        }
+
+        foreach (var plan in Trailing(skin, events: false))
+            yield return plan;
+    }
+
+    /// <summary>Live events, then NPCs and ghosts, which both views end with.</summary>
+    private IEnumerable<SectionPlan> Trailing(WolfgateSkin skin, bool events = true)
+    {
+        if (events)
+        {
+            var interests = _targets.Where(t => t.Category == GhostOrbitCategory.Interest).ToList();
+            if (interests.Count > 0)
+                yield return Fixed(GhostOrbitCategory.Interest, interests, skin);
+        }
+
+        var npcs = _targets.Where(t => t.Category == GhostOrbitCategory.Npc).ToList();
+        if (npcs.Count > 0)
+            yield return Fixed(GhostOrbitCategory.Npc, npcs, skin, NpcSection);
+
+        var ghosts = _targets.Where(t => t.Category == GhostOrbitCategory.Ghost).ToList();
+        if (ghosts.Count > 0)
+            yield return Fixed(GhostOrbitCategory.Ghost, ghosts, skin, GhostSection);
+    }
+
+    private SectionPlan XenoSection(List<GhostOrbitTarget> xenos, WolfgateSkin skin)
+    {
+        // Queen and king first, then by tier and caste.
+        var ordered = xenos.OrderBy(t => t.Order)
+            .ThenBy(t => t.Detail, StringComparer.CurrentCultureIgnoreCase)
+            .ThenBy(t => t.Name, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
+        return new SectionPlan("xenonid", CategoryName(GhostOrbitCategory.Xenonid), CategoryColor(GhostOrbitCategory.Xenonid, skin), ordered)
+        {
+            Note = _burrowedLarva > 0 ? Loc.GetString("wf-ghost-orbit-xenonid-larva", ("count", _burrowedLarva)) : null,
+        };
+    }
+
+    /// <summary>A section of one category, sorted by name.</summary>
+    private static SectionPlan Fixed(GhostOrbitCategory category, List<GhostOrbitTarget> targets, WolfgateSkin skin, string? key = null)
+    {
+        return new SectionPlan(key ?? category.ToString().ToLowerInvariant(), CategoryName(category), CategoryColor(category, skin),
+            targets.OrderBy(t => t.Name, StringComparer.CurrentCultureIgnoreCase).ToList());
+    }
+
+    /// <summary>Players alive first, then critical, SSD and dead; ships after them.</summary>
+    private static int StatusRank(GhostOrbitTarget target) => target.Category switch
+    {
+        GhostOrbitCategory.Antagonist or GhostOrbitCategory.Alive => 0,
+        GhostOrbitCategory.Critical => 1,
+        GhostOrbitCategory.Xenonid => 2,
+        GhostOrbitCategory.Disconnected => 3,
+        GhostOrbitCategory.Dead => 4,
+        GhostOrbitCategory.Ship => 5,
+        _ => 6,
+    };
+
+    /// <summary>A place's stations and sites first, then live events, ships, and players by status.</summary>
+    private static int PlaceRank(GhostOrbitTarget target) => target.Category switch
+    {
+        GhostOrbitCategory.Location or GhostOrbitCategory.PlanetPoi => 0,
+        GhostOrbitCategory.Interest => 1,
+        GhostOrbitCategory.Ship => 2,
+        _ => 3 + StatusRank(target),
+    };
+
+    private static Color PlaceColor(int order, WolfgateSkin skin) => order switch
+    {
+        0 => skin.Accent,
+        1 => Color.FromHex("#7BD88F"),
+        2 => skin.TextMuted,
+        _ => skin.Text,
+    };
+
+    private void AddSection(SectionPlan plan, WolfgateSkin skin, SpriteSystem sprite)
+    {
+        var section = new Section(plan.Key, plan.Title, plan.Accent, skin) { Note = plan.Note };
+        section.Header.OnPressed += _ => ToggleSection(section);
+        foreach (var target in plan.Targets)
+        {
+            // Each tile keeps its status colour, so a faction's dead and SSD still stand out from its living.
+            var tile = new GhostOrbitTile(target, GetIcon(target, sprite), CategoryColor(target.Category, skin), skin);
+            tile.OnPressed += _ => Orbit(target.Entity);
+            section.Tiles.Add(tile);
+            section.Body.AddChild(tile);
+        }
+
+        _sections.Add(section);
+        Sections.AddChild(section.Root);
     }
 
     private void ApplyFilter()
@@ -190,7 +310,7 @@ public sealed partial class GhostOrbitWindow : FancyWindow
             }
 
             // A search looks through collapsed sections too.
-            var expanded = searching || !Collapsed.Contains(section.Category);
+            var expanded = searching || !Collapsed.Contains(section.Key);
             section.Root.Visible = !searching || matches > 0;
             section.Body.Visible = expanded;
             var count = searching ? $"{matches}/{section.Tiles.Count}" : $"{section.Tiles.Count}";
@@ -203,8 +323,8 @@ public sealed partial class GhostOrbitWindow : FancyWindow
         if (_search.Length > 0)
             return;
 
-        if (!Collapsed.Remove(section.Category))
-            Collapsed.Add(section.Category);
+        if (!Collapsed.Remove(section.Key))
+            Collapsed.Add(section.Key);
 
         ApplyFilter();
     }
@@ -256,11 +376,14 @@ public sealed partial class GhostOrbitWindow : FancyWindow
 
         return target.Category switch
         {
-            GhostOrbitCategory.Ship or GhostOrbitCategory.Encounter => sprite.Frame0(ShipIcon),
+            GhostOrbitCategory.Ship => sprite.Frame0(ShipIcon),
             GhostOrbitCategory.Location or GhostOrbitCategory.PlanetPoi => sprite.Frame0(LocationIcon),
             _ => null,
         };
     }
+
+    private static string CategoryName(GhostOrbitCategory category) =>
+        Loc.GetString($"wf-ghost-orbit-category-{category.ToString().ToLowerInvariant()}");
 
     private static Color CategoryColor(GhostOrbitCategory category, WolfgateSkin skin)
     {
@@ -277,10 +400,15 @@ public sealed partial class GhostOrbitWindow : FancyWindow
             GhostOrbitCategory.Location => skin.Caution,
             GhostOrbitCategory.PlanetPoi => Color.FromHex("#7BD88F"),
             GhostOrbitCategory.Ship => Color.FromHex("#5FA8FF"),
-            GhostOrbitCategory.Encounter => Color.FromHex("#FFAE3D"),
             GhostOrbitCategory.Npc => Color.FromHex("#C8B27A"),
             _ => skin.Text,
         };
+    }
+
+    /// <summary>What one section shows: its key for folding, its title and colour, and its tiles in order.</summary>
+    private sealed record SectionPlan(string Key, string Title, Color Accent, List<GhostOrbitTarget> Targets)
+    {
+        public string? Note { get; init; }
     }
 
     /// <summary>
@@ -288,7 +416,7 @@ public sealed partial class GhostOrbitWindow : FancyWindow
     /// </summary>
     private sealed class Section
     {
-        public readonly GhostOrbitCategory Category;
+        public readonly string Key;
         public readonly BoxContainer Root;
         public readonly ContainerButton Header;
         public readonly WrapContainer Body;
@@ -301,10 +429,10 @@ public sealed partial class GhostOrbitWindow : FancyWindow
         private readonly Label _count;
         private readonly string _name;
 
-        public Section(GhostOrbitCategory category, Color accent, WolfgateSkin skin)
+        public Section(string key, string name, Color accent, WolfgateSkin skin)
         {
-            Category = category;
-            _name = Loc.GetString($"wf-ghost-orbit-category-{category.ToString().ToLowerInvariant()}");
+            Key = key;
+            _name = name;
 
             Root = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Vertical, SeparationOverride = 4 };
 

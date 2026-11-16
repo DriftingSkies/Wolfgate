@@ -136,7 +136,7 @@
                              TextAlign="Center"
                              StyleClasses="ButtonSquare"
                              ToggleMode="True"/>
-                    <!-- WOLFGATE(RadarLabels) START: radars mark no docks, so there is nothing to toggle -->
+                    <!-- WOLFGATE(RadarLabels) START: radars always mark docks, so there is nothing to toggle -->
                     <!--
                     <controls:Button Name="DockToggle"
                             Text="{controls:Loc 'shuttle-console-dock-toggle'}"

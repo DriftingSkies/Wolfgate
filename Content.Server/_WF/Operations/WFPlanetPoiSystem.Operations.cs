@@ -21,8 +21,8 @@ public sealed partial class WFPlanetPoiSystem
     /// <summary>A site an operation has left: its ground stays claimed, its marker says what it was.</summary>
     private const string LeftSiteName = "wf-operation-site-left";
 
-    /// <summary>Tries at a spot clear of landed grids before the world is given up on.</summary>
-    private const int OperationSpotAttempts = 12;
+    /// <summary>Tries at a spot clear of landed grids and other sites' bounds before the world is given up on.</summary>
+    private const int OperationSpotAttempts = 32;
 
     /// <summary>Built worlds whose ground can take an operation site, skipping the surfaces listed.</summary>
     public List<EntityUid> OperationGrounds(ICollection<string> excluded)
@@ -77,7 +77,9 @@ public sealed partial class WFPlanetPoiSystem
         {
             if (!TryWreckSpot((ground, biome), grid, record.RoamerCentre, radius, table, reach, out spot))
                 return false;
-            found = !GridsNear(ground, mapId, spot, reach + WreckClearance);
+            var footprint = Footprint(spot, reach);
+            found = !GridsNear(ground, mapId, spot, reach + WreckClearance)
+                    && !record.Sites.Exists(other => other.Bounds.Intersects(footprint));
         }
         if (!found)
             return false;
@@ -88,8 +90,7 @@ public sealed partial class WFPlanetPoiSystem
         {
             Name = name,
             Origin = origin,
-            Bounds = new Box2i((int) MathF.Floor(spot.X - reach), (int) MathF.Floor(spot.Y - reach),
-                (int) MathF.Ceiling(spot.X + reach) + 1, (int) MathF.Ceiling(spot.Y + reach) + 1),
+            Bounds = Footprint(spot, reach),
             TileCount = under.Count,
             Connection = WFPlanetPoiConnection.Isolated,
             Expeditions = false,
@@ -129,6 +130,13 @@ public sealed partial class WFPlanetPoiSystem
             signal.Name = LeftSiteName;
             Reveal((site.Signal, signal), null);
         }
+    }
+
+    /// <summary>The tiles a site claims round its middle, upper edges exclusive, as other sites record theirs.</summary>
+    private static Box2i Footprint(Vector2 spot, float reach)
+    {
+        return new Box2i((int) MathF.Floor(spot.X - reach), (int) MathF.Floor(spot.Y - reach),
+            (int) MathF.Ceiling(spot.X + reach) + 1, (int) MathF.Ceiling(spot.Y + reach) + 1);
     }
 
     /// <summary>Whether a grid other than the ground lies within a circle on its map.</summary>

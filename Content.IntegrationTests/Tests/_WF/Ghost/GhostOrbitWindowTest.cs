@@ -56,4 +56,53 @@ public sealed class GhostOrbitWindowTest : InteractionTest
             window.Close();
         });
     }
+
+    /// <summary>
+    /// The Faction view puts players and ships under their faction, the unaligned last; the Place view puts everything
+    /// under where it is, the sector first.
+    /// </summary>
+    [Test]
+    public async Task ViewsGroupByFactionAndByPlace()
+    {
+        GhostOrbitWindow window = default!;
+        var receive = typeof(GhostOrbitWindow).GetMethod("OnTargetsReceived", BindingFlags.Instance | BindingFlags.NonPublic)!;
+        var targets = new List<GhostOrbitTarget>
+        {
+            new() { Entity = Player, Name = "Free trader", Category = GhostOrbitCategory.Alive, Place = "Asclepiu", PlaceOrder = 1 },
+            new() { Entity = Player, Name = "Marine", Category = GhostOrbitCategory.Alive, Faction = "Trans-Solarian Federation", Place = "Sector" },
+            new() { Entity = Player, Name = "Frigate", Category = GhostOrbitCategory.Ship, Faction = "Trans-Solarian Federation", Place = "Sector" },
+        };
+
+        List<string> Titles() => window.FindControl<BoxContainer>("Sections").Children
+            .Select(root => ((Label) ((BoxContainer) ((ContainerButton) root.GetChild(0)).GetChild(0)).GetChild(1)).Text ?? string.Empty)
+            .ToList();
+
+        await Client.WaitPost(() =>
+        {
+            window = new GhostOrbitWindow();
+            window.OpenCentered();
+            window.FindControl<Button>("FactionViewButton").Pressed = true;
+            typeof(GhostOrbitWindow).GetMethod("SetView", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(window, new object[] { false });
+            receive.Invoke(window, new object[] { new GhostOrbitTargetsEvent(targets) });
+        });
+        await RunTicks(2);
+
+        await Client.WaitAssertion(() =>
+        {
+            var titles = Titles();
+            Assert.That(titles, Has.Count.EqualTo(2), string.Join(", ", titles));
+            Assert.That(titles[0], Does.Contain("Trans-Solarian Federation"), "A faction comes before the unaligned.");
+            Assert.That(titles[1], Does.Contain("Independent"));
+
+            typeof(GhostOrbitWindow).GetMethod("SetView", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(window, new object[] { true });
+            titles = Titles();
+            Assert.That(titles, Has.Count.EqualTo(2), string.Join(", ", titles));
+            Assert.That(titles[0], Does.Contain("Sector"), "The sector comes before the worlds.");
+            Assert.That(titles[1], Does.Contain("Asclepiu"));
+
+            // Leave the session's view as players start with it.
+            typeof(GhostOrbitWindow).GetMethod("SetView", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(window, new object[] { false });
+            window.Close();
+        });
+    }
 }

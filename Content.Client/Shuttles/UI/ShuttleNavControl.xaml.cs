@@ -1073,7 +1073,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
                         // WOLFGATE(RadarLabels) START: lines go to the scope's shared tag layout, which stacks overlapping tags.
                         WfBeginTag(uiPosition * UIScale, (uiPosition + labelOffset) * UIScale, isMouseOver ? 3 : isPlayerShuttle ? 2 : 1,
-                            always: isMouseOver || distance <= WfTagCloseRange, key: gUid.Id); // a ship this close keeps its name: it could be shooting
+                            always: isMouseOver && WfHoverReveal || distance <= WfTagCloseRange, key: gUid.Id); // a ship this close keeps its name: it could be shooting
                         WfTagLine(handle, mainLabel, UIScale * 0.9f, displayColor);
                         if (shouldDrawDetailedIFF)
                         {
@@ -1341,13 +1341,17 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
                 //var color = Color.ToSrgb(Color.Magenta); // Frontier
                 var color = Color.ToSrgb(state.HighlightedRadarColor); // Frontier
 
-                var verts = new[]
-                {
-                    Vector2.Transform(position + new Vector2(-DockScale, -DockScale), gridToView),
-                    Vector2.Transform(position + new Vector2(DockScale, -DockScale), gridToView),
-                    Vector2.Transform(position + new Vector2(DockScale, DockScale), gridToView),
-                    Vector2.Transform(position + new Vector2(-DockScale, DockScale), gridToView),
-                };
+                // WOLFGATE(Shuttles) START: a dock marker keeps a small minimum size on screen, and hides when zoomed far out
+                // var verts = new[]
+                // {
+                //     Vector2.Transform(position + new Vector2(-DockScale, -DockScale), gridToView),
+                //     Vector2.Transform(position + new Vector2(DockScale, -DockScale), gridToView),
+                //     Vector2.Transform(position + new Vector2(DockScale, DockScale), gridToView),
+                //     Vector2.Transform(position + new Vector2(-DockScale, DockScale), gridToView),
+                // };
+                if (WfDockVertices(position, positionInView, gridToView, DockScale) is not { } verts)
+                    break;
+                // WOLFGATE END
 
                 handle.DrawPrimitives(DrawPrimitiveTopology.TriangleFan, verts, color.WithAlpha(0.8f));
                 handle.DrawPrimitives(DrawPrimitiveTopology.LineStrip, verts, color);
@@ -1359,6 +1363,8 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
             {
                 if (state.LabelName == null || labeled.Contains(state.LabelName))
                     continue;
+                if (!WfDockNamesShown(gridToView, DockScale)) // WOLFGATE(Shuttles): dock names only up close, so they don't crowd the contacts
+                    break;
 
                 var position = state.Coordinates.Position;
                 var uiPosition = Vector2.Transform(position, gridToView);

@@ -267,11 +267,12 @@ public sealed partial class WFPlanetPoiSystem
                     await DigTunnelsAsync(ground, grid, biome, record, roads, plan, created, changed);
                 }
             }
-            // Wrecks last: they keep off the sites and roads, which are pinned by now.
+            // Camps and wrecks last: they keep off the sites and roads, which are pinned by now. Camps first, as every
+            // world is meant to have them and their hulls need the most room; wrecks fill what is left.
             Report(ground, WFWorldFormingStage.Wrecks, 0.9f);
-            await PlaceWrecksAsync(ground, grid, biome, orbit, centre, radius, table, record, created);
-            Report(ground, WFWorldFormingStage.Wrecks, 0.95f);
             await PlaceCampsAsync(ground, grid, biome, orbit, centre, radius, table, record, created);
+            Report(ground, WFWorldFormingStage.Wrecks, 0.95f);
+            await PlaceWrecksAsync(ground, grid, biome, orbit, centre, radius, table, record, created);
             Report(ground, WFWorldFormingStage.Wrecks, 1f);
             record.PendingRoamers = table.Roamers.ToList();
             record.PendingResidents = table.Residents;

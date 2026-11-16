@@ -66,7 +66,9 @@ instead when no stretch has room, or for a camp with `roadside: false`), with an
 guarding it: two or three on the deck at once, more round the hull behind a
 ring of cover once the ground there exists. Every prop claims the ground it covers (`footprint` on a camp prop, a single
 tile when unset; a tent is 3 by 4 tiles), so tents, fires, cover and guards never lie on each other. Dwelling sites (`dwelling: true`, such as the houses) may get a resident. Every world has a Reaver encampment (Ashfall Reaver raiders) and an ADS
-control site (ADS automatons); the hold has loot of the same kind as the wrecks'.
+control site (ADS automatons); the hold has loot of the same kind as the wrecks'. Camps are placed before the wrecks,
+and each tries every hull it may be built round, in a random order, before it is left out: on a small, wet world such
+as Carcinoma only the smallest hull may still find room.
 
 Once the ground exists, a table's `vehicles` (`WFPlanetPoiSystem.Vehicles`, `vehicles.yml`) park a few working
 trucks, vans and the odd humvee by the roads and out in the open, part-fuelled, with the key on the driver's seat; in

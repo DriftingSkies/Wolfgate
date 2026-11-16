@@ -1,4 +1,3 @@
-using Content.Shared._WF.Encounters;
 using Content.Shared.StatusIcon;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
@@ -22,7 +21,6 @@ public enum GhostOrbitCategory : byte
     Location,
     PlanetPoi,
     Ship,
-    Encounter,
     Npc,
 }
 
@@ -61,32 +59,18 @@ public record struct GhostOrbitTarget
 
     /// <summary>Sort rank inside the section, lowest first. Only the Xenonids section uses it.</summary>
     public int Order;
-}
 
-/// <summary>
-/// One ship of a running encounter, for the Encounters section. Orbiting it follows its grid.
-/// </summary>
-[Serializable, NetSerializable]
-public record struct GhostOrbitEncounterShip
-{
-    public NetEntity Grid;
-    public string Ship;
-    public string Encounter;
+    /// <summary>The faction of a player or ship, by its company's family, or null for none.</summary>
+    public string? Faction;
 
-    /// <summary>The encounter's entity, to count encounters rather than ships.</summary>
-    public NetEntity EncounterId;
+    /// <summary>The faction's colour, for its section in the Faction view.</summary>
+    public Color? FactionColor;
 
-    public string Side;
-    public WFEncounterCategory Category;
+    /// <summary>Where the target is: the sector, a world, or in transit. For the Place view.</summary>
+    public string? Place;
 
-    /// <summary>The colour the ship has on the sector markers; null draws by category.</summary>
-    public Color? Color;
-
-    /// <summary>Kept off the sector markers; only ghosts and admins see it.</summary>
-    public bool Hidden;
-
-    /// <summary>Ghosts currently following the ship, admins excluded for non-admin viewers.</summary>
-    public int Followers;
+    /// <summary>Sort rank of <see cref="Place"/>: the sector first, then worlds, then transit and the rest.</summary>
+    public int PlaceOrder;
 }
 
 /// <summary>
@@ -96,15 +80,12 @@ public record struct GhostOrbitEncounterShip
 public sealed class GhostOrbitRequestEvent : EntityEventArgs;
 
 [Serializable, NetSerializable]
-public sealed class GhostOrbitTargetsEvent(List<GhostOrbitTarget> targets, List<GhostOrbitEncounterShip>? encounters = null, int burrowedLarva = 0) : EntityEventArgs
+public sealed class GhostOrbitTargetsEvent(List<GhostOrbitTarget> targets, int burrowedLarva = 0) : EntityEventArgs
 {
     public List<GhostOrbitTarget> Targets = targets;
 
     /// <summary>Burrowed larva waiting across all hives.</summary>
     public int BurrowedLarva = burrowedLarva;
-
-    /// <summary>The ships of every unresolved encounter, hidden ones included.</summary>
-    public List<GhostOrbitEncounterShip> Encounters = encounters ?? new List<GhostOrbitEncounterShip>();
 }
 
 /// <summary>

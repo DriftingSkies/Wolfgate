@@ -1,6 +1,4 @@
 using System.Numerics;
-using Content.Server._WF.Encounters.Components;
-using Content.Server._WF.Encounters.Systems;
 using Content.Server._WF.PlanetPois;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
@@ -53,7 +51,6 @@ public sealed partial class GhostOrbitSystem : EntitySystem
     [Dependency] private FollowerSystem _follower = default!;
     [Dependency] private JobSystem _jobs = default!;
     [Dependency] private MobStateSystem _mobState = default!;
-    [Dependency] private WFEncounterMarkerSystem _markers = default!;
     [Dependency] private MobThresholdSystem _thresholds = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private IPrototypeManager _proto = default!;
@@ -81,18 +78,16 @@ public sealed partial class GhostOrbitSystem : EntitySystem
         var isAdmin = _admin.IsAdmin(viewer);
         var targets = BuildTargets(viewer, isAdmin);
 
-        var encounters = new List<GhostOrbitEncounterShip>();
-        AddEncounters(encounters, isAdmin);
-
         EntityManager.System<Content.Server._WF.NpcCrew.Systems.WFCrewUiDiagnosticsSystem>().Reply("ghost", args.SenderSession, targets.Count);
-        RaiseNetworkEvent(new GhostOrbitTargetsEvent(targets, encounters, _hives.GetBurrowedLarva()), args.SenderSession.Channel);
+        RaiseNetworkEvent(new GhostOrbitTargetsEvent(targets, burrowedLarva: _hives.GetBurrowedLarva()), args.SenderSession.Channel);
     }
 
     /// <summary>
-    /// Everything the viewer can orbit except encounter ships.
+    /// Everything the viewer can orbit, each with its faction and place for the menu's two views.
     /// </summary>
     public List<GhostOrbitTarget> BuildTargets(EntityUid viewer, bool isAdmin)
     {
+        BeginGrouping();
         var targets = new List<GhostOrbitTarget>();
         var seen = new HashSet<EntityUid> { viewer };
 
@@ -189,11 +184,11 @@ public sealed partial class GhostOrbitSystem : EntitySystem
         var query = AllEntityQuery<T, TransformComponent, MetaDataComponent>();
         while (query.MoveNext(out var uid, out _, out var xform, out var meta))
         {
-            if (!Listable(uid, xform, meta) || !seen.Add(uid))
+            if (!Listable(uid, xform, meta) || !InterestActive(uid) || !seen.Add(uid))
                 continue;
 
             var label = CompOrNull<GhostInterestComponent>(uid)?.Label ?? kind;
-            targets.Add(new GhostOrbitTarget
+            var target = new GhostOrbitTarget
             {
                 Entity = GetNetEntity(uid),
                 Name = meta.EntityName,
@@ -201,7 +196,9 @@ public sealed partial class GhostOrbitSystem : EntitySystem
                 Detail = label != null ? Loc.GetString(label) : meta.EntityPrototype?.Name,
                 Prototype = meta.EntityPrototype?.ID,
                 Followers = CountFollowers(uid, isAdmin),
-            });
+            };
+            SetPlace(ref target, xform);
+            targets.Add(target);
         }
     }
 
@@ -263,7 +260,7 @@ public sealed partial class GhostOrbitSystem : EntitySystem
             }
 
             seen.Add(uid);
-            targets.Add(new GhostOrbitTarget
+            var target = new GhostOrbitTarget
             {
                 Entity = GetNetEntity(uid),
                 Name = meta.EntityName,
@@ -277,7 +274,10 @@ public sealed partial class GhostOrbitSystem : EntitySystem
                 Followers = CountFollowers(uid, isAdmin),
                 Disconnected = playerOwned && !hasClient && !dead,
                 Order = order,
-            });
+            };
+            SetFaction(ref target, uid);
+            SetPlace(ref target, xform);
+            targets.Add(target);
         }
     }
 
@@ -301,7 +301,7 @@ public sealed partial class GhostOrbitSystem : EntitySystem
                 continue;
 
             seen.Add(attached);
-            targets.Add(new GhostOrbitTarget
+            var target = new GhostOrbitTarget
             {
                 Entity = GetNetEntity(attached),
                 Name = meta.EntityName,
@@ -310,44 +310,11 @@ public sealed partial class GhostOrbitSystem : EntitySystem
                 Prototype = meta.EntityPrototype?.ID,
                 Followers = CountFollowers(attached, isAdmin),
                 AdminOnly = adminGhost,
-            });
-        }
-    }
-
-    /// <summary>
-    /// One entry per ship of every unresolved encounter, hidden ones included, for the Encounters tab.
-    /// </summary>
-    private void AddEncounters(List<GhostOrbitEncounterShip> ships, bool isAdmin)
-    {
-        var query = EntityQueryEnumerator<WFEncounterComponent>();
-        while (query.MoveNext(out var uid, out var encounter))
-        {
-            if (encounter.Resolution != null)
-                continue;
-
-            var id = GetNetEntity(uid);
-            foreach (var (key, ship) in encounter.Ships)
-            {
-                if (TerminatingOrDeleted(ship.Grid))
-                    continue;
-
-                var meta = MetaData(ship.Grid);
-                if (!Listable(ship.Grid, Transform(ship.Grid), meta))
-                    continue;
-
-                ships.Add(new GhostOrbitEncounterShip
-                {
-                    Grid = GetNetEntity(ship.Grid),
-                    Ship = meta.EntityName.Length > 0 ? meta.EntityName : key,
-                    Encounter = encounter.Name,
-                    EncounterId = id,
-                    Side = ship.Side,
-                    Category = encounter.Category,
-                    Color = _markers.ShipColor(encounter, ship),
-                    Hidden = encounter.Hidden,
-                    Followers = CountFollowers(ship.Grid, isAdmin),
-                });
-            }
+            };
+            if (!isGhost)
+                SetFaction(ref target, attached);
+            SetPlace(ref target, Transform(attached));
+            targets.Add(target);
         }
     }
 
@@ -369,14 +336,16 @@ public sealed partial class GhostOrbitSystem : EntitySystem
             if (!Listable(uid, xform, meta) || TerminatingOrDeleted(signal.Ground) || !seen.Add(uid))
                 continue;
 
-            targets.Add(new GhostOrbitTarget
+            var target = new GhostOrbitTarget
             {
                 Entity = GetNetEntity(uid),
                 Name = Loc.GetString(signal.Name),
                 Category = GhostOrbitCategory.PlanetPoi,
                 Detail = xform.MapUid is { } map ? worlds.GetValueOrDefault(map) : null,
                 Followers = CountFollowers(uid, isAdmin),
-            });
+            };
+            SetPlace(ref target, xform);
+            targets.Add(target);
         }
     }
 
@@ -389,7 +358,7 @@ public sealed partial class GhostOrbitSystem : EntitySystem
                 continue;
 
             var deed = CompOrNull<ShuttleDeedComponent>(xform.GridUid);
-            targets.Add(new GhostOrbitTarget
+            var target = new GhostOrbitTarget
             {
                 Entity = GetNetEntity(uid),
                 Name = warp.Location ?? meta.EntityName,
@@ -397,7 +366,11 @@ public sealed partial class GhostOrbitSystem : EntitySystem
                 Detail = deed?.ShuttleOwner is { } owner ? Loc.GetString("wf-ghost-orbit-ship-owner", ("owner", owner)) : null,
                 Followers = CountFollowers(uid, isAdmin),
                 AdminOnly = warp.AdminOnly,
-            });
+            };
+            if (deed != null)
+                SetFaction(ref target, xform.GridUid);
+            SetPlace(ref target, xform);
+            targets.Add(target);
         }
     }
 

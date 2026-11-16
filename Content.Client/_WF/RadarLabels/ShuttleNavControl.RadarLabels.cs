@@ -11,7 +11,8 @@ namespace Content.Client.Shuttles.UI;
 /// fight show their name everywhere, the rest are blips, with a count where several crowd together. Round the cursor a
 /// lens shows every tag, stacking any that would overlap into a list with lines to their contacts
 /// (<see cref="WFRadarTagLayout"/>), and the tag nearest the cursor shows its detail lines. Tags fade in and out.
-/// With the smart tags option off, every tag sits whole by its contact.
+/// With the smart tags option off, every tag sits whole by its contact. Icons only hides every name and count until the
+/// cursor rests on a contact; hover reveal off turns the cursor's lens off.
 /// </summary>
 public partial class ShuttleNavControl
 {
@@ -146,7 +147,8 @@ public partial class ShuttleNavControl
             return;
         }
 
-        if (!_wfSettingsCfg.GetCVar(WolfgateCVars.RadarSmartTags))
+        var iconsOnly = _wfSettingsCfg.GetCVar(WolfgateCVars.RadarIconsOnly);
+        if (!iconsOnly && !_wfSettingsCfg.GetCVar(WolfgateCVars.RadarSmartTags))
         {
             // Smart tags off: every tag whole by its contact, overlapping or not.
             for (var i = 0; i < _wfTags.Count; i++)
@@ -159,14 +161,18 @@ public partial class ShuttleNavControl
         WfKeyTags();
         var allNames = _wfAllNames;
 
-        // The lens: every tag inside it shows, and the one nearest the cursor shows its details.
-        Vector2? cursor = _isMouseInside ? (UserInterfaceManager.MousePositionScaled.Position - GlobalPosition) * UIScale : null;
+        // The lens: every tag inside it shows, and the one nearest the cursor shows its details. With icons only, just
+        // that nearest one shows.
+        var hover = _isMouseInside && WfHoverReveal;
+        Vector2? cursor = hover ? (UserInterfaceManager.MousePositionScaled.Position - GlobalPosition) * UIScale : null;
         var lens = WfLensRadius * UIScale;
         var focus = -1;
         var nearest = lens * lens;
         if (cursor is { } point)
         {
-            handle.DrawCircle(point, lens, WfLensColor, false);
+            if (!iconsOnly)
+                handle.DrawCircle(point, lens, WfLensColor, false);
+
             for (var i = 0; i < _wfTags.Count; i++)
             {
                 var distance = (_wfTags[i].Anchor - point).LengthSquared();
@@ -186,7 +192,8 @@ public partial class ShuttleNavControl
         {
             var tag = _wfTags[i];
             var draw = _wfTagDraws[i];
-            var shown = draw.Always || allNames || cursor is { } at && (tag.Anchor - at).LengthSquared() <= lens * lens;
+            var shown = allNames || i == focus
+                || !iconsOnly && (draw.Always || cursor is { } at && (tag.Anchor - at).LengthSquared() <= lens * lens);
             draw.Full = i == focus;
             if (!draw.Full)
             {
@@ -225,7 +232,7 @@ public partial class ShuttleNavControl
         foreach (var key in _wfTagGone)
             _wfTagAlpha.Remove(key);
 
-        WfDrawQuietTags(handle);
+        WfDrawQuietTags(handle, !iconsOnly);
         WfDrawShownTags(handle);
         WfClearTags();
     }
@@ -252,15 +259,19 @@ public partial class ShuttleNavControl
     }
 
     /// <summary>
-    /// Quiet tags out of the lens: one still fading out keeps its name a moment; blips crowded together get a count.
+    /// Quiet tags out of the lens: one still fading out keeps its name a moment; blips crowded together get a count
+    /// unless <paramref name="counts"/> is off.
     /// </summary>
-    private void WfDrawQuietTags(DrawingHandleScreen handle)
+    private void WfDrawQuietTags(DrawingHandleScreen handle, bool counts)
     {
         foreach (var index in _wfQuietIndex)
         {
             if (_wfTagDraws[index].Alpha > 0f)
                 DrawTagAlone(handle, index);
         }
+
+        if (!counts)
+            return;
 
         var crowd = WfCrowdRadius * UIScale;
         var scale = UIScale * 0.7f;
@@ -339,6 +350,9 @@ public partial class ShuttleNavControl
             }
         }
     }
+
+    /// <summary>Whether hovering a contact reveals its tag.</summary>
+    private bool WfHoverReveal => _wfSettingsCfg.GetCVar(WolfgateCVars.RadarHoverReveal);
 
     private static Color Fade(Color color, float alpha) => color.WithAlpha(color.A * alpha);
 

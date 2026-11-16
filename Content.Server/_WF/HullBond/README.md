@@ -21,6 +21,11 @@ Adding it to another machine is all a new fitting needs.
   it adopts the bond and comes loose at once if it was built on another hull. A bonded board can't go in a flatpacker,
   which would unpack a new, unbonded machine.
 
+NPC ships are fair game. An encounter hull (Reavers, pirates and every other `Encounters` ship) is made loose when
+it is built (`Loosen`, a `Loose` flag on its `WFHullBondId`): the fittings bonded to it lose their bond and nothing
+bonds to it again, so a stolen shield, drive or loader bolts down on the thief's ship and bonds there. A claimed
+encounter ship stays loose, and the pieces of a loose hull are loose.
+
 A new board, a new flatpack and a fitting that was never bolted down have no bond and take the first hull they are
 bolted to. The refusal is server-side, so the client may show the wrench starting before the popup.
 

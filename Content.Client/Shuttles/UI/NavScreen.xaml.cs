@@ -39,7 +39,7 @@ public sealed partial class NavScreen : BoxContainer
         IFFDetailedToggle.OnToggled += OnIFFDetailedTogglePressed; // Mono
         IFFDetailedToggle.Pressed = NavRadar.ShowIFFDetailed; // Mono
 
-        // WOLFGATE(RadarLabels) START: radars mark no docks, so there is nothing to toggle
+        // WOLFGATE(RadarLabels) START: radars always mark docks, so there is nothing to toggle
         // DockToggle.OnToggled += OnDockTogglePressed;
         // DockToggle.Pressed = NavRadar.ShowDocks;
         // WOLFGATE END

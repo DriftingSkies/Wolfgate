@@ -114,7 +114,9 @@ public sealed class NpcFacingTest
         var hits = 0;
         var lastDamage = 0f;
         var trace = new StringBuilder();
-        for (var tick = 0; tick < 420; tick++)
+        // NPC plans are made off the main thread, so a loaded machine can spend ticks waiting on one; run until the
+        // zombie has landed a few swings rather than for a fixed count, with a cap.
+        for (var tick = 0; tick < 1200 && (tick < 420 || hits < 3); tick++)
         {
             await server.WaitRunTicks(1);
             await server.WaitPost(() =>

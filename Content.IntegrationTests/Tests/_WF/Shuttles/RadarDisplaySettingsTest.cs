@@ -40,8 +40,8 @@ public sealed class RadarDisplaySettingsTest
                 scanner.OpenCentered();
                 var radar = scanner.FindControl<ShuttleNavControl>("RadarScreen");
                 var detailed = scanner.FindControl<Button>("IFFDetailedToggle");
-                // No player radar marks docks.
-                Assert.That((radar.ShowIFF, radar.ShowIFFDetailed, radar.ShowDocks), Is.EqualTo((true, true, false)));
+                // Every radar marks docks.
+                Assert.That((radar.ShowIFF, radar.ShowIFFDetailed, radar.ShowDocks), Is.EqualTo((true, true, true)));
                 Assert.That(detailed.Pressed, Is.True);
 
                 // The mass scanner's own handler, as a click on the toggle runs it.
@@ -72,8 +72,8 @@ public sealed class RadarDisplaySettingsTest
                 Assert.That(gunnery.FindControl<ShuttleNavControl>("NavRadar").ShowIFFDetailed, Is.False,
                     "The gunnery console shares the choice.");
                 Assert.That(gunnery.FindControl<Button>("IFFDetailedToggle").Pressed, Is.False);
-                Assert.That(helm.FindControl<ShuttleNavControl>("NavRadar").ShowDocks, Is.False, "The helm marks no docks.");
-                Assert.That(gunnery.FindControl<ShuttleNavControl>("NavRadar").ShowDocks, Is.False, "Nor does gunnery.");
+                Assert.That(helm.FindControl<ShuttleNavControl>("NavRadar").ShowDocks, Is.True, "The helm marks docks.");
+                Assert.That(gunnery.FindControl<ShuttleNavControl>("NavRadar").ShowDocks, Is.True, "So does gunnery.");
             });
         }
         finally

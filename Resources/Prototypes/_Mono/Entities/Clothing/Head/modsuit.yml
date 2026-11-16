@@ -7,6 +7,26 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Head/Modsuits/ussp-varyag.rsi
+  # WOLFGATE(Modsuits) START: the rsi only has the default and vox states, so other species drew an error sprite
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    quickEquip: false
+    equippedPrefix: off
+    slots: [ HEAD ]
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD-vox
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+  # WOLFGATE END
   - type: Armor
     coverage: [Head] # WOLFGATE(Wolfmed): P6, P3-D6: locational armour coverage
     modifiers:
@@ -57,6 +77,26 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Head/Modsuits/ussp-zastavnik.rsi
+  # WOLFGATE(Modsuits) START: the rsi only has the default and vox states, so other species drew an error sprite
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    quickEquip: false
+    equippedPrefix: off
+    slots: [ HEAD ]
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD-vox
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+  # WOLFGATE END
   - type: Armor
     coverage: [Head] # WOLFGATE(Wolfmed): P6, P3-D6: locational armour coverage
     modifiers:
@@ -192,6 +232,30 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Head/Modsuits/tsfmc-volta.rsi
+  # WOLFGATE(Modsuits) START: the rsi only has the default, vox and vulpkanin states, so other species drew an error sprite
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    quickEquip: false
+    equippedPrefix: off
+    slots: [ HEAD ]
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-vulpkanin
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed-vulpkanin
+  # WOLFGATE END
   - type: Armor
     coverage: [Head] # WOLFGATE(Wolfmed): P6, P3-D6: locational armour coverage
     modifiers:
@@ -243,6 +307,26 @@
   components:
   - type: Sprite
     sprite: _Mono/Clothing/Head/Modsuits/mercenary.rsi
+  # WOLFGATE(Modsuits) START: the rsi only has the default and vox states, so other species drew an error sprite
+  - type: Clothing
+    equipSound: /Audio/Mecha/mechmove03.ogg
+    unequipSound: /Audio/Mecha/mechmove03.ogg
+    quickEquip: false
+    equippedPrefix: off
+    slots: [ HEAD ]
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD-vox
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      head-vox:
+      - state: equipped-HEAD-sealed-vox
+  # WOLFGATE END
   - type: RadarConsole
     followEntity: true
     noRotate: true

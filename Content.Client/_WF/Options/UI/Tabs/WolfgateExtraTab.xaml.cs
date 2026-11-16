@@ -28,6 +28,8 @@ public sealed partial class WolfgateExtraTab : Control
         Control.AddOptionCheckBox(WolfgateCVars.CockpitAutoEnter, CockpitAutoEnterCheckBox);
         Control.AddOptionCheckBox(WFCameraCVars.DefaultNorth, DefaultNorthCheckBox);
         Control.AddOptionCheckBox(WolfgateCVars.RadarSmartTags, RadarSmartTagsCheckBox);
+        Control.AddOptionCheckBox(WolfgateCVars.RadarIconsOnly, RadarIconsOnlyCheckBox);
+        Control.AddOptionCheckBox(WolfgateCVars.RadarHoverReveal, RadarHoverRevealCheckBox);
         Control.AddOptionCheckBox(WFNewbieCVars.ShowTag, ShowNewbieTagCheckBox);
 
         Control.AddOptionCheckBox(HeatHazeCVars.Enabled, HeatHazeCheckBox);

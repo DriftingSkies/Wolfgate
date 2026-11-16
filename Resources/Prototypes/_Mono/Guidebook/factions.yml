@@ -16,7 +16,7 @@
   # - WFAds # WOLFGATE(AdsIncursion)
   - WFLoreAds # WOLFGATE(LoreBook)
   - WFLoreReavers # WOLFGATE(LoreBook)
-
+  - Underground
 - type: guideEntry
   id: TSFMC_Entry
   name: TSFMC
@@ -127,3 +127,9 @@
   - WFLoreJudges
   # WOLFGATE END
   - WFCommonWrit # WOLFGATE(Bench): the Common Writ
+
+- type: guideEntry
+  id: Underground
+  name: Underground Black Market
+  text: "/ServerInfo/_Mono/Guidebook/Factions/underground.xml"
+  priority: 13

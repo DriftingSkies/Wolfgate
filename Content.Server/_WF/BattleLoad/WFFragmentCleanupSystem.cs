@@ -8,14 +8,19 @@ using Robust.Shared.Player;
 
 namespace Content.Server._WF.BattleLoad;
 
-/// <summary>Deletes the tiny grids a hull sheds as it breaks up, unless a player or a mob is aboard.</summary>
+/// <summary>Deletes the tiny grids a hull sheds as it breaks up, unless a player or a mob is aboard or over it.</summary>
 public sealed partial class WFFragmentCleanupSystem : EntitySystem
 {
     [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private SharedMapSystem _map = default!;
 
     private readonly List<EntityUid> _pending = new();
+    private readonly HashSet<Entity<MobStateComponent>> _mobsOver = new();
     private int _maxTiles;
+
+    /// <summary>How far past a fragment's edge a mob still counts as about to step onto it.</summary>
+    private const float MobMargin = 0.5f;
 
     public override void Initialize()
     {
@@ -44,7 +49,7 @@ public sealed partial class WFFragmentCleanupSystem : EntitySystem
             if (TerminatingOrDeleted(uid) || !TryComp<MapGridComponent>(uid, out var grid))
                 continue;
 
-            if (!IsSmall((uid, grid)) || HasSomeoneAboard(uid))
+            if (!IsSmall((uid, grid)) || HasSomeoneAboard(uid) || HasSomeoneOver(uid))
                 continue;
 
             QueueDel(uid);
@@ -65,6 +70,18 @@ public sealed partial class WFFragmentCleanupSystem : EntitySystem
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Whether a mob is over or beside the grid without being on it yet, such as someone in space stepping onto a
+    /// tile they just placed. Deleting the grid would take them along once they land on it.
+    /// </summary>
+    private bool HasSomeoneOver(EntityUid uid)
+    {
+        var xform = Transform(uid);
+        _mobsOver.Clear();
+        _lookup.GetEntitiesIntersecting(xform.MapID, _lookup.GetWorldAABB(uid, xform).Enlarged(MobMargin), _mobsOver);
+        return _mobsOver.Count > 0;
     }
 
     private bool HasSomeoneAboard(EntityUid uid)

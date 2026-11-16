@@ -15,6 +15,8 @@
                 <CheckBox Name="CockpitAutoEnterCheckBox" Text="{Loc 'ui-options-wf-cockpit-auto-enter'}" />
                 <CheckBox Name="DefaultNorthCheckBox" Text="{Loc 'ui-options-wf-default-north'}" />
                 <CheckBox Name="RadarSmartTagsCheckBox" Text="{Loc 'ui-options-wf-radar-smart-tags'}" />
+                <CheckBox Name="RadarIconsOnlyCheckBox" Text="{Loc 'ui-options-wf-radar-icons-only'}" />
+                <CheckBox Name="RadarHoverRevealCheckBox" Text="{Loc 'ui-options-wf-radar-hover-reveal'}" />
                 <CheckBox Name="ShowNewbieTagCheckBox" Text="{Loc 'wf-newbie-option-show-tag'}" />
                 <Label Text="{Loc 'ui-options-wf-effects'}" StyleClasses="LabelKeyText"/>
                 <CheckBox Name="HeatHazeCheckBox" Text="{Loc 'ui-options-wf-heat-haze'}" />

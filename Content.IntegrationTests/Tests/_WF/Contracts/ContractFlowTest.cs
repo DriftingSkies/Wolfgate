@@ -302,7 +302,8 @@ public sealed class ContractFlowTest
             var freighter = run.Ships["freighter"].Grid;
             xforms.SetMapCoordinates(mob, new MapCoordinates(xforms.GetWorldPosition(freighter) + new Vector2(50f, 0f), escort.Site!.Value.MapId));
         });
-        await pair.RunTicksSync(150);
+        // Encounters look for players every 5 s; exactly 5 s could end a tick before the next look.
+        await pair.RunTicksSync(pair.SecondsToTicks(6f));
         await server.WaitAssertion(() =>
         {
             Assert.That(escort.EncounterEntity is { } run && !entMan.Deleted(run), Is.True, "The escort run removed itself when its escort arrived.");
@@ -311,7 +312,7 @@ public sealed class ContractFlowTest
             // Surrendered and held still: not arrived, whatever its orders say.
             entMan.GetComponent<WFEncounterComponent>(escort.EncounterEntity!.Value).Ships["freighter"].Surrendered = true;
         });
-        await pair.RunTicksSync(150);
+        await pair.RunTicksSync(pair.SecondsToTicks(6f));
         await server.WaitAssertion(() =>
         {
             Assert.That(escort.Status, Is.EqualTo(WFContractStatus.Failed), "An escorted ship's surrender did not fail the escort.");

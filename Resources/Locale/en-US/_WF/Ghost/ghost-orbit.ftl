@@ -4,10 +4,18 @@ wf-ghost-orbit-refresh = Refresh
 wf-ghost-orbit-auto-refresh = Live
 wf-ghost-orbit-summary = {$players} playing · {$ssd} SSD · {$dead} dead · {$ghosts} ghosts · {$npcs} NPCs
 
-wf-ghost-orbit-encounter-detail = {$encounter} · {$side}
-wf-ghost-orbit-encounter-detail-hidden = {$encounter} · {$side} · hidden
+wf-ghost-orbit-view-faction = By faction
+wf-ghost-orbit-view-place = By place
 
-wf-ghost-orbit-category-interest = Points of Interest
+wf-ghost-orbit-section-places = Stations & Sites
+wf-ghost-orbit-faction-independent = Independent
+wf-ghost-orbit-faction-tsf = Trans-Solarian Federation
+wf-ghost-orbit-faction-pdv = Phaethon Dynasty
+wf-ghost-orbit-place-sector = Sector
+wf-ghost-orbit-place-transit = In transit
+wf-ghost-orbit-place-unknown = Elsewhere
+
+wf-ghost-orbit-category-interest = Live Events
 wf-ghost-orbit-category-antagonist = Antagonists
 wf-ghost-orbit-category-critical = Critical
 wf-ghost-orbit-category-alive = Alive
@@ -17,7 +25,6 @@ wf-ghost-orbit-category-ghost = Ghosts
 wf-ghost-orbit-category-location = Locations
 wf-ghost-orbit-category-planetpoi = Planetary POIs
 wf-ghost-orbit-category-ship = Ships
-wf-ghost-orbit-category-encounter = Encounters
 wf-ghost-orbit-category-npc = NPCs
 
 wf-ghost-orbit-followers-badge = ({$count})

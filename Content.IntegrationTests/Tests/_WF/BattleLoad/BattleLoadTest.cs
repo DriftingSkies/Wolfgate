@@ -206,6 +206,8 @@ public sealed class BattleLoadTest
             maps.SetTile(tinyGrid, Vector2i.Zero, plating);
             var crewedGrid = maps.CreateGridEntity(mapId);
             crewed = crewedGrid;
+            // Apart from the others, so its mob doesn't stand over them too.
+            entMan.System<SharedTransformSystem>().SetWorldPosition(crewedGrid.Owner, new Vector2(30f, 0f));
             maps.SetTile(crewedGrid, Vector2i.Zero, plating);
             var mob = entMan.SpawnEntity("MobHuman", new EntityCoordinates(crewed, new Vector2(0.5f, 0.5f)));
             var minds = entMan.System<SharedMindSystem>();
@@ -230,6 +232,53 @@ public sealed class BattleLoadTest
                 Assert.That(entMan.Deleted(tiny), Is.True, "A one-tile fragment with nobody aboard goes.");
                 Assert.That(entMan.Deleted(crewed), Is.False, "A fragment with someone aboard stays.");
                 Assert.That(entMan.Deleted(large), Is.False, "A ten-tile fragment stays.");
+            });
+        });
+
+        await server.WaitPost(() => entMan.System<SharedMapSystem>().DeleteMap(mapId));
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A tile placed off a hull splits off; someone in space stepping onto it must not go with its deletion.</summary>
+    [Test]
+    public async Task FragmentSomeoneIsSteppingOntoStays()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var tiles = server.ResolveDependency<ITileDefinitionManager>();
+
+        EntityUid source = default, stepped = default, mob = default;
+        MapId mapId = default;
+        await server.WaitPost(() =>
+        {
+            source = MakeGrid(entMan, tiles, out mapId);
+            var maps = entMan.System<SharedMapSystem>();
+            var xforms = entMan.System<SharedTransformSystem>();
+
+            var steppedGrid = maps.CreateGridEntity(mapId);
+            stepped = steppedGrid;
+            xforms.SetWorldPosition(steppedGrid.Owner, new Vector2(30f, 0f));
+            maps.SetTile(steppedGrid, Vector2i.Zero, new Tile(tiles["Lattice"].TileId));
+
+            // In space just past the tile's edge, so parented to the map rather than the fragment.
+            mob = entMan.SpawnEntity("MobHuman", new MapCoordinates(new Vector2(31.3f, 0.5f), mapId));
+            var minds = entMan.System<SharedMindSystem>();
+            minds.TransferTo(minds.CreateMind(null), mob);
+
+            var ev = new GridSplitEvent(new[] { stepped }, source);
+            entMan.EventBus.RaiseLocalEvent(source, ref ev, true);
+        });
+
+        await pair.RunTicksSync(3);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(entMan.GetComponent<TransformComponent>(mob).ParentUid, Is.Not.EqualTo(stepped), "The mob starts off the fragment.");
+                Assert.That(entMan.Deleted(stepped), Is.False, "A fragment someone is stepping onto stays.");
+                Assert.That(entMan.Deleted(mob), Is.False);
             });
         });
 

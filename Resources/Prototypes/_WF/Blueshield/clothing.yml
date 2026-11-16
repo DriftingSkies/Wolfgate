@@ -79,8 +79,6 @@
   - type: ContainerFill
     containers:
       key_slots:
-      - EncryptionKeyCommand
-      - EncryptionKeyCentCom
       - EncryptionKeyCommon
   - type: Sprite
     sprite: _WF/Blueshield/Clothing/Ears/Headsets/blueshield.rsi

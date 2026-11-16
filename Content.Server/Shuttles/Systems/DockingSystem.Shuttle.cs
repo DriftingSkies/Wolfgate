@@ -227,7 +227,9 @@ public sealed partial class DockingSystem
                     // Check if there's no intersecting grids (AKA oh god it's docking at cargo).
                     grids.Clear();
                     _mapSystem.FindGridsIntersecting(targetGridXform.MapID, dockedBounds, ref grids, includeMap: false);
-                    if (grids.Any(o => o.Owner != targetGrid && o.Owner != targetGridXform.MapUid))
+                    // WOLFGATE(RadarMenu): the docking ship itself is no obstacle, so one that flew up to a dock can take it
+                    // if (grids.Any(o => o.Owner != targetGrid && o.Owner != targetGridXform.MapUid))
+                    if (grids.Any(o => o.Owner != targetGrid && o.Owner != targetGridXform.MapUid && o.Owner != shuttleUid))
                     {
                         continue;
                     }

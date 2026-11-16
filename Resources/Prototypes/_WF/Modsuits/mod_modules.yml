@@ -453,6 +453,32 @@
 
 - type: entity
   parent: BaseModsuitModuleBuiltin
+  id: ModsuitModuleBuiltinHealingHands
+  name: integrated healing hands
+  description: Medical actuators in the gauntlets turn a punch into a gentle, healing blow.
+  components:
+  - type: Sprite
+    state: health
+  - type: ModModule
+    moduleType: Passive
+    removable: false
+    allowFlags: Inactive
+    requiredParts:
+    - gloves
+  - type: ModGrantComponentsModule
+    slot: gloves
+    components:
+    - type: MeleeWeapon
+      canWideSwing: false
+      autoAttack: true
+      attackRate: 3
+      damage:
+        groups:
+          Burn: -4
+          Brute: -3
+
+- type: entity
+  parent: BaseModsuitModuleBuiltin
   id: ModsuitModuleBuiltinSecHud
   name: integrated security visor
   description: A security heads-up display built into the helmet, showing job, mindshield and criminal record status.

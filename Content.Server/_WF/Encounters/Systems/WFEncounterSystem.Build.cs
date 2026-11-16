@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Linq;
 using Content.Server._Mono.ShipRepair;
+using Content.Server._WF.HullBond;
 using Content.Server._WF.Encounters.Components;
 using Content.Server._WF.NpcCrew;
 using Content.Server._WF.NpcCrew.Components;
@@ -23,6 +24,7 @@ public sealed partial class WFEncounterSystem
 {
     [Dependency] private MapLoaderSystem _mapLoader = default!;
     [Dependency] private ShipRepairSystem _shipRepair = default!;
+    [Dependency] private WFHullBondSystem _hullBond = default!;
 
     /// <summary>How many entities of a staged hull are map-initialised a tick.</summary>
     private const int MapInitBatch = 250;
@@ -265,6 +267,8 @@ public sealed partial class WFEncounterSystem
         var marker = AddComp<WFEncounterGridComponent>(grid);
         marker.Encounter = build.Encounter;
         marker.Key = build.Ship.Key;
+        // An NPC hull's fittings are anyone's to strip and bolt down on their own ship.
+        _hullBond.Loosen(grid);
         Unload(grid);
         // A crew that is not allowed the hull's best plating gets it swapped out before anything else goes aboard.
         _setup.ApplyHullSwaps(grid, build.Ship.Profile);

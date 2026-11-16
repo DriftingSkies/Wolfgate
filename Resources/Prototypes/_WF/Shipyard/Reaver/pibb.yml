@@ -1,0 +1,36 @@
+# Author info
+# punishedbrungus (discord) Balls2zawall (github)
+
+- type: vessel
+  id: WFPibb
+  parent: BaseVessel
+  name: 'RVR Pibb'
+  description: 'A restaraunt turned to a combat galley, the Pibb packs a bit of punch, and so does the food.'
+  price: 42521 # appraised at 35434, 20% markup
+  category: Small # 156 tiles
+  group: Custom
+  shuttlePath: /SharedMaps/_WF/Shipyard/Shuttles/Reaver/pibb.yml
+  guidebookPage: null
+  class:
+  - Fighter
+  - Kitchen
+  engine:
+  - Uranium
+
+- type: gameMap
+  id: WFPibb
+  mapName: 'RVR - Pibb'
+  mapPath: /SharedMaps/_WF/Shipyard/Shuttles/Reaver/pibb.yml
+  minPlayers: 0
+  stations:
+    WFPibb:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Pibb RVR{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

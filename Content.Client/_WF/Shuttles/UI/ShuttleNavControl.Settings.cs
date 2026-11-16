@@ -12,12 +12,15 @@ public partial class ShuttleNavControl
     private bool _wfSavedIffDetailed;
     private RadarAzimuthMode _wfSavedAzimuth;
 
-    /// <summary>Starts the radar with the player's saved contact labels and bearing ring. It marks no docks: only the admin radar can.</summary>
+    /// <summary>
+    /// Starts the radar with the player's saved contact labels and bearing ring. Docks always show, as markers that
+    /// stay visible from afar; their names only up close (see ShuttleNavControl.Docks.cs).
+    /// </summary>
     private void WfLoadDisplaySettings()
     {
         ShowIFF = _wfSavedIff = _wfSettingsCfg.GetCVar(WolfgateCVars.RadarShowIff);
         ShowIFFDetailed = _wfSavedIffDetailed = _wfSettingsCfg.GetCVar(WolfgateCVars.RadarShowIffDetailed);
-        ShowDocks = false;
+        ShowDocks = true;
         _azimuthMode = _wfSavedAzimuth = _wfSettingsCfg.GetCVar(WolfgateCVars.RadarAzimuth) switch
         {
             1 => RadarAzimuthMode.Ring,
