@@ -1,6 +1,7 @@
 using Content.Shared._Mono.Company;
 using Content.Shared.Roles;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization.Manager.Attributes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
 using Robust.Shared.Utility;
 
@@ -19,6 +20,8 @@ public sealed partial class WFOperationPrototype : IPrototype, IInheritingProtot
     [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<WFOperationPrototype>))]
     public string[]? Parents { get; private set; }
 
+    /// <summary>Never inherited, or every operation built on an abstract base would be abstract too.</summary>
+    [NeverPushInheritance]
     [AbstractDataField]
     public bool Abstract { get; private set; }
 

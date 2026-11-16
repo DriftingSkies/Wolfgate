@@ -28,6 +28,10 @@ public sealed class WFOperationPrototypeTest
                 .Where(l => l.ProductEvent is WFCallOperationEvent)
                 .ToDictionary(l => ((WFCallOperationEvent) l.ProductEvent!).Operation.Id);
 
+            // An abstract flag pushed down from the base once hid every operation; the rest of the test would pass on none.
+            Assert.That(protos.EnumeratePrototypes<WFOperationPrototype>().Count(), Is.GreaterThanOrEqualTo(20),
+                "The operations didn't load.");
+
             foreach (var op in protos.EnumeratePrototypes<WFOperationPrototype>())
             {
                 Assert.That(op.Grids, Is.Not.Empty, op.ID);

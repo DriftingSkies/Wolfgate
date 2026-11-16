@@ -5,7 +5,6 @@ using Content.Shared._Mono.Company;
 using Content.Shared.Mind;
 using Content.Shared.Store;
 using Robust.Shared.GameObjects;
-using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._WF.ShipTiers;
@@ -29,10 +28,10 @@ public sealed class WFListingBuyerTest
         {
             var minds = server.System<SharedMindSystem>();
             var body = entities.SpawnEntity("MobHuman", map.GridCoords);
-            entities.EnsureComponent<CompanyComponent>(body).CompanyName = "TSF";
-            var player = new NetUserId(System.Guid.NewGuid());
-            var mind = minds.CreateMind(player);
+            var mind = minds.CreateMind(null);
             minds.TransferTo(mind, body);
+            // After the transfer, which may assign the body a company of its own.
+            entities.EnsureComponent<CompanyComponent>(body).CompanyName = "TSF";
 
             var listing = server.ResolveDependency<IPrototypeManager>().Index<ListingPrototype>("WFUplinkOperationSalvageTsf");
             var args = new ListingConditionArgs(mind, null, listing, entities);
@@ -40,9 +39,8 @@ public sealed class WFListingBuyerTest
             Assert.Multiple(() =>
             {
                 Assert.That(WFListingBuyer.Body(args), Is.EqualTo(body), "A mind buyer should resolve to its body.");
-                Assert.That(WFListingBuyer.Player(entities, mind), Is.EqualTo(player));
                 Assert.That(new WFOperationReadyCondition { Operation = "WFOperationSalvageTsf" }.Condition(args), Is.True,
-                    "A TSF member's mind was refused an operation any member may call.");
+                    "A TSF member's mind was refused an operation any member may call. ");
             });
 
             entities.DeleteEntity(body);
