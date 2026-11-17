@@ -70,3 +70,4 @@ ent-WFKitCratePdvAkinciRaider = replacement akıncı raider kit crate
     .desc = A second issue of the akıncı raider kit, for a specialist who lost theirs.
 ent-WFKitCratePdvTopcu = replacement topçu kit crate
     .desc = A second issue of the topçu kit, for a specialist who lost theirs.
+wf-specialist-vendor-section = Specialist kit

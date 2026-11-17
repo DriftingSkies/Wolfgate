@@ -41,6 +41,7 @@
     - UplinkSecurityVouchers # Mono
     - UplinkSecurityMaterials
     - WFUplinkSecurityOperations # WOLFGATE(Operations): the uplink tab operations are called in from
+    - WFUplinkSecuritySupplies # WOLFGATE(FactionBalance): rations, survival gear, tools and field medicine
     balance:
       FederationMilitaryCredit: 0
   - type: AccessReader

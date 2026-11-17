@@ -32,9 +32,9 @@ public sealed partial class WFUnrestrictedComponent : Component
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
 public sealed partial class WFSecondWindComponent : Component
 {
-    /// <summary>Total damage on the wearer that sets it off.</summary>
+    /// <summary>Total damage on the wearer that sets it off, short of the 100 that puts a mob in crit.</summary>
     [DataField]
-    public FixedPoint2 Threshold = 100;
+    public FixedPoint2 Threshold = 70;
 
     [DataField]
     public float SpeedMultiplier = 1.3f;

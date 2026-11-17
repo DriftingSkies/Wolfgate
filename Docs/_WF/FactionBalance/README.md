@@ -69,6 +69,7 @@ Balance Rework doc.
   - single-use (was 1)
   - single-use
   - no cooldown, the card is single-use (was 5400)
+- [`Resources/Prototypes/_Mono/Entities/Structures/Machines/uplinks.yml`](../../../Resources/Prototypes/_Mono/Entities/Structures/Machines/uplinks.yml): rations, survival gear, tools and field medicine
 - [`Resources/Prototypes/_Mono/PointsOfInterest/pdvhelios.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/pdvhelios.yml)
   - more leader and specialist slots for a 130-player population
   - 2 -> 3 for a 130-player population

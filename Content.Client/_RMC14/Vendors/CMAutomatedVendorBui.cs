@@ -258,8 +258,11 @@ public sealed class CMAutomatedVendorBui : BoundUserInterface
     private FormattedMessage GetSectionName(CMVendorUserComponent? user, CMVendorSection section)
     {
         var name = new FormattedMessage();
-        name.PushTag(new MarkupNode("bold", new MarkupParameter(section.Name.ToUpperInvariant()), null));
-        name.AddText(section.Name.ToUpperInvariant());
+        // WOLFGATE(SpecialistKits) START: a section name may be a Fluent message, shown in the player's language
+        var sectionName = Loc.TryGetString(section.Name, out var localized) ? localized : section.Name;
+        name.PushTag(new MarkupNode("bold", new MarkupParameter(sectionName.ToUpperInvariant()), null));
+        name.AddText(sectionName.ToUpperInvariant());
+        // WOLFGATE END
 
         if (section.TakeAll != null)
         {

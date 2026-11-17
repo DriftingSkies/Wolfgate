@@ -1,7 +1,7 @@
 # ShipTiers
 
 Caps how many capitals the TSF and the PDV can field, by how many of their members are online: one at any
-population, two at 8 members and three at 16 (`wfShipTiers` `Default` in `Resources/Prototypes/_WF/ShipTiers`). A
+population, two at 8 members and three at 16 (`wfShipTiers` `WFDefault` in `Resources/Prototypes/_WF/ShipTiers`). A
 capital buy past the cap is refused at the shipyard console. A new capital can't fly for 10 minutes while it is
 built (`PreventPilot`), and the sector is told when construction starts and ends. A capital that is lost locks its
 slot for 45 minutes. It counts as lost when it is deleted while undocked, or when Mono's activity check finds it

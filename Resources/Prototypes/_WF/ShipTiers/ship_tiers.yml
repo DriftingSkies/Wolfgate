@@ -1,7 +1,7 @@
 # Capital rules for the TSF and PDV. Read by WFShipTierSystem.
 
 - type: wfShipTiers
-  id: Default
+  id: WFDefault
   companies:
   - TSF
   - PDV

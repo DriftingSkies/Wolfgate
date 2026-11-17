@@ -26,10 +26,16 @@ public sealed class WFShipTierSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPrototypeManager _protos = default!;
 
-    private static readonly ProtoId<WFShipTiersPrototype> Rules = "Default";
+    private static readonly ProtoId<WFShipTiersPrototype> Rules = "WFDefault";
 
     /// <summary>When each faction's locked capital slots open again.</summary>
     private readonly Dictionary<string, List<TimeSpan>> _lockouts = new();
+
+    /// <summary>
+    /// Hulls a capital purchase was checked against the cap for. Only these become capitals: an admin spawn or a used
+    /// hull from a trader raises the purchase event without the check, and takes no slot.
+    /// </summary>
+    private readonly HashSet<EntityUid> _approved = new();
 
     private TimeSpan _nextCheck;
 
@@ -45,6 +51,7 @@ public sealed class WFShipTierSystem : EntitySystem
         SubscribeLocalEvent<RoundRestartCleanupEvent>(_ =>
         {
             _lockouts.Clear();
+            _approved.Clear();
             _flushing = true;
         });
         SubscribeLocalEvent<RoundStartingEvent>(_ => _flushing = false);
@@ -105,7 +112,10 @@ public sealed class WFShipTierSystem : EntitySystem
 
         var company = buyer.CompanyName.Id;
         if (SlotsUsed(company) < SlotsFor(rules, MembersOnline(company)))
+        {
+            _approved.Add(ev.Shuttle);
             return;
+        }
 
         ev.CancelReason = "wf-ship-tiers-capital-cap";
         ev.Cancel();
@@ -113,7 +123,8 @@ public sealed class WFShipTierSystem : EntitySystem
 
     private void OnPurchased(ShipyardShuttlePurchaseEvent ev)
     {
-        if (!_protos.TryIndex(Rules, out var rules)
+        if (!_approved.Remove(ev.Shuttle)
+            || !_protos.TryIndex(Rules, out var rules)
             || !TryComp<VesselComponent>(ev.Shuttle, out var vessel)
             || !rules.Capitals.Contains(vessel.VesselId)
             || !TryComp<CompanyComponent>(ev.Shuttle, out var shipCompany)
@@ -164,8 +175,16 @@ public sealed class WFShipTierSystem : EntitySystem
                 continue;
             }
 
-            if (capital.Lost || !TryComp<ShipActivityComponent>(uid, out var activity))
+            if (!TryComp<ShipActivityComponent>(uid, out var activity))
                 continue;
+
+            // Written off for drifting, but crewed and powered again: it takes its slot back and its lockout ends.
+            if (capital.Lost)
+            {
+                if (capital.LockedUntil != null && !activity.InactiveLastCheck)
+                    Recover((uid, capital));
+                continue;
+            }
 
             // Mono's InactivePastThreshold never clears, and a capital sits unpowered while it is built, so the live
             // count is read instead, and only once the ship has flown since construction.
@@ -192,16 +211,27 @@ public sealed class WFShipTierSystem : EntitySystem
             return;
 
         ent.Comp.Lost = true;
+        ent.Comp.LockedUntil = _timing.CurTime + rules.Lockout;
         var company = ent.Comp.Company.Id;
         if (!_lockouts.TryGetValue(company, out var locks))
             _lockouts[company] = locks = new List<TimeSpan>();
-        locks.Add(_timing.CurTime + rules.Lockout);
+        locks.Add(ent.Comp.LockedUntil.Value);
 
         _chat.DispatchGlobalAnnouncement(Loc.GetString("wf-ship-tiers-capital-lost",
                 ("faction", FactionName(ent.Comp.Company)),
                 ("ship", Name(ent)),
                 ("minutes", (int) rules.Lockout.TotalMinutes)),
             Loc.GetString("wf-ship-tiers-announcer"), colorOverride: Color.Orange);
+    }
+
+    /// <summary>A capital written off for drifting is back in service: it holds its slot again instead of a lockout.</summary>
+    private void Recover(Entity<WFCapitalShipComponent> ent)
+    {
+        if (ent.Comp.LockedUntil is { } until && _lockouts.TryGetValue(ent.Comp.Company.Id, out var locks))
+            locks.Remove(until);
+        ent.Comp.Lost = false;
+        ent.Comp.LockedUntil = null;
+        ent.Comp.SeenActive = true;
     }
 
     private bool IsDocked(EntityUid grid)

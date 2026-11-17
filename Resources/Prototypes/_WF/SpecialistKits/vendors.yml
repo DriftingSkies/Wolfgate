@@ -1,5 +1,4 @@
 # Specialist vendors at the Halcyon and Helios: one kit per player, from RMC's automated vendor.
-# Section names show as written: the RMC vendor UI doesn't localize them.
 
 - type: entity
   parent: ColMarTechBase
@@ -13,7 +12,7 @@
       shader: unshaded
   - type: CMAutomatedVendor
     sections:
-    - name: Specialist kit
+    - name: wf-specialist-vendor-section
       choices: { WFSpecialistKit: 1 }
       entries:
       - id: WFKitTsfBreacher
@@ -37,7 +36,7 @@
       shader: unshaded
   - type: CMAutomatedVendor
     sections:
-    - name: Specialist kit
+    - name: wf-specialist-vendor-section
       choices: { WFSpecialistKit: 1 }
       entries:
       - id: WFKitPdvBoarder

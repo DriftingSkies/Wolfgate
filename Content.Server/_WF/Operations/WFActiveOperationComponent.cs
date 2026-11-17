@@ -1,5 +1,6 @@
 using Content.Shared._WF.Operations;
 using Robust.Shared.Map;
+using Robust.Shared.Timing;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
@@ -34,6 +35,10 @@ public sealed partial class WFActiveOperationComponent : Component
     /// <summary>When the site arrived, for picking up guards its map spawns a little later.</summary>
     [DataField, AutoPausedField]
     public TimeSpan ArrivedAt;
+
+    /// <summary>The tick the site began loading: only NPCs made since then are its guards, not wildlife already there.</summary>
+    [ViewVariables]
+    public GameTick ArrivedTick;
 
     /// <summary>Set once a cleared PvE site has paid the caller.</summary>
     [DataField]

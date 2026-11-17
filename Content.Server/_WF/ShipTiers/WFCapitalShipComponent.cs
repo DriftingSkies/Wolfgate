@@ -22,4 +22,8 @@ public sealed partial class WFCapitalShipComponent : Component
     /// <summary>Set once the ship has been lost, so its lockout starts only once.</summary>
     [DataField]
     public bool Lost;
+
+    /// <summary>When the lockout its loss started ends; cleared if the ship turns out not to be lost after all.</summary>
+    [DataField, AutoPausedField]
+    public TimeSpan? LockedUntil;
 }

@@ -279,6 +279,9 @@ public abstract class SharedCMAutomatedVendorSystem : EntitySystem
         if (wfKitAttempt.Cancelled)
         {
             ResetChoices();
+            // ResetChoices leaves the count undirtied, so the client would still show the choice spent.
+            if (user != null)
+                Dirty(actor, user);
             _popup.PopupEntity(Loc.GetString(wfKitAttempt.Reason), vendor, actor);
             return;
         }

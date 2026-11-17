@@ -53,10 +53,10 @@ public sealed class WFOperationSystem : EntitySystem
     [Dependency] private SharedJobSystem _jobs = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
-    [Dependency] private TurfSystem _turf = default!;
     [Dependency] private WFShipTierSystem _shipTiers = default!;
 
     [Dependency] private WFPlanetPoiSystem _pois = default!;
+    [Dependency] private WFSiteGridSystem _siteGrid = default!;
 
     /// <summary>When each operation can be called again.</summary>
     private readonly Dictionary<string, TimeSpan> _readyAt = new();
@@ -74,6 +74,7 @@ public sealed class WFOperationSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<CompanyComponent, WFCallOperationEvent>(OnCall);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(_ => _readyAt.Clear());
+        SubscribeLocalEvent<RoundStartedEvent>(_ => MeasurePlanetGrids());
     }
 
     /// <summary>
@@ -160,6 +161,21 @@ public sealed class WFOperationSystem : EntitySystem
             return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// Measures every grid a planetside site may load, once per server, at the start of a round rather than in the
+    /// middle of an uplink purchase.
+    /// </summary>
+    private void MeasurePlanetGrids()
+    {
+        foreach (var op in _protos.EnumeratePrototypes<WFOperationPrototype>())
+        {
+            if (op.PlanetChance <= 0f)
+                continue;
+            foreach (var path in op.PlanetGrids.Count > 0 ? op.PlanetGrids : op.Grids)
+                TryMeasure(path, out _);
+        }
     }
 
     /// <summary>A grid file's bounds, loaded once onto a paused scratch map and remembered.</summary>
@@ -253,6 +269,7 @@ public sealed class WFOperationSystem : EntitySystem
     private void Arrive(Entity<WFActiveOperationComponent> ent, WFOperationPrototype op)
     {
         ent.Comp.ArrivesAt = null;
+        ent.Comp.ArrivedTick = _timing.CurTick;
 
         Entity<MapGridComponent>? grid = null;
         var path = ent.Comp.Path ?? _random.Pick(op.Grids);
@@ -274,7 +291,7 @@ public sealed class WFOperationSystem : EntitySystem
         _metaData.SetEntityName(grid.Value, Loc.GetString(op.Name));
         EntityManager.AddComponents(grid.Value, op.AddComponents);
 
-        foreach (var child in Children(grid.Value))
+        foreach (var child in _siteGrid.Children(grid.Value))
         {
             if (MetaData(child).EntityPrototype is not { } proto
                 || !op.Replace.TryGetValue(proto.ID, out var replacement))
@@ -291,11 +308,11 @@ public sealed class WFOperationSystem : EntitySystem
         if (op.Reward > 0)
             AddMapGuards(ent.Comp, grid.Value.Owner);
 
-        var tiles = OpenTiles(grid.Value);
+        var tiles = _siteGrid.OpenTiles(grid.Value);
         if (tiles.Count == 0)
             tiles.Add(new EntityCoordinates(grid.Value, Vector2.Zero));
 
-        var anchor = Children(grid.Value).FirstOrDefault(HasComp<WarpPointComponent>);
+        var anchor = _siteGrid.Children(grid.Value).FirstOrDefault(HasComp<WarpPointComponent>);
         foreach (var payload in op.Payloads)
         {
             for (var i = 0; i < payload.Count; i++)
@@ -325,13 +342,19 @@ public sealed class WFOperationSystem : EntitySystem
         Announce(op.Reward > 0 ? "wf-operation-arrived-pve" : "wf-operation-arrived", op, ent.Comp, ("minutes", (int) Math.Round(stay.TotalMinutes)));
     }
 
-    /// <summary>Counts the NPCs standing on the site's grid among its guards.</summary>
+    /// <summary>
+    /// Counts the NPCs on the site's grid that came with it among its guards; wildlife that wanders on, made before the
+    /// site, doesn't count.
+    /// </summary>
     private void AddMapGuards(WFActiveOperationComponent active, EntityUid grid)
     {
-        var npcs = EntityQueryEnumerator<HTNComponent, MobStateComponent, TransformComponent>();
-        while (npcs.MoveNext(out var npc, out _, out _, out var xform))
+        var npcs = EntityQueryEnumerator<HTNComponent, MobStateComponent, TransformComponent, MetaDataComponent>();
+        while (npcs.MoveNext(out var npc, out _, out _, out var xform, out var meta))
         {
-            if (xform.GridUid == grid && !HasComp<ActorComponent>(npc) && !active.Npcs.Contains(npc))
+            if (xform.GridUid == grid
+                && meta.CreationTick >= active.ArrivedTick
+                && !HasComp<ActorComponent>(npc)
+                && !active.Npcs.Contains(npc))
                 active.Npcs.Add(npc);
         }
     }
@@ -342,10 +365,10 @@ public sealed class WFOperationSystem : EntitySystem
         if (op.ClearSpawns.Count == 0 || active.Grid is not { } grid || !TryComp<MapGridComponent>(grid, out var gridComp))
             return;
 
-        var tiles = OpenTiles((grid, gridComp));
+        var tiles = _siteGrid.OpenTiles((grid, gridComp));
         if (tiles.Count == 0)
             tiles.Add(new EntityCoordinates(grid, Vector2.Zero));
-        var anchor = Children(grid).FirstOrDefault(HasComp<WarpPointComponent>);
+        var anchor = _siteGrid.Children(grid).FirstOrDefault(HasComp<WarpPointComponent>);
 
         foreach (var spoil in op.ClearSpawns)
         {
@@ -357,28 +380,7 @@ public sealed class WFOperationSystem : EntitySystem
         }
     }
 
-    /// <summary>The entities parented to the grid, copied so the caller may change them.</summary>
-    private List<EntityUid> Children(EntityUid grid)
-    {
-        var children = new List<EntityUid>();
-        var enumerator = Transform(grid).ChildEnumerator;
-        while (enumerator.MoveNext(out var child))
-            children.Add(child);
-        return children;
-    }
 
-    /// <summary>Floor tiles on the grid that nothing blocks.</summary>
-    private List<EntityCoordinates> OpenTiles(Entity<MapGridComponent> grid)
-    {
-        var tiles = new List<EntityCoordinates>();
-        foreach (var tile in _map.GetAllTiles(grid, grid.Comp))
-        {
-            if (_turf.IsSpace(tile) || _turf.IsTileBlocked(tile, CollisionGroup.Impassable))
-                continue;
-            tiles.Add(_map.GridTileToLocal(grid, grid.Comp, tile.GridIndices));
-        }
-        return tiles;
-    }
 
     /// <summary>A random point in the operation's distance band, clear of both faction bases.</summary>
     private bool TryPickSite(WFOperationPrototype op, out MapCoordinates target)

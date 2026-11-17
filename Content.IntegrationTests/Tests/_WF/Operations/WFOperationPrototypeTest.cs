@@ -59,7 +59,7 @@ public sealed class WFOperationPrototypeTest
                     $"{riskier.ID} refunds less than {safer.ID} but returns less per credit staked");
             }
 
-            var rules = protos.Index<WFShipTiersPrototype>("Default");
+            var rules = protos.Index<WFShipTiersPrototype>("WFDefault");
             foreach (var capital in rules.Capitals)
                 Assert.That(protos.HasIndex<VesselPrototype>(capital), $"capital {capital} isn't a vessel");
         });

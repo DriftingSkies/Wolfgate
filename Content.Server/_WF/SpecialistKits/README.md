@@ -54,6 +54,7 @@ Entry points: `WFSpecialistKitSystem`, `WFSpecialistKitComponent` on each kit's 
 
 ## Non-modular edits
 
+- [`Content.Client/_RMC14/Vendors/CMAutomatedVendorBui.cs`](../../../Content.Client/_RMC14/Vendors/CMAutomatedVendorBui.cs): a section name may be a Fluent message, shown in the player's language
 - [`Content.Shared/_RMC14/Vendors/SharedCMAutomatedVendorSystem.cs`](../../../Content.Shared/_RMC14/Vendors/SharedCMAutomatedVendorSystem.cs)
   - specialist kit limits that scale with faction members online
   - a kit is counted against its faction's limit only once it is handed out

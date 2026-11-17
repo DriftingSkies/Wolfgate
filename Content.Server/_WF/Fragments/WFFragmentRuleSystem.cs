@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server._Mono.Store;
+using Content.Server._WF.Operations;
 using Content.Server._WF.Remade.Conversion;
 using Content.Server.StationEvents.Events;
 using Content.Shared._Mono.Company;
@@ -33,7 +34,7 @@ public sealed class WFFragmentRuleSystem : StationEventSystem<WFFragmentRuleComp
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private TagSystem _tags = default!;
-    [Dependency] private TurfSystem _turf = default!;
+    [Dependency] private WFSiteGridSystem _siteGrid = default!;
 
     /// <summary>A wave's size: the base, one more per <paramref name="perExtra"/> players, and room left under the cap.</summary>
     public static int WaveSize(int players, int alive, int baseSize, int perExtra, int maxAlive)
@@ -70,7 +71,7 @@ public sealed class WFFragmentRuleSystem : StationEventSystem<WFFragmentRuleComp
         comp.Site = new MapCoordinates(site, mapId);
         _metaData.SetEntityName(grid.Value, Loc.GetString("wf-fragment-grid-name"));
 
-        foreach (var child in Children(grid.Value))
+        foreach (var child in _siteGrid.Children(grid.Value))
         {
             if (MetaData(child).EntityPrototype is not { } proto
                 || !comp.Replace.TryGetValue(proto.ID, out var pool)
@@ -82,7 +83,7 @@ public sealed class WFFragmentRuleSystem : StationEventSystem<WFFragmentRuleComp
             comp.Remade.Add(SpawnRemade(RobustRandom.Pick(pool), coords));
         }
 
-        var tiles = OpenTiles(grid.Value);
+        var tiles = _siteGrid.OpenTiles(grid.Value);
         if (tiles.Count == 0)
             tiles.Add(new EntityCoordinates(grid.Value, Vector2.Zero));
 
@@ -139,7 +140,7 @@ public sealed class WFFragmentRuleSystem : StationEventSystem<WFFragmentRuleComp
             return;
 
         comp.Wave++;
-        var spots = OpenTiles((grid, Comp<MapGridComponent>(grid)));
+        var spots = _siteGrid.OpenTiles((grid, Comp<MapGridComponent>(grid)));
         // Out of sight where possible: tiles at least 6 m from every player near the heart.
         var hidden = spots.Where(s =>
         {
@@ -236,28 +237,7 @@ public sealed class WFFragmentRuleSystem : StationEventSystem<WFFragmentRuleComp
         return remade;
     }
 
-    /// <summary>The entities parented to the grid, copied so the caller may change them.</summary>
-    private List<EntityUid> Children(EntityUid grid)
-    {
-        var children = new List<EntityUid>();
-        var enumerator = Transform(grid).ChildEnumerator;
-        while (enumerator.MoveNext(out var child))
-            children.Add(child);
-        return children;
-    }
 
-    /// <summary>Floor tiles on the grid that nothing blocks.</summary>
-    private List<EntityCoordinates> OpenTiles(Entity<MapGridComponent> grid)
-    {
-        var tiles = new List<EntityCoordinates>();
-        foreach (var tile in MapSystem.GetAllTiles(grid, grid.Comp))
-        {
-            if (_turf.IsSpace(tile) || _turf.IsTileBlocked(tile, CollisionGroup.Impassable))
-                continue;
-            tiles.Add(MapSystem.GridTileToLocal(grid, grid.Comp, tile.GridIndices));
-        }
-        return tiles;
-    }
 
     /// <summary>A sector-wide announcement with the fragment's position to the nearest 250 m.</summary>
     private void Announce(string key, MapCoordinates at)
