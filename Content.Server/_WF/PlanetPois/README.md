@@ -117,6 +117,7 @@ payment, sells a few, and eats whoever is left dead in his inn.
 - [`Content.Server/_WF/PlanetPois/WFPlanetPoiSystem.Loading.cs`](WFPlanetPoiSystem.Loading.cs)
 - [`Content.Server/_WF/PlanetPois/WFPlanetPoiSystem.MergeSlices.cs`](WFPlanetPoiSystem.MergeSlices.cs)
 - [`Content.Server/_WF/PlanetPois/WFPlanetPoiSystem.Network.cs`](WFPlanetPoiSystem.Network.cs)
+- [`Content.Server/_WF/PlanetPois/WFPlanetPoiSystem.Operations.cs`](WFPlanetPoiSystem.Operations.cs)
 - [`Content.Server/_WF/PlanetPois/WFPlanetPoiSystem.Roamers.cs`](WFPlanetPoiSystem.Roamers.cs)
 - [`Content.Server/_WF/PlanetPois/WFPlanetPoiSystem.Rotation.cs`](WFPlanetPoiSystem.Rotation.cs)
 - [`Content.Server/_WF/PlanetPois/WFPlanetPoiSystem.Trails.cs`](WFPlanetPoiSystem.Trails.cs)

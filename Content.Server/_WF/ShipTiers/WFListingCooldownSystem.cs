@@ -21,12 +21,11 @@ public sealed class WFListingCooldownSystem : EntitySystem
         SubscribeLocalEvent<RoundRestartCleanupEvent>(_ => _readyAt.Clear());
     }
 
-    /// <summary>Whether the buyer, a mind or a body, is off cooldown for this key; a buyer with no player always is.</summary>
+    /// <summary>Whether the buyer, a mind or a body, is off cooldown for this key; a buyer with no player never is.</summary>
     public bool Ready(EntityUid buyer, string key)
     {
-        return WFListingBuyer.Player(EntityManager, buyer) is not { } player
-               || !_readyAt.TryGetValue((player, key), out var ready)
-               || _timing.CurTime >= ready;
+        return WFListingBuyer.Player(EntityManager, buyer) is { } player
+               && (!_readyAt.TryGetValue((player, key), out var ready) || _timing.CurTime >= ready);
     }
 
     private void OnBought(EntityUid uid, ActorComponent actor, WFListingCooldownEvent args)

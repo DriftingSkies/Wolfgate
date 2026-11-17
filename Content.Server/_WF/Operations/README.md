@@ -44,7 +44,6 @@ costs its operation's stake.
 - [`Content.Server/_WF/Operations/WFActiveOperationComponent.cs`](WFActiveOperationComponent.cs)
 - [`Content.Server/_WF/Operations/WFOperationReadyCondition.cs`](WFOperationReadyCondition.cs)
 - [`Content.Server/_WF/Operations/WFOperationSystem.cs`](WFOperationSystem.cs)
-- [`Content.Server/_WF/Operations/WFPlanetPoiSystem.Operations.cs`](WFPlanetPoiSystem.Operations.cs)
 - [`Content.Server/_WF/Operations/WFSiteGridSystem.cs`](WFSiteGridSystem.cs)
 
 ### Shared

@@ -109,13 +109,10 @@ public sealed class WFFragmentRuleSystem : StationEventSystem<WFFragmentRuleComp
 
         comp.Remade.RemoveWhere(r => !Exists(r) || _mobState.IsDead(r));
 
-        if (comp.HeartUid is not { } heart || TerminatingOrDeleted(heart))
-        {
-            Clear(comp);
-            return;
-        }
-
-        var heartPos = _transform.GetMapCoordinates(heart);
+        // Boarders are counted before the heart check, so a heart broken since the last scan still credits them.
+        var heartPos = comp.HeartUid is { } living && !TerminatingOrDeleted(living)
+            ? _transform.GetMapCoordinates(living)
+            : MapCoordinates.Nullspace;
         var near = new List<Vector2>();
         var players = EntityQueryEnumerator<ActorComponent, MobStateComponent, TransformComponent>();
         while (players.MoveNext(out var player, out _, out var state, out var xform))
@@ -131,6 +128,12 @@ public sealed class WFFragmentRuleSystem : StationEventSystem<WFFragmentRuleComp
                 near.Add(pos);
         }
 
+        if (heartPos == MapCoordinates.Nullspace)
+        {
+            Clear(comp);
+            return;
+        }
+
         if (Timing.CurTime < comp.NextWave)
             return;
         comp.NextWave = Timing.CurTime + comp.WaveInterval;
@@ -140,6 +143,10 @@ public sealed class WFFragmentRuleSystem : StationEventSystem<WFFragmentRuleComp
             return;
 
         comp.Wave++;
+        // The elite takes one of the wave's slots, so the wave never passes the cap.
+        var elite = comp.Elites.Count > 0 && comp.EliteEvery > 0 && comp.Wave % comp.EliteEvery == 0;
+        if (elite)
+            size--;
         var spots = _siteGrid.OpenTiles((grid, Comp<MapGridComponent>(grid)));
         // Out of sight where possible: tiles at least 6 m from every player near the heart.
         var hidden = spots.Where(s =>
@@ -155,7 +162,7 @@ public sealed class WFFragmentRuleSystem : StationEventSystem<WFFragmentRuleComp
         for (var i = 0; i < size; i++)
             comp.Remade.Add(SpawnRemade(RobustRandom.Pick(comp.Common), RobustRandom.Pick(spots)));
 
-        if (comp.Elites.Count > 0 && comp.EliteEvery > 0 && comp.Wave % comp.EliteEvery == 0)
+        if (elite)
             comp.Remade.Add(SpawnRemade(RobustRandom.Pick(comp.Elites), RobustRandom.Pick(spots)));
     }
 
@@ -223,7 +230,7 @@ public sealed class WFFragmentRuleSystem : StationEventSystem<WFFragmentRuleComp
             var point = mid
                         + across * side * RobustRandom.NextFloat(minAcross, MathF.Max(minAcross, maxAcross))
                         + along * RobustRandom.NextFloat(-0.1f, 0.1f) * half;
-            if (bases.All(p => (p - point).Length() >= comp.BaseClearance))
+            if (bases.All(p => (p - point).Length() >= comp.BaseClearance && (p - point).Length() <= comp.MaxDistance))
                 return point;
         }
         return best;

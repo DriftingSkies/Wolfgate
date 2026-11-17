@@ -29,7 +29,7 @@ public sealed partial class WFUnrestrictedComponent : Component
 }
 
 /// <summary>Second wind: once the wearer is badly hurt, a burst of speed to get clear, then not again until healed.</summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
+[RegisterComponent, NetworkedComponent]
 public sealed partial class WFSecondWindComponent : Component
 {
     /// <summary>Total damage on the wearer that sets it off, short of the 100 that puts a mob in crit.</summary>
@@ -41,12 +41,24 @@ public sealed partial class WFSecondWindComponent : Component
 
     [DataField]
     public TimeSpan Duration = TimeSpan.FromSeconds(6);
+}
 
+/// <summary>Second wind's charge and burst, kept on the wearer so swapping vests neither resets nor moves them.</summary>
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
+public sealed partial class WFSecondWindStateComponent : Component
+{
     /// <summary>When the burst ends; zero when it isn't running.</summary>
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
     public TimeSpan ActiveUntil;
 
-    /// <summary>Spent until the wearer heals below half the threshold.</summary>
+    /// <summary>The burst's speed, taken from the vest that set it off.</summary>
+    [DataField, AutoNetworkedField]
+    public float SpeedMultiplier = 1f;
+
+    /// <summary>Spent until the wearer heals below half this threshold.</summary>
+    [DataField, AutoNetworkedField]
+    public FixedPoint2 Threshold;
+
     [DataField, AutoNetworkedField]
     public bool Spent;
 }

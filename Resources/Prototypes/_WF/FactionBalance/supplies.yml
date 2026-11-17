@@ -1,7 +1,7 @@
 # Supplies: field rations, survival gear, tools and field medicine on both faction uplinks, the same price on each,
 # for crews that live out of their ship or on a world for an operation. Also the TSF's missing grenades, breaching
 # charges, tools and combat medicine, and the PDV infiltration kit that replaces its five loose chameleon listings.
-# Names and descriptions come from the product entity.
+# Listing names and descriptions come from the product entity; the two new entities' are in uplink.ftl.
 
 - type: storeCategory
   id: WFUplinkSecuritySupplies
@@ -16,8 +16,6 @@
 - type: entity
   parent: NFPouchFirstAid
   id: WFFieldDressingPouch
-  name: field dressing pouch
-  description: A belt pouch of field dressings, with a splint and a tourniquet, for keeping someone alive until a medic arrives.
   components:
   - type: StorageFill
     contents:
@@ -30,8 +28,6 @@
 - type: entity
   parent: ClothingBackpackChameleon
   id: WFPdvInfiltrationKit
-  name: infiltration kit
-  description: A chameleon backpack holding a blank ID card, a chameleon PDA and headset and a voice-changing gas mask, for walking into somebody else's station.
   components:
   - type: StorageFill
     contents:

@@ -42,7 +42,7 @@ public sealed class WFVestSpecializationSystem : EntitySystem
         SubscribeLocalEvent<InventoryComponent, ProximityDetectionAttemptEvent>(OnProximityDetection);
         SubscribeLocalEvent<InventoryComponent, GunRefreshModifiersEvent>(OnGunRefresh);
 
-        SubscribeLocalEvent<WFSecondWindComponent, InventoryRelayedEvent<RefreshMovementSpeedModifiersEvent>>(OnSecondWindSpeed);
+        SubscribeLocalEvent<WFSecondWindStateComponent, RefreshMovementSpeedModifiersEvent>(OnSecondWindSpeed);
         SubscribeLocalEvent<WFUnrestrictedComponent, GotEquippedEvent>((_, _, args) => RefreshHeldGuns(args.Equipee));
         SubscribeLocalEvent<WFUnrestrictedComponent, GotUnequippedEvent>((_, _, args) => RefreshHeldGuns(args.Equipee));
 
@@ -90,10 +90,10 @@ public sealed class WFVestSpecializationSystem : EntitySystem
         }
     }
 
-    private void OnSecondWindSpeed(Entity<WFSecondWindComponent> ent, ref InventoryRelayedEvent<RefreshMovementSpeedModifiersEvent> args)
+    private void OnSecondWindSpeed(Entity<WFSecondWindStateComponent> ent, ref RefreshMovementSpeedModifiersEvent args)
     {
         if (_timing.CurTime < ent.Comp.ActiveUntil)
-            args.Args.ModifySpeed(ent.Comp.SpeedMultiplier, ent.Comp.SpeedMultiplier);
+            args.ModifySpeed(ent.Comp.SpeedMultiplier, ent.Comp.SpeedMultiplier);
     }
 
     public override void Update(float frameTime)
@@ -104,39 +104,43 @@ public sealed class WFVestSpecializationSystem : EntitySystem
             return;
         _nextCheck = _timing.CurTime + TimeSpan.FromSeconds(0.25);
 
+        // Recovery and burst expiry run on the wearer, vest or not.
+        var states = EntityQueryEnumerator<WFSecondWindStateComponent, DamageableComponent>();
+        while (states.MoveNext(out var wearer, out var state, out var damage))
+        {
+            if (state.ActiveUntil != TimeSpan.Zero && _timing.CurTime >= state.ActiveUntil)
+            {
+                state.ActiveUntil = TimeSpan.Zero;
+                Dirty(wearer, state);
+                _movementSpeed.RefreshMovementSpeedModifiers(wearer);
+            }
+
+            if (state.Spent && damage.TotalDamage < state.Threshold / 2)
+            {
+                state.Spent = false;
+                Dirty(wearer, state);
+            }
+        }
+
         var query = EntityQueryEnumerator<WFSecondWindComponent>();
         while (query.MoveNext(out var uid, out var wind))
         {
-            // Worn, not carried: a vest in hand gets no speed from the relay, so it mustn't spend its charge.
+            // Only a worn vest enables it; one carried in hand does nothing.
             if (!_inventory.TryGetContainingEntity(uid, out var wearer)
                 || !_inventory.TryGetSlotEntity(wearer.Value, Slot, out var worn)
                 || worn != uid
                 || !TryComp<DamageableComponent>(wearer, out var damage))
                 continue;
 
-            if (wind.ActiveUntil != TimeSpan.Zero && _timing.CurTime >= wind.ActiveUntil)
-            {
-                wind.ActiveUntil = TimeSpan.Zero;
-                Dirty(uid, wind);
-                _movementSpeed.RefreshMovementSpeedModifiers(wearer.Value);
-            }
-
-            if (wind.Spent)
-            {
-                if (damage.TotalDamage < wind.Threshold / 2)
-                {
-                    wind.Spent = false;
-                    Dirty(uid, wind);
-                }
-                continue;
-            }
-
-            if (damage.TotalDamage < wind.Threshold)
+            var state = EnsureComp<WFSecondWindStateComponent>(wearer.Value);
+            if (state.Spent || damage.TotalDamage < wind.Threshold)
                 continue;
 
-            wind.Spent = true;
-            wind.ActiveUntil = _timing.CurTime + wind.Duration;
-            Dirty(uid, wind);
+            state.Spent = true;
+            state.Threshold = wind.Threshold;
+            state.SpeedMultiplier = wind.SpeedMultiplier;
+            state.ActiveUntil = _timing.CurTime + wind.Duration;
+            Dirty(wearer.Value, state);
             _movementSpeed.RefreshMovementSpeedModifiers(wearer.Value);
             _popup.PopupEntity(Loc.GetString("wf-armor-spec-second-wind-popup"), wearer.Value, wearer.Value);
         }

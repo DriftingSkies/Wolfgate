@@ -20,7 +20,6 @@ namespace Content.Server._WF.SpecialistKits;
 public sealed class WFSpecialistKitSystem : EntitySystem
 {
     [Dependency] private IComponentFactory _factory = default!;
-    [Dependency] private IPlayerManager _players = default!;
     [Dependency] private IPrototypeManager _protos = default!;
     [Dependency] private SharedJobSystem _jobs = default!;
     [Dependency] private SharedMindSystem _mind = default!;
@@ -92,15 +91,17 @@ public sealed class WFSpecialistKitSystem : EntitySystem
                && holders.Contains(actor.PlayerSession.UserId);
     }
 
-    /// <summary>Holders still in the round: connected and in a body of the faction.</summary>
+    /// <summary>
+    /// Holders still in the round: their mind owns a body of the faction, connected or not, so a disconnect never
+    /// frees a slot a reconnect would take back.
+    /// </summary>
     private int Active(HashSet<NetUserId> holders, string company)
     {
         var count = 0;
         foreach (var id in holders)
         {
-            if (_players.TryGetSessionById(id, out var session)
-                && session.Status == SessionStatus.InGame
-                && session.AttachedEntity is { } body
+            if (_mind.TryGetMind(id, out var mind)
+                && mind.Value.Comp.OwnedEntity is { } body
                 && TryComp<CompanyComponent>(body, out var member)
                 && member.CompanyName == company)
                 count++;

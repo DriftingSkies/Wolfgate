@@ -1,3 +1,4 @@
+using Content.Server._WF.Shipyard;
 using System.Linq;
 using Content.Server.Chat.Systems;
 using Content.Server.GameTicking.Events;
@@ -48,6 +49,7 @@ public sealed class WFShipTierSystem : EntitySystem
         SubscribeLocalEvent<AttemptShipyardShuttlePurchaseEvent>(OnAttemptPurchase);
         SubscribeLocalEvent<ShipyardShuttlePurchaseEvent>(OnPurchased);
         SubscribeLocalEvent<WFCapitalShipComponent, EntityTerminatingEvent>(OnTerminating);
+        SubscribeLocalEvent<ShipSoldEvent>(OnSold);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(_ =>
         {
             _lockouts.Clear();
@@ -145,9 +147,15 @@ public sealed class WFShipTierSystem : EntitySystem
 
     private void OnTerminating(Entity<WFCapitalShipComponent> ent, ref EntityTerminatingEvent args)
     {
-        // A sale deletes the ship while it is docked, and a round restart flushes every grid; anything else is a loss.
-        if (!_flushing && !ent.Comp.Lost && !IsDocked(ent))
+        // A sold capital and a round restart's flush aren't losses; any other deletion is.
+        if (!_flushing && !ent.Comp.Lost && !ent.Comp.Sold)
             Lose(ent);
+    }
+
+    private void OnSold(ref ShipSoldEvent ev)
+    {
+        if (TryComp<WFCapitalShipComponent>(ev.Shuttle, out var capital))
+            capital.Sold = true;
     }
 
     public override void Update(float frameTime)
@@ -182,7 +190,7 @@ public sealed class WFShipTierSystem : EntitySystem
             if (capital.Lost)
             {
                 if (capital.LockedUntil != null && !activity.InactiveLastCheck)
-                    Recover((uid, capital));
+                    TryRecover((uid, capital));
                 continue;
             }
 
@@ -225,10 +233,21 @@ public sealed class WFShipTierSystem : EntitySystem
     }
 
     /// <summary>A capital written off for drifting is back in service: it holds its slot again instead of a lockout.</summary>
-    private void Recover(Entity<WFCapitalShipComponent> ent)
+    /// <summary>Restores a lost capital, unless its slot has gone to a replacement; then it stays lost and grounded.</summary>
+    private void TryRecover(Entity<WFCapitalShipComponent> ent)
     {
-        if (ent.Comp.LockedUntil is { } until && _lockouts.TryGetValue(ent.Comp.Company.Id, out var locks))
+        var company = ent.Comp.Company.Id;
+        var ownLock = ent.Comp.LockedUntil is { } end && end > _timing.CurTime ? 1 : 0;
+        if (!_protos.TryIndex(Rules, out var rules)
+            || SlotsUsed(company) - ownLock >= SlotsFor(rules, MembersOnline(company)))
+        {
+            EnsureComp<PreventPilotComponent>(ent);
+            return;
+        }
+
+        if (ent.Comp.LockedUntil is { } until && _lockouts.TryGetValue(company, out var locks))
             locks.Remove(until);
+        RemComp<PreventPilotComponent>(ent);
         ent.Comp.Lost = false;
         ent.Comp.LockedUntil = null;
         ent.Comp.SeenActive = true;

@@ -2,6 +2,8 @@
 costing its stake. Run from the repository root after changing an operation's stake, name or faction."""
 import re
 
+import yaml
+
 OPERATIONS = 'Resources/Prototypes/_WF/Operations/operations.yml'
 LISTINGS = 'Resources/Prototypes/_WF/Operations/listings.yml'
 FACTIONS = {
@@ -14,7 +16,9 @@ def operations():
     text = open(OPERATIONS, encoding='utf-8').read().replace('\r\n', '\n')
     ops = {}
     for block in re.split(r'(?m)^- type: wfOperation\n', text)[1:]:
-        fields = dict(re.findall(r'(?m)^  (abstract|id|parent|name|company|stake): (\S+)$', block))
+        # Parsed as YAML, so a trailing comment never hides a field.
+        data = yaml.safe_load('- type: wfOperation\n' + block)[0]
+        fields = {k: data[k] for k in ('abstract', 'id', 'parent', 'name', 'company', 'stake') if k in data}
         ops[fields['id']] = fields
     def get(op, key):
         while op is not None:
@@ -22,8 +26,13 @@ def operations():
                 return op[key]
             op = ops.get(op.get('parent'))
         return None
-    return [(op['id'], get(op, 'name'), get(op, 'company'), int(get(op, 'stake') or 0))
-            for op in ops.values() if op.get('abstract') != 'true']
+    def stake(op):
+        value = get(op, 'stake')
+        if value is None:
+            raise SystemExit(f"{op['id']} has no stake, on it or a parent")
+        return int(value)
+    return [(op['id'], get(op, 'name'), get(op, 'company'), stake(op))
+            for op in ops.values() if op.get('abstract') is not True]
 
 
 def listing(op_id, name, company, stake):

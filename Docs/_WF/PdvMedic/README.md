@@ -5,7 +5,7 @@ The PDV Jarrah, the Vanguard's field surgeon and the counterpart of the TSF brig
 encryption key, and its own loadout groups for medical gloves, a medical HUD and a medical chest rig. Its chat ranks
 are the Ottoman medical ladder in `PdvRanks`.
 
-Helios Fortress has 2 slots, its hyperwar version 4 and the hyperwar Jupiter 2. Each has `WFSpawnPointPdvJarrah`
+Helios Fortress has 5 slots, its hyperwar version 4 and the hyperwar Jupiter 2. Each has `WFSpawnPointPdvJarrah`
 markers beside the other PDV spawns (Helios's spawn hall, Jupiter's barracks). The ID card and PDA reuse the
 Rakhshan art.
 

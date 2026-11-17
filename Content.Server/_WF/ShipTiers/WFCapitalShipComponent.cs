@@ -19,6 +19,10 @@ public sealed partial class WFCapitalShipComponent : Component
     [DataField]
     public bool SeenActive;
 
+    /// <summary>Set when the ship is sold, so its deletion isn't taken for a loss.</summary>
+    [ViewVariables]
+    public bool Sold;
+
     /// <summary>Set once the ship has been lost, so its lockout starts only once.</summary>
     [DataField]
     public bool Lost;
