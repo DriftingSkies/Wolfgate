@@ -135,6 +135,7 @@
             PirateFirstMate: [ 3, 3 ]
             PDVDenasvar: [ 6, 6 ]
             WGPdvJarrah: [ 4, 4 ] # WOLFGATE(PdvMedic): PDV field medic slots
+            WGPdvArtificer: [ 4, 4 ] # WOLFGATE(PdvArtificer): PDV engineer slots
             # PDVInfiltrator: [ 2, 2 ]
             Pirate: [ -1, -1 ]
             PdvBorg: [ 2, 2 ]

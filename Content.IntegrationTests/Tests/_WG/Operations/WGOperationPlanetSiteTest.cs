@@ -81,7 +81,7 @@ public sealed class WGOperationPlanetSiteTest
                         "The operation's orbit signal should be named from the start.");
                 });
 
-                Assert.That(pois.TryLoadOperationSite(ground, new ResPath(Site), spot, Vector2.Zero, out var grid), Is.True);
+                Assert.That(pois.TryLoadOperationSite(ground, new ResPath(Site), spot, Vector2.Zero, 12f, out var grid), Is.True);
                 Assert.Multiple(() =>
                 {
                     Assert.That(entities.GetComponent<TransformComponent>(grid!.Value).MapUid, Is.EqualTo(ground));

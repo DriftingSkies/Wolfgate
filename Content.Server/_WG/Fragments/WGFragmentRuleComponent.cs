@@ -90,6 +90,8 @@ public sealed partial class WGFragmentRuleComponent : Component
     public TimeSpan NextCheck;
     public int Wave;
     public bool Cleared;
+    /// <summary>Set when the heart breaks; <see cref="Present"/> stops taking new factions from then on.</summary>
+    public bool HeartBroken;
     public readonly HashSet<EntityUid> Remade = new();
     public readonly HashSet<ProtoId<CompanyPrototype>> Present = new();
 }

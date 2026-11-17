@@ -72,7 +72,9 @@ costs its operation's stake.
 ## Non-modular edits
 
 - [`Resources/Prototypes/_Mono/Entities/Structures/Machines/uplinks.yml`](../../../Resources/Prototypes/_Mono/Entities/Structures/Machines/uplinks.yml): the uplink tab operations are called in from
-- [`Resources/Prototypes/_NF/GameRules/roundstart.yml`](../../../Resources/Prototypes/_NF/GameRules/roundstart.yml): the vault and the weapons cache are now operations each faction calls in
+- [`Resources/Prototypes/_NF/GameRules/roundstart.yml`](../../../Resources/Prototypes/_NF/GameRules/roundstart.yml)
+  - the weapons cache is now PDV's Dynasty Arms Drop operation
+  - the vault is now TSF's Vault Transfer operation
 - [`Resources/Prototypes/_NF/Store/presets.yml`](../../../Resources/Prototypes/_NF/Store/presets.yml): the uplink tab operations are called in from
 
 <!-- WOLFGATE-GENERATED END -->

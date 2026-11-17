@@ -65,6 +65,7 @@
   placement:
     mode: SnapgridCenter
   components:
+  - type: WGFragmentHeart
   - type: Transform
     noRot: true
     anchored: true

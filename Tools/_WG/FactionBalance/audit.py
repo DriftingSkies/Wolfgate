@@ -1,42 +1,64 @@
 import os,re,sys,collections
+import yaml
+
+class Loader(yaml.SafeLoader):
+    pass
+
+def tagged(loader,suffix,node):
+    # SS14 tags (!type:Foo) are kept as a __tag__ key on mappings and dropped elsewhere.
+    if isinstance(node,yaml.MappingNode):
+        d=loader.construct_mapping(node,deep=True); d['__tag__']=suffix; return d
+    if isinstance(node,yaml.SequenceNode):
+        return loader.construct_sequence(node,deep=True)
+    return loader.construct_scalar(node)
+Loader.add_multi_constructor('!',tagged)
+
 root=sys.argv[1]
 protos=os.path.join(root,'Resources','Prototypes')
 docs=[]
 for d,_,fs in os.walk(protos):
     for f in fs:
         if f.endswith('.yml'):
-            t=open(os.path.join(d,f),encoding='utf-8',errors='ignore').read()
-            for b in re.split(r'(?m)^- type: ',t)[1:]:
-                docs.append((os.path.relpath(os.path.join(d,f),root),b))
+            try:
+                data=yaml.load(open(os.path.join(d,f),encoding='utf-8',errors='ignore'),Loader=Loader)
+            except yaml.YAMLError:
+                continue
+            if isinstance(data,list):
+                docs+=[x for x in data if isinstance(x,dict)]
 names={}
 recipes={}
 packs={}
 listings=[]
-for path,b in docs:
-    kind=b.split('\n',1)[0].strip()
-    m=re.search(r'(?m)^  id: (\S+)',b)
-    if not m: continue
-    i=m.group(1)
+
+def whitelist_tags(conditions):
+    tags=[]
+    for c in conditions or []:
+        if isinstance(c,dict) and isinstance(c.get('whitelist'),dict):
+            tags+=c['whitelist'].get('tags') or []
+    return tags
+
+for b in docs:
+    kind=b.get('type'); i=b.get('id')
+    if not i: continue
     if kind=='entity':
-        n=re.search(r'(?m)^  name: (.+)$',b)
-        if n: names[i]=n.group(1).strip().strip('"')
+        if b.get('name'): names[i]=str(b['name']).strip()
     elif kind=='latheRecipe':
-        r=re.search(r'(?m)^  result: (\S+)',b)
-        if r: recipes[i]=r.group(1)
+        if b.get('result'): recipes[i]=b['result']
     elif kind=='latheRecipePack':
-        packs[i]=re.findall(r'(?m)^  - (\S+)',b)
+        packs[i]=list(b.get('recipes') or [])
     elif kind=='listing':
-        if re.search(r'(?m)^\s*#',b) and False: pass
-        e=re.search(r'(?m)^  productEntity: (\S+)',b)
-        tags=re.findall(r'(?m)^      - (\S+)',b)
-        cats=re.findall(r'(?m)^  - (Uplink\S+|WGUplink\S+)',b)
-        holder='WGKitHolderCondition' in b
-        cost=re.search(r'(?m)^    (FederationMilitaryCredit|Doubloon): (\d+)',b)
-        if e and cost:
-            listings.append((i,e.group(1),tags,cats[0] if cats else '?',int(cost.group(2)),cost.group(1),holder))
-def side(tags,cur):
+        cost=b.get('cost') or {}
+        cur=next((c for c in ('FederationMilitaryCredit','Doubloon') if c in cost),None)
+        if not b.get('productEntity') or not cur: continue
+        conds=b.get('conditions') or []
+        cats=[c for c in b.get('categories') or [] if str(c).startswith(('Uplink','WGUplink'))]
+        holder=any(isinstance(c,dict) and c.get('__tag__')=='type:WGKitHolderCondition' for c in conds)
+        listings.append((i,b['productEntity'],whitelist_tags(conds),cats[0] if cats else '?',int(cost[cur]),cur,holder))
+def side(tags,cur,cat='?'):
     if cur=='FederationMilitaryCredit' and any(t in ('SecurityUplink','FactionStaticUplinkTsf') for t in tags): return 'TSF'
     if cur=='Doubloon' and any(t in ('PirateUplink','FactionStaticUplinkPdv') for t in tags): return 'PDV'
+    # A Doubloon listing with no whitelist is the pirate uplink's own.
+    if cur=='Doubloon' and (not tags or str(cat).startswith('UplinkPirate')): return 'PDV'
 out=['# Phase 0 audit: TSF and PDV gear and where it is sold','',
 'Generated from the prototypes by `Tools/_WG/FactionBalance/audit.py`; rerun it after changing listings or lathe packs.',
 'The specialist kits are in `Resources/Prototypes/_WG/SpecialistKits/kits.yml`.','']
@@ -49,7 +71,7 @@ shown={'TSF':tabs('StorePresetSecurityUplink'),'PDV':tabs('StorePresetPirateUpli
 out+=["Counts are what a player sees in the uplink's tabs, against the 80-100 cap. Operations (their own tab, one per",
       'operation) and the kit replacement crates (shown only to a player who drew that kit) are listed apart.','']
 for fac in ('TSF','PDV'):
-    mine=[l for l in listings if side(l[2],l[5])==fac and l[3] in shown[fac]]
+    mine=[l for l in listings if side(l[2],l[5],l[3])==fac and l[3] in shown[fac]]
     rows=[l for l in mine if not l[3].endswith('Operations') and not l[6]]
     kits=[l for l in mine if l[6]]
     out+=[f'## {fac} uplink ({len(rows)} listings; {len(kits)} kit replacements)','','| Category | Item | Cost |','|---|---|---|']
@@ -66,4 +88,4 @@ out+=['## Gaps','',
 '- The PDV buys finished gear and its composite on the uplink; the TSF now buys plastitanium there at the same rate.',
 '- Both uplinks sell the same Supplies tab at the same prices.','']
 open(sys.argv[2],'w',encoding='utf-8',newline='\n').write('\n'.join(out))
-print({fac: sum(1 for l in listings if side(l[2],l[5])==fac and l[3] in shown[fac] and not l[3].endswith('Operations') and not l[6]) for fac in ('TSF','PDV')})
+print({fac: sum(1 for l in listings if side(l[2],l[5],l[3])==fac and l[3] in shown[fac] and not l[3].endswith('Operations') and not l[6]) for fac in ('TSF','PDV')})

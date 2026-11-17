@@ -215,9 +215,10 @@ public abstract class SharedWGSnowSlowSystem : EntitySystem
         // Gear that caps contact slowdowns, such as a vest's terrain runner, caps snow the same way.
         var cap = new GetSpeedModifierContactCapEvent();
         RaiseLocalEvent(ent, ref cap);
-        speed = MathF.Max(speed, cap.MaxWalkSlowdown);
-        if (speed < 1f)
-            args.ModifySpeed(speed);
+        var walk = MathF.Min(1f, MathF.Max(speed, cap.MaxWalkSlowdown));
+        var sprint = MathF.Min(1f, MathF.Max(speed, cap.MaxSprintSlowdown));
+        if (walk < 1f || sprint < 1f)
+            args.ModifySpeed(walk, sprint);
     }
 
     private void OnFootstep(ref WGSnowFootstepEvent args)

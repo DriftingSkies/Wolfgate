@@ -22,6 +22,7 @@ Tuning is in `Resources/Prototypes/_WG/Fragments/fragments.yml`; the logic is `W
 
 ### Server
 
+- [`Content.Server/_WG/Fragments/WGFragmentHeartComponent.cs`](WGFragmentHeartComponent.cs)
 - [`Content.Server/_WG/Fragments/WGFragmentRuleComponent.cs`](WGFragmentRuleComponent.cs)
 - [`Content.Server/_WG/Fragments/WGFragmentRuleSystem.cs`](WGFragmentRuleSystem.cs)
 

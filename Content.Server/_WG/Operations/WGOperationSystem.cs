@@ -227,8 +227,8 @@ public sealed class WGOperationSystem : EntitySystem
             if (op.Reward > 0 && !active.Paid && active.Grid is { } scanned && _timing.CurTime < active.ArrivedAt + GuardScanWindow)
                 AddMapGuards(active, scanned);
 
-            // A cleared PvE site pays at once and stays until its time is up, for the loot.
-            if (!active.Paid && active.Npcs.Count > 0 && active.Npcs.All(npc => !Exists(npc) || _mobState.IsIncapacitated(npc)))
+            // A cleared PvE site pays at once and stays until its time is up, for the loot; a clear seen after the deadline fails.
+            if (_timing.CurTime < active.EndsAt && !active.Paid && active.Npcs.Count > 0 && active.Npcs.All(npc => !Exists(npc) || _mobState.IsIncapacitated(npc)))
             {
                 active.Paid = true;
                 Pay(op, op.Stake + op.Reward);
@@ -275,7 +275,7 @@ public sealed class WGOperationSystem : EntitySystem
         var path = ent.Comp.Path ?? _random.Pick(op.Grids);
         var loaded = ent.Comp.Ground is { } ground
             ? _bounds.TryGetValue(path, out var bounds)
-              && _pois.TryLoadOperationSite(ground, path, ent.Comp.Target.Position, bounds.Center, out grid)
+              && _pois.TryLoadOperationSite(ground, path, ent.Comp.Target.Position, bounds.Center, bounds.Size.Length() / 2f, out grid)
             : _loader.TryLoadGrid(ent.Comp.Target.MapId, path, out grid, offset: ent.Comp.Target.Position);
         if (!loaded || grid == null)
         {

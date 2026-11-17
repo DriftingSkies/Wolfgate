@@ -1,5 +1,6 @@
 wg-specialist-kit-full = Your faction has taken every one of this kit it may this round. More open up as more of you come online.
 wg-specialist-kit-job = This kit is for another job.
+wg-specialist-kit-one = You have already drawn a different specialist kit this round.
 ent-WGSpecialistVendorTSF = TSFMC specialist rack
     .desc = An automated rack of specialist kits. Each marine may draw one.
 ent-WGSpecialistVendorPDV = Vanguard specialist rack

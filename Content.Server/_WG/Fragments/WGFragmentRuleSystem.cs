@@ -51,6 +51,37 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
         return joint ? (int) MathF.Round(reward * (1f + bonus)) : reward;
     }
 
+    public override void Initialize()
+    {
+        base.Initialize();
+        SubscribeLocalEvent<WGFragmentHeartComponent, EntityTerminatingEvent>(OnHeartTerminating);
+    }
+
+    /// <summary>Records who is aboard as the heart breaks, then freezes the list for the joint bonus.</summary>
+    private void OnHeartTerminating(Entity<WGFragmentHeartComponent> ent, ref EntityTerminatingEvent args)
+    {
+        var rules = QueryActiveRules();
+        while (rules.MoveNext(out _, out var comp, out _))
+        {
+            if (comp.HeartUid != ent.Owner || comp.HeartBroken || comp.Grid is not { } grid)
+                continue;
+
+            var players = EntityQueryEnumerator<ActorComponent, MobStateComponent, TransformComponent>();
+            while (players.MoveNext(out var player, out _, out var state, out var xform))
+            {
+                if (xform.GridUid == grid && !_mobState.IsDead(player, state))
+                    RecordVisit(comp, player);
+            }
+            comp.HeartBroken = true;
+        }
+    }
+
+    private void RecordVisit(WGFragmentRuleComponent comp, EntityUid player)
+    {
+        if (TryComp<CompanyComponent>(player, out var company) && comp.Rewards.ContainsKey(company.CompanyName))
+            comp.Present.Add(company.CompanyName);
+    }
+
     protected override void Started(EntityUid uid, WGFragmentRuleComponent comp, GameRuleComponent gameRule, GameRuleStartedEvent args)
     {
         base.Started(uid, comp, gameRule, args);
@@ -59,7 +90,12 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
         if (!MapSystem.MapExists(mapId) || comp.Grids.Count == 0)
             return;
 
-        var site = PickSite(comp, mapId);
+        if (PickSite(comp, mapId) is not { } site)
+        {
+            Log.Warning("Fragment found no point clear of every faction base; not placed this time.");
+            return;
+        }
+
         var path = RobustRandom.Pick(comp.Grids);
         if (!_loader.TryLoadGrid(mapId, path, out var grid, offset: site))
         {
@@ -120,8 +156,8 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
             if (xform.GridUid != grid || _mobState.IsDead(player, state))
                 continue;
 
-            if (TryComp<CompanyComponent>(player, out var company) && comp.Rewards.ContainsKey(company.CompanyName))
-                comp.Present.Add(company.CompanyName);
+            if (!comp.HeartBroken)
+                RecordVisit(comp, player);
 
             var pos = _transform.GetWorldPosition(xform);
             if ((pos - heartPos.Position).Length() <= comp.WakeRadius)
@@ -197,9 +233,9 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
 
     /// <summary>
     /// A point roughly as far from every faction base as from the others, at least the clearance from any of them;
-    /// a random point near the sector's middle if the bases can't be found.
+    /// a random point near the sector's middle if the bases can't be found. Null when no candidate is clear of every base.
     /// </summary>
-    private Vector2 PickSite(WGFragmentRuleComponent comp, MapId mapId)
+    private Vector2? PickSite(WGFragmentRuleComponent comp, MapId mapId)
     {
         var bases = new List<Vector2>();
         var uplinks = EntityQueryEnumerator<TagComponent, TransformComponent>();
@@ -209,8 +245,18 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
                 bases.Add(_transform.GetWorldPosition(xform));
         }
 
+        bool Clear(Vector2 point) => bases.All(p => (p - point).Length() >= comp.BaseClearance);
+
         if (bases.Count < 2)
-            return RobustRandom.NextVector2(2000f, 4000f);
+        {
+            for (var attempt = 0; attempt < 30; attempt++)
+            {
+                var point = RobustRandom.NextVector2(2000f, 4000f);
+                if (Clear(point))
+                    return point;
+            }
+            return null;
+        }
 
         var a = bases[0];
         var b = bases.MaxBy(p => (p - a).LengthSquared());
@@ -233,7 +279,7 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
             if (bases.All(p => (p - point).Length() >= comp.BaseClearance && (p - point).Length() <= comp.MaxDistance))
                 return point;
         }
-        return best;
+        return Clear(best) ? best : null;
     }
 
     /// <summary>A Remade answering to no Monolith: it never starves, and nothing it kills turns.</summary>

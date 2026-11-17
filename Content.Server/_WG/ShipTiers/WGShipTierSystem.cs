@@ -36,7 +36,8 @@ public sealed class WGShipTierSystem : EntitySystem
     /// Hulls a capital purchase was checked against the cap for. Only these become capitals: an admin spawn or a used
     /// hull from a trader raises the purchase event without the check, and takes no slot.
     /// </summary>
-    private readonly HashSet<EntityUid> _approved = new();
+    /// <summary>Capital purchases admitted under the cap, with the buyer's faction.</summary>
+    private readonly Dictionary<EntityUid, ProtoId<CompanyPrototype>> _approved = new();
 
     private TimeSpan _nextCheck;
 
@@ -115,7 +116,7 @@ public sealed class WGShipTierSystem : EntitySystem
         var company = buyer.CompanyName.Id;
         if (SlotsUsed(company) < SlotsFor(rules, MembersOnline(company)))
         {
-            _approved.Add(ev.Shuttle);
+            _approved[ev.Shuttle] = buyer.CompanyName;
             return;
         }
 
@@ -125,21 +126,19 @@ public sealed class WGShipTierSystem : EntitySystem
 
     private void OnPurchased(ShipyardShuttlePurchaseEvent ev)
     {
-        if (!_approved.Remove(ev.Shuttle)
+        if (!_approved.Remove(ev.Shuttle, out var company)
             || !_protos.TryIndex(Rules, out var rules)
             || !TryComp<VesselComponent>(ev.Shuttle, out var vessel)
-            || !rules.Capitals.Contains(vessel.VesselId)
-            || !TryComp<CompanyComponent>(ev.Shuttle, out var shipCompany)
-            || !rules.Companies.Contains(shipCompany.CompanyName))
+            || !rules.Capitals.Contains(vessel.VesselId))
             return;
 
         var capital = EnsureComp<WGCapitalShipComponent>(ev.Shuttle);
-        capital.Company = shipCompany.CompanyName;
+        capital.Company = company;
         capital.ReadyAt = _timing.CurTime + rules.BuildTime;
         EnsureComp<PreventPilotComponent>(ev.Shuttle);
 
         _chat.DispatchGlobalAnnouncement(Loc.GetString("wg-ship-tiers-construction-started",
-                ("faction", FactionName(shipCompany.CompanyName)),
+                ("faction", FactionName(company)),
                 ("ship", Name(ev.Shuttle)),
                 ("minutes", (int) rules.BuildTime.TotalMinutes)),
             Loc.GetString("wg-ship-tiers-announcer"), colorOverride: Color.Orange);

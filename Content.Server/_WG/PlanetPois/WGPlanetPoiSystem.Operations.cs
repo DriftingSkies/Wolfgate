@@ -105,12 +105,17 @@ public sealed partial class WGPlanetPoiSystem
         return true;
     }
 
-    /// <summary>Loads an operation's grid with its middle on a claimed spot and settles it into the ground.</summary>
-    public bool TryLoadOperationSite(EntityUid ground, ResPath path, Vector2 spot, Vector2 centre,
+    /// <summary>
+    /// Loads an operation's grid with its middle on a claimed spot and settles it into the ground; fails if a grid has
+    /// landed within <paramref name="reach"/> of it since it was claimed.
+    /// </summary>
+    public bool TryLoadOperationSite(EntityUid ground, ResPath path, Vector2 spot, Vector2 centre, float reach,
         [NotNullWhen(true)] out Entity<MapGridComponent>? site)
     {
         site = null;
-        if (!_loader.TryLoadGrid(Transform(ground).MapID, path, out var loaded, offset: spot - centre))
+        var mapId = Transform(ground).MapID;
+        if (GridsNear(ground, mapId, spot, reach + WreckClearance)
+            || !_loader.TryLoadGrid(mapId, path, out var loaded, offset: spot - centre))
             return false;
         SettleWreck(loaded.Value);
         site = loaded;
