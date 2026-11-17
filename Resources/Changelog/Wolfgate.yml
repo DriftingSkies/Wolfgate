@@ -7879,3 +7879,12 @@ Entries:
   id: 100500
   time: '2026-11-17T07:42:55.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/710
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: >-
+        Wolfgate content now uses the WG prefix. Some saved Wolfgate settings
+        reset once.
+  id: 100501
+  time: '2026-11-17T13:22:37.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/715

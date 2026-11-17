@@ -5,6 +5,12 @@ one table per kind (consent toggles, genital shapes, HUD themes, loadouts, ship 
 profiles and character exports. `WGLegacyDbRows` rewrites a loaded profile or consent row, so the load that finds an
 old id also saves the new one. Renamed entity ids go in `Resources/migration.yml` instead.
 
+The Wolfgate prefix itself moved from WF to WG. `WGLegacyPrototypeIds.Prefix` carries any saved id across, and
+profile rows are rewritten with it on load. Entities have their old ids in `Resources/migration.yml` and tiles in
+`tile_aliases.yml`. `WGLegacyMapFilesSystem` rewrites the maps saved in the server's data folder once at startup
+(mapping mode libraries included), and mapping mode uploads go through the same `WGLegacyMapText`.
+`Tools/_WG/Prototypes/wg_prefix_rename.py` is the rename, for a branch cut before it.
+
 Renaming a saved id means adding the old one to its table; `WGLegacyPrototypeIdsTest` checks that every entry maps to
 an existing prototype and that no old id still exists.
 
@@ -16,6 +22,8 @@ an existing prototype and that no old id still exists.
 ### Server
 
 - [`Content.Server/_WG/Prototypes/WGLegacyDbRows.cs`](WGLegacyDbRows.cs)
+- [`Content.Server/_WG/Prototypes/WGLegacyMapFilesSystem.cs`](WGLegacyMapFilesSystem.cs)
+- [`Content.Server/_WG/Prototypes/WGLegacyMapText.cs`](WGLegacyMapText.cs)
 
 ### Shared
 
@@ -28,7 +36,16 @@ an existing prototype and that no old id still exists.
 
 ### Unit tests
 
+- [`Content.Tests/_WG/Prototypes/WGLegacyMapTextTest.cs`](../../../Content.Tests/_WG/Prototypes/WGLegacyMapTextTest.cs)
 - [`Content.Tests/_WG/Prototypes/WGLegacyPrototypeIdsTest.cs`](../../../Content.Tests/_WG/Prototypes/WGLegacyPrototypeIdsTest.cs)
+
+### Prototypes
+
+- [`Resources/Prototypes/_WG/Prototypes/tile_aliases.yml`](../../../Resources/Prototypes/_WG/Prototypes/tile_aliases.yml)
+
+### Tools
+
+- [`Tools/_WG/Prototypes/wg_prefix_rename.py`](../../../Tools/_WG/Prototypes/wg_prefix_rename.py)
 
 ## Non-modular edits
 
@@ -39,6 +56,8 @@ an existing prototype and that no old id still exists.
   - renamed species ids
   - consent rows holding renamed toggle ids are saved under the current ids on load
 - [`Content.Shared/Humanoid/SharedHumanoidAppearanceSystem.cs`](../../../Content.Shared/Humanoid/SharedHumanoidAppearanceSystem.cs): exports saved before a species or loadout rename
-- [`Resources/migration.yml`](../../../Resources/migration.yml): WG prototype id prefix
+- [`Resources/migration.yml`](../../../Resources/migration.yml)
+  - WG prototype id prefix
+  - the Wolfgate prefix moved from WF to WG
 
 <!-- WOLFGATE-GENERATED END -->

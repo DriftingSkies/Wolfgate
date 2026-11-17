@@ -153,3 +153,6 @@ reason; `--check` fails until both are filled in.
 - Fill in `.github/PULL_REQUEST_TEMPLATE.md`, including a `:cl:` changelog for player-facing changes.
 - Read CI results from the PR's checks, not from local re-runs. Several lints and map tests give false results
   on Windows.
+- The Wolfgate prefix moved from `WF` to `WG`. A branch cut before the move copies
+  `Tools/_WG/Prototypes/wg_prefix_rename.py` from `main`, runs it, commits the result and then merges `main`.
+  Nothing new takes a `WF` name, folder or key.

@@ -30,6 +30,23 @@ public sealed class WGLegacyPrototypeIdsTest
         });
     }
 
+    /// <summary>Ids saved under the old WF prefix move to WG, alone or inside a longer saved string.</summary>
+    [Test]
+    public void PrefixTest()
+    {
+        const string old = "W" + "F";
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(WGLegacyPrototypeIds.Prefix($"{old}Canine"), Is.EqualTo("WGCanine"));
+            Assert.That(WGLegacyPrototypeIds.Prefix($"[\"{old}TailFox@#ffffff\",\"HumanHair\"]"), Is.EqualTo("[\"WGTailFox@#ffffff\",\"HumanHair\"]"));
+            Assert.That(WGLegacyPrototypeIds.Prefix($"arm:{old}AugmentArm:{old}Chrome"), Is.EqualTo("arm:WGAugmentArm:WGChrome"));
+            Assert.That(WGLegacyPrototypeIds.Prefix("UNLAWFUL"), Is.EqualTo("UNLAWFUL"));
+            Assert.That(WGLegacyPrototypeIds.Prefix(null), Is.Null);
+            Assert.That(WGLegacyPrototypeIds.Resolve(WGLegacyPrototypeIds.Species, $"{old}Canine"), Is.EqualTo("WGCanine"));
+        });
+    }
+
     /// <summary>A consent row saved under an old toggle id reads as the current toggle.</summary>
     [Test]
     public void ConsentRowTest()

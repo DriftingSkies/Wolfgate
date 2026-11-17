@@ -92,6 +92,14 @@ HUNK = re.compile(r"^@@ -\S+ \+(\d+)(?:,(\d+))? @@", re.M)
 # A line holding only attributes of an XML tag, possibly opening or closing it.
 XML_ATTRIBUTE = re.compile(r'\s*(?:<[\w:.]+\s+)?(?:[\w:.]+="[^"]*"\s*)+/?>?\s*$')
 # A marker alone on its line, after nothing but a comment opener: it covers the rest of its paragraph.
+OLD_PREFIX = re.compile(r"[Ww][Gg]")
+
+
+def old_prefix(match):
+    """The matched WG, Wg or wg as it was under the old prefix."""
+    return match[0][0] + ("F" if match[0][1] == "G" else "f")
+
+
 STANDALONE = re.compile(r"\s*(?://+|#+|<!--|/\*+|\*|;|--)\s*WOLFGATE(?![\w-])")
 
 MODULE_NAME = re.compile(r"[A-Z][A-Za-z0-9]*")
@@ -718,6 +726,13 @@ class Modules:
         if fork_point and git("cat-file", "-e", f"{fork_point}:{path}").wait() == 0:
             changed = set(Modules.added_lines(fork_point, head, path))
             added = [n for n in added if n in changed]
+        text = finish(git("show", f"{head}:{path}")).decode("utf-8-sig", "replace")
+        lines = re.sub(r"\r+\n", "\n", text).split("\n")
+        # A line the WF to WG prefix rename alone touched is the old line, not a new edit.
+        if git("cat-file", "-e", f"{merge_base}:{path}").wait() == 0:
+            old = finish(git("show", f"{merge_base}:{path}")).decode("utf-8-sig", "replace")
+            old_lines = set(re.sub(r"\r+\n", "\n", old).split("\n"))
+            added = [n for n in added if n > len(lines) or OLD_PREFIX.sub(old_prefix, lines[n - 1]) not in old_lines]
         hunks, run = [], []
         for n in added:
             if run and n != run[-1] + 1:
@@ -726,8 +741,6 @@ class Modules:
             run.append(n)
         if run:
             hunks.append(run)
-        text = finish(git("show", f"{head}:{path}")).decode("utf-8-sig", "replace")
-        lines = re.sub(r"\r+\n", "\n", text).split("\n")
         marked, standalone, blocks, start = set(), set(), [], None
         for number, line in enumerate(lines, 1):
             if "WOLFGATE" not in line:

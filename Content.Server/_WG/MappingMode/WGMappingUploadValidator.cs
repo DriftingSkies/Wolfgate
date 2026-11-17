@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Content.Server._WG.Prototypes;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Markdown;
 using Robust.Shared.Serialization.Markdown.Mapping;
@@ -56,6 +57,9 @@ public static class WGMappingUploadValidator
 
         if (text.Length > 0 && text[0] == '﻿')
             text = text[1..];
+
+        // A file downloaded before the Wolfgate prefix moved to WG.
+        text = WGLegacyMapText.Convert(text);
 
         try
         {

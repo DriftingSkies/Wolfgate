@@ -26,6 +26,8 @@ public static class WGLegacyDbRows
             changed = true;
         }
 
+        changed |= UpdatePrefix(profile);
+
         foreach (var loadout in profile.Loadouts.SelectMany(r => r.Groups).SelectMany(g => g.Loadouts))
         {
             var name = WGLegacyPrototypeIds.Resolve(WGLegacyPrototypeIds.Loadouts, loadout.LoadoutName);
@@ -40,6 +42,50 @@ public static class WGLegacyDbRows
         {
             profile.Genitals = genitals;
             changed = true;
+        }
+
+        return changed;
+    }
+
+    /// <summary>Moves the row's other saved ids off the old WF prefix; true if anything changed.</summary>
+    private static bool UpdatePrefix(Profile profile)
+    {
+        var changed = false;
+
+        string Move(string value)
+        {
+            var current = WGLegacyPrototypeIds.Prefix(value);
+            changed |= current != value;
+            return current;
+        }
+
+        profile.HairName = Move(profile.HairName);
+        profile.FacialHairName = Move(profile.FacialHairName);
+        profile.ScreamVoice = Move(profile.ScreamVoice);
+        profile.LaughVoice = Move(profile.LaughVoice);
+        profile.Augments = Move(profile.Augments);
+        profile.AugmentUnlocks = Move(profile.AugmentUnlocks);
+
+        foreach (var job in profile.Jobs)
+            job.JobName = Move(job.JobName);
+        foreach (var antag in profile.Antags)
+            antag.AntagName = Move(antag.AntagName);
+        foreach (var trait in profile.Traits)
+            trait.TraitName = Move(trait.TraitName);
+
+        foreach (var role in profile.Loadouts)
+        {
+            role.RoleName = Move(role.RoleName);
+            foreach (var group in role.Groups)
+                group.GroupName = Move(group.GroupName);
+        }
+
+        if (profile.Markings is { } markings)
+        {
+            var raw = markings.RootElement.GetRawText();
+            var current = Move(raw);
+            if (current != raw)
+                profile.Markings = JsonDocument.Parse(current);
         }
 
         return changed;

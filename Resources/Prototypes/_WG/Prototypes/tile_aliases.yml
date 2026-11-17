@@ -1,0 +1,400 @@
+# Tiles saved in maps before the Wolfgate prefix moved to WG.
+- type: tileAlias
+  id: WFAsteroidCore
+  target: WGAsteroidCore
+
+- type: tileAlias
+  id: WFBloodOceanSeabed
+  target: WGBloodOceanSeabed
+
+- type: tileAlias
+  id: WFCavernFloorAerumnaPinkCrystal
+  target: WGCavernFloorAerumnaPinkCrystal
+
+- type: tileAlias
+  id: WFCavernFloorAsh
+  target: WGCavernFloorAsh
+
+- type: tileAlias
+  id: WFCavernFloorBedrock
+  target: WGCavernFloorBedrock
+
+- type: tileAlias
+  id: WFCavernFloorBoneCartilage
+  target: WGCavernFloorBoneCartilage
+
+- type: tileAlias
+  id: WFCavernFloorBoneRim
+  target: WGCavernFloorBoneRim
+
+- type: tileAlias
+  id: WFCavernFloorBoneSpine
+  target: WGCavernFloorBoneSpine
+
+- type: tileAlias
+  id: WFCavernFloorCaveSoil
+  target: WGCavernFloorCaveSoil
+
+- type: tileAlias
+  id: WFCavernFloorChromite
+  target: WGCavernFloorChromite
+
+- type: tileAlias
+  id: WFCavernFloorChromiteScree
+  target: WGCavernFloorChromiteScree
+
+- type: tileAlias
+  id: WFCavernFloorClot
+  target: WGCavernFloorClot
+
+- type: tileAlias
+  id: WFCavernFloorFervidusObsidianGlass
+  target: WGCavernFloorFervidusObsidianGlass
+
+- type: tileAlias
+  id: WFCavernFloorFlesh
+  target: WGCavernFloorFlesh
+
+- type: tileAlias
+  id: WFCavernFloorFleshJelly
+  target: WGCavernFloorFleshJelly
+
+- type: tileAlias
+  id: WFCavernFloorFlowstone
+  target: WGCavernFloorFlowstone
+
+- type: tileAlias
+  id: WFCavernFloorFossilBed
+  target: WGCavernFloorFossilBed
+
+- type: tileAlias
+  id: WFCavernFloorGut
+  target: WGCavernFloorGut
+
+- type: tileAlias
+  id: WFCavernFloorLimestone
+  target: WGCavernFloorLimestone
+
+- type: tileAlias
+  id: WFCavernFloorMerakGlassSand
+  target: WGCavernFloorMerakGlassSand
+
+- type: tileAlias
+  id: WFCavernFloorNerve
+  target: WGCavernFloorNerve
+
+- type: tileAlias
+  id: WFCavernFloorNest
+  target: WGCavernFloorNest
+
+- type: tileAlias
+  id: WFCavernFloorObsidian
+  target: WGCavernFloorObsidian
+
+- type: tileAlias
+  id: WFCavernFloorPoolbed
+  target: WGCavernFloorPoolbed
+
+- type: tileAlias
+  id: WFCavernFloorRimeBlue
+  target: WGCavernFloorRimeBlue
+
+- type: tileAlias
+  id: WFCavernFloorRimeDark
+  target: WGCavernFloorRimeDark
+
+- type: tileAlias
+  id: WFCavernFloorRimeFall
+  target: WGCavernFloorRimeFall
+
+- type: tileAlias
+  id: WFCavernFloorRimePack
+  target: WGCavernFloorRimePack
+
+- type: tileAlias
+  id: WFCavernFloorRuinStone
+  target: WGCavernFloorRuinStone
+
+- type: tileAlias
+  id: WFCavernFloorSand
+  target: WGCavernFloorSand
+
+- type: tileAlias
+  id: WFCavernFloorSandDrift
+  target: WGCavernFloorSandDrift
+
+- type: tileAlias
+  id: WFCavernFloorSandstone
+  target: WGCavernFloorSandstone
+
+- type: tileAlias
+  id: WFCavernFloorSnowdrift
+  target: WGCavernFloorSnowdrift
+
+- type: tileAlias
+  id: WFCavernFloorSulphur
+  target: WGCavernFloorSulphur
+
+- type: tileAlias
+  id: WFCavernFloorThrasciasRimeIce
+  target: WGCavernFloorThrasciasRimeIce
+
+- type: tileAlias
+  id: WFCavernFloorUmbralDusk
+  target: WGCavernFloorUmbralDusk
+
+- type: tileAlias
+  id: WFCavernFloorUmbralShroud
+  target: WGCavernFloorUmbralShroud
+
+- type: tileAlias
+  id: WFCavernFloorVerdaWaterJelly
+  target: WGCavernFloorVerdaWaterJelly
+
+- type: tileAlias
+  id: WFCavernFloorWetRock
+  target: WGCavernFloorWetRock
+
+- type: tileAlias
+  id: WFFloorAerumnaClay
+  target: WGFloorAerumnaClay
+
+- type: tileAlias
+  id: WFFloorAerumnaClayRock
+  target: WGFloorAerumnaClayRock
+
+- type: tileAlias
+  id: WFFloorAerumnaCrystalBed
+  target: WGFloorAerumnaCrystalBed
+
+- type: tileAlias
+  id: WFFloorAerumnaDusk
+  target: WGFloorAerumnaDusk
+
+- type: tileAlias
+  id: WFFloorAerumnaHive
+  target: WGFloorAerumnaHive
+
+- type: tileAlias
+  id: WFFloorAerumnaPinkCrystal
+  target: WGFloorAerumnaPinkCrystal
+
+- type: tileAlias
+  id: WFFloorAerumnaShroud
+  target: WGFloorAerumnaShroud
+
+- type: tileAlias
+  id: WFFloorFervidusAshDirt
+  target: WGFloorFervidusAshDirt
+
+- type: tileAlias
+  id: WFFloorFervidusAshDust
+  target: WGFloorFervidusAshDust
+
+- type: tileAlias
+  id: WFFloorFervidusAshRock
+  target: WGFloorFervidusAshRock
+
+- type: tileAlias
+  id: WFFloorFervidusObsidianGlass
+  target: WGFloorFervidusObsidianGlass
+
+- type: tileAlias
+  id: WFFloorFervidusSulfurPool
+  target: WGFloorFervidusSulfurPool
+
+- type: tileAlias
+  id: WFFloorFervidusTarPool
+  target: WGFloorFervidusTarPool
+
+- type: tileAlias
+  id: WFFloorFlesh
+  target: WGFloorFlesh
+
+- type: tileAlias
+  id: WFFloorFleshBoneMeaty
+  target: WGFloorFleshBoneMeaty
+
+- type: tileAlias
+  id: WFFloorFleshBoneSpine
+  target: WGFloorFleshBoneSpine
+
+- type: tileAlias
+  id: WFFloorFleshBoneStraight
+  target: WGFloorFleshBoneStraight
+
+- type: tileAlias
+  id: WFFloorFleshCrust
+  target: WGFloorFleshCrust
+
+- type: tileAlias
+  id: WFFloorFleshJelly
+  target: WGFloorFleshJelly
+
+- type: tileAlias
+  id: WFFloorFleshMarshDirt
+  target: WGFloorFleshMarshDirt
+
+- type: tileAlias
+  id: WFFloorFleshMarshMud
+  target: WGFloorFleshMarshMud
+
+- type: tileAlias
+  id: WFFloorFleshRiverBank
+  target: WGFloorFleshRiverBank
+
+- type: tileAlias
+  id: WFFloorFleshScab
+  target: WGFloorFleshScab
+
+- type: tileAlias
+  id: WFFloorMerakDarkSand
+  target: WGFloorMerakDarkSand
+
+- type: tileAlias
+  id: WFFloorMerakDesertCracked
+  target: WGFloorMerakDesertCracked
+
+- type: tileAlias
+  id: WFFloorMerakDesertGravel
+  target: WGFloorMerakDesertGravel
+
+- type: tileAlias
+  id: WFFloorMerakDesertSandrock
+  target: WGFloorMerakDesertSandrock
+
+- type: tileAlias
+  id: WFFloorMerakDuneSand
+  target: WGFloorMerakDuneSand
+
+- type: tileAlias
+  id: WFFloorMerakGlassSand
+  target: WGFloorMerakGlassSand
+
+- type: tileAlias
+  id: WFFloorMerakGoldSand
+  target: WGFloorMerakGoldSand
+
+- type: tileAlias
+  id: WFFloorMerakOasisDirt
+  target: WGFloorMerakOasisDirt
+
+- type: tileAlias
+  id: WFFloorMerakOasisGrass
+  target: WGFloorMerakOasisGrass
+
+- type: tileAlias
+  id: WFFloorMerakPaleSand
+  target: WGFloorMerakPaleSand
+
+- type: tileAlias
+  id: WFFloorMerakRedDesertRock
+  target: WGFloorMerakRedDesertRock
+
+- type: tileAlias
+  id: WFFloorMerakRedDesertRockCracked
+  target: WGFloorMerakRedDesertRockCracked
+
+- type: tileAlias
+  id: WFFloorMerakRedDesertSand
+  target: WGFloorMerakRedDesertSand
+
+- type: tileAlias
+  id: WFFloorThrasciasClearIce
+  target: WGFloorThrasciasClearIce
+
+- type: tileAlias
+  id: WFFloorThrasciasClearIceSmooth
+  target: WGFloorThrasciasClearIceSmooth
+
+- type: tileAlias
+  id: WFFloorThrasciasCrystalIce
+  target: WGFloorThrasciasCrystalIce
+
+- type: tileAlias
+  id: WFFloorThrasciasFrozenDirt
+  target: WGFloorThrasciasFrozenDirt
+
+- type: tileAlias
+  id: WFFloorThrasciasLakeIce
+  target: WGFloorThrasciasLakeIce
+
+- type: tileAlias
+  id: WFFloorThrasciasPackIce
+  target: WGFloorThrasciasPackIce
+
+- type: tileAlias
+  id: WFFloorThrasciasRimeIce
+  target: WGFloorThrasciasRimeIce
+
+- type: tileAlias
+  id: WFFloorThrasciasRoughIce
+  target: WGFloorThrasciasRoughIce
+
+- type: tileAlias
+  id: WFFloorThrasciasSnowCalm
+  target: WGFloorThrasciasSnowCalm
+
+- type: tileAlias
+  id: WFFloorThrasciasSnowDug
+  target: WGFloorThrasciasSnowDug
+
+- type: tileAlias
+  id: WFFloorThrasciasSnowRough
+  target: WGFloorThrasciasSnowRough
+
+- type: tileAlias
+  id: WFFloorVerdaForestGrass
+  target: WGFloorVerdaForestGrass
+
+- type: tileAlias
+  id: WFFloorVerdaMarshGrass
+  target: WGFloorVerdaMarshGrass
+
+- type: tileAlias
+  id: WFFloorVerdaMarshMud
+  target: WGFloorVerdaMarshMud
+
+- type: tileAlias
+  id: WFFloorVerdaMeadowGrass
+  target: WGFloorVerdaMeadowGrass
+
+- type: tileAlias
+  id: WFFloorVerdaPondMud
+  target: WGFloorVerdaPondMud
+
+- type: tileAlias
+  id: WFFloorVerdaScarAshDirt
+  target: WGFloorVerdaScarAshDirt
+
+- type: tileAlias
+  id: WFFloorVerdaScarDirt
+  target: WGFloorVerdaScarDirt
+
+- type: tileAlias
+  id: WFFloorVerdaScarDirtPatch
+  target: WGFloorVerdaScarDirtPatch
+
+- type: tileAlias
+  id: WFFloorVerdaScarWiltedGrass
+  target: WGFloorVerdaScarWiltedGrass
+
+- type: tileAlias
+  id: WFFloorVerdaShoreSand
+  target: WGFloorVerdaShoreSand
+
+- type: tileAlias
+  id: WFFloorVerdaSnowRough
+  target: WGFloorVerdaSnowRough
+
+- type: tileAlias
+  id: WFFloorVerdaWaterJelly
+  target: WGFloorVerdaWaterJelly
+
+- type: tileAlias
+  id: WFRoadFloorDarkPavement
+  target: WGRoadFloorDarkPavement
+
+- type: tileAlias
+  id: WFRoadFloorDirt
+  target: WGRoadFloorDirt

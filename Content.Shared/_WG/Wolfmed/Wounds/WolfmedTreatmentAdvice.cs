@@ -111,7 +111,7 @@ public static class WolfmedTreatmentAdvice
     /// </summary>
     public static string Slug(string id)
     {
-        var start = id.Length > 2 && id[0] == 'W' && id[1] == 'F' && char.IsUpper(id[2]) ? 2 : 0;
+        var start = id.Length > 2 && id[0] == 'W' && id[1] == 'G' && char.IsUpper(id[2]) ? 2 : 0;
         // StringBuilder, not string += char: that compiles to a ReadOnlySpan<char> concat the client sandbox rejects.
         var result = new System.Text.StringBuilder(id.Length + 8);
         for (var i = start; i < id.Length; i++)

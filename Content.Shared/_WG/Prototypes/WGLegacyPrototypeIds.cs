@@ -1,4 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
+using Content.Shared.Humanoid.Markings;
 using Content.Shared.Preferences;
 
 namespace Content.Shared._WG.Prototypes;
@@ -87,7 +89,11 @@ public static class WGLegacyPrototypeIds
         ["ProtoVulp"] = "Protogen",
     };
 
-    /// <summary>Moves a profile's species and loadouts off renamed ids; run before it is validated.</summary>
+    // Written apart so Tools/_WG/Prototypes/wg_prefix_rename.py leaves the old prefix alone.
+    private const string OldPrefix = "W" + "F";
+    private static readonly Regex OldPrefixed = new($"(?<![A-Za-z0-9]){OldPrefix}(?=[A-Z])", RegexOptions.Compiled);
+
+    /// <summary>Moves a profile's species, loadouts and appearance off renamed ids; run before it is validated.</summary>
     public static void ResolveProfile(HumanoidCharacterProfile profile)
     {
         profile.Species = Resolve(Species, profile.Species.Id);
@@ -99,12 +105,32 @@ public static class WGLegacyPrototypeIds
                     loadout.Prototype = Resolve(Loadouts, loadout.Prototype.Id);
             }
         }
+
+        var appearance = profile.Appearance;
+        appearance.HairStyleId = Prefix(appearance.HairStyleId);
+        appearance.FacialHairStyleId = Prefix(appearance.FacialHairStyleId);
+        for (var i = 0; i < appearance.Markings.Count; i++)
+        {
+            var marking = appearance.Markings[i];
+            var id = Prefix(marking.MarkingId);
+            if (id == marking.MarkingId)
+                continue;
+
+            appearance.Markings[i] = new Marking(id, marking.MarkingColors) { Visible = marking.Visible, Forced = marking.Forced };
+        }
     }
 
-    /// <summary>The current id for an old one from the table; any other id, or null, is returned unchanged.</summary>
+    /// <summary>The current id for an old one from the table or under the old prefix; any other id, or null, is returned unchanged.</summary>
     [return: NotNullIfNotNull(nameof(id))]
     public static string? Resolve(IReadOnlyDictionary<string, string> table, string? id)
     {
-        return id != null && table.TryGetValue(id, out var current) ? current : id;
+        return id != null && table.TryGetValue(id, out var current) ? current : Prefix(id);
+    }
+
+    /// <summary>The text with every id under the old Wolfgate prefix moved to the current one (WGCanine).</summary>
+    [return: NotNullIfNotNull(nameof(text))]
+    public static string? Prefix(string? text)
+    {
+        return text == null || !text.Contains(OldPrefix) ? text : OldPrefixed.Replace(text, "WG");
     }
 }
