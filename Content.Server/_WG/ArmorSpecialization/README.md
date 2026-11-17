@@ -79,6 +79,7 @@ in a fight and not only on paper. Each is one component on the suit, and each re
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WG/ArmorSpecialization/WGArmorSpecializationTest.cs`](../../../Content.IntegrationTests/Tests/_WG/ArmorSpecialization/WGArmorSpecializationTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/ArmorSpecialization/WGSpallLinerSyntheticTest.cs`](../../../Content.IntegrationTests/Tests/_WG/ArmorSpecialization/WGSpallLinerSyntheticTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/ArmorSpecialization/WGVestSpecializationTest.cs`](../../../Content.IntegrationTests/Tests/_WG/ArmorSpecialization/WGVestSpecializationTest.cs)
 
 ### Prototypes

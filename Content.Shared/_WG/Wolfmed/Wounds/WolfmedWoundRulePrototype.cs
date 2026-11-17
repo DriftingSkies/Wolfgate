@@ -89,4 +89,8 @@ public sealed partial class WolfmedEmbeddedSpec
     /// <summary>A wound whose armour ward also stops this object staying in, so a spall liner covers a chassis breach.</summary>
     [DataField]
     public ProtoId<WoundPrototype>? WardedAs;
+
+    /// <summary>Chance the object stays in once the wound is made, so the wound can open on every hit while the object only sometimes lodges.</summary>
+    [DataField]
+    public float Chance = 1f;
 }

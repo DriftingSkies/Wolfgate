@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Shared._Onyx.Wounds;
 using Content.Shared._WG.Wolfmed.Armor;
 using Content.Shared._WG.Wolfmed.Wounds;
@@ -49,7 +50,8 @@ public sealed partial class WGArmorSpecializationSystem : EntitySystem
 
     private void OnWoundRuleAttempt(Entity<WGWoundWardComponent> ent, ref InventoryRelayedEvent<WolfmedWoundRuleAttemptEvent> args)
     {
-        if (!WolfmedArmorCoverage.Covers(EntityManager, ent.Owner, args.Args.Part))
+        // A spall liner catches what would stay in anywhere on the body, not just under the plates.
+        if (!HoldsObject(args.Args.Wound) && !WolfmedArmorCoverage.Covers(EntityManager, ent.Owner, args.Args.Part))
             return;
 
         if (ent.Comp.Blocks.Contains(args.Args.Wound) ||
@@ -58,6 +60,9 @@ public sealed partial class WGArmorSpecializationSystem : EntitySystem
         else if (ent.Comp.Hardens.TryGetValue(args.Args.Wound, out var multiplier))
             args.Args.MinDamageMultiplier = MathF.Max(args.Args.MinDamageMultiplier, multiplier);
     }
+
+    private bool HoldsObject(ProtoId<WoundPrototype> wound) =>
+        _prototypes.TryIndex(wound, out var proto) && proto.Behaviors.Any(b => b is WolfmedClearedWoundBehavior);
 
     private void OnSeverAttempt(Entity<WGLimbLockComponent> ent, ref InventoryRelayedEvent<WolfmedSeverAttemptEvent> args)
     {

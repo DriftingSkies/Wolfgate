@@ -81,6 +81,7 @@
     maxTotal: 6
     wardedAs: WGWolfmedShrapnelWound
 
+# The round stays in on the same odds as in flesh (WGWolfmedRuleLodgedRound/Heavy); the breach opens every time.
 - type: wolfmedWoundRule
   id: WGWolfmedRuleMechBreachRound
   priority: 92
@@ -88,6 +89,7 @@
   damageTypes: [ Piercing ]
   causes: [ Projectile ]
   minDamage: 8
+  maxDamage: 18
   severityMultiplier: 0.8
   minSeverity: 6
   replacesDefault: false
@@ -96,6 +98,24 @@
   embedded:
     item: WGWolfmedSpentRound
     wardedAs: WGWolfmedLodgedRoundWound
+    chance: 0.2
+
+- type: wolfmedWoundRule
+  id: WGWolfmedRuleMechBreachRoundHeavy
+  priority: 92
+  wound: WGWolfmedBreachWound
+  damageTypes: [ Piercing ]
+  causes: [ Projectile ]
+  minDamage: 18.01
+  severityMultiplier: 0.8
+  minSeverity: 6
+  replacesDefault: false
+  continue: true
+  capabilities: [ Mechanical ]
+  embedded:
+    item: WGWolfmedSpentRound
+    wardedAs: WGWolfmedLodgedRoundWound
+    chance: 0.35
 
 # Everything that is not a round or a fragment: a blade, a claw, a thrown crate, a vent. Nothing stays in.
 - type: wolfmedWoundRule
