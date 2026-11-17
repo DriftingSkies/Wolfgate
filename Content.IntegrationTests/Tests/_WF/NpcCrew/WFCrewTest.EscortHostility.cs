@@ -166,11 +166,13 @@ public sealed partial class WFCrewTest
         var leader = await CreateDeck(new Vector2(500, 500), 7, true);
         var deck = await CreateDeck(new Vector2(600, 500), 7, true);
         var attacker = await CreateDeck(new Vector2(700, 500), 7, true);
-        EntityUid gunner = default, weapon = default, wall = default;
+        EntityUid gunner = default, weapon = default, wall = default, stranger = default;
         await Server.WaitPost(() =>
         {
             SEntMan.EnsureComponent<ShuttleComponent>(deck);
             SEntMan.SpawnAtPosition("WFTestGunnery", new EntityCoordinates(deck, new Vector2(3.5f)));
+            stranger = SEntMan.SpawnAtPosition("MobHuman", new EntityCoordinates(attacker, new Vector2(3.5f)));
+            SEntMan.RemoveComponent<NpcFactionMemberComponent>(stranger);
             var pilot = ConvoyCrew(deck, "WFCrewPilot", "defender", new Vector2(1.5f));
             Server.System<WFPilotDutySystem>().Escort(pilot, leader, 100);
             gunner = Server.System<WFCrewSystem>().SpawnCrewman(WFCrewRoles.Gunner,
@@ -196,6 +198,7 @@ public sealed partial class WFCrewTest
             Assert.That(SEntMan.GetComponent<ShipTargetingComponent>(gunner).Target.EntityId, Is.EqualTo(attacker));
             var protection = Server.System<WFCrewFriendlyFireSystem>();
             Assert.That(protection.Protected(weapon, wall), Is.False);
+            Assert.That(protection.Protected(weapon, stranger), Is.False, "A hostile ship does not shelter those aboard.");
             Assert.That(protection.Protected(weapon, leader), Is.True, "The uncrewed escorted ship is protected without sharing a faction.");
             var before = SEntMan.GetComponent<DamageableComponent>(wall).TotalDamage;
             var damage = new DamageSpecifier { DamageDict = { ["Piercing"] = 5 } };
@@ -209,6 +212,8 @@ public sealed partial class WFCrewTest
         {
             Assert.That(SEntMan.HasComponent<ShipTargetingComponent>(gunner), Is.False);
             Assert.That(Server.System<WFCrewFriendlyFireSystem>().Protected(weapon, wall), Is.True);
+            Assert.That(Server.System<WFCrewFriendlyFireSystem>().Protected(weapon, stranger), Is.True,
+                "A round that passes a hull spares whoever stands behind it.");
         });
     }
 }

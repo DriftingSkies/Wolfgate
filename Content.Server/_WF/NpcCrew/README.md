@@ -138,7 +138,9 @@ A gunner's guns hold fire while any ship its crew does not count as hostile lies
 a company whose `wfStanding` has `recklessFire` (the Reavers) fires through anything.
 Crew-operated cannon rounds also protect allies and allied hulls, retaining their firing origin after a gunner dies
 or a player takes over. Explicit Attack orders, incoming fire and hostile docking permit retaliation against
-the targeted ship, including a normally friendly company; escorts in the same formation remain protected. Before a
+the targeted ship, including a normally friendly company; escorts in the same formation remain protected. A cannon
+round that passes an allied hull spares everyone aboard it too, attackers included, so nobody is shot through a
+standing wall once their ship stops counting as hostile. Before a
 hit from a vessel of another faction counts as an attack, the crew ask (`WFCrewFriendlyFireQueryEvent`) whether anyone
 vouches for it as a friend of the ship; the encounter it is fighting in does, by alliance or by whom it has been
 shooting, and a friend's fire is let pass outright.

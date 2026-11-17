@@ -44,9 +44,7 @@ public sealed class WFGridMomentumTest
             var origin = xforms.GetWorldPosition(grid);
             xforms.SetMapCoordinates(mob, new MapCoordinates(origin + new Vector2(2.5f, 0.5f), map.MapId));
         });
-        await HoldShip(server, physics, grid, shipVelocity, 10);
-        // The ship turns back once the mob is off it: the mob keeps the speed it left with.
-        await HoldShip(server, physics, grid, -shipVelocity, 50);
+        await HoldShip(server, physics, grid, shipVelocity, 60);
 
         await server.WaitAssertion(() =>
         {
@@ -54,6 +52,23 @@ public sealed class WFGridMomentumTest
             var mobVelocity = entMan.GetComponent<PhysicsComponent>(mob).LinearVelocity;
             Assert.That((mobVelocity - shipVelocity).Length(), Is.LessThan(0.1f),
                 $"A mob off a moving grid must keep drifting with it, not brake against the map; it moves at {mobVelocity}.");
+        });
+
+        // The ship turns back and leaves the mob behind: on its own, the mob stops being driven at the ship's old speed.
+        await HoldShip(server, physics, grid, -shipVelocity, 40);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entMan.GetComponent<Content.Shared._WF.GridMomentum.WFGridMomentumComponent>(mob).Frame, Is.EqualTo(Vector2.Zero),
+                "A mob far from the grid it left still carries that grid's velocity.");
+        });
+
+        // It bumps into something that stops it, and nothing drives it back up to speed.
+        await server.WaitPost(() => physics.SetLinearVelocity(mob, Vector2.Zero));
+        await server.WaitRunTicks(30);
+        await server.WaitAssertion(() =>
+        {
+            var mobVelocity = entMan.GetComponent<PhysicsComponent>(mob).LinearVelocity;
+            Assert.That(mobVelocity.Length(), Is.LessThan(0.1f), $"A stopped mob was driven back up to {mobVelocity}.");
         });
 
         await pair.CleanReturnAsync();

@@ -4,7 +4,9 @@ A floating mob that steps off a moving ship keeps the ship's momentum. Upstream 
 push-off acceleration to the mob's map velocity, so leaving a ship's tiles braked the mob toward a standstill and the
 ship ran on without it. Off a grid, `SharedMoverController` now does both relative to the velocity the grid had where
 the mob left it (`WfGridFrame`), taken once as it floats off and kept on `WFGridMomentumComponent` until it stands on
-a grid again. Reading a nearby ship's velocity live instead dragged floating mobs along with any ship that sped up or
+a grid again. The velocity is dropped once the mob is more
+than 4 m from that grid, or the grid is gone, and it slows against the map as upstream has it: kept for good, it drove
+the mob on at the ship's speed through anything it hit or tried to hold on to. Reading a nearby ship's velocity live instead dragged floating mobs along with any ship that sped up or
 turned beside them, and mispredicted on the client.
 
 <!-- WOLFGATE-GENERATED START -->

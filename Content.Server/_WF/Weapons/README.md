@@ -18,11 +18,31 @@ keeps a grid-held entity in that grid's frame even off its tiles. Before, a shel
 queued in map coordinates and spawned a tick later, so a ship closing faster than a wall's width per tick carried the
 blast inside an intact wall. `WFHullImpactTest` covers flat and diagonal walls at closing speeds up to 40 m/s.
 
-The sweep also casts each moving grid near a round's path with the round's velocity relative to that grid
-(`ProjectileSystem.GridSweep.cs`). A single ray in the round's own frame covers only its own travel, so a hull closing
-faster than its thickness per tick could pass the round between two ticks and leave it inside the ship. The soonest hit
-across all rays wins. `ShellStopsAtClosingHullFromAnyRange` fires from starts across a whole tick of closing at 40 and 60
-m/s.
+The sweep is `ProjectileSystem.Sweep.cs`; upstream's own stays in `Update` for merges and never runs. It runs on the
+tick's first physics substep, so a round fired by any system this tick is swept before it first moves. Each moving grid
+near a round's path gets a ray of its own, at the round's velocity relative to that grid: a single ray in the round's
+frame covers only its own travel, so a hull closing faster than its thickness per tick could pass the round between two
+ticks. The soonest hit across all rays wins, and the round is held on it in the struck grid's frame.
+
+A round a deflector field lets through is swept again from the field in the same tick. Before, the sweep ended at the
+field and the round flew a whole tick unswept, up to 10 m, which put shells inside hulls whose walls all stood.
+`WFHullTunnelTest` fires rounds and turret shots from every bearing at a sealed hull that is still, flying, turning or
+shielded; `ShellStopsAtClosingHullFromAnyRange` covers every phase of the sweep at 40 and 60 m/s.
+
+Live runs `physics.target_minimum_tickrate` 30, one physics step a tick. The hold creeps a metre a tick, which in one
+step can carry the round out of the far side of the wall: it then hit whoever stood behind, or its fuse went off
+inside. `WFHullTunnelTest` runs at both 60 and 30.
+
+A held round has `WFSweepHoldComponent`: it can hit nothing but what it was held on, so the creep cannot reach someone
+standing behind a window, and if the physics contact has not landed by the next tick the sweep sets off its warhead and
+lands the hit itself (`HeldRoundLandsItsHitWithoutAContact`).
+
+Flak shrapnel (`Shrapnel90mmFlak`) has a 4 m hit circle for catching missiles, which also reached people behind a hull.
+`WFProximityShrapnelComponent` keeps the circle for rounds and things adrift; anything aboard a grid has to be within
+its `Reach` (`FlakShrapnelStopsAtTheHull`).
+
+`physics.broadphase_margin` must stay 0: at 0.1 every 90 mm HE shell in `WFHullTunnelTest` damages what stands behind
+the wall it hits, while 20 mm rounds are still stopped.
 
 A ship gun with `WFLoaderAutoFeed` refills from its linked ammo loaders after each shot, so a single-round gun such as
 the CHARON keeps firing without a click in the loader window per slug. `WFLoaderAutoFeedTest` covers the CHARON.
@@ -38,7 +58,10 @@ predicted on their own client; this only cuts the audio entities other players r
 
 ### Server
 
-- [`Content.Server/_WF/Weapons/Projectiles/ProjectileSystem.GridSweep.cs`](Projectiles/ProjectileSystem.GridSweep.cs)
+- [`Content.Server/_WF/Weapons/Projectiles/ProjectileSystem.Sweep.cs`](Projectiles/ProjectileSystem.Sweep.cs)
+- [`Content.Server/_WF/Weapons/Projectiles/WFProximityShrapnelComponent.cs`](Projectiles/WFProximityShrapnelComponent.cs)
+- [`Content.Server/_WF/Weapons/Projectiles/WFProximityShrapnelSystem.cs`](Projectiles/WFProximityShrapnelSystem.cs)
+- [`Content.Server/_WF/Weapons/Projectiles/WFSweepHoldComponent.cs`](Projectiles/WFSweepHoldComponent.cs)
 - [`Content.Server/_WF/Weapons/Ranged/Components/WFGunshotAudioThrottleComponent.cs`](Ranged/Components/WFGunshotAudioThrottleComponent.cs)
 - [`Content.Server/_WF/Weapons/Ranged/Systems/GunSystem.Prediction.cs`](Ranged/Systems/GunSystem.Prediction.cs)
 - [`Content.Server/_WF/Weapons/Ranged/Systems/GunSystem.WFGunshotAudio.cs`](Ranged/Systems/GunSystem.WFGunshotAudio.cs)
@@ -66,6 +89,7 @@ predicted on their own client; this only cuts the audio entities other players r
 - [`Content.IntegrationTests/Tests/_WF/Weapons/ShieldSidearmTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Weapons/ShieldSidearmTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Weapons/WFGunPredictionTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Weapons/WFGunPredictionTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Weapons/WFHullImpactTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Weapons/WFHullImpactTest.cs)
+- [`Content.IntegrationTests/Tests/_WF/Weapons/WFHullTunnelTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Weapons/WFHullTunnelTest.cs)
 - [`Content.IntegrationTests/Tests/_WF/Weapons/WFLoaderAutoFeedTest.cs`](../../../Content.IntegrationTests/Tests/_WF/Weapons/WFLoaderAutoFeedTest.cs)
 
 ### Prototypes
@@ -195,17 +219,10 @@ predicted on their own client; this only cuts the audio entities other players r
   - one report per projectile is an anti-abuse gate, not just a dedupe. Collides never raises
 - [`Content.Server/Explosion/EntitySystems/ExplosionSystem.cs`](../../Explosion/EntitySystems/ExplosionSystem.cs): an entity held on a grid keeps that grid's frame even just off its tiles.
 - [`Content.Server/Projectiles/ProjectileSystem.cs`](../../Projectiles/ProjectileSystem.cs)
-  - the sweep leaves contained projectiles alone
+  - the sweep subscribes to the physics substep
+  - the hit landed, so the sweep need not land it
   - a handled hit returns before the shared Dirty, so network the spent flag here
-  - an item that is only a projectile once shot is not swept while unfired or inside a container
-  - a held hit velocity is restored even when the projectile has no relative speed
-  - sweep each moving grid with the velocity relative to it, so a closing hull is not skipped
-  - the first hit is the soonest, as each grid's ray has its own direction and speed
-  - track the soonest hit and its ray
-  - sweep hits name their entity directly
-  - the soonest hit, along its own ray
-  - a grid's hit lies along the ray relative to it, at the grid's place this tick
-  - hold every hit on the struck grid, so an impact blast moves with the ship it hit.
+  - the sweep is ProjectileSystem.Sweep.cs, run on the first physics substep
 - [`Content.Server/Weapons/Ranged/Systems/GunSystem.cs`](../../Weapons/Ranged/Systems/GunSystem.cs)
   - seeded so the shooter's client predicts the same spread
   - cap networked gunshot audio for guns above 5 shots/s
@@ -243,6 +260,7 @@ predicted on their own client; this only cuts the audio entities other players r
 - [`Resources/Prototypes/_Mono/Entities/Objects/Specific/Planet/flora.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Specific/Planet/flora.yml): material bullet impacts
 - [`Resources/Prototypes/_Mono/Entities/Objects/Weapons/Guns/SMGs/nt.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Weapons/Guns/SMGs/nt.yml): a full-auto SMG is no sidearm, so the revolver base's shield exemption is switched off
 - [`Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/charon_launcher.yml`](../../../Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/charon_launcher.yml): refill from linked ammo loaders after each shot
+- [`Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/projectiles.yml`](../../../Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/projectiles.yml): the wide circle is for rounds and things adrift, not for people behind a hull
 - [`Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/standardlarge_kinetic.yml`](../../../Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/Kinetic/standardlarge_kinetic.yml): refill from linked ammo loaders after each shot
 - [`Resources/Prototypes/_Mono/Entities/Structures/Machines/lathe.yml`](../../../Resources/Prototypes/_Mono/Entities/Structures/Machines/lathe.yml): give judges attachments
 - [`Resources/Prototypes/_Mono/Loadouts/Contractor/gun.yml`](../../../Resources/Prototypes/_Mono/Loadouts/Contractor/gun.yml)

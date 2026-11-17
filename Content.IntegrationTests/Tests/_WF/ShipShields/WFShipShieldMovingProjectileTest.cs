@@ -125,7 +125,7 @@ public sealed class WFShipShieldMovingProjectileTest
             if (entities.TryGetComponent<ExplosiveComponent>(projectileUid, out var explosive))
                 expectedDamage += explosive.TotalIntensity * (float) server.ResolveDependency<IPrototypeManager>()
                     .Index(explosive.ExplosionType).DamagePerIntensity.GetTotal();
-            entities.System<ProjectileSystem>().Update(1f / 30f);
+            entities.System<ProjectileSystem>().SweepProjectiles(1f / 30f);
 
             Assert.That(projectile.ProjectileSpent, Is.True, "A confirmed shield ray hit must not depend on a later physics contact.");
             Assert.That(emitter.Damage, Is.EqualTo(expectedDamage).Within(0.01f));
@@ -134,7 +134,7 @@ public sealed class WFShipShieldMovingProjectileTest
             var offlineShot = entities.SpawnEntity(prototype, start);
             physics.SetLinearVelocity(offlineShot, new Vector2(speed, 0f));
             physics.WakeBody(offlineShot);
-            entities.System<ProjectileSystem>().Update(1f / 30f);
+            entities.System<ProjectileSystem>().SweepProjectiles(1f / 30f);
             Assert.That(entities.GetComponent<ProjectileComponent>(offlineShot).ProjectileSpent, Is.False,
                 "A non-collidable offline shield must not intercept a swept shot.");
             Assert.That(emitter.Damage, Is.EqualTo(expectedDamage).Within(0.01f));

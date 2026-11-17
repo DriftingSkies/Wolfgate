@@ -11,7 +11,11 @@ public sealed partial class WFGridMomentumComponent : Component
     [DataField, AutoNetworkedField]
     public EntityUid? Grid;
 
-    /// <summary>The map velocity of the grid under the mob as it left; off a grid, it slows and pushes off relative to this.</summary>
+    /// <summary>The grid the mob floated off and is still beside.</summary>
+    [DataField, AutoNetworkedField]
+    public EntityUid? Left;
+
+    /// <summary>The map velocity of the grid under the mob as it left; beside that grid, it slows and pushes off relative to this.</summary>
     [DataField, AutoNetworkedField]
     public Vector2 Frame;
 }

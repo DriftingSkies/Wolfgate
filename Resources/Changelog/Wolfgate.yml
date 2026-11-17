@@ -7862,3 +7862,20 @@ Entries:
   id: 100499
   time: '2026-11-16T20:42:03.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/709
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Ship gun rounds and shells no longer pass through standing walls and
+        windows to hit people or explode inside.
+    - type: Fix
+      message: Flak shrapnel no longer cuts people behind a hull.
+    - type: Fix
+      message: A deflector shield no longer lets shells land inside the ship.
+    - type: Fix
+      message: >-
+        NPC ship guns no longer shoot people through the walls of a ship they
+        treat as friendly.
+  id: 100500
+  time: '2026-11-17T07:42:55.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/710
