@@ -1,4 +1,4 @@
-using Content.Server._WF.Wolfmed.Life; // WOLFGATE(Wolfmed): GAMEPLAY: wound-host overheating below.
+using Content.Server._WG.Wolfmed.Life; // WOLFGATE(Wolfmed): GAMEPLAY: wound-host overheating below.
 using Content.Server.Temperature.Components;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Mobs;

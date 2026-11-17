@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Examine;
 using Content.Shared.Stacks;
 using Robust.Shared.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Shared.Construction.Steps
 {

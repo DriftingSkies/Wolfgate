@@ -1,6 +1,6 @@
 using Content.Shared.Dragon;
 using Robust.Shared.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Dragon;
 

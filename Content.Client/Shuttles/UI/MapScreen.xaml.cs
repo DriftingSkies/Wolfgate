@@ -3,7 +3,7 @@ using System.Numerics;
 using Content.Client.Shuttles.Systems;
 using Content.Shared._Mono.Detection;
 using Content.Shared._NF.Shuttles.Components;
-using Content.Shared._WF.Planets; // WOLFGATE(Planets)
+using Content.Shared._WG.Planets; // WOLFGATE(Planets)
 using Content.Shared.Shuttles.BUIStates;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.Shuttles.Systems;
@@ -121,7 +121,7 @@ public sealed partial class MapScreen : BoxContainer
             MapRadar.ShowBeacons = args.Pressed;
         };
 
-        WfInitDestinationSearch(); // WOLFGATE(Shuttles): search box for the destination register
+        WgInitDestinationSearch(); // WOLFGATE(Shuttles): search box for the destination register
     }
 
     public void UpdateState(ShuttleMapInterfaceState state)
@@ -134,7 +134,7 @@ public sealed partial class MapScreen : BoxContainer
         _ftlTime = state.FTLTime;
         MapRadar.InFtl = true;
         MapFTLState.Text = Loc.GetString($"shuttle-console-ftl-state-{_state.ToString()}");
-        WfUpdateFtlDrive(state.FtlDrive); // WOLFGATE(Shuttles): the drive status decides whether the FTL button can be used
+        WgUpdateFtlDrive(state.FtlDrive); // WOLFGATE(Shuttles): the drive status decides whether the FTL button can be used
 
         //frontier - we only allow pre-approved vessels to FTL
         if (!_entManager.HasComponent<ShuttleFTLComponent>(_shuttleEntity))
@@ -195,9 +195,9 @@ public sealed partial class MapScreen : BoxContainer
     private void SetFTLAllowed(bool value)
     {
         // WOLFGATE(Shuttles) START: without a powered drive the FTL button stays off and its preview is released
-        if (value && WfFtlDriveBlocked)
+        if (value && WgFtlDriveBlocked)
         {
-            WfBlockFtl();
+            WgBlockFtl();
             return;
         }
         // WOLFGATE END
@@ -289,7 +289,7 @@ public sealed partial class MapScreen : BoxContainer
             AddMapObject(mapObj.mapId, mapObj.mapobj);
         }
         _pendingMapObjects.Clear();
-        WfFilterDestinations(); // WOLFGATE(Shuttles): reapply the destination search to the new list
+        WgFilterDestinations(); // WOLFGATE(Shuttles): reapply the destination search to the new list
 
         _nextPing = _timing.CurTime + _pingCooldown;
         MapRebuildButton.Disabled = true;
@@ -352,7 +352,7 @@ public sealed partial class MapScreen : BoxContainer
                 mapName = Loc.GetString("shuttle-console-unknown");
             }
 
-            mapName = _entManager.System<WFMapLabelSystem>().Label(mapUid, mapMetadata.EntityName); // WOLFGATE(Planets): sector space, surfaces and levels say what they are
+            mapName = _entManager.System<WGMapLabelSystem>().Label(mapUid, mapMetadata.EntityName); // WOLFGATE(Planets): sector space, surfaces and levels say what they are
 
             var heading = new CollapsibleHeading(mapName);
 
@@ -445,7 +445,7 @@ public sealed partial class MapScreen : BoxContainer
                 _pendingMapObjects.Add((mapComp.MapId, beacon));
             }
 
-            WfAddEncounters(mapComp.MapId, mapUid); // WOLFGATE(Encounters): list encounters among the sector objects
+            WgAddEncounters(mapComp.MapId, mapUid); // WOLFGATE(Encounters): list encounters among the sector objects
 
             HyperspaceDestinations.AddChild(mapButton);
 
@@ -535,7 +535,7 @@ public sealed partial class MapScreen : BoxContainer
             Text = mapObj.Name,
             HorizontalExpand = true,
         };
-        WfFitMapObject(gridButton, mapObj.Name); // WOLFGATE(Shuttles): long names clip instead of running out of the register
+        WgFitMapObject(gridButton, mapObj.Name); // WOLFGATE(Shuttles): long names clip instead of running out of the register
 
         var gridContainer = new BoxContainer()
         {

@@ -192,8 +192,8 @@ public sealed partial class ShuttleSystem
             if (ourTiles == 0 || otherTiles == 0)
                 continue;
 
-            var wfCollision = new Content.Server._WF.NpcCrew.WFShipCollisionEvent(args.OurEntity, args.OtherEntity, ourVelocity.Length(), otherVelocity.Length(), jungleDiff); // WOLFGATE(NpcCrew): crews take a ramming for an attack
-            RaiseLocalEvent(ref wfCollision); // WOLFGATE(NpcCrew)
+            var wgCollision = new Content.Server._WG.NpcCrew.WGShipCollisionEvent(args.OurEntity, args.OtherEntity, ourVelocity.Length(), otherVelocity.Length(), jungleDiff); // WOLFGATE(NpcCrew): crews take a ramming for an attack
+            RaiseLocalEvent(ref wgCollision); // WOLFGATE(NpcCrew)
 
             Log.Info($"Shuttle impact of {ToPrettyString(args.OurEntity)} with {ToPrettyString(args.OtherEntity)}; our mass: {ourMass}, other: {otherMass}, velocity {jungleDiff}, impact point {worldPoint}");
 
@@ -315,8 +315,8 @@ public sealed partial class ShuttleSystem
             if (direction.LengthSquared() > minsq)
             {
                 _stuns.TryKnockdown(ent.Owner, knockdownTime, true);
-                var wfThrow = WfCapImpactThrow(direction); // WOLFGATE(ThrowSweep): thrown no faster than walls can stop
-                _throwing.TryThrow(ent, wfThrow, ent.Comp, Transform(ent), _projQuery, wfThrow.Length(), playSound: false); // WOLFGATE(ThrowSweep)
+                var wgThrow = WgCapImpactThrow(direction); // WOLFGATE(ThrowSweep): thrown no faster than walls can stop
+                _throwing.TryThrow(ent, wgThrow, ent.Comp, Transform(ent), _projQuery, wgThrow.Length(), playSound: false); // WOLFGATE(ThrowSweep)
             }
             else
             {
@@ -473,7 +473,7 @@ public sealed partial class ShuttleSystem
                 }
                 else
                 {
-                    var direction = WfCapImpactThrow(throwDirection * tileData.DistanceFactor); // WOLFGATE(ThrowSweep): thrown no faster than walls can stop
+                    var direction = WgCapImpactThrow(throwDirection * tileData.DistanceFactor); // WOLFGATE(ThrowSweep): thrown no faster than walls can stop
                     _throwing.TryThrow(localEnt, direction, physics, localEnt.Comp, _projQuery, direction.Length(), playSound: false);
                 }
             }

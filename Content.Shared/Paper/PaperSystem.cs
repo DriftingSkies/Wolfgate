@@ -15,7 +15,7 @@ using Content.Shared.Verbs; // Frontier
 using Content.Shared.Ghost;
 using Content.Shared.Mobs; // Frontier
 using Robust.Shared.Prototypes;
-using Content.Shared._WF.SafetyDepositBox.Components;
+using Content.Shared._WG.SafetyDepositBox.Components;
 
 namespace Content.Shared.Paper;
 

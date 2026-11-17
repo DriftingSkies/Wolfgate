@@ -38,7 +38,7 @@
       damageContainer: Box
     - type: Sprite
       noRot: true
-      sprite: _WF/Resprites/Wizden/Storage/Closets/misc-cardboard-box.rsi
+      sprite: _WG/Resprites/Wizden/Storage/Closets/misc-cardboard-box.rsi
       layers:
       - state: base
         map: ["enum.StorageVisualLayers.Base"]

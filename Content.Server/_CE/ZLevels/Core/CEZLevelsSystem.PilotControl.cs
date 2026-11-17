@@ -111,15 +111,15 @@ public sealed partial class CEZLevelsSystem
                 continue;
 
             // WOLFGATE(Planets) START: a console on planet ground has no ship to lift.
-            if (WfRefusesGroundInput(pilotUid, console, grid))
+            if (WgRefusesGroundInput(pilotUid, console, grid))
                 continue;
 
             // Grounded ascend engages liftoff; airborne input keeps CE's normal control.
-            if (WfHandleLiftoffPilotInput(pilotUid, console, grid, vertical))
+            if (WgHandleLiftoffPilotInput(pilotUid, console, grid, vertical))
                 continue;
 
             // WOLFGATE(Planets): descend from orbit enters the atmosphere only when no confirm is needed.
-            if (WfRefusesOrbitInput(pilotUid, console, grid, vertical))
+            if (WgRefusesOrbitInput(pilotUid, console, grid, vertical))
                 continue;
             // WOLFGATE END
 
@@ -127,7 +127,7 @@ public sealed partial class CEZLevelsSystem
                 Math.Clamp(_pilotVerticalInput.GetValueOrDefault(grid) + vertical, -1f, 1f);
         }
 
-        WfCollectLiftoffInputs(); // WOLFGATE(Planets): a console latch feeds the same CE takeoff spool and flight integrator.
+        WgCollectLiftoffInputs(); // WOLFGATE(Planets): a console latch feeds the same CE takeoff spool and flight integrator.
     }
 
     /// <summary>
@@ -185,7 +185,7 @@ public sealed partial class CEZLevelsSystem
             return 0f;
 
         return Math.Clamp(thrust / mass * VerticalThrustScale, 0f, MaxVerticalAccel) // WOLFGATE(Planets): the climb is scaled by the maneuvering factor below.
-            * WfManeuveringFactor(grid); // WOLFGATE(Planets): only thrust left after hovering can climb.
+            * WgManeuveringFactor(grid); // WOLFGATE(Planets): only thrust left after hovering can climb.
     }
 
     private void UpdateTakeoffSpool()
@@ -205,8 +205,8 @@ public sealed partial class CEZLevelsSystem
             // WOLFGATE(Planets) START: planetary lift replaces, rather than supplements, the station gravgen gate.
             // No gravgen, dumbass.
             // if (!TryComp<GravityComponent>(gridUid, out var gravity) || !gravity.Enabled)
-            if (WfIsPlanetFlight(gridUid)
-                    ? !WfHasVerticalLift(gridUid)
+            if (WgIsPlanetFlight(gridUid)
+                    ? !WgHasVerticalLift(gridUid)
                     : !TryComp<GravityComponent>(gridUid, out var gravity) || !gravity.Enabled)
                 continue;
             // WOLFGATE END
@@ -218,7 +218,7 @@ public sealed partial class CEZLevelsSystem
             var grounded = HasGroundUnderFootprint((gridUid, grid), mapUid.Value);
 
             // You can't sink through the ground, and there has to be a gap below.
-            if (down && (grounded || !TryMapDown(mapUid.Value, out var wfBelow) || WfClosedToHulls(wfBelow))) // WOLFGATE(Planets): pilots can't descend below a planet's ground.
+            if (down && (grounded || !TryMapDown(mapUid.Value, out var wgBelow) || WgClosedToHulls(wgBelow))) // WOLFGATE(Planets): pilots can't descend below a planet's ground.
                 continue;
 
             // Going up needs SOME adjacent gap to become airborne in.

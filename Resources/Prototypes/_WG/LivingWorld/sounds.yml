@@ -1,0 +1,143 @@
+# Black Mesa plant sounds, imported by Tools/_WG/LivingWorld/import_bms.py. Point a plant's sound fields at these.
+
+- type: soundCollection
+  id: WGFloraLash
+  files:
+  - /Audio/_WG/LivingWorld/lash/tent_strike1.ogg
+  - /Audio/_WG/LivingWorld/lash/tent_strike2.ogg
+
+- type: soundCollection
+  id: WGFloraSwoosh
+  files:
+  - /Audio/_WG/LivingWorld/lash/tent_swoosh1.ogg
+  - /Audio/_WG/LivingWorld/lash/tent_swoosh2.ogg
+  - /Audio/_WG/LivingWorld/lash/tent_swoosh3.ogg
+
+- type: soundCollection
+  id: WGFloraGrab
+  files:
+  - /Audio/_WG/LivingWorld/grab/barnacle_tongue_pull1.ogg
+  - /Audio/_WG/LivingWorld/grab/barnacle_pull1.ogg
+  - /Audio/_WG/LivingWorld/grab/barnacle_pull2.ogg
+
+- type: soundCollection
+  id: WGFloraGulp
+  files:
+  - /Audio/_WG/LivingWorld/grab/barnacle_gulp1.ogg
+  - /Audio/_WG/LivingWorld/grab/barnacle_bark1.ogg
+
+- type: soundCollection
+  id: WGFloraSpit
+  files:
+  - /Audio/_WG/LivingWorld/spit/goo_attack1.ogg
+  - /Audio/_WG/LivingWorld/spit/goo_attack2.ogg
+
+- type: soundCollection
+  id: WGFloraSplat
+  files:
+  - /Audio/_WG/LivingWorld/spit/splat1.ogg
+
+- type: soundCollection
+  id: WGFloraPodSwell
+  files:
+  - /Audio/_WG/LivingWorld/pods/flinch01.ogg
+  - /Audio/_WG/LivingWorld/pods/flinch02.ogg
+
+- type: soundCollection
+  id: WGFloraPodBurst
+  files:
+  - /Audio/_WG/LivingWorld/pods/explode01.ogg
+  - /Audio/_WG/LivingWorld/pods/explode02.ogg
+
+- type: soundCollection
+  id: WGFloraSporePuff
+  files:
+  - /Audio/_WG/LivingWorld/pods/moldcyst_pop.ogg
+  - /Audio/_WG/LivingWorld/pods/xen_podbreak.ogg
+  - /Audio/_WG/LivingWorld/pods/xen_podbreak2.ogg
+
+- type: soundCollection
+  id: WGFloraPodIdle
+  files:
+  - /Audio/_WG/LivingWorld/pods/moldcyst_idle.ogg
+
+- type: soundCollection
+  id: WGFloraHeal
+  files:
+  - /Audio/_WG/LivingWorld/heal/healingpool_active01.ogg
+
+- type: soundCollection
+  id: WGFloraHealHum
+  files:
+  - /Audio/_WG/LivingWorld/heal/healingpool_hum01.ogg
+
+- type: soundCollection
+  id: WGFloraLightExtend
+  files:
+  - /Audio/_WG/LivingWorld/light/extend01.ogg
+
+- type: soundCollection
+  id: WGFloraLightRetract
+  files:
+  - /Audio/_WG/LivingWorld/light/retract01.ogg
+
+- type: soundCollection
+  id: WGFloraChirp
+  files:
+  - /Audio/_WG/LivingWorld/critters/chirp03.ogg
+  - /Audio/_WG/LivingWorld/critters/chirp05.ogg
+
+- type: soundCollection
+  id: WGFloraLilypad
+  files:
+  - /Audio/_WG/LivingWorld/critters/lilypad_landing_soft01.ogg
+  - /Audio/_WG/LivingWorld/critters/lilypad_sinking01.ogg
+
+- type: soundCollection
+  id: WGFloraTreeAttack
+  files:
+  - /Audio/_WG/LivingWorld/hackertree/attack1.ogg
+
+- type: soundCollection
+  id: WGFloraTreeDie
+  files:
+  - /Audio/_WG/LivingWorld/hackertree/die1.ogg
+
+- type: soundCollection
+  id: WGFloraTreeRetract
+  files:
+  - /Audio/_WG/LivingWorld/hackertree/retract_to_idle01.ogg
+
+- type: soundCollection
+  id: WGFloraVineSnap
+  files:
+  - /Audio/_WG/LivingWorld/vines/int_vinebreak1.ogg
+  - /Audio/_WG/LivingWorld/vines/int_vinebreak2.ogg
+  - /Audio/_WG/LivingWorld/vines/web_break01.ogg
+
+- type: soundCollection
+  id: WGFloraVineTear
+  files:
+  - /Audio/_WG/LivingWorld/vines/web_largebreak01.ogg
+
+- type: soundCollection
+  id: WGFloraCrystalHum
+  files:
+  - /Audio/_WG/LivingWorld/crystal/xen_crystal_radiation_hum01.ogg
+
+- type: soundCollection
+  id: WGFloraCrystalCharge
+  files:
+  - /Audio/_WG/LivingWorld/crystal/xen_crystal_radiation_charging01.ogg
+
+- type: soundCollection
+  id: WGFloraGore
+  files:
+  - /Audio/_WG/LivingWorld/gore/gore_splat1.ogg
+  - /Audio/_WG/LivingWorld/gore/gore_splat2.ogg
+  - /Audio/_WG/LivingWorld/gore/gibbing1.ogg
+
+- type: soundCollection
+  id: WGFloraWetSquelch
+  files:
+  - /Audio/_WG/LivingWorld/gore/gore1.ogg

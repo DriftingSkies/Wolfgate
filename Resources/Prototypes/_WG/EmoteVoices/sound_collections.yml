@@ -1,0 +1,67 @@
+# Sounds ported from Nova Sector's scream and laugh selector.
+
+- type: soundCollection
+  id: WGScreamsHumanFemaleAlt
+  files:
+  - /Audio/_WG/EmoteVoices/Scream/scream_f1.ogg
+  - /Audio/_WG/EmoteVoices/Scream/scream_f2.ogg
+  - /Audio/_WG/EmoteVoices/Scream/scream_f3.ogg
+
+- type: soundCollection
+  id: WGScreamsLizard
+  files:
+  - /Audio/_WG/EmoteVoices/Scream/lizard_scream_1.ogg
+  - /Audio/_WG/EmoteVoices/Scream/lizard_scream_2.ogg
+  - /Audio/_WG/EmoteVoices/Scream/lizard_scream_3.ogg
+
+- type: soundCollection
+  id: WGScreamsEthereal
+  files:
+  - /Audio/_WG/EmoteVoices/Scream/ethereal_scream_1.ogg
+  - /Audio/_WG/EmoteVoices/Scream/ethereal_scream_2.ogg
+  - /Audio/_WG/EmoteVoices/Scream/ethereal_scream_3.ogg
+
+- type: soundCollection
+  id: WGScreamsPlasmaman
+  files:
+  - /Audio/_WG/EmoteVoices/Scream/plasmeme_scream_1.ogg
+  - /Audio/_WG/EmoteVoices/Scream/plasmeme_scream_2.ogg
+  - /Audio/_WG/EmoteVoices/Scream/plasmeme_scream_3.ogg
+
+- type: soundCollection
+  id: WGScreamsMonkey
+  files:
+  - /Audio/_WG/EmoteVoices/Scream/scream_monkey.ogg
+  - /Audio/_WG/EmoteVoices/Scream/monkey_screech_1.ogg
+  - /Audio/_WG/EmoteVoices/Scream/monkey_screech_2.ogg
+  - /Audio/_WG/EmoteVoices/Scream/monkey_screech_3.ogg
+  - /Audio/_WG/EmoteVoices/Scream/monkey_screech_4.ogg
+  - /Audio/_WG/EmoteVoices/Scream/monkey_screech_5.ogg
+  - /Audio/_WG/EmoteVoices/Scream/monkey_screech_6.ogg
+  - /Audio/_WG/EmoteVoices/Scream/monkey_screech_7.ogg
+
+- type: soundCollection
+  id: WGLaughsHumanFemaleAlt
+  files:
+  - /Audio/_WG/EmoteVoices/Laugh/female_giggle_1.ogg
+  - /Audio/_WG/EmoteVoices/Laugh/female_giggle_2.ogg
+
+- type: soundCollection
+  id: WGLaughsFelinid
+  files:
+  - /Audio/_WG/EmoteVoices/Laugh/nyahaha1.ogg
+  - /Audio/_WG/EmoteVoices/Laugh/nyahaha2.ogg
+  - /Audio/_WG/EmoteVoices/Laugh/nyaha.ogg
+  - /Audio/_WG/EmoteVoices/Laugh/nyahehe.ogg
+
+- type: soundCollection
+  id: WGLaughsSkrell
+  files:
+  - /Audio/_WG/EmoteVoices/Laugh/skrelllaugh1.ogg
+  - /Audio/_WG/EmoteVoices/Laugh/skrelllaugh2.ogg
+
+- type: soundCollection
+  id: WGLaughsClown
+  files:
+  - /Audio/_WG/EmoteVoices/Laugh/hohoho.ogg
+  - /Audio/_WG/EmoteVoices/Laugh/hehe.ogg

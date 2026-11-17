@@ -6,11 +6,11 @@
   - DirectorOfCare # Frontier
   - MedicalDoctor
   # WOLFGATE(Wolfmed): PROTO L (WP12-10) - wounds guidebook entries
-  - WFWounds
-  - WFWoundTreatment
-  - WFWolfmedAutodoc # WOLFGATE(Wolfmed): AUTODOC
-  - WFSynthsAndYou # WOLFGATE(Synthetics): guide for repairing synthetics
-  - WFNarcotics # WOLFGATE(WolfChem): drugs, grades and neuroware
+  - WGWounds
+  - WGWoundTreatment
+  - WGWolfmedAutodoc # WOLFGATE(Wolfmed): AUTODOC
+  - WGSynthsAndYou # WOLFGATE(Synthetics): guide for repairing synthetics
+  - WGNarcotics # WOLFGATE(WolfChem): drugs, grades and neuroware
   - Chemist
   - Cloning
   - Cryogenics # Note: Frontier changes inside

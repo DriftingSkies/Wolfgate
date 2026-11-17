@@ -3,7 +3,7 @@ using Content.Shared.Damage.Prototypes;
 using Content.Shared.FixedPoint;
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 using Robust.Shared.Utility;
 using Robust.Shared.Serialization;
 

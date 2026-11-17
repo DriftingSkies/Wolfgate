@@ -36,8 +36,8 @@
     - UplinkSecurityBundles
     - UplinkSecurityVouchers # Mono
     - UplinkSecurityMaterials
-    - WFUplinkSecurityOperations # WOLFGATE(Operations): the uplink tab operations are called in from
-    - WFUplinkSecuritySupplies # WOLFGATE(FactionBalance): rations, survival gear, tools and field medicine
+    - WGUplinkSecurityOperations # WOLFGATE(Operations): the uplink tab operations are called in from
+    - WGUplinkSecuritySupplies # WOLFGATE(FactionBalance): rations, survival gear, tools and field medicine
     currencyWhitelist:
     - FederationMilitaryCredit
     balance:
@@ -59,8 +59,8 @@
     - UplinkPdvMaterials
     - UplinkPirateExplosives
     - UplinkPdvVouchers
-    - WFUplinkPdvOperations # WOLFGATE(Operations): the uplink tab operations are called in from
-    - WFUplinkPdvSupplies # WOLFGATE(FactionBalance): rations, survival gear, tools and field medicine
+    - WGUplinkPdvOperations # WOLFGATE(Operations): the uplink tab operations are called in from
+    - WGUplinkPdvSupplies # WOLFGATE(FactionBalance): rations, survival gear, tools and field medicine
 #    - UplinkPirateGambling
     currencyWhitelist:
     - Doubloon #Rename to Mark/Slip/Chit in code to represent blackmarket currency instead of doubloons

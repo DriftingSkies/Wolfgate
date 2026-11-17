@@ -337,7 +337,7 @@ namespace Content.Server.Administration.Managers
                     .Select(p => p.Key));
             }
 
-            commands.AddRange(WFToolshedCommandsFor(adminData?.Data)); // WOLFGATE(Administration): the client refuses a command missing from this list
+            commands.AddRange(WGToolshedCommandsFor(adminData?.Data)); // WOLFGATE(Administration): the client refuses a command missing from this list
 
             msg.AvailableCommands = commands.ToArray();
 

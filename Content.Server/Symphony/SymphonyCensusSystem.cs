@@ -6,8 +6,8 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-using Content.Server._WF.Census;
-using Content.Shared._WF.Census;
+using Content.Server._WG.Census;
+using Content.Shared._WG.Census;
 using Content.Shared.Symphony;
 using Robust.Server.ServerStatus;
 using Robust.Shared.Asynchronous;
@@ -20,7 +20,7 @@ namespace Content.Server.Symphony;
 /// <summary>
 /// How the SSymphony panel sets up censuses: it lists them with their answer counts, creates and updates them
 /// (opening one tells the players online) and deletes them. The panel reads the answers straight from
-/// wolfgate_census_response. Behind the admin API token; works with wf.census.enabled off too.
+/// wolfgate_census_response. Behind the admin API token; works with wg.census.enabled off too.
 /// </summary>
 public sealed class SymphonyCensusSystem : EntitySystem
 {

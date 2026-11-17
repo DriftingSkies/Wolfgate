@@ -16,7 +16,7 @@ using Content.Shared.Verbs;
 using Content.Shared.Climbing.Events;
 using Content.Shared.Carrying;
 using Content.Shared.Contests;
-using Content.Shared._WF.Modsuits.Modules; // WOLFGATE(Modsuits)
+using Content.Shared._WG.Modsuits.Modules; // WOLFGATE(Modsuits)
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Standing;

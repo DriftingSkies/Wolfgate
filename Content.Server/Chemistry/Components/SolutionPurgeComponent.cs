@@ -2,7 +2,7 @@ using Content.Server.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.FixedPoint;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Chemistry.Components;
 

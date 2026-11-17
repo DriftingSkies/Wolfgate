@@ -1,5 +1,5 @@
 using System.Linq;
-using Content.Client._WF.LoreBook; // WOLFGATE(LoreBook)
+using Content.Client._WG.LoreBook; // WOLFGATE(LoreBook)
 using Content.Client.Guidebook.Components;
 using Content.Client.Light;
 using Content.Client.Verbs;
@@ -33,7 +33,7 @@ public sealed partial class GuidebookSystem : EntitySystem
     [Dependency] private RgbLightControllerSystem _rgbLightControllerSystem = default!;
     [Dependency] private SharedPointLightSystem _pointLightSystem = default!;
     [Dependency] private TagSystem _tags = default!;
-    [Dependency] private WFLoreBookSystem _loreBook = default!; // WOLFGATE(LoreBook)
+    [Dependency] private WGLoreBookSystem _loreBook = default!; // WOLFGATE(LoreBook)
 
     public event Action<List<ProtoId<GuideEntryPrototype>>,
         List<ProtoId<GuideEntryPrototype>>?,

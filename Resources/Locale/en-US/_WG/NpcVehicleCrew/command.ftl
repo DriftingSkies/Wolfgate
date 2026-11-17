@@ -1,0 +1,59 @@
+wg-vehiclecrew-desc = Spawns, lists and clears NPC-crewed vehicles.
+wg-vehiclecrew-help = Usage: wg_vehiclecrew spawn <crew> [behaviour] [distance] | list | clear [group]
+wg-vehiclecrew-unknown-sub = Unknown subcommand {$sub}.
+wg-vehiclecrew-no-entity = You need a body to spawn a vehicle beside.
+wg-vehiclecrew-unknown-crew = Unknown vehicle crew {$crew}.
+wg-vehiclecrew-bad-behaviour = Unknown behaviour {$behaviour}. Use Hold, Patrol, Hunt, Escort or Flee.
+wg-vehiclecrew-bad-distance = Distance must be a number of tiles, 0 or more.
+wg-vehiclecrew-spawn-failed = Could not spawn {$crew}; see the server log.
+wg-vehiclecrew-spawned = Spawned {$vehicle}, crew group {$group}.
+wg-vehiclecrew-list-empty = No NPC vehicle crews.
+wg-vehiclecrew-list-line = {$vehicle} ({$crew}), group {$group}: {$behaviour}, {$alive} alive
+wg-vehiclecrew-list-line-bailed = {$vehicle} ({$crew}), group {$group}: bailed out, {$alive} alive
+wg-vehiclecrew-cleared = Cleared {$count} {$count ->
+    [one] vehicle
+   *[other] vehicles
+}.
+wg-vehiclecrew-hint-sub = spawn, list or clear
+wg-vehiclecrew-hint-crew = vehicle crew
+wg-vehiclecrew-hint-group = crew group
+wg-vehiclecrew-hint-behaviour = behaviour
+wg-vehiclecrew-hint-distance = tiles from you, default 6
+
+# The vehicle crew panel
+wg-vehiclecrew-panel-title = NPC vehicle crews
+wg-vehiclecrew-panel-roster = Crews
+wg-vehiclecrew-panel-search = Search crews
+wg-vehiclecrew-panel-setup = Spawn
+wg-vehiclecrew-panel-pick = Pick a crew on the left.
+wg-vehiclecrew-panel-details = { $vehicle }, { $faction }. { $seats } aboard, { $skill }. Engages at { $range } tiles.
+wg-vehiclecrew-panel-unarmed = { $vehicle }, { $faction }. { $seats } aboard. Unarmed: it runs when shot at.
+wg-vehiclecrew-panel-orders = Orders
+wg-vehiclecrew-panel-orders-default = Its own ({ $behaviour })
+wg-vehiclecrew-panel-count = How many
+wg-vehiclecrew-panel-distance = Tiles away
+wg-vehiclecrew-panel-spawn = Spawn beside me
+wg-vehiclecrew-panel-live = Live crews
+wg-vehiclecrew-panel-none = None yet.
+wg-vehiclecrew-panel-clear-all = Clear all
+wg-vehiclecrew-panel-row = { $name } ({ $crew }): { $behaviour }, crew { $alive }/{ $total }, hull { $integrity }%. { $location }
+wg-vehiclecrew-panel-row-bailed = { $name } ({ $crew }): bailed out, crew { $alive }/{ $total }. { $location }
+wg-vehiclecrew-panel-order = Order
+wg-vehiclecrew-panel-home = Home here
+wg-vehiclecrew-panel-home-tooltip = Make where you stand its home: where it holds, patrols round and retreats to.
+wg-vehiclecrew-panel-goto = Go to
+wg-vehiclecrew-panel-delete = Delete
+wg-vehiclecrew-panel-escort-tooltip = Escort follows you.
+wg-vehiclecrew-panel-spawned = Spawned { $count } { $crew }.
+wg-vehiclecrew-panel-ordered = { $vehicle }: { $behaviour }.
+wg-vehiclecrew-panel-homed = { $vehicle } now calls this home.
+wg-vehiclecrew-panel-deleted = Deleted { $vehicle } and its crew.
+wg-vehiclecrew-panel-bailed = { $vehicle }'s crew has bailed out; it takes no orders.
+wg-vehiclecrew-panel-other-map = { $vehicle } is on another map.
+wg-vehiclecrew-behaviour-hold = Hold
+wg-vehiclecrew-behaviour-patrol = Patrol
+wg-vehiclecrew-behaviour-hunt = Hunt
+wg-vehiclecrew-behaviour-escort = Escort me
+wg-vehiclecrew-behaviour-flee = Flee
+wg-vehiclecrew-behaviour-retreat = Retreat
+wg-vehiclecrew-behaviour-bail = Bailed out

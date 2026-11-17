@@ -488,9 +488,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     shadekin_BEHIND: shadekin_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE(Genitals): split art
       state: shadekin_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: shadekin_BEHIND
 
 - type: marking
@@ -503,9 +503,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     shadekin_big_BEHIND: shadekin_big_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE(Genitals): split art
       state: shadekin_big_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: shadekin_big_BEHIND
 
 # - type: marking
@@ -527,9 +527,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     shadekin_shorter_BEHIND: shadekin_shorter_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): split art
       state: shadekin_shorter_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: shadekin_shorter_BEHIND
 
 - type: marking
@@ -544,13 +544,13 @@
     shadekin_shorter_BEHIND: shadekin_shorter_FRONT
     shorter_brush_BEHIND: shorter_brush_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): split art
       state: shadekin_shorter_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): split art
       state: shorter_brush_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: shadekin_shorter_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: shorter_brush_BEHIND
 
 - type: marking
@@ -563,9 +563,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     shadekin_medium_BEHIND: shadekin_medium_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): split art
       state: shadekin_medium_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: shadekin_medium_BEHIND
 
 - type: marking
@@ -580,13 +580,13 @@
     shadekin_medium_BEHIND: shadekin_medium_FRONT
     medium_twocolored_BEHIND: medium_twocolored_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): split art
       state: shadekin_medium_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): split art
       state: medium_twocolored_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: shadekin_medium_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: medium_twocolored_BEHIND
 
 # Overlays

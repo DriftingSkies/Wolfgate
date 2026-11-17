@@ -1,6 +1,6 @@
 using System.Linq;
 using Content.Shared._Onyx.Wounds; // WOLFGATE(Wolfmed): HOOK 20
-using Content.Shared._WF.Biotype; // WOLFGATE(Biotype)
+using Content.Shared._WG.Biotype; // WOLFGATE(Biotype)
 using Content.Shared.Body.Part; // WOLFGATE(Wolfmed): HOOK 20 (Option B)
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
@@ -158,11 +158,11 @@ public sealed partial class DamageVisualsSystem : VisualizerSystem<DamageVisuals
             && _prototypeManager.TryIndex<DamageContainerPrototype>(damageComponent.DamageContainerID, out var damageContainer))
         {
             // WOLFGATE(Biotype) START: a converted body keeps its species' visuals, so groups its new container lacks are dropped
-            if (damageVisComp.DamageOverlayGroups is { } wfGroups &&
-                TryComp(entity, out WFBiotypeComponent? wfBiotype) && wfBiotype.Applied != null)
+            if (damageVisComp.DamageOverlayGroups is { } wgGroups &&
+                TryComp(entity, out WGBiotypeComponent? wgBiotype) && wgBiotype.Applied != null)
             {
-                foreach (var group in wfGroups.Keys.Where(g => !damageContainer.SupportedGroups.Contains(g)).ToList())
-                    wfGroups.Remove(group);
+                foreach (var group in wgGroups.Keys.Where(g => !damageContainer.SupportedGroups.Contains(g)).ToList())
+                    wgGroups.Remove(group);
             }
             // WOLFGATE END
 
@@ -375,7 +375,7 @@ public sealed partial class DamageVisualsSystem : VisualizerSystem<DamageVisuals
         if (damageVisComp.TargetLayers != null && damageVisComp.DamageOverlayGroups != null)
             UpdateDisabledLayers(uid, spriteComponent, component, damageVisComp);
 
-        // WOLFGATE(Wolfmed) START: HOOK 20 — per-limb accuracy for wound hosts; body in _WF/Wolfmed/Damage/DamageVisualsSystem.Wolfmed.cs
+        // WOLFGATE(Wolfmed) START: HOOK 20 — per-limb accuracy for wound hosts; body in _WG/Wolfmed/Damage/DamageVisualsSystem.Wolfmed.cs
         if (damageVisComp.TargetLayers != null && damageVisComp.DamageOverlayGroups != null &&
             TryComp(uid, out PartDamageVisualsComponent? partDamage))
         {

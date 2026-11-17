@@ -1,7 +1,0 @@
-# Ships Monolith#4624 removed and Wolfgate kept. Stays on a ship after it returns to a shipyard.
-- type: Tag
-  id: WFClassicVessel
-
-# Vessels no shipyard sells; the admin vessel spawner lists these under Admin only.
-- type: Tag
-  id: WFAdminOnlyVessel

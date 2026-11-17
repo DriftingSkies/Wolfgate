@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server._NF.Trade;
-using Content.Server._WF.TradeGoods.Components; // WOLFGATE(TradeGoods)
+using Content.Server._WG.TradeGoods.Components; // WOLFGATE(TradeGoods)
 using Content.Server.GameTicking;
 using Content.Server.Station.Systems;
 using Content.Shared._NF.CCVar;
@@ -13,7 +13,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Content.Server._NF.Station.Systems;
 using Robust.Shared.EntitySerialization.Systems;
-using Content.Server._WF.PlanetCargoHubs; // WOLFGATE(PlanetCargoHubs)
+using Content.Server._WG.PlanetCargoHubs; // WOLFGATE(PlanetCargoHubs)
 
 namespace Content.Server._NF.GameRule;
 
@@ -31,7 +31,7 @@ public sealed partial class PointOfInterestSystem : EntitySystem
     [Dependency] private MetaDataSystem _meta = default!;
     [Dependency] private StationRenameWarpsSystems _renameWarps = default!;
     [Dependency] private StationSystem _station = default!;
-    [Dependency] private WFPlanetCargoHubSystem _wfCargoHubs = default!; // WOLFGATE(PlanetCargoHubs)
+    [Dependency] private WGPlanetCargoHubSystem _wgCargoHubs = default!; // WOLFGATE(PlanetCargoHubs)
 
     private List<Vector2> _stationCoords = new();
 
@@ -67,22 +67,22 @@ public sealed partial class PointOfInterestSystem : EntitySystem
             return;
 
         var currentPreset = _ticker.CurrentPreset.ID;
-        var wfUnspawned = new List<PointOfInterestPrototype>(depotPrototypes); // WOLFGATE(TradeGoods): the depot kinds not spawned yet this round
+        var wgUnspawned = new List<PointOfInterestPrototype>(depotPrototypes); // WOLFGATE(TradeGoods): the depot kinds not spawned yet this round
 
         for (int i = 0; i < depotCount && depotPrototypes.Count > 0; i++)
         {
             // WOLFGATE(PlanetCargoHubs) START: a depot built on a planet this round gets no space station
-            if (_wfCargoHubs.IsPlanetside(i))
+            if (_wgCargoHubs.IsPlanetside(i))
             {
                 rotationOffset += rotation;
-                wfUnspawned.RemoveAll(kind => kind.ID == WFPlanetCargoHubSystem.DepotKind); // WOLFGATE(TradeGoods): a planet hub is a standard depot, so the space slots owe the other kind
+                wgUnspawned.RemoveAll(kind => kind.ID == WGPlanetCargoHubSystem.DepotKind); // WOLFGATE(TradeGoods): a planet hub is a standard depot, so the space slots owe the other kind
                 continue;
             }
             // WOLFGATE END
 
             // WOLFGATE(TradeGoods) START: every kind of depot spawns once before any repeats, as each sells goods the other doesn't
             // var proto = _random.Pick(depotPrototypes);
-            var proto = wfUnspawned.Count > 0 ? _random.PickAndTake(wfUnspawned) : _random.Pick(depotPrototypes);
+            var proto = wgUnspawned.Count > 0 ? _random.PickAndTake(wgUnspawned) : _random.Pick(depotPrototypes);
             // WOLFGATE END
 
             // Safety check: ensure selected POIs are either fine in any preset or accepts this current one.
@@ -285,7 +285,7 @@ public sealed partial class PointOfInterestSystem : EntitySystem
         _meta.SetEntityName(loadedGrid.Value, stationName, meta);
 
         EntityManager.AddComponents(loadedGrid.Value, proto.AddComponents);
-        EnsureComp<WFTradeStationComponent>(loadedGrid.Value).Id = proto.ID; // WOLFGATE(TradeGoods): stations take their economy role from their POI
+        EnsureComp<WGTradeStationComponent>(loadedGrid.Value).Id = proto.ID; // WOLFGATE(TradeGoods): stations take their economy role from their POI
 
         // Rename warp points after set up if needed
         if (proto.NameWarp)

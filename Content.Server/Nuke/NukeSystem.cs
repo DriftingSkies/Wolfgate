@@ -1,4 +1,4 @@
-using Content.Server._WF.Warheads; // WOLFGATE(Warheads)
+using Content.Server._WG.Warheads; // WOLFGATE(Warheads)
 using Content.Server.AlertLevel;
 using Content.Server.Audio;
 using Content.Server.Chat.Systems;
@@ -28,7 +28,7 @@ namespace Content.Server.Nuke;
 
 public sealed partial class NukeSystem : EntitySystem
 {
-    [Dependency] private WFWarheadSystem _wfWarheads = default!; // WOLFGATE(Warheads)
+    [Dependency] private WGWarheadSystem _wgWarheads = default!; // WOLFGATE(Warheads)
     [Dependency] private AlertLevelSystem _alertLevel = default!;
     [Dependency] private ChatSystem _chatSystem = default!;
     [Dependency] private ExplosionSystem _explosions = default!;
@@ -585,7 +585,7 @@ public sealed partial class NukeSystem : EntitySystem
             OwningStation = transform.GridUid,
         });
 
-        _wfWarheads.OnNukeDetonated(uid); // WOLFGATE(Warheads): flash, shockwave, radiation and fallout
+        _wgWarheads.OnNukeDetonated(uid); // WOLFGATE(Warheads): flash, shockwave, radiation and fallout
         _sound.StopStationEventMusic(uid, StationEventMusicType.Nuke);
         Del(uid);
     }

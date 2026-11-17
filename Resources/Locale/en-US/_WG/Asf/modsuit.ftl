@@ -1,0 +1,30 @@
+ent-WGAsfClothingModsuitField = ASF Pathfinder modsuit control unit
+    .desc = An ASF field modsuit built on the Minerva research frame, with extra plating for survey work that goes wrong. Takes armor plates.
+ent-WGAsfClothingModsuitFieldPowerCell = { ent-WGAsfClothingModsuitField }
+    .desc = { ent-WGAsfClothingModsuitField.desc }
+ent-WGAsfClothingModsuitHelmetField = Pathfinder modsuit helmet
+    .desc = A plated modsuit helmet with a lilac visor, a headlamp and dual-tube night vision.
+ent-WGAsfClothingModsuitGauntletsField = Pathfinder modsuit gauntlets
+    .desc = Armored modsuit gauntlets.
+ent-WGAsfClothingModsuitChestplateField = Pathfinder modsuit chestplate
+    .desc = A dark-plated modsuit chestplate with bright violet trim and a slot for armor plates.
+ent-WGAsfClothingModsuitBootsField = Pathfinder modsuit boots
+    .desc = Sealed, armored modsuit boots with void-rated mag clamps that hold on even off a hull.
+
+ent-WGAsfClothingModsuitAegis = ASF Aegis modsuit control unit
+    .desc = A Pathfinder refitted with a hardlight emitter in the control unit. While the suit is sealed it can project a personal shield that absorbs fire until it breaks.
+ent-WGAsfClothingModsuitAegisPowerCell = { ent-WGAsfClothingModsuitAegis }
+    .desc = { ent-WGAsfClothingModsuitAegis.desc }
+ent-WGAsfClothingModsuitHelmetAegis = Aegis modsuit helmet
+    .desc = A grey armored modsuit helmet. The visor glows while the emitter runs.
+ent-WGAsfClothingModsuitGauntletsAegis = Aegis modsuit gauntlets
+    .desc = { ent-WGAsfClothingModsuitGauntletsField.desc }
+ent-WGAsfClothingModsuitChestplateAegis = Aegis modsuit chestplate
+    .desc = A grey-plated modsuit chestplate with violet hardlight seams and a slot for armor plates.
+ent-WGAsfClothingModsuitBootsAegis = Aegis modsuit boots
+    .desc = { ent-WGAsfClothingModsuitBootsField.desc }
+
+wg-asf-modsuit-aegis-shield-hint = Seal the suit, then use the shield action or alt-click the control unit to raise the hardlight shield.
+wg-asf-modsuit-shield-unsealed = Seal the suit first.
+wg-asf-research-field-modsuit = ASF Pathfinder modsuit
+wg-asf-research-aegis-modsuit = ASF Aegis hardlight modsuit

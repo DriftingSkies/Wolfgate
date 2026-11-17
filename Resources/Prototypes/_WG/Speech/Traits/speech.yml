@@ -1,0 +1,8 @@
+- type: trait
+  id: WGNeoFrenchAccent
+  name: trait-neo-french-name
+  description: trait-neo-french-desc
+  category: SpeechTraits
+  cost: 1
+  components:
+  - type: NeoFrenchAccent

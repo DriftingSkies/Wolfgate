@@ -37,7 +37,7 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
-using Content.Server._WF.ShipAccess; // WOLFGATE(ShipAccess)
+using Content.Server._WG.ShipAccess; // WOLFGATE(ShipAccess)
 
 namespace Content.Server.Administration.Systems;
 
@@ -836,7 +836,7 @@ public sealed partial class AdminVerbSystem
     {
         var allAccess = _prototypeManager
             .EnumeratePrototypes<AccessLevelPrototype>()
-            .Where(p => p.ID != WFShipAccessServerSystem.LockedAccess) // WOLFGATE(ShipAccess): all access is not a key to every locked ship
+            .Where(p => p.ID != WGShipAccessServerSystem.LockedAccess) // WOLFGATE(ShipAccess): all access is not a key to every locked ship
             .Select(p => new ProtoId<AccessLevelPrototype>(p.ID)).ToArray();
 
         _accessSystem.TrySetTags(entity, allAccess);

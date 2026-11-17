@@ -1,5 +1,5 @@
 // WOLFGATE(Wolfmed): StatusEffectNew framework vendored from Space Onyx (2f5bab9), Onyx's copy of upstream SS14's, for the wound port.
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): EntityPrototype.TryComp is a compat extension on RT 277.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): EntityPrototype.TryComp is a compat extension on RT 277.
 using Content.Shared.Rejuvenate;
 using Content.Shared.StatusEffectNew.Components;
 using Content.Shared.Whitelist;

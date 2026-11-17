@@ -20,28 +20,28 @@
   - ContractorClothingUniformJumpskirtGenetics
   - ContractorClothingUniformJumpsuitPsychologist
   - ContractorClothingUniformJumpskirtPsychologist
-  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-  - WFMeridianLoadoutClothingUnderAkulaWetsuitJobMedical
-  - WFMeridianLoadoutClothingUnderMiscPsyche
-  - WFMeridianLoadoutClothingUnderRankCivilianPsychologistBunnysuit
-  - WFMeridianLoadoutClothingUnderRankMedicalChiefMedicalOfficerScrubs
-  - WFMeridianLoadoutClothingUnderRankMedicalChiefMedicalOfficerTurtleneck
-  - WFMeridianLoadoutClothingUnderRankMedicalChiefMedicalOfficerTurtleneckSkirt
-  - WFMeridianLoadoutClothingUnderRankMedicalCmoBunnysuit
-  - WFMeridianLoadoutClothingUnderRankMedicalCoroner
-  - WFMeridianLoadoutClothingUnderRankMedicalCoronerBunnysuit
-  - WFMeridianLoadoutClothingUnderRankMedicalCoronerSkirt
-  - WFMeridianLoadoutClothingUnderRankMedicalDoctorBunnysuit
-  - WFMeridianLoadoutClothingUnderRankMedicalDoctorNovaUtility
-  - WFMeridianLoadoutClothingUnderRankMedicalDoctorNurse
-  - WFMeridianLoadoutClothingUnderRankMedicalDoctorNurseSeriouser
-  - WFMeridianLoadoutClothingUnderRankMedicalParamedicBunnysuit
-  - WFMeridianLoadoutClothingUnderRankMedicalPathologistBunnysuit
-  - WFMeridianLoadoutClothingUnderRankMedicalScrubsBlue
-  - WFMeridianLoadoutClothingUnderRankMedicalScrubsCoroner
-  - WFMeridianLoadoutClothingUnderRankMedicalScrubsGreen
-  - WFMeridianLoadoutClothingUnderRankMedicalScrubsNova
-  - WFMeridianLoadoutClothingUnderRankMedicalScrubsNovaRed
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+  - WGMeridianLoadoutClothingUnderAkulaWetsuitJobMedical
+  - WGMeridianLoadoutClothingUnderMiscPsyche
+  - WGMeridianLoadoutClothingUnderRankCivilianPsychologistBunnysuit
+  - WGMeridianLoadoutClothingUnderRankMedicalChiefMedicalOfficerScrubs
+  - WGMeridianLoadoutClothingUnderRankMedicalChiefMedicalOfficerTurtleneck
+  - WGMeridianLoadoutClothingUnderRankMedicalChiefMedicalOfficerTurtleneckSkirt
+  - WGMeridianLoadoutClothingUnderRankMedicalCmoBunnysuit
+  - WGMeridianLoadoutClothingUnderRankMedicalCoroner
+  - WGMeridianLoadoutClothingUnderRankMedicalCoronerBunnysuit
+  - WGMeridianLoadoutClothingUnderRankMedicalCoronerSkirt
+  - WGMeridianLoadoutClothingUnderRankMedicalDoctorBunnysuit
+  - WGMeridianLoadoutClothingUnderRankMedicalDoctorNovaUtility
+  - WGMeridianLoadoutClothingUnderRankMedicalDoctorNurse
+  - WGMeridianLoadoutClothingUnderRankMedicalDoctorNurseSeriouser
+  - WGMeridianLoadoutClothingUnderRankMedicalParamedicBunnysuit
+  - WGMeridianLoadoutClothingUnderRankMedicalPathologistBunnysuit
+  - WGMeridianLoadoutClothingUnderRankMedicalScrubsBlue
+  - WGMeridianLoadoutClothingUnderRankMedicalScrubsCoroner
+  - WGMeridianLoadoutClothingUnderRankMedicalScrubsGreen
+  - WGMeridianLoadoutClothingUnderRankMedicalScrubsNova
+  - WGMeridianLoadoutClothingUnderRankMedicalScrubsNovaRed
   # WOLFGATE END
   fallbacks:
   - MedicalDoctorJumpsuit
@@ -83,6 +83,6 @@
   loadouts:
   - NitrileGloves
   - LatexGloves
-  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-  - WFMeridianLoadoutClothingGlovesLatexCoroner
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+  - WGMeridianLoadoutClothingGlovesLatexCoroner
   # WOLFGATE END

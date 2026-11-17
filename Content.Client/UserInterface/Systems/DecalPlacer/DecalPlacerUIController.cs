@@ -1,7 +1,7 @@
 ﻿using Content.Client.Decals.UI;
 using Content.Client.Gameplay;
 using Content.Client.Sandbox;
-using Content.Client._WF.MappingMode; // WOLFGATE(MappingMode)
+using Content.Client._WG.MappingMode; // WOLFGATE(MappingMode)
 using Content.Shared.Decals;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controllers;
@@ -15,7 +15,7 @@ public sealed partial class DecalPlacerUIController : UIController, IOnStateExit
 {
     [Dependency] private IPrototypeManager _prototypes = default!;
     [UISystemDependency] private readonly SandboxSystem _sandbox = default!;
-    [UISystemDependency] private readonly WFMappingClientSystem _wfMapping = default!; // WOLFGATE(MappingMode)
+    [UISystemDependency] private readonly WGMappingClientSystem _wgMapping = default!; // WOLFGATE(MappingMode)
 
     private DecalPlacerWindow? _window;
 
@@ -29,7 +29,7 @@ public sealed partial class DecalPlacerUIController : UIController, IOnStateExit
         }
         // WOLFGATE(MappingMode) START: mappers open the decal placer
         // else if(_sandbox.SandboxAllowed)
-        else if (_sandbox.SandboxAllowed || _wfMapping.InSession)
+        else if (_sandbox.SandboxAllowed || _wgMapping.InSession)
         // WOLFGATE END
         {
             _window.Open();

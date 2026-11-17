@@ -17,7 +17,7 @@ public sealed partial class TargetGuidedSystem : EntitySystem
     [Dependency] private RotateToFaceSystem _rotateToFace = null!;
     [Dependency] private PhysicsSystem _physics = null!;
     [Dependency] private FireControlSystem _fireControl = null!;
-    [Dependency] private Content.Server._WF.BoardingAction.WFHackHarpoonSystem _wfHack = default!; // WOLFGATE(BoardingAction)
+    [Dependency] private Content.Server._WG.BoardingAction.WGHackHarpoonSystem _wgHack = default!; // WOLFGATE(BoardingAction)
 
     public override void Initialize()
     {
@@ -118,7 +118,7 @@ public sealed partial class TargetGuidedSystem : EntitySystem
         if (component.ControlPermanentlyLost)
             return;
 
-        if (_wfHack.RefusesGuidance(uid, coordinates)) // WOLFGATE(BoardingAction): a locked-down ship can't steer a missile onto the hacker.
+        if (_wgHack.RefusesGuidance(uid, coordinates)) // WOLFGATE(BoardingAction): a locked-down ship can't steer a missile onto the hacker.
             return;
 
         // Store the previous position to check if it's changed

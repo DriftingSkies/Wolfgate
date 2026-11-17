@@ -876,7 +876,7 @@ public sealed partial class ChatUIController : UIController
 
     public void ProcessChatMessage(ChatMessage msg, bool speechBubble = true)
     {
-        if (_ent.EntitySysManager.TryGetEntitySystem<Content.Client._WF.Ghost.GhostOrbitSystem>(out var ghostOrbit)) // WOLFGATE(Ghost)
+        if (_ent.EntitySysManager.TryGetEntitySystem<Content.Client._WG.Ghost.GhostOrbitSystem>(out var ghostOrbit)) // WOLFGATE(Ghost)
             ghostOrbit.AddChatLink(msg); // WOLFGATE(Ghost): orbit link for ghosts
 
         // color the name unless it's something like "the old man"
@@ -888,7 +888,7 @@ public sealed partial class ChatUIController : UIController
         }
 
         // WOLFGATE(WolfChem) START: chat seen through the local player's high, before tags split the message text
-        if (_ent.EntitySysManager.TryGetEntitySystem<Content.Client._WF.WolfChem.Narcotics.WFDrugChatSystem>(out var drugChat))
+        if (_ent.EntitySysManager.TryGetEntitySystem<Content.Client._WG.WolfChem.Narcotics.WGDrugChatSystem>(out var drugChat))
             drugChat.Distort(msg);
         // WOLFGATE END
 

@@ -1,0 +1,48 @@
+- type: entity
+  parent: ClothingUniformBase
+  id: WGAsfClothingUniformService
+  components:
+  - type: Sprite
+    sprite: _WG/Asf/Clothing/Uniforms/service.rsi
+  - type: Clothing
+    sprite: _WG/Asf/Clothing/Uniforms/service.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: WGAsfClothingHeadBeret
+  components:
+  - type: Sprite
+    sprite: _WG/Asf/Clothing/Head/beret.rsi
+  - type: Clothing
+    sprite: _WG/Asf/Clothing/Head/beret.rsi
+  - type: Tag
+    tags:
+    - ClothMade
+    - HamsterWearable
+    - WhitelistChameleon
+    - PetWearable
+
+- type: entity
+  parent: ClothingOuterStorageBase
+  id: WGAsfClothingOuterGreatcoat
+  components:
+  - type: Sprite
+    sprite: _WG/Asf/Clothing/OuterClothing/greatcoat.rsi
+  - type: Clothing
+    sprite: _WG/Asf/Clothing/OuterClothing/greatcoat.rsi
+  - type: TemperatureProtection
+    heatingCoefficient: 0.1
+    coolingCoefficient: 0.1
+
+- type: entity
+  parent: ClothingOuterCoatLab
+  id: WGAsfClothingOuterCoatLab
+  components:
+  - type: Sprite
+    sprite: _WG/Asf/Clothing/OuterClothing/labcoat.rsi
+  - type: Clothing
+    sprite: _WG/Asf/Clothing/OuterClothing/labcoat.rsi
+
+- type: entity
+  parent: [ClothingOuterStorageFoldableBaseOpened, WGAsfClothingOuterCoatLab]
+  id: WGAsfClothingOuterCoatLabOpened

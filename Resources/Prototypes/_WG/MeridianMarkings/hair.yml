@@ -1,0 +1,1543 @@
+- type: marking
+  id: WGMeridianHairZeroPonytail
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: zero_ponytail
+
+- type: marking
+  id: WGMeridianHairAfricanPigtails
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: african_pigtails
+
+- type: marking
+  id: WGMeridianHairAfroHuge
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair_32x48.rsi
+    state: afro_huge
+
+- type: marking
+  id: WGMeridianHairAfroOverEyes
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: afro_over_eyes
+
+- type: marking
+  id: WGMeridianHairAfropuffDouble
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: afropuff_double
+
+- type: marking
+  id: WGMeridianHairAfropuffLeft
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: afropuff_left
+
+- type: marking
+  id: WGMeridianHairAllTheFuzz
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: all_the_fuzz
+
+- type: marking
+  id: WGMeridianHairAmazon
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: amazon
+
+- type: marking
+  id: WGMeridianHairAnimeProtagonist
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: anime_protagonist
+
+- type: marking
+  id: WGMeridianHairAstolfo
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: astolfo
+
+- type: marking
+  id: WGMeridianHairBaum
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: baum
+
+- type: marking
+  id: WGMeridianHairBeachwave
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: beachwave
+
+- type: marking
+  id: WGMeridianHairBedhead4x
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: bedhead_4x
+
+- type: marking
+  id: WGMeridianHairBigTails
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: big_tails
+
+- type: marking
+  id: WGMeridianHairBiggerTails
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: bigger_tails
+
+- type: marking
+  id: WGMeridianHairBluntBangs
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: blunt_bangs
+
+- type: marking
+  id: WGMeridianHairBluntBangsAlt
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: blunt_bangs_alt
+
+- type: marking
+  id: WGMeridianHairBobcutALT
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: bobcut_alt
+
+- type: marking
+  id: WGMeridianHairBobcutOverEye1
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: bobcut_over_eye_1
+
+- type: marking
+  id: WGMeridianHairBobcutOverEye2
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: bobcut_over_eye_2
+
+- type: marking
+  id: WGMeridianHairBobcutOverEye3
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: bobcut_over_eye_3
+
+- type: marking
+  id: WGMeridianHairBonnie
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: bonnie
+
+- type: marking
+  id: WGMeridianHairBonnieShort
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: bonnie_short
+
+- type: marking
+  id: WGMeridianHairBowlCutOverEyes
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: bowl_cut_over_eyes
+
+- type: marking
+  id: WGMeridianHairBunHead4
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: bun_head_4
+
+- type: marking
+  id: WGMeridianHairChinLengthBobCut
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: chin_length_bob_cut
+
+- type: marking
+  id: WGMeridianHairChunkyPonytail
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: chunky_ponytail
+
+- type: marking
+  id: WGMeridianHairChunkyQuadBuns
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair_32x48.rsi
+    state: chunky_quad_buns
+
+- type: marking
+  id: WGMeridianHairChunkyTwinBuns
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: chunky_twin_buns
+
+- type: marking
+  id: WGMeridianHairClean
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: clean
+
+- type: marking
+  id: WGMeridianHairClown
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: clown
+
+- type: marking
+  id: WGMeridianHairCoily
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: coily
+
+- type: marking
+  id: WGMeridianHairCombed
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: combed
+
+- type: marking
+  id: WGMeridianHairCombedBob
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: combed_bob
+
+- type: marking
+  id: WGMeridianHairComet
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: comet
+
+- type: marking
+  id: WGMeridianHairCotton
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: cotton
+
+- type: marking
+  id: WGMeridianHairCottonAlt
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: cotton_alt
+
+- type: marking
+  id: WGMeridianHairCountrySideBraid
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: country_side_braid
+
+- type: marking
+  id: WGMeridianHairCurly
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: curly
+
+- type: marking
+  id: WGMeridianHairCurlyFront
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: curly_front
+
+- type: marking
+  id: WGMeridianHairCurtains
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: curtains
+
+- type: marking
+  id: WGMeridianHairDawn
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: dawn
+
+- type: marking
+  id: WGMeridianHairDiagonalBangs
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: diagonal_bangs
+
+- type: marking
+  id: WGMeridianHairDoubleDrills
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: double_drills
+
+- type: marking
+  id: WGMeridianHairDreadtail
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: dreadtail
+
+- type: marking
+  id: WGMeridianHairElegantBun
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: elegant_bun
+
+- type: marking
+  id: WGMeridianHairEmoShort
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: emo_short
+
+- type: marking
+  id: WGMeridianHairFingerwave
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: fingerwave
+
+- type: marking
+  id: WGMeridianHairFlowerchild
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: flowerchild
+
+- type: marking
+  id: WGMeridianHairFlowerchildNoPonytail
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: flowerchild_no_ponytail
+
+- type: marking
+  id: WGMeridianHairFlowerchildPonytailOnly
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: flowerchild_ponytail_only
+
+- type: marking
+  id: WGMeridianHairFluffball
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: fluffball
+
+- type: marking
+  id: WGMeridianHairFluffy
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: fluffy
+
+- type: marking
+  id: WGMeridianHairFluffyLong
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: fluffy_long
+
+- type: marking
+  id: WGMeridianHairFluffyMess
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: fluffy_mess
+
+- type: marking
+  id: WGMeridianHairFluffyPonytail
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: fluffy_ponytail
+
+- type: marking
+  id: WGMeridianHairFluffyShort
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: fluffy_short
+
+- type: marking
+  id: WGMeridianHairFortuneTeller
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: fortune_teller
+
+- type: marking
+  id: WGMeridianHairFrizzySidecut
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: frizzy_sidecut
+
+- type: marking
+  id: WGMeridianHairFroofyLong
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: froofy_long
+
+- type: marking
+  id: WGMeridianHairGeisha
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: geisha
+
+- type: marking
+  id: WGMeridianHairGentleBun
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: gentle_bun
+
+- type: marking
+  id: WGMeridianHairGentlyBrushed
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: gently_brushed
+
+- type: marking
+  id: WGMeridianHairGlamMetal
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: glam_metal
+
+- type: marking
+  id: WGMeridianHairGorgon
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: gorgon
+
+- type: marking
+  id: WGMeridianHairGrande
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: grande
+
+- type: marking
+  id: WGMeridianHairHairfre
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: hairfre
+
+- type: marking
+  id: WGMeridianHairHalfBob
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: half_bob
+
+- type: marking
+  id: WGMeridianHairHalfShaveLongMessy
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: half_shave_long_messy
+
+- type: marking
+  id: WGMeridianHairHalfShaved2
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: half_shaved_2
+
+- type: marking
+  id: WGMeridianHairHalfShavedLong
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: half_shaved_long
+
+- type: marking
+  id: WGMeridianHairHalfShavedLong2
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: half_shaved_long_2
+
+- type: marking
+  id: WGMeridianHairHalfShavedMessy
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: half_shaved_messy
+
+- type: marking
+  id: WGMeridianHairHightight
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: hightight
+
+- type: marking
+  id: WGMeridianHairHightopSlant
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: hightop_slant
+
+- type: marking
+  id: WGMeridianHairHoloTuber
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: holo_tuber
+
+- type: marking
+  id: WGMeridianHairHyenaMane
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: hyena_mane
+
+- type: marking
+  id: WGMeridianHairJay
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: jay
+
+- type: marking
+  id: WGMeridianHairJessica
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: jessica
+
+- type: marking
+  id: WGMeridianHairKhmuro
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: khmuro
+
+- type: marking
+  id: WGMeridianHairKillmonger
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: killmonger
+
+- type: marking
+  id: WGMeridianHairKobeni1
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: kobeni_1
+
+- type: marking
+  id: WGMeridianHairKobeni2
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: kobeni_2
+
+- type: marking
+  id: WGMeridianHairLongDreadlocks
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: long_dreadlocks
+
+- type: marking
+  id: WGMeridianHairLongDreadsUp
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: long_dreads_up
+
+- type: marking
+  id: WGMeridianHairLongGloomyBangs
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: long_gloomy_bangs
+
+- type: marking
+  id: WGMeridianHairLongOverEyeAlt
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: long_over_eye_alt
+
+- type: marking
+  id: WGMeridianHairLongSidecut
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: long_sidecut
+
+- type: marking
+  id: WGMeridianHairLongSideparted
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: long_sideparted
+
+- type: marking
+  id: WGMeridianHairLongThinPonytail
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: long_thin_ponytail
+
+- type: marking
+  id: WGMeridianHairLongTwintails
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: long_twintails
+
+- type: marking
+  id: WGMeridianHairLongWavy
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: long_wavy
+
+- type: marking
+  id: WGMeridianHairLongerALT
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: longer_alt
+
+- type: marking
+  id: WGMeridianHairLooseSlicked
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: loose_slicked
+
+- type: marking
+  id: WGMeridianHairLowBun
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: low_bun
+
+- type: marking
+  id: WGMeridianHairLowPonytail
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: low_ponytail
+
+- type: marking
+  id: WGMeridianHairManbun
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: manbun
+
+- type: marking
+  id: WGMeridianHairMcSqueeb
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: mcsqueeb
+
+- type: marking
+  id: WGMeridianHairMediumBraid
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: medium_braid
+
+- type: marking
+  id: WGMeridianHairMediumGloomyBangs
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: medium_gloomy_bangs
+
+- type: marking
+  id: WGMeridianHairMermaid
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: mermaid
+
+- type: marking
+  id: WGMeridianHairMirroredHalfBob
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: mirrored_half_bob
+
+- type: marking
+  id: WGMeridianHairMisshapen
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: misshapen
+
+- type: marking
+  id: WGMeridianHairMohawkTall
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair_32x48.rsi
+    state: mohawk_tall
+
+- type: marking
+  id: WGMeridianHairMohawkShort
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: mohawk_short
+
+- type: marking
+  id: WGMeridianHairMoneyPiece
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: money_piece
+
+- type: marking
+  id: WGMeridianHairMorning
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: morning
+
+- type: marking
+  id: WGMeridianHairMullet
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: mullet
+
+- type: marking
+  id: WGMeridianHairMulletWithRatTail
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: mullet_with_rat_tail
+
+- type: marking
+  id: WGMeridianHairNewYou
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: new_you
+
+- type: marking
+  id: WGMeridianHairOverEar1
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: over_ear_1
+
+- type: marking
+  id: WGMeridianHairOverEye2
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: over_eye_2
+
+- type: marking
+  id: WGMeridianHairPhoenix
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: phoenix
+
+- type: marking
+  id: WGMeridianHairPhoenixHalfShaven
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: phoenix_half_shaven
+
+- type: marking
+  id: WGMeridianHairPigtailsAntenna
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: pigtails_antenna
+
+- type: marking
+  id: WGMeridianHairPigtailsCupid
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: pigtails_cupid
+
+- type: marking
+  id: WGMeridianHairPigtails4
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: pigtails_4
+
+- type: marking
+  id: WGMeridianHairPigtails5
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: pigtails_5
+
+- type: marking
+  id: WGMeridianHairPonytailFro
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: ponytail_fro
+
+- type: marking
+  id: WGMeridianHairPonytailWavy
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: ponytail_wavy
+
+- type: marking
+  id: WGMeridianHairPonytailALT
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: ponytail_alt
+
+- type: marking
+  id: WGMeridianHairPonytailFeminine
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: ponytail_feminine
+
+- type: marking
+  id: WGMeridianHairPonytailScythe
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair_32x48.rsi
+    state: ponytail_scythe
+
+- type: marking
+  id: WGMeridianHairPoofy2
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: poofy_2
+
+- type: marking
+  id: WGMeridianHairQuadCurls
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: quad_curls
+
+- type: marking
+  id: WGMeridianHairRingTails
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: ring_tails
+
+- type: marking
+  id: WGMeridianHairRows1
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: rows_1
+
+- type: marking
+  id: WGMeridianHairRows2
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: rows_2
+
+- type: marking
+  id: WGMeridianHairRoyalCurls
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: royal_curls
+
+- type: marking
+  id: WGMeridianHairRunner
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: runner
+
+- type: marking
+  id: WGMeridianHairRunnerBun
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: runner_bun
+
+- type: marking
+  id: WGMeridianHairSabitsuki
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: sabitsuki
+
+- type: marking
+  id: WGMeridianHairSadako
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: sadako
+
+- type: marking
+  id: WGMeridianHairSergeant
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: sergeant
+
+- type: marking
+  id: WGMeridianHairShaggy
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: shaggy
+
+- type: marking
+  id: WGMeridianHairShortBangs2
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: short_bangs_2
+
+- type: marking
+  id: WGMeridianHairShortFluffyPonytail
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: short_fluffy_ponytail
+
+- type: marking
+  id: WGMeridianHairShortTassles
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: short_tassles
+
+- type: marking
+  id: WGMeridianHairShortTwintails
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: short_twintails
+
+- type: marking
+  id: WGMeridianHairShortWavy
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: short_wavy
+
+- type: marking
+  id: WGMeridianHairShorterBangs
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: shorter_bangs
+
+- type: marking
+  id: WGMeridianHairShorterLongBedhead
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: shorter_long_bedhead
+
+- type: marking
+  id: WGMeridianHairShy
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: shy
+
+- type: marking
+  id: WGMeridianHairSidecutBang
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: sidecut_bang
+
+- type: marking
+  id: WGMeridianHairSidewaysPonytail
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: sideways_ponytail
+
+- type: marking
+  id: WGMeridianHairSimple
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: simple
+
+- type: marking
+  id: WGMeridianHairSimplePonytail
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: simple_ponytail
+
+- type: marking
+  id: WGMeridianHairSimplePonytailAlt
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: simple_ponytail_alt
+
+- type: marking
+  id: WGMeridianHairSimpleShort
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: simple_short
+
+- type: marking
+  id: WGMeridianHairSingedBlownBack
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: singed_blown_back
+
+- type: marking
+  id: WGMeridianHairSingedPigtails
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: singed_pigtails
+
+- type: marking
+  id: WGMeridianHairSleaze
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: sleaze
+
+- type: marking
+  id: WGMeridianHairSlightlyMessy
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: slightly_messy
+
+- type: marking
+  id: WGMeridianHairSlimeBlobby
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: slime_blobby
+
+- type: marking
+  id: WGMeridianHairSlimeDroplet
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: slime_droplet
+
+- type: marking
+  id: WGMeridianHairSlimeFringeLong
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: slime_fringe_long
+
+- type: marking
+  id: WGMeridianHairSlimeJelly
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: slime_jelly
+
+- type: marking
+  id: WGMeridianHairSlimePonytailHigh
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: slime_ponytail_high
+
+- type: marking
+  id: WGMeridianHairSlimePonytailLow
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: slime_ponytail_low
+
+- type: marking
+  id: WGMeridianHairSlimeSpikes
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: slime_spikes
+
+- type: marking
+  id: WGMeridianHairSlimeTails
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: slime_tails
+
+- type: marking
+  id: WGMeridianHairSlimeTails2
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: slime_tails_2
+
+- type: marking
+  id: WGMeridianHairSlimeTendrils
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: slime_tendrils
+
+- type: marking
+  id: WGMeridianHairSpicy
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: spicy
+
+- type: marking
+  id: WGMeridianHairSpikeyLong
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: spikey_long
+
+- type: marking
+  id: WGMeridianHairSpiky4
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: spiky_4
+
+- type: marking
+  id: WGMeridianHairStacy
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: stacy
+
+- type: marking
+  id: WGMeridianHairStraight
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: straight
+
+- type: marking
+  id: WGMeridianHairStrict
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: strict
+
+- type: marking
+  id: WGMeridianHairStrictLong
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: strict_long
+
+- type: marking
+  id: WGMeridianHairStrictShort
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: strict_short
+
+- type: marking
+  id: WGMeridianHairSwirlCurlsAlt
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: swirl_curls_alt
+
+- type: marking
+  id: WGMeridianHairSwirlyCurls
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: swirly_curls
+
+- type: marking
+  id: WGMeridianHairTayama
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: tayama
+
+- type: marking
+  id: WGMeridianHairTeshariMohawk
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: teshari_mohawk
+
+- type: marking
+  id: WGMeridianHairTeshariMohawkAlt
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: teshari_mohawk_alt
+
+- type: marking
+  id: WGMeridianHairThickPonytail
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: thick_ponytail
+
+- type: marking
+  id: WGMeridianHairTriBun
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: tri_bun
+
+- type: marking
+  id: WGMeridianHairTriBunLong
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: tri_bun_long
+
+- type: marking
+  id: WGMeridianHairTwintailFloor
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: twintail_floor
+
+- type: marking
+  id: WGMeridianHairTwintailsWavy
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: twintails_wavy
+
+- type: marking
+  id: WGMeridianHairTwintails2
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: twintails_2
+
+- type: marking
+  id: WGMeridianHairUpwards
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: upwards
+
+- type: marking
+  id: WGMeridianHairVeryLongGloomyBangs
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: very_long_gloomy_bangs
+
+- type: marking
+  id: WGMeridianHairVictory
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: victory
+
+- type: marking
+  id: WGMeridianHairViolet
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: violet
+
+- type: marking
+  id: WGMeridianHairVioletPonytail
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: violet_ponytail
+
+- type: marking
+  id: WGMeridianHairViper
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: viper
+
+- type: marking
+  id: WGMeridianHairVolajuPompless
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: volaju_pompless
+
+- type: marking
+  id: WGMeridianHairWife
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: wife
+
+- type: marking
+  id: WGMeridianHairWolfcut
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: wolfcut
+
+- type: marking
+  id: WGMeridianHairZiegler
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: ziegler
+
+- type: marking
+  id: WGMeridianHairZoey
+  bodyPart: Hair
+  markingCategory: Hair
+  sprites:
+  - sprite: _WG/MeridianMarkings/hair.rsi
+    state: zoey

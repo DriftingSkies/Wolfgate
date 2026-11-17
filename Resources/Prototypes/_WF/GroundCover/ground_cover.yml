@@ -1,4 +1,0 @@
-- type: shader
-  id: WFGroundCover
-  kind: source
-  path: "/Textures/_WF/GroundCover/Shaders/ground_cover.swsl"

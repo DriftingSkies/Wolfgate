@@ -327,7 +327,7 @@ public partial class SharedBodySystem
         var integrity = damageable.TotalDamage;
         // WOLFGATE(Wolfmed): playtest 2: burns never switch a wound host's limb off; its wounds slow it instead.
         var enableIntegrity = _queryWoundHost.HasComp(partEnt.Comp.Body)
-            ? Content.Shared._WF.Wolfmed.Consciousness.WolfmedLimbIntegrity.ForEnable(damageable, Prototypes)
+            ? Content.Shared._WG.Wolfmed.Consciousness.WolfmedLimbIntegrity.ForEnable(damageable, Prototypes)
             : integrity;
 
         // KILL the body part

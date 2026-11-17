@@ -4,7 +4,7 @@
   id: LizardChestDragonwings
   bodyPart: Tail
   markingCategory: Chest
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, WFCanine]
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, WGCanine]
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     body_dragonwings_BEHIND: TailBehind
     body_dragonwings_membrane_BEHIND: TailBehind
@@ -12,11 +12,11 @@
     body_dragonwings_BEHIND: body_dragonwings_FRONT
     body_dragonwings_membrane_BEHIND: body_dragonwings_membrane_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Customization/reptilian.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Customization/reptilian.rsi # WOLFGATE(Genitals): split art
     state: body_dragonwings_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Customization/reptilian.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Customization/reptilian.rsi # WOLFGATE(Genitals): split art
     state: body_dragonwings_membrane_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Customization/reptilian.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Customization/reptilian.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: body_dragonwings_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Customization/reptilian.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Customization/reptilian.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: body_dragonwings_membrane_BEHIND

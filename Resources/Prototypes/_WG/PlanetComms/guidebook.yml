@@ -1,0 +1,5 @@
+- type: guideEntry
+  id: WGPlanetComms
+  name: guide-entry-wg-planet-comms
+  text: "/ServerInfo/_WG/PlanetComms/PlanetComms.xml"
+  priority: 1

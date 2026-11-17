@@ -59,7 +59,7 @@
     damageContainers:
     - Inorganic
     - Silicon
-    - WFSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
+    - WGSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
     - Synth # WOLFGATE(Wolfmed): the HardLight Synth's container, so its bar shows
 
   # Visual

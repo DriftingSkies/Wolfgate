@@ -3,7 +3,7 @@
   parent: BaseStructure
   id: RMCPlanter
   # WOLFGATE(Streets): in the spawn menu's Streets group
-  categories: [ WFStreets, WFStreetsFurniture ]
+  categories: [ WGStreets, WGStreetsFurniture ]
   components:
   - type: Sprite
     noRot: false

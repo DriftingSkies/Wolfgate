@@ -90,7 +90,7 @@ namespace Content.Shared.Movement.Systems
             RaiseLocalEvent(uid, ev);
 
             // WOLFGATE(Wolfmed): playtest 2: Wolfmed's crawl floor goes on after every other modifier (WolfmedCrawlSystem).
-            var floor = new Content.Shared._WF.Wolfmed.Consciousness.WolfmedSpeedFloorEvent(
+            var floor = new Content.Shared._WG.Wolfmed.Consciousness.WolfmedSpeedFloorEvent(
                 move.BaseWalkSpeed, move.BaseSprintSpeed, ev.WalkSpeedModifier, ev.SprintSpeedModifier);
             RaiseLocalEvent(uid, ref floor);
 

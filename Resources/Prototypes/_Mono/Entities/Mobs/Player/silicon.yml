@@ -881,7 +881,7 @@
     - XenoborgUpgradeModules
     # WOLFGATE(Xenoborgs) START: wizden#42796 + #45105, the extractor and crystal-priced recipes
     - XenoborgMachines
-    - WFXenoborgCrystalRecipes
+    - WGXenoborgCrystalRecipes
     # WOLFGATE END
   - type: ReagentSpeed
     solution: lube
@@ -1006,7 +1006,7 @@
       enum.RadarConsoleUiKey.Key:
         toggleAction: ActionAGhostShowRadar
       enum.SurveillanceCameraMonitorUiKey.Key:
-        toggleAction: WFActionXenoborgCameras
+        toggleAction: WGActionXenoborgCameras
   - type: SurveillanceCameraMonitor
   - type: DeviceNetwork
     deviceNetId: Wireless

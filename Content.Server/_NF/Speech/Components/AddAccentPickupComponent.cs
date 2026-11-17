@@ -1,6 +1,6 @@
 using Content.Server.Speech.Components;
 using Content.Server.Speech.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server._NF.Speech.Components;
 

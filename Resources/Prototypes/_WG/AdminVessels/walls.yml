@@ -1,0 +1,18 @@
+# The Lupercal's bastion walls: durasteel to look at, as indestructible as the rest of its walls and windows (the
+# owner: invulnerable materials wherever the ship can use them). The generator swaps every wall and window to its
+# indestructible kind as it writes the map.
+
+- type: entity
+  parent: WallPlastitaniumIndestructible
+  id: WGLupercalWallDurasteel
+  name: durasteel wall
+  description: A durasteel frame under plastitanium skin, laid too thick to breach.
+  suffix: Lupercal, indestructible
+  components:
+  - type: Sprite
+    sprite: _WG/ShipArmor/durasteel.rsi
+  - type: Icon
+    sprite: _WG/ShipArmor/durasteel.rsi
+  - type: ArmorThickness
+    thickness: 13
+    canBePierced: false

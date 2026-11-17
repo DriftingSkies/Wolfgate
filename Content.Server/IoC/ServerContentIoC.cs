@@ -60,7 +60,7 @@ namespace Content.Server.IoC
             IoCManager.Register<RulesManager, RulesManager>();
             IoCManager.Register<IBanManager, BanManager>();
             IoCManager.Register<ContentNetworkResourceManager>();
-            IoCManager.Register<_WF.JoinProgress.JoinProgressManager>(); // WOLFGATE(JoinProgress): tells joining clients their download size
+            IoCManager.Register<_WG.JoinProgress.JoinProgressManager>(); // WOLFGATE(JoinProgress): tells joining clients their download size
             IoCManager.Register<IAdminNotesManager, AdminNotesManager>();
             IoCManager.Register<GhostKickManager>();
             IoCManager.Register<ISharedAdminLogManager, AdminLogManager>();

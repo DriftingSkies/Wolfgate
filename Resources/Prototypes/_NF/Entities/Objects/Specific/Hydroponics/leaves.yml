@@ -65,7 +65,7 @@
   # WOLFGATE(WolfChem) START: fits a baggie
   - type: Tag
     tags:
-    - WFBaggable
+    - WGBaggable
   # WOLFGATE END
 
 - type: entity

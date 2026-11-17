@@ -1,0 +1,51 @@
+# What waits in a world's road tunnels (the roads' `tunnels` on its POI table): spiders in the dark and the risen crews
+# of ships that came down nearby (wreck_crew.yml).
+
+- type: entityTable
+  id: WGTunnelLurkersVerda
+  table: !type:GroupSelector
+    children:
+      - id: MobGiantSpiderAngry
+        weight: 2
+      - id: WGWreckZombieVerda
+
+- type: entityTable
+  id: WGTunnelLurkersMerak
+  table: !type:GroupSelector
+    children:
+      - id: MobGiantSpiderAngry
+        weight: 2
+      - id: WGWreckZombieMerak
+
+- type: entityTable
+  id: WGTunnelLurkersFervidus
+  table: !type:GroupSelector
+    children:
+      - id: MobGiantSpiderAngry
+        weight: 2
+      - id: WGWreckZombieFervidus
+
+- type: entityTable
+  id: WGTunnelLurkersThrascias
+  table: !type:GroupSelector
+    children:
+      - id: MobGiantSpiderAngry
+        weight: 2
+      - id: WGWreckZombieThrascias
+
+- type: entityTable
+  id: WGTunnelLurkersAerumna
+  table: !type:GroupSelector
+    children:
+      - id: MobGiantSpiderAngry
+        weight: 2
+      - id: WGWreckZombieAerumna
+
+- type: entityTable
+  id: WGTunnelLurkersCarcinoma
+  table: !type:GroupSelector
+    children:
+      - !type:NestedSelector
+        tableId: WGFaunaCarcinoma
+        weight: 2
+      - id: WGWreckZombieCarcinoma

@@ -1,7 +1,7 @@
 using Content.Server.Botany.Systems;
 using Content.Server._Mono.Botany.PlantAnalyzer;
 using Content.Shared.Botany.Components;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Botany.Components
 {

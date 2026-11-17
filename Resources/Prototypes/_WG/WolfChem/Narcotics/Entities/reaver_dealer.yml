@@ -1,0 +1,83 @@
+# The Reaver dealer: full-grade product, seeds, kit and pristine sticks at twice their appraisal, out of a Reaver
+# runner's hold. He can be killed and the stock runs out. He sells only; nothing on the counter pays the bill.
+- type: vendingMachineInventory
+  id: WGReaverDealerInventory
+  startingInventory:
+    WGBaggieCocaine: 12
+    WGBaggieHeroin: 12
+    WGCrackRock: 16
+    WGCrystalShard: 16
+    WGOpiumResin: 12
+    WGHashBrick: 6
+    Joint: 12
+    WGVialRedline: 6
+    WGVialAnvil: 6
+    WGVialHalo: 6
+    WGCocaSeeds: 8
+    WGOpiumPoppySeeds: 8
+    WGBaggie: 20
+    WGVial: 12
+    WGBongFilled: 4
+    WGPurityTester: 3
+    WGNeurowareStick: 12
+    WGNeurowareStickWhiteline: 6
+    WGNeurowareStickNullLoop: 6
+    WGNeurowareStickBurst: 6
+    WGNeurowareStickRedline: 4
+    WGNeurowareStickDamper: 4
+    WGNeurowareStickChoir: 4
+    WGNeurowareStickHalo: 4
+    WGNeurowareStickIdle: 6
+
+- type: entity
+  id: WGReaverDealerStock
+  parent: VendingMachineAmmo
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: VendingMachine
+    pack: WGReaverDealerInventory
+    requiresCash: true
+  - type: MarketModifier
+    mod: 2
+
+- type: startingGear
+  id: WGReaverDealerGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBlack
+    outerClothing: ClothingOuterCoatPirate
+    head: ClothingHeadBandRed
+    eyes: ClothingEyesEyepatch
+    mask: ClothingMaskNeckGaiter
+    shoes: ClothingShoesBootsJack
+    gloves: ClothingHandsGlovesFingerless
+
+- type: traderDialogue
+  id: WGReaverDealerDialogue
+  greeting: wg-reaver-dealer-greeting
+  farewell: wg-reaver-dealer-farewell
+  options:
+  - prompt: wg-reaver-dealer-prompt-shop
+    response: wg-reaver-dealer-response-shop
+    action: OpenShop
+  - prompt: wg-reaver-dealer-prompt-who
+    response: wg-reaver-dealer-response-who
+
+- type: entity
+  id: WGReaverDealer
+  parent: WGTraderWanderer
+  name: Reaver dealer
+  description: Sells clean product off an Ashfall runner. The red band says who he flies for.
+  suffix: Trader, Narcotics
+  components:
+  - type: PirateAccent
+  - type: Loadout
+    prototypes: [ WGReaverDealerGear ]
+  - type: Trader
+    dialogue: WGReaverDealerDialogue
+    killable: true
+  - type: TraderShop
+    vendors: [ WGReaverDealerStock ]
+    randomStock: 18
+    stockMin: 3
+    stockMax: 12
+    lootItems: 5

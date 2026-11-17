@@ -1,4 +1,4 @@
-using Content.Client._WF.Administration.UI.SpawnOutfit; // WOLFGATE(Administration)
+using Content.Client._WG.Administration.UI.SpawnOutfit; // WOLFGATE(Administration)
 using Content.Client.Eui;
 using Content.Shared.Administration;
 using Content.Shared.Eui;

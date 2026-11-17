@@ -27,7 +27,7 @@ using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Content.Shared.Body.Organ;
-using Content.Shared._WF.Genitals; // WOLFGATE(Genitals)
+using Content.Shared._WG.Genitals; // WOLFGATE(Genitals)
 
 namespace Content.Shared._Shitmed.Medical.Surgery;
 

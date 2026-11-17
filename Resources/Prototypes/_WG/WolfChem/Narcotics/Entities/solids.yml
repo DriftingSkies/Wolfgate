@@ -1,0 +1,193 @@
+# Solid drugs. Each keeps its solution's grade and can be ground back down. All but hash are narcotics at the market
+# (WGNarcoticMarks); hash is legal, like the cannabis it is pressed from.
+
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: WGBaseSolid
+  components:
+  - type: Item
+    size: Tiny
+  - type: Food
+  - type: FlavorProfile
+    flavors:
+    - bitter
+  - type: Extractable
+    grindableSolutionName: food
+  - type: ExaminableSolution
+    solution: food
+  # Fits pipe and bong bowls, and baggies.
+  - type: Tag
+    tags:
+    - Smokable
+    - WGBaggable
+
+- type: entity
+  abstract: true
+  parent: [ WGBaseSolid, WGNarcoticMarks ]
+  id: WGBaseDrugSolid
+  components:
+  - type: Tag
+    tags:
+    - Smokable
+    - WGNarcotic
+    - WGBaggable
+
+- type: entity
+  parent: WGBaseDrugSolid
+  id: WGCrackRock
+  components:
+  - type: Sprite
+    sprite: _WG/WolfChem/Narcotics/Objects/solids.rsi
+    state: crack
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: WGCrack
+          Quantity: 5
+
+- type: entity
+  parent: WGBaseDrugSolid
+  id: WGCrystalShard
+  components:
+  - type: Sprite
+    sprite: _WG/WolfChem/Narcotics/Objects/solids.rsi
+    state: crystal
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: Desoxyephedrine
+          Quantity: 5
+
+- type: entity
+  parent: WGBaseDrugSolid
+  id: WGOpiumResin
+  components:
+  - type: Sprite
+    sprite: _WG/WolfChem/Narcotics/Objects/solids.rsi
+    state: resin
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: WGOpium
+          Quantity: 5
+
+- type: entity
+  parent: WGBaseSolid
+  id: WGHashBrick
+  components:
+  - type: Sprite
+    sprite: _WG/WolfChem/Narcotics/Objects/solids.rsi
+    state: hash
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 30
+        reagents:
+        - ReagentId: THC
+          Quantity: 30
+  - type: Construction
+    graph: WGHash
+    node: brick
+  # THC carries no price of its own.
+  - type: StaticPrice
+    price: 450
+
+# Baggies. Craft an empty one from plastic, pour powder in from a beaker or put solid drugs in; filled ones are dealer
+# stock.
+- type: entity
+  parent: BaseStorageItem
+  id: WGBaggie
+  components:
+  - type: Item
+    size: Tiny
+  # The powder inside takes the colour of what was poured in.
+  - type: Sprite
+    sprite: _WG/WolfChem/Narcotics/Objects/baggie.rsi
+    layers:
+    - state: icon
+    - state: solid-0
+      map: [ "enum.StorageFillLayers.Fill" ]
+    - state: fill-1
+      map: [ "enum.SolutionContainerLayers.Fill" ]
+      visible: false
+  - type: Appearance
+  - type: SolutionContainerVisuals
+    maxFillLevels: 2
+    fillBaseName: fill-
+  # Solids go in with a click and come out one at a time on use (WGBaggieSystem); the window stays on the verb.
+  - type: Storage
+    grid:
+    - 0,0,1,1
+    maxItemSize: Small
+    openOnActivate: false
+    whitelist:
+      tags:
+      - WGBaggable
+  - type: StorageFillVisualizer
+    maxFillLevels: 4
+    fillBaseName: solid
+  - type: SolutionContainerManager
+    solutions:
+      baggie:
+        maxVol: 10
+  - type: RefillableSolution
+    solution: baggie
+  - type: DrainableSolution
+    solution: baggie
+  - type: ExaminableSolution
+    solution: baggie
+  # Examine lists the solids; the held baggie shows its powder here.
+  - type: SolutionItemStatus
+    solution: baggie
+  - type: SolutionTransfer
+    transferAmount: 5
+  - type: Construction
+    graph: WGBaggie
+    node: baggie
+    minTransferAmount: 1
+    maxTransferAmount: 10
+  - type: Extractable
+    grindableSolutionName: baggie
+  - type: WGBaggie
+    reagents:
+    - WGCocaine
+    - WGHeroin
+    - Desoxyephedrine
+    - Ephedrine
+
+- type: entity
+  parent: [ WGBaggie, WGNarcoticMarks ]
+  id: WGBaggieCocaine
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      baggie:
+        maxVol: 10
+        reagents:
+        - ReagentId: WGCocaine
+          Quantity: 10
+  - type: Tag
+    tags:
+    - WGNarcotic
+
+- type: entity
+  parent: [ WGBaggie, WGNarcoticMarks ]
+  id: WGBaggieHeroin
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      baggie:
+        maxVol: 10
+        reagents:
+        - ReagentId: WGHeroin
+          Quantity: 10
+  - type: Tag
+    tags:
+    - WGNarcotic

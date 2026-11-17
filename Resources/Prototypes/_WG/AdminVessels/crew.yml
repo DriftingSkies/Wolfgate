@@ -1,0 +1,294 @@
+# The Lupercal's own people besides its NpcCrew roster: the counter staff its roster puts behind the counters
+# (WGShipCounterPost* markers), and its silicons, which serve under the WGLupercalLawset.
+
+# Torvald Deepkeel, the Lupercal's dockmaster: answers hails and books the ring's berths from his desk.
+- type: humanoidProfile
+  id: WGLupercalDockmasterProfile
+  profile:
+    name: Torvald Deepkeel
+    species: Dwarf
+    age: 142
+    sex: Male
+    gender: Male
+    appearance:
+      hair: HumanHairBraid
+      hairColor: "#9C9C9C"
+      facialHair: HumanFacialHairLongbeard
+      facialHairColor: "#9C9C9C"
+      eyeColor: "#3B5B4A"
+      skinColor: "#B98563"
+
+- type: startingGear
+  id: WGLupercalDockmasterTraderGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBlack
+    outerClothing: ClothingOuterVestHazard
+    head: ClothingHeadHatHardhatWhite
+    ears: ClothingHeadsetGrey
+    shoes: ClothingShoesBootsWork
+    gloves: ClothingHandsGlovesColorBlack
+
+- type: traderDialogue
+  id: WGLupercalDockmasterDialogue
+  greeting: wg-lupercal-dockmaster-greeting
+  farewell: wg-lupercal-dockmaster-farewell
+  options:
+  - prompt: wg-lupercal-dockmaster-prompt-how
+    response: wg-lupercal-dockmaster-response-how
+  - prompt: wg-lupercal-dockmaster-prompt-hail
+    response: wg-lupercal-dockmaster-response-hail
+  - prompt: wg-lupercal-dockmaster-prompt-who
+    response: wg-lupercal-dockmaster-response-who
+
+- type: entity
+  id: WGLupercalDockmaster
+  parent: WGDrydockDockmasterBase
+  name: Torvald Deepkeel
+  description: The Lupercal's dockmaster, his beard braided into the cable of a crane remote.
+  suffix: Lupercal, Dockmaster
+  components:
+  - type: HumanoidAppearance
+    species: Dwarf
+    initial: WGLupercalDockmasterProfile
+  - type: Loadout
+    prototypes: [ WGLupercalDockmasterTraderGear ]
+  - type: Trader
+    dialogue: WGLupercalDockmasterDialogue
+  # Every console aboard rings on a hail: the bridge gets a few seconds to take it first.
+  - type: HailResponder
+    answerDelay: 8
+    greetings:
+    - wg-lupercal-dockmaster-hail-1
+    - wg-lupercal-dockmaster-hail-2
+    - wg-lupercal-dockmaster-hail-3
+
+# His desk beside the counter. A hail only rings at a helm, and this one stands in a public lobby, so only officers and
+# up may sit at it. The booking service is the desk's, so it stays when a player takes the dockmaster's job.
+- type: entity
+  parent: WGComputerDrydockTraffic
+  id: WGComputerLupercalDockDesk
+  name: dockmaster's desk
+  description: Where the Lupercal's dockmaster takes hails and books berths. On a call, a button in the hail window offers the caller the drydock. Officers and up may sit at it.
+  components:
+  - type: WGOfficerHelm
+  - type: WGDrydockOperator
+  # The operator adds the drydock window if it's missing; declared here so spawning changes nothing.
+  - type: UserInterface
+    interfaces:
+      enum.ShuttleConsoleUiKey.Key:
+        type: ShuttleConsoleBoundUserInterface
+      enum.IntercomUiKey.Key:
+        type: IntercomBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+      enum.WGDrydockConsoleUiKey.Key:
+        type: WGDrydockConsoleBoundUserInterface
+  - type: HailService
+    name: drydock-hail-service
+    key: enum.WGDrydockConsoleUiKey.Key
+    perCaller: true
+
+# Imre Kast, quartermaster at the Exchange dock: fuel, and refuelling for ships with a deed.
+- type: humanoidProfile
+  id: WGLupercalQuartermasterProfile
+  profile:
+    name: Imre Kast
+    species: Human
+    age: 51
+    sex: Male
+    gender: Male
+    appearance:
+      hair: HumanHairCrewcut
+      hairColor: "#2E2620"
+      facialHair: HumanFacialHairChinlessbeard
+      facialHairColor: "#2E2620"
+      eyeColor: "#5A4632"
+      skinColor: "#C79A76"
+
+- type: startingGear
+  id: WGLupercalQuartermasterGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitEngineeringHazard
+    head: ClothingHeadHatHardhatBlue
+    ears: ClothingHeadsetGrey
+    shoes: ClothingShoesBootsWork
+    gloves: ClothingHandsGlovesColorBlack
+    belt: ClothingBeltUtility
+
+- type: traderDialogue
+  id: WGLupercalQuartermasterDialogue
+  greeting: wg-lupercal-quartermaster-greeting
+  farewell: wg-lupercal-quartermaster-farewell
+  options:
+  - prompt: wg-lupercal-quartermaster-prompt-shop
+    response: wg-lupercal-quartermaster-response-shop
+    action: OpenShop
+  - prompt: wg-lupercal-quartermaster-prompt-refuel
+    response: wg-lupercal-quartermaster-response-refuel
+    action: Refuel
+    requires: DeedId
+  - prompt: wg-lupercal-quartermaster-prompt-who
+    response: wg-lupercal-quartermaster-response-who
+    action: None
+
+- type: entity
+  id: WGLupercalQuartermaster
+  parent: WGTraderFuelTechnician
+  name: Imre Kast
+  description: The Exchange dock's quartermaster, who counts every litre twice.
+  suffix: Lupercal, Fuel
+  components:
+  - type: HumanoidAppearance
+    species: Human
+    initial: WGLupercalQuartermasterProfile
+  - type: Loadout
+    prototypes: [ WGLupercalQuartermasterGear ]
+  - type: Trader
+    dialogue: WGLupercalQuartermasterDialogue
+
+# Sister Agathe Lowe, apothecary at the Medical dock: clinic supplies and medical equipment.
+- type: humanoidProfile
+  id: WGLupercalApothecaryProfile
+  profile:
+    name: Agathe Lowe
+    species: Human
+    age: 63
+    sex: Female
+    gender: Female
+    appearance:
+      hair: HumanHairTightbun
+      hairColor: "#D8D2C8"
+      eyeColor: "#4E6A80"
+      skinColor: "#E9C7A8"
+
+- type: startingGear
+  id: WGLupercalApothecaryGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorWhite
+    outerClothing: ClothingOuterCoatLab
+    neck: ClothingNeckStethoscope
+    ears: ClothingHeadsetGrey
+    shoes: ClothingShoesColorWhite
+    gloves: ClothingHandsGlovesNitrile
+
+- type: traderDialogue
+  id: WGLupercalApothecaryDialogue
+  greeting: wg-lupercal-apothecary-greeting
+  farewell: wg-lupercal-apothecary-farewell
+  options:
+  - prompt: wg-lupercal-apothecary-prompt-shop
+    response: wg-lupercal-apothecary-response-shop
+    action: OpenShop
+  - prompt: wg-lupercal-apothecary-prompt-who
+    response: wg-lupercal-apothecary-response-who
+    action: None
+
+- type: entity
+  id: WGLupercalApothecary
+  parent: WGBaseTrader
+  name: Agathe Lowe
+  description: The Medical dock's apothecary, who calls everyone "dear" and means nothing by it.
+  suffix: Lupercal, Medical
+  components:
+  - type: HumanoidAppearance
+    species: Human
+    initial: WGLupercalApothecaryProfile
+  - type: Loadout
+    prototypes: [ WGLupercalApothecaryGear ]
+  - type: Trader
+    dialogue: WGLupercalApothecaryDialogue
+  - type: TraderShop
+    vendors:
+    - WGTraderStockMedic
+    - WGTraderStockMedicEquipment
+
+# Counter posts: the roster puts each trader on his marker, facing the counter in front of it.
+- type: entity
+  parent: WGShipCounterPostBase
+  id: WGShipCounterPostLupercalDockmaster
+  name: counter post (Lupercal dockmaster)
+  components:
+  - type: WGShipCounterPost
+    trader: WGLupercalDockmaster
+
+- type: entity
+  parent: WGShipCounterPostBase
+  id: WGShipCounterPostLupercalQuartermaster
+  name: counter post (Lupercal quartermaster)
+  components:
+  - type: WGShipCounterPost
+    trader: WGLupercalQuartermaster
+
+- type: entity
+  parent: WGShipCounterPostBase
+  id: WGShipCounterPostLupercalApothecary
+  name: counter post (Lupercal apothecary)
+  components:
+  - type: WGShipCounterPost
+    trader: WGLupercalApothecary
+
+# The WGLupercalLawset (code plan section 8d): the owner and command first, then the people aboard, then the rules
+# set from the bridge, then the ship and the silicon itself.
+- type: siliconLaw
+  id: WGLupercalLaw1
+  order: 1
+  lawString: law-lupercal-1
+
+- type: siliconLaw
+  id: WGLupercalLaw2
+  order: 2
+  lawString: law-lupercal-2
+
+- type: siliconLaw
+  id: WGLupercalLaw3
+  order: 3
+  lawString: law-lupercal-3
+
+- type: siliconLaw
+  id: WGLupercalLaw4
+  order: 4
+  lawString: law-lupercal-4
+
+- type: siliconLawset
+  id: WGLupercalLawset
+  laws:
+  - WGLupercalLaw1
+  - WGLupercalLaw2
+  - WGLupercalLaw3
+  - WGLupercalLaw4
+  obeysTo: laws-owner-lupercal
+
+- type: entity
+  id: WGLupercalAiBrain
+  parent: StationAiBrain
+  categories: [ HideSpawnMenu, DoNotMap ]
+  components:
+  - type: SiliconLawProvider
+    laws: WGLupercalLawset
+
+# The AI core in the admin machines room, empty until a player takes the AI job.
+- type: entity
+  id: WGLupercalAiCore
+  parent: PlayerStationAiEmpty
+  suffix: Lupercal, Job spawn
+  components:
+  - type: ContainerSpawnPoint
+    containerId: station_ai_mind_slot
+    job: WGLupercalAi
+
+- type: entity
+  id: WGLupercalBorg
+  parent: PlayerBorgBattery
+  categories: [ HideSpawnMenu ]
+  suffix: Lupercal
+  components:
+  - type: SiliconLawProvider
+    laws: WGLupercalLawset
+
+- type: entity
+  id: WGLupercalCyborgSpawnPoint
+  parent: SpawnPointBorg
+  name: cyborg (Lupercal)
+  components:
+  - type: SpawnPoint
+    job_id: WGLupercalCyborg

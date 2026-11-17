@@ -513,13 +513,13 @@ public sealed partial class StationJobsSystem : EntitySystem
         while (query.MoveNext(out var station, out var comp))
         {
             // WOLFGATE(RoundSetup) START: private scenario stations stay out of the late-join job list
-            // if (HasComp<Content.Server._WF.RoundSetup.WFCrashScenarioStationComponent>(station) ||
-            //     HasComp<Content.Server._WF.RoundSetup.WFShipScenarioStationComponent>(station))
-            if (!EntityManager.System<Content.Server._WF.RoundSetup.WFRoundSetupSystem>().IsStandardStation(station))
+            // if (HasComp<Content.Server._WG.RoundSetup.WGCrashScenarioStationComponent>(station) ||
+            //     HasComp<Content.Server._WG.RoundSetup.WGShipScenarioStationComponent>(station))
+            if (!EntityManager.System<Content.Server._WG.RoundSetup.WGRoundSetupSystem>().IsStandardStation(station))
                 continue;
             // WOLFGATE END
             // WOLFGATE(ShipCommand) START: an admin vessel with player jobs is listed, with its open jobs, only while one is open
-            var shipJobs = EntityManager.System<Content.Server._WF.ShipCommand.WFShipJobsSystem>();
+            var shipJobs = EntityManager.System<Content.Server._WG.ShipCommand.WGShipJobsSystem>();
             if (shipJobs.IsJobsStation(station))
             {
                 if (shipJobs.ListedForJoin(station, comp))

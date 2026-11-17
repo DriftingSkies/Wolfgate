@@ -5,7 +5,7 @@
     DrinkCafeLatte: 5
     DrinkTeacup: 5
     DrinkGreenTea: 5
-    WFDrinkEarlGreyTea: 5 # WOLFGATE(Tributes): Earl Grey for Sir Patrick Stewart
+    WGDrinkEarlGreyTea: 5 # WOLFGATE(Tributes): Earl Grey for Sir Patrick Stewart
     DrinkHotCoco: 5
   contrabandInventory:
     DrinkTeapot: 2

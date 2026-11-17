@@ -83,7 +83,7 @@ public sealed partial class CEZGroundFrictionController : VirtualController
             return;
 
         // WOLFGATE(Planets): crash skids slide before regaining ordinary parked-hull grip.
-        var drop = MathF.Min(CEZLevelsSystem.GroundSkidDecel * _zLevels.WfCrashSkidFriction(uid) * grip * frameTime, speed);
+        var drop = MathF.Min(CEZLevelsSystem.GroundSkidDecel * _zLevels.WgCrashSkidFriction(uid) * grip * frameTime, speed);
 
         // Back out the force that produces exactly that change in velocity over this step.
         var force = predicted / speed * -drop / (body.InvMass * frameTime);
@@ -105,7 +105,7 @@ public sealed partial class CEZGroundFrictionController : VirtualController
             return;
 
         // WOLFGATE(Planets): detached crash sections can yaw while skidding, then regain normal parked grip.
-        var drop = MathF.Min(CEZLevelsSystem.GroundSkidAngularDecel * _zLevels.WfCrashSkidFriction(uid) * grip * frameTime, spin);
+        var drop = MathF.Min(CEZLevelsSystem.GroundSkidAngularDecel * _zLevels.WgCrashSkidFriction(uid) * grip * frameTime, spin);
 
         var torque = -MathF.Sign(predicted) * drop / (body.InvI * frameTime);
         PhysicsSystem.ApplyTorque(uid, torque, body: body);

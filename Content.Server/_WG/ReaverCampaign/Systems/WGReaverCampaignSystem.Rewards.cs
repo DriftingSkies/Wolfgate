@@ -1,0 +1,129 @@
+using System.Linq;
+using System.Numerics;
+using Content.Server._WG.Drydock;
+using Content.Server._WG.Encounters.Components;
+using Content.Server._WG.ReaverCampaign.Components;
+using Content.Shared._WG.Encounters;
+using Content.Shared._WG.ReaverCampaign;
+
+namespace Content.Server._WG.ReaverCampaign.Systems;
+
+public sealed partial class WGReaverCampaignSystem
+{
+    [Dependency] private WGDrydockSystem _drydock = default!;
+
+    /// <summary>How near a stronghold's lead a player ship must stand by to count for the support pool.</summary>
+    private const float SupportRange = 2500f;
+
+    /// <summary>How long in all a ship must stand by an assault to share the support pool.</summary>
+    private const float SupportTime = 90f;
+
+    /// <summary>How long after the last hit on a stronghold standing by still counts as support.</summary>
+    private static readonly TimeSpan SupportWindow = TimeSpan.FromSeconds(120);
+
+    /// <summary>Times the player ships near a stronghold under attack that have never hit it.</summary>
+    private void TrackSupport(WGReaverStrongholdComponent stronghold, WGEncounterComponent encounter, Vector2 lead,
+        HashSet<EntityUid> ships, float elapsed)
+    {
+        foreach (var ship in ships)
+        {
+            if (encounter.ShipHits.Keys.Any(key => key.Attacker == ship)
+                || Vector2.DistanceSquared(_transform.GetWorldPosition(ship), lead) > SupportRange * SupportRange)
+                continue;
+
+            stronghold.Support[ship] = stronghold.Support.GetValueOrDefault(ship) + elapsed;
+        }
+    }
+
+    /// <summary>Pays a broken stronghold's bounty, at its higher tier and scaled by its level and the citadel's scale, to those who hit it or its reinforcements and the ships that stood by; returns the bounty and how many were paid.</summary>
+    private (int Bounty, int Paid) PayStrongholdBounty(WGReaverCampaignPrototype campaign, WGReaverCampaignComponent state,
+        Entity<WGReaverStrongholdComponent, WGEncounterComponent> stronghold)
+    {
+        var (uid, comp, encounter) = stronghold;
+        var factor = BountyFactor(campaign, comp) * Bracket(campaign, state).BountyScale;
+        var bounty = ShipScaled(campaign, uid, (int) (ByTier(campaign.StrongholdBounty, Math.Max(comp.Tier, state.Tier), 0) * factor));
+        var attackers = encounter.ShipHits.Keys.Select(key => key.Attacker).ToHashSet();
+        var supporters = new List<EntityUid>();
+        foreach (var (ship, seconds) in comp.Support)
+        {
+            if (seconds >= SupportTime && !attackers.Contains(ship) && !TerminatingOrDeleted(ship))
+                supporters.Add(ship);
+        }
+
+        var (reward, extra) = Rewards(campaign, bounty, grant => (int) (grant.Stronghold * factor));
+        var helpers = new List<EntityUid>();
+        var paid = _rewards.PayBounty(uid, reward, comp.Citadel ? "breaking the Reaver citadel" : "breaking the Reaver stronghold", supporters, extra, helpers,
+            uncapped: comp.Citadel);
+        _drydock.IssueShipVouchers(campaign.StrongholdVoucher, helpers);
+        return (bounty, paid);
+    }
+
+    /// <summary>Pays a destroyed patrol's bounty to those who hit it; returns the bounty and how many were paid.</summary>
+    private (int Bounty, int Paid) PayPatrolBounty(WGReaverCampaignPrototype campaign, EntityUid patrol)
+    {
+        return PayMinorBounty(campaign, patrol, campaign.PatrolBounty, "destroying the Reaver patrol");
+    }
+
+    /// <summary>Pays a destroyed reinforcement's bounty, the patrol bounty, to those who hit it; returns the bounty and how many were paid.</summary>
+    private (int Bounty, int Paid) PayReinforcementBounty(WGReaverCampaignPrototype campaign, EntityUid reinforcement)
+    {
+        return PayMinorBounty(campaign, reinforcement, campaign.PatrolBounty, "destroying the Reaver reinforcements");
+    }
+
+    /// <summary>Pays a destroyed battery's bounty to those who hit it; returns the bounty and how many were paid.</summary>
+    private (int Bounty, int Paid) PayBatteryBounty(WGReaverCampaignPrototype campaign, EntityUid battery)
+    {
+        return PayMinorBounty(campaign, battery, campaign.BatteryBounty, "destroying the Reaver battery");
+    }
+
+    /// <summary>Pays a patrol-sized bounty, scaled by the bracket, with the patrol credits and voucher; returns the bounty and how many were paid.</summary>
+    private (int Bounty, int Paid) PayMinorBounty(WGReaverCampaignPrototype campaign, EntityUid encounter, int spesos, string reason)
+    {
+        var scale = Bracket().BountyScale;
+        var bounty = ShipScaled(campaign, encounter, (int) (spesos * scale));
+        var (reward, extra) = Rewards(campaign, bounty, grant => (int) (grant.Patrol * scale));
+        var helpers = new List<EntityUid>();
+        var paid = _rewards.PayBounty(encounter, reward, reason, null, extra, helpers);
+        _drydock.IssueShipVouchers(campaign.PatrolVoucher, helpers);
+        return (bounty, paid);
+    }
+
+    /// <summary>Pays half the current tier's stronghold bounty, or half a level 0 citadel's, credits included, to those who hit a destroyed convoy; returns the bounty and how many were paid.</summary>
+    private (int Bounty, int Paid) PayConvoyBounty(WGReaverCampaignPrototype campaign, WGReaverCampaignComponent state, EntityUid convoy,
+        bool citadel)
+    {
+        var scale = (citadel ? campaign.CitadelBountyScale : 1f) * Bracket(campaign, state).BountyScale;
+        var bounty = ShipScaled(campaign, convoy, (int) (ByTier(campaign.StrongholdBounty, state.Tier, 0) * scale) / 2);
+        var (reward, extra) = Rewards(campaign, bounty, grant => (int) (grant.Stronghold * scale) / 2);
+        var helpers = new List<EntityUid>();
+        var paid = _rewards.PayBounty(convoy, reward, citadel ? "destroying the Reaver citadel convoy" : "destroying the Reaver convoy", null, extra, helpers);
+        _drydock.IssueShipVouchers(campaign.StrongholdVoucher, helpers);
+        return (bounty, paid);
+    }
+
+    /// <summary>A bounty in spesos scaled by the paid attacking ships; credits are per head and stay as they are.</summary>
+    private int ShipScaled(WGReaverCampaignPrototype campaign, EntityUid encounter, int bounty)
+    {
+        return _rewards.ScaleForShips(encounter, bounty, campaign.ShipBountyScale, campaign.MaxShipBountyScale);
+    }
+
+    /// <summary>A bounty as an encounter reward with the first navy's credits, and the other navies' credits as rewards of no spesos.</summary>
+    private static (WGEncounterReward Reward, List<WGEncounterReward> Extra) Rewards(WGReaverCampaignPrototype campaign, int spesos,
+        Func<WGReaverCreditGrant, int> amount)
+    {
+        var extra = campaign.Credits.Select(grant => new WGEncounterReward
+        {
+            Credits = amount(grant),
+            CreditEntity = grant.Entity,
+            CreditCompanies = new List<string>(grant.Companies),
+        }).ToList();
+
+        if (extra.Count == 0)
+            return (new WGEncounterReward { Spesos = spesos }, extra);
+
+        var reward = extra[0];
+        reward.Spesos = spesos;
+        extra.RemoveAt(0);
+        return (reward, extra);
+    }
+}

@@ -45,6 +45,6 @@
     back:
     - RubberStampDoctor
     - BoxFolderMedicalDoctor
-    - WFShipVoucherMedicalResponder # WOLFGATE(Shipyard): free Triage or Stubby
+    - WGShipVoucherMedicalResponder # WOLFGATE(Shipyard): free Triage or Stubby
     - SyndicateJawsOfLife # WOLFGATE: responders start with advanced jaws of life
     - EncryptionKeyService

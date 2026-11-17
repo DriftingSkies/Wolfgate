@@ -36,7 +36,7 @@ using Content.Shared.Damage;
 using Content.Shared.Hands.Components;
 using Content.Shared._Mono.FireControl;
 using Content.Shared._RMC14.Weapons.Ranged.Prediction;
-using GunUseGunOriginComponent = Content.Shared._WF.Vehicles.Weapons.GunUseGunOriginComponent; // WOLFGATE(Vehicles)
+using GunUseGunOriginComponent = Content.Shared._WG.Vehicles.Weapons.GunUseGunOriginComponent; // WOLFGATE(Vehicles)
 using Content.Shared.Mech.Components;
 using Content.Shared.Projectiles;
 using Content.Shared.Weapons.Hitscan.Components;

@@ -1,4 +1,4 @@
-using Content.Server._WF.Cleaning; // WOLFGATE(Cleaning)
+using Content.Server._WG.Cleaning; // WOLFGATE(Cleaning)
 using Content.Server.Decals;
 using Content.Shared.Chemistry.Reaction;
 using Content.Shared.Chemistry.Reagent;
@@ -38,7 +38,7 @@ public sealed partial class CleanDecalsReaction : ITileReaction
 
         var lookupSystem = entityManager.System<EntityLookupSystem>();
         var decalSystem = entityManager.System<DecalSystem>();
-        var cleaning = entityManager.System<WFDecalCleaningSystem>(); // WOLFGATE(Cleaning): mapped decals saved with the flag off
+        var cleaning = entityManager.System<WGDecalCleaningSystem>(); // WOLFGATE(Cleaning): mapped decals saved with the flag off
         // Very generous hitbox.
         var decals = decalSystem
             .GetDecalsIntersecting(tile.GridUid, lookupSystem.GetLocalBounds(tile, grid.TileSize).Enlarged(0.5f).Translated(new Vector2(-0.5f, -0.5f)));

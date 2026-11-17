@@ -1,0 +1,119 @@
+# The four program disks are the only way to unlock the pod's advanced surgery, so they need a route that
+# does not depend on a lathe being up: one crate, one cargo row, beside the other medical products.
+
+- type: entity
+  id: WGCrateAutodocPrograms
+  parent: CrateMedical
+  name: autodoc program crate
+  description: A full set of surgical programs for an autodoc, plus the cardiac module.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGAutodocProgramDiskTransplant
+    - id: WGAutodocProgramDiskLimb
+    - id: WGAutodocProgramDiskNeuro
+    - id: WGAutodocProgramDiskCavity
+    - id: WGAutodocDefibModule
+    - id: WGAutodocAutofixModule
+
+- type: cargoProduct
+  id: WGWolfmedAutodocPrograms
+  icon:
+    sprite: Objects/Specific/Research/researchdisk.rsi
+    state: icon
+  product: WGCrateAutodocPrograms
+  cost: 12000 # above the ~10,080 its contents sell for, or cargo can be milked
+  category: cargoproduct-category-name-medical
+  group: market
+
+# Lathe recipes. The board sits with the other medical machine boards; the disks are ordinary medical prints.
+
+- type: latheRecipe
+  id: WGAutodocMachineCircuitboard
+  result: WGAutodocMachineCircuitboard
+  completetime: 30
+  materials:
+    Steel: 500
+    Glass: 1000
+    Gold: 500
+    Silver: 500
+    Plasma: 500
+    Diamond: 200
+
+- type: latheRecipe
+  id: WGAutodocProgramDiskTransplant
+  result: WGAutodocProgramDiskTransplant
+  completetime: 15
+  materials:
+    Steel: 200
+    Glass: 300
+    Gold: 100
+    Silver: 100
+    Plasma: 100
+
+- type: latheRecipe
+  id: WGAutodocProgramDiskLimb
+  result: WGAutodocProgramDiskLimb
+  completetime: 15
+  materials:
+    Steel: 200
+    Glass: 300
+    Gold: 100
+    Silver: 100
+    Plasma: 100
+
+- type: latheRecipe
+  id: WGAutodocProgramDiskNeuro
+  result: WGAutodocProgramDiskNeuro
+  completetime: 15
+  materials:
+    Steel: 200
+    Glass: 300
+    Gold: 200
+    Silver: 100
+    Plasma: 100
+
+- type: latheRecipe
+  id: WGAutodocProgramDiskCavity
+  result: WGAutodocProgramDiskCavity
+  completetime: 15
+  materials:
+    Steel: 200
+    Glass: 300
+    Gold: 100
+    Silver: 100
+    Plasma: 100
+
+- type: latheRecipe
+  id: WGAutodocDefibModule
+  result: WGAutodocDefibModule
+  completetime: 15
+  materials:
+    Steel: 300
+    Glass: 300
+    Gold: 200
+    Silver: 150
+    Plasma: 150
+    Diamond: 50
+
+- type: latheRecipe
+  id: WGAutodocAutofixModule
+  result: WGAutodocAutofixModule
+  completetime: 15
+  materials:
+    Steel: 300
+    Glass: 300
+    Gold: 200
+    Silver: 150
+    Plasma: 150
+    Diamond: 50
+
+- type: latheRecipePack
+  id: WGWolfmedAutodocPrograms
+  recipes:
+  - WGAutodocProgramDiskTransplant
+  - WGAutodocProgramDiskLimb
+  - WGAutodocProgramDiskNeuro
+  - WGAutodocProgramDiskCavity
+  - WGAutodocDefibModule
+  - WGAutodocAutofixModule

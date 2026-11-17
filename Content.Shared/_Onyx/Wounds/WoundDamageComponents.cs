@@ -4,7 +4,7 @@ using Content.Shared.Body.Part;
 using Content.Shared.FixedPoint;
 using Content.Shared.Humanoid;
 using Content.Shared._Shitmed.Targeting; // WOLFGATE(Wolfmed): D10 skips Onyx's Targeting stack; TargetBodyPart comes from Shitmed.
-using Content.Shared._WF.Wolfmed.Damage; // WOLFGATE(Wolfmed): V3: PartDamageVisualsComponent.Degradation.
+using Content.Shared._WG.Wolfmed.Damage; // WOLFGATE(Wolfmed): V3: PartDamageVisualsComponent.Degradation.
 using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;

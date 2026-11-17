@@ -248,10 +248,10 @@ public sealed partial class CrewManifestSystem : EntitySystem
             var jobTitle = "Unknown";
             var jobIcon = "JobIconContractor";
             ProtoId<JobPrototype>? jobProto = null;
-            var wfCompanyRank = 0; // WOLFGATE(Companies)
+            var wgCompanyRank = 0; // WOLFGATE(Companies)
             if (_id.TryFindIdCard(uid, out var card))
             {
-                wfCompanyRank = CompOrNull<Content.Shared._WF.Companies.WFCompanyRankIconComponent>(card)?.RankId ?? 0; // WOLFGATE(Companies): the card's rank icon replaces JobIcon
+                wgCompanyRank = CompOrNull<Content.Shared._WG.Companies.WGCompanyRankIconComponent>(card)?.RankId ?? 0; // WOLFGATE(Companies): the card's rank icon replaces JobIcon
                 name = card.Comp.FullName ?? name;
                 jobTitle = card.Comp.LocalizedJobTitle ?? jobTitle;
                 jobIcon = card.Comp.JobIcon;
@@ -269,7 +269,7 @@ public sealed partial class CrewManifestSystem : EntitySystem
             jobProto = _prototypeManager.EnumeratePrototypes<JobPrototype>().Where(p => p.LocalizedName == jobTitle).Aggregate(jobProto, (current, proto) => current ?? proto.ID);
 
             var entry = new CrewManifestEntry(name, jobTitle, jobIcon, jobProto ?? "Contractor")
-                { WFCompanyRank = wfCompanyRank }; // WOLFGATE(Companies)
+                { WGCompanyRank = wgCompanyRank }; // WOLFGATE(Companies)
             _prototypeManager.Resolve(jobProto, out var job);
             entriesSort.Add((job, entry));
         } // Monolith: Gridless end

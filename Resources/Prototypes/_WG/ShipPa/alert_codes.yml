@@ -1,0 +1,37 @@
+# Ship PA situation codes shown as buttons on the pilot console's PA & Alarms panel.
+# Setting one dirties ShipAlertComponent.Code and broadcasts `announcement` through the ship's speakers.
+- type: shipAlertCode
+  id: WGShipCodeGreen
+  name: ship-alert-code-green
+  description: ship-alert-code-green-desc
+  announcement: ship-alert-code-green-announcement
+  color: "#3fe05a"
+  order: 0
+  sound: /Audio/Announcements/attention.ogg
+
+- type: shipAlertCode
+  id: WGShipCodeYellow
+  name: ship-alert-code-yellow
+  description: ship-alert-code-yellow-desc
+  announcement: ship-alert-code-yellow-announcement
+  color: "#ffd23f"
+  order: 1
+  sound: /Audio/Misc/bluealert.ogg
+
+- type: shipAlertCode
+  id: WGShipCodeRed
+  name: ship-alert-code-red
+  description: ship-alert-code-red-desc
+  announcement: ship-alert-code-red-announcement
+  color: "#ff3030"
+  order: 2
+  sound: /Audio/Misc/redalert.ogg
+
+- type: shipAlertCode
+  id: WGShipCodeBlack
+  name: ship-alert-code-black
+  description: ship-alert-code-black-desc
+  announcement: ship-alert-code-black-announcement
+  color: "#d0d0d0"
+  order: 3
+  sound: /Audio/Announcements/war.ogg

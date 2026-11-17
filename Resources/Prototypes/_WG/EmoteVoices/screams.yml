@@ -1,0 +1,417 @@
+# Screams a character can pick in the creator. The first group is every scream a Wolfgate species already uses,
+# the second is Nova Sector's selector. A voice without params plays with a variation of 0.125.
+
+- type: emoteVoice
+  id: WGScreamNone
+  emote: Scream
+  name: emote-voice-name-silent
+
+# Wolfgate species
+
+- type: emoteVoice
+  id: WGScreamHuman
+  emote: Scream
+  name: emote-voice-name-human
+  sound:
+    collection: MaleScreams
+  sexSounds:
+    Female:
+      collection: FemaleScreams
+
+- type: emoteVoice
+  id: WGScreamHumanMasculine
+  emote: Scream
+  name: emote-voice-name-human-masculine
+  sound:
+    collection: MaleScreams
+
+- type: emoteVoice
+  id: WGScreamHumanFeminine
+  emote: Scream
+  name: emote-voice-name-human-feminine
+  sound:
+    collection: FemaleScreams
+
+- type: emoteVoice
+  id: WGScreamDwarf
+  emote: Scream
+  name: emote-voice-name-dwarf
+  sound:
+    collection: MaleScreams
+  sexSounds:
+    Female:
+      collection: FemaleScreams
+  params:
+    variation: 0.125
+    pitch: 0.75
+
+- type: emoteVoice
+  id: WGScreamThaven
+  emote: Scream
+  name: emote-voice-name-thaven
+  sound:
+    collection: MaleScreams
+  sexSounds:
+    Female:
+      collection: FemaleScreams
+  params:
+    variation: 0.05
+    pitch: 1.25
+
+- type: emoteVoice
+  id: WGScreamArachnid
+  emote: Scream
+  name: emote-voice-name-arachnid
+  sound:
+    path: /Audio/Voice/Arachnid/arachnid_scream.ogg
+
+- type: emoteVoice
+  id: WGScreamAvali
+  emote: Scream
+  name: emote-voice-name-avali
+  sound:
+    path: /Audio/_Starlight/Effects/avali_scream.ogg
+
+- type: emoteVoice
+  id: WGScreamDiona
+  emote: Scream
+  name: emote-voice-name-diona
+  sound:
+    path: /Audio/Voice/Diona/diona_scream.ogg
+
+- type: emoteVoice
+  id: WGScreamFelinid
+  emote: Scream
+  name: emote-voice-name-felinid
+  sound:
+    collection: FelinidScreams
+
+- type: emoteVoice
+  id: WGScreamFelionoid
+  emote: Scream
+  name: emote-voice-name-felionoid
+  sound:
+    collection: FelionoidScreams
+
+- type: emoteVoice
+  id: WGScreamGoblin
+  emote: Scream
+  name: emote-voice-name-goblin
+  sound:
+    collection: GoblinScreams
+
+- type: emoteVoice
+  id: WGScreamHarpy
+  emote: Scream
+  name: emote-voice-name-harpy
+  sound:
+    collection: HarpyScreams
+
+- type: emoteVoice
+  id: WGScreamHydrakin
+  emote: Scream
+  name: emote-voice-name-hydrakin
+  sound:
+    collection: HydrakinScream
+  params:
+    variation: 0.125
+    volume: -8
+
+- type: emoteVoice
+  id: WGScreamIpc
+  emote: Scream
+  name: emote-voice-name-ipc
+  sound:
+    path: /Audio/_EinsteinEngines/Voice/IPC/robot-scream.ogg
+  params:
+    variation: 0
+
+- type: emoteVoice
+  id: WGScreamMoth
+  emote: Scream
+  name: emote-voice-name-moth
+  sound:
+    path: /Audio/Voice/Moth/moth_scream.ogg
+
+- type: emoteVoice
+  id: WGScreamReptilian
+  emote: Scream
+  name: emote-voice-name-reptilian
+  sound:
+    path: /Audio/Voice/Reptilian/reptilian_scream.ogg
+
+- type: emoteVoice
+  id: WGScreamResomi
+  emote: Scream
+  name: emote-voice-name-resomi
+  sound:
+    path: /Audio/_Moffstation/Voice/Resomi/resomi_scream.ogg
+
+- type: emoteVoice
+  id: WGScreamRodentia
+  emote: Scream
+  name: emote-voice-name-rodentia
+  sound:
+    path: /Audio/Animals/mouse_squeak.ogg
+
+- type: emoteVoice
+  id: WGScreamShadekin
+  emote: Scream
+  name: emote-voice-name-shadekin
+  sound:
+    collection: ShadekinMaleScreams
+  sexSounds:
+    Female:
+      collection: ShadekinFemaleScreams
+
+- type: emoteVoice
+  id: WGScreamShadekinMasculine
+  emote: Scream
+  name: emote-voice-name-shadekin-masculine
+  sound:
+    collection: ShadekinMaleScreams
+
+- type: emoteVoice
+  id: WGScreamShadekinFeminine
+  emote: Scream
+  name: emote-voice-name-shadekin-feminine
+  sound:
+    collection: ShadekinFemaleScreams
+
+- type: emoteVoice
+  id: WGScreamSynth
+  emote: Scream
+  name: emote-voice-name-synth
+  sound:
+    collection: SiliconScreams
+  params:
+    variation: 0
+
+- type: emoteVoice
+  id: WGScreamCyborg
+  emote: Scream
+  name: emote-voice-name-cyborg
+  sound:
+    path: /Audio/_Goobstation/Voice/Cyborg/borgscream.ogg
+  params:
+    variation: 0.05
+
+- type: emoteVoice
+  id: WGScreamVox
+  emote: Scream
+  name: emote-voice-name-vox
+  sound:
+    collection: VoxScreams
+
+- type: emoteVoice
+  id: WGScreamVulpkanin
+  emote: Scream
+  name: emote-voice-name-vulpkanin
+  sound:
+    collection: WGVulpkaninScreams
+
+# Nova Sector
+
+- type: emoteVoice
+  id: WGScreamHumanAlt
+  emote: Scream
+  name: emote-voice-name-human-alt
+  sound:
+    collection: MaleScreams
+  sexSounds:
+    Female:
+      collection: WGScreamsHumanFemaleAlt
+
+- type: emoteVoice
+  id: WGScreamHumanAltFeminine
+  emote: Scream
+  name: emote-voice-name-human-alt-feminine
+  sound:
+    collection: WGScreamsHumanFemaleAlt
+
+- type: emoteVoice
+  id: WGScreamClassic
+  emote: Scream
+  name: emote-voice-name-classic
+  sound:
+    path: /Audio/Voice/Human/wilhelm_scream.ogg
+
+- type: emoteVoice
+  id: WGScreamRobotic
+  emote: Scream
+  name: emote-voice-name-robotic
+  sound:
+    path: /Audio/_WG/EmoteVoices/Scream/scream_silicon.ogg
+
+- type: emoteVoice
+  id: WGScreamLizard
+  emote: Scream
+  name: emote-voice-name-lizard
+  sound:
+    collection: WGScreamsLizard
+
+- type: emoteVoice
+  id: WGScreamCat
+  emote: Scream
+  name: emote-voice-name-cat
+  sound:
+    path: /Audio/_WG/EmoteVoices/Scream/scream_cat.ogg
+
+- type: emoteVoice
+  id: WGScreamJelly
+  emote: Scream
+  name: emote-voice-name-jelly
+  sound:
+    path: /Audio/_WG/EmoteVoices/Scream/jelly_scream.ogg
+
+- type: emoteVoice
+  id: WGScreamVoxAlt
+  emote: Scream
+  name: emote-voice-name-vox-alt
+  sound:
+    path: /Audio/_WG/EmoteVoices/Scream/voxscream.ogg
+
+- type: emoteVoice
+  id: WGScreamXeno
+  emote: Scream
+  name: emote-voice-name-xeno
+  sound:
+    path: /Audio/_WG/EmoteVoices/Scream/hiss6.ogg
+
+- type: emoteVoice
+  id: WGScreamRaptor
+  emote: Scream
+  name: emote-voice-name-raptor
+  sound:
+    path: /Audio/_WG/EmoteVoices/Scream/raptorscream.ogg
+
+- type: emoteVoice
+  id: WGScreamRodent
+  emote: Scream
+  name: emote-voice-name-rodent
+  sound:
+    path: /Audio/_WG/EmoteVoices/Scream/rodentscream.ogg
+
+- type: emoteVoice
+  id: WGScreamChicken
+  emote: Scream
+  name: emote-voice-name-chicken
+  sound:
+    path: /Audio/_Mono/Voice/bagawk.ogg
+
+- type: emoteVoice
+  id: WGScreamEthereal
+  emote: Scream
+  name: emote-voice-name-ethereal
+  sound:
+    collection: WGScreamsEthereal
+
+- type: emoteVoice
+  id: WGScreamSlugcat
+  emote: Scream
+  name: emote-voice-name-slugcat
+  sound:
+    path: /Audio/_WG/EmoteVoices/Scream/scugscream_1.ogg
+
+- type: emoteVoice
+  id: WGScreamZombie
+  emote: Scream
+  name: emote-voice-name-zombie
+  sound:
+    path: /Audio/_WG/EmoteVoices/Scream/zombie_scream.ogg
+
+- type: emoteVoice
+  id: WGScreamMonkey
+  emote: Scream
+  name: emote-voice-name-monkey
+  sound:
+    collection: WGScreamsMonkey
+
+- type: emoteVoice
+  id: WGScreamGorilla
+  emote: Scream
+  name: emote-voice-name-gorilla
+  sound:
+    path: /Audio/_WG/EmoteVoices/Scream/gorilla.ogg
+
+- type: emoteVoice
+  id: WGScreamSkeleton
+  emote: Scream
+  name: emote-voice-name-skeleton
+  sound:
+    path: /Audio/_WG/EmoteVoices/Scream/scream_skeleton.ogg
+
+- type: emoteVoice
+  id: WGScreamPlasmaman
+  emote: Scream
+  name: emote-voice-name-plasmaman
+  sound:
+    collection: WGScreamsPlasmaman
+
+# The robotic voice packs ported from HardLight (Far Horizons): any character may pick them, synthetic ones most of all.
+
+- type: emoteVoice
+  id: WGScreamProtoHumie
+  emote: Scream
+  name: emote-voice-name-proto-humie
+  sound:
+    collection: ProtoHumanMScreams
+  sexSounds:
+    Female:
+      collection: ProtoHumanFScreams
+
+- type: emoteVoice
+  id: WGScreamProtoHumieMasculine
+  emote: Scream
+  name: emote-voice-name-proto-humie-masculine
+  sound:
+    collection: ProtoHumanMScreams
+
+- type: emoteVoice
+  id: WGScreamProtoHumieFeminine
+  emote: Scream
+  name: emote-voice-name-proto-humie-feminine
+  sound:
+    collection: ProtoHumanFScreams
+
+- type: emoteVoice
+  id: WGScreamProtoArachnid
+  emote: Scream
+  name: emote-voice-name-proto-arachnid
+  sound:
+    collection: ProtoArachnidScreams
+
+- type: emoteVoice
+  id: WGScreamProtoAvali
+  emote: Scream
+  name: emote-voice-name-proto-avali
+  sound:
+    collection: ProtoAvaliScreams
+
+- type: emoteVoice
+  id: WGScreamProtoFeline
+  emote: Scream
+  name: emote-voice-name-proto-feline
+  sound:
+    collection: ProtoFelionoidScreams
+
+- type: emoteVoice
+  id: WGScreamProtoMoth
+  emote: Scream
+  name: emote-voice-name-proto-moth
+  sound:
+    collection: ProtoMothScreams
+
+- type: emoteVoice
+  id: WGScreamProtoVox
+  emote: Scream
+  name: emote-voice-name-proto-vox
+  sound:
+    collection: ProtoVoxScreams
+
+- type: emoteVoice
+  id: WGScreamProtoVulpkanin
+  emote: Scream
+  name: emote-voice-name-proto-vulpkanin
+  sound:
+    collection: ProtoVulpScreams

@@ -154,9 +154,9 @@ public sealed partial class PryingSystem : EntitySystem
         // WOLFGATE(ArmorSpecialization) START: worn gear (servo assist) speeds prying with a tool, like other tool work.
         if (tool != null && tool != user)
         {
-            var wfSpeed = new Content.Shared._WF.ArmorSpecialization.WFToolSpeedEvent();
-            RaiseLocalEvent(user, ref wfSpeed);
-            toolModifier *= MathF.Max(wfSpeed.Multiplier, 0.1f);
+            var wgSpeed = new Content.Shared._WG.ArmorSpecialization.WGToolSpeedEvent();
+            RaiseLocalEvent(user, ref wgSpeed);
+            toolModifier *= MathF.Max(wgSpeed.Multiplier, 0.1f);
         }
         // WOLFGATE END
 

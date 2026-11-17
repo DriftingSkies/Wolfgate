@@ -6,8 +6,8 @@ using Content.Shared.Decals;
 using Content.Shared.Examine;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared._Shitmed.Humanoid.Events; // Shitmed Change
-using Content.Shared._WF.Prototypes; // WOLFGATE(Prototypes)
-using Content.Shared._WF.Biotype; // WOLFGATE(Biotype)
+using Content.Shared._WG.Prototypes; // WOLFGATE(Prototypes)
+using Content.Shared._WG.Biotype; // WOLFGATE(Biotype)
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Inventory;
@@ -43,7 +43,7 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
     [Dependency] private ISerializationManager _serManager = default!;
     [Dependency] private MarkingManager _markingManager = default!;
     [Dependency] private SharedAppearanceSystem _appearance = default!;
-    [Dependency] private SharedWFBiotypeSystem _biotype = default!; // WOLFGATE(Biotype)
+    [Dependency] private SharedWGBiotypeSystem _biotype = default!; // WOLFGATE(Biotype)
 
     public const string DefaultSpecies = "Human";
 
@@ -81,7 +81,7 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
          */
 
         var profile = export.Profile;
-        WFLegacyPrototypeIds.ResolveProfile(profile); // WOLFGATE(Prototypes): exports saved before a species or loadout rename
+        WGLegacyPrototypeIds.ResolveProfile(profile); // WOLFGATE(Prototypes): exports saved before a species or loadout rename
         var collection = IoCManager.Instance;
         profile.EnsureValid(session, collection!);
         return profile;

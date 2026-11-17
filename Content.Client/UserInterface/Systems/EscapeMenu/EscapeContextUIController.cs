@@ -1,4 +1,4 @@
-﻿using Content.Client._WF.Cockpit; // WOLFGATE(Cockpit)
+﻿using Content.Client._WG.Cockpit; // WOLFGATE(Cockpit)
 using Content.Client.UserInterface.Systems.Info;
 using Content.Shared.Input;
 using JetBrains.Annotations;
@@ -32,7 +32,7 @@ public sealed partial class EscapeContextUIController : UIController
         }
         else
         {
-            if (UIManager.GetUIController<WFCockpitUIController>().ExitOnEscape()) return; // WOLFGATE(Cockpit): Escape leaves the cockpit before it opens the game menu.
+            if (UIManager.GetUIController<WGCockpitUIController>().ExitOnEscape()) return; // WOLFGATE(Cockpit): Escape leaves the cockpit before it opens the game menu.
             _escapeUIController.ToggleWindow();
         }
     }

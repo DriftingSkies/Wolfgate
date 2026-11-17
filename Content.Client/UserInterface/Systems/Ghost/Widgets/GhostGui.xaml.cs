@@ -6,7 +6,7 @@ using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Timing;
 using Robust.Shared.Configuration;
 using Content.Client._NF.CryoSleep; // Frontier
-using Content.Client._WF.Ghost; // WOLFGATE(Ghost)
+using Content.Client._WG.Ghost; // WOLFGATE(Ghost)
 
 namespace Content.Client.UserInterface.Systems.Ghost.Widgets;
 

@@ -3,7 +3,7 @@
               xmlns:controls="https://spacestation14.io"
               xmlns:ui="clr-namespace:Content.Client.Shuttles.UI"
               xmlns:controls1="clr-namespace:Content.Client.UserInterface.Controls"
-              xmlns:wf="clr-namespace:Content.Client._WF.Planets"
+              xmlns:wg="clr-namespace:Content.Client._WG.Planets"
               xmlns:graphics="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client">
                 <!-- Mono - wrap -->
                 <controls:LayoutContainer Margin="5 4 10 5">
@@ -145,8 +145,8 @@
                             ToggleMode="True"/>
                     -->
                     <!-- WOLFGATE END -->
-                    <!-- WOLFGATE(Planets): enter/leave planet orbit, which needs no FTL drive (xmlns:wf above). -->
-                    <wf:WFOrbitButton Name="WfOrbitButton"/>
+                    <!-- WOLFGATE(Planets): enter/leave planet orbit, which needs no FTL drive (xmlns:wg above). -->
+                    <wg:WGOrbitButton Name="WgOrbitButton"/>
                         </controls:BoxContainer>
                     </controls:PanelContainer>
                     <!-- Frontier - Inertia dampener controls-->

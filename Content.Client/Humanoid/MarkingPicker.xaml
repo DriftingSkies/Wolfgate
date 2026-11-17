@@ -43,7 +43,7 @@
             <PanelContainer StyleClasses="CreatorCard" HorizontalExpand="True">
                 <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="6">
                     <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
-                        <Label Text="{Loc 'wf-creator-markings-available'}" StyleClasses="CreatorHeading" HorizontalExpand="True" />
+                        <Label Text="{Loc 'wg-creator-markings-available'}" StyleClasses="CreatorHeading" HorizontalExpand="True" />
                         <Label Name="CMarkingPoints" Text="" StyleClasses="CreatorFieldLabel" VAlign="Center" />
                     </BoxContainer>
                     <OptionButton Name="CMarkingCategoryButton" HorizontalExpand="True" />
@@ -55,7 +55,7 @@
             <!-- Applied markings -->
             <PanelContainer StyleClasses="CreatorCard" HorizontalExpand="True">
                 <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="6">
-                    <Label Text="{Loc 'wf-creator-markings-applied'}" StyleClasses="CreatorHeading" />
+                    <Label Text="{Loc 'wg-creator-markings-applied'}" StyleClasses="CreatorHeading" />
                     <ItemList Name="CMarkingsUsed" VerticalExpand="True" MinSize="260 280" />
                     <BoxContainer Orientation="Horizontal" SeparationOverride="4">
                         <Button Name="CMarkingRankUp" Text="{Loc 'markings-rank-up'}" HorizontalExpand="True" />
@@ -68,7 +68,7 @@
         <!-- Colours of the selected applied marking -->
         <PanelContainer StyleClasses="CreatorCard" HorizontalExpand="True" Name="CMarkingColorsCard" Visible="False">
             <BoxContainer Orientation="Vertical" SeparationOverride="6">
-                <Label Text="{Loc 'wf-creator-markings-colours'}" StyleClasses="CreatorHeading" />
+                <Label Text="{Loc 'wg-creator-markings-colours'}" StyleClasses="CreatorHeading" />
                 <BoxContainer Name="CMarkingColors" Orientation="Vertical" />
             </BoxContainer>
         </PanelContainer>

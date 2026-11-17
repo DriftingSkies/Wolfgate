@@ -1,6 +1,6 @@
 using System.Numerics;
 using Content.Shared._Mono.Radar;
-using Content.Shared._WF.Performance; // WOLFGATE(Performance)
+using Content.Shared._WG.Performance; // WOLFGATE(Performance)
 using Robust.Shared.Configuration; // WOLFGATE(Performance)
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components; // WOLFGATE(Performance)
@@ -14,7 +14,7 @@ public sealed partial class RadarBlipsSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedTransformSystem _xform = default!;
-    [Dependency] private IConfigurationManager _wfConfig = default!; // WOLFGATE(Performance)
+    [Dependency] private IConfigurationManager _wgConfig = default!; // WOLFGATE(Performance)
 
     private const double BlipStaleSeconds = 3.0;
     private TimeSpan _lastRequestTime = TimeSpan.Zero;
@@ -23,7 +23,7 @@ public sealed partial class RadarBlipsSystem : EntitySystem
     // The rate is a cvar now, so a crowded fight can be dialled back without a rebuild.
     // private static readonly TimeSpan RequestThrottle = TimeSpan.FromMilliseconds(500);
     private TimeSpan RequestThrottle =>
-        TimeSpan.FromSeconds(1.0 / Math.Clamp(_wfConfig.GetCVar(WFRadarCVars.RequestHz), 0.5f, 20f));
+        TimeSpan.FromSeconds(1.0 / Math.Clamp(_wgConfig.GetCVar(WGRadarCVars.RequestHz), 0.5f, 20f));
     // WOLFGATE END
 
     private TimeSpan _lastUpdatedTime;
@@ -37,9 +37,9 @@ public sealed partial class RadarBlipsSystem : EntitySystem
     private readonly List<MissileVectorData> _cachedMissileData = new();
 
     // WOLFGATE(Performance) START: lookups and colours for the missile lines, which are rebuilt on every draw frame
-    private readonly Dictionary<NetEntity, BlipNetData> _wfBlipByUid = new();
-    private static readonly Color WFMissileLineColor = Color.FromHex("#00AACC");
-    private static readonly Color WFMissileArcColor = Color.FromHex("#FF0040");
+    private readonly Dictionary<NetEntity, BlipNetData> _wgBlipByUid = new();
+    private static readonly Color WGMissileLineColor = Color.FromHex("#00AACC");
+    private static readonly Color WGMissileArcColor = Color.FromHex("#FF0040");
     // WOLFGATE END
 
     public override void Initialize()
@@ -47,7 +47,7 @@ public sealed partial class RadarBlipsSystem : EntitySystem
         base.Initialize();
         SubscribeNetworkEvent<GiveBlipsEvent>(HandleReceiveBlips);
         SubscribeNetworkEvent<BlipRemovalEvent>(RemoveBlip);
-        SubscribeNetworkEvent<WFBlipRemovalBatchEvent>(WFRemoveBlips); // WOLFGATE(Performance): removals arrive one batch a tick
+        SubscribeNetworkEvent<WGBlipRemovalBatchEvent>(WGRemoveBlips); // WOLFGATE(Performance): removals arrive one batch a tick
     }
 
     private void HandleReceiveBlips(GiveBlipsEvent ev, EntitySessionEventArgs args)
@@ -142,21 +142,21 @@ public sealed partial class RadarBlipsSystem : EntitySystem
         // populate the cached list instead of allocating a new one each frame
         // WOLFGATE(Performance) START: one dictionary lookup per missile, not a scan of every blip per missile.
         // The line colours are parsed once instead of twice per missile on every draw frame.
-        _wfBlipByUid.Clear();
+        _wgBlipByUid.Clear();
         foreach (var blip in _blips)
         {
-            _wfBlipByUid[blip.Uid] = blip;
+            _wgBlipByUid[blip.Uid] = blip;
         }
 
         foreach (var missile in _missiles)
         {
             // var tiedBlip = _blips.FirstOrDefault(x => x.Uid == missile.Uid);
-            if (!_wfBlipByUid.TryGetValue(missile.Uid, out var tiedBlip))
+            if (!_wgBlipByUid.TryGetValue(missile.Uid, out var tiedBlip))
                 continue;
 
             var coord = tiedBlip.Position;
-            var color = WFMissileLineColor;
-            var colorArcs = WFMissileArcColor;
+            var color = WGMissileLineColor;
+            var colorArcs = WGMissileArcColor;
             // WOLFGATE END
 
             var predictedPosStart = new NetCoordinates(missile.Uid, coord.Position + tiedBlip.Vel * (float)(_timing.CurTime - _lastUpdatedTime).TotalSeconds);

@@ -1,0 +1,539 @@
+# Grab-and-go food from Mrs. Luvvit's Pie & Mash. Each pack is eaten straight from its container or, used in hand,
+# opened to take the food out; the food keeps the bites already taken and the empty container comes with it. Vendor
+# food is junkier than the home-cooked dish: less nutritious, salted or sugared, and never chef-made. Hot food comes
+# out of the vendor piping hot.
+
+- type: entity
+  parent: FoodBase
+  id: WGFoodBritishPackBase
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _WG/BritishFood/packs.rsi
+  - type: Item
+    size: Small
+  - type: Tag
+    tags:
+    - FoodSnack
+
+- type: entity
+  parent: WGFoodBritishPackBase
+  id: WGFoodBritishPackHotBase
+  abstract: true
+  components:
+  - type: WGPipingHot
+
+- type: entity
+  parent: WGFoodBritishPackHotBase
+  id: WGFoodPackHuntersChicken
+  components:
+  - type: Sprite
+    state: hunters_chicken
+  - type: Food
+    trash:
+    - WGTrashPackHuntersChicken
+  - type: WGUnwrapFood
+    food: WGFoodHuntersChickenVendor
+  - type: FlavorProfile
+    flavors:
+    - chicken
+    - bacon
+    - WGBarbecueSauce
+    - cheesy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 16
+        reagents:
+        - ReagentId: Protein
+          Quantity: 5
+        - ReagentId: Nutriment
+          Quantity: 6
+        - ReagentId: BbqSauce
+          Quantity: 3
+        - ReagentId: TableSalt
+          Quantity: 2
+  - type: StaticPrice
+    vendPrice: 450
+
+- type: entity
+  parent: WGFoodBritishPackHotBase
+  id: WGFoodPackSteakAlePie
+  components:
+  - type: Sprite
+    state: steak_ale_pie
+  - type: Item
+    size: Normal
+  - type: Food
+    trash:
+    - WGTrashPackSteakAlePie
+  - type: WGUnwrapFood
+    food: WGFoodPieSteakAleVendor
+  - type: FlavorProfile
+    flavors:
+    - WGPastry
+    - meaty
+    - WGAleGravy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 13
+        - ReagentId: Protein
+          Quantity: 5
+        - ReagentId: TableSalt
+          Quantity: 2
+  - type: StaticPrice
+    vendPrice: 500
+
+- type: entity
+  parent: WGFoodBritishPackHotBase
+  id: WGFoodPackSteakAlePieSlice
+  components:
+  - type: Sprite
+    state: steak_ale_pie_slice
+  - type: Food
+    trash:
+    - WGTrashPackSteakAlePieSlice
+  - type: WGUnwrapFood
+    food: WGFoodPieSteakAleSliceVendor
+  - type: FlavorProfile
+    flavors:
+    - WGPastry
+    - meaty
+    - WGAleGravy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 4
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 2.6
+        - ReagentId: Protein
+          Quantity: 1
+        - ReagentId: TableSalt
+          Quantity: 0.4
+  - type: StaticPrice
+    vendPrice: 150
+
+- type: entity
+  parent: WGFoodBritishPackHotBase
+  id: WGFoodPackPorkPie
+  components:
+  - type: Sprite
+    state: pork_pie
+  - type: Food
+    trash:
+    - WGTrashPackPorkPie
+  - type: WGUnwrapFood
+    food: WGFoodPiePorkVendor
+  - type: FlavorProfile
+    flavors:
+    - WGPastry
+    - meaty
+    - WGSavouryJelly
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 8
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Protein
+          Quantity: 2
+        - ReagentId: TableSalt
+          Quantity: 1
+  - type: StaticPrice
+    vendPrice: 200
+
+- type: entity
+  parent: WGFoodBritishPackHotBase
+  id: WGFoodPackChickenMushroomPie
+  components:
+  - type: Sprite
+    state: chicken_mushroom_pie
+  - type: Food
+    trash:
+    - WGTrashPackChickenMushroomPie
+  - type: WGUnwrapFood
+    food: WGFoodPieChickenMushroomVendor
+  - type: FlavorProfile
+    flavors:
+    - WGPastry
+    - chicken
+    - mushroom
+    - creamy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 8
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Protein
+          Quantity: 2
+        - ReagentId: TableSalt
+          Quantity: 1
+  - type: StaticPrice
+    vendPrice: 200
+
+- type: entity
+  parent: WGFoodBritishPackHotBase
+  id: WGFoodPackCornishPasty
+  components:
+  - type: Sprite
+    state: cornish_pasty
+  - type: Food
+    trash:
+    - WGTrashPackCornishPasty
+  - type: WGUnwrapFood
+    food: WGFoodCornishPastyVendor
+  - type: FlavorProfile
+    flavors:
+    - WGPastry
+    - meaty
+    - potatoes
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 9
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 6
+        - ReagentId: Protein
+          Quantity: 2
+        - ReagentId: TableSalt
+          Quantity: 1
+  - type: StaticPrice
+    vendPrice: 200
+
+- type: entity
+  parent: WGFoodBritishPackHotBase
+  id: WGFoodPackWelshCawl
+  components:
+  - type: Sprite
+    state: welsh_cawl
+  - type: Food
+    trash:
+    - WGTrashPackWelshCawl
+  - type: FlavorProfile
+    flavors:
+    - richbroth
+    - salty
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 8
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+        - ReagentId: Protein
+          Quantity: 1
+        - ReagentId: Vitamin
+          Quantity: 2
+        - ReagentId: TableSalt
+          Quantity: 2
+  - type: StaticPrice
+    vendPrice: 200
+
+- type: entity
+  parent: WGFoodBritishPackHotBase
+  id: WGFoodPackCheesyBeanMelt
+  components:
+  - type: Sprite
+    state: cheesy_bean_melt
+  - type: Food
+    trash:
+    - WGTrashPackCheesyBeanMelt
+  - type: WGUnwrapFood
+    food: WGFoodCheesyBeanMeltVendor
+  - type: FlavorProfile
+    flavors:
+    - WGPastry
+    - meaty
+    - WGBakedBeans
+    - cheesy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 12
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 7
+        - ReagentId: Protein
+          Quantity: 4
+        - ReagentId: TableSalt
+          Quantity: 1
+  - type: StaticPrice
+    vendPrice: 200
+
+# Puddings come out cold.
+
+- type: entity
+  parent: WGFoodBritishPackBase
+  id: WGFoodPackEtonMess
+  components:
+  - type: Sprite
+    state: eton_mess
+  - type: Food
+    trash:
+    - WGTrashPackEtonMess
+  - type: FlavorProfile
+    flavors:
+    - WGMeringue
+    - creamy
+    - berry
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 8
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 2
+        - ReagentId: Sugar
+          Quantity: 6
+  - type: StaticPrice
+    vendPrice: 150
+
+- type: entity
+  parent: WGFoodBritishPackBase
+  id: WGFoodPackScones
+  components:
+  - type: Sprite
+    state: scones
+  - type: Food
+    trash:
+    - WGTrashPackScones
+  - type: WGUnwrapFood
+    food: WGFoodSconesVendor
+  - type: FlavorProfile
+    flavors:
+    - bread
+    - jelly
+    - WGClottedCream
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 11
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 6
+        - ReagentId: Sugar
+          Quantity: 5
+  - type: StaticPrice
+    vendPrice: 150
+
+- type: entity
+  parent: WGFoodBritishPackBase
+  id: WGFoodPackStickyToffeePudding
+  components:
+  - type: Sprite
+    state: sticky_toffee_pudding
+  - type: Food
+    trash:
+    - WGTrashPackStickyToffeePudding
+  - type: WGUnwrapFood
+    food: WGFoodStickyToffeePuddingVendor
+  - type: FlavorProfile
+    flavors:
+    - sweetdough
+    - WGToffee
+    - WGDates
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 14
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 4
+        - ReagentId: Sugar
+          Quantity: 10
+  - type: StaticPrice
+    vendPrice: 200
+
+# What comes out of the packs. Only the packs make these, so they spawn without heat of their own.
+
+- type: entity
+  parent: WGFoodHuntersChicken
+  id: WGFoodHuntersChickenVendor
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 16
+        reagents:
+        - ReagentId: Protein
+          Quantity: 5
+        - ReagentId: Nutriment
+          Quantity: 6
+        - ReagentId: BbqSauce
+          Quantity: 3
+        - ReagentId: TableSalt
+          Quantity: 2
+
+# The pack's tray is its tin, so the pie leaves nothing more.
+- type: entity
+  parent: WGFoodPieSteakAle
+  id: WGFoodPieSteakAleVendor
+  components:
+  - type: Food
+    trash: []
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 13
+        - ReagentId: Protein
+          Quantity: 5
+        - ReagentId: TableSalt
+          Quantity: 2
+  - type: SliceableFood
+    slice: WGFoodPieSteakAleSliceVendor
+
+- type: entity
+  parent: WGFoodPieSteakAleSlice
+  id: WGFoodPieSteakAleSliceVendor
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 4
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 2.6
+        - ReagentId: Protein
+          Quantity: 1
+        - ReagentId: TableSalt
+          Quantity: 0.4
+
+- type: entity
+  parent: WGFoodPiePork
+  id: WGFoodPiePorkVendor
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 8
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Protein
+          Quantity: 2
+        - ReagentId: TableSalt
+          Quantity: 1
+  - type: SliceableFood
+    slice: WGFoodPiePorkSliceVendor
+
+- type: entity
+  parent: WGFoodPiePorkSlice
+  id: WGFoodPiePorkSliceVendor
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 2
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 1.25
+        - ReagentId: Protein
+          Quantity: 0.5
+        - ReagentId: TableSalt
+          Quantity: 0.25
+
+- type: entity
+  parent: WGFoodPieChickenMushroom
+  id: WGFoodPieChickenMushroomVendor
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 8
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Protein
+          Quantity: 2
+        - ReagentId: TableSalt
+          Quantity: 1
+  - type: SliceableFood
+    slice: WGFoodPieChickenMushroomSliceVendor
+
+- type: entity
+  parent: WGFoodPieChickenMushroomSlice
+  id: WGFoodPieChickenMushroomSliceVendor
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 2
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 1.25
+        - ReagentId: Protein
+          Quantity: 0.5
+        - ReagentId: TableSalt
+          Quantity: 0.25
+
+- type: entity
+  parent: WGFoodCornishPasty
+  id: WGFoodCornishPastyVendor
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 9
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 6
+        - ReagentId: Protein
+          Quantity: 2
+        - ReagentId: TableSalt
+          Quantity: 1
+
+- type: entity
+  parent: WGFoodScones
+  id: WGFoodSconesVendor
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 11
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 6
+        - ReagentId: Sugar
+          Quantity: 5
+
+- type: entity
+  parent: WGFoodStickyToffeePudding
+  id: WGFoodStickyToffeePuddingVendor
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 14
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 4
+        - ReagentId: Sugar
+          Quantity: 10
+
+- type: entity
+  parent: WGFoodCheesyBeanMelt
+  id: WGFoodCheesyBeanMeltVendor
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 12
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 7
+        - ReagentId: Protein
+          Quantity: 4
+        - ReagentId: TableSalt
+          Quantity: 1

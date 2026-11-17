@@ -181,12 +181,12 @@
   - BorgModuleAdvancedSurgery
   - DefibrillatorCompact # Mono
   # WOLFGATE(Wolfmed) START: AUTODOC: the program disks moved to High-End Surgery with the pod
-  # - WFAutodocProgramDiskTransplant
-  # - WFAutodocProgramDiskLimb
-  # - WFAutodocProgramDiskNeuro
-  # - WFAutodocProgramDiskCavity
-  # - WFAutodocDefibModule
-  # - WFAutodocAutofixModule
+  # - WGAutodocProgramDiskTransplant
+  # - WGAutodocProgramDiskLimb
+  # - WGAutodocProgramDiskNeuro
+  # - WGAutodocProgramDiskCavity
+  # - WGAutodocDefibModule
+  # - WGAutodocAutofixModule
   # WOLFGATE END
   technologyPrerequisites:
   - SuperParts

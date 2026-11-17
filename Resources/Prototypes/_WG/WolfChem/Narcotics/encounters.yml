@@ -1,0 +1,39 @@
+# A Reaver runner selling narcotics. It flies Ashfall colours but holds fire and trades with anyone who comes
+# alongside, like the other traders; its hold is worth taking, so it keeps a gunner and three veteran Reaver guards,
+# and whoever starts a fight aboard may leave short an organ. Navies at war with the Reavers fire on it.
+- type: wgEncounter
+  id: WGEncounterReaverDealer
+  name: wg-encounter-name-reaver-dealer
+  announcement: wg-encounter-announce-reaver-dealer
+  announceOnRadio: true
+  announcementSender: wg-encounter-sender-traffic
+  start: Scheduled
+  category: Traffic
+  icon: Coins
+  cost: 1
+  weight: 0.5
+  cooldown: 3600
+  duration: 3600
+  minDistance: 2000
+  maxDistance: 3500
+  ships:
+  - key: trader
+    navigation: WGCrewNavigationFreight
+    vessel: Scallywag
+    retrofit: WGPirateRetrofitGrime
+    side: trader
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    captain: false
+    deckhands: 0
+    guards: 3
+    roles: [ WGCrewPilot, WGCrewGunner, WGCrewDeckhand ]
+    passengers: [ WGReaverDealer ]
+    skill: Veteran
+    wander: 4
+    wanderRadius: 2500
+    wanderPause: 300
+    boarding: Ignore
+    docking: Ignore
+    disengage: Deter
+    distress: false

@@ -90,5 +90,5 @@
     - Brig # odd, but potentially restricts cadets in lieu of a security guard-only access level
     # WOLFGATE(Shipyard) START: Judges can redeem Roswell with the standard station guard voucher
     vessels:
-    - WFRoswell
+    - WGRoswell
     # WOLFGATE END

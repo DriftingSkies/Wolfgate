@@ -1,0 +1,144 @@
+using System.Numerics;
+using Content.Server._WG.AdsIncursion.Components;
+using Content.Server._WG.PlanetComms;
+using Content.Server._WG.ReaverCampaign.Systems;
+using Content.Shared._WG.AdsIncursion;
+using Content.Shared.Radio;
+using Content.Server.Administration.Logs;
+using Content.Server.Chat.Managers;
+using Content.Shared.Chat;
+using Content.Shared.Database;
+using Content.Shared.Radio.Components;
+using Content.Shared.Speech;
+using Robust.Shared.Audio;
+using Robust.Shared.Audio.Systems;
+using Robust.Shared.Player;
+using Robust.Shared.Utility;
+using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
+
+namespace Content.Server._WG.AdsIncursion.Systems;
+
+public sealed partial class WGAdsCampaignSystem
+{
+    [Dependency] private IChatManager _chatManager = default!;
+    [Dependency] private IAdminLogManager _adminLogger = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private WGPlanetCommsSystem _planetComms = default!;
+
+    private static readonly ProtoId<RadioChannelPrototype> WarningChannel = "Common";
+
+    /// <summary>How the system's units and its watch speak: the synthetic verbs in the system's readout face.</summary>
+    private static readonly ProtoId<SpeechVerbPrototype> SynthVerb = "WGAdsSynth";
+
+    /// <summary>
+    /// A banner to everyone: purple with the rising sound, or teal with the falling one; without <paramref name="chime"/> it is silent and
+    /// never held back. A chimed rising banner is the system's own anomaly alert, with the malfunctioning-AI klaxon, not the sector watch.
+    /// </summary>
+    private void Announce(WGAdsCampaignPrototype campaign, string message, bool rising, bool chime = true)
+    {
+        var sender = chime && rising ? "wg-ads-anomaly-alert" : "wg-ads-watch";
+        Banner(Loc.GetString(sender), message, chime ? rising ? campaign.RisingSound : campaign.FallingSound : null,
+            rising ? campaign.RisingColor : campaign.FallingColor);
+    }
+
+    /// <summary>
+    /// A global announcement in the system's own face: what <see cref="ChatSystem.DispatchGlobalAnnouncement"/> does, with the
+    /// message set in the readout font the synthetic speech uses, since the chat system escapes any markup in the text.
+    /// </summary>
+    private void Banner(string sender, string message, SoundSpecifier? sound, Color colour)
+    {
+        var wrapped = Loc.GetString("wg-ads-announcement-wrap", ("sender", sender), ("message", FormattedMessage.EscapeText(message)));
+        // Worlds with no mass transceiver up miss it.
+        var reach = _planetComms.Reachable(Filter.Broadcast(), null);
+        _chatManager.ChatMessageToManyFiltered(reach, ChatChannel.Radio, message, wrapped, default, false, true, colour);
+        if (sound != null)
+            _audio.PlayGlobal(_audio.ResolveSound(sound), reach, true, AudioParams.Default.WithVolume(-2f));
+        _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Global station announcement from {sender}: {message}");
+    }
+
+    /// <summary>A line on the common channel from the sector watch, with no banner: everything short of a capital event.</summary>
+    private void AnnounceRadio(string message)
+    {
+        Radio(_territory.SectorMap, message);
+    }
+
+    /// <summary>A banner about something at a place, chimed unless a tier change already chimed this tick.</summary>
+    private void AnnouncePlace(WGAdsCampaignPrototype campaign, string key, bool rising, MapId map, Vector2 position,
+        params (string, object)[] args)
+    {
+        var chime = State()?.TierAnnounced != _timing.CurTime;
+        Announce(campaign, PlaceLine(key, map, position, args), rising, chime);
+    }
+
+    /// <summary>A string about something at a place, with the station, bearing and range from the nearest station added as arguments.</summary>
+    private string PlaceLine(string key, MapId map, Vector2 position, params (string, object)[] args)
+    {
+        var (station, bearing, range) = Place(map, position);
+        var all = new List<(string, object)>(args) { ("station", station), ("bearing", bearing), ("range", range) };
+        return Loc.GetString(key, all.ToArray());
+    }
+
+    /// <summary>The nearest station to a point, with the bearing and range from it to the point; the origin if there is none.</summary>
+    private (string Station, string Bearing, string Range) Place(MapId map, Vector2 position)
+    {
+        string? name = null;
+        var from = Vector2.Zero;
+        var best = float.MaxValue;
+        foreach (var station in _territory.Stations(map))
+        {
+            var at = _transform.GetWorldPosition(station);
+            var distance = Vector2.DistanceSquared(at, position);
+            if (distance >= best)
+                continue;
+
+            best = distance;
+            from = at;
+            name = Name(station);
+        }
+
+        return (name ?? Loc.GetString("wg-ads-place-origin"),
+            WGReaverCampaignSystem.Bearing(from, position),
+            WGReaverCampaignSystem.Kilometres(from, position));
+    }
+
+    /// <summary>Warns a ship over its PA and in chat to those aboard, with the bearing and range from it to the ADS ship; the rest of the sector is not told.</summary>
+    private void WarnShip(WGAdsCampaignPrototype campaign, EntityUid ship, Vector2 ads, string key)
+    {
+        var at = _transform.GetWorldPosition(ship);
+        var message = Loc.GetString(key,
+            ("ship", Name(ship)),
+            ("bearing", WGReaverCampaignSystem.Bearing(at, ads)),
+            ("range", WGReaverCampaignSystem.Kilometres(at, ads)));
+        _notices.Tell(ship, message, Loc.GetString("wg-ads-watch"), campaign.RisingColor, true);
+    }
+
+    /// <summary>Says something on the common channel as the sector watch; false if there is no watch to say it.</summary>
+    private bool Radio(MapId map, string message)
+    {
+        if (State() is not { } state || Watch(state, map) is not { } watch)
+            return false;
+
+        _radio.SendRadioMessage(watch, message, WarningChannel, watch);
+        return true;
+    }
+
+    /// <summary>The sector watch's radio for the ADS: an entity on the map, named for it and heard without a telecom server.</summary>
+    private EntityUid? Watch(WGAdsCampaignComponent state, MapId map)
+    {
+        if (state.Watch is { } existing && !TerminatingOrDeleted(existing))
+            return existing;
+
+        if (!_map.TryGetMap(map, out var mapUid) || mapUid is not { } uid)
+            return null;
+
+        var watch = Spawn(null, new EntityCoordinates(uid, Vector2.Zero));
+        // A hull passing over the map origin would otherwise pick it up.
+        Transform(watch).GridTraversal = false;
+        _meta.SetEntityName(watch, Loc.GetString("wg-ads-watch"));
+        EnsureComp<TelecomExemptComponent>(watch);
+        EnsureComp<SpeechComponent>(watch).SpeechVerb = SynthVerb;
+        state.Watch = watch;
+        return watch;
+    }
+}

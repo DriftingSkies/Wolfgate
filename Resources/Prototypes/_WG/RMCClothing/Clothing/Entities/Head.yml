@@ -1,0 +1,683 @@
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetM10
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m10/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m10/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHelmetM10Jungle
+    - name: desert
+      look: WGRMCLookHelmetM10Desert
+    - name: snow
+      look: WGRMCLookHelmetM10Snow
+    - name: urban
+      look: WGRMCLookHelmetM10Urban
+    - name: classic
+      look: WGRMCLookHelmetM10Classic
+
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetM10Medic
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m10_medic/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m10_medic/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHelmetM10MedicJungle
+    - name: desert
+      look: WGRMCLookHelmetM10MedicDesert
+    - name: snow
+      look: WGRMCLookHelmetM10MedicSnow
+    - name: urban
+      look: WGRMCLookHelmetM10MedicUrban
+    - name: classic
+      look: WGRMCLookHelmetM10MedicClassic
+
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetM10Tech
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m10_tech/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m10_tech/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHelmetM10TechJungle
+    - name: desert
+      look: WGRMCLookHelmetM10TechDesert
+    - name: snow
+      look: WGRMCLookHelmetM10TechSnow
+    - name: urban
+      look: WGRMCLookHelmetM10TechUrban
+    - name: classic
+      look: WGRMCLookHelmetM10TechClassic
+
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetM10Officer
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m10_officer/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m10_officer/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHelmetM10OfficerJungle
+    - name: desert
+      look: WGRMCLookHelmetM10OfficerDesert
+
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetM11
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m11/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m11/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHelmetM11Jungle
+    - name: desert
+      look: WGRMCLookHelmetM11Desert
+    - name: snow
+      look: WGRMCLookHelmetM11Snow
+    - name: urban
+      look: WGRMCLookHelmetM11Urban
+    - name: classic
+      look: WGRMCLookHelmetM11Classic
+
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetM12
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m12/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m12/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHelmetM12Jungle
+    - name: desert
+      look: WGRMCLookHelmetM12Desert
+    - name: snow
+      look: WGRMCLookHelmetM12Snow
+    - name: urban
+      look: WGRMCLookHelmetM12Urban
+    - name: classic
+      look: WGRMCLookHelmetM12Classic
+
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetM30
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m30/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m30/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHelmetM30Jungle
+    - name: desert
+      look: WGRMCLookHelmetM30Desert
+    - name: snow
+      look: WGRMCLookHelmetM30Snow
+    - name: urban
+      look: WGRMCLookHelmetM30Urban
+    - name: classic
+      look: WGRMCLookHelmetM30Classic
+
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetM35
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m35/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m35/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHelmetM35Jungle
+    - name: desert
+      look: WGRMCLookHelmetM35Desert
+    - name: snow
+      look: WGRMCLookHelmetM35Snow
+    - name: urban
+      look: WGRMCLookHelmetM35Urban
+    - name: classic
+      look: WGRMCLookHelmetM35Classic
+
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetM3Demo
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m3_demo/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m3_demo/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHelmetM3DemoJungle
+    - name: desert
+      look: WGRMCLookHelmetM3DemoDesert
+    - name: snow
+      look: WGRMCLookHelmetM3DemoSnow
+    - name: urban
+      look: WGRMCLookHelmetM3DemoUrban
+    - name: classic
+      look: WGRMCLookHelmetM3DemoClassic
+
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetM3G4
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m3_g4/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m3_g4/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHelmetM3G4Jungle
+    - name: desert
+      look: WGRMCLookHelmetM3G4Desert
+    - name: snow
+      look: WGRMCLookHelmetM3G4Snow
+    - name: urban
+      look: WGRMCLookHelmetM3G4Urban
+    - name: classic
+      look: WGRMCLookHelmetM3G4Classic
+
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetM3Scout
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m3_scout/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m3_scout/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHelmetM3ScoutJungle
+    - name: desert
+      look: WGRMCLookHelmetM3ScoutDesert
+    - name: snow
+      look: WGRMCLookHelmetM3ScoutSnow
+    - name: urban
+      look: WGRMCLookHelmetM3ScoutUrban
+    - name: classic
+      look: WGRMCLookHelmetM3ScoutClassic
+
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetM50
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m50/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m50/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHelmetM50Jungle
+    - name: desert
+      look: WGRMCLookHelmetM50Desert
+    - name: snow
+      look: WGRMCLookHelmetM50Snow
+    - name: urban
+      look: WGRMCLookHelmetM50Urban
+    - name: classic
+      look: WGRMCLookHelmetM50Classic
+
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetMarsoc
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_marsoc.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_marsoc.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetMercenaryBlack
+  id: WGRMCHelmetM45
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m45/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_m45/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHelmetM45Jungle
+    - name: desert
+      look: WGRMCLookHelmetM45Desert
+    - name: snow
+      look: WGRMCLookHelmetM45Snow
+    - name: urban
+      look: WGRMCLookHelmetM45Urban
+    - name: classic
+      look: WGRMCLookHelmetM45Classic
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatBeret
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_beret/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_beret/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHatBeretJungle
+    - name: desert
+      look: WGRMCLookHatBeretDesert
+    - name: snow
+      look: WGRMCLookHatBeretSnow
+    - name: urban
+      look: WGRMCLookHatBeretUrban
+    - name: classic
+      look: WGRMCLookHatBeretClassic
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatBeretTan
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_beret_tan/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_beret_tan/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHatBeretTanJungle
+    - name: desert
+      look: WGRMCLookHatBeretTanDesert
+    - name: snow
+      look: WGRMCLookHatBeretTanSnow
+    - name: urban
+      look: WGRMCLookHatBeretTanUrban
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatCap
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_cap/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_cap/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHatCapJungle
+    - name: desert
+      look: WGRMCLookHatCapDesert
+    - name: snow
+      look: WGRMCLookHatCapSnow
+    - name: urban
+      look: WGRMCLookHatCapUrban
+    - name: classic
+      look: WGRMCLookHatCapClassic
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatCapOfficer
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_cap_officer/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_cap_officer/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHatCapOfficerJungle
+    - name: desert
+      look: WGRMCLookHatCapOfficerDesert
+    - name: snow
+      look: WGRMCLookHatCapOfficerSnow
+    - name: urban
+      look: WGRMCLookHatCapOfficerUrban
+    - name: classic
+      look: WGRMCLookHatCapOfficerClassic
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatFlapCap
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_flap_cap/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_flap_cap/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHatFlapCapJungle
+    - name: desert
+      look: WGRMCLookHatFlapCapDesert
+    - name: urban
+      look: WGRMCLookHatFlapCapUrban
+    - name: classic
+      look: WGRMCLookHatFlapCapClassic
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatDressEnlisted
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_dress_enlisted.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_dress_enlisted.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatDressOfficer
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_dress_officer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_dress_officer.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetCombatPDV
+  id: WGRMCHelmetPDV
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_pdv.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_pdv.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetCombatPDV
+  id: WGRMCHelmetPDVArmy
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_pdvarmy.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_pdvarmy.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetCombatPDV
+  id: WGRMCHelmetPDVHeavy
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_pdvheavy.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_pdvheavy.rsi
+
+- type: entity
+  parent: ClothingHeadHelmetCombatPDV
+  id: WGRMCHelmetPDVEngineer
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_pdvengineer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/helmet_pdvengineer.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatPDVBeret
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvberet.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvberet.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatPDVArmyBeret
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvarmy_beret.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvarmy_beret.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatPDVBeretSOF
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvberet_sof.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvberet_sof.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatPDVCap
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvcap.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvcap.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatPDVUshanka
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvushanka.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvushanka.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatPDVPeaked
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvpeaked.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvpeaked.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatPDVPeakedBlack
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvpeaked_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvpeaked_black.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatPDVPeakedWhite
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvpeaked_white.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_pdvpeaked_white.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatMilitiaHood
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_militia_hood.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_militia_hood.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatMilitiaHeadband
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_militia_headband.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_militia_headband.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatBoonie
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_boonie/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_boonie/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHatBoonieJungle
+    - name: desert
+      look: WGRMCLookHatBoonieDesert
+    - name: snow
+      look: WGRMCLookHatBoonieSnow
+    - name: urban
+      look: WGRMCLookHatBoonieUrban
+    - name: classic
+      look: WGRMCLookHatBoonieClassic
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatBoonieTan
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_boonie_tan/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_boonie_tan/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookHatBoonieTanJungle
+    - name: urban
+      look: WGRMCLookHatBoonieTanUrban
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatBeaniesBeanie
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_beanies/beanie.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_beanies/beanie.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatBeaniesGray
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_beanies/gray.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_beanies/gray.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatBeaniesGreen
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_beanies/green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_beanies/green.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatBeaniesTan
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_beanies/tan.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_beanies/tan.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatHeadbandBrown
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_headband/brown.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_headband/brown.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatHeadbandGray
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_headband/gray.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_headband/gray.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatHeadbandGreen
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_headband/green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_headband/green.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatHeadbandRed
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_headband/red.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_headband/red.rsi
+
+- type: entity
+  parent: ClothingHeadBaseButcherable
+  id: WGRMCHatHeadbandTan
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Head/hat_headband/tan.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Head/hat_headband/tan.rsi

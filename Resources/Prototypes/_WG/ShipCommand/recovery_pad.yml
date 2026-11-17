@@ -1,0 +1,76 @@
+# The recovery pad and its console (ShipCommand): the console recalls a chosen person onto the pad from anywhere on its
+# map, after a charge-up, then cools down. Admins only by default; the owner can open it to officers or staff.
+
+- type: entity
+  id: WGRecoveryPad
+  name: recovery pad
+  description: A bluespace recall pad. Its console brings a chosen person here from anywhere in the sector, alive or dead.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: Structures/cargo_telepad.rsi
+    drawdepth: FloorObjects
+    color: "#8fe3ff"
+    layers:
+    - state: display
+    - state: idle
+      map: [ "enum.WGRecoveryPadLayers.Beam" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGRecoveryPadVisuals.Charging:
+        enum.WGRecoveryPadLayers.Beam:
+          True: { state: beam }
+          False: { state: idle }
+  - type: Clickable
+  - type: InteractionOutline
+  - type: WGRecoveryPad
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SheetSteel1:
+            min: 1
+            max: 2
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  parent: BaseComputer
+  id: WGComputerRecoveryPad
+  name: recovery pad console
+  description: Recalls a chosen person onto the ship's recovery pad. Admins only, unless the ship's owner says otherwise.
+  components:
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: teleport
+    - map: ["computerLayerKeys"]
+      state: teleport_key
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+  - type: WGRecoveryPadConsole
+  - type: ActivatableUI
+    key: enum.WGRecoveryPadUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.WGRecoveryPadUiKey.Key:
+        type: WGRecoveryPadBoundUserInterface
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#4fc3e8"

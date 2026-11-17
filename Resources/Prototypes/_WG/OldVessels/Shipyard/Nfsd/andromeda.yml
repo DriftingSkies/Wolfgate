@@ -1,0 +1,46 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+#Author: Articular1 on Github, Articular on Discord.
+
+- type: vessel
+  id: Andromeda
+  parent: BaseVesselIFFDisabled
+  name: TSF-CRSW Andromeda
+  description: A experimental heavy frigate, with heavy burst frontal firepower and fast maneuveability.
+  limit: 3
+  hyperwarLimit: 5
+  hyperwarTimelock: 1800
+  price: 418500 # appraised at 380247 with hardpoints; classic reprice
+  purchasable: false # voucher only - T3
+  category: Large
+  group: Security
+  access: TsfmcArmory
+  shuttlePath: /SharedMaps/_WG/OldVessels/Nfsd/andromeda.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: Null
+  class:
+  - Frigate
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: Andromeda
+  mapName: 'Andromeda'
+  mapPath: /SharedMaps/_WG/OldVessels/Nfsd/andromeda.yml
+  minPlayers: 0
+  stations:
+    Andromeda:
+      stationProto: StandardFrontierSecurityVessel
+      gridComponents:
+      - type: VesselInfo
+        description: "Enough guns to blot out the stars."
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Andromeda TSF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Deputy: [ 0, 0 ]
+          TsfBorg: [ 0, 0 ]

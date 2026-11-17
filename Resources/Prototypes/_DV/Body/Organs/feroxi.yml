@@ -31,7 +31,7 @@
           Quantity: 5
 
 - type: entity
-  parent: [BaseHumanOrgan, WFWolfmedOrganLungs] # WOLFGATE(Wolfmed): M4: OD16 parity, Wolfmed lung data (plan 9.2 group A-prime)
+  parent: [BaseHumanOrgan, WGWolfmedOrganLungs] # WOLFGATE(Wolfmed): M4: OD16 parity, Wolfmed lung data (plan 9.2 group A-prime)
   id: OrganFeroxiLungs
   name: feroxian lungs and gills
   description: "A pair of amphibious lungs along with gills, filtering oxygen out of the air continuously."

@@ -342,7 +342,7 @@ public sealed partial class StationJobsSystem
 
             // WOLFGATE(Station) START: no Vagrant slot anywhere; tell them instead of leaving them silently in the lobby
             if (!assignedJobs.ContainsKey(player) && nfSession != null)
-                WFNotifyNoOverflowSlot(nfSession);
+                WGNotifyNoOverflowSlot(nfSession);
             // WOLFGATE END
         }
     }

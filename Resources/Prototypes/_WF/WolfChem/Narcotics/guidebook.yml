@@ -1,6 +1,0 @@
-# The player's guide to drugs and neuroware, a child of the Medical guide (Resources/Prototypes/Guidebook/medical.yml).
-
-- type: guideEntry
-  id: WFNarcotics
-  name: guide-entry-wf-narcotics
-  text: "/ServerInfo/_WF/WolfChem/Narcotics/Narcotics.xml"

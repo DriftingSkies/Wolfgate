@@ -1,9 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared._NF.LoggingExtensions;
-using Content.Shared._WF.InteractionParticles; // WOLFGATE(InteractionParticles)
-using Content.Shared._WF.Traders; // WOLFGATE(Traders)
-using Content.Shared._WF.Xenonids.Devour; // WOLFGATE(Xenonids)
+using Content.Shared._WG.InteractionParticles; // WOLFGATE(InteractionParticles)
+using Content.Shared._WG.Traders; // WOLFGATE(Traders)
+using Content.Shared._WG.Xenonids.Devour; // WOLFGATE(Xenonids)
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration.Logs;
 using Content.Shared.CCVar;

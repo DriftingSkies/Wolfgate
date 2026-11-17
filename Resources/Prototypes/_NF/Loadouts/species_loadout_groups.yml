@@ -8,12 +8,12 @@
   - LoadoutTankHarness
   - LoadoutSpeciesBreathTool
   - LoadoutSpeciesVoxNitrogen
-  - WFLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
+  - WGLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
   fallbacks:
   - LoadoutTankHarness
   - LoadoutSpeciesBreathTool
   - LoadoutSpeciesVoxNitrogen
-  - WFLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
+  - WGLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
 
 - type: loadoutGroup
   id: NfsdSpeciesSpecific
@@ -25,9 +25,9 @@
   - LoadoutTankHarness
   - NfsdVoxClothingMaskGasNfsd
   - LoadoutSpeciesVoxNitrogen
-  - WFLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
+  - WGLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
   fallbacks:
   - LoadoutTankHarness
   - NfsdVoxClothingMaskGasNfsd
   - LoadoutSpeciesVoxNitrogen
-  - WFLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank
+  - WGLoadoutSpeciesAvaliAutoInjector # WOLFGATE(Species): Avali auto-injector, like the Vox tank

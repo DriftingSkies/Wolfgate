@@ -1,0 +1,29 @@
+# Capital ship vouchers sit one tech past grade 3, so both factions' top ships arrive at 585k points.
+- type: technology
+  id: WGTsfCapitalVouchers
+  name: research-technology-wg-tsf-capital-vouchers
+  entityIcon: ShipVoucherLuda
+  discipline: TsfmcShipyard
+  tier: 3
+  cost: 100000
+  recipeUnlocks:
+  - ShipVoucherLudaRecipe
+  - FlyssaVoucherTSF
+  technologyPrerequisites:
+  - TsfTierThreeVouchers
+  - UraniumProcessingAdvanced
+  position: 2, -34
+
+- type: technology
+  id: WGPdvCapitalVouchers
+  name: research-technology-wg-pdv-capital-vouchers
+  entityIcon: ShipVoucherSaturn
+  discipline: RogueShipyard
+  tier: 3
+  cost: 180000
+  recipeUnlocks:
+  - ShipVoucherSaturnRecipe
+  - WGShipVoucherFoxtrotIIRecipe
+  technologyPrerequisites:
+  - PdvTierThreeVouchers
+  position: -2, -34

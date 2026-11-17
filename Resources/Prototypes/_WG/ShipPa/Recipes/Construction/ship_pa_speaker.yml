@@ -1,0 +1,17 @@
+- type: construction
+  name: PA speaker
+  id: WGShipPaSpeaker
+  graph: WGShipPaSpeaker
+  startNode: start
+  targetNode: speaker
+  category: construction-category-structures
+  description: A ship-wide public address loudspeaker. Carries the pilot's announcements and the ship's alarms.
+  icon:
+    sprite: _WG/ShipPa/Structures/Wallmounts/ship_speaker.rsi
+    state: base
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canRotate: true
+  canBuildInImpassable: true
+  conditions:
+  - !type:WallmountCondition {}

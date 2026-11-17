@@ -1,0 +1,46 @@
+# Emergency responder starting voucher: one free Triage or Stubby from the medical shipyard.
+- type: entity
+  parent: BaseShipVoucher
+  id: WGShipVoucherMedicalResponder
+  name: emergency responder ship voucher
+  description: Allows for one free MI Triage or UW Stubby purchase from the Medical Shipyard. Destroyed on sale.
+  components:
+  - type: Sprite
+    layers:
+    - state: blue
+    - sprite: _WG/Shipyard/Objects/Misc/voucher_medical.rsi
+      state: vouchermedical
+  - type: Item
+    heldPrefix: blue
+  - type: ShipyardVoucher
+    destroyOnEmpty: true
+    companyName: MD
+    vessels:
+    - Triage
+    - Stubby
+
+# PDV Voucher for Foxtrot-II
+- type: entity
+  parent: BaseShipLPCRenewable
+  id: WGShipVoucherFoxtrotII
+  name: PDV Foxtrot-II LPC [T4]
+  description: A small card that authorizes the procurement of a Foxtrot-II stealth ship.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Misc/lpcnew.rsi
+    layers:
+    - state: icon_capital
+    - state: screen
+      color: "#1eff00"
+    - state: screen4
+      color: "#1eff00"
+      shader: unshaded
+  - type: Item
+    heldPrefix: pdv
+  - type: ShipyardVoucher
+    destroyOnEmpty: true # single-use, each ship costs a card (was false)
+    redemptionsLeft: 1 # single-use
+    companyName: PDV
+    cooldown: 0 # no cooldown, the card is single-use (was 14400)
+    vessels:
+    - WGFoxtrotII

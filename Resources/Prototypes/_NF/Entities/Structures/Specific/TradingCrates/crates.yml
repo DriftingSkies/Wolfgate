@@ -11,7 +11,7 @@
     expressOnTimeBonus: 1500
     expressLatePenalty: 1000 # 2000/3250
   # WOLFGATE(TradeGoods): the pallet price follows the selling station's demand
-  - type: WFTradeCrateMarket
+  - type: WGTradeCrateMarket
   - type: Icon
     sprite: _NF/Structures/Storage/Crates/tradedark.rsi
   - type: Sprite
@@ -57,7 +57,7 @@
     expressOnTimeBonus: 1500
     expressLatePenalty: 5500 # 0/2000
   # WOLFGATE(TradeGoods): the pallet price follows the selling station's demand
-  - type: WFTradeCrateMarket
+  - type: WGTradeCrateMarket
   - type: Icon
     sprite: _NF/Structures/Storage/Crates/tradelight.rsi
   - type: Sprite

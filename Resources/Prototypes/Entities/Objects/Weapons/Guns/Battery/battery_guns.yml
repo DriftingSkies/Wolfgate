@@ -429,7 +429,7 @@
     # - FullAuto # Mono
     - Burst # Mono
     soundGunshot:
-      path: /Audio/_WF/Weapons/Guns/pulse_rifle.ogg # WOLFGATE(Weapons): own pulse rifle shot
+      path: /Audio/_WG/Weapons/Guns/pulse_rifle.ogg # WOLFGATE(Weapons): own pulse rifle shot
   - type: HitscanBatteryAmmoProvider
     proto: Pulse
     fireCost: 100
@@ -473,7 +473,7 @@
     - SemiAuto
     - FullAuto
     soundGunshot:
-      path: /Audio/_WF/Weapons/Guns/pulse_rifle.ogg # WOLFGATE(Weapons): own pulse rifle shot
+      path: /Audio/_WG/Weapons/Guns/pulse_rifle.ogg # WOLFGATE(Weapons): own pulse rifle shot
   - type: HitscanBatteryAmmoProvider
     proto: RiflePulse
     fireCost: 100
@@ -522,7 +522,7 @@
     - SemiAuto
     - FullAuto
     soundGunshot:
-      path: /Audio/_WF/Weapons/Guns/pulse_rifle.ogg # WOLFGATE(Weapons): own pulse rifle shot
+      path: /Audio/_WG/Weapons/Guns/pulse_rifle.ogg # WOLFGATE(Weapons): own pulse rifle shot
   - type: HitscanBatteryAmmoProvider
     proto: Pulse
     fireCost: 100
@@ -1033,7 +1033,7 @@
   components:
   # WOLFGATE(Xenoborgs) START: wizden#43013 + #45168 xenoborg laser cannon sprite and blue beam, same damage
   - type: Sprite
-    sprite: _WF/Xenoborgs/Objects/Weapons/Guns/Battery/xenoborg_laser_cannon.rsi
+    sprite: _WG/Xenoborgs/Objects/Weapons/Guns/Battery/xenoborg_laser_cannon.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]

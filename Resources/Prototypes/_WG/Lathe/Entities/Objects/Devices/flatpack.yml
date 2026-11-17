@@ -1,0 +1,21 @@
+- type: entity
+  parent: BaseNFFlatpack
+  id: WGPartsSiloFlatpack
+  name: parts silo flatpack
+  description: A flatpack used for constructing a parts silo.
+  components:
+  - type: Flatpack
+    entity: WGMachinePartsSilo
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: BaseNFFlatpack
+  id: WGChemicalSiloFlatpack
+  name: chemical silo flatpack
+  description: A flatpack used for constructing a chemical silo.
+  components:
+  - type: Flatpack
+    entity: WGMachineChemicalSilo
+  - type: StaticPrice
+    price: 400

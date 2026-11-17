@@ -98,8 +98,8 @@ public sealed partial class FTLAntiCollisionSystem : EntitySystem
         // WOLFGATE(Shuttles) START: the docked grids arrive too, so check their hulls as well as the pilot's
         // var shuttleAABB = grid.LocalAABB.Translated(shuttlePosition);
         // var range = shuttleAABB.MaxDimension + CollisionCheckRange;
-        var shuttleAABB = WfGroupBounds(shuttle, dockedShips);
-        var range = shuttleAABB.MaxDimension + CollisionCheckRange + WfGroupBuffer;
+        var shuttleAABB = WgGroupBounds(shuttle, dockedShips);
+        var range = shuttleAABB.MaxDimension + CollisionCheckRange + WgGroupBuffer;
         // WOLFGATE END
 
         // Find nearby grids
@@ -143,7 +143,7 @@ public sealed partial class FTLAntiCollisionSystem : EntitySystem
             var distance = (otherPos - shuttlePosition).Length();
 
             // If too close, add to the list for potential repositioning
-            if (distance < MinimumSafeDistance || WfOverlapsGroup(otherGrid.Owner, shuttleAABB)) // WOLFGATE(Shuttles): a docked grid may reach another hull
+            if (distance < MinimumSafeDistance || WgOverlapsGroup(otherGrid.Owner, shuttleAABB)) // WOLFGATE(Shuttles): a docked grid may reach another hull
             {
                 nearbyGrids.Add((otherGrid.Owner, distance));
             }
@@ -163,7 +163,7 @@ public sealed partial class FTLAntiCollisionSystem : EntitySystem
         {
             // Move the ship to the new position
             _transform.SetWorldPosition(shuttle, newPosition);
-            WfMoveDocked(shuttle, dockedShips, newPosition - shuttlePosition); // WOLFGATE(Shuttles): the docked grids move with it
+            WgMoveDocked(shuttle, dockedShips, newPosition - shuttlePosition); // WOLFGATE(Shuttles): the docked grids move with it
 
             // Log the repositioning
             Log.Info($"FTL Anti-Collision: Repositioned ship {ToPrettyString(shuttle)} to prevent collision");

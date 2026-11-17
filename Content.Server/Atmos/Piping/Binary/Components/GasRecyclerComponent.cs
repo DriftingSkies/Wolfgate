@@ -1,6 +1,6 @@
 using Content.Shared.Atmos;
 using Content.Shared.Construction.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Atmos.Piping.Binary.Components
 {

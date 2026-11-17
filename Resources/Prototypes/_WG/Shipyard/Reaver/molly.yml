@@ -1,0 +1,36 @@
+# Author info
+# punishedbrungus (discord) Balls2zawall (github)
+
+- type: vessel
+  id: WGMolly
+  parent: BaseVessel
+  name: 'RVR Molly'
+  description: 'An Autumn turned into a broadside brawler, this one is a bit scary with its triple cannons on each side. Woe be the flanker.'
+  price: 372688 # appraised at 310573, 20% markup
+  category: Large # 947 tiles
+  group: Custom
+  shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/Reaver/molly.yml
+  guidebookPage: null
+  class:
+  - Cruiser
+  - Brawler
+  engine:
+  - AME
+
+- type: gameMap
+  id: WGMolly
+  mapName: 'RVR - Molly'
+  mapPath: /SharedMaps/_WG/Shipyard/Shuttles/Reaver/molly.yml
+  minPlayers: 0
+  stations:
+    WGMolly:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Molly RVR{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

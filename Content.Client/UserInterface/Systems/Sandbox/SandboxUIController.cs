@@ -1,7 +1,7 @@
 using System.Numerics;
 using Content.Client.Administration.Managers;
-using Content.Client._WF.Spawning; // WOLFGATE(Spawning)
-using Content.Client._WF.MappingMode; // WOLFGATE(MappingMode)
+using Content.Client._WG.Spawning; // WOLFGATE(Spawning)
+using Content.Client._WG.MappingMode; // WOLFGATE(MappingMode)
 using Content.Client.Gameplay;
 using Content.Client.Markers;
 using Content.Client.Sandbox;
@@ -41,7 +41,7 @@ public sealed partial class SandboxUIController : UIController, IOnStateChanged<
     [UISystemDependency] private readonly DebugPhysicsSystem _debugPhysics = default!;
     [UISystemDependency] private readonly MarkerSystem _marker = default!;
     [UISystemDependency] private readonly SandboxSystem _sandbox = default!;
-    [UISystemDependency] private readonly WFMappingClientSystem _wfMapping = default!; // WOLFGATE(MappingMode)
+    [UISystemDependency] private readonly WGMappingClientSystem _wgMapping = default!; // WOLFGATE(MappingMode)
 
     private SandboxWindow? _window;
 
@@ -65,7 +65,7 @@ public sealed partial class SandboxUIController : UIController, IOnStateChanged<
             {
                 // WOLFGATE(MappingMode) START: mappers open the spawn menus
                 // if (!_admin.CanAdminPlace())
-                if (!_admin.CanAdminPlace() && !_wfMapping.InSession)
+                if (!_admin.CanAdminPlace() && !_wgMapping.InSession)
                 // WOLFGATE END
                     return;
                 EntitySpawningController.ToggleWindow();
@@ -77,7 +77,7 @@ public sealed partial class SandboxUIController : UIController, IOnStateChanged<
             {
                 // WOLFGATE(MappingMode) START: mappers open the spawn menus
                 // if (!_admin.CanAdminPlace())
-                if (!_admin.CanAdminPlace() && !_wfMapping.InSession)
+                if (!_admin.CanAdminPlace() && !_wgMapping.InSession)
                 // WOLFGATE END
                     return;
                 TileSpawningController.ToggleWindow();
@@ -87,7 +87,7 @@ public sealed partial class SandboxUIController : UIController, IOnStateChanged<
             {
                 // WOLFGATE(MappingMode) START: mappers open the spawn menus
                 // if (!_admin.CanAdminPlace())
-                if (!_admin.CanAdminPlace() && !_wfMapping.InSession)
+                if (!_admin.CanAdminPlace() && !_wgMapping.InSession)
                 // WOLFGATE END
                     return;
                 DecalPlacerController.ToggleWindow();

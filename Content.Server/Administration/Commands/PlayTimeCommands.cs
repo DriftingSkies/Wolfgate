@@ -39,7 +39,7 @@ public sealed partial class PlayTimeAddOverallCommand : IConsoleCommand
         // WOLFGATE(LiveFixes) START: this async void command threw unobserved while the player's times were loading
         if (!_playTimeTracking.TryGetTrackerTimes(player, out _))
         {
-            shell.WriteError(Loc.GetString("wf-playtime-not-loaded", ("username", args[0])));
+            shell.WriteError(Loc.GetString("wg-playtime-not-loaded", ("username", args[0])));
             return;
         }
         // WOLFGATE END
@@ -103,7 +103,7 @@ public sealed partial class PlayTimeAddRoleCommand : IConsoleCommand
         // WOLFGATE(LiveFixes) START: this async void command threw unobserved while the player's times were loading
         if (!_playTimeTracking.TryGetTrackerTimes(player, out _))
         {
-            shell.WriteError(Loc.GetString("wf-playtime-not-loaded", ("username", userName)));
+            shell.WriteError(Loc.GetString("wg-playtime-not-loaded", ("username", userName)));
             return;
         }
         // WOLFGATE END
@@ -167,7 +167,7 @@ public sealed partial class PlayTimeGetOverallCommand : IConsoleCommand
         // WOLFGATE(LiveFixes) START: this async void command threw unobserved while the player's times were loading
         if (!_playTimeTracking.TryGetTrackerTimes(player, out _))
         {
-            shell.WriteError(Loc.GetString("wf-playtime-not-loaded", ("username", userName)));
+            shell.WriteError(Loc.GetString("wg-playtime-not-loaded", ("username", userName)));
             return;
         }
         // WOLFGATE END
@@ -220,7 +220,7 @@ public sealed partial class PlayTimeGetRoleCommand : IConsoleCommand
         // WOLFGATE(LiveFixes) START: this async void command threw unobserved while the player's times were loading
         if (!_playTimeTracking.TryGetTrackerTimes(session, out _))
         {
-            shell.WriteError(Loc.GetString("wf-playtime-not-loaded", ("username", userName)));
+            shell.WriteError(Loc.GetString("wg-playtime-not-loaded", ("username", userName)));
             return;
         }
         // WOLFGATE END

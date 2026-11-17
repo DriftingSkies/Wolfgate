@@ -1,0 +1,734 @@
+# Supplies: field rations, survival gear, tools and field medicine on both faction uplinks, the same price on each,
+# for crews that live out of their ship or on a world for an operation. Also the TSF's missing grenades, breaching
+# charges, tools and combat medicine, and the PDV infiltration kit that replaces its five loose chameleon listings.
+# Listing names and descriptions come from the product entity; the two new entities' are in uplink.ftl.
+
+- type: storeCategory
+  id: WGUplinkSecuritySupplies
+  name: wg-store-category-supplies
+  priority: 9
+
+- type: storeCategory
+  id: WGUplinkPdvSupplies
+  name: wg-store-category-supplies
+  priority: 9
+
+- type: entity
+  parent: NFPouchFirstAid
+  id: WGFieldDressingPouch
+  components:
+  - type: StorageFill
+    contents:
+    - id: Gauze
+    - id: Brutepack
+    - id: Ointment
+    - id: WGWolfmedSplint
+    - id: Tourniquet
+
+- type: entity
+  parent: ClothingBackpackChameleon
+  id: WGPdvInfiltrationKit
+  components:
+  - type: StorageFill
+    contents:
+    - id: ContractorIDCard
+    - id: ChameleonPDA
+    - id: ClothingHeadsetChameleon
+    - id: ClothingMaskGasVoiceChameleon
+
+# TSF supplies
+
+- type: listing
+  id: WGUplinkTsfSupplyMreBox
+  productEntity: BoxMRE
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyRationCrate
+  productEntity: WGCrateFoodRations
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyWater
+  productEntity: DrinkWaterBottleFull
+  cost:
+    FederationMilitaryCredit: 1
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplySurvivalBox
+  productEntity: BoxSurvivalSecurity
+  cost:
+    FederationMilitaryCredit: 3
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyOxygenExtended
+  productEntity: ExtendedEmergencyOxygenTankFilled
+  cost:
+    FederationMilitaryCredit: 3
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyOxygenDouble
+  productEntity: DoubleEmergencyOxygenTankFilled
+  cost:
+    FederationMilitaryCredit: 5
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplySeclite
+  productEntity: FlashlightSeclite
+  cost:
+    FederationMilitaryCredit: 1
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyFlares
+  productEntity: BoxFlare
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyGps
+  productEntity: HandheldGPSBasic
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyHandicomms
+  productEntity: RadioHandheldNF
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyUtilityBelt
+  productEntity: ClothingBeltUtilityFilled
+  cost:
+    FederationMilitaryCredit: 4
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyEntrenchingTool
+  productEntity: CMEntrenchingTool
+  cost:
+    FederationMilitaryCredit: 3
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplySandbags
+  productEntity: CMSandbagEmpty25
+  cost:
+    FederationMilitaryCredit: 3
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyFieldDressing
+  productEntity: WGFieldDressingPouch
+  cost:
+    FederationMilitaryCredit: 5
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyHealthAnalyzer
+  productEntity: HandheldHealthAnalyzer
+  cost:
+    FederationMilitaryCredit: 5
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyPowerCellHigh
+  productEntity: PowerCellHigh
+  cost:
+    FederationMilitaryCredit: 3
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyPowerCellHyper
+  productEntity: PowerCellHyper
+  cost:
+    FederationMilitaryCredit: 8
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyZipties
+  productEntity: BoxZiptie
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyBedroll
+  productEntity: NFBedrollFolded
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSupplyBodyBags
+  productEntity: BoxBodyBag
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+# PDV supplies
+
+- type: listing
+  id: WGUplinkPdvSupplyMreBox
+  productEntity: BoxMRE
+  cost:
+    Doubloon: 2
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyRationCrate
+  productEntity: WGCrateFoodRations
+  cost:
+    Doubloon: 15
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyWater
+  productEntity: DrinkWaterBottleFull
+  cost:
+    Doubloon: 1
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplySurvivalBox
+  productEntity: BoxSurvivalSyndicate
+  cost:
+    Doubloon: 3
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyOxygenExtended
+  productEntity: ExtendedEmergencyOxygenTankFilled
+  cost:
+    Doubloon: 3
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyOxygenDouble
+  productEntity: DoubleEmergencyOxygenTankFilled
+  cost:
+    Doubloon: 5
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplySeclite
+  productEntity: FlashlightSeclite
+  cost:
+    Doubloon: 1
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyFlares
+  productEntity: BoxFlare
+  cost:
+    Doubloon: 2
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyGps
+  productEntity: HandheldGPSBasic
+  cost:
+    Doubloon: 2
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyHandicomms
+  productEntity: RadioHandheldNF
+  cost:
+    Doubloon: 2
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyUtilityBelt
+  productEntity: ClothingBeltUtilityFilled
+  cost:
+    Doubloon: 4
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyEntrenchingTool
+  productEntity: CMEntrenchingTool
+  cost:
+    Doubloon: 3
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplySandbags
+  productEntity: CMSandbagEmpty25
+  cost:
+    Doubloon: 3
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyFieldDressing
+  productEntity: WGFieldDressingPouch
+  cost:
+    Doubloon: 5
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyHealthAnalyzer
+  productEntity: HandheldHealthAnalyzer
+  cost:
+    Doubloon: 5
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyPowerCellHigh
+  productEntity: PowerCellHigh
+  cost:
+    Doubloon: 3
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyPowerCellHyper
+  productEntity: PowerCellHyper
+  cost:
+    Doubloon: 8
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyZipties
+  productEntity: BoxZiptie
+  cost:
+    Doubloon: 2
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyBedroll
+  productEntity: NFBedrollFolded
+  cost:
+    Doubloon: 2
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyBodyBags
+  productEntity: BoxBodyBag
+  cost:
+    Doubloon: 2
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+# TSF gaps beside the PDV uplink
+
+- type: listing
+  id: WGUplinkTsfJetpack
+  productEntity: JetpackSecurityFilled
+  cost:
+    FederationMilitaryCredit: 5
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfWelderIndustrial
+  productEntity: WelderIndustrial
+  cost:
+    FederationMilitaryCredit: 4
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfMultitool
+  productEntity: Multitool
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfFlashbang
+  productEntity: GrenadeFlashBang
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - UplinkSecurityExplosives
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfSmoke
+  productEntity: SmokeGrenade
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - UplinkSecurityExplosives
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfEmp
+  productEntity: EmpGrenadeNfsd
+  cost:
+    FederationMilitaryCredit: 3
+  categories:
+  - UplinkSecurityExplosives
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfC4
+  productEntity: C4
+  cost:
+    FederationMilitaryCredit: 5
+  categories:
+  - UplinkSecurityExplosives
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfBreachingCharge
+  productEntity: BreachingCharge
+  cost:
+    FederationMilitaryCredit: 5
+  categories:
+  - UplinkSecurityExplosives
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfMedkitCombat
+  productEntity: MedkitCombatFilled
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfDefibrillator
+  productEntity: Defibrillator
+  cost:
+    FederationMilitaryCredit: 40
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfBruteInjector
+  productEntity: BruteAutoInjector
+  cost:
+    FederationMilitaryCredit: 3
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfBurnInjector
+  productEntity: BurnAutoInjector
+  cost:
+    FederationMilitaryCredit: 3
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+# PDV
+
+- type: listing
+  id: WGUplinkPdvInfiltrationKit
+  productEntity: WGPdvInfiltrationKit
+  cost:
+    Doubloon: 35
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink

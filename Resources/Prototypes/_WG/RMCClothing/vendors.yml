@@ -1,0 +1,23 @@
+# Faction outfitters: every ported item of the faction, in unlimited stock, paid in cash like the TSFMCDrobe.
+# Role-locked and command gear stays in the loadouts.
+
+- type: entity
+  parent: VendingMachineNfsdDrobe
+  id: WGVendingMachineTsfOutfitter
+  components:
+  - type: VendingMachine
+    pack: WGRMCTsfOutfitterInventory
+  - type: AccessReader
+    access: [["Tsfmc"]]
+
+- type: entity
+  parent: VendingMachineYarrrDrobe
+  id: WGVendingMachinePdvOutfitter
+  components:
+  - type: VendingMachine
+    pack: WGRMCPdvOutfitterInventory
+    requiresCash: true
+  - type: Advertise
+    pack: YarrrDrobeAds
+  - type: AccessReader
+    access: [["PDV"]]

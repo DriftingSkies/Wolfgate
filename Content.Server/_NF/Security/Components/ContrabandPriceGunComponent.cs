@@ -1,6 +1,6 @@
 using Content.Shared.Store;
 using Robust.Shared.Audio;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server._NF.Security.Components;
 

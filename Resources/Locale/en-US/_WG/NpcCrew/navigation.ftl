@@ -1,0 +1,54 @@
+wg-crew-setup-navigation-tuning = Flight tuning...
+wg-crew-setup-navigation-help = Customize this scenario's flight limits. Selecting a profile replaces the values below; edits stay local until you create the crew or save its settings. Hull clearance still applies to orbit distances.
+wg-crew-setup-navigation-profile = Navigation profile
+wg-crew-setup-navigation-custom = Custom values
+wg-crew-setup-navigation-defaults = Safe defaults
+wg-crew-navigation-freight = Freighter
+wg-crew-navigation-warship = Warship
+wg-crew-navigation-raider = Raider
+wg-crew-navigation-hunter = Hunter
+wg-crew-setup-navigation-reset = Reset flight tuning to safe defaults
+wg-crew-setup-navigation-bounds = Allowed range: { $min } to { $max }
+wg-crew-setup-navigation-invalid-value = Flight tuning: { $setting } must be a finite number from { $min } to { $max }.
+wg-crew-setup-navigation-invalid-hold = Flight tuning: the hold return tolerance must not exceed the hold drift limit.
+wg-crew-setup-navigation-category-speeds = Speeds
+wg-crew-setup-navigation-category-handling = Handling
+wg-crew-setup-navigation-category-clearances = Clearances
+wg-crew-setup-navigation-category-docking = Docking
+wg-crew-setup-navigation-cruise-speed = Travel speed (m/s, 0 = hull maximum)
+wg-crew-setup-navigation-follow-speed = Follow / escort speed (m/s, 0 = hull maximum)
+wg-crew-setup-navigation-loiter-speed = Loiter speed (m/s)
+wg-crew-setup-navigation-circle-speed = Circle speed (m/s)
+wg-crew-setup-navigation-attack-speed = Attack speed (m/s, 0 = hull maximum)
+wg-crew-setup-navigation-hold-correction-speed = Hold correction speed (m/s)
+wg-crew-setup-navigation-near-target-speed = Near-target speed (m/s, 0 = hull maximum)
+wg-crew-setup-navigation-maximum-turn-rate = Maximum turn rate (rad/s)
+wg-crew-setup-navigation-orbit-lookahead-angle = Orbit look-ahead angle (degrees)
+wg-crew-setup-navigation-thrust-multiplier = Linear thrust multiplier
+wg-crew-setup-navigation-angular-thrust-multiplier = Turning thrust multiplier
+wg-crew-setup-navigation-braking-lookahead = Braking lookahead (seconds)
+wg-crew-setup-navigation-speed-tolerance = Speed tolerance (m/s)
+wg-crew-setup-navigation-arrival-speed = Arrival speed tolerance (m/s)
+wg-crew-setup-navigation-hold-angular-speed = Hold turn tolerance (rad/s)
+wg-crew-setup-navigation-navigation-clearance = Hull clearance (metres)
+wg-crew-setup-navigation-hold-range = Hold drift limit (metres)
+wg-crew-setup-navigation-hold-return-range = Hold return tolerance (metres)
+wg-crew-setup-navigation-escort-range = Formation tolerance (metres)
+wg-crew-setup-navigation-escort-heading-range = Formation heading range (metres)
+wg-crew-setup-navigation-attack-range = Minimum attack radius (metres)
+wg-crew-setup-navigation-evasion-buffer = Evasion clearance (metres)
+wg-crew-setup-navigation-evasion-lookahead = Evasion lookahead (seconds)
+wg-crew-setup-navigation-dock-approach-speed = Dock approach speed (m/s)
+wg-crew-setup-navigation-dock-creep-speed = Dock final approach speed (m/s)
+wg-crew-setup-navigation-undock-speed = Undocking speed (m/s)
+wg-crew-setup-navigation-dock-evasion-buffer = Dock evasion clearance (metres)
+wg-crew-setup-navigation-dock-evasion-lookahead = Dock evasion lookahead (seconds)
+wg-crew-setup-navigation-dock-standoff = Dock approach distance (metres)
+wg-crew-setup-navigation-dock-alignment-range = Dock alignment distance (metres)
+wg-crew-setup-navigation-dock-standoff-range = Dock approach tolerance (metres)
+wg-crew-setup-navigation-dock-creep-range = Dock final tolerance (metres)
+wg-crew-setup-navigation-dock-settle-speed = Dock settle speed tolerance (m/s)
+wg-crew-setup-navigation-dock-settle-turn-rate = Dock settle turn tolerance (rad/s)
+wg-crew-setup-navigation-dock-approach-timeout = Dock approach timeout (seconds)
+wg-crew-setup-navigation-dock-settle-timeout = Dock settling timeout (seconds)
+wg-crew-setup-navigation-dock-creep-timeout = Dock final approach timeout (seconds)

@@ -1,0 +1,380 @@
+# The Sandstone Galleries' cave life, zone by zone: pillared halls, fossil beds and a buried ruin quarter
+# (Biomes/merak.yml). Names and descriptions are in Locale/en-US/_WG/Caverns/life_merak.ftl.
+
+# ---- Produce ----
+
+# Eat it for bicaridine and kelotane, or cut it into a poultice (WGHealingHerbBase).
+- type: entity
+  parent: WGHealingHerbBase
+  id: WGGalleryAloe
+  components:
+  - type: Sprite
+    color: "#d6dc86"
+
+# Cook two with water in a big bowl.
+- type: entity
+  parent: WGWildMushroomBase
+  id: WGMarrowCapMushroom
+  components:
+  - type: Sprite
+    color: "#e6d2a2"
+
+- type: entity
+  parent: FoodSoupMushroom
+  id: WGFoodSoupMarrowCap
+
+- type: microwaveMealRecipe
+  id: RecipeWGMarrowCapSoup
+  name: wg-recipe-marrow-cap-soup
+  result: WGFoodSoupMarrowCap
+  time: 10
+  group: Soup
+  reagents:
+    Water: 10
+  solids:
+    FoodBowlBig: 1
+    WGMarrowCapMushroom: 2
+  recipeType:
+  - Oven
+  - Microwave
+
+# Eaten, the petals ease the breathing.
+- type: entity
+  parent: WGWildProduceBase
+  id: WGGravebloomPetals
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/lily.rsi
+    color: "#cdb6e8"
+  - type: FlavorProfile
+    flavors:
+    - sweet
+    - leafy
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 10
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 1
+        - ReagentId: Dexalin
+          Quantity: 4
+  - type: Tag
+    tags:
+    - Fruit
+
+# ---- Plants ----
+
+# Not woody: nothing to log when one is trampled.
+- type: entity
+  abstract: true
+  parent: BaseFlora
+  id: WGCaveDryPlantBase
+  components:
+  - type: Appearance
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 12
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          path: /Audio/Effects/plant_rustle.ogg
+          params:
+            volume: 5
+            variation: 0.05
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+# Pillared halls: a fleshy aloe in the sand; pick it for a healing herb.
+- type: entity
+  parent: WGCaveDryPlantBase
+  id: WGCaveGalleryAloe
+  components:
+  - type: Sprite
+    sprite: _WG/DecorImport/Objects/Decoration/Flora/flora_alien_plants.rsi
+    layers:
+    - state: garden
+      map: [ "plant" ]
+      color: "#d6dc86"
+  - type: GenericVisualizer
+    visuals:
+      enum.WGRegrowingHarvestVisuals.Harvested:
+        plant:
+          True: { scale: "0.65,0.65", color: "#8a8c5a" }
+          False: { scale: "1,1", color: "#d6dc86" }
+  - type: WGRegrowingHarvest
+    regrowTime: 720
+    harvestTime: 1.5
+    table: !type:AllSelector
+      children:
+      - id: WGGalleryAloe
+
+# Pillared halls, rare: roots under the sand that close on whoever walks over them, for two seconds.
+- type: entity
+  parent: WGCaveDryPlantBase
+  id: WGCaveSandSnare
+  components:
+  - type: Sprite
+    sprite: _WG/DecorImport/Objects/Decoration/Flora/flora_alien_plants.rsi
+    layers:
+    - state: plantbot1
+      map: [ "plant" ]
+      color: "#dcc590"
+  - type: GenericVisualizer
+    visuals:
+      enum.WGReactiveFloraVisuals.State:
+        plant:
+          Idle: { color: "#dcc590", scale: "1,1" }
+          Armed: { color: "#fff0b0", scale: "1.1,1.1" }
+          Spent: { color: "#dcc590", scale: "1,1" }
+  - type: WGReactiveFlora
+    behaviour: Grab
+    range: 1.1
+    cooldown: 10
+    checkInterval: 0.5
+    holdTime: 2
+    heldSpeed: 0
+    cutFreeDamage: 12
+    damage:
+      types:
+        Blunt: 2
+    ignoreFactions: [ Passive, SimpleHostile, SimpleNeutral, Dragon ]
+    sound:
+      collection: WGFloraGrab
+    releaseSound:
+      collection: WGFloraVineSnap
+    popup: wg-cave-snare-grabs
+
+# Fossil beds: a pale cap that grows out of old bone; pick it for the pot.
+- type: entity
+  parent: WGCaveDryPlantBase
+  id: WGCaveMarrowCap
+  components:
+  - type: Sprite
+    sprite: _WG/DecorImport/Objects/Decoration/Flora/flora_mushrooms.rsi
+    layers:
+    - state: mush1
+      map: [ "plant" ]
+      color: "#e6d2a2"
+  - type: GenericVisualizer
+    visuals:
+      enum.WGRegrowingHarvestVisuals.Harvested:
+        plant:
+          True: { scale: "0.55,0.55", color: "#8a7d62" }
+          False: { scale: "1,1", color: "#e6d2a2" }
+  - type: WGRegrowingHarvest
+    regrowTime: 600
+    harvestTime: 1
+    table: !type:AllSelector
+      children:
+      - id: WGMarrowCapMushroom
+        amount: !type:RangeNumberSelector
+          range: 1, 3
+
+# Fossil beds, rare: a brittle geode that swells when someone stands near and shatters into shards. Shoot it from afar.
+- type: entity
+  parent: WGCaveDryPlantBase
+  id: WGCaveBrittleGeode
+  components:
+  - type: Sprite
+    sprite: _WG/DecorImport/Objects/Decoration/Flora/flora_alien_plants.rsi
+    layers:
+    - state: glowgrowth1
+      map: [ "plant" ]
+      color: "#ffd070"
+  - type: GenericVisualizer
+    visuals:
+      enum.WGReactiveFloraVisuals.State:
+        plant:
+          Idle: { color: "#ffd070", scale: "1,1" }
+          Armed: { color: "#ffffff", scale: "1.25,1.25" }
+          Spent: { visible: false }
+  - type: WGReactiveFlora
+    behaviour: Explode
+    range: 1.8
+    cooldown: 1
+    checkInterval: 0.5
+    ignoreFactions: [ Passive, SimpleHostile, SimpleNeutral, Dragon ]
+    armDelay: 1.5
+    armSound:
+      collection: WGFloraCrystalCharge
+    armPopup: wg-cave-geode-cracks
+    sound:
+      collection: WGFloraPodBurst
+    popup: wg-cave-geode-bursts
+    burstRadius: 1.8
+    burstDamage:
+      types:
+        Slash: 12
+        Piercing: 4
+    deleteOnBurst: true
+
+# Buried ruin quarter: a pale bloom on the old stones; pick it for its petals.
+- type: entity
+  parent: WGCaveDryPlantBase
+  id: WGCaveGravebloom
+  components:
+  - type: Sprite
+    sprite: _WG/DecorImport/Objects/Decoration/Flora/flora_alien_plants.rsi
+    layers:
+    - state: flower
+      map: [ "plant" ]
+      color: "#d6bff2"
+  - type: GenericVisualizer
+    visuals:
+      enum.WGRegrowingHarvestVisuals.Harvested:
+        plant:
+          True: { scale: "0.65,0.65", color: "#8f8398" }
+          False: { scale: "1,1", color: "#d6bff2" }
+  - type: WGRegrowingHarvest
+    regrowTime: 900
+    harvestTime: 1.5
+    harvestSound:
+      collection: WGFloraLilypad
+    table: !type:AllSelector
+      children:
+      - id: WGGravebloomPetals
+
+# Buried ruin quarter, rare: a dry pod that bursts into a blinding dust when someone brushes past.
+- type: entity
+  parent: WGCaveDryPlantBase
+  id: WGCaveDustPod
+  components:
+  - type: Sprite
+    sprite: _WG/DecorImport/Objects/Decoration/Flora/flora_alien_plants.rsi
+    layers:
+    - state: xpod1
+      map: [ "plant" ]
+      color: "#e8d4a0"
+  - type: GenericVisualizer
+    visuals:
+      enum.WGReactiveFloraVisuals.State:
+        plant:
+          Idle: { color: "#e8d4a0", scale: "1,1" }
+          Armed: { color: "#ffffff", scale: "1.2,1.2" }
+          Spent: { color: "#9a8e72", scale: "0.9,0.9" }
+  - type: WGReactiveFlora
+    behaviour: Cloud
+    range: 1.3
+    cooldown: 20
+    checkInterval: 0.75
+    activeTime: 1.5
+    ignoreFactions: [ Passive, SimpleHostile, SimpleNeutral, Dragon ]
+    sound:
+      collection: WGFloraSporePuff
+    popup: wg-cave-dustpod-puff
+    cloudPrototype: Smoke
+    cloudDuration: 5
+    cloudSpread: 3
+    solution:
+      reagents:
+      - ReagentId: TearGas
+        Quantity: 6
+      - ReagentId: Toxin
+        Quantity: 2
+
+# ---- Wildlife ----
+# Reskins of the surface and space animals; their sprites are made by Tools/_WG/Caverns/gen_life_karst_cinder_sandstone.py.
+
+- type: entity
+  parent: MobCobraSpace
+  id: WGMobPallidSandviper
+  components:
+  - type: Sprite
+    sprite: _WG/Caverns/Life/merak/pallid_viper.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: spacecobra
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: glow
+      shader: unshaded
+
+- type: entity
+  parent: MobBat
+  id: WGMobDustBat
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: bat
+      sprite: _WG/Caverns/Life/merak/dust_bat.rsi
+
+- type: entity
+  parent: MobCrab
+  id: WGMobGalleryCrab
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base", "movement" ]
+      state: crab
+      sprite: _WG/Caverns/Life/merak/gallery_crab.rsi
+
+- type: entity
+  parent: MobTick
+  id: WGMobCryptTick
+  components:
+  - type: Sprite
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: alive
+      sprite: _WG/Caverns/Life/merak/crypt_tick.rsi
+      scale: 0.8, 0.8
+
+# ---- Fauna tables ----
+# One marker per zone, in the zone's chambers (HideSpawnMenu markers, like WGCavernFaunaMerak).
+
+# Pillared halls: bats among the pillars and crabs in the sand.
+- type: entityTable
+  id: WGCavernFaunaMerakHalls
+  table: !type:GroupSelector
+    children:
+    - id: WGMobDustBat
+      weight: 4
+    - id: WGMobGalleryCrab
+      weight: 3
+
+- type: entity
+  id: WGCavernFaunaMerakHalls
+  parent: MarkerBase
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGCavernFaunaMerakHalls
+
+# Fossil beds: sandvipers coiled in the bones, and the odd crab.
+- type: entityTable
+  id: WGCavernFaunaMerakFossils
+  table: !type:GroupSelector
+    children:
+    - id: WGMobPallidSandviper
+      weight: 4
+    - id: WGMobGalleryCrab
+      weight: 2
+
+- type: entity
+  id: WGCavernFaunaMerakFossils
+  parent: MarkerBase
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGCavernFaunaMerakFossils
+
+# Buried ruin quarter: ticks in the dust, bats in the rafters.
+- type: entityTable
+  id: WGCavernFaunaMerakRuins
+  table: !type:GroupSelector
+    children:
+    - id: WGMobCryptTick
+      weight: 4
+    - id: WGMobDustBat
+      weight: 2
+
+- type: entity
+  id: WGCavernFaunaMerakRuins
+  parent: MarkerBase
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGCavernFaunaMerakRuins

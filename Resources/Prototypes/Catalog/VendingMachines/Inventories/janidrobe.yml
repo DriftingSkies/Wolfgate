@@ -9,24 +9,24 @@
     ClothingHeadHatPurplesoft: 2
     ClothingBeltJanitor: 2
     NFPouchJanitor: 2 # Frontier - Pouch
-    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-    WFMeridianClothingAccessoryMaidapron: 2
-    WFMeridianClothingGlovesMaidArmCovers: 2
-    WFMeridianClothingHeadCostumeMaidHeadband: 2
-    WFMeridianClothingHeadCostumeNovaMaid: 2
-    WFMeridianClothingHeadHoodedWinterhoodJanitor: 2
-    WFMeridianClothingHeadMaidHeadband: 2
-    WFMeridianClothingHeadPlaybunnyearsJanitor: 2
-    WFMeridianClothingNeckMaidNeckCover: 2
-    WFMeridianClothingNeckTieBunnytieJanitor: 2
-    WFMeridianClothingSuitHoodedWintercoatJanitor: 2
-    WFMeridianClothingSuitJacketTailcoatJanitor: 2
-    WFMeridianClothingUnderCostumeMaid: 2
-    WFMeridianClothingUnderCostumeNovaMaidUniform: 2
-    WFMeridianClothingUnderCostumeNovaMaidUniformAlt: 2
-    WFMeridianClothingUnderMaidCostume: 2
-    WFMeridianClothingUnderRankCivilianJanitor: 2
-    WFMeridianClothingUnderRankCivilianJanitorBunnysuit: 2
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+    WGMeridianClothingAccessoryMaidapron: 2
+    WGMeridianClothingGlovesMaidArmCovers: 2
+    WGMeridianClothingHeadCostumeMaidHeadband: 2
+    WGMeridianClothingHeadCostumeNovaMaid: 2
+    WGMeridianClothingHeadHoodedWinterhoodJanitor: 2
+    WGMeridianClothingHeadMaidHeadband: 2
+    WGMeridianClothingHeadPlaybunnyearsJanitor: 2
+    WGMeridianClothingNeckMaidNeckCover: 2
+    WGMeridianClothingNeckTieBunnytieJanitor: 2
+    WGMeridianClothingSuitHoodedWintercoatJanitor: 2
+    WGMeridianClothingSuitJacketTailcoatJanitor: 2
+    WGMeridianClothingUnderCostumeMaid: 2
+    WGMeridianClothingUnderCostumeNovaMaidUniform: 2
+    WGMeridianClothingUnderCostumeNovaMaidUniformAlt: 2
+    WGMeridianClothingUnderMaidCostume: 2
+    WGMeridianClothingUnderRankCivilianJanitor: 2
+    WGMeridianClothingUnderRankCivilianJanitorBunnysuit: 2
     # WOLFGATE END
 #    ClothingHeadsetService: 2 # Frontier
     ClothingOuterWinterJani: 2

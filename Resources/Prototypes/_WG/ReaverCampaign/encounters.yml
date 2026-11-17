@@ -1,0 +1,603 @@
+# The Ashfall Reaver campaign's encounters. Everything here is started by the campaign or an admin, never the
+# storyteller. The first ship listed is the lead: a stronghold breaks when its lead is out of the fight, and a patrol,
+# raid or reinforcement flies the lead's orders.
+
+# A stronghold hub: a shielded frigate with docking ports holding a cell centre, with no guards. The campaign docks
+# reinforcements to it as it ages (WGReaverReinforcement*). Saintie carries its own Aegis shield generator, so it comes
+# up shielded; the campaign anchors one on any hub hull that has none. The lead does not evade: a hub that ran from an
+# alert would undock everything on it.
+- type: wgEncounter
+  id: WGReaverStronghold
+  name: wg-reaver-name-stronghold
+  start: Manual
+  lifetime: Persistent
+  category: Threat
+  icon: Flag
+  leash: 2000
+  manifests: [ WGManifestContraband ]
+  ships:
+  - key: lead
+    navigation: WGCrewNavigationRaider
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Saintie ]
+    # Hulls of several makes with docking ports for reinforcements. A fixed gun count keeps them alike; the campaign
+    # anchors a shield on any without one. From tier 3 only hulls with six hardpoints or more.
+    # The USSP Ledokol capital and Buran frigate are favoured hubs: Ledokol is listed twice from tier 3.
+    tiers:
+    - minTier: 0
+      vessels: [ Balor, MClass, Intermission, WGHammerhead, Arkansaw, Claymore, Pelican, Saintie, Ledokol, Buran, WGMinerva ]
+      skills: [ Green ]
+      retrofit: WGPirateRetrofitHubLight
+    - minTier: 2
+      vessels: [ Balor, MClass, Intermission, WGHammerhead, Arkansaw, Claymore, Pelican, Saintie, Ledokol, Buran, WGMinerva ]
+      skills: [ Green, Regular ]
+      retrofit: WGPirateRetrofitHubMedium
+    - minTier: 3
+      vessels: [ MClass, Intermission, WGHammerhead, Arkansaw, Claymore, Saintie, Ledokol, Ledokol, Buran, WGMinerva ]
+      skills: [ Regular ]
+      retrofit: WGPirateRetrofitHubHeavy
+    - minTier: 4
+      vessels: [ MClass, Intermission, WGHammerhead, Arkansaw, Claymore, Saintie, Ledokol, Ledokol, Buran, WGMinerva ]
+      skills: [ Regular, Veteran ]
+      retrofit: WGPirateRetrofitHubSiege
+    - minTier: 5
+      vessels: [ MClass, Intermission, WGHammerhead, Arkansaw, Claymore, Saintie, Ledokol, Ledokol, Buran, WGMinerva ]
+      skills: [ Veteran ]
+      retrofit: WGPirateRetrofitHubSiege
+    deckhands: 4
+    guards: 3
+    cargo: 4
+    # Jars stowed for the AME: ~40 minutes each, so the hub burns through them in a long round. The restock tops the crate up past that.
+    fuelStores: 12
+    skill: Regular
+    evades: false
+    platform: true
+    warnRange: 1500
+    attackRange: 900
+    zoneLines: wg-encounter-pirate-zone
+    disengage: Deter
+    disengageRange: 1200
+    objectives:
+    - kind: Hold
+
+# The citadel: the tier 5 set piece, flown out as a convoy from the highest-level stronghold. Vulture carries 9 docking
+# ports and its own Sentinel shield generator, so the campaign places none. It holds and does not evade, as a hub.
+- type: wgEncounter
+  id: WGReaverCitadel
+  name: wg-reaver-name-citadel
+  start: Manual
+  lifetime: Persistent
+  category: Threat
+  icon: Flag
+  leash: 2000
+  manifests: [ WGManifestContraband ]
+  ships:
+  - key: lead
+    navigation: WGCrewNavigationRaider
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Vulture ]
+    # The citadel keeps its own guns; only its decks are worn.
+    retrofit: WGPirateRetrofitGrime
+    deckhands: 6
+    guards: 4
+    cargo: 8
+    fuelStores: 16
+    skill: Veteran
+    evades: false
+    platform: true
+    warnRange: 2000
+    attackRange: 1200
+    zoneLines: wg-encounter-pirate-zone
+    disengage: Deter
+    disengageRange: 1500
+    objectives:
+    - kind: Hold
+
+# A gun battery: a gunboat that holds station round a fortified hub (the first stronghold, a regrouped one and the
+# citadel) and turns its guns on what comes near. The campaign places one per slot of the population bracket and
+# rebuilds a lost one each reinforcement interval; while any stands, the hub's shield heals faster.
+- type: wgEncounter
+  id: WGReaverBattery
+  name: wg-reaver-name-battery
+  start: Manual
+  lifetime: Persistent
+  category: Threat
+  icon: Skull
+  leash: 600
+  ships:
+  - key: lead
+    navigation: WGCrewNavigationRaider
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Kalisto, Metis, Bastion, Natisk, Drakon, Tayfun ]
+    tiers:
+    - minTier: 0
+      vessels: [ Kalisto, Metis, Bastion, Natisk, Drakon, Tayfun ]
+      skills: [ Green, Regular ]
+      retrofit: WGPirateRetrofitMedium
+    - minTier: 3
+      vessels: [ Kalisto, Metis, Bastion, Natisk, Drakon, Tayfun ]
+      skills: [ Regular ]
+      retrofit: WGPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Kalisto, Metis, Bastion, Natisk, Drakon, Tayfun ]
+      skills: [ Regular, Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    deckhands: 0
+    captain: false
+    engineer: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    fuelStores: 6
+    skill: Regular
+    evades: false
+    platform: true
+    warnRange: 1200
+    attackRange: 800
+    zoneLines: wg-encounter-pirate-zone
+    disengage: Deter
+    disengageRange: 1200
+    objectives:
+    - kind: Hold
+
+# A gunship that flies in from the sector edge to dock with a hub and raise it to level 1 or 2. The campaign gives it
+# its orders: go to the hub, then dock.
+- type: wgEncounter
+  id: WGReaverReinforcementGunship
+  name: wg-reaver-name-reinforcement
+  start: Manual
+  lifetime: Persistent
+  category: Threat
+  icon: Skull
+  ships:
+  - key: lead
+    navigation: WGCrewNavigationRaider
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Kalisto, Metis, Bastion, Sulak, Drakon, Tayfun ]
+    deckhands: 2
+    engineer: false
+    skill: Regular
+    evades: false
+    warnRange: 900
+    attackRange: 450
+    zoneLines: wg-encounter-pirate-zone
+    disengage: Deter
+    disengageRange: 1200
+
+# A heavy that docks with a hub to raise it to level 3 or 4.
+- type: wgEncounter
+  id: WGReaverReinforcementHeavy
+  name: wg-reaver-name-reinforcement
+  start: Manual
+  lifetime: Persistent
+  category: Threat
+  icon: Skull
+  ships:
+  - key: lead
+    navigation: WGCrewNavigationRaider
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Saintie, Vulture, Ganymede, Buran, WGMinerva ]
+    deckhands: 3
+    guards: 2
+    fuelStores: 12
+    skill: Regular
+    evades: false
+    warnRange: 900
+    attackRange: 450
+    zoneLines: wg-encounter-pirate-zone
+    disengage: Deter
+    disengageRange: 1200
+
+# A patrol: a raider and a wing flying a route through held space and home. The route is set by the campaign.
+- type: wgEncounter
+  id: WGReaverPatrol
+  name: wg-reaver-name-patrol
+  start: Manual
+  lifetime: Transient
+  category: Threat
+  icon: Skull
+  duration: 3600
+  ships:
+  - key: lead
+    navigation: WGCrewNavigationRaider
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Kalisto, Metis, Bastion, Garm, Natisk, Sulak ]
+    # Retrofitted civilian hulls at the low tiers, gunships from tier 3, the full black-market line from tier 4.
+    tiers:
+    - minTier: 0
+      vessels: [ WGPibb, WGDespot, Sakuratsu, WGKetch, WGJackal, Caracara, Takeaway ]
+      skills: [ Green ]
+      retrofit: WGPirateRetrofitLight
+    - minTier: 2
+      vessels: [ Peregrine, WGHuolian, Arribane, WGMolly, Zeros, WGDredger ]
+      skills: [ Green, Regular ]
+      retrofit: WGPirateRetrofitMedium
+    - minTier: 3
+      vessels: [ Windreign, WGRenegade, WGDredger, Kalisto, Metis, Bastion, Garm ]
+      skills: [ Regular ]
+      retrofit: WGPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Kalisto, Metis, Bastion, Garm, Natisk, Sulak ]
+      skills: [ Regular, Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Kalisto, Metis, Bastion, Garm, Natisk, Sulak ]
+      skills: [ Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    deckhands: 2
+    engineer: false
+    skill: Regular
+    warnRange: 900
+    attackRange: 450
+    zoneLines: wg-encounter-pirate-zone
+    disengage: Deter
+    disengageRange: 1200
+  - key: wing
+    navigation: WGCrewNavigationRaider
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
+    tiers:
+    - minTier: 0
+      vessels: [ Horsefly, Tick ]
+      skills: [ Green ]
+      retrofit: WGPirateRetrofitLight
+    - minTier: 2
+      vessels: [ Horsefly, Tick, Carrion, Strayk ]
+      skills: [ Green, Regular ]
+      retrofit: WGPirateRetrofitMedium
+    - minTier: 3
+      vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
+      skills: [ Regular ]
+      retrofit: WGPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
+      skills: [ Regular, Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
+      skills: [ Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: 160, 0
+    skill: Regular
+    warnRange: 900
+    attackRange: 450
+    zoneLines: wg-encounter-pirate-zone
+    disengage: Deter
+    disengageRange: 1200
+    objectives:
+    - kind: Escort
+      target: lead
+
+# A raid on a player ship: the campaign sends the lead to the target and has it attack.
+- type: wgEncounter
+  id: WGReaverRaidPack
+  name: wg-reaver-name-raid
+  start: Manual
+  lifetime: Transient
+  category: Threat
+  icon: Skull
+  cost: 2
+  minPlayers: 3
+  duration: 3600
+  ships:
+  - key: raider
+    navigation: WGCrewNavigationRaider
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
+    # Retrofitted civilian hulls at the low tiers, gunships from tier 3, the full black-market line from tier 4.
+    tiers:
+    - minTier: 0
+      vessels: [ WGPibb, WGDespot, Sakuratsu, WGKetch, WGJackal, Caracara, Takeaway ]
+      skills: [ Green ]
+      retrofit: WGPirateRetrofitLight
+    - minTier: 2
+      vessels: [ Peregrine, Arribane, WGMolly, Zeros, WGDredger, Windreign, WGJackal ]
+      skills: [ Green, Regular ]
+      retrofit: WGPirateRetrofitMedium
+    - minTier: 3
+      vessels: [ WGRenegade, WGHuolian, Kalisto, Metis, Bastion, Garm, WGJackal ]
+      skills: [ Regular ]
+      retrofit: WGPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon, WGHuolian, WGRenegade ]
+      skills: [ Regular, Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon, WGHuolian ]
+      skills: [ Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    deckhands: 3
+    warnRange: 900
+    attackRange: 450
+    zoneLines: wg-encounter-pirate-zone
+  - key: wing
+    navigation: WGCrewNavigationRaider
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
+    tiers:
+    - minTier: 0
+      vessels: [ Horsefly, Tick ]
+      skills: [ Green ]
+      retrofit: WGPirateRetrofitLight
+    - minTier: 2
+      vessels: [ Horsefly, Tick, Carrion, Strayk ]
+      skills: [ Green, Regular ]
+      retrofit: WGPirateRetrofitMedium
+    - minTier: 3
+      vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
+      skills: [ Regular ]
+      retrofit: WGPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
+      skills: [ Regular, Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
+      skills: [ Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: 160, 0
+    warnRange: 900
+    attackRange: 450
+    zoneLines: wg-encounter-pirate-zone
+    objectives:
+    - kind: Escort
+      target: raider
+
+# A response to a challenge on a Reaver cell: the nearest stronghold sends a raider and its wing to the cell, where they
+# attack the challenger, then fly home. They hold their ground and drive the intruder off rather than run.
+- type: wgEncounter
+  id: WGReaverResponsePack
+  name: wg-reaver-name-response
+  start: Manual
+  lifetime: Transient
+  category: Threat
+  icon: Skull
+  cost: 2
+  minPlayers: 3
+  duration: 3600
+  ships:
+  - key: raider
+    navigation: WGCrewNavigationRaider
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
+    # Retrofitted civilian hulls at the low tiers, gunships from tier 3, the full black-market line from tier 4.
+    tiers:
+    - minTier: 0
+      vessels: [ WGPibb, WGDespot, Sakuratsu, WGKetch, WGJackal, Caracara, Takeaway ]
+      skills: [ Green ]
+      retrofit: WGPirateRetrofitLight
+    - minTier: 2
+      vessels: [ Peregrine, WGHuolian, Arribane, WGMolly, Zeros, WGDredger ]
+      skills: [ Green, Regular ]
+      retrofit: WGPirateRetrofitMedium
+    - minTier: 3
+      vessels: [ Windreign, WGRenegade, Rosetta, WGDredger, Kalisto, Metis, Bastion, Garm ]
+      skills: [ Regular ]
+      retrofit: WGPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
+      skills: [ Regular, Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
+      skills: [ Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    deckhands: 3
+    warnRange: 900
+    attackRange: 450
+    evades: false
+    zoneLines: wg-encounter-pirate-zone
+    disengage: Deter
+    disengageRange: 1200
+  - key: wing
+    navigation: WGCrewNavigationRaider
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
+    tiers:
+    - minTier: 0
+      vessels: [ Horsefly, Tick ]
+      skills: [ Green ]
+      retrofit: WGPirateRetrofitLight
+    - minTier: 2
+      vessels: [ Horsefly, Tick, Carrion, Strayk ]
+      skills: [ Green, Regular ]
+      retrofit: WGPirateRetrofitMedium
+    - minTier: 3
+      vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
+      skills: [ Regular ]
+      retrofit: WGPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
+      skills: [ Regular, Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
+      skills: [ Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: 160, 0
+    warnRange: 900
+    attackRange: 450
+    evades: false
+    zoneLines: wg-encounter-pirate-zone
+    disengage: Deter
+    disengageRange: 1200
+    objectives:
+    - kind: Escort
+      target: raider
+
+# Boarders sent after a player ship; they hunt as the storyteller's boarders do.
+- type: wgEncounter
+  id: WGReaverRaidBoarders
+  name: wg-reaver-name-boarders
+  start: Manual
+  lifetime: Transient
+  category: Threat
+  icon: Skull
+  cost: 2
+  minPlayers: 2
+  hidden: true
+  duration: 1800
+  ships:
+  - key: boarder
+    navigation: WGCrewNavigationHunter
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Hazel, Metis, Mudskipper ]
+    tiers:
+    - minTier: 0
+      vessels: [ WGPibb, Takeaway, Caracara ]
+      skills: [ Green ]
+      retrofit: WGPirateRetrofitLight
+    - minTier: 2
+      vessels: [ WGPibb, Arribane, Zeros, Peregrine ]
+      skills: [ Green, Regular ]
+      retrofit: WGPirateRetrofitMedium
+    - minTier: 4
+      vessels: [ Hazel, Metis, Mudskipper ]
+      skills: [ Regular, Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    captain: false
+    deckhands: 2
+    guards: 2
+    hunt: true
+    evades: false
+
+# A raid on a station: the campaign sends the lead to a standoff point and has it prowl round the station.
+- type: wgEncounter
+  id: WGReaverRaidStation
+  name: wg-reaver-name-raid
+  start: Manual
+  lifetime: Transient
+  category: Threat
+  icon: Skull
+  cost: 2
+  minPlayers: 3
+  duration: 3600
+  ships:
+  - key: raider
+    navigation: WGCrewNavigationRaider
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
+    # Retrofitted civilian hulls at the low tiers, gunships from tier 3, the full black-market line from tier 4.
+    tiers:
+    - minTier: 0
+      vessels: [ WGPibb, WGDespot, Sakuratsu, WGKetch, WGJackal, Caracara, Takeaway ]
+      skills: [ Green ]
+      retrofit: WGPirateRetrofitLight
+    - minTier: 2
+      vessels: [ Peregrine, WGHuolian, Arribane, WGMolly, Zeros, WGDredger ]
+      skills: [ Green, Regular ]
+      retrofit: WGPirateRetrofitMedium
+    - minTier: 3
+      vessels: [ Windreign, WGRenegade, WGDredger, Kalisto, Metis, Bastion, Garm ]
+      skills: [ Regular ]
+      retrofit: WGPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
+      skills: [ Regular, Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Kalisto, Metis, Mudskipper, Scallywag, Natisk, Drakon ]
+      skills: [ Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    deckhands: 3
+    warnRange: 900
+    attackRange: 450
+    zoneLines: wg-encounter-pirate-zone
+  - key: wing
+    navigation: WGCrewNavigationRaider
+    side: reavers
+    faction: WGAshfallReavers
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
+    tiers:
+    - minTier: 0
+      vessels: [ Horsefly, Tick ]
+      skills: [ Green ]
+      retrofit: WGPirateRetrofitLight
+    - minTier: 2
+      vessels: [ Horsefly, Tick, Carrion, Strayk ]
+      skills: [ Green, Regular ]
+      retrofit: WGPirateRetrofitMedium
+    - minTier: 3
+      vessels: [ Carrion, Hazel, Horsefly, Tick, Svinya, Strayk ]
+      skills: [ Regular ]
+      retrofit: WGPirateRetrofitHeavy
+    - minTier: 4
+      vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
+      skills: [ Regular, Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    - minTier: 5
+      vessels: [ Carrion, Horsefly, Tick, Hazel, Svinya, Strayk ]
+      skills: [ Veteran ]
+      retrofit: WGPirateRetrofitGrime
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: 160, 0
+    warnRange: 900
+    attackRange: 450
+    zoneLines: wg-encounter-pirate-zone
+    objectives:
+    - kind: Escort
+      target: raider

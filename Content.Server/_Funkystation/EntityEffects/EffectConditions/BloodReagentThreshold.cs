@@ -3,7 +3,7 @@ using Content.Shared.Chemistry.Reagent;
 using Content.Shared.EntityEffects;
 using Content.Shared.FixedPoint;
 using Robust.Shared.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 using Content.Shared.Chemistry.EntitySystems;
 
 namespace Content.Server.EntityEffects.EffectConditions;

@@ -104,7 +104,7 @@ public abstract partial class SharedFlatpackSystem : EntitySystem
             _adminLogger.Add(LogType.Construction,
                 LogImpact.Low,
                 $"{ToPrettyString(args.User):player} unpacked {ToPrettyString(spawn):entity} at {xform.Coordinates} from {ToPrettyString(uid):entity}");
-            var unpacked = new Content.Shared._WF.Drydock.WFFlatpackUnpackedEvent(spawn); // WOLFGATE(Drydock): salvaged hardware unpacks damaged
+            var unpacked = new Content.Shared._WG.Drydock.WGFlatpackUnpackedEvent(spawn); // WOLFGATE(Drydock): salvaged hardware unpacks damaged
             RaiseLocalEvent(uid, ref unpacked); // WOLFGATE(Drydock)
             QueueDel(uid);
         }

@@ -8,7 +8,7 @@
 - type: tile
   parent: RMCFloorHybrisaWhiteBase
   id: RMCFloorHybrisaWhite
-  name: tiles-wf-rmc-white-metal-tile
+  name: tiles-wg-rmc-white-metal-tile
   sprite: /Textures/_RMC14/Tiles/hybrisa/tilewhite.png
 
 - type: tile

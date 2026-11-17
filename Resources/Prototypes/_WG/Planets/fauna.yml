@@ -1,0 +1,147 @@
+# Sparse ambient wildlife.
+# Table spawners produce mobile animals; placing mobs directly in a biome layer would anchor them.
+
+- type: entityTable
+  id: WGFaunaAsclepiu
+  table: !type:GroupSelector
+    children:
+    - id: MobFox
+      weight: 4
+    - id: MobLizard
+      weight: 3
+    - id: MobCrab
+      weight: 2
+    - id: MobSnake
+      weight: 1
+
+- type: entity
+  id: WGFaunaAsclepiu
+  parent: MarkerBase
+  name: asclepiu wildlife spawner
+  categories: [HideSpawnMenu]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGFaunaAsclepiu
+
+- type: entityTable
+  id: WGFaunaFervidus
+  table: !type:GroupSelector
+    children:
+    # A bird flock (_WG/Birds); the leader spawns the rest.
+    - id: WGMobBirdAshHawk
+      weight: 2
+    - id: WGMobArgocyteSlurvaBasalt
+      weight: 6
+    - id: WGMobArgocyteCrawlerBasalt
+      weight: 3
+    - id: WGMobArgocyteSwiperBasalt
+      weight: 1
+
+- type: entity
+  id: WGFaunaFervidus
+  parent: MarkerBase
+  name: fervidus wildlife spawner
+  categories: [HideSpawnMenu]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGFaunaFervidus
+
+# The table is in Life/aerumna.yml, with the other regions'.
+- type: entity
+  id: WGFaunaAerumna
+  parent: MarkerBase
+  name: aerumna wildlife spawner
+  categories: [HideSpawnMenu]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGFaunaAerumna
+
+# The hive's own: nothing but xenos, thick on the hive ground.
+- type: entityTable
+  id: WGFaunaAerumnaHive
+  table: !type:GroupSelector
+    children:
+    - id: MobXenoRunner
+      weight: 5
+    - id: MobXenoDrone
+      weight: 4
+    - id: MobXenoSpitter
+      weight: 1
+
+- type: entity
+  id: WGFaunaAerumnaHive
+  parent: MarkerBase
+  name: aerumna hive spawner
+  categories: [HideSpawnMenu]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGFaunaAerumnaHive
+
+# The planet-wide mix wrecks use; the biome places the per-region spawners in Life/thrascias.yml.
+- type: entityTable
+  id: WGFaunaThrascias
+  table: !type:GroupSelector
+    children:
+    - id: MobArgocyteSlurva
+      weight: 4
+    - id: WGMobThrasciasPenguin
+      weight: 3
+    - id: WGMobThrasciasSnowFox
+      weight: 2
+    - id: MobArgocyteBarrier
+      weight: 2
+    - id: WGMobThrasciasFrostBear
+      weight: 1
+
+- type: entity
+  id: WGFaunaThrascias
+  parent: MarkerBase
+  name: thrascias wildlife spawner
+  categories: [HideSpawnMenu]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGFaunaThrascias
+
+
+
+# Heat-adapted native; retains normal combat damage and AI.
+- type: entity
+  id: WGMobArgocyteSlurvaBasalt
+  parent: MobArgocyteSlurva
+  suffix: Fervidus
+  components:
+  - type: Temperature
+    heatDamageThreshold: 500
+    coldDamageThreshold: 0
+    currentTemperature: 373.15
+
+# Heat-adapted native; retains normal combat damage and AI.
+- type: entity
+  id: WGMobArgocyteCrawlerBasalt
+  parent: MobArgocyteCrawler
+  suffix: Fervidus
+  components:
+  - type: Temperature
+    heatDamageThreshold: 500
+    coldDamageThreshold: 0
+    currentTemperature: 373.15
+
+# Heat-adapted native; retains normal combat damage and AI.
+- type: entity
+  id: WGMobArgocyteSwiperBasalt
+  parent: MobArgocyteSwiper
+  suffix: Fervidus
+  components:
+  - type: Temperature
+    heatDamageThreshold: 500
+    coldDamageThreshold: 0
+    currentTemperature: 373.15
+
+- type: entity
+  id: WGFaunaMerak
+  parent: MarkerBase
+  name: desert wildlife spawner
+  categories: [HideSpawnMenu]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: MonoPlanetmapFaunaDesert

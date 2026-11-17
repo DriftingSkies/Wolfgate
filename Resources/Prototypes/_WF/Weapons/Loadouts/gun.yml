@@ -1,6 +1,0 @@
-- type: loadout #Mosin
-  id: WFContractorMosinLoadout
-  price: 20000
-  storage:
-    back:
-    - WeaponSniperMosin

@@ -1,5 +1,5 @@
 using System.Numerics;
-using Content.Client._WF.Shuttles.Systems; // WOLFGATE(Shuttles)
+using Content.Client._WG.Shuttles.Systems; // WOLFGATE(Shuttles)
 using Content.Shared.DoAfter;
 using Content.Client.UserInterface.Systems;
 using Robust.Client.GameObjects;

@@ -8,7 +8,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactGlass # WOLFGATE(Weapons)
+        collection: WGBulletImpactGlass # WOLFGATE(Weapons)
   - type: Animateable
   - type: MeleeSound
     soundGroups:

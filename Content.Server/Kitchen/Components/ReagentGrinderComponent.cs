@@ -2,7 +2,7 @@ using Content.Shared.Kitchen;
 using Content.Server.Kitchen.EntitySystems;
 using Content.Shared.Construction.Prototypes;
 using Robust.Shared.Audio;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Kitchen.Components
 {

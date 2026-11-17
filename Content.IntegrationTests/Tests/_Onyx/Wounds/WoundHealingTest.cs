@@ -7,8 +7,8 @@ using Content.Server.Medical.Components; // WOLFGATE(Wolfmed): D14, HealingCompo
 using Content.Shared._Onyx.Targeting;
 using Content.Shared._Onyx.Wounds;
 using Content.Shared._Shitmed.Targeting; // WOLFGATE(Wolfmed): D10.
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade.
-using Content.Shared._WF.Wolfmed.Targeting; // WOLFGATE(Wolfmed): D10 resolver.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade.
+using Content.Shared._WG.Wolfmed.Targeting; // WOLFGATE(Wolfmed): D10 resolver.
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.CCVar;
@@ -82,7 +82,7 @@ public sealed class WoundHealingTest : GameTest
     public async Task HealsSelectedPartDamageWithoutWoundTest()
     {
         // WOLFGATE(Wolfmed): playtest 5 ships wolfmed.pain_scale 0.85; Onyx's pain figures below are at 1.
-        await OverrideCVar(Side.Server, Content.Shared._WF.Wolfmed.CCVar.WolfmedCVars.PainScale, 1f);
+        await OverrideCVar(Side.Server, Content.Shared._WG.Wolfmed.CCVar.WolfmedCVars.PainScale, 1f);
         var server = Pair.Server;
         await server.WaitIdleAsync();
         var entityManager = server.ResolveDependency<IEntityManager>();
@@ -100,7 +100,7 @@ public sealed class WoundHealingTest : GameTest
             var pain = entityManager.System<PainSystem>();
             var head = graph.GetBodyChildren(body).Single(part => part.Component.PartType == BodyPartType.Head).Id;
 
-            // WOLFGATE(Wolfmed): W0: 11 rather than Onyx's 15. WFWolfmedFractureProfile's Hairline threshold is 12 at
+            // WOLFGATE(Wolfmed): W0: 11 rather than Onyx's 15. WGWolfmedFractureProfile's Hairline threshold is 12 at
             // a 25 % roll, so a 15 Blunt hit would silently grow a bone fracture in one run out of four and
             // take the pain figures with it. 11 keeps the whole test deterministic.
             Assert.That(routing.TryApplyPartDamage(body, head, Spec("Blunt", 11)));

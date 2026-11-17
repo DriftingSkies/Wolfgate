@@ -1,0 +1,54 @@
+- type: flavor
+  id: WGPastry
+  flavorType: Complex
+  description: wg-flavor-complex-pastry
+
+- type: flavor
+  id: WGBarbecueSauce
+  flavorType: Complex
+  description: wg-flavor-complex-barbecue-sauce
+
+- type: flavor
+  id: WGAleGravy
+  flavorType: Complex
+  description: wg-flavor-complex-ale-gravy
+
+- type: flavor
+  id: WGSavouryJelly
+  flavorType: Complex
+  description: wg-flavor-complex-savoury-jelly
+
+- type: flavor
+  id: WGBakedBeans
+  flavorType: Complex
+  description: wg-flavor-complex-baked-beans
+
+- type: flavor
+  id: WGMeringue
+  flavorType: Complex
+  description: wg-flavor-complex-meringue
+
+- type: flavor
+  id: WGClottedCream
+  flavorType: Complex
+  description: wg-flavor-complex-clotted-cream
+
+- type: flavor
+  id: WGToffee
+  flavorType: Complex
+  description: wg-flavor-complex-toffee
+
+- type: flavor
+  id: WGDates
+  flavorType: Complex
+  description: wg-flavor-complex-dates
+
+- type: flavor
+  id: WGIrnBru
+  flavorType: Complex
+  description: wg-flavor-complex-irn-bru
+
+- type: flavor
+  id: WGDandelionBurdock
+  flavorType: Complex
+  description: wg-flavor-complex-dandelion-burdock

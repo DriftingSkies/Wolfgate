@@ -1,4 +1,4 @@
-using Content.Client._WF.Administration.UI.AdminRadar; // WOLFGATE(Administration)
+using Content.Client._WG.Administration.UI.AdminRadar; // WOLFGATE(Administration)
 using Content.Client.Shuttles.UI;
 using Content.Shared.Shuttles.BUIStates;
 using JetBrains.Annotations;
@@ -13,7 +13,7 @@ public sealed class RadarConsoleBoundUserInterface : BoundUserInterface
 {
     [ViewVariables]
     private RadarConsoleWindow? _window;
-    private AdminRadarWindow? _wfAdminWindow; // WOLFGATE(Administration): the scanner window an admin in a ghost gets instead
+    private AdminRadarWindow? _wgAdminWindow; // WOLFGATE(Administration): the scanner window an admin in a ghost gets instead
 
     public RadarConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
@@ -24,8 +24,8 @@ public sealed class RadarConsoleBoundUserInterface : BoundUserInterface
         base.Open();
 
         // WOLFGATE(Administration) START: an admin in a ghost gets the resizable, far-zooming scanner
-        _wfAdminWindow = AdminRadarWindow.OpenFor(this);
-        if (_wfAdminWindow != null)
+        _wgAdminWindow = AdminRadarWindow.OpenFor(this);
+        if (_wgAdminWindow != null)
             return;
         // WOLFGATE END
         _window = this.CreateWindow<RadarConsoleWindow>();
@@ -39,6 +39,6 @@ public sealed class RadarConsoleBoundUserInterface : BoundUserInterface
             return;
 
         _window?.UpdateState(cState.State);
-        _wfAdminWindow?.UpdateState(cState.State); // WOLFGATE(Administration)
+        _wgAdminWindow?.UpdateState(cState.State); // WOLFGATE(Administration)
     }
 }

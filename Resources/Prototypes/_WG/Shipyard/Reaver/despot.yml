@@ -1,0 +1,36 @@
+# Author info
+# punishedbrungus (discord) Balls2zawall (github)
+
+- type: vessel
+  id: WGDespot
+  parent: BaseVessel
+  name: 'RVR Despot'
+  description: 'Formerly an artifact research vessel, the Despot has been stripped down and turned to piracy.'
+  price: 60793 # appraised at 50661, 20% markup
+  category: Medium # 217 tiles
+  group: Shipyard
+  shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/Reaver/despot.yml
+  guidebookPage: null
+  class:
+  - Fighter
+  - Brawler
+  engine:
+  - Uranium
+
+- type: gameMap
+  id: WGDespot
+  mapName: 'RVR - Despot'
+  mapPath: /SharedMaps/_WG/Shipyard/Shuttles/Reaver/despot.yml
+  minPlayers: 0
+  stations:
+    WGDespot:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Despot RVR{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

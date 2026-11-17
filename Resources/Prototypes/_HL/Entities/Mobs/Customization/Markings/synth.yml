@@ -456,9 +456,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     factory_BEHIND: factory_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art
     state: factory_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: factory_BEHIND
 
 - type: marking
@@ -471,9 +471,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     factory_composite_BEHIND: factory_composite_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art
     state: factory_composite_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: factory_composite_BEHIND
 
 - type: marking
@@ -486,9 +486,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     core_BEHIND: core_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/Orchids/tail.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/Orchids/tail.rsi # WOLFGATE(Genitals): split art
     state: core_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/Orchids/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/Orchids/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: core_BEHIND
 
 - type: marking
@@ -503,13 +503,13 @@
     large_BEHIND: large_FRONT
     large_composite_BEHIND: large_composite_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art
     state: large_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art
     state: large_composite_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: large_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: large_composite_BEHIND
 
 - type: marking
@@ -522,9 +522,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     xeno_curl_BEHIND: xeno_curl_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art
     state: xeno_curl_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: xeno_curl_BEHIND
 
 - type: marking
@@ -537,9 +537,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     xeno_light_BEHIND: xeno_light_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: xeno_light_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: xeno_light_BEHIND
 
 - type: marking
@@ -552,9 +552,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     xeno_spike_BEHIND: xeno_spike_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): split art
     state: xeno_spike_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: xeno_spike_BEHIND
 
 # Wings
@@ -563,15 +563,15 @@
   id: SynthWingsDragon
   bodyPart: Tail
   markingCategory: Chest
-  speciesRestriction: [Synth, Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, WFCanine]
+  speciesRestriction: [Synth, Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, WGCanine]
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     dragon_BEHIND: TailBehind
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     dragon_BEHIND: dragon_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/wings.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/wings.rsi # WOLFGATE(Genitals): split art
     state: dragon_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/wings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/wings.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: dragon_BEHIND
 
 - type: marking
@@ -584,7 +584,7 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     dragon_light_BEHIND: dragon_light_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/wings.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/wings.rsi # WOLFGATE(Genitals): split art
     state: dragon_light_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/wings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/wings.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: dragon_light_BEHIND

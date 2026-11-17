@@ -31,14 +31,14 @@
   - OreMagnetMachineCircuitboard # Mono
   - MaterialSiloMachineCircuitboard
   # WOLFGATE(Lathe) START: fabrication silos
-  - WFPartsSiloMachineCircuitboard
-  - WFChemicalSiloMachineCircuitboard
+  - WGPartsSiloMachineCircuitboard
+  - WGChemicalSiloMachineCircuitboard
   # WOLFGATE END
   # - CargoTelepadMachineCircuitboard # Frontier
   - ShuttleGunKineticCircuitboard
   - WeaponTurretM25Circuitboard # Mono
   - ShipDrillMachineCircuitboard # Mono
   # WOLFGATE(AsteroidMining) START: heavy and light mining laser boards
-  - WFWeaponTurretMiningBeamCircuitboard
-  - WFWeaponTurretMiningLaserSmallCircuitboard
+  - WGWeaponTurretMiningBeamCircuitboard
+  - WGWeaponTurretMiningLaserSmallCircuitboard
   # WOLFGATE END

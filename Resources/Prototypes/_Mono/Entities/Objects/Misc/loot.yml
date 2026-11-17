@@ -42,7 +42,7 @@
   - type: Tag
     tags:
     - Unstashable
-    - WFMonolithicCrystalSmall # WOLFGATE(Asf): ASF crystal bounties
+    - WGMonolithicCrystalSmall # WOLFGATE(Asf): ASF crystal bounties
 
 - type: entity
   name: medium monolithic crystal
@@ -89,7 +89,7 @@
   - type: Tag
     tags:
     - Unstashable
-    - WFMonolithicCrystalMedium # WOLFGATE(Asf): ASF crystal bounties
+    - WGMonolithicCrystalMedium # WOLFGATE(Asf): ASF crystal bounties
 
 - type: entity
   name: large monolithic crystal
@@ -138,6 +138,6 @@
   - type: Tag
     tags:
     - Unstashable
-    - WFMonolithicCrystalLarge # WOLFGATE(Asf): ASF crystal bounties
+    - WGMonolithicCrystalLarge # WOLFGATE(Asf): ASF crystal bounties
 
 

@@ -10109,7 +10109,7 @@ entities:
       pos: -1.5,-5.5
     - type: DeltaPressure
       gridUid: 1
-- proto: WFContractBoardColony
+- proto: WGContractBoardColony
   entities:
   - uid: 1632
     components:
@@ -10117,7 +10117,7 @@ entities:
       rot: 3.141592653589793 rad
       pos: 22.5,-4.5
       parent: 1
-- proto: WFContractCargoPad
+- proto: WGContractCargoPad
   entities:
   - uid: 1633
     components:

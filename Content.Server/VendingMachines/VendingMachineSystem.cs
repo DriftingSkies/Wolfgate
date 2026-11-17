@@ -78,7 +78,7 @@ using Content.Shared.Interaction;
 // WOLFGATE(Gags): refuse returns with stored items
 using Content.Shared.Storage;
 // WOLFGATE(Gags): validate and apply vending recolours
-using Content.Shared._WF.Gags;
+using Content.Shared._WG.Gags;
 
 namespace Content.Server.VendingMachines
 {
@@ -102,7 +102,7 @@ namespace Content.Server.VendingMachines
         [Dependency] private VendingMachinePurchaseSystem _vendingPurchase = default!; // Mono
         [Dependency] private SharedCreditReceiverSystem _cash = default!; // Mono - Pwease chwose two pway wiw cawsh ow cwedit
         // WOLFGATE(Gags) START: hold colours only until the selected item is dispensed
-        [Dependency] private SharedWFGagsSystem _gags = default!;
+        [Dependency] private SharedWGGagsSystem _gags = default!;
         private readonly Dictionary<EntityUid, List<Color>> _pendingColors = new();
         private readonly Dictionary<EntityUid, (InventoryType Type, string ItemId)> _pendingReturnItems = new();
         // WOLFGATE END
@@ -178,14 +178,14 @@ namespace Content.Server.VendingMachines
         private void OnAfterInteractUsing(EntityUid uid, VendingMachineComponent component, AfterInteractUsingEvent args)
         {
             if (args.Handled || !component.CanReturnItems ||
-                !TryComp<WFGagsVendorReturnItemComponent>(args.Used, out var returnItem))
+                !TryComp<WGGagsVendorReturnItemComponent>(args.Used, out var returnItem))
                 return;
 
             args.Handled = true;
 
             if (returnItem.Vendor != uid)
             {
-                _popupSystem.PopupEntity(Loc.GetString("wf-gags-vending-return-wrong-vendor"), args.User);
+                _popupSystem.PopupEntity(Loc.GetString("wg-gags-vending-return-wrong-vendor"), args.User);
                 return;
             }
 
@@ -199,13 +199,13 @@ namespace Content.Server.VendingMachines
 
             if (inventory == null || !inventory.TryGetValue(returnItem.ItemId, out var entry))
             {
-                _popupSystem.PopupEntity(Loc.GetString("wf-gags-vending-return-invalid"), args.User);
+                _popupSystem.PopupEntity(Loc.GetString("wg-gags-vending-return-invalid"), args.User);
                 return;
             }
 
             if (TryComp<StorageComponent>(args.Used, out var storage) && storage.Container.ContainedEntities.Count > 0)
             {
-                _popupSystem.PopupEntity(Loc.GetString("wf-gags-vending-return-not-empty"), args.User);
+                _popupSystem.PopupEntity(Loc.GetString("wg-gags-vending-return-not-empty"), args.User);
                 return;
             }
 
@@ -213,7 +213,7 @@ namespace Content.Server.VendingMachines
                 entry.Amount++;
 
             Dirty(uid, component);
-            _popupSystem.PopupEntity(Loc.GetString("wf-gags-vending-return-success"), args.User);
+            _popupSystem.PopupEntity(Loc.GetString("wg-gags-vending-return-success"), args.User);
             QueueDel(args.Used);
         }
 
@@ -440,7 +440,7 @@ namespace Content.Server.VendingMachines
             if (!_prototypeManager.TryIndex<EntityPrototype>(itemId, out var proto))
                 return;
 
-            if (WfShipCommandRefuses(uid, sender, component)) // WOLFGATE(ShipCommand): a commanded ship's vendors turn the barred away
+            if (WgShipCommandRefuses(uid, sender, component)) // WOLFGATE(ShipCommand): a commanded ship's vendors turn the barred away
                 return; // WOLFGATE(ShipCommand)
 
             var price = _pricing.GetEstimatedPrice(proto);
@@ -461,8 +461,8 @@ namespace Content.Server.VendingMachines
             var priceVend = _pricing.GetEstimatedVendPrice(proto);
             if (priceVend > 0.0 && component.RequiresCash) // if vending price exists, overwrite it.
                 totalPrice = (int) priceVend;
-            totalPrice = WfTradeBuyPrice(uid, proto, totalPrice); // WOLFGATE(TradeGoods): trade vendors charge the station's live price
-            totalPrice = WfShipCommandPrice(uid, sender, totalPrice); // WOLFGATE(ShipCommand): a commanded ship's price rules
+            totalPrice = WgTradeBuyPrice(uid, proto, totalPrice); // WOLFGATE(TradeGoods): trade vendors charge the station's live price
+            totalPrice = WgShipCommandPrice(uid, sender, totalPrice); // WOLFGATE(ShipCommand): a commanded ship's price rules
 
             if (IsAuthorized(uid, sender, component))
             {
@@ -491,7 +491,7 @@ namespace Content.Server.VendingMachines
 
                     if (component.CanRecolor &&
                         _gags.DefaultColors(new EntProtoId(itemId)) != null &&
-                        WFGagsColors.Sanitize(colors) is { } safeColors)
+                        WGGagsColors.Sanitize(colors) is { } safeColors)
                     {
                         _pendingColors[uid] = safeColors;
                     }
@@ -519,7 +519,7 @@ namespace Content.Server.VendingMachines
 
                     _adminLogger.Add(LogType.Action, LogImpact.Low,
                         $"{ToPrettyString(sender):user} bought from [vendingMachine:{ToPrettyString(uid!)}, product:{proto.Name}, cost:{totalPrice},  with ${cashSlotBalance} in the cash slot and ${bankBalance} in the bank.");
-                    WfShipCommandRecord(uid, sender, proto, totalPrice); // WOLFGATE(ShipCommand): logged as service use aboard a commanded ship, a bargain held for the item
+                    WgShipCommandRecord(uid, sender, proto, totalPrice); // WOLFGATE(ShipCommand): logged as service use aboard a commanded ship, a bargain held for the item
                 }
             }
             // End Frontier
@@ -659,7 +659,7 @@ namespace Content.Server.VendingMachines
                 vendComponent.CanReturnItems &&
                 returnDetails.ItemId == vendComponent.NextItemToEject)
             {
-                var returnItem = AddComp<WFGagsVendorReturnItemComponent>(ent);
+                var returnItem = AddComp<WGGagsVendorReturnItemComponent>(ent);
                 returnItem.Vendor = uid;
                 returnItem.Type = returnDetails.Type;
                 returnItem.ItemId = returnDetails.ItemId;
@@ -671,7 +671,7 @@ namespace Content.Server.VendingMachines
                 _gags.SetColors(ent, colors);
             // WOLFGATE END
 
-            WfShipCommandMarkVended(uid, ent); // WOLFGATE(ShipCommand): a vend sold below its usual price resells for no more than was paid
+            WgShipCommandMarkVended(uid, ent); // WOLFGATE(ShipCommand): a vend sold below its usual price resells for no more than was paid
 
             // Mono: Track vending machine purchases for pricing modifications
             // Only track if this was a paid purchase (not a random eject or force eject)

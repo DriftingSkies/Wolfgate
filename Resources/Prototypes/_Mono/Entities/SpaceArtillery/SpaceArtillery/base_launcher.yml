@@ -331,7 +331,7 @@
         sound:
           collection: MetalBreak
   # WOLFGATE(ShipCombat): rotating guns of this class turn at a limited rate.
-  - type: WFTurretTraverse
+  - type: WGTurretTraverse
     turnRate: 120
 
 - type: entity
@@ -354,7 +354,7 @@
         sound:
           collection: MetalBreak
   # WOLFGATE(ShipCombat): rotating guns of this class turn at a limited rate.
-  - type: WFTurretTraverse
+  - type: WGTurretTraverse
     turnRate: 80
 
 - type: entity
@@ -383,7 +383,7 @@
         sound:
           collection: MetalBreak
   # WOLFGATE(ShipCombat): rotating guns of this class turn at a limited rate.
-  - type: WFTurretTraverse
+  - type: WGTurretTraverse
     turnRate: 50
 
 - type: entity
@@ -412,7 +412,7 @@
         sound:
           collection: MetalBreak
   # WOLFGATE(ShipCombat): rotating guns of this class turn at a limited rate.
-  - type: WFTurretTraverse
+  - type: WGTurretTraverse
     turnRate: 30
 
 - type: entity
@@ -441,5 +441,5 @@
         sound:
           collection: MetalBreak
   # WOLFGATE(ShipCombat): rotating guns of this class turn at a limited rate.
-  - type: WFTurretTraverse
+  - type: WGTurretTraverse
     turnRate: 20

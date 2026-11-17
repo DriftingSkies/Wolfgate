@@ -5,14 +5,14 @@ using Content.Client.Power;
 using Content.Client.Storage.Components;
 using Content.Shared.Research.Prototypes;
 using Content.Shared.Stacks;
-using Content.Shared._WF.Lathe; // WOLFGATE(Lathe)
+using Content.Shared._WG.Lathe; // WOLFGATE(Lathe)
 
 namespace Content.Client.Lathe;
 
 public sealed partial class LatheSystem : SharedLatheSystem
 {
     [Dependency] private SharedAppearanceSystem _appearance = default!;
-    [Dependency] private SharedFabricationSiloSystem _wfFabricationSilo = default!; // WOLFGATE(Lathe): recipe part matching
+    [Dependency] private SharedFabricationSiloSystem _wgFabricationSilo = default!; // WOLFGATE(Lathe): recipe part matching
 
     public override void Initialize()
     {
@@ -70,7 +70,7 @@ public sealed partial class LatheSystem : SharedLatheSystem
                 // WOLFGATE(Lathe) START: variants and other stacks of a part count, as the server counts them
                 // if (MetaData(conEnt).EntityPrototype?.ID != entity.Id)
                 //     continue;
-                if (!_wfFabricationSilo.IsRecipePart(conEnt, entity))
+                if (!_wgFabricationSilo.IsRecipePart(conEnt, entity))
                     continue;
                 // WOLFGATE END
 

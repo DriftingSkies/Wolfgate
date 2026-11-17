@@ -1,0 +1,73 @@
+- type: company
+  id: WGAsf
+  name: Astraeus Solar Federation
+  description: wg-asf-company-description
+  color: "#A66BE0"
+  disabled: true # assigned by ASF jobs, not picked in the lobby
+
+- type: department
+  id: WGAsf
+  name: wg-asf-department
+  description: wg-asf-department-description
+  color: "#A66BE0"
+  weight: 60
+  roles:
+  - WGAsfEnvoy
+  - WGAsfEnforcer
+  - WGAsfFieldResearcher
+  - WGAsfColonist
+  primary: false
+
+- type: accessLevel
+  id: WGAsf
+  name: wg-asf-access-crew
+
+- type: accessLevel
+  id: WGAsfBridge
+  name: wg-asf-access-bridge
+
+- type: accessLevel
+  id: WGAsfSecurity
+  name: wg-asf-access-security
+
+- type: accessLevel
+  id: WGAsfCommand
+  name: wg-asf-access-command
+
+# Colonist
+- type: accessGroup
+  id: WGAsfCrew
+  tags:
+  - WGAsf
+
+# Field Researcher
+- type: accessGroup
+  id: WGAsfResearch
+  tags:
+  - WGAsf
+  - WGAsfBridge
+
+# Enforcer
+- type: accessGroup
+  id: WGAsfSecurity
+  tags:
+  - WGAsf
+  - WGAsfBridge
+  - WGAsfSecurity
+
+# Envoy
+- type: accessGroup
+  id: WGAsfCommand
+  tags:
+  - WGAsf
+  - WGAsfBridge
+  - WGAsfSecurity
+  - WGAsfCommand
+
+- type: radioChannel
+  id: WGAsf
+  name: wg-asf-radio
+  keycode: '7'
+  frequency: 1987
+  color: "#C79DD0"
+  longRange: true

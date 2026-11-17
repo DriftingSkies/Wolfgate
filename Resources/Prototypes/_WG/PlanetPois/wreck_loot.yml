@@ -1,0 +1,172 @@
+# What a crashed ship sometimes still has in its hold (a wreck theme's `loot`, WGPlanetPoiSystem.Wrecks): a crate of
+# salvaged armament, one ship gun flatpack with the hardpoint it mounts on, or a crate of gunnery co-processor chips.
+# The flatpacks are the exotic traders' (_WG/Traders/exotic_flatpacks.yml); the big guns turn up rarest.
+
+- type: entityTable
+  id: WGWreckLoot
+  table: !type:GroupSelector
+    children:
+    - id: WGWreckShipgunCrate
+      weight: 3
+    - id: WGWreckGunneryChipCrate
+      weight: 2
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGWreckShipgunCrate
+  name: salvaged armament crate
+  description: A battered crate from a wrecked ship's hold. Something heavy and dangerous is packed inside.
+  components:
+  - type: Sprite
+    sprite: Structures/Storage/Crates/weapon.rsi
+  - type: Icon
+    sprite: Structures/Storage/Crates/weapon.rsi
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: WGWreckShipgunBundles
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGWreckGunneryChipCrate
+  name: salvaged electronics crate
+  description: A crate of carefully packed electronics, somehow intact after the crash.
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage: !type:NestedSelector
+        tableId: WGWreckGunneryChips
+
+- type: entityTable
+  id: WGWreckGunneryChips
+  table: !type:GroupSelector
+    rolls: !type:RangeNumberSelector
+      range: 1, 2
+    children:
+    - id: WGGunneryChipBasic
+      weight: 6
+    - id: WGGunneryChipAdvanced
+      weight: 3
+    - id: WGGunneryChipMilitary
+      weight: 1
+
+# One ship gun and the hardpoint it mounts on.
+- type: entityTable
+  id: WGWreckShipgunBundles
+  table: !type:GroupSelector
+    children:
+    - !type:AllSelector
+      weight: 4
+      children:
+      - id: WGFlatpackTurretDravon
+      - id: WGFlatpackHardpointBallisticMedium
+    - !type:AllSelector
+      weight: 2
+      children:
+      - id: WGFlatpackTurretFang
+      - id: WGFlatpackHardpointBallisticHeavy
+    - !type:AllSelector
+      weight: 4
+      children:
+      - id: WGFlatpackTurretRAC30
+      - id: WGFlatpackHardpointBallisticMedium
+    - !type:AllSelector
+      weight: 0.5
+      children:
+      - id: WGFlatpackTurretLongbow
+      - id: WGFlatpackHardpointBallisticSuperheavy
+    - !type:AllSelector
+      weight: 2
+      children:
+      - id: WGFlatpackTurretAk820
+      - id: WGFlatpackHardpointBallisticHeavy
+    - !type:AllSelector
+      weight: 2
+      children:
+      - id: WGFlatpackTurretBofors
+      - id: WGFlatpackHardpointBallisticHeavy
+    - !type:AllSelector
+      weight: 2
+      children:
+      - id: WGFlatpackTurretHydra
+      - id: WGFlatpackHardpointBallisticHeavy
+    - !type:AllSelector
+      weight: 4
+      children:
+      - id: WGFlatpackTurretEquinox
+      - id: WGFlatpackHardpointBallisticMedium
+    - !type:AllSelector
+      weight: 4
+      children:
+      - id: WGFlatpackTurretTarnyx
+      - id: WGFlatpackHardpointBallisticMedium
+    - !type:AllSelector
+      weight: 6
+      children:
+      - id: WGFlatpackTurretRubicon
+      - id: WGFlatpackHardpointEnergyLight
+    - !type:AllSelector
+      weight: 6
+      children:
+      - id: WGFlatpackTurretAdder
+      - id: WGFlatpackHardpointBallisticLight
+    - !type:AllSelector
+      weight: 4
+      children:
+      - id: WGFlatpackTurretType54
+      - id: WGFlatpackHardpointEnergyMedium
+    - !type:AllSelector
+      weight: 2
+      children:
+      - id: WGFlatpackTurretCerberus
+      - id: WGFlatpackHardpointEnergyHeavy
+    - !type:AllSelector
+      weight: 0.5
+      children:
+      - id: WGFlatpackTurretScylla
+      - id: WGFlatpackHardpointEnergySuperheavy
+    - !type:AllSelector
+      weight: 0.5
+      children:
+      - id: WGFlatpackTurretDymere
+      - id: WGFlatpackHardpointEnergySuperheavy
+    - !type:AllSelector
+      weight: 6
+      children:
+      - id: WGFlatpackTurretPhalanx
+      - id: WGFlatpackHardpointEnergyLight
+    - !type:AllSelector
+      weight: 2
+      children:
+      - id: WGFlatpackTurretApollo
+      - id: WGFlatpackHardpointEnergyHeavy
+    - !type:AllSelector
+      weight: 4
+      children:
+      - id: WGFlatpackTurretPrometheus
+      - id: WGFlatpackHardpointEnergyMedium
+    - !type:AllSelector
+      weight: 6
+      children:
+      - id: WGFlatpackTurretFlare
+      - id: WGFlatpackHardpointBallisticSuperlight
+    - !type:AllSelector
+      weight: 4
+      children:
+      - id: WGFlatpackTurretVespera
+      - id: WGFlatpackHardpointMissileMedium
+    - !type:AllSelector
+      weight: 6
+      children:
+      - id: WGFlatpackTurretVanyk
+      - id: WGFlatpackHardpointMissileLight
+    - !type:AllSelector
+      weight: 4
+      children:
+      - id: WGFlatpackTurretTovek
+      - id: WGFlatpackHardpointMissileMedium
+    - !type:AllSelector
+      weight: 2
+      children:
+      - id: WGFlatpackTurretPaladin
+      - id: WGFlatpackHardpointMissileHeavy

@@ -1,6 +1,6 @@
 using Content.Server.Atmos.Components;
 using Content.Server.Decals;
-using Content.Shared._WF.Performance; // WOLFGATE(Performance)
+using Content.Shared._WG.Performance; // WOLFGATE(Performance)
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.Reactions;

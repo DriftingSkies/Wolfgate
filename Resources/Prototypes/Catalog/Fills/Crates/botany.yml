@@ -21,9 +21,9 @@
       - id: BungoSeeds
         amount: 2
       # WOLFGATE(WolfChem) START: drug crops come only from this crate and dealers
-      - id: WFCocaSeeds
+      - id: WGCocaSeeds
         amount: 2
-      - id: WFOpiumPoppySeeds
+      - id: WGOpiumPoppySeeds
         amount: 2
       # WOLFGATE END
 

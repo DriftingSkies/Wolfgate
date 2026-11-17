@@ -1,0 +1,50 @@
+# The voices of the Wolfmed emotes, by sex. WolfmedBodySoundSystem plays from these when a body's own species set
+# has nothing for the emote, so every humanoid species gets them without an edit to its upstream set, and a
+# species that maps one of these emotes itself keeps its own sound. Everything listed here is flesh only.
+# Unsexed bodies use the male set, as VocalSystem does for humans.
+
+- type: emoteSounds
+  id: WGWolfmedMaleEmotes
+  params:
+    variation: 0.125
+  sounds:
+    WGWolfmedSneeze:
+      collection: WGWolfmedSneezeMale
+    WGWolfmedSnore:
+      collection: WGWolfmedSnore
+    WGWolfmedSniff:
+      collection: WGWolfmedSniffMale
+    WGWolfmedGulp:
+      collection: WGWolfmedGulp
+    # The SEPSIS package's condition emotes (wired by the orchestrator after the merge).
+    WGWolfmedCough:
+      collection: WGWolfmedCoughMale
+    WGWolfmedCoughBlood:
+      collection: WGWolfmedCoughMale
+    WGWolfmedChoke:
+      collection: WGWolfmedChokeMale
+    WGWolfmedRetch:
+      collection: WGWolfmedRetch
+
+- type: emoteSounds
+  id: WGWolfmedFemaleEmotes
+  params:
+    variation: 0.125
+  sounds:
+    WGWolfmedSneeze:
+      collection: WGWolfmedSneezeFemale
+    WGWolfmedSnore:
+      collection: WGWolfmedSnore
+    WGWolfmedSniff:
+      collection: WGWolfmedSniffFemale
+    WGWolfmedGulp:
+      collection: WGWolfmedGulp
+    # The SEPSIS package's condition emotes (wired by the orchestrator after the merge).
+    WGWolfmedCough:
+      collection: WGWolfmedCoughFemale
+    WGWolfmedCoughBlood:
+      collection: WGWolfmedCoughFemale
+    WGWolfmedChoke:
+      collection: WGWolfmedChokeFemale
+    WGWolfmedRetch:
+      collection: WGWolfmedRetch

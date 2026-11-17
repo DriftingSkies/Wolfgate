@@ -1,0 +1,325 @@
+# The Gut's own life. Stomachs: bile slugs, flesh ticks, gastric moss and acid polyps. Nerve tangles: antibodies and
+# nerve whips. The ossuary: bone burrowers, marrow caps and the bone piles of the surface. Blood channels: blood leeches.
+# Everything follows the surface flesh's rule: the Chimera and the aberrant flesh are spared. Names are in
+# Locale/en-US/_WG/Caverns/life_carcinoma.ftl.
+
+# ---- Wildlife ---------------------------------------------------------------------------------------------------
+
+# A fat slug that grazes the bile. It's harmless, and the acid doesn't trouble it.
+- type: entity
+  parent: MobSlug
+  id: WGMobCavernBileSlug
+  components:
+  - type: NpcFactionMember
+    factions:
+    - AberrantFleshExpeditionNF
+  - type: Sprite
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: slug
+      sprite: _WG/Caverns/Life/bile_slug.rsi
+
+# A white blood cell grown to the size of a man. It engulfs anything that doesn't belong in the Gut.
+- type: entity
+  parent: MobAdultSlimesBlue
+  id: WGMobCavernAntibody
+  components:
+  - type: NpcFactionMember
+    factions:
+    - AberrantFleshExpeditionNF
+  - type: Sprite
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: blue_adult_slime
+      sprite: _WG/Caverns/Life/antibody.rsi
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 5
+        Caustic: 5
+
+# A leech that swims the blood channels and bites whoever wades in.
+- type: entity
+  name: blood leech
+  parent: [MobNonHumanHostileBase, MobHumanoidHostileAISimpleMelee]
+  id: WGMobCavernBloodLeech
+  components:
+  - type: NpcFactionMember
+    factions:
+    - AberrantFleshExpeditionNF
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _NF/Mobs/BloodCult/bloodcultleech.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: leech
+    scale: 0.8, 0.8
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: leech
+      Critical:
+        Base: crit
+      Dead:
+        Base: dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      40: Critical
+      70: Dead
+  - type: Stamina
+    critThreshold: 60
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 5
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    damage:
+      types:
+        Piercing: 5
+        Bloodloss: 3
+    animation: WeaponArcBite
+
+# ---- Spawner tables, one per hall -------------------------------------------------------------------------------
+
+- type: entityTable
+  id: WGCavernFaunaCarcinomaStomach
+  table: !type:GroupSelector
+    children:
+    - id: WGMobCavernBileSlug
+      weight: 5
+    - id: WGMobFleshTick
+      weight: 3
+    - !type:NestedSelector
+      tableId: WGFaunaCarcinoma
+      weight: 3
+    - id: MobFleshAssimilatedMiner
+      weight: 0.5
+
+- type: entity
+  id: WGCavernFaunaCarcinomaStomach
+  parent: MarkerBase
+  categories: [HideSpawnMenu]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGCavernFaunaCarcinomaStomach
+
+- type: entityTable
+  id: WGCavernFaunaCarcinomaNerve
+  table: !type:GroupSelector
+    children:
+    - id: WGMobCavernAntibody
+      weight: 6
+    - id: WGMobFleshTick
+      weight: 2
+    - !type:NestedSelector
+      tableId: WGFaunaCarcinoma
+      weight: 2
+
+- type: entity
+  id: WGCavernFaunaCarcinomaNerve
+  parent: MarkerBase
+  categories: [HideSpawnMenu]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGCavernFaunaCarcinomaNerve
+
+- type: entityTable
+  id: WGCavernFaunaCarcinomaOssuary
+  table: !type:GroupSelector
+    children:
+    - id: WGMobCarcinomaBurrower
+      weight: 6
+    - id: WGMobFleshTick
+      weight: 2
+    - !type:NestedSelector
+      tableId: WGFaunaCarcinoma
+      weight: 2
+
+- type: entity
+  id: WGCavernFaunaCarcinomaOssuary
+  parent: MarkerBase
+  categories: [HideSpawnMenu]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGCavernFaunaCarcinomaOssuary
+
+- type: entityTable
+  id: WGCavernFaunaCarcinomaBlood
+  table: !type:GroupSelector
+    children:
+    - id: WGMobCavernBloodLeech
+      weight: 6
+    - id: WGMobCarcinomaSlurva
+      weight: 2
+
+- type: entity
+  id: WGCavernFaunaCarcinomaBlood
+  parent: MarkerBase
+  categories: [HideSpawnMenu]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGCavernFaunaCarcinomaBlood
+
+# ---- Produce ----------------------------------------------------------------------------------------------------
+
+# Eat it for bicaridine and kelotane; cut it for a poultice like any herb.
+- type: entity
+  parent: WGHealingHerbBase
+  id: WGGastricMoss
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/aloe.rsi
+    state: produce
+    color: "#c4d070"
+
+# Two cook into mushroom soup like any foraged mushroom.
+- type: entity
+  parent: WGWildMushroomBase
+  id: WGMarrowCap
+  components:
+  - type: Sprite
+    color: "#f1dfc4"
+
+- type: microwaveMealRecipe
+  id: RecipeWGOssuaryMarrowCapSoup
+  name: marrow cap soup recipe
+  result: FoodSoupMushroom
+  time: 10
+  group: Soup
+  reagents:
+    Water: 10
+  solids:
+    FoodBowlBig: 1
+    WGMarrowCap: 2
+  recipeType:
+  - Oven
+  - Microwave
+
+# ---- Plants -----------------------------------------------------------------------------------------------------
+
+# Moss on the stomach wall, thriving in the bile. Pick it and eat it or bind it on a wound.
+- type: entity
+  parent: BaseFlora
+  id: WGCavernGastricMossPlant
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _WG/DecorImport/Objects/Decoration/Flora/flora_alien_plants.rsi
+    drawdepth: FloorObjects
+    layers:
+    - state: garden
+      color: "#c4d070"
+      map: ["plant"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGRegrowingHarvestVisuals.Harvested:
+        plant:
+          True: { scale: "0.6,0.6", color: "#6e7448" }
+          False: { scale: "1,1", color: "#c4d070" }
+  - type: WGRegrowingHarvest
+    harvestTime: 1.5
+    regrowTime: 720
+    harvestSound:
+      collection: WGFloraWetSquelch
+    table: !type:AllSelector
+      children:
+      - id: WGGastricMoss
+        amount: !type:RangeNumberSelector
+          range: 1, 2
+
+# A cream-coloured mushroom feeding on the bone dust; pick it and cook it.
+- type: entity
+  parent: NebulaFloraPlantMushroom
+  id: WGCavernMarrowCapPlant
+  components:
+  - type: Sprite
+    layers:
+    - state: s_mushroom1
+      color: "#f6e8d0"
+      map: ["plant"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGRegrowingHarvestVisuals.Harvested:
+        plant:
+          True: { scale: "0.6,0.6" }
+          False: { scale: "1,1" }
+  - type: WGRegrowingHarvest
+    harvestTime: 1.5
+    regrowTime: 600
+    table: !type:AllSelector
+      children:
+      - id: WGMarrowCap
+        amount: !type:RangeNumberSelector
+          range: 1, 2
+
+# A bundle of raw nerve that fires at anything that touches it: a shock, and a fall.
+- type: entity
+  parent: WGCarcinomaTendons
+  id: WGCavernNerveWhip
+  components:
+  - type: Sprite
+    layers:
+    - state: kudzu_11
+      color: "#f4a0d4"
+      map: ["nerve"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGReactiveFloraVisuals.State:
+        nerve:
+          Idle: { scale: "1,1", color: "#f4a0d4" }
+          Armed: { scale: "1.2,1.2", color: "#ffe0f4" }
+          Spent: { scale: "1,1", color: "#f4a0d4" }
+  - type: WGReactiveFlora
+    behaviour: Lash
+    range: 1.4
+    cooldown: 5
+    checkInterval: 0.5
+    activeTime: 0.8
+    sound:
+      collection: WGFloraLash
+    popup: wg-cavern-nerve-whip-lashes
+    damage:
+      types:
+        Shock: 6
+    knockdownTime: 1.5
+    ignoreFactions: [Chimera, AberrantFleshExpeditionNF]
+
+# A polyp on the stomach wall that spits digestive acid at what comes within sight.
+- type: entity
+  parent: BaseFlora
+  id: WGCavernAcidPolyp
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: Structures/Decoration/flesh_decoration.rsi
+    drawdepth: FloorObjects
+    layers:
+    - state: closed
+      color: "#d4dc7a"
+      map: ["polyp"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGReactiveFloraVisuals.State:
+        polyp:
+          Idle: { state: closed, color: "#d4dc7a" }
+          Armed: { state: open, color: "#eaff8a" }
+          Spent: { state: closed, color: "#d4dc7a" }
+  - type: WGReactiveFlora
+    behaviour: Spit
+    range: 5
+    cooldown: 8
+    checkInterval: 0.5
+    activeTime: 1
+    projectile: WGCavernAcidSpit
+    projectileSpeed: 8
+    sound:
+      collection: WGFloraSpit
+    ignoreFactions: [Chimera, AberrantFleshExpeditionNF]

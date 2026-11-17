@@ -1,0 +1,289 @@
+# Base sprites for the leg styles. Art from Meridian Rift, Starlight and DeltaV; written by Tools/_WG/LegStyle/port.py.
+
+- type: humanoidBaseSprite
+  id: WGMobHumanLLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_human.rsi
+    state: l_leg
+
+- type: humanoidBaseSprite
+  id: WGMobHumanRLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_human.rsi
+    state: r_leg
+
+- type: humanoidBaseSprite
+  id: WGMobHumanLFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_human.rsi
+    state: l_foot
+
+- type: humanoidBaseSprite
+  id: WGMobHumanRFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_human.rsi
+    state: r_foot
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninLLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_vulpkanin.rsi
+    state: l_leg
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninRLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_vulpkanin.rsi
+    state: r_leg
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninLFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_vulpkanin.rsi
+    state: l_foot
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninRFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_vulpkanin.rsi
+    state: r_foot
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninLLegPlanti
+  baseSprite:
+    sprite: _WG/LegStyle/plantigrade_vulpkanin.rsi
+    state: l_leg
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninRLegPlanti
+  baseSprite:
+    sprite: _WG/LegStyle/plantigrade_vulpkanin.rsi
+    state: r_leg
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninLFootPlanti
+  baseSprite:
+    sprite: _WG/LegStyle/plantigrade_vulpkanin.rsi
+    state: l_foot
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninRFootPlanti
+  baseSprite:
+    sprite: _WG/LegStyle/plantigrade_vulpkanin.rsi
+    state: r_foot
+
+- type: humanoidBaseSprite
+  id: WGMobFeroxiLLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_feroxi.rsi
+    state: l_leg
+
+- type: humanoidBaseSprite
+  id: WGMobFeroxiRLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_feroxi.rsi
+    state: r_leg
+
+- type: humanoidBaseSprite
+  id: WGMobFeroxiLFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_feroxi.rsi
+    state: l_foot
+
+- type: humanoidBaseSprite
+  id: WGMobFeroxiRFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_feroxi.rsi
+    state: r_foot
+
+- type: humanoidBaseSprite
+  id: WGMobGoblinLLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_goblin.rsi
+    state: l_leg
+
+- type: humanoidBaseSprite
+  id: WGMobGoblinRLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_goblin.rsi
+    state: r_leg
+
+- type: humanoidBaseSprite
+  id: WGMobGoblinLFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_goblin.rsi
+    state: l_foot
+
+- type: humanoidBaseSprite
+  id: WGMobGoblinRFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_goblin.rsi
+    state: r_foot
+
+- type: humanoidBaseSprite
+  id: WGMobRodentiaLLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_rodentia.rsi
+    state: l_leg
+
+- type: humanoidBaseSprite
+  id: WGMobRodentiaRLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_rodentia.rsi
+    state: r_leg
+
+- type: humanoidBaseSprite
+  id: WGMobRodentiaLFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_rodentia.rsi
+    state: l_foot
+
+- type: humanoidBaseSprite
+  id: WGMobRodentiaRFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_rodentia.rsi
+    state: r_foot
+
+- type: humanoidBaseSprite
+  id: WGMobShadekinLLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_shadekin.rsi
+    state: l_leg
+
+- type: humanoidBaseSprite
+  id: WGMobShadekinRLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_shadekin.rsi
+    state: r_leg
+
+- type: humanoidBaseSprite
+  id: WGMobShadekinLFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_shadekin.rsi
+    state: l_foot
+
+- type: humanoidBaseSprite
+  id: WGMobShadekinRFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_shadekin.rsi
+    state: r_foot
+
+- type: humanoidBaseSprite
+  id: WGMobSkrellLLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_skrell.rsi
+    state: l_leg
+
+- type: humanoidBaseSprite
+  id: WGMobSkrellRLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_skrell.rsi
+    state: r_leg
+
+- type: humanoidBaseSprite
+  id: WGMobSkrellLFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_skrell.rsi
+    state: l_foot
+
+- type: humanoidBaseSprite
+  id: WGMobSkrellRFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_skrell.rsi
+    state: r_foot
+
+- type: humanoidBaseSprite
+  id: WGMobSlimeLLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_slime.rsi
+    state: l_leg
+
+- type: humanoidBaseSprite
+  id: WGMobSlimeRLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_slime.rsi
+    state: r_leg
+
+- type: humanoidBaseSprite
+  id: WGMobSlimeLFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_slime.rsi
+    state: l_foot
+
+- type: humanoidBaseSprite
+  id: WGMobSlimeRFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_slime.rsi
+    state: r_foot
+
+- type: humanoidBaseSprite
+  id: WGMobTajaranLLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_tajaran.rsi
+    state: l_leg
+
+- type: humanoidBaseSprite
+  id: WGMobTajaranRLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_tajaran.rsi
+    state: r_leg
+
+- type: humanoidBaseSprite
+  id: WGMobTajaranLFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_tajaran.rsi
+    state: l_foot
+
+- type: humanoidBaseSprite
+  id: WGMobTajaranRFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_tajaran.rsi
+    state: r_foot
+
+- type: humanoidBaseSprite
+  id: WGMobThavenLLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_thaven.rsi
+    state: l_leg
+
+- type: humanoidBaseSprite
+  id: WGMobThavenRLegDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_thaven.rsi
+    state: r_leg
+
+- type: humanoidBaseSprite
+  id: WGMobThavenLFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_thaven.rsi
+    state: l_foot
+
+- type: humanoidBaseSprite
+  id: WGMobThavenRFootDigi
+  baseSprite:
+    sprite: _WG/LegStyle/digitigrade_thaven.rsi
+    state: r_foot
+
+- type: humanoidBaseSprite
+  id: WGMobSynthLLegPlanti
+  baseSprite:
+    sprite: _WG/LegStyle/plantigrade_synth.rsi
+    state: l_leg
+
+- type: humanoidBaseSprite
+  id: WGMobSynthRLegPlanti
+  baseSprite:
+    sprite: _WG/LegStyle/plantigrade_synth.rsi
+    state: r_leg
+
+- type: humanoidBaseSprite
+  id: WGMobSynthLFootPlanti
+  baseSprite:
+    sprite: _WG/LegStyle/plantigrade_synth.rsi
+    state: l_foot
+
+- type: humanoidBaseSprite
+  id: WGMobSynthRFootPlanti
+  baseSprite:
+    sprite: _WG/LegStyle/plantigrade_synth.rsi
+    state: r_foot

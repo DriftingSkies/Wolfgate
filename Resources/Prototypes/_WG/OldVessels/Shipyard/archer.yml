@@ -1,0 +1,43 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+# Author Info
+# GitHub: starch70
+# Discord: _starch_
+
+# Shuttle Notes:
+#
+- type: vessel
+  id: Archer
+  parent: BaseVessel
+  name: TSF-SKR Archer
+  description: A combat ship outfitted with 4 plasma turrets and 6 light autocannons. This ship has a military IFF designation.
+  price: 98773 # the plasma and plastitanium tax is real...
+  category: Medium
+  group: Shipyard
+  shuttlePath: /SharedMaps/_WG/OldVessels/archer.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: Null
+  class:
+  - Pursuit
+  engine:
+  - Uranium
+
+- type: gameMap
+  id: Archer
+  mapName: 'TSF-SKR Archer'
+  mapPath: /SharedMaps/_WG/OldVessels/archer.yml
+  minPlayers: 0
+  stations:
+    Archer:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Archer MIL{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'
+        - type: StationJobs
+          availableJobs:
+            Contractor: [ 0, 0 ]
+            # Pilot: [ 0, 0 ]
+            # Mercenary: [ 0, 0 ]

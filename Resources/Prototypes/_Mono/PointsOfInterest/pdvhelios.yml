@@ -12,13 +12,13 @@
   minimumDistance: 22000
   maximumDistance: 27000 # somewhere in far reaches 1 or 2
   # WOLFGATE(ReaverCampaign): the Contested Sector game mode spawns the same sector as Standard
-  spawnGamePreset: [ NFAdventure, NFPirate, MonoStandard, WFContestedSector, MonoRogueTSF, MonoRogueUSSP, MonoADS, MonoChimera, MonoMixed, MonoAllAtOnce, MonoChimeraPdv ]
+  spawnGamePreset: [ NFAdventure, NFPirate, MonoStandard, WGContestedSector, MonoRogueTSF, MonoRogueUSSP, MonoADS, MonoChimera, MonoMixed, MonoAllAtOnce, MonoChimeraPdv ]
   spawnGroup: Required
   gridPath: /Maps/_Mono/POI/pdvhelios.yml
   addComponents:
   # WOLFGATE(Ordnance) START: the faction's ordnance terminal
-  - type: WFOrdnanceStation
-    terminal: WFOrdnanceTerminalPDV
+  - type: WGOrdnanceStation
+    terminal: WGOrdnanceTerminalPDV
   # WOLFGATE END
   - type: IFF
     color: "#DE9E59"
@@ -72,8 +72,8 @@
             PirateFirstMate: [ 2, 2 ]
             PDVDenasvar: [ 6, 6 ]
             # WOLFGATE END
-            WFPdvJarrah: [ 5, 5 ] # WOLFGATE(PdvMedic): PDV field medic slots, 2 -> 5 for a 130-player population
-            WFPdvArtificer: [ 4, 4 ] # WOLFGATE(PdvArtificer): PDV engineer slots
+            WGPdvJarrah: [ 5, 5 ] # WOLFGATE(PdvMedic): PDV field medic slots, 2 -> 5 for a 130-player population
+            WGPdvArtificer: [ 4, 4 ] # WOLFGATE(PdvArtificer): PDV engineer slots
             # PDVInfiltrator: [ 2, 2 ]
             Pirate: [ -1, -1 ]
             PdvBorg: [ 3, 3 ] # WOLFGATE(FactionBalance): 2 -> 3 for a 130-player population
@@ -96,8 +96,8 @@
   gridPath: /Maps/_Mono/POI/pdvhelios_hw.yml
   addComponents:
   # WOLFGATE(Ordnance) START: the faction's ordnance terminal
-  - type: WFOrdnanceStation
-    terminal: WFOrdnanceTerminalPDV
+  - type: WGOrdnanceStation
+    terminal: WGOrdnanceTerminalPDV
   # WOLFGATE END
   - type: IFF
     color: "#DE9E59"
@@ -134,7 +134,7 @@
             PDVTarkhan: [ 3, 3 ]
             PirateFirstMate: [ 3, 3 ]
             PDVDenasvar: [ 6, 6 ]
-            WFPdvJarrah: [ 4, 4 ] # WOLFGATE(PdvMedic): PDV field medic slots
+            WGPdvJarrah: [ 4, 4 ] # WOLFGATE(PdvMedic): PDV field medic slots
             # PDVInfiltrator: [ 2, 2 ]
             Pirate: [ -1, -1 ]
             PdvBorg: [ 2, 2 ]

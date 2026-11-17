@@ -89,11 +89,11 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
         };
 
         NfInitialize(); // Frontier Initialization for the ShuttleConsoleWindow
-        WfInitialize(); // WOLFGATE(Shuttles)
-        WfAccessInitialize(); // WOLFGATE(ShipAccess)
-        WfShieldInitialize(); // WOLFGATE(ShipShields): add the shield allocation tab.
-        WfInitializeInstruments(); // WOLFGATE(CombatConsole): compose the flight deck instrument panels.
-        WfHailInitialize(); // WOLFGATE(Hailing): hail button and banner
+        WgInitialize(); // WOLFGATE(Shuttles)
+        WgAccessInitialize(); // WOLFGATE(ShipAccess)
+        WgShieldInitialize(); // WOLFGATE(ShipShields): add the shield allocation tab.
+        WgInitializeInstruments(); // WOLFGATE(CombatConsole): compose the flight deck instrument panels.
+        WgHailInitialize(); // WOLFGATE(Hailing): hail button and banner
     }
 
     private void ClearModes(ShuttleConsoleMode mode)
@@ -110,14 +110,14 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
         // WOLFGATE(Shuttles) START: ship mode
         if (mode != ShuttleConsoleMode.Ship)
         {
-            WfSetShipMode(false);
+            WgSetShipMode(false);
         }
         // WOLFGATE END
 
         // WOLFGATE(ShipAccess) START: access tab
         if (mode != ShuttleConsoleMode.Access)
         {
-            WfSetAccessMode(false);
+            WgSetAccessMode(false);
         }
         // WOLFGATE END
 
@@ -176,12 +176,12 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
                 break;
             // WOLFGATE(Shuttles) START: ship mode
             case ShuttleConsoleMode.Ship:
-                WfSetShipMode(true);
+                WgSetShipMode(true);
                 break;
             // WOLFGATE END
             // WOLFGATE(ShipAccess) START: access tab
             case ShuttleConsoleMode.Access:
-                WfSetAccessMode(true);
+                WgSetAccessMode(true);
                 break;
             // WOLFGATE END
             case ShuttleConsoleMode.Map:
@@ -218,7 +218,7 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
 
     public void UpdateState(EntityUid owner, ShuttleBoundUserInterfaceState cState)
     {
-        WfUpdateCockpitAutopilot(cState.CockpitAutopilotActive); // WOLFGATE(Cockpit): consume authoritative autopilot status on every page.
+        WgUpdateCockpitAutopilot(cState.CockpitAutopilotActive); // WOLFGATE(Cockpit): consume authoritative autopilot status on every page.
         var coordinates = _entManager.GetCoordinates(cState.NavState.Coordinates);
         NavContainer.SetShuttle(coordinates?.EntityId);
         NavContainer.SetConsole(owner);
@@ -229,11 +229,11 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
         ShipContainer.SetConsole(owner);
         CollisionBanner.SetShuttle(coordinates?.EntityId);
         // WOLFGATE END
-        WfUpdateTractorCapture(cState.TractorSources); // WOLFGATE(TractorBeam)
-        WfUpdateBoarding(cState.Boarding); // WOLFGATE(BoardingAction): hacks and disruption
-        WfAccessUpdateState(coordinates?.EntityId, owner); // WOLFGATE(ShipAccess)
-        WfShieldUpdateState(cState.ShieldShunt, cState.NavState.Angle); // WOLFGATE(ShipShields): share authoritative allocation across helms.
-        WfHailUpdateState(owner); // WOLFGATE(Hailing): point the banner and window at this console
+        WgUpdateTractorCapture(cState.TractorSources); // WOLFGATE(TractorBeam)
+        WgUpdateBoarding(cState.Boarding); // WOLFGATE(BoardingAction): hacks and disruption
+        WgAccessUpdateState(coordinates?.EntityId, owner); // WOLFGATE(ShipAccess)
+        WgShieldUpdateState(cState.ShieldShunt, cState.NavState.Angle); // WOLFGATE(ShipShields): share authoritative allocation across helms.
+        WgHailUpdateState(owner); // WOLFGATE(Hailing): point the banner and window at this console
 
         NavContainer.UpdateState(cState.NavState);
         MapContainer.UpdateState(cState.MapState);

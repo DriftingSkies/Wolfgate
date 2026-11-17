@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-4.0",
+  "copyright": "Made by Kepteyn",
+  "size": {
+    "x": 32,
+    "y": 96
+  },
+  "states": [
+	{
+      "name": "radiator1",
+      "delays": [
+                [
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            ]
+    },
+     {
+      "name": "wgantenna1"
+    },
+    {
+      "name": "wgantenna1_unshaded",
+      "delays": [
+        [
+          0.4,
+          0.4,
+          0.4,
+          0.4,
+          0.4,
+          0.4,
+          0.4
+        ]
+      ]
+    },
+    {
+      "name": "wgantenna2"
+    },
+    {
+      "name": "wgantenna2_unshaded",
+      "delays": [
+        [
+          0.4,
+          0.4,
+          0.4,
+          0.4
+        ]
+      ]
+    }
+  ]
+}

@@ -41,7 +41,7 @@ public sealed partial class DefaultGameScreen : InGameScreen
     {
         float indent = Chat.Size.Y + Targeting.Size.Y + 120;
         // WOLFGATE(Cockpit) START: Keep critical alerts in a compact bank beside the cockpit world view.
-        if (_wfCockpitAlertsWidth is { } width)
+        if (_wgCockpitAlertsWidth is { } width)
             Alerts.AlertContainer.MaxGridWidth = width;
         else
             Alerts.AlertContainer.MaxGridHeight = Math.Max(MainViewport.Size.Y - indent, 1);

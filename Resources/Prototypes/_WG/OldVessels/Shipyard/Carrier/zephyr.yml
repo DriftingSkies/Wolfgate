@@ -1,0 +1,39 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51); admin spawn only.
+#Author: Starch(!)
+
+- type: vessel
+  id: Zephyr
+  parent: BaseVesselIFFDisabled
+  name: TSF-SKR Zephyr
+  description: A fighter refurbished from recovered remnant Razor hulls.
+  price: 29365
+  category: Small
+  group: Custom
+  mapchecker_group_override: Shipyard  # Treat this as a Shipyard vessel for mapchecker purposes
+  shuttlePath: /SharedMaps/_WG/OldVessels/Carrier/zephyr.yml
+  tags:
+  - WGClassicVessel
+  - WGAdminOnlyVessel
+  guidebookPage: Null
+  class:
+  - Pursuit
+  - Fighter
+  engine:
+  - APU
+
+- type: gameMap
+  id: Zephyr
+  mapName: 'Zephyr'
+  mapPath: /SharedMaps/_WG/OldVessels/Carrier/zephyr.yml
+  minPlayers: 0
+  stations:
+    Zephyr:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Zephyr TSF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs: {}

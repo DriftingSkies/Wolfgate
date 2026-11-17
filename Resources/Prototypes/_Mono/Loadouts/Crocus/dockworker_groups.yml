@@ -7,13 +7,13 @@
   - CrocusDockworkerCap
   - CrocusDockworkerCapAlt
   - CrocusDockworkerHardhat
-  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-  - WFMeridianLoadoutClothingHeadHoodedWinterhoodCargo
-  - WFMeridianLoadoutClothingHeadHoodedWinterhoodCargoQm
-  - WFMeridianLoadoutClothingHeadHoodedWinterhoodMiner
-  - WFMeridianLoadoutClothingHeadPlaybunnyearsBitrunner
-  - WFMeridianLoadoutClothingHeadPlaybunnyearsCargo
-  - WFMeridianLoadoutClothingHeadPlaybunnyearsQuartermaster
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+  - WGMeridianLoadoutClothingHeadHoodedWinterhoodCargo
+  - WGMeridianLoadoutClothingHeadHoodedWinterhoodCargoQm
+  - WGMeridianLoadoutClothingHeadHoodedWinterhoodMiner
+  - WGMeridianLoadoutClothingHeadPlaybunnyearsBitrunner
+  - WGMeridianLoadoutClothingHeadPlaybunnyearsCargo
+  - WGMeridianLoadoutClothingHeadPlaybunnyearsQuartermaster
   # WOLFGATE END
 
 - type: loadoutGroup
@@ -27,36 +27,36 @@
   - CrocusDockworkerJumpsuitBlue
   - CrocusDockworkerJumpsuitTan
   - CrocusDockworkerJumpsuitBrown
-  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-  - WFMeridianLoadoutClothingUnderAkulaWetsuitJobCargo
-  - WFMeridianLoadoutClothingUnderImperialQuartermaster
-  - WFMeridianLoadoutClothingUnderImperialskirtQuartermaster
-  - WFMeridianLoadoutClothingUnderRankCargoBitrunner
-  - WFMeridianLoadoutClothingUnderRankCargoBitrunnerBunnysuit
-  - WFMeridianLoadoutClothingUnderRankCargoCargoBunnysuit
-  - WFMeridianLoadoutClothingUnderRankCargoMiner
-  - WFMeridianLoadoutClothingUnderRankCargoMinerBunnysuit
-  - WFMeridianLoadoutClothingUnderRankCargoQm
-  - WFMeridianLoadoutClothingUnderRankCargoQmNova
-  - WFMeridianLoadoutClothingUnderRankCargoQmNovaCasual
-  - WFMeridianLoadoutClothingUnderRankCargoQmNovaFormal
-  - WFMeridianLoadoutClothingUnderRankCargoQmNovaFormalSkirt
-  - WFMeridianLoadoutClothingUnderRankCargoQmNovaGorka
-  - WFMeridianLoadoutClothingUnderRankCargoQmNovaTurtleneck
-  - WFMeridianLoadoutClothingUnderRankCargoQmNovaTurtleneckSkirt
-  - WFMeridianLoadoutClothingUnderRankCargoQmSkirt
-  - WFMeridianLoadoutClothingUnderRankCargoQuartermasterBunnysuit
-  - WFMeridianLoadoutClothingUnderRankCargoTech
-  - WFMeridianLoadoutClothingUnderRankCargoTechAlt
-  - WFMeridianLoadoutClothingUnderRankCargoTechNovaCasualman
-  - WFMeridianLoadoutClothingUnderRankCargoTechNovaEvil
-  - WFMeridianLoadoutClothingUnderRankCargoTechNovaGorka
-  - WFMeridianLoadoutClothingUnderRankCargoTechNovaLong
-  - WFMeridianLoadoutClothingUnderRankCargoTechNovaTurtleneck
-  - WFMeridianLoadoutClothingUnderRankCargoTechNovaTurtleneckSkirt
-  - WFMeridianLoadoutClothingUnderRankCargoTechNovaUtility
-  - WFMeridianLoadoutClothingUnderRankCargoTechSkirt
-  - WFMeridianLoadoutClothingUnderRankCargoTechSkirtAlt
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+  - WGMeridianLoadoutClothingUnderAkulaWetsuitJobCargo
+  - WGMeridianLoadoutClothingUnderImperialQuartermaster
+  - WGMeridianLoadoutClothingUnderImperialskirtQuartermaster
+  - WGMeridianLoadoutClothingUnderRankCargoBitrunner
+  - WGMeridianLoadoutClothingUnderRankCargoBitrunnerBunnysuit
+  - WGMeridianLoadoutClothingUnderRankCargoCargoBunnysuit
+  - WGMeridianLoadoutClothingUnderRankCargoMiner
+  - WGMeridianLoadoutClothingUnderRankCargoMinerBunnysuit
+  - WGMeridianLoadoutClothingUnderRankCargoQm
+  - WGMeridianLoadoutClothingUnderRankCargoQmNova
+  - WGMeridianLoadoutClothingUnderRankCargoQmNovaCasual
+  - WGMeridianLoadoutClothingUnderRankCargoQmNovaFormal
+  - WGMeridianLoadoutClothingUnderRankCargoQmNovaFormalSkirt
+  - WGMeridianLoadoutClothingUnderRankCargoQmNovaGorka
+  - WGMeridianLoadoutClothingUnderRankCargoQmNovaTurtleneck
+  - WGMeridianLoadoutClothingUnderRankCargoQmNovaTurtleneckSkirt
+  - WGMeridianLoadoutClothingUnderRankCargoQmSkirt
+  - WGMeridianLoadoutClothingUnderRankCargoQuartermasterBunnysuit
+  - WGMeridianLoadoutClothingUnderRankCargoTech
+  - WGMeridianLoadoutClothingUnderRankCargoTechAlt
+  - WGMeridianLoadoutClothingUnderRankCargoTechNovaCasualman
+  - WGMeridianLoadoutClothingUnderRankCargoTechNovaEvil
+  - WGMeridianLoadoutClothingUnderRankCargoTechNovaGorka
+  - WGMeridianLoadoutClothingUnderRankCargoTechNovaLong
+  - WGMeridianLoadoutClothingUnderRankCargoTechNovaTurtleneck
+  - WGMeridianLoadoutClothingUnderRankCargoTechNovaTurtleneckSkirt
+  - WGMeridianLoadoutClothingUnderRankCargoTechNovaUtility
+  - WGMeridianLoadoutClothingUnderRankCargoTechSkirt
+  - WGMeridianLoadoutClothingUnderRankCargoTechSkirtAlt
   # WOLFGATE END
   fallbacks:
   - CrocusDockworkerJumpsuit
@@ -68,10 +68,10 @@
   maxLimit: 1
   loadouts:
   - CrocusDockworkerGloves
-  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-  - WFMeridianLoadoutClothingGlovesCargoGauntlet
-  - WFMeridianLoadoutClothingGlovesColorPlasmamanCargo
-  - WFMeridianLoadoutClothingGlovesColorPlasmamanExplorer
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+  - WGMeridianLoadoutClothingGlovesCargoGauntlet
+  - WGMeridianLoadoutClothingGlovesColorPlasmamanCargo
+  - WGMeridianLoadoutClothingGlovesColorPlasmamanExplorer
   # WOLFGATE END
 
 - type: loadoutGroup
@@ -82,12 +82,12 @@
   loadouts:
   - CrocusDockworkerOuterClothing
   - CrocusDockworkerOuterClothingWinterCoat
-  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-  - WFMeridianLoadoutClothingSuitJacketQuartermaster
-  - WFMeridianLoadoutClothingSuitJacketTailcoatBitrunner
-  - WFMeridianLoadoutClothingSuitJacketTailcoatCargo
-  - WFMeridianLoadoutClothingSuitJacketTailcoatQuartermaster
-  - WFMeridianLoadoutClothingSuitToggleCargoTech
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+  - WGMeridianLoadoutClothingSuitJacketQuartermaster
+  - WGMeridianLoadoutClothingSuitJacketTailcoatBitrunner
+  - WGMeridianLoadoutClothingSuitJacketTailcoatCargo
+  - WGMeridianLoadoutClothingSuitJacketTailcoatQuartermaster
+  - WGMeridianLoadoutClothingSuitToggleCargoTech
   # WOLFGATE END
   fallbacks:
   - CrocusDockworkerOuterClothing
@@ -109,8 +109,8 @@
   maxLimit: 1
   loadouts:
   - CrocusDockworkerShoes
-  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-  - WFMeridianLoadoutClothingShoesWorkbootsMiningHeeled
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+  - WGMeridianLoadoutClothingShoesWorkbootsMiningHeeled
   # WOLFGATE END
   fallbacks:
   - CrocusDockworkerShoes

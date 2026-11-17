@@ -1,0 +1,146 @@
+# Crew profiles for vehicle crews. NpcCrew profiles cannot be extended from another file, so each copies the matching
+# one (bodies, names, components, skills) and keys its loadouts by the vehicle roles, reusing the NpcCrew gear.
+
+- type: wgCrewProfile
+  id: WGVehicleCrewProfilePirate
+  firstNames: WGNamesPirateFirst
+  lastNames: WGNamesPirateLast
+  # Pirates never fly durasteel, as with NpcCrew's own pirate profile.
+  hullSwaps:
+    WGWallDurasteel: WallPlastitanium
+    WGWallDurasteelDiagonal: WallPlastitaniumDiagonal
+    WGWallDurasteelCapital: WallPlastitaniumCapital
+    WGWallDurasteelDiagonalCapital: WallPlastitaniumDiagonalCapital
+  components:
+  - type: PirateAccent
+  - type: WGCrewSuitUp
+  - type: PressureImmunity
+  - type: BreathingImmunity
+  bodies:
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyReptilian
+  - WGMobCrewBodyReptilian
+  - WGMobCrewBodyDwarf
+  - WGMobCrewBodyVulpkanin
+  - WGMobCrewBodyTajaran
+  - WGMobCrewBodyRodentia
+  - WGMobCrewBodyArachnid
+  - WGMobCrewBodyMoth
+  skills: [ Green, Regular, Regular, Veteran ]
+  loadouts:
+    # Every profile must kit a deckhand: NpcCrew's own posts may draw on it.
+    WGCrewDeckhand: [ WGCrewPirateHand ]
+    WGVehicleDriver: [ WGCrewPirateOfficer, WGCrewPirateHand ]
+    WGVehicleGunner: [ WGCrewPirateOfficer, WGCrewPirateHand ]
+    WGVehicleTrooper: [ WGCrewPirateRifle, WGCrewPirateBruiser, WGCrewPirateHand ]
+
+- type: wgCrewProfile
+  id: WGVehicleCrewProfileMercenary
+  bodies:
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyReptilian
+  - WGMobCrewBodyDwarf
+  - WGMobCrewBodyVulpkanin
+  - WGMobCrewBodyTajaran
+  skills: [ Regular, Veteran, Veteran ]
+  loadouts:
+    # Every profile must kit a deckhand: NpcCrew's own posts may draw on it.
+    WGCrewDeckhand: [ WGCrewMercGuard ]
+    WGVehicleDriver: [ WGCrewMercOfficer ]
+    WGVehicleGunner: [ WGCrewMercOfficer ]
+    WGVehicleTrooper: [ WGCrewMercGuard ]
+
+- type: wgCrewProfile
+  id: WGVehicleCrewProfileTsf
+  firstNames: WGNamesTsfFirst
+  lastNames: WGNamesTsfLast
+  bodies:
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyReptilian
+  - WGMobCrewBodyDwarf
+  - WGMobCrewBodyVulpkanin
+  - WGMobCrewBodyTajaran
+  skills: [ Green, Regular, Regular ]
+  loadouts:
+    # Every profile must kit a deckhand: NpcCrew's own posts may draw on it.
+    WGCrewDeckhand: [ WGCrewTsfGuard ]
+    WGVehicleDriver: [ WGCrewTsfOfficer ]
+    WGVehicleGunner: [ WGCrewTsfOfficer ]
+    WGVehicleTrooper: [ WGCrewTsfGuard ]
+
+- type: wgCrewProfile
+  id: WGVehicleCrewProfilePdv
+  firstNames: WGNamesPdvFirst
+  lastNames: WGNamesPdvLast
+  bodies:
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyReptilian
+  - WGMobCrewBodyDwarf
+  - WGMobCrewBodyVulpkanin
+  - WGMobCrewBodyTajaran
+  skills: [ Green, Regular, Regular ]
+  loadouts:
+    # Every profile must kit a deckhand: NpcCrew's own posts may draw on it.
+    WGCrewDeckhand: [ WGCrewPdvGuard ]
+    WGVehicleDriver: [ WGCrewPdvOfficer ]
+    WGVehicleGunner: [ WGCrewPdvOfficer ]
+    WGVehicleTrooper: [ WGCrewPdvGuard ]
+
+- type: wgCrewProfile
+  id: WGVehicleCrewProfileUssp
+  firstNames: WGNamesUsspFirst
+  lastNames: WGNamesUsspLast
+  components:
+  - type: RussianAccent
+  bodies:
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyDwarf
+  - WGMobCrewBodyReptilian
+  skills: [ Regular, Regular, Veteran ]
+  loadouts:
+    # Every profile must kit a deckhand: NpcCrew's own posts may draw on it.
+    WGCrewDeckhand: [ WGCrewUsspGuard ]
+    WGVehicleDriver: [ WGCrewUsspOfficer ]
+    WGVehicleGunner: [ WGCrewUsspOfficer ]
+    WGVehicleTrooper: [ WGCrewUsspGuard ]
+
+# Haulers: hands drive; civilian crews carry no troopers, so that role's armed kit is only a fallback.
+- type: wgCrewProfile
+  id: WGVehicleCrewProfileCivilian
+  bodies:
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyHuman
+  - WGMobCrewBodyReptilian
+  - WGMobCrewBodyReptilian
+  - WGMobCrewBodyDwarf
+  - WGMobCrewBodyMoth
+  - WGMobCrewBodyVulpkanin
+  - WGMobCrewBodyVulpkanin
+  - WGMobCrewBodyTajaran
+  - WGMobCrewBodyTajaran
+  - WGMobCrewBodyRodentia
+  - WGMobCrewBodyArachnid
+  skills: [ Green, Green, Regular ]
+  loadouts:
+    # Every profile must kit a deckhand: NpcCrew's own posts may draw on it.
+    WGCrewDeckhand: [ WGCrewHaulerHandOveralls ]
+    WGVehicleDriver:
+    - WGCrewHaulerHandCargo
+    - WGCrewHaulerHandHazard
+    - WGCrewHaulerHandOveralls
+    - WGCrewHaulerHandWinter
+    - WGCrewHaulerHandWrench
+    WGVehicleGunner: [ WGCrewHaulerHandOveralls ]
+    WGVehicleTrooper: [ WGCrewHaulerGuardSidearm ]

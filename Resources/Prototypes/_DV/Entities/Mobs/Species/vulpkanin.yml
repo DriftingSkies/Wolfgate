@@ -29,7 +29,7 @@
     allowedEmotes: ['Bark', 'Snarl', 'Whine', 'Howl', 'Awoo', 'Growl', 'Yip', 'Whimper'] # Starlight / Monolith: Add yip, whine; rename old whine to whimper
   # WOLFGATE(Species) START: upstream's vulpkanin speech bubble
   - type: TypingIndicator
-    proto: WFVulpkanin
+    proto: WGVulpkanin
   # WOLFGATE END
   - type: LanguageKnowledge # Einstein Engines - Languages
     speaks:

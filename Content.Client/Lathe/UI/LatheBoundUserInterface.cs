@@ -1,4 +1,4 @@
-using Content.Shared._WF.Lathe; // WOLFGATE(Lathe)
+using Content.Shared._WG.Lathe; // WOLFGATE(Lathe)
 using Content.Shared.Lathe;
 using Content.Shared.Research.Components;
 using JetBrains.Annotations;

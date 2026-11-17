@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Meridian Rift at https://github.com/Aphelion-Moon/Meridian-Rift/tree/0fd8e40910402f2745e5e5e4adc7d37bd45fed40 (modular_nova/master_files/icons/mob/sprite_accessory/skrell_hair.dmi), which carries the art of NovaSector, Skyrat-tg and tgstation. Layers merged per colour and centred for Wolfgate by Tools/_WG/MeridianMarkings/port.py.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "backwater",
+      "directions": 4
+    },
+    {
+      "name": "hoop",
+      "directions": 4
+    },
+    {
+      "name": "long_mid_bun",
+      "directions": 4
+    },
+    {
+      "name": "reef",
+      "directions": 4
+    },
+    {
+      "name": "tucked",
+      "directions": 4
+    },
+    {
+      "name": "very_long",
+      "directions": 4
+    },
+    {
+      "name": "very_short",
+      "directions": 4
+    }
+  ]
+}

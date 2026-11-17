@@ -1,5 +1,5 @@
 using Content.Shared._CE.ZLevels.Core.Components;
-using Content.Shared._WF.Tether.Harpoon; // WOLFGATE(Tether)
+using Content.Shared._WG.Tether.Harpoon; // WOLFGATE(Tether)
 using Content.Shared.Climbing.Components;
 using Content.Shared.Projectiles; // WOLFGATE(Tether)
 using Robust.Shared.Physics;

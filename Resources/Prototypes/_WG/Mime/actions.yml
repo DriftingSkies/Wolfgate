@@ -1,0 +1,33 @@
+- type: entity
+  id: ActionMimeInvisibleBox
+  name: Invisible Box
+  description: Summon an invisible box you can store things in. Press again to put it away. Your things stay inside.
+  components:
+  - type: InstantAction
+    itemIconStyle: BigAction
+    raiseOnAction: true
+    icon:
+      sprite: _WG/Mime/mime.rsi
+      state: invisible-box
+    event: !type:MimeSummonActionEvent
+  - type: MimeSummonAction
+    itemId: WGMimeInvisibleBox
+    summonMessage: mime-invisible-box-find
+    putAwayMessage: mime-invisible-box-put-away
+
+- type: entity
+  id: ActionMimeFingerGun
+  name: Finger Gun
+  description: Summon an invisible finger gun. Point it at someone to make them feel shot, without actually hurting them. Press again to put it away.
+  components:
+  - type: InstantAction
+    itemIconStyle: BigAction
+    raiseOnAction: true
+    icon:
+      sprite: _WG/Mime/mime.rsi
+      state: finger-gun
+    event: !type:MimeSummonActionEvent
+  - type: MimeSummonAction
+    itemId: WGMimeFingerGun
+    summonMessage: mime-finger-gun-draw
+    putAwayMessage: mime-finger-gun-put-away

@@ -1,7 +1,7 @@
 # Shitmed Change: Removed components from each part, instead using composition for sprites
 - type: entity
   id: PartSlime
-  parent: [WFWolfmedPartSlime, BaseItem, BasePart] # WOLFGATE(Wolfmed): P5-1: slime wound profile, no bone fractures; WFWolfmedPartSlime must stay FIRST (RT first-parent-wins)
+  parent: [WGWolfmedPartSlime, BaseItem, BasePart] # WOLFGATE(Wolfmed): P5-1: slime wound profile, no bone fractures; WGWolfmedPartSlime must stay FIRST (RT first-parent-wins)
   name: "slime body part"
   abstract: true
   components: # Shitmed Change

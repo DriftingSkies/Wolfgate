@@ -1,6 +1,6 @@
 using Content.Server.Chemistry.EntitySystems;
 using Content.Shared.Random;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Chemistry.Components;
 

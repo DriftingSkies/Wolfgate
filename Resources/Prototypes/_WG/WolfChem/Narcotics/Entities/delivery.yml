@@ -1,0 +1,114 @@
+# Ways in: powder lines laid from a baggie, and a bong that works from the hand.
+
+- type: entity
+  id: WGPowderLine
+  components:
+  - type: Transform
+    noRot: true
+  # Tinted by the powder it was laid from; a short line when it holds less than a full one.
+  - type: Sprite
+    drawdepth: SmallObjects
+    sprite: _WG/WolfChem/Narcotics/Objects/powder_line.rsi
+    layers:
+    - state: line-2
+      map: [ "enum.SolutionContainerLayers.Fill" ]
+  - type: Appearance
+  - type: SolutionContainerVisuals
+    maxFillLevels: 2
+    fillBaseName: line-
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: SolutionContainerManager
+    solutions:
+      # One baggie line (WGBaggie lineAmount).
+      line:
+        maxVol: 2.5
+  - type: ExaminableSolution
+    solution: line
+  - type: WGPowderLine
+  # Swept up or blown away like any spill.
+  - type: TimedDespawn
+    lifetime: 900
+
+- type: entity
+  parent: BaseItem
+  id: WGBong
+  components:
+  - type: Sprite
+    sprite: _WG/WolfChem/Narcotics/Objects/bong.rsi
+    layers:
+    - state: icon
+    - state: fill-1
+      map: [ "enum.SolutionContainerLayers.Fill" ]
+      visible: false
+    - state: bowl
+      map: [ "bowl" ]
+      visible: false
+    - state: lit
+      map: [ "lit" ]
+      shader: unshaded
+      visible: false
+  - type: Item
+    size: Small
+    sprite: _WG/WolfChem/Narcotics/Objects/bong.rsi
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGBongVisuals.Loaded:
+        bowl:
+          True: { visible: true }
+          False: { visible: false }
+      enum.WGBongVisuals.Lit:
+        lit:
+          True: { visible: true }
+          False: { visible: false }
+  - type: SolutionContainerVisuals
+    maxFillLevels: 2
+    fillBaseName: fill-
+  - type: SolutionContainerManager
+    solutions:
+      water:
+        maxVol: 30
+  - type: RefillableSolution
+    solution: water
+  - type: DrainableSolution
+    solution: water
+  - type: ExaminableSolution
+    solution: water
+  - type: ContainerContainer
+    containers:
+      bowl: !type:ContainerSlot
+  - type: ItemSlots
+  - type: WGBong
+    bowl:
+      name: wg-bong-bowl
+      # Anything a pipe takes, plus what fits a baggie: solid drugs and dried leaves.
+      whitelist:
+        tags:
+        - Smokable
+        - WGBaggable
+      insertSound:
+        path: /Audio/Weapons/Guns/Empty/empty.ogg
+      ejectSound:
+        path: /Audio/Weapons/Guns/Empty/empty.ogg
+  - type: Construction
+    graph: WGBong
+    node: bong
+  - type: StaticPrice
+    price: 40
+
+- type: entity
+  parent: WGBong
+  id: WGBongFilled
+  suffix: Water
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      water:
+        maxVol: 30
+        reagents:
+        - ReagentId: Water
+          Quantity: 20

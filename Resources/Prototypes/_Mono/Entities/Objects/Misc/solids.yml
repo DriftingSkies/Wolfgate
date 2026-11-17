@@ -12,7 +12,7 @@
   # WOLFGATE(WolfChem) START: fits a baggie
   - type: Tag
     tags:
-    - WFBaggable
+    - WGBaggable
   # WOLFGATE END
   - type: StaticPrice
     price: 10000 # worth a lot but expensive to make

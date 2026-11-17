@@ -1,0 +1,25 @@
+- type: constructionGraph
+  id: WGShipPaSpeaker
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: speaker
+      # Only material steps: the construction menu can't start a structure on a tool step.
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 2
+
+  - node: speaker
+    entity: WGWallmountShipPaSpeaker
+    edges:
+    - to: start
+      completed:
+      - !type:GivePrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 2

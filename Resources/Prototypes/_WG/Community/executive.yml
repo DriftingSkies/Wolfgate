@@ -1,0 +1,36 @@
+# Author info:
+# YuiY1997 (Github) feralrezu (Discord)
+- type: vessel
+  id: WGExecutive
+  parent: BaseVessel
+  name: 'DME Executive'
+  description: 'A mid-sized space yacht with a fully stocked bar, pool, library, master bedroom, and crew sleeping quarters. It features sizeable engines with respectable acceleration. While it has a small cargo hold, it is not recommended to use this ship as a freighter.'
+  price: 73909 # appraised at 64269, 15% civilian markup
+  category: Medium # 343 tiles
+  group: Shipyard
+  shuttlePath: /SharedMaps/_WG/Community/executive.yml
+  guidebookPage: null
+  class:
+  - Cargo
+  - Civilian
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WGExecutive
+  mapName: 'DME Executive'
+  mapPath: /SharedMaps/_WG/Community/executive.yml
+  isGrid: true
+  minPlayers: 0
+  stations:
+    WGExecutive:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Executive CIV{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

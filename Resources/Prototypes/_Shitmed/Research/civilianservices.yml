@@ -15,13 +15,13 @@
   - ShitmedOmnimedTool
   - AutodocCircuitboard
   # WOLFGATE(Wolfmed) START: AUTODOC: S.A.M. and its programs are tier 3
-  - WFAutodocMachineCircuitboard
-  - WFAutodocProgramDiskTransplant
-  - WFAutodocProgramDiskLimb
-  - WFAutodocProgramDiskNeuro
-  - WFAutodocProgramDiskCavity
-  - WFAutodocDefibModule
-  - WFAutodocAutofixModule
+  - WGAutodocMachineCircuitboard
+  - WGAutodocProgramDiskTransplant
+  - WGAutodocProgramDiskLimb
+  - WGAutodocProgramDiskNeuro
+  - WGAutodocProgramDiskCavity
+  - WGAutodocDefibModule
+  - WGAutodocAutofixModule
   # WOLFGATE END
   technologyPrerequisites:
   - CyberneticEnhancements

@@ -3,7 +3,7 @@
   bodyPart: Eyes
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -18,7 +18,7 @@
   bodyPart: Eyes
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -33,7 +33,7 @@
   bodyPart: Eyes
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -48,7 +48,7 @@
   bodyPart: Eyes
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -63,7 +63,7 @@
   bodyPart: Eyes
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Arachnid, Goblin, Felinid, Oni, Harpy, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Harpy, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Arachnid, Goblin, Felinid, Oni, Harpy, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Harpy, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -78,7 +78,7 @@
   bodyPart: Chest
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -93,7 +93,7 @@
   bodyPart: Chest
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -108,7 +108,7 @@
   bodyPart: RArm
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, SlimePerson, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, SlimePerson, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -123,7 +123,7 @@
   bodyPart: RArm, RHand
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, SlimePerson, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia
+  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, SlimePerson, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia
   coloring:
     default:
       type:
@@ -138,7 +138,7 @@
   bodyPart: LArm, LHand
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -153,7 +153,7 @@
   bodyPart: LFoot
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -168,7 +168,7 @@
   bodyPart: LLeg
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -183,7 +183,7 @@
   bodyPart: RLeg
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -198,7 +198,7 @@
   bodyPart: RFoot
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Arachnid, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -213,7 +213,7 @@
   bodyPart: RHand
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, SlimePerson, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, SlimePerson, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:
@@ -228,7 +228,7 @@
   bodyPart: LHand
   markingCategory: Overlay
   # WOLFGATE(Species): added Canine
-  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, SlimePerson, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
+  speciesRestriction: [Dwarf, Human, Reptilian, Arachnid, SlimePerson, Goblin, Felinid, Oni, Vulpkanin, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Oni, Vulpkanin, Rodentia; Goob - Tajaran
   coloring:
     default:
       type:

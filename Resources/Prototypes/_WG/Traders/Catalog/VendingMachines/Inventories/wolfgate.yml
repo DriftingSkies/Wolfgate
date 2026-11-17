@@ -1,0 +1,77 @@
+# Everything added through Wolfgate is stocked here; John Wolfgate sells the same list.
+- type: vendingMachineInventory
+  id: WGWolfgateVendInventory
+  startingInventory:
+    WGPlanetTimepiece: 5
+    WGParachute: 10
+    WGJetpackAtmospheric: 3
+    WGLandingThrusterKit: 4
+    WGRopeHempCoil: 6
+    WGRopeSyntheticCoil: 6
+    WGRopeBungeeCoil: 4
+    WGRopeSteelCableCoil: 4
+    WGRopeTowCableCoil: 2
+    WGTetherInstaller: 3
+    WGPowerCordCoilLV: 4
+    WGPowerCordCoilMV: 4
+    WGPowerCordCoilHV: 4
+    WGShipHarpoonTurretFlatpack: 2
+    WGShipHarpoon: 8
+    WGPartsSiloFlatpack: 2
+    WGChemicalSiloFlatpack: 2
+    WGDoomArcadeFlatpack: 3
+    WGVehicleBayTerminalFlatpack: 4
+    WGVehicleDeliveryPadFlatpack: 4
+    WGFreedoom2ArcadeFlatpack: 3
+    WGMameArcadeFlatpack: 3
+    WGBoombox: 4
+    WGPoolCue: 6
+    WGPoolTableFlatpack: 2
+    # Wolfmed field medicine.
+    WGWolfmedSplint: 6
+    WGWolfmedAntisepticSpray: 6
+    WGWolfmedSkinGraft: 4
+    WGWolfmedAnalgesicPill: 10
+    WGWolfmedOpiateChemistryBottle: 3
+    WGWolfmedStimPen: 4
+    WGWolfmedAnalgesicPen: 10
+    WGWolfmedOpiatePen: 6
+    WGWolfmedNaloxonePen: 4 # M2 (OD14): reverses an overdose.
+    WGWolfmedHydraulicFluidPack: 4 # Playtest 3 IPC 2: refills a chassis.
+    WGSpaceacillinChemistryBottle: 3
+    # Playtest 5 (ITEMS): the rest of the field kit, the pill forms and the surgical basics.
+    Tourniquet: 6
+    MedicatedSuture: 2
+    WGWolfmedSuture: 4 # Playtest 5: the plain suture.
+    RegenerativeMesh: 2
+    WGWolfmedAnalgesicPillCanister: 4
+    WGWolfmedIbuprofenPillCanister: 3
+    WGWolfmedKetorolacPillCanister: 3
+    WGWolfmedTramadolChemistryBottle: 3
+    WGWolfmedOxycodoneChemistryBottle: 2
+    WGWolfmedOsteogenPillCanister: 4
+    WGWolfmedOsteogenChemistryBottle: 3
+    Cautery: 2
+    Hemostat: 2
+    Bonesetter: 2
+    BoneGel: 2
+    WGMedkitSyntheticFilled: 3
+    WGWolfmedIvDripFlatpack: 3
+    WGWolfmedVentilatorFlatpack: 3
+    # The autodoc as a flatpack, for a ship without a medical lathe (its board is printed there), and its consumables.
+    WGMachineAutodocFlatpack: 1
+    WGAutodocProgramDiskTransplant: 1
+    WGAutodocProgramDiskLimb: 1
+    WGAutodocProgramDiskNeuro: 1
+    WGAutodocProgramDiskCavity: 1
+    WGAutodocDefibModule: 1
+    WGAutodocAutofixModule: 1
+    # Xenobiology gear and starter slimes.
+    MobSlimeXenobioBabyGrey: 4
+    SlimeScannerXenobio: 4
+    ClothingBackpackXenoBioTankFilled: 3
+    WGSlimeGrinderFlatpack: 2
+    WGXenobiologyBountyConsoleFlatpack: 1
+    # MODsuit cores.
+    ModsuitCoreStandard: 4
+    ModsuitCorePlasma: 3

@@ -1,0 +1,47 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51); admin spawn only.
+#Author: kasature90 (github) / _starch_ (discord).
+
+- type: vessel
+  id: Kortik
+  parent: BaseVesselIFFDisabled
+  name: PDV-NCI Kortik-EM
+  description: A further upgrade to the Kortik-R, swapping the 2 R-300 howitzers for 2 CHARON mass drivers. FULLY UNABLE TO USE SHIELD GENERATORS.
+  limit: 1
+  hyperwarLimit: 2
+  hyperwarTimelock: 3600
+  price: 328237
+  purchasable: false
+  category: Large
+  group: Custom # was BlackMarket; Custom keeps it off every shipyard console
+  mapchecker_group_override: BlackMarket
+  shuttlePath: /SharedMaps/_Mono/Shuttles/PDV/kortik_em.yml
+  tags:
+  - WGClassicVessel
+  - WGAdminOnlyVessel
+  guidebookPage: Null
+  class:
+  - Pirate
+  - Frigate
+  engine:
+  - AME
+
+- type: gameMap
+  id: Kortik
+  mapName: 'Kortik-EM'
+  mapPath: /SharedMaps/_Mono/Shuttles/PDV/kortik_em.yml
+  minPlayers: 0
+  stations:
+    Kortik:
+      stationProto: StandardFrontierVessel
+      gridComponents:
+      - type: ShipShieldDisabledGrid
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Kortik-EM PDV{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'
+        - type: StationJobs
+          availableJobs:
+            Pirate: [ 0, 0 ]
+            PdvBorg: [ 0, 0 ]

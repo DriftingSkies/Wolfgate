@@ -1,0 +1,27 @@
+using Robust.Shared.Serialization;
+
+namespace Content.Shared._WG.RoundSetup;
+
+/// <summary>A reusable setup owned by one account, without members, credentials or purchase consent.</summary>
+[Serializable, NetSerializable]
+public sealed class WGSavedSetup
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public WGRoundScenario Scenario { get; set; }
+    public WGCrewFaction Faction { get; set; }
+    public string ShipName { get; set; } = string.Empty;
+    public WGShipStartLocation ShipStart { get; set; }
+    public string? Vessel { get; set; }
+    public WGLobbyAccess Access { get; set; }
+    public bool AllowLateJoin { get; set; }
+    public string? Job { get; set; }
+    public string JobTitle { get; set; } = string.Empty;
+    public WGSavedRole[] Roles { get; set; } = Array.Empty<WGSavedRole>();
+}
+
+/// <summary>A saved recruitment opening, independent of live reservations.</summary>
+[Serializable, NetSerializable]
+public sealed record WGSavedRole(string Name, string Job, int Capacity);

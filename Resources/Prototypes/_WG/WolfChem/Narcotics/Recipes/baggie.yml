@@ -1,0 +1,24 @@
+- type: constructionGraph
+  id: WGBaggie
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: baggie
+      steps:
+      - material: Plastic
+        amount: 1
+        doAfter: 2
+  - node: baggie
+    entity: WGBaggie
+
+- type: construction
+  name: baggie
+  id: WGBaggie
+  graph: WGBaggie
+  startNode: start
+  targetNode: baggie
+  category: construction-category-misc
+  description: A small zip baggie for powders.
+  icon: { sprite: _WG/WolfChem/Narcotics/Objects/baggie.rsi, state: icon }
+  objectType: Item

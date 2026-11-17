@@ -17,7 +17,7 @@
   description: A pompous and comfy blue cloak with a nice gold trim, while not particularly valuable as your other possessions, it sure is fancy.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Goobstation/Clothing/Neck/Cloaks/cap.rsi # WOLFGATE(Resprites): GoobStation cloak resprite
+    sprite: _WG/Resprites/Goobstation/Clothing/Neck/Cloaks/cap.rsi # WOLFGATE(Resprites): GoobStation cloak resprite
   - type: StealTarget
     stealGroup:
     - HeadCloak
@@ -29,7 +29,7 @@
   description: An exquisite dark and red cloak fitting for those who can assert dominance over wrongdoers. Take a stab at being civil in prosecution!
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Goobstation/Clothing/Neck/Cloaks/hos.rsi # WOLFGATE(Resprites): GoobStation cloak resprite
+    sprite: _WG/Resprites/Goobstation/Clothing/Neck/Cloaks/hos.rsi # WOLFGATE(Resprites): GoobStation cloak resprite
   - type: StealTarget
     stealGroup:
     - HeadCloak
@@ -42,7 +42,7 @@
   description: A white cloak with orange adornments, given to those who proved themselves to master the precise art of engineering.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Goobstation/Clothing/Neck/Cloaks/ChiefEngineer/whitece.rsi
+    sprite: _WG/Resprites/Goobstation/Clothing/Neck/Cloaks/ChiefEngineer/whitece.rsi
   - type: StealTarget
     stealGroup:
     - HeadCloak
@@ -54,7 +54,7 @@
   description: A green cloak with yellow and blue adornments, given to those who proved themselves to master the precise art of engineering.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Goobstation/Clothing/Neck/Cloaks/ChiefEngineer/greence.rsi
+    sprite: _WG/Resprites/Goobstation/Clothing/Neck/Cloaks/ChiefEngineer/greence.rsi
   - type: StealTarget
     stealGroup:
     - HeadCloak
@@ -79,7 +79,7 @@
   description: A white cloak with violet stripes, showing your status as the arbiter of cutting-edge technology.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Goobstation/Clothing/Neck/Cloaks/rd.rsi # WOLFGATE(Resprites): GoobStation cloak resprite
+    sprite: _WG/Resprites/Goobstation/Clothing/Neck/Cloaks/rd.rsi # WOLFGATE(Resprites): GoobStation cloak resprite
   - type: StealTarget
     stealGroup:
     - HeadCloak
@@ -91,7 +91,7 @@
   description: A strong brown cloak with a reflective stripe, while not as fancy as others, it does show your managing skills.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Goobstation/Clothing/Neck/Cloaks/qm.rsi # WOLFGATE(Resprites): GoobStation cloak resprite
+    sprite: _WG/Resprites/Goobstation/Clothing/Neck/Cloaks/qm.rsi # WOLFGATE(Resprites): GoobStation cloak resprite
   - type: StealTarget
     stealGroup:
     - HeadCloak
@@ -103,7 +103,7 @@
   description: A blue cloak with red shoulders and gold buttons, proving you are the gatekeeper to any airlock on the station.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Goobstation/Clothing/Neck/Cloaks/hop.rsi # WOLFGATE(Resprites): GoobStation cloak resprite
+    sprite: _WG/Resprites/Goobstation/Clothing/Neck/Cloaks/hop.rsi # WOLFGATE(Resprites): GoobStation cloak resprite
   - type: StealTarget
     stealGroup:
     - HeadCloak

@@ -1,0 +1,60 @@
+# Start the round already dependent on a drug family, with a first fix in hand. Drawbacks, so they refund points.
+# Pick one per family; they stack. A neuroware host gets the family's program on a dealer copy instead of the drug.
+
+- type: trait
+  id: WGDependentStimulant
+  name: trait-wg-dependent-stimulant-name
+  description: trait-wg-dependent-stimulant-desc
+  category: Physical
+  cost: -3
+  components:
+  - type: WGDependentStimulant
+    gear: WGBaggieCocaineCut
+    hostGear: WGNeurowareStickWhitelineCopy
+
+- type: trait
+  id: WGDependentOpioid
+  name: trait-wg-dependent-opioid-name
+  description: trait-wg-dependent-opioid-desc
+  category: Physical
+  cost: -3
+  components:
+  - type: WGDependentOpioid
+    gear: WGBaggieHeroinCut
+    hostGear: WGNeurowareStickNullLoopCopy
+
+- type: trait
+  id: WGDependentEmpathogen
+  name: trait-wg-dependent-empathogen-name
+  description: trait-wg-dependent-empathogen-desc
+  category: Physical
+  cost: -2
+  components:
+  - type: WGDependentEmpathogen
+    gear: WGVialHaloCut
+    hostGear: WGNeurowareStickHaloCopy
+
+# Cannabis withdrawal stops at cravings, like nicotine.
+- type: trait
+  id: WGDependentCannabinoid
+  name: trait-wg-dependent-cannabinoid-name
+  description: trait-wg-dependent-cannabinoid-desc
+  category: Physical
+  cost: -1
+  components:
+  - type: WGDependentCannabinoid
+    gear: Joint
+    hostGear: WGNeurowareStickIdleCopy
+
+# No program runs nicotine, so a synthetic has nothing to be hooked on.
+- type: trait
+  id: WGDependentNicotine
+  name: trait-wg-dependent-nicotine-name
+  description: trait-wg-dependent-nicotine-desc
+  category: Physical
+  cost: -1
+  traitGear: CigPackGreen
+  biotypeBlacklist:
+  - Synthetic
+  components:
+  - type: WGDependentNicotine

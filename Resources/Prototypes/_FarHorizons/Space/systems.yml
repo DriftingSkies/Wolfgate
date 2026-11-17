@@ -29,7 +29,7 @@
 
     # WOLFGATE(Planets) START: quarantined biothreat world, unsanctioned.
     # At the drone belt's edge, on a bearing clear of the Wilds.
-    - planet: WFPlanetCarcinoma
+    - planet: WGPlanetCarcinoma
       distance: 14500
       angle: 0.0
     # WOLFGATE END

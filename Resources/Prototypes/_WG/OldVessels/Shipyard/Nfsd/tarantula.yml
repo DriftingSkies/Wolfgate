@@ -1,0 +1,44 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+# Author Info
+# GitHub: Redrover1760
+# Discord: GnarlySheep
+
+- type: vessel
+  id: Tarantula
+  parent: BaseVesselIFFDisabled
+  name: TSF-SVE Tarantula
+  description: A durable ship built for sustained close-range engagements, equipped with 4 Cerberus plasma scattercannons and 2 Marauders to melt ships away.
+  price: 157049
+  purchasable: false # voucher only - T2
+  category: Medium
+  group: Security
+  access: Tsfmc
+  shuttlePath: /SharedMaps/_WG/OldVessels/Nfsd/tarantula.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: Null
+  class:
+  - Patrol
+  - Pursuit
+  engine:
+  - AME
+
+- type: gameMap
+  id: Tarantula
+  mapName: 'Tarantula'
+  mapPath: /SharedMaps/_WG/OldVessels/Nfsd/tarantula.yml
+  minPlayers: 0
+  stations:
+    Tarantula:
+      stationProto: StandardFrontierSecurityVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Tarantula TSF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Deputy: [ 0, 0 ]
+          TsfBorg: [ 0, 0 ]
+

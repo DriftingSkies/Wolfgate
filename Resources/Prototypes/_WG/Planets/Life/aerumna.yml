@@ -1,0 +1,419 @@
+# Aerumna's living world: the animals and plants of its fungal forest, boulder fields and crystal spires, laid by the
+# layers in Biomes/aerumna.yml. Names and descriptions are in Locale/en-US/_WG/Planets/aerumna_life.ftl. The hive's own
+# xenos and weeds are in Xenonids/Wild.
+
+# ---- Fauna ----
+
+# Between the groves: a few ore golems and the planet's argocytes. (The chromite leviathan is a roamer, not a spawner.)
+# Xenos stay in the hive (WGFaunaAerumnaHive).
+- type: entityTable
+  id: WGFaunaAerumna
+  table: !type:GroupSelector
+    children:
+    # A bird flock (_WG/Birds); the leader spawns the rest.
+    - id: WGMobBirdCarrion
+      weight: 2
+    - id: MobArgocyteSlurva
+      weight: 3
+    - id: MobIronGolem
+      weight: 2
+    - id: MobCoalGolem
+      weight: 1
+
+# The fungal forest: harmless, shy things that glow or hide in the dark.
+- type: entityTable
+  id: WGFaunaAerumnaForest
+  table: !type:GroupSelector
+    children:
+    # A bird flock (_WG/Birds); the leader spawns the rest.
+    - id: WGMobBirdCarrion
+      weight: 2
+    - id: WGMobGlowSlug
+      weight: 5
+    - id: WGMobShadowCat
+      weight: 3
+
+- type: entity
+  id: WGFaunaAerumnaForest
+  parent: MarkerBase
+  name: aerumna forest wildlife spawner
+  categories: [HideSpawnMenu]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGFaunaAerumnaForest
+
+# The boulder fields: a crab the planet's weight has made slow and hard.
+- type: entityTable
+  id: WGFaunaAerumnaBoulders
+  table: !type:GroupSelector
+    children:
+    - id: WGMobGravityCrab
+      weight: 1
+
+- type: entity
+  id: WGFaunaAerumnaBoulders
+  parent: MarkerBase
+  name: aerumna boulder field wildlife spawner
+  categories: [HideSpawnMenu]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGFaunaAerumnaBoulders
+
+# The crystal spires: the light that lives in them.
+- type: entityTable
+  id: WGFaunaAerumnaSpires
+  table: !type:GroupSelector
+    children:
+    - id: MobLuminousObject
+      weight: 4
+    - id: MobLuminousPerson
+      weight: 2
+    - id: MobLuminousEntity
+      weight: 1
+
+- type: entity
+  id: WGFaunaAerumnaSpires
+  parent: MarkerBase
+  name: aerumna crystal spire wildlife spawner
+  categories: [HideSpawnMenu]
+  components:
+  - type: WGPlanetFaunaSpawner
+    table: WGFaunaAerumnaSpires
+
+# A shadow cat that counts as a mob, so the wildlife system keeps it.
+- type: entity
+  parent: MobCatShadow
+  id: WGMobShadowCat
+  components:
+  - type: MobState
+    allowedStates:
+    - Alive
+    - Dead
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      12: Dead
+
+# A slug that glows green; it lights its own way through the forest and runs from nothing.
+- type: entity
+  parent: MobSlug
+  id: WGMobGlowSlug
+  components:
+  - type: Sprite
+    color: "#9dffb8"
+  - type: PointLight
+    radius: 2
+    energy: 1.2
+    color: "#8affc0"
+    castShadows: false
+
+# An ore crab that has grown dense in 3 g: slow, with a claw that hits like a boulder.
+- type: entity
+  parent: MobIronCrabNF
+  id: WGMobGravityCrab
+  components:
+  - type: Sprite
+    color: "#7a7590"
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 0.9
+    baseSprintSpeed: 1.1
+  - type: MeleeWeapon
+    attackRate: 0.6
+    damage:
+      types:
+        Blunt: 20
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      120: Alive
+      220: Dead
+  - type: Stamina
+    critThreshold: 220
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 220
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          SteelOre1:
+            min: 5
+            max: 9
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+# ---- Produce ----
+
+# A glowing cap you can carry as a light. Two cook into mushroom soup (recipes.yml).
+- type: entity
+  parent: WGWildMushroomBase
+  id: WGAerumnaGlowcap
+  components:
+  - type: Sprite
+    color: "#c8ff8f"
+  - type: PointLight
+    radius: 3.5
+    energy: 1.4
+    color: "#b9ff7a"
+    castShadows: false
+
+# Two glowcaps cook into mushroom soup like any other foraged mushroom.
+- type: microwaveMealRecipe
+  id: RecipeWGAerumnaGlowcapSoup
+  name: glowcap soup recipe
+  result: FoodSoupMushroom
+  time: 10
+  group: Soup
+  reagents:
+    Water: 10
+  solids:
+    FoodBowlBig: 1
+    WGAerumnaGlowcap: 2
+  recipeType:
+  - Oven
+  - Microwave
+
+# Sap in a pod that gives off its own light; drink it for the sweet glow.
+- type: reagent
+  id: WGGlowSap
+  name: reagent-name-wg-glow-sap
+  parent: BaseJuice
+  desc: reagent-desc-wg-glow-sap
+  physicalDesc: reagent-physical-desc-glowing
+  flavor: sweet
+  color: "#5de8ff"
+
+- type: entity
+  parent: WGWildProduceBase
+  id: WGAerumnaSapPod
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/berries.rsi
+    color: "#59e6ff"
+  - type: FlavorProfile
+    flavors:
+    - sweet
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 10
+        reagents:
+        - ReagentId: WGGlowSap
+          Quantity: 7
+        - ReagentId: Nutriment
+          Quantity: 2
+  - type: Extractable
+    juiceSolution:
+      reagents:
+      - ReagentId: WGGlowSap
+        Quantity: 7
+  - type: PointLight
+    radius: 1.8
+    energy: 0.9
+    color: "#5de8ff"
+    castShadows: false
+
+# A cap that clouds the mind: a mild hallucinogen, nothing worse.
+- type: entity
+  parent: WGWildMushroomBase
+  id: WGAerumnaMindFogCap
+  components:
+  - type: Sprite
+    color: "#a98ae6"
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 10
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 2
+        - ReagentId: SpaceDrugs
+          Quantity: 6
+
+# ---- Plants ----
+
+# A patch of glowshrooms. Pick the glowing caps by hand and carry one as a light; it regrows.
+- type: entity
+  parent: ShiptestFluffGlowshroom
+  id: WGAerumnaGlowshroom
+  components:
+  - type: Sprite
+    sprite: _WG/DecorImport/Objects/Decoration/Flora/flora_mushrooms.rsi
+    noRot: true
+    layers:
+    - state: glowshroom
+      map: ["plant"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGRegrowingHarvestVisuals.Harvested:
+        plant:
+          True: { color: "#59604c" }
+          False: { color: "#ffffff" }
+  - type: WGRegrowingHarvest
+    regrowTime: 600
+    harvestTime: 1.5
+    harvestSound:
+      collection: WGFloraVineSnap
+    table: !type:AllSelector
+      children:
+      - id: WGAerumnaGlowcap
+        amount: !type:RangeNumberSelector
+          range: 1, 2
+
+# Bioluminescent sap pods on a thin stalk. Pick one for a drink that glows.
+- type: entity
+  parent: TgFloraAshFonarstolbe
+  id: WGAerumnaSapPlant
+  components:
+  - type: Sprite
+    sprite: _WG/DecorImport/Objects/Decoration/Flora/flora_alien_plants.rsi
+    noRot: true
+    layers:
+    - state: lamppostfruit1
+      map: ["plant"]
+  - type: PointLight
+    radius: 2.2
+    energy: 1.0
+    color: "#66f0ff"
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGRegrowingHarvestVisuals.Harvested:
+        plant:
+          True: { color: "#4a5560" }
+          False: { color: "#ffffff" }
+  - type: WGRegrowingHarvest
+    regrowTime: 600
+    harvestTime: 1.5
+    harvestSound:
+      collection: WGFloraVineSnap
+    table: !type:AllSelector
+      children:
+      - id: WGAerumnaSapPod
+        amount: !type:RangeNumberSelector
+          range: 1, 2
+
+# A pale bulb that bursts into a cloud of blinding spores when something walks up to it, then rests.
+- type: entity
+  parent: NovaFloraBiolumiMine
+  id: WGAerumnaSporePod
+  components:
+  - type: Sprite
+    sprite: _WG/DecorImport/Objects/Decoration/Flora/flora_alien_plants.rsi
+    noRot: true
+    layers:
+    - state: mine
+      map: ["pod"]
+  - type: PointLight
+    radius: 2
+    energy: 0.8
+    color: "#e8f3ff"
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGReactiveFloraVisuals.State:
+        pod:
+          Idle: { scale: "1,1", color: "#ffffff" }
+          Armed: { scale: "1.3,1.3", color: "#fff6c8" }
+          Spent: { scale: "1,1", color: "#ffffff" }
+  - type: WGReactiveFlora
+    behaviour: Cloud
+    range: 1.1
+    checkInterval: 0.4
+    cooldown: 40
+    activeTime: 1.5
+    sound:
+      collection: WGFloraSporePuff
+    popup: wg-flora-sporepod-burst
+    solution:
+      reagents:
+      - ReagentId: TearGas
+        Quantity: 20
+    cloudDuration: 3
+    cloudSpread: 3
+
+# Luce-vine: it tends the xenonids that nest on Aerumna and lashes everything else that is not native to it.
+- type: entity
+  parent: AuroraAssunzioneBushLucevine
+  id: WGAerumnaLuceVine
+  components:
+  - type: Sprite
+    sprite: _WG/DecorImport/Objects/Decoration/Flora/flora_alien_plants.rsi
+    noRot: true
+    layers:
+    - state: lvcluster_1
+      map: ["vine"]
+  # The parent picks its look on `base` and `glow` layers this sprite doesn't have.
+  - type: RandomSprite
+    available:
+    - vine:
+        lvcluster_1: ""
+    - vine:
+        lvcluster_2: ""
+    - vine:
+        lvcluster_3: ""
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGReactiveFloraVisuals.State:
+        vine:
+          Idle: { scale: "1,1", color: "#ffffff" }
+          Armed: { scale: "1.15,1.15", color: "#b8d4ff" }
+          Spent: { scale: "1,1", color: "#ffffff" }
+  - type: WGReactiveFlora
+    behaviour: Lash
+    range: 1.3
+    checkInterval: 0.5
+    cooldown: 3
+    maxTargets: 2
+    sound:
+      collection: WGFloraLash
+    popup: wg-flora-lucevine-lash
+    damage:
+      types:
+        Slash: 5
+        Poison: 3
+    knockback: 0.6
+    ignoreFactions: [SimpleHostile, SimpleNeutral]
+    healInsteadFactions: [Xeno]
+    healDamage:
+      groups:
+        Brute: -10
+        Burn: -6
+    healSound:
+      collection: WGFloraHeal
+
+# A bruise-coloured cap that grows where the forest is deepest. Pick it; eat it and the world swims a little.
+- type: entity
+  parent: AuroraFloraBushMushroom
+  id: WGAerumnaMindFogMushroom
+  components:
+  - type: Sprite
+    sprite: _WG/DecorImport/Objects/Decoration/Flora/flora_mushrooms.rsi
+    noRot: true
+    layers:
+    - state: fungus_bush
+      map: ["plant"]
+      color: "#b79cf2"
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGRegrowingHarvestVisuals.Harvested:
+        plant:
+          True: { color: "#6b6480" }
+          False: { color: "#b79cf2" }
+  - type: WGRegrowingHarvest
+    regrowTime: 900
+    harvestTime: 2
+    harvestSound:
+      collection: WGFloraVineSnap
+    table: !type:AllSelector
+      children:
+      - id: WGAerumnaMindFogCap
+        amount: !type:RangeNumberSelector
+          range: 1, 2

@@ -2,8 +2,8 @@ using Content.Shared.Clothing.Components;
 using Content.Shared.Clothing.EntitySystems;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
-using Content.Shared._WF.Modsuits.Components; // WOLFGATE(Modsuits)
-using Content.Shared._WF.Modsuits.Modules; // WOLFGATE(Modsuits)
+using Content.Shared._WG.Modsuits.Components; // WOLFGATE(Modsuits)
+using Content.Shared._WG.Modsuits.Modules; // WOLFGATE(Modsuits)
 using Robust.Client.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;

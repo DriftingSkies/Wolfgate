@@ -15,8 +15,8 @@ using Robust.Server.Player;
 using Robust.Shared.Enums;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
-using Content.Server._WF.ShipAccess; // WOLFGATE(ShipAccess)
-using Content.Server._WF.MappingMode; // WOLFGATE(MappingMode)
+using Content.Server._WG.ShipAccess; // WOLFGATE(ShipAccess)
+using Content.Server._WG.MappingMode; // WOLFGATE(MappingMode)
 
 namespace Content.Server.Sandbox
 {
@@ -31,7 +31,7 @@ namespace Content.Server.Sandbox
         [Dependency] private ItemSlotsSystem _slots = default!;
         [Dependency] private GameTicker _ticker = default!;
         [Dependency] private SharedHandsSystem _handsSystem = default!;
-        [Dependency] private WFMappingModeSystem _wfMapping = default!; // WOLFGATE(MappingMode)
+        [Dependency] private WGMappingModeSystem _wgMapping = default!; // WOLFGATE(MappingMode)
 
         private bool _isSandboxEnabled;
 
@@ -71,14 +71,14 @@ namespace Content.Server.Sandbox
                 if (_conGroupController.CanAdminPlace(player))
                 {
                     // WOLFGATE(MappingMode) START: admins who map get the won't-be-saved warning and tile routing too
-                    _wfMapping.WarnPlacement(player, placement);
-                    _wfMapping.RouteAdminPlacement(player, placement);
+                    _wgMapping.WarnPlacement(player, placement);
+                    _wgMapping.RouteAdminPlacement(player, placement);
                     // WOLFGATE END
                     return true;
                 }
 
                 // WOLFGATE(MappingMode): mappers place, erase and lay tiles on their own session's maps
-                if (_wfMapping.AllowPlacement(player, placement))
+                if (_wgMapping.AllowPlacement(player, placement))
                     return true;
 
                 return false;
@@ -133,7 +133,7 @@ namespace Content.Server.Sandbox
 
             var allAccess = PrototypeManager
                 .EnumeratePrototypes<AccessLevelPrototype>()
-                .Where(p => p.ID != WFShipAccessServerSystem.LockedAccess) // WOLFGATE(ShipAccess): all access is not a key to every locked ship
+                .Where(p => p.ID != WGShipAccessServerSystem.LockedAccess) // WOLFGATE(ShipAccess): all access is not a key to every locked ship
                 .Select(p => new ProtoId<AccessLevelPrototype>(p.ID)).ToList();
 
             if (_inventory.TryGetSlotEntity(attached, "id", out var slotEntity))

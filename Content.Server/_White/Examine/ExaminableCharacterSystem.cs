@@ -7,7 +7,7 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Player;
 using System.Globalization;
 using Content.Shared.CCVar;
-using Content.Server._WF.ExamineCard; // WOLFGATE(ExamineCard)
+using Content.Server._WG.ExamineCard; // WOLFGATE(ExamineCard)
 
 namespace Content.Server._White.Examine
 {

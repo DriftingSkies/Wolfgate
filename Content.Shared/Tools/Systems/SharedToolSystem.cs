@@ -180,9 +180,9 @@ public abstract partial class SharedToolSystem : EntitySystem
         var toolEvent = new ToolDoAfterEvent(fuel, doAfterEv, GetNetEntity(target));
         var doAfterLength = delay / toolComponent.SpeedModifier; // Goob - doAfterLength var
         // WOLFGATE(ArmorSpecialization) START: worn gear (servo assist) may speed the user's tool work.
-        var wfSpeed = new Content.Shared._WF.ArmorSpecialization.WFToolSpeedEvent();
-        RaiseLocalEvent(user, ref wfSpeed);
-        doAfterLength /= MathF.Max(wfSpeed.Multiplier, 0.1f);
+        var wgSpeed = new Content.Shared._WG.ArmorSpecialization.WGToolSpeedEvent();
+        RaiseLocalEvent(user, ref wgSpeed);
+        doAfterLength /= MathF.Max(wgSpeed.Multiplier, 0.1f);
         // WOLFGATE END
         var doAfterArgs = new DoAfterArgs(EntityManager, user, doAfterLength, toolEvent, tool, target: target, used: tool)
         {

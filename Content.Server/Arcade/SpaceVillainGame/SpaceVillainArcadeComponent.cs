@@ -1,7 +1,7 @@
 using Content.Shared.Arcade;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Arcade.SpaceVillain;
 

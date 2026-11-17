@@ -145,7 +145,7 @@ public abstract partial class SharedNavMapSystem : EntitySystem
 
         // Should this be a full component state or a delta-state?
         // WOLFGATE(Performance): a client behind the trimmed removal history gets a full state
-        if (args.FromTick <= component.CreationTick || args.FromTick <= component.WFRemovedTrimmedTo)
+        if (args.FromTick <= component.CreationTick || args.FromTick <= component.WGRemovedTrimmedTo)
         {
             // Full state
             chunks = new(component.Chunks.Count);
@@ -170,7 +170,7 @@ public abstract partial class SharedNavMapSystem : EntitySystem
         // WOLFGATE(Performance) START: name only the removals since the client's ack, not every chunk on the grid
         // args.State = new NavMapDeltaState(chunks, component.Beacons, component.RegionProperties, new(component.Chunks.Keys));
         var removed = new HashSet<Vector2i>();
-        foreach (var (origin, tick) in component.WFRemovedChunks)
+        foreach (var (origin, tick) in component.WGRemovedChunks)
         {
             if (tick >= args.FromTick)
                 removed.Add(origin);

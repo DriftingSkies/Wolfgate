@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using Content.Server._NF.Traits.Assorted;
-using Content.Server._WF.Cloning; // WOLFGATE(Cloning)
+using Content.Server._WG.Cloning; // WOLFGATE(Cloning)
 using Content.Server.Chat.Systems;
 using Content.Server.Cloning;
 using Content.Server.Cloning.Components;
@@ -58,7 +58,7 @@ public sealed partial class GeneticCloningSystem : EntitySystem
     [Dependency] private SharedMindSystem _mindSystem = default!;
     [Dependency] private TransformSystem _transformSystem = default!;
     [Dependency] private GrammarSystem _grammar = default!;
-    [Dependency] private WFCloneTemplateSystem _wfCloneTemplate = default!; // WOLFGATE(Cloning)
+    [Dependency] private WGCloneTemplateSystem _wgCloneTemplate = default!; // WOLFGATE(Cloning)
 
     /// <summary>
     /// body check for ui
@@ -123,7 +123,7 @@ public sealed partial class GeneticCloningSystem : EntitySystem
             HasBankAccount = HasComp<BankAccountComponent>(body),
             ScannedAt = _timing.CurTime, //not sure if this is needed anymore
             FailChance = failChance, // WOLFGATE(Cloning)
-            WfTemplate = _wfCloneTemplate.Capture(body), // WOLFGATE(Cloning)
+            WgTemplate = _wgCloneTemplate.Capture(body), // WOLFGATE(Cloning)
         };
 
         foreach (var comp in AllComps(body))
@@ -227,7 +227,7 @@ public sealed partial class GeneticCloningSystem : EntitySystem
             }
         }
 
-        _wfCloneTemplate.Apply(mob, record.WfTemplate); // WOLFGATE(Cloning): replaces CloningEvent, which needs the source body
+        _wgCloneTemplate.Apply(mob, record.WgTemplate); // WOLFGATE(Cloning): replaces CloningEvent, which needs the source body
 
         _metaSystem.SetEntityName(mob, record.Name);
 

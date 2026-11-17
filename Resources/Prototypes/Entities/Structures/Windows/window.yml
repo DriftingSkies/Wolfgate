@@ -16,7 +16,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactGlass # WOLFGATE(Weapons)
+        collection: WGBulletImpactGlass # WOLFGATE(Weapons)
   - type: Anchorable
     flags:
     - Anchorable
@@ -177,7 +177,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactGlass # WOLFGATE(Weapons)
+        collection: WGBulletImpactGlass # WOLFGATE(Weapons)
   - type: WallMount
     arc: 360 # interact despite grilles
   - type: Tag

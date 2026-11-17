@@ -130,7 +130,7 @@ public sealed partial class DoorSystem : SharedDoorSystem
     }
 
     // WOLFGATE(InteractionParticles) START: a door that reverses mid-animation must not run both animations at once
-    private static readonly string[] WfDoorAnimationKeys =
+    private static readonly string[] WgDoorAnimationKeys =
     {
         DoorComponent.OpenKey, DoorComponent.CloseKey, DoorComponent.DenyKey, DoorComponent.EmagKey,
     };
@@ -146,7 +146,7 @@ public sealed partial class DoorSystem : SharedDoorSystem
             _ => null,
         };
 
-        foreach (var key in WfDoorAnimationKeys)
+        foreach (var key in WgDoorAnimationKeys)
         {
             if (key != keep && _animationSystem.HasRunningAnimation(door, key))
                 _animationSystem.Stop(door, key);

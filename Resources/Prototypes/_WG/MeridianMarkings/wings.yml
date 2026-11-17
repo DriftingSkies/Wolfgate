@@ -1,0 +1,510 @@
+- type: marking
+  id: WGMeridianWingsAngel
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    angel_BEHIND: TailBehind
+  colorLinks:
+    angel_BEHIND: angel
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: angel
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: angel_BEHIND
+
+- type: marking
+  id: WGMeridianWingsDragon
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  layering:
+    dragon_BEHIND: TailBehind
+  colorLinks:
+    dragon_BEHIND: dragon
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: dragon
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: dragon_BEHIND
+
+- type: marking
+  id: WGMeridianWingsHalfSpiderlegsThick
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    half_spiderlegs_thick_primary_BEHIND: TailBehind
+    half_spiderlegs_thick_secondary_BEHIND: TailBehind
+  colorLinks:
+    half_spiderlegs_thick_primary_BEHIND: half_spiderlegs_thick_primary
+    half_spiderlegs_thick_secondary_BEHIND: half_spiderlegs_thick_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: half_spiderlegs_thick_primary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: half_spiderlegs_thick_secondary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: half_spiderlegs_thick_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: half_spiderlegs_thick_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianWingsHarpyFluffyDualTone
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      harpy_fluffy_dual_tone_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  layering:
+    harpy_fluffy_dual_tone_primary_BEHIND: TailBehind
+    harpy_fluffy_dual_tone_secondary_BEHIND: TailBehind
+  colorLinks:
+    harpy_fluffy_dual_tone_primary_BEHIND: harpy_fluffy_dual_tone_primary
+    harpy_fluffy_dual_tone_secondary_BEHIND: harpy_fluffy_dual_tone_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: harpy_fluffy_dual_tone_primary
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: harpy_fluffy_dual_tone_secondary
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: harpy_fluffy_dual_tone_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: harpy_fluffy_dual_tone_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianWingsHarpyFluffyDualToneTop
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      harpy_fluffy_dual_tone_top_primary:
+        type:
+          !type:SimpleColoring
+            color: "#FFFFFF"
+      harpy_fluffy_dual_tone_top_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  layering:
+    harpy_fluffy_dual_tone_top_primary_BEHIND: TailBehind
+    harpy_fluffy_dual_tone_top_secondary_BEHIND: TailBehind
+  colorLinks:
+    harpy_fluffy_dual_tone_top_primary_BEHIND: harpy_fluffy_dual_tone_top_primary
+    harpy_fluffy_dual_tone_top_secondary_BEHIND: harpy_fluffy_dual_tone_top_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: harpy_fluffy_dual_tone_top_primary
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: harpy_fluffy_dual_tone_top_secondary
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: harpy_fluffy_dual_tone_top_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: harpy_fluffy_dual_tone_top_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianWingsInsectoidII
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  layering:
+    insectoid_ii_BEHIND: TailBehind
+  colorLinks:
+    insectoid_ii_BEHIND: insectoid_ii
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: insectoid_ii
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: insectoid_ii_BEHIND
+
+- type: marking
+  id: WGMeridianWingsMantaRay
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      manta_ray_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  layering:
+    manta_ray_primary_BEHIND: TailBehind
+    manta_ray_secondary_BEHIND: TailBehind
+  colorLinks:
+    manta_ray_primary_BEHIND: manta_ray_primary
+    manta_ray_secondary_BEHIND: manta_ray_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: manta_ray_primary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: manta_ray_secondary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: manta_ray_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: manta_ray_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianWingsMantisAltTop
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      mantis_alt_top_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  layering:
+    mantis_alt_top_primary_BEHIND: TailBehind
+    mantis_alt_top_secondary_BEHIND: TailBehind
+  colorLinks:
+    mantis_alt_top_primary_BEHIND: mantis_alt_top_primary
+    mantis_alt_top_secondary_BEHIND: mantis_alt_top_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: mantis_alt_top_primary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: mantis_alt_top_secondary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: mantis_alt_top_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: mantis_alt_top_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianWingsMantisTop
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    mantis_top_primary_BEHIND: TailBehind
+    mantis_top_secondary_BEHIND: TailBehind
+  colorLinks:
+    mantis_top_primary_BEHIND: mantis_top_primary
+    mantis_top_secondary_BEHIND: mantis_top_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: mantis_top_primary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: mantis_top_secondary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: mantis_top_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: mantis_top_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianWingsMothBluespace
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    moth_bluespace_BEHIND: TailBehind
+  colorLinks:
+    moth_bluespace_BEHIND: moth_bluespace
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_bluespace
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_bluespace_BEHIND
+
+- type: marking
+  id: WGMeridianWingsMothCitheronia
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    moth_citheronia_primary_BEHIND: TailBehind
+    moth_citheronia_secondary_BEHIND: TailBehind
+    moth_citheronia_tertiary_BEHIND: TailBehind
+  colorLinks:
+    moth_citheronia_primary_BEHIND: moth_citheronia_primary
+    moth_citheronia_secondary_BEHIND: moth_citheronia_secondary
+    moth_citheronia_tertiary_BEHIND: moth_citheronia_tertiary
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_citheronia_primary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_citheronia_secondary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_citheronia_tertiary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_citheronia_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_citheronia_secondary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_citheronia_tertiary_BEHIND
+
+- type: marking
+  id: WGMeridianWingsMothClockwork
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    moth_clockwork_BEHIND: TailBehind
+  colorLinks:
+    moth_clockwork_BEHIND: moth_clockwork
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_clockwork
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_clockwork_BEHIND
+
+- type: marking
+  id: WGMeridianWingsMothLightbearer
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    moth_lightbearer_BEHIND: TailBehind
+  colorLinks:
+    moth_lightbearer_BEHIND: moth_lightbearer
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_lightbearer
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_lightbearer_BEHIND
+
+- type: marking
+  id: WGMeridianWingsMothStrawberry
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    moth_strawberry_BEHIND: TailBehind
+  colorLinks:
+    moth_strawberry_BEHIND: moth_strawberry
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_strawberry
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: moth_strawberry_BEHIND
+
+- type: marking
+  id: WGMeridianWingsRobotic
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    robotic_BEHIND: TailBehind
+  colorLinks:
+    robotic_BEHIND: robotic
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: robotic
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: robotic_BEHIND
+
+- type: marking
+  id: WGMeridianWingsSpiderlegsMechanical
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    spiderlegs_mechanical_primary_BEHIND: TailBehind
+    spiderlegs_mechanical_secondary_BEHIND: TailBehind
+    spiderlegs_mechanical_tertiary_BEHIND: TailBehind
+  colorLinks:
+    spiderlegs_mechanical_primary_BEHIND: spiderlegs_mechanical_primary
+    spiderlegs_mechanical_secondary_BEHIND: spiderlegs_mechanical_secondary
+    spiderlegs_mechanical_tertiary_BEHIND: spiderlegs_mechanical_tertiary
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_mechanical_primary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_mechanical_secondary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_mechanical_tertiary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_mechanical_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_mechanical_secondary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_mechanical_tertiary_BEHIND
+
+- type: marking
+  id: WGMeridianWingsSpiderlegsSegmented
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    spiderlegs_segmented_primary_BEHIND: TailBehind
+    spiderlegs_segmented_secondary_BEHIND: TailBehind
+    spiderlegs_segmented_tertiary_BEHIND: TailBehind
+  colorLinks:
+    spiderlegs_segmented_primary_BEHIND: spiderlegs_segmented_primary
+    spiderlegs_segmented_secondary_BEHIND: spiderlegs_segmented_secondary
+    spiderlegs_segmented_tertiary_BEHIND: spiderlegs_segmented_tertiary
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_segmented_primary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_segmented_secondary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_segmented_tertiary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_segmented_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_segmented_secondary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_segmented_tertiary_BEHIND
+
+- type: marking
+  id: WGMeridianWingsSpiderlegsStriped
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    spiderlegs_striped_primary_BEHIND: TailBehind
+    spiderlegs_striped_secondary_BEHIND: TailBehind
+  colorLinks:
+    spiderlegs_striped_primary_BEHIND: spiderlegs_striped_primary
+    spiderlegs_striped_secondary_BEHIND: spiderlegs_striped_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_striped_primary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_striped_secondary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_striped_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: spiderlegs_striped_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianWingsTarantula
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    tarantula_primary_BEHIND: TailBehind
+    tarantula_secondary_BEHIND: TailBehind
+  colorLinks:
+    tarantula_primary_BEHIND: tarantula_primary
+    tarantula_secondary_BEHIND: tarantula_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: tarantula_primary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: tarantula_secondary
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: tarantula_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings.rsi
+    state: tarantula_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianWingsTriWings
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      tri_wings_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+      tri_wings_tertiary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  layering:
+    tri_wings_primary_BEHIND: TailBehind
+    tri_wings_secondary_BEHIND: TailBehind
+    tri_wings_tertiary_BEHIND: TailBehind
+  colorLinks:
+    tri_wings_primary_BEHIND: tri_wings_primary
+    tri_wings_secondary_BEHIND: tri_wings_secondary
+    tri_wings_tertiary_BEHIND: tri_wings_tertiary
+  sprites:
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: tri_wings_primary
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: tri_wings_secondary
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: tri_wings_tertiary
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: tri_wings_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: tri_wings_secondary_BEHIND
+  - sprite: _WG/MeridianMarkings/wings_48x32.rsi
+    state: tri_wings_tertiary_BEHIND

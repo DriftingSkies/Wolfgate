@@ -1,4 +1,4 @@
-using Content.Shared._WF.RMCCore.Input; // WOLFGATE(Xenonids)
+using Content.Shared._WG.RMCCore.Input; // WOLFGATE(Xenonids)
 using Content.Shared.Input;
 using Robust.Shared.Input;
 
@@ -66,7 +66,7 @@ namespace Content.Client.Input
             human.AddFunction(ContentKeyFunctions.SwapHands);
             human.AddFunction(ContentKeyFunctions.SwapHandsPrevious); // Frontier
             human.AddFunction(ContentKeyFunctions.Drop);
-            human.AddFunction(ContentKeyFunctions.WFOfferItem); // WOLFGATE(ExtraInteractions): hold out the active item
+            human.AddFunction(ContentKeyFunctions.WGOfferItem); // WOLFGATE(ExtraInteractions): hold out the active item
             human.AddFunction(ContentKeyFunctions.UseItemInHand);
             human.AddFunction(ContentKeyFunctions.AltUseItemInHand);
             human.AddFunction(ContentKeyFunctions.OpenCharacterMenu);

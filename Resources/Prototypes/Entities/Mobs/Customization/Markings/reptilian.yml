@@ -153,13 +153,13 @@
   #   state: tail_smooth_primary
   # - sprite: Mobs/Customization/reptilian_parts.rsi
   #   state: tail_smooth_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
     state: tail_smooth_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
     state: tail_smooth_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
     state: tail_smooth_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
     state: tail_smooth_secondary_BEHIND
   # WOLFGATE END
 
@@ -176,9 +176,9 @@
   sprites:
   # - sprite: Mobs/Customization/reptilian_parts.rsi
   #   state: tail_large
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
     state: tail_large_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
     state: tail_large_BEHIND
   # WOLFGATE END
 
@@ -195,9 +195,9 @@
   sprites:
   # - sprite: Mobs/Customization/reptilian_parts.rsi
   #   state: tail_spikes
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
     state: tail_spikes_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
     state: tail_spikes_BEHIND
   # WOLFGATE END
 
@@ -214,9 +214,9 @@
   sprites:
   # - sprite: Mobs/Customization/reptilian_parts.rsi
   #   state: tail_ltiger
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
     state: tail_ltiger_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
     state: tail_ltiger_BEHIND
   # WOLFGATE END
 
@@ -233,9 +233,9 @@
   sprites:
   # - sprite: Mobs/Customization/reptilian_parts.rsi
   #   state: tail_dtiger
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
     state: tail_dtiger_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
     state: tail_dtiger_BEHIND
   # WOLFGATE END
 
@@ -431,13 +431,13 @@
     #   state: tail_smooth_wagging_primary
     # - sprite: Mobs/Customization/reptilian_parts.rsi
     #   state: tail_smooth_wagging_secondary
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
       state: tail_smooth_wagging_primary_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
       state: tail_smooth_wagging_secondary_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
       state: tail_smooth_wagging_primary_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
       state: tail_smooth_wagging_secondary_BEHIND
   # WOLFGATE END
 
@@ -454,9 +454,9 @@
   sprites:
     # - sprite: Mobs/Customization/reptilian_parts.rsi
     #   state: tail_spikes_wagging
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
       state: tail_spikes_wagging_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
       state: tail_spikes_wagging_BEHIND
   # WOLFGATE END
 
@@ -473,9 +473,9 @@
   sprites:
     # - sprite: Mobs/Customization/reptilian_parts.rsi
     #   state: tail_ltiger_wagging
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
       state: tail_ltiger_wagging_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
       state: tail_ltiger_wagging_BEHIND
   # WOLFGATE END
 
@@ -492,8 +492,8 @@
   sprites:
     # - sprite: Mobs/Customization/reptilian_parts.rsi
     #   state: tail_dtiger_wagging
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
       state: tail_dtiger_wagging_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi
       state: tail_dtiger_wagging_BEHIND
   # WOLFGATE END

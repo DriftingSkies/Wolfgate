@@ -1,8 +1,8 @@
 using System.Numerics;
 using Content.Client.Parallax.Managers;
 using Content.Client.Viewport; // CrystallEdge
-using Content.Client._WF.Caverns; // WOLFGATE(Caverns)
-using Content.Client._WF.Shuttles.Systems; // WOLFGATE(Shuttles)
+using Content.Client._WG.Caverns; // WOLFGATE(Caverns)
+using Content.Client._WG.Shuttles.Systems; // WOLFGATE(Shuttles)
 using Content.Shared._CE.ZLevels.Core.Components; // CrystallEdge
 using Content.Shared._CE.ZLevels.Core.EntitySystems; // CrystallEdge
 using Content.Shared.CCVar;
@@ -42,7 +42,7 @@ public sealed partial class ParallaxOverlay : Overlay
         if (args.MapId == MapId.Nullspace)
             return false;
 
-        if (_entManager.System<WFCavernViewSystem>().HidesSky(args.MapUid, args.WorldAABB)) // WOLFGATE(Caverns): no sky in a cavern or through a cavern mouth.
+        if (_entManager.System<WGCavernViewSystem>().HidesSky(args.MapUid, args.WorldAABB)) // WOLFGATE(Caverns): no sky in a cavern or through a cavern mouth.
             return false;
 
         //CrystallEdge draw parallax only for lowest zlevel

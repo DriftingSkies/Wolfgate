@@ -1,0 +1,10 @@
+# The question mark over a trader's head, drawn where the SSD indicator is. TraderIconSystem shows it on every living trader.
+- type: ssdIcon
+  id: WGTraderIcon
+  icon:
+    sprite: /Textures/_WG/Traders/trader_mark.rsi
+    state: mark
+  locationPreference: Left
+  priority: -1
+  layer: Mod
+  offset: 0

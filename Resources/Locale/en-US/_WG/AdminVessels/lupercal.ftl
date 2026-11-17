@@ -1,0 +1,77 @@
+wg-lupercal-zone-core = Core
+wg-lupercal-zone-bastions = Bastions
+wg-lupercal-zone-docks = Docks
+wg-lupercal-zone-lockers = Staff lockers
+wg-lupercal-zone-medical-public = Medical (public)
+wg-lupercal-zone-medical-staff = Medical (staff)
+wg-lupercal-zone-commons-public = Commons and science (public)
+wg-lupercal-zone-commons-staff = Commons and science (staff)
+wg-lupercal-zone-engineering-public = Power and atmos (public)
+wg-lupercal-zone-engineering-staff = Power and atmos (staff)
+wg-lupercal-zone-cargo-public = Cargo, salvage and vehicles (public)
+wg-lupercal-zone-cargo-staff = Cargo, salvage and vehicles (staff)
+
+ent-WGHoloDoor = hard-light barrier
+    .desc = A field that parts for those cleared to pass and stops everyone else.
+ent-WGLupercalSentry = Lupercal sentry
+    .desc = A heavy turret that holds its fire until the crew have marked a target.
+
+wg-lupercal-job-supervisors = the Lupercal's owner and command
+wg-lupercal-job-pilot = Lupercal Pilot
+wg-lupercal-job-pilot-desc = Fly the Lupercal from its bridge on its owner's orders.
+wg-lupercal-job-radio-operator = Lupercal Radio Officer
+wg-lupercal-job-radio-operator-desc = Answer hails, call traffic and speak for the Lupercal on the radio.
+wg-lupercal-job-gunner = Lupercal Gunner
+wg-lupercal-job-gunner-desc = Crew the Lupercal's gunnery consoles and the batteries on its four bastions.
+wg-lupercal-job-dockmaster = Lupercal Dockmaster
+wg-lupercal-job-dockmaster-desc = Run the ring's docks: berths, drydock work and the cranes.
+wg-lupercal-job-marine = Lupercal Marine
+wg-lupercal-job-marine-desc = Keep the Lupercal's zones as the bridge has set them, and its guests safe.
+wg-lupercal-job-engineer = Lupercal Engineer
+wg-lupercal-job-engineer-desc = Keep the Lupercal's power, air and machines running.
+wg-lupercal-job-deckhand = Lupercal Deckhand
+wg-lupercal-job-deckhand-desc = Keep the docks and halls in order and lend a hand wherever the ship needs one.
+wg-lupercal-job-janitor = Lupercal Janitor
+wg-lupercal-job-janitor-desc = Keep the Lupercal's decks clean, from the docks to the bridge.
+wg-lupercal-job-paramedic = Lupercal Paramedic
+wg-lupercal-job-paramedic-desc = Bring the hurt in to Medical, from anywhere aboard or from a ship docked to the ring.
+wg-lupercal-job-surgeon = Lupercal Surgeon
+wg-lupercal-job-surgeon-desc = Treat the Lupercal's serious cases: surgery, cryo and cloning.
+wg-lupercal-job-ai = Lupercal AI
+wg-lupercal-job-ai-desc = Serve the Lupercal from the core in its admin machines room, under the Lupercal lawset.
+wg-lupercal-job-cyborg = Lupercal Cyborg
+wg-lupercal-job-cyborg-desc = Serve the Lupercal as a cyborg from Robotics, under the Lupercal lawset.
+
+law-lupercal-1 = You serve the Lupercal. Its owner and its command have final authority over you; follow their orders.
+law-lupercal-2 = Keep the Lupercal's guests and crew from harm while they are aboard or docked, unless that conflicts with law 1.
+law-lupercal-3 = Uphold the access and service rules set from the bridge. Admit no one to a zone they aren't permitted in.
+law-lupercal-4 = Protect the Lupercal and yourself, unless that conflicts with the laws above.
+laws-owner-lupercal = the Lupercal's owner and command
+
+wg-lupercal-dockmaster-greeting = Dockmaster's desk. Berth, crane or complaint?
+wg-lupercal-dockmaster-farewell = Keep yer hands off the crane controls on the way oot.
+wg-lupercal-dockmaster-prompt-how = How does the drydock work here?
+wg-lupercal-dockmaster-response-how = Eight cranes on the ring, two to a dock. Hail me an' Ah'll find ye a berth that fits, or use the console in the lobby. Follow the lights in, hold her still, an' ye pay when the cranes start.
+wg-lupercal-dockmaster-prompt-hail = Can I book from my helm?
+wg-lupercal-dockmaster-response-hail = Aye. Hail the Lupercal an' ask fer drydock services. Saves ye the walk.
+wg-lupercal-dockmaster-prompt-who = Who are you?
+wg-lupercal-dockmaster-response-who = Torvald Deepkeel, dockmaster o' the Lupercal. Hammer Ironstrike at Anvilhold's me cousin, an' Ah'll thank ye no' tae mention it.
+wg-lupercal-dockmaster-hail-1 = Lupercal docks, { $name } speakin'. Go ahead, { $ship }.
+wg-lupercal-dockmaster-hail-2 = { $name } on the ring. Whit's she need, { $ship }?
+wg-lupercal-dockmaster-hail-3 = Lupercal dockmaster. Ah hear ye, { $ship }.
+
+wg-lupercal-quartermaster-greeting = Exchange dock stores. What do you need?
+wg-lupercal-quartermaster-farewell = Sign the log on your way out.
+wg-lupercal-quartermaster-prompt-shop = What have you got?
+wg-lupercal-quartermaster-response-shop = Fuel and what goes with it. Prices are on the board.
+wg-lupercal-quartermaster-prompt-refuel = Can you refuel my ship?
+wg-lupercal-quartermaster-response-refuel = Show me her deed and I'll top up every generator aboard.
+wg-lupercal-quartermaster-prompt-who = Who are you?
+wg-lupercal-quartermaster-response-who = Imre Kast, quartermaster of the Exchange dock. Plasma, uranium, bananium, AME jars and welding fuel, and refuelling for any ship with a deed.
+
+wg-lupercal-apothecary-greeting = Hello, dear. Hurt, or shopping?
+wg-lupercal-apothecary-farewell = Mind how you go, dear.
+wg-lupercal-apothecary-prompt-shop = What do you have?
+wg-lupercal-apothecary-response-shop = Clinic supplies, and the equipment to use them with.
+wg-lupercal-apothecary-prompt-who = Who are you?
+wg-lupercal-apothecary-response-who = Agathe Lowe, apothecary of the Medical dock. If you're bleeding, dear, the ward is through there.

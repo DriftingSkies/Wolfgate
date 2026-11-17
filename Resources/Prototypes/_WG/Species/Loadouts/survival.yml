@@ -1,0 +1,9 @@
+# Avali auto-injector in every survival loadout group, the way Vox get a nitrogen tank
+- type: loadout
+  id: WGLoadoutSpeciesAvaliAutoInjector
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: WGEffectSpeciesAvali
+  storage:
+    back:
+    - AvaliAutoInjector

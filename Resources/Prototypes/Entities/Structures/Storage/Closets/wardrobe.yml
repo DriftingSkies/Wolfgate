@@ -16,7 +16,7 @@
   description: "A wardrobe packed with stylish blue clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/generic-wardrobe-blue.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/generic-wardrobe-blue.rsi
 
 # Pink wardrobe
 - type: entity
@@ -26,7 +26,7 @@
   description: "A wardrobe packed with fabulous pink clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/generic-wardrobe-pink.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/generic-wardrobe-pink.rsi
 
 # Black wardrobe
 - type: entity
@@ -36,7 +36,7 @@
   description: "A wardrobe packed with stylish black clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/generic-wardrobe-black.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/generic-wardrobe-black.rsi
 
 # Green wardrobe
 - type: entity
@@ -46,7 +46,7 @@
   description: "A wardrobe packed with stylish green clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/generic-wardrobe-green.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/generic-wardrobe-green.rsi
 
 # Prison wardrobe
 - type: entity
@@ -56,7 +56,7 @@
   categories: [ HideSpawnMenu ] # Frontier
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/prisoner-wardrobe.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/prisoner-wardrobe.rsi
 
 # Yellow wardrobe
 - type: entity
@@ -66,7 +66,7 @@
   description: "A wardrobe packed with stylish yellow clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/generic-wardrobe-yellow.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/generic-wardrobe-yellow.rsi
 
 # White wardrobe
 - type: entity
@@ -76,7 +76,7 @@
   description: "A wardrobe packed with stylish white clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/generic-wardrobe-white.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/generic-wardrobe-white.rsi
 
 # Grey wardrobe
 - type: entity
@@ -86,7 +86,7 @@
   description: "A wardrobe packed with a tide of grey clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/generic-wardrobe.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/generic-wardrobe.rsi
 
 # Mixed wardrobe
 - type: entity
@@ -96,7 +96,7 @@
   description: "A wardrobe packed with a mix of colorful clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/generic-wardrobe-mixed.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/generic-wardrobe-mixed.rsi
 
 # Jobs
 
@@ -106,7 +106,7 @@
   name: security wardrobe
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/security-wardrobe.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/security-wardrobe.rsi
 
 - type: entity
   id: WardrobeAtmospherics
@@ -114,7 +114,7 @@
   name: atmospherics wardrobe
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-wardrobe-atmos.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/engineering-wardrobe-atmos.rsi
 
 - type: entity
   id: ClosetJanitor
@@ -135,7 +135,7 @@
   description: It's a storage unit for foodservice garments and mouse traps.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/service-wardrobe-kitchen.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/service-wardrobe-kitchen.rsi
 
 - type: entity
   id: WardrobeChapel
@@ -144,7 +144,7 @@
   description: It's a storage unit for TSF regionally-approved religious attire.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/service-wardrobe-chapel.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/service-wardrobe-chapel.rsi
 
 - type: entity
   id: ClosetLegal
@@ -153,7 +153,7 @@
   description: It's a storage unit for courtroom apparel and items.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/service-wardrobe-legal.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/service-wardrobe-legal.rsi
 
 - type: entity
   id: WardrobeCargo
@@ -161,7 +161,7 @@
   name: cargo wardrobe
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/cargo-wardrobe.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/cargo-wardrobe.rsi
 
 - type: entity
   id: WardrobeSalvage
@@ -170,7 +170,7 @@
   description: Notably not salvaged.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/cargo-wardrobe-salvage.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/cargo-wardrobe-salvage.rsi
 
 - type: entity
   id: WardrobeEngineering
@@ -178,7 +178,7 @@
   name: engineering wardrobe
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-wardrobe.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/engineering-wardrobe.rsi
 
 - type: entity
   id: WardrobeMedicalDoctor
@@ -186,7 +186,7 @@
   name: medical doctor's wardrobe
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/medical-wardrobe-doctor.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/medical-wardrobe-doctor.rsi
 
 - type: entity
   id: WardrobeRobotics
@@ -194,7 +194,7 @@
   name: robotics wardrobe
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/misc-wardrobe-robotics.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/misc-wardrobe-robotics.rsi
 
 - type: entity
   id: WardrobeChemistry
@@ -202,7 +202,7 @@
   name: chemistry wardrobe
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/medical-wardrobe-chemistry.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/medical-wardrobe-chemistry.rsi
 
 - type: entity
   id: WardrobeGenetics
@@ -210,7 +210,7 @@
   name: genetics wardrobe
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/misc-wardrobe-genetics.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/misc-wardrobe-genetics.rsi
 
 - type: entity
   id: WardrobeVirology
@@ -218,7 +218,7 @@
   name: virology wardrobe
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/misc-wardrobe-virology.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/misc-wardrobe-virology.rsi
 
 - type: entity
   id: WardrobeScience
@@ -226,7 +226,7 @@
   name: science wardrobe
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/science-wardrobe.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/science-wardrobe.rsi
 
 - type: entity
   id: WardrobeBotanist
@@ -234,5 +234,5 @@
   name: botanist wardrobe
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/service-wardrobe-botany.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/service-wardrobe-botany.rsi
 # WOLFGATE END

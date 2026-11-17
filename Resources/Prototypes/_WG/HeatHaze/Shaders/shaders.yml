@@ -1,0 +1,9 @@
+- type: shader
+  id: WGHeatHaze
+  kind: source
+  path: "/Textures/_WG/HeatHaze/Shaders/heat_haze.swsl"
+
+- type: shader
+  id: WGHeatHazeMask
+  kind: source
+  path: "/Textures/_WG/HeatHaze/Shaders/heat_haze_mask.swsl"

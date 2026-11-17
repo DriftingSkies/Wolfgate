@@ -105,7 +105,7 @@
       - id: EmergencyMedipen #You never know what people are going to latejoin into
       # WOLFGATE(Wolfmed) START: playtest 5: a tourniquet and a suture. Fifteen of the belt's sixteen cells.
       - id: Tourniquet
-      - id: WFWolfmedSuture
+      - id: WGWolfmedSuture
       # WOLFGATE END
 
 - type: entity
@@ -124,8 +124,8 @@
       # WOLFGATE(Wolfmed) START: playtest 5: the first responder's tourniquet, suture and a painkiller pen for a
       # downed patient. Sixteen of sixteen cells.
       - id: Tourniquet
-      - id: WFWolfmedSuture
-      - id: WFWolfmedAnalgesicPen
+      - id: WGWolfmedSuture
+      - id: WGWolfmedAnalgesicPen
       # WOLFGATE END
 
 - type: entity

@@ -1,0 +1,32 @@
+# The ship command console (ShipCommand): the bridge front end for a commanded ship's zones, people, prices, roster,
+# jobs, presets, recovery pads and service log. Officers see it; whoever configures the ship changes it.
+
+- type: entity
+  parent: BaseComputer
+  id: WGComputerShipCommand
+  name: ship command console
+  description: "Runs the ship it stands on: who goes where, who pays what, who crews it. Officers may look; the owner decides."
+  components:
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: command
+    - map: ["computerLayerKeys"]
+      state: id_key
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+  - type: WGShipConsole
+  - type: ActivatableUI
+    key: enum.WGShipConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.WGShipConsoleUiKey.Key:
+        type: WGShipConsoleBoundUserInterface
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#3c5eb5"

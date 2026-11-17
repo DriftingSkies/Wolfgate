@@ -1,0 +1,23 @@
+﻿# Turrets for the Reavers. Woe unto those who board their ships.
+# Also adding the Underground for now since they're neutral with the Reavers.
+
+- type: entity
+  parent: BallisticTurretHeavyBase
+  id: WGWeaponTurretHeavyReaver
+  suffix: Reaver
+  components:
+  - type: NpcFactionMember
+    factions:
+    - WGAshfallReavers
+    - WGUnderground
+
+# RIP variant to keep parity but honestly the Reavers don't need it.
+- type: entity
+  parent: WeaponTurretHeavyRIPBase
+  id: WGWeaponTurretHeavyRIPReaver
+  suffix: Reaver
+  components:
+  - type: NpcFactionMember
+    factions:
+    - WGAshfallReavers
+    - WGUnderground

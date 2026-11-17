@@ -1,0 +1,76 @@
+# Where the hacking harpoon and its darts come from: PDV and the Underground buy them, Viper Group researches and prints them.
+
+- type: listing
+  id: WGUplinkPirateHackHarpoon
+  productEntity: WGHackHarpoonGunFlatpack
+  cost:
+    Doubloon: 5
+  categories:
+  - UplinkPirateWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPirateHackDart
+  productEntity: WGHackDart
+  cost:
+    Doubloon: 1
+  categories:
+  - UplinkPirateAmmo
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkHackHarpoon
+  productEntity: WGHackHarpoonGunFlatpack
+  cost:
+    Telecrystal: 5
+  categories:
+  - UplinkWeaponry
+
+- type: listing
+  id: WGUplinkHackDart
+  productEntity: WGHackDart
+  cost:
+    Telecrystal: 1
+  categories:
+  - UplinkAmmo
+
+- type: technology
+  id: WGViperGroupHackHarpoon
+  name: wg-boarding-tech-hack-harpoon
+  entityIcon: WGHackHarpoonGun
+  discipline: ViperGroup
+  tier: 2
+  cost: 40000
+  recipeUnlocks:
+  - WGHackHarpoonGunFlatpack
+  - WGHackDart
+  technologyPrerequisites:
+  - UniversalMaterialResearchT2
+  position: 6, -16
+
+- type: latheRecipe
+  id: WGHackHarpoonGunFlatpack
+  result: WGHackHarpoonGunFlatpack
+  completetime: 20
+  materials:
+    Steel: 5000
+    Plasteel: 2500
+    Glass: 1000
+    Silver: 500
+
+- type: latheRecipe
+  id: WGHackDart
+  result: WGHackDart
+  completetime: 5
+  materials:
+    Steel: 500
+    Plastic: 300
+    Silver: 100

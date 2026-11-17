@@ -4,7 +4,7 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
-using Content.Shared._WF.RMCCore.Explosion; // WOLFGATE(RMCCore)
+using Content.Shared._WG.RMCCore.Explosion; // WOLFGATE(RMCCore)
 
 namespace Content.Server.Explosion.EntitySystems;
 

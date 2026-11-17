@@ -1,0 +1,162 @@
+# HUD: the wound-to-readout table the synthetic diagnostics overlay is built from. Every line a mechanical
+# body puts on its own screen is one of these rows; nothing in the overlay hardcodes a fault string.
+#
+# A row is keyed either on a wound prototype or on a condition the body reports some other way. `severity`
+# is the tag until `escalateAt`, then `escalated`. `advice` is the single line the SYSTEM block shows when
+# this is the worst fault on the readout; the analyzer's own advice keys are whole paragraphs, so the HUD
+# keeps its own terse ones here.
+
+- type: syntheticHudLine
+  id: WGSyntheticHudDent
+  wound: WGWolfmedDentWound
+  line: wolfmed-synthetic-line-dent
+  severity: Info
+  minSeverity: 10
+  escalateAt: 60
+  escalated: Warn
+  advice: wolfmed-synthetic-advice-dent
+
+- type: syntheticHudLine
+  id: WGSyntheticHudBreach
+  wound: WGWolfmedBreachWound
+  line: wolfmed-synthetic-line-breach
+  severity: Warn
+  escalateAt: 60
+  escalated: Crit
+  advice: wolfmed-synthetic-advice-breach
+
+- type: syntheticHudLine
+  id: WGSyntheticHudShortCircuit
+  wound: WGWolfmedShortCircuitWound
+  line: wolfmed-synthetic-line-short-circuit
+  severity: Warn
+  escalateAt: 50
+  escalated: Crit
+  advice: wolfmed-synthetic-advice-short-circuit
+
+- type: syntheticHudLine
+  id: WGSyntheticHudServo
+  wound: WGWolfmedServoDamageWound
+  line: wolfmed-synthetic-line-servo
+  severity: Crit
+  escalateAt: 30
+  escalated: Fail
+  advice: wolfmed-synthetic-advice-servo
+
+- type: syntheticHudLine
+  id: WGSyntheticHudOverheating
+  wound: WGWolfmedOverheatingWound
+  line: wolfmed-synthetic-line-overheating
+  severity: Warn
+  escalateAt: 45
+  escalated: Crit
+  advice: wolfmed-synthetic-advice-overheating
+
+- type: syntheticHudLine
+  id: WGSyntheticHudChassisBreach
+  wound: WGWolfmedChassisBreachWound
+  line: wolfmed-synthetic-line-chassis-breach
+  severity: Fail
+  advice: wolfmed-synthetic-advice-chassis-breach
+
+# The generic chassis total, which every damaged part carries. It only earns a row once the part is really
+# hurt, or it would fill the readout on its own and push the specific findings off the bottom.
+- type: syntheticHudLine
+  id: WGSyntheticHudFrame
+  wound: IpcMechanicalDamageWound
+  line: wolfmed-synthetic-line-frame
+  severity: Info
+  minSeverity: 25
+  escalateAt: 60
+  escalated: Warn
+  advice: wolfmed-synthetic-advice-frame
+
+# Conditions -------------------------------------------------------------------
+
+- type: syntheticHudLine
+  id: WGSyntheticHudFallback
+  condition: Fallback
+  line: wolfmed-synthetic-line-fallback
+  severity: Warn
+  advice: wolfmed-synthetic-advice-fallback
+
+- type: syntheticHudLine
+  id: WGSyntheticHudLowFluid
+  condition: LowFluid
+  line: wolfmed-synthetic-line-low-fluid
+  severity: Crit
+  advice: wolfmed-synthetic-advice-low-fluid
+
+- type: syntheticHudLine
+  id: WGSyntheticHudShutdown
+  condition: Shutdown
+  line: wolfmed-synthetic-line-shutdown
+  severity: Fail
+  advice: wolfmed-synthetic-advice-shutdown
+
+- type: syntheticHudLine
+  id: WGSyntheticHudBrainDamage
+  condition: BrainDamage
+  line: wolfmed-synthetic-line-core-degraded
+  severity: Crit
+  advice: wolfmed-synthetic-advice-core
+
+- type: syntheticHudLine
+  id: WGSyntheticHudBrainDestroyed
+  condition: BrainDestroyed
+  line: wolfmed-synthetic-line-core-offline
+  severity: Fail
+  advice: wolfmed-synthetic-advice-core
+
+- type: syntheticHudLine
+  id: WGSyntheticHudPartDisabled
+  condition: PartDisabled
+  line: wolfmed-synthetic-line-actuator-offline
+  severity: Fail
+  advice: wolfmed-synthetic-advice-servo
+
+# Synthetics: a limb the chassis panel isolated. Deliberate, so it is a note rather than a failure.
+- type: syntheticHudLine
+  id: WGSyntheticHudPartIsolated
+  condition: PartIsolated
+  line: wolfmed-synthetic-line-isolated
+  severity: Info
+  advice: wolfmed-synthetic-advice-isolated
+
+- type: syntheticHudLine
+  id: WGSyntheticHudPartMissing
+  condition: PartMissing
+  line: wolfmed-synthetic-line-limb-detached
+  severity: Fail
+  advice: wolfmed-synthetic-advice-limb
+
+- type: syntheticHudLine
+  id: WGSyntheticHudEmbedded
+  condition: Embedded
+  line: wolfmed-synthetic-line-embedded
+  severity: Warn
+  advice: wolfmed-synthetic-advice-embedded
+
+# M2 (OD10): a repaired positronic core carries no brain trauma; the readout says so for the trauma's length instead.
+- type: syntheticHudLine
+  id: WGSyntheticHudCoreRestored
+  condition: CoreRestored
+  line: wolfmed-synthetic-line-core-restored
+  severity: Info
+  advice: wolfmed-synthetic-advice-core-restored
+
+# M4 (plan §3.11, §5.6): the chassis is heating toward thermal shutdown. Thermal shutdown itself is the cause banner.
+- type: syntheticHudLine
+  id: WGSyntheticHudCoreTempCritical
+  condition: CoreTempCritical
+  line: wolfmed-synthetic-line-core-temp-critical
+  severity: Crit
+  advice: wolfmed-synthetic-advice-core-temp
+
+# Flash-burnt optics: a sheet of glass replaces the lenses, the eye surgery does it too.
+- type: syntheticHudLine
+  id: WGSyntheticHudOpticsDamaged
+  condition: OpticsDamaged
+  line: wolfmed-synthetic-line-optics
+  severity: Warn
+  advice: wolfmed-synthetic-advice-optics

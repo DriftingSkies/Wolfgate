@@ -4,7 +4,7 @@ using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.FixedPoint;
 using Content.Shared._Onyx.Body;
-using Content.Shared._WF.Wolfmed.Body; // WOLFGATE(Wolfmed): D8, organ health lives on WolfmedOrganComponent.
+using Content.Shared._WG.Wolfmed.Body; // WOLFGATE(Wolfmed): D8, organ health lives on WolfmedOrganComponent.
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared._Onyx.Wounds;
@@ -30,11 +30,11 @@ namespace Content.Shared._Onyx.Body.Systems
         [Dependency] private SharedBodySystem _body = default!;
         [Dependency] private WoundSystem _wounds = default!;
         [Dependency] private MobStateSystem _mobState = default!;
-        [Dependency] private Content.Server._WF.Wolfmed.Body.WolfmedOrganFailureSystem _wfFailure = default!; // WOLFGATE(Wolfmed): revival pass
+        [Dependency] private Content.Server._WG.Wolfmed.Body.WolfmedOrganFailureSystem _wgFailure = default!; // WOLFGATE(Wolfmed): revival pass
         // WOLFGATE(Performance) START: the failed-organ scan runs four times a second, not every tick
-        [Dependency] private IGameTiming _wfTiming = default!;
-        private static readonly TimeSpan WFScanInterval = TimeSpan.FromSeconds(0.25);
-        private TimeSpan _wfNextScan;
+        [Dependency] private IGameTiming _wgTiming = default!;
+        private static readonly TimeSpan WGScanInterval = TimeSpan.FromSeconds(0.25);
+        private TimeSpan _wgNextScan;
         // WOLFGATE END
 
         public override void Update(float frameTime)
@@ -43,9 +43,9 @@ namespace Content.Shared._Onyx.Body.Systems
                 return;
 
             // WOLFGATE(Performance) START: the failed-organ scan runs four times a second, not every tick
-            if (_wfTiming.CurTime < _wfNextScan)
+            if (_wgTiming.CurTime < _wgNextScan)
                 return;
-            _wfNextScan = _wfTiming.CurTime + WFScanInterval;
+            _wgNextScan = _wgTiming.CurTime + WGScanInterval;
             // WOLFGATE END
 
             // WOLFGATE(Wolfmed): organ health is on WolfmedOrganComponent, so the query pairs it with Wolfgate's OrganComponent.
@@ -72,7 +72,7 @@ namespace Content.Shared._Onyx.Body.Systems
                     continue;
 
                 // WOLFGATE(Wolfmed): revival pass, a failed organ stays in at 0 health for the heal surgery.
-                if (_wfFailure.Keep((uid, organ, slotted)))
+                if (_wgFailure.Keep((uid, organ, slotted)))
                     continue;
 
                 DestroyOrgan((uid, organ, slotted));
@@ -88,7 +88,7 @@ namespace Content.Shared._Onyx.Body.Systems
             var functional = organ.Comp.Health > FixedPoint2.Zero;
             // WOLFGATE(Performance) START: an organ that just failed is handled next tick, not at the next timed scan
             if (wasFunctional && !functional)
-                _wfNextScan = TimeSpan.Zero;
+                _wgNextScan = TimeSpan.Zero;
             // WOLFGATE END
             // WOLFGATE(Wolfmed): the owning body is on Wolfgate's OrganComponent, not on the health component.
             if (wasFunctional == functional || CompOrNull<OrganComponent>(organ)?.Body is not { } body)

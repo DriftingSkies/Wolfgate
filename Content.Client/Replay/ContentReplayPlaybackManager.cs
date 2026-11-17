@@ -1,4 +1,4 @@
-using Content.Shared._WF.Audio.InternetSound; // WOLFGATE(Audio)
+using Content.Shared._WG.Audio.InternetSound; // WOLFGATE(Audio)
 using Content.Client.Administration.Managers;
 using Content.Client.Launcher;
 using Content.Client.MainMenu;

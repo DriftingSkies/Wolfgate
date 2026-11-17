@@ -80,7 +80,7 @@
     rewardAccounts:
       Nfsd: 1.0
     # WOLFGATE(LiveFixes): guards always nearby kept the vault from ever leaving
-    wfMaxExtensions: 4
+    wgMaxExtensions: 4
   - type: CurrencyInjectionOnBluespaceError # Mono: reward TSF with FMC for defending solarian vault
     injection: 
       company: TSF
@@ -130,7 +130,7 @@
     rewardAccounts:
       Nfsd: 1.0
     # WOLFGATE(LiveFixes): guards always nearby kept the vault from ever leaving
-    wfMaxExtensions: 4
+    wgMaxExtensions: 4
   - type: CurrencyInjectionOnBluespaceError # Mono: reward TSF with FMC for defending solarian vault
     injection: 
       company: TSF

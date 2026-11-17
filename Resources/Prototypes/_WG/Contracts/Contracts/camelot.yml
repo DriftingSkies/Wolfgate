@@ -1,0 +1,338 @@
+# Freeport Camelot: provisions, fuel, exports, smugglers. Far out, so hauling pays by distance.
+
+- type: wgContract
+  id: WGContractCamelotProvisions
+  contractor: WGContractorCamelot
+  category: Supply
+  tier: 1
+  title: wg-contract-camelot-provisions
+  briefing: wg-contract-camelot-provisions-brief
+  reward: 14900, 17500
+  minutes: 55
+  weight: 4
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    perKilometre: 375
+    goods:
+    - entity: FoodBreadPlain
+      count: 6, 12
+    - entity: FoodMeat
+      count: 10, 20
+    - entity: DrinkWaterBottleFull
+      count: 10, 20
+    - entity: MedkitFilled
+      count: 1, 2
+      value: 600
+
+- type: wgContract
+  id: WGContractCamelotFuel
+  contractor: WGContractorCamelot
+  category: Supply
+  tier: 2
+  title: wg-contract-camelot-fuel
+  briefing: wg-contract-camelot-fuel-brief
+  reward: 21900, 30600
+  deposit: 1500
+  minutes: 60
+  weight: 3
+  harms:
+    WGContractorHalcyon: 1
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    perKilometre: 500
+    goods:
+    - stack: Plasma
+      count: 20, 40
+    - stack: Uranium
+      count: 10, 20
+    - stack: Coal
+      count: 40, 60
+
+- type: wgContract
+  id: WGContractCamelotScrapStock
+  contractor: WGContractorCamelot
+  category: Supply
+  tier: 1
+  title: wg-contract-camelot-scrap-stock
+  briefing: wg-contract-camelot-scrap-stock-brief
+  reward: 13100, 18400
+  minutes: 55
+  weight: 3
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    perKilometre: 375
+    goods:
+    - stack: Steel
+      count: 40, 80
+    - stack: Glass
+      count: 40, 80
+    - stack: CableMV
+      count: 30, 50
+
+- type: wgContract
+  id: WGContractCamelotLongHaul
+  contractor: WGContractorCamelot
+  category: Hauling
+  tier: 3
+  title: wg-contract-camelot-long-haul
+  briefing: wg-contract-camelot-long-haul-brief
+  reward: 22500, 30000
+  deposit: 5000
+  minutes: 70
+  weight: 2.4
+  harms:
+    WGContractorHalcyon: 1
+  objective: !type:WGContractCourier
+    package: WGContractFreightSupplies
+    count: 4, 6
+    from: Board
+    to: Contractor
+    perPackage: 2500
+    perKilometre: 1500
+
+- type: wgContract
+  id: WGContractCamelotExports
+  contractor: WGContractorCamelot
+  category: Hauling
+  tier: 2
+  title: wg-contract-camelot-exports
+  briefing: wg-contract-camelot-exports-brief
+  reward: 12500, 16250
+  deposit: 2000
+  minutes: 60
+  weight: 2.4
+  objective: !type:WGContractCourier
+    package: WGContractFreightLuxury
+    count: 2, 4
+    from: Contractor
+    to: Other
+    perPackage: 2250
+    perKilometre: 1375
+
+- type: wgContract
+  id: WGContractCamelotParcel
+  contractor: WGContractorCamelot
+  category: Delivery
+  tier: 1
+  title: wg-contract-camelot-parcel
+  briefing: wg-contract-camelot-parcel-brief
+  reward: 5000, 7000
+  minutes: 50
+  weight: 1.5
+  objective: !type:WGContractCourier
+    package: WGContractParcel
+    count: 1, 2
+    from: Contractor
+    to: Other
+    perPackage: 750
+    perKilometre: 1000
+
+- type: wgContract
+  id: WGContractCamelotSmuggler
+  contractor: WGContractorCamelot
+  category: Bounty
+  tier: 2
+  title: wg-contract-camelot-smuggler
+  briefing: wg-contract-camelot-smuggler-brief
+  reward: 30000, 37500
+  deposit: 2000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1.2
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetSmuggler ]
+    minDistance: 3500
+    maxDistance: 5500
+
+- type: wgContract
+  id: WGContractCamelotManifest
+  contractor: WGContractorCamelot
+  category: Salvage
+  tier: 2
+  title: wg-contract-camelot-manifest
+  briefing: wg-contract-camelot-manifest-brief
+  reward: 17500, 22500
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WGContractRecovery
+    item: WGContractCargoManifest
+    minDistance: 3500
+    maxDistance: 5500
+    wrecks:
+    - /Maps/Salvage/cargo-1.yml
+    - /Maps/Salvage/small-cargo.yml
+    - /Maps/Salvage/hauling-shuttle.yml
+
+- type: wgContract
+  id: WGContractCamelotEscortTrader
+  contractor: WGContractorCamelot
+  category: Escort
+  tier: 2
+  title: wg-contract-camelot-escort-trader
+  briefing: wg-contract-camelot-escort-trader-brief
+  reward: 21250, 27500
+  deposit: 1500
+  minutes: 70
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WGContractEscort
+    encounters: [ WGContractEscortLight ]
+    perKilometre: 1000
+
+- type: wgContract
+  id: WGContractCamelotPrizeHull
+  contractor: WGContractorCamelot
+  category: Salvage
+  tier: 3
+  title: wg-contract-camelot-prize-hull
+  briefing: wg-contract-camelot-prize-hull-brief
+  reward: 35000, 45000
+  deposit: 2500
+  minutes: 75
+  minCrew: 2
+  crewBonus: 0.25
+  weight: 1
+  requires:
+  - tag: WGTowRope
+    name: wg-contract-requires-rope
+  - entity: WGTetherInstaller
+    name: wg-contract-requires-tether-installer
+  objective: !type:WGContractTow
+    range: 150
+    minDistance: 3500
+    maxDistance: 5500
+    infestation:
+    - entity: MobFleshJaredSalvage
+      count: 2, 4
+    - entity: MobFleshGolemSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/medium-pirate.yml
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-vault-1.yml
+
+# Second batch.
+
+- type: wgContract
+  id: WGContractCamelotPouch
+  contractor: WGContractorCamelot
+  category: Delivery
+  tier: 2
+  title: wg-contract-camelot-pouch
+  briefing: wg-contract-camelot-pouch-brief
+  reward: 12000, 15000
+  deposit: 2000
+  minutes: 45
+  weight: 0.8
+  harms:
+    WGContractorTSFRequisitions: 1
+  objective: !type:WGContractCourier
+    package: WGContractDiplomaticPouch
+    from: Contractor
+    to: Other
+    destinations: [ WGContractorHalcyon ]
+    perKilometre: 2000
+
+- type: wgContract
+  id: WGContractCamelotFuelRelay
+  contractor: WGContractorCamelot
+  category: Hauling
+  tier: 2
+  title: wg-contract-camelot-fuel-relay
+  briefing: wg-contract-camelot-fuel-relay-brief
+  reward: 15000, 19000
+  deposit: 2500
+  minutes: 60
+  weight: 2.4
+  objective: !type:WGContractCourier
+    package: WGContractFreightPlasma
+    count: 3, 5
+    from: Other
+    to: Contractor
+    destinations: [ WGContractorMMC ]
+    perPackage: 2500
+    perKilometre: 1500
+
+# Fifth batch.
+
+- type: wgContract
+  id: WGContractCamelotBeacon
+  contractor: WGContractorCamelot
+  category: Salvage
+  tier: 2
+  title: wg-contract-camelot-beacon
+  briefing: wg-contract-camelot-beacon-brief
+  reward: 16000, 21000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WGContractRepair
+    infestation:
+    - entity: MobCarpSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/small-3.yml
+    - /Maps/Salvage/small-ai-survey-drone.yml
+    - /Maps/Salvage/engineering-chunk.yml
+
+- type: wgContract
+  id: WGContractCamelotHarbourClearance
+  contractor: WGContractorCamelot
+  category: Salvage
+  tier: 1
+  title: wg-contract-camelot-harbour-clearance
+  briefing: wg-contract-camelot-harbour-clearance-brief
+  reward: 9000, 12000
+  minutes: 50
+  crewBonus: 0.25
+  weight: 1.2
+  requires:
+  - tag: WGTowRope
+    name: wg-contract-requires-rope
+  - entity: WGTetherInstaller
+    name: wg-contract-requires-tether-installer
+  objective: !type:WGContractTow
+    minDistance: 2500
+    maxDistance: 4000
+    wrecks:
+    - /Maps/Salvage/small-cargo.yml
+    - /Maps/Salvage/small-ship-1.yml
+    - /Maps/Salvage/small-ai-survey-drone.yml
+
+- type: wgContract
+  id: WGContractCamelotPicket
+  contractor: WGContractorCamelot
+  category: Bounty
+  tier: 2
+  title: wg-contract-camelot-picket
+  briefing: wg-contract-camelot-picket-brief
+  reward: 17500, 22500
+  deposit: 1000
+  minutes: 40
+  weight: 1.2
+  objective: !type:WGContractPicket
+    encounters: [ WGContractTargetClaimJumper ]
+    duration: 360
+    range: 400
+
+- type: wgContract
+  id: WGContractCamelotPlanetCache
+  contractor: WGContractorCamelot
+  category: Salvage
+  tier: 2
+  title: wg-contract-camelot-planet-cache
+  briefing: wg-contract-camelot-planet-cache-brief
+  reward: 20000, 26000
+  deposit: 1000
+  minutes: 70
+  weight: 1.1
+  objective: !type:WGContractInspect
+    wrecks: []
+    planet:
+      hostiles: 3, 5

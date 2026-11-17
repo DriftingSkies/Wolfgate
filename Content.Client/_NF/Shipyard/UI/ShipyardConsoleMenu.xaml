@@ -81,7 +81,7 @@
                           HorizontalExpand="True" />
             <!-- WOLFGATE(OldVessels): classic ships filter, hidden when the listing has none -->
             <OptionButton Name="ClassicFilter"
-                          Prefix="{Loc 'wf-shipyard-classic-filter-label'}"
+                          Prefix="{Loc 'wg-shipyard-classic-filter-label'}"
                           StyleClasses="ButtonSquare"
                           Margin="2 2 2 2"
                           HorizontalExpand="True" />

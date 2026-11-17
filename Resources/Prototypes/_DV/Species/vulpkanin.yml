@@ -3,7 +3,7 @@
   name: species-name-vulpkanin
   roundStart: true
   prototype: MobVulpkanin
-  sprites: WFMobVulpkaninSprites # WOLFGATE(Species): was MobVulpkaninSprites; Starlight's body on digitigrade legs
+  sprites: WGMobVulpkaninSprites # WOLFGATE(Species): was MobVulpkaninSprites; Starlight's body on digitigrade legs
   defaultSkinTone: "#985629"
   markingLimits: MobVulpkaninMarkingLimits
   dollPrototype: MobVulpkaninDummy

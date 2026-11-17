@@ -81,7 +81,7 @@ public partial class AtmosphereSystem
 
     public void InvalidateTile(Entity<GridAtmosphereComponent?> entity, Vector2i tile)
     {
-        if (WfIsUntrackedGround(entity.Owner, tile)) // WOLFGATE(Planets): bare planet ground nobody built on isn't tracked
+        if (WgIsUntrackedGround(entity.Owner, tile)) // WOLFGATE(Planets): bare planet ground nobody built on isn't tracked
             return;
 
         if (_atmosQuery.Resolve(entity.Owner, ref entity.Comp, false))

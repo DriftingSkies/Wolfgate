@@ -381,8 +381,8 @@ public sealed partial class DrinkSystem : SharedDrinkSystem
 
         _reaction.DoEntityReaction(args.Target.Value, solution, ReactionMethod.Ingestion);
         // WOLFGATE(MeridianTraits): a hemophage's tumor judges what was drunk
-        var wfDrank = new Content.Shared._WF.MeridianTraits.Hemophage.WFDrankEvent(entity.Owner, drained);
-        RaiseLocalEvent(args.Target.Value, ref wfDrank);
+        var wgDrank = new Content.Shared._WG.MeridianTraits.Hemophage.WGDrankEvent(entity.Owner, drained);
+        RaiseLocalEvent(args.Target.Value, ref wgDrank);
         _stomach.TryTransferSolution(firstStomach.Value.Owner, drained, firstStomach.Value.Comp1);
 
         var speechEvent = new SpeechTriggerEvent(SpeechTrigger.Drinking);

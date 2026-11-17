@@ -1,0 +1,432 @@
+- type: marking
+  id: WGMeridianHornsAngelerDualTone
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      angeler_dual_tone_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: angeler_dual_tone_primary
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: angeler_dual_tone_secondary
+
+- type: marking
+  id: WGMeridianHornsAntlersPalmated
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns_32x48.rsi
+    state: antlers_palmated
+
+- type: marking
+  id: WGMeridianHornsAntlers
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  layering:
+    antlers_BEHIND: TailBehind
+  colorLinks:
+    antlers_BEHIND: antlers
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns_32x48.rsi
+    state: antlers
+  - sprite: _WG/MeridianMarkings/horns_32x48.rsi
+    state: antlers_BEHIND
+
+- type: marking
+  id: WGMeridianHornsBroadCurls
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  layering:
+    broad_curls_BEHIND: TailBehind
+  colorLinks:
+    broad_curls_BEHIND: broad_curls
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: broad_curls
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: broad_curls_BEHIND
+
+- type: marking
+  id: WGMeridianHornsBroken
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: broken
+
+- type: marking
+  id: WGMeridianHornsBrokenLeft
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: broken_left
+
+- type: marking
+  id: WGMeridianHornsBrokenRight
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: broken_right
+
+- type: marking
+  id: WGMeridianHornsCrippledBull
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  layering:
+    crippled_bull_BEHIND: TailBehind
+  colorLinks:
+    crippled_bull_BEHIND: crippled_bull
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: crippled_bull
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: crippled_bull_BEHIND
+
+- type: marking
+  id: WGMeridianHornsCurly
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: curly
+
+- type: marking
+  id: WGMeridianHornsDragon
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: dragon
+
+- type: marking
+  id: WGMeridianHornsDrake
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: drake
+
+- type: marking
+  id: WGMeridianHornsHighRiseHorns
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  layering:
+    high_rise_horns_BEHIND: TailBehind
+  colorLinks:
+    high_rise_horns_BEHIND: high_rise_horns
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns_32x48.rsi
+    state: high_rise_horns
+  - sprite: _WG/MeridianMarkings/horns_32x48.rsi
+    state: high_rise_horns_BEHIND
+
+- type: marking
+  id: WGMeridianHornsHopefulHorns
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  layering:
+    hopeful_horns_BEHIND: TailBehind
+  colorLinks:
+    hopeful_horns_BEHIND: hopeful_horns
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: hopeful_horns
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: hopeful_horns_BEHIND
+
+- type: marking
+  id: WGMeridianHornsImpala
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  layering:
+    impala_BEHIND: TailBehind
+  colorLinks:
+    impala_BEHIND: impala
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns_32x48.rsi
+    state: impala
+  - sprite: _WG/MeridianMarkings/horns_32x48.rsi
+    state: impala_BEHIND
+
+- type: marking
+  id: WGMeridianHornsImpalaBig
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  layering:
+    impala_big_BEHIND: TailBehind
+  colorLinks:
+    impala_big_BEHIND: impala_big
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns_32x48.rsi
+    state: impala_big
+  - sprite: _WG/MeridianMarkings/horns_32x48.rsi
+    state: impala_big_BEHIND
+
+- type: marking
+  id: WGMeridianHornsKnight
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: knight
+
+- type: marking
+  id: WGMeridianHornsLifted
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: lifted
+
+- type: marking
+  id: WGMeridianHornsOni
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  layering:
+    oni_BEHIND: TailBehind
+  colorLinks:
+    oni_BEHIND: oni
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: oni
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: oni_BEHIND
+
+- type: marking
+  id: WGMeridianHornsOniLarge
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  layering:
+    oni_large_BEHIND: TailBehind
+  colorLinks:
+    oni_large_BEHIND: oni_large
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: oni_large
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: oni_large_BEHIND
+
+- type: marking
+  id: WGMeridianHornsPaintedPoints
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  layering:
+    painted_points_BEHIND: TailBehind
+  colorLinks:
+    painted_points_BEHIND: painted_points
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns_32x48.rsi
+    state: painted_points
+  - sprite: _WG/MeridianMarkings/horns_32x48.rsi
+    state: painted_points_BEHIND
+
+- type: marking
+  id: WGMeridianHornsSideSweptBack
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: side_swept_back
+
+- type: marking
+  id: WGMeridianHornsTicketRack
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  layering:
+    ticket_rack_BEHIND: TailBehind
+  colorLinks:
+    ticket_rack_BEHIND: ticket_rack
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: ticket_rack
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: ticket_rack_BEHIND
+
+- type: marking
+  id: WGMeridianHornsUni
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  layering:
+    uni_BEHIND: TailBehind
+  colorLinks:
+    uni_BEHIND: uni
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: uni
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: uni_BEHIND
+
+- type: marking
+  id: WGMeridianHornsUpwards
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns.rsi
+    state: upwards
+
+- type: marking
+  id: WGMeridianHornsWhosHorns
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#555555"
+  layering:
+    who_s_horns_BEHIND: TailBehind
+  colorLinks:
+    who_s_horns_BEHIND: who_s_horns
+  sprites:
+  - sprite: _WG/MeridianMarkings/horns_32x48.rsi
+    state: who_s_horns
+  - sprite: _WG/MeridianMarkings/horns_32x48.rsi
+    state: who_s_horns_BEHIND

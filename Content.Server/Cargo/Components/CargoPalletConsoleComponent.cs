@@ -1,7 +1,7 @@
 using Content.Server.Cargo.Systems;
 using Content.Shared.Stacks;
 using Content.Shared.Whitelist;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Cargo.Components;
 

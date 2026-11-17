@@ -1,0 +1,15 @@
+- type: guideEntry
+  id: WGAsf
+  name: guide-entry-wg-asf
+  text: "/ServerInfo/_WG/Asf/Guidebook/Factions/Asf.xml"
+  priority: 13
+
+- type: guideEntry
+  id: WGShipyardAsfRevelation
+  name: guide-entry-wg-shipyard-asf-revelation
+  text: "/ServerInfo/_WG/Asf/Guidebook/Shipyard/Revelation.xml"
+  
+- type: guideEntry
+  id: WGShipyardAsfSurveyor
+  name: guide-entry-wg-shipyard-asf-surveyor
+  text: "/ServerInfo/_WG/Asf/Guidebook/Shipyard/Surveyor.xml"

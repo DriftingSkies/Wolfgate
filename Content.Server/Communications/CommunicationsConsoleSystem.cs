@@ -253,10 +253,10 @@ namespace Content.Server.Communications
             }
 
             // WOLFGATE(PlanetComms) START: a global console on a world with no mass transceiver up has no uplink
-            if (comp.Global && !EntityManager.System<Content.Server._WF.PlanetComms.WFPlanetCommsSystem>().IsCommsUp(uid))
+            if (comp.Global && !EntityManager.System<Content.Server._WG.PlanetComms.WGPlanetCommsSystem>().IsCommsUp(uid))
             {
-                if (message.Actor is { Valid: true } wfActor)
-                    _popupSystem.PopupEntity(Loc.GetString("wf-planet-comms-no-uplink"), uid, wfActor, PopupType.MediumCaution);
+                if (message.Actor is { Valid: true } wgActor)
+                    _popupSystem.PopupEntity(Loc.GetString("wg-planet-comms-no-uplink"), uid, wgActor, PopupType.MediumCaution);
                 return;
             }
             // WOLFGATE END

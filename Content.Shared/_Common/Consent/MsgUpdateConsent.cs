@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: Copyright (c) 2024-2025 Space Wizards Federation
 // SPDX-License-Identifier: MIT
 
-using Content.Shared._WF.NetGuard; // WOLFGATE(NetGuard)
+using Content.Shared._WG.NetGuard; // WOLFGATE(NetGuard)
 using Lidgren.Network;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;

@@ -193,7 +193,7 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
         bill = 0;
 
         // WOLFGATE(Companies) START: company hangar ships belong to the company and can't be sold
-        if (HasComp<Content.Server._WF.Companies.WFCompanyHangarShipComponent>(shuttleUid))
+        if (HasComp<Content.Server._WG.Companies.WGCompanyHangarShipComponent>(shuttleUid))
         {
             result.Error = ShipyardSaleError.InvalidShip;
             return result;
@@ -266,17 +266,17 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
             CleanGrid(shuttleUid, consoleUid);
         }
 
-        var wfAppraisal = (int)_pricing.AppraiseGrid(shuttleUid, LacksPreserveOnSaleComp); // WOLFGATE(ShipCommand): appraised before a bargain's discount
-        bill = _wfShipServices.ResaleValue(shuttleUid, wfAppraisal); // WOLFGATE(ShipCommand): a bargain resells less its discount
+        var wgAppraisal = (int)_pricing.AppraiseGrid(shuttleUid, LacksPreserveOnSaleComp); // WOLFGATE(ShipCommand): appraised before a bargain's discount
+        bill = _wgShipServices.ResaleValue(shuttleUid, wgAppraisal); // WOLFGATE(ShipCommand): a bargain resells less its discount
 
-        // WOLFGATE(Shipyard) START: last look at the grid, with its deed, before it goes. See _WF/Shipyard.
-        var soldEv = new _WF.Shipyard.ShipSoldEvent(shuttleUid, consoleUid, stationUid, wfAppraisal); // WOLFGATE(ShipCommand): the used lot lists a bargain at its full value
+        // WOLFGATE(Shipyard) START: last look at the grid, with its deed, before it goes. See _WG/Shipyard.
+        var soldEv = new _WG.Shipyard.ShipSoldEvent(shuttleUid, consoleUid, stationUid, wgAppraisal); // WOLFGATE(ShipCommand): the used lot lists a bargain at its full value
         RaiseLocalEvent(ref soldEv);
         // WOLFGATE END
 
         // WOLFGATE(Shipyard) START: the hull is parked and taken apart over many ticks; this stalled the server
         // QueueDel(shuttleUid);
-        _wfHullRetire.Retire(shuttleUid);
+        _wgHullRetire.Retire(shuttleUid);
         // WOLFGATE END
         _sawmill.Info($"Sold shuttle {shuttleUid} for {bill}");
 

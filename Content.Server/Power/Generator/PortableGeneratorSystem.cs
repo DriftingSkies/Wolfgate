@@ -210,16 +210,16 @@ public sealed partial class PortableGeneratorSystem : SharedPortableGeneratorSys
     }
 
     // WOLFGATE(Performance): UI state is pushed at 4 Hz, and only for generators with a viewer
-    private float _wfUiAccumulator;
-    private const float WfUiInterval = 0.25f;
+    private float _wgUiAccumulator;
+    private const float WgUiInterval = 0.25f;
 
     public override void Update(float frameTime)
     {
         // WOLFGATE(Performance) START: ActiveUserInterfaceComponent is the engine's open-UI marker
-        _wfUiAccumulator += frameTime;
-        if (_wfUiAccumulator < WfUiInterval)
+        _wgUiAccumulator += frameTime;
+        if (_wgUiAccumulator < WgUiInterval)
             return;
-        _wfUiAccumulator = 0f;
+        _wgUiAccumulator = 0f;
 
         // var query = EntityQueryEnumerator<PortableGeneratorComponent, FuelGeneratorComponent, PowerSupplierComponent>();
         var query = EntityQueryEnumerator<ActiveUserInterfaceComponent, PortableGeneratorComponent, FuelGeneratorComponent, PowerSupplierComponent>();

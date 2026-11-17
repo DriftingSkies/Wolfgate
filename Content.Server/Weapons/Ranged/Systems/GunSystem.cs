@@ -229,7 +229,7 @@ public sealed partial class GunSystem : SharedGunSystem
             MuzzleFlash(gunUid, muzzle, mapDirection.ToAngle(), user);
             // WOLFGATE(Weapons) START: cap networked gunshot audio for guns above 5 shots/s
             // Audio.PlayPredicted(sound ?? gun.SoundGunshotModified, gunUid, user);
-            WfPlayGunshot(gunUid, gun, sound ?? gun.SoundGunshotModified, user);
+            WgPlayGunshot(gunUid, gun, sound ?? gun.SoundGunshotModified, user);
             // WOLFGATE END
         }
     }
@@ -273,7 +273,7 @@ public sealed partial class GunSystem : SharedGunSystem
             return;
         }
 
-        // WOLFGATE(Weapons) START: links to the shooter's predicted copy, see _WF/Weapons/Ranged/Systems/GunSystem.Prediction.cs
+        // WOLFGATE(Weapons) START: links to the shooter's predicted copy, see _WG/Weapons/Ranged/Systems/GunSystem.Prediction.cs
         // upstream original, kept for merges:
         // if (GunPrediction && user != null && TryComp<ActorComponent>(user, out var actor))
         // {
@@ -300,7 +300,7 @@ public sealed partial class GunSystem : SharedGunSystem
         }
     }
 
-    // WOLFGATE(Weapons) START: LinearSpread and GetRecoilAngle moved to _WF/Weapons/Ranged/Systems/SharedGunSystem.Prediction.cs so the client can predict them
+    // WOLFGATE(Weapons) START: LinearSpread and GetRecoilAngle moved to _WG/Weapons/Ranged/Systems/SharedGunSystem.Prediction.cs so the client can predict them
     // upstream original, kept for merges:
     // /// <summary>
     // /// Gets a linear spread of angles between start and end.

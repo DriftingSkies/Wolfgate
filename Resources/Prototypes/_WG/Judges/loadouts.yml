@@ -1,0 +1,41 @@
+# Eyes
+
+- type: loadout
+  id: LoadoutEyesGlassesSecurity
+  equipment:
+    eyes: ClothingEyesGlassesSecurity
+
+- type: loadout
+  id: LoadoutEyesEyepatchHudSecurity
+  equipment:
+    eyes: ClothingEyesEyepatchHudSecurity
+
+- type: loadout
+  id: WGMeridianLoadoutGlassesHudSecuritySunglassesEyepatch
+  equipment:
+    eyes: WGMeridianClothingGlassesHudSecuritySunglassesEyepatch
+
+- type: loadout
+  id: WGMeridianLoadoutGlassesHudArProjectorSecurity
+  equipment:
+    eyes: WGMeridianClothingGlassesHudArProjectorSecurity
+
+- type: loadout
+  id: WGMeridianLoadoutGlassesHudArAviatorSecurity
+  equipment:
+    eyes: WGMeridianClothingGlassesHudArAviatorSecurity
+
+- type: loadout
+  id: WGMeridianLoadoutGlassesHudArAviatorSecurityblue
+  equipment:
+    eyes: WGMeridianClothingGlassesHudArAviatorSecurityblue
+
+- type: loadout
+  id: WGMeridianLoadoutGlassesHudSecuritySunglassesArmadyne
+  equipment:
+    eyes: WGMeridianClothingGlassesHudSecuritySunglassesArmadyne
+
+- type: loadout
+  id: WGMeridianLoadoutGlassesHudSecuritySunglassesPeacekeeper
+  equipment:
+    eyes: WGMeridianClothingGlassesHudSecuritySunglassesPeacekeeper

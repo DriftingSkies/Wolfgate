@@ -1,0 +1,40 @@
+# Monolith #4558 xenoborg shuttle floors
+- type: tile
+  id: FloorBlueCircuitXenoborg
+  name: tiles-Malicous-blue-circuit-floor
+  sprite: /Textures/_WG/Xenoborgs/Tiles/Xeno_Circuit.png
+  variants: 2
+  placementVariants:
+  - 1.0
+  - 1.0
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepHull
+  itemDrop: FloorTileItemBCircuit
+  heatCapacity: 10000
+
+- type: tile
+  id: FloorMonoXenoborg
+  name: tiles-Mono-XenoBorg
+  sprite: /Textures/_WG/Xenoborgs/Tiles/Xeno_Mono.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepHull
+  itemDrop: FloorTileItemXenoborg
+  heatCapacity: 10000
+
+- type: tile
+  id: FloorSquaresXenoborg
+  name: tiles-Squares-XenoBorg
+  sprite: /Textures/_WG/Xenoborgs/Tiles/Xeno_Squares.png
+  baseTurf: Plating
+  isSubfloor: false
+  deconstructTools: [ Prying ]
+  footstepSounds:
+    collection: FootstepHull
+  itemDrop: FloorTileItemXenoborg
+  heatCapacity: 10000

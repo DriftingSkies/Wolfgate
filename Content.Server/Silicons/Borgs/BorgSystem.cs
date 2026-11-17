@@ -248,7 +248,7 @@ public sealed partial class BorgSystem : SharedBorgSystem
 
         // WOLFGATE(Cyborgs) START: the charge changes every tick with the headlight on
         // UpdateUI(uid, component);
-        WfUpdateChargeUi(uid, component);
+        WgUpdateChargeUi(uid, component);
         // WOLFGATE END
     }
 
@@ -257,7 +257,7 @@ public sealed partial class BorgSystem : SharedBorgSystem
         Toggle.TryDeactivate(uid);
         // WOLFGATE(Cyborgs) START: an empty cell raises this on every failed draw
         // UpdateUI(uid, component);
-        WfUpdateChargeUi(uid, component);
+        WgUpdateChargeUi(uid, component);
         // WOLFGATE END
     }
 

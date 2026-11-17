@@ -44,7 +44,7 @@ public sealed partial class Drunk : EntityEffect
         if (PerUnitInBlood > 0f && args is EntityEffectReagentArgs { Source: { } blood, Reagent: { } reagent })
         {
             var units = Math.Max(0f, blood.GetTotalPrototypeQuantity(reagent.ID).Float() - InBloodAbove);
-            args.EntityManager.System<Content.Server._WF.WolfChem.Narcotics.WFAlcoholSystem>()
+            args.EntityManager.System<Content.Server._WG.WolfChem.Narcotics.WGAlcoholSystem>()
                 .HoldDrunkenness(args.TargetEntity, BoozePower * PerUnitInBlood * units, SlurSpeech);
             return;
         }

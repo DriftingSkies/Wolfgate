@@ -18,7 +18,7 @@ public sealed partial class DrainComponent : Component
 {
     // WOLFGATE(Performance): when a dry auto-drain next searches for puddles
     [ViewVariables]
-    public TimeSpan WFIdleUntil;
+    public TimeSpan WGIdleUntil;
 
     [DataField]
     public string SolutionName = "drainBuffer"; // Monolith

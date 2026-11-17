@@ -1,0 +1,41 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+#Author: burrkeye on Github, burkia on Discord.
+
+- type: vessel
+  id: Hazel
+  parent: BaseVesselIFFDisabled
+  name: BT-Y Hazel
+  description: A small, cramped shuttle featuring a Syndicate 3 barreled 220mm Battery and 2 ASM-302s, well armored for its size. Does not have an FTL drive. A cheap option but realiability is questionable.
+  price: 92764
+  purchasable: false # voucher only - T0
+  category: Small
+  group: BlackMarket
+  access: PDV
+  shuttlePath: /SharedMaps/_WG/OldVessels/BlackMarket/hazel.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: Null
+  class:
+  - Pirate
+  - Pursuit
+  engine:
+  - AME
+
+- type: gameMap
+  id: Hazel
+  mapName: 'BT-Y Hazel'
+  mapPath: /SharedMaps/_WG/OldVessels/BlackMarket/hazel.yml
+  minPlayers: 0
+  stations:
+    Hazel:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Hazel PDV{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'
+        - type: StationJobs
+          availableJobs:
+            Pirate: [ 0, 0 ]
+            PdvBorg: [ 0, 0 ]

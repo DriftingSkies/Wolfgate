@@ -1,0 +1,123 @@
+# Crew posts for a commanded ship's roster (ShipCommand). Unlike NpcCrew's spawn points nothing spawns here on its
+# own: the ship's WGShipRoster staffs each post when the ship spawns, and restaffs it when its crewman is lost.
+
+- type: entity
+  abstract: true
+  parent: MarkerBase
+  id: WGShipCrewPostBase
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Markers/jobs.rsi
+    layers:
+    - state: green
+
+- type: entity
+  parent: WGShipCrewPostBase
+  id: WGShipCrewPostPilot
+  name: command crew post (pilot)
+  description: A commanded ship's roster post. The roster staffs it; nothing spawns here on its own.
+  components:
+  - type: WGShipCrewPost
+    role: WGCrewPilot
+
+- type: entity
+  parent: WGShipCrewPostBase
+  id: WGShipCrewPostRadioOperator
+  name: command crew post (radio operator)
+  description: A commanded ship's roster post. The roster staffs it; nothing spawns here on its own.
+  components:
+  - type: WGShipCrewPost
+    role: WGCrewRadioOperator
+
+- type: entity
+  parent: WGShipCrewPostBase
+  id: WGShipCrewPostGunner
+  name: command crew post (gunner)
+  description: A commanded ship's roster post. The roster staffs it; nothing spawns here on its own.
+  components:
+  - type: WGShipCrewPost
+    role: WGCrewGunner
+
+- type: entity
+  parent: WGShipCrewPostBase
+  id: WGShipCrewPostMarine
+  name: command crew post (marine)
+  description: A commanded ship's roster post. The roster staffs it; nothing spawns here on its own.
+  components:
+  - type: WGShipCrewPost
+    role: WGCrewMarine
+
+- type: entity
+  parent: WGShipCrewPostBase
+  id: WGShipCrewPostDeckhand
+  name: command crew post (deckhand)
+  description: A commanded ship's roster post. The roster staffs it; nothing spawns here on its own.
+  components:
+  - type: WGShipCrewPost
+    role: WGCrewDeckhand
+
+- type: entity
+  parent: WGShipCrewPostBase
+  id: WGShipCrewPostJanitor
+  name: command crew post (janitor)
+  description: A commanded ship's roster post. The roster staffs it; nothing spawns here on its own.
+  components:
+  - type: WGShipCrewPost
+    role: WGCrewJanitor
+
+- type: entity
+  parent: WGShipCrewPostBase
+  id: WGShipCrewPostEngineer
+  name: command crew post (engineer)
+  description: A commanded ship's roster post. The roster staffs it; nothing spawns here on its own.
+  components:
+  - type: WGShipCrewPost
+    role: WGCrewEngineer
+
+- type: entity
+  parent: WGShipCrewPostBase
+  id: WGShipCrewPostParamedic
+  name: command crew post (paramedic)
+  description: A commanded ship's roster post. The roster staffs it; nothing spawns here on its own.
+  components:
+  - type: WGShipCrewPost
+    role: WGCrewParamedic
+
+- type: entity
+  parent: WGShipCrewPostBase
+  id: WGShipCrewPostSurgeon
+  name: command crew post (surgeon)
+  description: A commanded ship's roster post. The roster staffs it; nothing spawns here on its own.
+  components:
+  - type: WGShipCrewPost
+    role: WGCrewSurgeon
+
+# A counter post: the roster stands the named trader here, facing the way the marker faces (the counter table).
+- type: entity
+  abstract: true
+  parent: MarkerBase
+  id: WGShipCounterPostBase
+  categories: [ HideSpawnMenu ]
+  description: A commanded ship's counter. The roster stands its trader here, facing the counter; nothing spawns here on its own.
+  components:
+  # Its facing is the trader's, so it keeps its rotation (no ForceFixRotations, unlike other markers).
+  - type: Tag
+    tags: []
+  - type: Sprite
+    sprite: Markers/jobs.rsi
+    layers:
+    - state: green
+
+# Where restaffed crew come aboard and relieved crew leave: one per ship.
+- type: entity
+  parent: MarkerBase
+  id: WGShipCrewBay
+  name: crew bay
+  description: A commanded ship's crew bay. Restaffed crew come aboard here and walk to their posts; relieved crew leave from here.
+  components:
+  - type: WGShipCrewBay
+  - type: Sprite
+    sprite: Markers/jobs.rsi
+    layers:
+    - state: green

@@ -23,7 +23,7 @@ using Robust.Shared.Player;
 using Robust.Shared.Random;
 using System.Linq;
 using System.Numerics;
-using Content.Shared._WF.RMCCore.Tackle; // WOLFGATE(RMCCore)
+using Content.Shared._WG.RMCCore.Tackle; // WOLFGATE(RMCCore)
 
 namespace Content.Server.Weapons.Melee;
 

@@ -1,0 +1,76 @@
+- type: entity
+  parent: ArcadeBase
+  id: WGDoomArcade
+  name: freedoom arcade
+  description: An arcade cabinet running Freedoom.
+  components:
+  - type: ActivatableUI
+    key: enum.DoomArcadeUiKey.Key
+  - type: ActivatableUIRequiresPower
+  - type: UserInterface
+    interfaces:
+      enum.DoomArcadeUiKey.Key:
+        type: DoomArcadeBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: WGGameCabinet
+  - type: Computer
+    board: WGDoomArcadeComputerCircuitboard
+
+- type: entity
+  parent: WGDoomArcade
+  id: WGFreedoom2Arcade
+  name: freedoom phase 2 arcade
+  description: An arcade cabinet running Freedoom Phase 2.
+  components:
+  - type: WGGameCabinet
+    game: WGGameFreedoom2
+  - type: Computer
+    board: WGFreedoom2ComputerCircuitboard
+
+# Sold by John Wolfgate and the Wolfgate vendor.
+- type: entity
+  parent: BaseNFFlatpack
+  id: WGDoomArcadeFlatpack
+  name: freedoom arcade flatpack
+  description: A flatpack used for constructing a freedoom arcade cabinet.
+  components:
+  - type: Flatpack
+    entity: WGDoomArcade
+  - type: Sprite
+    layers:
+    - state: service_music
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: WGDoomArcadeComputerCircuitboard
+  name: freedoom arcade board
+  description: A computer printed circuit board for a freedoom arcade cabinet.
+  components:
+  - type: ComputerBoard
+    prototype: WGDoomArcade
+
+- type: entity
+  parent: BaseNFFlatpack
+  id: WGFreedoom2ArcadeFlatpack
+  name: freedoom phase 2 arcade flatpack
+  description: A flatpack used for constructing a freedoom phase 2 arcade cabinet.
+  components:
+  - type: Flatpack
+    entity: WGFreedoom2Arcade
+  - type: Sprite
+    layers:
+    - state: service_music
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: BaseComputerCircuitboard
+  id: WGFreedoom2ComputerCircuitboard
+  name: freedoom phase 2 arcade board
+  description: A computer printed circuit board for a freedoom phase 2 arcade cabinet.
+  components:
+  - type: ComputerBoard
+    prototype: WGFreedoom2Arcade

@@ -1,0 +1,85 @@
+# Crew roles: the mob, the duty worked, how readily it fights and any components the role adds. The radio operator
+# stands guard at his post; radio and captain reactions run while the HTN sleeps. Gunners operate ship consoles.
+
+- type: wgCrewRole
+  id: WGCrewGunner
+  kit: WGCrewKitGunner
+  mob: WGMobCrewGunner
+  duty: Gunnery
+  engagement: WhenAttacked
+  title: wg-crew-role-gunner
+  order: 25
+
+- type: wgCrewRole
+  id: WGCrewCaptain
+  kit: WGCrewKitOfficer
+  mob: WGMobCrewOfficer
+  duty: Guard
+  engagement: WhenAttacked
+  title: wg-crew-role-captain
+  order: 0
+  components:
+  - type: WGCaptain
+  - type: WGRadioOperator
+  - type: TelecomExempt
+
+- type: wgCrewRole
+  id: WGCrewPilot
+  kit: WGCrewKitOfficer
+  mob: WGMobCrewOfficer
+  duty: Pilot
+  engagement: WhenAttacked
+  title: wg-crew-role-pilot
+  order: 10
+
+- type: wgCrewRole
+  id: WGCrewRadioOperator
+  kit: WGCrewKitOfficer
+  mob: WGMobCrewOfficer
+  duty: Guard
+  engagement: WhenAttacked
+  title: wg-crew-role-radio-operator
+  order: 20
+  components:
+  - type: WGRadioOperator
+  # His own radio set: Shortband away from any telecom server.
+  - type: TelecomExempt
+
+- type: wgCrewRole
+  id: WGCrewMarine
+  mob: WGMobCrewMarine
+  duty: Guard
+  engagement: OnSight
+  title: wg-crew-role-marine
+  order: 30
+
+# Keeps the plant fuelled from the ship's stores and switched on; a deckhand otherwise, and no fighter unless struck.
+- type: wgCrewRole
+  id: WGCrewEngineer
+  kit: WGCrewKitDeckhand
+  mob: WGMobCrewDeckhand
+  duty: Guard
+  engagement: WhenAttacked
+  title: wg-crew-role-engineer
+  order: 35
+  components:
+  - type: WGCrewEngineer
+
+# Mops up puddles and washes dirt off the floors across the ship, back at his post when it's clean.
+- type: wgCrewRole
+  id: WGCrewJanitor
+  kit: WGCrewKitJanitor
+  mob: WGMobCrewJanitor
+  duty: Janitor
+  engagement: WhenAttacked
+  title: wg-crew-role-janitor
+  order: 45
+
+- type: wgCrewRole
+  id: WGCrewDeckhand
+  kit: WGCrewKitDeckhand
+  mob: WGMobCrewDeckhand
+  duty: Guard
+  engagement: OnSight
+  title: wg-crew-role-deckhand
+  order: 40

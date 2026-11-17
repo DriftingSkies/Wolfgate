@@ -75,7 +75,7 @@
         perUnitInBlood: 4.67 # WOLFGATE(WolfChem): drunkenness follows the units in the blood
         inBloodAbove: 8 # WOLFGATE(WolfChem): drunkenness follows the units in the blood
     # WOLFGATE(Synthetics) START: a synthetic chassis takes it too, shorting out while flesh grows over the frame
-    WFContaminant:
+    WGContaminant:
       metabolismRate: 0.2
       effects:
       - !type:HealthChange
@@ -107,7 +107,7 @@
           min: 4
         type: Local
         visualType: MediumCaution
-        messages: [ "wf-synth-contaminant-1", "wf-synth-contaminant-2", "wf-synth-contaminant-3" ]
+        messages: [ "wg-synth-contaminant-1", "wg-synth-contaminant-2", "wg-synth-contaminant-3" ]
         probability: 0.2
     # WOLFGATE END
 
@@ -206,7 +206,7 @@
         perUnitInBlood: 4.67 # WOLFGATE(WolfChem): drunkenness follows the units in the blood
         inBloodAbove: 10 # WOLFGATE(WolfChem): drunkenness follows the units in the blood
     # WOLFGATE(Synthetics) START: a synthetic chassis takes it too, shorting out while flesh grows over the frame
-    WFContaminant:
+    WGContaminant:
       metabolismRate: 0.2
       effects:
       - !type:HealthChange
@@ -238,7 +238,7 @@
           min: 4
         type: Local
         visualType: MediumCaution
-        messages: [ "wf-synth-contaminant-1", "wf-synth-contaminant-2", "wf-synth-contaminant-3" ]
+        messages: [ "wg-synth-contaminant-1", "wg-synth-contaminant-2", "wg-synth-contaminant-3" ]
         probability: 0.2
     # WOLFGATE END
 

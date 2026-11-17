@@ -18800,14 +18800,14 @@ entities:
     - type: Transform
       pos: -5.5,1.5
       parent: 1
-- proto: WFCargoChuteHokkaido
+- proto: WGCargoChuteHokkaido
   entities:
   - uid: 6270
     components:
     - type: Transform
       pos: -1.5,2.5
       parent: 1
-- proto: WFVendingMachineTraderHokkaido
+- proto: WGVendingMachineTraderHokkaido
   entities:
   - uid: 6271
     components:

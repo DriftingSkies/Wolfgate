@@ -1,0 +1,304 @@
+# The Lupercal's player jobs. Each starts closed (0 slots in the gameMap): the owner opens them (the command console,
+# or wg_shipjobs), and a player who takes one relieves the NPC at the matching post (WGShipJobs on the vessel). They
+# are the Lupercal's own ids, so no other station's join path offers them, and they stay out of character preferences.
+# The station AI goes into the core in the admin machines room and cyborgs come aboard in Robotics, both under the
+# WGLupercalLawset. Written by gen_jobs.py (job prototypes can't inherit).
+
+- type: job
+  id: WGLupercalPilot
+  name: wg-lupercal-job-pilot
+  description: wg-lupercal-job-pilot-desc
+  playTimeTracker: JobWGLupercalPilot
+  supervisors: wg-lupercal-job-supervisors
+  icon: JobIconPilot
+  setPreference: false
+  canBeAntag: false
+  weight: 1
+  displayWeight: 5
+  startingGear: WGLupercalPilotGear
+  accessGroups:
+  - GeneralAccess
+
+- type: job
+  id: WGLupercalRadioOperator
+  name: wg-lupercal-job-radio-operator
+  description: wg-lupercal-job-radio-operator-desc
+  playTimeTracker: JobWGLupercalRadioOperator
+  supervisors: wg-lupercal-job-supervisors
+  icon: JobIconStc
+  setPreference: false
+  canBeAntag: false
+  weight: 1
+  displayWeight: 5
+  startingGear: WGLupercalOfficerGear
+  accessGroups:
+  - GeneralAccess
+
+- type: job
+  id: WGLupercalGunner
+  name: wg-lupercal-job-gunner
+  description: wg-lupercal-job-gunner-desc
+  playTimeTracker: JobWGLupercalGunner
+  supervisors: wg-lupercal-job-supervisors
+  icon: JobIconSergeant
+  setPreference: false
+  canBeAntag: false
+  weight: 1
+  displayWeight: 5
+  startingGear: WGLupercalOfficerGear
+  accessGroups:
+  - GeneralAccess
+
+- type: job
+  id: WGLupercalDockmaster
+  name: wg-lupercal-job-dockmaster
+  description: wg-lupercal-job-dockmaster-desc
+  playTimeTracker: JobWGLupercalDockmaster
+  supervisors: wg-lupercal-job-supervisors
+  icon: JobIconQuarterMaster
+  setPreference: false
+  canBeAntag: false
+  weight: 1
+  displayWeight: 5
+  startingGear: WGLupercalDockmasterGear
+  accessGroups:
+  - GeneralAccess
+
+- type: job
+  id: WGLupercalMarine
+  name: wg-lupercal-job-marine
+  description: wg-lupercal-job-marine-desc
+  playTimeTracker: JobWGLupercalMarine
+  supervisors: wg-lupercal-job-supervisors
+  icon: JobIconSecurityOfficer
+  setPreference: false
+  canBeAntag: false
+  weight: 1
+  displayWeight: 5
+  startingGear: WGLupercalMarineGear
+  accessGroups:
+  - GeneralAccess
+
+- type: job
+  id: WGLupercalEngineer
+  name: wg-lupercal-job-engineer
+  description: wg-lupercal-job-engineer-desc
+  playTimeTracker: JobWGLupercalEngineer
+  supervisors: wg-lupercal-job-supervisors
+  icon: JobIconStationEngineer
+  setPreference: false
+  canBeAntag: false
+  weight: 1
+  displayWeight: 5
+  startingGear: WGLupercalEngineerGear
+  accessGroups:
+  - GeneralAccess
+
+- type: job
+  id: WGLupercalDeckhand
+  name: wg-lupercal-job-deckhand
+  description: wg-lupercal-job-deckhand-desc
+  playTimeTracker: JobWGLupercalDeckhand
+  supervisors: wg-lupercal-job-supervisors
+  icon: JobIconTechnicalAssistant
+  setPreference: false
+  canBeAntag: false
+  weight: 1
+  displayWeight: 5
+  startingGear: WGLupercalDeckhandGear
+  accessGroups:
+  - GeneralAccess
+
+- type: job
+  id: WGLupercalJanitor
+  name: wg-lupercal-job-janitor
+  description: wg-lupercal-job-janitor-desc
+  playTimeTracker: JobWGLupercalJanitor
+  supervisors: wg-lupercal-job-supervisors
+  icon: JobIconJanitor
+  setPreference: false
+  canBeAntag: false
+  weight: 1
+  displayWeight: 5
+  startingGear: WGLupercalJanitorGear
+  accessGroups:
+  - GeneralAccess
+
+- type: job
+  id: WGLupercalParamedic
+  name: wg-lupercal-job-paramedic
+  description: wg-lupercal-job-paramedic-desc
+  playTimeTracker: JobWGLupercalParamedic
+  supervisors: wg-lupercal-job-supervisors
+  icon: JobIconParamedic
+  setPreference: false
+  canBeAntag: false
+  weight: 1
+  displayWeight: 5
+  startingGear: WGLupercalParamedicGear
+  accessGroups:
+  - GeneralAccess
+
+- type: job
+  id: WGLupercalSurgeon
+  name: wg-lupercal-job-surgeon
+  description: wg-lupercal-job-surgeon-desc
+  playTimeTracker: JobWGLupercalSurgeon
+  supervisors: wg-lupercal-job-supervisors
+  icon: JobIconMedicalDoctor
+  setPreference: false
+  canBeAntag: false
+  weight: 1
+  displayWeight: 5
+  startingGear: WGLupercalSurgeonGear
+  accessGroups:
+  - GeneralAccess
+
+- type: job
+  id: WGLupercalAi
+  name: wg-lupercal-job-ai
+  description: wg-lupercal-job-ai-desc
+  playTimeTracker: JobWGLupercalAi
+  supervisors: wg-lupercal-job-supervisors
+  icon: JobIconStationAi
+  setPreference: false
+  canBeAntag: false
+  weight: 1
+  displayWeight: 5
+  jobEntity: WGLupercalAiBrain
+  jobPreviewEntity: PlayerStationAiPreview
+  applyTraits: false
+  alwaysUseSpawner: true
+
+- type: job
+  id: WGLupercalCyborg
+  name: wg-lupercal-job-cyborg
+  description: wg-lupercal-job-cyborg-desc
+  playTimeTracker: JobWGLupercalCyborg
+  supervisors: wg-lupercal-job-supervisors
+  icon: JobIconBorg
+  setPreference: false
+  canBeAntag: false
+  weight: 1
+  displayWeight: 5
+  jobEntity: WGLupercalBorg
+  applyTraits: false
+  alwaysUseSpawner: true
+
+- type: playTimeTracker
+  id: JobWGLupercalPilot
+
+- type: playTimeTracker
+  id: JobWGLupercalRadioOperator
+
+- type: playTimeTracker
+  id: JobWGLupercalGunner
+
+- type: playTimeTracker
+  id: JobWGLupercalDockmaster
+
+- type: playTimeTracker
+  id: JobWGLupercalMarine
+
+- type: playTimeTracker
+  id: JobWGLupercalEngineer
+
+- type: playTimeTracker
+  id: JobWGLupercalDeckhand
+
+- type: playTimeTracker
+  id: JobWGLupercalJanitor
+
+- type: playTimeTracker
+  id: JobWGLupercalParamedic
+
+- type: playTimeTracker
+  id: JobWGLupercalSurgeon
+
+- type: playTimeTracker
+  id: JobWGLupercalAi
+
+- type: playTimeTracker
+  id: JobWGLupercalCyborg
+
+- type: startingGear
+  id: WGLupercalPilotGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitPilot
+    shoes: ClothingShoesBootsJack
+    ears: ClothingHeadsetGrey
+    back: ClothingBackpack
+    id: PilotPDA
+
+- type: startingGear
+  id: WGLupercalOfficerGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBlack
+    shoes: ClothingShoesColorBlack
+    ears: ClothingHeadsetGrey
+    back: ClothingBackpack
+    id: MercenaryPDA
+
+- type: startingGear
+  id: WGLupercalDockmasterGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitCargo
+    shoes: ClothingShoesBootsWork
+    ears: ClothingHeadsetGrey
+    back: ClothingBackpack
+    id: PassengerPDA
+
+- type: startingGear
+  id: WGLupercalMarineGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitSec
+    shoes: ClothingShoesBootsJack
+    ears: ClothingHeadsetGrey
+    back: ClothingBackpack
+    id: MercenaryPDA
+
+- type: startingGear
+  id: WGLupercalEngineerGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitEngineering
+    shoes: ClothingShoesBootsWork
+    ears: ClothingHeadsetGrey
+    back: ClothingBackpack
+    id: EngineerPDA
+
+- type: startingGear
+  id: WGLupercalDeckhandGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorGrey
+    shoes: ClothingShoesBootsWork
+    ears: ClothingHeadsetGrey
+    back: ClothingBackpack
+    id: PassengerPDA
+
+- type: startingGear
+  id: WGLupercalJanitorGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitJanitor
+    shoes: ClothingShoesGaloshes
+    gloves: ClothingHandsGlovesJanitor
+    ears: ClothingHeadsetGrey
+    back: ClothingBackpack
+    id: JanitorPDA
+
+- type: startingGear
+  id: WGLupercalParamedicGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitParamedic
+    shoes: ClothingShoesColorWhite
+    ears: ClothingHeadsetGrey
+    back: ClothingBackpack
+    id: ParamedicPDA
+
+- type: startingGear
+  id: WGLupercalSurgeonGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitMedicalDoctor
+    shoes: ClothingShoesColorWhite
+    ears: ClothingHeadsetGrey
+    back: ClothingBackpack
+    id: MedicalPDA

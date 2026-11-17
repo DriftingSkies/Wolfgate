@@ -37,7 +37,7 @@
     event: !type:ToggleMappingToolsActionEvent
   assignments:
   - 5: 4
-  name: wf-mapping-tools-action-name
+  name: wg-mapping-tools-action-name
 # WOLFGATE END
 - action: !type:InstantActionComponent
     icon: /Textures/Tiles/plating.png

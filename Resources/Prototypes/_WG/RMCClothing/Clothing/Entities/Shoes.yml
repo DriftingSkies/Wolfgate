@@ -1,0 +1,69 @@
+- type: entity
+  parent: ClothingShoesBootsCombatFilled
+  id: WGRMCBootsBlack
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/black.rsi
+
+- type: entity
+  parent: ClothingShoesBootsCombatFilled
+  id: WGRMCBootsBrown
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/brown.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/brown.rsi
+
+- type: entity
+  parent: ClothingShoesBootsCombatFilled
+  id: WGRMCBootsGrey
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/grey.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/grey.rsi
+
+- type: entity
+  parent: ClothingShoesBootsCombatFilled
+  id: WGRMCBootsJungle
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/jungle.rsi
+
+- type: entity
+  parent: ClothingShoesBootsCombatFilled
+  id: WGRMCBootsUrban
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/urban.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/urban.rsi
+
+- type: entity
+  parent: ClothingShoesBootsCombatFilled
+  id: WGRMCBootsJackboots
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/jackboots.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/jackboots.rsi
+
+- type: entity
+  parent: ClothingShoesBootsCombatFilled
+  id: WGRMCBootsSwat
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/swat.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Shoes/boots/swat.rsi

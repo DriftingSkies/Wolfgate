@@ -17,7 +17,7 @@ using Robust.Shared.Prototypes;
 
 // Mono
 using Content.Shared.Destructible;
-using Content.Server._WF.Remade.Gifts; // WOLFGATE(Remade)
+using Content.Server._WG.Remade.Gifts; // WOLFGATE(Remade)
 
 namespace Content.Server.Materials;
 
@@ -117,7 +117,7 @@ public sealed partial class MaterialStorageSystem : SharedMaterialStorageSystem
         }
 
         // WOLFGATE(Remade) START: Monolith-made material stays in the silo, or it would sell as sheets
-        var matterEv = new WFMatterEjectAttemptEvent(player, uid, msg.Material, volume);
+        var matterEv = new WGMatterEjectAttemptEvent(player, uid, msg.Material, volume);
         RaiseLocalEvent(ref matterEv);
         if (matterEv.Cancelled)
             return;

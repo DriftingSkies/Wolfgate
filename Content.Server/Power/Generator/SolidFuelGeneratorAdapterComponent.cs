@@ -1,6 +1,6 @@
 ﻿using Content.Shared.Materials;
 using Content.Shared.Power.Generator;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 using Robust.Shared.Prototypes; // Frontier
 
 namespace Content.Server.Power.Generator;

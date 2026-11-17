@@ -123,7 +123,7 @@ public sealed partial class SharedExecutionSystem : EntitySystem
 
         // The victim must be incapacitated to be executed
         // WOLFGATE(Wolfmed) START: a Downed wound host is helpless enough to execute
-        if (!HasComp<Content.Shared._WF.Wolfmed.Consciousness.WolfmedDownedComponent>(victim))
+        if (!HasComp<Content.Shared._WG.Wolfmed.Consciousness.WolfmedDownedComponent>(victim))
         // WOLFGATE END
         if (victim != attacker && _actionBlocker.CanInteract(victim, null))
             return false;
@@ -174,7 +174,7 @@ public sealed partial class SharedExecutionSystem : EntitySystem
         // Not from the Execute do-after, which also lands here: it raises its own ending once the ghost has left.
         if (!entity.Comp.Executing)
         {
-            var wolfmedSuicided = new Content.Shared._WF.Wolfmed.Life.WolfmedEndingEvent(Content.Shared._WF.Wolfmed.Life.WolfmedEnding.Suicide, args.Victim, entity);
+            var wolfmedSuicided = new Content.Shared._WG.Wolfmed.Life.WolfmedEndingEvent(Content.Shared._WG.Wolfmed.Life.WolfmedEnding.Suicide, args.Victim, entity);
             RaiseLocalEvent(args.Victim, ref wolfmedSuicided);
         }
         // WOLFGATE END
@@ -247,7 +247,7 @@ public sealed partial class SharedExecutionSystem : EntitySystem
 
             // WOLFGATE(Wolfmed) START: M2: OD17, on a wound host a suicide is brain 0 then death; the ghost above cannot return.
             // Carries the weapon, so the server also leaves the gore that blade's strength buys.
-            var suicided = new Content.Shared._WF.Wolfmed.Life.WolfmedEndingEvent(Content.Shared._WF.Wolfmed.Life.WolfmedEnding.Suicide, attacker, weapon);
+            var suicided = new Content.Shared._WG.Wolfmed.Life.WolfmedEndingEvent(Content.Shared._WG.Wolfmed.Life.WolfmedEnding.Suicide, attacker, weapon);
             RaiseLocalEvent(victim, ref suicided);
             // WOLFGATE END
         }
@@ -257,7 +257,7 @@ public sealed partial class SharedExecutionSystem : EntitySystem
             // WOLFGATE(Wolfmed) START: M2: HOOK 13 rewritten (OD17), a wound host's execution is a catastrophic brain injury.
             // Brain 0 then death, revivable. The old torso top-up (TryApplyLethalDamage) no longer killed anybody.
             // Carries the weapon and the attacker, so the server also leaves the gore that blade's strength buys.
-            var executed = new Content.Shared._WF.Wolfmed.Life.WolfmedEndingEvent(Content.Shared._WF.Wolfmed.Life.WolfmedEnding.Execution, attacker, weapon);
+            var executed = new Content.Shared._WG.Wolfmed.Life.WolfmedEndingEvent(Content.Shared._WG.Wolfmed.Life.WolfmedEnding.Execution, attacker, weapon);
             RaiseLocalEvent(victim, ref executed);
             // WOLFGATE END
         }

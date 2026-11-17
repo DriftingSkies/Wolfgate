@@ -11,12 +11,12 @@
   gridPath: /Maps/_Mono/POI/underground.yml
   addComponents:
   # WOLFGATE(Ordnance) START: the faction's ordnance terminal
-  - type: WFOrdnanceStation
-    terminal: WFOrdnanceTerminalUnderground
+  - type: WGOrdnanceStation
+    terminal: WGOrdnanceTerminalUnderground
   # WOLFGATE END
-  # WOLFGATE(ReaverCampaign): the station flies the neutral WFUnderground company, so the Reavers leave it and its cell alone
+  # WOLFGATE(ReaverCampaign): the station flies the neutral WGUnderground company, so the Reavers leave it and its cell alone
   - type: Company
-    companyName: WFUnderground
+    companyName: WGUnderground
   - type: IFF
     color: "#991111"
     readOnly: true # mono

@@ -59,7 +59,7 @@
     sprite: _DV/Clothing/Shoes/Boots/winterbootschem.rsi
 
 - type: entity
-  parent: [ClothingShoesBaseWinterBoots, WFBaseWaddleShoes] # WOLFGATE(Waddle)
+  parent: [ClothingShoesBaseWinterBoots, WGBaseWaddleShoes] # WOLFGATE(Waddle)
   id: ClothingShoesBootsWinterClown
   name: clown winter boots
   components:

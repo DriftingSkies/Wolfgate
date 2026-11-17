@@ -1,0 +1,136 @@
+using System.Linq;
+using Robust.Client.UserInterface;
+using Robust.Client.UserInterface.Controls;
+using static Content.Client._WG.CombatConsole.WGInstrumentTheme;
+
+namespace Content.Client._WG.ShipPa.UI;
+
+public sealed partial class ShipAlarmPanel
+{
+    private bool _wgInstrumentsRefitted;
+
+    /// <summary>Rehouses the live PA controls into a compact bank without replacing their handlers.</summary>
+    public void WgRefitInstruments()
+    {
+        if (_wgInstrumentsRefitted)
+            return;
+        _wgInstrumentsRefitted = true;
+
+        var conditionCaption = ConditionLabel.Parent!.Children.OfType<Label>().Single(label => label != ConditionLabel);
+        foreach (var label in new[] { conditionCaption, ConditionLabel, SpeakersCaption, SpeakersLabel })
+        {
+            label.Margin = new Thickness(0);
+            label.MinHeight = 24;
+            label.ClipText = true;
+        }
+        conditionCaption.ClipText = SpeakersCaption.ClipText = false;
+        ConditionLabel.HorizontalExpand = true;
+        SpeakersLabel.HorizontalExpand = true;
+        SpeakersLabel.Align = Robust.Client.UserInterface.Controls.Label.AlignMode.Left;
+        // The volume slider rides the Speakers caption line, so the bank stays as tall as before.
+        VolumeSlider.Margin = new Thickness(6, 0);
+        VolumeSlider.MinWidth = 0;
+        VolumeLabel.Margin = new Thickness(0);
+        VolumeLabel.MinHeight = 24;
+        var volume = Row(SpeakersCaption, VolumeSlider, VolumeLabel);
+        volume.SeparationOverride = 0;
+        var readouts = Column(Row(conditionCaption, ConditionLabel), Column(volume, SpeakersLabel));
+        readouts.SeparationOverride = 2;
+        ((BoxContainer) SpeakersLabel.Parent!).SeparationOverride = 0;
+
+        var codes = CodeContainer.Children.OfType<Button>().ToArray();
+        foreach (var button in codes)
+        {
+            Detach(button);
+            WgCompactAlarmButton(button);
+        }
+        CodeContainer.RemoveAllChildren();
+        CodeContainer.Margin = new Thickness(0);
+        CodeContainer.SeparationOverride = 4;
+        for (var i = 0; i < codes.Length; i += 2)
+        {
+            var row = i + 1 < codes.Length ? Row(codes[i], codes[i + 1]) : Row(codes[i]);
+            row.SeparationOverride = 4;
+            CodeContainer.AddChild(row);
+        }
+        WgCompactAlarmButton(GeneralQuartersButton);
+        WgCompactAlarmButton(DistressButton);
+        WgCompactAlarmButton(CollisionAlertButton);
+        WgCompactAlarmButton(AnnounceButton);
+        WgCompactAlarmButton(SoundButton);
+        WgCompactAlarmButton(SoundStopButton);
+        AnnounceButton.HorizontalExpand = SoundButton.HorizontalExpand = SoundStopButton.HorizontalExpand = false;
+        AnnounceButton.SetWidth = 84;
+        SoundButton.SetWidth = 56;
+        SoundStopButton.SetWidth = 56;
+        foreach (var edit in new[] { AnnounceEdit, SoundEdit })
+        {
+            edit.Margin = new Thickness(0);
+            edit.HorizontalExpand = true;
+            edit.MinWidth = 100;
+            edit.MinHeight = edit.SetHeight = 32;
+        }
+        var announce = Row(AnnounceEdit, AnnounceButton);
+        var sound = Row(SoundEdit, SoundButton, SoundStopButton);
+        announce.SeparationOverride = sound.SeparationOverride = 4;
+        // SOS and the collision alert share a row so the overlay panel below still fits at the console's minimum size.
+        var alerts = Row(DistressButton, CollisionAlertButton);
+        alerts.SeparationOverride = 4;
+        WgRefitPlaylist();
+        var body = Column(readouts, CodeContainer, GeneralQuartersButton, alerts, announce, sound, PlaylistBox);
+        body.SeparationOverride = 6;
+        RemoveAllChildren();
+        Margin = new Thickness(0);
+        HorizontalExpand = true;
+        VerticalExpand = false;
+        AddChild(body);
+        ApplyCodeColours();
+    }
+
+    /// <summary>Compacts the now-playing line and queue; the section stays hidden until the ship has something to list.</summary>
+    private void WgRefitPlaylist()
+    {
+        foreach (var label in new[] { NowPlayingLabel, QueueLabel })
+        {
+            label.Margin = new Thickness(0);
+            label.MinHeight = 24;
+            label.ClipText = true;
+            label.VerticalAlignment = VAlignment.Center;
+        }
+        WgCompactAlarmButton(SkipButton);
+        WgCompactAlarmButton(ClearQueueButton);
+        SkipButton.HorizontalExpand = ClearQueueButton.HorizontalExpand = false;
+        SkipButton.SetWidth = 56;
+        ClearQueueButton.SetWidth = 64;
+        ((BoxContainer) NowPlayingLabel.Parent!).SeparationOverride = 4;
+        QueueHeader.SeparationOverride = 4;
+        QueueHeader.Margin = new Thickness(0);
+        QueueList.SeparationOverride = 2;
+        // Three rows show at once; the rest scroll.
+        QueueScroll.MaxHeight = 3 * 32 + 2 * 2;
+        PlaylistBox.Margin = new Thickness(0);
+        PlaylistBox.SeparationOverride = 4;
+    }
+
+    /// <summary>Styles a queue row built after the refit, which the console theme has already passed over.</summary>
+    private static void WgStyleQueueRow(BoxContainer row, Button remove)
+    {
+        row.SeparationOverride = 4;
+        remove.AddStyleClass("WgCompact");
+        Apply(row);
+        remove.Margin = new Thickness(0);
+        remove.HorizontalExpand = false;
+        remove.MinHeight = remove.SetHeight = 32;
+        remove.SetWidth = 32;
+    }
+
+    private static void WgCompactAlarmButton(Button button)
+    {
+        button.AddStyleClass("WgCompact");
+        button.Margin = new Thickness(0);
+        button.MinWidth = 0;
+        button.MinHeight = button.SetHeight = 32;
+        button.HorizontalExpand = true;
+        Switch(button);
+    }
+}

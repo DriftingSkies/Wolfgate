@@ -39,17 +39,17 @@ public static partial class PoolManager
         (CCVars.MovementMobPushing.Name, "false"),
         (CCVars.GameLobbyDefaultPreset.Name, "secret"), // Frontier: Adventure takes ages, default to secret
         (CCVars.StaticStorageUI.Name, "true"),// Frontier: causes storage test failures
-        ("wf.encounters.simulate", "false"), // WOLFGATE(Encounters): tests spawn real ships unless they turn simulation on
-        ("wf.planet_site_stash", "false"), // WOLFGATE(Dormancy): tests look at a formed world's sites with nobody near
-        ("wf.planet_cargo_hub_chance", "0"), // WOLFGATE(PlanetCargoHubs): a hub would take the room other tests' sites expect
-        ("wf.caverns", "false"), // WOLFGATE(Caverns): tests that want a cavern turn caverns on themselves
-        ("wf.net.map_scoped_grids", "false"), // WOLFGATE(NetTraffic): test maps have no viewer, and the pair waits for the client to get them
-        ("wf.encounters.vote", "false"), // WOLFGATE(Encounters): a round-restart vote throws on a dummy session's join
+        ("wg.encounters.simulate", "false"), // WOLFGATE(Encounters): tests spawn real ships unless they turn simulation on
+        ("wg.planet_site_stash", "false"), // WOLFGATE(Dormancy): tests look at a formed world's sites with nobody near
+        ("wg.planet_cargo_hub_chance", "0"), // WOLFGATE(PlanetCargoHubs): a hub would take the room other tests' sites expect
+        ("wg.caverns", "false"), // WOLFGATE(Caverns): tests that want a cavern turn caverns on themselves
+        ("wg.net.map_scoped_grids", "false"), // WOLFGATE(NetTraffic): test maps have no viewer, and the pair waits for the client to get them
+        ("wg.encounters.vote", "false"), // WOLFGATE(Encounters): a round-restart vote throws on a dummy session's join
         (CCVars.AutoVoteEnabled.Name, "false"), // WOLFGATE: a round-restart vote throws on a dummy session's join
-        ("wf.newbie.welcome", "false"), // WOLFGATE(Newbie): welcome popups would open over other tests' windows
-        ("wf.lorebook.seen_edition", "1000"), // WOLFGATE(LoreBook): a new edition's lore book would open over other tests' windows
-        ("wf.companies.create_hours", "0"), // WOLFGATE(Companies): test players have no playtime
-        ("wf.companies.create_fee", "0"), // WOLFGATE(Companies): tests check balances without the creation fee
+        ("wg.newbie.welcome", "false"), // WOLFGATE(Newbie): welcome popups would open over other tests' windows
+        ("wg.lorebook.seen_edition", "1000"), // WOLFGATE(LoreBook): a new edition's lore book would open over other tests' windows
+        ("wg.companies.create_hours", "0"), // WOLFGATE(Companies): test players have no playtime
+        ("wg.companies.create_fee", "0"), // WOLFGATE(Companies): tests check balances without the creation fee
         (CCVars.StorageLimit.Name, "1")// Frontier: test failures with multiple storage
     };
 }

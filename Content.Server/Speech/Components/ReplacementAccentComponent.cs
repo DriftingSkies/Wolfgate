@@ -1,5 +1,5 @@
 using Content.Server.Speech.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Speech.Components;
 

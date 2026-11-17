@@ -1,5 +1,5 @@
 using Content.Shared._Mono.ShipRepair.Components;
-using Content.Shared._WF.ShipRepair; // WOLFGATE(ShipRepair)
+using Content.Shared._WG.ShipRepair; // WOLFGATE(ShipRepair)
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
@@ -13,7 +13,7 @@ public abstract partial class SharedShipRepairSystem : EntitySystem
 {
     private List<DoAfterId> _toRemoveIds = new();
 
-    [Dependency] private WFHullSectionSystem _wfSections = default!; // WOLFGATE(ShipRepair): sections, rebuild guard, target pick.
+    [Dependency] private WGHullSectionSystem _wgSections = default!; // WOLFGATE(ShipRepair): sections, rebuild guard, target pick.
 
     private void InitTool()
     {
@@ -39,12 +39,12 @@ public abstract partial class SharedShipRepairSystem : EntitySystem
 
         var targetGrid = ourXform.GridUid == null ? grids[0] : (ourXform.GridUid.Value, Comp<MapGridComponent>(ourXform.GridUid.Value));
         */
-        if (_wfSections.PickTarget(ourXform, clickWorld) is not { } targetGrid)
+        if (_wgSections.PickTarget(ourXform, clickWorld) is not { } targetGrid)
             return;
 
-        if (_wfSections.IsSection(targetGrid))
+        if (_wgSections.IsSection(targetGrid))
         {
-            _wfSections.TryStartReattach(ent, args.User, targetGrid);
+            _wgSections.TryStartReattach(ent, args.User, targetGrid);
             return;
         }
 
@@ -82,7 +82,7 @@ public abstract partial class SharedShipRepairSystem : EntitySystem
             if (storedTile != currentTile.TypeId)
             {
                 // WOLFGATE(ShipRepair): never rebuild under another grid, where a detached section belongs, or apart from the hull.
-                if (!_wfSections.CanRebuildTileAt(ent, args.User, targetGrid, gridIndices))
+                if (!_wgSections.CanRebuildTileAt(ent, args.User, targetGrid, gridIndices))
                     return;
 
                 StartRepair(ent, args.User, targetGrid, gridIndices, ent.Comp.TileRepairTime * ent.Comp.RepairTimeMultiplier, ent.Comp.TileRepairCost);
@@ -128,7 +128,7 @@ public abstract partial class SharedShipRepairSystem : EntitySystem
                         // is taken away when its replacement is built, in OnRepairDoAfter. On any other grid the
                         // original still exists, as upstream has it: carried off to another ship, it is not built again.
                         var origXform = Transform(origUid.Value);
-                        if (origXform.GridUid != null && !_wfSections.IsDebrisOf(origXform.GridUid, targetGrid.Owner))
+                        if (origXform.GridUid != null && !_wgSections.IsDebrisOf(origXform.GridUid, targetGrid.Owner))
                         {
                             alreadyExists = true;
                             continue;
@@ -174,7 +174,7 @@ public abstract partial class SharedShipRepairSystem : EntitySystem
                 if (needsRepair && enough)
                 {
                     // WOLFGATE(ShipRepair): never rebuild under another grid, where a detached section belongs, or onto something anchored there since.
-                    if (!_wfSections.CanRebuildEntityAt(ent, args.User, targetGrid, repairData.EntityPalette[spec.ProtoIndex], _wfSections.TileOf(targetGrid, spec.LocalPosition), repairData, chunk))
+                    if (!_wgSections.CanRebuildEntityAt(ent, args.User, targetGrid, repairData.EntityPalette[spec.ProtoIndex], _wgSections.TileOf(targetGrid, spec.LocalPosition), repairData, chunk))
                         return;
 
                     StartRepair(ent, args.User, targetGrid, gridIndices, delay, cost, id);
@@ -249,7 +249,7 @@ public abstract partial class SharedShipRepairSystem : EntitySystem
                 return;
 
             // WOLFGATE(ShipRepair): a grid, or something anchored, may have moved into the spot while the repair ran.
-            if (!_wfSections.CanRebuildEntityAt(ent, args.User, targetGrid, repairData.EntityPalette[spec.ProtoIndex], _wfSections.TileOf(targetGrid, spec.LocalPosition), repairData, chunk))
+            if (!_wgSections.CanRebuildEntityAt(ent, args.User, targetGrid, repairData.EntityPalette[spec.ProtoIndex], _wgSections.TileOf(targetGrid, spec.LocalPosition), repairData, chunk))
                 return;
 
             // this is technically copypaste code but it's different each time
@@ -260,7 +260,7 @@ public abstract partial class SharedShipRepairSystem : EntitySystem
                 RaiseLocalEvent(origUid.Value, ref ev);
                 // abort if we can't repair now
                 // WOLFGATE(ShipRepair) START: an unhandled query blocks unless the original is debris of this hull.
-                if (ev.Handled ? !ev.Repairable : !_wfSections.IsDebrisOf(Transform(origUid.Value).GridUid, targetGrid))
+                if (ev.Handled ? !ev.Repairable : !_wgSections.IsDebrisOf(Transform(origUid.Value).GridUid, targetGrid))
                     return;
 
                 // Block or consume, as upstream has it for an original off every grid: left standing, the debris
@@ -287,7 +287,7 @@ public abstract partial class SharedShipRepairSystem : EntitySystem
         else
         {
             // WOLFGATE(ShipRepair): a grid may have moved into the spot, or the hull beside it gone, while the repair ran.
-            if (!_wfSections.CanRebuildTileAt(ent, args.User, targetGrid, args.TargetGridIndices))
+            if (!_wgSections.CanRebuildTileAt(ent, args.User, targetGrid, args.TargetGridIndices))
                 return;
 
             TryRepairTileTile((targetGrid, repairData), args.TargetGridIndices);

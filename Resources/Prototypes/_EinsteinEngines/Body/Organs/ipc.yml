@@ -14,13 +14,13 @@
     solutions:
       organ:
         reagents:
-        - ReagentId: WFWolfmedHydraulicFluid # WOLFGATE(Wolfmed): playtest 3 IPC 2: the chassis's own fluid, not Oil
+        - ReagentId: WGWolfmedHydraulicFluid # WOLFGATE(Wolfmed): playtest 3 IPC 2: the chassis's own fluid, not Oil
           Quantity: 10
 
 - type: entity
   id: OrganIPCEyes
   # WOLFGATE(Wolfmed): Wolfmed eyes data, so the organ can be hurt, scanned and treated
-  parent: [BaseIPCOrgan, WFWolfmedOrganEyes]
+  parent: [BaseIPCOrgan, WGWolfmedOrganEyes]
   name: robotic eyes
   description: "01001001 00100000 01110011 01100101 01100101 00100000 01111001 01101111 01110101 00100001"
   components:
@@ -54,7 +54,7 @@
 
 - type: entity
   id: OrganIPCPump
-  parent: [BaseIPCOrgan, WFWolfmedOrganIpcPump] # WOLFGATE(Wolfmed): BRAIN: organ health, so the pump can be broken
+  parent: [BaseIPCOrgan, WGWolfmedOrganIpcPump] # WOLFGATE(Wolfmed): BRAIN: organ health, so the pump can be broken
   name: micro pump
   description: "A micro pump, used to circulate coolant."
   components:
@@ -67,7 +67,7 @@
   - type: Metabolizer
     maxReagents: 2
     groups:
-    - id: WFContaminant
+    - id: WGContaminant
   # WOLFGATE END
   # The heart 'metabolizes' medicines and poisons that aren't filtered out by other organs.
   # This is done because these chemicals need to have some effect even if they aren't being filtered out of your body.

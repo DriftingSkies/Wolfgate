@@ -1,6 +1,6 @@
 - type: guideEntry
   id: MonoStarSystem
-  name: wf-lore-entry-system # WOLFGATE(LoreBook): the page is now The Kyphrus System
+  name: wg-lore-entry-system # WOLFGATE(LoreBook): the page is now The Kyphrus System
   text: "/ServerInfo/_Mono/Guidebook/StarSystem/Colossus.xml"
   priority: 10
   lore: true # WOLFGATE(LoreBook): the star system pages moved to the lore book
@@ -14,13 +14,13 @@
   text: "/ServerInfo/_Mono/Guidebook/StarSystem/Kyphrus.xml"
   priority: 100
   children:
-    - WFLoreCollapse # WOLFGATE(LoreBook)
+    - WGLoreCollapse # WOLFGATE(LoreBook)
     - Asclepiu
     - Thrascias
     - Fervidus
     - Merak
     - Aerumna
-    - WFLoreCarcinoma # WOLFGATE(LoreBook)
+    - WGLoreCarcinoma # WOLFGATE(LoreBook)
 
 - type: guideEntry
   id: Asclepiu
@@ -28,7 +28,7 @@
   text: "/ServerInfo/_Mono/Guidebook/StarSystem/Asclepiu.xml"
   # WOLFGATE(LoreBook) START: Verda's city
   children:
-  - WFLoreCrocus
+  - WGLoreCrocus
   # WOLFGATE END
 
 - type: guideEntry

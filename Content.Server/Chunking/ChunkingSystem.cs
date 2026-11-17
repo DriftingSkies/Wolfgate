@@ -1,5 +1,5 @@
 using System.Linq;
-using Content.Server._WF.AsteroidMining; // WOLFGATE(Performance)
+using Content.Server._WG.AsteroidMining; // WOLFGATE(Performance)
 using Content.Shared.Decals;
 using Microsoft.Extensions.ObjectPool;
 using Robust.Shared;
@@ -84,7 +84,7 @@ public sealed partial class ChunkingSystem : EntitySystem
         ref QueryState state)
     {
         // WOLFGATE(Performance) START: mining rocks never hold decals or gas, and are only sent to players near them
-        if (state.EntityManager.HasComponent<WFAsteroidGridComponent>(uid))
+        if (state.EntityManager.HasComponent<WGAsteroidGridComponent>(uid))
             return true;
         // WOLFGATE END
 

@@ -8,7 +8,7 @@ using Content.Shared.Movement.Systems;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.Shuttles.Systems;
 using Content.Shared.Ghost; // Frontier
-using Content.Shared._WF.MappingMode; // WOLFGATE(MappingMode)
+using Content.Shared._WG.MappingMode; // WOLFGATE(MappingMode)
 using Prometheus;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
@@ -27,8 +27,8 @@ public sealed partial class MoverController : SharedMoverController
         "Amount of ActiveInputMovers being processed by MoverController");
 
     // WOLFGATE(Performance) START: gauge of sleeping movers skipped
-    private static readonly Gauge WFIdleSkippedGauge = Metrics.CreateGauge(
-        "wf_physics_idle_mover_skipped",
+    private static readonly Gauge WGIdleSkippedGauge = Metrics.CreateGauge(
+        "wg_physics_idle_mover_skipped",
         "ActiveInputMovers skipped by MoverController for being asleep with no input");
     // WOLFGATE END
 
@@ -38,15 +38,15 @@ public sealed partial class MoverController : SharedMoverController
     private Dictionary<EntityUid, (ShuttleComponent, List<(EntityUid, PilotComponent, InputMoverComponent, TransformComponent)>)> _shuttlePilots = new();
 
     [Dependency] private EntityQuery<ActiveInputMoverComponent> _activeQuery = default!;
-    [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _wfDormancy = default!; // WOLFGATE(Dormancy): skips movers at rest nobody is near
+    [Dependency] private Content.Server._WG.Dormancy.WGDormancySystem _wgDormancy = default!; // WOLFGATE(Dormancy): skips movers at rest nobody is near
     [Dependency] private EntityQuery<DroneConsoleComponent> _droneQuery = default!;
     [Dependency] private EntityQuery<ShuttleComponent> _shuttleQuery = default!;
     [Dependency] private EntityQuery<GhostComponent> _ghostQuery = default!;
-    [Dependency] private EntityQuery<WFMappingObserverComponent> _wfMapperQuery = default!; // WOLFGATE(MappingMode)
-    [Dependency] private EntityQuery<ActorComponent> _wfActorQuery = default!; // WOLFGATE(Performance): idle-mover skip
-    private int _wfIdleSkipped; // WOLFGATE(Performance): movers skipped this tick for being asleep with no input
-    private readonly List<ShuttleInput> _wfShuttleInputs = new(); // WOLFGATE(Performance): reused by HandleShuttleMovement
-    private readonly List<EntityUid> _wfLostPilots = new(); // WOLFGATE(Performance): reused by HandleShuttleMovement
+    [Dependency] private EntityQuery<WGMappingObserverComponent> _wgMapperQuery = default!; // WOLFGATE(MappingMode)
+    [Dependency] private EntityQuery<ActorComponent> _wgActorQuery = default!; // WOLFGATE(Performance): idle-mover skip
+    private int _wgIdleSkipped; // WOLFGATE(Performance): movers skipped this tick for being asleep with no input
+    private readonly List<ShuttleInput> _wgShuttleInputs = new(); // WOLFGATE(Performance): reused by HandleShuttleMovement
+    private readonly List<EntityUid> _wgLostPilots = new(); // WOLFGATE(Performance): reused by HandleShuttleMovement
 
     // Not needed for persistence; just used to save an alloc
     private readonly HashSet<EntityUid> _seenMovers = [];
@@ -204,7 +204,7 @@ public sealed partial class MoverController : SharedMoverController
         // cannot have any events get fired while we use it in this while loop.
         _seenMovers.Clear();
         _moversToUpdate.Clear();
-        _wfIdleSkipped = 0; // WOLFGATE(Performance): reset idle-skip counter
+        _wgIdleSkipped = 0; // WOLFGATE(Performance): reset idle-skip counter
 
         // Don't use EntityQueryEnumerator because admin ghosts have to move on
         // paused maps. Pausing movers is handled via ActiveInputMoverComponent.
@@ -213,7 +213,7 @@ public sealed partial class MoverController : SharedMoverController
         {
             // WOLFGATE(MappingMode) START: mapping observers move on their paused session maps like admin ghosts
             // if (IsPaused(uid) && !_ghostQuery.HasComp(uid)) // Frontier: Skip processing paused entities. Ghosts are excepted for mapping reasons
-            if (IsPaused(uid) && !_ghostQuery.HasComp(uid) && !_wfMapperQuery.HasComp(uid))
+            if (IsPaused(uid) && !_ghostQuery.HasComp(uid) && !_wgMapperQuery.HasComp(uid))
             // WOLFGATE END
                 continue; // Frontier
 
@@ -222,17 +222,17 @@ public sealed partial class MoverController : SharedMoverController
                 && moverComp.HeldMoveButtons == MoveButtons.None
                 && (Timing.CurTick > moverComp.LastInputTick
                     || (moverComp.CurTickWalkMovement == Vector2.Zero && moverComp.CurTickSprintMovement == Vector2.Zero))
-                && !_wfActorQuery.HasComp(uid)
-                && PhysicsQuery.TryComp(uid, out var wfBody)
-                && !wfBody.Awake)
+                && !_wgActorQuery.HasComp(uid)
+                && PhysicsQuery.TryComp(uid, out var wgBody)
+                && !wgBody.Awake)
             {
-                _wfIdleSkipped++;
+                _wgIdleSkipped++;
                 continue;
             }
             // WOLFGATE END
 
             // WOLFGATE(Dormancy) START: an NPC at rest with no input on planet ground no player is near has nothing to move
-            if (activeComp.RelayedFrom == null && moverComp.HeldMoveButtons == MoveButtons.None && _wfDormancy.MoverSleeps(uid))
+            if (activeComp.RelayedFrom == null && moverComp.HeldMoveButtons == MoveButtons.None && _wgDormancy.MoverSleeps(uid))
                 continue;
             // WOLFGATE END
 
@@ -245,7 +245,7 @@ public sealed partial class MoverController : SharedMoverController
         }
 
         ActiveMoverGauge.Set(_moversToUpdate.Count);
-        WFIdleSkippedGauge.Set(_wfIdleSkipped); // WOLFGATE(Performance): idle movers skipped
+        WGIdleSkippedGauge.Set(_wgIdleSkipped); // WOLFGATE(Performance): idle movers skipped
 
         foreach (var ent in _moversToUpdate)
         {
@@ -477,7 +477,7 @@ public sealed partial class MoverController : SharedMoverController
             dir = dir - dirCompVel + scaledComp;
         }
 
-        return dir * shuttle.AccelerationMultiplier * WfAtmosphereManeuvering(xform.Owner); // WOLFGATE(Planets): planet lift and cargo load scale thrust
+        return dir * shuttle.AccelerationMultiplier * WgAtmosphereManeuvering(xform.Owner); // WOLFGATE(Planets): planet lift and cargo load scale thrust
     }
 
     /// <summary>
@@ -515,9 +515,9 @@ public sealed partial class MoverController : SharedMoverController
             // var inputs = new List<ShuttleInput>();
             // // query all our pilots for input
             // var toRemove = new List<EntityUid>();
-            var inputs = _wfShuttleInputs;
+            var inputs = _wgShuttleInputs;
             inputs.Clear();
-            var toRemove = _wfLostPilots;
+            var toRemove = _wgLostPilots;
             toRemove.Clear();
             // WOLFGATE END
 
@@ -781,7 +781,7 @@ public sealed partial class MoverController : SharedMoverController
                 var totalForce = GetDirectionThrust(linearInput, shuttle, body, xform);
 
                 // Won't just do cardinal directions.
-                foreach (var dir in ThrusterSystem.WFCardinalFlags) // WOLFGATE(Performance): Enum.GetValues allocated every tick per shuttle
+                foreach (var dir in ThrusterSystem.WGCardinalFlags) // WOLFGATE(Performance): Enum.GetValues allocated every tick per shuttle
                 {
                     // Brain no worky but I just want cardinals
                     switch (dir)

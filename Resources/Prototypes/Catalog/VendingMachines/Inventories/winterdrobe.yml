@@ -18,31 +18,31 @@
     ClothingOuterCoatBomber: 3
     ClothingHeadHatSantahat: 2
     ClothingHeadHatXmasCrown: 2
-    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-    WFMeridianClothingHeadHoodedWinterhood: 2
-    WFMeridianClothingHeadHoodedWinterhoodEva: 2
-    WFMeridianClothingHeadHoodedWinterhoodNova: 2
-    WFMeridianClothingHeadHoodedWinterhoodNovaChristmas: 2
-    WFMeridianClothingHeadHoodedWinterhoodNovaChristmasGreen: 2
-    WFMeridianClothingHeadHoodedWinterhoodNovaNarsie: 2
-    WFMeridianClothingHeadHoodedWinterhoodNovaRatvar: 2
-    WFMeridianClothingHeadHoodedWinterhoodPullover: 2
-    WFMeridianClothingHeadHoodedWinterhoodZipup: 2
-    WFMeridianClothingShoesWinterbootsChristmas: 2
-    WFMeridianClothingShoesWinterbootsIceBoots: 2
-    WFMeridianClothingShoesWinterbootsIceBootsEva: 2
-    WFMeridianClothingShoesWinterbootsIceBootsPrimitiveCatgirlBoots: 2
-    WFMeridianClothingSuitHoodedWintercoatCustom: 2
-    WFMeridianClothingSuitHoodedWintercoatEva: 2
-    WFMeridianClothingSuitHoodedWintercoatNova: 2
-    WFMeridianClothingSuitHoodedWintercoatNovaChristmas: 2
-    WFMeridianClothingSuitHoodedWintercoatNovaChristmasGreen: 2
-    WFMeridianClothingSuitHoodedWintercoatNovaNarsie: 2
-    WFMeridianClothingSuitHoodedWintercoatNovaRatvar: 2
-    WFMeridianClothingSuitHoodedWintercoatPullover: 2
-    WFMeridianClothingSuitHoodedWintercoatZipup: 2
-    WFMeridianClothingSuitModernwintercoatthing: 2
-    WFMeridianClothingSuitMothcoatWinter: 2
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+    WGMeridianClothingHeadHoodedWinterhood: 2
+    WGMeridianClothingHeadHoodedWinterhoodEva: 2
+    WGMeridianClothingHeadHoodedWinterhoodNova: 2
+    WGMeridianClothingHeadHoodedWinterhoodNovaChristmas: 2
+    WGMeridianClothingHeadHoodedWinterhoodNovaChristmasGreen: 2
+    WGMeridianClothingHeadHoodedWinterhoodNovaNarsie: 2
+    WGMeridianClothingHeadHoodedWinterhoodNovaRatvar: 2
+    WGMeridianClothingHeadHoodedWinterhoodPullover: 2
+    WGMeridianClothingHeadHoodedWinterhoodZipup: 2
+    WGMeridianClothingShoesWinterbootsChristmas: 2
+    WGMeridianClothingShoesWinterbootsIceBoots: 2
+    WGMeridianClothingShoesWinterbootsIceBootsEva: 2
+    WGMeridianClothingShoesWinterbootsIceBootsPrimitiveCatgirlBoots: 2
+    WGMeridianClothingSuitHoodedWintercoatCustom: 2
+    WGMeridianClothingSuitHoodedWintercoatEva: 2
+    WGMeridianClothingSuitHoodedWintercoatNova: 2
+    WGMeridianClothingSuitHoodedWintercoatNovaChristmas: 2
+    WGMeridianClothingSuitHoodedWintercoatNovaChristmasGreen: 2
+    WGMeridianClothingSuitHoodedWintercoatNovaNarsie: 2
+    WGMeridianClothingSuitHoodedWintercoatNovaRatvar: 2
+    WGMeridianClothingSuitHoodedWintercoatPullover: 2
+    WGMeridianClothingSuitHoodedWintercoatZipup: 2
+    WGMeridianClothingSuitModernwintercoatthing: 2
+    WGMeridianClothingSuitMothcoatWinter: 2
     # WOLFGATE END
 
   emaggedInventory:

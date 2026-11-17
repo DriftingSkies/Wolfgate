@@ -1,6 +1,6 @@
 using Content.Server.Emoting.Systems;
 using Content.Shared.Chat.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Emoting.Components;
 

@@ -293,7 +293,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactGlass # WOLFGATE(Weapons)
+        collection: WGBulletImpactGlass # WOLFGATE(Weapons)
   - type: Sprite
     sprite: Structures/Furniture/Tables/glass.rsi
   - type: Icon
@@ -351,7 +351,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactGlass # WOLFGATE(Weapons)
+        collection: WGBulletImpactGlass # WOLFGATE(Weapons)
   - type: Sprite
     sprite: Structures/Furniture/Tables/r_glass.rsi
   - type: Icon
@@ -431,7 +431,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactGlass # WOLFGATE(Weapons)
+        collection: WGBulletImpactGlass # WOLFGATE(Weapons)
   - type: Sprite
     sprite: Structures/Furniture/Tables/plasma.rsi
   - type: Icon
@@ -535,7 +535,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactWood # WOLFGATE(Weapons)
+        collection: WGBulletImpactWood # WOLFGATE(Weapons)
   - type: Sprite
     sprite: Structures/Furniture/Tables/wood.rsi
   - type: Icon
@@ -918,7 +918,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactWood # WOLFGATE(Weapons)
+        collection: WGBulletImpactWood # WOLFGATE(Weapons)
   - type: Sprite
     sprite: Structures/Furniture/Tables/counterwood.rsi
   - type: Icon

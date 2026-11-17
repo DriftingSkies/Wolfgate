@@ -5,17 +5,17 @@
   hidden: false # WOLFGATE(RMCClothing): ported RMC-14 clothing gives this slot a choice
   loadouts:
   - PDVClothingJumpsuit
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutUniformPDVArmy
-  - WFRMCLoadoutUniformPDV
-  - WFRMCLoadoutUniformPDVEngineer
-  - WFRMCLoadoutUniformPDVMedic
-  - WFRMCLoadoutUniformPDVMP
-  - WFRMCLoadoutUniformPDVOfficer
-  - WFRMCLoadoutUniformPDVOfficerShirt
-  - WFRMCLoadoutUniformPDVSOF
-  - WFRMCLoadoutUniformPDVGuard
-  - WFRMCLoadoutUniformMilitia
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutUniformPDVArmy
+  - WGRMCLoadoutUniformPDV
+  - WGRMCLoadoutUniformPDVEngineer
+  - WGRMCLoadoutUniformPDVMedic
+  - WGRMCLoadoutUniformPDVMP
+  - WGRMCLoadoutUniformPDVOfficer
+  - WGRMCLoadoutUniformPDVOfficerShirt
+  - WGRMCLoadoutUniformPDVSOF
+  - WGRMCLoadoutUniformPDVGuard
+  - WGRMCLoadoutUniformMilitia
   # WOLFGATE END
 
 - type: loadoutGroup
@@ -33,81 +33,81 @@
   minLimit: 1
   loadouts:
   - PDVClothingNeckWearableCameraPDV
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutNeckScarfAlpha
-  - WFRMCLoadoutNeckScarfBlack
-  - WFRMCLoadoutNeckScarfBravo
-  - WFRMCLoadoutNeckScarfCharlie
-  - WFRMCLoadoutNeckScarfDelta
-  - WFRMCLoadoutNeckScarfEcho
-  - WFRMCLoadoutNeckScarfGray
-  - WFRMCLoadoutNeckScarfGreen
-  - WFRMCLoadoutNeckScarfTan
-  - WFRMCLoadoutNeckNeckerchiefAlpha
-  - WFRMCLoadoutNeckNeckerchiefBlack
-  - WFRMCLoadoutNeckNeckerchiefBravo
-  - WFRMCLoadoutNeckNeckerchiefCharlie
-  - WFRMCLoadoutNeckNeckerchiefDelta
-  - WFRMCLoadoutNeckNeckerchiefEcho
-  - WFRMCLoadoutNeckNeckerchiefGray
-  - WFRMCLoadoutNeckNeckerchiefGreen
-  - WFRMCLoadoutNeckNeckerchiefTan
-  - WFRMCLoadoutNeckNeckerchiefWhite
-  - WFRMCLoadoutNeckSmock
-  - WFRMCLoadoutNeckTornScarfBlack
-  - WFRMCLoadoutNeckTornScarfDesert
-  - WFRMCLoadoutNeckTornScarfGreen
-  - WFRMCLoadoutNeckTornScarfGrey
-  - WFRMCLoadoutNeckTornScarfSnow
-  - WFRMCLoadoutNeckTornScarfUrban
-  - WFRMCLoadoutPoncho
-  - WFRMCLoadoutTieBlack
-  - WFRMCLoadoutTieBlue
-  - WFRMCLoadoutTieGold
-  - WFRMCLoadoutTieGreen
-  - WFRMCLoadoutTieHorrible
-  - WFRMCLoadoutTiePurple
-  - WFRMCLoadoutTieRed
-  - WFRMCLoadoutArmbandRedArmband
-  - WFRMCLoadoutArmbandAlphaArmband
-  - WFRMCLoadoutArmbandBravoArmband
-  - WFRMCLoadoutArmbandCharlieArmband
-  - WFRMCLoadoutArmbandDeltaArmband
-  - WFRMCLoadoutArmbandEchoArmband
-  - WFRMCLoadoutArmbandFoxtrotArmband
-  - WFRMCLoadoutArmbandSquadArmband
-  - WFRMCLoadoutArmbandMedArmband
-  - WFRMCLoadoutArmbandMedGreenArmband
-  - WFRMCLoadoutArmbandEngiArmband
-  - WFRMCLoadoutArmbandMpArmband
-  - WFRMCLoadoutDropPouchDropPouch
-  - WFRMCLoadoutDropPouchDropPouchBlack
-  - WFRMCLoadoutDropPouchDropPouchRcm
-  - WFRMCLoadoutDropPouchGrenadePouch
-  - WFRMCLoadoutDropPouchMl66aPouch
-  - WFRMCLoadoutLegPouch
-  - WFRMCLoadoutArmorPouchesMag
-  - WFRMCLoadoutArmorPouchesDrum
-  - WFRMCLoadoutArmorPouchesNade
-  - WFRMCLoadoutArmorPouchesShell
-  - WFRMCLoadoutArmorPouchesPouch
-  - WFRMCLoadoutArmorPaintSkull
-  - WFRMCLoadoutArmorPaintCross
-  - WFRMCLoadoutArmorPaintHeart
-  - WFRMCLoadoutArmorPaintMedic
-  - WFRMCLoadoutArmorPaintTarget
-  - WFRMCLoadoutArmorPaintSmiley
-  - WFRMCLoadoutArmorPaintMixtape
-  - WFRMCLoadoutArmorPaintInscription
-  - WFRMCLoadoutArmorPaintNeutral
-  - WFRMCLoadoutPatchPDV
-  - WFRMCLoadoutPatchPDVAlt
-  - WFRMCLoadoutPatchPDVMedical
-  - WFRMCLoadoutPatchMerc
-  - WFRMCLoadoutPatchMercAlt
-  - WFRMCLoadoutPatchMedic
-  - WFRMCLoadoutPatchOlive
-  - WFRMCLoadoutPatchPeace
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutNeckScarfAlpha
+  - WGRMCLoadoutNeckScarfBlack
+  - WGRMCLoadoutNeckScarfBravo
+  - WGRMCLoadoutNeckScarfCharlie
+  - WGRMCLoadoutNeckScarfDelta
+  - WGRMCLoadoutNeckScarfEcho
+  - WGRMCLoadoutNeckScarfGray
+  - WGRMCLoadoutNeckScarfGreen
+  - WGRMCLoadoutNeckScarfTan
+  - WGRMCLoadoutNeckNeckerchiefAlpha
+  - WGRMCLoadoutNeckNeckerchiefBlack
+  - WGRMCLoadoutNeckNeckerchiefBravo
+  - WGRMCLoadoutNeckNeckerchiefCharlie
+  - WGRMCLoadoutNeckNeckerchiefDelta
+  - WGRMCLoadoutNeckNeckerchiefEcho
+  - WGRMCLoadoutNeckNeckerchiefGray
+  - WGRMCLoadoutNeckNeckerchiefGreen
+  - WGRMCLoadoutNeckNeckerchiefTan
+  - WGRMCLoadoutNeckNeckerchiefWhite
+  - WGRMCLoadoutNeckSmock
+  - WGRMCLoadoutNeckTornScarfBlack
+  - WGRMCLoadoutNeckTornScarfDesert
+  - WGRMCLoadoutNeckTornScarfGreen
+  - WGRMCLoadoutNeckTornScarfGrey
+  - WGRMCLoadoutNeckTornScarfSnow
+  - WGRMCLoadoutNeckTornScarfUrban
+  - WGRMCLoadoutPoncho
+  - WGRMCLoadoutTieBlack
+  - WGRMCLoadoutTieBlue
+  - WGRMCLoadoutTieGold
+  - WGRMCLoadoutTieGreen
+  - WGRMCLoadoutTieHorrible
+  - WGRMCLoadoutTiePurple
+  - WGRMCLoadoutTieRed
+  - WGRMCLoadoutArmbandRedArmband
+  - WGRMCLoadoutArmbandAlphaArmband
+  - WGRMCLoadoutArmbandBravoArmband
+  - WGRMCLoadoutArmbandCharlieArmband
+  - WGRMCLoadoutArmbandDeltaArmband
+  - WGRMCLoadoutArmbandEchoArmband
+  - WGRMCLoadoutArmbandFoxtrotArmband
+  - WGRMCLoadoutArmbandSquadArmband
+  - WGRMCLoadoutArmbandMedArmband
+  - WGRMCLoadoutArmbandMedGreenArmband
+  - WGRMCLoadoutArmbandEngiArmband
+  - WGRMCLoadoutArmbandMpArmband
+  - WGRMCLoadoutDropPouchDropPouch
+  - WGRMCLoadoutDropPouchDropPouchBlack
+  - WGRMCLoadoutDropPouchDropPouchRcm
+  - WGRMCLoadoutDropPouchGrenadePouch
+  - WGRMCLoadoutDropPouchMl66aPouch
+  - WGRMCLoadoutLegPouch
+  - WGRMCLoadoutArmorPouchesMag
+  - WGRMCLoadoutArmorPouchesDrum
+  - WGRMCLoadoutArmorPouchesNade
+  - WGRMCLoadoutArmorPouchesShell
+  - WGRMCLoadoutArmorPouchesPouch
+  - WGRMCLoadoutArmorPaintSkull
+  - WGRMCLoadoutArmorPaintCross
+  - WGRMCLoadoutArmorPaintHeart
+  - WGRMCLoadoutArmorPaintMedic
+  - WGRMCLoadoutArmorPaintTarget
+  - WGRMCLoadoutArmorPaintSmiley
+  - WGRMCLoadoutArmorPaintMixtape
+  - WGRMCLoadoutArmorPaintInscription
+  - WGRMCLoadoutArmorPaintNeutral
+  - WGRMCLoadoutPatchPDV
+  - WGRMCLoadoutPatchPDVAlt
+  - WGRMCLoadoutPatchPDVMedical
+  - WGRMCLoadoutPatchMerc
+  - WGRMCLoadoutPatchMercAlt
+  - WGRMCLoadoutPatchMedic
+  - WGRMCLoadoutPatchOlive
+  - WGRMCLoadoutPatchPeace
   # WOLFGATE END
 
 - type: loadoutGroup
@@ -120,81 +120,81 @@
   - PDVClothingNeckCloakVizier
   - PDVClothingNeckMantleVizier
   - PDVClothingNeckCloakPdvPurple
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutNeckScarfAlpha
-  - WFRMCLoadoutNeckScarfBlack
-  - WFRMCLoadoutNeckScarfBravo
-  - WFRMCLoadoutNeckScarfCharlie
-  - WFRMCLoadoutNeckScarfDelta
-  - WFRMCLoadoutNeckScarfEcho
-  - WFRMCLoadoutNeckScarfGray
-  - WFRMCLoadoutNeckScarfGreen
-  - WFRMCLoadoutNeckScarfTan
-  - WFRMCLoadoutNeckNeckerchiefAlpha
-  - WFRMCLoadoutNeckNeckerchiefBlack
-  - WFRMCLoadoutNeckNeckerchiefBravo
-  - WFRMCLoadoutNeckNeckerchiefCharlie
-  - WFRMCLoadoutNeckNeckerchiefDelta
-  - WFRMCLoadoutNeckNeckerchiefEcho
-  - WFRMCLoadoutNeckNeckerchiefGray
-  - WFRMCLoadoutNeckNeckerchiefGreen
-  - WFRMCLoadoutNeckNeckerchiefTan
-  - WFRMCLoadoutNeckNeckerchiefWhite
-  - WFRMCLoadoutNeckSmock
-  - WFRMCLoadoutNeckTornScarfBlack
-  - WFRMCLoadoutNeckTornScarfDesert
-  - WFRMCLoadoutNeckTornScarfGreen
-  - WFRMCLoadoutNeckTornScarfGrey
-  - WFRMCLoadoutNeckTornScarfSnow
-  - WFRMCLoadoutNeckTornScarfUrban
-  - WFRMCLoadoutPoncho
-  - WFRMCLoadoutTieBlack
-  - WFRMCLoadoutTieBlue
-  - WFRMCLoadoutTieGold
-  - WFRMCLoadoutTieGreen
-  - WFRMCLoadoutTieHorrible
-  - WFRMCLoadoutTiePurple
-  - WFRMCLoadoutTieRed
-  - WFRMCLoadoutArmbandRedArmband
-  - WFRMCLoadoutArmbandAlphaArmband
-  - WFRMCLoadoutArmbandBravoArmband
-  - WFRMCLoadoutArmbandCharlieArmband
-  - WFRMCLoadoutArmbandDeltaArmband
-  - WFRMCLoadoutArmbandEchoArmband
-  - WFRMCLoadoutArmbandFoxtrotArmband
-  - WFRMCLoadoutArmbandSquadArmband
-  - WFRMCLoadoutArmbandMedArmband
-  - WFRMCLoadoutArmbandMedGreenArmband
-  - WFRMCLoadoutArmbandEngiArmband
-  - WFRMCLoadoutArmbandMpArmband
-  - WFRMCLoadoutDropPouchDropPouch
-  - WFRMCLoadoutDropPouchDropPouchBlack
-  - WFRMCLoadoutDropPouchDropPouchRcm
-  - WFRMCLoadoutDropPouchGrenadePouch
-  - WFRMCLoadoutDropPouchMl66aPouch
-  - WFRMCLoadoutLegPouch
-  - WFRMCLoadoutArmorPouchesMag
-  - WFRMCLoadoutArmorPouchesDrum
-  - WFRMCLoadoutArmorPouchesNade
-  - WFRMCLoadoutArmorPouchesShell
-  - WFRMCLoadoutArmorPouchesPouch
-  - WFRMCLoadoutArmorPaintSkull
-  - WFRMCLoadoutArmorPaintCross
-  - WFRMCLoadoutArmorPaintHeart
-  - WFRMCLoadoutArmorPaintMedic
-  - WFRMCLoadoutArmorPaintTarget
-  - WFRMCLoadoutArmorPaintSmiley
-  - WFRMCLoadoutArmorPaintMixtape
-  - WFRMCLoadoutArmorPaintInscription
-  - WFRMCLoadoutArmorPaintNeutral
-  - WFRMCLoadoutPatchPDV
-  - WFRMCLoadoutPatchPDVAlt
-  - WFRMCLoadoutPatchPDVMedical
-  - WFRMCLoadoutPatchMerc
-  - WFRMCLoadoutPatchMercAlt
-  - WFRMCLoadoutPatchMedic
-  - WFRMCLoadoutPatchOlive
-  - WFRMCLoadoutPatchPeace
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutNeckScarfAlpha
+  - WGRMCLoadoutNeckScarfBlack
+  - WGRMCLoadoutNeckScarfBravo
+  - WGRMCLoadoutNeckScarfCharlie
+  - WGRMCLoadoutNeckScarfDelta
+  - WGRMCLoadoutNeckScarfEcho
+  - WGRMCLoadoutNeckScarfGray
+  - WGRMCLoadoutNeckScarfGreen
+  - WGRMCLoadoutNeckScarfTan
+  - WGRMCLoadoutNeckNeckerchiefAlpha
+  - WGRMCLoadoutNeckNeckerchiefBlack
+  - WGRMCLoadoutNeckNeckerchiefBravo
+  - WGRMCLoadoutNeckNeckerchiefCharlie
+  - WGRMCLoadoutNeckNeckerchiefDelta
+  - WGRMCLoadoutNeckNeckerchiefEcho
+  - WGRMCLoadoutNeckNeckerchiefGray
+  - WGRMCLoadoutNeckNeckerchiefGreen
+  - WGRMCLoadoutNeckNeckerchiefTan
+  - WGRMCLoadoutNeckNeckerchiefWhite
+  - WGRMCLoadoutNeckSmock
+  - WGRMCLoadoutNeckTornScarfBlack
+  - WGRMCLoadoutNeckTornScarfDesert
+  - WGRMCLoadoutNeckTornScarfGreen
+  - WGRMCLoadoutNeckTornScarfGrey
+  - WGRMCLoadoutNeckTornScarfSnow
+  - WGRMCLoadoutNeckTornScarfUrban
+  - WGRMCLoadoutPoncho
+  - WGRMCLoadoutTieBlack
+  - WGRMCLoadoutTieBlue
+  - WGRMCLoadoutTieGold
+  - WGRMCLoadoutTieGreen
+  - WGRMCLoadoutTieHorrible
+  - WGRMCLoadoutTiePurple
+  - WGRMCLoadoutTieRed
+  - WGRMCLoadoutArmbandRedArmband
+  - WGRMCLoadoutArmbandAlphaArmband
+  - WGRMCLoadoutArmbandBravoArmband
+  - WGRMCLoadoutArmbandCharlieArmband
+  - WGRMCLoadoutArmbandDeltaArmband
+  - WGRMCLoadoutArmbandEchoArmband
+  - WGRMCLoadoutArmbandFoxtrotArmband
+  - WGRMCLoadoutArmbandSquadArmband
+  - WGRMCLoadoutArmbandMedArmband
+  - WGRMCLoadoutArmbandMedGreenArmband
+  - WGRMCLoadoutArmbandEngiArmband
+  - WGRMCLoadoutArmbandMpArmband
+  - WGRMCLoadoutDropPouchDropPouch
+  - WGRMCLoadoutDropPouchDropPouchBlack
+  - WGRMCLoadoutDropPouchDropPouchRcm
+  - WGRMCLoadoutDropPouchGrenadePouch
+  - WGRMCLoadoutDropPouchMl66aPouch
+  - WGRMCLoadoutLegPouch
+  - WGRMCLoadoutArmorPouchesMag
+  - WGRMCLoadoutArmorPouchesDrum
+  - WGRMCLoadoutArmorPouchesNade
+  - WGRMCLoadoutArmorPouchesShell
+  - WGRMCLoadoutArmorPouchesPouch
+  - WGRMCLoadoutArmorPaintSkull
+  - WGRMCLoadoutArmorPaintCross
+  - WGRMCLoadoutArmorPaintHeart
+  - WGRMCLoadoutArmorPaintMedic
+  - WGRMCLoadoutArmorPaintTarget
+  - WGRMCLoadoutArmorPaintSmiley
+  - WGRMCLoadoutArmorPaintMixtape
+  - WGRMCLoadoutArmorPaintInscription
+  - WGRMCLoadoutArmorPaintNeutral
+  - WGRMCLoadoutPatchPDV
+  - WGRMCLoadoutPatchPDVAlt
+  - WGRMCLoadoutPatchPDVMedical
+  - WGRMCLoadoutPatchMerc
+  - WGRMCLoadoutPatchMercAlt
+  - WGRMCLoadoutPatchMedic
+  - WGRMCLoadoutPatchOlive
+  - WGRMCLoadoutPatchPeace
   # WOLFGATE END
 
 - type: loadoutGroup
@@ -206,33 +206,33 @@
   - PDVClothingOuterArmorCV53
   - PDVClothingOuterArmorBPVestLight
   - PDVClothingOuterArmorBPVestMedium
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutArmorUM5
-  - WFRMCLoadoutArmorB80
-  - WFRMCLoadoutArmorUM5CU
-  - WFRMCLoadoutArmorUH7
-  - WFRMCLoadoutArmorUL6
-  - WFRMCLoadoutArmorCCC5
-  - WFRMCLoadoutArmorCCC5Heavy
-  - WFRMCLoadoutArmorCCC5Plated
-  - WFRMCLoadoutCoatUL4
-  - WFRMCLoadoutCoatOfficer
-  - WFRMCLoadoutCoatSenior
-  - WFRMCLoadoutCoatPCG
-  - WFRMCLoadoutCoatSnowSoviet
-  - WFRMCLoadoutArmorMilitiaHauberk
-  - WFRMCLoadoutArmorMilitiaPartial
-  - WFRMCLoadoutArmorMilitiaBrace
-  - WFRMCLoadoutArmorMilitiaVest
-  - WFRMCLoadoutGhillie
-  - WFRMCLoadoutGhillieUDEP
-  - WFRMCLoadoutCoatSnow
-  - WFRMCLoadoutCoatSnowGreen
-  - WFRMCLoadoutCoatSnowNavy
-  - WFRMCLoadoutCoatWindbreaker
-  - WFRMCLoadoutCoatWindbreakerBrown
-  - WFRMCLoadoutCoatWindbreakerGrey
-  - WFRMCLoadoutCoatWindbreakerExpedition
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutArmorUM5
+  - WGRMCLoadoutArmorB80
+  - WGRMCLoadoutArmorUM5CU
+  - WGRMCLoadoutArmorUH7
+  - WGRMCLoadoutArmorUL6
+  - WGRMCLoadoutArmorCCC5
+  - WGRMCLoadoutArmorCCC5Heavy
+  - WGRMCLoadoutArmorCCC5Plated
+  - WGRMCLoadoutCoatUL4
+  - WGRMCLoadoutCoatOfficer
+  - WGRMCLoadoutCoatSenior
+  - WGRMCLoadoutCoatPCG
+  - WGRMCLoadoutCoatSnowSoviet
+  - WGRMCLoadoutArmorMilitiaHauberk
+  - WGRMCLoadoutArmorMilitiaPartial
+  - WGRMCLoadoutArmorMilitiaBrace
+  - WGRMCLoadoutArmorMilitiaVest
+  - WGRMCLoadoutGhillie
+  - WGRMCLoadoutGhillieUDEP
+  - WGRMCLoadoutCoatSnow
+  - WGRMCLoadoutCoatSnowGreen
+  - WGRMCLoadoutCoatSnowNavy
+  - WGRMCLoadoutCoatWindbreaker
+  - WGRMCLoadoutCoatWindbreakerBrown
+  - WGRMCLoadoutCoatWindbreakerGrey
+  - WGRMCLoadoutCoatWindbreakerExpedition
   # WOLFGATE END
   fallbacks:
   - PDVClothingOuterArmorCV32
@@ -243,37 +243,37 @@
   minLimit: 1
   loadouts:
   - PDVClothingOuterArmorCV67
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutArmorUM5
-  - WFRMCLoadoutArmorB80
-  - WFRMCLoadoutArmorUM5CU
-  - WFRMCLoadoutArmorUH7
-  - WFRMCLoadoutArmorUL6
-  - WFRMCLoadoutArmorCCC5
-  - WFRMCLoadoutArmorCCC5Heavy
-  - WFRMCLoadoutArmorCCC5Plated
-  - WFRMCLoadoutCoatUL4
-  - WFRMCLoadoutCoatOfficer
-  - WFRMCLoadoutCoatSenior
-  - WFRMCLoadoutCoatPCG
-  - WFRMCLoadoutCoatKommissarBlack
-  - WFRMCLoadoutCoatKommissarBlackLong
-  - WFRMCLoadoutCoatKommissarWhite
-  - WFRMCLoadoutCoatKommissarWhiteLong
-  - WFRMCLoadoutCoatSnowSoviet
-  - WFRMCLoadoutArmorMilitiaHauberk
-  - WFRMCLoadoutArmorMilitiaPartial
-  - WFRMCLoadoutArmorMilitiaBrace
-  - WFRMCLoadoutArmorMilitiaVest
-  - WFRMCLoadoutGhillie
-  - WFRMCLoadoutGhillieUDEP
-  - WFRMCLoadoutCoatSnow
-  - WFRMCLoadoutCoatSnowGreen
-  - WFRMCLoadoutCoatSnowNavy
-  - WFRMCLoadoutCoatWindbreaker
-  - WFRMCLoadoutCoatWindbreakerBrown
-  - WFRMCLoadoutCoatWindbreakerGrey
-  - WFRMCLoadoutCoatWindbreakerExpedition
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutArmorUM5
+  - WGRMCLoadoutArmorB80
+  - WGRMCLoadoutArmorUM5CU
+  - WGRMCLoadoutArmorUH7
+  - WGRMCLoadoutArmorUL6
+  - WGRMCLoadoutArmorCCC5
+  - WGRMCLoadoutArmorCCC5Heavy
+  - WGRMCLoadoutArmorCCC5Plated
+  - WGRMCLoadoutCoatUL4
+  - WGRMCLoadoutCoatOfficer
+  - WGRMCLoadoutCoatSenior
+  - WGRMCLoadoutCoatPCG
+  - WGRMCLoadoutCoatKommissarBlack
+  - WGRMCLoadoutCoatKommissarBlackLong
+  - WGRMCLoadoutCoatKommissarWhite
+  - WGRMCLoadoutCoatKommissarWhiteLong
+  - WGRMCLoadoutCoatSnowSoviet
+  - WGRMCLoadoutArmorMilitiaHauberk
+  - WGRMCLoadoutArmorMilitiaPartial
+  - WGRMCLoadoutArmorMilitiaBrace
+  - WGRMCLoadoutArmorMilitiaVest
+  - WGRMCLoadoutGhillie
+  - WGRMCLoadoutGhillieUDEP
+  - WGRMCLoadoutCoatSnow
+  - WGRMCLoadoutCoatSnowGreen
+  - WGRMCLoadoutCoatSnowNavy
+  - WGRMCLoadoutCoatWindbreaker
+  - WGRMCLoadoutCoatWindbreakerBrown
+  - WGRMCLoadoutCoatWindbreakerGrey
+  - WGRMCLoadoutCoatWindbreakerExpedition
   # WOLFGATE END
   fallbacks:
   - PDVClothingOuterArmorCV67
@@ -295,13 +295,13 @@
   minLimit: 1
   loadouts:
   - PDVCombatGloves
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutGlovesBlack
-  - WFRMCLoadoutGlovesBrown
-  - WFRMCLoadoutGlovesGrey
-  - WFRMCLoadoutGlovesLightBrown
-  - WFRMCLoadoutGlovesLeatherBlack
-  - WFRMCLoadoutGlovesVeteran
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutGlovesBlack
+  - WGRMCLoadoutGlovesBrown
+  - WGRMCLoadoutGlovesGrey
+  - WGRMCLoadoutGlovesLightBrown
+  - WGRMCLoadoutGlovesLeatherBlack
+  - WGRMCLoadoutGlovesVeteran
   # WOLFGATE END
 
 - type: loadoutGroup
@@ -311,14 +311,14 @@
   loadouts:
   - PDVClothingEyesHudSecurity
   - PDVClothingEyesPGlassesSecurity
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutGogglesBallisticGoggles
-  - WFRMCLoadoutGogglesM1A1BallisticGoggles
-  - WFRMCLoadoutGogglesM1A1BallisticGogglesBlue
-  - WFRMCLoadoutGogglesBlackBallisticGoggles
-  - WFRMCLoadoutGogglesBallisticGogglesRcm
-  - WFRMCLoadoutGogglesBallisticGogglesRcmTint
-  - WFRMCLoadoutGogglesSwatgoggles
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutGogglesBallisticGoggles
+  - WGRMCLoadoutGogglesM1A1BallisticGoggles
+  - WGRMCLoadoutGogglesM1A1BallisticGogglesBlue
+  - WGRMCLoadoutGogglesBlackBallisticGoggles
+  - WGRMCLoadoutGogglesBallisticGogglesRcm
+  - WGRMCLoadoutGogglesBallisticGogglesRcmTint
+  - WGRMCLoadoutGogglesSwatgoggles
   # WOLFGATE END
   fallbacks:
   - PDVClothingEyesHudSecurity
@@ -330,14 +330,14 @@
   loadouts:
   - PDVCombatBoots
   - PDVJackboots
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutBootsBlack
-  - WFRMCLoadoutBootsBrown
-  - WFRMCLoadoutBootsGrey
-  - WFRMCLoadoutBootsJungle
-  - WFRMCLoadoutBootsUrban
-  - WFRMCLoadoutBootsJackboots
-  - WFRMCLoadoutBootsSwat
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutBootsBlack
+  - WGRMCLoadoutBootsBrown
+  - WGRMCLoadoutBootsGrey
+  - WGRMCLoadoutBootsJungle
+  - WGRMCLoadoutBootsUrban
+  - WGRMCLoadoutBootsJackboots
+  - WGRMCLoadoutBootsSwat
   # WOLFGATE END
   fallbacks:
   - PDVCombatBoots
@@ -348,14 +348,14 @@
   minLimit: 1
   loadouts:
   - PDVAdvancedTacticalMagboots
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutBootsBlack
-  - WFRMCLoadoutBootsBrown
-  - WFRMCLoadoutBootsGrey
-  - WFRMCLoadoutBootsJungle
-  - WFRMCLoadoutBootsUrban
-  - WFRMCLoadoutBootsJackboots
-  - WFRMCLoadoutBootsSwat
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutBootsBlack
+  - WGRMCLoadoutBootsBrown
+  - WGRMCLoadoutBootsGrey
+  - WGRMCLoadoutBootsJungle
+  - WGRMCLoadoutBootsUrban
+  - WGRMCLoadoutBootsJackboots
+  - WGRMCLoadoutBootsSwat
   # WOLFGATE END
   fallbacks:
   - PDVAdvancedTacticalMagboots
@@ -368,45 +368,45 @@
   loadouts:
   - PDVGaiter
   - PDVGasmask
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutKeffiyehKeffiyeh
-  - WFRMCLoadoutKeffiyehKeffiyehBlack
-  - WFRMCLoadoutKeffiyehKeffiyehBlue
-  - WFRMCLoadoutKeffiyehKeffiyehGreen
-  - WFRMCLoadoutKeffiyehKeffiyehRed
-  - WFRMCLoadoutKeffiyehKeffiyehWhite
-  - WFRMCLoadoutScarfAlpha
-  - WFRMCLoadoutScarfBlack
-  - WFRMCLoadoutScarfBravo
-  - WFRMCLoadoutScarfCharlie
-  - WFRMCLoadoutScarfDelta
-  - WFRMCLoadoutScarfEcho
-  - WFRMCLoadoutScarfGray
-  - WFRMCLoadoutScarfGreen
-  - WFRMCLoadoutScarfTan
-  - WFRMCLoadoutNeckerchiefAlpha
-  - WFRMCLoadoutNeckerchiefBlack
-  - WFRMCLoadoutNeckerchiefBravo
-  - WFRMCLoadoutNeckerchiefCharlie
-  - WFRMCLoadoutNeckerchiefDelta
-  - WFRMCLoadoutNeckerchiefEcho
-  - WFRMCLoadoutNeckerchiefGray
-  - WFRMCLoadoutNeckerchiefGreen
-  - WFRMCLoadoutNeckerchiefTan
-  - WFRMCLoadoutNeckerchiefWhite
-  - WFRMCLoadoutSmock
-  - WFRMCLoadoutTornScarfBlack
-  - WFRMCLoadoutTornScarfDesert
-  - WFRMCLoadoutTornScarfGreen
-  - WFRMCLoadoutTornScarfGrey
-  - WFRMCLoadoutTornScarfSnow
-  - WFRMCLoadoutTornScarfUrban
-  - WFRMCLoadoutCoifBalaclava
-  - WFRMCLoadoutCoifCoif
-  - WFRMCLoadoutCoifGreenCoif
-  - WFRMCLoadoutCoifGreyCoif
-  - WFRMCLoadoutCoifTanCoif
-  - WFRMCLoadoutCoifSkullCoif
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutKeffiyehKeffiyeh
+  - WGRMCLoadoutKeffiyehKeffiyehBlack
+  - WGRMCLoadoutKeffiyehKeffiyehBlue
+  - WGRMCLoadoutKeffiyehKeffiyehGreen
+  - WGRMCLoadoutKeffiyehKeffiyehRed
+  - WGRMCLoadoutKeffiyehKeffiyehWhite
+  - WGRMCLoadoutScarfAlpha
+  - WGRMCLoadoutScarfBlack
+  - WGRMCLoadoutScarfBravo
+  - WGRMCLoadoutScarfCharlie
+  - WGRMCLoadoutScarfDelta
+  - WGRMCLoadoutScarfEcho
+  - WGRMCLoadoutScarfGray
+  - WGRMCLoadoutScarfGreen
+  - WGRMCLoadoutScarfTan
+  - WGRMCLoadoutNeckerchiefAlpha
+  - WGRMCLoadoutNeckerchiefBlack
+  - WGRMCLoadoutNeckerchiefBravo
+  - WGRMCLoadoutNeckerchiefCharlie
+  - WGRMCLoadoutNeckerchiefDelta
+  - WGRMCLoadoutNeckerchiefEcho
+  - WGRMCLoadoutNeckerchiefGray
+  - WGRMCLoadoutNeckerchiefGreen
+  - WGRMCLoadoutNeckerchiefTan
+  - WGRMCLoadoutNeckerchiefWhite
+  - WGRMCLoadoutSmock
+  - WGRMCLoadoutTornScarfBlack
+  - WGRMCLoadoutTornScarfDesert
+  - WGRMCLoadoutTornScarfGreen
+  - WGRMCLoadoutTornScarfGrey
+  - WGRMCLoadoutTornScarfSnow
+  - WGRMCLoadoutTornScarfUrban
+  - WGRMCLoadoutCoifBalaclava
+  - WGRMCLoadoutCoifCoif
+  - WGRMCLoadoutCoifGreenCoif
+  - WGRMCLoadoutCoifGreyCoif
+  - WGRMCLoadoutCoifTanCoif
+  - WGRMCLoadoutCoifSkullCoif
   # WOLFGATE END
   fallbacks:
   - PDVGaiter
@@ -420,19 +420,19 @@
   - PDVClothingBackpack
   - PDVClothingSatchel
   - PDVClothingDuffel
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutBackpackSmockPlain
-  - WFRMCLoadoutLightPackLightpack
-  - WFRMCLoadoutLightPackLightpackBlack
-  - WFRMCLoadoutLightPackLightpackMedic
-  - WFRMCLoadoutBackpackPDVRadio
-  - WFRMCLoadoutSatchelPDVWelder
-  - WFRMCLoadoutBackpackBlack
-  - WFRMCLoadoutBackpackCommando
-  - WFRMCLoadoutBackpackBlackRadio
-  - WFRMCLoadoutCloakV86
-  - WFRMCLoadoutBackpackSmock
-  - WFRMCLoadoutSatchelPDV
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutBackpackSmockPlain
+  - WGRMCLoadoutLightPackLightpack
+  - WGRMCLoadoutLightPackLightpackBlack
+  - WGRMCLoadoutLightPackLightpackMedic
+  - WGRMCLoadoutBackpackPDVRadio
+  - WGRMCLoadoutSatchelPDVWelder
+  - WGRMCLoadoutBackpackBlack
+  - WGRMCLoadoutBackpackCommando
+  - WGRMCLoadoutBackpackBlackRadio
+  - WGRMCLoadoutCloakV86
+  - WGRMCLoadoutBackpackSmock
+  - WGRMCLoadoutSatchelPDV
   # WOLFGATE END
   fallbacks:
   - PDVClothingBackpack
@@ -455,30 +455,30 @@
   minLimit: 0
   loadouts:
   - PDVBeret
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutHelmetM45
-  - WFRMCLoadoutHelmetPDV
-  - WFRMCLoadoutHelmetPDVArmy
-  - WFRMCLoadoutHelmetPDVHeavy
-  - WFRMCLoadoutHelmetPDVEngineer
-  - WFRMCLoadoutHatPDVBeret
-  - WFRMCLoadoutHatPDVArmyBeret
-  - WFRMCLoadoutHatPDVBeretSOF
-  - WFRMCLoadoutHatPDVCap
-  - WFRMCLoadoutHatPDVUshanka
-  - WFRMCLoadoutHatMilitiaHood
-  - WFRMCLoadoutHatMilitiaHeadband
-  - WFRMCLoadoutHatBoonie
-  - WFRMCLoadoutHatBoonieTan
-  - WFRMCLoadoutHatBeaniesBeanie
-  - WFRMCLoadoutHatBeaniesGray
-  - WFRMCLoadoutHatBeaniesGreen
-  - WFRMCLoadoutHatBeaniesTan
-  - WFRMCLoadoutHatHeadbandBrown
-  - WFRMCLoadoutHatHeadbandGray
-  - WFRMCLoadoutHatHeadbandGreen
-  - WFRMCLoadoutHatHeadbandRed
-  - WFRMCLoadoutHatHeadbandTan
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutHelmetM45
+  - WGRMCLoadoutHelmetPDV
+  - WGRMCLoadoutHelmetPDVArmy
+  - WGRMCLoadoutHelmetPDVHeavy
+  - WGRMCLoadoutHelmetPDVEngineer
+  - WGRMCLoadoutHatPDVBeret
+  - WGRMCLoadoutHatPDVArmyBeret
+  - WGRMCLoadoutHatPDVBeretSOF
+  - WGRMCLoadoutHatPDVCap
+  - WGRMCLoadoutHatPDVUshanka
+  - WGRMCLoadoutHatMilitiaHood
+  - WGRMCLoadoutHatMilitiaHeadband
+  - WGRMCLoadoutHatBoonie
+  - WGRMCLoadoutHatBoonieTan
+  - WGRMCLoadoutHatBeaniesBeanie
+  - WGRMCLoadoutHatBeaniesGray
+  - WGRMCLoadoutHatBeaniesGreen
+  - WGRMCLoadoutHatBeaniesTan
+  - WGRMCLoadoutHatHeadbandBrown
+  - WGRMCLoadoutHatHeadbandGray
+  - WGRMCLoadoutHatHeadbandGreen
+  - WGRMCLoadoutHatHeadbandRed
+  - WGRMCLoadoutHatHeadbandTan
   # WOLFGATE END
 
 - type: loadoutGroup
@@ -497,33 +497,33 @@
   - PDVCommanderBeret
   - PDVCapVizier
   - PDVCapVizierPurple
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutHelmetM45
-  - WFRMCLoadoutHelmetPDV
-  - WFRMCLoadoutHelmetPDVArmy
-  - WFRMCLoadoutHelmetPDVHeavy
-  - WFRMCLoadoutHelmetPDVEngineer
-  - WFRMCLoadoutHatPDVBeret
-  - WFRMCLoadoutHatPDVArmyBeret
-  - WFRMCLoadoutHatPDVBeretSOF
-  - WFRMCLoadoutHatPDVCap
-  - WFRMCLoadoutHatPDVUshanka
-  - WFRMCLoadoutHatPDVPeaked
-  - WFRMCLoadoutHatPDVPeakedBlack
-  - WFRMCLoadoutHatPDVPeakedWhite
-  - WFRMCLoadoutHatMilitiaHood
-  - WFRMCLoadoutHatMilitiaHeadband
-  - WFRMCLoadoutHatBoonie
-  - WFRMCLoadoutHatBoonieTan
-  - WFRMCLoadoutHatBeaniesBeanie
-  - WFRMCLoadoutHatBeaniesGray
-  - WFRMCLoadoutHatBeaniesGreen
-  - WFRMCLoadoutHatBeaniesTan
-  - WFRMCLoadoutHatHeadbandBrown
-  - WFRMCLoadoutHatHeadbandGray
-  - WFRMCLoadoutHatHeadbandGreen
-  - WFRMCLoadoutHatHeadbandRed
-  - WFRMCLoadoutHatHeadbandTan
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutHelmetM45
+  - WGRMCLoadoutHelmetPDV
+  - WGRMCLoadoutHelmetPDVArmy
+  - WGRMCLoadoutHelmetPDVHeavy
+  - WGRMCLoadoutHelmetPDVEngineer
+  - WGRMCLoadoutHatPDVBeret
+  - WGRMCLoadoutHatPDVArmyBeret
+  - WGRMCLoadoutHatPDVBeretSOF
+  - WGRMCLoadoutHatPDVCap
+  - WGRMCLoadoutHatPDVUshanka
+  - WGRMCLoadoutHatPDVPeaked
+  - WGRMCLoadoutHatPDVPeakedBlack
+  - WGRMCLoadoutHatPDVPeakedWhite
+  - WGRMCLoadoutHatMilitiaHood
+  - WGRMCLoadoutHatMilitiaHeadband
+  - WGRMCLoadoutHatBoonie
+  - WGRMCLoadoutHatBoonieTan
+  - WGRMCLoadoutHatBeaniesBeanie
+  - WGRMCLoadoutHatBeaniesGray
+  - WGRMCLoadoutHatBeaniesGreen
+  - WGRMCLoadoutHatBeaniesTan
+  - WGRMCLoadoutHatHeadbandBrown
+  - WGRMCLoadoutHatHeadbandGray
+  - WGRMCLoadoutHatHeadbandGreen
+  - WGRMCLoadoutHatHeadbandRed
+  - WGRMCLoadoutHatHeadbandTan
   # WOLFGATE END
   fallbacks:
   - PDVCommanderBeret
@@ -536,25 +536,25 @@
   loadouts:
   - PDVClothingBeltWebbingsNormalBlack
   - PDVClothingBeltWebbingsBigBlack
-  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WF/RMCClothing/port.py
-  - WFRMCLoadoutBeltPDV
-  - WFRMCLoadoutBeltSparePouch
-  - WFRMCLoadoutBeltMedicBagPDV
-  - WFRMCLoadoutBeltHolsterPDV
-  - WFRMCLoadoutBeltMedicBagBlack
-  - WFRMCLoadoutBeltBlack
-  - WFRMCLoadoutBeltBlackLight
-  - WFRMCLoadoutBeltMedical
-  - WFRMCLoadoutBeltMachinegunner
-  - WFRMCLoadoutBeltUtility
-  - WFRMCLoadoutBeltCombatUtility
-  - WFRMCLoadoutBeltConstruction
-  - WFRMCLoadoutBeltSecurity
-  - WFRMCLoadoutBeltGrenade
-  - WFRMCLoadoutBeltHolsterSMG
-  - WFRMCLoadoutBeltTanAmmo
-  - WFRMCLoadoutBeltTanGeneral
-  - WFRMCLoadoutBeltTanMedical
+  # WOLFGATE(RMCClothing) START: RMC-14 military clothing, written by Tools/_WG/RMCClothing/port.py
+  - WGRMCLoadoutBeltPDV
+  - WGRMCLoadoutBeltSparePouch
+  - WGRMCLoadoutBeltMedicBagPDV
+  - WGRMCLoadoutBeltHolsterPDV
+  - WGRMCLoadoutBeltMedicBagBlack
+  - WGRMCLoadoutBeltBlack
+  - WGRMCLoadoutBeltBlackLight
+  - WGRMCLoadoutBeltMedical
+  - WGRMCLoadoutBeltMachinegunner
+  - WGRMCLoadoutBeltUtility
+  - WGRMCLoadoutBeltCombatUtility
+  - WGRMCLoadoutBeltConstruction
+  - WGRMCLoadoutBeltSecurity
+  - WGRMCLoadoutBeltGrenade
+  - WGRMCLoadoutBeltHolsterSMG
+  - WGRMCLoadoutBeltTanAmmo
+  - WGRMCLoadoutBeltTanGeneral
+  - WGRMCLoadoutBeltTanMedical
   # WOLFGATE END
   fallbacks:
   - PDVClothingBeltWebbingsNormalBlack

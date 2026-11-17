@@ -1,0 +1,317 @@
+# Stellar Blessing Settlers' Council: colony work for TSF civilians, posted on the colony's own board.
+
+- type: wgContract
+  id: WGContractColonySeedDrive
+  contractor: WGContractorColonyCouncil
+  category: Supply
+  tier: 1
+  title: wg-contract-colony-seed-drive
+  briefing: wg-contract-colony-seed-drive-brief
+  reward: 10500, 14900
+  minutes: 50
+  weight: 3
+  objective: !type:WGContractSupply
+    premium: 1.5
+    goods:
+    - component: Seed
+      name: wg-contract-goods-seeds
+      count: 10, 15
+      value: 30
+
+- type: wgContract
+  id: WGContractColonyRations
+  contractor: WGContractorColonyCouncil
+  category: Supply
+  tier: 1
+  title: wg-contract-colony-rations
+  briefing: wg-contract-colony-rations-brief
+  reward: 10500, 14900
+  minutes: 45
+  weight: 3
+  objective: !type:WGContractSupply
+    premium: 1.5
+    goods:
+    - entity: DrinkWaterBottleFull
+      count: 10, 15
+    - entity: FoodBreadPlain
+      count: 6, 10
+
+- type: wgContract
+  id: WGContractColonyMedical
+  contractor: WGContractorColonyCouncil
+  category: Supply
+  tier: 1
+  title: wg-contract-colony-medical
+  briefing: wg-contract-colony-medical-brief
+  reward: 12250, 16600
+  minutes: 50
+  weight: 2.4
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    goodsCap: 2000
+    goods:
+    - stack: Gauze
+      count: 6, 10
+    - stack: Ointment
+      count: 6, 10
+    - stack: Brutepack
+      count: 6, 10
+
+- type: wgContract
+  id: WGContractColonyGreenhouse
+  contractor: WGContractorColonyCouncil
+  category: Supply
+  tier: 2
+  title: wg-contract-colony-greenhouse
+  briefing: wg-contract-colony-greenhouse-brief
+  reward: 21900, 28900
+  deposit: 1000
+  minutes: 55
+  weight: 2.4
+  objective: !type:WGContractSupply
+    premium: 1.25
+    goods:
+    - stack: Glass
+      count: 60, 100
+    - stack: Plastic
+      count: 40, 60
+    - stack: Steel
+      count: 40, 60
+
+- type: wgContract
+  id: WGContractColonyPrefabs
+  contractor: WGContractorColonyCouncil
+  category: Hauling
+  tier: 2
+  title: wg-contract-colony-prefabs
+  briefing: wg-contract-colony-prefabs-brief
+  reward: 11000, 14000
+  deposit: 1500
+  minutes: 55
+  weight: 2.4
+  objective: !type:WGContractCourier
+    package: WGContractFreightSupplies
+    count: 3, 5
+    from: Other
+    to: Contractor
+    destinations: [ WGContractorCaelPort ]
+    perPackage: 1500
+    perKilometre: 1250
+
+- type: wgContract
+  id: WGContractColonyLetters
+  contractor: WGContractorColonyCouncil
+  category: Delivery
+  tier: 1
+  title: wg-contract-colony-letters
+  briefing: wg-contract-colony-letters-brief
+  reward: 5500, 7500
+  minutes: 60
+  weight: 1.2
+  objective: !type:WGContractMailRun
+    package: WGContractParcel
+    stops: 3, 4
+    perStop: 1250
+    perKilometre: 750
+
+- type: wgContract
+  id: WGContractColonySettlerEscort
+  contractor: WGContractorColonyCouncil
+  category: Escort
+  tier: 2
+  title: wg-contract-colony-settler-escort
+  briefing: wg-contract-colony-settler-escort-brief
+  reward: 18000, 23000
+  deposit: 1500
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WGContractEscort
+    encounters: [ WGContractEscortLight ]
+    destinations: [ WGContractorCaelPort, WGContractorSevastopol ]
+    perKilometre: 1250
+
+- type: wgContract
+  id: WGContractColonyCarpNests
+  contractor: WGContractorColonyCouncil
+  category: Bounty
+  tier: 2
+  title: wg-contract-colony-carp-nests
+  briefing: wg-contract-colony-carp-nests-brief
+  reward: 18000, 24000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WGContractClear
+    minDistance: 2500
+    maxDistance: 4500
+    stationClearance: 2000
+    targets:
+      entity: WGContractCarpNest
+      count: 2, 3
+    infestation:
+    - entity: MobCarpSalvage
+      count: 2, 3
+    wrecks:
+    - /Maps/Salvage/cargo-1.yml
+    - /Maps/Salvage/hauling-shuttle.yml
+    - /Maps/Salvage/small-cargo.yml
+
+- type: wgContract
+  id: WGContractColonyRaiders
+  contractor: WGContractorColonyCouncil
+  category: Bounty
+  tier: 3
+  title: wg-contract-colony-raiders
+  briefing: wg-contract-colony-raiders-brief
+  reward: 45000, 55000
+  deposit: 2500
+  minutes: 65
+  crewBonus: 0.25
+  weight: 0.8
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetRaiderPair ]
+    minDistance: 3500
+    maxDistance: 5500
+
+- type: wgContract
+  id: WGContractColonyScrapTow
+  contractor: WGContractorColonyCouncil
+  category: Salvage
+  tier: 1
+  title: wg-contract-colony-scrap-tow
+  briefing: wg-contract-colony-scrap-tow-brief
+  reward: 9000, 12000
+  minutes: 50
+  crewBonus: 0.25
+  weight: 1
+  requires:
+  - tag: WGTowRope
+    name: wg-contract-requires-rope
+  - entity: WGTetherInstaller
+    name: wg-contract-requires-tether-installer
+  objective: !type:WGContractTow
+    minDistance: 2500
+    maxDistance: 4000
+    wrecks:
+    - /Maps/Salvage/small-cargo.yml
+    - /Maps/Salvage/small-ship-1.yml
+    - /Maps/Salvage/hauling-shuttle.yml
+
+- type: wgContract
+  id: WGContractColonyHabitatSurvey
+  contractor: WGContractorColonyCouncil
+  category: Science
+  tier: 1
+  title: wg-contract-colony-habitat-survey
+  briefing: wg-contract-colony-habitat-survey-brief
+  reward: 5000, 7000
+  minutes: 45
+  weight: 1.2
+  objective: !type:WGContractSweep
+    points: 3, 4
+    perPoint: 1500
+    minDistance: 2000
+    maxDistance: 4500
+
+- type: wgContract
+  id: WGContractColonyBeacon
+  contractor: WGContractorColonyCouncil
+  category: Salvage
+  tier: 2
+  title: wg-contract-colony-beacon
+  briefing: wg-contract-colony-beacon-brief
+  reward: 16000, 21000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WGContractRepair
+    infestation:
+    - entity: MobCarpSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/small-1.yml
+    - /Maps/Salvage/small-2.yml
+    - /Maps/Salvage/small-ai-survey-drone.yml
+
+- type: wgContract
+  id: WGContractColonyWatch
+  contractor: WGContractorColonyCouncil
+  category: Bounty
+  tier: 2
+  title: wg-contract-colony-watch
+  briefing: wg-contract-colony-watch-brief
+  reward: 15000, 20000
+  deposit: 1000
+  minutes: 40
+  weight: 1.3
+  objective: !type:WGContractPicket
+    encounters: [ WGContractTargetClaimJumper ]
+    duration: 360
+    range: 400
+
+- type: wgContract
+  id: WGContractColonyLostSettlers
+  contractor: WGContractorColonyCouncil
+  category: Salvage
+  tier: 2
+  title: wg-contract-colony-lost-settlers
+  briefing: wg-contract-colony-lost-settlers-brief
+  reward: 18000, 24000
+  deposit: 1000
+  minutes: 55
+  minCrew: 2
+  crewBonus: 0.25
+  weight: 1.2
+  objective: !type:WGContractRecovery
+    wrecks:
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+    - /Maps/Salvage/medium-ruined-emergency-shuttle.yml
+    item: WGContractStasisBag
+    count: 2, 3
+    infestation:
+    - entity: MobCarpSalvage
+      count: 1, 3
+
+- type: wgContract
+  id: WGContractColonyPlanetHomestead
+  contractor: WGContractorColonyCouncil
+  category: Salvage
+  tier: 2
+  title: wg-contract-colony-planet-homestead
+  briefing: wg-contract-colony-planet-homestead-brief
+  reward: 20000, 26000
+  deposit: 1000
+  minutes: 75
+  weight: 1.3
+  objective: !type:WGContractConstruct
+    kits:
+    - entity: WGContractKitGenerator
+      count: 1, 1
+    - entity: WGContractKitSolar
+      count: 2, 3
+    planet:
+      hostiles: 2, 4
+
+- type: wgContract
+  id: WGContractColonyPlanetDens
+  contractor: WGContractorColonyCouncil
+  category: Bounty
+  tier: 2
+  title: wg-contract-colony-planet-dens
+  briefing: wg-contract-colony-planet-dens-brief
+  reward: 22000, 28000
+  deposit: 1000
+  minutes: 70
+  weight: 1.2
+  crewBonus: 0.25
+  objective: !type:WGContractClear
+    wrecks: []
+    targets:
+      entity: WGContractCreatureDen
+      count: 2, 3
+    planet:
+      hostiles: 3, 5

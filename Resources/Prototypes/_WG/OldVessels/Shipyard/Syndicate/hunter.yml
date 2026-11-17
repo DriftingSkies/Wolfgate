@@ -1,0 +1,38 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51); admin spawn only.
+
+- type: vessel
+  id: Hunter
+  parent: BaseVesselIFFDisabled
+  name: Hunter
+  description: A cheap, armored personnel carrier armed with 4 100mm autocannons.
+  price: 62802
+  purchasable: false
+  category: Small
+  group: Custom # was Syndicate; Custom keeps it off every shipyard console
+  mapchecker_group_override: Syndicate
+  shuttlePath: /SharedMaps/_WG/OldVessels/Syndicate/hunter.yml
+  tags:
+  - WGClassicVessel
+  - WGAdminOnlyVessel
+  guidebookPage: Null
+  class:
+  - Syndicate
+  engine:
+  - Uranium
+
+- type: gameMap
+  id: Hunter
+  mapName: 'Hunter'
+  mapPath: /SharedMaps/_WG/OldVessels/Syndicate/hunter.yml
+  minPlayers: 0
+  stations:
+    Hunter:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Hunter SYN{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'
+        - type: StationJobs
+          availableJobs: {}

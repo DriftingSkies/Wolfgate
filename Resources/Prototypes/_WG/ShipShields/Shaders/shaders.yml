@@ -1,0 +1,4 @@
+- type: shader
+  id: WGShipShieldShimmer
+  kind: source
+  path: "/Textures/_WG/ShipShields/Shaders/shield_shimmer.swsl"

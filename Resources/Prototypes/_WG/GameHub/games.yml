@@ -1,0 +1,39 @@
+- type: wgGame
+  id: WGGameFreedoom
+  name: wg-gamehub-game-freedoom-name
+  description: wg-gamehub-game-freedoom-description
+  dataPath: /GameData/_WG/DoomArcade/freedoom1.wad
+  dataFile: freedoom1.wad
+  noisePack: /Textures/_WG/DoomArcade/freedoom1-noise.wad
+  # Episode * 10 + map: E1M1 is 11, E4M9 is 49.
+  minLevel: 11
+  maxLevel: 49
+
+- type: wgGame
+  id: WGGameFreedoom2
+  name: wg-gamehub-game-freedoom2-name
+  description: wg-gamehub-game-freedoom2-description
+  dataPath: /GameData/_WG/DoomArcade/freedoom2.wad
+  dataFile: freedoom2.wad
+  noisePack: /Textures/_WG/DoomArcade/freedoom2-noise.wad
+  # The engine reports episode 1 and maps 1 to 32 as 10 + map.
+  minLevel: 11
+  maxLevel: 42
+
+- type: entity
+  parent: NFBasePDACartridge
+  id: WGGameHubCartridge
+  name: gamehub cartridge
+  description: A program for downloading and playing games.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-y
+  - type: UIFragment
+    ui: !type:WGGameHubUi
+  - type: Cartridge
+    programName: wg-gamehub-program-name
+    icon:
+      sprite: Structures/Machines/arcade.rsi
+      state: icon

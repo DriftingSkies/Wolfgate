@@ -111,7 +111,7 @@ public sealed partial class BluespaceCargoRule : StationEventSystem<BluespaceCar
         {
             foreach (var tileRef in _map.GetAllTiles(grid, gridComp))
             {
-                if (!WFIsFreeTile(grid, gridComp, xform.MapUid, tileRef.GridIndices, safeAtmosphere))
+                if (!WGIsFreeTile(grid, gridComp, xform.MapUid, tileRef.GridIndices, safeAtmosphere))
                     continue;
 
                 targetCoords = _map.GridTileToLocal(grid, gridComp, tileRef.GridIndices);
@@ -132,7 +132,7 @@ public sealed partial class BluespaceCargoRule : StationEventSystem<BluespaceCar
     }
 
     // WOLFGATE(LiveFixes) START: the random search's tile checks, for the search of every tile
-    private bool WFIsFreeTile(EntityUid grid, MapGridComponent gridComp, EntityUid? map, Vector2i tile, bool safeAtmosphere)
+    private bool WGIsFreeTile(EntityUid grid, MapGridComponent gridComp, EntityUid? map, Vector2i tile, bool safeAtmosphere)
     {
         if (_atmosphere.IsTileSpace(grid, map, tile) || _atmosphere.IsTileAirBlocked(grid, tile, mapGridComp: gridComp))
             return false;

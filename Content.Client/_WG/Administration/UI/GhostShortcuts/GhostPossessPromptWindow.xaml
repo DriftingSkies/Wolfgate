@@ -1,0 +1,20 @@
+<!-- Names must avoid DefaultWindow's own: CloseButton, ContentsContainer, TitleLabel, WindowHeader. -->
+<DefaultWindow xmlns="https://spacestation14.io"
+               Title="{Loc 'wg-ghost-possess-prompt-title'}"
+               MinSize="440 0">
+    <BoxContainer Orientation="Vertical" Margin="8 4">
+        <RichTextLabel Name="MessageLabel" HorizontalExpand="True" Margin="0 4" />
+        <Label Name="WarningLabel" StyleClasses="LabelSubText" />
+        <BoxContainer Orientation="Horizontal" Margin="0 8 0 0">
+            <Button Name="ReplaceButton"
+                    Text="{Loc 'wg-ghost-possess-prompt-replace'}"
+                    StyleClasses="ButtonSquare"
+                    HorizontalExpand="True" />
+            <Button Name="AbortButton"
+                    Text="{Loc 'wg-ghost-possess-prompt-abort'}"
+                    StyleClasses="ButtonSquare"
+                    HorizontalExpand="True"
+                    Margin="4 0 0 0" />
+        </BoxContainer>
+    </BoxContainer>
+</DefaultWindow>

@@ -1,0 +1,2939 @@
+# The Modsuit Itself, This is just a Deathsquad modsuit, but reskined for CC Officials
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseWGModsuitSyndicateContraband ]
+  id: ClothingModsuitContractor
+  name: Contractor modsuit control unit
+  description: The main controller for a Contractor modsuit.
+  components:
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/contractor.rsi
+    - type: ModSuit
+      theme: ModThemeContractor
+      parts:
+        head: ClothingModsuitHelmetContractor
+        gloves: ClothingModsuitGauntletsContractor
+        outerClothing: ClothingModsuitChestplateContractor
+        shoes: ClothingModsuitBootsContractor
+      startingModules:
+      - ModsuitModuleStorageCompact
+      - ModsuitModuleFlashlight
+      - ModsuitModuleMagboots
+      inbuiltModules:
+      - ModsuitModuleBuiltinSecHud
+      - ModsuitModuleBuiltinMedHud
+      - ModsuitModuleBuiltinFlashProtection
+      - ModsuitModuleBuiltinInsulation
+      - ModsuitModuleBuiltinAutoInjector
+      - ModsuitModuleBuiltinChameleon
+      - ModsuitModuleBuiltinInstrument
+    - type: ItemSlots
+      slots:
+        mod-core:
+          name: modsuit-core-slot-name
+          startingItem: ModsuitCoreStandardAntique
+          whitelist:
+            components:
+            - ModCore
+    - type: ChameleonClothing
+      slot: [back]
+      default: ClothingModsuitContractor
+    - type: UserInterface
+      interfaces:
+        enum.ChameleonUiKey.Key:
+          type: ChameleonBoundUserInterface
+        enum.ModSuitUiKey.Key:
+          type: ModSuitBoundUserInterface
+    - type: ExplosionResistance
+      damageCoefficient: 0.1
+ 
+- type: entity
+  parent: [ClothingModsuitGauntletsStandard, BaseWGModsuitSyndicateContraband]
+  id: ClothingModsuitGauntletsContractor
+  name: Contractor modsuit gauntlets
+  description: A pair of gauntlets made for the Contractor modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/contractor.rsi
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        gloves:
+        - state: equipped-HAND-sealed
+        - state: equipped-HAND-sealed-unshaded
+          shader: unshaded
+        gloves-vox:
+        - state: equipped-HAND-sealed-vox
+        - state: equipped-HAND-sealed-unshaded-vox
+          shader: unshaded
+
+- type: entity
+  parent: [ClothingModsuitHelmetStandard, BaseWGModsuitSyndicateContraband]
+  id: ClothingModsuitHelmetContractor
+  name: Contractor modsuit helmet
+  description: A state-of-the-art helmet designed by the Syndicate for the Contractor modsuit. It includes a built-in HUD.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/contractor.rsi
+    - type: PointLight
+      color: "#18f324"
+    - type: Armor # mostly the same stats as HoS modsuit
+      modifiers:
+        coefficients:
+          Blunt: 0.55
+          Slash: 0.55
+          Piercing: 0.5
+          Heat: 0.55
+          Caustic: 0.5
+          Radiation: 0.0
+    - type: FireProtection
+      reduction: 0.2
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        head-hydrakin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-feroxi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vulpkanin:
+        - state: equipped-HEAD-sealed-vulpkanin
+        head-resomi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vox:
+        - state: equipped-HEAD-sealed-vox
+        - state: equipped-HEAD-sealed-unshaded-vox
+          shader: unshaded
+    - type: ActivatableUI
+      inHandsOnly: false
+      singleUser: true
+      requireActiveHand: false
+      verbText: verb-instrument-openui
+      key: enum.InstrumentUiKey.Key
+    - type: UserInterface
+      interfaces:
+        enum.InstrumentUiKey.Key:
+          type: InstrumentBoundUserInterface
+    - type: HideLayerClothing
+      slots:
+      - Hair
+      - Snout
+      - HeadTop
+      - HeadSide
+    - type: ModSealedComponents
+      components:
+      - type: Instrument
+        program: 62
+      - type: SwappableInstrument
+        instrumentList:
+          "Synth": {62: 0}
+          "Friend": {2: 0}
+          "Overdriven": {29: 0}
+          "Bass": {33: 0}
+          "Rock": {29: 0}
+          "Acoustic": {24: 0}
+          "Flute": {73: 0}
+          "Sax": {66: 0}
+      - type: BreathMask
+      - type: PressureProtection
+        highPressureMultiplier: 0.3
+        lowPressureMultiplier: 1000
+      - type: TemperatureProtection
+        heatingCoefficient: 0.01
+        coolingCoefficient: 0.01
+      - type: IdentityBlocker
+      - type: IngestionBlocker
+    - type: Clothing
+      clothingVisuals:
+        head-feroxi:
+        - state: equipped-HEAD
+        head-hydrakin:
+        - state: equipped-HEAD
+
+- type: entity
+  parent: [ClothingModsuitChestplateStandard, BaseWGModsuitSyndicateContraband]
+  id: ClothingModsuitChestplateContractor
+  name: Contractor modsuit chestplate
+  description: A state of the art chestplate designed by the Syndicate for the Contractor modsuit. It incorporates powered servos to reduce the equipment load.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/contractor.rsi
+    - type: ClothingSpeedModifier
+      walkModifier: 1
+      sprintModifier: 1
+    - type: Armor # mostly the same stats as HoS modsuit
+      modifiers:
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.45
+          Heat: 0.5
+          Caustic: 0.5
+          Radiation: 0
+    - type: ExplosionResistance
+      damageCoefficient: 0.4
+    - type: StaminaDamageResistance
+      coefficient: 0.7
+    - type: FireProtection
+      reduction: 0.8
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        outerClothing-resomi:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing-vox:
+        - state: equipped-OUTERCLOTHING-sealed-vox
+    - type: ModSealedComponents
+      components:
+      - type: PressureProtection
+        highPressureMultiplier: 0.3
+        lowPressureMultiplier: 1000
+      - type: TemperatureProtection
+        coolingCoefficient: 0.01
+        heatingCoefficient: 0.01
+
+- type: entity
+  parent: [ClothingModsuitBootsStandard, BaseWGModsuitSyndicateContraband]
+  id: ClothingModsuitBootsContractor
+  name: Contractor modsuit boots
+  description: A state-of-the-art pair of magboots for the Contractor modsuit. So long as the suit is powered, these will not slow the wearer down.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Appearance
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/contractor.rsi
+    - type: Tag
+      tags:
+        - WhitelistChameleon
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        shoes:
+        - state: equipped-FEET-sealed
+        - state: equipped-FEET-sealed-unshaded
+          shader: unshaded
+        shoes-vox:
+        - state: equipped-FEET-sealed-vox
+        - state: equipped-FEET-sealed-unshaded-vox
+          shader: unshaded
+    - type: ModifyStandingUpTime
+      multiplier: .5
+    - type: ClothingSpeedModifier
+      walkModifier: 1.1
+      sprintModifier: 1.1
+
+# The Modsuit Itself, This is just a Deathsquad modsuit, but reskined for CC Officials
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseCentcommContraband ]
+  id: ClothingModsuitCorporate
+  name: Corporate modsuit control unit
+  description: The main controller for a Corporate modsuit.
+  components:
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/corporate.rsi
+    - type: ModSuit
+      theme: ModThemeCorporate
+      parts:
+        head: ClothingModsuitHelmetCorporate
+        gloves: ClothingModsuitGauntletsCorporate
+        outerClothing: ClothingModsuitChestplateCorporate
+        shoes: ClothingModsuitBootsCorporate
+      startingModules:
+      - ModsuitModuleStorageLarge
+      - ModsuitModuleFlashlight
+      - ModsuitModuleMagboots
+      - ModsuitModuleEmpShield
+      inbuiltModules:
+      - ModsuitModuleBuiltinThermal
+      - ModsuitModuleBuiltinSecHud
+      - ModsuitModuleBuiltinMedHud
+      - ModsuitModuleBuiltinFlashProtection
+      - ModsuitModuleBuiltinInsulation
+      - ModsuitModuleBuiltinAutoInjector
+      - ModsuitModuleBuiltinInstrument
+      - ModsuitModuleBuiltinSphereTransformCorporate
+    - type: ItemSlots
+      slots:
+        mod-core:
+          name: modsuit-core-slot-name
+          startingItem: ModsuitCoreStandardAntique
+          whitelist:
+            components:
+            - ModCore
+    - type: Storage
+      grid:
+        - 0,0,7,6
+    - type: ExplosionResistance
+      damageCoefficient: 0.1
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        back:
+        - state: equipped-BACKPACK-sealed
+        - state: equipped-BACKPACK-sealed-unshaded
+          shader: unshaded      
+
+- type: entity
+  parent: [ClothingModsuitGauntletsStandard, BaseCentcommContraband]
+  id: ClothingModsuitGauntletsCorporate
+  name: Corporate modsuit gauntlets
+  description: A pair of gauntlets made for the Corporate modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/corporate.rsi
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        gloves:
+        - state: equipped-HAND-sealed
+        - state: equipped-HAND-sealed-unshaded
+          shader: unshaded
+        gloves-vox:
+        - state: equipped-HAND-sealed-vox
+        - state: equipped-HAND-sealed-unshaded-vox
+          shader: unshaded
+
+- type: entity
+  parent: [ClothingModsuitHelmetStandard, BaseCentcommContraband]
+  id: ClothingModsuitHelmetCorporate
+  name: Corporate modsuit helmet
+  description: A state-of-the-art helmet designed by NanoTrasen for the Corporate modsuit. It includes a built-in HUD.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/corporate.rsi
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.1 # Best armor in the game - Yeah no shit.
+          Slash: 0.1
+          Piercing: 0.1
+          Heat: 0.1
+          Cold: 0.1
+          Cellular: 0.1
+          Radiation: 0
+          Caustic: 0.1
+    - type: PointLight
+      color: "#fc8a00"
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        head-hydrakin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-feroxi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-resomi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vox:
+        - state: equipped-HEAD-sealed-vox
+        - state: equipped-HEAD-sealed-unshaded-vox
+          shader: unshaded
+        head-vulpkanin: #TODO: add vulp sprites
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+    - type: ActivatableUI
+      inHandsOnly: false # Goobstation
+      singleUser: true
+      requireActiveHand: false # Goobstation
+      verbText: verb-instrument-openui
+      key: enum.InstrumentUiKey.Key
+    - type: UserInterface
+      interfaces:
+        enum.InstrumentUiKey.Key:
+          type: InstrumentBoundUserInterface
+    - type: ModSealedComponents
+      components:
+      - type: Instrument
+        program: 62
+      - type: SwappableInstrument
+        instrumentList:
+          "Synth": {62: 0}
+          "Friend": {2: 0}
+          "Overdriven": {29: 0}
+          "Bass": {33: 0}
+          "Rock": {29: 0}
+          "Acoustic": {24: 0}
+          "Flute": {73: 0}
+          "Sax": {66: 0}
+      - type: BreathMask
+      - type: PressureProtection
+        highPressureMultiplier: 0.3
+        lowPressureMultiplier: 1000
+      - type: TemperatureProtection
+        heatingCoefficient: 0.01
+        coolingCoefficient: 0.01
+      - type: IdentityBlocker
+      - type: IngestionBlocker
+    - type: Clothing
+      clothingVisuals:
+        head-vulpkanin:
+        - state: equipped-HEAD
+        head-feroxi:
+        - state: equipped-HEAD
+        head-hydrakin:
+        - state: equipped-HEAD
+
+- type: entity
+  parent: [ClothingModsuitChestplateStandard, BaseCentcommContraband]
+  id: ClothingModsuitChestplateCorporate
+  name: Corporate modsuit chestplate
+  description: A state of the art chestplate designed by NanoTrasen for the Corporate modsuit. It incorporates powered servos to reduce the equipment load.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/corporate.rsi
+    - type: ClothingSpeedModifier
+      walkModifier: 1
+      sprintModifier: 1
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.1 # Best armor in the game - Yeah no shit.
+          Slash: 0.1
+          Piercing: 0.1
+          Heat: 0.1
+          Cold: 0.1
+          Cellular: 0.1
+          Radiation: 0
+          Caustic: 0.1
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        outerClothing-resomi:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing-vox:
+        - state: equipped-OUTERCLOTHING-sealed-vox
+    - type: StaminaDamageResistance
+      coefficient: 0 # 100%
+    - type: ExplosionResistance
+      damageCoefficient: 0.2
+    - type: FireProtection
+      reduction: 1
+    - type: ModSealedComponents
+      components:
+      - type: PressureProtection
+        highPressureMultiplier: 0.3
+        lowPressureMultiplier: 1000
+      - type: TemperatureProtection
+        coolingCoefficient: 0.01
+        heatingCoefficient: 0.01
+
+- type: entity
+  parent: [ClothingModsuitBootsStandard, BaseCentcommContraband]
+  id: ClothingModsuitBootsCorporate
+  name: Corporate modsuit boots
+  description: A state-of-the-art pair of magboots for the Corporate modsuit. So long as the suit is powered, these will not slow the wearer down.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Appearance
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/corporate.rsi
+    - type: Tag
+      tags:
+        - WhitelistChameleon
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        shoes:
+        - state: equipped-FEET-sealed
+        - state: equipped-FEET-sealed-unshaded
+          shader: unshaded
+        shoes-vox:
+        - state: equipped-FEET-sealed-vox
+        - state: equipped-FEET-sealed-unshaded-vox
+          shader: unshaded
+    - type: ModifyStandingUpTime
+      multiplier: .25
+    - type: ClothingSpeedModifier
+      walkModifier: 1.1
+      sprintModifier: 1.1
+
+- type: entity
+  id: SuitStorageCorporate
+  parent: SuitStorageBase
+  suffix: Corporate Modsuit
+  components:
+    - type: StorageFill
+      contents:
+          - id: OxygenTankFilled
+          - id: ClothingModsuitCorporate
+          - id: ClothingMaskBreath
+
+- type: entity
+  id: ClothingModsuitCorporateFilled
+  parent: ClothingModsuitCorporate
+  suffix: Filled
+  components:
+    - type: StorageFill
+      contents:
+          - id: BoxSurvivalEngineering
+          - id: BoxFolderCentComClipboard # Solely for holding and looking menacing.
+          - id: ClothingMaskGasCentcom
+          - id: WeaponDisabler
+          - id: JawsOfLife
+          - id: PowerDrill
+          - id: WelderExperimental
+          - id: Multitool
+          - id: MedkitCombatFilled
+          
+#NCT
+- type: entity
+  parent: [ClothingModsuitCorporate, ClothingModsuitStandard, BaseCentcommContraband]
+  id: ClothingModsuitTrainer
+  name: Career Trainer modsuit control unit
+  description: The main controller for a Career Trainer modsuit.
+  components:
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/nct.rsi
+    - type: ModSuit
+      theme: ModThemeCorporate
+      parts:
+        head: ClothingModsuitHelmetTrainer
+        gloves: ClothingModsuitGauntletsTrainer
+        outerClothing: ClothingModsuitChestplateTrainer
+        shoes: ClothingModsuitBootsTrainer
+      startingModules:
+      - ModsuitModuleStorageLarge
+      - ModsuitModuleFlashlight
+      inbuiltModules:
+      - ModsuitModuleBuiltinThermal
+      - ModsuitModuleBuiltinSecHud
+      - ModsuitModuleBuiltinMedHud
+      - ModsuitModuleBuiltinFlashProtection
+      - ModsuitModuleBuiltinInsulation
+- type: entity
+  parent: [ClothingModsuitGauntletsCorporate, ClothingModsuitGauntletsStandard, BaseCentcommContraband]
+  id: ClothingModsuitGauntletsTrainer
+  name: Corporate modsuit gauntlets
+  description: A pair of gauntlets made for the Career Trainer modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/nct.rsi
+
+- type: entity
+  parent: [ClothingModsuitHelmetCorporate, ClothingModsuitHelmetStandard, BaseCentcommContraband]
+  id: ClothingModsuitHelmetTrainer
+  name: Corporate modsuit helmet
+  description: A state-of-the-art helmet designed by NanoTrasen for the Career Trainer modsuit. It includes a built-in HUD.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/nct.rsi
+    - type: PointLight
+      color: "#fc0574"
+    - type: Armor # mostly the same stats as HoS modsuit
+      modifiers:
+        coefficients:
+          Blunt: 0.55
+          Slash: 0.55
+          Piercing: 0.5
+          Heat: 0.55
+          Caustic: 0.5
+          Radiation: 0.0
+    - type: FireProtection
+      reduction: 0.2
+    - type: Clothing
+      clothingVisuals:
+        head-vulpkanin:
+        - state: equipped-HEAD
+        head-feroxi:
+        - state: equipped-HEAD
+        head-hydrakin:
+        - state: equipped-HEAD
+    - type: ModSuitSealedVisuals
+      clothingVisuals:
+        head:
+        - state: equipped-HEAD-sealed
+        head-resomi:
+        - state: equipped-HEAD-sealed
+        head-vulpkanin:
+        - state: equipped-HEAD-sealed
+        head-feroxi:
+        - state: equipped-HEAD-sealed
+        head-hydrakin:
+        - state: equipped-HEAD-sealed
+
+- type: entity
+  parent: [ClothingModsuitChestplateCorporate, ClothingModsuitChestplateStandard, BaseCentcommContraband]
+  id: ClothingModsuitChestplateTrainer
+  name: Career Trainer modsuit chestplate
+  description: A state of the art chestplate designed by NanoTrasen for the Career Trainer modsuit. It incorporates powered servos to reduce the equipment load.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/nct.rsi
+    - type: ClothingSpeedModifier
+      walkModifier: 0.95
+      sprintModifier: 0.95
+    - type: Armor # mostly the same stats as HoS modsuit
+      modifiers:
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.45
+          Heat: 0.5
+          Caustic: 0.5
+          Radiation: 0
+    - type: ExplosionResistance
+      damageCoefficient: 0.4
+    - type: StaminaDamageResistance
+      coefficient: 0.7
+    - type: FireProtection
+      reduction: 0.8
+    - type: ModSuitSealedVisuals
+      clothingVisuals:
+        outerClothing:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing-resomi:
+        - state: equipped-OUTERCLOTHING-sealed
+
+- type: entity
+  parent: [ClothingModsuitBootsCorporate, ClothingModsuitBootsStandard, BaseCentcommContraband]
+  id: ClothingModsuitBootsTrainer
+  name: Career Trainer modsuit boots
+  description: A state-of-the-art pair of magboots for the Career Trainer modsuit. So long as the suit is powered, these will not slow the wearer down.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Appearance
+    - type: Sprite
+      sprite: _Goobstation/Clothing/OuterClothing/Modsuits/nct.rsi
+
+- type: entity
+  id: SuitStorageTrainer
+  parent: SuitStorageBase
+  suffix: Trainer Modsuit
+  components:
+    - type: StorageFill
+      contents:
+          - id: OxygenTankFilled
+          - id: ClothingModsuitCorporate
+          - id: ClothingMaskBreath
+
+- type: entity
+  id: ClothingModsuitTrainerFilled
+  parent: ClothingModsuitTrainer
+  suffix: Filled
+  components:
+    - type: StorageFill
+      contents:
+          - id: BoxSurvivalEngineering
+          - id: BoxFolderCentComClipboard # Solely for holding and looking menacing.
+          - id: ClothingMaskGasCentcom
+          - id: WeaponDisabler
+          - id: JawsOfLife
+          - id: PowerDrill
+          - id: WelderExperimental
+          - id: Multitool
+          - id: MedkitCombatFilled
+
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseWGModsuitCargoContraband ]
+  id: ClothingModsuitLoader
+  name: loader modsuit control unit
+  description: An unsealed experimental motorized harness manufactured by Scarborough Arms for quick and efficient munition supplies. What it lacks in EVA protection, it makes up for in strength and flexibility.
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/loader.rsi
+  - type: Clothing
+    quickEquip: false
+    slots:
+    - back
+    clothingVisuals:
+      back:
+      - state: equipped-BACKPACK
+      - state: module-hydraulic
+  - type: ModSuit
+    theme: ModThemeLoader
+    parts:
+      head: ClothingModsuitHelmetLoader
+      gloves: ClothingModsuitGauntletsLoader
+      outerClothing: ClothingModsuitChestplateLoader
+      shoes: ClothingModsuitBootsLoader
+    startingModules:
+    - ModsuitModuleStorageLarge
+    - ModsuitModuleFlashlight
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      back:
+      - state: equipped-BACKPACK-sealed
+      - state: module-hydraulic
+  - type: Construction
+    graph: Modsuit
+    node: loader
+  - type: ClothingSpeedModifier
+    walkModifier: 1
+    sprintModifier: 1
+
+- type: entity
+  parent: ClothingModsuitHelmetStandard
+  id: ClothingModsuitHelmetLoader
+  name: loader modsuit helmet
+  description: The helmet of a loader modsuit. It covers the face, but isn't airtight.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/loader.rsi
+  - type: Clothing
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD
+      head-vulpkanin:
+      - state: equipped-HEAD
+      head-feroxi:
+      - state: equipped-HEAD
+      head-hydrakin:
+      - state: equipped-HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.95
+        Heat: 0.9
+        Caustic: 0.9
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-resomi:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-vox:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-feroxi:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-hydrakin:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+  - type: ModSealedComponents
+    components:
+    - type: IdentityBlocker
+    - type: HideLayerClothing
+      slots:
+      - Hair
+      - Snout
+      - HeadTop
+      - HeadSide
+  - type: Tag
+    tags: []
+
+- type: entity
+  parent: ClothingModsuitChestplateStandard
+  id: ClothingModsuitChestplateLoader
+  name: loader modsuit chestplate
+  description: The titanium exoskeleton of a loader modsuit. Its myomer-driven legs let the wearer run at full speed.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/loader.rsi
+  - type: ClothingSpeedModifier
+    walkModifier: 1
+    sprintModifier: 1
+  - type: Armor
+    coverage:
+    - Torso
+    - Torso
+    - Arm
+    - Hand
+    - Leg
+    - Foot
+    - Tail
+    - Other
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.95
+        Heat: 0.9
+        Caustic: 0.9
+  - type: ExplosionResistance
+    damageCoefficient: 0.9
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-resomi:
+      - state: equipped-OUTERCLOTHING-sealed
+  - type: ModSealedComponents
+    components: []
+
+- type: entity
+  parent: ClothingModsuitGauntletsStandard
+  id: ClothingModsuitGauntletsLoader
+  name: loader modsuit gauntlets
+  description: The gauntlets of a loader modsuit. Partially insulated against shocks from the myomer arms.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/loader.rsi
+  - type: Insulated
+    coefficient: 0.25
+
+- type: entity
+  parent: ClothingModsuitBootsStandard
+  id: ClothingModsuitBootsLoader
+  name: loader modsuit boots
+  description: The boots of a loader modsuit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/loader.rsi
+
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseWGModsuitCargoContraband ]
+  id: ClothingModsuitMining
+  name: mining modsuit control unit
+  description: A Nanotrasen mining suit for on-site operations, fit with ceramic blast plating and a sphere form. The systems run near their maximum load, leaving far less room for customization than other suits.
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/mining.rsi
+  - type: ModSuit
+    theme: ModThemeMining
+    parts:
+      head: ClothingModsuitHelmetMining
+      gloves: ClothingModsuitGauntletsMining
+      outerClothing: ClothingModsuitChestplateMining
+      shoes: ClothingModsuitBootsMining
+    startingModules:
+    - ModsuitModuleStorageLarge
+    - ModsuitModuleGps
+    - ModsuitModuleOreBag
+    - ModsuitModuleClamp
+    - ModsuitModuleDrill
+    - ModsuitModuleMouthhole
+  - type: Construction
+    graph: Modsuit
+    node: mining
+
+- type: entity
+  parent: ClothingModsuitHelmetStandard
+  id: ClothingModsuitHelmetMining
+  name: mining modsuit helmet
+  description: The helmet of a mining modsuit. The visor has been expanded into a system of seven arachnid-like cameras.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/mining.rsi
+  - type: PointLight
+    color: "#a4fef4"
+  - type: Clothing
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD
+      head-vulpkanin:
+      - state: equipped-HEAD
+      head-feroxi:
+      - state: equipped-HEAD
+      head-hydrakin:
+      - state: equipped-HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.85
+        Slash: 0.85
+        Piercing: 0.95
+        Heat: 0.6
+        Radiation: 0.2
+        Caustic: 0.4
+  - type: FireProtection
+    reduction: 0.3
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-resomi:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-vox:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-feroxi:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-hydrakin:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+
+- type: entity
+  parent: ClothingModsuitChestplateStandard
+  id: ClothingModsuitChestplateMining
+  name: mining modsuit chestplate
+  description: The chestplate of a mining modsuit. Ceramic plating gives it incredible protection against blasts, corrosives and heat.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/mining.rsi
+  - type: Armor
+    coverage:
+    - Torso
+    - Torso
+    - Arm
+    - Hand
+    - Leg
+    - Foot
+    - Tail
+    - Other
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.95
+        Heat: 0.5
+        Radiation: 0.2
+        Caustic: 0.3
+  - type: ExplosionResistance
+    damageCoefficient: 0.5
+  - type: FireProtection
+    reduction: 0.9
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-resomi:
+      - state: equipped-OUTERCLOTHING-sealed
+  - type: ModSealedComponents
+    components:
+    - type: PressureProtection
+      highPressureMultiplier: 0.3
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.005
+      coolingCoefficient: 0.01
+
+- type: entity
+  parent: ClothingModsuitGauntletsStandard
+  id: ClothingModsuitGauntletsMining
+  name: mining modsuit gauntlets
+  description: The gauntlets of a mining modsuit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/mining.rsi
+
+- type: entity
+  parent: ClothingModsuitBootsStandard
+  id: ClothingModsuitBootsMining
+  name: mining modsuit boots
+  description: The boots of a mining modsuit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/mining.rsi
+
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseWGModsuitSyndicateContraband ]
+  id: ClothingModsuitSyndicate
+  name: blood-red modsuit control unit
+  description: An advanced combat suit adorned in a sinister crimson red color scheme, produced by the Gorlex Marauders. It offers armor ruled illegal in most of the sector.
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/syndicate.rsi
+  - type: ModSuit
+    theme: ModThemeSyndicate
+    parts:
+      head: ClothingModsuitHelmetSyndicate
+      gloves: ClothingModsuitGauntletsSyndicate
+      outerClothing: ClothingModsuitChestplateSyndicate
+      shoes: ClothingModsuitBootsSyndicate
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: modsuit-core-slot-name
+        startingItem: ModsuitCoreStandardMicroreactor
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: ClothingModsuitSyndicate
+  id: ClothingModsuitSyndicateFilled
+  suffix: Filled
+  components:
+  - type: ModSuit
+    startingModules:
+    - ModsuitModuleStorageSyndicate
+    - ModsuitModuleFlashlight
+    - ModsuitModuleEmpShield
+    - ModsuitModuleJetpack
+    - ModsuitModuleDnaLock
+    - ModsuitModuleRestraintAssist
+
+- type: entity
+  parent: [ ClothingModsuitHelmetStandard, BaseWGModsuitSyndicateContraband ]
+  id: ClothingModsuitHelmetSyndicate
+  name: blood-red modsuit helmet
+  description: The helmet of a blood-red modsuit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/syndicate.rsi
+  - type: PointLight
+    color: "#ff3c3c"
+  - type: Clothing
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD
+      head-vulpkanin:
+      - state: equipped-HEAD
+      head-feroxi:
+      - state: equipped-HEAD
+      head-hydrakin:
+      - state: equipped-HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.47
+        Slash: 0.47
+        Piercing: 0.47
+        Heat: 0.47
+        Radiation: 0.47
+        Caustic: 0.47
+  - type: FireProtection
+    reduction: 0.25
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-resomi:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-vox:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-feroxi:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-hydrakin:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+  - type: ModSealedComponents
+    components:
+    - type: BreathMask
+    - type: PressureProtection
+      highPressureMultiplier: 0.07
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+    - type: IdentityBlocker
+    - type: IngestionBlocker
+    - type: HideLayerClothing
+      slots:
+      - Hair
+      - Snout
+      - HeadTop
+      - HeadSide
+
+- type: entity
+  parent: [ ClothingModsuitChestplateStandard, BaseWGModsuitSyndicateContraband ]
+  id: ClothingModsuitChestplateSyndicate
+  name: blood-red modsuit chestplate
+  description: The chestplate of a blood-red modsuit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/syndicate.rsi
+  - type: ClothingSpeedModifier
+    walkModifier: 0.95
+    sprintModifier: 0.95
+  - type: Armor
+    coverage:
+    - Torso
+    - Torso
+    - Arm
+    - Leg
+    - Tail
+    - Other
+    modifiers:
+      coefficients:
+        Blunt: 0.42
+        Slash: 0.42
+        Piercing: 0.42
+        Heat: 0.42
+        Radiation: 0.42
+        Caustic: 0.42
+  - type: ExplosionResistance
+    damageCoefficient: 0.45
+  - type: StaminaDamageResistance
+    coefficient: 0.42
+  - type: FireProtection
+    reduction: 0.8
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-resomi:
+      - state: equipped-OUTERCLOTHING-sealed
+  - type: ModSealedComponents
+    components:
+    - type: PressureProtection
+      highPressureMultiplier: 0.04
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.01
+      coolingCoefficient: 0.01
+
+- type: entity
+  parent: [ ClothingModsuitGauntletsStandard, BaseWGModsuitSyndicateContraband ]
+  id: ClothingModsuitGauntletsSyndicate
+  name: blood-red modsuit gauntlets
+  description: The gauntlets of a blood-red modsuit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/syndicate.rsi
+  - type: Armor
+    coverage:
+    - Hand
+    modifiers:
+      coefficients:
+        Blunt: 0.42
+        Slash: 0.42
+        Piercing: 0.42
+        Heat: 0.42
+        Radiation: 0.42
+        Caustic: 0.42
+
+- type: entity
+  parent: [ ClothingModsuitBootsStandard, BaseWGModsuitSyndicateContraband ]
+  id: ClothingModsuitBootsSyndicate
+  name: blood-red modsuit boots
+  description: The boots of a blood-red modsuit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/syndicate.rsi
+  - type: Armor
+    coverage:
+    - Foot
+    modifiers:
+      coefficients:
+        Blunt: 0.42
+        Slash: 0.42
+        Piercing: 0.42
+        Heat: 0.42
+        Radiation: 0.42
+        Caustic: 0.42
+
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseWGModsuitSyndicateContraband ]
+  id: ClothingModsuitSyndicateElite
+  name: elite syndicate modsuit control unit
+  description: An evolution of the blood-red modsuit upgraded by Cybersun Industries, featuring a bulkier build, a matte black color scheme and heavier armor.
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/elite.rsi
+  - type: ModSuit
+    theme: ModThemeElite
+    parts:
+      head: ClothingModsuitHelmetSyndicateElite
+      gloves: ClothingModsuitGauntletsSyndicateElite
+      outerClothing: ClothingModsuitChestplateSyndicateElite
+      shoes: ClothingModsuitBootsSyndicateElite
+  - type: ItemSlots
+    slots:
+      mod-core:
+        name: modsuit-core-slot-name
+        startingItem: ModsuitCoreStandardMicroreactor
+        whitelist:
+          components:
+          - ModCore
+
+- type: entity
+  parent: ClothingModsuitSyndicateElite
+  id: ClothingModsuitSyndicateEliteFilled
+  suffix: Filled
+  components:
+  - type: ModSuit
+    startingModules:
+    - ModsuitModuleStorageSyndicate
+    - ModsuitModuleFlashlight
+    - ModsuitModuleEmpShield
+    - ModsuitModuleJetpack
+    - ModsuitModuleDnaLock
+    - ModsuitModuleRestraintAssist
+
+- type: entity
+  parent: [ ClothingModsuitHelmetStandard, BaseWGModsuitSyndicateContraband ]
+  id: ClothingModsuitHelmetSyndicateElite
+  name: elite syndicate modsuit helmet
+  description: The helmet of a elite syndicate modsuit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/elite.rsi
+  - type: PointLight
+    color: "#5dff6a"
+  - type: Clothing
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD
+      head-vox:
+      - state: equipped-HEAD
+      head-vulpkanin:
+      - state: equipped-HEAD
+      head-feroxi:
+      - state: equipped-HEAD
+      head-hydrakin:
+      - state: equipped-HEAD
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.57
+        Slash: 0.57
+        Piercing: 0.57
+        Heat: 0.23
+        Radiation: 0.01
+        Caustic: 0.37
+  - type: FireProtection
+    reduction: 0.25
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      head:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-resomi:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-vox:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-vulpkanin:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-feroxi:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+      head-hydrakin:
+      - state: equipped-HEAD-sealed
+      - state: equipped-HEAD-sealed-unshaded
+        shader: unshaded
+  - type: ModSealedComponents
+    components:
+    - type: BreathMask
+    - type: PressureProtection
+      highPressureMultiplier: 0.07
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.001
+      coolingCoefficient: 0.001
+    - type: IdentityBlocker
+    - type: IngestionBlocker
+    - type: HideLayerClothing
+      slots:
+      - Hair
+      - Snout
+      - HeadTop
+      - HeadSide
+
+- type: entity
+  parent: [ ClothingModsuitChestplateStandard, BaseWGModsuitSyndicateContraband ]
+  id: ClothingModsuitChestplateSyndicateElite
+  name: elite syndicate modsuit chestplate
+  description: The chestplate of a elite syndicate modsuit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/elite.rsi
+  - type: ClothingSpeedModifier
+    walkModifier: 1
+    sprintModifier: 1
+  - type: Armor
+    coverage:
+    - Torso
+    - Torso
+    - Arm
+    - Leg
+    - Tail
+    - Other
+    modifiers:
+      coefficients:
+        Blunt: 0.52
+        Slash: 0.52
+        Piercing: 0.52
+        Heat: 0.18
+        Radiation: 0.01
+        Caustic: 0.37
+  - type: ExplosionResistance
+    damageCoefficient: 0.18
+  - type: StaminaDamageResistance
+    coefficient: 0.52
+  - type: FireProtection
+    reduction: 0.85
+  - type: ModSuitSealedVisuals
+    spriteLayer: sealed
+    clothingVisuals:
+      outerClothing:
+      - state: equipped-OUTERCLOTHING-sealed
+      outerClothing-resomi:
+      - state: equipped-OUTERCLOTHING-sealed
+  - type: ModSealedComponents
+    components:
+    - type: PressureProtection
+      highPressureMultiplier: 0.015
+      lowPressureMultiplier: 1000
+    - type: TemperatureProtection
+      heatingCoefficient: 0.001
+      coolingCoefficient: 0.001
+
+- type: entity
+  parent: [ ClothingModsuitGauntletsStandard, BaseWGModsuitSyndicateContraband ]
+  id: ClothingModsuitGauntletsSyndicateElite
+  name: elite syndicate modsuit gauntlets
+  description: The gauntlets of a elite syndicate modsuit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/elite.rsi
+  - type: Armor
+    coverage:
+    - Hand
+    modifiers:
+      coefficients:
+        Blunt: 0.52
+        Slash: 0.52
+        Piercing: 0.52
+        Heat: 0.18
+        Radiation: 0.01
+        Caustic: 0.37
+
+- type: entity
+  parent: [ ClothingModsuitBootsStandard, BaseWGModsuitSyndicateContraband ]
+  id: ClothingModsuitBootsSyndicateElite
+  name: elite syndicate modsuit boots
+  description: The boots of a elite syndicate modsuit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _Goobstation/Clothing/OuterClothing/Modsuits/elite.rsi
+  - type: Armor
+    coverage:
+    - Foot
+    modifiers:
+      coefficients:
+        Blunt: 0.52
+        Slash: 0.52
+        Piercing: 0.52
+        Heat: 0.18
+        Radiation: 0.01
+        Caustic: 0.37
+
+# apocryphal
+
+# The Modsuit Itself, This is just a Deathsquad modsuit
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseCentcommContraband ]
+  id: ClothingModsuitApocryphal
+  name: Apocryphal modsuit control unit
+  description: The main controller for a Apocryphal modsuit.
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/apocryphal.rsi
+    - type: ModSuit
+      theme: ModThemeApocryphal
+      parts:
+        head: ClothingModsuitHelmetApocryphal
+        gloves: ClothingModsuitGauntletsApocryphal
+        outerClothing: ClothingModsuitChestplateApocryphal
+        shoes: ClothingModsuitBootsApocryphal
+      startingModules:
+      - ModsuitModuleStorageBluespace
+      - ModsuitModuleFlashlight
+      - ModsuitModuleMagboots
+      - ModsuitModuleWelding
+      - ModsuitModuleEmpShield
+      - ModsuitModuleJetpack
+      - ModsuitModuleRestraintAssist
+      inbuiltModules:
+      - ModsuitModuleBuiltinThermal
+      - ModsuitModuleBuiltinSecHud
+      - ModsuitModuleBuiltinMedHud
+      - ModsuitModuleBuiltinFlashProtection
+      - ModsuitModuleBuiltinInsulation
+    - type: ItemSlots
+      slots:
+        mod-core:
+          name: modsuit-core-slot-name
+          startingItem: ModsuitCoreStandardAntique
+          whitelist:
+            components:
+            - ModCore
+    - type: ExplosionResistance
+      damageCoefficient: 0.1
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        back:
+        - state: equipped-BACKPACK-sealed
+
+- type: entity
+  parent: ClothingModsuitGauntletsStandard
+  id: ClothingModsuitGauntletsApocryphal
+  name: Apocryphal modsuit gauntlets
+  description: A pair of gauntlets made for the Apocryphal modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/apocryphal.rsi
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        gloves:
+        - state: equipped-HAND-sealed
+        - state: equipped-HAND-sealed-unshaded
+          shader: unshaded
+        gloves-vox:
+        - state: equipped-HAND-sealed-vox
+        - state: equipped-HAND-sealed-unshaded-vox
+          shader: unshaded
+
+- type: entity
+  parent: [ClothingModsuitHelmetStandard]
+  id: ClothingModsuitHelmetApocryphal
+  name: Apocryphal modsuit helmet # Goob edit
+  description: A state-of-the-art helmet designed by NanoTrasen for the Apocryphal modsuit. It includes a built-in HUD.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/apocryphal.rsi
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.1 # Best armor in the game - Yeah no shit.
+          Slash: 0.1
+          Piercing: 0.1
+          Heat: 0.1
+          Cold: 0.1
+          Cellular: 0.1
+          Radiation: 0.1
+          Caustic: 0.1
+    - type: PointLight
+      color: "#FFDF00"
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        head-hydrakin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-feroxi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vulpkanin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-resomi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vox:
+        - state: equipped-HEAD-sealed-vox
+        - state: equipped-HEAD-sealed-unshaded-vox
+          shader: unshaded
+- type: entity
+  parent: ClothingModsuitChestplateStandard
+  id: ClothingModsuitChestplateApocryphal
+  name: Apocryphal modsuit chestplate
+  description: A state of the art chestplate designed by NanoTrasen for the Apocryphal Modsuit. It incorporates powered servos to reduce the equipment load.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/apocryphal.rsi
+    - type: ClothingSpeedModifier
+      walkModifier: 1
+      sprintModifier: 1
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.1 # Best armor in the game - Yeah no shit.
+          Slash: 0.1
+          Piercing: 0.1
+          Heat: 0.1
+          Cold: 0.1
+          Cellular: 0.1
+          Radiation: 0.1
+          Caustic: 0.1
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        outerClothing-resomi:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing-vox:
+        - state: equipped-OUTERCLOTHING-sealed-vox
+    - type: StaminaDamageResistance
+      coefficient: 0 # 100%
+    - type: PressureProtection
+      highPressureMultiplier: 0.02
+      lowPressureMultiplier: 1000
+    - type: ExplosionResistance
+      damageCoefficient: 0.1
+    - type: FireProtection
+      reduction: 1
+
+- type: entity
+  parent: ClothingModsuitBootsStandard
+  id: ClothingModsuitBootsApocryphal
+  name: Apocryphal modsuit boots
+  description: A state-of-the-art pair of magboots for the Apocryphal modsuit. So long as the suit is powered, these will not slow the wearer down.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Appearance
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/apocryphal.rsi
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        shoes:
+        - state: equipped-FEET-sealed
+        shoes-vox:
+        - state: equipped-FEET-sealed-vox
+    - type: ClothingSpeedModifier
+      walkModifier: 1.1
+      sprintModifier: 1.1
+
+- type: entity
+  id: SuitStorageApocryphal
+  parent: SuitStorageBase
+  suffix: Apocryphal Modsuit
+  components:
+    - type: StorageFill
+      contents:
+          - id: OxygenTankFilled
+          - id: ClothingModsuitApocryphal
+          - id: ClothingMaskBreath
+
+# inquisitory
+
+# The Modsuit Itself, This is just a ERT chaplain modsuit
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseCentcommContraband ]
+  id: ClothingModsuitInquisitory
+  name: Inquisitory modsuit control unit
+  description: The main controller for a Inquisitory modsuit.
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/inquisitory.rsi
+    - type: ModSuit
+      theme: ModThemeResponsory
+      parts:
+        head: ClothingModsuitHelmetInquisitory
+        gloves: ClothingModsuitGauntletsInquisitory
+        outerClothing: ClothingModsuitChestplateInquisitory
+        shoes: ClothingModsuitBootsInquisitory
+      startingModules:
+      - ModsuitModuleStorageBluespace
+      - ModsuitModuleFlashlight
+      - ModsuitModuleMagboots
+      - ModsuitModuleWelding
+      - ModsuitModuleEmpShield
+      - ModsuitModuleRestraintAssist
+      inbuiltModules:
+      - ModsuitModuleBuiltinSecHud
+      - ModsuitModuleBuiltinMedHud
+      - ModsuitModuleBuiltinFlashProtection
+    - type: ItemSlots
+      slots:
+        mod-core:
+          name: modsuit-core-slot-name
+          startingItem: ModsuitCoreStandardMicroreactor
+          whitelist:
+            components:
+            - ModCore
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        back:
+        - state: equipped-BACKPACK-sealed
+
+- type: entity
+  parent: ClothingModsuitGauntletsStandard
+  id: ClothingModsuitGauntletsInquisitory
+  name: Inquisitory modsuit gauntlets
+  description: A pair of gauntlets made for the Inquisitory modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/inquisitory.rsi
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        gloves:
+        - state: equipped-HAND-sealed
+        gloves-vox:
+        - state: equipped-HAND-sealed-vox
+- type: entity
+  parent: [ClothingModsuitHelmetStandard]
+  id: ClothingModsuitHelmetInquisitory
+  name: Inquisitory modsuit helmet
+  description: A state-of-the-art helmet designed by NanoTrasen for the Inquisitory modsuit. It includes a built-in HUD.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/inquisitory.rsi
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.2
+          Slash: 0.2
+          Piercing: 0.2
+          Heat: 0.2
+          Radiation: 0.2
+          Caustic: 0.2
+    - type: PointLight
+      color: "#FFDF00"
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        head-hydrakin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-feroxi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vulpkanin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-resomi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vox:
+        - state: equipped-HEAD-sealed-vox
+        - state: equipped-HEAD-sealed-unshaded-vox
+          shader: unshaded
+- type: entity
+  parent: ClothingModsuitChestplateStandard
+  id: ClothingModsuitChestplateInquisitory
+  name: Inquisitory modsuit chestplate
+  description: A state of the art chestplate designed by NanoTrasen for the Inquisitory modsuit. It incorporates powered servos to reduce the equipment load.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/inquisitory.rsi
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.2
+          Slash: 0.2
+          Piercing: 0.2
+          Heat: 0.2
+          Radiation: 0.2
+          Caustic: 0.2
+    - type: ClothingSpeedModifier
+      walkModifier: 0.95
+      sprintModifier: 0.95
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        outerClothing-resomi:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing-vox:
+        - state: equipped-OUTERCLOTHING-sealed-vox
+    - type: StaminaDamageResistance
+      coefficient: 0.5 # 50%
+    - type: FireProtection
+      reduction: 0.9
+
+- type: entity
+  parent: ClothingModsuitBootsStandard
+  id: ClothingModsuitBootsInquisitory
+  name: Inquisitory modsuit boots
+  description: A state-of-the-art pair of magboots for the Inquisitory modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Appearance
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/inquisitory.rsi
+    - type: Tag
+      tags:
+        - WhitelistChameleon
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        shoes:
+        - state: equipped-FEET-sealed
+        shoes-vox:
+        - state: equipped-FEET-sealed-vox
+
+- type: entity
+  id: SuitStorageInquisitory
+  parent: SuitStorageBase
+  suffix: Inquisitory Modsuit
+  components:
+    - type: StorageFill
+      contents:
+        - id: OxygenTankFilled
+        - id: ClothingModsuitInquisitory
+        - id: ClothingMaskBreath
+
+# praetorian
+
+# The Modsuit Itself, This is just a bso modsuit
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseCentcommContraband ]
+  id: ClothingModsuitPraetorian
+  name: Praetorian modsuit control unit
+  description: The main controller for a Praetorian modsuit.
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/praetorian.rsi
+    - type: Clothing
+      clothingVisuals:
+        back:
+        - state: equipped-BACKPACK
+        back-resomi:
+        - state: equipped-BACKPACK-resomi
+    - type: ModSuit
+      theme: ModThemePraetorian
+      parts:
+        head: ClothingModsuitHelmetPraetorian
+        gloves: ClothingModsuitGauntletsPraetorian
+        outerClothing: ClothingModsuitChestplatePraetorian
+        shoes: ClothingModsuitBootsPraetorian
+      inbuiltModules:
+      - ModsuitModuleBuiltinFlashProtection
+      - ModsuitModuleBuiltinInsulation
+    - type: Construction
+      graph: Modsuit
+      node: praetorian
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        back:
+        - state: equipped-BACKPACK-sealed
+        back-resomi:
+        - state: equipped-BACKPACK-sealed-resomi
+
+- type: entity
+  parent: ClothingModsuitPraetorian
+  id: ClothingModsuitPraetorianFilled
+  suffix: Filled
+  components:
+    - type: ModSuit
+      theme: ModThemePraetorian
+      parts:
+        head: ClothingModsuitHelmetPraetorian
+        gloves: ClothingModsuitGauntletsPraetorian
+        outerClothing: ClothingModsuitChestplatePraetorian
+        shoes: ClothingModsuitBootsPraetorian
+      startingModules:
+      - ModsuitModuleStorageLarge
+      - ModsuitModuleFlashlight
+      - ModsuitModuleMagboots
+      - ModsuitModuleWelding
+      - ModsuitModuleEmpShield
+      - ModsuitModuleRestraintAssist
+      inbuiltModules:
+      - ModsuitModuleBuiltinFlashProtection
+      - ModsuitModuleBuiltinInsulation
+    - type: ItemSlots
+      slots:
+        mod-core:
+          name: modsuit-core-slot-name
+          startingItem: ModsuitCoreStandardHyper
+          whitelist:
+            components:
+            - ModCore
+
+- type: entity
+  parent: ClothingModsuitGauntletsStandard
+  id: ClothingModsuitGauntletsPraetorian
+  name: Praetorian modsuit gauntlets
+  description: A pair of gauntlets made for the Praetorian modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/praetorian.rsi
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        gloves:
+        - state: equipped-HAND-sealed
+        - state: equipped-HAND-sealed-unshaded
+          shader: unshaded
+        gloves-vox:
+        - state: equipped-HAND-sealed-vox
+        - state: equipped-HAND-sealed-unshaded-vox
+          shader: unshaded
+
+- type: entity
+  parent: ClothingModsuitHelmetStandard
+  id: ClothingModsuitHelmetPraetorian
+  name: Praetorian modsuit helmet
+  description: A state-of-the-art helmet designed by NanoTrasen for the Praetorian modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Clothing
+      clothingVisuals:
+        head-hydrakin:
+        - state: equipped-HEAD
+        head-feroxi:
+        - state: equipped-HEAD
+        head:
+        - state: equipped-HEAD
+        head-resomi:
+        - state: equipped-HEAD-resomi
+        head-vox:
+        - state: equipped-HEAD-vox
+        head-vulpkanin:
+        - state: equipped-HEAD-vulpkanin
+        head-reptilian:
+        - state: equipped-HEAD-reptilian
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/praetorian.rsi
+    - type: PressureProtection
+      highPressureMultiplier: 0.05
+      lowPressureMultiplier: 1000
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.55
+          Slash: 0.55
+          Piercing: 0.5
+          Radiation: 0.5
+          Heat: 0.5
+          Caustic: 0.5
+    - type: PointLight
+      color: "#4d7ae3"
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        head-hydrakin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-feroxi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-resomi:
+        - state: equipped-HEAD-sealed-resomi
+        head-vox:
+        - state: equipped-HEAD-sealed-vox
+        - state: equipped-HEAD-sealed-unshaded-vox
+          shader: unshaded
+        head-vulpkanin:
+        - state: equipped-HEAD-sealed-vulpkanin
+        - state: equipped-HEAD-sealed-unshaded-vulpkanin
+          shader: unshaded
+        head-reptilian:
+        - state: equipped-HEAD-sealed-reptilian
+        - state: equipped-HEAD-sealed-unshaded-reptilian
+          shader: unshaded
+- type: entity
+  parent: ClothingModsuitChestplateStandard
+  id: ClothingModsuitChestplatePraetorian
+  name: Praetorian modsuit chestplate
+  description: A state of the art chestplate designed by NanoTrasen for the Praetorian modsuit. It incorporates powered servos to reduce the equipment load.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/praetorian.rsi
+    - type: ClothingSpeedModifier
+      walkModifier: 0.95
+      sprintModifier: 0.95
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.45
+          Radiation: 0.5
+          Heat: 0.45
+          Caustic: 0.5
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        outerClothing:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing-resomi:
+        - state: equipped-OUTERCLOTHING-sealed-resomi
+        outerClothing-vox:
+        - state: equipped-OUTERCLOTHING-sealed-vox
+        outerClothing-reptilian:
+        - state: equipped-OUTERCLOTHING-sealed-reptilian
+    - type: PressureProtection
+      highPressureMultiplier: 0.05
+      lowPressureMultiplier: 1000
+    - type: ExplosionResistance
+      damageCoefficient: 0.45
+
+- type: entity
+  parent: ClothingModsuitBootsStandard
+  id: ClothingModsuitBootsPraetorian
+  name: Praetorian modsuit boots
+  description: A state-of-the-art pair of magboots for the Praetorian modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Appearance
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/praetorian.rsi
+    - type: Tag
+      tags:
+        - WhitelistChameleon
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        shoes:
+        - state: equipped-FEET-sealed
+        shoes-vox:
+        - state: equipped-FEET-sealed-vox
+        shoes-reptilian:
+        - state: equipped-FEET-sealed-reptilian
+
+- type: entity
+  id: SuitStoragePraetorian
+  parent: SuitStorageBase
+  suffix: Praetorian Modsuit
+  components:
+    - type: StorageFill
+      contents:
+        - id: OxygenTankFilled
+        - id: ClothingModsuitPraetorianFilled
+        - id: ClothingMaskBreath
+
+# engineering-responsory
+
+# The Modsuit Itself, This is just a ERT modsuit
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseCentcommContraband ]
+  id: ClothingModsuitResponsoryEngineering
+  name: Engineering Responsory modsuit control unit
+  description: The main controller for a Engineering Responsory modsuit.
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/engineering-responsory.rsi
+    - type: ModSuit
+      theme: ModThemeResponsory
+      parts:
+        head: ClothingModsuitHelmetResponsoryEngineering
+        gloves: ClothingModsuitGauntletsResponsoryEngineering
+        outerClothing: ClothingModsuitChestplateResponsoryEngineering
+        shoes: ClothingModsuitBootsResponsoryEngineering
+      startingModules:
+      - ModsuitModuleStorageBluespace
+      - ModsuitModuleFlashlight
+      - ModsuitModuleMagboots
+      - ModsuitModuleWelding
+      - ModsuitModuleEmpShield
+      - ModsuitModuleRestraintAssist
+      - ModsuitModuleRadProtection
+      inbuiltModules:
+      - ModsuitModuleBuiltinSecHud
+      - ModsuitModuleBuiltinMedHud
+      - ModsuitModuleBuiltinFlashProtection
+      - ModsuitModuleBuiltinInsulation
+    - type: ItemSlots
+      slots:
+        mod-core:
+          name: modsuit-core-slot-name
+          startingItem: ModsuitCoreStandardMicroreactor
+          whitelist:
+            components:
+            - ModCore
+    - type: ClothingSpeedModifier
+      walkModifier: 1
+      sprintModifier: 1
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        back:
+        - state: equipped-BACKPACK-sealed
+
+- type: entity
+  parent: ClothingModsuitGauntletsStandard
+  id: ClothingModsuitGauntletsResponsoryEngineering
+  name: Engineering Responsory modsuit gauntlets
+  description: A pair of gauntlets made for the Engineering Responsory modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/engineering-responsory.rsi
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        gloves:
+        - state: equipped-HAND-sealed
+        - state: equipped-HAND-sealed-unshaded
+          shader: unshaded
+        gloves-vox:
+        - state: equipped-HAND-sealed-vox
+        - state: equipped-HAND-sealed-unshaded-vox
+          shader: unshaded
+
+- type: entity
+  parent: [ClothingModsuitHelmetStandard]
+  id: ClothingModsuitHelmetResponsoryEngineering
+  name: Engineering Responsory modsuit helmet
+  description: A state-of-the-art helmet designed by NanoTrasen for the Engineering Responsory modsuit. It includes a built-in HUD.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/engineering-responsory.rsi
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.75
+          Slash: 0.4 # Goobstation - Solstice: CBURN should protect against zombie attacks # pheenty: why tf is ert engineer inherited from cburn
+          Piercing: 0.65
+          Heat: 0.15
+          Cold: 0.10
+          Shock: 0.15
+          Radiation: 0.1
+          Caustic: 0.1
+    - type: PointLight
+      color: "#FFDF00"
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        head-hydrakin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-feroxi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vulpkanin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-resomi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vox:
+        - state: equipped-HEAD-sealed-vox
+        - state: equipped-HEAD-sealed-unshaded-vox
+          shader: unshaded
+- type: entity
+  parent: ClothingModsuitChestplateStandard
+  id: ClothingModsuitChestplateResponsoryEngineering
+  name: Engineering Responsory modsuit chestplate
+  description: A state of the art chestplate designed by NanoTrasen for the Engineering Responsory modsuit. It incorporates powered servos to reduce the equipment load.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/engineering-responsory.rsi
+    - type: ClothingSpeedModifier
+      walkModifier: 1
+      sprintModifier: 1
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.7
+          Slash: 0.3 # Goobstation - CBURN should protect against zombie attacks
+          Piercing: 0.6
+          Heat: 0.10
+          Cold: 0.10
+          Shock: 0.15
+          Radiation: 0.1
+          Caustic: 0.1
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        outerClothing-resomi:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing-vox:
+        - state: equipped-OUTERCLOTHING-sealed-vox    
+    - type: StaminaDamageResistance
+      coefficient: 0.5 # 50%
+    - type: FireProtection
+      reduction: 1
+- type: entity
+  parent: ClothingModsuitBootsStandard
+  id: ClothingModsuitBootsResponsoryEngineering
+  name: Engineering Responsory modsuit boots
+  description: A state-of-the-art pair of magboots for the Engineering Responsory modsuit. So long as the suit is powered, these will not slow the wearer down.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Appearance
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/engineering-responsory.rsi
+    - type: Tag
+      tags:
+        - WhitelistChameleon
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        shoes:
+        - state: equipped-FEET-sealed
+        shoes-vox:
+        - state: equipped-FEET-sealed-vox
+        - state: equipped-FEET-sealed-unshaded-vox
+          shader: unshaded
+    - type: ClothingSpeedModifier
+      walkModifier: 1
+      sprintModifier: 1
+
+- type: entity
+  id: SuitStorageResponsoryEngineering
+  parent: SuitStorageBase
+  suffix: Engineering Responsory Modsuit
+  components:
+    - type: StorageFill
+      contents:
+        - id: OxygenTankFilled
+        - id: ClothingModsuitResponsoryEngineering
+        - id: ClothingMaskBreath
+
+# janitorial-responsory
+
+# The Modsuit Itself, This is just a ERT modsuit
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseCentcommContraband ]
+  id: ClothingModsuitResponsoryJanitorial
+  name: Janitorial Responsory modsuit control unit
+  description: The main controller for a Janitorial Responsory modsuit.
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/janitorial-responsory.rsi
+    - type: ModSuit
+      theme: ModThemeResponsory
+      parts:
+        head: ClothingModsuitHelmetResponsoryJanitorial
+        gloves: ClothingModsuitGauntletsResponsoryJanitorial
+        outerClothing: ClothingModsuitChestplateResponsoryJanitorial
+        shoes: ClothingModsuitBootsResponsoryJanitorial
+      startingModules:
+      - ModsuitModuleStorageBluespace
+      - ModsuitModuleFlashlight
+      - ModsuitModuleMagboots
+      - ModsuitModuleWelding
+      - ModsuitModuleEmpShield
+      - ModsuitModuleRestraintAssist
+      - ModsuitModuleNoSlip
+      - ModsuitModuleJanitorMister
+      inbuiltModules:
+      - ModsuitModuleBuiltinSecHud
+      - ModsuitModuleBuiltinMedHud
+      - ModsuitModuleBuiltinFlashProtection
+    - type: ItemSlots
+      slots:
+        mod-core:
+          name: modsuit-core-slot-name
+          startingItem: ModsuitCoreStandardMicroreactor
+          whitelist:
+            components:
+            - ModCore
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        back:
+        - state: equipped-BACKPACK-sealed
+
+- type: entity
+  parent: ClothingModsuitGauntletsStandard
+  id: ClothingModsuitGauntletsResponsoryJanitorial
+  name: Janitorial Responsory modsuit gauntlets
+  description: A pair of gauntlets made for the Janitorial Responsory modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/janitorial-responsory.rsi
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        gloves:
+        - state: equipped-HAND-sealed
+        - state: equipped-HAND-sealed-unshaded
+          shader: unshaded
+        gloves-vox:
+        - state: equipped-HAND-sealed-vox
+        - state: equipped-HAND-sealed-unshaded-vox
+          shader: unshaded
+- type: entity
+  parent: [ClothingModsuitHelmetStandard]
+  id: ClothingModsuitHelmetResponsoryJanitorial
+  name: Janitorial Responsory modsuit helmet
+  description: A state-of-the-art helmet designed by NanoTrasen for the Janitorial Responsory modsuit. It includes a built-in HUD.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/janitorial-responsory.rsi
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.5
+          Heat: 0.5
+          Radiation: 0.45
+          Caustic: 0.45
+    - type: PointLight
+      color: "#FFDF00"
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        head-hydrakin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-feroxi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vulpkanin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-resomi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vox:
+        - state: equipped-HEAD-sealed-vox
+        - state: equipped-HEAD-sealed-unshaded-vox
+          shader: unshaded
+- type: entity
+  parent: ClothingModsuitChestplateStandard
+  id: ClothingModsuitChestplateResponsoryJanitorial
+  name: Janitorial Responsory modsuit chestplate
+  description: A state of the art chestplate designed by NanoTrasen for the Janitorial Responsory modsuit. It incorporates powered servos to reduce the equipment load.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/janitorial-responsory.rsi
+    - type: ClothingSpeedModifier
+      walkModifier: 0.95
+      sprintModifier: 0.95
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.45
+          Slash: 0.45
+          Piercing: 0.45
+          Heat: 0.45
+          Radiation: 0.45
+          Caustic: 0.45
+    - type: ExplosionResistance
+      damageCoefficient: 0.45
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        outerClothing-resomi:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing-vox:
+        - state: equipped-OUTERCLOTHING-sealed-vox
+    - type: StaminaDamageResistance
+      coefficient: 0.45 # 50%
+
+- type: entity
+  parent: ClothingModsuitBootsStandard
+  id: ClothingModsuitBootsResponsoryJanitorial
+  name: Janitorial Responsory modsuit boots
+  description: A state-of-the-art pair of magboots for the Janitorial Responsory modsuit. So long as the suit is powered, these will not slow the wearer down.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Appearance
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/janitorial-responsory.rsi
+    - type: Tag
+      tags:
+        - WhitelistChameleon
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        shoes:
+        - state: equipped-FEET-sealed
+        shoes-vox:
+        - state: equipped-FEET-sealed-vox
+        - state: equipped-FEET-sealed-unshaded-vox
+          shader: unshaded
+
+- type: entity
+  id: SuitStorageResponsoryJanitorial
+  parent: SuitStorageBase
+  suffix: Janitorial Responsory Modsuit
+  components:
+    - type: StorageFill
+      contents:
+        - id: OxygenTankFilled
+        - id: ClothingModsuitResponsoryJanitorial
+        - id: ClothingMaskBreath
+
+# leader-responsory
+
+# The Modsuit Itself, This is just a ERT modsuit
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseCentcommContraband ]
+  id: ClothingModsuitResponsoryLeader
+  name: Leader Responsory modsuit control unit
+  description: The main controller for a Leader Responsory modsuit.
+  components:
+    - type: ClothingSpeedModifier
+      walkModifier: 1
+      sprintModifier: 1
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/leader-responsory.rsi
+    - type: ModSuit
+      theme: ModThemeResponsory
+      parts:
+        head: ClothingModsuitHelmetResponsoryLeader
+        gloves: ClothingModsuitGauntletsResponsoryLeader
+        outerClothing: ClothingModsuitChestplateResponsoryLeader
+        shoes: ClothingModsuitBootsResponsoryLeader
+      startingModules:
+      - ModsuitModuleStorageBluespace
+      - ModsuitModuleFlashlight
+      - ModsuitModuleMagboots
+      - ModsuitModuleWelding
+      - ModsuitModuleEmpShield
+      - ModsuitModuleRestraintAssist
+      - ModsuitModulePowerKick
+      inbuiltModules:
+      - ModsuitModuleBuiltinSecHud
+      - ModsuitModuleBuiltinMedHud
+      - ModsuitModuleBuiltinFlashProtection
+    - type: ItemSlots
+      slots:
+        mod-core:
+          name: modsuit-core-slot-name
+          startingItem: ModsuitCoreStandardMicroreactor
+          whitelist:
+            components:
+            - ModCore
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        back:
+        - state: equipped-BACKPACK-sealed
+
+- type: entity
+  parent: ClothingModsuitGauntletsStandard
+  id: ClothingModsuitGauntletsResponsoryLeader
+  name: Leader Responsory modsuit gauntlets
+  description: A pair of gauntlets made for the Leader Responsory modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/leader-responsory.rsi
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        gloves:
+        - state: equipped-HAND-sealed
+        - state: equipped-HAND-sealed-unshaded
+          shader: unshaded
+        gloves-vox:
+        - state: equipped-HAND-sealed-vox
+        - state: equipped-HAND-sealed-unshaded-vox
+          shader: unshaded
+- type: entity
+  parent: [ClothingModsuitHelmetStandard]
+  id: ClothingModsuitHelmetResponsoryLeader
+  name: Leader Responsory modsuit helmet
+  description: A state-of-the-art helmet designed by NanoTrasen for the Leader Responsory modsuit. It includes a built-in HUD.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/leader-responsory.rsi
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.4
+          Slash: 0.4
+          Piercing: 0.35
+          Heat: 0.5
+          Radiation: 0.2
+          Caustic: 0.4
+    - type: PointLight
+      color: "#FFDF00"
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        head-hydrakin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-feroxi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vulpkanin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-resomi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vox:
+        - state: equipped-HEAD-sealed-vox
+        - state: equipped-HEAD-sealed-unshaded-vox
+          shader: unshaded
+- type: entity
+  parent: ClothingModsuitChestplateStandard
+  id: ClothingModsuitChestplateResponsoryLeader
+  name: Leader Responsory modsuit chestplate
+  description: A state of the art chestplate designed by NanoTrasen for the Leader Responsory modsuit. It incorporates powered servos to reduce the equipment load.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/leader-responsory.rsi
+    - type: ClothingSpeedModifier
+      walkModifier: 1
+      sprintModifier: 1
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.35
+          Slash: 0.35
+          Piercing: 0.3
+          Heat: 0.45
+          Radiation: 0.2
+          Caustic: 0.4
+    - type: ExplosionResistance
+      damageCoefficient: 0.4
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        outerClothing-resomi:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing-vox:
+        - state: equipped-OUTERCLOTHING-sealed-vox
+    - type: StaminaDamageResistance
+      coefficient: 0.35
+    - type: FireProtection
+      reduction: 1
+- type: entity
+  parent: ClothingModsuitBootsStandard
+  id: ClothingModsuitBootsResponsoryLeader
+  name: Leader Responsory modsuit boots
+  description: A state-of-the-art pair of magboots for the Leader Responsory modsuit. So long as the suit is powered, these will not slow the wearer down.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Appearance
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/leader-responsory.rsi
+    - type: Tag
+      tags:
+        - WhitelistChameleon
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        shoes:
+        - state: equipped-FEET-sealed
+        shoes-vox:
+        - state: equipped-FEET-sealed-vox
+        - state: equipped-FEET-sealed-unshaded-vox
+          shader: unshaded
+    - type: ClothingSpeedModifier
+      walkModifier: 1
+      sprintModifier: 1
+
+- type: entity
+  id: SuitStorageResponsoryLeader
+  parent: SuitStorageBase
+  suffix: Leader Responsory Modsuit
+  components:
+    - type: StorageFill
+      contents:
+        - id: OxygenTankFilled
+        - id: ClothingModsuitResponsoryLeader
+        - id: ClothingMaskBreath
+
+# medical-responsory
+
+# The Modsuit Itself, This is just a ERT modsuit
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseCentcommContraband ]
+  id: ClothingModsuitResponsoryMedical
+  name: Medical Responsory modsuit control unit
+  description: The main controller for a Medical Responsory modsuit.
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/medical-responsory.rsi
+    - type: ModSuit
+      theme: ModThemeResponsory
+      parts:
+        head: ClothingModsuitHelmetResponsoryMedical
+        gloves: ClothingModsuitGauntletsResponsoryMedical
+        outerClothing: ClothingModsuitChestplateResponsoryMedical
+        shoes: ClothingModsuitBootsResponsoryMedical
+      startingModules:
+      - ModsuitModuleStorageBluespace
+      - ModsuitModuleFlashlight
+      - ModsuitModuleMagboots
+      - ModsuitModuleWelding
+      - ModsuitModuleEmpShield
+      - ModsuitModuleRestraintAssist
+      - ModsuitModuleQuickCarry
+      inbuiltModules:
+      - ModsuitModuleBuiltinSecHud
+      - ModsuitModuleBuiltinMedHud
+      - ModsuitModuleBuiltinFlashProtection
+      - ModsuitModuleBuiltinInsulation
+    - type: ItemSlots
+      slots:
+        mod-core:
+          name: modsuit-core-slot-name
+          startingItem: ModsuitCoreStandardMicroreactor
+          whitelist:
+            components:
+            - ModCore
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        back:
+        - state: equipped-BACKPACK-sealed
+
+- type: entity
+  parent: ClothingModsuitGauntletsStandard
+  id: ClothingModsuitGauntletsResponsoryMedical
+  name: Medical Responsory modsuit gauntlets
+  description: A pair of gauntlets made for the Medical Responsory hardsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/medical-responsory.rsi
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        gloves:
+        - state: equipped-HAND-sealed
+        - state: equipped-HAND-sealed-unshaded
+          shader: unshaded
+        gloves-vox:
+        - state: equipped-HAND-sealed-vox
+        - state: equipped-HAND-sealed-unshaded-vox
+          shader: unshaded
+
+- type: entity
+  parent: [ClothingModsuitHelmetStandard]
+  id: ClothingModsuitHelmetResponsoryMedical
+  name: Medical Responsory modsuit helmet
+  description: A state-of-the-art helmet designed by NanoTrasen for the Medical Responsory modsuit. It includes a built-in HUD.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/medical-responsory.rsi
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.5
+          Heat: 0.5
+          Radiation: 0.45
+          Caustic: 0.45
+    - type: PointLight
+      color: "#FFDF00"
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        head-hydrakin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-feroxi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vulpkanin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-resomi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vox:
+        - state: equipped-HEAD-sealed-vox
+        - state: equipped-HEAD-sealed-unshaded-vox
+          shader: unshaded
+- type: entity
+  parent: ClothingModsuitChestplateStandard
+  id: ClothingModsuitChestplateResponsoryMedical
+  name: Medical Responsory modsuit chestplate
+  description: A state of the art chestplate designed by NanoTrasen for the Medical Responsory modsuit. It incorporates powered servos to reduce the equipment load.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/medical-responsory.rsi
+    - type: ClothingSpeedModifier
+      walkModifier: 0.95
+      sprintModifier: 0.95
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.45
+          Slash: 0.45
+          Piercing: 0.45
+          Heat: 0.45
+          Radiation: 0.45
+          Caustic: 0.45
+    - type: ExplosionResistance
+      damageCoefficient: 0.45
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        outerClothing-resomi:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing-vox:
+        - state: equipped-OUTERCLOTHING-sealed-vox
+    - type: StaminaDamageResistance
+      coefficient: 0.45
+
+
+- type: entity
+  parent: ClothingModsuitBootsStandard
+  id: ClothingModsuitBootsResponsoryMedical
+  name: Medical Responsory modsuit boots
+  description: A state-of-the-art pair of magboots for the Medical Responsory modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Appearance
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/medical-responsory.rsi
+    - type: Tag
+      tags:
+        - WhitelistChameleon
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        shoes:
+        - state: equipped-FEET-sealed
+        shoes-vox:
+        - state: equipped-FEET-sealed-vox
+        - state: equipped-FEET-sealed-unshaded-vox
+          shader: unshaded
+
+- type: entity
+  id: SuitStorageResponsoryMedical
+  parent: SuitStorageBase
+  suffix: Medical Responsory Modsuit
+  components:
+    - type: StorageFill
+      contents:
+        - id: OxygenTankFilled
+        - id: ClothingModsuitResponsoryMedical
+        - id: ClothingMaskBreath
+
+# security-responsory
+
+# The Modsuit Itself, This is just a ERT modsuit
+- type: entity
+  parent: [ ClothingModsuitStandard, BaseCentcommContraband ]
+  id: ClothingModsuitResponsorySecurity
+  name: Security Responsory modsuit control unit
+  description: The main controller for a Security Responsory modsuit.
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/security-responsory.rsi
+    - type: ModSuit
+      theme: ModThemeResponsory
+      parts:
+        head: ClothingModsuitHelmetResponsorySecurity
+        gloves: ClothingModsuitGauntletsResponsorySecurity
+        outerClothing: ClothingModsuitChestplateResponsorySecurity
+        shoes: ClothingModsuitBootsResponsorySecurity
+      startingModules:
+      - ModsuitModuleStorageBluespace
+      - ModsuitModuleFlashlight
+      - ModsuitModuleMagboots
+      - ModsuitModuleWelding
+      - ModsuitModuleEmpShield
+      - ModsuitModuleRestraintAssist
+      - ModsuitModulePepperShoulders
+      inbuiltModules:
+      - ModsuitModuleBuiltinSecHud
+      - ModsuitModuleBuiltinMedHud
+      - ModsuitModuleBuiltinFlashProtection
+      - ModsuitModuleBuiltinInsulation
+    - type: ItemSlots
+      slots:
+        mod-core:
+          name: modsuit-core-slot-name
+          startingItem: ModsuitCoreStandardMicroreactor
+          whitelist:
+            components:
+            - ModCore
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        back:
+        - state: equipped-BACKPACK-sealed
+
+- type: entity
+  parent: ClothingModsuitGauntletsStandard
+  id: ClothingModsuitGauntletsResponsorySecurity
+  name: Security Responsory modsuit gauntlets
+  description: A pair of gauntlets made for the Security Responsory modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/security-responsory.rsi
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        gloves:
+        - state: equipped-HAND-sealed
+        - state: equipped-HAND-sealed-unshaded
+          shader: unshaded
+        gloves-vox:
+        - state: equipped-HAND-sealed-vox
+        - state: equipped-HAND-sealed-unshaded-vox
+          shader: unshaded          
+
+- type: entity
+  parent: [ClothingModsuitHelmetStandard]
+  id: ClothingModsuitHelmetResponsorySecurity
+  name: Security Responsory modsuit helmet
+  description: A state-of-the-art helmet designed by NanoTrasen for the Security Responsory modsuit. It includes a built-in HUD.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/security-responsory.rsi
+    - type: PressureProtection
+      highPressureMultiplier: 0.08
+      lowPressureMultiplier: 1000
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.5
+          Heat: 0.5
+          Radiation: 0.45
+          Caustic: 0.45
+    - type: PointLight
+      color: "#FFDF00"
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        head-hydrakin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-feroxi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vulpkanin:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-resomi:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head:
+        - state: equipped-HEAD-sealed
+        - state: equipped-HEAD-sealed-unshaded
+          shader: unshaded
+        head-vox:
+        - state: equipped-HEAD-sealed-vox
+        - state: equipped-HEAD-sealed-unshaded-vox
+          shader: unshaded
+- type: entity
+  parent: ClothingModsuitChestplateStandard
+  id: ClothingModsuitChestplateResponsorySecurity
+  name: Security Responsory modsuit chestplate
+  description: A state of the art chestplate designed by NanoTrasen for the Security Responsory modsuit. It incorporates powered servos to reduce the equipment load.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/security-responsory.rsi
+    - type: ClothingSpeedModifier
+      walkModifier: 0.95
+      sprintModifier: 0.95
+    - type: Armor
+      modifiers:
+        coefficients:
+          Blunt: 0.45
+          Slash: 0.45
+          Piercing: 0.45
+          Heat: 0.45
+          Radiation: 0.45
+          Caustic: 0.45
+    - type: ExplosionResistance
+      damageCoefficient: 0.45
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        outerClothing-resomi:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing:
+        - state: equipped-OUTERCLOTHING-sealed
+        outerClothing-vox:
+        - state: equipped-OUTERCLOTHING-sealed-vox
+    - type: StaminaDamageResistance
+      coefficient: 0.45
+
+
+- type: entity
+  parent: ClothingModsuitBootsStandard
+  id: ClothingModsuitBootsResponsorySecurity
+  name: Security Responsory modsuit boots
+  description: A state-of-the-art pair of magboots for the Security Responsory modsuit.
+  categories: [HideSpawnMenu]
+  components:
+    - type: Appearance
+    - type: Sprite
+      sprite: _EinsteinEngines/Clothing/NanoTrasen/Modsuits/security-responsory.rsi
+    - type: Tag
+      tags:
+        - WhitelistChameleon
+    - type: ModSuitSealedVisuals
+      spriteLayer: sealed
+      clothingVisuals:
+        shoes:
+        - state: equipped-FEET-sealed
+        shoes-vox:
+        - state: equipped-FEET-sealed-vox
+        - state: equipped-FEET-sealed-unshaded-vox
+          shader: unshaded
+
+- type: entity
+  id: SuitStorageResponsorySecurity
+  parent: SuitStorageBase
+  suffix: Security Responsory Modsuit
+  components:
+    - type: StorageFill
+      contents:
+        - id: OxygenTankFilled
+        - id: ClothingModsuitResponsorySecurity
+        - id: ClothingMaskBreath

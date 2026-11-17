@@ -15,9 +15,9 @@
   colorLinks:
     selene_BEHIND: selene_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
     state: selene_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
     state: selene_BEHIND
   # WOLFGATE END
 
@@ -36,16 +36,16 @@
     selene_secondary_BEHIND: selene_secondary_FRONT
     selene_tertiary_BEHIND: selene_tertiary_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
     state: selene_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
     state: selene_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
     state: selene_tertiary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
     state: selene_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
     state: selene_secondary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Moth/moth_wings.rsi
     state: selene_tertiary_BEHIND
   # WOLFGATE END

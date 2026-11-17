@@ -1,0 +1,42 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+#Author: Starch(!)
+
+- type: vessel
+  id: Tumour
+  parent: BaseVesselIFFDisabled
+  name: TSF-SKR Tumour
+  description: A ugly potato of a carrier. Little armament to defend itself, but carries lathes to support its fighters and other ships.
+  price: 110110
+  purchasable: false # voucher only - T0
+  category: Medium
+  group: Security
+  access: Tsfmc
+  shuttlePath: /SharedMaps/_WG/OldVessels/Nfsd/tumour.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: Null
+  class:
+  - Pursuit
+  - Patrol
+  engine:
+  - Uranium
+
+- type: gameMap
+  id: Tumour
+  mapName: 'Tumour'
+  mapPath: /SharedMaps/_WG/OldVessels/Nfsd/tumour.yml
+  minPlayers: 0
+  stations:
+    Tumour:
+      stationProto: StandardFrontierSecurityVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Tumour TSF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Deputy: [ 0, 0 ]
+          TsfBorg: [ 0, 0 ]
+

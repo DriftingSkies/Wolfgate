@@ -1,0 +1,393 @@
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCKeffiyehKeffiyeh
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/keffiyeh/keffiyeh.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/keffiyeh/keffiyeh.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCKeffiyehKeffiyehBlack
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/keffiyeh/keffiyeh_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/keffiyeh/keffiyeh_black.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCKeffiyehKeffiyehBlue
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/keffiyeh/keffiyeh_blue.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/keffiyeh/keffiyeh_blue.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCKeffiyehKeffiyehGreen
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/keffiyeh/keffiyeh_green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/keffiyeh/keffiyeh_green.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCKeffiyehKeffiyehRed
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/keffiyeh/keffiyeh_red.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/keffiyeh/keffiyeh_red.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCKeffiyehKeffiyehWhite
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/keffiyeh/keffiyeh_white.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/keffiyeh/keffiyeh_white.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCScarfAlpha
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/alpha.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/alpha.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCScarfBlack
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/black.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCScarfBravo
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/bravo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/bravo.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCScarfCharlie
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/charlie.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/charlie.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCScarfDelta
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/delta.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/delta.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCScarfEcho
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/echo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/echo.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCScarfGray
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/gray.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/gray.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCScarfGreen
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/green.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCScarfTan
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/tan.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/scarf/tan.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCNeckerchiefAlpha
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/alpha.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/alpha.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCNeckerchiefBlack
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/black.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCNeckerchiefBravo
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/bravo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/bravo.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCNeckerchiefCharlie
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/charlie.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/charlie.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCNeckerchiefDelta
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/delta.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/delta.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCNeckerchiefEcho
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/echo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/echo.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCNeckerchiefGray
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/gray.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/gray.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCNeckerchiefGreen
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/green.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCNeckerchiefTan
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/tan.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/tan.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCNeckerchiefWhite
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/white.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/neckerchief/white.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCSmock
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/smock/black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/smock/black.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: black
+      look: WGRMCLookSmockBlack
+    - name: classic
+      look: WGRMCLookSmockClassic
+    - name: desert
+      look: WGRMCLookSmockDesert
+    - name: jungle
+      look: WGRMCLookSmockJungle
+    - name: snow
+      look: WGRMCLookSmockSnow
+    - name: urban
+      look: WGRMCLookSmockUrban
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCTornScarfBlack
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/torn_scarf/black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/torn_scarf/black.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCTornScarfDesert
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/torn_scarf/desert.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/torn_scarf/desert.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCTornScarfGreen
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/torn_scarf/green.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/torn_scarf/green.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCTornScarfGrey
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/torn_scarf/grey.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/torn_scarf/grey.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCTornScarfSnow
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/torn_scarf/snow.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/torn_scarf/snow.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCTornScarfUrban
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/torn_scarf/urban.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/torn_scarf/urban.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCCoifBalaclava
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/coif/balaclava.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/coif/balaclava.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCCoifCoif
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/coif/coif.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/coif/coif.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCCoifGreenCoif
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/coif/green_coif.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/coif/green_coif.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCCoifGreyCoif
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/coif/grey_coif.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/coif/grey_coif.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCCoifTanCoif
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/coif/tan_coif.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/coif/tan_coif.rsi
+
+- type: entity
+  parent: ClothingMaskNeckGaiter
+  id: WGRMCCoifSkullCoif
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Mask/coif/skull_coif.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Mask/coif/skull_coif.rsi

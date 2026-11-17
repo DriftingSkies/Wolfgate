@@ -723,16 +723,16 @@ namespace Content.Server.Database
         // WOLFGATE(BloodColour): blood and flesh colour as hex, null for the species' own.
         [Column("blood_color")] public string? BloodColor { get; set; }
 
-        // WOLFGATE(ChatFont): the wfChatFont prototype id, empty for the default.
+        // WOLFGATE(ChatFont): the wgChatFont prototype id, empty for the default.
         [Column("chat_font")] public string ChatFont { get; set; } = "";
 
-        // WOLFGATE(CombatMusic): the combat playlist, comma-separated wfCombatTrack ids, empty for the faction's own.
+        // WOLFGATE(CombatMusic): the combat playlist, comma-separated wgCombatTrack ids, empty for the faction's own.
         [Column("combat_music")] public string CombatMusic { get; set; } = "";
 
         // WOLFGATE(TypingBubble): the typingIndicator prototype id, null for the species' own.
         [Column("typing_indicator")] public string? TypingIndicator { get; set; }
 
-        // WOLFGATE(EmoteVoices): the wfMessageSound prototype id, empty for the species' own.
+        // WOLFGATE(EmoteVoices): the wgMessageSound prototype id, empty for the species' own.
         [Column("message_sound")] public string MessageSound { get; set; } = "";
 
         // WOLFGATE(Voice): the voice settings as JSON, null in rows saved before voices existed.
@@ -2076,7 +2076,7 @@ namespace Content.Server.Database
         [Required, MaxLength(32)]
         public string Title { get; set; } = null!;
 
-        /// <summary>WFCompanyPermissions flags.</summary>
+        /// <summary>WGCompanyPermissions flags.</summary>
         public int Permissions { get; set; }
 
         public int Wage { get; set; }
@@ -2131,7 +2131,7 @@ namespace Content.Server.Database
 
         public DateTime Time { get; set; }
 
-        /// <summary>WFCompanyLedgerKind.</summary>
+        /// <summary>WGCompanyLedgerKind.</summary>
         public int Kind { get; set; }
 
         public long Amount { get; set; }
@@ -2354,7 +2354,7 @@ namespace Content.Server.Database
         [Required, MaxLength(32)]
         public string Name { get; set; } = "";
 
-        /// <summary>The settings as JSON (WFShipPresetData).</summary>
+        /// <summary>The settings as JSON (WGShipPresetData).</summary>
         [Required]
         public string Data { get; set; } = "";
 

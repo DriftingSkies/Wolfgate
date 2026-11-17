@@ -437,7 +437,7 @@ public partial class NavMapControl : MapGridControl
             // Calculate font size for current zoom level
             var fontSize = (int)Math.Round(1 / WorldRange * DefaultDisplayedRange * UIScale * _targetFontsize, 0);
             // WOLFGATE(Cockpit): department labels stay compact instead of growing with map zoom.
-            if (WfCockpitControls)
+            if (WgCockpitControls)
                 fontSize = Math.Max(1, (int)Math.Round(9f * UIScale));
             var font = new VectorFont(_cache.GetResource<FontResource>("/Fonts/NotoSans/NotoSans-Bold.ttf"), fontSize);
 

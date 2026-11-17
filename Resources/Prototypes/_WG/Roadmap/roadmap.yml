@@ -1,0 +1,223 @@
+# Columns run left to right by order, items top to bottom.
+# state: Planned (red), InProgress (blue), Partial (yellow) or Complete (green).
+
+- type: roadmapColumn
+  id: WGRoadmapCurrent
+  name: wg-roadmap-column-current
+  order: 0
+  items:
+  - name: wg-roadmap-item-wolfmed
+    description: wg-roadmap-item-wolfmed-desc
+    state: Complete
+  - name: wg-roadmap-item-planets
+    description: wg-roadmap-item-planets-desc
+    state: Complete
+  - name: wg-roadmap-item-encounters
+    description: wg-roadmap-item-encounters-desc
+    state: Complete
+  - name: wg-roadmap-item-ship-shields
+    description: wg-roadmap-item-ship-shields-desc
+    state: Complete
+  - name: wg-roadmap-item-species
+    description: wg-roadmap-item-species-desc
+    state: Complete
+  - name: wg-roadmap-item-anatomy
+    description: wg-roadmap-item-anatomy-desc
+    state: Complete
+  - name: wg-roadmap-item-custom-markings
+    description: wg-roadmap-item-custom-markings-desc
+    state: Complete
+  - name: wg-roadmap-item-appearance
+    description: wg-roadmap-item-appearance-desc
+    state: Complete
+  - name: wg-roadmap-item-ship-pa
+    description: wg-roadmap-item-ship-pa-desc
+    state: Complete
+  - name: wg-roadmap-item-ship-access
+    description: wg-roadmap-item-ship-access-desc
+    state: Complete
+  - name: wg-roadmap-item-traders
+    description: wg-roadmap-item-traders-desc
+    state: Complete
+  - name: wg-roadmap-item-classic-vessels
+    description: wg-roadmap-item-classic-vessels-desc
+    state: Complete
+  - name: wg-roadmap-item-dredger
+    description: wg-roadmap-item-dredger-desc
+    state: Complete
+  - name: wg-roadmap-item-tethers
+    description: wg-roadmap-item-tethers-desc
+    state: Complete
+  - name: wg-roadmap-item-tractor-beams
+    description: wg-roadmap-item-tractor-beams-desc
+    state: Complete
+  - name: wg-roadmap-item-ship-consoles
+    description: wg-roadmap-item-ship-consoles-desc
+    state: Complete
+  - name: wg-roadmap-item-pilot-view
+    description: wg-roadmap-item-pilot-view-desc
+    state: Complete
+  - name: wg-roadmap-item-deposit-boxes
+    description: wg-roadmap-item-deposit-boxes-desc
+    state: Complete
+  - name: wg-roadmap-item-interface
+    description: wg-roadmap-item-interface-desc
+    state: Complete
+  - name: wg-roadmap-item-prediction
+    description: wg-roadmap-item-prediction-desc
+    state: Complete
+  - name: wg-roadmap-item-shockwaves
+    description: wg-roadmap-item-shockwaves-desc
+    state: Complete
+  - name: wg-roadmap-item-heat-haze
+    description: wg-roadmap-item-heat-haze-desc
+    state: Complete
+  - name: wg-roadmap-item-blood-trails
+    description: wg-roadmap-item-blood-trails-desc
+    state: Complete
+  - name: wg-roadmap-item-job-titles
+    description: wg-roadmap-item-job-titles-desc
+    state: Complete
+  - name: wg-roadmap-item-emote-voices
+    description: wg-roadmap-item-emote-voices-desc
+    state: Complete
+  - name: wg-roadmap-item-subtle
+    description: wg-roadmap-item-subtle-desc
+    state: Complete
+  - name: wg-roadmap-item-headshots
+    description: wg-roadmap-item-headshots-desc
+    state: Complete
+  - name: wg-roadmap-item-avali
+    state: Complete
+  - name: wg-roadmap-item-avali-feathers
+    description: wg-roadmap-item-avali-feathers-desc
+    state: Complete
+  - name: wg-roadmap-item-fire-sprites
+    description: wg-roadmap-item-fire-sprites-desc
+    state: Complete
+  - name: wg-roadmap-item-resprites
+    description: wg-roadmap-item-resprites-desc
+    state: Complete
+  - name: wg-roadmap-item-cc-medbay
+    description: wg-roadmap-item-cc-medbay-desc
+    state: Complete
+  - name: wg-roadmap-item-cockpit
+    description: wg-roadmap-item-cockpit-desc
+    state: Complete
+  - name: wg-roadmap-item-planet-flight
+    description: wg-roadmap-item-planet-flight-desc
+    state: Complete
+  - name: wg-roadmap-item-hailing
+    description: wg-roadmap-item-hailing-desc
+    state: Complete
+  - name: wg-roadmap-item-encounters-fleets
+    description: wg-roadmap-item-encounters-fleets-desc
+    state: Complete
+  - name: wg-roadmap-item-sector-threats
+    description: wg-roadmap-item-sector-threats-desc
+    state: Complete
+  - name: wg-roadmap-item-ceasefire
+    description: wg-roadmap-item-ceasefire-desc
+    state: Complete
+  - name: wg-roadmap-item-judge-patrols
+    description: wg-roadmap-item-judge-patrols-desc
+    state: Complete
+  - name: wg-roadmap-item-crew-starts
+    description: wg-roadmap-item-crew-starts-desc
+    state: Complete
+  - name: wg-roadmap-item-shipyards
+    description: wg-roadmap-item-shipyards-desc
+    state: Complete
+  - name: wg-roadmap-item-vehicles
+    description: wg-roadmap-item-vehicles-desc
+    state: Complete
+  - name: wg-roadmap-item-xenonids
+    description: wg-roadmap-item-xenonids-desc
+    state: Complete
+  - name: wg-roadmap-item-synthetics
+    description: wg-roadmap-item-synthetics-desc
+    state: Complete
+  - name: wg-roadmap-item-barricades
+    description: wg-roadmap-item-barricades-desc
+    state: Complete
+  - name: wg-roadmap-item-loadouts
+    description: wg-roadmap-item-loadouts-desc
+    state: Complete
+  - name: wg-roadmap-item-chat
+    description: wg-roadmap-item-chat-desc
+    state: Complete
+  - name: wg-roadmap-item-instruments
+    description: wg-roadmap-item-instruments-desc
+    state: Complete
+  - name: wg-roadmap-item-black-hole
+    description: wg-roadmap-item-black-hole-desc
+    state: Complete
+  - name: wg-roadmap-item-feedback
+    description: wg-roadmap-item-feedback-desc
+    state: Complete
+  - name: wg-roadmap-item-mapping-mode
+    description: wg-roadmap-item-mapping-mode-desc
+    state: Complete
+
+- type: roadmapColumn
+  id: WGRoadmapUpcoming
+  name: wg-roadmap-column-upcoming
+  order: 1
+  items:
+  - name: wg-roadmap-item-planet-settlements
+    description: wg-roadmap-item-planet-settlements-desc
+    state: InProgress
+  - name: wg-roadmap-item-crocus
+    description: wg-roadmap-item-crocus-desc
+    state: InProgress
+  - name: wg-roadmap-item-planet-expeditions
+    description: wg-roadmap-item-planet-expeditions-desc
+    state: InProgress
+  - name: wg-roadmap-item-planet-wrecks
+    description: wg-roadmap-item-planet-wrecks-desc
+    state: InProgress
+  - name: wg-roadmap-item-planet-threats
+    description: wg-roadmap-item-planet-threats-desc
+    state: InProgress
+  - name: wg-roadmap-item-planet-vehicles
+    description: wg-roadmap-item-planet-vehicles-desc
+    state: InProgress
+  - name: wg-roadmap-item-planet-signals
+    description: wg-roadmap-item-planet-signals-desc
+    state: InProgress
+
+- type: roadmapColumn
+  id: WGRoadmapFuture
+  name: wg-roadmap-column-future
+  order: 2
+  items:
+  - name: wg-roadmap-item-planet-cracking
+    description: wg-roadmap-item-planet-cracking-desc
+    state: Planned
+  - name: wg-roadmap-item-generated-cities
+    description: wg-roadmap-item-generated-cities-desc
+    state: Planned
+  - name: wg-roadmap-item-outposts-bases
+    description: wg-roadmap-item-outposts-bases-desc
+    state: Planned
+  - name: wg-roadmap-item-outposts-economy
+    description: wg-roadmap-item-outposts-economy-desc
+    state: Planned
+  - name: wg-roadmap-item-outposts-living
+    description: wg-roadmap-item-outposts-living-desc
+    state: Planned
+  - name: wg-roadmap-item-outposts-raids
+    description: wg-roadmap-item-outposts-raids-desc
+    state: Planned
+  - name: wg-roadmap-item-outposts-more
+    description: wg-roadmap-item-outposts-more-desc
+    state: Planned
+  - name: wg-roadmap-item-encounters-scanner
+    description: wg-roadmap-item-encounters-scanner-desc
+    state: Planned
+  - name: wg-roadmap-item-encounters-freight
+    description: wg-roadmap-item-encounters-freight-desc
+    state: Planned
+  - name: wg-roadmap-item-encounters-follow-ups
+    description: wg-roadmap-item-encounters-follow-ups-desc
+    state: Planned

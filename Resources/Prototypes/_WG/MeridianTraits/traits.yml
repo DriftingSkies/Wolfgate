@@ -1,0 +1,110 @@
+# Traits ported from Meridian Rift quirks that run on components Wolfgate already has.
+
+- type: trait
+  id: WGDeaf
+  name: trait-wg-deaf-name
+  description: trait-wg-deaf-desc
+  category: Disabilities
+  components:
+  - type: WGPermanentDeaf
+  - type: Deaf
+
+- type: trait
+  id: WGPseudobulbarAffect
+  name: trait-wg-pseudobulbar-affect-name
+  description: trait-wg-pseudobulbar-affect-desc
+  category: Quirks
+  whitelist:
+    components:
+    - Vocal
+  components:
+  - type: AutoEmote
+    emotes:
+    - WGPseudobulbarLaugh
+
+- type: trait
+  id: WGIlluminated
+  name: trait-wg-illuminated-name
+  description: trait-wg-illuminated-desc
+  category: Quirks
+  components:
+  - type: PointLight
+    radius: 1.5
+    energy: 0.6
+    color: "#FFF4D6"
+
+- type: trait
+  id: WGFragility
+  name: trait-wg-fragility-name
+  description: trait-wg-fragility-desc
+  category: Physical
+  cost: -4
+  mutuallyExclusiveTraits:
+  - HardenedLymphocytes
+  - WGRadFiend
+  components:
+  - type: DamageProtectionBuff
+    modifiers:
+      fragility:
+        id: WGFragilityTrait
+        coefficients:
+          Blunt: 1.25
+          Heat: 1.25
+
+- type: trait
+  id: WGRadFiend
+  name: trait-wg-rad-fiend-name
+  description: trait-wg-rad-fiend-desc
+  category: Physical
+  cost: 6
+  # Each of these is its own DamageProtectionBuff, and a mob holds only one.
+  mutuallyExclusiveTraits:
+  - HardenedLymphocytes
+  - WGFragility
+  components:
+  - type: DamageProtectionBuff
+    modifiers:
+      radFiend:
+        id: WGRadFiendTrait
+        coefficients:
+          Radiation: 0
+
+- type: trait
+  id: WGHardenedSoles
+  name: trait-wg-hardened-soles-name
+  description: trait-wg-hardened-soles-desc
+  category: Physical
+  cost: 1
+  components:
+  - type: ProtectedFromStepTriggers
+
+- type: trait
+  id: WGCanineTraits
+  name: trait-wg-canine-traits-name
+  description: trait-wg-canine-traits-desc
+  category: SpeechTraits
+  cost: 1
+  mutuallyExclusiveTraits:
+  - Accentless
+  - WGAvianTraits
+  components:
+  - type: BarkAccent
+
+- type: trait
+  id: WGAvianTraits
+  name: trait-wg-avian-traits-name
+  description: trait-wg-avian-traits-desc
+  category: SpeechTraits
+  cost: 1
+  mutuallyExclusiveTraits:
+  - Accentless
+  - WGCanineTraits
+  components:
+  - type: ResomiAccent
+    bawkChance: 0.05
+
+- type: autoEmote
+  id: WGPseudobulbarLaugh
+  emote: Laugh
+  interval: 60.0
+  chance: 0.15

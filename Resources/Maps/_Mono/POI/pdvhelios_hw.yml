@@ -27692,7 +27692,7 @@ entities:
     - type: Transform
       pos: -4.5,51.5
       parent: 1
-- proto: WFSpawnPointPdvArtificer
+- proto: WGSpawnPointPdvArtificer
   entities:
   - uid: 8510
     components:
@@ -27704,7 +27704,7 @@ entities:
     - type: Transform
       parent: 1
       pos: -7.5,64.5
-- proto: WFSpawnPointPdvJarrah
+- proto: WGSpawnPointPdvJarrah
   entities:
   - uid: 8508
     components:
@@ -27716,14 +27716,14 @@ entities:
     - type: Transform
       parent: 1
       pos: -5.5,64.5
-- proto: WFSpecialistVendorPDV
+- proto: WGSpecialistVendorPDV
   entities:
   - uid: 8512
     components:
     - type: Transform
       parent: 1
       pos: -1.5,64.5
-- proto: WFVendingMachinePdvOutfitter
+- proto: WGVendingMachinePdvOutfitter
   entities:
   - uid: 8506
     components:

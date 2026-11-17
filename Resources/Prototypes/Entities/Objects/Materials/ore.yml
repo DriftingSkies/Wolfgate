@@ -10,7 +10,7 @@
     sprite: Objects/Materials/ore.rsi
     size: Normal
   # WOLFGATE(CargoLoad): ore weighs down the ship carrying it
-  - type: WFCargoMass
+  - type: WGCargoMass
     perUnit: 0.015
   - type: Tag
     tags:

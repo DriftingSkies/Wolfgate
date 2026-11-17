@@ -33,7 +33,7 @@
 
 - type: entity
   id: OrganAnimalLungs
-  parent: [BaseAnimalOrgan, WFWolfmedOrganLungs] # WOLFGATE(Wolfmed): M4: OD16 parity, Wolfmed lung data (plan 9.2 group B, arachnid)
+  parent: [BaseAnimalOrgan, WGWolfmedOrganLungs] # WOLFGATE(Wolfmed): M4: OD16 parity, Wolfmed lung data (plan 9.2 group B, arachnid)
   name: lungs
   categories: [ HideSpawnMenu ]
   components:
@@ -69,7 +69,7 @@
 - type: entity
   id: OrganAnimalStomach
   # WOLFGATE(Wolfmed): Wolfmed stomach data, so the organ can be hurt, scanned and treated
-  parent: [BaseAnimalOrgan, WFWolfmedOrganStomach]
+  parent: [BaseAnimalOrgan, WGWolfmedOrganStomach]
   name: stomach
   categories: [ HideSpawnMenu ]
   components:
@@ -114,7 +114,7 @@
 - type: entity
   id: OrganAnimalLiver
   # WOLFGATE(Wolfmed): Wolfmed liver data, so the organ can be hurt, scanned and treated
-  parent: [BaseAnimalOrgan, WFWolfmedOrganLiver]
+  parent: [BaseAnimalOrgan, WGWolfmedOrganLiver]
   name: liver
   categories: [ HideSpawnMenu ]
   components:
@@ -140,7 +140,7 @@
 
 - type: entity
   id: OrganAnimalHeart
-  parent: [BaseAnimalOrgan, WFWolfmedOrganHeart] # WOLFGATE(Wolfmed): M4: OD16 parity, the heart can arrest (plan 9.2 group B; balance change)
+  parent: [BaseAnimalOrgan, WGWolfmedOrganHeart] # WOLFGATE(Wolfmed): M4: OD16 parity, the heart can arrest (plan 9.2 group B; balance change)
   name: heart
   categories: [ HideSpawnMenu ]
   components:
@@ -169,7 +169,7 @@
 - type: entity
   id: OrganAnimalKidneys
   # WOLFGATE(Wolfmed): Wolfmed kidneys data, so the organ can be hurt, scanned and treated
-  parent: [BaseAnimalOrgan, WFWolfmedOrganKidneys]
+  parent: [BaseAnimalOrgan, WGWolfmedOrganKidneys]
   name: kidneys
   categories: [ HideSpawnMenu ]
   components:

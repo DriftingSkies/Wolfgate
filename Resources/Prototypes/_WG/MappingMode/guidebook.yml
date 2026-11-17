@@ -1,0 +1,84 @@
+- type: guideEntry
+  id: WGMappingGuide
+  name: guide-entry-wg-mapping-guide
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/MappingServer.xml"
+  priority: 20
+  children:
+  - WGMappingGuideStart
+  - WGMappingGuideModes
+  - WGMappingGuidePlacing
+  - WGMappingGuideSelecting
+  - WGMappingGuideShapes
+  - WGMappingGuidePipes
+  - WGMappingGuideWiring
+  - WGMappingGuideZLevels
+  - WGMappingGuideTemplates
+  - WGMappingGuideSaving
+  - WGMappingGuideTogether
+  - WGMappingGuideLimits
+  - WGMappingGuideAdmins
+
+- type: guideEntry
+  id: WGMappingGuideStart
+  name: guide-entry-wg-mapping-guide-start
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/GettingStarted.xml"
+
+- type: guideEntry
+  id: WGMappingGuideModes
+  name: guide-entry-wg-mapping-guide-modes
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/BuildModes.xml"
+
+- type: guideEntry
+  id: WGMappingGuidePlacing
+  name: guide-entry-wg-mapping-guide-placing
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/Placing.xml"
+
+- type: guideEntry
+  id: WGMappingGuideSelecting
+  name: guide-entry-wg-mapping-guide-selecting
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/Selecting.xml"
+
+- type: guideEntry
+  id: WGMappingGuideShapes
+  name: guide-entry-wg-mapping-guide-shapes
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/Shapes.xml"
+
+- type: guideEntry
+  id: WGMappingGuidePipes
+  name: guide-entry-wg-mapping-guide-pipes
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/Pipes.xml"
+
+- type: guideEntry
+  id: WGMappingGuideWiring
+  name: guide-entry-wg-mapping-guide-wiring
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/Wiring.xml"
+
+- type: guideEntry
+  id: WGMappingGuideZLevels
+  name: guide-entry-wg-mapping-guide-zlevels
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/ZLevels.xml"
+
+- type: guideEntry
+  id: WGMappingGuideTemplates
+  name: guide-entry-wg-mapping-guide-templates
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/Templates.xml"
+
+- type: guideEntry
+  id: WGMappingGuideSaving
+  name: guide-entry-wg-mapping-guide-saving
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/Saving.xml"
+
+- type: guideEntry
+  id: WGMappingGuideTogether
+  name: guide-entry-wg-mapping-guide-together
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/Together.xml"
+
+- type: guideEntry
+  id: WGMappingGuideLimits
+  name: guide-entry-wg-mapping-guide-limits
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/Limits.xml"
+
+- type: guideEntry
+  id: WGMappingGuideAdmins
+  name: guide-entry-wg-mapping-guide-admins
+  text: "/ServerInfo/_WG/MappingMode/Guidebook/Admins.xml"

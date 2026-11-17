@@ -1,0 +1,67 @@
+using Content.Shared._Mono.ArmorPlate;
+using Content.Shared._WG.ArmorSpecialization;
+using Content.Shared.Clothing.Components;
+using Content.Shared.Inventory;
+using Content.Shared.Weapons.Ranged.Events;
+using Robust.Shared.GameObjects;
+using Robust.Shared.Map;
+using Robust.Shared.Maths;
+
+namespace Content.IntegrationTests.Tests._WG.ArmorSpecialization;
+
+/// <summary>The ported RMC armors carry their vest specializations, and those act on whoever wears them.</summary>
+[TestFixture]
+public sealed class WGVestSpecializationTest
+{
+    [Test]
+    public async Task ArmorsCarryTheirSpecializations()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entities = server.ResolveDependency<IEntityManager>();
+
+        await server.WaitAssertion(() =>
+        {
+            var map = entities.System<SharedMapSystem>().CreateMap(out var mapId);
+            var at = new MapCoordinates(0, 0, mapId);
+
+            Assert.That(entities.HasComponent<ArmorPlateHolderComponent>(entities.SpawnEntity("WGRMCArmorM3", at)));
+            var scout = entities.SpawnEntity("WGRMCArmorM3Scout", at);
+            Assert.That(entities.HasComponent<WGLowSignatureComponent>(scout));
+            Assert.That(entities.HasComponent<SpeedModifierContactCapClothingComponent>(scout));
+            Assert.That(entities.HasComponent<WGUnrestrictedComponent>(entities.SpawnEntity("WGRMCArmorM3L", at)));
+            Assert.That(entities.HasComponent<WGFastHandsComponent>(entities.SpawnEntity("WGRMCArmorUL6", at)));
+            Assert.That(entities.HasComponent<WGSecondWindComponent>(entities.SpawnEntity("WGRMCArmorMilitiaVest", at)));
+
+            entities.DeleteEntity(map);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task UnrestrictedTightensSpread()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entities = server.ResolveDependency<IEntityManager>();
+
+        await server.WaitAssertion(() =>
+        {
+            var map = entities.System<SharedMapSystem>().CreateMap(out var mapId);
+            var at = new MapCoordinates(0, 0, mapId);
+            var wearer = entities.SpawnEntity("MobHuman", at);
+            var vest = entities.SpawnEntity("WGRMCArmorM3L", at);
+            Assert.That(entities.System<InventorySystem>().TryEquip(wearer, vest, "outerClothing", force: true));
+
+            var ev = new GunRefreshModifiersEvent(default, null, 1f, new Angle(1), new Angle(1), new Angle(10), new Angle(2), 1, 1f, 1f, null);
+            entities.EventBus.RaiseLocalEvent(wearer, ref ev);
+            Assert.That(ev.MaxAngle.Theta, Is.EqualTo(8).Within(0.01));
+            Assert.That(ev.MinAngle.Theta, Is.EqualTo(1.6).Within(0.01));
+
+            entities.DeleteEntity(map);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+}

@@ -1,0 +1,20 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+                      Title="{Loc 'wg-ghost-orbit-title'}"
+                      MinSize="500 420"
+                      SetSize="760 640">
+    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+            <LineEdit Name="SearchBar" PlaceHolder="{Loc 'wg-ghost-orbit-search'}" HorizontalExpand="True" />
+            <Button Name="FactionViewButton" Text="{Loc 'wg-ghost-orbit-view-faction'}" ToggleMode="True" StyleClasses="OpenRight" />
+            <Button Name="PlaceViewButton" Text="{Loc 'wg-ghost-orbit-view-place'}" ToggleMode="True" StyleClasses="OpenLeft" />
+            <Button Name="MostFollowedButton" Text="{Loc 'ghost-target-window-warp-to-most-followed'}" />
+            <Button Name="RefreshButton" Text="{Loc 'wg-ghost-orbit-refresh'}" />
+            <CheckBox Name="AutoRefreshBox" Text="{Loc 'wg-ghost-orbit-auto-refresh'}" Pressed="True" />
+        </BoxContainer>
+        <Label Name="SummaryLabel" StyleClasses="LabelSubText" />
+        <ScrollContainer Name="Scroll" VerticalExpand="True" HScrollEnabled="False">
+            <BoxContainer Name="Sections" Orientation="Vertical" SeparationOverride="4" Margin="0 0 6 0" />
+        </ScrollContainer>
+    </BoxContainer>
+</controls:FancyWindow>

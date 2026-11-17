@@ -274,15 +274,15 @@ public abstract class SharedCMAutomatedVendorSystem : EntitySystem
         }
 
         // WOLFGATE(SpecialistKits) START: specialist kit limits that scale with faction members online
-        var wfKitAttempt = new Content.Shared._WF.SpecialistKits.WFSpecialistKitVendAttemptEvent(actor, entry.Id);
-        RaiseLocalEvent(ref wfKitAttempt);
-        if (wfKitAttempt.Cancelled)
+        var wgKitAttempt = new Content.Shared._WG.SpecialistKits.WGSpecialistKitVendAttemptEvent(actor, entry.Id);
+        RaiseLocalEvent(ref wgKitAttempt);
+        if (wgKitAttempt.Cancelled)
         {
             ResetChoices();
             // ResetChoices leaves the count undirtied, so the client would still show the choice spent.
             if (user != null)
                 Dirty(actor, user);
-            _popup.PopupEntity(Loc.GetString(wfKitAttempt.Reason), vendor, actor);
+            _popup.PopupEntity(Loc.GetString(wgKitAttempt.Reason), vendor, actor);
             return;
         }
         // WOLFGATE END
@@ -418,8 +418,8 @@ public abstract class SharedCMAutomatedVendorSystem : EntitySystem
         }
 
         // WOLFGATE(SpecialistKits) START: a kit is counted against its faction's limit only once it is handed out
-        var wfKitVended = new Content.Shared._WF.SpecialistKits.WFSpecialistKitVendedEvent(actor, entry.Id);
-        RaiseLocalEvent(ref wfKitVended);
+        var wgKitVended = new Content.Shared._WG.SpecialistKits.WGSpecialistKitVendedEvent(actor, entry.Id);
+        RaiseLocalEvent(ref wgKitVended);
         // WOLFGATE END
     }
 

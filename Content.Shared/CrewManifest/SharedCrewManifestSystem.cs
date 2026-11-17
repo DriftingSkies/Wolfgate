@@ -54,7 +54,7 @@ public sealed class CrewManifestEntry
 
     public string JobPrototype { get; }
 
-    public int WFCompanyRank { get; init; } // WOLFGATE(Companies): rank whose custom icon replaces JobIcon
+    public int WGCompanyRank { get; init; } // WOLFGATE(Companies): rank whose custom icon replaces JobIcon
 
     public CrewManifestEntry(string name, string jobTitle, string jobIcon, string jobPrototype)
     {

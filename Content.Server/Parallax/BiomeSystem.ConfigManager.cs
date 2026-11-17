@@ -14,7 +14,7 @@ public sealed partial class BiomeSystem
 
     private void ProtoReload(PrototypesReloadedEventArgs obj)
     {
-        WfRollReload(obj); // WOLFGATE(Planets): the loader's spawner rolls follow reloaded entity prototypes
+        WgRollReload(obj); // WOLFGATE(Planets): the loader's spawner rolls follow reloaded entity prototypes
 
         if (!obj.ByType.TryGetValue(typeof(BiomeTemplatePrototype), out var reloads))
             return;

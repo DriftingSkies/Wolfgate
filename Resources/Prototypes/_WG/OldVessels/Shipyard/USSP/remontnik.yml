@@ -1,0 +1,41 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+#Author: Grandalff on Github.
+
+- type: vessel
+  id: Remontnik
+  parent: BaseVesselIFFDisabled
+  name: PPU Remontnik
+  description: A USSP engineering and mining vessel designed by PPU. Comes with an FTL, potatoes with butter and alcohol in the fridge.
+  price: 160461
+  purchasable: false # voucher only - T2
+  category: Medium
+  group: Ussp
+  access: USSP
+  shuttlePath: /SharedMaps/_WG/OldVessels/USSP/remontnik.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: Null
+  class:
+  - Engineering
+  - Salvage
+  engine:
+  - Uranium
+
+- type: gameMap
+  id: Remontnik
+  mapName: 'Remontnik'
+  mapPath: /SharedMaps/_WG/OldVessels/USSP/remontnik.yml
+  minPlayers: 0
+  stations:
+    Remontnik:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Remontnik USSP{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'
+        - type: StationJobs
+          availableJobs:
+           USSPSergeant: [ 0, 0 ]
+           USSPRifleman: [ 0, 0 ]

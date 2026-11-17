@@ -155,9 +155,9 @@
   colorLinks:
     whitescale_forked_tailfin_BEHIND: whitescale_forked_tailfin_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
       state: whitescale_forked_tailfin_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
       state: whitescale_forked_tailfin_BEHIND
   # WOLFGATE END
 
@@ -179,9 +179,9 @@
   colorLinks:
     huescale_forked_tailfin_BEHIND: huescale_forked_tailfin_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
       state: huescale_forked_tailfin_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
       state: huescale_forked_tailfin_BEHIND
   # WOLFGATE END
 
@@ -205,13 +205,13 @@
     peacock_tail_feathers_BEHIND: peacock_tail_feathers_FRONT
     peacock_tail_eyes_BEHIND: peacock_tail_eyes_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails48x48.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails48x48.rsi
       state: peacock_tail_feathers_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails48x48.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails48x48.rsi
       state: peacock_tail_eyes_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails48x48.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails48x48.rsi
       state: peacock_tail_feathers_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails48x48.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails48x48.rsi
       state: peacock_tail_eyes_BEHIND
   # WOLFGATE END
 
@@ -235,13 +235,13 @@
     haven_tone_1_BEHIND: haven_tone_1_FRONT
     haven_tone_2_BEHIND: haven_tone_2_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
       state: haven_tone_1_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
       state: haven_tone_2_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
       state: haven_tone_1_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
       state: haven_tone_2_BEHIND
   # WOLFGATE END
 
@@ -263,9 +263,9 @@
   colorLinks:
     forked_long_BEHIND: forked_long_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
       state: forked_long_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
       state: forked_long_BEHIND
   # WOLFGATE END
 
@@ -287,9 +287,9 @@
   colorLinks:
     swallow_tail_BEHIND: swallow_tail_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
       state: swallow_tail_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_EE/Mobs/Customization/Harpy/harpy_tails.rsi
       state: swallow_tail_BEHIND
   # WOLFGATE END
 

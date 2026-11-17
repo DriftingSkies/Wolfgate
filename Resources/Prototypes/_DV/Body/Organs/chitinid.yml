@@ -29,7 +29,7 @@
 - type: entity
   id: OrganChitinidLiver
   # WOLFGATE(Wolfmed): Wolfmed liver data, so the organ can be hurt, scanned and treated
-  parent: [BaseAnimalOrgan, WFWolfmedOrganLiver]
+  parent: [BaseAnimalOrgan, WGWolfmedOrganLiver]
   name: liver
   categories: [ HideSpawnMenu ]
   components:

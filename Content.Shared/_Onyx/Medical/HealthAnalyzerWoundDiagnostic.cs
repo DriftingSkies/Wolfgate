@@ -1,8 +1,8 @@
 using Content.Shared._Shitmed.Targeting; // WOLFGATE(Wolfmed): D10 keeps TargetBodyPart under _Shitmed; Onyx's _Onyx.Targeting copy is not ported.
 using Content.Shared._Onyx.Wounds;
-using Content.Shared._WF.Wolfmed.Wounds; // WOLFGATE(Wolfmed): W5
-using Content.Shared._WF.Wolfmed.Reagents; // WOLFGATE(Wolfmed): CONSC
-using Content.Shared._WF.Wolfmed.Life; // WOLFGATE(Wolfmed): M1a: the vitals block
+using Content.Shared._WG.Wolfmed.Wounds; // WOLFGATE(Wolfmed): W5
+using Content.Shared._WG.Wolfmed.Reagents; // WOLFGATE(Wolfmed): CONSC
+using Content.Shared._WG.Wolfmed.Life; // WOLFGATE(Wolfmed): M1a: the vitals block
 using Content.Shared.FixedPoint;
 using Robust.Shared.Serialization;
 

@@ -1,0 +1,897 @@
+# Crates for the freight manifests that no catalog crate covers. None is a cargo product, so none can be ordered and
+# resold. Guns are kept to a few per crate, and anything TSF-issue sits in a TSF-branded crate.
+
+- type: entity
+  id: WGCrateFoodRations
+  parent: CratePlasticBiodegradable
+  name: bulk ration crate
+  description: A flimsy crate stacked with boxes of military meal rations.
+  components:
+  - type: StorageFill
+    contents:
+    - id: BoxMRE
+      amount: 12
+
+- type: entity
+  id: WGCrateShipSystems
+  parent: CrateEngineering
+  name: ship systems crate
+  description: Flatpacked IFF console, generators, cell charger and docking airlocks for fitting out a ship.
+  components:
+  - type: StorageFill
+    contents:
+    - id: ComputerIFFFlatpack
+    - id: PortableGeneratorSuperPacmanFlatpack
+      amount: 2
+    - id: PowerCellRechargerFlatpack
+    - id: AirlockShuttleFlatpack
+      amount: 4
+
+- type: entity
+  id: WGCrateArmsTsfRifles
+  parent: CrateNfsdSecure1
+  name: TSFMC rifle crate
+  description: Two Lecter service rifles with spare magazines. Requires Security access to open.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponRifleLecter
+      amount: 2
+    - id: Magazine68x52mmCaseless
+      amount: 4
+
+- type: entity
+  id: WGCrateArmsVault
+  parent: CrateNfsdSecure2
+  name: TSFMC mixed arms crate
+  description: A rifle, an SMG, a laser rifle and a shotgun, with ammunition for each. Requires Security access to open.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponRifleLecter
+    - id: WeaponSubMachineGunWt550
+    - id: WeaponLaserCarbine
+    - id: WeaponShotgunEnforcer
+    - id: Magazine68x52mmCaseless
+      amount: 2
+    - id: Magazine46x30mmSubMachineGunTopMountedFMJ
+      amount: 2
+    - id: AmmoBox12_gaugeBuckshot
+
+- type: entity
+  id: WGCrateArmsSupplies
+  parent: CrateAmmoGeneric
+  name: ammunition and armor crate
+  description: Boxed ammunition for the TSF service weapons, and three bulletproof vests.
+  components:
+  - type: StorageFill
+    contents:
+    - id: AmmoBox46x30mmFMJ
+      amount: 2
+    - id: AmmoBox68x52mmCaseless
+      amount: 2
+    - id: AmmoBox12_gaugeBuckshot
+      amount: 2
+    - id: ClothingOuterArmorBulletproof
+      amount: 3
+
+- type: entity
+  id: WGCrateLuxuryBullion
+  parent: CratePrivateSecure
+  name: bullion crate
+  description: A private crate holding a stack of gold bars and a stack of silver bars.
+  components:
+  - type: StorageFill
+    contents:
+    - id: IngotGold
+    - id: IngotSilver
+
+- type: entity
+  id: WGCrateOreCommon
+  parent: CrateGenericSteel
+  name: bulk ore crate
+  description: Steel ore and salt ore, mined and crated.
+  components:
+  - type: StorageFill
+    contents:
+    - id: SteelOre
+      amount: 3
+    - id: SaltOre
+
+- type: entity
+  id: WGCrateOrePrecious
+  parent: CrateGenericSteel
+  name: precious ore crate
+  description: Silver ore and gold ore, mined and crated.
+  components:
+  - type: StorageFill
+    contents:
+    - id: SilverOre
+    - id: GoldOre
+
+# Three lots, each one item picked by weight, so it is never empty and holds no jackpot.
+- type: entity
+  id: WGCrateSalvageSorted
+  parent: CrateGenericSteel
+  name: sorted salvage crate
+  description: Scrap sheets, rods and cloth sorted into three lots, with the odd silver bar among them.
+  components:
+  - type: StorageFill
+    contents:
+    - id: SheetSteel
+      prob: 0.2
+      orGroup: Haul1
+    - id: SheetGlass
+      prob: 0.2
+      orGroup: Haul1
+    - id: SheetPlastic
+      prob: 0.1
+      orGroup: Haul1
+    - id: SheetPlasteel
+      prob: 0.05
+      orGroup: Haul1
+    - id: SheetBrass
+      prob: 0.1
+      orGroup: Haul1
+    - id: MaterialCloth
+      prob: 0.1
+      orGroup: Haul1
+    - id: PartRodMetal
+      prob: 0.1
+      orGroup: Haul1
+    - id: IngotSilver
+      prob: 0.04
+      orGroup: Haul1
+    - id: SheetSteel
+      prob: 0.2
+      orGroup: Haul2
+    - id: SheetGlass
+      prob: 0.2
+      orGroup: Haul2
+    - id: SheetPlastic
+      prob: 0.1
+      orGroup: Haul2
+    - id: SheetPlasteel
+      prob: 0.05
+      orGroup: Haul2
+    - id: SheetBrass
+      prob: 0.1
+      orGroup: Haul2
+    - id: MaterialCloth
+      prob: 0.1
+      orGroup: Haul2
+    - id: PartRodMetal
+      prob: 0.1
+      orGroup: Haul2
+    - id: IngotSilver
+      prob: 0.04
+      orGroup: Haul2
+    - id: SheetSteel
+      prob: 0.2
+      orGroup: Haul3
+    - id: SheetGlass
+      prob: 0.2
+      orGroup: Haul3
+    - id: SheetPlastic
+      prob: 0.1
+      orGroup: Haul3
+    - id: SheetPlasteel
+      prob: 0.05
+      orGroup: Haul3
+    - id: SheetBrass
+      prob: 0.1
+      orGroup: Haul3
+    - id: MaterialCloth
+      prob: 0.1
+      orGroup: Haul3
+    - id: PartRodMetal
+      prob: 0.1
+      orGroup: Haul3
+    - id: IngotSilver
+      prob: 0.04
+      orGroup: Haul3
+
+- type: entity
+  id: WGCrateContrabandHeavyArms
+  parent: CratePirateGrey
+  name: unmarked pirate chest
+  description: An unmarked, unlocked chest of unregistered arms.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponSubMachineGunWt550Expedition
+    - id: WeaponLaserCarbineExpedition
+    - id: WeaponEnergyGunExpedition
+    - id: Magazine46x30mmSubMachineGunTopMountedFMJ
+      amount: 2
+
+# Mixed lots: crates that hold one thing from each of several short lists, so two crates of a kind seldom match. They
+# make up most of what a hauler carries. None is a cargo product, so none can be ordered and resold.
+
+- type: entity
+  id: WGCrateLotTools
+  parent: CrateEngineering
+  name: mixed tool lot
+  description: "A job lot of tools and fittings, packed by whoever was clearing the workshop."
+  components:
+  - type: StorageFill
+    contents:
+    - id: ToolboxMechanicalFilled
+      orGroup: lot0
+    - id: ToolboxElectricalFilled
+      orGroup: lot0
+    - id: ToolboxEmergencyFilled
+      orGroup: lot0
+    - id: ClothingBeltUtilityFilled
+      orGroup: lot0
+    - id: ToolboxGoldFilled
+      orGroup: lot0
+    - id: WelderIndustrial
+      orGroup: lot1
+    - id: WelderExperimental
+      orGroup: lot1
+    - id: Welder
+      orGroup: lot1
+    - id: PowerDrill
+      orGroup: lot1
+    - id: JawsOfLife
+      orGroup: lot1
+    - id: WelderIndustrialAdvanced
+      orGroup: lot1
+    - id: Multitool
+      orGroup: lot2
+    - id: NetworkConfigurator
+      orGroup: lot2
+    - id: trayScanner
+      orGroup: lot2
+    - id: GeigerCounter
+      orGroup: lot2
+    - id: HandHeldMassScanner
+      orGroup: lot2
+    - id: RCD
+      orGroup: lot3
+    - id: RCDAmmo
+      orGroup: lot3
+    - id: HolofanProjector
+      orGroup: lot3
+    - id: SprayPainter
+      orGroup: lot3
+    - id: LightReplacer
+      orGroup: lot3
+    - id: HandLabeler
+      orGroup: lot3
+    - id: ClothingHandsGlovesColorYellow
+      orGroup: lot4
+    - id: ClothingHeadHatWelding
+      orGroup: lot4
+    - id: ClothingEyesGlassesMeson
+      orGroup: lot4
+    - id: ClothingShoesBootsMag
+      orGroup: lot4
+    - id: ClothingBeltUtility
+      orGroup: lot4
+    - id: CableApcStack
+      orGroup: lot5
+    - id: CableMVStack
+      orGroup: lot5
+    - id: CableHVStack
+      orGroup: lot5
+    - id: InflatableWallStack1
+      orGroup: lot5
+    - id: InflatableDoorStack1
+      orGroup: lot5
+    - id: PartRodMetal
+      orGroup: lot5
+    - id: PowerCellHigh
+      orGroup: lot6
+    - id: PowerCellHyper
+      orGroup: lot6
+    - id: PowerCellMedium
+      orGroup: lot6
+    - id: FlashlightSeclite
+      orGroup: lot6
+    - id: Binoculars
+      orGroup: lot6
+    - id: Crowbar
+      orGroup: lot6
+
+- type: entity
+  id: WGCrateLotSurvival
+  parent: CrateInternals
+  name: voidsuit lot
+  description: "Suits, tanks and the odds and ends of working outside, none of it matching."
+  components:
+  - type: StorageFill
+    contents:
+    - id: ClothingOuterEVASuitSalvage
+      orGroup: lot0
+    - id: ClothingOuterEVASuitEngineer
+      orGroup: lot0
+    - id: ClothingOuterEVASuitPilot
+      orGroup: lot0
+    - id: ClothingOuterEVASuitCargo
+      orGroup: lot0
+    - id: ClothingOuterEVASuitMailman
+      orGroup: lot0
+    - id: ClothingOuterHardsuitBasic
+      orGroup: lot0
+    - id: ClothingOuterHardsuitSpatio
+      orGroup: lot0
+    - id: ClothingHeadHelmetEVA
+      orGroup: lot1
+    - id: ClothingHeadHelmetEVALarge
+      orGroup: lot1
+    - id: ClothingMaskGas
+      orGroup: lot1
+    - id: ClothingMaskBreath
+      orGroup: lot1
+    - id: ClothingMaskGasExplorer
+      orGroup: lot1
+    - id: OxygenTankFilled
+      orGroup: lot2
+    - id: NitrogenTankFilled
+      orGroup: lot2
+    - id: DoubleEmergencyOxygenTankFilled
+      orGroup: lot2
+    - id: ExtendedEmergencyOxygenTankFilled
+      orGroup: lot2
+    - id: EmergencyOxygenTankFilled
+      orGroup: lot2
+    - id: JetpackMiniFilled
+      orGroup: lot3
+    - id: JetpackBlueFilled
+      orGroup: lot3
+    - id: ClothingShoesBootsMag
+      orGroup: lot3
+    - id: HandheldGPSBasic
+      orGroup: lot3
+    - id: RadioHandheldNF
+      orGroup: lot3
+    - id: EmergencyMedipen
+      orGroup: lot4
+    - id: SpaceMedipen
+      orGroup: lot4
+    - id: MedkitOxygenFilled
+      orGroup: lot4
+    - id: BoxMRE
+      orGroup: lot4
+    - id: BoxFlare
+      orGroup: lot4
+    - id: WeaponFlareGun
+      orGroup: lot5
+    - id: FireExtinguisher
+      orGroup: lot5
+    - id: FlashlightSeclite
+      orGroup: lot5
+    - id: InflatableWallStack1
+      orGroup: lot5
+    - id: Binoculars
+      orGroup: lot5
+
+- type: entity
+  id: WGCrateLotMedical
+  parent: CrateMedical
+  name: mixed medical lot
+  description: "Whatever a clinic had too much of: dressings, pills, instruments and one thing somebody will miss."
+  components:
+  - type: StorageFill
+    contents:
+    - id: MedkitFilled
+      orGroup: lot0
+    - id: MedkitBruteFilled
+      orGroup: lot0
+    - id: MedkitBurnFilled
+      orGroup: lot0
+    - id: MedkitToxinFilled
+      orGroup: lot0
+    - id: MedkitOxygenFilled
+      orGroup: lot0
+    - id: MedkitRadiationFilled
+      orGroup: lot0
+    - id: MedkitAdvancedFilled
+      orGroup: lot0
+    - id: Brutepack
+      orGroup: lot1
+    - id: Ointment
+      orGroup: lot1
+    - id: Gauze
+      orGroup: lot1
+    - id: Bloodpack
+      orGroup: lot1
+    - id: MedicatedSuture
+      orGroup: lot1
+    - id: RegenerativeMesh
+      orGroup: lot1
+    - id: Tourniquet
+      orGroup: lot1
+    - id: PillCanisterBicaridine
+      orGroup: lot2
+    - id: PillCanisterDermaline
+      orGroup: lot2
+    - id: PillCanisterDylovene
+      orGroup: lot2
+    - id: PillCanisterDexalin
+      orGroup: lot2
+    - id: PillCanisterKelotane
+      orGroup: lot2
+    - id: PillCanisterTricordrazine
+      orGroup: lot2
+    - id: PillCanisterCharcoal
+      orGroup: lot2
+    - id: WGWolfmedSplint
+      orGroup: lot3
+    - id: WGWolfmedSuture
+      orGroup: lot3
+    - id: WGWolfmedSkinGraft
+      orGroup: lot3
+    - id: WGWolfmedAnalgesicPen
+      orGroup: lot3
+    - id: WGWolfmedOpiatePen
+      orGroup: lot3
+    - id: WGWolfmedStimPen
+      orGroup: lot3
+    - id: WGWolfmedNaloxonePen
+      orGroup: lot3
+    - id: Scalpel
+      orGroup: lot4
+    - id: Retractor
+      orGroup: lot4
+    - id: Hemostat
+      orGroup: lot4
+    - id: Cautery
+      orGroup: lot4
+    - id: Bonesetter
+      orGroup: lot4
+    - id: Saw
+      orGroup: lot4
+    - id: Drill
+      orGroup: lot4
+    - id: HandheldHealthAnalyzer
+      orGroup: lot5
+    - id: ClothingEyesHudMedical
+      orGroup: lot5
+    - id: Defibrillator
+      orGroup: lot5
+    - id: HypoMini
+      orGroup: lot5
+    - id: HandheldCrewMonitor
+      orGroup: lot5
+    - id: WGMedkitSyntheticFilled
+      orGroup: lot5
+    - id: EmergencyMedipen
+      orGroup: lot6
+    - id: AntiPoisonMedipen
+      orGroup: lot6
+    - id: BruteAutoInjector
+      orGroup: lot6
+    - id: BurnAutoInjector
+      orGroup: lot6
+    - id: AirlossAutoInjector
+      orGroup: lot6
+    - id: SpaceMedipen
+      orGroup: lot6
+
+- type: entity
+  id: WGCrateLotParts
+  parent: CrateEngineering
+  name: ship parts lot
+  description: "Flatpacks and boards pulled from a refit, some of them even from the same ship."
+  components:
+  - type: StorageFill
+    contents:
+    - id: ThrusterFlatpack
+      orGroup: lot0
+    - id: SmallThrusterFlatpack
+      orGroup: lot0
+    - id: GyroscopeFlatpack
+      orGroup: lot0
+    - id: SmallGyroscopeFlatpack
+      orGroup: lot0
+    - id: PortableGeneratorPacmanFlatpack
+      orGroup: lot1
+    - id: PortableGeneratorJrPacmanFlatpack
+      orGroup: lot1
+    - id: PortableGeneratorSuperPacmanFlatpack
+      orGroup: lot1
+    - id: SolarAssemblyFlatpack
+      orGroup: lot1
+    - id: AirlockShuttleFlatpack
+      orGroup: lot2
+    - id: AirlockGlassShuttleFlatpack
+      orGroup: lot2
+    - id: GaslockFlatpack
+      orGroup: lot2
+    - id: AirlockFlatpack
+      orGroup: lot2
+    - id: AirlockGlassFlatpack
+      orGroup: lot2
+    - id: ThrusterMachineCircuitboard
+      orGroup: lot3
+    - id: SmallThrusterMachineCircuitboard
+      orGroup: lot3
+    - id: GyroscopeMachineCircuitboard
+      orGroup: lot3
+    - id: ShuttleConsoleCircuitboard
+      orGroup: lot3
+    - id: RadarConsoleCircuitboard
+      orGroup: lot3
+    - id: ComputerIFFFlatpack
+      orGroup: lot4
+    - id: SpaceHeaterFlatpack
+      orGroup: lot4
+    - id: PowerCellRechargerFlatpack
+      orGroup: lot4
+    - id: NFHolopadShipFlatpack
+      orGroup: lot4
+    - id: AtmosDeviceFanDirectionalFlatpack
+      orGroup: lot4
+    - id: ShipRepairDevice
+      orGroup: lot5
+    - id: ShipRepairDeviceAmmo
+      orGroup: lot5
+    - id: SheetPlasteel
+      orGroup: lot5
+    - id: SheetSteel
+      orGroup: lot5
+    - id: SheetRGlass
+      orGroup: lot5
+    - id: AirAlarmElectronics
+      orGroup: lot6
+    - id: DoorElectronics
+      orGroup: lot6
+    - id: APCElectronics
+      orGroup: lot6
+    - id: FireAlarmElectronics
+      orGroup: lot6
+    - id: IntercomElectronics
+      orGroup: lot6
+    - id: SolarTrackerElectronics
+      orGroup: lot6
+
+- type: entity
+  id: WGCrateLotArms
+  parent: CrateWeaponSecure
+  name: small arms lot
+  description: "An unbranded lot of sidearms and long guns with whatever ammunition was lying about. Requires Armory access to open."
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponPistolMk58
+      orGroup: lot0
+    - id: WeaponPistolViper
+      orGroup: lot0
+    - id: WeaponRevolverInspector
+      orGroup: lot0
+    - id: WeaponPistolEchis
+      orGroup: lot0
+    - id: WeaponLaserPistolNF
+      orGroup: lot0
+    - id: WeaponRevolverArgenti
+      orGroup: lot0
+    - id: WeaponRifleGestio
+      orGroup: lot1
+    - id: WeaponRifleNovaliteC1
+      orGroup: lot1
+    - id: WeaponShotgunKammerer
+      orGroup: lot1
+    - id: WeaponShotgunDoubleBarreled
+      orGroup: lot1
+    - id: WeaponSubMachineGunWt550
+      orGroup: lot1
+    - id: WeaponSniperMosin
+      orGroup: lot1
+    - id: WeaponRifleSVS
+      orGroup: lot1
+    - id: WeaponSniperRepeater
+      orGroup: lot1
+    - id: AmmoBox9x19mmFMJ
+      orGroup: lot2
+    - id: AmmoBox45_ACPFMJ
+      orGroup: lot2
+    - id: AmmoBox762x39mmFMJ
+      orGroup: lot2
+    - id: AmmoBox12_gaugeBuckshot
+      orGroup: lot2
+    - id: AmmoBox357_magnumFMJ
+      orGroup: lot2
+    - id: AmmoBox762x54mmRFMJ
+      orGroup: lot2
+    - id: Magazine9x19mmPistolFMJ
+      orGroup: lot3
+    - id: Magazine45_ACPPistolFMJ
+      orGroup: lot3
+    - id: Magazine762x39mmFMJ
+      orGroup: lot3
+    - id: MagazineNovaliteC1
+      orGroup: lot3
+    - id: SpeedLoader357_magnumFMJ
+      orGroup: lot3
+    - id: Magazine46x30mmSubMachineGunTopMountedFMJ
+      orGroup: lot3
+    - id: ClothingOuterArmorBasic
+      orGroup: lot4
+    - id: ClothingOuterArmorBasicSlim
+      orGroup: lot4
+    - id: ClothingOuterArmorBulletproof
+      orGroup: lot4
+    - id: ClothingHeadHelmetBasic
+      orGroup: lot4
+    - id: ClothingOuterArmorBPVestLight
+      orGroup: lot4
+    - id: CombatKnife
+      orGroup: lot5
+    - id: SurvivalKnife
+      orGroup: lot5
+    - id: Machete
+      orGroup: lot5
+    - id: ClothingBeltHolster
+      orGroup: lot5
+    - id: ClothingBeltBandolier
+      orGroup: lot5
+    - id: ClothingBeltMilitaryWebbing
+      orGroup: lot5
+    - id: GrenadeFlashBang
+      orGroup: lot6
+    - id: SmokeGrenade
+      orGroup: lot6
+    - id: ClothingHandsGlovesCombat
+      orGroup: lot6
+    - id: ClothingEyesBallisticGlassesGreen
+      orGroup: lot6
+    - id: Binoculars
+      orGroup: lot6
+
+- type: entity
+  id: WGCrateLotLuxury
+  parent: CratePrivateSecure
+  name: estate lot
+  description: "The contents of a cabin, sold off: drink, smokes, an instrument and a few things that shine. Requires its owner to open."
+  components:
+  - type: StorageFill
+    contents:
+    - id: DrinkChampagneBottleFull
+      orGroup: lot0
+    - id: DrinkCognacBottleFull
+      orGroup: lot0
+    - id: DrinkPremiumWhiskeyBottleFull
+      orGroup: lot0
+    - id: DrinkPremiumRumBottleFull
+      orGroup: lot0
+    - id: DrinkPremiumAbsintheBottleFull
+      orGroup: lot0
+    - id: DrinkPremiumGinBottleFull
+      orGroup: lot0
+    - id: DrinkPremiumVodkaBottleFull
+      orGroup: lot0
+    - id: CigarGoldCase
+      orGroup: lot1
+    - id: CigarPlatinumCase
+      orGroup: lot1
+    - id: CigarCase
+      orGroup: lot1
+    - id: CigPackBlack
+      orGroup: lot1
+    - id: SmokingPipeFilledTobacco
+      orGroup: lot1
+    - id: ViolinInstrument
+      orGroup: lot2
+    - id: AccordionInstrument
+      orGroup: lot2
+    - id: BanjoInstrument
+      orGroup: lot2
+    - id: FluteInstrument
+      orGroup: lot2
+    - id: HarmonicaInstrument
+      orGroup: lot2
+    - id: OcarinaInstrument
+      orGroup: lot2
+    - id: IngotGold1
+      orGroup: lot3
+    - id: IngotSilver1
+      orGroup: lot3
+    - id: MaterialDiamond1
+      orGroup: lot3
+    - id: DrinkGoldenCup
+      orGroup: lot3
+    - id: ClothingNeckGoldmedal
+      orGroup: lot3
+    - id: ClothingHeadHatTophat
+      orGroup: lot4
+    - id: ClothingHeadHatBowlerHat
+      orGroup: lot4
+    - id: ClothingHeadHatFez
+      orGroup: lot4
+    - id: ClothingHeadHatBeret
+      orGroup: lot4
+    - id: ClothingOuterCoatTrench
+      orGroup: lot4
+    - id: ClothingOuterCoatBomber
+      orGroup: lot4
+    - id: Katana
+      orGroup: lot5
+    - id: Claymore
+      orGroup: lot5
+    - id: CaneSheathFilled
+      orGroup: lot5
+    - id: NavyOfficerSabre
+      orGroup: lot5
+    - id: WeaponPistolFlintlock
+      orGroup: lot5
+    - id: Musket
+      orGroup: lot5
+    - id: PlushieLizard
+      orGroup: lot6
+    - id: PlushieCarp
+      orGroup: lot6
+    - id: PlushieMoth
+      orGroup: lot6
+    - id: PlushieSharkBlue
+      orGroup: lot6
+    - id: PlushiePenguin
+      orGroup: lot6
+    - id: ChessBoard
+      orGroup: lot6
+    - id: BookRandom
+      orGroup: lot6
+
+- type: entity
+  id: WGCrateLotSalvage
+  parent: CrateGenericSteel
+  name: salvage crew lot
+  description: "What a salvage crew kept back for itself: ore, scrap worth keeping and the kit that got it."
+  components:
+  - type: StorageFill
+    contents:
+    - id: GoldOre
+      orGroup: lot0
+    - id: SilverOre
+      orGroup: lot0
+    - id: PlasmaOre
+      orGroup: lot0
+    - id: UraniumOre
+      orGroup: lot0
+    - id: DiamondOre
+      orGroup: lot0
+    - id: SteelOre
+      orGroup: lot0
+    - id: Pickaxe
+      orGroup: lot2
+    - id: MiningDrill
+      orGroup: lot2
+    - id: WeaponProtoKineticAccelerator
+      orGroup: lot2
+    - id: WeaponCrusher
+      orGroup: lot2
+    - id: OreBag
+      orGroup: lot2
+    - id: Shovel
+      orGroup: lot2
+    - id: ClothingOuterEVASuitSalvage
+      orGroup: lot3
+    - id: ClothingOuterHardsuitSpatio
+      orGroup: lot3
+    - id: ClothingEyesGlassesMeson
+      orGroup: lot3
+    - id: HandHeldMassScanner
+      orGroup: lot3
+    - id: HandheldGPSBasic
+      orGroup: lot3
+    - id: SheetSteel
+      orGroup: lot4
+    - id: SheetPlasteel
+      orGroup: lot4
+    - id: SheetGlass
+      orGroup: lot4
+    - id: PartRodMetal
+      orGroup: lot4
+    - id: SheetPlasma
+      orGroup: lot4
+    - id: SheetUranium
+      orGroup: lot4
+    - id: ArtifactFragment1
+      orGroup: lot5
+    - id: MaterialBluespace1
+      orGroup: lot5
+    - id: IngotGold1
+      orGroup: lot5
+    - id: IngotSilver1
+      orGroup: lot5
+    - id: MaterialDiamond1
+      orGroup: lot5
+    - id: SalvageMagnetMachineCircuitboard
+      orGroup: lot6
+    - id: OreProcessorMachineCircuitboard
+      orGroup: lot6
+    - id: FultonBeacon
+      orGroup: lot6
+    - id: Fulton1
+      orGroup: lot6
+    - id: SeismicCharge
+      orGroup: lot6
+
+- type: entity
+  id: WGCrateLotContraband
+  parent: CratePirateGrey
+  name: unmarked lot
+  description: "No manifest, no markings, and nobody is going to ask where it came from."
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponShotgunSawn
+      orGroup: lot0
+    - id: WeaponPistolMk32
+      orGroup: lot0
+    - id: WeaponPistolPollock
+      orGroup: lot0
+    - id: WeaponPistolCobra
+      orGroup: lot0
+    - id: WeaponShotgunHandmade
+      orGroup: lot0
+    - id: WeaponRevolverPython
+      orGroup: lot0
+    - id: WeaponSubMachineGunMalandro
+      orGroup: lot1
+    - id: WeaponSubMachineGunC20r
+      orGroup: lot1
+    - id: WeaponRifleAk
+      orGroup: lot1
+    - id: WeaponRifleM90
+      orGroup: lot1
+    - id: WeaponShotgunBulldog
+      orGroup: lot1
+    - id: WeaponSubMachineGunAK220
+      orGroup: lot1
+    - id: AmmoBox9x19mmFMJ
+      orGroup: lot2
+    - id: AmmoBox762x39mmFMJ
+      orGroup: lot2
+    - id: AmmoBox12_gaugeBuckshot
+      orGroup: lot2
+    - id: AmmoBox12_gaugeSlug
+      orGroup: lot2
+    - id: AmmoBox357_magnumFMJ
+      orGroup: lot2
+    - id: Magazine762x39mmFMJ
+      orGroup: lot2
+    - id: ClothingEyesGlassesThermal
+      orGroup: lot3
+    - id: ClothingEyesNightVisionGoggles
+      orGroup: lot3
+    - id: ClothingOuterArmorMakeshiftVestHeavy
+      orGroup: lot3
+    - id: ClothingMaskNeckGaiter
+      orGroup: lot3
+    - id: IngotGold1
+      orGroup: lot4
+    - id: IngotSilver1
+      orGroup: lot4
+    - id: MaterialDiamond1
+      orGroup: lot4
+    - id: SpaceCash1000
+      orGroup: lot4
+    - id: SpaceCash500
+      orGroup: lot4
+    - id: Cutlass
+      orGroup: lot5
+    - id: PirateHook
+      orGroup: lot5
+    - id: Machete
+      orGroup: lot5
+    - id: ThrowingKnife
+      orGroup: lot5
+    - id: WeaponBrassKnuckles
+      orGroup: lot5
+    - id: Stunprod
+      orGroup: lot5
+    - id: DrinkRumBottleFull
+      orGroup: lot6
+    - id: DrinkVodkaBottleFull
+      orGroup: lot6
+    - id: CigPackBlack
+      orGroup: lot6
+    - id: Zipties
+      orGroup: lot6
+    - id: Handcuffs
+      orGroup: lot6
+    - id: SmokeGrenade
+      orGroup: lot6

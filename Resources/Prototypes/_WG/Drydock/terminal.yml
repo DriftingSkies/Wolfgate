@@ -1,0 +1,36 @@
+# Drydock terminal: works every berth console multitool-linked to it on its grid from one seat, and locks berths so
+# only it works them. See the Drydock README.
+
+- type: entity
+  parent: BaseComputer
+  id: WGComputerDrydockTerminal
+  name: drydock terminal
+  description: Works every drydock berth linked to it, from one seat. Locked berths take work from here alone.
+  components:
+  - type: Sprite
+    sprite: _NF/Structures/Machines/computers.rsi
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: shuttle_records
+    - map: ["computerLayerKeys"]
+      state: telesci_key
+  # Anchored, no unwrenching, like the berth consoles.
+  - type: Anchorable
+    flags:
+    - Anchorable
+  - type: WGDrydockTerminal
+  # Long enough to reach every berth of a station's yard.
+  - type: DeviceLinkSource
+    range: 100
+    ports:
+    - WGDrydockBerthSender
+  - type: ActivatableUI
+    key: enum.WGDrydockTerminalUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.WGDrydockTerminalUiKey.Key:
+        type: WGDrydockTerminalBoundUserInterface

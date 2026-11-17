@@ -433,8 +433,8 @@ public sealed partial class SuitSensorSystem : EntitySystem
         // will additonally check the grid and name if it exists, as well if its expedition
         var status = new SuitSensorStatus(GetNetEntity(uid), userName, userJob, userJobIcon, userJobDepartments, userLocationName);
         // WOLFGATE(Companies) START: the company rank on the ID, for its custom job icon
-        if (card.Owner.Valid && TryComp<Content.Shared._WF.Companies.WFCompanyRankIconComponent>(card, out var wfRankIcon))
-            status.WFCompanyRank = wfRankIcon.RankId;
+        if (card.Owner.Valid && TryComp<Content.Shared._WG.Companies.WGCompanyRankIconComponent>(card, out var wgRankIcon))
+            status.WGCompanyRank = wgRankIcon.RankId;
         // WOLFGATE END
         switch (sensor.Mode)
         {
@@ -508,7 +508,7 @@ public sealed partial class SuitSensorSystem : EntitySystem
             [SuitSensorConstants.NET_NAME] = status.Name,
             [SuitSensorConstants.NET_JOB] = status.Job,
             [SuitSensorConstants.NET_JOB_ICON] = status.JobIcon,
-            [SuitSensorConstants.NET_WF_COMPANY_RANK] = status.WFCompanyRank, // WOLFGATE(Companies)
+            [SuitSensorConstants.NET_WG_COMPANY_RANK] = status.WGCompanyRank, // WOLFGATE(Companies)
             [SuitSensorConstants.NET_JOB_DEPARTMENTS] = status.JobDepartments,
             [SuitSensorConstants.NET_IS_ALIVE] = status.IsAlive,
             [SuitSensorConstants.NET_SUIT_SENSOR_UID] = status.SuitSensorUid,
@@ -558,8 +558,8 @@ public sealed partial class SuitSensorSystem : EntitySystem
             TotalDamageThreshold = totalDamageThreshold,
             Coordinates = coords,
         };
-        if (payload.TryGetValue(SuitSensorConstants.NET_WF_COMPANY_RANK, out int wfCompanyRank)) // WOLFGATE(Companies)
-            status.WFCompanyRank = wfCompanyRank; // WOLFGATE(Companies)
+        if (payload.TryGetValue(SuitSensorConstants.NET_WG_COMPANY_RANK, out int wgCompanyRank)) // WOLFGATE(Companies)
+            status.WGCompanyRank = wgCompanyRank; // WOLFGATE(Companies)
         return status;
     }
 }

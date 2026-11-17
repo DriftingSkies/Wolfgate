@@ -18,7 +18,7 @@
   description: It's a storage unit for emergency breath masks and O2 tanks.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/emergency-oxygen.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/emergency-oxygen.rsi
 
 - type: entity
   parent: BaseWallCloset
@@ -27,7 +27,7 @@
   description: It's full of life-saving equipment. Assuming, that is, that you breathe nitrogen.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/emergency-nitrogen.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/emergency-nitrogen.rsi
 
 - type: entity
   parent: BaseWallCloset
@@ -36,7 +36,7 @@
   description: It's a storage unit for fire-fighting supplies.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/emergency-fire.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/emergency-fire.rsi
 
 - type: entity
   id: ClosetWallBlue
@@ -45,7 +45,7 @@
   description: "A wardrobe packed with stylish blue clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-blue.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-blue.rsi
 
 - type: entity
   id: ClosetWallPink
@@ -54,7 +54,7 @@
   description: "A wardrobe packed with fabulous pink clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-pink.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-pink.rsi
 
 - type: entity
   id: ClosetWallBlack
@@ -63,7 +63,7 @@
   description: "A wardrobe packed with stylish black clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-black.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-black.rsi
 
 - type: entity
   id: ClosetWallGreen
@@ -72,7 +72,7 @@
   description: "A wardrobe packed with stylish green clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-green.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-green.rsi
 
 - type: entity
   id: ClosetWallOrange
@@ -80,7 +80,7 @@
   name: prison wall closet
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-wardrobe.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-wardrobe.rsi
 
 - type: entity
   id: ClosetWallYellow
@@ -89,7 +89,7 @@
   description: "A wardrobe packed with stylish yellow clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-yellow.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-yellow.rsi
 
 - type: entity
   id: ClosetWallWhite
@@ -98,7 +98,7 @@
   description: "A wardrobe packed with stylish white clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-white.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-white.rsi
 
 - type: entity
   id: ClosetWallGrey
@@ -107,7 +107,7 @@
   description: "A wardrobe packed with a tide of grey clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe.rsi
 
 - type: entity
   id: ClosetWallMixed
@@ -116,7 +116,7 @@
   description: "A wardrobe packed with a mix of colorful clothing."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-mixed.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/generic-wardrobe-mixed.rsi
 
 - type: entity
   id: ClosetWallAtmospherics
@@ -124,7 +124,7 @@
   name: atmospherics wall closet
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/engineering-wardrobe-atmos.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/engineering-wardrobe-atmos.rsi
 
 - type: entity
   id: LockerWallMedical
@@ -132,7 +132,7 @@
   name: medical wall locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/medical-secure.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/medical-secure.rsi
   - type: AccessReader
 #    access: [["Medical"]]
 
@@ -143,7 +143,7 @@
   description: It's emergencies all the way down.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/engineering-secure-shuttlerepair.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/engineering-secure-shuttlerepair.rsi
   - type: AccessReader
 #    access: [["Engineering"]]
 
@@ -155,7 +155,7 @@
   suffix: 1
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-1.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-1.rsi
 
 - type: entity
   parent: LockerWallBasePrisoner
@@ -163,7 +163,7 @@
   suffix: 2
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-2.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-2.rsi
 
 - type: entity
   parent: LockerWallBasePrisoner
@@ -171,7 +171,7 @@
   suffix: 3
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-3.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-3.rsi
 
 - type: entity
   parent: LockerWallBasePrisoner
@@ -179,7 +179,7 @@
   suffix: 4
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-4.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-4.rsi
 
 - type: entity
   parent: LockerWallBasePrisoner
@@ -187,7 +187,7 @@
   suffix: 5
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-5.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-5.rsi
 
 - type: entity
   parent: LockerWallBasePrisoner
@@ -195,7 +195,7 @@
   suffix: 6
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-6.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-6.rsi
 
 - type: entity
   parent: LockerWallBasePrisoner
@@ -203,7 +203,7 @@
   suffix: 7
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-7.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-7.rsi
 
 - type: entity
   parent: LockerWallBasePrisoner
@@ -211,7 +211,7 @@
   suffix: 8
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-8.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/prisoner-secure-8.rsi
 
 - type: entity
   parent: BaseWallLocker
@@ -221,7 +221,7 @@
   suffix: "Locked"
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/ClosetsWallmounted/antag-secure-syndicate.rsi
+    sprite: _WG/Resprites/Wizden/Storage/ClosetsWallmounted/antag-secure-syndicate.rsi
   - type: AccessReader
     access: [["SyndicateAgent"]]
 # WOLFGATE END

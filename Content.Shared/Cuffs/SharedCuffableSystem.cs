@@ -509,7 +509,7 @@ namespace Content.Shared.Cuffs
                 cuffTime = 0.0f; // cuff them instantly.
 
             // WOLFGATE(Modsuits) START: restraint-assist modules shorten the cuff do-after.
-            var cuffEv = new Content.Shared._WF.Modsuits.Modules.ModifyCuffDurationEvent(target, cuffTime);
+            var cuffEv = new Content.Shared._WG.Modsuits.Modules.ModifyCuffDurationEvent(target, cuffTime);
             RaiseLocalEvent(user, ref cuffEv);
             cuffTime = cuffEv.Duration;
             // WOLFGATE END

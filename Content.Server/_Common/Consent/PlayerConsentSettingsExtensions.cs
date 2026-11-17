@@ -3,7 +3,7 @@
 // WOLFGATE(Genitals): ported from HardLight (consent system)
 
 using Content.Shared._Common.Consent;
-using Content.Shared._WF.Prototypes; // WOLFGATE(Prototypes)
+using Content.Shared._WG.Prototypes; // WOLFGATE(Prototypes)
 using Content.Server.Database;
 using Robust.Shared.Prototypes;
 using System.Linq;
@@ -16,7 +16,7 @@ public static class PlayerConsentSettingsExtensions
     {
         return new(dbConsentSettings.ConsentFreetext ?? "", (dbConsentSettings.ConsentToggles ?? new()).ToDictionary(
             // WOLFGATE(Prototypes): rows saved before a toggle rename load under its current id.
-            keySelector: t => new ProtoId<ConsentTogglePrototype>(WFLegacyPrototypeIds.Resolve(WFLegacyPrototypeIds.ConsentToggles, t.ToggleProtoId)),
+            keySelector: t => new ProtoId<ConsentTogglePrototype>(WGLegacyPrototypeIds.Resolve(WGLegacyPrototypeIds.ConsentToggles, t.ToggleProtoId)),
             elementSelector: t => t.ToggleProtoState
         ));
     }

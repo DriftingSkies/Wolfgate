@@ -1,0 +1,9 @@
+wg-round-setup-error-denied = This action is no longer available. Refresh the lobby and try again.
+wg-round-setup-error-round-ended = Crew Setup is unavailable while the round is ending.
+wg-round-setup-error-job = Choose an available job for your current character before joining. Job restrictions and open slots still apply.
+wg-round-setup-error-host-not-ready = The host must be ready before this group can launch.
+wg-round-setup-error-latejoin = The host has closed this scenario to late arrivals.
+wg-round-setup-error-wreck = No surviving floor is available on this group's wreck. You have stayed in the lobby.
+wg-round-setup-request-sent = Your join request has been sent to the host.
+wg-round-setup-invited = You have been invited to a crew. Open Crew Setup to respond.
+wg-round-setup-error-round-mode = This round mode controls its own spawns and cannot support a crash start.

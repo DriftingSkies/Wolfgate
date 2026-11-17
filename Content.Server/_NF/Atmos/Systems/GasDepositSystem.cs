@@ -274,7 +274,7 @@ public sealed partial class GasDepositSystem : SharedGasDepositSystem
         if (RefuseWorthlessSale(ent, gridUid, args.Actor))
             return;
 
-        if (WfShipRefuses(ent, args.Actor)) // WOLFGATE(ShipCommand): a commanded ship's gas sale doesn't buy from the barred
+        if (WgShipRefuses(ent, args.Actor)) // WOLFGATE(ShipCommand): a commanded ship's gas sale doesn't buy from the barred
             return; // WOLFGATE(ShipCommand)
 
         var mixture = new GasMixture();

@@ -1,0 +1,95 @@
+- type: roleLoadout
+  id: JobWGPdvJarrah
+  groups:
+  - PDVHead
+  - PDVNeck
+  - PDVJumpsuit
+  - WGPdvJarrahGloves
+  - PDVOuterClothing
+  - WGPdvJarrahHud
+  - PDVBackpack
+  - PDVShoes
+  - PirateFace
+  - ContractorBoxSurvival
+  - WGPdvJarrahPDA
+  - ContractorCartridge
+  - ContractorWallet
+  - NFSpeciesSpecific
+  - PirateTrinkets
+  - WGPdvJarrahBelt
+  - ContractorEncryptionKey
+  - RogueFirearm
+  - RogueSidearm
+  - RogueMag
+  - RoguePistolMag
+  - WGPdvRanksJarrah
+  canCustomizeName: true
+
+- type: loadout
+  id: WGPdvJarrahPDA
+  price: 0
+  equipment:
+    id: WGPdvJarrahPDA
+
+- type: loadoutGroup
+  id: WGPdvJarrahPDA
+  name: loadout-group-contractor-id
+  hidden: true
+  loadouts:
+  - WGPdvJarrahPDA
+  fallbacks:
+  - WGPdvJarrahPDA
+
+- type: loadoutGroup
+  id: WGPdvJarrahGloves
+  name: loadout-group-contractor-gloves
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - PDVCombatGloves
+  - TsfmcNitrileGloves
+  - TsfmcLatexGloves
+  fallbacks:
+  - PDVCombatGloves
+
+- type: loadout
+  id: WGPdvJarrahMedSecHud
+  equipment:
+    eyes: ClothingEyesHudMedSec
+
+- type: loadout
+  id: WGPdvJarrahMedicalHud
+  equipment:
+    eyes: ClothingEyesHudMedical
+
+- type: loadoutGroup
+  id: WGPdvJarrahHud
+  name: loadout-group-contractor-glasses
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - WGPdvJarrahMedSecHud
+  - WGPdvJarrahMedicalHud
+  fallbacks:
+  - WGPdvJarrahMedSecHud
+
+- type: loadout
+  id: WGPdvJarrahMedicalWebbing
+  equipment:
+    belt: ClothingBeltMilitaryWebbingMed
+
+- type: loadoutGroup
+  id: WGPdvJarrahBelt
+  name: loadout-group-contractor-belt
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - WGPdvJarrahMedicalWebbing
+  - WGRMCLoadoutBeltMedicBagPDV
+  - WGRMCLoadoutBeltMedicBagBlack
+  - WGRMCLoadoutBeltMedical
+  - WGRMCLoadoutBeltTanMedical
+  - PDVClothingBeltWebbingsNormalBlack
+  - PDVClothingBeltWebbingsBigBlack
+  fallbacks:
+  - WGPdvJarrahMedicalWebbing

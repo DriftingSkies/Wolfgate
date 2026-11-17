@@ -10,7 +10,7 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     avali_tail_wag_BEHIND: avali_tail_wag_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Avali/avali_parts.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Avali/avali_parts.rsi # WOLFGATE(Genitals): split art
       state: avali_tail_wag_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Avali/avali_parts.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Avali/avali_parts.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: avali_tail_wag_BEHIND

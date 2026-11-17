@@ -1,0 +1,32 @@
+#Author Info
+#zy.dras (Discord)
+- type: vessel
+  id: WGSolarsail
+  parent: BaseVessel
+  name: Solarsail
+  description: A personal transport and mobile office for the Overseer.
+  price: 23829 #appraised at 20721, 15% markup
+  category: Small
+  group: Sr
+  access: CaelestinusCommand
+  shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/solarsail.yml
+  guidebookPage: Null
+  class:
+  - Civilian
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WGSolarsail
+  mapName: 'Solarsail'
+  mapPath: /SharedMaps/_WG/Shipyard/Shuttles/solarsail.yml
+  minPlayers: 0
+  stations:
+    WGSolarsail:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Solarsail SRV{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'

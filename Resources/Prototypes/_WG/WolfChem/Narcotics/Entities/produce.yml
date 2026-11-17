@@ -1,0 +1,103 @@
+# Drug crops. Seeds come from the exotic seeds crate and dealers, never the public seed vendor.
+
+- type: seed
+  id: WGCoca
+  name: wg-seeds-coca-name
+  noun: seeds-noun-seeds
+  displayName: wg-seeds-coca-display-name
+  plantRsi: _WG/WolfChem/Narcotics/Hydroponics/coca.rsi
+  packetPrototype: WGCocaSeeds
+  productPrototypes:
+  - WGLeavesCoca
+  harvestRepeat: Repeat
+  lifespan: 60
+  maturation: 9
+  production: 10
+  yield: 2
+  potency: 20
+  growthStages: 3
+  waterConsumption: 0.5
+  idealLight: 9
+  idealHeat: 300
+  chemicals:
+    WGCocaAlkaloid:
+      Min: 1
+      Max: 10
+      PotencyDivisor: 10
+
+- type: entity
+  parent: SeedBase
+  id: WGCocaSeeds
+  components:
+  - type: Seed
+    seedId: WGCoca
+  - type: Sprite
+    sprite: _WG/WolfChem/Narcotics/Hydroponics/coca.rsi
+
+- type: entity
+  parent: ProduceBase
+  id: WGLeavesCoca
+  components:
+  - type: Sprite
+    sprite: _WG/WolfChem/Narcotics/Hydroponics/coca.rsi
+  - type: Produce
+    seedId: WGCoca
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: WGCocaAlkaloid
+          Quantity: 10
+  - type: WGProducePurity
+
+- type: seed
+  id: WGOpiumPoppy
+  name: wg-seeds-opium-poppy-name
+  noun: seeds-noun-seeds
+  displayName: wg-seeds-opium-poppy-display-name
+  plantRsi: _WG/WolfChem/Narcotics/Hydroponics/opium_poppy.rsi
+  packetPrototype: WGOpiumPoppySeeds
+  productPrototypes:
+  - WGOpiumPoppyPod
+  lifespan: 30
+  maturation: 12
+  production: 4
+  yield: 2
+  potency: 15
+  growthStages: 3
+  waterConsumption: 0.6
+  chemicals:
+    WGOpium:
+      Min: 2
+      Max: 10
+      PotencyDivisor: 10
+
+- type: entity
+  parent: SeedBase
+  id: WGOpiumPoppySeeds
+  components:
+  - type: Seed
+    seedId: WGOpiumPoppy
+  - type: Sprite
+    sprite: _WG/WolfChem/Narcotics/Hydroponics/opium_poppy.rsi
+
+# The pod holds opium; grind it, chill the opium and add water to set it into resin.
+- type: entity
+  parent: FoodProduceBase
+  id: WGOpiumPoppyPod
+  components:
+  - type: Sprite
+    sprite: _WG/WolfChem/Narcotics/Hydroponics/opium_poppy.rsi
+  - type: FlavorProfile
+    flavors:
+    - bitter
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 15
+        reagents:
+        - ReagentId: WGOpium
+          Quantity: 6
+  - type: Produce
+    seedId: WGOpiumPoppy
+  - type: WGProducePurity

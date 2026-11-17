@@ -94,7 +94,7 @@ public abstract partial class CESharedZLevelsSystem
 
         var stickyGround = zPhysicsComponent.CachedStickyGround &&
             zPhysicsComponent.Velocity is <= 0 and > -2f;
-        WfGroundless(zPhysicsComponent, ref stickyGround); // WOLFGATE(Planets): a ghost never sticks to stairs or stays between levels
+        WgGroundless(zPhysicsComponent, ref stickyGround); // WOLFGATE(Planets): a ghost never sticks to stairs or stays between levels
 
         if (stickyGround || zPhysicsComponent.AutoStep && distanceToGround < 0)
             zPhysicsComponent.LocalPosition = zPhysicsComponent.CachedGroundHeight;
@@ -132,7 +132,7 @@ public abstract partial class CESharedZLevelsSystem
             if (TryMoveDown(entity))
             {
                 zPhysicsComponent.LocalPosition += 1;
-                if (zPhysicsComponent is { CachedStickyGround: false, Fallable: true } && !WfSteppedDown(zPhysicsComponent)) // WOLFGATE(Caverns): stepping down onto stairs is not a fall
+                if (zPhysicsComponent is { CachedStickyGround: false, Fallable: true } && !WgSteppedDown(zPhysicsComponent)) // WOLFGATE(Caverns): stepping down onto stairs is not a fall
                 {
                     var fallEv = new CEZLevelFallMapEvent();
                     RaiseLocalEvent(entity, ref fallEv);
@@ -142,7 +142,7 @@ public abstract partial class CESharedZLevelsSystem
 
         if (zPhysicsComponent.LocalPosition >= 1)
         {
-            if (HasTileAbove(entity) || WfSealedAbove((entity.Owner, zPhysicsComponent))) // WOLFGATE(Caverns): ground over a cavern is a ceiling even where it isn't loaded
+            if (HasTileAbove(entity) || WgSealedAbove((entity.Owner, zPhysicsComponent))) // WOLFGATE(Caverns): ground over a cavern is a ceiling even where it isn't loaded
             {
                 if (zPhysicsComponent.Velocity >= ImpactVelocityLimit)
                 {
@@ -163,7 +163,7 @@ public abstract partial class CESharedZLevelsSystem
             }
         }
 
-        WFNoteHeight(entity, zPhysicsComponent.LocalPosition); // WOLFGATE(Performance): predicted height joins the sprite passes
+        WGNoteHeight(entity, zPhysicsComponent.LocalPosition); // WOLFGATE(Performance): predicted height joins the sprite passes
 
         if (float.Abs(oldVelocity - zPhysicsComponent.Velocity) > 0.001f)
             DirtyField(entity, zPhysicsComponent, nameof(CEZPhysicsComponent.Velocity));

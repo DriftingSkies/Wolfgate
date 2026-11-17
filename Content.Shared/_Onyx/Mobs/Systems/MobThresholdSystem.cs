@@ -7,7 +7,7 @@ using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade.
 using Content.Shared.FixedPoint;
 
 namespace Content.Shared.Mobs.Systems;

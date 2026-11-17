@@ -73,7 +73,7 @@ namespace Content.Server.Ghost
         [Dependency] private IAdminManager _admin = default!; // Frontier
         [Dependency] private IServerPreferencesManager _preferencesManager = default!;
         [Dependency] private GhostSpriteStateSystem _ghostState = default!;
-        [Dependency] private Content.Server._WF.Wolfmed.Life.WolfmedDyingActionsSystem _wolfmedEndings = default!; // WOLFGATE(Wolfmed): M1a: honest endings
+        [Dependency] private Content.Server._WG.Wolfmed.Life.WolfmedDyingActionsSystem _wolfmedEndings = default!; // WOLFGATE(Wolfmed): M1a: honest endings
 
         private EntityQuery<GhostComponent> _ghostQuery;
         private EntityQuery<PhysicsComponent> _physicsQuery;

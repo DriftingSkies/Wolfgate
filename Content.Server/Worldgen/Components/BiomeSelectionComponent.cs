@@ -1,6 +1,6 @@
 ﻿using Content.Server.Worldgen.Systems.Biomes;
 using Content.Server.Worldgen.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Worldgen.Components;
 

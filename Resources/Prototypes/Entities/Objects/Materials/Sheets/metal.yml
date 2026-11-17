@@ -10,7 +10,7 @@
     sprite: Objects/Materials/Sheets/metal.rsi
     size: Normal
   # WOLFGATE(CargoLoad): sheets weigh down the ship carrying them
-  - type: WFCargoMass
+  - type: WGCargoMass
     perUnit: 0.01
   - type: StaticPrice
     price: 0

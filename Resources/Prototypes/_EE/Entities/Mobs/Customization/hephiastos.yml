@@ -37,7 +37,7 @@
   id: CyberLimbsMarkingHesphiastosLArm
   bodyPart: LArm
   markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
-  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
+  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WGCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/hesphiastos/hesphiastos_main.rsi
     state: l_arm-1
@@ -48,7 +48,7 @@
   id: CyberLimbsMarkingHesphiastosLHand
   bodyPart: LHand
   markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
-  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
+  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WGCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/hesphiastos/hesphiastos_main.rsi
     state: l_hand-1
@@ -59,7 +59,7 @@
   id: CyberLimbsMarkingHesphiastosLLeg
   bodyPart: LLeg
   markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
-  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
+  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WGCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/hesphiastos/hesphiastos_main.rsi
     state: l_leg-1
@@ -71,7 +71,7 @@
   id: CyberLimbsMarkingHesphiastosLFoot
   bodyPart: LFoot
   markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
-  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
+  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WGCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/hesphiastos/hesphiastos_main.rsi
     state: l_foot-1
@@ -84,7 +84,7 @@
   id: CyberLimbsMarkingHesphiastosRArm
   bodyPart: RArm
   markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
-  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
+  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WGCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/hesphiastos/hesphiastos_main.rsi
     state: r_arm-1
@@ -96,7 +96,7 @@
   id: CyberLimbsMarkingHesphiastosRHand
   bodyPart: RHand
   markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
-  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
+  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WGCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/hesphiastos/hesphiastos_main.rsi
     state: r_hand-1
@@ -108,7 +108,7 @@
   id: CyberLimbsMarkingHesphiastosRLeg
   bodyPart: RLeg
   markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
-  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
+  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WGCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/hesphiastos/hesphiastos_main.rsi
     state: r_leg-1
@@ -120,7 +120,7 @@
   id: CyberLimbsMarkingHesphiastosRFoot
   bodyPart: RFoot
   markingCategory: Chassis # WOLFGATE(Species): chassis part, was a Head, Chest, Arms or Legs marking
-  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WFCanine] # WOLFGATE(Species): added Canine
+  speciesRestriction: [IPC, Moth, Dwarf, Human, Arachnid, Felinid, Oni, Vulpkanin, HumanoidFoxes, Reptilian, WGCanine] # WOLFGATE(Species): added Canine
   sprites:
   - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/hesphiastos/hesphiastos_main.rsi
     state: r_foot-1

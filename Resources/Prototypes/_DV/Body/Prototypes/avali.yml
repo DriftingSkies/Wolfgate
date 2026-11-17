@@ -9,7 +9,7 @@
       connections:
       - torso
       organs:
-        brain: WFOrganAvaliBrain # WOLFGATE(Avali): Avali brain sprite
+        brain: WGOrganAvaliBrain # WOLFGATE(Avali): Avali brain sprite
         eyes: OrganHumanEyes
     torso:
       part: TorsoAvali

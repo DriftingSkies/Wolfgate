@@ -1,7 +1,7 @@
 ## Static
 - type: latheRecipePack
   id: EmptyXenoborgs
-  # WOLFGATE(Xenoborgs) START: shells cost crystals only (WFXenoborgCrystalRecipes)
+  # WOLFGATE(Xenoborgs) START: shells cost crystals only (WGXenoborgCrystalRecipes)
   recipes: []
   # recipes:
   # - BorgChassisSelectableXenoborg

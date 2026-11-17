@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 using Robust.Client.Graphics;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Client.IconSmoothing
 {

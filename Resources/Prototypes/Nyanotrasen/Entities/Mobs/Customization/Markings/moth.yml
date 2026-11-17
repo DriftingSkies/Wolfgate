@@ -349,9 +349,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: aspen_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: aspen_BEHIND
   # WOLFGATE END
 
@@ -374,9 +374,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: atlas_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: atlas_BEHIND
   # WOLFGATE END
 
@@ -399,9 +399,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: brown_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: brown_BEHIND
   # WOLFGATE END
 
@@ -424,9 +424,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: deathshead_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: deathshead_BEHIND
   # WOLFGATE END
 
@@ -449,9 +449,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: feathery_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: feathery_BEHIND
   # WOLFGATE END
 
@@ -474,9 +474,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: firewatch_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: firewatch_BEHIND
   # WOLFGATE END
 
@@ -499,9 +499,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: gothic_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: gothic_BEHIND
   # WOLFGATE END
 
@@ -524,9 +524,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: jungle_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: jungle_BEHIND
   # WOLFGATE END
 
@@ -549,9 +549,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: lovers_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: lovers_BEHIND
   # WOLFGATE END
 
@@ -574,9 +574,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: luna_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: luna_BEHIND
   # WOLFGATE END
 
@@ -599,9 +599,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: mint_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: mint_BEHIND
   # WOLFGATE END
 
@@ -624,9 +624,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: moffra_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: moffra_BEHIND
   # WOLFGATE END
 
@@ -649,9 +649,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: monarch_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: monarch_BEHIND
   # WOLFGATE END
 
@@ -674,9 +674,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: moonfly_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: moonfly_BEHIND
   # WOLFGATE END
 
@@ -699,9 +699,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: oakworm_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: oakworm_BEHIND
   # WOLFGATE END
 
@@ -724,9 +724,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: plain_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: plain_BEHIND
   # WOLFGATE END
 
@@ -749,9 +749,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: plasmafire_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: plasmafire_BEHIND
   # WOLFGATE END
 
@@ -774,9 +774,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: poison_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: poison_BEHIND
   # WOLFGATE END
 
@@ -799,9 +799,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: ragged_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: ragged_BEHIND
   # WOLFGATE END
 
@@ -824,9 +824,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: reddish_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: reddish_BEHIND
   # WOLFGATE END
 
@@ -849,9 +849,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: rosy_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: rosy_BEHIND
   # WOLFGATE END
 
@@ -874,9 +874,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: royal_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: royal_BEHIND
   # WOLFGATE END
 
@@ -899,9 +899,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: snow_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: snow_BEHIND
   # WOLFGATE END
 
@@ -924,9 +924,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: whitefly_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: whitefly_BEHIND
   # WOLFGATE END
 
@@ -949,9 +949,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art into front/behind anatomy zones
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: witchking_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
     state: witchking_BEHIND
   # WOLFGATE END
 

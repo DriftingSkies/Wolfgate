@@ -1,0 +1,166 @@
+- type: entity
+  abstract: true
+  parent: BaseSign
+  id: WGBasePictureFrame
+  components:
+  - type: Sprite
+    sprite: _WG/Photography/frame.rsi
+    layers:
+    - state: overlay
+      map: ["enum.PhotoVisualLayers.Base"]
+    - sprite: _WG/Photography/photo.rsi
+      state: photo
+      map: ["enum.PhotoVisualLayers.Photo"]
+      visible: false
+    - sprite: _WG/Photography/photo.rsi
+      state: photo
+      map: ["enum.PhotoVisualLayers.Thumbnail"]
+      visible: false
+  - type: PhotoFrame
+  - type: ContainerContainer
+    containers:
+      photo: !type:ContainerSlot
+  - type: ActivatableUI
+    key: enum.PhotoUiKey.Viewer
+    requiresComplex: false
+  - type: UserInterface
+    interfaces:
+      enum.PhotoUiKey.Viewer:
+        type: PhotoBoundUserInterface
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:EmptyAllContainersBehaviour
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  parent: WGBasePictureFrame
+  id: WGPictureFrame
+  components:
+  - type: Construction
+    graph: WGPictureFrameGraph
+    node: PictureFrameNode
+
+- type: entity
+  parent: WGBasePictureFrame
+  id: WGPictureFrameShowroom
+
+- type: entity
+  parent: WGBasePictureFrame
+  id: WGPictureFrameMonkey
+  components:
+  - type: Sprite
+    layers:
+    - state: monkey
+      map: ["enum.PhotoVisualLayers.Base"]
+    - sprite: _WG/Photography/photo.rsi
+      state: photo
+      map: ["enum.PhotoVisualLayers.Photo"]
+      visible: false
+    - sprite: _WG/Photography/photo.rsi
+      state: photo
+      map: ["enum.PhotoVisualLayers.Thumbnail"]
+      visible: false
+  - type: PhotoFrame
+    portraitState: monkey
+    portraitName: wg-photo-portrait-monkey-name
+    portraitDescription: wg-photo-portrait-monkey-description
+
+- type: entity
+  parent: WGPictureFrameMonkey
+  id: WGPictureFrameFruit
+  components:
+  - type: Sprite
+    layers:
+    - state: fruit
+      map: ["enum.PhotoVisualLayers.Base"]
+    - sprite: _WG/Photography/photo.rsi
+      state: photo
+      map: ["enum.PhotoVisualLayers.Photo"]
+      visible: false
+    - sprite: _WG/Photography/photo.rsi
+      state: photo
+      map: ["enum.PhotoVisualLayers.Thumbnail"]
+      visible: false
+  - type: PhotoFrame
+    portraitState: fruit
+    portraitName: wg-photo-portrait-fruit-name
+    portraitDescription: wg-photo-portrait-fruit-description
+
+- type: entity
+  parent: WGPictureFrameMonkey
+  id: WGPictureFrameRat
+  components:
+  - type: Sprite
+    layers:
+    - state: rat
+      map: ["enum.PhotoVisualLayers.Base"]
+    - sprite: _WG/Photography/photo.rsi
+      state: photo
+      map: ["enum.PhotoVisualLayers.Photo"]
+      visible: false
+    - sprite: _WG/Photography/photo.rsi
+      state: photo
+      map: ["enum.PhotoVisualLayers.Thumbnail"]
+      visible: false
+  - type: PhotoFrame
+    portraitState: rat
+    portraitName: wg-photo-portrait-rat-name
+    portraitDescription: wg-photo-portrait-rat-description
+
+- type: constructionGraph
+  id: WGPictureFrameGraph
+  start: start
+  graph:
+  - node: start
+    actions:
+    - !type:DestroyEntity { }
+    edges:
+    - to: PictureFrameNode
+      completed:
+      - !type:SnapToGrid { }
+      steps:
+      - material: WoodPlank
+        amount: 1
+        doAfter: 1
+  - node: PictureFrameNode
+    entity: WGPictureFrame
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers { }
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+      steps:
+      - tool: Screwing
+        doAfter: 3
+    - to: start
+      completed:
+      - !type:EmptyAllContainers { }
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+      steps:
+      - tool: Anchoring
+        doAfter: 3
+
+- type: construction
+  id: WGPictureFrameConstruction
+  name: picture frame
+  description: A wooden frame for a photo, hung on a wall.
+  graph: WGPictureFrameGraph
+  startNode: start
+  targetNode: PictureFrameNode
+  category: construction-category-misc
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: true
+  icon:
+    sprite: _WG/Photography/frame.rsi
+    state: overlay

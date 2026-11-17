@@ -1,8 +1,8 @@
 using Content.Client._Common.Consent.UI; // WOLFGATE(Genitals)
-using Content.Client._WF.Genitals.UI; // WOLFGATE(Genitals): anatomy panel
-using Content.Client._WF.SectorControl; // WOLFGATE(SectorControl)
-using Content.Client._WF.Feedback; // WOLFGATE(Feedback)
-using Content.Client._WF.LoreBook; // WOLFGATE(LoreBook)
+using Content.Client._WG.Genitals.UI; // WOLFGATE(Genitals): anatomy panel
+using Content.Client._WG.SectorControl; // WOLFGATE(SectorControl)
+using Content.Client._WG.Feedback; // WOLFGATE(Feedback)
+using Content.Client._WG.LoreBook; // WOLFGATE(LoreBook)
 using Content.Client.UserInterface.Systems.Actions;
 using Content.Client.UserInterface.Systems.Admin;
 using Content.Client.UserInterface.Systems.Bwoink;
@@ -31,8 +31,8 @@ public sealed partial class GameTopMenuBarUIController : UIController
     [Dependency] private ActionUIController _action = default!;
     [Dependency] private SandboxUIController _sandbox = default!;
     [Dependency] private GuidebookUIController _guidebook = default!;
-    [Dependency] private WFSectorMapUIController _sectorMap = default!; // WOLFGATE(SectorControl): sector map button
-    [Dependency] private WFLoreBookUIController _loreBook = default!; // WOLFGATE(LoreBook): lore book button
+    [Dependency] private WGSectorMapUIController _sectorMap = default!; // WOLFGATE(SectorControl): sector map button
+    [Dependency] private WGLoreBookUIController _loreBook = default!; // WOLFGATE(LoreBook): lore book button
     [Dependency] private EmotesUIController _emotes = default!;
     [Dependency] private LanguageMenuUIController _language = default!;
     [Dependency] private FeedbackUIController _feedback = default!; // WOLFGATE(Feedback): bug report button

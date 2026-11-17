@@ -1,0 +1,13 @@
+- type: entity
+  parent: BaseItem
+  id: WGPurityTester
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Medical/mouth_swab.rsi
+    state: icon
+    color: "#c8e070"
+  - type: Item
+    size: Tiny
+  - type: WGPurityTester
+  - type: StaticPrice
+    price: 120

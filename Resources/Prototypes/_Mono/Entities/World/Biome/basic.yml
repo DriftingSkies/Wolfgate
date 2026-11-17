@@ -693,7 +693,7 @@
   distanceRange: 20000, 34000 # WOLFGATE(Lattice): wider Lattice bands, Detune 20-34 km
   chunkComponents:
   - type: DebrisFeaturePlacerController
-    densityNoiseChannel: WFDensityDetune # WOLFGATE(Lattice): each band thins its own rocks
+    densityNoiseChannel: WGDensityDetune # WOLFGATE(Lattice): each band thins its own rocks
   - type: SimpleDebrisSelector
     debrisTable:
     # Medium (1.44)
@@ -822,7 +822,7 @@
   chunkComponents:
   # WOLFGATE(Lattice) START: each band thins its own rocks
   - type: DebrisFeaturePlacerController
-    densityNoiseChannel: WFDensityDissonance
+    densityNoiseChannel: WGDensityDissonance
   # WOLFGATE END
   - type: NoiseDrivenDebrisSelector
     noiseChannel: WreckRare
@@ -857,7 +857,7 @@
   chunkComponents:
   # WOLFGATE(Lattice) START: each band thins its own rocks
   - type: DebrisFeaturePlacerController
-    densityNoiseChannel: WFDensityFeedback
+    densityNoiseChannel: WGDensityFeedback
   # WOLFGATE END
   - type: NoiseDrivenDebrisSelector
     noiseChannel: WreckRare
@@ -894,7 +894,7 @@
   - type: DebrisFeaturePlacerController
     # WOLFGATE(Lattice) START: the Coda has the fewest rocks of all
     # densityNoiseChannel: DensityVeryRare
-    densityNoiseChannel: WFDensityCoda
+    densityNoiseChannel: WGDensityCoda
     # WOLFGATE END
   - type: NoiseDrivenDebrisSelector
     debrisTable:

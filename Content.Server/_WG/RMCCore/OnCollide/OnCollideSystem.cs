@@ -1,0 +1,28 @@
+using Content.Server.Chat.Systems;
+using Content.Server._WG.RMCCore.Emote;
+using Content.Shared._WG.RMCCore.OnCollide;
+using Content.Shared._WG.Xenonids;
+using Content.Shared.Chat.Prototypes;
+using Robust.Shared.Prototypes;
+
+namespace Content.Server._WG.RMCCore.OnCollide;
+
+public sealed partial class OnCollideSystem : SharedOnCollideSystem
+{
+    [Dependency] private RMCEmoteSystem _rmcEmotes = default!;
+
+    protected override void DoEmote(Entity<DamageOnCollideComponent> ent, EntityUid other)
+    {
+        if (ent.Comp.Emote is not { } emote)
+            return;
+
+        if (HasComp<XenoComponent>(other) && ent.Comp.XenoEmote != null)
+        {
+            emote = ent.Comp.XenoEmote.Value;
+        }
+        else if (HasComp<XenoComponent>(other))
+            return;
+
+        _rmcEmotes.TryEmoteWithChat(other, emote);
+    }
+}

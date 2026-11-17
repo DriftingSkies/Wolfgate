@@ -26,7 +26,7 @@ public sealed partial class TargetSeekingSystem : EntitySystem
     [Dependency] private RotateToFaceSystem _rotateToFace = null!;
     [Dependency] private PhysicsSystem _physics = null!;
     [Dependency] private IGameTiming _gameTiming = default!; // Mono
-    [Dependency] private Content.Server._WF.BoardingAction.WFHackHarpoonSystem _wfHack = default!; // WOLFGATE(BoardingAction)
+    [Dependency] private Content.Server._WG.BoardingAction.WGHackHarpoonSystem _wgHack = default!; // WOLFGATE(BoardingAction)
 
     private EntityQuery<ProjectileComponent> _projectileQuery;
     private EntityQuery<PhysicsComponent> _physicsQuery;
@@ -281,7 +281,7 @@ public sealed partial class TargetSeekingSystem : EntitySystem
                     continue;
                 }
 
-                if (_wfHack.IsLockedOut(shooterGridUid, actualTarget)) // WOLFGATE(BoardingAction): a locked-down ship's seekers can't take the hacker.
+                if (_wgHack.IsLockedOut(shooterGridUid, actualTarget)) // WOLFGATE(BoardingAction): a locked-down ship's seekers can't take the hacker.
                     continue;
             }
 

@@ -21,7 +21,7 @@ public sealed partial class BodyPartFunctionalitySystem : EntitySystem
             return BodyPartFunctionalityState.Disabled;
 
         // WOLFGATE(Synthetics): a chassis part isolated from the panel has no servos.
-        if (HasComp<Content.Shared._WF.Synthetics.WFIsolatedPartComponent>(part))
+        if (HasComp<Content.Shared._WG.Synthetics.WGIsolatedPartComponent>(part))
             return BodyPartFunctionalityState.Disabled;
 
         if (!_configuration.GetCVar(CCVars.WoundsBodyPartFunctionalityEnabled))

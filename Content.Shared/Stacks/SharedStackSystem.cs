@@ -126,8 +126,8 @@ namespace Content.Shared.Stacks
 
             transferred = Math.Min(donorStack.Count, GetAvailableSpace(recipientStack));
             // WOLFGATE(ShipCommand) START: a bargain's discount moves with the items it covers
-            var wfMerge = new Content.Shared._WF.ShipCommand.WFStackMergeEvent(recipient, transferred, donorStack.Count);
-            RaiseLocalEvent(donor, ref wfMerge);
+            var wgMerge = new Content.Shared._WG.ShipCommand.WGStackMergeEvent(recipient, transferred, donorStack.Count);
+            RaiseLocalEvent(donor, ref wgMerge);
             // WOLFGATE END
             SetCount(donor, donorStack.Count - transferred, donorStack);
             SetCount(recipient, recipientStack.Count + transferred, recipientStack);

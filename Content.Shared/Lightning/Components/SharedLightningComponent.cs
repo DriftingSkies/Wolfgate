@@ -10,7 +10,7 @@
 
 using Content.Shared.Physics;
 using Robust.Shared.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Shared.Lightning.Components;
 /// <summary>

@@ -8,7 +8,7 @@
     anchored: true
   # WOLFGATE(Warheads) START: Skyrat's nuke sprites; the holiday layers keep the old sheet
   - type: Sprite
-    sprite: _WF/Warheads/field.rsi
+    sprite: _WG/Warheads/field.rsi
     noRot: true
     layers:
     - state: nuclearbomb_base
@@ -98,9 +98,9 @@
     alertLevelOnDeactivate: green
     # WOLFGATE(Warheads) START: Skyrat's final alarm, and the warhead countdown, voice and effects
     alertSound:
-      path: /Audio/_WF/Warheads/alarm.ogg
-  - type: WFNukePayload
-    payload: WFPayloadStationNuke
+      path: /Audio/_WG/Warheads/alarm.ogg
+  - type: WGNukePayload
+    payload: WGPayloadStationNuke
     # WOLFGATE END
   - type: InteractionOutline
   - type: ActivatableUI

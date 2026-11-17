@@ -1,0 +1,420 @@
+- type: marking
+  id: WGMeridianPodHairCabbage
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: cabbage
+
+- type: marking
+  id: WGMeridianHeadDoubleHalo
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  layering:
+    double_halo_BEHIND: TailBehind
+  colorLinks:
+    double_halo_BEHIND: double_halo
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: double_halo
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: double_halo_BEHIND
+
+- type: marking
+  id: WGMeridianPodHairFig
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: fig
+
+- type: marking
+  id: WGMeridianHeadHalo
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  layering:
+    halo_BEHIND: TailBehind
+  colorLinks:
+    halo_BEHIND: halo
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: halo
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: halo_BEHIND
+
+- type: marking
+  id: WGMeridianPodHairHibiscus
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: hibiscus
+
+- type: marking
+  id: WGMeridianPodHairIvy
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: ivy
+
+- type: marking
+  id: WGMeridianHeadMooglePomLargeBack
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      moogle_pom_large_back_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  layering:
+    moogle_pom_large_back_primary_BEHIND: TailBehind
+    moogle_pom_large_back_secondary_BEHIND: TailBehind
+  colorLinks:
+    moogle_pom_large_back_primary_BEHIND: moogle_pom_large_back_primary
+    moogle_pom_large_back_secondary_BEHIND: moogle_pom_large_back_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_large_back_primary
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_large_back_secondary
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_large_back_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_large_back_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianHeadMooglePomLargeFront
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      moogle_pom_large_front_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  layering:
+    moogle_pom_large_front_primary_BEHIND: TailBehind
+    moogle_pom_large_front_secondary_BEHIND: TailBehind
+  colorLinks:
+    moogle_pom_large_front_primary_BEHIND: moogle_pom_large_front_primary
+    moogle_pom_large_front_secondary_BEHIND: moogle_pom_large_front_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_large_front_primary
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_large_front_secondary
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_large_front_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_large_front_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianHeadMooglePomMediumBack
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      moogle_pom_medium_back_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  layering:
+    moogle_pom_medium_back_primary_BEHIND: TailBehind
+    moogle_pom_medium_back_secondary_BEHIND: TailBehind
+  colorLinks:
+    moogle_pom_medium_back_primary_BEHIND: moogle_pom_medium_back_primary
+    moogle_pom_medium_back_secondary_BEHIND: moogle_pom_medium_back_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_medium_back_primary
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_medium_back_secondary
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_medium_back_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_medium_back_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianHeadMooglePomMediumFront
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      moogle_pom_medium_front_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  layering:
+    moogle_pom_medium_front_primary_BEHIND: TailBehind
+    moogle_pom_medium_front_secondary_BEHIND: TailBehind
+  colorLinks:
+    moogle_pom_medium_front_primary_BEHIND: moogle_pom_medium_front_primary
+    moogle_pom_medium_front_secondary_BEHIND: moogle_pom_medium_front_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_medium_front_primary
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_medium_front_secondary
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_medium_front_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_medium_front_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianHeadMooglePomSmallBack
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      moogle_pom_small_back_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  layering:
+    moogle_pom_small_back_primary_BEHIND: TailBehind
+    moogle_pom_small_back_secondary_BEHIND: TailBehind
+  colorLinks:
+    moogle_pom_small_back_primary_BEHIND: moogle_pom_small_back_primary
+    moogle_pom_small_back_secondary_BEHIND: moogle_pom_small_back_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_small_back_primary
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_small_back_secondary
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_small_back_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_small_back_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianHeadMooglePomSmallFront
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      moogle_pom_small_front_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  layering:
+    moogle_pom_small_front_primary_BEHIND: TailBehind
+    moogle_pom_small_front_secondary_BEHIND: TailBehind
+  colorLinks:
+    moogle_pom_small_front_primary_BEHIND: moogle_pom_small_front_primary
+    moogle_pom_small_front_secondary_BEHIND: moogle_pom_small_front_secondary
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_small_front_primary
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_small_front_secondary
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_small_front_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/accessories_32x48.rsi
+    state: moogle_pom_small_front_secondary_BEHIND
+
+- type: marking
+  id: WGMeridianPodHairOrchid
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: orchid
+
+- type: marking
+  id: WGMeridianPodHairPrayer
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: prayer
+
+- type: marking
+  id: WGMeridianPodHairRose
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: rose
+
+- type: marking
+  id: WGMeridianMushroomCapRound
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: round
+
+- type: marking
+  id: WGMeridianPodHairShrub
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: shrub
+
+- type: marking
+  id: WGMeridianPodHairSpinach
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: spinach
+
+- type: marking
+  id: WGMeridianHeadSylveonBow
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      sylveon_bow_2_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+      sylveon_bow_2_tertiary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  layering:
+    sylveon_bow_2_primary_BEHIND: TailBehind
+    sylveon_bow_2_secondary_BEHIND: TailBehind
+    sylveon_bow_2_tertiary_BEHIND: TailBehind
+  colorLinks:
+    sylveon_bow_2_primary_BEHIND: sylveon_bow_2_primary
+    sylveon_bow_2_secondary_BEHIND: sylveon_bow_2_secondary
+    sylveon_bow_2_tertiary_BEHIND: sylveon_bow_2_tertiary
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: sylveon_bow_2_primary
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: sylveon_bow_2_secondary
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: sylveon_bow_2_tertiary
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: sylveon_bow_2_primary_BEHIND
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: sylveon_bow_2_secondary_BEHIND
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: sylveon_bow_2_tertiary_BEHIND
+
+- type: marking
+  id: WGMeridianNeckSylveonBow
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      sylveon_bow_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+      sylveon_bow_tertiary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: sylveon_bow_primary
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: sylveon_bow_secondary
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: sylveon_bow_tertiary
+
+- type: marking
+  id: WGMeridianPodHairVine
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/accessories.rsi
+    state: vine

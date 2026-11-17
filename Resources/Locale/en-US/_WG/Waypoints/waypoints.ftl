@@ -1,0 +1,26 @@
+wg-radar-cursor-coordinates = Cursor: {$x}, {$y}
+wg-radar-cursor-unknown = Cursor: -
+wg-radar-scanner-coordinates = Scanner: {$x}, {$y}
+wg-radar-scanner-unknown = Scanner: -
+
+wg-waypoint-key = WPT
+wg-waypoint-key-tooltip = Waypoints and autopilot coordinates.
+wg-waypoint-name = Name (optional)
+wg-waypoint-x = X
+wg-waypoint-y = Y
+wg-waypoint-pick = Pick
+wg-waypoint-pick-tooltip = Click the scanner to fill in X and Y.
+wg-waypoint-add = Add
+wg-waypoint-add-tooltip = Save these coordinates as a waypoint for this ship.
+wg-waypoint-fly = Fly
+wg-waypoint-fly-tooltip = Send the autopilot here.
+wg-waypoint-go = Go
+wg-waypoint-remove = X
+wg-waypoint-remove-tooltip = Delete this waypoint.
+wg-waypoint-empty = No waypoints.
+wg-waypoint-position = {$x}, {$y}
+wg-waypoint-other-map = In another sector.
+wg-waypoint-default-name = WP-{$id}
+wg-waypoint-status-invalid = Enter a valid X and Y.
+wg-waypoint-status-full = Waypoint list full ({$max}).
+wg-waypoint-status-flying = Autopilot set: {$x}, {$y}

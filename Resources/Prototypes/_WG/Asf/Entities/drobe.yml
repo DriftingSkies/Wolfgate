@@ -1,0 +1,65 @@
+- type: entity
+  parent: VendingMachineCredit
+  id: WGAsfDrobe
+  components:
+  - type: VendingMachine
+    pack: WGAsfDrobeInventory
+    offState: off
+    brokenState: broken
+    normalState: normal-unshaded
+    requiresCash: true
+  - type: Advertise
+    pack: WGAsfDrobeAds
+  - type: Sprite
+    sprite: _WG/Asf/Structures/drobe.rsi
+    layers:
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.Base"]
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+      shader: unshaded
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: AccessReader
+    access: [["WGAsf"]]
+
+- type: vendingMachineInventory
+  id: WGAsfDrobeInventory
+  startingInventory:
+    WGAsfClothingBackpack: 10
+    WGAsfClothingBackpackSatchel: 10
+    WGAsfClothingBackpackDuffel: 10
+    WGAsfClothingUniformService: 20
+    WGAsfClothingUniformColonist: 20
+    WGAsfClothingUniformResearcher: 20
+    WGAsfClothingUniformCasual: 20
+    WGAsfClothingUniformMedic: 10
+    WGAsfClothingUniformFormal: 10
+    WGAsfClothingUniformStarfleetJumpskirtBlack: 10
+    WGAsfClothingUniformStarfleetJumpskirt: 10
+    WGAsfClothingHeadBeret: 15
+    WGAsfClothingHeadCap: 15
+    WGAsfClothingHeadHat: 10
+    WGAsfClothingHeadConductorCap: 10
+    WGAsfClothingNeckCapelet: 10
+    WGAsfClothingNeckCape: 10
+    WGAsfClothingNeckShroudEnvoy: 10
+    WGAsfClothingNeckShroudResearcher: 10
+    WGMeridianClothingAccessoryPandoraHope: 10
+    WGAsfClothingOuterGreatcoat: 10
+    WGAsfClothingOuterCoatLab: 10
+    WGAsfClothingOuterExplorerLabcoat: 10
+    WGAsfClothingOuterHaori: 10
+    WGAsfClothingOuterRobe: 10
+    WGAsfClothingOuterParade: 5
+    WGAsfClothingOuterEVA: 5
+    WGAsfClothingHeadEVA: 5
+    WGAsfClothingShoesBoots: 20
+    WGAsfClothingHandsGloves: 20
+    WGAsfClothingHeadset: 20
+
+- type: localizedDataset
+  id: WGAsfDrobeAds
+  values:
+    prefix: wg-asf-drobe-ad-
+    count: 4

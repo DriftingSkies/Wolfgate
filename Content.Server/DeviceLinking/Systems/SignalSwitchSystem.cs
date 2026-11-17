@@ -1,4 +1,4 @@
-using Content.Server._WF.LockableButtons; // WOLFGATE(LockableButtons)
+using Content.Server._WG.LockableButtons; // WOLFGATE(LockableButtons)
 using Content.Shared.DeviceLinking.Components;
 using Content.Shared.Interaction;
 using Robust.Shared.Audio;

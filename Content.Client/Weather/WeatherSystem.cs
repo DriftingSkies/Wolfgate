@@ -1,5 +1,5 @@
 using System.Numerics;
-using Content.Shared._WF.WolfWeather; // WOLFGATE(WolfWeather)
+using Content.Shared._WG.WolfWeather; // WOLFGATE(WolfWeather)
 using Content.Shared.Light.Components;
 using Content.Shared.Weather;
 using Robust.Client.Audio;

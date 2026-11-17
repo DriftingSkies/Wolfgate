@@ -1,0 +1,21 @@
+- type: gamePreset
+  id: WGEscalation
+  alias:
+    - escalation
+  name: wg-escalation-preset-title
+  description: wg-escalation-preset-description
+  showInVote: false # Disabled for now; admins can still set it.
+  rules:
+  - NFAdventure
+  - BasicStationEventScheduler
+  - BluespaceEventScheduler
+  - BluespaceDungeonEventScheduler
+  - BluespaceSalvageEventScheduler
+  - SmugglingEventScheduler
+  - FrontierRoundstartVariation
+  - MonoMonolithicEventsScheduler
+  - ManualPortstrikeTsfPdv
+  - StarSystemKyphrus
+  - WGEscalationRule
+  - WGRemadeDiscoveryRule
+  - RoundEndRuleHour3

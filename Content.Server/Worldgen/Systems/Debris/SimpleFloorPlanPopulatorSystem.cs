@@ -26,7 +26,7 @@ public sealed partial class SimpleFloorPlanPopulatorSystem : BaseWorldSystem
         LocalStructureLoadedEvent args)
     {
         // WOLFGATE(Performance) START: spawns are queued and made a few ms per tick instead of in this handler
-        if (WFQueueFloorPlan(uid, component))
+        if (WGQueueFloorPlan(uid, component))
             return;
         // WOLFGATE END
 

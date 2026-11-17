@@ -432,7 +432,7 @@
   - type: TimedDespawn
     lifetime: 0.4
   # WOLFGATE(Weapons): the wide circle is for rounds and things adrift, not for people behind a hull
-  - type: WFProximityShrapnel
+  - type: WGProximityShrapnel
 
 - type: entity
   id: 90mmBulletMinelayer

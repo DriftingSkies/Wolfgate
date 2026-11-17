@@ -1,0 +1,25 @@
+using System.Threading;
+using System.Threading.Tasks;
+using Content.Server._WG.NpcCrew.Components;
+using Content.Server._WG.NpcCrew.Systems;
+using Content.Server.NPC;
+using Content.Server.NPC.HTN;
+using Content.Server.NPC.HTN.PrimitiveTasks;
+
+namespace Content.Server._WG.NpcCrew.HTN;
+
+/// <summary>Returns displaced crew to their assigned ship, through the docking ports when it is docked alongside.</summary>
+public sealed partial class WGCrewReturnOperator : HTNOperator
+{
+    [Dependency] private IEntityManager _entities = default!;
+
+    public override async Task<(bool Valid, Dictionary<string, object>? Effects)> Plan(NPCBlackboard blackboard, CancellationToken cancelToken)
+    {
+        var owner = blackboard.GetValue<EntityUid>(NPCBlackboard.Owner);
+        if (!_entities.TryGetComponent<WGCrewComponent>(owner, out var crew) || crew.Post is not { } post
+            || !post.IsValid(_entities) || _entities.GetComponent<TransformComponent>(owner).GridUid == post.EntityId)
+            return (false, null);
+        var next = _entities.System<WGCrewWorkSystem>().Waypoint(owner, post, crew.PostRange);
+        return (true, new Dictionary<string, object> { { "WGCrewReturn", next } });
+    }
+}

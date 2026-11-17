@@ -5,11 +5,11 @@
   description: The standard combat suit of USSP naval operations.
   components:
   # WOLFGATE(ArmorSpecialization): spall liner.
-  - type: WFWoundWard
-    examine: wf-armor-spec-spall-liner-examine
+  - type: WGWoundWard
+    examine: wg-armor-spec-spall-liner-examine
     blocks:
-    - WFWolfmedLodgedRoundWound
-    - WFWolfmedShrapnelWound
+    - WGWolfmedLodgedRoundWound
+    - WGWolfmedShrapnelWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ussp_combat.rsi
   - type: Item
@@ -55,11 +55,11 @@
   description: An old model of USSP combat suit that is still in use on the front lines. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): sealed layer.
-  - type: WFWoundWard
-    examine: wf-armor-spec-sealed-examine
+  - type: WGWoundWard
+    examine: wg-armor-spec-sealed-examine
     blocks:
-    - WFWolfmedChemicalBurnWound
-    - WFWolfmedFrostbiteWound
+    - WGWolfmedChemicalBurnWound
+    - WGWolfmedFrostbiteWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ussp_combat_light.rsi
   - type: Item
@@ -105,11 +105,11 @@
   description: An old model of USSP combat suit that is still in use on the front lines. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): sealed layer.
-  - type: WFWoundWard
-    examine: wf-armor-spec-sealed-examine
+  - type: WGWoundWard
+    examine: wg-armor-spec-sealed-examine
     blocks:
-    - WFWolfmedChemicalBurnWound
-    - WFWolfmedFrostbiteWound
+    - WGWolfmedChemicalBurnWound
+    - WGWolfmedFrostbiteWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ussp_combat_light_officer.rsi
   - type: Item
@@ -155,7 +155,7 @@
   description: A new prototype combat suit using the old L-10 as a baseline. It has an integrated mass scanner in its helmet. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): pain dampener.
-  - type: WFPainDampener
+  - type: WGPainDampener
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ussp_combat_lightmk2.rsi
   - type: Item
@@ -200,11 +200,11 @@
   description: A highly decorated hardsuit with upgraded mobility and lighter, higher-quality armor plates, for conveying orders quickly on the front line, or for staying cool on parade. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): concussion ward and pain dampener.
-  - type: WFWoundWard
-    examine: wf-armor-spec-concussion-ward-examine
+  - type: WGWoundWard
+    examine: wg-armor-spec-concussion-ward-examine
     blocks:
-    - WFWolfmedConcussionWound
-  - type: WFPainDampener
+    - WGWolfmedConcussionWound
+  - type: WGPainDampener
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ussp_commissar_parade.rsi
   - type: Item
@@ -250,11 +250,11 @@
   description: Developed by Union armament manufacturers for use by members of the commissariat on the front lines. Features enhanced plating for survivability, allowing commanders to continue to give orders even while under heavy fire. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): concussion ward and pain dampener.
-  - type: WFWoundWard
-    examine: wf-armor-spec-concussion-ward-examine
+  - type: WGWoundWard
+    examine: wg-armor-spec-concussion-ward-examine
     blocks:
-    - WFWolfmedConcussionWound
-  - type: WFPainDampener
+    - WGWolfmedConcussionWound
+  - type: WGPainDampener
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/ussp_officer_combat.rsi
   - type: Item

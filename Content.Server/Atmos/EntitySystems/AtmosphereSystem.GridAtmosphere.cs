@@ -74,7 +74,7 @@ public sealed partial class AtmosphereSystem
             // WOLFGATE(EngineCompat) START: engine v291 gives a split-off grid its own origin; map its tiles back to the old grid.
             // We assume the tiles on the new grid have the same coordinates as they did on the old grid...
             var enumerator = _mapSystem.GetAllTilesEnumerator(newGrid, mapGrid);
-            _wfSplitOrigin.TryGetOffset(newGrid, uid, out var oldOffset);
+            _wgSplitOrigin.TryGetOffset(newGrid, uid, out var oldOffset);
 
             while (enumerator.MoveNext(out var tile))
             {

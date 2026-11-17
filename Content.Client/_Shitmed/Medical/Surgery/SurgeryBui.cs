@@ -2,7 +2,7 @@ using Content.Client._Common.Consent; // WOLFGATE(Genitals)
 using Content.Client._Shitmed.Xenonids.UI;
 using Content.Client.Administration.UI.CustomControls;
 using Content.Shared._Shitmed.Medical.Surgery;
-using Content.Shared._WF.Genitals.Systems; // WOLFGATE(Genitals)
+using Content.Shared._WG.Genitals.Systems; // WOLFGATE(Genitals)
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Part;
 using JetBrains.Annotations;

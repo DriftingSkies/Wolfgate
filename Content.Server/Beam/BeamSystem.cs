@@ -102,10 +102,10 @@ public sealed partial class BeamSystem : SharedBeamSystem
         var distanceLength = distanceCorrection.Length();
 
         // WOLFGATE(NetTraffic) START: only players near either end of the beam get its segment visuals
-        var wfNearby = Filter.Pvs(beamStartPos).AddPlayersByPvs(beamStartPos.Offset(distanceCorrection));
+        var wgNearby = Filter.Pvs(beamStartPos).AddPlayersByPvs(beamStartPos.Offset(distanceCorrection));
         var beamVisualizerEvent = new BeamVisualizerEvent(GetNetEntity(ent), distanceLength, userAngle, bodyState, shader);
         // RaiseNetworkEvent(beamVisualizerEvent);
-        RaiseNetworkEvent(beamVisualizerEvent, wfNearby);
+        RaiseNetworkEvent(beamVisualizerEvent, wgNearby);
         // WOLFGATE END
 
         if (controller != null)
@@ -131,7 +131,7 @@ public sealed partial class BeamSystem : SharedBeamSystem
             var ev = new BeamVisualizerEvent(GetNetEntity(newEnt), distanceLength, userAngle, bodyState, shader);
             // WOLFGATE(NetTraffic) START: same nearby players as the first segment
             // RaiseNetworkEvent(ev);
-            RaiseNetworkEvent(ev, wfNearby);
+            RaiseNetworkEvent(ev, wgNearby);
             // WOLFGATE END
         }
 

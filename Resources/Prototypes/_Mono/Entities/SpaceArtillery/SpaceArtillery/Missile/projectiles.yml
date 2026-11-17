@@ -114,7 +114,7 @@
   - type: GatheringProjectile
   - type: MiningGatheringSoft
   - type: MiningGatheringHard
-  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WFMissileFlightSystem flies the missile
+  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WGMissileFlightSystem flies the missile
   # Upstream carrier, which flew the missile itself:
   # - type: TargetSeeking
   #   acceleration: 140
@@ -132,7 +132,7 @@
     detectionRange: 1200
     scanArc: 15
     trackDelay: 0.1
-  - type: WFMissileFlight
+  - type: WGMissileFlight
     launchSpeed: 150
     boostAccel: 260
     boostTime: 1.6
@@ -204,7 +204,7 @@
   - type: GatheringProjectile
   - type: MiningGatheringSoft
   - type: MiningGatheringHard
-  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WFMissileFlightSystem flies the missile
+  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WGMissileFlightSystem flies the missile
   # Upstream carrier, which flew the missile itself:
   # - type: TargetSeeking
   #   acceleration: 250
@@ -223,7 +223,7 @@
     detectionRange: 1600
     scanArc: 30
     trackDelay: 0.2
-  - type: WFMissileFlight
+  - type: WGMissileFlight
     launchSpeed: 90
     boostAccel: 200
     boostTime: 3
@@ -264,7 +264,7 @@
     detectionRange: 0
     scanArc: 0
     maxSpeed: 300
-  - type: WFMissileFlight
+  - type: WGMissileFlight
     launchSpeed: 90
     boostAccel: 150
     boostTime: 4
@@ -320,7 +320,7 @@
   - type: GatheringProjectile
   - type: MiningGatheringSoft
   - type: MiningGatheringHard
-  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WFMissileFlightSystem flies the missile
+  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WGMissileFlightSystem flies the missile
   # Upstream carrier, which flew the missile itself:
   # - type: TargetSeeking
   #   acceleration: 180
@@ -338,7 +338,7 @@
     detectionRange: 2400
     scanArc: 35
     trackDelay: 0.15
-  - type: WFMissileFlight
+  - type: WGMissileFlight
     launchSpeed: 120
     boostAccel: 260
     boostTime: 4
@@ -395,7 +395,7 @@
   - type: GatheringProjectile
   - type: MiningGatheringSoft
   - type: MiningGatheringHard
-  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WFMissileFlightSystem flies the missile
+  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WGMissileFlightSystem flies the missile
   # Upstream carrier, which flew the missile itself:
   # - type: TargetSeeking
   #   acceleration: 360 # PD skillcheck
@@ -414,7 +414,7 @@
     detectionRange: 700
     scanArc: 20
     trackDelay: 0
-  - type: WFMissileFlight
+  - type: WGMissileFlight
     launchSpeed: 300
     boostAccel: 900
     boostTime: 2
@@ -474,7 +474,7 @@
   - type: GatheringProjectile
   - type: MiningGatheringSoft
   - type: MiningGatheringHard
-  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WFMissileFlightSystem flies the missile
+  # WOLFGATE(ShipMissiles) START: the carrier only seeks; WGMissileFlightSystem flies the missile
   # Upstream carrier, which flew the missile itself:
   # - type: TargetSeeking
   #   acceleration: 220
@@ -492,7 +492,7 @@
     detectionRange: 2400
     scanArc: 35
     trackDelay: 0.2
-  - type: WFMissileFlight
+  - type: WGMissileFlight
     launchSpeed: 60
     boostAccel: 240
     boostTime: 3.5

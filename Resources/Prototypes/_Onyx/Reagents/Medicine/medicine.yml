@@ -131,8 +131,8 @@
       metabolismRate: 0.1
       effects:
       # WOLFGATE(WolfChem) START: medical opioids build dependence slowly through the Opium profile
-      - !type:WFDose
-        profile: WFOpium
+      - !type:WGDose
+        profile: WGOpium
         perUnit: 0.5
         dependenceOnly: true
       # WOLFGATE END
@@ -173,8 +173,8 @@
       metabolismRate: 0.1
       effects:
       # WOLFGATE(WolfChem) START: medical opioids build dependence slowly through the Heroin profile
-      - !type:WFDose
-        profile: WFHeroin
+      - !type:WGDose
+        profile: WGHeroin
         perUnit: 0.5
         dependenceOnly: true
       # WOLFGATE END

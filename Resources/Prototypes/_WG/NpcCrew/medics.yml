@@ -1,0 +1,96 @@
+# NPC medics (WGCrewMedicSystem): the paramedic answers the downed and the bleeding aboard and on docked ships, does
+# the lifesaving where they lie, patches minor injuries and brings anyone worse to a bed in Medical; the surgeon works
+# the beds there without the paramedic's limits. Their supplies never run out. Neither carries a weapon, and neither
+# fights unless struck.
+
+- type: entity
+  id: WGCrewKitMedic
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: NPCRetaliation
+    attackMemoryLength: 60
+
+- type: entity
+  parent: [ WGCrewKitMedic, WGMobCrewBase ]
+  id: WGMobCrewParamedic
+  name: paramedic
+  description: First on the scene, with gauze in every pocket.
+  components:
+  - type: Loadout
+    prototypes: [ WGCrewParamedicGear ]
+
+- type: entity
+  parent: [ WGCrewKitMedic, WGMobCrewBase ]
+  id: WGMobCrewSurgeon
+  name: surgeon
+  description: Steady hands and a short temper about it.
+  components:
+  - type: Loadout
+    prototypes: [ WGCrewSurgeonGear ]
+  # He scrubs in: without this every hand step at a table would poison the patient for unsterile surgery.
+  - type: Sanitized
+
+# What a surgeon works from at an operating table, held off the map: a pod's library, triage, tools, tray and
+# reservoirs. It never holds a patient, and it says nothing.
+- type: entity
+  parent: WGMachineAutodoc
+  id: WGCrewSurgeonInstruments
+  name: surgeon's instruments
+  categories: [ HideSpawnMenu, DoNotMap ]
+  components:
+  - type: Autodoc
+    voice: WGCrewSurgeonSilent
+    basePrograms:
+    - WGWolfmedAutodocProgramBase
+    - WGWolfmedAutodocProgramTransplant
+    - WGWolfmedAutodocProgramLimb
+    - WGWolfmedAutodocProgramNeuro
+    - WGWolfmedAutodocProgramCavity
+
+- type: autodocVoice
+  id: WGCrewSurgeonSilent
+  lines: {}
+  events: {}
+
+- type: startingGear
+  id: WGCrewParamedicGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitParamedic
+    shoes: ClothingShoesColorWhite
+    ears: WGCrewHeadset
+    gloves: ClothingHandsGlovesNitrile
+    belt: ClothingBeltMedicalFilled
+
+- type: startingGear
+  id: WGCrewSurgeonGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitMedicalDoctor
+    outerClothing: ClothingOuterCoatLab
+    shoes: ClothingShoesColorWhite
+    ears: WGCrewHeadset
+    gloves: ClothingHandsGlovesNitrile
+    neck: ClothingNeckStethoscope
+
+- type: wgCrewRole
+  id: WGCrewParamedic
+  kit: WGCrewKitMedic
+  mob: WGMobCrewParamedic
+  duty: Guard
+  engagement: WhenAttacked
+  title: wg-crew-role-paramedic
+  order: 40
+  components:
+  - type: WGCrewMedic
+    rank: Paramedic
+
+- type: wgCrewRole
+  id: WGCrewSurgeon
+  kit: WGCrewKitMedic
+  mob: WGMobCrewSurgeon
+  duty: Guard
+  engagement: WhenAttacked
+  title: wg-crew-role-surgeon
+  order: 41
+  components:
+  - type: WGCrewMedic
+    rank: Surgeon

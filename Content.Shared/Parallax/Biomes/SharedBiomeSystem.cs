@@ -377,7 +377,7 @@ public abstract partial class SharedBiomeSystem : EntitySystem
     private FastNoiseLite GetNoise(FastNoiseLite seedNoise, int seed)
     {
         // WOLFGATE(Planets) START: reuse one copy per source noise and seed, since callers only read it
-        if (_wfNoiseCache.TryGet(seedNoise, seed, out var cached))
+        if (_wgNoiseCache.TryGet(seedNoise, seed, out var cached))
             return cached;
         // WOLFGATE END
 
@@ -386,7 +386,7 @@ public abstract partial class SharedBiomeSystem : EntitySystem
         noiseCopy.SetSeed(noiseCopy.GetSeed() + seed);
         // Ensure re-calculate is run.
         noiseCopy.SetFractalOctaves(noiseCopy.GetFractalOctaves());
-        noiseCopy = _wfNoiseCache.Add(seedNoise, noiseCopy); // WOLFGATE(Planets): keep the copy for later calls
+        noiseCopy = _wgNoiseCache.Add(seedNoise, noiseCopy); // WOLFGATE(Planets): keep the copy for later calls
         return noiseCopy;
     }
 }

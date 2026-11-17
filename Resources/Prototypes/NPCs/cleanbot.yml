@@ -7,7 +7,7 @@
     # WOLFGATE(Cleaning) START: with no puddle in reach, wash dirt, blood and footprint decals
     - tasks:
         - !type:HTNCompoundTask
-          task: WFCleanNearbyDecalsCompound
+          task: WGCleanNearbyDecalsCompound
     # WOLFGATE END
     - tasks:
         - !type:HTNCompoundTask

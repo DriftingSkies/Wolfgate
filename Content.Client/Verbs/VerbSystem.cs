@@ -178,7 +178,7 @@ namespace Content.Client.Verbs
             // WOLFGATE(NpcCrew) START: opt-in traces distinguish missing UI replies from stale player attachments.
             if (!target.IsClientSide())
             {
-                EntityManager.System<Content.Client._WF.NpcCrew.WFCrewUiDiagnosticsSystem>().Request("verbs", target);
+                EntityManager.System<Content.Client._WG.NpcCrew.WGCrewUiDiagnosticsSystem>().Request("verbs", target);
                 RaiseNetworkEvent(new RequestServerVerbsEvent(target, verbTypes, adminRequest: force));
             }
             // WOLFGATE END
@@ -236,7 +236,7 @@ namespace Content.Client.Verbs
         private void HandleVerbResponse(VerbsResponseEvent msg)
         {
             OnVerbsResponse?.Invoke(msg);
-            EntityManager.System<Content.Client._WF.NpcCrew.WFCrewUiDiagnosticsSystem>().Reply("verbs", msg.Verbs?.Count ?? -1, msg.Entity); // WOLFGATE(NpcCrew): trace the response after the active menu handles it.
+            EntityManager.System<Content.Client._WG.NpcCrew.WGCrewUiDiagnosticsSystem>().Reply("verbs", msg.Verbs?.Count ?? -1, msg.Entity); // WOLFGATE(NpcCrew): trace the response after the active menu handles it.
         }
     }
 }

@@ -13,19 +13,19 @@
     ClothingUniformJumpsuitLibrarian: 3
     ClothingUniformJumpskirtLibrarian: 3
     ClothingShoesBootsLaceup: 2
-    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-    WFMeridianClothingHeadFedoraCurator: 2
-    WFMeridianClothingHeadPlaybunnyearsCuratorGreen: 2
-    WFMeridianClothingHeadPlaybunnyearsCuratorRed: 2
-    WFMeridianClothingHeadPlaybunnyearsCuratorTeal: 2
-    WFMeridianClothingSuitJacketTailcoatCuratorGreen: 2
-    WFMeridianClothingSuitJacketTailcoatCuratorRed: 2
-    WFMeridianClothingSuitJacketTailcoatCuratorTeal: 2
-    WFMeridianClothingUnderRankCivilianCuratorBunnysuitGreen: 2
-    WFMeridianClothingUnderRankCivilianCuratorBunnysuitRed: 2
-    WFMeridianClothingUnderRankCivilianCuratorBunnysuitTeal: 2
-    WFMeridianClothingUnderRankCivilianCuratorSkirt: 2
-    WFMeridianClothingUnderRankCivilianCuratorTreasureHunter: 2
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+    WGMeridianClothingHeadFedoraCurator: 2
+    WGMeridianClothingHeadPlaybunnyearsCuratorGreen: 2
+    WGMeridianClothingHeadPlaybunnyearsCuratorRed: 2
+    WGMeridianClothingHeadPlaybunnyearsCuratorTeal: 2
+    WGMeridianClothingSuitJacketTailcoatCuratorGreen: 2
+    WGMeridianClothingSuitJacketTailcoatCuratorRed: 2
+    WGMeridianClothingSuitJacketTailcoatCuratorTeal: 2
+    WGMeridianClothingUnderRankCivilianCuratorBunnysuitGreen: 2
+    WGMeridianClothingUnderRankCivilianCuratorBunnysuitRed: 2
+    WGMeridianClothingUnderRankCivilianCuratorBunnysuitTeal: 2
+    WGMeridianClothingUnderRankCivilianCuratorSkirt: 2
+    WGMeridianClothingUnderRankCivilianCuratorTreasureHunter: 2
     # WOLFGATE END
 #    ClothingHeadsetService: 2 # Frontier
   contrabandInventory:

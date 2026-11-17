@@ -1,0 +1,43 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+# Author Info
+# GitHub: starch70
+# Discord: _starch_
+
+# Shuttle Notes:
+#
+- type: vessel
+  id: Littora
+  parent: BaseVessel
+  name: SKR Littora
+  description: A medium-to-large sized expedition ship with salvage equipment.
+  price: 120788
+  category: Large
+  group: Expedition
+  shuttlePath: /SharedMaps/_WG/OldVessels/Expedition/littora.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: null
+  class:
+  - Expedition
+  engine:
+  - AME
+
+- type: gameMap
+  id: Littora
+  mapName: 'Littora'
+  mapPath: /SharedMaps/_WG/OldVessels/Expedition/littora.yml
+  minPlayers: 0
+  stations:
+    Littora:
+      stationProto: StandardFrontierExpeditionVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Littora EXP{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'
+        - type: StationJobs
+          availableJobs:
+            Contractor: [ 0, 0 ]
+            # Pilot: [ 0, 0 ]
+            # Mercenary: [ 0, 0 ]

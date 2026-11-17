@@ -16,7 +16,7 @@ public sealed partial class ReactiveSystem : EntitySystem
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private IRobustRandom _robustRandom = default!;
     [Dependency] private ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private Content.Shared._WF.ArmorSpecialization.WFCivilianSpecializationSystem _wfSpecs = default!; // WOLFGATE(ArmorSpecialization)
+    [Dependency] private Content.Shared._WG.ArmorSpecialization.WGCivilianSpecializationSystem _wgSpecs = default!; // WOLFGATE(ArmorSpecialization)
 
     public void DoEntityReaction(EntityUid uid, Solution solution, ReactionMethod method)
     {
@@ -40,7 +40,7 @@ public sealed partial class ReactiveSystem : EntitySystem
             return;
 
         // WOLFGATE(ArmorSpecialization) START: a decon coating keeps splashed, sprayed and spilled chemicals off the wearer.
-        if (method == ReactionMethod.Touch && _wfSpecs.BlocksTouch(uid, proto))
+        if (method == ReactionMethod.Touch && _wgSpecs.BlocksTouch(uid, proto))
             return;
         // WOLFGATE END
 

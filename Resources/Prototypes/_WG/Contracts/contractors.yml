@@ -1,0 +1,165 @@
+# Contractors and their stations. Helios and the Underground post no station work.
+
+- type: wgContractor
+  id: WGContractorCaelPort
+  name: wg-contractor-cael-port
+  description: wg-contractor-cael-port-desc
+  employer: wg-contractor-cael-port-employer
+  color: "#37946e"
+  stations: [ Frontier ]
+  offers: 24
+  order: 0
+
+- type: wgContractor
+  id: WGContractorCaelMarshals
+  name: wg-contractor-cael-marshals
+  description: wg-contractor-cael-marshals-desc
+  employer: wg-contractor-cael-marshals-employer
+  color: "#4d8fd6"
+  stations: [ Frontier ]
+  offers: 10
+  order: 1
+
+- type: wgContractor
+  id: WGContractorMMC
+  name: wg-contractor-mmc
+  description: wg-contractor-mmc-desc
+  employer: wg-contractor-mmc-employer
+  color: "#d9d9d9"
+  stations: [ Hokkaido ]
+  offers: 22
+  order: 2
+
+- type: wgContractor
+  id: WGContractorSevastopol
+  name: wg-contractor-sevastopol
+  description: wg-contractor-sevastopol-desc
+  employer: wg-contractor-sevastopol-employer
+  color: "#009dff"
+  stations: [ Sevastopol ]
+  offers: 16
+  order: 3
+
+- type: wgContractor
+  id: WGContractorStellarBlessing
+  name: wg-contractor-stellar-blessing
+  description: wg-contractor-stellar-blessing-desc
+  employer: wg-contractor-stellar-blessing-employer
+  color: "#5fb0e0"
+  stations: [ TSFMCIndustry ]
+  offers: 18
+  order: 4
+
+- type: wgContractor
+  id: WGContractorHalcyon
+  name: wg-contractor-halcyon
+  description: wg-contractor-halcyon-desc
+  employer: wg-contractor-halcyon-employer
+  color: "#5b7fe0"
+  stations: [ TSFMCHalcyon ]
+  offers: 16
+  order: 5
+
+- type: wgContractor
+  id: WGContractorCamelot
+  name: wg-contractor-camelot
+  description: wg-contractor-camelot-desc
+  employer: wg-contractor-camelot-employer
+  color: "#d0573f"
+  stations: [ USSPCamelot ]
+  offers: 16
+  order: 6
+
+- type: wgContractor
+  id: WGContractorAnomalousLab
+  name: wg-contractor-anomalous-lab
+  description: wg-contractor-anomalous-lab-desc
+  employer: wg-contractor-anomalous-lab-employer
+  color: "#a07fff"
+  stations: [ AnomalousLab ]
+  offers: 18
+  order: 7
+
+# Faction boards: members only.
+
+- type: wgContractor
+  id: WGContractorTSFRequisitions
+  name: wg-contractor-tsf-requisitions
+  description: wg-contractor-tsf-requisitions-desc
+  employer: wg-contractor-tsf-requisitions-employer
+  color: "#6fb6ff"
+  stations: [ TSFMCHalcyon ]
+  board: TSF
+  companies: [ TSF, TSFCivilian, TSFHighComm ]
+  offers: 20
+  order: 10
+
+- type: wgContractor
+  id: WGContractorUSSPCommissariat
+  name: wg-contractor-ussp-commissariat
+  description: wg-contractor-ussp-commissariat-desc
+  employer: wg-contractor-ussp-commissariat-employer
+  color: "#d0573f"
+  stations: [ USSPCamelot ]
+  board: USSP
+  companies: [ USSP ]
+  offers: 18
+  order: 11
+
+- type: wgContractor
+  id: WGContractorPDVQuartermaster
+  name: wg-contractor-pdv-quartermaster
+  description: wg-contractor-pdv-quartermaster-desc
+  employer: wg-contractor-pdv-quartermaster-employer
+  color: "#d4a83a"
+  stations: [ HeliosFortress ]
+  board: PDV
+  companies: [ PDV, PDVCivilian, PDVHighComm ]
+  offers: 16
+  order: 12
+
+- type: wgContractor
+  id: WGContractorColonyCouncil
+  name: wg-contractor-colony-council
+  description: wg-contractor-colony-council-desc
+  employer: wg-contractor-colony-council-employer
+  color: "#5fb0e0"
+  stations: [ TSFMCIndustry ]
+  board: Colony
+  companies: [ TSFCivilian ]
+  offers: 16
+  order: 13
+
+- type: wgContractor
+  id: WGContractorAsfResearch
+  name: wg-contractor-asf-research
+  description: wg-contractor-asf-research-desc
+  employer: wg-contractor-asf-research-employer
+  color: "#9b6dff"
+  stations: [ WGAsfLantern ]
+  board: ASF
+  companies: [ WGAsf ]
+  offers: 16
+  order: 14
+
+- type: wgContractor
+  id: WGContractorColonialDevelopment
+  name: wg-contractor-colonial-development
+  description: wg-contractor-colonial-development-desc
+  employer: wg-contractor-colonial-development-employer
+  color: "#7aa35a"
+  stations: [ Frontier ]
+  offers: 6
+  order: 15
+
+- type: wgContractor
+  id: WGContractorViperGroup
+  name: wg-contractor-viper-group
+  description: wg-contractor-viper-group-desc
+  employer: wg-contractor-viper-group-employer
+  color: "#b82121"
+  stations: [ USSPCamelot ]
+  board: VG
+  companies: [ TheViperGroup ]
+  offers: 8
+  order: 16

@@ -1,0 +1,5 @@
+- type: jukebox
+  id: WGSethClownMusic
+  name: Seth Makes Sounds - Clown Music
+  path:
+    path: /Audio/_WG/ClownCosmetics/Jukebox/seth_clown_music.ogg

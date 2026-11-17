@@ -1,5 +1,5 @@
 // WOLFGATE(Xenoborgs) START: wizden#41812 component-granting borg modules, ported whole; logic in BorgModuleExtrasSystem.
-using Content.Shared._WF.Xenoborgs;
+using Content.Shared._WG.Xenoborgs;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 

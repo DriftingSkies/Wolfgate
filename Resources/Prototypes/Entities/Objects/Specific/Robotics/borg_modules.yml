@@ -217,12 +217,12 @@
         - ReagentTank # jerry cans
         - NFShipyardVoucher # ship vouchers, for a shipyard console
         tags:
-        - WFDrydockRepairVoucher
+        - WGDrydockRepairVoucher
     - id: SheetSteel1
       whitelist:
         components:
         - Stack
-    - id: WFBorgIdCard # buys a ship and unlocks its consoles
+    - id: WGBorgIdCard # buys a ship and unlocks its consoles
       whitelist:
         components:
         - IdCard
@@ -379,15 +379,15 @@
     # - FloorTileItemSteelLingering0
     # - FloorTileItemDarkLingering0
     # - FloorTileItemWhiteLingering0
-    - WFSheetSteelBorg
-    - WFSheetGlassBorg
-    - WFSheetRGlassBorg
-    - WFSheetPlasticBorg
-    - WFSheetPlasteelBorg
-    - WFPartRodMetalBorg
-    - WFFloorTileItemSteelBorg
-    - WFFloorTileItemDarkBorg
-    - WFFloorTileItemWhiteBorg
+    - WGSheetSteelBorg
+    - WGSheetGlassBorg
+    - WGSheetRGlassBorg
+    - WGSheetPlasticBorg
+    - WGSheetPlasteelBorg
+    - WGPartRodMetalBorg
+    - WGFloorTileItemSteelBorg
+    - WGFloorTileItemDarkBorg
+    - WGFloorTileItemWhiteBorg
     # WOLFGATE END
   # Frontier: droppable borg items
   - type: DroppableBorgModule
@@ -540,20 +540,20 @@
     # - Ointment10Lingering
     # - Gauze10Lingering
     # - Bloodpack10Lingering
-    - WFBrutepackBorg
-    - WFOintmentBorg
-    - WFGauzeBorg
-    - WFBloodpackBorg
-    - WFSutureBorg
+    - WGBrutepackBorg
+    - WGOintmentBorg
+    - WGGauzeBorg
+    - WGBloodpackBorg
+    - WGSutureBorg
     - DefibrillatorOneHandedUnpowered
     # WOLFGATE END
     - Syringe
     # WOLFGATE(Wolfmed): the field items Wolfmed's wound and IPC treatments call for
-    # - Suture10Lingering # WOLFGATE(Cyborgs): the refilling WFSutureBorg above replaces it
-    - WFWolfmedTourniquetBorg
-    - WFWolfmedSplintBorg
-    - WFWolfmedAntisepticSpray
-    - WFWolfmedHydraulicFluidPack
+    # - Suture10Lingering # WOLFGATE(Cyborgs): the refilling WGSutureBorg above replaces it
+    - WGWolfmedTourniquetBorg
+    - WGWolfmedSplintBorg
+    - WGWolfmedAntisepticSpray
+    - WGWolfmedHydraulicFluidPack
     - CableApcStackLingering10
   - type: BorgModuleIcon
     icon: { sprite: Interface/Actions/actions_borg.rsi, state: treatment-module }
@@ -901,7 +901,7 @@
     - BoneGel
     # WOLFGATE(Wolfmed): fracture setting and burn grafting
     - Bonesetter
-    - WFWolfmedSkinGraft
+    - WGWolfmedSkinGraft
     # Frontier -> GoobStation -> Monolith: droppable borg items
   - type: DroppableBorgModule
     moduleId: Surgery
@@ -933,7 +933,7 @@
     - BoneGel
     # WOLFGATE(Wolfmed): fracture setting and burn grafting
     - Bonesetter
-    - WFWolfmedSkinGraft
+    - WGWolfmedSkinGraft
     # Frontier -> GoobStation -> Monolith: droppable borg items
   - type: DroppableBorgModule
     moduleId: Surgery

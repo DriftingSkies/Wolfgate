@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Meridian Rift at https://github.com/Aphelion-Moon/Meridian-Rift/tree/0fd8e40910402f2745e5e5e4adc7d37bd45fed40 (icons/mob/human/species/mush_cap.dmi, modular_nova/master_files/icons/mob/species/podperson_hair.dmi, modular_nova/master_files/icons/mob/sprite_accessory/head_accessory.dmi, modular_nova/master_files/icons/mob/sprite_accessory/neck_accessory.dmi), which carries the art of NovaSector, Skyrat-tg and tgstation. Layers merged per colour and centred for Wolfgate by Tools/_WG/MeridianMarkings/port.py.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "cabbage",
+      "directions": 4
+    },
+    {
+      "name": "fig",
+      "directions": 4
+    },
+    {
+      "name": "hibiscus",
+      "directions": 4
+    },
+    {
+      "name": "ivy",
+      "directions": 4
+    },
+    {
+      "name": "orchid",
+      "directions": 4
+    },
+    {
+      "name": "prayer",
+      "directions": 4
+    },
+    {
+      "name": "rose",
+      "directions": 4
+    },
+    {
+      "name": "round",
+      "directions": 4
+    },
+    {
+      "name": "shrub",
+      "directions": 4
+    },
+    {
+      "name": "spinach",
+      "directions": 4
+    },
+    {
+      "name": "sylveon_bow_2_primary",
+      "directions": 4
+    },
+    {
+      "name": "sylveon_bow_2_primary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "sylveon_bow_2_secondary",
+      "directions": 4
+    },
+    {
+      "name": "sylveon_bow_2_secondary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "sylveon_bow_2_tertiary",
+      "directions": 4
+    },
+    {
+      "name": "sylveon_bow_2_tertiary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "sylveon_bow_primary",
+      "directions": 4
+    },
+    {
+      "name": "sylveon_bow_secondary",
+      "directions": 4
+    },
+    {
+      "name": "sylveon_bow_tertiary",
+      "directions": 4
+    },
+    {
+      "name": "vine",
+      "directions": 4
+    }
+  ]
+}

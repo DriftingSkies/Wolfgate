@@ -127,9 +127,9 @@
   colorLinks:
     wings_backstabbed_BEHIND: wings_backstabbed_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/moth.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/moth.rsi
     state: wings_backstabbed_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/moth.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/moth.rsi
     state: wings_backstabbed_BEHIND
   # WOLFGATE END
 

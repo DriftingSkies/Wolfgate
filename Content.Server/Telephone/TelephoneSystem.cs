@@ -6,7 +6,7 @@ using Content.Server.Power.EntitySystems;
 using Content.Server.Speech;
 using Content.Server.Speech.Components;
 using Content.Server._EinsteinEngines.Language;
-using Content.Shared._WF.ChatFont; // WOLFGATE(ChatFont)
+using Content.Shared._WG.ChatFont; // WOLFGATE(ChatFont)
 using Content.Shared.Chat;
 using Content.Shared.Database;
 using Content.Shared.Labels.Components;
@@ -355,8 +355,8 @@ public sealed partial class TelephoneSystem : SharedTelephoneSystem
 
         var wrappedMessage = Loc.GetString(speech.Bold ? "chat-telephone-message-wrap-bold" : "chat-telephone-message-wrap",
             ("color", Color.White),
-            ("fontType", CompOrNull<WFChatFontComponent>(messageSource)?.Font ?? speech.FontId), // WOLFGATE(ChatFont): the caller's picked font
-            ("fontSize", WFChatFontRules.ScaleSize(speech.FontSize, CompOrNull<WFChatFontComponent>(messageSource))), // WOLFGATE(ChatFont): the picked font's size scale
+            ("fontType", CompOrNull<WGChatFontComponent>(messageSource)?.Font ?? speech.FontId), // WOLFGATE(ChatFont): the caller's picked font
+            ("fontSize", WGChatFontRules.ScaleSize(speech.FontSize, CompOrNull<WGChatFontComponent>(messageSource))), // WOLFGATE(ChatFont): the picked font's size scale
             ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
             ("name", name),
             ("message", content));

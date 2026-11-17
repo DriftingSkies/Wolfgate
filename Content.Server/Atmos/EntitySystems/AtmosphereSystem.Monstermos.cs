@@ -65,7 +65,7 @@ namespace Content.Server.Atmos.EntitySystems
             tile.MonstermosInfo.LastQueueCycle = queueCycle;
             var tileCount = 1;
             // WOLFGATE(Performance): without space nothing past the equalize limit is ever used, so stop the search there
-            var searchLimit = WFMonstermosSearchLimit(ent.Comp4);
+            var searchLimit = WGMonstermosSearchLimit(ent.Comp4);
             for (var i = 0; i < tileCount; i++)
             {
                 if (i > Atmospherics.MonstermosHardTileLimit) break;
@@ -97,17 +97,17 @@ namespace Content.Server.Atmos.EntitySystems
                         // Looks like someone opened an airlock to space!
 
                         // WOLFGATE(Performance) START: a room refilling into a hole vents from the same tile forever; let it leak quietly
-                        if (!WFBreachLooping(ent.Owner, tile))
+                        if (!WGBreachLooping(ent.Owner, tile))
                             ExplosivelyDepressurize(ent, tile, cycleNum);
                         else
-                            WFMarkEqualized(tileCount, cycleNum);
+                            WGMarkEqualized(tileCount, cycleNum);
                         // WOLFGATE END
                         return;
                     }
                 }
             }
 
-            var wfExplored = tileCount; // WOLFGATE(Performance): used range for the cleanup below
+            var wgExplored = tileCount; // WOLFGATE(Performance): used range for the cleanup below
             if (tileCount > Atmospherics.MonstermosTileLimit)
             {
                 for (var i = Atmospherics.MonstermosTileLimit; i < tileCount; i++)
@@ -374,7 +374,7 @@ namespace Content.Server.Atmos.EntitySystems
 
             // We do cleanup.
             // WOLFGATE(Performance) START: clear only the range this run used
-            Array.Clear(_equalizeTiles, 0, wfExplored);
+            Array.Clear(_equalizeTiles, 0, wgExplored);
             Array.Clear(_equalizeGiverTiles, 0, tileCount);
             Array.Clear(_equalizeTakerTiles, 0, tileCount);
             Array.Clear(_equalizeQueue, 0, tileCount);

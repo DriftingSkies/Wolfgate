@@ -29,29 +29,29 @@
   # so it would be routed to a part, create IpcMechanicalDamageWound severity and bleed at chance 1 - a
   # self-reinforcing leak loop. Bloodloss stays systemic and self-limits via bloodlossHealDamage.
   - type: Bloodstream
-    bloodReagent: WFWolfmedHydraulicFluid # WOLFGATE(Wolfmed): playtest 3 IPC 2: was Oil, lamp oil a lit welder set alight in its own puddle
+    bloodReagent: WGWolfmedHydraulicFluid # WOLFGATE(Wolfmed): playtest 3 IPC 2: was Oil, lamp oil a lit welder set alight in its own puddle
     bloodMaxVolume: 250
     bloodRefreshAmount: 0.5 # WOLFGATE(Synthetics): slow hydraulic regeneration, as the synthetic biotype overlay
-    # WOLFGATE(Synthetics) START: room for contaminants; WFChassisFilter flushes everything the pump can't process
+    # WOLFGATE(Synthetics) START: room for contaminants; WGChassisFilter flushes everything the pump can't process
     # chemicalMaxVolume: 0
     chemicalMaxVolume: 30
     # WOLFGATE END
     # WOLFGATE(Wolfmed): fluid loss deals an IPC no damage.
     # An IPC never takes Airloss-group damage: Bloodloss reads as oxygen loss on the analyzer, and it does not
-    # breathe. WFSiliconWolfmed no longer accepts Bloodloss either.
+    # breathe. WGSiliconWolfmed no longer accepts Bloodloss either.
     bloodlossDamage:
       types: {}
     bloodlossHealDamage:
       types: {}
-  # WOLFGATE(Wolfmed): P5-D5/P5-D5b: IPCs use the WFSiliconWolfmed damage container.
+  # WOLFGATE(Wolfmed): P5-D5/P5-D5b: IPCs use the WGSiliconWolfmed damage container.
   # Silicon's types plus Wolfmed's own. Bloodloss was added in phase 5 and taken out again (see
-  # _WF/Wolfmed/Damage/containers.yml): it sits in the Airloss group, so an IPC read as losing oxygen. PROTO S/T added
-  # WFSiliconWolfmed to the welder and nanite applicator in WP13-1, so repair keeps working
+  # _WG/Wolfmed/Damage/containers.yml): it sits in the Airloss group, so an IPC read as losing oxygen. PROTO S/T added
+  # WGSiliconWolfmed to the welder and nanite applicator in WP13-1, so repair keeps working
   # (WeldingHealableSystem.cs:33-35). damageModifierSet is inherited per key from
   # PlayerSiliconHumanoidBase:26-28 (component data merges field by field); restated here only so the pair
   # is readable in one place.
   - type: Damageable
-    damageContainer: WFSiliconWolfmed
+    damageContainer: WGSiliconWolfmed
     damageModifierSet: IPC
   - type: LanguageKnowledge # Einstein Engines - Languages
     speaks:
@@ -196,7 +196,7 @@
   - type: EmitBuzzWhileDamaged
   - type: CanHostGuardian
   - type: WeldingHealable
-  - type: WFChassisFilter # WOLFGATE(Synthetics): only contaminants stay in the chemical stream
+  - type: WGChassisFilter # WOLFGATE(Synthetics): only contaminants stay in the chemical stream
   - type: RetroMonitorView # Mono
   - type: DamagedSiliconAccent
 

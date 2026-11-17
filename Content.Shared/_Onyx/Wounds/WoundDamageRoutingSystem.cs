@@ -1,8 +1,8 @@
 using System.Linq;
 using Content.Shared.Body.Systems;
-using Content.Shared._WF.Wolfmed.Body; // WOLFGATE(Wolfmed): D8, Onyx's extra part fields live on WolfmedBodyPartComponent.
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade, DamageDealtEvent + shared bed-heal marker (HealOnBuckleComponent is server-only here).
-using Content.Shared._WF.Wolfmed.Targeting; // WOLFGATE(Wolfmed): D10, Onyx's TargetResolverSystem is replaced by WoundTargetResolver.
+using Content.Shared._WG.Wolfmed.Body; // WOLFGATE(Wolfmed): D8, Onyx's extra part fields live on WolfmedBodyPartComponent.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade, DamageDealtEvent + shared bed-heal marker (HealOnBuckleComponent is server-only here).
+using Content.Shared._WG.Wolfmed.Targeting; // WOLFGATE(Wolfmed): D10, Onyx's TargetResolverSystem is replaced by WoundTargetResolver.
 using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Prototypes;
@@ -27,7 +27,7 @@ namespace Content.Shared._Onyx.Wounds;
 
 public sealed partial class WoundDamageRoutingSystem : EntitySystem
 {
-    [Dependency] private WolfmedDamageableSystem _damage = default!; // WOLFGATE(Wolfmed): D12, Onyx-shaped damage API; see _WF/Wolfmed/Compat
+    [Dependency] private WolfmedDamageableSystem _damage = default!; // WOLFGATE(Wolfmed): D12, Onyx-shaped damage API; see _WG/Wolfmed/Compat
     [Dependency] private SharedBodySystem _body = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
     [Dependency] private WoundDamageProjectionSystem _projection = default!;
@@ -35,8 +35,8 @@ public sealed partial class WoundDamageRoutingSystem : EntitySystem
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private InventorySystem _inventory = default!;
     [Dependency] private WoundTargetResolver _targetResolver = default!; // WOLFGATE(Wolfmed): D10, Shitmed-backed replacement.
-    [Dependency] private WolfmedBodyPartSystem _wfPart = default!; // WOLFGATE(Wolfmed): D8, Onyx's extra part fields.
-    [Dependency] private WolfmedAimScatterSystem _wfAim = default!; // WOLFGATE(Wolfmed): bullets can stray off the aimed part.
+    [Dependency] private WolfmedBodyPartSystem _wgPart = default!; // WOLFGATE(Wolfmed): D8, Onyx's extra part fields.
+    [Dependency] private WolfmedAimScatterSystem _wgAim = default!; // WOLFGATE(Wolfmed): bullets can stray off the aimed part.
     [Dependency] private PainSystem _pain = default!;
     // WOLFGATE(Wolfmed): M6: the MobThresholdSystem dependency went with TryApplyLethalDamage, its only reader.
     [Dependency] private IPrototypeManager _prototypes = default!;
@@ -687,7 +687,7 @@ public sealed partial class WoundDamageRoutingSystem : EntitySystem
                              TryGetActiveHandPart(body, out var handPart))
                         _requestedParts[body] = handPart;
                     else if (origin is { } targetingSource && _targetResolver.TryResolve(body, targetingSource, out var targetedPart))
-                        _requestedParts[body] = _wfAim.Scatter(body, targetingSource, _routedModifiers.GetValueOrDefault(body.Owner).Tool, targetedPart); // WOLFGATE(Wolfmed)
+                        _requestedParts[body] = _wgAim.Scatter(body, targetingSource, _routedModifiers.GetValueOrDefault(body.Owner).Tool, targetedPart); // WOLFGATE(Wolfmed)
                     else if (origin is { } defibrillator && HasComp<DefibrillatorComponent>(defibrillator) &&
                              _targetResolver.TryResolveAvailable(body, TargetBodyPart.Torso, out var chestPart)) // WOLFGATE(Wolfmed): D9
                         _requestedParts[body] = chestPart;
@@ -786,7 +786,7 @@ public sealed partial class WoundDamageRoutingSystem : EntitySystem
             // WOLFGATE(Wolfmed): M1b: per-part ceiling for damage nobody dealt (fire, cold, atmosphere, an EMP), plus the
             // corpse ceiling. What it trims is not lost: it rides on the hit's event as Overflow.
             var discarded = origin == null && !_explosionDamage.Contains(body)
-                ? _wfPart.ClampToBodyCap(body, target, localized)
+                ? _wgPart.ClampToBodyCap(body, target, localized)
                 : new DamageSpecifier();
             var overflow = AccumulateAmputationOverflow(target, ref localized);
             if (!overflow.Empty)
@@ -843,15 +843,15 @@ public sealed partial class WoundDamageRoutingSystem : EntitySystem
         var overflow = new DamageSpecifier();
         if (!TryComp(part, out WoundableComponent? woundable) ||
             !TryComp(part, out BodyPartComponent? bodyPart) ||
-            _wfPart.Get(part).MaxDamage <= FixedPoint2.Zero || // WOLFGATE(Wolfmed): D8
+            _wgPart.Get(part).MaxDamage <= FixedPoint2.Zero || // WOLFGATE(Wolfmed): D8
             !TryComp(part, out DamageableComponent? damageable))
             return overflow;
 
         var current = _damage.GetPositiveDamage((part, damageable)).GetTotal();
-        var remaining = _wfPart.Get(part).MaxDamage - current; // WOLFGATE(Wolfmed): D8
+        var remaining = _wgPart.Get(part).MaxDamage - current; // WOLFGATE(Wolfmed): D8
 
         if (remaining > FixedPoint2.Zero) // WOLFGATE(Wolfmed): revival pass, room under the cap again
-            _wfPart.ClearOverflow(part);
+            _wgPart.ClearOverflow(part);
 
         if (remaining > FixedPoint2.Zero && woundable.AmputationOverflow != FixedPoint2.Zero)
         {
@@ -1003,7 +1003,7 @@ public sealed partial class WoundDamageRoutingSystem : EntitySystem
             if (!TryComp(parts[i], out BodyPartComponent? part) ||
                 part.PartType == BodyPartType.Torso || // WOLFGATE(Wolfmed): D9
                 _body.GetParentPartOrNull(parts[i]) is null || // WOLFGATE(Wolfmed): Shitmed's BodyPartComponent has no Parent field.
-                _wfPart.Get(parts[i]).AmputationThresholds.Count == 0) // WOLFGATE(Wolfmed): D8
+                _wgPart.Get(parts[i]).AmputationThresholds.Count == 0) // WOLFGATE(Wolfmed): D8
                 continue;
 
             var weight = Math.Max(0f, shares[i].GetTotal().Float());
@@ -1117,7 +1117,7 @@ public sealed partial class WoundDamageRoutingSystem : EntitySystem
             // WOLFGATE(Wolfmed): AUTODOC5: the body damage cap only ever saw localized (part) damage, so airloss
             // counted without limit on a body that cannot die of the number. BRAIN's hypoxia clock carries
             // the lethality; the reading stops at the old death line.
-            if (_wfPart.AirlossCeiling(type) is { } ceiling && value > ceiling)
+            if (_wgPart.AirlossCeiling(type) is { } ceiling && value > ceiling)
                 value = FixedPoint2.Max(oldValue, ceiling);
             if (value == oldValue)
                 continue;

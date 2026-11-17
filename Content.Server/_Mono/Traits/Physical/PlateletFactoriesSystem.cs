@@ -8,7 +8,7 @@ using Content.Shared.Damage;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.Timing;
 using System.Linq; // WOLFGATE(Wolfmed)
-using Content.Server._WF.Wolfmed.Medical; // WOLFGATE(Wolfmed)
+using Content.Server._WG.Wolfmed.Medical; // WOLFGATE(Wolfmed)
 using Content.Shared._Onyx.Wounds; // WOLFGATE(Wolfmed)
 using Content.Shared.FixedPoint; // WOLFGATE(Wolfmed)
 

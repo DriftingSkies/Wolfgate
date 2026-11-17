@@ -22,8 +22,8 @@
       - id: BoxEvidenceMarkers
       - id: HandLabeler
       # WOLFGATE(Photography)
-      - id: WFCameraDetective
-      - id: WFCameraFilm
+      - id: WGCameraDetective
+      - id: WGCameraFilm
         amount: 2
   - type: AccessReader
     access: [["Tsfmc"]]

@@ -38,7 +38,7 @@ public sealed partial record GeneralStationRecord
 
     // WOLFGATE(Companies) START: the holder's company rank, whose custom job icon screens show instead of JobIcon
     [DataField]
-    public int WFCompanyRank;
+    public int WGCompanyRank;
     // WOLFGATE END
 
     /// <summary>

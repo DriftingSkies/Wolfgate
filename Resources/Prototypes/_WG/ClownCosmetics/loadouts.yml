@@ -1,0 +1,429 @@
+- type: loadout
+  id: WGContractorClothingHeadHatCircusClown
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    head: WGClothingHeadHatCircusClown
+
+- type: loadout
+  id: WGContractorClothingUniformCircusClown
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformCircusClown
+
+- type: loadout
+  id: WGContractorClothingUniformJokester
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJokester
+
+- type: loadout
+  id: WGContractorClothingOuterCoatJokester
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    outerClothing: WGClothingOuterCoatJokester
+
+- type: loadout
+  id: WGContractorClothingUniformJesterEvil
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJesterEvil
+
+- type: loadout
+  id: WGContractorClothingHeadJesterEvilHat
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    head: WGClothingHeadJesterEvilHat
+
+- type: loadout
+  id: WGContractorClothingNeckRuffle
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    neck: WGClothingNeckRuffle
+
+- type: loadout
+  id: WGContractorClothingMaskClownNose
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - WGClothingMaskClownNose
+
+- type: loadout
+  id: WGContractorClothingShoesCircus
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  hideEffects:
+  - !type:GroupLoadoutEffect
+    proto: ShoesCapableNF
+  price: 0
+  equipment:
+    shoes: WGClothingShoesCircus
+
+- type: loadout
+  id: WGContractorClothingShoesJokester
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  hideEffects:
+  - !type:GroupLoadoutEffect
+    proto: ShoesCapableNF
+  price: 0
+  equipment:
+    shoes: WGClothingShoesJokester
+
+- type: loadout
+  id: WGContractorClothingShoesJesterEvilJanglers
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  hideEffects:
+  - !type:GroupLoadoutEffect
+    proto: ShoesCapableNF
+  price: 0
+  equipment:
+    shoes: WGClothingShoesJesterEvilJanglers
+
+- type: loadout
+  id: WGContractorCandyClownUniformSuit
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGCandyClownUniformSuit
+
+- type: loadout
+  id: WGContractorStripedClownUniformSuit
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGStripedClownUniformSuit
+
+- type: loadout
+  id: WGContractorSpottedClownUniformSuit
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGSpottedClownUniformSuit
+
+- type: loadout
+  id: WGContractorClothingUniformJumpsuitPerformerClown
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJumpsuitPerformerClown
+
+- type: loadout
+  id: WGContractorClothingUniformJumpskirtPerformerClown
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJumpskirtPerformerClown
+
+- type: loadout
+  id: WGContractorClothingUniformJumpsuitClownFormal
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJumpsuitClownFormal
+
+- type: loadout
+  id: WGContractorClothingUniformJumpskirtClownFormal
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJumpskirtClownFormal
+
+- type: loadout
+  id: WGContractorCoolCoyoteClothesSexyclown
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGCoolCoyoteClothesSexyclown
+
+- type: loadout
+  id: WGContractorClothingHeadHatMimeBowler
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    head: WGClothingHeadHatMimeBowler
+
+- type: loadout
+  id: WGContractorClothingOuterCoatPufferMime
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    outerClothing: WGClothingOuterCoatPufferMime
+
+- type: loadout
+  id: WGContractorClothingUniformJumpsuitMimeCropped
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJumpsuitMimeCropped
+
+- type: loadout
+  id: WGContractorClothingUniformJumpskirtMimeCropped
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJumpskirtMimeCropped
+
+- type: loadout
+  id: WGContractorClothingUniformJumpsuitMimeNouveau
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJumpsuitMimeNouveau
+
+- type: loadout
+  id: WGContractorClothingUniformJumpskirtMimeNouveau
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJumpskirtMimeNouveau
+
+- type: loadout
+  id: WGContractorClothingShoesMimeBoots
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  hideEffects:
+  - !type:GroupLoadoutEffect
+    proto: ShoesCapableNF
+  price: 0
+  equipment:
+    shoes: WGClothingShoesMimeBoots
+
+- type: loadout
+  id: WGContractorClothingUniformJumpsuitPerformerMime
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJumpsuitPerformerMime
+
+- type: loadout
+  id: WGContractorClothingUniformJumpskirtPerformerMime
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJumpskirtPerformerMime
+
+- type: loadout
+  id: WGContractorClothingUniformJumpsuitMimeSuaveWhite
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJumpsuitMimeSuaveWhite
+
+- type: loadout
+  id: WGContractorClothingUniformJumpsuitMimeSuaveBlack
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGClothingUniformJumpsuitMimeSuaveBlack
+
+- type: loadout
+  id: WGContractorMimeFrillsUniformSuit
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGMimeFrillsUniformSuit
+
+- type: loadout
+  id: WGContractorClothingMaskSusMime
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - WGClothingMaskSusMime
+
+- type: loadout
+  id: WGContractorClothingUnderSocksMime
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  hideEffects:
+  - !type:GroupLoadoutEffect
+    proto: ShoesCapableNF
+  price: 0
+  equipment:
+    shoes: WGClothingUnderSocksMime
+
+- type: loadout
+  id: WGContractorClothingMaskMimeSecurity
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - WGClothingMaskMimeSecurity
+
+- type: loadout
+  id: WGContractorCoolCoyoteClothesSexymime
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: WGCoolCoyoteClothesSexymime
+
+- type: loadout
+  id: WGContractorClothingUniformJumpskirtClown
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtClown
+
+- type: loadout
+  id: WGContractorClothingOuterHardsuitClown
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    outerClothing: ClothingOuterHardsuitClown
+
+- type: loadout
+  id: WGContractorClothingOuterHardsuitMime
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  equipment:
+    outerClothing: ClothingOuterHardsuitMime
+
+- type: loadout
+  id: WGContractorClothingMaskBlushingClown
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - ClothingMaskBlushingClown
+
+- type: loadout
+  id: WGContractorClownRecorder
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - ClownRecorder
+
+- type: loadout
+  id: WGContractorWhoopieCushion
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - WhoopieCushion
+
+- type: loadout
+  id: WGContractorVehicleUnicycleFolded
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - VehicleUnicycleFolded
+
+- type: loadout
+  id: WGContractorRubberChicken
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - RubberChicken
+
+- type: loadout
+  id: WGContractorToyHammer
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - ToyHammer
+
+- type: loadout
+  id: WGContractorLauncherCreamPie
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - LauncherCreamPie

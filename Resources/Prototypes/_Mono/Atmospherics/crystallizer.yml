@@ -54,7 +54,7 @@
   maximumTemperature: 8150
   energyRelease: 1840
   products:
-    WFSheetPlastitanium5: 1
+    WGSheetPlastitanium5: 1
   dangerous: true
   minimumRequirements:
   - 105     # oxygen

@@ -1,0 +1,88 @@
+# The PDV's engineer, the counterpart of the TSFMC engineer.
+
+- type: job
+  id: WGPdvArtificer
+  name: job-name-wg-pdv-artificer
+  description: job-description-wg-pdv-artificer
+  playTimeTracker: JobWGPdvArtificer
+  requirements:
+    - !type:OverallPlaytimeRequirement
+      time: 21600 # 6hr, as the TSFMC engineer
+    - !type:TraitsRequirement
+      inverted: true
+      traits:
+      - Heretic
+  startingGear: WGPdvArtificerGear
+  alwaysUseSpawner: true
+  hideConsoleVisibility: true
+  canBeAntag: true
+  icon: JobIconWGPdvArtificer
+  supervisors: job-supervisors-wg-pdv-artificer
+  weight: 25
+  displayWeight: 25
+  assignedCompany: PDV
+  setPreference: true
+  access:
+  - PDV
+  - Mercenary
+  accessGroups:
+  - GeneralAccess
+  guides:
+  - PDV_Entry
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: MailDisabled
+    - type: SpecialSectorStationRecord
+      recordGeneration: FalseRecord
+    - type: NpcFactionMember
+      factions:
+      - PirateNF
+    - type: RadioOnCryosleep
+      radioChannel: Freelance
+  - !type:AddImplantSpecial
+    implants: [ FreelanceTrackingImplant ]
+  - !type:AddLanguageSpecial
+    languagesSpoken:
+    - Freespeak
+    languagesUnderstood:
+    - Freespeak
+  - !type:GiveItemOnHolidaySpecial
+    holiday: FrontierBirthday
+    prototype: FrontierBirthdayGift
+
+- type: startingGear
+  id: WGPdvArtificerGear
+  equipment:
+    ears: ClothingHeadsetAltFreelancer
+    pocket1: BasePirateUplinkPirateCrew
+  storage:
+    back:
+    - EncryptionKeyEngineering
+    - RadioHandheldNF
+    - NanolaminateFoamGrenade
+    - NanolaminateFoamGrenade
+    - RCDRecharging
+    - NFPouchUtility
+
+- type: playTimeTracker
+  id: JobWGPdvArtificer
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconWGPdvArtificer
+  icon:
+    sprite: /Textures/_Mono/Interface/Misc/job_icons.rsi
+    state: PDVRakhshan
+  jobName: job-name-wg-pdv-artificer
+
+- type: entity
+  id: WGSpawnPointPdvArtificer
+  parent: SpawnPointJobBase
+  name: PDV Artificer
+  components:
+  - type: SpawnPoint
+    job_id: WGPdvArtificer
+  - type: Sprite
+    sprite: Structures/Decoration/banner.rsi
+    state: banner-red

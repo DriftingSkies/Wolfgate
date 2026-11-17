@@ -269,7 +269,7 @@ public sealed partial class CrewMonitoringWindow : FancyWindow
                 {
                     TextureScale = new Vector2(2f, 2f),
                     VerticalAlignment = VAlignment.Center,
-                    Texture = Content.Client._WF.Companies.WFCompanyRankIcons.Or(sensor.WFCompanyRank, _spriteSystem.Frame0(proto.Icon)), // WOLFGATE(Companies): rank icon
+                    Texture = Content.Client._WG.Companies.WGCompanyRankIcons.Or(sensor.WGCompanyRank, _spriteSystem.Frame0(proto.Icon)), // WOLFGATE(Companies): rank icon
                     Margin = new Thickness(5, 0, 5, 0),
                 };
 

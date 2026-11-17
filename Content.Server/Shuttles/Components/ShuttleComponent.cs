@@ -56,7 +56,7 @@ namespace Content.Server.Shuttles.Components
         public readonly List<EntityUid> AngularThrusters = new();
 
         // WOLFGATE(Performance): what SetAngularThrust last set every angular thruster to; null once one is added
-        public bool? WFAngularFiring;
+        public bool? WGAngularFiring;
 
         [ViewVariables]
         public float AngularThrust = 0f;

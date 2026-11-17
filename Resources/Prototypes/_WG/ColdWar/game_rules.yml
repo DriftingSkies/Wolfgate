@@ -1,0 +1,5 @@
+- type: entity
+  id: WGEscalationRule
+  parent: BaseGameRule
+  components:
+  - type: WGEscalationRule

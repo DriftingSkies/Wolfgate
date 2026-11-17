@@ -1,5 +1,5 @@
 using Content.Shared.Explosion.EntitySystems;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.Explosion.Components;

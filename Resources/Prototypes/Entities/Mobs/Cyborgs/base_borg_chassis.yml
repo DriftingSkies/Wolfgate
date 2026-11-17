@@ -159,12 +159,12 @@
       locked: true
     paiSlot:
       locked: true
-  - type: WFBorgPda
-  - type: WFGameHubInstaller
+  - type: WGBorgPda
+  - type: WGGameHubInstaller
   - type: Ringer
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
-    # The same apps as a vagrant's PDA (BasePDA): GameHub comes from WFGameHubInstaller, and Market, Contracts and
+    # The same apps as a vagrant's PDA (BasePDA): GameHub comes from WGGameHubInstaller, and Market, Contracts and
     # NanoChat are added to every PDA in code.
     preinstalled:
     - CrewManifestCartridge
@@ -369,7 +369,7 @@
         toggleAction: ActionObserverShowRadar
       # WOLFGATE(Cyborgs) START: the action that opens the built-in PDA
       enum.PdaUiKey.Key:
-        toggleAction: WFActionBorgOpenPda
+        toggleAction: WGActionBorgOpenPda
       # WOLFGATE END
   - type: RadarConsole
     followEntity: true

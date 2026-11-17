@@ -28,7 +28,7 @@ public sealed partial class SuicideSystem : EntitySystem
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private GhostSystem _ghostSystem = default!;
     [Dependency] private SharedSuicideSystem _suicide = default!;
-    [Dependency] private Content.Server._WF.Wolfmed.Life.WolfmedDyingActionsSystem _wolfmedEndings = default!; // WOLFGATE(Wolfmed): M2: OD17
+    [Dependency] private Content.Server._WG.Wolfmed.Life.WolfmedDyingActionsSystem _wolfmedEndings = default!; // WOLFGATE(Wolfmed): M2: OD17
 
     private static readonly ProtoId<TagPrototype> CannotSuicideTag = "CannotSuicide";
 

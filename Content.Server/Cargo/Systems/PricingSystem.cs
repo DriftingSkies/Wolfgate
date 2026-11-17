@@ -253,7 +253,7 @@ public sealed partial class PricingSystem : EntitySystem
         RaiseLocalEvent(uid, ref ev);
 
         if (ev.Handled)
-            return WfBargainPrice(uid, ev.Price); // WOLFGATE(ShipCommand): a bargain resells for no more than was paid
+            return WgBargainPrice(uid, ev.Price); // WOLFGATE(ShipCommand): a bargain resells for no more than was paid
 
         var price = ev.Price;
         //TODO: Add an OpaqueToAppraisal component or similar for blocking the recursive descent into containers, or preventing material pricing.
@@ -270,7 +270,7 @@ public sealed partial class PricingSystem : EntitySystem
             price += GetStaticPrice(uid);
         }
 
-        price = WfBargainPrice(uid, price); // WOLFGATE(ShipCommand): a bargain resells for no more than was paid
+        price = WgBargainPrice(uid, price); // WOLFGATE(ShipCommand): a bargain resells for no more than was paid
 
         if (includeContents && TryComp<ContainerManagerComponent>(uid, out var containers))
         {
@@ -301,7 +301,7 @@ public sealed partial class PricingSystem : EntitySystem
         RaiseLocalEvent(uid, ref ev);
 
         if (ev.Handled)
-            return WfBargainPrice(uid, ev.Price); // WOLFGATE(ShipCommand): a bargain resells for no more than was paid
+            return WgBargainPrice(uid, ev.Price); // WOLFGATE(ShipCommand): a bargain resells for no more than was paid
 
         var price = ev.Price;
         price += GetMaterialsPrice(uid);
@@ -317,7 +317,7 @@ public sealed partial class PricingSystem : EntitySystem
             price += GetStaticPriceWithVendingDiscount(uid, currentGrid);
         }
 
-        price = WfBargainPrice(uid, price); // WOLFGATE(ShipCommand): a bargain resells for no more than was paid
+        price = WgBargainPrice(uid, price); // WOLFGATE(ShipCommand): a bargain resells for no more than was paid
 
         if (includeContents && TryComp<ContainerManagerComponent>(uid, out var containers))
         {
@@ -547,9 +547,9 @@ public sealed partial class PricingSystem : EntitySystem
         }
 
         // WOLFGATE(Encounters) START: a claimed hulk is worth a fraction of its parts
-        var wfAppraised = new Content.Server._WF.Encounters.Systems.WFGridAppraisedEvent(grid, price);
-        RaiseLocalEvent(grid, ref wfAppraised);
-        price = wfAppraised.Price;
+        var wgAppraised = new Content.Server._WG.Encounters.Systems.WGGridAppraisedEvent(grid, price);
+        RaiseLocalEvent(grid, ref wgAppraised);
+        price = wgAppraised.Price;
         // WOLFGATE END
 
         return price;

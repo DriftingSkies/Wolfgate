@@ -1,6 +1,6 @@
 using Robust.Shared.Serialization;
 // WOLFGATE(Gags): carry chosen clothing colours with a purchase
-using Content.Shared._WF.Gags;
+using Content.Shared._WG.Gags;
 
 namespace Content.Shared.VendingMachines
 {
@@ -15,7 +15,7 @@ namespace Content.Shared.VendingMachines
         {
             Type = type;
             ID = id;
-            Colors = WFGagsColors.Sanitize(colors);
+            Colors = WGGagsColors.Sanitize(colors);
         }
         // WOLFGATE END
     }

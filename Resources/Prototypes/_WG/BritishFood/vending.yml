@@ -1,0 +1,66 @@
+- type: vendingMachineInventory
+  id: WGLuvvitsInventory
+  startingInventory:
+    WGFoodPackHuntersChicken: 6
+    WGFoodPackSteakAlePie: 3
+    WGFoodPackSteakAlePieSlice: 6
+    WGFoodPackPorkPie: 6
+    WGFoodPackChickenMushroomPie: 6
+    WGFoodPackCornishPasty: 6
+    WGFoodPackCheesyBeanMelt: 6
+    WGFoodPackWelshCawl: 6
+    WGFoodPackScones: 6
+    WGFoodPackEtonMess: 6
+    WGFoodPackStickyToffeePudding: 6
+    WGDrinkIrnBruCan: 6
+    WGDrinkDandelionBurdockCan: 6
+
+- type: localizedDataset
+  id: WGLuvvitsAds
+  values:
+    prefix: wg-advertisement-luvvits-
+    count: 4
+
+- type: localizedDataset
+  id: WGLuvvitsGoodbyes
+  values:
+    prefix: wg-thankyou-luvvits-
+    count: 1
+
+# An imported pie vendor. Its food comes out piping hot.
+- type: entity
+  parent: VendingMachine
+  id: WGVendingMachineLuvvits
+  components:
+  - type: VendingMachine
+    pack: WGLuvvitsInventory
+    dispenseOnHitChance: 0.25
+    dispenseOnHitThreshold: 2
+    offState: off
+    brokenState: broken
+    normalState: normal-unshaded
+  - type: Advertise
+    pack: WGLuvvitsAds
+  - type: SpeakOnUIClosed
+    pack: WGLuvvitsGoodbyes
+  - type: Sprite
+    sprite: _WG/BritishFood/luvvits.rsi
+    layers:
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.Base"]
+    - state: "off"
+      map: ["enum.VendingMachineVisualLayers.BaseUnshaded"]
+      shader: unshaded
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#FA9632"
+
+- type: entity
+  parent: VendingMachineBoozeFlatpack
+  id: WGVendingMachineLuvvitsFlatpack
+  components:
+  - type: Flatpack
+    entity: WGVendingMachineLuvvits

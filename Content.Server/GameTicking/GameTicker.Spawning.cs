@@ -24,7 +24,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
 using Content.Server._Corvax.Respawn; // Frontier
-using Content.Shared._WF.Roles; // WOLFGATE(Roles)
+using Content.Shared._WG.Roles; // WOLFGATE(Roles)
 
 namespace Content.Server.GameTicking
 {
@@ -55,9 +55,9 @@ namespace Content.Server.GameTicking
             while (query.MoveNext(out var uid, out _, out _))
             {
                 // WOLFGATE(RoundSetup) START: ordinary joining excludes private scenario stations
-                // if (HasComp<Content.Server._WF.RoundSetup.WFCrashScenarioStationComponent>(uid) ||
-                //     HasComp<Content.Server._WF.RoundSetup.WFShipScenarioStationComponent>(uid))
-                if (!EntityManager.System<Content.Server._WF.RoundSetup.WFRoundSetupSystem>().IsStandardStation(uid))
+                // if (HasComp<Content.Server._WG.RoundSetup.WGCrashScenarioStationComponent>(uid) ||
+                //     HasComp<Content.Server._WG.RoundSetup.WGShipScenarioStationComponent>(uid))
+                if (!EntityManager.System<Content.Server._WG.RoundSetup.WGRoundSetupSystem>().IsStandardStation(uid))
                     continue;
                 // WOLFGATE END
                 spawnableStations.Add(uid);
@@ -99,7 +99,7 @@ namespace Content.Server.GameTicking
             // WOLFGATE(RoundSetup) START: explicit Normal choices share the regular job allocation
             // var assignedJobs = _stationJobs.AssignJobs(profiles, spawnableStations);
             // _stationJobs.AssignOverflowJobs(ref assignedJobs, playerNetIds, profiles, spawnableStations);
-            var assignedJobs = WFAssignRoundSetupJobs(profiles, spawnableStations, playerNetIds);
+            var assignedJobs = WGAssignRoundSetupJobs(profiles, spawnableStations, playerNetIds);
             // WOLFGATE END
 
             // Calculate extended access for stations.
@@ -127,7 +127,7 @@ namespace Content.Server.GameTicking
 
                 // WOLFGATE(RoundSetup) START: authorize the assigned group member while preserving the saved profile
                 // SpawnPlayer(_playerManager.GetSessionById(player), profiles[player], station, job, false);
-                WFSpawnAssignedPlayer(_playerManager.GetSessionById(player), profiles[player], station, job);
+                WGSpawnAssignedPlayer(_playerManager.GetSessionById(player), profiles[player], station, job);
                 // WOLFGATE END
             }
 
@@ -185,7 +185,7 @@ namespace Content.Server.GameTicking
             }
 
             // WOLFGATE(RoundSetup) START: require authenticated scenario membership on every spawn path
-            if (!EntityManager.System<Content.Server._WF.RoundSetup.WFRoundSetupSystem>().CanSpawnOnStation(player, station))
+            if (!EntityManager.System<Content.Server._WG.RoundSetup.WGRoundSetupSystem>().CanSpawnOnStation(player, station))
                 return;
             // WOLFGATE END
 
@@ -263,7 +263,7 @@ namespace Content.Server.GameTicking
             _roles.MindAddJobRole(newMind, silent: silent, jobPrototype:jobId);
             var jobName = _jobs.MindTryGetJobName(newMind);
             var customJobTitle = CustomJobTitleRules.GetTitle(character, jobId, _prototypeManager); // WOLFGATE(Roles)
-            customJobTitle = EntityManager.System<Content.Server._WF.Companies.WFCompanySystem>().RankTitleFor(player, character, jobId) ?? customJobTitle; // WOLFGATE(Companies): arrival announcement uses the rank, not Vagrant
+            customJobTitle = EntityManager.System<Content.Server._WG.Companies.WGCompanySystem>().RankTitleFor(player, character, jobId) ?? customJobTitle; // WOLFGATE(Companies): arrival announcement uses the rank, not Vagrant
             _admin.UpdatePlayerList(player);
 
             if (lateJoin && !silent)

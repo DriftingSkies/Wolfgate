@@ -1,0 +1,275 @@
+# ASF ship vouchers, coilguns and field modsuits are researched on Lantern Post's server and printed at its fabricator, like other factions' LPCs.
+
+- type: techDiscipline
+  id: WGAsf
+  name: wg-asf-research-discipline
+  color: "#A66BE0"
+  icon:
+    sprite: _WG/Asf/Interface/research_disciplines.rsi
+    state: asf
+  tierPrerequisites:
+    1: 0
+    2: 0.5
+    3: 0.5
+  uiName: ASF
+
+- type: technology
+  id: WGAsfLPCCivilian
+  name: wg-asf-research-lpc-civilian
+  entityIcon: WGAsfVoucherCivilian
+  discipline: WGAsf
+  tier: 1
+  cost: 10000
+  recipeUnlocks:
+  - WGAsfVoucherCivilian
+  technologyPrerequisites:
+  - UniversalMaterialResearchT1
+  position: -5, -7
+
+- type: technology
+  id: WGAsfLPCEscort
+  name: wg-asf-research-lpc-escort
+  entityIcon: WGAsfVoucherEscort
+  discipline: WGAsf
+  tier: 1
+  cost: 20000
+  recipeUnlocks:
+  - WGAsfVoucherEscort
+  technologyPrerequisites:
+  - WGAsfLPCCivilian
+  position: -6, -7
+
+- type: technology
+  id: WGAsfLPCLodestar
+  name: wg-asf-research-lpc-lodestar
+  entityIcon: WGAsfVoucherLodestar
+  discipline: WGAsf
+  tier: 2
+  cost: 40000
+  recipeUnlocks:
+  - WGAsfVoucherLodestar
+  technologyPrerequisites:
+  - WGAsfLPCEscort
+  - UniversalMaterialResearchT2
+  position: -6, -15
+
+- type: technology
+  id: WGAsfCoilArms
+  name: wg-asf-research-coil-arms
+  entityIcon: WGAsfWeaponRifleCoil
+  discipline: WGAsf
+  tier: 1
+  cost: 15000
+  recipeUnlocks:
+  - WGAsfWeaponPistolCoil
+  - WGAsfWeaponRifleCoil
+  - WGAsfMagazinePistolCoil
+  - WGAsfMagazineRifleCoil
+  - WGAsfBoxCoilSlug
+  technologyPrerequisites:
+  - UniversalMaterialResearchT1
+  position: -4, -7
+
+- type: technology
+  id: WGAsfFieldModsuit
+  name: wg-asf-research-field-modsuit
+  entityIcon: WGAsfClothingModsuitField
+  discipline: WGAsf
+  tier: 1
+  cost: 20000 # as the TSF M82c's basic equipment
+  recipeUnlocks:
+  - WGAsfClothingModsuitField
+  technologyPrerequisites:
+  - UniversalMaterialResearchT1
+  position: -3, -7
+
+- type: technology
+  id: WGAsfAegisModsuit
+  name: wg-asf-research-aegis-modsuit
+  entityIcon: WGAsfClothingModsuitAegis
+  discipline: WGAsf
+  tier: 2
+  cost: 45000
+  recipeUnlocks:
+  - WGAsfClothingModsuitAegis
+  technologyPrerequisites:
+  - WGAsfFieldModsuit
+  - UniversalMaterialResearchT2
+  position: -4, -15
+
+- type: latheRecipe
+  parent: BaseVoucherRecipe
+  id: WGAsfVoucherCivilian
+  result: WGAsfVoucherCivilian
+  completetime: 20
+  materials:
+    Steel: 5000
+    Copper: 2500
+    Plasteel: 2500
+    Glass: 2500
+
+- type: latheRecipe
+  parent: BaseVoucherRecipe
+  id: WGAsfVoucherEscort
+  result: WGAsfVoucherEscort
+  completetime: 30
+  materials:
+    Steel: 5000
+    Copper: 5000
+    Plasteel: 5000
+    Glass: 5000
+    Plasma: 2500
+
+- type: latheRecipe
+  parent: BaseVoucherRecipe
+  id: WGAsfVoucherLodestar
+  result: WGAsfVoucherLodestar
+  completetime: 100
+  materials: # matches the TSF tier-2 LPC; the Lodestar is a flagship
+    Steel: 10000
+    Copper: 10000
+    Plasteel: 5000
+    Lithium: 10000
+    Glass: 5000
+    Plasma: 5000
+    Gold: 5000
+    Silver: 5000
+    Plastitanium: 1000
+
+- type: latheRecipe
+  parent: BaseWeaponRecipe
+  id: WGAsfWeaponPistolCoil
+  result: WGAsfWeaponPistolCoil
+  categories:
+  - Sidearms
+  - Ballistic
+  - Weapons
+  materials:
+    Steel: 600
+    Plastic: 300
+    Copper: 300 # the coil windings
+
+- type: latheRecipe
+  parent: BaseWeaponRecipeLong
+  id: WGAsfWeaponRifleCoil
+  result: WGAsfWeaponRifleCoil
+  categories:
+  - Rifles
+  - Ballistic
+  - Weapons
+  materials:
+    Steel: 1200
+    Plasteel: 1000
+    Plastic: 900
+    Copper: 800
+
+- type: latheRecipe
+  parent: BaseAmmoFMJPistolCaliberPistolMagazineRecipe
+  id: WGAsfMagazinePistolCoil
+  result: WGAsfMagazinePistolCoil
+
+- type: latheRecipe
+  parent: BaseAmmoFMJIntermediateMagazineRecipe
+  id: WGAsfMagazineRifleCoil
+  result: WGAsfMagazineRifleCoil
+
+- type: latheRecipe
+  parent: BaseAmmoFMJIntermediateAmmoBoxRecipe
+  id: WGAsfBoxCoilSlug
+  result: WGAsfBoxCoilSlug
+
+- type: latheRecipe
+  parent: MonoHardsuitT1Recipe
+  id: WGAsfClothingModsuitField
+  result: WGAsfClothingModsuitField
+  materials: # the M82c's T1 cost, plus the helmet, gauntlets and boots
+    Glass: 300
+    Steel: 3500
+    Plastic: 1250
+    Plasteel: 4500
+    Durathread: 2000
+    Silver: 500
+    Gold: 500
+
+- type: latheRecipe
+  parent: MonoHardsuitT2Recipe
+  id: WGAsfClothingModsuitAegis
+  result: WGAsfClothingModsuitAegis
+  materials: # T2 suit cost plus the shield emitter
+    Glass: 500
+    Steel: 3500
+    Plastic: 1250
+    Plasteel: 5000
+    Durathread: 2500
+    Silver: 1500
+    Gold: 1000
+    Plasma: 1000
+
+- type: latheRecipePack
+  id: WGAsfResearch
+  recipes:
+  - WGAsfVoucherCivilian
+  - WGAsfVoucherEscort
+  - WGAsfVoucherLodestar
+  - WGAsfWeaponPistolCoil
+  - WGAsfWeaponRifleCoil
+  - WGAsfMagazinePistolCoil
+  - WGAsfMagazineRifleCoil
+  - WGAsfBoxCoilSlug
+  - WGAsfClothingModsuitField
+  - WGAsfClothingModsuitAegis
+
+- type: entity
+  id: WGAsfResearchServer
+  parent: BaseRdServerFaction
+  components:
+  - type: TechnologyDatabase
+    supportedDisciplines:
+    - WGAsf
+    - FactionUniversal
+    - Industrial
+    - Arsenal
+    - Experimental
+    - CivilianServices
+    - MechaEngineering
+
+- type: entity
+  id: WGAsfLathe
+  parent: [BaseLatheLube, BaseStructureDisableToolUse]
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Machines/techfab.rsi
+    layers:
+    - state: icon
+      map: ["enum.LatheVisualLayers.IsRunning"]
+    - sprite: _WG/Asf/Structures/fabricator.rsi
+      state: techfab-asf
+    - state: unlit
+      shader: unshaded
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+    - state: inserting
+      map: ["enum.MaterialStorageVisualLayers.Inserting"]
+    - state: panel
+      map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: Machine
+    board: ProtolatheMachineCircuitboard
+  - type: Lathe
+    producingSound: /Audio/Machines/circuitprinter.ogg
+    idleState: icon
+    runningState: icon
+    staticPacks:
+    - RoundstartShipgunAmmo
+    dynamicPacks:
+    - WGAsfResearch
+    # universal shipgun ammo, as on every faction lathe
+    - UniversalRailgunAmmo
+    - UniversalMissileAmmo
+    - UniversalShellAmmo
+    - UniversalOrdinance
+  - type: MaterialStorage
+    whitelist:
+      tags:
+      - Sheet
+      - RawMaterial
+      - Ingot
+  - type: RequireProjectileTarget

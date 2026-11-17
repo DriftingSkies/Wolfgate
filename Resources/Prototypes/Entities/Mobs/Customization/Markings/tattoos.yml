@@ -114,7 +114,7 @@
   id: TattooEyeRight
   bodyPart: Eyes
   markingCategory: Eyes # WOLFGATE(Species): eye markings get their own points (was Head)
-  speciesRestriction: [Human, SlimePerson, Reptilian, Dwarf, Goblin, Felinid, Vulpkanin, Oni, Harpy, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Vulpkanin, Oni, Harpy; Goob - Tajaran # WOLFGATE(Species): added Canine
+  speciesRestriction: [Human, SlimePerson, Reptilian, Dwarf, Goblin, Felinid, Vulpkanin, Oni, Harpy, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Vulpkanin, Oni, Harpy; Goob - Tajaran # WOLFGATE(Species): added Canine
   coloring:
     default:
       type:
@@ -128,7 +128,7 @@
   id: TattooEyeLeft
   bodyPart: Eyes
   markingCategory: Eyes # WOLFGATE(Species): eye markings get their own points (was Head)
-  speciesRestriction: [Human, SlimePerson, Reptilian, Dwarf, Goblin, Felinid, Vulpkanin, Oni, Harpy, Rodentia, Tajaran, Feroxi, WFCanine] # Delta V - Felinid, Vulpkanin, Oni, Harpy; Goob - Tajaran # WOLFGATE(Species): added Canine
+  speciesRestriction: [Human, SlimePerson, Reptilian, Dwarf, Goblin, Felinid, Vulpkanin, Oni, Harpy, Rodentia, Tajaran, Feroxi, WGCanine] # Delta V - Felinid, Vulpkanin, Oni, Harpy; Goob - Tajaran # WOLFGATE(Species): added Canine
   coloring:
     default:
       type:

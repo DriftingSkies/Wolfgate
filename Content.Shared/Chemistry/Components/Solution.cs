@@ -1,4 +1,4 @@
-using Content.Shared._WF.BloodColour; // WOLFGATE(BloodColour)
+using Content.Shared._WG.BloodColour; // WOLFGATE(BloodColour)
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.FixedPoint;
 using JetBrains.Annotations;
@@ -178,7 +178,7 @@ namespace Content.Shared.Chemistry.Components
             _heatCapacity = solution._heatCapacity;
             _heatCapacityDirty = solution._heatCapacityDirty;
             _heatCapacityUpdateCounter = solution._heatCapacityUpdateCounter;
-            WFCopyPurityFrom(solution); // WOLFGATE(WolfChem): copy the grades
+            WGCopyPurityFrom(solution); // WOLFGATE(WolfChem): copy the grades
             ValidateSolution();
         }
 
@@ -369,7 +369,7 @@ namespace Content.Shared.Chemistry.Components
                 return;
             }
 
-            WFBlendAddedPurity(id.Prototype, quantity); // WOLFGATE(WolfChem): a standard-grade addition dilutes a graded reagent
+            WGBlendAddedPurity(id.Prototype, quantity); // WOLFGATE(WolfChem): a standard-grade addition dilutes a graded reagent
             Volume += quantity;
             _heatCapacityDirty |= dirtyHeatCap;
             for (var i = 0; i < Contents.Count; i++)
@@ -475,7 +475,7 @@ namespace Content.Shared.Chemistry.Components
                 }
             }
 
-            WFPrunePurity(); // WOLFGATE(WolfChem): drop grades of reagents scaled away
+            WGPrunePurity(); // WOLFGATE(WolfChem): drop grades of reagents scaled away
             _heatCapacityDirty = true;
             ValidateSolution();
         }
@@ -548,7 +548,7 @@ namespace Content.Shared.Chemistry.Components
                 Volume -= splitQuantity;
                 removedQuantity += splitQuantity;
             }
-            WFPrunePurity(); // WOLFGATE(WolfChem): drop grades of removed reagents
+            WGPrunePurity(); // WOLFGATE(WolfChem): drop grades of removed reagents
             ValidateSolution();
 
             return removedQuantity;
@@ -590,7 +590,7 @@ namespace Content.Shared.Chemistry.Components
         /// </summary>
         public Solution SplitSolutionWithout(FixedPoint2 toTake, params string[] excludedPrototypes)
         {
-            var wfPurity = WFSnapshotPurity(); // WOLFGATE(WolfChem): the remove and re-add below would lose grades
+            var wgPurity = WGSnapshotPurity(); // WOLFGATE(WolfChem): the remove and re-add below would lose grades
             // First remove the blacklisted prototypes
             List<ReagentQuantity> excluded = new();
             foreach (var id in excludedPrototypes)
@@ -615,7 +615,7 @@ namespace Content.Shared.Chemistry.Components
                 AddReagent(reagent);
             }
 
-            WFRestorePurity(wfPurity, sol); // WOLFGATE(WolfChem): both halves keep their grades
+            WGRestorePurity(wgPurity, sol); // WOLFGATE(WolfChem): both halves keep their grades
             return sol;
         }
 
@@ -624,7 +624,7 @@ namespace Content.Shared.Chemistry.Components
         /// </summary>
         public Solution SplitSolutionWithOnly(FixedPoint2 toTake, params string[] includedPrototypes)
         {
-            var wfPurity = WFSnapshotPurity(); // WOLFGATE(WolfChem): the remove and re-add below would lose grades
+            var wgPurity = WGSnapshotPurity(); // WOLFGATE(WolfChem): the remove and re-add below would lose grades
             // First remove the non-included prototypes
             List<ReagentQuantity> excluded = new();
             for (var i = Contents.Count - 1; i >= 0; i--)
@@ -645,7 +645,7 @@ namespace Content.Shared.Chemistry.Components
                 AddReagent(reagent);
             }
 
-            WFRestorePurity(wfPurity, sol); // WOLFGATE(WolfChem): both halves keep their grades
+            WGRestorePurity(wgPurity, sol); // WOLFGATE(WolfChem): both halves keep their grades
             return sol;
         }
 
@@ -711,7 +711,7 @@ namespace Content.Shared.Chemistry.Components
             _heatCapacityDirty = true;
             newSolution._heatCapacityDirty = true;
 
-            WFSplitPurity(newSolution); // WOLFGATE(WolfChem): the split-off solution takes the grades of what it received
+            WGSplitPurity(newSolution); // WOLFGATE(WolfChem): the split-off solution takes the grades of what it received
             ValidateSolution();
             newSolution.ValidateSolution();
 
@@ -731,7 +731,7 @@ namespace Content.Shared.Chemistry.Components
                 return new Solution();
 
             var origVol = Volume;
-            var wfPurity = WFSnapshotPurity(); // WOLFGATE(WolfChem): RemoveAllSolution below would drop grades
+            var wgPurity = WGSnapshotPurity(); // WOLFGATE(WolfChem): RemoveAllSolution below would drop grades
             Solution newSolution = new Solution(Contents.Count) { Temperature = Temperature };
 
             for (var i = Contents.Count - 1; i >= 0; i--) // iterate backwards because of remove swap.
@@ -770,7 +770,7 @@ namespace Content.Shared.Chemistry.Components
             }
             newSolution._heatCapacityDirty = true;
 
-            WFRestorePurity(wfPurity, newSolution); // WOLFGATE(WolfChem): the split-off solution takes the grades of what it received
+            WGRestorePurity(wgPurity, newSolution); // WOLFGATE(WolfChem): the split-off solution takes the grades of what it received
             ValidateSolution();
             newSolution.ValidateSolution();
 
@@ -789,7 +789,7 @@ namespace Content.Shared.Chemistry.Components
                 return new Solution();
 
             var origVol = Volume;
-            var wfPurity = WFSnapshotPurity(); // WOLFGATE(WolfChem): RemoveAllSolution below would drop grades
+            var wgPurity = WGSnapshotPurity(); // WOLFGATE(WolfChem): RemoveAllSolution below would drop grades
             Solution newSolution = new Solution(Contents.Count) { Temperature = Temperature };
 
             for (var i = Contents.Count - 1; i >= 0; i--) // iterate backwards because of remove swap.
@@ -832,7 +832,7 @@ namespace Content.Shared.Chemistry.Components
             }
             newSolution._heatCapacityDirty = true;
 
-            WFRestorePurity(wfPurity, newSolution); // WOLFGATE(WolfChem): the split-off solution takes the grades of what it received
+            WGRestorePurity(wgPurity, newSolution); // WOLFGATE(WolfChem): the split-off solution takes the grades of what it received
             ValidateSolution();
             newSolution.ValidateSolution();
 
@@ -887,7 +887,7 @@ namespace Content.Shared.Chemistry.Components
             DebugTools.Assert(remaining >= 0);
             DebugTools.Assert(remaining == 0 || Volume == FixedPoint2.Zero);
 
-            WFPrunePurity(); // WOLFGATE(WolfChem): drop grades of removed reagents
+            WGPrunePurity(); // WOLFGATE(WolfChem): drop grades of removed reagents
             _heatCapacityDirty = true;
             ValidateSolution();
         }
@@ -897,7 +897,7 @@ namespace Content.Shared.Chemistry.Components
             if (otherSolution.Volume <= FixedPoint2.Zero)
                 return;
 
-            WFBlendPurityFrom(otherSolution); // WOLFGATE(WolfChem): blend each reagent with the other solution's grade
+            WGBlendPurityFrom(otherSolution); // WOLFGATE(WolfChem): blend each reagent with the other solution's grade
             Volume += otherSolution.Volume;
 
             var closeTemps = MathHelper.CloseTo(otherSolution.Temperature, Temperature);
@@ -972,16 +972,16 @@ namespace Content.Shared.Chemistry.Components
                     continue;
                 }
 
-                var wfColour = WFBloodColourData.ColourOf(reagent) ?? proto.SubstanceColor; // WOLFGATE(BloodColour): a character's own blood colour beats the reagent's
+                var wgColour = WGBloodColourData.ColourOf(reagent) ?? proto.SubstanceColor; // WOLFGATE(BloodColour): a character's own blood colour beats the reagent's
                 if (first)
                 {
                     first = false;
-                    mixColor = wfColour; // WOLFGATE(BloodColour)
+                    mixColor = wgColour; // WOLFGATE(BloodColour)
                     continue;
                 }
 
                 var interpolateValue = quantity.Float() / runningTotalQuantity.Float();
-                mixColor = Color.InterpolateBetween(mixColor, wfColour, interpolateValue); // WOLFGATE(BloodColour)
+                mixColor = Color.InterpolateBetween(mixColor, wgColour, interpolateValue); // WOLFGATE(BloodColour)
             }
             return mixColor;
         }
@@ -1016,16 +1016,16 @@ namespace Content.Shared.Chemistry.Components
                     continue;
                 }
 
-                var wfColour = WFBloodColourData.ColourOf(reagent) ?? proto.SubstanceColor; // WOLFGATE(BloodColour): a character's own blood colour beats the reagent's
+                var wgColour = WGBloodColourData.ColourOf(reagent) ?? proto.SubstanceColor; // WOLFGATE(BloodColour): a character's own blood colour beats the reagent's
                 if (first)
                 {
                     first = false;
-                    mixColor = wfColour; // WOLFGATE(BloodColour)
+                    mixColor = wgColour; // WOLFGATE(BloodColour)
                     continue;
                 }
 
                 var interpolateValue = quantity.Float() / runningTotalQuantity.Float();
-                mixColor = Color.InterpolateBetween(mixColor, wfColour, interpolateValue); // WOLFGATE(BloodColour)
+                mixColor = Color.InterpolateBetween(mixColor, wgColour, interpolateValue); // WOLFGATE(BloodColour)
             }
             return mixColor;
         }
@@ -1046,7 +1046,7 @@ namespace Content.Shared.Chemistry.Components
         public void SetContents(IEnumerable<ReagentQuantity> reagents, bool setMaxVol = false)
         {
             Volume = 0;
-            var wfPurity = Purity; // WOLFGATE(WolfChem): keep the grades of reagents that stay
+            var wgPurity = Purity; // WOLFGATE(WolfChem): keep the grades of reagents that stay
             RemoveAllSolution();
             _heatCapacityDirty = true;
             Contents = new(reagents);
@@ -1055,8 +1055,8 @@ namespace Content.Shared.Chemistry.Components
                 Volume += reagent.Quantity;
             }
 
-            Purity = wfPurity; // WOLFGATE(WolfChem)
-            WFPrunePurity(); // WOLFGATE(WolfChem)
+            Purity = wgPurity; // WOLFGATE(WolfChem)
+            WGPrunePurity(); // WOLFGATE(WolfChem)
 
             if (setMaxVol)
                 MaxVolume = Volume;

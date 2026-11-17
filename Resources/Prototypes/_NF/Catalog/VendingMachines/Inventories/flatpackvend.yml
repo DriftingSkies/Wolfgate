@@ -36,4 +36,4 @@
     JukeboxFlatpack: 4294967295 # Infinite - Mono
     AtmosDeviceFanDirectionalFlatpack: 4294967295 # Infinite - Mono
     MaterialSiloFlatpack: 4294967295 # Infinite - Mono
-    WFFlatpackShieldDeflector: 4294967295 # WOLFGATE(ShipShields): the Parasol deflector is an off-the-shelf fitting
+    WGFlatpackShieldDeflector: 4294967295 # WOLFGATE(ShipShields): the Parasol deflector is an off-the-shelf fitting

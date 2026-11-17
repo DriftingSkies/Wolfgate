@@ -6,21 +6,21 @@
   description: This is where the bartender keeps the booze.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-cabinet.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/service-secure-cabinet.rsi
     layers:
     - state: closed
       map: [ "enum.StorageVisualLayers.Door" ]
     - state: locked
-      sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-cabinet.rsi
+      sprite: _WG/Resprites/Wizden/Storage/Closets/service-secure-cabinet.rsi
       map: [ "enum.LockVisualLayers.Lock" ]
       shader: unshaded
     - state: welded
       visible: false
-      sprite: _WF/Resprites/Wizden/Storage/Closets/closet-effects.rsi
+      sprite: _WG/Resprites/Wizden/Storage/Closets/closet-effects.rsi
       map: [ "enum.WeldableLayers.BaseWelded" ]
     - state: paper
       visible: false
-      sprite: _WF/Resprites/Wizden/Storage/Closets/closet-effects.rsi
+      sprite: _WG/Resprites/Wizden/Storage/Closets/closet-effects.rsi
       offset: "-0.065,0"
       map: [ "enum.PaperLabelVisuals.Layer" ]
   - type: AccessReader
@@ -44,7 +44,7 @@
   description: Nevermind the pickaxe.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/cargo-secure-salvage.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/cargo-secure-salvage.rsi
   - type: AccessReader
 #    access: [["Salvage"]] # Frontier
 
@@ -56,7 +56,7 @@
   name: captain's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-captain.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/command-secure-captain.rsi
   - type: AccessReader
   #  access: [["Captain"]] # Mono
 
@@ -67,7 +67,7 @@
   name: head of personnel's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-service.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/command-secure-service.rsi
   - type: AccessReader
     access: [["CaelestinusCommand"]] # Mono
 
@@ -78,7 +78,7 @@
   name: chief engineer's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-engineering.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/command-secure-engineering.rsi
   - type: AccessReader
 #    access: [ [ "ChiefEngineer" ] ] # Frontier
 
@@ -89,7 +89,7 @@
   name: quartermaster's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-cargo.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/command-secure-cargo.rsi
   - type: AccessReader
 #    access: [ [ "Quartermaster" ] ]
 
@@ -100,7 +100,7 @@
   name: electrical supplies locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-secure-electrical.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/engineering-secure-electrical.rsi
   - type: AccessReader
 #    access: [ [ "Engineering" ] ] # Frontier
 
@@ -111,7 +111,7 @@
   name: welding supplies locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-secure-welding.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/engineering-secure-welding.rsi
   - type: AccessReader
 #    access: [ [ "Engineering" ] ] # Frontier
 
@@ -122,7 +122,7 @@
   name: atmospheric technician's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-secure-atmos.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/engineering-secure-atmos.rsi
   - type: AccessReader
 #    access: [ [ "Atmospherics" ] ] # Frontier
 
@@ -133,7 +133,7 @@
   name: engineer's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-secure-engineer.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/engineering-secure-engineer.rsi
   - type: AccessReader
 #    access: [ [ "Engineering" ] ] # Frontier
 
@@ -145,7 +145,7 @@
   description: It's emergencies all the way down.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-secure-shuttlerepair.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/engineering-secure-shuttlerepair.rsi
   - type: AccessReader
     access: [ [ "Engineering" ] ]
 
@@ -157,21 +157,21 @@
   suffix: No Access
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-freezer.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/service-secure-freezer.rsi
     layers:
     - state: closed
       map: [ "enum.StorageVisualLayers.Door" ]
     - state: locked
-      sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-freezer.rsi
+      sprite: _WG/Resprites/Wizden/Storage/Closets/service-secure-freezer.rsi
       map: [ "enum.LockVisualLayers.Lock" ]
       shader: unshaded
     - state: welded
       visible: false
-      sprite: _WF/Resprites/Wizden/Storage/Closets/closet-effects.rsi
+      sprite: _WG/Resprites/Wizden/Storage/Closets/closet-effects.rsi
       map: [ "enum.WeldableLayers.BaseWelded" ]
     - state: paper
       visible: false
-      sprite: _WF/Resprites/Wizden/Storage/Closets/closet-effects.rsi
+      sprite: _WG/Resprites/Wizden/Storage/Closets/closet-effects.rsi
       offset: "-0.065,0"
       map: [ "enum.PaperLabelVisuals.Layer" ]
   - type: ExplosionResistance
@@ -199,7 +199,7 @@
   name: botanist's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-botany.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/service-secure-botany.rsi
   - type: AccessReader
 #    access: [ [ "Hydroponics" ] ] # Frontier
 
@@ -211,7 +211,7 @@
   description: Filled to the brim with medical junk.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/medical-secure-medicine.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/medical-secure-medicine.rsi
   - type: AccessReader
 #    access: [ [ "Medical" ] ] # Frontier
 
@@ -222,7 +222,7 @@
   name: medical doctor's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/medical-secure-doctor.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/medical-secure-doctor.rsi
   - type: AccessReader
 #    access: [ [ "Medical" ] ] # Frontier
 
@@ -233,7 +233,7 @@
   name: paramedic's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/medical-secure-paramedic.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/medical-secure-paramedic.rsi
   - type: AccessReader
 #    access: [ [ "Medical" ] ] # Frontier
 
@@ -245,7 +245,7 @@
   name: chemical locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/medical-secure-chemistry.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/medical-secure-chemistry.rsi
   - type: AccessReader
 #    access: [ [ "Chemistry" ] ] # Frontier
 
@@ -256,7 +256,7 @@
   name: chief medical officer's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-medical.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/command-secure-medical.rsi
   - type: AccessReader
     access: [ [ "CaelestinusCommand" ] ] # Mono
 
@@ -267,7 +267,7 @@
   name: research director's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-science.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/command-secure-science.rsi
   - type: AccessReader
 #    access: [ [ "ResearchDirector" ] ] # Frontier
 
@@ -278,7 +278,7 @@
   name: scientist's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/science-secure-scientist.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/science-secure-scientist.rsi
   - type: AccessReader
 #    access: [ [ "Research" ] ] # Frontier
 
@@ -289,7 +289,7 @@
   name: head of security's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-security.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/command-secure-security.rsi
   - type: AccessReader
     access: [["CaelestinusCommand"]] # Mono
 
@@ -300,7 +300,7 @@
   name: warden's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/security-secure-warden.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/security-secure-warden.rsi
   - type: AccessReader
     access: [["TsfmcArmory"]] # Mono
 
@@ -311,7 +311,7 @@
   name: corpsman's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/misc-secure-brigmedic.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/misc-secure-brigmedic.rsi
   - type: AccessReader
     access: [["Tsfmc"]] # Mono
 
@@ -322,7 +322,7 @@
   name: judge's locker
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/security-secure-officer.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/security-secure-officer.rsi
   - type: AccessReader
     access: [["Caelestinus"]] # Mono
 
@@ -332,21 +332,21 @@
   name: gun safe
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/armory-secure-gunsafe.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/armory-secure-gunsafe.rsi
     layers:
     - state: closed
       map: [ "enum.StorageVisualLayers.Door" ]
     - state: locked
-      sprite: _WF/Resprites/Wizden/Storage/Closets/armory-secure-gunsafe.rsi
+      sprite: _WG/Resprites/Wizden/Storage/Closets/armory-secure-gunsafe.rsi
       map: [ "enum.LockVisualLayers.Lock" ]
       shader: unshaded
     - state: welded
       visible: false
-      sprite: _WF/Resprites/Wizden/Storage/Closets/closet-effects.rsi
+      sprite: _WG/Resprites/Wizden/Storage/Closets/closet-effects.rsi
       map: [ "enum.WeldableLayers.BaseWelded" ]
     - state: paper
       visible: false
-      sprite: _WF/Resprites/Wizden/Storage/Closets/closet-effects.rsi
+      sprite: _WG/Resprites/Wizden/Storage/Closets/closet-effects.rsi
       offset: "-0.065,0"
       map: [ "enum.PaperLabelVisuals.Layer" ]
   - type: AccessReader
@@ -393,7 +393,7 @@
   description: It's a personal storage unit for operative gear.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/antag-secure-syndicate.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/antag-secure-syndicate.rsi
 
 # Bluespace
 - type: entity
@@ -429,7 +429,7 @@
   parent: LockerBaseSecure
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-clown.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/service-secure-clown.rsi
   - type: AccessReader
 #    access: [ [ "Theatre" ] ]
 
@@ -440,7 +440,7 @@
   parent: LockerBaseSecure
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/service-secure-mime.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/service-secure-mime.rsi
   - type: AccessReader
 #    access: [["Theatre"]] # Frontier
 
@@ -455,5 +455,5 @@
 #   access: [["HeadOfPersonnel"]] # Frontier
     access: [["CaelestinusCommand"]] # Mono
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/command-secure-service.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/command-secure-service.rsi
 # WOLFGATE END

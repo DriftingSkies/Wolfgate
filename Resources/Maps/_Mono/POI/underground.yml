@@ -29657,28 +29657,28 @@ entities:
     - type: Transform
       parent: 1
       pos: -7.5705595,-5.6265144
-- proto: WFCargoChuteUnderground
+- proto: WGCargoChuteUnderground
   entities:
   - uid: 4827
     components:
     - type: Transform
       parent: 1
       pos: 12.5,11.5
-- proto: WFLatticeStationAnchor
+- proto: WGLatticeStationAnchor
   entities:
   - uid: 4829
     components:
     - type: Transform
       parent: 1
       pos: 8.5,11.5
-- proto: WFVendingMachineFence
+- proto: WGVendingMachineFence
   entities:
   - uid: 4828
     components:
     - type: Transform
       parent: 1
       pos: 12.5,10.5
-- proto: WFLockableButtonUnderground
+- proto: WGLockableButtonUnderground
   entities:
   - uid: 2791
     components:

@@ -313,8 +313,8 @@ Resources/MapImages
 # Link Files
 *.lnk
 
-# WOLFGATE(Ci): written by Tools/_WF/Ci/test_merge.py in a test merge build; never committed
+# WOLFGATE(Ci): written by Tools/_WG/Ci/test_merge.py in a test merge build; never committed
 Resources/Symphony/testmerges.json
 
-# WOLFGATE(Testing): NUnit results written by Tools/_WF/Testing/test.ps1
+# WOLFGATE(Testing): NUnit results written by Tools/_WG/Testing/test.ps1
 /test_results/

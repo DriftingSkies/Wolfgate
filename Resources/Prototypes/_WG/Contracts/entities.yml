@@ -1,0 +1,914 @@
+# The contract board and everything its contracts put in the world.
+
+- type: entity
+  parent: BaseStructure
+  id: WGContractBoard
+  name: contract board
+  description: The sector's open contract exchange. Deliveries, hauling, supply, mining, bounties, salvage, science and escorts, posted by every station that pays.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: bounty
+      shader: unshaded
+    - state: tech_key
+      shader: unshaded
+  - type: Icon
+    sprite: Structures/Machines/computers.rsi
+    state: computer
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.35,0.35,0.35"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: ActivatableUI
+    key: enum.WGContractBoardUiKey.Key
+    requireActiveHand: false
+  - type: UserInterface
+    interfaces:
+      enum.WGContractBoardUiKey.Key:
+        type: WGContractBoardBoundUserInterface
+  - type: WGContractBoard
+  - type: GuideHelp
+    guides:
+    - WGContracts
+  - type: PointLight
+    radius: 1.5
+    energy: 1.6
+    color: "#b89f25"
+    lightMask: ConeSingle
+    autoRot: true
+    offset: "0, 0.4"
+    castShadows: false
+  - type: EmitSoundOnUIOpen
+    sound:
+      collection: Keyboard
+      params:
+        volume: -1
+        variation: 0.10
+        pitch: 1.10
+
+- type: entity
+  parent: WGContractBoard
+  id: WGContractBoardTSF
+  name: TSF requisitions board
+  description: "Naval requisitions for Federation personnel and civilians: patrols, war materiel and convoys, paid in thalers and Federation credits."
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: security
+      shader: unshaded
+    - state: security_key
+      shader: unshaded
+  - type: WGContractBoard
+    board: TSF
+  - type: PointLight
+    color: "#6fb6ff"
+
+- type: entity
+  parent: WGContractBoard
+  id: WGContractBoardUSSP
+  name: Commissariat board
+  description: "The Commissariat posts the freeport's needs for its own people: rations, reactor fuel, defence of the lanes."
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: comm
+      shader: unshaded
+    - state: tech_key
+      shader: unshaded
+  - type: WGContractBoard
+    board: USSP
+  - type: PointLight
+    color: "#d0573f"
+
+- type: entity
+  parent: WGContractBoard
+  id: WGContractBoardPDV
+  name: quartermaster's board
+  description: "The Dynasty Quartermaster's list of prizes, plunder and stores wanted at Helios, paid in thalers and doubloons."
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: syndishuttle
+      shader: unshaded
+    - state: syndie_key
+      shader: unshaded
+  - type: WGContractBoard
+    board: PDV
+  - type: PointLight
+    color: "#d4a83a"
+
+- type: entity
+  parent: WGContractBoard
+  id: WGContractBoardColony
+  name: settlers' council board
+  description: "Work posted by the Stellar Blessing's settlers for their own: stores, building stock, escorts and keeping the colony's approaches safe."
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: supply
+      shader: unshaded
+    - state: tech_key
+      shader: unshaded
+  - type: WGContractBoard
+    board: Colony
+  - type: PointLight
+    color: "#5fb0e0"
+
+- type: entity
+  parent: WGContractBoard
+  id: WGContractBoardASF
+  name: ASF research board
+  description: "Field work for the Astraeus Solar Federation: anomaly surveys, artifact recovery and sample collection, paid in thalers and reward grants."
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: rdcomp
+      shader: unshaded
+    - state: rd_key
+      shader: unshaded
+  - type: WGContractBoard
+    board: ASF
+  - type: PointLight
+    color: "#9b6dff"
+
+- type: entity
+  parent: WGContractBoard
+  id: WGContractBoardVG
+  name: Viper Group board
+  description: "Deniable work for the Viper Group: raids, prizes, relics and extractions, paid in thalers and ship component crates."
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: syndishuttle
+      shader: unshaded
+    - state: syndie_key
+      shader: unshaded
+  - type: WGContractBoard
+    board: VG
+  - type: PointLight
+    color: "#b82121"
+
+# The Contracts PDA app.
+- type: entity
+  parent: NFBasePDACartridge
+  id: WGContractsCartridge
+  name: contracts cartridge
+  description: A PDA program tracking the contracts you took at a contract board.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-q
+  - type: Icon
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-q
+  - type: UIFragment
+    ui: !type:ContractsUi
+  - type: Cartridge
+    programName: wg-contract-program-name
+    icon: { sprite: Objects/Misc/clipboard.rsi, state: clipboard_paper }
+    readonly: true
+  - type: WGContractCartridge
+  - type: StaticPrice
+    price: 50
+    vendPrice: 500
+
+# Hand-carried parcels.
+- type: entity
+  parent: BaseItem
+  id: WGContractParcel
+  name: sealed parcel
+  description: A tamper-sealed parcel with a contract barcode. Only the addressee can open it.
+  components:
+  - type: Sprite
+    sprite: _NF/Objects/Specific/Mail/mail_large.rsi
+    state: icon
+  - type: Item
+    size: Normal
+    sprite: _NF/Objects/Specific/Mail/mail_large.rsi
+  - type: StaticPrice
+    price: 0
+
+- type: entity
+  parent: WGContractParcel
+  id: WGContractParcelFragile
+  name: fragile parcel
+  description: A tamper-sealed parcel stamped FRAGILE in three languages. Only the addressee can open it.
+  components:
+  - type: Sprite
+    sprite: _NF/Objects/Specific/Mail/mail_large.rsi
+    layers:
+    - state: icon
+    - state: fragile
+
+- type: entity
+  parent: WGContractParcel
+  id: WGContractParcelPriority
+  name: priority parcel
+  description: A tamper-sealed parcel with a red priority band. Only the addressee can open it.
+  components:
+  - type: Sprite
+    sprite: _NF/Objects/Specific/Mail/mail_large.rsi
+    layers:
+    - state: icon
+    - state: priority
+
+- type: entity
+  parent: WGContractParcel
+  id: WGContractDataCase
+  name: encrypted data case
+  description: A hard case of storage cores under a courier seal. Reading it without the key wipes it.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/diskcases.rsi
+    state: icon_cc
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: WGContractParcel
+  id: WGContractSampleCase
+  name: sample case
+  description: A sealed, shock-mounted case of specimens, humming faintly.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Xenoarchaeology/artifact_fragments.rsi
+    state: ancientball2
+  - type: Item
+    size: Small
+
+# Hauling crates: weigh like trade cargo, but no chute buys them.
+- type: entity
+  parent: BaseTradeItem
+  id: WGContractFreight
+  name: contract freight crate
+  description: A sealed freight crate with a contract manifest. Delivered, not sold.
+  components:
+  - type: Sprite
+    layers:
+    - state: metal
+      color: "#9fd3e0"
+  - type: StaticPrice
+    price: 0
+  - type: WGCargoMass
+    class: Standard
+
+- type: entity
+  parent: WGContractFreight
+  id: WGContractFreightMedical
+  name: contract medical crate
+  description: Sealed medical stock under a contract manifest. Keep it upright.
+  components:
+  - type: Sprite
+    layers:
+    - state: supplies-med
+  - type: WGCargoMass
+    class: Light
+
+- type: entity
+  parent: WGContractFreight
+  id: WGContractFreightComponents
+  name: contract components crate
+  description: Boxed machine parts under a contract manifest.
+  components:
+  - type: Sprite
+    layers:
+    - state: components
+
+- type: entity
+  parent: WGContractFreight
+  id: WGContractFreightEquipment
+  name: contract equipment crate
+  description: Crated equipment under a contract manifest.
+  components:
+  - type: Sprite
+    layers:
+    - state: equipment
+  - type: WGCargoMass
+    class: Heavy
+
+- type: entity
+  parent: WGContractFreight
+  id: WGContractFreightMunitions
+  name: contract munitions crate
+  description: Military munitions under a sealed contract manifest. Do not drop.
+  components:
+  - type: Sprite
+    layers:
+    - state: ammo
+  - type: WGCargoMass
+    class: Heavy
+
+- type: entity
+  parent: WGContractFreight
+  id: WGContractFreightSupplies
+  name: contract supply crate
+  description: "General stores under a contract manifest: rations, filters, spares."
+  components:
+  - type: Sprite
+    layers:
+    - state: supplies
+
+- type: entity
+  parent: WGContractFreight
+  id: WGContractFreightReactor
+  name: contract reactor parts crate
+  description: Shielded reactor components under a contract manifest. Heavy.
+  components:
+  - type: Sprite
+    layers:
+    - state: fusion
+  - type: WGCargoMass
+    class: Bulk
+
+- type: entity
+  parent: WGContractFreight
+  id: WGContractFreightLuxury
+  name: contract luxury crate
+  description: Fine goods under a contract manifest, insured for more than your ship.
+  components:
+  - type: Sprite
+    layers:
+    - state: luxury
+  - type: WGCargoMass
+    class: Light
+
+- type: entity
+  parent: WGContractFreight
+  id: WGContractFreightScience
+  name: contract science crate
+  description: Instruments and reagents under a sealed contract manifest.
+  components:
+  - type: Sprite
+    layers:
+    - state: chems
+  - type: WGCargoMass
+    class: Light
+
+# The manifest crate for supply and mining contracts.
+- type: entity
+  parent: CrateGenericSteel
+  id: WGContractCrate
+  name: contract manifest crate
+  description: An empty crate tagged with a supply manifest. Pack what the manifest asks for, close it on the contractor's station, and it is collected.
+  components:
+  - type: Sprite
+    color: "#bfe6f0"
+  - type: StaticPrice
+    price: 0
+
+# Salvage finds.
+- type: entity
+  parent: BaseItem
+  id: WGContractFlightRecorder
+  name: flight recorder
+  description: A battered, bright orange flight recorder. Someone is paying to hear its last minutes.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/station_beacon.rsi
+    layers:
+    - state: icon
+      color: "#ff9a3c"
+  - type: Item
+    size: Normal
+  - type: StaticPrice
+    price: 0
+
+- type: entity
+  parent: WGContractFlightRecorder
+  id: WGContractDataCore
+  name: salvaged data core
+  description: A storage core pulled from a dead ship's server rack, still holding a charge.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/diskcases.rsi
+    layers:
+    - state: icon_base
+      color: "#d0e8ff"
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: WGContractFlightRecorder
+  id: WGContractAnomalySample
+  name: anomaly sample canister
+  description: A containment canister holding something that should not be glowing.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Xenoarchaeology/artifact_fragments.rsi
+    layers:
+    - state: eldritchball3
+  - type: PointLight
+    radius: 1.5
+    energy: 1
+    color: "#a07fff"
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: WGContractFlightRecorder
+  id: WGContractCargoManifest
+  name: sealed cargo manifest
+  description: A strongbox of shipping papers and seals. Insurers want it more than the cargo.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/diskcases.rsi
+    layers:
+    - state: icon_cargo
+
+# Where the boards nearby leave contract cargo; map one beside each board.
+- type: entity
+  id: WGContractCargoPad
+  name: contract pickup pad
+  description: Cargo for contracts taken at nearby boards is left here.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: Decals/markings.rsi
+    drawdepth: FloorObjects
+    layers:
+    - state: delivery_greyscale
+      color: "#5fc3e4"
+  - type: Icon
+    sprite: Decals/markings.rsi
+    state: delivery_greyscale
+  - type: Clickable
+  - type: WGContractDrop
+
+# Cargo for the second batch of contracts.
+
+- type: entity
+  parent: WGContractParcel
+  id: WGContractDiplomaticPouch
+  name: diplomatic pouch
+  description: A locked leather pouch under a diplomatic seal. Its carrier is protected by treaty; its contents are none of their business.
+  components:
+  - type: Sprite
+    sprite: Objects/Storage/Briefcases/briefcase_brown.rsi
+    state: icon
+  - type: Item
+    size: Normal
+    sprite: Objects/Storage/Briefcases/briefcase_brown.rsi
+
+- type: entity
+  parent: WGContractFreight
+  id: WGContractFreightLivestock
+  name: contract livestock crate
+  description: A ventilated crate of live animals under a contract manifest. It shuffles and smells.
+  components:
+  - type: Sprite
+    sprite: Structures/Storage/Crates/livestock.rsi
+    layers:
+    - state: base
+    - state: closed
+
+- type: entity
+  parent: WGContractFreight
+  id: WGContractFreightPlasma
+  name: contract plasma canister crate
+  description: Racked plasma canisters under a contract manifest. Heavy, volatile, and not for sale.
+  components:
+  - type: Sprite
+    layers:
+    - state: chems-volatile
+  - type: WGCargoMass
+    class: Bulk
+
+# Devices and targets placed aboard derelicts by contracts.
+
+# Deploy: set adrift in open space at a marked point.
+- type: entity
+  parent: BaseItem
+  id: WGContractRelayBuoy
+  name: relay buoy
+  description: A self-righting navigation buoy under a contract seal. Set it adrift at its marked point and it switches on by itself.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/station_beacon.rsi
+    layers:
+    - state: icon
+    - state: blink
+      shader: unshaded
+  - type: Item
+    size: Large
+  - type: StaticPrice
+    price: 0
+
+- type: entity
+  parent: WGContractRelayBuoy
+  id: WGContractSensorBuoy
+  name: sensor buoy
+  description: A passive sensor buoy in Federation grey. Set it adrift at its marked point and it listens for drive wakes by itself.
+
+- type: entity
+  parent: WGContractRelayBuoy
+  id: WGContractProbeBuoy
+  name: gravimetric probe
+  description: A sealed ASF probe that maps the local gravity field. Set it adrift at its marked point and it starts logging by itself.
+
+# Rescue: carried out of a wreck one at a time.
+- type: entity
+  parent: BaseItem
+  id: WGContractStasisBag
+  name: occupied stasis bag
+  description: A sealed stasis bag holding an unconscious survivor, kept cold until a medical bay can thaw them. Handle it gently.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Medical/Morgue/bodybags.rsi
+    state: bag
+  - type: Item
+    size: Huge
+  - type: StaticPrice
+    price: 0
+
+# Repair: weld it whole and fit a power cell. Starts damaged.
+- type: entity
+  id: WGContractNavBeacon
+  name: derelict nav beacon
+  description: A navigation beacon knocked out of service. It needs welding and a fresh power cell.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.3,-0.3,0.3,0.3"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    sprite: Objects/Devices/station_beacon.rsi
+    state: icon
+  - type: InteractionOutline
+  - type: Clickable
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Repairable
+    doAfterDelay: 4
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 400
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        whitelist:
+          components:
+          - PowerCell
+  - type: ContainerContainer
+    containers:
+      cell_slot: !type:ContainerSlot
+
+# Download: a crewmate stands by it while it runs.
+- type: entity
+  id: WGContractDataTerminal
+  name: derelict data terminal
+  description: A terminal still holding data worth having. Stay close while it downloads; something else wants it too.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.35,-0.35,0.35,0.35"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    sprite: Structures/Machines/computers.rsi
+    layers:
+    - state: computer
+    - state: generic_keyboard
+    - state: comm_logs
+      shader: unshaded
+  - type: InteractionOutline
+  - type: Clickable
+
+# Inspection: the marked cargo aboard a stopped smuggler.
+- type: entity
+  parent: CrateGenericSteel
+  id: WGContractSmuggledCargo
+  name: suspect cargo crate
+  description: A crate with a doctored manifest. Inspectors want a look inside.
+
+# Clearing: a nest that keeps spawning carp until destroyed.
+- type: entity
+  id: WGContractCarpNest
+  name: carp nest
+  description: A pulsing knot of anomalous energy that space carp keep crawling out of. Destroy it.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.4
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    layers:
+    - sprite: Structures/Specific/carp_rift.rsi
+      state: icon
+      color: "#7fb3ff"
+      shader: unshaded
+  - type: InteractionOutline
+  - type: Clickable
+  - type: PointLight
+    color: "#366db5"
+    radius: 4.0
+    energy: 2.0
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: TimedSpawner
+    prototypes:
+    - MobCarpSalvage
+    intervalSeconds: 45
+    minimumEntitiesSpawned: 1
+    maximumEntitiesSpawned: 2
+
+# Cargo for faction board work.
+
+- type: entity
+  parent: WGContractParcel
+  id: WGContractPrisonerDossier
+  name: prisoner transfer dossier
+  description: A sealed folder of custody papers. Whoever holds the papers holds the prisoner.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/bureaucracy.rsi
+    layers:
+    - state: folder-base
+      color: "#9a3b3b"
+    - state: folder-sec-doc
+  - type: Item
+    size: Small
+
+- type: entity
+  parent: WGContractParcel
+  id: WGContractStrongbox
+  name: sealed strongbox
+  description: A heavy locked case of hard currency. Don't count it, don't open it, don't lose it.
+  components:
+  - type: Sprite
+    sprite: Objects/Storage/medalcase.rsi
+    state: closed
+  - type: Item
+    size: Normal
+    sprite: Objects/Storage/medalcase.rsi
+
+- type: entity
+  parent: WGContractFreight
+  id: WGContractFreightContraband
+  name: contract contraband crate
+  description: A crate whose manifest says machine parts. It doesn't rattle like machine parts.
+  components:
+  - type: Sprite
+    layers:
+    - state: weapon-components
+
+# Planetside clearing: a den the world's wildlife breeds in. Collapse it.
+- type: entity
+  id: WGContractCreatureDen
+  name: creature den
+  description: A dug-out den reeking of the world's wildlife, gnawed bones round its mouth. Collapse it before more come out.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.4
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    sprite: _WG/Fauna/Objects/CHOMP/tribal_gear.rsi
+    state: hole
+    drawdepth: FloorObjects
+  - type: InteractionOutline
+  - type: Clickable
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Rock
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+# Construction: a kit set down on its site unfolds into what it is named for.
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: WGContractKitBase
+  name: outpost kit
+  description: A sealed prefab kit under a contract seal. Set it down on the marked site and it unfolds by itself.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/flatpack.rsi
+    state: icon-default
+  - type: Item
+    size: Huge
+  - type: StaticPrice
+    price: 0
+
+- type: entity
+  parent: WGContractKitBase
+  id: WGContractKitBeacon
+  name: outpost beacon kit
+  components:
+  - type: WGContractKit
+    unfold: WGContractOutpostBeacon
+
+- type: entity
+  parent: WGContractKitBase
+  id: WGContractKitGenerator
+  name: outpost generator kit
+  components:
+  - type: WGContractKit
+    unfold: PortableGeneratorPacman
+
+- type: entity
+  parent: WGContractKitBase
+  id: WGContractKitSolar
+  name: outpost solar kit
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/flatpack.rsi
+    state: solar-assembly-part
+  - type: WGContractKit
+    unfold: SolarPanel
+
+- type: entity
+  parent: WGContractKitBase
+  id: WGContractKitFab
+  name: colony fab kit
+  description: A folded-up colony fabricator under a contract seal. Set it down on the marked site and it unfolds by itself.
+  components:
+  - type: WGContractKit
+    unfold: Autolathe
+
+- type: entity
+  parent: WGContractKitBase
+  id: WGContractKitOreProcessor
+  name: ore processor kit
+  components:
+  - type: WGContractKit
+    unfold: OreProcessor
+
+- type: entity
+  parent: WGContractKitBase
+  id: WGContractKitAirMiner
+  name: air miner kit
+  components:
+  - type: WGContractKit
+    unfold: GasMinerOxygen
+
+# What a beacon kit unfolds into: an outpost's marker, lit and anchored.
+- type: entity
+  id: WGContractOutpostBeacon
+  name: outpost beacon
+  description: A claim beacon marking a new outpost, blinking for any ship overhead.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.3,-0.3,0.3,0.3"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    sprite: Objects/Devices/station_beacon.rsi
+    layers:
+    - state: icon
+    - state: blink
+      shader: unshaded
+  - type: PointLight
+    color: "#7fd4ff"
+    radius: 3.0
+    energy: 1.5
+  - type: InteractionOutline
+  - type: Clickable
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+# The outpost chain's hold stage: stay by it while it prints the outpost's first parts.
+- type: entity
+  parent: WGContractDataTerminal
+  id: WGContractColonyFabCore
+  name: colony fab core
+  description: The heart of a new outpost's fabricator, printing its first parts. Stay close while it works; the wildlife hates the noise.
+
+# What a faction station keeps contract deliveries in when its material silo won't take them.
+- type: entity
+  parent: CrateGenericSteel
+  id: WGContractReceivingCrate
+  name: receiving crate
+  description: Goods a contract delivered for the station's own use, set aside for its faction to collect.

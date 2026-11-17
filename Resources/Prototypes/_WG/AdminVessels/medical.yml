@@ -1,0 +1,36 @@
+# The Lupercal's medical machines (ShipCommand phase 8): an autodoc that knows every program and comes with both of
+# its modules, and a cloning pod that never runs out of biomass. The surgeon keeps the autodoc's reservoirs full.
+
+- type: entity
+  parent: WGMachineAutodoc
+  id: WGLupercalAutodoc
+  suffix: Lupercal, every program
+  description: A surgical pod running S.A.M., the Surgical Automation Module, with every program disk's work in its own library and both modules fitted. It operates. It does not explain.
+  components:
+  - type: Autodoc
+    basePrograms:
+    - WGWolfmedAutodocProgramBase
+    - WGWolfmedAutodocProgramTransplant
+    - WGWolfmedAutodocProgramLimb
+    - WGWolfmedAutodocProgramNeuro
+    - WGWolfmedAutodocProgramCavity
+  - type: ContainerFill
+    containers:
+      autodoc_module:
+      - WGAutodocDefibModule
+      autodoc_autofix:
+      - WGAutodocAutofixModule
+      autodoc_beaker1:
+      - WGWolfmedOpiateChemistryBottle
+      autodoc_beaker2:
+      - WGSpaceacillinChemistryBottle
+      autodoc_blood:
+      - Bloodpack
+
+- type: entity
+  parent: CloningPod
+  id: WGLupercalCloningPod
+  suffix: Lupercal, bottomless
+  components:
+  - type: WGBottomlessMaterials
+    amount: 10000

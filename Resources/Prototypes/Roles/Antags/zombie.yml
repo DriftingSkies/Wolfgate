@@ -6,7 +6,7 @@
   objective: roles-antag-initial-infected-objective
   requirements:
 # WOLFGATE(Biotype): synthetic bodies can't be infected, whatever the species
-  - !type:WFBiotypeRequirement
+  - !type:WGBiotypeRequirement
     inverted: true
     biotypes:
     - Synthetic
@@ -20,7 +20,7 @@
   objective: roles-antag-zombie-objective
   requirements:
 # WOLFGATE(Biotype): synthetic bodies can't be infected, whatever the species
-  - !type:WFBiotypeRequirement
+  - !type:WGBiotypeRequirement
     inverted: true
     biotypes:
     - Synthetic

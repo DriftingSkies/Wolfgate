@@ -57,8 +57,8 @@ public abstract partial class SharedWeatherSystem : EntitySystem
         // upstream original, kept for merges:
         // if (!tileDef.Weather)
         //     return false;
-        var wfExposure = WfPlanetExposure(uid);
-        if (wfExposure == false || wfExposure == null && !tileDef.Weather)
+        var wgExposure = WgPlanetExposure(uid);
+        if (wgExposure == false || wgExposure == null && !tileDef.Weather)
             return false;
         // WOLFGATE END
 

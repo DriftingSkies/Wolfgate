@@ -42,7 +42,7 @@ public sealed partial class SpreaderSystem : EntitySystem
     private EntityQuery<EdgeSpreaderComponent> _spreaderQuery;
     private EntityQuery<SpreaderGridComponent> _spreaderGridQuery;
 
-    private readonly List<EntityUid> _wfPendingSpreaders = new(); // WOLFGATE(Performance): see Update
+    private readonly List<EntityUid> _wgPendingSpreaders = new(); // WOLFGATE(Performance): see Update
 
     private AtmosDirection[] _atmosDirections = [AtmosDirection.North, AtmosDirection.East, AtmosDirection.South, AtmosDirection.West];
 
@@ -171,14 +171,14 @@ public sealed partial class SpreaderSystem : EntitySystem
         var startTime = _timing.RealTime;
 
         // WOLFGATE(Performance) START: queue spreaders deferred from the previous pass
-        if (_wfPendingSpreaders.Count > 0)
+        if (_wgPendingSpreaders.Count > 0)
         {
-            foreach (var pending in _wfPendingSpreaders)
+            foreach (var pending in _wgPendingSpreaders)
             {
                 if (!TerminatingOrDeleted(pending))
                     InitSpreader(pending);
             }
-            _wfPendingSpreaders.Clear();
+            _wgPendingSpreaders.Clear();
         }
         // WOLFGATE END
 
@@ -213,7 +213,7 @@ public sealed partial class SpreaderSystem : EntitySystem
                     {
                         // WOLFGATE(Performance) START: adding a SpreaderGrid mid-query is unsafe, so defer spreaders moving to a grid without one
                         if (xform.GridUid is { } movedGrid && (!_spreaderGridQuery.TryComp(movedGrid, out var movedSpreaderGrid) || movedSpreaderGrid.SpreadQueues.Count != _prototypeUpdates.Count))
-                            _wfPendingSpreaders.Add(ent);
+                            _wgPendingSpreaders.Add(ent);
                         else
                         // WOLFGATE END
                             InitSpreader(ent);

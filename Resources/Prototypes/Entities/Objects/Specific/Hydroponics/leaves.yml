@@ -40,7 +40,7 @@
   # WOLFGATE(WolfChem) START: fits a baggie
   - type: Tag
     tags:
-    - WFBaggable
+    - WGBaggable
   # WOLFGATE END
 
 - type: entity
@@ -68,7 +68,7 @@
   - type: Tag
     tags:
       - Smokable
-      - WFBaggable # WOLFGATE(WolfChem): fits a baggie
+      - WGBaggable # WOLFGATE(WolfChem): fits a baggie
   - type: Item
     size: Tiny
     
@@ -232,7 +232,7 @@
   # WOLFGATE(WolfChem) START: fits a baggie and a bong bowl
   - type: Tag
     tags:
-    - WFBaggable
+    - WGBaggable
   # WOLFGATE END
 
 - type: entity

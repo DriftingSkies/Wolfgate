@@ -1,14 +1,14 @@
 <DefaultWindow xmlns="https://spacestation14.io"
             xmlns:tabs="clr-namespace:Content.Client.Options.UI.Tabs"
             xmlns:dtabs="clr-namespace:Content.Client._DV.Options.UI.Tabs"
-            xmlns:wftabs="clr-namespace:Content.Client._WF.Options.UI.Tabs"
+            xmlns:wgtabs="clr-namespace:Content.Client._WG.Options.UI.Tabs"
             Title="{Loc 'ui-options-title'}"
             MinSize="800 450">
     <!-- WOLFGATE(Options) START: settings search bar above the tabs -->
     <BoxContainer Orientation="Vertical">
     <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
-        <LineEdit Name="WfSearchBar" PlaceHolder="{Loc 'wf-options-search'}" HorizontalExpand="True" />
-        <Label Name="WfSearchEmpty" Text="{Loc 'wf-options-search-none'}" StyleClasses="LabelSubText" Margin="8 0 0 0" Visible="False" />
+        <LineEdit Name="WgSearchBar" PlaceHolder="{Loc 'wg-options-search'}" HorizontalExpand="True" />
+        <Label Name="WgSearchEmpty" Text="{Loc 'wg-options-search-none'}" StyleClasses="LabelSubText" Margin="8 0 0 0" Visible="False" />
     </BoxContainer>
     <!-- WOLFGATE END -->
     <TabContainer Name="Tabs" Access="Public" VerticalExpand="True"> <!-- WOLFGATE(Options): VerticalExpand under the search bar -->
@@ -20,9 +20,9 @@
         <tabs:AdminOptionsTab Name="AdminOptionsTab" />
         <!-- WOLFGATE(Options) START: the Extra tab is the Wolfgate one, which carries the Delta-V setting too -->
         <!-- <dtabs:DeltaTab Name="ExtraTab" /> --> <!-- Delta-V -->
-        <wftabs:WolfgateExtraTab Name="ExtraTab" />
+        <wgtabs:WolfgateExtraTab Name="ExtraTab" />
         <!-- WOLFGATE END -->
-        <wftabs:WolfgateConsentTab Name="ConsentTab" /> <!-- WOLFGATE(Options): consent tab (xmlns:wftabs), appended so existing tab indices stay valid -->
+        <wgtabs:WolfgateConsentTab Name="ConsentTab" /> <!-- WOLFGATE(Options): consent tab (xmlns:wgtabs), appended so existing tab indices stay valid -->
     </TabContainer>
     </BoxContainer> <!-- WOLFGATE(Options): settings search bar -->
 </DefaultWindow>

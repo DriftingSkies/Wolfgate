@@ -165,7 +165,7 @@ public partial class ChatBox : UIWidget
         formatted.PushColor(color);
         // WOLFGATE(ChatTabs) START: a line whose markup does not parse is shown as text instead of throwing out of a refill
         // formatted.AddMarkupOrThrow(message);
-        WfAddMarkup(formatted, message);
+        WgAddMarkup(formatted, message);
         // WOLFGATE END
         formatted.Pop();
         if(repeat != 0) // WD EDIT START
@@ -179,7 +179,7 @@ public partial class ChatBox : UIWidget
         } // WD EDIT END
         // WOLFGATE(ChatTabs) START: a line whose tags fail to lay out is shown as text instead of throwing out of a refill
         // Contents.AddMessage(formatted, tagsAllowed: null);
-        WfAddEntry(formatted, message, color);
+        WgAddEntry(formatted, message, color);
         // WOLFGATE END
     }
 

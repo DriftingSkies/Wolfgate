@@ -65,8 +65,8 @@ public sealed partial class DockingScreen : BoxContainer
 
     private void OnUndockAllPressed()
     {
-        if (DockingControl.WfClampsHoldUs()) // WOLFGATE(Encounters): flash the clamp refusal on the plot.
-            DockingControl.WfClampFlash(); // WOLFGATE(Encounters)
+        if (DockingControl.WgClampsHoldUs()) // WOLFGATE(Encounters): flash the clamp refusal on the plot.
+            DockingControl.WgClampFlash(); // WOLFGATE(Encounters)
 
         if (UndockAllRequest == null)
             return;

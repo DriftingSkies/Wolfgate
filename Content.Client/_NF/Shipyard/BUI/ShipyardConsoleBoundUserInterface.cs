@@ -1,8 +1,8 @@
 // using Content.Client._Mono.Shipyard; // WOLFGATE(ShipPreview): unused now
 using Content.Client._NF.Shipyard.UI;
 // WOLFGATE(ShipPreview): the Wolfgate ship previewer replaces the Mono preview-map flow for this button.
-using Content.Client._WF.ShipPreview.UI;
-using Content.Shared._WF.Traders; // WOLFGATE(Traders)
+using Content.Client._WG.ShipPreview.UI;
+using Content.Shared._WG.Traders; // WOLFGATE(Traders)
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared._NF.Shipyard.BUI;
 using Content.Shared._NF.Shipyard.Events;

@@ -17,7 +17,7 @@
   id: FloorSteel
   parent: BaseStationTile
   name: tiles-steel-floor
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Gray/gray.png
   variants: 4
   placementVariants:
   - 1.0
@@ -30,7 +30,7 @@
   id: FloorSteelMini
   parent: BaseStationTile
   name: tiles-steel-floor-mini
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-mini.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Gray/gray-mini.png
   variants: 4
   placementVariants:
   - 1.0
@@ -43,7 +43,7 @@
   id: FloorSteelPavement
   parent: BaseStationTile
   name: tiles-steel-floor-pavement
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-pavement.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Gray/gray-pavement.png
   variants: 4
   placementVariants:
   - 1.0
@@ -56,7 +56,7 @@
   id: FloorSteelMono
   parent: BaseStationTile
   name: tiles-steel-floor-mono
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-mono.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Gray/gray-mono.png
   variants: 4
   placementVariants:
   - 1.0
@@ -71,7 +71,7 @@
   id: FloorSteelPavementVertical
   parent: BaseStationTile
   name: tiles-steel-floor-pavement-vertical
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-pavement-vertical.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Gray/gray-pavement-vertical.png
   variants: 4
   placementVariants:
   - 1.0
@@ -86,7 +86,7 @@
   id: FloorSteelHerringbone
   parent: BaseStationTile
   name: tiles-steel-floor-herringbone
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-herringbone.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Gray/gray-herringbone.png
   variants: 4
   placementVariants:
   - 1.0
@@ -101,7 +101,7 @@
   parent: BaseStationTile
   id: FloorSteelVerticalSlatsBordered
   name: tiles-steel-floor-vertical-slats-bordered
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-vertical-slats.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Gray/gray-vertical-slats.png
   variants: 4
   placementVariants:
   - 1.0
@@ -114,7 +114,7 @@
   parent: BaseStationTile
   id: FloorSteelHorizontalSlatsBordered
   name: tiles-steel-floor-horizontal-slats-bordered
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-horizontal-slats.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Gray/gray-horizontal-slats.png
   variants: 4
   placementVariants:
   - 1.0
@@ -127,7 +127,7 @@
   id: FloorTechMaint2
   parent: BaseStationTile
   name: tiles-techmaint2-floor
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-maint.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Gray/gray-maint.png
   variants: 4
   placementVariants:
   - 1.0
@@ -149,7 +149,7 @@
   id: FloorPlastic
   parent: BaseStationTile
   name: tiles-plastic-floor
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-plastic.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Gray/gray-plastic.png
   variants: 4
   placementVariants:
   - 1.0
@@ -163,7 +163,7 @@
   id: FloorSteelDamaged
   parent: BaseStationTile
   name: tiles-steel-floor
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Gray/gray-damaged.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Gray/gray-damaged.png
   variants: 5
   placementVariants:
   - 1.0
@@ -179,7 +179,7 @@
   id: FloorWhite
   parent: BaseStationTile
   name: tiles-white-floor
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/White/white.png
   variants: 4
   placementVariants:
   - 1.0
@@ -195,7 +195,7 @@
   id: FloorWhiteMini
   parent: BaseStationTile
   name: tiles-white-floor-mini
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-mini.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/White/white-mini.png
   variants: 4
   placementVariants:
   - 1.0
@@ -211,7 +211,7 @@
   parent: BaseStationTile
   id: FloorWhiteVerticalSlatsBordered
   name: tiles-white-floor-vertical-slats-bordered
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-vertical-slats.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/White/white-vertical-slats.png
   variants: 4
   placementVariants:
   - 1.0
@@ -224,7 +224,7 @@
   parent: BaseStationTile
   id: FloorWhiteHorizontalSlatsBordered
   name: tiles-white-floor-horizontal-slats-bordered
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-horizontal-slats.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/White/white-horizontal-slats.png
   variants: 4
   placementVariants:
   - 1.0
@@ -237,7 +237,7 @@
   id: FloorWhitePavement
   parent: BaseStationTile
   name: tiles-white-floor-pavement
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-pavement.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/White/white-pavement.png
   variants: 4
   placementVariants:
   - 1.0
@@ -253,7 +253,7 @@
   id: FloorWhiteMono
   parent: BaseStationTile
   name: tiles-white-floor-mono
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-mono.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/White/white-mono.png
   variants: 4
   placementVariants:
   - 1.0
@@ -269,7 +269,7 @@
   id: FloorWhitePavementVertical
   parent: BaseStationTile
   name: tiles-white-floor-pavement-vertical
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-pavement-vertical.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/White/white-pavement-vertical.png
   variants: 4
   placementVariants:
   - 1.0
@@ -285,7 +285,7 @@
   id: FloorWhiteHerringbone
   parent: BaseStationTile
   name: tiles-white-floor-herringbone
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-herringbone.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/White/white-herringbone.png
   variants: 4
   placementVariants:
   - 1.0
@@ -301,7 +301,7 @@
   id: FloorWhitePlastic
   parent: BaseStationTile
   name: tiles-plastic-white-floor
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/White/white-plastic.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/White/white-plastic.png
   variants: 4
   placementVariants:
   - 1.0
@@ -318,7 +318,7 @@
   id: FloorDark
   parent: BaseStationTile
   name: tiles-dark-floor
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Dark/dark.png
   variants: 4
   placementVariants:
   - 1.0
@@ -334,7 +334,7 @@
   id: FloorDarkMini
   parent: BaseStationTile
   name: tiles-dark-floor-mini
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-mini.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Dark/dark-mini.png
   variants: 4
   placementVariants:
   - 1.0
@@ -350,7 +350,7 @@
   parent: BaseStationTile
   id: FloorDarkVerticalSlatsBordered
   name: tiles-dark-floor-vertical-slats-bordered
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-vertical-slats.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Dark/dark-vertical-slats.png
   variants: 4
   placementVariants:
   - 1.0
@@ -363,7 +363,7 @@
   parent: BaseStationTile
   id: FloorDarkHorizontalSlatsBordered
   name: tiles-dark-floor-horizontal-slats-bordered
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-horizontal-slats.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Dark/dark-horizontal-slats.png
   variants: 4
   placementVariants:
   - 1.0
@@ -376,7 +376,7 @@
   id: FloorDarkPavement
   parent: BaseStationTile
   name: tiles-dark-floor-pavement
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-pavement.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Dark/dark-pavement.png
   variants: 4
   placementVariants:
   - 1.0
@@ -392,7 +392,7 @@
   id: FloorDarkMono
   parent: BaseStationTile
   name: tiles-dark-floor-mono
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-mono.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Dark/dark-mono.png
   variants: 4
   placementVariants:
   - 1.0
@@ -408,7 +408,7 @@
   id: FloorDarkPavementVertical
   parent: BaseStationTile
   name: tiles-dark-floor-pavement-vertical
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-pavement-vertical.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Dark/dark-pavement-vertical.png
   variants: 4
   placementVariants:
   - 1.0
@@ -424,7 +424,7 @@
   id: FloorDarkHerringbone
   parent: BaseStationTile
   name: tiles-dark-floor-herringbone
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-herringbone.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Dark/dark-herringbone.png
   variants: 4
   placementVariants:
   - 1.0
@@ -440,7 +440,7 @@
   id: FloorDarkPlastic
   parent: BaseStationTile
   name: tiles-plastic-dark-floor
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-plastic.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Dark/dark-plastic.png
   variants: 4
   placementVariants:
   - 1.0
@@ -456,7 +456,7 @@
   id: FloorTechMaintDark
   parent: BaseStationTile
   name: tiles-techmaint-floor-dark
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Basic/Dark/dark-maint.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Basic/Dark/dark-maint.png
   variants: 4
   placementVariants:
   - 1.0

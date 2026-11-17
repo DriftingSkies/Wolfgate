@@ -40,7 +40,7 @@ public sealed partial class CPRSystem : EntitySystem
     [Dependency] private SharedMindSystem _mind = default!; // Mono
     [Dependency] private EuiManager _euiManager = default!; // Mono
     [Dependency] private ISharedPlayerManager _player = default!; // Mono
-    [Dependency] private Content.Server._WF.Wolfmed.Life.WolfmedRevivalSystem _wolfmedRevival = default!; // WOLFGATE(Wolfmed): BRAIN
+    [Dependency] private Content.Server._WG.Wolfmed.Life.WolfmedRevivalSystem _wolfmedRevival = default!; // WOLFGATE(Wolfmed): BRAIN
 
     public override void Initialize()
     {

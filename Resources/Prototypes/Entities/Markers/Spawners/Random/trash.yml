@@ -30,17 +30,17 @@
       # WOLFGATE(BritishFood) START: Luvvit's empties share one trash slot
       - !type:GroupSelector
         children:
-        - id: WFTrashPackHuntersChicken
-        - id: WFTrashPackSteakAlePie
-        - id: WFTrashPackSteakAlePieSlice
-        - id: WFTrashPackPorkPie
-        - id: WFTrashPackChickenMushroomPie
-        - id: WFTrashPackCornishPasty
-        - id: WFTrashPackWelshCawl
-        - id: WFTrashPackEtonMess
-        - id: WFTrashPackScones
-        - id: WFTrashPackStickyToffeePudding
-        - id: WFTrashPackCheesyBeanMelt
+        - id: WGTrashPackHuntersChicken
+        - id: WGTrashPackSteakAlePie
+        - id: WGTrashPackSteakAlePieSlice
+        - id: WGTrashPackPorkPie
+        - id: WGTrashPackChickenMushroomPie
+        - id: WGTrashPackCornishPasty
+        - id: WGTrashPackWelshCawl
+        - id: WGTrashPackEtonMess
+        - id: WGTrashPackScones
+        - id: WGTrashPackStickyToffeePudding
+        - id: WGTrashPackCheesyBeanMelt
       # WOLFGATE END
     - !type:GroupSelector
       weight: 5

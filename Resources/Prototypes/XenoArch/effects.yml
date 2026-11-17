@@ -123,13 +123,13 @@
     - id: XenoArtifactEffectCreationGasCarbonDioxide
       weight: 4.0
     # WOLFGATE(Xenoarch) START: Goob gases the old gas effect could roll
-    - id: WFXenoArtifactEffectCreationGasBZ
+    - id: WGXenoArtifactEffectCreationGasBZ
       weight: 2.0
-    - id: WFXenoArtifactEffectCreationGasHealium
+    - id: WGXenoArtifactEffectCreationGasHealium
       weight: 1.0
-    - id: WFXenoArtifactEffectCreationGasNitrium
+    - id: WGXenoArtifactEffectCreationGasNitrium
       weight: 1.0
-    - id: WFXenoArtifactEffectCreationGasPluoxium
+    - id: WGXenoArtifactEffectCreationGasPluoxium
       weight: 2.0
     # WOLFGATE END
     - id: NFXenoArtifactEffectSpawnGrimforgedConstruct # Frontier

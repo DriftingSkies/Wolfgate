@@ -1,0 +1,26 @@
+- type: constructionGraph
+  id: WGBong
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: bong
+      steps:
+      - material: Glass
+        amount: 2
+        doAfter: 4
+      - material: Plastic
+        amount: 1
+  - node: bong
+    entity: WGBong
+
+- type: construction
+  name: bong
+  id: WGBong
+  graph: WGBong
+  startNode: start
+  targetNode: bong
+  category: construction-category-misc
+  description: A glass water pipe. Fill it with water and pack the bowl.
+  icon: { sprite: _WG/WolfChem/Narcotics/Objects/bong.rsi, state: icon }
+  objectType: Item

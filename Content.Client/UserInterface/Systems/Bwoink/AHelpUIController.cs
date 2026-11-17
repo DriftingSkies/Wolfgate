@@ -10,8 +10,8 @@ using Content.Client.Lobby.UI;
 using Content.Client.Stylesheets;
 using Content.Client.UserInterface.Controls;
 using Content.Client.UserInterface.Systems.MenuBar.Widgets;
-using Content.Client._WF.EventStaff; // WOLFGATE(EventStaff)
-using Content.Shared._WF.EventStaff; // WOLFGATE(EventStaff)
+using Content.Client._WG.EventStaff; // WOLFGATE(EventStaff)
+using Content.Shared._WG.EventStaff; // WOLFGATE(EventStaff)
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
 using Content.Shared.Input;

@@ -1,0 +1,39 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+#Author: Articular1 on Github, Articular on Discord
+- type: vessel
+  id: Spyglass
+  parent: BaseVessel
+  name: UI Spyglass
+  description:  A Ullman Industries research ship. This baby is capable of Xenoarcheology and not a whole lot more.
+  price: 72298
+  category: Small
+  group: Shipyard
+  shuttlePath: /SharedMaps/_WG/OldVessels/spyglass.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: Null
+  class:
+  - Science
+  engine:
+  - Uranium
+
+- type: gameMap
+  id: Spyglass
+  mapName: 'UI Spyglass'
+  mapPath: /SharedMaps/_WG/OldVessels/spyglass.yml
+  minPlayers: 0
+  stations:
+    Spyglass:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Spyglass CIV{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'
+        - type: StationJobs
+          availableJobs:
+            Contractor: [ 0, 0 ]
+            # Pilot: [ 0, 0 ]
+            # Mercenary: [ 0, 0 ]
+

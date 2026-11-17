@@ -110,7 +110,7 @@ public sealed partial class CEZLevelsSystem
         // WOLFGATE(Planets) START: a crash skid scales down the landed body's tile friction instead of adding drag.
         // A landed body already uses tile friction (not the much smaller air friction).
         // Skids need less of that base damping, not an additional multiplier above one.
-        var skidFriction = WfCrashSkidFriction(ent.Owner);
+        var skidFriction = WgCrashSkidFriction(ent.Owner);
         args.Modifier *= skidFriction < 1f ? skidFriction : 1f + (GroundDragModifier - 1f) * grip;
         // WOLFGATE END
     }
@@ -124,12 +124,12 @@ public sealed partial class CEZLevelsSystem
         // Coverage is only ever valid for the tick it was taken on, and grids die; drop the lot
         // rather than carrying stale entries for deleted hulls.
         _groundCoverageCache.Clear();
-        WfPruneGroundSamples(); // WOLFGATE(Performance)
+        WgPruneGroundSamples(); // WOLFGATE(Performance)
 
         var query = EntityQueryEnumerator<CEZGridFallerComponent, MapGridComponent>();
         while (query.MoveNext(out var uid, out _, out _))
         {
-            if (WfSkipGroundContact(uid)) // WOLFGATE(Dormancy): a resting hull's contact is sampled now and then, not every tick.
+            if (WgSkipGroundContact(uid)) // WOLFGATE(Dormancy): a resting hull's contact is sampled now and then, not every tick.
                 continue;
 
             SetGroundContact(uid, HasGroundContact(uid));
@@ -164,7 +164,7 @@ public sealed partial class CEZLevelsSystem
 
         // WOLFGATE(Performance) START: reuse a parked grid's sample instead of re-walking its hull every tick
         // var sample = ComputeGroundSample(grid);
-        var sample = WfGroundSample(grid);
+        var sample = WgGroundSample(grid);
         // WOLFGATE END
         _groundCoverageCache[grid] = (_timing.CurTick, sample.Grip, sample.Contact);
         return sample;

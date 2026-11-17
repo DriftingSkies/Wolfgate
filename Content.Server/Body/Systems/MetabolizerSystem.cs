@@ -21,14 +21,14 @@ namespace Content.Server.Body.Systems
     public sealed partial class MetabolizerSystem : EntitySystem
     {
         [Dependency] private IGameTiming _gameTiming = default!;
-        [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _wfDormancy = default!; // WOLFGATE(Dormancy): skips NPC bodies nobody is near
-        private readonly List<(EntityUid Uid, MetabolizerComponent Component)> _wfDue = new(); // WOLFGATE(Wolfmed): reused due list
+        [Dependency] private Content.Server._WG.Dormancy.WGDormancySystem _wgDormancy = default!; // WOLFGATE(Dormancy): skips NPC bodies nobody is near
+        private readonly List<(EntityUid Uid, MetabolizerComponent Component)> _wgDue = new(); // WOLFGATE(Wolfmed): reused due list
         [Dependency] private IPrototypeManager _prototypeManager = default!;
         [Dependency] private IRobustRandom _random = default!;
         [Dependency] private ISharedAdminLogManager _adminLogger = default!;
         [Dependency] private MobStateSystem _mobStateSystem = default!;
         [Dependency] private SharedSolutionContainerSystem _solutionContainerSystem = default!;
-        [Dependency] private Content.Server._WF.WolfChem.Purity.WFPuritySystem _wfPurity = default!; // WOLFGATE(WolfChem): impurity damage
+        [Dependency] private Content.Server._WG.WolfChem.Purity.WGPuritySystem _wgPurity = default!; // WOLFGATE(WolfChem): impurity damage
 
         private EntityQuery<OrganComponent> _organQuery;
         private EntityQuery<SolutionContainerManagerComponent> _solutionQuery;
@@ -90,7 +90,7 @@ namespace Content.Server.Body.Systems
 
             // WOLFGATE(Wolfmed) START: reuse one list and buffer only the metabolizers that are due.
             // var metabolizers = new ValueList<(EntityUid Uid, MetabolizerComponent Component)>(Count<MetabolizerComponent>());
-            var metabolizers = _wfDue;
+            var metabolizers = _wgDue;
             metabolizers.Clear();
             // WOLFGATE END
             var query = EntityQueryEnumerator<MetabolizerComponent>();
@@ -108,7 +108,7 @@ namespace Content.Server.Body.Systems
                     continue;
 
                 metab.NextUpdate += metab.UpdateInterval;
-                if (_wfDormancy.BodySleeps(uid)) continue; // WOLFGATE(Dormancy): an NPC body no player is near on a planet skips its upkeep
+                if (_wgDormancy.BodySleeps(uid)) continue; // WOLFGATE(Dormancy): an NPC body no player is near on a planet skips its upkeep
                 TryMetabolize((uid, metab));
             }
         }
@@ -195,7 +195,7 @@ namespace Content.Server.Body.Systems
                     // mostToRemove = FixedPoint2.Clamp(rate, 0, quantity);
                     //
                     // float scale = (float) mostToRemove / (float) rate;
-                    mostToRemove = WFGranularRate(ent, reagent.Prototype, group.Id, entry.MetabolismRate, group.MetabolismRateModifier, quantity, out var scale);
+                    mostToRemove = WGGranularRate(ent, reagent.Prototype, group.Id, entry.MetabolismRate, group.MetabolismRateModifier, quantity, out var scale);
                     // WOLFGATE END
                     scale *= solution.GetPurity(reagent.Prototype); // WOLFGATE(WolfChem): a graded reagent works at its grade
 
@@ -241,7 +241,7 @@ namespace Content.Server.Body.Systems
                 // remove a certain amount of reagent
                 if (mostToRemove > FixedPoint2.Zero)
                 {
-                    _wfPurity.ApplyImpurity(ent.Comp2?.Body ?? solutionEntityUid.Value, mostToRemove, solution.GetPurity(reagent.Prototype), proto.Group); // WOLFGATE(WolfChem): the impure fraction is toxic
+                    _wgPurity.ApplyImpurity(ent.Comp2?.Body ?? solutionEntityUid.Value, mostToRemove, solution.GetPurity(reagent.Prototype), proto.Group); // WOLFGATE(WolfChem): the impure fraction is toxic
                     solution.RemoveReagent(reagent, mostToRemove);
                     // Frontier: do not count cryogenics chems against the reagent limit (to buff cryo meds)
                     if (!proto.Metabolisms.ContainsKey("Cryogenic"))
@@ -249,7 +249,7 @@ namespace Content.Server.Body.Systems
                     // End Frontier
                 }
                 // WOLFGATE(WolfChem) START: a tick that only carries a slow rate over still takes a slot
-                else if (WFTakeCarried() && !proto.Metabolisms.ContainsKey("Cryogenic"))
+                else if (WGTakeCarried() && !proto.Metabolisms.ContainsKey("Cryogenic"))
                 {
                     reagents++;
                 }

@@ -30,9 +30,9 @@
   colorLinks:
     tail_bird_BEHIND: tail_bird_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Moffstation/Mobs/Customization/Resomi/resomi_tail_markings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Moffstation/Mobs/Customization/Resomi/resomi_tail_markings.rsi
     state: tail_bird_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Moffstation/Mobs/Customization/Resomi/resomi_tail_markings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Moffstation/Mobs/Customization/Resomi/resomi_tail_markings.rsi
     state: tail_bird_BEHIND
   # WOLFGATE END
 

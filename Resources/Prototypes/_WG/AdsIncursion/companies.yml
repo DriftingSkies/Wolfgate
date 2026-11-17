@@ -1,0 +1,7 @@
+# The flag of the Automated Defense System's hulls and crews. Nobody can pick it at character setup.
+- type: company
+  id: WGAds
+  name: Automated Defense System
+  description: wg-company-ads-description
+  color: "#9B4DFF"
+  disabled: true

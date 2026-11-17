@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Meridian Rift at https://github.com/Aphelion-Moon/Meridian-Rift/tree/0fd8e40910402f2745e5e5e4adc7d37bd45fed40 (modular_nova/master_files/icons/mob/sprite_accessory/xeno_parts.dmi), which carries the art of NovaSector, Skyrat-tg and tgstation. Layers merged per colour and centred for Wolfgate by Tools/_WG/MeridianMarkings/port.py.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "dorsal_down",
+      "directions": 4
+    },
+    {
+      "name": "dorsal_down_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "royal",
+      "directions": 4
+    },
+    {
+      "name": "royal_2",
+      "directions": 4
+    },
+    {
+      "name": "royal_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "standard",
+      "directions": 4
+    },
+    {
+      "name": "standard_2",
+      "directions": 4
+    },
+    {
+      "name": "standard_BEHIND",
+      "directions": 4
+    }
+  ]
+}

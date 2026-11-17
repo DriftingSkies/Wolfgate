@@ -1,0 +1,62 @@
+- type: marking
+  id: WGMeridianSkrellHairBackwater
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell]
+  sprites:
+  - sprite: _WG/MeridianMarkings/skrell.rsi
+    state: backwater
+
+- type: marking
+  id: WGMeridianSkrellHairHoop
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell]
+  sprites:
+  - sprite: _WG/MeridianMarkings/skrell.rsi
+    state: hoop
+
+- type: marking
+  id: WGMeridianSkrellHairLongMidBun
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell]
+  sprites:
+  - sprite: _WG/MeridianMarkings/skrell.rsi
+    state: long_mid_bun
+
+- type: marking
+  id: WGMeridianSkrellHairReef
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell]
+  sprites:
+  - sprite: _WG/MeridianMarkings/skrell.rsi
+    state: reef
+
+- type: marking
+  id: WGMeridianSkrellHairTucked
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell]
+  sprites:
+  - sprite: _WG/MeridianMarkings/skrell.rsi
+    state: tucked
+
+- type: marking
+  id: WGMeridianSkrellHairVeryLong
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell]
+  sprites:
+  - sprite: _WG/MeridianMarkings/skrell.rsi
+    state: very_long
+
+- type: marking
+  id: WGMeridianSkrellHairVeryShort
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell]
+  sprites:
+  - sprite: _WG/MeridianMarkings/skrell.rsi
+    state: very_short

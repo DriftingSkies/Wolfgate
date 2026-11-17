@@ -195,7 +195,7 @@
   # WOLFGATE END
   # WOLFGATE(Chimera) START: whoever takes a fleshbeast is told how to talk to the hivemind
   - type: MindGreeting
-    message: wf-chimera-greeting
+    message: wg-chimera-greeting
   # WOLFGATE END
 
 - type: entity

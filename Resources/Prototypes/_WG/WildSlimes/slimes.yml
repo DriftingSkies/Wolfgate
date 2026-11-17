@@ -1,0 +1,71 @@
+# See-through slimes for the wild breeds. Their offspring spawn as these too.
+- type: entity
+  parent: MobSlimeXenobioBaby
+  id: WGMobSlimeTranslucentBaby
+  categories:
+  - HideSpawnMenu
+  suffix: Baby, translucent
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: _WG/Xenobiology/Mobs/slimesBaby.rsi
+    layers:
+    - map:
+      - enum.DamageStateVisualLayers.Base
+      state: base
+      color: "#FFFFFFB4"
+
+- type: entity
+  parent: WGMobSlimeTranslucentBaby
+  id: WGMobSlimeTranslucentAdult
+  categories:
+  - HideSpawnMenu
+  suffix: Adult, translucent
+  components:
+  - type: MobGrowth
+    currentStage: adult
+
+# Admin and mapper spawners; neither is sold or bred from anything else.
+- type: entity
+  parent: MobSlimeXenobioBabyPending
+  id: WGMobSlimeBabyCarcinoma
+  name: carcinoma slime
+  components:
+  - type: PendingSlimeSpawn
+    basePrototype: WGMobSlimeTranslucentBaby
+    breed: WGCarcinomaMutation
+
+- type: entity
+  parent: MobSlimeXenobioBabyPending
+  id: WGMobSlimeBabyMetastatic
+  name: metastatic slime
+  components:
+  - type: PendingSlimeSpawn
+    basePrototype: WGMobSlimeTranslucentBaby
+    breed: WGMetastaticMutation
+
+# Wild slimes: docile, they only latch onto whoever hurts them, and wander back to their patch.
+- type: htnCompound
+  id: WGWildSlimeCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: LatchCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WGWildSlimeHomeCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: IdleCompound
+
+- type: htnCompound
+  id: WGWildSlimeHomeCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGWildSlimeHomeOperator
+        targetKey: TargetCoordinates
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: true
+        targetKey: TargetCoordinates

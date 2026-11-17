@@ -13,7 +13,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactConcrete # WOLFGATE(Weapons)
+        collection: WGBulletImpactConcrete # WOLFGATE(Weapons)
   - type: Transform
     noRot: true
   - type: IconSmooth
@@ -737,7 +737,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactConcrete # WOLFGATE(Weapons)
+        collection: WGBulletImpactConcrete # WOLFGATE(Weapons)
   - type: Transform
     noRot: true
   - type: SoundOnGather

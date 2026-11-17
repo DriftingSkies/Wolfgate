@@ -1,0 +1,52 @@
+# Drydock berth console, whose berth is the cranes multitool-linked to it, and the dockmaster's traffic console for hails.
+
+- type: entity
+  parent: BaseComputer
+  id: WGComputerDrydock
+  name: drydock console
+  components:
+  - type: Sprite
+    sprite: _NF/Structures/Machines/computers.rsi
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerKeyboard"]
+      state: generic_keyboard
+    - map: ["computerLayerScreen"]
+      state: shipyard
+    - map: ["computerLayerKeys"]
+      state: telesci_key
+  # Anchored, no unwrenching, like station cranes.
+  - type: Anchorable
+    flags:
+    - Anchorable
+  - type: WGDrydockConsole
+    refits:
+    - WGRefitThrusters
+    - WGRefitGyroscopes
+    - WGRefitPower
+    - WGRefitLandingThrusters
+    - WGRefitDurasteel
+  - type: DeviceLinkSource
+    ports:
+      - WGDrydockCraneSender
+  # A drydock terminal can work this berth.
+  - type: DeviceLinkSink
+    ports:
+      - WGDrydockBerthReceiver
+  - type: ActivatableUI
+    key: enum.WGDrydockConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.WGDrydockConsoleUiKey.Key:
+        type: WGDrydockConsoleBoundUserInterface
+
+- type: entity
+  parent: ComputerShuttle
+  id: WGComputerDrydockTraffic
+  name: drydock traffic console
+  description: The dockmaster's console for hails.
+  components:
+  - type: Anchorable
+    flags:
+    - Anchorable

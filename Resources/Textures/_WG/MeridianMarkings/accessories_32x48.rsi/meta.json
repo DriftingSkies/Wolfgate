@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Meridian Rift at https://github.com/Aphelion-Moon/Meridian-Rift/tree/0fd8e40910402f2745e5e5e4adc7d37bd45fed40 (modular_nova/master_files/icons/mob/sprite_accessory/halo.dmi, modular_nova/master_files/icons/mob/sprite_accessory/moogle_pom.dmi), which carries the art of NovaSector, Skyrat-tg and tgstation. Layers merged per colour and centred for Wolfgate by Tools/_WG/MeridianMarkings/port.py.",
+  "size": {
+    "x": 32,
+    "y": 48
+  },
+  "states": [
+    {
+      "name": "double_halo",
+      "directions": 4,
+      "delays": [
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "double_halo_BEHIND",
+      "directions": 4,
+      "delays": [
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "halo",
+      "directions": 4,
+      "delays": [
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "halo_BEHIND",
+      "directions": 4,
+      "delays": [
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.5,
+          0.5
+        ]
+      ]
+    },
+    {
+      "name": "moogle_pom_large_back_primary",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_large_back_primary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_large_back_secondary",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_large_back_secondary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_large_front_primary",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_large_front_primary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_large_front_secondary",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_large_front_secondary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_medium_back_primary",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_medium_back_primary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_medium_back_secondary",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_medium_back_secondary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_medium_front_primary",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_medium_front_primary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_medium_front_secondary",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_medium_front_secondary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_small_back_primary",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_small_back_primary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_small_back_secondary",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_small_back_secondary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_small_front_primary",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_small_front_primary_BEHIND",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_small_front_secondary",
+      "directions": 4
+    },
+    {
+      "name": "moogle_pom_small_front_secondary_BEHIND",
+      "directions": 4
+    }
+  ]
+}

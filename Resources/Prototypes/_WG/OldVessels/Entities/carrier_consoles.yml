@@ -1,0 +1,66 @@
+# Carrier consoles of the restored Balor, Ledokol, M-Class, Ravager and Tumour, removed upstream by
+# Monolith#4624. The old IDs are nulled in Resources/mono_migration.yml, so these carry a WG prefix and the restored
+# grids use them.
+
+- type: entity
+  id: WGMiningCarrierComputer
+  parent: BaseCarrierComputer
+  name: mining carrier console
+  components:
+  - type: ShipyardListing
+    shuttles:
+    - Ample
+    - Antlion
+
+- type: entity
+  id: WGTSFCarrierComputer
+  parent: BaseCarrierComputer
+  name: TSF tumour carrier console
+  components:
+  - type: ShipyardListing
+    shuttles:
+    - QJ490
+    - QJ270
+    - ZephyrEC # the crewed Zephyr stays admin only; its EC variant flies from the Fujian too
+    - QJ340
+
+- type: entity
+  id: WGLedokolAttachmentComputer
+  parent: BaseCarrierComputer
+  name: ledokol attachment console
+  components:
+  - type: ShipyardListing
+    shuttles:
+    - Molotok
+    - Kopye
+    - Kupol
+
+- type: entity
+  id: WGRavagerCarrierComputer
+  parent: BaseCarrierComputer
+  name: ravager shipyard console
+  components:
+  - type: ShipyardListing
+    shuttles:
+    - Rook
+    - Taser
+    - Hound
+
+- type: entity
+  id: WGBalorCarrierComputer
+  parent: BaseCarrierComputer
+  name: balor shipyard console
+  components:
+  - type: ShipyardListing
+    shuttles:
+    - Rac-Man
+    - Bow-Man
+
+- type: entity
+  id: WGVrakritatatCarrierComputer
+  parent: BaseCarrierComputer
+  name: Vrakritatat shipyard console
+  components:
+  - type: ShipyardListing
+    shuttles:
+    - WGVoxSkipjack

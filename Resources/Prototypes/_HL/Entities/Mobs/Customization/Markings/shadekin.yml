@@ -71,9 +71,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     default_BEHIND: default_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: default_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: default_BEHIND
 
 - type: marking
@@ -86,9 +86,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     fan_BEHIND: fan_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: fan_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: fan_BEHIND
 
 - type: marking
@@ -101,9 +101,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     feathery_BEHIND: feathery_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: feathery_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: feathery_BEHIND
 
 - type: marking
@@ -118,13 +118,13 @@
     plasmafire_primary_BEHIND: plasmafire_primary_FRONT
     plasmafire_secondary_BEHIND: plasmafire_secondary_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: plasmafire_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: plasmafire_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: plasmafire_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: plasmafire_secondary_BEHIND
 
 # Shadekin eyes
@@ -132,7 +132,7 @@
   id: ShadekinEyeR
   bodyPart: Eyes
   markingCategory: Eyes # WOLFGATE(Species): eye markings get their own points (was Head)
-  speciesRestriction: [Skrell, Avali, Dwarf, Human, SlimePerson, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, Feroxi, Moth, Kitsune, Chitinid, Shadekin, Felinid, Tajaran, WFCanine]
+  speciesRestriction: [Skrell, Avali, Dwarf, Human, SlimePerson, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, Feroxi, Moth, Kitsune, Chitinid, Shadekin, Felinid, Tajaran, WGCanine]
   coloring:
     default:
       type:
@@ -145,7 +145,7 @@
   id: ShadekinEyeL
   bodyPart: Eyes
   markingCategory: Eyes # WOLFGATE(Species): eye markings get their own points (was Head)
-  speciesRestriction: [Skrell, Avali, Dwarf, Human, SlimePerson, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, Feroxi, Moth, Kitsune, Chitinid, Shadekin, Felinid, Tajaran, WFCanine]
+  speciesRestriction: [Skrell, Avali, Dwarf, Human, SlimePerson, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, Feroxi, Moth, Kitsune, Chitinid, Shadekin, Felinid, Tajaran, WGCanine]
   coloring:
     default:
       type:
@@ -244,13 +244,13 @@
     harvest_primary_BEHIND: harvest_primary_FRONT
     harvest_secondary_BEHIND: harvest_secondary_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
     state: harvest_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
     state: harvest_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: harvest_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: harvest_secondary_BEHIND
 
 - type: marking
@@ -265,13 +265,13 @@
     short_primary_BEHIND: short_primary_FRONT
     short_secondary_BEHIND: short_secondary_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
     state: short_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
     state: short_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: short_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: short_secondary_BEHIND
 
 - type: marking
@@ -286,13 +286,13 @@
     zigzag_primary_BEHIND: zigzag_primary_FRONT
     zigzag_secondary_BEHIND: zigzag_secondary_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
     state: zigzag_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
     state: zigzag_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: zigzag_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: zigzag_secondary_BEHIND
 
 - type: marking
@@ -307,13 +307,13 @@
     stingers_primary_BEHIND: stingers_primary_FRONT
     stingers_secondary_BEHIND: stingers_secondary_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
     state: stingers_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): split art
     state: stingers_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: stingers_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: stingers_secondary_BEHIND
 
 # WOLFGATE(Species): ported from HardLight
@@ -330,13 +330,13 @@
     shadekin_dual_color_primary_BEHIND: shadekin_dual_color_primary_FRONT
     shadekin_dual_color_secondary_BEHIND: shadekin_dual_color_secondary_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Shadekin/shadekintails64x32.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Shadekin/shadekintails64x32.rsi # WOLFGATE(Genitals): split art
       state: shadekin_dual_color_primary_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Shadekin/shadekintails64x32.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Shadekin/shadekintails64x32.rsi # WOLFGATE(Genitals): split art
       state: shadekin_dual_color_secondary_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Shadekin/shadekintails64x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Shadekin/shadekintails64x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: shadekin_dual_color_primary_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Shadekin/shadekintails64x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Shadekin/shadekintails64x32.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: shadekin_dual_color_secondary_BEHIND
 
 # WOLFGATE(Species): ported from HardLight

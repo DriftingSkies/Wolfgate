@@ -47,7 +47,7 @@ public sealed partial class DefibrillatorSystem : EntitySystem
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedMindSystem _mind = default!;
     [Dependency] private UseDelaySystem _useDelay = default!;
-    [Dependency] private Content.Server._WF.Wolfmed.Life.WolfmedRevivalSystem _wolfmedRevival = default!; // WOLFGATE(Wolfmed): BRAIN
+    [Dependency] private Content.Server._WG.Wolfmed.Life.WolfmedRevivalSystem _wolfmedRevival = default!; // WOLFGATE(Wolfmed): BRAIN
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -208,7 +208,7 @@ public sealed partial class DefibrillatorSystem : EntitySystem
         {
             // WOLFGATE(Wolfmed) START: BRAIN, the Wolfmed rule replaces the threshold gate for a wound host.
             // A wound host's damage total decides nothing. The brain and the heart do, so the whole threshold gate is
-            // replaced by the Wolfmed rule; the body lives in _WF.
+            // replaced by the Wolfmed rule; the body lives in _WG.
             if (_wolfmedRevival.OwnsRevival(target))
             {
                 if (_wolfmedRevival.TryDefibrillate(target, out var wolfmedLine))
@@ -221,7 +221,7 @@ public sealed partial class DefibrillatorSystem : EntitySystem
 
                 // A gate is not a failed shock: the medic has to fix something before another one is worth
                 // giving, so the reason goes where they are looking rather than only into a speech bubble.
-                if (wolfmedLine != Content.Server._WF.Wolfmed.Life.WolfmedRevivalSystem.NoResponse &&
+                if (wolfmedLine != Content.Server._WG.Wolfmed.Life.WolfmedRevivalSystem.NoResponse &&
                     wolfmedLine != "wolfmed-defib-success")
                 {
                     _popup.PopupEntity(wolfmedText, target, user, // WOLFGATE(Wolfmed): M1a

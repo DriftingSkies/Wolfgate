@@ -1,0 +1,10 @@
+wg-camo-pattern-arid = Arid
+wg-camo-pattern-black = Black
+wg-camo-pattern-classic = Classic
+wg-camo-pattern-desert = Desert
+wg-camo-pattern-field = Field
+wg-camo-pattern-jungle = Jungle
+wg-camo-pattern-snow = Snow
+wg-camo-pattern-urban = Urban
+wg-camo-pattern-winter = Winter
+wg-camo-pattern-woodland = Woodland

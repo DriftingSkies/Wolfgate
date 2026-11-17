@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
-using Content.Shared._WF.Planets; // WOLFGATE(Planets)
+using Content.Shared._WG.Planets; // WOLFGATE(Planets)
 using Content.Shared.Administration.Logs;
 using Content.Shared.Audio;
 using Content.Shared.Database;
@@ -147,7 +147,7 @@ public sealed partial class FloorTileSystem : EntitySystem
                 var baseTurf = (ContentTileDefinition) _tileDefinitionManager[tile.Tile.TypeId];
 
                 // WOLFGATE(Planets): a planet's natural ground takes lattice directly, and remembers what is under it.
-                var onTerrain = WfIsPlanetTerrain(gridUid, mapGrid, tile) && HasBaseTurf(currentTileDefinition, ContentTileDefinition.SpaceID);
+                var onTerrain = WgIsPlanetTerrain(gridUid, mapGrid, tile) && HasBaseTurf(currentTileDefinition, ContentTileDefinition.SpaceID);
 
                 if (HasBaseTurf(currentTileDefinition, baseTurf.ID) || onTerrain) // WOLFGATE(Planets): lattice also goes straight onto planet ground.
                 {
@@ -156,7 +156,7 @@ public sealed partial class FloorTileSystem : EntitySystem
 
                     // WOLFGATE(Planets) START: the ground under lattice is kept so cutting it gives the ground back.
                     if (onTerrain)
-                        EnsureComp<WFPlanetBuiltTilesComponent>(gridUid).Underlay[tile.GridIndices] = tile.Tile;
+                        EnsureComp<WGPlanetBuiltTilesComponent>(gridUid).Underlay[tile.GridIndices] = tile.Tile;
                     // WOLFGATE END
 
                     PlaceAt(args.User, gridUid, mapGrid, location, currentTileDefinition.TileId, component.PlaceTileSound);
@@ -188,9 +188,9 @@ public sealed partial class FloorTileSystem : EntitySystem
     /// True when this tile of a planet layer is still the ground the biome put there, which is the only
     /// thing a crew may lay lattice straight onto. Anything already built is left to the ordinary base-turf chain.
     /// </summary>
-    private bool WfIsPlanetTerrain(EntityUid gridUid, MapGridComponent mapGrid, TileRef tile)
+    private bool WgIsPlanetTerrain(EntityUid gridUid, MapGridComponent mapGrid, TileRef tile)
     {
-        if (tile.Tile.IsEmpty || !HasComp<WFPlanetLayerComponent>(gridUid) || !TryComp<BiomeComponent>(gridUid, out var biome))
+        if (tile.Tile.IsEmpty || !HasComp<WGPlanetLayerComponent>(gridUid) || !TryComp<BiomeComponent>(gridUid, out var biome))
             return false;
 
         return _biome.TryGetBiomeTile(tile.GridIndices, biome.Layers, biome.Seed, (MapGridComponent?) null, out var natural)

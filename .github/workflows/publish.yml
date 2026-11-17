@@ -67,7 +67,7 @@ jobs:
     - name: Test merge pull requests
       id: testmerge
       if: ${{ inputs.test_merges != '' }}
-      run: python3 Tools/_WF/Ci/test_merge.py "${{ inputs.test_merges }}"
+      run: python3 Tools/_WG/Ci/test_merge.py "${{ inputs.test_merges }}"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REPOSITORY: ${{ github.repository }}
@@ -117,7 +117,7 @@ jobs:
         retention-days: 1
 
     - name: Publish to Robust.Cdn
-      run: python3 Tools/_WF/Ci/publish_github_artifact.py
+      run: python3 Tools/_WG/Ci/publish_github_artifact.py
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
@@ -138,7 +138,7 @@ jobs:
       # WOLFGATE(Ci): a test merge or test fork build is not a release of main, so its entries are not announced
       if: ${{ inputs.test_merges == '' && inputs.fork_id == '' }}
       continue-on-error: true
-      run: python3 Tools/_WF/Ci/actions_changelogs_since_last_run.py # WOLFGATE(Ci): Wolfgate copy that also posts Wolfgate.yml
+      run: python3 Tools/_WG/Ci/actions_changelogs_since_last_run.py # WOLFGATE(Ci): Wolfgate copy that also posts Wolfgate.yml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         DISCORD_WEBHOOK_URL: ${{ secrets.CHANGELOG_DISCORD_WEBHOOK }}

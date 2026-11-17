@@ -24,9 +24,9 @@ public sealed partial class WeldingHealableSystem : SharedWeldingHealableSystem
     [Dependency] private SharedBodySystem _bodySystem = default!;
     public override void Initialize()
     {
-        // WOLFGATE(Wolfmed) START: W6, wound hosts repair through the _WF partial, ahead of FlammableSystem.
+        // WOLFGATE(Wolfmed) START: W6, wound hosts repair through the _WG partial, ahead of FlammableSystem.
         InitializeWoundRepair();
-        // The wound-host repair in the _WF partial must beat FlammableSystem to the welder, and the engine makes
+        // The wound-host repair in the _WG partial must beat FlammableSystem to the welder, and the engine makes
         // every subscription a system has to one event share its ordering, so this one carries it too. Harmless:
         // Repair only handles the interaction when it actually repairs, so a welder used on anything else still
         // reaches FlammableSystem exactly as it did.
@@ -39,7 +39,7 @@ public sealed partial class WeldingHealableSystem : SharedWeldingHealableSystem
 
     private void OnRepairFinished(EntityUid uid, WeldingHealableComponent healableComponent, SiliconRepairFinishedEvent args)
     {
-        if (HasComp<WoundHostComponent>(uid) || args.Cancelled || args.Used == null // WOLFGATE(Wolfmed): W6, wound hosts are repaired by the _WF partial.
+        if (HasComp<WoundHostComponent>(uid) || args.Cancelled || args.Used == null // WOLFGATE(Wolfmed): W6, wound hosts are repaired by the _WG partial.
             || !TryComp<DamageableComponent>(args.Target, out var damageable)
             || !TryComp<WeldingHealingComponent>(args.Used, out var component)
             || damageable.DamageContainerID is null
@@ -76,7 +76,7 @@ public sealed partial class WeldingHealableSystem : SharedWeldingHealableSystem
     }
     private async void Repair(EntityUid uid, WeldingHealableComponent healableComponent, InteractUsingEvent args)
     {
-        if (HasComp<WoundHostComponent>(uid) || args.Handled // WOLFGATE(Wolfmed): W6, wound hosts are repaired by the _WF partial.
+        if (HasComp<WoundHostComponent>(uid) || args.Handled // WOLFGATE(Wolfmed): W6, wound hosts are repaired by the _WG partial.
             || !EntityManager.TryGetComponent(args.Used, out WeldingHealingComponent? component)
             || !EntityManager.TryGetComponent(args.Target, out DamageableComponent? damageable)
             || damageable.DamageContainerID is null

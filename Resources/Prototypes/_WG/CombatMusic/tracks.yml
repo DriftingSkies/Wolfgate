@@ -1,0 +1,297 @@
+# Tracks a player can put in their character's combat playlist (character editor, Combat music tab).
+
+- type: wgCombatTrack
+  id: WGCombatTrackMobster
+  name: wg-combat-track-mobster
+  description: wg-combat-track-mobster-desc
+  credits: wg-combat-track-mobster-credits
+  path: /Audio/_WG/CombatMusic/mobster.ogg
+  order: 0
+
+- type: wgCombatTrack
+  id: WGCombatTrackUnholy
+  name: wg-combat-track-unholy
+  description: wg-combat-track-unholy-desc
+  credits: wg-combat-track-unholy-credits
+  path: /Audio/_WG/CombatMusic/unholy.ogg
+  order: 10
+
+- type: wgCombatTrack
+  id: WGCombatTrackVitamass
+  name: wg-combat-track-vitamass
+  description: wg-combat-track-vitamass-desc
+  credits: wg-combat-track-vitamass-credits
+  path: /Audio/_WG/CombatMusic/vitamass.ogg
+  order: 20
+
+- type: wgCombatTrack
+  id: WGCombatTrackAscended
+  name: wg-combat-track-ascended
+  description: wg-combat-track-ascended-desc
+  credits: wg-combat-track-ascended-credits
+  path: /Audio/_WG/CombatMusic/ascended.ogg
+  order: 30
+
+- type: wgCombatTrack
+  id: WGCombatTrackDesertRider
+  name: wg-combat-track-desert-rider
+  description: wg-combat-track-desert-rider-desc
+  credits: wg-combat-track-desert-rider-credits
+  path: /Audio/_WG/CombatMusic/desert_rider.ogg
+  order: 40
+
+- type: wgCombatTrack
+  id: WGCombatTrackMeatGrinder
+  name: wg-combat-track-meat-grinder
+  description: wg-combat-track-meat-grinder-desc
+  credits: wg-combat-track-meat-grinder-credits
+  path: /Audio/_WG/CombatMusic/meat_grinder.ogg
+  order: 50
+
+- type: wgCombatTrack
+  id: WGCombatTrackHighGrain
+  name: wg-combat-track-high-grain
+  description: wg-combat-track-high-grain-desc
+  credits: wg-combat-track-high-grain-credits
+  path: /Audio/_WG/CombatMusic/high_grain.ogg
+  order: 60
+
+- type: wgCombatTrack
+  id: WGCombatTrackIconoclast
+  name: wg-combat-track-iconoclast
+  description: wg-combat-track-iconoclast-desc
+  credits: wg-combat-track-iconoclast-credits
+  path: /Audio/_WG/CombatMusic/iconoclast.ogg
+  order: 70
+
+- type: wgCombatTrack
+  id: WGCombatTrackMalpractice
+  name: wg-combat-track-malpractice
+  description: wg-combat-track-malpractice-desc
+  credits: wg-combat-track-malpractice-credits
+  path: /Audio/_WG/CombatMusic/malpractice.ogg
+  order: 100
+
+- type: wgCombatTrack
+  id: WGCombatTrackBeggar
+  name: wg-combat-track-beggar
+  description: wg-combat-track-beggar-desc
+  credits: wg-combat-track-beggar-credits
+  path: /Audio/_WG/CombatMusic/beggar.ogg
+  order: 110
+
+- type: wgCombatTrack
+  id: WGCombatTrackStress
+  name: wg-combat-track-stress
+  description: wg-combat-track-stress-desc
+  credits: wg-combat-track-stress-credits
+  path: /Audio/_WG/CombatMusic/stress.ogg
+  order: 120
+
+- type: wgCombatTrack
+  id: WGCombatTrackNiteCreecher
+  name: wg-combat-track-nite-creecher
+  description: wg-combat-track-nite-creecher-desc
+  credits: wg-combat-track-nite-creecher-credits
+  path: /Audio/_WG/CombatMusic/nite_creecher.ogg
+  order: 130
+
+- type: wgCombatTrack
+  id: WGCombatTrackFahkeet
+  name: wg-combat-track-fahkeet
+  description: wg-combat-track-fahkeet-desc
+  credits: wg-combat-track-fahkeet-credits
+  path: /Audio/_WG/CombatMusic/fahkeet.ogg
+  order: 140
+
+- type: wgCombatTrack
+  id: WGCombatTrackDogmatica
+  name: wg-combat-track-dogmatica
+  description: wg-combat-track-dogmatica-desc
+  credits: wg-combat-track-dogmatica-credits
+  path: /Audio/_WG/CombatMusic/dogmatica.ogg
+  order: 150
+
+- type: wgCombatTrack
+  id: WGCombatTrackButchersBoulevard
+  name: wg-combat-track-butchers-boulevard
+  description: wg-combat-track-butchers-boulevard-desc
+  credits: wg-combat-track-butchers-boulevard-credits
+  path: /Audio/_WG/CombatMusic/butchers_boulevard.ogg
+  order: 160
+
+- type: wgCombatTrack
+  id: WGCombatTrackSystemCommand
+  name: wg-combat-track-system-command
+  description: wg-combat-track-system-command-desc
+  credits: wg-combat-track-system-command-credits
+  path: /Audio/_Crescent/CombatMode/default_1.ogg
+  order: 300
+
+- type: wgCombatTrack
+  id: WGCombatTrackSystemHydroponics
+  name: wg-combat-track-system-hydroponics
+  description: wg-combat-track-system-hydroponics-desc
+  credits: wg-combat-track-system-hydroponics-credits
+  path: /Audio/_Crescent/CombatMode/default_2.ogg
+  order: 310
+
+- type: wgCombatTrack
+  id: WGCombatTrackAirfield
+  name: wg-combat-track-airfield
+  description: wg-combat-track-airfield-desc
+  credits: wg-combat-track-airfield-credits
+  path: /Audio/_Crescent/CombatMode/TSFMC_1.ogg
+  order: 320
+
+- type: wgCombatTrack
+  id: WGCombatTrackHelipad
+  name: wg-combat-track-helipad
+  description: wg-combat-track-helipad-desc
+  credits: wg-combat-track-helipad-credits
+  path: /Audio/_Crescent/CombatMode/TSFMC_2.ogg
+  order: 330
+
+- type: wgCombatTrack
+  id: WGCombatTrackBattle01
+  name: wg-combat-track-battle01
+  description: wg-combat-track-battle01-desc
+  credits: wg-combat-track-battle01-credits
+  path: /Audio/_Crescent/CombatMode/PDV_1.ogg
+  order: 340
+
+- type: wgCombatTrack
+  id: WGCombatTrackLetThereBeChaos
+  name: wg-combat-track-let-there-be-chaos
+  description: wg-combat-track-let-there-be-chaos-desc
+  credits: wg-combat-track-let-there-be-chaos-credits
+  path: /Audio/_Crescent/CombatMode/PDV_2.ogg
+  order: 350
+
+- type: wgCombatTrack
+  id: WGCombatTrackAdjudicator
+  name: wg-combat-track-adjudicator
+  description: wg-combat-track-adjudicator-desc
+  credits: wg-combat-track-adjudicator-credits
+  path: /Audio/_WG/CombatMusic/duty_and_honor.ogg
+  order: 175
+
+- type: wgCombatTrack
+  id: WGCombatTrackImperium
+  name: wg-combat-track-imperium
+  description: wg-combat-track-imperium-desc
+  credits: wg-combat-track-imperium-credits
+  path: /Audio/_WG/CombatMusic/light_of_the_imperium.ogg
+  order: 176
+
+- type: wgCombatTrack
+  id: WGCombatTrackEyesOfTheWolf
+  name: wg-combat-track-eyes-of-the-wolf
+  description: wg-combat-track-eyes-of-the-wolf-desc
+  credits: wg-combat-track-eyes-of-the-wolf-credits
+  path: /Audio/_WG/CombatMusic/eyes_of_the_wolf.ogg
+  order: 177
+
+- type: wgCombatTrack
+  id: WGCombatTrackHuntOrBeHunted
+  name: wg-combat-track-hunt-or-be-hunted
+  description: wg-combat-track-hunt-or-be-hunted-desc
+  credits: wg-combat-track-hunt-or-be-hunted-credits
+  path: /Audio/_WG/CombatMusic/hunt_or_be_hunted.ogg
+  order: 178
+
+- type: wgCombatTrack
+  id: WGCombatTrackStoneshard9
+  name: wg-combat-track-stoneshard9
+  description: wg-combat-track-stoneshard9-desc
+  credits: wg-combat-track-stoneshard9-credits
+  path: /Audio/_WG/CombatMusic/stoneshard_9.ogg
+  order: 179
+
+- type: wgCombatTrack
+  id: WGCombatTrackSonsOfTyr
+  name: wg-combat-track-sons-of-tyr
+  description: wg-combat-track-sons-of-tyr-desc
+  credits: wg-combat-track-sons-of-tyr-credits
+  path: /Audio/_WG/CombatMusic/sons_of_tyr.ogg
+  order: 180
+
+- type: wgCombatTrack
+  id: WGCombatTrackElddansurin
+  name: wg-combat-track-elddansurin
+  description: wg-combat-track-elddansurin-desc
+  credits: wg-combat-track-elddansurin-credits
+  path: /Audio/_WG/CombatMusic/elddansurin.ogg
+  order: 181
+
+- type: wgCombatTrack
+  id: WGCombatTrackApab
+  name: wg-combat-track-apab
+  description: wg-combat-track-apab-desc
+  credits: wg-combat-track-apab-credits
+  path: /Audio/_WG/CombatMusic/apab.ogg
+  order: 182
+
+- type: wgCombatTrack
+  id: WGCombatTrackTenseCombat
+  name: wg-combat-track-tense-combat
+  description: wg-combat-track-tense-combat-desc
+  credits: wg-combat-track-tense-combat-credits
+  path: /Audio/_WG/CombatMusic/tense_combat.ogg
+  order: 183
+
+- type: wgCombatTrack
+  id: WGCombatTrackTatarTheme
+  name: wg-combat-track-tatar-theme
+  description: wg-combat-track-tatar-theme-desc
+  credits: wg-combat-track-tatar-theme-credits
+  path: /Audio/_WG/CombatMusic/tatar_theme.ogg
+  order: 184
+
+- type: wgCombatTrack
+  id: WGCombatTrackTheHeathen
+  name: wg-combat-track-the-heathen
+  description: wg-combat-track-the-heathen-desc
+  credits: wg-combat-track-the-heathen-credits
+  path: /Audio/_WG/CombatMusic/the_heathen.ogg
+  order: 185
+
+- type: wgCombatTrack
+  id: WGCombatTrackSvanrand
+  name: wg-combat-track-svanrand
+  description: wg-combat-track-svanrand-desc
+  credits: wg-combat-track-svanrand-credits
+  path: /Audio/_WG/CombatMusic/svanrand.ogg
+  order: 186
+
+- type: wgCombatTrack
+  id: WGCombatTrackStoneshard5
+  name: wg-combat-track-stoneshard5
+  description: wg-combat-track-stoneshard5-desc
+  credits: wg-combat-track-stoneshard5-credits
+  path: /Audio/_WG/CombatMusic/stoneshard_5.ogg
+  order: 187
+
+- type: wgCombatTrack
+  id: WGCombatTrackIberiaWar
+  name: wg-combat-track-iberia-war
+  description: wg-combat-track-iberia-war-desc
+  credits: wg-combat-track-iberia-war-credits
+  path: /Audio/_WG/CombatMusic/fate_of_iberia_war.ogg
+  order: 188
+
+- type: wgCombatTrack
+  id: WGCombatTrackStudzianki
+  name: wg-combat-track-studzianki
+  description: wg-combat-track-studzianki-desc
+  credits: wg-combat-track-studzianki-credits
+  path: /Audio/_WG/CombatMusic/studzianki.ogg
+  order: 189
+
+- type: wgCombatTrack
+  id: WGCombatTrackCanteDeLosMuertos
+  name: wg-combat-track-cante-de-los-muertos
+  description: wg-combat-track-cante-de-los-muertos-desc
+  credits: wg-combat-track-cante-de-los-muertos-credits
+  path: /Audio/_WG/CombatMusic/cante_de_los_muertos.ogg
+  order: 190

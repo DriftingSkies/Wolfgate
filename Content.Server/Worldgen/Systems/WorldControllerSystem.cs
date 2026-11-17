@@ -40,8 +40,8 @@ public sealed partial class WorldControllerSystem : EntitySystem
         SubscribeLocalEvent<LoadedChunkComponent, ComponentStartup>(OnChunkLoadedCore);
         SubscribeLocalEvent<LoadedChunkComponent, ComponentShutdown>(OnChunkUnloadedCore);
         SubscribeLocalEvent<WorldChunkComponent, ComponentShutdown>(OnChunkShutdown);
-        WFInitializeUnloadGrace(); // WOLFGATE(Performance): chunk unload grace
-        WFInitializeIdleHelms(); // WOLFGATE(Performance): idle helms load nothing
+        WGInitializeUnloadGrace(); // WOLFGATE(Performance): chunk unload grace
+        WGInitializeIdleHelms(); // WOLFGATE(Performance): idle helms load nothing
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public sealed partial class WorldControllerSystem : EntitySystem
     /// </summary>
     private void OnChunkShutdown(EntityUid uid, WorldChunkComponent component, ComponentShutdown args)
     {
-        _wfUnneededSince.Remove(uid); // WOLFGATE(Performance): drop a deleted chunk's unload grace timer
+        _wgUnneededSince.Remove(uid); // WOLFGATE(Performance): drop a deleted chunk's unload grace timer
         if (!TryComp<WorldControllerComponent>(component.Map, out var controller))
             return;
 
@@ -114,7 +114,7 @@ public sealed partial class WorldControllerSystem : EntitySystem
         if (_chunksToLoad.Count == 0)
             return; // Just bail early.
 
-        WFCollectActiveGrids(); // WOLFGATE(Performance): grids that have a player or pilot
+        WGCollectActiveGrids(); // WOLFGATE(Performance): grids that have a player or pilot
 
         var loaderEnum = EntityQueryEnumerator<WorldLoaderComponent, TransformComponent>();
 
@@ -124,7 +124,7 @@ public sealed partial class WorldControllerSystem : EntitySystem
                 continue; // Frontier
 
             // WOLFGATE(Performance): parked, empty helms don't load worldgen
-            if (WFIdleHelm(uid, xform))
+            if (WGIdleHelm(uid, xform))
                 continue;
 
             // Mono edit
@@ -171,7 +171,7 @@ public sealed partial class WorldControllerSystem : EntitySystem
 
             // WOLFGATE(Performance): wait out the unload grace, so passing ships don't unload and respawn debris
             // if (!_chunksToLoad[chunk.Map].ContainsKey(coords))
-            if (WFShouldUnload(uid, _chunksToLoad[chunk.Map].ContainsKey(coords)))
+            if (WGShouldUnload(uid, _chunksToLoad[chunk.Map].ContainsKey(coords)))
             {
                 RemCompDeferred<LoadedChunkComponent>(uid);
                 chunksUnloaded++;
@@ -181,7 +181,7 @@ public sealed partial class WorldControllerSystem : EntitySystem
         if (chunksUnloaded > 0)
             _sawmill.Debug($"Queued {chunksUnloaded} chunks for unload.");
 
-        WFLogChunkCount(); // WOLFGATE(Performance): loaded-chunk counter
+        WGLogChunkCount(); // WOLFGATE(Performance): loaded-chunk counter
 
         if (_chunksToLoad.All(x => x.Value.Count == 0))
             return;

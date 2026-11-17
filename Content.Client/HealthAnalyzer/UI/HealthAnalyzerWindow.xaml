@@ -10,7 +10,7 @@
     xmlns="https://spacestation14.io"
     xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
     xmlns:graphics="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
-    xmlns:wolfmed="clr-namespace:Content.Client._WF.Wolfmed.Medical"
+    xmlns:wolfmed="clr-namespace:Content.Client._WG.Wolfmed.Medical"
     SetHeight="600"
     SetWidth="900"
     MinSize="660 470"

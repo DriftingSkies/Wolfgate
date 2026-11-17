@@ -1,0 +1,39 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51); admin spawn only.
+#Author: Starch(!)
+
+- type: vessel
+  id: Veska
+  parent: BaseVesselIFFDisabled
+  name: RG Veska
+  description: A modified Ample that tears out the mining equipment and installs a light autocannon.
+  price: 11699
+  category: Micro
+  group: Custom
+  mapchecker_group_override: BlackMarket  # Treat this as a BlackMarket vessel for mapchecker purposes
+  shuttlePath: /SharedMaps/_WG/OldVessels/Carrier/veska.yml
+  tags:
+  - WGClassicVessel
+  - WGAdminOnlyVessel
+  guidebookPage: Null
+  class:
+  - Pirate
+  - Fighter
+  engine:
+  - APU
+
+- type: gameMap
+  id: Veska
+  mapName: 'Veska'
+  mapPath: /SharedMaps/_WG/OldVessels/Carrier/veska.yml
+  minPlayers: 0
+  stations:
+    Veska:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Veska MIL{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs: {}

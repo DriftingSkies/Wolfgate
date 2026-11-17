@@ -1,0 +1,24 @@
+- type: constructionGraph
+  id: WGVial
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: vial
+      steps:
+      - material: Glass
+        amount: 1
+        doAfter: 2
+  - node: vial
+    entity: WGVial
+
+- type: construction
+  name: small vial
+  id: WGVial
+  graph: WGVial
+  startNode: start
+  targetNode: vial
+  category: construction-category-misc
+  description: A 10u glass vial with a crimp cap that seals it shut.
+  icon: { sprite: _WG/WolfChem/Narcotics/Objects/vial.rsi, state: icon }
+  objectType: Item

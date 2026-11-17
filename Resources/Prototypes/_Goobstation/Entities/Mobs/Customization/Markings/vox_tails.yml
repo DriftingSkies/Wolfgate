@@ -16,9 +16,9 @@
   # WOLFGATE(Genitals) START: split art, south frame on TailBehind
   # - sprite: Mobs/Customization/vox_parts.rsi
   #   state: tail_animated
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
     state: tail_animated_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
     state: tail_animated_BEHIND
   # WOLFGATE END
 
@@ -71,9 +71,9 @@
   # WOLFGATE(Genitals) START: split art, south frame on TailBehind
   # - sprite: Mobs/Customization/vox_parts.rsi
   #   state: tail_big_animated
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
     state: tail_big_animated_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
     state: tail_big_animated_BEHIND
   # WOLFGATE END
     
@@ -106,9 +106,9 @@
   # WOLFGATE(Genitals) START: split art, south frame on TailBehind
   # - sprite: Mobs/Customization/vox_parts.rsi
   #   state: tail_spikes_animated 
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
     state: tail_spikes_animated_FRONT 
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
     state: tail_spikes_animated_BEHIND
   # WOLFGATE END
     
@@ -160,8 +160,8 @@
   # WOLFGATE(Genitals) START: split art, south frame on TailBehind
   # - sprite: Mobs/Customization/vox_parts.rsi
   #   state: tail_split_animated 
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
     state: tail_split_animated_FRONT 
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/vox_parts.rsi
     state: tail_split_animated_BEHIND
   # WOLFGATE END

@@ -96,7 +96,7 @@ public sealed partial class CargoSystem
         // End Frontier
 
         // WOLFGATE(CargoSales) START: a pallet that would be refused pays nothing, so it shows nothing
-        if (WfRefuseOverLimit(uid, WfWithContents(toSell)))
+        if (WgRefuseOverLimit(uid, WgWithContents(toSell)))
             amount = 0;
         // WOLFGATE END
 
@@ -329,7 +329,7 @@ public sealed partial class CargoSystem
         }
 
         // WOLFGATE(CargoSales) START: the MaxPerSale check runs apart from the alert
-        if (WfRefuseOverLimit(consoleUid, allEntsToDelete))
+        if (WgRefuseOverLimit(consoleUid, allEntsToDelete))
             return false;
         // WOLFGATE END
 
@@ -337,7 +337,7 @@ public sealed partial class CargoSystem
 
         var ev = new EntitySoldEvent(toSell, gridUid); // Mono: moved here so refused sales dont count as sold
         RaiseLocalEvent(ref ev);
-        WfRaisePalletSale(allEntsToDelete, gridUid); // WOLFGATE(CargoSales): a pallet sale event that leaves out contraband turn-ins
+        WgRaisePalletSale(allEntsToDelete, gridUid); // WOLFGATE(CargoSales): a pallet sale event that leaves out contraband turn-ins
 
         foreach (var ent in allEntsToDelete)
         {
@@ -489,7 +489,7 @@ public sealed partial class CargoSystem
                 // WOLFGATE END
                 // WOLFGATE(TradeGoods): materials pay what the station's stock makes them worth
                 else
-                    price += _wfMaterials.WfPalletAdjustment(ent, gridUid);
+                    price += _wgMaterials.WgPalletAdjustment(ent, gridUid);
 
                 var station = _station.GetOwningStation(ent);
                 double multiplier = 1;
@@ -545,7 +545,7 @@ public sealed partial class CargoSystem
                 }
                 // WOLFGATE(CargoSales): taxed goods inside an untaxed crate or bag pay their tax too
                 else
-                    WfContentsTax(ent, gridUid, ref blackMarketTaxAmount, ref frontierTaxAmount, ref nfsdTaxAmount, ref medicalTaxAmount);
+                    WgContentsTax(ent, gridUid, ref blackMarketTaxAmount, ref frontierTaxAmount, ref nfsdTaxAmount, ref medicalTaxAmount);
 
                 // Mono: Calculate if any factions need to receive currency
                 if (TryComp<CurrencyInjectionOnSellComponent>(ent, out var injection) && (!injection.RequireCorrectDestination || !TryComp<TradeCrateComponent>(ent, out var tradeCrate) || _station.GetOwningStation(ent) == tradeCrate.DestinationStation))
@@ -595,7 +595,7 @@ public sealed partial class CargoSystem
             return;
         }
 
-        if (WfShipRefuses(uid, args.Actor)) // WOLFGATE(ShipCommand): a commanded ship's sale pallets don't buy from the barred
+        if (WgShipRefuses(uid, args.Actor)) // WOLFGATE(ShipCommand): a commanded ship's sale pallets don't buy from the barred
             return; // WOLFGATE(ShipCommand)
 
         if (!SellPallets((uid, component), gridUid, out var price, out var noMultiplierPrice, out var blackMarketTaxAmount, out var frontierTaxAmount, out var nfsdTaxAmount, out var medicalTaxAmount, out var currencyInjections)) // Frontier: convert first arg to Entity, add noMultiplierPrice
@@ -643,7 +643,7 @@ public sealed partial class CargoSystem
             }
         }
         // Mono End
-        price = EntityManager.System<Content.Server._WF.Companies.WFCompanySystem>().TakeCut(args.Actor, (int) price, "cargo"); // WOLFGATE(Companies): the seller's company takes its cut
+        price = EntityManager.System<Content.Server._WG.Companies.WGCompanySystem>().TakeCut(args.Actor, (int) price, "cargo"); // WOLFGATE(Companies): the seller's company takes its cut
         var stackPrototype = _protoMan.Index<StackPrototype>(component.CashType);
         _stack.Spawn((int)price, stackPrototype, xform.Coordinates);
         _audio.PlayPvs(ApproveSound, uid);

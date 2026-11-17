@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Content.Server.NPC.Queries;
 using Content.Server.NPC.Systems;
 using Robust.Shared.Map;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.NPC.HTN.PrimitiveTasks.Operators;
 

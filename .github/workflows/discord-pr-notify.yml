@@ -37,11 +37,11 @@ jobs:
       - name: Checkout notify script (base branch only)
         uses: actions/checkout@v4
         with:
-          sparse-checkout: Tools/_WF/Ci/actions_discord_pr_notify.py # WOLFGATE(Ci)
+          sparse-checkout: Tools/_WG/Ci/actions_discord_pr_notify.py # WOLFGATE(Ci)
           sparse-checkout-cone-mode: false
 
       - name: Post to Discord
-        run: python3 Tools/_WF/Ci/actions_discord_pr_notify.py # WOLFGATE(Ci)
+        run: python3 Tools/_WG/Ci/actions_discord_pr_notify.py # WOLFGATE(Ci)
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.PR_DISCORD_WEBHOOK }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

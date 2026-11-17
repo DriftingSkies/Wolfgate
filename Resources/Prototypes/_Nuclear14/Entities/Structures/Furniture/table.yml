@@ -288,11 +288,11 @@
     sprite: _Nuclear14/Structures/Furniture/64x64_furniture.rsi
     state: table_pool
   # WOLFGATE(Pool): playable 8-ball
-  - type: WFPoolTable
+  - type: WGPoolTable
     range: 2.5
   - type: UserInterface
     interfaces:
-      enum.WFPoolUiKey.Key:
+      enum.WGPoolUiKey.Key:
         type: PoolBoundUserInterface
 
 - type: entity

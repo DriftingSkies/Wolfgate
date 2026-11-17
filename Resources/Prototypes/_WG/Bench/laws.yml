@@ -1,0 +1,298 @@
+# The Common Writ: the laws the Bench app tickets, grouped by article.
+
+- type: wgLawChapter
+  id: WGLawChapterReality
+  name: wg-law-chapter-reality
+  order: 1
+
+- type: wgLawChapter
+  id: WGLawChapterPersons
+  name: wg-law-chapter-persons
+  order: 2
+
+- type: wgLawChapter
+  id: WGLawChapterBench
+  name: wg-law-chapter-bench
+  order: 3
+
+- type: wgLawChapter
+  id: WGLawChapterCentral
+  name: wg-law-chapter-central
+  order: 4
+
+- type: wgLaw
+  id: WGLawAnchorBreach
+  chapter: WGLawChapterReality
+  order: 1
+  name: wg-law-anchor-breach
+  text: wg-law-anchor-breach-text
+  level: Outlawry
+
+- type: wgLaw
+  id: WGLawTrespass
+  chapter: WGLawChapterReality
+  order: 2
+  name: wg-law-trespass
+  text: wg-law-trespass-text
+  level: Citation
+  fine: 10000
+  minFine: 5000
+  maxFine: 20000
+
+- type: wgLaw
+  id: WGLawDeepTrespass
+  chapter: WGLawChapterReality
+  order: 3
+  name: wg-law-deep-trespass
+  text: wg-law-deep-trespass-text
+  level: Impound
+  fine: 60000
+  minFine: 50000
+  maxFine: 100000
+
+- type: wgLaw
+  id: WGLawUnsanctionedLanding
+  chapter: WGLawChapterReality
+  order: 4
+  name: wg-law-unsanctioned-landing
+  text: wg-law-unsanctioned-landing-text
+  level: Impound
+  fine: 50000
+  minFine: 30000
+  maxFine: 80000
+
+- type: wgLaw
+  id: WGLawQuarantineBreach
+  chapter: WGLawChapterReality
+  order: 5
+  name: wg-law-quarantine-breach
+  text: wg-law-quarantine-breach-text
+  level: Banishment
+  fine: 100000
+  minFine: 75000
+  maxFine: 150000
+
+- type: wgLaw
+  id: WGLawUnlawfulPossession
+  chapter: WGLawChapterReality
+  order: 6
+  name: wg-law-unlawful-possession
+  text: wg-law-unlawful-possession-text
+  level: Citation
+  fine: 15000
+  minFine: 10000
+  maxFine: 25000
+
+- type: wgLaw
+  id: WGLawUnlawfulTrafficking
+  chapter: WGLawChapterReality
+  order: 7
+  name: wg-law-unlawful-trafficking
+  text: wg-law-unlawful-trafficking-text
+  level: Impound
+  fine: 75000
+  minFine: 50000
+  maxFine: 120000
+
+- type: wgLaw
+  id: WGLawArtifact
+  chapter: WGLawChapterReality
+  order: 8
+  name: wg-law-artifact
+  text: wg-law-artifact-text
+  level: Outlawry
+
+- type: wgLaw
+  id: WGLawSedition
+  chapter: WGLawChapterReality
+  order: 9
+  name: wg-law-sedition
+  text: wg-law-sedition-text
+  level: Outlawry
+
+- type: wgLaw
+  id: WGLawMurder
+  chapter: WGLawChapterPersons
+  order: 1
+  name: wg-law-murder
+  text: wg-law-murder-text
+  level: Banishment
+  fine: 100000
+  minFine: 75000
+  maxFine: 150000
+
+- type: wgLaw
+  id: WGLawAssault
+  chapter: WGLawChapterPersons
+  order: 2
+  name: wg-law-assault
+  text: wg-law-assault-text
+  level: Citation
+  fine: 10000
+  minFine: 5000
+  maxFine: 25000
+
+- type: wgLaw
+  id: WGLawPiracy
+  chapter: WGLawChapterPersons
+  order: 3
+  name: wg-law-piracy
+  text: wg-law-piracy-text
+  level: Impound
+  fine: 75000
+  minFine: 50000
+  maxFine: 120000
+
+- type: wgLaw
+  id: WGLawHullTheft
+  chapter: WGLawChapterPersons
+  order: 4
+  name: wg-law-hull-theft
+  text: wg-law-hull-theft-text
+  level: Impound
+  fine: 75000
+  minFine: 50000
+  maxFine: 120000
+
+# Narcotics: street drugs and neuroware, which carry Class 3 contraband.
+- type: wgLaw
+  id: WGLawNarcoticsPossession
+  chapter: WGLawChapterPersons
+  order: 5
+  name: wg-law-narcotics-possession
+  text: wg-law-narcotics-possession-text
+  level: Citation
+  fine: 5000
+  minFine: 2500
+  maxFine: 10000
+
+- type: wgLaw
+  id: WGLawNarcoticsTrafficking
+  chapter: WGLawChapterPersons
+  order: 6
+  name: wg-law-narcotics-trafficking
+  text: wg-law-narcotics-trafficking-text
+  level: Impound
+  fine: 50000
+  minFine: 30000
+  maxFine: 90000
+
+- type: wgLaw
+  id: WGLawUnlawfulLoading
+  chapter: WGLawChapterPersons
+  order: 7
+  name: wg-law-unlawful-loading
+  text: wg-law-unlawful-loading-text
+  level: Citation
+  fine: 20000
+  minFine: 10000
+  maxFine: 40000
+
+- type: wgLaw
+  id: WGLawHeaveTo
+  chapter: WGLawChapterBench
+  order: 1
+  name: wg-law-heave-to
+  text: wg-law-heave-to-text
+  level: Impound
+  fine: 50000
+  minFine: 30000
+  maxFine: 80000
+
+- type: wgLaw
+  id: WGLawContempt
+  chapter: WGLawChapterBench
+  order: 2
+  name: wg-law-contempt
+  text: wg-law-contempt-text
+  level: Outlawry
+
+- type: wgLaw
+  id: WGLawFalseDistress
+  chapter: WGLawChapterBench
+  order: 3
+  name: wg-law-false-distress
+  text: wg-law-false-distress-text
+  level: Citation
+  fine: 20000
+  minFine: 10000
+  maxFine: 30000
+
+- type: wgLaw
+  id: WGLawWarheads
+  chapter: WGLawChapterBench
+  order: 4
+  name: wg-law-warheads
+  text: wg-law-warheads-text
+  level: Outlawry
+
+- type: wgLaw
+  id: WGLawBrandishing
+  chapter: WGLawChapterCentral
+  order: 1
+  name: wg-law-brandishing
+  text: wg-law-brandishing-text
+  level: Citation
+  fine: 5000
+  minFine: 2000
+  maxFine: 10000
+
+- type: wgLaw
+  id: WGLawDischarge
+  chapter: WGLawChapterCentral
+  order: 2
+  name: wg-law-discharge
+  text: wg-law-discharge-text
+  level: Banishment
+  fine: 100000
+  minFine: 75000
+  maxFine: 150000
+
+- type: wgLaw
+  id: WGLawNeutralGround
+  chapter: WGLawChapterCentral
+  order: 3
+  name: wg-law-neutral-ground
+  text: wg-law-neutral-ground-text
+  level: Banishment
+  fine: 100000
+  minFine: 75000
+  maxFine: 150000
+
+- type: wgLaw
+  id: WGLawDocking
+  chapter: WGLawChapterCentral
+  order: 4
+  name: wg-law-docking
+  text: wg-law-docking-text
+  level: Citation
+  fine: 10000
+  minFine: 5000
+  maxFine: 20000
+
+- type: wgLaw
+  id: WGLawUndeclared
+  chapter: WGLawChapterCentral
+  order: 5
+  name: wg-law-undeclared
+  text: wg-law-undeclared-text
+  level: Citation
+  fine: 25000
+  minFine: 15000
+  maxFine: 40000
+
+- type: wgLaw
+  id: WGLawConcealment
+  chapter: WGLawChapterCentral
+  order: 6
+  name: wg-law-concealment
+  text: wg-law-concealment-text
+  level: Citation
+  fine: 5000
+  minFine: 2000
+  maxFine: 10000
+
+# Unlawful material under Article I of the Common Writ. Shown on examine like other contraband.
+- type: contrabandSeverity
+  id: WGUnlawful
+  examineText: contraband-examine-text-WGUnlawful

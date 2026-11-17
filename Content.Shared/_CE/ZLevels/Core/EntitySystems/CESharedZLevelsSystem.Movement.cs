@@ -5,7 +5,7 @@
 
 using System.Numerics;
 using Content.Shared._CE.ZLevels.Core.Components;
-using Content.Shared._WF.Performance; // WOLFGATE(Performance)
+using Content.Shared._WG.Performance; // WOLFGATE(Performance)
 using Content.Shared.Chasm;
 using JetBrains.Annotations;
 using Robust.Shared.Audio;
@@ -17,12 +17,12 @@ namespace Content.Shared._CE.ZLevels.Core.EntitySystems;
 public abstract partial class CESharedZLevelsSystem
 {
     private readonly List<EntityUid> _dirtyMovementBodies = new();
-    private readonly HashSet<Entity<CEZPhysicsComponent>> _wfTileHits = new(); // WOLFGATE(Performance): reused by OnTileChanged
-    private readonly HashSet<EntityUid> _wfDirtyMovementSet = new(); // WOLFGATE(Performance): List.Contains per MoveEvent went quadratic in battles
+    private readonly HashSet<Entity<CEZPhysicsComponent>> _wgTileHits = new(); // WOLFGATE(Performance): reused by OnTileChanged
+    private readonly HashSet<EntityUid> _wgDirtyMovementSet = new(); // WOLFGATE(Performance): List.Contains per MoveEvent went quadratic in battles
 
-    private const float WFZEpsilon = 0.0001f; // WOLFGATE(Performance): below this a z set is a no-op
-    private readonly HashSet<EntityUid> _wfOnSlope = new(); // WOLFGATE(Performance): bodies whose ground varies within their tile
-    private bool _wfLastSloped; // WOLFGATE(Performance): set by ComputeGroundHeightInternal on a stair curve
+    private const float WGZEpsilon = 0.0001f; // WOLFGATE(Performance): below this a z set is a no-op
+    private readonly HashSet<EntityUid> _wgOnSlope = new(); // WOLFGATE(Performance): bodies whose ground varies within their tile
+    private bool _wgLastSloped; // WOLFGATE(Performance): set by ComputeGroundHeightInternal on a stair curve
 
     private void InitializeMovement()
     {
@@ -147,14 +147,14 @@ public abstract partial class CESharedZLevelsSystem
         if (!any)
             return;
 
-        _wfTileHits.Clear();
-        _lookup.GetEntitiesIntersecting(mapId, new Box2(lo, hi), _wfTileHits, LookupFlags.Dynamic | LookupFlags.Static | LookupFlags.Sundries);
-        foreach (var hit in _wfTileHits)
+        _wgTileHits.Clear();
+        _lookup.GetEntitiesIntersecting(mapId, new Box2(lo, hi), _wgTileHits, LookupFlags.Dynamic | LookupFlags.Static | LookupFlags.Sundries);
+        foreach (var hit in _wgTileHits)
         {
             RequestCacheMovement(hit);
         }
 
-        _wfTileHits.Clear();
+        _wgTileHits.Clear();
         // WOLFGATE END
     }
 
@@ -162,23 +162,23 @@ public abstract partial class CESharedZLevelsSystem
     {
         var tile = _transform.GetGridOrMapTilePosition(entity);
 
-        if (tile == entity.Comp.CachedTile && !force && !_wfOnSlope.Contains(entity)) // WOLFGATE(Performance): stair height and stickiness change within a tile
+        if (tile == entity.Comp.CachedTile && !force && !_wgOnSlope.Contains(entity)) // WOLFGATE(Performance): stair height and stickiness change within a tile
             return;
 
         entity.Comp.CachedTile = tile;
         entity.Comp.CachedGroundHeight = ComputeGroundHeightInternal((entity, entity), out var sticky);
         entity.Comp.CachedStickyGround = sticky;
         // WOLFGATE(Performance) START: remember who stands on a stair curve
-        if (_wfLastSloped)
-            _wfOnSlope.Add(entity);
+        if (_wgLastSloped)
+            _wgOnSlope.Add(entity);
         else
-            _wfOnSlope.Remove(entity);
+            _wgOnSlope.Remove(entity);
         // WOLFGATE END
     }
 
     private void OnMoveEvent(Entity<CEZPhysicsComponent> entity, ref MoveEvent args)
     {
-        if (!_wfDirtyMovementSet.Add(entity)) // WOLFGATE(Performance): set lookup instead of List.Contains
+        if (!_wgDirtyMovementSet.Add(entity)) // WOLFGATE(Performance): set lookup instead of List.Contains
             return;
 
         _dirtyMovementBodies.Add(entity);
@@ -199,7 +199,7 @@ public abstract partial class CESharedZLevelsSystem
     private float ComputeGroundHeightInternal(Entity<CEZPhysicsComponent?> target, out bool stickyGround, int maxFloors = 1)
     {
         stickyGround = false;
-        _wfLastSloped = false; // WOLFGATE(Performance): reset the stair flag for this lookup
+        _wgLastSloped = false; // WOLFGATE(Performance): reset the stair flag for this lookup
 
         if (!Resolve(target, ref target.Comp, false))
             return 0;
@@ -263,7 +263,7 @@ public abstract partial class CESharedZLevelsSystem
                     return -floor + groundY;
                 }
 
-                _wfLastSloped = true; // WOLFGATE(Performance): this ground varies within the tile
+                _wgLastSloped = true; // WOLFGATE(Performance): this ground varies within the tile
                 var step = 1f / (curve.Count - 1);
                 var index = (int)(t / step);
                 var frac = (t - index * step) / step;
@@ -281,7 +281,7 @@ public abstract partial class CESharedZLevelsSystem
 
             //No ZEntities found, check floor tiles
             // WOLFGATE(Planets) START: a roof one layer down is something to stand on, not to drop through.
-            if (floor > 0 && !_gridQuery.HasComp(target) && WfRoofedBelow(gridUid, grid, gridTile))
+            if (floor > 0 && !_gridQuery.HasComp(target) && WgRoofedBelow(gridUid, grid, gridTile))
                 return -floor + 1;
             // WOLFGATE END
 
@@ -289,7 +289,7 @@ public abstract partial class CESharedZLevelsSystem
                 !tileRef.Tile.IsEmpty)
                 return -floor; // tile ground has groundY == 0 -> -floor
 
-            if (WfUnloadedGround(gridUid, gridTile)) // WOLFGATE(Planets): planet terrain that isn't loaded is still ground
+            if (WgUnloadedGround(gridUid, gridTile)) // WOLFGATE(Planets): planet terrain that isn't loaded is still ground
                 return -floor;
         }
 
@@ -369,11 +369,11 @@ public abstract partial class CESharedZLevelsSystem
             return;
 
         // WOLFGATE(Performance): skip the dirty and wake when a convoy or parachute re-sets the same height
-        if (MathF.Abs(ent.Comp.LocalPosition - newPosition) < WFZEpsilon)
+        if (MathF.Abs(ent.Comp.LocalPosition - newPosition) < WGZEpsilon)
             return;
 
         ent.Comp.LocalPosition = newPosition;
-        WFNoteHeight(ent, newPosition); // WOLFGATE(Performance): raised entities join the sprite passes
+        WGNoteHeight(ent, newPosition); // WOLFGATE(Performance): raised entities join the sprite passes
         DirtyField(ent, ent.Comp, nameof(CEZPhysicsComponent.LocalPosition));
         WakeBody(ent);
     }
@@ -437,7 +437,7 @@ public abstract partial class CESharedZLevelsSystem
             return;
 
         // WOLFGATE(Performance): skip the dirty and wake when the velocity is unchanged
-        if (MathF.Abs(ent.Comp.Velocity - newVelocity) < WFZEpsilon)
+        if (MathF.Abs(ent.Comp.Velocity - newVelocity) < WGZEpsilon)
             return;
 
         ent.Comp.Velocity = newVelocity;
@@ -572,7 +572,7 @@ public abstract partial class CESharedZLevelsSystem
         }
 
         _dirtyMovementBodies.Clear();
-        _wfDirtyMovementSet.ClearAndTrim(); // WOLFGATE(Performance): release a battle's oversized set afterwards
+        _wgDirtyMovementSet.ClearAndTrim(); // WOLFGATE(Performance): release a battle's oversized set afterwards
     }
 }
 

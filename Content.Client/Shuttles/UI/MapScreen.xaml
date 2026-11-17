@@ -110,7 +110,7 @@
                 <!-- WOLFGATE(Shuttles) START: destination search; the list scrolls instead of stretching the window -->
                 <controls:BoxContainer Orientation="Vertical" VerticalExpand="True">
                 <controls:LineEdit Name="DestinationSearch"
-                                   PlaceHolder="{controls:Loc 'wf-shuttle-destination-search'}"
+                                   PlaceHolder="{controls:Loc 'wg-shuttle-destination-search'}"
                                    HorizontalExpand="True"
                                    Margin="0 0 0 4"/>
                 <controls:ScrollContainer VerticalExpand="True" HScrollEnabled="False">

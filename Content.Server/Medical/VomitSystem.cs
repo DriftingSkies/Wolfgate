@@ -47,7 +47,7 @@ namespace Content.Server.Medical
                 return;
 
             // WOLFGATE(Wolfmed) START: no vomiting while dead or in cardiac arrest.
-            var wolfmedAttempt = new Content.Server._WF.Wolfmed.Life.WolfmedVomitAttemptEvent();
+            var wolfmedAttempt = new Content.Server._WG.Wolfmed.Life.WolfmedVomitAttemptEvent();
             RaiseLocalEvent(uid, ref wolfmedAttempt);
             if (wolfmedAttempt.Cancelled)
                 return;

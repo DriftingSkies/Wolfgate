@@ -7,7 +7,7 @@
     - SlimePerson
     - Vox
 # WOLFGATE(Biotype): the box is for flesh bodies, whatever the species
-  - !type:WFBiotypeLoadoutEffect
+  - !type:WGBiotypeLoadoutEffect
     biotypes:
     - Organic
 
@@ -26,7 +26,7 @@
     - Oni
     - Felinid
     - Vulpkanin
-    - WFCanine # WOLFGATE(Species)
+    - WGCanine # WOLFGATE(Species)
     - Harpy
     - Rodentia
     - Protogen # Mono
@@ -45,7 +45,7 @@
     - Synth
     # WOLFGATE END
 # WOLFGATE(Biotype): the box is for flesh bodies, whatever the species
-  - !type:WFBiotypeLoadoutEffect
+  - !type:WGBiotypeLoadoutEffect
     biotypes:
     - Organic
 
@@ -65,7 +65,7 @@
     - Oni
     - Felinid
     - Vulpkanin
-    - WFCanine # WOLFGATE(Species)
+    - WGCanine # WOLFGATE(Species)
     - Harpy
     - Rodentia
     - Protogen # Mono

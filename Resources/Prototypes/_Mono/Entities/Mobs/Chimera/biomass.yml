@@ -9,7 +9,7 @@
     - Wall
   components:
   # WOLFGATE(Planets): prevent action-spawned biomass from colonizing planets, too.
-  - type: WFPlanetBiomassRestriction
+  - type: WGPlanetBiomassRestriction
   - type: MeleeSound
     soundGroups:
       Brute:

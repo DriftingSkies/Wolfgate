@@ -1,7 +1,0 @@
-<controls:FancyWindow xmlns="https://spacestation14.io"
-                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
-                      Title="{Loc 'wf-mapping-tools-title'}"
-                      MinSize="340 300"
-                      SetSize="360 720">
-    <BoxContainer Name="Body" Orientation="Vertical" VerticalExpand="True" />
-</controls:FancyWindow>

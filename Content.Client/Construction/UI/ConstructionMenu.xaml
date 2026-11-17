@@ -1,5 +1,5 @@
 <DefaultWindow xmlns="https://spacestation14.io"
-               xmlns:wfc="clr-namespace:Content.Client._WF.Construction">
+               xmlns:wgc="clr-namespace:Content.Client._WG.Construction">
     <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
         <BoxContainer Orientation="Vertical" MinWidth="243" Margin="0 0 5 0">
             <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 0 0 5">
@@ -31,8 +31,8 @@
             <BoxContainer Orientation="Vertical">
                 <Button Name="BuildButton" Disabled="True" ToggleMode="True"
                         VerticalExpand="True" SizeFlagsStretchRatio="0.5"/>
-                <!-- WOLFGATE(Construction): repeat-craft row for item recipes (xmlns:wfc above) -->
-                <wfc:CraftRepeatButtons Name="CraftRepeat" Visible="False" Margin="0 4 0 4"/>
+                <!-- WOLFGATE(Construction): repeat-craft row for item recipes (xmlns:wgc above) -->
+                <wgc:CraftRepeatButtons Name="CraftRepeat" Visible="False" Margin="0 4 0 4"/>
                 <BoxContainer Orientation="Horizontal" VerticalExpand="True" SizeFlagsStretchRatio="0.5">
                     <Button Name="EraseButton" ToggleMode="True"
                         HorizontalExpand="True" SizeFlagsStretchRatio="0.7"/>

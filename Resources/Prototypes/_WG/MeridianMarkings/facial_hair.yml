@@ -1,0 +1,63 @@
+- type: marking
+  id: WGMeridianFacialHairChinHorns
+  bodyPart: FacialHair
+  markingCategory: FacialHair
+  sprites:
+  - sprite: _WG/MeridianMarkings/facial_hair.rsi
+    state: chin_horns
+
+- type: marking
+  id: WGMeridianFacialHairGoatee
+  bodyPart: FacialHair
+  markingCategory: FacialHair
+  sprites:
+  - sprite: _WG/MeridianMarkings/facial_hair.rsi
+    state: goatee
+
+- type: marking
+  id: WGMeridianFacialHairHornadorns
+  bodyPart: FacialHair
+  markingCategory: FacialHair
+  sprites:
+  - sprite: _WG/MeridianMarkings/facial_hair.rsi
+    state: hornadorns
+
+- type: marking
+  id: WGMeridianFacialHairMoustacheHandlebar
+  bodyPart: FacialHair
+  markingCategory: FacialHair
+  sprites:
+  - sprite: _WG/MeridianMarkings/facial_hair.rsi
+    state: moustache_handlebar
+
+- type: marking
+  id: WGMeridianFacialHairMoustacheSelleckAlt
+  bodyPart: FacialHair
+  markingCategory: FacialHair
+  sprites:
+  - sprite: _WG/MeridianMarkings/facial_hair.rsi
+    state: moustache_selleck_alt
+
+- type: marking
+  id: WGMeridianFacialHairNeckfluff
+  bodyPart: FacialHair
+  markingCategory: FacialHair
+  sprites:
+  - sprite: _WG/MeridianMarkings/facial_hair.rsi
+    state: neckfluff
+
+- type: marking
+  id: WGMeridianFacialHairTentacleBeard
+  bodyPart: FacialHair
+  markingCategory: FacialHair
+  sprites:
+  - sprite: _WG/MeridianMarkings/facial_hair.rsi
+    state: tentacle_beard
+
+- type: marking
+  id: WGMeridianFacialHairTriBeard
+  bodyPart: FacialHair
+  markingCategory: FacialHair
+  sprites:
+  - sprite: _WG/MeridianMarkings/facial_hair.rsi
+    state: tri_beard

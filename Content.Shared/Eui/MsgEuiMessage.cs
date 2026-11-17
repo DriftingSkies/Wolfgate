@@ -1,5 +1,5 @@
 using System.IO;
-using Content.Shared._WF.NetGuard; // WOLFGATE(NetGuard)
+using Content.Shared._WG.NetGuard; // WOLFGATE(NetGuard)
 using Lidgren.Network;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;

@@ -28,8 +28,8 @@
     - MonolithRuleConflictTwoNewLife
     - MonolithRuleConflictThreeFairPlay
     - MonolithRuleConflictFourPortStriking
-    - WFRuleConflictFiveDeclaringWar # WOLFGATE(ColdWar)
-    - WFRuleConflictSixNewPlayers # WOLFGATE(Newbie)
+    - WGRuleConflictFiveDeclaringWar # WOLFGATE(ColdWar)
+    - WGRuleConflictSixNewPlayers # WOLFGATE(Newbie)
 
 #MARK: Core Rules
 

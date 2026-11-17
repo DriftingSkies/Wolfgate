@@ -13,8 +13,8 @@
   startingGear: FugitiveGear
   icon: JobIconFugitive
   supervisors: job-supervisors-nobody
-  # WOLFGATE(ReaverCampaign): Underground crew fly the neutral WFUnderground company, so the Reavers leave them alone
-  assignedCompany: WFUnderground
+  # WOLFGATE(ReaverCampaign): Underground crew fly the neutral WGUnderground company, so the Reavers leave them alone
+  assignedCompany: WGUnderground
   displayWeight: 100
   accessGroups:
   - GeneralAccess
@@ -32,7 +32,7 @@
     - type: NpcFactionMember
       factions:
       - NanoTrasen
-      - WFUnderground
+      - WGUnderground
     # WOLFGATE END
     - type: Contraband
       hideValues: true

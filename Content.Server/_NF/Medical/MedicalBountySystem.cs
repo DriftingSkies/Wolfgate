@@ -24,7 +24,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Content.Server._NF.Traits.Assorted;
-using Content.Server._WF.Wolfmed.Life; // WOLFGATE(Wolfmed)
+using Content.Server._WG.Wolfmed.Life; // WOLFGATE(Wolfmed)
 
 namespace Content.Server._NF.Medical;
 

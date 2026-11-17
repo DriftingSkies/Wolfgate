@@ -1,0 +1,7 @@
+# Species-gated loadout effect groups
+- type: loadoutEffectGroup
+  id: WGEffectSpeciesAvali
+  effects:
+  - !type:SpeciesLoadoutEffect
+    species:
+    - Avali

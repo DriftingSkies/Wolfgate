@@ -1,0 +1,44 @@
+# How each encounter faction talks and how readily its beaten ships give up. Matched by the zone lines a ship uses;
+# a ship whose lines have no voice here surrenders at 10% and runs when badly hurt.
+
+# Reavers and other raiders: cowards once the odds turn.
+- type: wgNpcVoice
+  id: WGVoicePirate
+  lines: wg-encounter-pirate-zone
+  surrender: 0.15
+
+# The Automated Defense System has no directive for surrender, and holds its ground.
+- type: wgNpcVoice
+  id: WGVoiceAds
+  lines: wg-ads-zone
+  surrender: 0
+  retreats: false
+
+- type: wgNpcVoice
+  id: WGVoiceBlackmarket
+  lines: wg-encounter-blackmarket-zone
+  surrender: 0.25
+
+- type: wgNpcVoice
+  id: WGVoiceBlockade
+  lines: wg-encounter-blockade-zone
+  surrender: 0.1
+  retreats: false
+
+- type: wgNpcVoice
+  id: WGVoicePdv
+  lines: wg-encounter-pdv-zone
+  surrender: 0.08
+
+# The Union remnant says it has never surrendered, and nearly means it.
+- type: wgNpcVoice
+  id: WGVoiceUssp
+  lines: wg-encounter-ussp-zone
+  surrender: 0.03
+  retreats: false
+
+- type: wgNpcVoice
+  id: WGVoiceChoir
+  lines: wg-remade-choir-zone
+  surrender: 0
+  retreats: false

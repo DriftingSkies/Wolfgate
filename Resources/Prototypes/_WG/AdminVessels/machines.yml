@@ -1,0 +1,93 @@
+# The Lupercal's admin-only machines: the debug generator, thruster and gyroscope under the ship's own ids, so a
+# mapchecker run needn't whitelist debug parts on it.
+
+- type: entity
+  parent: DebugGenerator
+  id: WGLupercalGenerator
+  name: zero-point generator
+  description: An admin-grade generator that never runs dry.
+  suffix: Admin, Lupercal
+
+# The stock Z-pinch reactor in a shielded frame: it runs with no radiation, and it starts full.
+- type: entity
+  parent: GeneratorCRPinch
+  id: WGLupercalReactor
+  name: shielded Z-pinch fusion reactor
+  description: The Lupercal's fuel-grade plasma fusion reactor, in a shielded frame that keeps its radiation in. Ideal power production is 105 kW.
+  suffix: Plasma, 105 kW, Lupercal
+  components:
+  - type: FuelGenerator
+    radiationIntensity: 0
+  - type: MaterialStorage
+    storage:
+      FuelGradePlasma: 10000
+
+# The ship's own shield. The staff list and up can open it and set the field to any strength; it starts at the stock
+# Fortress limit.
+- type: entity
+  parent: [ BaseStructureIndestructible, ShieldGeneratorPOI ]
+  id: WGLupercalShieldGenerator
+  name: Lupercal aegis generator
+  description: The Lupercal's own field generator, tuned at its panel by the ship's staff.
+  suffix: Admin, Lupercal
+  components:
+  - type: WGShipShieldStrengthControl
+  - type: ShipShieldEmitter
+    shieldColor: "#9FE7D0"
+  # Powers itself: the field holds whatever happens to the ship's grid.
+  - type: ApcPowerReceiver
+    needsPower: false
+    powerLoad: 80000
+  - type: Sprite
+    sprite: _Mono/Structures/ShuttleComponents/fobshield.rsi
+    snapCardinals: true
+    layers:
+    - state: fobshield
+    - state: fobshield_on
+      shader: unshaded
+      map: ["enum.PowerDeviceVisualLayers.Powered"]
+      visible: false
+      color: "#9FE7D0"
+  - type: PointLight
+    enabled: false
+    castShadows: true
+    radius: 2
+    energy: 1.5
+    color: "#9FE7D0"
+
+- type: entity
+  parent: DebugThruster
+  id: WGLupercalThruster
+  name: vector thruster
+  description: An admin-grade thruster strong enough to push a station.
+  suffix: Admin, Lupercal
+  components:
+  - type: Thruster
+    baseThrust: 20000
+    thrust: 20000
+
+- type: entity
+  parent: DebugGyroscope
+  id: WGLupercalGyroscope
+  name: station gyroscope
+  description: An admin-grade gyroscope strong enough to turn a station.
+  suffix: Admin, Lupercal
+  components:
+  - type: Thruster
+    baseThrust: 200000
+    thrust: 200000
+
+# The Lupercal's sentries: heavy turrets on a faction hostile to nobody, which fire only on whoever the crew have turned
+# on (ShipCommand's WGShipSentry); the fitting pass makes them indestructible.
+- type: npcFaction
+  id: WGShipSentry
+
+- type: entity
+  parent: BallisticTurretHeavyBase
+  id: WGLupercalSentry
+  suffix: Admin, Lupercal
+  components:
+  - type: NpcFactionMember
+    factions:
+    - WGShipSentry
+  - type: WGShipSentry

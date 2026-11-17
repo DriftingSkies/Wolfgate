@@ -1,0 +1,117 @@
+using System.Linq;
+using System.Threading.Tasks;
+using Content.Server.Database;
+using Content.Server.GameTicking;
+using Content.Shared.GameTicking;
+using Content.Shared._WG.Contracts;
+using Robust.Shared.Utility;
+
+namespace Content.Server._WG.Contracts;
+
+/// <summary>Saves standing per character and drifts it toward neutral once per round played.</summary>
+public sealed partial class WGContractSystem
+{
+    [Dependency] private IServerDbManager _db = default!;
+    [Dependency] private GameTicker _ticker = default!;
+
+    /// <summary>Characters whose stored standing has been read this round.</summary>
+    private readonly HashSet<WGContractHolder> _loaded = new();
+
+    /// <summary>Characters whose stored standing is being read; changes wait in memory until it arrives.</summary>
+    private readonly HashSet<WGContractHolder> _loading = new();
+
+    /// <summary>Saves run in order, so two changes to a new row cannot both insert it.</summary>
+    private Task _saves = Task.CompletedTask;
+
+    /// <summary>Bumped each round, so a load that finishes after a restart is dropped.</summary>
+    private int _generation;
+
+    private void InitializePersistence()
+    {
+        SubscribeLocalEvent<PlayerSpawnCompleteEvent>(OnPlayerSpawned);
+    }
+
+    private void OnPlayerSpawned(PlayerSpawnCompleteEvent ev)
+    {
+        _ = LoadStanding(new WGContractHolder(ev.Player.UserId, ev.Profile.Name));
+    }
+
+    /// <summary>Loads, drifts and merges a character's stored standing, once per round.</summary>
+    public async Task LoadStanding(WGContractHolder holder)
+    {
+        if (_loaded.Contains(holder) || !_loading.Add(holder))
+            return;
+
+        var generation = _generation;
+        List<WGStoredContractStanding> stored;
+        try
+        {
+            stored = await _db.GetContractStandingAsync(holder.User, holder.Character);
+        }
+        catch (Exception e)
+        {
+            Log.Error($"Could not load contract standing for {holder.Character} ({holder.User}): {e}");
+            // Unread standing must not overwrite the stored row.
+            if (generation == _generation)
+                _loading.Remove(holder);
+            return;
+        }
+
+        if (generation != _generation)
+            return;
+
+        _loading.Remove(holder);
+        _loaded.Add(holder);
+
+        var round = _ticker.RoundId;
+        var standing = _standing.GetOrNew(holder);
+        var changed = standing.Where(pair => pair.Value != 0).Select(pair => pair.Key).ToHashSet();
+        foreach (var row in stored)
+        {
+            var points = row.Points;
+            if (row.LastRound != round && _proto.TryIndex<WGContractorPrototype>(row.Contractor, out var contractor))
+                points = Drifted(points, contractor.Drift);
+
+            if (points != row.Points || row.LastRound != round)
+                changed.Add(row.Contractor);
+
+            standing[row.Contractor] = Math.Clamp(points + standing.GetValueOrDefault(row.Contractor), MinStanding, MaxStanding);
+        }
+
+        foreach (var contractor in changed)
+        {
+            SaveStanding(holder, contractor);
+        }
+
+        _dirty = true;
+    }
+
+    /// <summary>Standing moved toward neutral by up to <paramref name="drift"/>.</summary>
+    public static int Drifted(int points, int drift) =>
+        points > 0 ? Math.Max(0, points - drift) : Math.Min(0, points + drift);
+
+    /// <summary>Stores one standing, once the character's stored standing has been read.</summary>
+    private void SaveStanding(WGContractHolder holder, string contractor)
+    {
+        if (!_loaded.Contains(holder))
+            return;
+
+        var points = Standing(holder, contractor);
+        var round = _ticker.RoundId;
+        var previous = _saves;
+        _saves = Save();
+
+        async Task Save()
+        {
+            await previous;
+            try
+            {
+                await _db.SetContractStandingAsync(holder.User, holder.Character, contractor, points, round);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Could not save contract standing for {holder.Character} ({holder.User}) with {contractor}: {e}");
+            }
+        }
+    }
+}

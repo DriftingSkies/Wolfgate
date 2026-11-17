@@ -1,0 +1,226 @@
+# Astraeus Reward Grants (ARG): paid by the Lantern Post bounty console, spent at the ASF grant kiosk.
+
+- type: currency
+  id: WGAsfRewardGrant
+  displayName: wg-asf-grant-currency
+  cash:
+    1: WGAsfRewardGrant1
+  canWithdraw: true
+
+- type: stack
+  id: WGAsfRewardGrant
+  name: wg-asf-grant-stack
+  icon: { sprite: _WG/Asf/Objects/grant_ticket.rsi, state: ticket }
+  spawn: WGAsfRewardGrant1
+
+- type: entity
+  parent: BaseItem
+  id: WGAsfRewardGrant
+  suffix: 100 ARG
+  components:
+  - type: Sprite
+    sprite: _WG/Asf/Objects/grant_ticket.rsi
+    state: ticket
+  - type: Item
+    sprite: _WG/Asf/Objects/grant_ticket.rsi
+    size: Tiny
+  - type: Stack
+    count: 100
+    stackType: WGAsfRewardGrant
+  - type: StaticPrice
+    price: 0
+  - type: Currency
+    price:
+      WGAsfRewardGrant: 1
+
+- type: entity
+  parent: WGAsfRewardGrant
+  id: WGAsfRewardGrant1
+  suffix: 1 ARG
+  components:
+  - type: Stack
+    count: 1
+
+- type: entity
+  parent: WGAsfRewardGrant
+  id: WGAsfRewardGrant10
+  suffix: 10 ARG
+  components:
+  - type: Stack
+    count: 10
+
+# Grant kiosk: the MMC requisition kiosk in ASF purple, for ASF crew only.
+- type: entity
+  parent: VendingMachine
+  id: WGAsfGrantKiosk
+  components:
+  - type: VendingMachine
+    offState: off
+    brokenState: broken
+    normalState: asf-unshaded
+  - type: Advertise
+    pack: FactionUplinkAds
+  - type: Sprite
+    sprite: _WG/Asf/Structures/grant_kiosk.rsi
+    layers:
+    - state: asf
+      map: [ "enum.VendingMachineVisualLayers.Base" ]
+    - state: asf-unshaded
+      map: [ "enum.VendingMachineVisualLayers.BaseUnshaded" ]
+      shader: unshaded
+    - state: panel
+      map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+  - type: PointLight
+    radius: 1.5
+    energy: 1.3
+    color: "#A66BE0"
+  - type: UserInterface
+    interfaces:
+      enum.StoreUiKey.Key:
+        type: StoreBoundUserInterface
+  - type: ActivatableUI
+    key: enum.StoreUiKey.Key
+  - type: Store
+    name: wg-asf-grant-kiosk-store
+    categories:
+    - WGAsfGrantVouchers
+    - WGAsfGrantArms
+    - WGAsfGrantGear
+    - WGAsfGrantResearch
+    balance:
+      WGAsfRewardGrant: 0
+    currencyWhitelist:
+    - WGAsfRewardGrant
+  - type: AccessReader
+    access: [["WGAsf"]]
+  - type: CompanyAccessReader
+    requiredCompanies:
+    - WGAsf
+
+- type: storeCategory
+  id: WGAsfGrantVouchers
+  name: wg-asf-grant-category-vouchers
+  priority: 0
+
+- type: storeCategory
+  id: WGAsfGrantArms
+  name: wg-asf-grant-category-arms
+  priority: 1
+
+- type: storeCategory
+  id: WGAsfGrantGear
+  name: wg-asf-grant-category-gear
+  priority: 2
+
+- type: storeCategory
+  id: WGAsfGrantResearch
+  name: wg-asf-grant-category-research
+  priority: 3
+
+# Vouchers: priced near a hull's cost at 1 ARG to 1,000 spesos, a little under it for the civilian hulls.
+- type: listing
+  id: WGAsfGrantVoucherCivilian
+  productEntity: WGAsfVoucherCivilian
+  cost:
+    WGAsfRewardGrant: 30
+  categories:
+  - WGAsfGrantVouchers
+
+- type: listing
+  id: WGAsfGrantVoucherEscort
+  productEntity: WGAsfVoucherEscort
+  cost:
+    WGAsfRewardGrant: 60
+  categories:
+  - WGAsfGrantVouchers
+
+- type: listing
+  id: WGAsfGrantVoucherLodestar
+  productEntity: WGAsfVoucherLodestar
+  cost:
+    WGAsfRewardGrant: 250
+  categories:
+  - WGAsfGrantVouchers
+
+# Arms
+- type: listing
+  id: WGAsfGrantPistolCoil
+  productEntity: WGAsfWeaponPistolCoil
+  cost:
+    WGAsfRewardGrant: 8
+  categories:
+  - WGAsfGrantArms
+
+- type: listing
+  id: WGAsfGrantRifleCoil
+  productEntity: WGAsfWeaponRifleCoil
+  cost:
+    WGAsfRewardGrant: 15
+  categories:
+  - WGAsfGrantArms
+
+- type: listing
+  id: WGAsfGrantMagazinePistolCoil
+  productEntity: WGAsfMagazinePistolCoil
+  cost:
+    WGAsfRewardGrant: 1
+  categories:
+  - WGAsfGrantArms
+
+- type: listing
+  id: WGAsfGrantMagazineRifleCoil
+  productEntity: WGAsfMagazineRifleCoil
+  cost:
+    WGAsfRewardGrant: 2
+  categories:
+  - WGAsfGrantArms
+
+- type: listing
+  id: WGAsfGrantBoxCoilSlug
+  productEntity: WGAsfBoxCoilSlug
+  cost:
+    WGAsfRewardGrant: 2
+  categories:
+  - WGAsfGrantArms
+
+# Gear
+- type: listing
+  id: WGAsfGrantModsuitField
+  productEntity: WGAsfClothingModsuitFieldPowerCell
+  cost:
+    WGAsfRewardGrant: 30
+  categories:
+  - WGAsfGrantGear
+
+- type: listing
+  id: WGAsfGrantModsuitAegis
+  productEntity: WGAsfClothingModsuitAegisPowerCell
+  cost:
+    WGAsfRewardGrant: 60
+  categories:
+  - WGAsfGrantGear
+
+# Research: tools for the work the bounties pay for
+- type: listing
+  id: WGAsfGrantArtifactContainer
+  productEntity: CrateArtifactContainer
+  cost:
+    WGAsfRewardGrant: 3
+  categories:
+  - WGAsfGrantResearch
+
+- type: listing
+  id: WGAsfGrantNodeScanner
+  productEntity: NodeScanner
+  cost:
+    WGAsfRewardGrant: 2
+  categories:
+  - WGAsfGrantResearch
+
+- type: listing
+  id: WGAsfGrantAnomalyScanner
+  productEntity: AnomalyScanner
+  cost:
+    WGAsfRewardGrant: 2
+  categories:
+  - WGAsfGrantResearch

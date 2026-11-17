@@ -43,7 +43,7 @@
 - type: entity
   id: OrganAnimalEyes
   # WOLFGATE(Wolfmed): Wolfmed eyes data, so the organ can be hurt, scanned and treated
-  parent: [BaseAnimalOrgan, WFWolfmedOrganEyes]
+  parent: [BaseAnimalOrgan, WGWolfmedOrganEyes]
   name: animal eyes
   description: "I see you!"
   components:

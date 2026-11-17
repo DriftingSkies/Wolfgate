@@ -22,11 +22,11 @@ public sealed partial class PinpointerSystem : SharedPinpointerSystem
 
         SubscribeLocalEvent<PinpointerComponent, ActivateInWorldEvent>(OnActivate);
         SubscribeLocalEvent<FTLCompletedEvent>(OnLocateTarget);
-        SubscribeLocalEvent<Content.Server._WF.Planets.Hop.WFPlanetHopCompletedEvent>(OnLocateTargetAfterHop); // WOLFGATE(Planets): a hop moves the pinpointer's map like a jump
+        SubscribeLocalEvent<Content.Server._WG.Planets.Hop.WGPlanetHopCompletedEvent>(OnLocateTargetAfterHop); // WOLFGATE(Planets): a hop moves the pinpointer's map like a jump
     }
 
     // WOLFGATE(Planets) START: pinpointers find their target again after a hop
-    private void OnLocateTargetAfterHop(ref Content.Server._WF.Planets.Hop.WFPlanetHopCompletedEvent ev)
+    private void OnLocateTargetAfterHop(ref Content.Server._WG.Planets.Hop.WGPlanetHopCompletedEvent ev)
     {
         var query = EntityQueryEnumerator<PinpointerComponent>();
 

@@ -9,8 +9,8 @@ using Content.Shared.FixedPoint;
 using Content.Shared.Humanoid;
 using Content.Shared.Rejuvenate;
 using Content.Shared._Onyx.Chemistry.Circulation;
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade.
-using Content.Shared._WF.Wolfmed.Wounds; // WOLFGATE(Wolfmed): W5: the rejuvenate relay.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade.
+using Content.Shared._WG.Wolfmed.Wounds; // WOLFGATE(Wolfmed): W5: the rejuvenate relay.
 using Robust.Shared.Network;
 
 namespace Content.Shared._Onyx.Wounds;
@@ -18,7 +18,7 @@ namespace Content.Shared._Onyx.Wounds;
 public sealed partial class WoundDamageProjectionSystem : EntitySystem
 {
     [Dependency] private SharedBodySystem _body = default!;
-    [Dependency] private WolfmedDamageableSystem _damage = default!; // WOLFGATE(Wolfmed): D12, Onyx-shaped damage API; see _WF/Wolfmed/Compat
+    [Dependency] private WolfmedDamageableSystem _damage = default!; // WOLFGATE(Wolfmed): D12, Onyx-shaped damage API; see _WG/Wolfmed/Compat
     [Dependency] private INetManager _net = default!;
     [Dependency] private PainSystem _pain = default!;
     // WOLFGATE(Wolfmed): D15 drops the CirculatoryStreamSystem dependency. Organic is the primary stream in phase 1, so

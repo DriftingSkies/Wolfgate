@@ -43,11 +43,11 @@ using Robust.Shared.Utility;
 using Content.Shared.Atmos.Components;
 using System.Linq;
 using Content.Shared.StatusEffect; // Frontier
-using Content.Server._WF.Xenonids.Parasite.AI; // WOLFGATE(Xenonids)
-using Content.Shared._WF.Xenonids.Parasite; // WOLFGATE(Xenonids)
-using Content.Server._WF.Fauna; // WOLFGATE(Fauna)
-using Content.Server._WF.NpcCrew.HTN; // WOLFGATE(NpcCrew)
-using Content.Server._WF.NpcCrew.Systems; // WOLFGATE(NpcCrew)
+using Content.Server._WG.Xenonids.Parasite.AI; // WOLFGATE(Xenonids)
+using Content.Shared._WG.Xenonids.Parasite; // WOLFGATE(Xenonids)
+using Content.Server._WG.Fauna; // WOLFGATE(Fauna)
+using Content.Server._WG.NpcCrew.HTN; // WOLFGATE(NpcCrew)
+using Content.Server._WG.NpcCrew.Systems; // WOLFGATE(NpcCrew)
 
 namespace Content.Server.NPC.Systems;
 
@@ -79,7 +79,7 @@ public sealed partial class NPCUtilitySystem : EntitySystem
     [Dependency] private TurretTargetSettingsSystem _turretTargetSettings = default!;
     [Dependency] private FaunaCorpseEaterSystem _faunaEater = default!; // WOLFGATE(Fauna)
 
-    private readonly List<EntityUid> _wfHostileScratch = new(); // WOLFGATE(Performance): reused by NearbyHostilesQuery
+    private readonly List<EntityUid> _wgHostileScratch = new(); // WOLFGATE(Performance): reused by NearbyHostilesQuery
 
     private EntityQuery<PuddleComponent> _puddleQuery;
     private EntityQuery<TransformComponent> _xformQuery;
@@ -398,7 +398,7 @@ public sealed partial class NPCUtilitySystem : EntitySystem
             }
             case TargetIsAliveCon:
             {
-                return _mobState.IsAlive(targetUid) || WfIsOccupiedVehicle(targetUid) ? 1f : 0f; // WOLFGATE(Vehicles): an occupied vehicle is a live target.
+                return _mobState.IsAlive(targetUid) || WgIsOccupiedVehicle(targetUid) ? 1f : 0f; // WOLFGATE(Vehicles): an occupied vehicle is a live target.
             }
             case TargetIsCritCon:
             {
@@ -447,7 +447,7 @@ public sealed partial class NPCUtilitySystem : EntitySystem
                 return !TryComp<MobStateComponent>(targetUid, out var mobState) || _mobState.IsAlive(targetUid, mobState) ? 1f : 0f;
             }
             // WOLFGATE(Xenonids) START: AI facehuggers pick hosts they can still infect
-            case WFTargetInfectableCon:
+            case WGTargetInfectableCon:
             {
                 return TryComp<InfectableComponent>(targetUid, out var infectable)
                        && !infectable.BeingInfected
@@ -462,9 +462,9 @@ public sealed partial class NPCUtilitySystem : EntitySystem
             }
             // WOLFGATE END
             // WOLFGATE(NpcCrew) START: crew keep their chores on the ship they serve
-            case WFTargetOnHomeGridCon:
+            case WGTargetOnHomeGridCon:
             {
-                var home = EntityManager.System<WFCrewSystem>().HomeGrid(owner) ?? Transform(owner).GridUid;
+                var home = EntityManager.System<WGCrewSystem>().HomeGrid(owner) ?? Transform(owner).GridUid;
                 return home != null && Transform(targetUid).GridUid == home ? 1f : 0f;
             }
             // WOLFGATE END
@@ -566,13 +566,13 @@ public sealed partial class NPCUtilitySystem : EntitySystem
             case NearbyHostilesQuery:
             {
                 // WOLFGATE(Performance) START: scratch-list overload avoids LINQ and per-call allocation
-                _wfHostileScratch.Clear();
-                _npcFaction.GetNearbyHostiles(owner, vision, _wfHostileScratch);
-                foreach (var ent in _wfHostileScratch)
+                _wgHostileScratch.Clear();
+                _npcFaction.GetNearbyHostiles(owner, vision, _wgHostileScratch);
+                foreach (var ent in _wgHostileScratch)
                 {
                     entities.Add(ent);
                 }
-                _wfHostileScratch.Clear();
+                _wgHostileScratch.Clear();
                 // WOLFGATE END
                 break;
             }

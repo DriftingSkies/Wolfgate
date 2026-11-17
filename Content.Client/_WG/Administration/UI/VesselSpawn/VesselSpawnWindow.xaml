@@ -1,0 +1,107 @@
+<!-- Names must avoid DefaultWindow's own: CloseButton, ContentsContainer, TitleLabel, WindowHeader. -->
+<DefaultWindow xmlns="https://spacestation14.io"
+               xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+               xmlns:preview="clr-namespace:Content.Client._WG.ShipPreview"
+               Title="{Loc 'wg-vessel-spawn-title'}"
+               Resizable="True"
+               MinSize="800 450"
+               SetSize="1100 680">
+    <BoxContainer Orientation="Horizontal" Margin="4">
+
+        <!-- Vessel list -->
+        <BoxContainer Orientation="Vertical" MinWidth="380" Margin="0 0 6 0">
+            <LineEdit Name="SearchBar"
+                      PlaceHolder="{Loc 'wg-vessel-spawn-search'}"
+                      HorizontalExpand="True"
+                      Margin="0 0 0 4" />
+            <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+                <OptionButton Name="CategoryFilter"
+                              Prefix="{Loc 'wg-vessel-spawn-category-label'}"
+                              StyleClasses="ButtonSquare"
+                              HorizontalExpand="True"
+                              Margin="0 0 4 0" />
+                <OptionButton Name="SizeFilter"
+                              Prefix="{Loc 'wg-vessel-spawn-size-label'}"
+                              StyleClasses="ButtonSquare"
+                              MinWidth="120" />
+            </BoxContainer>
+            <PanelContainer VerticalExpand="True" HorizontalExpand="True">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#141414" BorderColor="#333333" BorderThickness="1" />
+                </PanelContainer.PanelOverride>
+                <ScrollContainer HScrollEnabled="False"
+                                 VerticalExpand="True"
+                                 HorizontalExpand="True"
+                                 Margin="2">
+                    <BoxContainer Name="Vessels"
+                                  Orientation="Vertical"
+                                  HorizontalExpand="True">
+                        <!-- Category headers and vessel rows get added here by code -->
+                    </BoxContainer>
+                </ScrollContainer>
+            </PanelContainer>
+            <Label Name="CountLabel"
+                   StyleClasses="LabelSubText"
+                   HorizontalAlignment="Right"
+                   Margin="0 4 0 0" />
+        </BoxContainer>
+
+        <!-- Preview and details -->
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+            <Label Name="SelectedName"
+                   StyleClasses="LabelHeading"
+                   Text="{Loc 'wg-vessel-spawn-none-selected'}" />
+            <PanelContainer HorizontalExpand="True" VerticalExpand="True" Margin="0 2 0 4">
+                <preview:ShipPreviewControl Name="Preview"
+                                            HorizontalExpand="True"
+                                            VerticalExpand="True"
+                                            MinSize="200 160" />
+            </PanelContainer>
+            <PanelContainer StyleClasses="AngleRect" HorizontalExpand="True">
+                <BoxContainer Orientation="Vertical" Margin="8">
+                    <GridContainer Columns="2" HorizontalExpand="True">
+                        <Label Text="{Loc 'wg-vessel-spawn-detail-id'}" StyleClasses="LabelKeyText" MinWidth="90" />
+                        <Label Name="SelectedId" StyleClasses="LabelSubText" />
+                        <Label Text="{Loc 'wg-vessel-spawn-detail-category'}" StyleClasses="LabelKeyText" />
+                        <Label Name="SelectedCategory" StyleClasses="LabelSubText" />
+                        <Label Text="{Loc 'wg-vessel-spawn-detail-classes'}" StyleClasses="LabelKeyText" />
+                        <Label Name="SelectedClasses" StyleClasses="LabelSubText" />
+                        <Label Text="{Loc 'wg-vessel-spawn-detail-size'}" StyleClasses="LabelKeyText" />
+                        <Label Name="SelectedSize" StyleClasses="LabelSubText" />
+                        <Label Text="{Loc 'wg-vessel-spawn-detail-engines'}" StyleClasses="LabelKeyText" />
+                        <Label Name="SelectedEngines" StyleClasses="LabelSubText" />
+                        <Label Text="{Loc 'wg-vessel-spawn-detail-price'}" StyleClasses="LabelKeyText" />
+                        <Label Name="SelectedPrice" StyleClasses="LabelSubText" />
+                        <Label Text="{Loc 'wg-vessel-spawn-detail-grid'}" StyleClasses="LabelKeyText" />
+                        <Label Name="SelectedGrid" StyleClasses="LabelSubText" />
+                    </GridContainer>
+                    <ScrollContainer HScrollEnabled="False" MinSize="0 56" VerticalExpand="False" Margin="0 4 0 0">
+                        <RichTextLabel Name="SelectedDescription" HorizontalExpand="True" />
+                    </ScrollContainer>
+                </BoxContainer>
+            </PanelContainer>
+            <LineEdit Name="ShipNameEdit"
+                      PlaceHolder="{Loc 'wg-vessel-spawn-name-placeholder'}"
+                      HorizontalExpand="True"
+                      Margin="0 6 0 0" />
+            <BoxContainer Orientation="Horizontal" Margin="0 6 0 0">
+                <OptionButton Name="OwnerSelect"
+                              Prefix="{Loc 'wg-vessel-spawn-owner-label'}"
+                              StyleClasses="ButtonSquare"
+                              MinWidth="180"
+                              Margin="0 0 4 0" />
+                <Button Name="ResetViewButton"
+                        Text="{Loc 'wg-ship-preview-reset-view'}"
+                        StyleClasses="ButtonSquare"
+                        Margin="0 0 4 0" />
+                <Control HorizontalExpand="True" />
+                <Button Name="SpawnButton"
+                        Text="{Loc 'wg-vessel-spawn-button'}"
+                        StyleClasses="ButtonSquare"
+                        MinWidth="120"
+                        Disabled="True"
+                        TooltipDelay="0.2" />
+            </BoxContainer>
+        </BoxContainer>
+    </BoxContainer>
+</DefaultWindow>

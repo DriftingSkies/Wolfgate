@@ -1,9 +1,0 @@
-- type: shader
-  id: WFHeatHaze
-  kind: source
-  path: "/Textures/_WF/HeatHaze/Shaders/heat_haze.swsl"
-
-- type: shader
-  id: WFHeatHazeMask
-  kind: source
-  path: "/Textures/_WF/HeatHaze/Shaders/heat_haze_mask.swsl"

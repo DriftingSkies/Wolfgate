@@ -1,0 +1,29 @@
+- type: wgEncounterPreset
+  id: WGEncounterPresetQuiet
+  name: wg-encounter-preset-quiet
+  budget: 2
+  budgetPerPlayer: 0.02
+  intervalScale: 1.5
+  roundStart: 2
+  weights:
+    Threat: 0.25
+    Distress: 0.5
+
+- type: wgEncounterPreset
+  id: WGEncounterPresetStandard
+  name: wg-encounter-preset-standard
+  budget: 3
+  budgetPerPlayer: 0.04
+  roundStart: 2
+
+- type: wgEncounterPreset
+  id: WGEncounterPresetDangerous
+  name: wg-encounter-preset-dangerous
+  budget: 5
+  budgetPerPlayer: 0.08
+  intervalScale: 0.6
+  roundStart: 2
+  weights:
+    Threat: 2
+    Distress: 1.5
+    Traffic: 0.75

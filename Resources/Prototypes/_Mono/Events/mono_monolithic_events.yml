@@ -6,6 +6,6 @@
     children:
     # WOLFGATE(Fragments) START: the Remade fragment between the faction bases replaces the plain one
     # - id: MonolithFragmentSmallAppearance
-    - id: WFFragmentEvent
+    - id: WGFragmentEvent
     # WOLFGATE END
 # Mono edit end

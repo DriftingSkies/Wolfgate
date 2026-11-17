@@ -1,0 +1,9 @@
+- type: latheRecipe
+  parent: BaseGoldCircuitboardRecipe
+  id: WGPartsSiloMachineCircuitboard
+  result: WGPartsSiloMachineCircuitboard
+
+- type: latheRecipe
+  parent: BaseGoldCircuitboardRecipe
+  id: WGChemicalSiloMachineCircuitboard
+  result: WGChemicalSiloMachineCircuitboard

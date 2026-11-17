@@ -1,8 +1,8 @@
 using System.Numerics;
-using Content.Client._WF.Genitals; // WOLFGATE(Genitals)
-using Content.Client._WF.LegStyle; // WOLFGATE(LegStyle)
-using Content.Shared._WF.Genitals; // WOLFGATE(Genitals)
-using Content.Shared._WF.Genitals.Events; // WOLFGATE(Genitals)
+using Content.Client._WG.Genitals; // WOLFGATE(Genitals)
+using Content.Client._WG.LegStyle; // WOLFGATE(LegStyle)
+using Content.Shared._WG.Genitals; // WOLFGATE(Genitals)
+using Content.Shared._WG.Genitals.Events; // WOLFGATE(Genitals)
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Humanoid.Prototypes;

@@ -1,0 +1,31 @@
+- type: wgDefconProfile
+  id: WGDefault
+  alarm: /Audio/_WG/Defcon/defcon_alarm.ogg
+  levels:
+    5:
+      name: wg-defcon-name-5
+      description: wg-defcon-desc-5
+      callout: /Audio/_WG/Defcon/defcon_5.ogg
+      color: "#4caf50"
+    4:
+      name: wg-defcon-name-4
+      description: wg-defcon-desc-4
+      callout: /Audio/_WG/Defcon/defcon_4.ogg
+      color: "#2f9fff"
+    3:
+      name: wg-defcon-name-3
+      description: wg-defcon-desc-3
+      callout: /Audio/_WG/Defcon/defcon_3.ogg
+      color: "#f5c518"
+    2:
+      name: wg-defcon-name-2
+      description: wg-defcon-desc-2
+      callout: /Audio/_WG/Defcon/defcon_2.ogg
+      alarms: 2
+      color: "#ff8c1a"
+    1:
+      name: wg-defcon-name-1
+      description: wg-defcon-desc-1
+      callout: /Audio/_WG/Defcon/defcon_1.ogg
+      siren: /Audio/Misc/gamma.ogg
+      color: "#e8283c"

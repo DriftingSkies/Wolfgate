@@ -1,0 +1,10 @@
+wg-shield-stats-title = Generator stats
+wg-shield-stats-generator = Generator: { $name }
+wg-shield-stats-capacity = Usable capacity: { $value } damage (limited by power or overload)
+wg-shield-stats-overload-limit = Overload threshold: { $value } damage
+wg-shield-stats-online-repair = Normal repair: { $value } damage/s
+wg-shield-stats-offline-repair = Recharge mode repair: { $value } damage/s
+wg-shield-stats-idle-power = Idle power: { $value } kW
+wg-shield-stats-max-power = Configured maximum power: { $value } kW
+wg-shield-stats-overload-lockout = Overload lockout: { $value } seconds after damage falls below the threshold.
+wg-shield-stats-recovery-note = Power demand rises with damage. Actual recovery also depends on damage, power and recharge. The shield panel shows the current recovery estimate.

@@ -51,7 +51,7 @@ public sealed partial class FireControlWindow : FancyWindow
         // DockToggle.OnToggled += OnDockTogglePressed;
         // DockToggle.Pressed = NavRadar.ShowDocks;
         // WOLFGATE END
-        WfInitializeCombatConsole(); // WOLFGATE(CombatConsole): compose the instrument deck and fire-group controls.
+        WgInitializeCombatConsole(); // WOLFGATE(CombatConsole): compose the instrument deck and fire-group controls.
     }
 
     private void SelectAllWeapons(BaseButton.ButtonEventArgs args)
@@ -174,7 +174,7 @@ public sealed partial class FireControlWindow : FancyWindow
     private void UpdateWeaponButtonText(Button button, FireControllableEntry controllable)
     {
         // WOLFGATE(CombatConsole) START: show the actual provider supply instead of treating autoloaders as empty.
-        if (WfUpdateWeaponSupplyText(button, controllable))
+        if (WgUpdateWeaponSupplyText(button, controllable))
             return;
         // WOLFGATE END
         if (button.Pressed && controllable.HasManualReload && controllable.AmmoCount.HasValue)
@@ -257,7 +257,7 @@ public sealed partial class FireControlWindow : FancyWindow
         SelectBallisticButton.Disabled = !hasBallisticWeapons;
         SelectEnergyButton.Disabled = !hasEnergyWeapons;
         SelectMissileButton.Disabled = !hasMissileWeapons;
-        WfUpdateCombatConsole(state); // WOLFGATE(CombatConsole): update groups and countermeasure telemetry.
+        WgUpdateCombatConsole(state); // WOLFGATE(CombatConsole): update groups and countermeasure telemetry.
     }
 
     private void UpdateWeaponsList(FireControlConsoleBoundInterfaceState state)

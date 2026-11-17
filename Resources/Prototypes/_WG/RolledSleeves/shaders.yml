@@ -1,0 +1,12 @@
+- type: shader
+  id: WGRolledSleeves
+  kind: source
+  path: "/Textures/_WG/RolledSleeves/Shaders/rolled_sleeves.swsl"
+
+# Replaces DisplacedDraw on displaced layers. No stencil test, which hides the layer in UI sprite views.
+- type: shader
+  id: WGRolledSleevesDisplaced
+  kind: source
+  path: "/Textures/_WG/RolledSleeves/Shaders/rolled_sleeves_displaced.swsl"
+  params:
+    displacementSize: 127

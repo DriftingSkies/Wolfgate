@@ -57,7 +57,7 @@ jobs:
         run: sudo apt-get install -y python3-requests python3-yaml
 
       - name: Publish changelog (Discord)
-        run: python3 Tools/_WF/Ci/actions_changelogs_since_last_run.py
+        run: python3 Tools/_WG/Ci/actions_changelogs_since_last_run.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Our changes.

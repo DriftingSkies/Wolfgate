@@ -1,9 +1,0 @@
-- type: latheRecipePack
-  id: WFTetherStatic
-  recipes:
-  - WFRopeHempCoil
-  - WFRopeSyntheticCoil
-  - WFRopeBungeeCoil
-  - WFRopeSteelCableCoil
-  - WFRopeTowCableCoil
-  - WFTetherInstaller

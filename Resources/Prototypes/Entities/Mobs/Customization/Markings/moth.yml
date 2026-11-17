@@ -185,9 +185,9 @@
     default_BEHIND: default_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: default_FRONT # WOLFGATE(Genitals): was default
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: default_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -202,9 +202,9 @@
     charred_BEHIND: charred_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: charred_FRONT # WOLFGATE(Genitals): was charred
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: charred_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -221,13 +221,13 @@
     dbushy_secondary_BEHIND: dbushy_secondary_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: dbushy_primary_FRONT # WOLFGATE(Genitals): was dbushy_primary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: dbushy_secondary_FRONT # WOLFGATE(Genitals): was dbushy_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: dbushy_primary_BEHIND # WOLFGATE(Genitals)
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: dbushy_secondary_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -244,13 +244,13 @@
     deathhead_secondary_BEHIND: deathhead_secondary_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: deathhead_primary_FRONT # WOLFGATE(Genitals): was deathhead_primary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: deathhead_secondary_FRONT # WOLFGATE(Genitals): was deathhead_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: deathhead_primary_BEHIND # WOLFGATE(Genitals)
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: deathhead_secondary_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -265,9 +265,9 @@
     fan_BEHIND: fan_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: fan_FRONT # WOLFGATE(Genitals): was fan
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: fan_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -282,9 +282,9 @@
     dfan_BEHIND: dfan_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: dfan_FRONT # WOLFGATE(Genitals): was dfan
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: dfan_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -299,9 +299,9 @@
     feathery_BEHIND: feathery_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: feathery_FRONT # WOLFGATE(Genitals): was feathery
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: feathery_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -318,13 +318,13 @@
     firewatch_secondary_BEHIND: firewatch_secondary_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: firewatch_primary_FRONT # WOLFGATE(Genitals): was firewatch_primary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: firewatch_secondary_FRONT # WOLFGATE(Genitals): was firewatch_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: firewatch_primary_BEHIND # WOLFGATE(Genitals)
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: firewatch_secondary_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -339,9 +339,9 @@
     gothic_BEHIND: gothic_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: gothic_FRONT # WOLFGATE(Genitals): was gothic
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: gothic_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -356,9 +356,9 @@
     jungle_BEHIND: jungle_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: jungle_FRONT # WOLFGATE(Genitals): was jungle
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: jungle_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -373,9 +373,9 @@
     ladybug_BEHIND: ladybug_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: ladybug_FRONT # WOLFGATE(Genitals): was ladybug
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: ladybug_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -392,13 +392,13 @@
     maple_secondary_BEHIND: maple_secondary_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: maple_primary_FRONT # WOLFGATE(Genitals): was maple_primary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: maple_secondary_FRONT # WOLFGATE(Genitals): was maple_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: maple_primary_BEHIND # WOLFGATE(Genitals)
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: maple_secondary_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -415,13 +415,13 @@
     moffra_secondary_BEHIND: moffra_secondary_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: moffra_primary_FRONT # WOLFGATE(Genitals): was moffra_primary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: moffra_secondary_FRONT # WOLFGATE(Genitals): was moffra_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: moffra_primary_BEHIND # WOLFGATE(Genitals)
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: moffra_secondary_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -436,9 +436,9 @@
     oakworm_BEHIND: oakworm_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: oakworm_FRONT # WOLFGATE(Genitals): was oakworm
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: oakworm_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -455,13 +455,13 @@
     plasmafire_secondary_BEHIND: plasmafire_secondary_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: plasmafire_primary_FRONT # WOLFGATE(Genitals): was plasmafire_primary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: plasmafire_secondary_FRONT # WOLFGATE(Genitals): was plasmafire_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: plasmafire_primary_BEHIND # WOLFGATE(Genitals)
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: plasmafire_secondary_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -476,9 +476,9 @@
     pointy_BEHIND: pointy_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: pointy_FRONT # WOLFGATE(Genitals): was pointy
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: pointy_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -495,13 +495,13 @@
     royal_secondary_BEHIND: royal_secondary_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: royal_primary_FRONT # WOLFGATE(Genitals): was royal_primary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: royal_secondary_FRONT # WOLFGATE(Genitals): was royal_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: royal_primary_BEHIND # WOLFGATE(Genitals)
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: royal_secondary_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -516,9 +516,9 @@
     stellar_BEHIND: stellar_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: stellar_FRONT # WOLFGATE(Genitals): was stellar
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: stellar_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -533,9 +533,9 @@
     striped_BEHIND: striped_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: striped_FRONT # WOLFGATE(Genitals): was striped
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: striped_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -550,9 +550,9 @@
     swirly_BEHIND: swirly_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: swirly_FRONT # WOLFGATE(Genitals): was swirly
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: swirly_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -567,9 +567,9 @@
     whitefly_BEHIND: whitefly_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: whitefly_FRONT # WOLFGATE(Genitals): was whitefly
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: whitefly_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -584,9 +584,9 @@
     witchwing_BEHIND: witchwing_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: witchwing_FRONT # WOLFGATE(Genitals): was witchwing
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: witchwing_BEHIND # WOLFGATE(Genitals)
 
 - type: marking
@@ -603,13 +603,13 @@
     underwing_secondary_BEHIND: underwing_secondary_FRONT
   # WOLFGATE END
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: underwing_primary_FRONT # WOLFGATE(Genitals): was underwing_primary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: underwing_secondary_FRONT # WOLFGATE(Genitals): was underwing_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: underwing_primary_BEHIND # WOLFGATE(Genitals)
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: underwing_secondary_BEHIND # WOLFGATE(Genitals)
 
 # Body markings:

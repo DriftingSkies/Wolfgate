@@ -1873,7 +1873,7 @@ entities:
       rot: 3.141592653589793 rad
       pos: 5.5,-1.5
       parent: 1
-- proto: WFIonDisruptor
+- proto: WGIonDisruptor
   entities:
   - uid: 4
     components:

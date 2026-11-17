@@ -5,8 +5,8 @@ using Content.IntegrationTests.Fixtures.Attributes;
 using Content.Shared._Onyx.Wounds;
 using Content.Shared._Onyx.Targeting;
 using Content.Shared._Shitmed.Targeting; // WOLFGATE(Wolfmed): D10, Onyx's own Targeting stack is not vendored.
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade + §2.7 TryDetachPart.
-using Content.Shared._WF.Wolfmed.Targeting; // WOLFGATE(Wolfmed): D10 resolver.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade + §2.7 TryDetachPart.
+using Content.Shared._WG.Wolfmed.Targeting; // WOLFGATE(Wolfmed): D10 resolver.
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.CCVar;
@@ -280,7 +280,7 @@ public sealed class WoundDamageFoundationTest : GameTest
         {
             var body = entityManager.SpawnEntity("WoundFoundationBody", map.GridCoords);
             var graph = entityManager.System<SharedBodySystem>();
-            var wfBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
+            var wgBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
             var routing = entityManager.System<WoundDamageRoutingSystem>();
             var damage = entityManager.System<WolfmedDamageableSystem>(); // WOLFGATE(Wolfmed)
             var parts = graph.GetBodyChildren(body).ToList();
@@ -305,7 +305,7 @@ public sealed class WoundDamageFoundationTest : GameTest
             Assert.That(entityManager.GetComponent<SystemicDamageComponent>(body).Damage.GetTotal(), Is.EqualTo(FixedPoint2.New(4)));
             Assert.That(damage.GetAllDamage(body).GetTotal(), Is.EqualTo(FixedPoint2.New(19)));
 
-            Assert.That(wfBody.TryDetachPart(head)); // WOLFGATE(Wolfmed)
+            Assert.That(wgBody.TryDetachPart(head)); // WOLFGATE(Wolfmed)
             // WOLFGATE(Wolfmed): the head's 13 leaves the projection (Onyx's 19 - 13 = 6), but Wolfgate's `HeadHuman`
             // is a vital part, so Shitmed's PartRemoveDamage (SharedBodySystem.Parts.cs:405) adds 100
             // Bloodloss on removal — systemic damage that the projection then includes. Onyx's bare test
@@ -362,7 +362,7 @@ public sealed class WoundDamageFoundationTest : GameTest
             var attacker = entityManager.SpawnEntity("WoundFoundationAttacker", map.GridCoords);
             entityManager.GetComponent<TargetingComponent>(attacker).Target = TargetBodyPart.Head;
             var graph = entityManager.System<SharedBodySystem>();
-            var wfBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
+            var wgBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
             var resolver = entityManager.System<WoundTargetResolver>(); // WOLFGATE(Wolfmed)
             var routing = entityManager.System<WoundDamageRoutingSystem>();
             var damage = entityManager.System<WolfmedDamageableSystem>(); // WOLFGATE(Wolfmed)
@@ -399,7 +399,7 @@ public sealed class WoundDamageFoundationTest : GameTest
             Assert.That(entityManager.GetComponent<SystemicDamageComponent>(body).Damage.DamageDict[new ProtoId<DamageTypePrototype>("Asphyxiation")],
                 Is.EqualTo(FixedPoint2.New(4)));
 
-            Assert.That(wfBody.TryDetachPart(head)); // WOLFGATE(Wolfmed)
+            Assert.That(wgBody.TryDetachPart(head)); // WOLFGATE(Wolfmed)
             // WOLFGATE(Wolfmed): Wolfgate has no TargetBodyPart.Vital; Head|Torso is the same set Onyx's Vital names.
             Assert.That(resolver.GetMatchingParts(body, TargetBodyPart.Head | TargetBodyPart.Torso), Is.EqualTo(new[] { torso }));
             Assert.That(routing.TryApplyDistributedDamage(body,
@@ -423,7 +423,7 @@ public sealed class WoundDamageFoundationTest : GameTest
         {
             var body = entityManager.SpawnEntity("WoundFoundationBody", map.GridCoords);
             var graph = entityManager.System<SharedBodySystem>();
-            var wfBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
+            var wgBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
             var routing = entityManager.System<WoundDamageRoutingSystem>();
             var wounds = entityManager.System<WoundSystem>();
             var head = graph.GetBodyChildren(body).Single(part => part.Component.PartType == BodyPartType.Head).Id;
@@ -438,7 +438,7 @@ public sealed class WoundDamageFoundationTest : GameTest
             Assert.That(wound.Comp.PeakSeverity, Is.EqualTo(FixedPoint2.New(15)));
             Assert.That(wound.Comp.HoldingPart, Is.EqualTo(head));
 
-            Assert.That(wfBody.TryDetachPart(head)); // WOLFGATE(Wolfmed)
+            Assert.That(wgBody.TryDetachPart(head)); // WOLFGATE(Wolfmed)
             Assert.That(wounds.GetWounds((head, entityManager.GetComponent<WoundableComponent>(head)))
                 .Single(candidate => candidate.Comp.Prototype == new ProtoId<WoundPrototype>("BluntWound")).Owner, Is.EqualTo(wound.Owner));
             var torso = graph.GetBodyChildren(body).Single(part => part.Component.PartType == BodyPartType.Torso).Id;
@@ -766,9 +766,9 @@ public sealed class WoundDamageFoundationTest : GameTest
     public async Task PainApiAndProjectionTest()
     {
         // WOLFGATE(Wolfmed): playtest 4, the loose rate would change Onyx's recovery arithmetic asserted below.
-        await OverrideCVar(Side.Server, Content.Shared._WF.Wolfmed.CCVar.WolfmedCVars.PainLooseRecovery, 0f);
+        await OverrideCVar(Side.Server, Content.Shared._WG.Wolfmed.CCVar.WolfmedCVars.PainLooseRecovery, 0f);
         // WOLFGATE(Wolfmed): playtest 5 ships wolfmed.pain_scale 0.85; Onyx's figures below are at 1.
-        await OverrideCVar(Side.Server, Content.Shared._WF.Wolfmed.CCVar.WolfmedCVars.PainScale, 1f);
+        await OverrideCVar(Side.Server, Content.Shared._WG.Wolfmed.CCVar.WolfmedCVars.PainScale, 1f);
         // WOLFGATE(Wolfmed): canary for the language trap that made the whole pain system inert. On a record struct
         // with a primary constructor, `new T()` binds to the implicit parameterless struct constructor and
         // zeroes the field rather than taking the primary constructor's `= 1f` default, so Onyx's
@@ -786,7 +786,7 @@ public sealed class WoundDamageFoundationTest : GameTest
         {
             var body = entityManager.SpawnEntity("WoundFoundationBody", map.GridCoords);
             var graph = entityManager.System<SharedBodySystem>();
-            var wfBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
+            var wgBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
             var routing = entityManager.System<WoundDamageRoutingSystem>();
             var damage = entityManager.System<WolfmedDamageableSystem>(); // WOLFGATE(Wolfmed)
             var pain = entityManager.System<PainSystem>();
@@ -851,7 +851,7 @@ public sealed class WoundDamageFoundationTest : GameTest
             Assert.That(pain.GetRawPain(healingHead), Is.EqualTo(FixedPoint2.New(8.59)));
             Assert.That(pain.GetRawPain(healingBody), Is.EqualTo(FixedPoint2.New(8.59)));
 
-            Assert.That(wfBody.TryDetachPart(head)); // WOLFGATE(Wolfmed)
+            Assert.That(wgBody.TryDetachPart(head)); // WOLFGATE(Wolfmed)
             // WOLFGATE(Wolfmed): BRAIN: losing the head is death on a wound host now. This test is about pain
             // bookkeeping on a living body, so the body is put back on its feet, and re-armed, for the pain-shock checks.
             entityManager.System<MobStateSystem>().ChangeMobState(body, MobState.Alive);

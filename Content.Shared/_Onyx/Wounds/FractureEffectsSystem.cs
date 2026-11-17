@@ -5,9 +5,9 @@ using Content.Shared.Body.Systems;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Movement.Systems;
-using Content.Shared._WF.Wolfmed.Wounds; // WOLFGATE(Wolfmed): W2
-using Content.Shared._WF.Wolfmed.Reagents; // WOLFGATE(Wolfmed): CONSC
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): Onyx's OrganGotInserted/RemovedEvent are compat shims here.
+using Content.Shared._WG.Wolfmed.Wounds; // WOLFGATE(Wolfmed): W2
+using Content.Shared._WG.Wolfmed.Reagents; // WOLFGATE(Wolfmed): CONSC
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): Onyx's OrganGotInserted/RemovedEvent are compat shims here.
 
 namespace Content.Shared._Onyx.Wounds;
 

@@ -1,0 +1,14 @@
+ent-WGRMCGogglesBallisticGoggles = ballistic goggles
+    .desc = Ballistic goggles with the faction's tactical display built into the lens.
+ent-WGRMCGogglesM1A1BallisticGoggles = M1A1 ballistic goggles
+    .desc = Ballistic goggles with the faction's tactical display built into the lens.
+ent-WGRMCGogglesM1A1BallisticGogglesBlue = blue M1A1 ballistic goggles
+    .desc = Ballistic goggles with the faction's tactical display built into the lens.
+ent-WGRMCGogglesBlackBallisticGoggles = black ballistic goggles
+    .desc = Ballistic goggles with the faction's tactical display built into the lens.
+ent-WGRMCGogglesBallisticGogglesRcm = clear ballistic goggles
+    .desc = Ballistic goggles with the faction's tactical display built into the lens.
+ent-WGRMCGogglesBallisticGogglesRcmTint = tinted ballistic goggles
+    .desc = Ballistic goggles with the faction's tactical display built into the lens.
+ent-WGRMCGogglesSwatgoggles = tactical ballistic goggles
+    .desc = Ballistic goggles with the faction's tactical display built into the lens.

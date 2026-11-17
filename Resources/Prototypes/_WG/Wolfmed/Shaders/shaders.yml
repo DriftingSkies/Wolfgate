@@ -1,0 +1,11 @@
+# Fading-out view of a body close to death (WolfmedDyingEffectsSystem).
+- type: shader
+  id: WGWolfmedDying
+  kind: source
+  path: "/Textures/_WG/Wolfmed/Shaders/dying.swsl"
+
+# HUD: the cyan edge tint, torn slice and standby drain behind the synthetic readout.
+- type: shader
+  id: WGWolfmedSynthetic
+  kind: source
+  path: "/Textures/_WG/Wolfmed/Shaders/synthetic.swsl"

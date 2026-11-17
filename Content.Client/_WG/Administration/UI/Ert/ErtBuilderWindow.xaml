@@ -1,0 +1,65 @@
+<!-- Names must avoid DefaultWindow's own: CloseButton, ContentsContainer, TitleLabel, WindowHeader. -->
+<DefaultWindow xmlns="https://spacestation14.io"
+               Title="{Loc 'wg-ert-title'}"
+               MinSize="640 520"
+               SetSize="760 700">
+    <BoxContainer Orientation="Vertical" Margin="4">
+        <Label Text="{Loc 'wg-ert-info'}" StyleClasses="LabelSubText" Margin="0 0 0 6" />
+        <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="0 0 8 0">
+
+                <!-- Team -->
+                <Label Text="{Loc 'wg-ert-section-team'}" StyleClasses="LabelHeading" />
+                <GridContainer Columns="2" HorizontalExpand="True">
+                    <Label Text="{Loc 'wg-ert-team-name'}" MinWidth="130" VerticalAlignment="Center" />
+                    <LineEdit Name="TeamNameEdit" PlaceHolder="{Loc 'wg-ert-team-name-placeholder'}" HorizontalExpand="True" />
+                    <Label Text="{Loc 'wg-ert-briefing'}" VerticalAlignment="Center" />
+                    <LineEdit Name="BriefingEdit" PlaceHolder="{Loc 'wg-ert-briefing-placeholder'}" HorizontalExpand="True" />
+                    <Label Text="{Loc 'wg-ert-members'}" VerticalAlignment="Center" />
+                    <BoxContainer Orientation="Horizontal">
+                        <SpinBox Name="MembersSpin" MinWidth="110" />
+                        <CheckBox Name="LeaderCheck" Text="{Loc 'wg-ert-leader'}" Pressed="True" Margin="8 0 0 0" />
+                    </BoxContainer>
+                </GridContainer>
+
+                <!-- Outfits -->
+                <Label Text="{Loc 'wg-ert-section-outfits'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+                <GridContainer Columns="3" HorizontalExpand="True">
+                    <Label Text="{Loc 'wg-ert-member-outfit'}" MinWidth="130" VerticalAlignment="Center" />
+                    <LineEdit Name="MemberOutfitSearch" PlaceHolder="{Loc 'wg-ert-outfit-search'}" MinWidth="160" Margin="0 0 4 0" />
+                    <OptionButton Name="MemberOutfitSelect" HorizontalExpand="True" />
+                    <Label Text="{Loc 'wg-ert-leader-outfit'}" VerticalAlignment="Center" />
+                    <LineEdit Name="LeaderOutfitSearch" PlaceHolder="{Loc 'wg-ert-outfit-search'}" MinWidth="160" Margin="0 0 4 0" />
+                    <OptionButton Name="LeaderOutfitSelect" HorizontalExpand="True" />
+                </GridContainer>
+
+                <!-- ID cards -->
+                <Label Text="{Loc 'wg-ert-section-ids'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+                <GridContainer Columns="2" HorizontalExpand="True">
+                    <Label Text="{Loc 'wg-ert-leader-title'}" MinWidth="130" VerticalAlignment="Center" />
+                    <LineEdit Name="LeaderTitleEdit" HorizontalExpand="True" />
+                    <Label Text="{Loc 'wg-ert-member-title'}" VerticalAlignment="Center" />
+                    <LineEdit Name="MemberTitleEdit" HorizontalExpand="True" />
+                </GridContainer>
+                <CheckBox Name="KeepAccessCheck" Text="{Loc 'wg-ert-keep-access'}" Pressed="True" Margin="0 4 0 2" />
+                <Label Text="{Loc 'wg-ert-access-hint'}" StyleClasses="LabelSubText" />
+                <GridContainer Name="AccessGrid" Columns="4" HorizontalExpand="True" />
+
+                <!-- Species -->
+                <Label Text="{Loc 'wg-ert-section-species'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+                <CheckBox Name="GenericHumansCheck" Text="{Loc 'wg-ert-generic-humans'}" Margin="0 2 0 2" />
+                <Label Text="{Loc 'wg-ert-species-hint'}" StyleClasses="LabelSubText" />
+                <GridContainer Name="SpeciesGrid" Columns="4" HorizontalExpand="True" />
+
+                <!-- Ship -->
+                <Label Text="{Loc 'wg-ert-section-ship'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                    <LineEdit Name="ShipSearch" PlaceHolder="{Loc 'wg-ert-ship-search'}" MinWidth="160" Margin="0 0 4 0" />
+                    <OptionButton Name="ShipSelect" HorizontalExpand="True" />
+                </BoxContainer>
+            </BoxContainer>
+        </ScrollContainer>
+        <Button Name="SpawnButton" Text="{Loc 'wg-ert-spawn'}" StyleClasses="ButtonSquare" Margin="0 6 0 0" />
+        <Label Name="StatusLabel" StyleClasses="LabelSubText" Margin="0 4 0 0" />
+    </BoxContainer>
+</DefaultWindow>

@@ -10,30 +10,30 @@ PascalCase name is its folder name in every area:
 
 | Area | Module folder |
 |---|---|
-| C# | `Content.Client/_WF/<Module>`, `Content.Server/_WF/<Module>`, `Content.Shared/_WF/<Module>` |
-| Tests | `Content.IntegrationTests/Tests/_WF/<Module>`, `Content.Tests/_WF/<Module>` |
-| Prototypes | `Resources/Prototypes/_WF/<Module>` |
-| Localization | `Resources/Locale/en-US/_WF/<Module>` |
-| Textures, audio | `Resources/Textures/_WF/<Module>`, `Resources/Audio/_WF/<Module>` |
-| Ship grids (a vessel's `shuttlePath`) | `Resources/SharedMaps/_WF/<Module>` |
-| Other maps (stations, POIs) | `Resources/Maps/_WF/<Module>` |
-| Guidebook pages | `Resources/ServerInfo/_WF/<Module>` |
-| Data clients download on demand, not shipped | `Resources/GameData/_WF/<Module>` |
-| Scripts and generators | `Tools/_WF/<Module>` |
-| Design docs | `Docs/_WF/<Module>` |
+| C# | `Content.Client/_WG/<Module>`, `Content.Server/_WG/<Module>`, `Content.Shared/_WG/<Module>` |
+| Tests | `Content.IntegrationTests/Tests/_WG/<Module>`, `Content.Tests/_WG/<Module>` |
+| Prototypes | `Resources/Prototypes/_WG/<Module>` |
+| Localization | `Resources/Locale/en-US/_WG/<Module>` |
+| Textures, audio | `Resources/Textures/_WG/<Module>`, `Resources/Audio/_WG/<Module>` |
+| Ship grids (a vessel's `shuttlePath`) | `Resources/SharedMaps/_WG/<Module>` |
+| Other maps (stations, POIs) | `Resources/Maps/_WG/<Module>` |
+| Guidebook pages | `Resources/ServerInfo/_WG/<Module>` |
+| Data clients download on demand, not shipped | `Resources/GameData/_WG/<Module>` |
+| Scripts and generators | `Tools/_WG/<Module>` |
+| Design docs | `Docs/_WG/<Module>` |
 
-Every file under a `_WF` folder sits inside a module folder; below it, any sub-structure is fine. A new feature
-gets a new module, not files at a `_WF` root.
+Every file under a `_WG` folder sits inside a module folder; below it, any sub-structure is fine. A new feature
+gets a new module, not files at a `_WG` root.
 
-Namespaces follow the folder (`Content.Server._WF.Traders`). A partial class that extends an upstream system
+Namespaces follow the folder (`Content.Server._WG.Traders`). A partial class that extends an upstream system
 lives in its module folder but keeps the upstream namespace.
 
 Content ported from another fork may keep that fork's folder and IDs (`_HL`, `_Common`, `_Floof`, ...).
 Database migrations stay in `Content.Server.Database/Migrations` and are named `Wolfgate<Change>`. Symphony
-(the hub integration, `*/Symphony` and `*.Symphony.cs`) is the one module outside `_WF`; its paths are listed in
-`Tools/_WF/Ci/modules.yml`.
+(the hub integration, `*/Symphony` and `*.Symphony.cs`) is the one module outside `_WG`; its paths are listed in
+`Tools/_WG/Ci/modules.yml`.
 
-Any edit to a file outside `_WF` is non-modular and must be marked with the module it serves:
+Any edit to a file outside `_WG` is non-modular and must be marked with the module it serves:
 
 - A single line: `// WOLFGATE(Traders): reason` at the end of the line or on the line above. The reason may be
   left out (`// WOLFGATE(Traders)`) only where the module makes it obvious, such as a `using` line; the
@@ -56,36 +56,36 @@ Any edit to a file outside `_WF` is non-modular and must be marked with the modu
   put the marker at the start of the line it marks, or just before `<Document>` for the first line inside it.
 - Files that can't hold comments (JSON, images, audio, rich-text `.txt` such as `Resources/ServerInfo/Rules.txt`)
   and map files (the mapper rewrites them) take no marker; list them under `unmarked` in
-  `Tools/_WF/Ci/modules.yml` instead (see below). Generated EF migration and snapshot files and
+  `Tools/_WG/Ci/modules.yml` instead (see below). Generated EF migration and snapshot files and
   `Resources/Changelog` are exempt entirely.
 
-Keep upstream edits to the smallest hook that works. Prefer, in order: a new `_WF` system that subscribes to
-existing events, a partial class in `_WF`, then a marked edit. Don't reformat, reorder or re-indent upstream
+Keep upstream edits to the smallest hook that works. Prefer, in order: a new `_WG` system that subscribes to
+existing events, a partial class in `_WG`, then a marked edit. Don't reformat, reorder or re-indent upstream
 code, and don't delete upstream code outright; comment or branch around it inside a marked block so a merge
 shows what changed.
 
 ## Documenting changes
 
-Each module has a `README.md` in `Content.Server/_WF/<Module>/`, or in `Content.Shared/_WF/<Module>/` or
-`Content.Client/_WF/<Module>/` if it has no server code, or in `Docs/_WF/<Module>/` if it has no C# at all.
+Each module has a `README.md` in `Content.Server/_WG/<Module>/`, or in `Content.Shared/_WG/<Module>/` or
+`Content.Client/_WG/<Module>/` if it has no server code, or in `Docs/_WG/<Module>/` if it has no C# at all.
 Write its overview by hand: what the module does, how players or admins use it and its main entry points, in a
 few lines. Longer design notes can follow.
 
-The rest is generated by `python Tools/_WF/Ci/modules.py --write`, from the module folders and the tagged markers:
+The rest is generated by `python Tools/_WG/Ci/modules.py --write`, from the module folders and the tagged markers:
 
 - In each module README, the sections between the `WOLFGATE-GENERATED` comments: every file in the module, and
-  every file outside `_WF` it edits with the reasons from its markers.
-- `Docs/_WF/NONMODULAR.md`: every standalone edit (untagged markers), with its reasons.
+  every file outside `_WG` it edits with the reasons from its markers.
+- `Docs/_WG/NONMODULAR.md`: every standalone edit (untagged markers), with its reasons.
 
 Never edit generated sections by hand; fix the markers or folders and regenerate. Files that can't hold a
-marker are listed under `unmarked` in `Tools/_WF/Ci/modules.yml` (path, module or none, reason), and the
+marker are listed under `unmarked` in `Tools/_WG/Ci/modules.yml` (path, module or none, reason), and the
 generator adds them to the right list.
 
-Run `--write` after any change that adds, moves or removes a `_WF` file or a marker, and commit the result. CI
+Run `--write` after any change that adds, moves or removes a `_WG` file or a marker, and commit the result. CI
 runs `--check`, which fails when the generated docs are stale, a marker names an unknown module, `START`/`END`
-don't pair, a standalone marker has no reason, a `_WF` file sits outside a module folder or a module has no
+don't pair, a standalone marker has no reason, a `_WG` file sits outside a module folder or a module has no
 README or still has the TODO overview; and `--pr-check origin/<base>`,
-which fails when a pull request adds or changes lines outside `_WF` that no marker covers, or changes a file that
+which fails when a pull request adds or changes lines outside `_WG` that no marker covers, or changes a file that
 can't hold one and has no `unmarked` entry (skipped for `[AUTOPORT]` pull requests). A marker elsewhere in the
 file doesn't cover a new edit, and lines that match Monolith at `fork_point` in `modules.yml` need none (move it
 forward after merging Monolith in). It prints the marker to add, or an `unmarked` entry with `TODO` for the module and
@@ -101,21 +101,21 @@ reason; `--check` fails until both are filled in.
 
 ## Code style
 
-- No license header in `_WF` files. (`MARKERS.md` is the upstream Frontier convention and doesn't apply here.)
+- No license header in `_WG` files. (`MARKERS.md` is the upstream Frontier convention and doesn't apply here.)
 - Comments are short and precise: a one-line `/// <summary>` on types, public members and non-trivial methods;
   a brief `//` only where the intent isn't obvious. No narrative or restating comments.
 - Dependencies: `[Dependency] private X _x = default!;`, without `readonly`.
-- Every player-facing string goes through Fluent in `Resources/Locale/en-US/_WF`. No hard-coded text.
-- Wolfgate prototype IDs take a `WF` prefix (`WFTractorBeamEmitter`), unless they deliberately override an
+- Every player-facing string goes through Fluent in `Resources/Locale/en-US/_WG`. No hard-coded text.
+- Wolfgate prototype IDs take a `WG` prefix (`WGTractorBeamEmitter`), unless they deliberately override an
   upstream ID or were ported from another fork. Renaming an entity ID needs a `Resources/migration.yml` entry
   (inside its `WOLFGATE` block). Renaming an ID that is saved (profiles, consent rows, loadouts, cvars) needs an
-  entry in `Content.Shared/_WF/Prototypes/WFLegacyPrototypeIds.cs`.
-- `Content.Server/_WF/SafetyDepositBox` and `Content.Client/_WF/SafetyDepositBox` are the reference for tone and
+  entry in `Content.Shared/_WG/Prototypes/WGLegacyPrototypeIds.cs`.
+- `Content.Server/_WG/SafetyDepositBox` and `Content.Client/_WG/SafetyDepositBox` are the reference for tone and
   density.
 
 ## Engine traps
 
-- Don't edit `RobustToolbox` from a content branch. It is the Lupine submodule (`Docs/_WF/Engine`): engine changes are
+- Don't edit `RobustToolbox` from a content branch. It is the Lupine submodule (`Docs/_WG/Engine`): engine changes are
   server-only patches on its `wolfgate/v291` branch, filed in the engine docket first, and the gitlink moves with a PR.
 - Client and Shared code is checked against `RobustToolbox/Robust.Shared/ContentPack/Sandbox.yml` at client
   load, and the compiler won't catch a violation. Not allowed: `BinaryWriter`, `EndOfStreamException`,
@@ -136,12 +136,12 @@ reason; `--check` fails until both are filled in.
 - Build the affected projects. Say so plainly if you didn't.
 - Prototype changes: start a headless server and grep its log for `[ERRO]`/`[FATL]`, then run
   `dotnet run --project Content.YAMLLinter -c Release`. The linter always crashes in DebugOpt on Windows.
-- Logic: add an NUnit test under `Content.IntegrationTests/Tests/_WF` (or `Content.Tests/_WF` for pure logic
+- Logic: add an NUnit test under `Content.IntegrationTests/Tests/_WG` (or `Content.Tests/_WG` for pure logic
   with no server). Never use `PoolSettings { Destructive =
   true }`; each one permanently costs CI about 1.9 GB and the runner is near its limit.
-- Run tests with `Tools/_WF/Testing/test.ps1` (`-Test <Fixture>` for one fixture in about 30 s, no arguments for the
+- Run tests with `Tools/_WG/Testing/test.ps1` (`-Test <Fixture>` for one fixture in about 30 s, no arguments for the
   whole suite in about 12 min). It builds once, then runs from `bin/` with server GC and 8 workers; plain
-  `dotnet test` takes 3 times as long. Its README in `Docs/_WF/Testing` has the measurements.
+  `dotnet test` takes 3 times as long. Its README in `Docs/_WG/Testing` has the measurements.
 - Client or Shared changes: start a real client and grep its log for `Sandbox violation`. Integration tests
   don't run the sandbox check.
 - Report failures with their output. Don't call something working unless you ran it.

@@ -1160,7 +1160,7 @@
     - FoodPoppy
   mutationPrototypes:
     - lily
-    - WFOpiumPoppy # WOLFGATE(WolfChem): the opium poppy is a poppy mutation
+    - WGOpiumPoppy # WOLFGATE(WolfChem): the opium poppy is a poppy mutation
   lifespan: 25
   maturation: 10
   production: 3

@@ -1,0 +1,34 @@
+#Author Info
+#zy.dras (Discord)
+- type: vessel
+  id: Bucket
+  parent: BaseVessel
+  name: Bucket
+  description: A small janitorial ship with the bare essentials, a cheap option for the rat catcher on the go.
+  price: 24576 #appraised at 21371, 15% markup, this thing is so cheap wtf
+  category: Micro
+  group: Sr
+  access: Janitor
+  shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/bucket.yml
+  guidebookPage: Null
+  class:
+  - Civilian
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: Bucket
+  mapName: 'Bucket'
+  mapPath: /SharedMaps/_WG/Shipyard/Shuttles/bucket.yml
+  minPlayers: 0
+  stations:
+    Bucket:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Bucket SRV{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'
+        - type: StationJobs
+          availableJobs: {}

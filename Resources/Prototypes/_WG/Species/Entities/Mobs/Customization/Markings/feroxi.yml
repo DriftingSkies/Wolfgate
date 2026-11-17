@@ -1,0 +1,74 @@
+# Ported from HardLight
+- type: marking
+  id: FeroxiLeftLegStripesBlitz
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, WGCanine]
+  sprites:
+  - sprite: DeltaV/Mobs/Customization/Feroxi/body_markings.rsi
+    state: feroxi-left-leg-stripes-blitz
+
+- type: marking
+  id: FeroxiRightLegStripesBlitz
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, WGCanine]
+  sprites:
+   - sprite: DeltaV/Mobs/Customization/Feroxi/body_markings.rsi
+     state: feroxi-right-leg-stripes-blitz
+
+- type: marking
+  id: FeroxiLeftLegStripesTiger
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, WGCanine]
+  sprites:
+  - sprite: DeltaV/Mobs/Customization/Feroxi/body_markings.rsi
+    state: feroxi-left-leg-stripes-tiger
+
+- type: marking
+  id: FeroxiRightLegStripesTiger
+  bodyPart: RLeg
+  markingCategory: Legs
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, WGCanine]
+  sprites:
+  - sprite: DeltaV/Mobs/Customization/Feroxi/body_markings.rsi
+    state: feroxi-right-leg-stripes-tiger
+
+# Arm Markings
+
+- type: marking
+  id: FeroxiLeftArmStripesBlitz
+  bodyPart: LArm
+  markingCategory: Arms
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, WGCanine]
+  sprites:
+  - sprite: DeltaV/Mobs/Customization/Feroxi/body_markings.rsi
+    state: feroxi-left-arm-stripes-blitz
+
+- type: marking
+  id: FeroxiRightArmStripesBlitz
+  bodyPart: RArm
+  markingCategory: Arms
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, WGCanine]
+  sprites:
+  - sprite: DeltaV/Mobs/Customization/Feroxi/body_markings.rsi
+    state: feroxi-right-arm-stripes-blitz
+
+- type: marking
+  id: FeroxiLeftArmStripesTiger
+  bodyPart: LArm
+  markingCategory: Arms
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, WGCanine]
+  sprites:
+  - sprite: DeltaV/Mobs/Customization/Feroxi/body_markings.rsi
+    state: feroxi-left-arm-stripes-tiger
+
+- type: marking
+  id: FeroxiRightArmStripesTiger
+  bodyPart: RArm
+  markingCategory: Arms
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, WGCanine]
+  sprites:
+  - sprite: DeltaV/Mobs/Customization/Feroxi/body_markings.rsi
+    state: feroxi-right-arm-stripes-tiger

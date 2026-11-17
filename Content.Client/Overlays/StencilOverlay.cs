@@ -2,7 +2,7 @@ using System.Numerics;
 using Content.Client.Graphics;
 using Content.Client.Parallax;
 using Content.Client.Weather;
-using Content.Shared._WF.WolfWeather; // WOLFGATE(WolfWeather)
+using Content.Shared._WG.WolfWeather; // WOLFGATE(WolfWeather)
 using Content.Shared.Salvage;
 using Content.Shared.Weather;
 using Robust.Client.GameObjects;

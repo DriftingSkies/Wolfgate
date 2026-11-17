@@ -65,16 +65,16 @@ public sealed partial class BatteryInterfaceSystem : EntitySystem
     }
 
     // WOLFGATE(Performance): UI state is pushed at 4 Hz, and only for interfaces with a viewer
-    private float _wfUiAccumulator;
-    private const float WfUiInterval = 0.25f;
+    private float _wgUiAccumulator;
+    private const float WgUiInterval = 0.25f;
 
     public override void Update(float frameTime)
     {
         // WOLFGATE(Performance) START: ActiveUserInterfaceComponent is the engine's open-UI marker
-        _wfUiAccumulator += frameTime;
-        if (_wfUiAccumulator < WfUiInterval)
+        _wgUiAccumulator += frameTime;
+        if (_wgUiAccumulator < WgUiInterval)
             return;
-        _wfUiAccumulator = 0f;
+        _wgUiAccumulator = 0f;
 
         // var query = EntityQueryEnumerator<BatteryInterfaceComponent, BatteryComponent, PowerNetworkBatteryComponent>();
         var query = EntityQueryEnumerator<ActiveUserInterfaceComponent, BatteryInterfaceComponent, BatteryComponent, PowerNetworkBatteryComponent>();

@@ -29137,7 +29137,7 @@ entities:
     - type: Transform
       parent: 1
       pos: -4.5,51.5
-- proto: WFSpawnPointPdvArtificer
+- proto: WGSpawnPointPdvArtificer
   entities:
   - uid: 8658
     components:
@@ -29149,7 +29149,7 @@ entities:
     - type: Transform
       parent: 1
       pos: -7.5,64.5
-- proto: WFSpawnPointPdvJarrah
+- proto: WGSpawnPointPdvJarrah
   entities:
   - uid: 8656
     components:
@@ -29161,14 +29161,14 @@ entities:
     - type: Transform
       parent: 1
       pos: -5.5,64.5
-- proto: WFSpecialistVendorPDV
+- proto: WGSpecialistVendorPDV
   entities:
   - uid: 8660
     components:
     - type: Transform
       parent: 1
       pos: -1.5,64.5
-- proto: WFVendingMachinePdvOutfitter
+- proto: WGVendingMachinePdvOutfitter
   entities:
   - uid: 8654
     components:
@@ -57153,7 +57153,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 16.5,-31.5
-- proto: WFLatticeStationAnchor
+- proto: WGLatticeStationAnchor
   entities:
   - uid: 8653
     components:
@@ -57685,7 +57685,7 @@ entities:
       pos: 15.5,28.5
     - type: DeltaPressure
       gridUid: 1
-- proto: WFContractBoardPDV
+- proto: WGContractBoardPDV
   entities:
   - uid: 8649
     components:
@@ -57699,7 +57699,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 22.5,12.5
       parent: 1
-- proto: WFContractCargoPad
+- proto: WGContractCargoPad
   entities:
   - uid: 8650
     components:

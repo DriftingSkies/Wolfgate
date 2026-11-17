@@ -3,9 +3,9 @@ using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
 using Robust.Shared.Configuration; // WOLFGATE(Stylesheets)
 using Robust.Shared.IoC;
-using Content.Client._WF.Stylesheets; // WOLFGATE(Stylesheets)
-using Content.Shared._WF.CCVar; // WOLFGATE(Stylesheets)
-using Content.Shared._WF.Prototypes; // WOLFGATE(Stylesheets)
+using Content.Client._WG.Stylesheets; // WOLFGATE(Stylesheets)
+using Content.Shared._WG.CCVar; // WOLFGATE(Stylesheets)
+using Content.Shared._WG.Prototypes; // WOLFGATE(Stylesheets)
 using Robust.Shared; // WOLFGATE(Stylesheets)
 
 namespace Content.Client.Stylesheets
@@ -26,7 +26,7 @@ namespace Content.Client.Stylesheets
             // SheetSpace = new StyleSpace(_resourceCache).Stylesheet;
             // A theme saved under a renamed id moves to the current one
             var savedTheme = _cfg.GetCVar(CVars.InterfaceTheme);
-            var currentTheme = WFLegacyPrototypeIds.Resolve(WFLegacyPrototypeIds.HudThemes, savedTheme);
+            var currentTheme = WGLegacyPrototypeIds.Resolve(WGLegacyPrototypeIds.HudThemes, savedTheme);
             if (currentTheme != savedTheme)
                 _cfg.SetCVar(CVars.InterfaceTheme, currentTheme);
             // A player who never picked a HUD theme gets the one that pairs with their skin

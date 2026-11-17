@@ -51,7 +51,7 @@ public sealed partial class GasCanisterSystem : SharedGasCanisterSystem
         if (!Resolve(uid, ref canister, ref nodeContainer))
             return;
 
-        // WOLFGATE(NetTraffic): a new state goes to everyone who sees the canister; WFUiStateTrimSystem sets it on open
+        // WOLFGATE(NetTraffic): a new state goes to everyone who sees the canister; WGUiStateTrimSystem sets it on open
         if (!UI.IsUiOpen(uid, GasCanisterUiKey.Key))
             return;
 

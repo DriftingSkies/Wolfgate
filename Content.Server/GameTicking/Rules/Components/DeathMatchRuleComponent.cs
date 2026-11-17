@@ -3,7 +3,7 @@ using Content.Shared.Roles;
 using Content.Shared.Storage;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.GameTicking.Rules.Components;
 

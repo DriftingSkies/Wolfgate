@@ -1,6 +1,6 @@
 using System.Numerics;
 using Content.Shared.Nyanotrasen.Kitchen.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server._NF.Traits.Assorted;
 

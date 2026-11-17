@@ -1,7 +1,7 @@
 using Content.Shared.Atmos.Monitor;
 using Content.Shared.Tag;
 using Robust.Shared.Audio;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Atmos.Monitor.Components;
 // AtmosAlarmables are entities that can be alarmed

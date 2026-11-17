@@ -1,0 +1,43 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+# # Author Info
+# # GitHub: NazrinNya
+# # Discord: NazrinNya
+
+- type: vessel
+  id: Ravager
+  parent: BaseVessel
+  name: Ravager
+  description: Capital class security mothership made for fast neutralization of civilian threats.
+  price: 712000 # appraised at 378473 after the classic downgrade; 1.88x markup
+  category: Large
+  group: Sr
+  access: Caelestinus # Shouldn't be buyable with sec voucher.
+  mapchecker_group_override: Security
+  shuttlePath: /SharedMaps/_WG/OldVessels/ravager.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: Null
+  class:
+  - Science
+  engine:
+  - AME
+
+- type: gameMap
+  id: Ravager
+  mapName: 'Ravager'
+  mapPath: /SharedMaps/_WG/OldVessels/ravager.yml
+  minPlayers: 0
+  stations:
+    Ravager:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Ravager SEC{1}'
+        nameGenerator: !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]
+          # Mercenary: [ 0, 0 ]
+          Borg: [ 0, 0 ]
+          SecurityGuard: [ 0, 0 ]

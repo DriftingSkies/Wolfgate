@@ -1,0 +1,27 @@
+# What a planet NPC is put in for a world's air (WGPlanetNpcGearSystem). One of the suits at most, the worst first:
+# pressure, then heat, then cold; then the mask, with an oxygen tank in a free slot, when the air isn't breathable.
+
+- type: startingGear
+  id: WGPlanetNpcGearPressure
+  equipment:
+    outerClothing: ClothingOuterHardsuitEVA
+    head: ClothingHeadHelmetEVA
+
+- type: startingGear
+  id: WGPlanetNpcGearHot
+  equipment:
+    outerClothing: ClothingOuterSuitFire
+    head: ClothingHeadHelmetFire
+
+- type: startingGear
+  id: WGPlanetNpcGearCold
+  equipment:
+    outerClothing: ClothingOuterWinterCoat
+    head: ClothingHeadHatHoodWinterDefault
+    gloves: ClothingHandsGlovesColorBlack
+    shoes: ClothingShoesBootsWinter
+
+- type: startingGear
+  id: WGPlanetNpcGearBreath
+  equipment:
+    mask: ClothingMaskGas

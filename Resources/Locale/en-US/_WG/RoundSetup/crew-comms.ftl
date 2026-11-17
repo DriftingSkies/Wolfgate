@@ -1,0 +1,16 @@
+wg-round-setup-radio = Crew
+wg-round-setup-radio-channel = Crew · { $crew }
+wg-round-setup-locator-label = SL
+wg-round-setup-locator-leader = Squad leader: { $name }
+wg-round-setup-locator-self = You lead this crew.
+wg-round-setup-locator-down = Leader down.
+wg-round-setup-locator-elsewhere = Leader is on another map.
+wg-round-setup-locator-unavailable = Leader signal unavailable.
+wg-round-setup-locator-radio = Crew radio: :k
+wg-round-setup-request-popup-title = Crew join request
+wg-round-setup-request-popup-body = { $name } wants to join as { $role }.
+wg-round-setup-request-popup-accept = Accept
+wg-round-setup-request-popup-reject = Deny
+wg-round-setup-request-popup-later = Later
+wg-round-setup-request-popup-later-help = Dismiss this card. The request remains in Crew Setup → Who can join.
+wg-round-setup-request-popup-unavailable = Reopen recruitment and free a slot for this role in Crew Setup before accepting.

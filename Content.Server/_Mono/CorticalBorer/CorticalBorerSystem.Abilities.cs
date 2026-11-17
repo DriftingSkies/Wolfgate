@@ -1,5 +1,5 @@
 using Content.Server._NF.Salvage;
-using Content.Server._WF.CorticalBorer; // WOLFGATE(CorticalBorer)
+using Content.Server._WG.CorticalBorer; // WOLFGATE(CorticalBorer)
 using Content.Server.Body.Components;
 using Content.Server.Medical;
 using Content.Shared._Mono.CorticalBorer;

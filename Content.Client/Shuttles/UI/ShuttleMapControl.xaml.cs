@@ -104,7 +104,7 @@ public sealed partial class ShuttleMapControl : BaseShuttleControl
         _physicsQuery = EntManager.GetEntityQuery<PhysicsComponent>();
 
         _font = new VectorFont(cache.GetResource<FontResource>("/EngineFonts/NotoSans/NotoSans-Regular.ttf"), 10);
-        WfAddPlanetScanner(); // WOLFGATE(PlanetScan): hovering a world opens its scan.
+        WgAddPlanetScanner(); // WOLFGATE(PlanetScan): hovering a world opens its scan.
     }
 
     public void SetMap(MapId mapId, Vector2 offset, bool recentering = false)
@@ -168,7 +168,7 @@ public sealed partial class ShuttleMapControl : BaseShuttleControl
             _ftlAngle -= Angle.FromDegrees(15f) * args.Delta.Y; // Mono Edit: Subtract instead of add to preserve clockwise rotation when scrolling up. (positive angles are actually counter-clockwise)
             _ftlAngle = _ftlAngle.Reduced();
             // WOLFGATE(Cockpit): rotating an FTL destination must not also scroll its MFD page.
-            if (WfCockpitControls)
+            if (WgCockpitControls)
                 args.Handle();
             return;
         }
@@ -279,7 +279,7 @@ public sealed partial class ShuttleMapControl : BaseShuttleControl
         }
 
         // WOLFGATE(Planets) START: over a world, the world fills the plot instead of space.
-        if (!DrawWfPlanetBackground(handle, _mapManager.GetMapOrInvalid(ViewingMap)))
+        if (!DrawWgPlanetBackground(handle, _mapManager.GetMapOrInvalid(ViewingMap)))
             DrawParallax(handle);
         // WOLFGATE END
 

@@ -28,7 +28,7 @@ public sealed partial class GCQueueSystem : EntitySystem
     {
         _cfg.OnValueChanged(CCVars.GCMaximumTimeMs, s => _maximumProcessTime = TimeSpan.FromMilliseconds(s),
             true);
-        WFInitializeMinAge(); // WOLFGATE(Performance): queue minimum age
+        WGInitializeMinAge(); // WOLFGATE(Performance): queue minimum age
     }
 
     /// <inheritdoc />CCVars
@@ -61,11 +61,11 @@ public sealed partial class GCQueueSystem : EntitySystem
                    overallWatch.Elapsed < _maximumProcessTime)
             {
                 // WOLFGATE(Performance) START: leave entities queued until the queue's minimum age has passed
-                if (WFTooYoung(queue, proto))
+                if (WGTooYoung(queue, proto))
                     break;
 
                 var e = queue.Dequeue();
-                WFOnDequeued(e);
+                WGOnDequeued(e);
                 // WOLFGATE END
                 if (!Deleted(e))
                 {
@@ -99,10 +99,10 @@ public sealed partial class GCQueueSystem : EntitySystem
 
         var proto = _proto.Index<GCQueuePrototype>(comp.Queue);
         // WOLFGATE(Performance) START: keep an age-protected entry's first time, and overflow such queues within the time limit
-        if (WFAlreadyQueued(e, proto))
+        if (WGAlreadyQueued(e, proto))
             return;
 
-        if (queue.Count > proto.Depth && !WFCanOverflow(queue, proto))
+        if (queue.Count > proto.Depth && !WGCanOverflow(queue, proto))
         // WOLFGATE END
         {
             QueueDel(e); // whelp, too full.
@@ -121,7 +121,7 @@ public sealed partial class GCQueueSystem : EntitySystem
         }
 
         queue.Enqueue(e);
-        WFOnQueued(e, proto); // WOLFGATE(Performance): queue minimum age
+        WGOnQueued(e, proto); // WOLFGATE(Performance): queue minimum age
     }
 }
 

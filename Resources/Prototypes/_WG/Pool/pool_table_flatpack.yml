@@ -1,0 +1,30 @@
+# Sold by John Wolfgate and the Wolfgate vendor.
+- type: entity
+  parent: BaseNFFlatpack
+  id: WGPoolTableFlatpack
+  name: pool table flatpack
+  description: A flatpack holding a billiard table and two cues.
+  components:
+  - type: Flatpack
+    entity: WGPoolTableKit
+  - type: Sprite
+    layers:
+    - state: service_music
+  - type: StaticPrice
+    price: 600
+
+# What the flatpack unpacks into: the table on the tile, with the cues lying on it.
+- type: entity
+  parent: MarkerBase
+  id: WGPoolTableKit
+  name: pool table kit
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EntityTableSpawner
+    offset: 0
+    table: !type:AllSelector
+      children:
+      - id: DarkPackTableWoodBilliard
+      - id: WGPoolCue
+        amount: !type:ConstantNumberSelector
+          value: 2

@@ -1,0 +1,49 @@
+# Specialist vendors at the Halcyon and Helios: one kit per player, from RMC's automated vendor.
+
+- type: entity
+  parent: ColMarTechBase
+  id: WGSpecialistVendorTSF
+  components:
+  - type: Sprite
+    sprite: _Crescent/Structures/armoryPF.rsi
+    layers:
+    - state: off
+    - state: normal-unshaded
+      shader: unshaded
+  - type: CMAutomatedVendor
+    sections:
+    - name: wg-specialist-vendor-section
+      choices: { WGSpecialistKit: 1 }
+      entries:
+      - id: WGKitTsfBreacher
+      - id: WGKitTsfCombatEngineer
+      - id: WGKitTsfCorpsman
+      - id: WGKitTsfMarksman
+      - id: WGKitTsfPyrotechnician
+      - id: WGKitTsfRecon
+      - id: WGKitTsfHeavyGunner
+      - id: WGKitTsfShipGunner
+
+- type: entity
+  parent: ColMarTechBase
+  id: WGSpecialistVendorPDV
+  components:
+  - type: Sprite
+    sprite: _Crescent/Structures/armoryPF.rsi
+    layers:
+    - state: off
+    - state: normal-unshaded
+      shader: unshaded
+  - type: CMAutomatedVendor
+    sections:
+    - name: wg-specialist-vendor-section
+      choices: { WGSpecialistKit: 1 }
+      entries:
+      - id: WGKitPdvBoarder
+      - id: WGKitPdvArtificer
+      - id: WGKitPdvFieldMedic
+      - id: WGKitPdvSharpshooter
+      - id: WGKitPdvHeavy
+      - id: WGKitPdvBurner
+      - id: WGKitPdvAkinciRaider
+      - id: WGKitPdvTopcu

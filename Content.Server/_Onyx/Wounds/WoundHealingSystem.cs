@@ -2,14 +2,14 @@ using System.Linq;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Systems;
 using Content.Shared._Shitmed.Targeting;
-using Content.Shared._WF.Wolfmed.Targeting;
+using Content.Shared._WG.Wolfmed.Targeting;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Damage.Systems;
 using Content.Shared.FixedPoint;
 using Content.Server.Medical.Components; // WOLFGATE(Wolfmed): D14, Wolfgate keeps HealingComponent server-side.
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12, Onyx-shaped damage API facade.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12, Onyx-shaped damage API facade.
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 
@@ -18,7 +18,7 @@ namespace Content.Shared._Onyx.Wounds;
 public sealed partial class WoundHealingSystem : EntitySystem
 {
     [Dependency] private SharedBodySystem _body = default!;
-    [Dependency] private WolfmedDamageableSystem _damage = default!; // WOLFGATE(Wolfmed): Onyx-shaped damage API; see _WF/Wolfmed/Compat
+    [Dependency] private WolfmedDamageableSystem _damage = default!; // WOLFGATE(Wolfmed): Onyx-shaped damage API; see _WG/Wolfmed/Compat
     [Dependency] private WoundBleedingSystem _bleeding = default!;
     [Dependency] private WoundDamageRoutingSystem _routing = default!;
     [Dependency] private WoundSystem _wounds = default!;

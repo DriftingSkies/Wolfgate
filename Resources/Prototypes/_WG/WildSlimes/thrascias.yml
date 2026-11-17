@@ -1,0 +1,398 @@
+# Thrascias's wild slimes: the rime slime and the aurora slime bred from it. Patches of clear blue rime ice beside the
+# crystal fields round the plasma pools, each over an ice-gallery grotto with its own plasma lake in the Rime Galleries.
+# The zone is the pools' ridged noise, lower than the crystal field, and the rime stops where the field begins. The
+# cavern's seed is the surface's plus 7937, so each cavern noise seed is the surface one less 7937, and lower thresholds
+# make each grotto a little wider than its patch.
+
+- type: wgWildSlimeHabitat
+  id: WGWildSlimesThrascias
+  surface: WGSurfaceThrascias
+  breed: WGRimeMutation
+  babyPrototype: WGMobSlimeTranslucentBaby
+  adultPrototype: WGMobSlimeTranslucentAdult
+  adultChance: 0.3
+  patchTemplate: WGThrasciasSlimeZone
+  patchTile: WGFloorThrasciasRimeIce
+  grottoTile: WGCavernFloorThrasciasRimeIce
+  minPatchTiles: 24
+  surfaceSlimes: 3
+  grottoSlimes: 2
+  respawnDelay: 600
+
+# Breathes nothing and keeps its body at the world's cold, which can't hurt it; warm air does. Bathing in liquid plasma
+# heals it. It grows and splits only in deep cold, so it needs a cold pen.
+- type: breed
+  breedName: rime slime
+  id: WGRimeMutation
+  producedExtract: WGRimeSlimeExtract
+  components:
+  - type: Slime
+    breed: WGRimeMutation
+    slimeColor: "#cfe4ff"
+    defaultSlimeProto: WGMobSlimeTranslucentBaby
+    maxOffspring: 4
+    mutationChance: 0.1
+    potentialMutations:
+    - WGAuroraMutation
+  - type: WGSlimeClimate
+    minTemperature: 150
+    maxTemperature: 240
+  - type: BreathingImmunity
+  - type: Damageable
+    damageModifierSet: WGRimeSlime
+    damageContainer: Biological
+  - type: Temperature
+    heatDamageThreshold: 260
+    coldDamageThreshold: 0
+    currentTemperature: 190
+    specificHeat: 42
+    coldDamage: {}
+    heatDamage:
+      types:
+        Heat: 1.5
+  - type: ThermalRegulator
+    metabolismHeat: 200
+    radiatedHeat: 100
+    implicitHeatRegulation: 250
+    sweatHeatRegulation: 50
+    shiveringHeatRegulation: 500
+    normalBodyTemperature: 190
+    thermalRegulationTemperatureThreshold: 2
+  - type: WGReagentBathHeal
+    reagents:
+    - Plasma
+    heal:
+      groups:
+        Brute: -1
+        Burn: -1
+
+# Bred only from rime slimes, shimmering like an aurora; it breeds back to them.
+- type: breed
+  breedName: aurora slime
+  id: WGAuroraMutation
+  producedExtract: WGAuroraSlimeExtract
+  components:
+  - type: Slime
+    breed: WGAuroraMutation
+    slimeColor: "#7fffd4"
+    shouldHaveShader: true
+    shader: XenoBluespace
+    defaultSlimeProto: WGMobSlimeTranslucentBaby
+    maxOffspring: 3
+    mutationChance: 0.3
+    potentialMutations:
+    - WGRimeMutation
+  - type: WGSlimeClimate
+    minTemperature: 150
+    maxTemperature: 240
+  - type: BreathingImmunity
+  - type: Damageable
+    damageModifierSet: WGRimeSlime
+    damageContainer: Biological
+  - type: Temperature
+    heatDamageThreshold: 260
+    coldDamageThreshold: 0
+    currentTemperature: 190
+    specificHeat: 42
+    coldDamage: {}
+    heatDamage:
+      types:
+        Heat: 1.5
+  - type: ThermalRegulator
+    metabolismHeat: 200
+    radiatedHeat: 100
+    implicitHeatRegulation: 250
+    sweatHeatRegulation: 50
+    shiveringHeatRegulation: 500
+    normalBodyTemperature: 190
+    thermalRegulationTemperatureThreshold: 2
+  - type: WGReagentBathHeal
+    reagents:
+    - Plasma
+    heal:
+      groups:
+        Brute: -1
+        Burn: -1
+
+# The base slime's resistances, but cold can't hurt it and heat hurts it more.
+- type: damageModifierSet
+  id: WGRimeSlime
+  coefficients:
+    Blunt: 0.6
+    Slash: 1.2
+    Piercing: 1.2
+    Cold: 0
+    Heat: 1.5
+    Poison: 0.8
+    Cellular: 0.2
+
+# Admin and mapper spawners; neither is sold or bred from anything else.
+- type: entity
+  parent: MobSlimeXenobioBabyPending
+  id: WGMobSlimeBabyRime
+  name: rime slime
+  components:
+  - type: PendingSlimeSpawn
+    basePrototype: WGMobSlimeTranslucentBaby
+    breed: WGRimeMutation
+
+- type: entity
+  parent: MobSlimeXenobioBabyPending
+  id: WGMobSlimeBabyAurora
+  name: aurora slime
+  components:
+  - type: PendingSlimeSpawn
+    basePrototype: WGMobSlimeTranslucentBaby
+    breed: WGAuroraMutation
+
+# Plasma grows cryoxadone, blood grows plasma ore, and water bursts into a freezing cold.
+- type: entity
+  id: WGRimeSlimeExtract
+  parent: BaseSlimeExtract
+  name: rime slime extract
+  components:
+  - type: Sprite
+    layers:
+    - sprite: _WG/Xenobiology/Specific/Xenobiology/extract.rsi
+      state: core
+      color: "#cfe4ff"
+  - type: Reactive
+    reactions:
+    - reagents:
+      - Plasma
+      methods:
+      - Touch
+      - Injection
+      effects:
+      - !type:XenobioReaction
+        base: XenobioExtractReagent
+        effects:
+        - !type:XenobioAdjustSolution
+          reagent: Cryoxadone
+          amount: 10
+    - reagents:
+      - Blood
+      methods:
+      - Touch
+      - Injection
+      effects:
+      - !type:XenobioReaction
+        base: XenobioExtractReaction
+        effects:
+        - !type:XenobioSpawnEntity
+          entity: PlasmaOre1
+          number: 3
+    - reagents:
+      - Water
+      methods:
+      - Touch
+      - Injection
+      effects:
+      - !type:XenobioReaction
+        base: XenobioExtractEvil
+        effects:
+        - !type:Jitter
+          time: 3
+          frequency: 20
+        - !type:XenobioRelayNearby
+          compName: Temperature
+          range: 4
+          effect: !type:AdjustTemperature
+            amount: -60000
+        - !type:CreateGas
+          gas: Frezon
+          multiplier: 10
+  - type: Tag
+    tags:
+    - WGXenobiologyRimeExtract
+
+# Plasma grows leporazine against the cold, blood thaws the frostbite of everyone close, and water bursts into a far
+# deeper freeze.
+- type: entity
+  id: WGAuroraSlimeExtract
+  parent: BaseSlimeExtract
+  name: aurora slime extract
+  components:
+  - type: Sprite
+    layers:
+    - sprite: _WG/Xenobiology/Specific/Xenobiology/extract.rsi
+      state: core
+      color: "#7fffd4"
+  - type: Reactive
+    reactions:
+    - reagents:
+      - Plasma
+      methods:
+      - Touch
+      - Injection
+      effects:
+      - !type:XenobioReaction
+        base: XenobioExtractReagent
+        effects:
+        - !type:XenobioAdjustSolution
+          reagent: Leporazine
+          amount: 15
+    - reagents:
+      - Blood
+      methods:
+      - Touch
+      - Injection
+      effects:
+      - !type:XenobioReaction
+        base: XenobioExtractReaction
+        effects:
+        - !type:XenobioRelayNearby
+          compName: MobState
+          range: 4
+          effect: !type:HealthChange
+            damage:
+              types:
+                Cold: -25
+    - reagents:
+      - Water
+      methods:
+      - Touch
+      - Injection
+      effects:
+      - !type:XenobioReaction
+        base: XenobioExtractEvil
+        effects:
+        - !type:Jitter
+          time: 3
+          frequency: 20
+        - !type:XenobioRelayNearby
+          compName: Temperature
+          range: 6
+          effect: !type:AdjustTemperature
+            amount: -120000
+        - !type:CreateGas
+          gas: Frezon
+          multiplier: 25
+  - type: Tag
+    tags:
+    - WGXenobiologyAuroraExtract
+
+- type: Tag
+  id: WGXenobiologyRimeExtract
+
+- type: Tag
+  id: WGXenobiologyAuroraExtract
+
+- type: xenobiologyBounty
+  id: WGBountyRimeExtract
+  pointsAwarded: 15000
+  entries:
+  - name: bounty-item-wg-rime-extract
+    amount: 1
+    whitelist:
+      tags:
+      - WGXenobiologyRimeExtract
+
+- type: xenobiologyBounty
+  id: WGBountyAuroraExtract
+  pointsAwarded: 40000
+  entries:
+  - name: bounty-item-wg-aurora-extract
+    amount: 1
+    whitelist:
+      tags:
+      - WGXenobiologyAuroraExtract
+
+# The id says "ice" so the planet map colours the rime as snow and ice. Bluer and cloudier than the clear lake ice.
+- type: tile
+  id: WGFloorThrasciasRimeIce
+  parent: WGFloorThrasciasClearIce
+  name: tiles-wg-thrascias-rime-ice
+  sprite: /Textures/_WG/WildSlimes/Thrascias/Tiles/rime_ice.png
+  variants: 4
+  placementVariants: [1, 1, 1, 1]
+  weather: true
+  transparent: true
+
+# The grotto floor: the same rime, solid, since nothing lies below the Rime Galleries.
+- type: tile
+  id: WGCavernFloorThrasciasRimeIce
+  parent: WGFloorThrasciasRimeIce
+  sprite: /Textures/_WG/WildSlimes/Thrascias/Tiles/rime_ice_cavern.png
+  transparent: false
+  indestructible: true
+  deconstructTools: []
+  baseTurf: ""
+
+- type: biomeTemplate
+  id: WGThrasciasSlimeZone
+  layers:
+  - !type:BiomeMetaLayer
+    template: WGThrasciasSlimePatch
+    threshold: 0.7
+    noise: { seed: 431, noiseType: OpenSimplex2, frequency: 0.03 }
+
+- type: biomeTemplate
+  id: WGCavernSlimeZoneThrascias
+  layers:
+  - !type:BiomeMetaLayer
+    template: WGCavernSlimeGrottoThrascias
+    threshold: 0.67
+    noise: { seed: -7506, noiseType: OpenSimplex2, frequency: 0.03 }
+
+# The rime ends at the crystal field: the pools' noise turned over, so the tile is laid only below the field's threshold.
+- type: biomeTemplate
+  id: WGThrasciasSlimePatch
+  layers:
+  - !type:BiomeTileLayer
+    tile: WGFloorThrasciasRimeIce
+    invert: true
+    threshold: -0.9
+    noise: { seed: 3, noiseType: OpenSimplex2, frequency: 0.004, fractalType: Ridged, octaves: 1 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGFloorThrasciasRimeIce]
+    entities: [WGThrasciasRimeMound, WGThrasciasRimeMoundSmall]
+    threshold: 0.88
+    noise: { seed: 433, noiseType: OpenSimplex2, frequency: 1 }
+
+# An ice-gallery grotto: rime floor lit by rime thistles and crystals, with a plasma lake under the surface's.
+- type: biomeTemplate
+  id: WGCavernSlimeGrottoThrascias
+  layers:
+  - !type:BiomeTileLayer
+    tile: WGCavernFloorThrasciasRimeIce
+    threshold: -1
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorThrasciasRimeIce]
+    entities: [WGCavernRimeThistle]
+    threshold: 0.88
+    noise: { seed: 435, noiseType: OpenSimplex2, frequency: 1 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorThrasciasRimeIce]
+    entities: [CrystalCyan, CrystalBlue]
+    threshold: 0.95
+    noise: { seed: 436, noiseType: OpenSimplex2, frequency: 2.5 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorThrasciasRimeIce]
+    entities: [WGThrasciasRimeMound, WGThrasciasRimeMoundSmall]
+    threshold: 0.9
+    noise: { seed: 434, noiseType: OpenSimplex2, frequency: 1 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorThrasciasRimeIce]
+    entities: [FloorLiquidPlasmaEntity]
+    threshold: 0.95
+    noise: { seed: -7934, noiseType: OpenSimplex2, frequency: 0.004, fractalType: Ridged, octaves: 1 }
+
+- type: entity
+  parent: WGCarcinomaJellyMound
+  id: WGThrasciasRimeMound
+  name: rime mound
+  description: A frosted heap of jelly, colder than the ice round it. Something small moves inside it.
+  components:
+  - type: Sprite
+    sprite: _WG/WildSlimes/Thrascias/rime_mound.rsi
+    state: mound
+
+- type: entity
+  parent: WGThrasciasRimeMound
+  id: WGThrasciasRimeMoundSmall
+  name: rime blob
+  description: A small frosted lump of jelly.
+  components:
+  - type: Sprite
+    state: blob

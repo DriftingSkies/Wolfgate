@@ -1,7 +1,7 @@
 - type: tile
   id: Plating
   name: tiles-plating
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/plating.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/plating.png #WOLFGATE(Resprites): Repathed
   baseTurf: Lattice
   isSubfloor: true
   deconstructTools: [ Axing ] # DeltaV - The return of fireaxe prying
@@ -35,7 +35,7 @@
   id: PlatingDamaged
   name: tiles-plating
   # WOLFGATE(Resprites) START: Wizden resprite; variant count kept so saved maps don't show error tiles.
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/plating-damaged.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/plating-damaged.png
   variants: 4
   placementVariants:
   - 1.0
@@ -58,7 +58,7 @@
 - type: tile
   id: PlatingAsteroid
   name: tiles-asteroid-plating
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Asteroid/asteroid-plating.png # WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Asteroid/asteroid-plating.png # WOLFGATE(Resprites): Repathed
   baseTurf: Lattice
   isSubfloor: true
   deconstructTools: [ Axing ] # DeltaV - The return of fireaxe prying
@@ -91,7 +91,7 @@
   id: PlatingSnow
   name: tiles-snow-plating
   # WOLFGATE(Resprites) START: Wizden resprite; variant count kept so saved maps don't show error tiles.
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/Snow/snow-plating.png
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/Snow/snow-plating.png
   variants: 1
   placementVariants:
   - 1.0
@@ -111,7 +111,7 @@
 - type: tile
   id: Lattice
   name: tiles-lattice
-  sprite: /Textures/_WF/Resprites/Wizden/Tiles/lattice.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/Wizden/Tiles/lattice.png #WOLFGATE(Resprites): Repathed
   baseTurf: Space
   isSubfloor: true
   deconstructTools: [ Cutting ]

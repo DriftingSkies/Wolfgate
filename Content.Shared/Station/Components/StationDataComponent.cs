@@ -6,8 +6,8 @@ namespace Content.Shared.Station.Components;
 /// Stores core information about a station, namely its config and associated grids.
 /// All station entities will have this component.
 /// </summary>
-// WOLFGATE(Performance): was AutoGenerateComponentState; WFDeletedRefStateSystem sends Grids, whose entries can be deleted first
-[RegisterComponent, NetworkedComponent, Access(typeof(SharedStationSystem), typeof(Content.Shared._WF.Performance.WFDeletedRefStateSystem))]
+// WOLFGATE(Performance): was AutoGenerateComponentState; WGDeletedRefStateSystem sends Grids, whose entries can be deleted first
+[RegisterComponent, NetworkedComponent, Access(typeof(SharedStationSystem), typeof(Content.Shared._WG.Performance.WGDeletedRefStateSystem))]
 public sealed partial class StationDataComponent : Component
 {
     /// <summary>
@@ -19,6 +19,6 @@ public sealed partial class StationDataComponent : Component
     /// <summary>
     /// List of all grids this station is part of.
     /// </summary>
-    [DataField] // WOLFGATE(Performance): networked by WFDeletedRefStateSystem
+    [DataField] // WOLFGATE(Performance): networked by WGDeletedRefStateSystem
     public HashSet<EntityUid> Grids = new();
 }

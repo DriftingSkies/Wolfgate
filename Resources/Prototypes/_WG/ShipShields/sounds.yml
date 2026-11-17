@@ -1,0 +1,6 @@
+- type: soundCollection
+  id: WGShipShieldImpacts
+  files:
+  - /Audio/_WG/ShipShields/impact_1.ogg
+  - /Audio/_WG/ShipShields/impact_2.ogg
+  - /Audio/_WG/ShipShields/impact_3.ogg

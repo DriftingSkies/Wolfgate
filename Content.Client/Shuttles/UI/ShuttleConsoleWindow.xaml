@@ -1,14 +1,14 @@
-<!-- WOLFGATE(Shuttles): xmlns:wf for _WF shuttle controls -->
+<!-- WOLFGATE(Shuttles): xmlns:wg for _WG shuttle controls -->
 <!-- WOLFGATE(TractorBeam): xmlns:tractor for the capture banner -->
 <!-- WOLFGATE(ShipAccess): xmlns:access for the access tab -->
 <!-- WOLFGATE(Hailing): xmlns:hail for the hail key -->
 <controls:FancyWindow xmlns="https://spacestation14.io"
                       xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
                       xmlns:ui="clr-namespace:Content.Client.Shuttles.UI"
-                      xmlns:wf="clr-namespace:Content.Client._WF.Shuttles.UI"
-                      xmlns:tractor="clr-namespace:Content.Client._WF.TractorBeam.UI"
-                      xmlns:access="clr-namespace:Content.Client._WF.ShipAccess"
-                      xmlns:hail="clr-namespace:Content.Client._WF.Hailing"
+                      xmlns:wg="clr-namespace:Content.Client._WG.Shuttles.UI"
+                      xmlns:tractor="clr-namespace:Content.Client._WG.TractorBeam.UI"
+                      xmlns:access="clr-namespace:Content.Client._WG.ShipAccess"
+                      xmlns:hail="clr-namespace:Content.Client._WG.Hailing"
                       xmlns:graphics="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
                       Title="{Loc 'shuttle-console-window-title'}"
                       SetSize="1000 1000"
@@ -24,7 +24,7 @@
                 </PanelContainer.PanelOverride>
         <BoxContainer Orientation="Vertical" HorizontalAlignment="Center">
         <!-- WOLFGATE(Shuttles): collision warning, across every mode -->
-        <wf:CollisionWarningBanner Name="CollisionBanner" SetWidth="970"/>
+        <wg:CollisionWarningBanner Name="CollisionBanner" SetWidth="970"/>
         <tractor:TractorCaptureBanner Name="CaptureBanner" SetWidth="970"/> <!-- WOLFGATE(TractorBeam) -->
         <!-- Top row mode buttons -->
         <PanelContainer VerticalExpand="False" HorizontalExpand="True" SetWidth="970">
@@ -81,14 +81,14 @@
             <!-- WOLFGATE END -->
         </BoxContainer>
         </PanelContainer>
-        <wf:ShuttleCameraBar Name="CameraBar" SetWidth="970"/> <!-- WOLFGATE(Shuttles): hull camera views -->
+        <wg:ShuttleCameraBar Name="CameraBar" SetWidth="970"/> <!-- WOLFGATE(Shuttles): hull camera views -->
         <!-- Contents box -->
         <BoxContainer Name="Contents"
                       HorizontalAlignment="Stretch"
                       VerticalExpand="True"
                       Margin="5">
             <ui:NavScreen Name="NavContainer" Visible="False"/>
-            <wf:ShipScreen Name="ShipContainer" Visible="False"/> <!-- WOLFGATE(Shuttles) -->
+            <wg:ShipScreen Name="ShipContainer" Visible="False"/> <!-- WOLFGATE(Shuttles) -->
             <access:ShipAccessScreen Name="AccessContainer" Visible="False"/> <!-- WOLFGATE(ShipAccess) -->
             <ui:MapScreen Name="MapContainer" Visible="False"/>
             <ui:DockingScreen Name="DockContainer" Visible="False"/>

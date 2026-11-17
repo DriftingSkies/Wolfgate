@@ -81,7 +81,7 @@ binds:
   type: State
   key: F
 # WOLFGATE(LandingGuide): landing guide toggle while piloting
-- function: WFToggleLandingGuide
+- function: WGToggleLandingGuide
   type: State
   key: J
 - function: CameraRotateLeft
@@ -256,7 +256,7 @@ binds:
   type: State
   key: G
 # WOLFGATE(ExtraInteractions): offer item key, on a key free in the stock layout
-- function: WFOfferItem
+- function: WGOfferItem
   type: State
   key: J
 - function: OpenGuidebook
@@ -633,191 +633,191 @@ binds:
   key: MouseRight
   canFocus: true
 # WOLFGATE(MappingTools) START: Select tool, clipboard, undo and z-level keys for the mapping tools
-- function: WFMappingEnableSelect
+- function: WGMappingEnableSelect
   type: State
   key: M
-- function: WFMappingSelect
+- function: WGMappingSelect
   type: State
   key: MouseLeft
   canFocus: true
   priority: 1
-- function: WFMappingSelect
+- function: WGMappingSelect
   type: State
   key: MouseLeft
   canFocus: true
   mod1: Shift
   priority: 1
-- function: WFMappingSelectCancel
+- function: WGMappingSelectCancel
   type: State
   key: MouseRight
   canFocus: true
   priority: 1
-- function: WFMappingCopy
+- function: WGMappingCopy
   type: State
   key: C
   mod1: Control
-- function: WFMappingCut
+- function: WGMappingCut
   type: State
   key: X
   mod1: Control
-- function: WFMappingPaste
+- function: WGMappingPaste
   type: State
   key: V
   mod1: Control
-- function: WFMappingDelete
+- function: WGMappingDelete
   type: State
   key: Delete
-- function: WFMappingRotate
+- function: WGMappingRotate
   type: State
   key: R
-- function: WFMappingMirror
+- function: WGMappingMirror
   type: State
   key: F
   priority: 1
-- function: WFMappingMirrorVertical
+- function: WGMappingMirrorVertical
   type: State
   key: F
   mod1: Shift
   priority: 1
-- function: WFMappingUndo
+- function: WGMappingUndo
   type: State
   key: Z
   mod1: Control
-- function: WFMappingRedo
+- function: WGMappingRedo
   type: State
   key: Y
   mod1: Control
-- function: WFMappingRedo
+- function: WGMappingRedo
   type: State
   key: Z
   mod1: Control
   mod2: Shift
-- function: WFMappingLevelUp
+- function: WGMappingLevelUp
   type: State
   key: PageUp
-- function: WFMappingLevelDown
+- function: WGMappingLevelDown
   type: State
   key: PageDown
 # WOLFGATE END
 # WOLFGATE(MappingMode) START: Escape drops a reference grid being placed, ahead of the game menu
-- function: WFMappingReferenceCancel
+- function: WGMappingReferenceCancel
   type: State
   key: Escape
   priority: 5
 # WOLFGATE END
 # WOLFGATE(MappingMode) START: build mode and quicksave keys for the mapping screen
-- function: WFMappingMode1
+- function: WGMappingMode1
   type: State
   key: Num1
   priority: 1
-- function: WFMappingMode2
+- function: WGMappingMode2
   type: State
   key: Num2
   priority: 1
-- function: WFMappingMode3
+- function: WGMappingMode3
   type: State
   key: Num3
   priority: 1
-- function: WFMappingMode4
+- function: WGMappingMode4
   type: State
   key: Num4
   priority: 1
-- function: WFMappingMode5
+- function: WGMappingMode5
   type: State
   key: Num5
   priority: 1
-- function: WFMappingMode6
+- function: WGMappingMode6
   type: State
   key: Num6
   priority: 1
-- function: WFMappingMode7
+- function: WGMappingMode7
   type: State
   key: Num7
   priority: 1
-- function: WFMappingMode8
+- function: WGMappingMode8
   type: State
   key: Num8
   priority: 1
-- function: WFMappingMode9
+- function: WGMappingMode9
   type: State
   key: Num9
   priority: 1
-- function: WFMappingMode10
+- function: WGMappingMode10
   type: State
   key: Num0
   priority: 1
-- function: WFMappingModePrimary
+- function: WGMappingModePrimary
   type: State
   key: MouseLeft
   canFocus: true
   priority: 2
-- function: WFMappingModePrimary
+- function: WGMappingModePrimary
   type: State
   key: MouseLeft
   canFocus: true
   mod1: Shift
   priority: 2
-- function: WFMappingModePrimary
+- function: WGMappingModePrimary
   type: State
   key: MouseLeft
   canFocus: true
   mod1: Control
   priority: 2
-- function: WFMappingModeSecondary
+- function: WGMappingModeSecondary
   type: State
   key: MouseRight
   canFocus: true
   priority: 2
-- function: WFMappingModeMiddle
+- function: WGMappingModeMiddle
   type: State
   key: MouseMiddle
   canFocus: true
   priority: 2
-- function: WFMappingModeCancel
+- function: WGMappingModeCancel
   type: State
   key: Escape
   priority: 4
-- function: WFMappingLinkCycle
+- function: WGMappingLinkCycle
   type: State
   key: Tab
   priority: 2
-- function: WFMappingTemplateNudgeUp
+- function: WGMappingTemplateNudgeUp
   type: State
   key: Up
   canRepeat: true
-- function: WFMappingTemplateNudgeUp
+- function: WGMappingTemplateNudgeUp
   type: State
   key: Up
   mod1: Shift
   canRepeat: true
-- function: WFMappingTemplateNudgeDown
+- function: WGMappingTemplateNudgeDown
   type: State
   key: Down
   canRepeat: true
-- function: WFMappingTemplateNudgeDown
+- function: WGMappingTemplateNudgeDown
   type: State
   key: Down
   mod1: Shift
   canRepeat: true
-- function: WFMappingTemplateNudgeLeft
+- function: WGMappingTemplateNudgeLeft
   type: State
   key: Left
   canRepeat: true
-- function: WFMappingTemplateNudgeLeft
+- function: WGMappingTemplateNudgeLeft
   type: State
   key: Left
   mod1: Shift
   canRepeat: true
-- function: WFMappingTemplateNudgeRight
+- function: WGMappingTemplateNudgeRight
   type: State
   key: Right
   canRepeat: true
-- function: WFMappingTemplateNudgeRight
+- function: WGMappingTemplateNudgeRight
   type: State
   key: Right
   mod1: Shift
   canRepeat: true
-- function: WFMappingQuicksave
+- function: WGMappingQuicksave
   type: State
   key: S
   mod1: Control

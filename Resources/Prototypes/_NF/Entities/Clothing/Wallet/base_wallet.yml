@@ -34,7 +34,7 @@
       - NFCoin
       - NFShipyardVoucher
       - Card # single cards
-      - WFHeavyVehicleLicence # WOLFGATE(Vehicles): driving liscences go in wallets
+      - WGHeavyVehicleLicence # WOLFGATE(Vehicles): driving liscences go in wallets
     blacklist:
       tags:
       - Book

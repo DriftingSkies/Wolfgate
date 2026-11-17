@@ -15,13 +15,13 @@
   minimumDistance: 10650
   maximumDistance: 12400
   # WOLFGATE(ReaverCampaign): the Contested Sector game mode spawns the same sector as Standard
-  spawnGamePreset: [ NFAdventure, NFPirate, MonoStandard, WFContestedSector, MonoRogueUSSP, MonoTSFUSSP, MonoADS, MonoChimera, MonoMixed, MonoAllAtOnce, MonoChimeraTsf, MonoChimeraPdv ]
+  spawnGamePreset: [ NFAdventure, NFPirate, MonoStandard, WGContestedSector, MonoRogueUSSP, MonoTSFUSSP, MonoADS, MonoChimera, MonoMixed, MonoAllAtOnce, MonoChimeraTsf, MonoChimeraPdv ]
   spawnGroup: Required
   gridPath: /Maps/_Mono/POI/camelot.yml
   addComponents:
   # WOLFGATE(Ordnance) START: the faction's ordnance terminal
-  - type: WFOrdnanceStation
-    terminal: WFOrdnanceTerminalUSSP
+  - type: WGOrdnanceStation
+    terminal: WGOrdnanceTerminalUSSP
   # WOLFGATE END
   - type: IFF
     color: "#ccaa55"

@@ -1,0 +1,31 @@
+# The flesh ships a woken Scion sends against the reality anchors (WGSiegeSystem). Choir-crewed hulls, overgrown with
+# corruption on arrival and carrying Remade, set on the nearest standing anchor station.
+- type: wgEncounter
+  id: WGEncounterNecroticFleet
+  name: wg-siege-encounter-name
+  start: Manual
+  category: Threat
+  icon: Skull
+  cost: 0
+  # On the sector map, so defenders can find them.
+  hidden: false
+  duration: 3600
+  ships:
+  - key: flesh
+    navigation: WGCrewNavigationRaider
+    vessels: [ Hazel, Metis, Mudskipper ]
+    retrofit: WGPirateRetrofitMedium
+    side: flesh
+    faction: WGChoir
+    profile: WGCrewProfileChoir
+    roles: [ WGCrewPilot, WGCrewGunner, WGCrewGunner, WGCrewDeckhand ]
+    captain: false
+    deckhands: 1
+    guards: 1
+    passengers: [ WGRemadeSlasher, WGRemadeSlasher, WGRemadeLeaper ]
+    skill: Regular
+    attackRange: 1500
+    zoneLines: wg-remade-choir-zone
+    zoneTargets: Everyone
+    evades: false
+    distress: false

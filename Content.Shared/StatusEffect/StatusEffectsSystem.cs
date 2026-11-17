@@ -5,7 +5,7 @@ using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
-using Content.Shared._WF.RMCCore.StatusEffect; // WOLFGATE(RMCCore)
+using Content.Shared._WG.RMCCore.StatusEffect; // WOLFGATE(RMCCore)
 
 namespace Content.Shared.StatusEffect
 {

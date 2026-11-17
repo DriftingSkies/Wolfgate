@@ -1,7 +1,7 @@
 # WOLFGATE(DecorImport) START: ported from Delta-V
 - type: tile
   id: FloorTilePool
-  name: tiles-wf-den-pool-tile
+  name: tiles-wg-den-pool-tile
   sprite: /Textures/_DEN/Tiles/pool/pool.png
   variants: 4
   placementVariants:
@@ -19,7 +19,7 @@
 
 - type: tile
   id: FloorTilePoolDark
-  name: tiles-wf-den-dark-pool-tile
+  name: tiles-wg-den-dark-pool-tile
   sprite: /Textures/_DEN/Tiles/pool/pool-dark.png
   variants: 4
   placementVariants:

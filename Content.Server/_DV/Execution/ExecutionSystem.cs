@@ -50,7 +50,7 @@ public sealed partial class ExecutionSystem : EntitySystem
     [Dependency] private SharedAppearanceSystem _appearanceSystem = default!;
     [Dependency] private SharedAudioSystem _audioSystem = default!;
     [Dependency] private GunSystem _gunSystem = default!;
-    [Dependency] private Content.Server._WF.Wolfmed.Life.WolfmedExecutionSystem _wolfmedExecution = default!; // WOLFGATE(Wolfmed): the kill and the gore tiers on a wound host
+    [Dependency] private Content.Server._WG.Wolfmed.Life.WolfmedExecutionSystem _wolfmedExecution = default!; // WOLFGATE(Wolfmed): the kill and the gore tiers on a wound host
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -111,7 +111,7 @@ public sealed partial class ExecutionSystem : EntitySystem
 
         // The victim must be incapacitated to be executed
         // WOLFGATE(Wolfmed) START: a Downed wound host is helpless enough to execute
-        if (!HasComp<Content.Shared._WF.Wolfmed.Consciousness.WolfmedDownedComponent>(victim))
+        if (!HasComp<Content.Shared._WG.Wolfmed.Consciousness.WolfmedDownedComponent>(victim))
         // WOLFGATE END
         if (victim != attacker && _actionBlockerSystem.CanInteract(victim, null))
             return false;

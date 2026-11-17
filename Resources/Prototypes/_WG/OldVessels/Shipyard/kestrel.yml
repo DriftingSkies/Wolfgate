@@ -1,0 +1,43 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+# Author Info
+# GitHub: kyres1
+# Discord: kyres1
+
+# Shuttle Notes:
+#
+- type: vessel
+  id: Kestrel
+  parent: BaseVessel
+  name: SKR Kestrel
+  description: A small jump-capable science vessel meant for long-term missions. Comes with a living suite and a decent defensive armament for its size, though it is without much maneuvering performance.
+  price: 78811
+  category: Small
+  group: Shipyard
+  shuttlePath: /SharedMaps/_WG/OldVessels/kestrel.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: null
+  class:
+  - Science
+  engine:
+  - Uranium
+
+- type: gameMap
+  id: Kestrel
+  mapName: 'SKR Kestrel'
+  mapPath: /SharedMaps/_WG/OldVessels/kestrel.yml
+  minPlayers: 0
+  stations:
+    Kestrel:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Kestrel CIV{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'
+        - type: StationJobs
+          availableJobs:
+            Contractor: [ 0, 0 ]
+            # Pilot: [ 0, 0 ]
+            # Mercenary: [ 0, 0 ]

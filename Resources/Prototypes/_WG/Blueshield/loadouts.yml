@@ -1,0 +1,101 @@
+- type: loadout
+  id: WGContractorClothingUniformJumpsuitBlueshieldOfficer
+  price: 0
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitBlueshieldOfficer
+
+- type: loadout
+  id: WGContractorClothingUniformJumpskirtBlueshieldOfficer
+  price: 0
+  equipment:
+    jumpsuit: ClothingUniformJumpskirtBlueshieldOfficer
+
+- type: loadout
+  id: WGContractorClothingUniformJumpsuitBlueshieldShirt
+  price: 0
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitBlueshieldShirt
+
+- type: loadout
+  id: WGContractorClothingOuterBlueshieldArmourVest
+  price: 0
+  equipment:
+    outerClothing: ClothingBlueshieldArmourVest
+
+- type: loadout
+  id: WGContractorClothingOuterBlueshieldArmoredJacket
+  price: 0
+  equipment:
+    outerClothing: ClothingBlueshieldArmoredJacket
+
+- type: loadout
+  id: WGContractorClothingHeadHatCowboyBlueshield
+  price: 0
+  equipment:
+    head: ClothingHeadHatCowboyBlueshield
+
+- type: loadout
+  id: WGContractorClothingNeckMantleBlueshield
+  price: 0
+  equipment:
+    neck: ClothingNeckMantleBlueshield
+
+- type: loadout
+  id: WGContractorClothingNeckEnsembleBlueshield
+  price: 0
+  equipment:
+    neck: ClothingNeckEnsembleBlueshield
+
+- type: loadout
+  id: WGContractorClothingShoesBootsWinterSnowjackBso
+  price: 0
+  equipment:
+    shoes: ClothingShoesBootsWinterSnowjackBso
+
+- type: loadout
+  id: WGContractorClothingBeltMilitaryWebbingBSO
+  price: 0
+  equipment:
+    belt: ClothingBeltMilitaryWebbingBSO
+
+- type: loadout
+  id: WGContractorClothingBackpackBlueshield
+  price: 0
+  equipment:
+    back: ClothingBackpackBlueshield
+
+- type: loadout
+  id: WGContractorClothingBackpackDuffelBlueshield
+  price: 0
+  equipment:
+    back: ClothingBackpackDuffelBlueshield
+
+- type: loadout
+  id: WGContractorClothingBackpackSatchelBlueshield
+  price: 0
+  equipment:
+    back: ClothingBackpackSatchelBlueshield
+
+- type: loadout
+  id: WGContractorClothingBackpackMessengerBlueshield
+  price: 0
+  equipment:
+    back: ClothingBackpackMessengerBlueshield
+
+- type: loadout
+  id: WGContractorClothingHeadsetAltBlueshield
+  price: 0
+  equipment:
+    ears: ClothingHeadsetAltBlueshield
+
+- type: loadout
+  id: WGContractorClothingEyesGlassesBSO
+  price: 0
+  equipment:
+    eyes: ClothingEyesGlassesBSO
+
+- type: loadout
+  id: WGContractorClothingMaskGasSwatBSO
+  price: 0
+  equipment:
+    mask: ClothingBSOMaskGasSwat

@@ -16,9 +16,9 @@ using Content.Shared.Forensics;
 using Content.Shared.Forensics.Components;
 using Content.Shared.HealthExaminable;
 using Content.Shared._Onyx.Wounds; // WOLFGATE(Wolfmed): Wolfmed wound hosts own their own bleeding.
-using Content.Server._WF.Wolfmed.Consciousness; // WOLFGATE(Wolfmed): CONSC
-using Content.Server._WF.BloodColour; // WOLFGATE(BloodColour)
-using Content.Shared._WF.BloodColour; // WOLFGATE(BloodColour)
+using Content.Server._WG.Wolfmed.Consciousness; // WOLFGATE(Wolfmed): CONSC
+using Content.Server._WG.BloodColour; // WOLFGATE(BloodColour)
+using Content.Shared._WG.BloodColour; // WOLFGATE(BloodColour)
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Rejuvenate;
@@ -33,10 +33,10 @@ namespace Content.Server.Body.Systems;
 public sealed partial class BloodstreamSystem : EntitySystem
 {
     [Dependency] private IGameTiming _gameTiming = default!;
-    [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _wfDormancy = default!; // WOLFGATE(Dormancy): skips NPC bodies nobody is near
+    [Dependency] private Content.Server._WG.Dormancy.WGDormancySystem _wgDormancy = default!; // WOLFGATE(Dormancy): skips NPC bodies nobody is near
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private IRobustRandom _robustRandom = default!;
-    [Dependency] private Content.Shared._WF.Wolfmed.Wounds.WolfmedBleedGateSystem _wfBleedGate = default!; // WOLFGATE(Wolfmed)
+    [Dependency] private Content.Shared._WG.Wolfmed.Wounds.WolfmedBleedGateSystem _wgBleedGate = default!; // WOLFGATE(Wolfmed)
     [Dependency] private AudioSystem _audio = default!;
     [Dependency] private DamageableSystem _damageableSystem = default!;
     [Dependency] private PopupSystem _popupSystem = default!;
@@ -48,8 +48,8 @@ public sealed partial class BloodstreamSystem : EntitySystem
     [Dependency] private AlertsSystem _alertsSystem = default!;
     [Dependency] private ForensicsSystem _forensicsSystem = default!;
     [Dependency] private WolfmedConsciousnessSystem _wolfmedConsciousness = default!; // WOLFGATE(Wolfmed): CONSC
-    [Dependency] private WFBloodColourSystem _wfBloodColour = default!; // WOLFGATE(BloodColour)
-    [Dependency] private Content.Server._WF.Wolfmed.Life.WolfmedLifeSystem _wolfmedLife = default!; // WOLFGATE(Wolfmed): M3
+    [Dependency] private WGBloodColourSystem _wgBloodColour = default!; // WOLFGATE(BloodColour)
+    [Dependency] private Content.Server._WG.Wolfmed.Life.WolfmedLifeSystem _wolfmedLife = default!; // WOLFGATE(Wolfmed): M3
 
     public override void Initialize()
     {
@@ -84,7 +84,7 @@ public sealed partial class BloodstreamSystem : EntitySystem
             return;
 
         // WOLFGATE(Wolfmed) START: salted food and water must not form saline
-        if (Content.Server._WF.Wolfmed.Medical.WolfmedOralAbsorptionSystem.BlockedInBody(args.Reaction))
+        if (Content.Server._WG.Wolfmed.Medical.WolfmedOralAbsorptionSystem.BlockedInBody(args.Reaction))
         {
             args.Cancelled = true;
             return;
@@ -134,7 +134,7 @@ public sealed partial class BloodstreamSystem : EntitySystem
                 continue;
 
             bloodstream.NextUpdate += bloodstream.UpdateInterval;
-            if (_wfDormancy.BodySleeps(uid)) continue; // WOLFGATE(Dormancy): an NPC body no player is near on a planet skips its upkeep
+            if (_wgDormancy.BodySleeps(uid)) continue; // WOLFGATE(Dormancy): an NPC body no player is near on a planet skips its upkeep
 
             if (!_solutionContainerSystem.ResolveSolution(uid, bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out var bloodSolution))
                 continue;
@@ -142,7 +142,7 @@ public sealed partial class BloodstreamSystem : EntitySystem
             // Adds blood to their blood level if it is below the maximum; Blood regeneration. Must be alive.
             // WOLFGATE(MeridianTraits): a hemophage's blood only comes back by feeding
             if (bloodSolution.Volume < bloodSolution.MaxVolume && !_mobStateSystem.IsDead(uid)
-                && !HasComp<Content.Shared._WF.MeridianTraits.Hemophage.WFHemophageComponent>(uid))
+                && !HasComp<Content.Shared._WG.MeridianTraits.Hemophage.WGHemophageComponent>(uid))
             {
                 // WOLFGATE(Wolfmed): M3: an impaired heart regenerates at its band's factor (plan §8); 1 everywhere else.
                 TryModifyBloodLevel(uid, bloodstream.BloodRefreshAmount * _wolfmedLife.BloodRegenFactor(uid), bloodstream);
@@ -188,12 +188,12 @@ public sealed partial class BloodstreamSystem : EntitySystem
             {
                 // If they're healthy, we'll try and heal some bloodloss instead.
                 // WOLFGATE(Wolfmed) START: skip the damage pipeline when there is no bloodloss to heal.
-                var wfBloodHeal = bloodstream.BloodlossHealDamage * bloodPercentage;
-                if (Content.Server._WF.Wolfmed.Damage.WolfmedHealCheck.WouldHeal(CompOrNull<DamageableComponent>(uid), wfBloodHeal))
+                var wgBloodHeal = bloodstream.BloodlossHealDamage * bloodPercentage;
+                if (Content.Server._WG.Wolfmed.Damage.WolfmedHealCheck.WouldHeal(CompOrNull<DamageableComponent>(uid), wgBloodHeal))
                 // WOLFGATE END
                 _damageableSystem.TryChangeDamage(
                     uid,
-                    wfBloodHeal, // WOLFGATE(Wolfmed): was BloodlossHealDamage * bloodPercentage, computed above.
+                    wgBloodHeal, // WOLFGATE(Wolfmed): was BloodlossHealDamage * bloodPercentage, computed above.
                     ignoreResistances: true, interruptsDoAfters: false);
 
                 // WOLFGATE(Wolfmed) START: nothing to remove when low blood added no drunk or stutter time.
@@ -265,7 +265,7 @@ public sealed partial class BloodstreamSystem : EntitySystem
         var oldBleedAmount = ent.Comp.BleedAmount;
         var total = bloodloss.GetTotal();
         var totalFloat = total.Float();
-        if (totalFloat > 0 && !_wfBleedGate.CanStartBleeding(ent)) // WOLFGATE(Wolfmed): the body or its gear refused the bleed; cautery still works.
+        if (totalFloat > 0 && !_wgBleedGate.CanStartBleeding(ent)) // WOLFGATE(Wolfmed): the body or its gear refused the bleed; cautery still works.
             return;
 
         TryModifyBleedAmount(ent, totalFloat, ent);
@@ -546,7 +546,7 @@ public sealed partial class BloodstreamSystem : EntitySystem
             foreach (var reagent in bloodSolution.Contents)
             {
                 List<ReagentData> reagentData = reagent.Reagent.EnsureReagentData();
-                reagentData.RemoveAll(x => x is DnaData || x is WFBloodColourData); // WOLFGATE(BloodColour): was x is DnaData, both are re-added below
+                reagentData.RemoveAll(x => x is DnaData || x is WGBloodColourData); // WOLFGATE(BloodColour): was x is DnaData, both are re-added below
                 reagentData.AddRange(GetEntityBloodData(entity.Owner));
             }
         }
@@ -569,7 +569,7 @@ public sealed partial class BloodstreamSystem : EntitySystem
         }
 
         bloodData.Add(dnaData);
-        _wfBloodColour.AddBloodData(uid, bloodData); // WOLFGATE(BloodColour): the profile's blood colour rides on the blood
+        _wgBloodColour.AddBloodData(uid, bloodData); // WOLFGATE(BloodColour): the profile's blood colour rides on the blood
 
         return bloodData;
     }

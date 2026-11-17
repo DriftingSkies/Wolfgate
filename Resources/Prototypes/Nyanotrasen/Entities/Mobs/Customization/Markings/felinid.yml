@@ -108,7 +108,7 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_tip_FRONT
   # WOLFGATE END
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
@@ -116,7 +116,7 @@
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_stripes_odd
   # WOLFGATE(Genitals) START: south frame on TailBehind
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_tip_BEHIND
   # WOLFGATE END
 
@@ -137,7 +137,7 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_tip_FRONT
   # WOLFGATE END
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
@@ -145,13 +145,13 @@
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_stripes_odd
   # WOLFGATE(Genitals) START: split art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_bow_FRONT
   # WOLFGATE END
   # WOLFGATE(Genitals) START: south frame on TailBehind
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_tip_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_bow_BEHIND
   # WOLFGATE END
 
@@ -172,7 +172,7 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_tip_FRONT
   # WOLFGATE END
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
@@ -180,13 +180,13 @@
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_stripes_odd
   # WOLFGATE(Genitals) START: split art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_bell_FRONT
   # WOLFGATE END
   # WOLFGATE(Genitals) START: south frame on TailBehind
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_tip_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_bell_BEHIND
   # WOLFGATE END
 
@@ -209,7 +209,7 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_tip_FRONT
   # WOLFGATE END
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
@@ -217,16 +217,16 @@
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_stripes_odd
   # WOLFGATE(Genitals) START: split art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_bow_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_bell_FRONT
   # WOLFGATE END
   # WOLFGATE(Genitals) START: south frame on TailBehind
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_tip_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_bow_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_bell_BEHIND
   # WOLFGATE END

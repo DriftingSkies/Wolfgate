@@ -1,0 +1,24 @@
+- type: gamePreset
+  id: WGContestedSector
+  alias:
+    - contested
+    - contestedsector
+    - ashfall
+    - monoashfall
+  name: wg-reaver-preset-title
+  description: wg-reaver-preset-description
+  showInVote: true
+  rules:
+  - NFAdventure
+  - BasicStationEventScheduler
+  - BluespaceEventScheduler
+  - BluespaceDungeonEventScheduler
+  - BluespaceSalvageEventScheduler
+  - SmugglingEventScheduler
+  - FrontierRoundstartVariation
+  - MonoMonolithicEventsScheduler
+  - ManualPortstrikeTsfPdv
+  - StarSystemKyphrus
+  - WGReaverCampaignRule
+  - WGAdsCampaignRule
+  - WGRemadeDiscoveryRule

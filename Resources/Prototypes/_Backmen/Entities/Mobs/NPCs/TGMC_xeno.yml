@@ -67,9 +67,9 @@
     openTimeOne: 0.4
     openTimeTwo: 0.4
     openSound:
-      path: /Audio/_WF/Xenonids/Xeno/alien_resin_move1.ogg
+      path: /Audio/_WG/Xenonids/Xeno/alien_resin_move1.ogg
     closeSound:
-      path: /Audio/_WF/Xenonids/Xeno/alien_resin_move2.ogg
+      path: /Audio/_WG/Xenonids/Xeno/alien_resin_move2.ogg
   - type: Damageable
     damageModifierSet: XenoSlimeModifier
   - type: IconSmooth

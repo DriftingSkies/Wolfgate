@@ -1,0 +1,153 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+                      xmlns:mapping="clr-namespace:Content.Client._WG.MappingMode"
+                      xmlns:graphics="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+                      Title="{Loc 'wg-mapping-mode-menu-title'}"
+                      MinSize="600 400"
+                      SetSize="680 520">
+    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+        <TabContainer Name="Tabs" Access="Public" VerticalExpand="True">
+            <!-- Session -->
+            <ScrollContainer HScrollEnabled="False" VerticalExpand="True">
+                <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+                    <BoxContainer Name="NoSessionBox" Access="Public" Orientation="Vertical" SeparationOverride="6">
+                        <Label Text="{Loc 'wg-mapping-mode-menu-no-session'}" />
+                        <Button Name="ReturnButton" Access="Public" Text="{Loc 'wg-mapping-mode-menu-return'}"
+                                ToolTip="{Loc 'wg-mapping-mode-menu-return-tooltip'}" TooltipDelay="0" />
+                    </BoxContainer>
+
+                    <BoxContainer Name="SessionBox" Access="Public" Orientation="Vertical" SeparationOverride="6">
+                        <Label Name="SessionNameLabel" Access="Public" StyleClasses="LabelHeading" ClipText="True" />
+                        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                            <Label Name="CodeLabel" Access="Public" HorizontalExpand="True" VAlign="Center" />
+                            <Button Name="CopyCodeButton" Access="Public" Text="{Loc 'wg-mapping-mode-menu-copy'}" />
+                            <controls:ConfirmButton Name="NewCodeButton" Access="Public"
+                                                    Text="{Loc 'wg-mapping-mode-menu-new-code'}"
+                                                    ToolTip="{Loc 'wg-mapping-mode-menu-new-code-tooltip'}"
+                                                    TooltipDelay="0" />
+                        </BoxContainer>
+                        <Label Name="StatusLabel" Access="Public" StyleClasses="LabelSubText" ClipText="True" />
+                        <Label Name="TestLabel" Access="Public" StyleClasses="LabelSubText" ClipText="True" Visible="False" />
+
+                        <Label Text="{Loc 'wg-mapping-mode-menu-members'}" StyleClasses="LabelHeading" Margin="0 6 0 0" />
+                        <BoxContainer Name="MemberList" Access="Public" Orientation="Vertical" SeparationOverride="2" />
+
+                        <Label Text="{Loc 'wg-mapping-mode-menu-autosave'}" StyleClasses="LabelHeading" Margin="0 6 0 0" />
+                        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                            <OptionButton Name="AutosaveOption" Access="Public" MinWidth="160" />
+                            <Label Name="AutosaveHint" Access="Public" StyleClasses="LabelSubText" VAlign="Center"
+                                   HorizontalExpand="True" ClipText="True" />
+                        </BoxContainer>
+
+                        <Label Text="{Loc 'wg-mapping-modebar-menu-screen'}" StyleClasses="LabelHeading"
+                               Margin="0 6 0 0" />
+                        <Button Name="ResetLayoutButton" Access="Public" HorizontalAlignment="Left"
+                                Text="{Loc 'wg-mapping-modebar-menu-reset'}"
+                                ToolTip="{Loc 'wg-mapping-modebar-menu-reset-tooltip'}" TooltipDelay="0" />
+
+                        <controls:ConfirmButton Name="LeaveButton" Access="Public" Margin="0 12 0 0"
+                                                Text="{Loc 'wg-mapping-mode-menu-leave'}"
+                                                ToolTip="{Loc 'wg-mapping-mode-menu-leave-tooltip'}"
+                                                TooltipDelay="0" />
+                    </BoxContainer>
+                </BoxContainer>
+            </ScrollContainer>
+
+            <!-- Grids -->
+            <BoxContainer Name="GridsBox" Access="Public" Orientation="Vertical" Margin="8" SeparationOverride="6">
+                <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                    <Label Name="GridsHint" Access="Public" StyleClasses="LabelSubText" VAlign="Center"
+                           HorizontalExpand="True" ClipText="True" />
+                    <Button Name="NextGridButton" Access="Public" Text="{Loc 'wg-mapping-ship-menu-next-grid'}"
+                            ToolTip="{Loc 'wg-mapping-ship-menu-next-grid-tooltip'}" TooltipDelay="0" />
+                    <Button Name="NewGridButton" Access="Public" ToggleMode="True"
+                            Text="{Loc 'wg-mapping-mode-menu-new-grid'}"
+                            ToolTip="{Loc 'wg-mapping-mode-menu-new-grid-tooltip'}" TooltipDelay="0" />
+                    <Button Name="GridsRefreshButton" Access="Public" Text="{Loc 'wg-mapping-mode-lobby-refresh'}" />
+                </BoxContainer>
+                <ScrollContainer HScrollEnabled="False" VerticalExpand="True">
+                    <BoxContainer Name="GridList" Access="Public" Orientation="Vertical" SeparationOverride="2" />
+                </ScrollContainer>
+                <Button Name="DeleteGridButton" Access="Public" HorizontalAlignment="Left"
+                        Text="{Loc 'wg-mapping-mode-menu-delete-grid'}"
+                        ToolTip="{Loc 'wg-mapping-mode-menu-delete-grid-tooltip'}"
+                        TooltipDelay="0" />
+                <PanelContainer Name="DeleteConfirmBox" Access="Public" Visible="False">
+                    <PanelContainer.PanelOverride>
+                        <graphics:StyleBoxFlat BackgroundColor="#3a1010" BorderColor="#ff5050"
+                                               BorderThickness="1" ContentMarginLeftOverride="6"
+                                               ContentMarginRightOverride="6" ContentMarginTopOverride="4"
+                                               ContentMarginBottomOverride="4" />
+                    </PanelContainer.PanelOverride>
+                    <BoxContainer Orientation="Vertical" SeparationOverride="4">
+                        <Label Name="DeleteConfirmLabel" Access="Public" />
+                        <Label Text="{Loc 'wg-mapping-mode-menu-delete-grid-preview-hint'}"
+                               StyleClasses="LabelSubText" />
+                        <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                            <Button Name="DeleteConfirmButton" Access="Public" StyleClasses="Caution"
+                                    Text="{Loc 'wg-mapping-mode-menu-delete-grid-confirm'}" />
+                            <Button Name="DeleteCancelButton" Access="Public"
+                                    Text="{Loc 'wg-mapping-mode-menu-delete-grid-cancel'}" />
+                        </BoxContainer>
+                    </BoxContainer>
+                </PanelContainer>
+            </BoxContainer>
+
+            <!-- Reference -->
+            <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+                <Label Text="{Loc 'wg-mapping-mode-menu-reference-hint'}" StyleClasses="LabelSubText" />
+                <BoxContainer Orientation="Horizontal" SeparationOverride="8" VerticalExpand="True">
+                    <BoxContainer Orientation="Vertical" SeparationOverride="4" HorizontalExpand="True">
+                        <LineEdit Name="ReferenceSearch" Access="Public"
+                                  PlaceHolder="{Loc 'wg-mapping-mode-menu-reference-search'}" />
+                        <ItemList Name="ReferenceList" Access="Public" SelectMode="Single" VerticalExpand="True" />
+                    </BoxContainer>
+                    <BoxContainer Orientation="Vertical" SeparationOverride="4" HorizontalExpand="True">
+                        <mapping:WGMappingReferencePreviewControl Name="ReferencePreview" Access="Public"
+                                                                  VerticalExpand="True" />
+                        <Label Name="ReferenceInfo" Access="Public" StyleClasses="LabelSubText" ClipText="True" />
+                        <Button Name="ReferencePlaceButton" Access="Public" Disabled="True"
+                                Text="{Loc 'wg-mapping-mode-menu-reference-place'}" />
+                    </BoxContainer>
+                </BoxContainer>
+            </BoxContainer>
+
+            <!-- Save -->
+            <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+                <Label Text="{Loc 'wg-mapping-mode-menu-save-name'}" StyleClasses="LabelHeading" />
+                <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                    <LineEdit Name="SaveNameEdit" Access="Public" HorizontalExpand="True" />
+                    <Button Name="SaveButton" Access="Public" Text="{Loc 'wg-mapping-mode-menu-save-now'}" />
+                </BoxContainer>
+                <Label Text="{Loc 'wg-mapping-mode-menu-save-hint'}" StyleClasses="LabelSubText" />
+                <BoxContainer Orientation="Horizontal" SeparationOverride="8" Margin="0 8 0 0">
+                    <Button Name="ExportButton" Access="Public"
+                            Text="{Loc 'wg-mapping-export-button'}"
+                            ToolTip="{Loc 'wg-mapping-export-button-tooltip'}" TooltipDelay="0" />
+                </BoxContainer>
+                <mapping:WGMappingDownloadRow Name="SaveDownloadRow" Access="Public" />
+                <Label Name="LastSavedLabel" Access="Public" Margin="0 8 0 0" />
+                <Label Name="NextAutosaveLabel" Access="Public" />
+                <Label Name="DirtyLabel" Access="Public" StyleClasses="LabelSubText" />
+            </BoxContainer>
+
+            <!-- Library -->
+            <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+                <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                    <Label Name="LibraryUsage" Access="Public" StyleClasses="LabelSubText" HorizontalExpand="True"
+                           VAlign="Center" />
+                    <Button Name="LibraryUploadButton" Access="Public" Text="{Loc 'wg-mapping-mode-upload-button'}"
+                            ToolTip="{Loc 'wg-mapping-mode-upload-button-tooltip'}" TooltipDelay="0" />
+                    <Button Name="LibraryRefreshButton" Access="Public" Text="{Loc 'wg-mapping-mode-lobby-refresh'}" />
+                </BoxContainer>
+                <ScrollContainer HScrollEnabled="False" VerticalExpand="True">
+                    <mapping:WGMappingLibraryList Name="LibraryList" Access="Public" />
+                </ScrollContainer>
+                <mapping:WGMappingDownloadTargetPicker Name="DownloadTarget" Access="Public" />
+                <mapping:WGMappingDownloadRow Name="DownloadRow" Access="Public" />
+                <mapping:WGMappingUploadRow Name="UploadRow" Access="Public" />
+            </BoxContainer>
+        </TabContainer>
+        <Label Name="ResultLabel" Access="Public" ClipText="True" />
+    </BoxContainer>
+</controls:FancyWindow>

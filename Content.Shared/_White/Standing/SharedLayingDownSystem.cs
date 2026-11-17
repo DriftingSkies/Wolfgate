@@ -139,7 +139,7 @@ public abstract partial class SharedLayingDownSystem : EntitySystem
         }
 
         // WOLFGATE(Modsuits) START: worn gear can shorten the stand-up do-after
-        var standingEv = new Content.Shared._WF.Modsuits.Support.GetStandingUpTimeMultiplierEvent();
+        var standingEv = new Content.Shared._WG.Modsuits.Support.GetStandingUpTimeMultiplierEvent();
         if (TryComp<InventoryComponent>(uid, out var inventory))
             _inventory.RelayEvent((uid, inventory), ref standingEv);
 

@@ -43,7 +43,7 @@
     damageContainers:
     - Inorganic
     - Silicon
-    - WFSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
+    - WGSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
     - Synth # WOLFGATE(Wolfmed): the HardLight Synth's container, so its bar shows
   inventoryTemplateId: borgShort
   spriteBodyState: engineer
@@ -127,7 +127,7 @@
     damageContainers:
     - Inorganic
     - Silicon
-    - WFSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
+    - WGSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
     - Synth # WOLFGATE(Wolfmed): the HardLight Synth's container, so its bar shows
   inventoryTemplateId: borgShort
   spriteBodyState: engineer
@@ -192,7 +192,7 @@
     - Biological
     - Inorganic
     - Silicon
-    - WFSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
+    - WGSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
     - Synth # WOLFGATE(Wolfmed): the HardLight Synth's container, so its bar shows
   - type: FootstepModifier
     footstepSoundCollection:
@@ -232,7 +232,7 @@
     - Biological
     - Inorganic
     - Silicon
-    - WFSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
+    - WGSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
     - Synth # WOLFGATE(Wolfmed): the HardLight Synth's container, so its bar shows
   - type: FootstepModifier
     footstepSoundCollection:
@@ -270,7 +270,7 @@
     - Biological
     - Inorganic
     - Silicon
-    - WFSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
+    - WGSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
     - Synth # WOLFGATE(Wolfmed): the HardLight Synth's container, so its bar shows
   - type: FootstepModifier
     footstepSoundCollection:
@@ -307,7 +307,7 @@
     - Biological
     - Inorganic
     - Silicon
-    - WFSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
+    - WGSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
     - Synth # WOLFGATE(Wolfmed): the HardLight Synth's container, so its bar shows
   - type: FootstepModifier
     footstepSoundCollection:

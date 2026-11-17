@@ -1,5 +1,5 @@
 using Content.Client._NF.LateJoin;
-using Content.Client._WF.RoundSetup; // WOLFGATE(RoundSetup)
+using Content.Client._WG.RoundSetup; // WOLFGATE(RoundSetup)
 using Content.Client.Audio;
 using Content.Client.Eui;
 using Content.Client.GameTicking.Managers;

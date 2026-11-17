@@ -11,7 +11,7 @@ using Robust.Shared.Audio;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 using Content.Shared.Nyanotrasen.Kitchen.Prototypes;
 
 namespace Content.Server.Nyanotrasen.Kitchen.Components

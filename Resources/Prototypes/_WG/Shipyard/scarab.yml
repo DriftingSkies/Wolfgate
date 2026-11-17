@@ -1,0 +1,38 @@
+#Author Info
+# nagoll1 (Discord) nagoll12 (Github)
+# __Sui__ (Discord) NEWSUI (Github)
+- type: vessel
+  id: WGScarab
+  parent: BaseVessel
+  name: 'Scarab'
+  description: 'A large mobile drydock for a crew of engineers and salvagers. Built to help ships around the sector: repairs, towing, power and upgrades.'
+  price: 333238 # appraised at 289773
+  category: Large # 1041 tiles
+  group: Shipyard
+  requireCrew: true
+  shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/scarab.yml
+  guidebookPage: null
+  class:
+  - Scrapyard
+  - Salvage
+  - Engineering
+  engine:
+  - AME
+
+- type: gameMap
+  id: WGScarab
+  mapName: 'Scarab'
+  mapPath: /SharedMaps/_WG/Shipyard/Shuttles/scarab.yml
+  minPlayers: 0
+  stations:
+    WGScarab:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Scarab CIV{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

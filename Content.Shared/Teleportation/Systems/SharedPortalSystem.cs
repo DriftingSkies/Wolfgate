@@ -5,7 +5,7 @@ using Content.Shared.Movement.Pulling.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Projectiles;
 using Content.Shared.Teleportation.Components;
-using Content.Shared._WF.InteractionParticles; // WOLFGATE(InteractionParticles)
+using Content.Shared._WG.InteractionParticles; // WOLFGATE(InteractionParticles)
 using Content.Shared.Weapons.Misc;
 using Content.Shared.Verbs;
 using Robust.Shared.Audio;

@@ -1,0 +1,274 @@
+# Strangers (WGStrangerSystem): oddballs found in the wilderness, in houses and sites, and round crazy camps' fires.
+# Most walk up to whoever they see and want a word; the stalker just follows. Their own brain only takes over when
+# they turn on someone, or someone hurts them, and they remember who. Roamers wander the world; the dealer, the
+# conspiracist and the stalker may live in a house, the mugger, the preacher and the beggar at a crazy camp, and both
+# guard their homes. Dialogues are in dialogues.yml.
+
+- type: entity
+  abstract: true
+  parent: BaseMobHuman
+  id: WGStrangerBase
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: RandomHumanoidAppearance
+    randomizeName: true
+  - type: NpcFactionMember
+    factions:
+    - SimpleNeutral
+  - type: InputMover
+  - type: MobMover
+  - type: HTN
+    rootTask:
+      task: SimpleHumanoidHostileCompound
+  - type: WGVehicleBoarder
+
+- type: entity
+  parent: WGStrangerBase
+  id: WGStrangerDealer
+  name: shifty stranger
+  suffix: Drug dealer
+  components:
+  - type: WGStranger
+    dialogue: WGStrangerDialogueDealer
+  - type: Loadout
+    prototypes: [ WGStrangerGearDealer ]
+
+- type: entity
+  parent: WGStrangerBase
+  id: WGStrangerMugger
+  name: rough stranger
+  suffix: Mugger
+  components:
+  - type: WGNpcIntent
+    set: WGIntentsMugger
+  - type: WGStranger
+    dialogue: WGStrangerDialogueMugger
+  - type: Loadout
+    prototypes: [ WGStrangerGearMugger ]
+
+- type: entity
+  parent: WGStrangerBase
+  id: WGStrangerPreacher
+  name: wild-eyed preacher
+  suffix: Preacher
+  components:
+  - type: WGStranger
+    dialogue: WGStrangerDialoguePreacher
+  - type: WGCowardice
+    cowardice: 0.5
+  - type: Loadout
+    prototypes: [ WGStrangerGearPreacher ]
+
+- type: entity
+  parent: WGStrangerBase
+  id: WGStrangerConspiracist
+  name: twitchy stranger
+  suffix: Conspiracy nut
+  components:
+  - type: WGStranger
+    dialogue: WGStrangerDialogueConspiracist
+  - type: WGCowardice
+    cowardice: 0.7
+    flee: 0.6
+  - type: Loadout
+    prototypes: [ WGStrangerGearConspiracist ]
+
+- type: entity
+  parent: WGStrangerBase
+  id: WGStrangerBeggar
+  name: ragged stranger
+  suffix: Beggar
+  components:
+  - type: WGStranger
+    dialogue: WGStrangerDialogueBeggar
+  - type: WGCowardice
+    cowardice: 0.85
+    hits: 2
+  - type: Loadout
+    prototypes: [ WGStrangerGearBeggar ]
+
+- type: entity
+  parent: WGStrangerBase
+  id: WGStrangerStalker
+  name: quiet stranger
+  suffix: Stalker
+  components:
+  - type: WGStranger
+    dialogue: WGStrangerDialogueStalker
+    behaviour: Stalk
+    mutters:
+    - wg-stranger-stalker-mutter-1
+    - wg-stranger-stalker-mutter-2
+    - wg-stranger-stalker-mutter-3
+    - wg-stranger-stalker-mutter-4
+    - wg-stranger-stalker-mutter-5
+  - type: Loadout
+    prototypes: [ WGStrangerGearStalker ]
+
+# Holed up in a vehicle he's taken (a POI table's `vehicles`), its key in his hand: he goes for anyone he sees.
+- type: entity
+  parent: WGStrangerBase
+  id: WGStrangerSquatter
+  name: wild-eyed squatter
+  suffix: Squatter
+  components:
+  - type: WGStranger
+    dialogue: WGStrangerDialogueSquatter
+    behaviour: Squat
+    sightRange: 9
+  - type: WGVehicleBoarder
+    leaves: false
+  - type: Loadout
+    prototypes: [ WGStrangerGearSquatter ]
+
+- type: startingGear
+  id: WGStrangerGearSquatter
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBrown
+    outerClothing: ClothingOuterWinterCoat
+    gloves: ClothingHandsGlovesFingerless
+    shoes: ClothingShoesBootsWork
+    pocket1: KitchenKnife
+
+# A random stranger, for maps, camps and the wilderness.
+- type: entity
+  parent: MarkerBase
+  id: WGStrangerRandomSpawner
+  name: random stranger spawner
+  components:
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: Markers/jobs.rsi
+      state: passenger
+  - type: EntityTableSpawner
+    table: !type:NestedSelector
+      tableId: WGStrangers
+
+# A stranger who lives in a house, and the house as his home.
+- type: entity
+  parent: WGStrangerRandomSpawner
+  id: WGStrangerHouseSpawner
+  name: house stranger spawner
+  components:
+  - type: EntityTableSpawner
+    table: !type:NestedSelector
+      tableId: WGStrangersHouse
+
+- type: entity
+  id: WGStrangerHouseHome
+  name: stranger house
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WGStrangerHome
+    radius: 5
+    warnRadius: 11
+    greetings:
+    - wg-stranger-greeting-house-1
+    - wg-stranger-greeting-house-2
+    - wg-stranger-greeting-house-3
+    - wg-stranger-greeting-house-4
+
+- type: entity
+  id: WGStrangerCampHome
+  name: crazy camp
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WGStrangerHome
+    radius: 8
+    warnRadius: 16
+    greetings:
+    - wg-stranger-greeting-camp-1
+    - wg-stranger-greeting-camp-2
+    - wg-stranger-greeting-camp-3
+    - wg-stranger-greeting-camp-4
+
+- type: entityTable
+  id: WGStrangersHouse
+  table: !type:GroupSelector
+    children:
+    - id: WGStrangerDealer
+      weight: 3
+    - id: WGStrangerConspiracist
+      weight: 2
+    - id: WGStrangerStalker
+      weight: 1
+
+- type: entityTable
+  id: WGStrangersCamp
+  table: !type:GroupSelector
+    children:
+    - id: WGStrangerMugger
+      weight: 2
+    - id: WGStrangerPreacher
+      weight: 2
+    - id: WGStrangerBeggar
+      weight: 3
+
+- type: entityTable
+  id: WGStrangers
+  table: !type:GroupSelector
+    children:
+    - id: WGStrangerDealer
+      weight: 3
+    - id: WGStrangerMugger
+      weight: 2
+    - id: WGStrangerPreacher
+      weight: 2
+    - id: WGStrangerConspiracist
+      weight: 2
+    - id: WGStrangerBeggar
+      weight: 3
+    - id: WGStrangerStalker
+      weight: 1
+
+- type: startingGear
+  id: WGStrangerGearDealer
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBlack
+    outerClothing: ClothingOuterCoatBomber
+    eyes: ClothingEyesGlassesSunglasses
+    shoes: ClothingShoesColorBrown
+    pocket1: KitchenKnife
+
+- type: startingGear
+  id: WGStrangerGearMugger
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBrown
+    outerClothing: ClothingOuterCoatJensen
+    mask: ClothingMaskBandBlack
+    gloves: ClothingHandsGlovesFingerless
+    shoes: ClothingShoesBootsWork
+    pocket1: Machete
+
+- type: startingGear
+  id: WGStrangerGearPreacher
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitChaplain
+    outerClothing: ClothingOuterHoodieChaplain
+    shoes: ClothingShoesColorBrown
+
+- type: startingGear
+  id: WGStrangerGearConspiracist
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorGrey
+    outerClothing: ClothingOuterCoatTrench
+    head: ClothingHeadTinfoil
+    shoes: ClothingShoesColorBrown
+
+- type: startingGear
+  id: WGStrangerGearBeggar
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBrown
+    outerClothing: ClothingOuterWinterCoat
+    gloves: ClothingHandsGlovesFingerless
+    neck: ClothingNeckScarfStripedRed
+
+- type: startingGear
+  id: WGStrangerGearStalker
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBlack
+    outerClothing: ClothingOuterCoatTrench
+    head: ClothingHeadHatFedoraBrown
+    shoes: ClothingShoesColorBrown
+    pocket1: CombatKnife

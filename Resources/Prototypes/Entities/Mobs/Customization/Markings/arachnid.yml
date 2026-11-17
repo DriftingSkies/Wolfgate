@@ -39,13 +39,13 @@
   #   state: long_primary
   # - sprite: Mobs/Customization/Arachnid/appendages.rsi
   #   state: long_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: long_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: long_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: long_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: long_secondary_BEHIND
   # WOLFGATE END
 
@@ -70,13 +70,13 @@
   #   state: sharp_primary
   # - sprite: Mobs/Customization/Arachnid/appendages.rsi
   #   state: sharp_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: sharp_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: sharp_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: sharp_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: sharp_secondary_BEHIND
   # WOLFGATE END
 
@@ -101,13 +101,13 @@
   #   state: stingers_primary
   # - sprite: Mobs/Customization/Arachnid/appendages.rsi
   #   state: stingers_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: stingers_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: stingers_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: stingers_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: stingers_secondary_BEHIND
   # WOLFGATE END
 
@@ -132,13 +132,13 @@
   #   state: zigzag_primary
   # - sprite: Mobs/Customization/Arachnid/appendages.rsi
   #   state: zigzag_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: zigzag_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: zigzag_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: zigzag_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: zigzag_secondary_BEHIND
   # WOLFGATE END
 
@@ -163,13 +163,13 @@
   #   state: curled_primary
   # - sprite: Mobs/Customization/Arachnid/appendages.rsi
   #   state: curled_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: curled_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: curled_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: curled_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: curled_secondary_BEHIND
   # WOLFGATE END
 
@@ -194,13 +194,13 @@
   #   state: chipped_primary
   # - sprite: Mobs/Customization/Arachnid/appendages.rsi
   #   state: chipped_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: chipped_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: chipped_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: chipped_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: chipped_secondary_BEHIND
   # WOLFGATE END
 
@@ -225,13 +225,13 @@
   #   state: harvest_primary
   # - sprite: Mobs/Customization/Arachnid/appendages.rsi
   #   state: harvest_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: harvest_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: harvest_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: harvest_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: harvest_secondary_BEHIND
   # WOLFGATE END
 
@@ -256,13 +256,13 @@
   #   state: short_primary
   # - sprite: Mobs/Customization/Arachnid/appendages.rsi
   #   state: short_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: short_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: short_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: short_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: short_secondary_BEHIND
   # WOLFGATE END
 
@@ -287,13 +287,13 @@
   #   state: freaky_primary
   # - sprite: Mobs/Customization/Arachnid/appendages.rsi
   #   state: freaky_secondary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: freaky_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: freaky_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: freaky_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi
     state: freaky_secondary_BEHIND
   # WOLFGATE END
 

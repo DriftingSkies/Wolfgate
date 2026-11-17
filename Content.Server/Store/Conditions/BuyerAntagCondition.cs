@@ -1,7 +1,7 @@
 using Content.Shared.Mind;
 using Content.Shared.Roles;
 using Content.Shared.Store;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Store.Conditions;
 

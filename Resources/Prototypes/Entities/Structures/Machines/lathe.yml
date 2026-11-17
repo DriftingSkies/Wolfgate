@@ -160,8 +160,8 @@
     unlitRunningState: unlit-building
     staticPacks:
     - ToolsStatic
-    - WFPlanetStatic # WOLFGATE(Planets): landing thruster kits and parachutes.
-    - WFPhotographyStatic # WOLFGATE(Photography): cameras and film.
+    - WGPlanetStatic # WOLFGATE(Planets): landing thruster kits and parachutes.
+    - WGPhotographyStatic # WOLFGATE(Photography): cameras and film.
     - PartsStatic
     - AtmosStatic
     - CablesStatic
@@ -178,9 +178,9 @@
     - NFServiceStatic # Frontier
     - MonoRestraintsStatic # Mono
     - ReportingStatic # DeltaV
-    - WFTetherStatic # WOLFGATE(Tether)
-    - WFRemadeStatic # WOLFGATE(Remade): the plasma cutter and the monolith tap flatpack
-    - WFLatticeStatic # WOLFGATE(Lattice): Drift stabiliser, anchor charm and relay anchor recipes
+    - WGTetherStatic # WOLFGATE(Tether)
+    - WGRemadeStatic # WOLFGATE(Remade): the plasma cutter and the monolith tap flatpack
+    - WGLatticeStatic # WOLFGATE(Lattice): Drift stabiliser, anchor charm and relay anchor recipes
   - type: EmagLatheRecipes
     emagStaticPacks:
     - StaticAmmoRecipePack
@@ -281,7 +281,7 @@
     # Einstein Engines Packs
     - Translators
     - RCD # Mono!
-    - WFXenobiologyTools # WOLFGATE(Xenobiology): slime scanner and xenovac
+    - WGXenobiologyTools # WOLFGATE(Xenobiology): slime scanner and xenovac
   - type: EmagLatheRecipes
     emagDynamicPacks:
     - DynamicAmmoRecipePack
@@ -359,7 +359,7 @@
     - EngineeringBoardsGoob #Goob Factorio port
     - ReactorCircuitboards # FH edit\
     - ServiceBoardsGoob #Forge-Change
-    - WFXenobiologyBoards # WOLFGATE(Xenobiology): slime grinder and bounty console boards
+    - WGXenobiologyBoards # WOLFGATE(Xenobiology): slime grinder and bounty console boards
   - type: MaterialStorage
     whitelist:
       tags:
@@ -406,7 +406,7 @@
     - MechMiscStatic # Mono
     # Shitmed Change
     - IPCPartsStatic
-    - WFSynthOrgansStatic # WOLFGATE(Wolfmed): replacement synth organs
+    - WGSynthOrgansStatic # WOLFGATE(Wolfmed): replacement synth organs
     dynamicPacks:
     - Robotics
     - BorgModules
@@ -511,7 +511,7 @@
     - StaticAmmoRecipePack
     - StaticGrenades
     - SecurityWeaponsStatic
-    - WFRavagerDroneVouchersStatic # WOLFGATE(OldVessels): Ravager drone LPCs
+    - WGRavagerDroneVouchersStatic # WOLFGATE(OldVessels): Ravager drone LPCs
     dynamicPacks:
     - SecurityEquipment
     - SecurityExplosives
@@ -630,7 +630,7 @@
     # Shitmed Change
     - SMSurgery
     - SMCybernetics
-    - WFWolfmedAutodocPrograms # WOLFGATE(Wolfmed): AUTODOC: the four program disks, behind the same research as the rest of medbay.
+    - WGWolfmedAutodocPrograms # WOLFGATE(Wolfmed): AUTODOC: the four program disks, behind the same research as the rest of medbay.
     # Einstein Engines Packs
     - Translators # Language
     - TranslatorImplanters # Language
@@ -786,7 +786,7 @@
   - type: Tag
     tags:
     - Structure
-    - WFNoLatheUpgradeKit
+    - WGNoLatheUpgradeKit
   # WOLFGATE END
 
 - type: entity

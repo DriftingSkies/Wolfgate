@@ -1,0 +1,80 @@
+- type: marking
+  id: WGMeridianFrillsAquaticDualTone
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      aquatic_dual_tone_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/frills.rsi
+    state: aquatic_dual_tone_primary
+  - sprite: _WG/MeridianMarkings/frills.rsi
+    state: aquatic_dual_tone_secondary
+
+- type: marking
+  id: WGMeridianFrillsHorns
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/frills.rsi
+    state: horns
+
+- type: marking
+  id: WGMeridianFrillsNeckFrills
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/frills.rsi
+    state: neck_frills
+
+- type: marking
+  id: WGMeridianFrillsRamatan
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/frills.rsi
+    state: ramatan_primary
+
+- type: marking
+  id: WGMeridianFrillsRamatanFluffy
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    layers:
+      ramatan_fluffy_secondary:
+        type:
+          !type:CategoryColoring
+            category: Hair
+        fallbackTypes:
+          - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/frills.rsi
+    state: ramatan_fluffy_secondary
+
+- type: marking
+  id: WGMeridianFrillsRamatanSharp
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/frills.rsi
+    state: ramatan_sharp_primary
+
+- type: marking
+  id: WGMeridianFrillsSplit
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/frills.rsi
+    state: split

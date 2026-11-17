@@ -99,7 +99,7 @@ public sealed partial class ThrusterSystem : EntitySystem
         using (args.PushGroup(nameof(ThrusterComponent)))
         {
             args.PushMarkup(enabled);
-            WfExamineAtmosphere(uid, args); // WOLFGATE(Planets): show atmospheric rating and conversion status.
+            WgExamineAtmosphere(uid, args); // WOLFGATE(Planets): show atmospheric rating and conversion status.
 
             if (component.Type == ThrusterType.Linear &&
                 EntityManager.TryGetComponent(uid, out TransformComponent? xform) &&
@@ -245,7 +245,7 @@ public sealed partial class ThrusterSystem : EntitySystem
                 shuttleComponent.AngularThrust += component.Thrust;
                 DebugTools.Assert(!shuttleComponent.AngularThrusters.Contains(uid));
                 shuttleComponent.AngularThrusters.Add(uid);
-                shuttleComponent.WFAngularFiring = null; // WOLFGATE(Performance): the arrival hasn't been set yet
+                shuttleComponent.WGAngularFiring = null; // WOLFGATE(Performance): the arrival hasn't been set yet
                 return;
             }
         }
@@ -362,7 +362,7 @@ public sealed partial class ThrusterSystem : EntitySystem
                 shuttleComponent.AngularThrust += component.Thrust;
                 DebugTools.Assert(!shuttleComponent.AngularThrusters.Contains(uid));
                 shuttleComponent.AngularThrusters.Add(uid);
-                shuttleComponent.WFAngularFiring = null; // WOLFGATE(Performance): the arrival hasn't been set yet
+                shuttleComponent.WGAngularFiring = null; // WOLFGATE(Performance): the arrival hasn't been set yet
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -482,7 +482,7 @@ public sealed partial class ThrusterSystem : EntitySystem
     {
         if (!component.Enabled)
             return false;
-        if (WfCooling(uid)) // WOLFGATE(Planets): atmospheric overload recovery must survive power-change callbacks.
+        if (WgCooling(uid)) // WOLFGATE(Planets): atmospheric overload recovery must survive power-change callbacks.
             return false;
 
         if (component.LifeStage > ComponentLifeStage.Running)
@@ -519,8 +519,8 @@ public sealed partial class ThrusterSystem : EntitySystem
     {
         base.Update(frameTime);
 
-        WfUpdateAtmosphereThrusters(); // WOLFGATE(Planets): atmospheric efficiency and continuous power demand.
-        WfUpdateCrashThrust(); // WOLFGATE(Planets): severed engines retain their last firing command while powered.
+        WgUpdateAtmosphereThrusters(); // WOLFGATE(Planets): atmospheric efficiency and continuous power demand.
+        WgUpdateCrashThrust(); // WOLFGATE(Planets): severed engines retain their last firing command while powered.
 
         var query = EntityQueryEnumerator<ThrusterComponent>();
         var curTime = _timing.CurTime;
@@ -609,7 +609,7 @@ public sealed partial class ThrusterSystem : EntitySystem
     }
 
     // WOLFGATE(Performance): fixed list instead of Enum.GetValues on every call
-    public static readonly DirectionFlag[] WFCardinalFlags =
+    public static readonly DirectionFlag[] WGCardinalFlags =
         { DirectionFlag.South, DirectionFlag.East, DirectionFlag.North, DirectionFlag.West };
 
     public void DisableLinearThrusters(ShuttleComponent component)
@@ -618,7 +618,7 @@ public sealed partial class ThrusterSystem : EntitySystem
         if (component.ThrustDirections == DirectionFlag.None)
             return;
 
-        foreach (var dir in WFCardinalFlags)
+        foreach (var dir in WGCardinalFlags)
         // WOLFGATE END
         {
             DisableLinearThrustDirection(component, dir);
@@ -630,10 +630,10 @@ public sealed partial class ThrusterSystem : EntitySystem
     public void SetAngularThrust(ShuttleComponent component, bool on)
     {
         // WOLFGATE(Performance) START: idle shuttles call this every tick with every thruster already set
-        if (component.WFAngularFiring == on)
+        if (component.WGAngularFiring == on)
             return;
 
-        component.WFAngularFiring = on;
+        component.WGAngularFiring = on;
         // WOLFGATE END
 
         var appearanceQuery = GetEntityQuery<AppearanceComponent>();
@@ -673,7 +673,7 @@ public sealed partial class ThrusterSystem : EntitySystem
         var thrustRating = args.PartRatings[component.MachinePartThrust];
 
         component.Thrust = component.BaseThrust * MathF.Pow(component.PartRatingThrustMultiplier, thrustRating - 1);
-        WfRefreshAtmosphereRating(uid, component); // WOLFGATE(Planets): preserve upgraded rating across atmosphere transitions.
+        WgRefreshAtmosphereRating(uid, component); // WOLFGATE(Planets): preserve upgraded rating across atmosphere transitions.
 
         if (component.Enabled && CanEnable(uid, component))
             EnableThruster(uid, component);

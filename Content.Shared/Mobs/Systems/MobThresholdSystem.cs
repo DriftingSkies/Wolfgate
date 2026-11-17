@@ -5,7 +5,7 @@ using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Events;
-using Content.Shared._WF.Wolfmed.Consciousness; // WOLFGATE(Wolfmed): CONSC
+using Content.Shared._WG.Wolfmed.Consciousness; // WOLFGATE(Wolfmed): CONSC
 using Robust.Shared.GameStates;
 
 namespace Content.Shared.Mobs.Systems;
@@ -330,7 +330,7 @@ public sealed partial class MobThresholdSystem : EntitySystem
         VerifyThresholds(uid, component);
     }
 
-    // WOLFGATE(Wolfmed) START: M1a, lets _WF code hand a wound host's health alerts to Wolfmed's condition alerts.
+    // WOLFGATE(Wolfmed) START: M1a, lets _WG code hand a wound host's health alerts to Wolfmed's condition alerts.
     // This is the one way to do it (plan §5.2); the component's access rule keeps TriggersAlerts to this system.
     public void SetTriggersAlerts(EntityUid uid, bool value, MobThresholdsComponent? component = null)
     {

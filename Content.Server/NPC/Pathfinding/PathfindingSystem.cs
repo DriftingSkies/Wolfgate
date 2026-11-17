@@ -114,7 +114,7 @@ namespace Content.Server.NPC.Pathfinding
             var amount = Math.Min(PathTickLimit, _pathRequests.Count);
             var results = ArrayPool<PathResult>.Shared.Rent(amount);
 
-            WfHoldForGround(amount); // WOLFGATE(Planets): requests across unbuilt planet ground wait for it
+            WgHoldForGround(amount); // WOLFGATE(Planets): requests across unbuilt planet ground wait for it
 
             Parallel.For(0, amount, options, i =>
             {
@@ -126,7 +126,7 @@ namespace Content.Server.NPC.Pathfinding
                 }
 
                 // WOLFGATE(Planets) START: held until the planet ground on its way is built
-                if (WfHeld(_pathRequests[i]))
+                if (WgHeld(_pathRequests[i]))
                 {
                     results[i] = PathResult.Continuing;
                     return;

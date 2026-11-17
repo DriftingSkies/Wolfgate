@@ -175,7 +175,7 @@ public sealed partial class GuidebookUIController : UIController, IOnStateEntere
         ProtoId<GuideEntryPrototype>? selected = null)
     {
         // WOLFGATE(LoreBook): lore pages open in the lore book, not here
-        if (WFTakeOutLore(ref guides, ref rootEntries, ref forceRoot, ref selected))
+        if (WGTakeOutLore(ref guides, ref rootEntries, ref forceRoot, ref selected))
             return;
 
         if (_guideWindow == null)

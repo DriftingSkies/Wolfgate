@@ -1,0 +1,85 @@
+# In memory of Sir Patrick Stewart.
+- type: flavor
+  id: WGEarlGrey
+  flavorType: Complex
+  description: wg-flavor-complex-earl-grey
+
+- type: reagent
+  id: WGEarlGreyTea
+  name: reagent-name-wg-earl-grey-tea
+  parent: BaseDrink
+  desc: reagent-desc-wg-earl-grey-tea
+  physicalDesc: reagent-physical-desc-aromatic
+  flavor: WGEarlGrey
+  color: "#7A4A26"
+  recognizable: true
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 2
+      - !type:GenericStatusEffect
+        key: Drowsiness
+        time: 1.0
+        type: Remove
+      - !type:AdjustReagent
+        reagent: Theobromine
+        amount: 0.025
+  metamorphicSprite:
+    sprite: Objects/Consumable/Drinks/teaglass.rsi
+    state: icon_empty
+  metamorphicMaxFillLevels: 4
+  metamorphicFillBaseName: fill-
+  metamorphicChangeColor: false
+
+- type: entity
+  parent: DrinkTeacup
+  id: WGDrinkEarlGreyTea
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        temperature: 353.15
+        reagents:
+        - ReagentId: WGEarlGreyTea
+          Quantity: 20
+
+# Livingston, the lionfish from the captain's ready room.
+- type: entity
+  parent: BaseStructureDynamic
+  id: WGAquariumLivingston
+  components:
+  - type: Sprite
+    sprite: _WG/Tributes/livingston.rsi
+    drawdepth: Objects
+    layers:
+    - state: base
+    - state: water
+    - state: sand
+    - state: seaweed-back
+    - state: rocks
+    - state: livingston
+    - state: seaweed-front
+    - state: borders
+  - type: Icon
+    sprite: _WG/Tributes/livingston.rsi
+    state: icon
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Glass
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          ShardGlass:
+            min: 1
+            max: 2
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]

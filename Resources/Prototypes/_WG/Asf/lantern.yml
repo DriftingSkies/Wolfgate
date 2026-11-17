@@ -1,0 +1,64 @@
+- type: pointOfInterest
+  id: WGAsfLantern
+  parent: BaseRepairablePOI # mobile: no ForceAnchor, it flies on its own engines
+  name: 'ASF Lantern Post'
+  minimumDistance: 5500
+  maximumDistance: 7000
+  spawnGroup: Required
+  gridPath: /Maps/_WG/Asf/lantern.yml
+  addComponents:
+  - type: IFF
+    color: "#A66BE0"
+  - type: WorldGenDistanceCarver
+    distanceThresholds:
+    - maxDistance: 800
+      prob: 0.0
+    - maxDistance: 1500
+      prob: 0.3
+
+- type: gameMap
+  id: WGAsfLantern
+  mapName: 'ASF Lantern Post'
+  mapPath: /Maps/_WG/Asf/lantern.yml
+  minPlayers: 0
+  stations:
+    WGAsfLantern:
+      stationProto: MarketFrontierOutpost
+      gridComponents:
+      - type: DeleteNearbyDrones
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'ASF Lantern Post'
+      - type: ExtraStationInformation
+        icon:
+          sprite: _WG/Asf/Structures/Banners/federation.rsi
+          state: asf-federation-banner
+        stationSubtext: wg-asf-lantern-subtext
+        stationDescription: wg-asf-lantern-description
+        lobbySortOrder: 5
+      - type: StationJobs
+        availableJobs:
+          WGAsfEnvoy: [1, 1]
+          WGAsfEnforcer: [-1, -1]
+          WGAsfFieldResearcher: [-1, -1]
+          WGAsfColonist: [-1, -1]
+      - type: StationDeadDropHintExempt
+      - type: StationCargoBountyDatabase
+        availableBounties:
+        - WGAsfBountyCrystalSmall
+        - WGAsfBountyCrystalSmallBulk
+        - WGAsfBountyCrystalMedium
+        - WGAsfBountyCrystalLarge
+        - WGAsfBountyArtifactFragments
+        - WGAsfBountyArtifact
+        - WGAsfBountySurvey
+        - WGAsfBountyArtifactVessel
+        - WGAsfBountyArtifactWandering
+        - WGAsfBountyArtifactSpeed
+        - WGAsfBountyArtifactDrill
+        - WGAsfBountyArtifactMultitool
+        - WGAsfBountyArtifactLamp
+        - WGAsfBountyArtifactRainbowLamp
+        - WGAsfBountyArtifactRadioactive
+        - WGAsfBountyArtifactGravity
+        - WGAsfBountyArtifactStealth

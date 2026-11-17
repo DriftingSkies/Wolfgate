@@ -1,0 +1,27 @@
+using Robust.Shared.Prototypes;
+
+namespace Content.Shared._WG.ChatFont;
+
+/// <summary>A font a character can pick for their speech in the character creator.</summary>
+[Prototype("wgChatFont")]
+public sealed partial class WGChatFontPrototype : IPrototype
+{
+    [IdDataField]
+    public string ID { get; private set; } = default!;
+
+    /// <summary>The name shown in the creator's dropdown.</summary>
+    [DataField(required: true)]
+    public LocId Name;
+
+    /// <summary>The client <c>font</c> prototype the speech is drawn in.</summary>
+    [DataField(required: true)]
+    public string Font = default!;
+
+    /// <summary>Multiplies the speech size so the font's letters stand about as tall as the default's.</summary>
+    [DataField]
+    public float SizeScale = 1f;
+
+    /// <summary>Position in the dropdown, lowest first.</summary>
+    [DataField]
+    public int Order;
+}

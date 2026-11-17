@@ -7,7 +7,7 @@ using Content.Shared.Power.Components;
 // WOLFGATE END
 using Content.Shared._EinsteinEngines.Silicon;
 using Content.Shared._EinsteinEngines.Silicon.Components; // WOLFGATE(Silicons)
-using Content.Shared._WF.Silicons; // WOLFGATE(Silicons)
+using Content.Shared._WG.Silicons; // WOLFGATE(Silicons)
 using Content.Shared.Verbs;
 using Robust.Shared.Utility;
 using Content.Server._EinsteinEngines.Silicon.Charge;

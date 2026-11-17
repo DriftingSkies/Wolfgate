@@ -6,7 +6,7 @@
   description: It's a storage unit for Space Law compliant prisoner garb.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/prisoner-wardrobe.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/prisoner-wardrobe.rsi
 #  - type: Appearance #WOLFGATE(Resprites) START: Repathed
 #  - type: EntityStorageVisuals
 #    stateBaseClosed: generic

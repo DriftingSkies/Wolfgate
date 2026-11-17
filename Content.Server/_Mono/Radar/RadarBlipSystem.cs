@@ -37,9 +37,9 @@ public sealed partial class RadarBlipSystem : EntitySystem
         )
             return;
 
-        WFNoteRequest(args.SenderSession); // WOLFGATE(Performance): removals go only to sessions that asked recently
+        WGNoteRequest(args.SenderSession); // WOLFGATE(Performance): removals go only to sessions that asked recently
         // WOLFGATE(Performance) START: the server caps how often it answers one player; the client's throttle is not enforced
-        if (!WFTakeRequest(args.SenderSession))
+        if (!WGTakeRequest(args.SenderSession))
             return;
         // WOLFGATE END
 
@@ -74,7 +74,7 @@ public sealed partial class RadarBlipSystem : EntitySystem
         // WOLFGATE(Performance) START: send removals only to recent radar users, none during round cleanup
         // var removalEv = new BlipRemovalEvent(netBlipUid);
         // RaiseNetworkEvent(removalEv);
-        WFSendRemoval(netBlipUid);
+        WGSendRemoval(netBlipUid);
         // WOLFGATE END
     }
 
@@ -89,7 +89,7 @@ public sealed partial class RadarBlipSystem : EntitySystem
 
         // WOLFGATE(Performance) START: radars share one walk of the blips per tick and skip the squares out of reach
         // var blipQuery = EntityQueryEnumerator<RadarBlipComponent, TransformComponent, PhysicsComponent>();
-        foreach (var (blipUid, blip, blipXform, blipPhysics, _) in WFBlipsInReach(radarMapId, sources))
+        foreach (var (blipUid, blip, blipXform, blipPhysics, _) in WGBlipsInReach(radarMapId, sources))
         {
             if (blip.Deleted)
                 continue;

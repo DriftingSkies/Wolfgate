@@ -4,7 +4,7 @@ using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Damage.Systems;
-using Content.Shared._WF.Wolfmed.Wounds; // WOLFGATE(Wolfmed): W1: the wound rule extension point.
+using Content.Shared._WG.Wolfmed.Wounds; // WOLFGATE(Wolfmed): W1: the wound rule extension point.
 using Content.Shared.FixedPoint;
 using Content.Shared.Rejuvenate;
 using Robust.Shared.Containers;
@@ -22,8 +22,8 @@ public sealed partial class WoundSystem : EntitySystem
     [Dependency] private INetManager _net = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private IRobustRandom _random = default!;
-    [Dependency] private Content.Shared._WF.Wolfmed.Wounds.WolfmedBleedGateSystem _wfBleedGate = default!; // WOLFGATE(Wolfmed)
-    [Dependency] private Content.Shared._WF.Wolfmed.Wounds.WolfmedWoundLadderSystem _wfLadder = default!; // WOLFGATE(Wolfmed): revival pass
+    [Dependency] private Content.Shared._WG.Wolfmed.Wounds.WolfmedBleedGateSystem _wgBleedGate = default!; // WOLFGATE(Wolfmed)
+    [Dependency] private Content.Shared._WG.Wolfmed.Wounds.WolfmedWoundLadderSystem _wgLadder = default!; // WOLFGATE(Wolfmed): revival pass
 
     private readonly Dictionary<ProtoId<DamageTypePrototype>, List<(WoundPrototype Wound, WoundDamageTypeSettings Settings)>>
         _woundsByDamageType = new();
@@ -71,7 +71,7 @@ public sealed partial class WoundSystem : EntitySystem
         if (!_net.IsServer)
             return;
 
-        _wfLadder.BeginHit(part.Owner); // WOLFGATE(Wolfmed): revival pass, the wounds below are one injury to the ladders
+        _wgLadder.BeginHit(part.Owner); // WOLFGATE(Wolfmed): revival pass, the wounds below are one injury to the ladders
 
         foreach (var (type, amount) in args.Damage.DamageDict)
         {
@@ -114,7 +114,7 @@ public sealed partial class WoundSystem : EntitySystem
             }
         }
 
-        _wfLadder.EndHit(); // WOLFGATE(Wolfmed): revival pass
+        _wgLadder.EndHit(); // WOLFGATE(Wolfmed): revival pass
     }
 
     public bool CanBleed(Entity<WoundableComponent?> part)
@@ -206,7 +206,7 @@ public sealed partial class WoundSystem : EntitySystem
             return null;
 
         // WOLFGATE(Wolfmed): revival pass, a wound ladder folds this into the part's wound of the same kind.
-        if (_wfLadder.TryFold((part.Owner, part.Comp), prototype, severity, reopen, out var folded))
+        if (_wgLadder.TryFold((part.Owner, part.Comp), prototype, severity, reopen, out var folded))
             return folded;
 
         if (prototype.MergeMode == WoundMergeMode.MergeByPrototype)
@@ -258,7 +258,7 @@ public sealed partial class WoundSystem : EntitySystem
         {
             if (!TryComp(wound, out WoundBleedingComponent? bleeding) &&
                 wound.Comp.Severity > previousSeverity && // WOLFGATE(Wolfmed): only a wound that just grew rolls, see LastSyncSeverity
-                _wfBleedGate.PartCanStartBleeding(wound.Comp.HoldingPart)) // WOLFGATE(Wolfmed): the body or its gear may refuse a new bleed.
+                _wgBleedGate.PartCanStartBleeding(wound.Comp.HoldingPart)) // WOLFGATE(Wolfmed): the body or its gear may refuse a new bleed.
             {
                 var chance = Math.Clamp(bleedingBehavior.Chance, 0f, 1f);
                 if (chance > 0f && _random.Prob(chance))
@@ -278,7 +278,7 @@ public sealed partial class WoundSystem : EntitySystem
             internalBehavior.Rate > 0f)
         {
             if (!TryComp(wound, out WoundInternalBleedingComponent? internalBleeding) &&
-                _wfBleedGate.PartCanStartBleeding(wound.Comp.HoldingPart)) // WOLFGATE(Wolfmed): the body or its gear may refuse a new bleed.
+                _wgBleedGate.PartCanStartBleeding(wound.Comp.HoldingPart)) // WOLFGATE(Wolfmed): the body or its gear may refuse a new bleed.
             {
                 var chance = Math.Clamp(internalBehavior.Chance, 0f, 1f);
                 if (chance > 0f && _random.Prob(chance))
@@ -296,7 +296,7 @@ public sealed partial class WoundSystem : EntitySystem
             // }
             var internalTarget = wound.Comp.State == WoundState.Open ? wound.Comp.Severity : FixedPoint2.Zero;
             if (internalBleeding != null &&
-                (internalTarget <= internalBleeding.Severity || _wfBleedGate.PartCanStartBleeding(wound.Comp.HoldingPart)))
+                (internalTarget <= internalBleeding.Severity || _wgBleedGate.PartCanStartBleeding(wound.Comp.HoldingPart)))
             {
                 internalBleeding.Rate = internalBehavior.Rate;
                 internalBleeding.Severity = internalTarget;

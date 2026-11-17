@@ -1,6 +1,6 @@
 using Content.Shared._Mono.Grid;
 using Content.Shared._NF.Shipyard.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Shared._NF.Shipyard.Components;
 

@@ -1,0 +1,289 @@
+# Laughs a character can pick in the creator. The first group is every laugh a Wolfgate species already uses,
+# the second is Nova Sector's selector. A voice without params plays with a variation of 0.125.
+
+- type: emoteVoice
+  id: WGLaughNone
+  emote: Laugh
+  name: emote-voice-name-silent
+
+# Wolfgate species
+
+- type: emoteVoice
+  id: WGLaughHuman
+  emote: Laugh
+  name: emote-voice-name-human
+  sound:
+    collection: MaleLaugh
+  sexSounds:
+    Female:
+      collection: FemaleLaugh
+
+- type: emoteVoice
+  id: WGLaughHumanMasculine
+  emote: Laugh
+  name: emote-voice-name-human-masculine
+  sound:
+    collection: MaleLaugh
+
+- type: emoteVoice
+  id: WGLaughHumanFeminine
+  emote: Laugh
+  name: emote-voice-name-human-feminine
+  sound:
+    collection: FemaleLaugh
+
+- type: emoteVoice
+  id: WGLaughDwarf
+  emote: Laugh
+  name: emote-voice-name-dwarf
+  sound:
+    collection: MaleLaugh
+  sexSounds:
+    Female:
+      collection: FemaleLaugh
+  params:
+    variation: 0.125
+    pitch: 0.75
+
+- type: emoteVoice
+  id: WGLaughThaven
+  emote: Laugh
+  name: emote-voice-name-thaven
+  sound:
+    collection: MaleLaugh
+  sexSounds:
+    Female:
+      collection: FemaleLaugh
+  params:
+    variation: 0.05
+    pitch: 1.25
+
+- type: emoteVoice
+  id: WGLaughArachnid
+  emote: Laugh
+  name: emote-voice-name-arachnid
+  sound:
+    path: /Audio/Voice/Arachnid/arachnid_laugh.ogg
+
+- type: emoteVoice
+  id: WGLaughAvali
+  emote: Laugh
+  name: emote-voice-name-avali
+  sound:
+    path: /Audio/_Starlight/Voice/Avali/avali_laugh.ogg
+
+- type: emoteVoice
+  id: WGLaughDiona
+  emote: Laugh
+  name: emote-voice-name-diona
+  sound:
+    collection: DionaLaugh
+
+- type: emoteVoice
+  id: WGLaughGoblin
+  emote: Laugh
+  name: emote-voice-name-goblin
+  sound:
+    collection: GoblinCackle
+
+- type: emoteVoice
+  id: WGLaughHarpy
+  emote: Laugh
+  name: emote-voice-name-harpy
+  sound:
+    collection: HarpyLaugh
+
+- type: emoteVoice
+  id: WGLaughHydrakin
+  emote: Laugh
+  name: emote-voice-name-hydrakin
+  sound:
+    collection: HydrakinLaugh
+  params:
+    variation: 0.125
+    volume: -8
+
+- type: emoteVoice
+  id: WGLaughIpc
+  emote: Laugh
+  name: emote-voice-name-ipc
+  sound:
+    path: /Audio/_EinsteinEngines/Voice/IPC/robot-laugh_3.ogg
+  params:
+    variation: 0
+
+- type: emoteVoice
+  id: WGLaughMoth
+  emote: Laugh
+  name: emote-voice-name-moth
+  sound:
+    path: /Audio/Voice/Moth/moth_laugh.ogg
+
+- type: emoteVoice
+  id: WGLaughReptilian
+  emote: Laugh
+  name: emote-voice-name-reptilian
+  sound:
+    path: /Audio/Animals/lizard_happy.ogg
+
+- type: emoteVoice
+  id: WGLaughResomi
+  emote: Laugh
+  name: emote-voice-name-resomi
+  sound:
+    collection: ResomiLaugh
+
+- type: emoteVoice
+  id: WGLaughShadekin
+  emote: Laugh
+  name: emote-voice-name-shadekin
+  sound:
+    collection: ShadowkinMaleLaughs
+  sexSounds:
+    Female:
+      collection: ShadowkinFemaleLaughs
+
+- type: emoteVoice
+  id: WGLaughShadekinMasculine
+  emote: Laugh
+  name: emote-voice-name-shadekin-masculine
+  sound:
+    collection: ShadowkinMaleLaughs
+
+- type: emoteVoice
+  id: WGLaughShadekinFeminine
+  emote: Laugh
+  name: emote-voice-name-shadekin-feminine
+  sound:
+    collection: ShadowkinFemaleLaughs
+
+- type: emoteVoice
+  id: WGLaughSyndicateCyborg
+  emote: Laugh
+  name: emote-voice-name-syndicate-cyborg
+  sound:
+    path: /Audio/Voice/Silicon/syndieborg_laugh.ogg
+  params:
+    variation: 0.05
+
+- type: emoteVoice
+  id: WGLaughVox
+  emote: Laugh
+  name: emote-voice-name-vox
+  sound:
+    path: /Audio/Voice/Vox/vox_laugh.ogg
+
+# Nova Sector
+
+- type: emoteVoice
+  id: WGLaughHumanAlt
+  emote: Laugh
+  name: emote-voice-name-human-alt
+  sound:
+    collection: MaleLaugh
+  sexSounds:
+    Female:
+      collection: WGLaughsHumanFemaleAlt
+
+- type: emoteVoice
+  id: WGLaughHumanAltFeminine
+  emote: Laugh
+  name: emote-voice-name-human-alt-feminine
+  sound:
+    collection: WGLaughsHumanFemaleAlt
+
+- type: emoteVoice
+  id: WGLaughFelinid
+  emote: Laugh
+  name: emote-voice-name-felinid
+  sound:
+    collection: WGLaughsFelinid
+
+- type: emoteVoice
+  id: WGLaughSkrell
+  emote: Laugh
+  name: emote-voice-name-skrell
+  sound:
+    collection: WGLaughsSkrell
+
+- type: emoteVoice
+  id: WGLaughSlugcat
+  emote: Laugh
+  name: emote-voice-name-slugcat
+  sound:
+    path: /Audio/_WG/EmoteVoices/Laugh/scuglaugh_1.ogg
+
+- type: emoteVoice
+  id: WGLaughClown
+  emote: Laugh
+  name: emote-voice-name-clown
+  sound:
+    collection: WGLaughsClown
+
+# The robotic voice packs ported from HardLight (Far Horizons): any character may pick them, synthetic ones most of all.
+
+- type: emoteVoice
+  id: WGLaughProtoHumie
+  emote: Laugh
+  name: emote-voice-name-proto-humie
+  sound:
+    collection: ProtoHumanMLaugh
+  sexSounds:
+    Female:
+      collection: ProtoHumanFLaugh
+
+- type: emoteVoice
+  id: WGLaughProtoHumieMasculine
+  emote: Laugh
+  name: emote-voice-name-proto-humie-masculine
+  sound:
+    collection: ProtoHumanMLaugh
+
+- type: emoteVoice
+  id: WGLaughProtoHumieFeminine
+  emote: Laugh
+  name: emote-voice-name-proto-humie-feminine
+  sound:
+    collection: ProtoHumanFLaugh
+
+- type: emoteVoice
+  id: WGLaughProtoArachnid
+  emote: Laugh
+  name: emote-voice-name-proto-arachnid
+  sound:
+    collection: ProtoArachnidLaugh
+
+- type: emoteVoice
+  id: WGLaughProtoAvali
+  emote: Laugh
+  name: emote-voice-name-proto-avali
+  sound:
+    collection: ProtoAvaliLaugh
+
+- type: emoteVoice
+  id: WGLaughProtoMoth
+  emote: Laugh
+  name: emote-voice-name-proto-moth
+  sound:
+    collection: ProtoMothLaugh
+
+- type: emoteVoice
+  id: WGLaughProtoReptile
+  emote: Laugh
+  name: emote-voice-name-proto-reptile
+  sound:
+    collection: ProtoReptilianLaugh
+
+- type: emoteVoice
+  id: WGLaughProtoResomi
+  emote: Laugh
+  name: emote-voice-name-proto-resomi
+  sound:
+    collection: ProtoResomiLaugh
+
+- type: emoteVoice
+  id: WGLaughProtoVox
+  emote: Laugh
+  name: emote-voice-name-proto-vox
+  sound:
+    collection: ProtoVoxLaugh

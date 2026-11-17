@@ -30,7 +30,7 @@
       metabolismRate: 0.2 # Mono
       effects:
       # WOLFGATE(WolfChem) START: Dylovene flushes combat drugs, Redline and Anvil
-      - !type:WFClearIntoxication
+      - !type:WGClearIntoxication
         family: Combat
         amount: 2
       # WOLFGATE END
@@ -1656,10 +1656,10 @@
         time: 8
         refresh: true # WOLFGATE(WolfChem): held while it is in the blood instead of piling up each tick
       # WOLFGATE(WolfChem) START: Psicodine calms empathogen and cannabis highs
-      - !type:WFClearIntoxication
+      - !type:WGClearIntoxication
         family: Empathogen
         amount: 2
-      - !type:WFClearIntoxication
+      - !type:WGClearIntoxication
         family: Cannabinoid
         amount: 2
       # WOLFGATE END
@@ -1720,10 +1720,10 @@
     Medicine:
       effects:
       # WOLFGATE(WolfChem) START: Haloperidol brings down stimulant and psychedelic highs
-      - !type:WFClearIntoxication
+      - !type:WGClearIntoxication
         family: Stimulant
         amount: 2
-      - !type:WFClearIntoxication
+      - !type:WGClearIntoxication
         family: Psychedelic
         amount: 2
       # WOLFGATE END

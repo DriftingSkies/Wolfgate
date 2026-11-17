@@ -1,0 +1,273 @@
+# Legs a species can pick instead of its own, from the Digitigrade legs toggle in the character editor.
+# A species listed under a style stands the other way by default, unless the style is marked default: then it
+# only fits clothing to legs the species draws itself. displacementSlots are the clothing slots
+# the legs reshape: they use the style's maps (or none) instead of the species' own, and a female body uses
+# femaleDisplacements where it has the slot. The art and the maps under _WG/LegStyle are made by
+# Tools/_WG/LegStyle/port.py: a shoe map and a suit map (jumpsuits and outer clothing) per paw shape.
+
+# Digitigrade legs. Vulpkanin and Canine stand on them by default; for the others they are the option. The
+# furred ones wear Starlight's Vulpkanin legs, which fit
+# the shoe map Reptilians use and Starlight's outer clothing map; the rest wear Meridian Rift's.
+
+- type: wgLegStyle
+  id: WGLegsHumanDigitigrade
+  species: [ Human, Dwarf, Felinid, Oni ]
+  stance: Digitigrade
+  sprites:
+    LLeg: WGMobHumanLLegDigi
+    RLeg: WGMobHumanRLegDigi
+    LFoot: WGMobHumanLFootDigi
+    RFoot: WGMobHumanRFootDigi
+  displacementSlots: [ jumpsuit, outerClothing, shoes ]
+  displacements:
+    jumpsuit: &humanSuit
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: suit_human
+    outerClothing: *humanSuit
+    shoes: &humanShoes
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: shoes_human
+  femaleDisplacements:
+    # The human chest fit above the hip.
+    jumpsuit: &humanSuitFemale
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: jumpsuit_female_human
+
+- type: wgLegStyle
+  id: WGLegsVulpkaninDigitigrade
+  species: [ Vulpkanin, WGCanine ]
+  stance: Digitigrade
+  default: true # the species draws these legs itself (Resources/Prototypes/_WG/Species/vulpkanin.yml)
+  displacementSlots: [ jumpsuit, outerClothing, shoes ]
+  fittedMarkings:
+  - _Starlight/Mobs/Customization/vulpkanin # drawn for these legs; the rest of the vulpkanin markings were drawn for DeltaV's
+  displacements:
+    jumpsuit: &starlightSuit
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: suit_starlight
+    outerClothing: &starlightOuter
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: outerclothing_starlight
+    shoes: &starlightShoes
+      sizeMaps:
+        32:
+          sprite: _White/Mobs/Species/displacement.rsi
+          state: shoes
+
+- type: wgLegStyle
+  id: WGLegsFeroxiDigitigrade
+  species: [ Feroxi ]
+  stance: Digitigrade
+  sprites:
+    LLeg: WGMobFeroxiLLegDigi
+    RLeg: WGMobFeroxiRLegDigi
+    LFoot: WGMobFeroxiLFootDigi
+    RFoot: WGMobFeroxiRFootDigi
+  displacementSlots: [ jumpsuit, outerClothing, shoes ]
+  displacements:
+    jumpsuit: &mammalSuit
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: suit_mammal
+    outerClothing: *mammalSuit
+    shoes: &mammalShoes
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: shoes_mammal
+
+- type: wgLegStyle
+  id: WGLegsGoblinDigitigrade
+  species: [ Goblin ]
+  stance: Digitigrade
+  sprites:
+    LLeg: WGMobGoblinLLegDigi
+    RLeg: WGMobGoblinRLegDigi
+    LFoot: WGMobGoblinLFootDigi
+    RFoot: WGMobGoblinRFootDigi
+  displacementSlots: [ jumpsuit, outerClothing, shoes ]
+  displacements:
+    jumpsuit: *humanSuit
+    outerClothing: *humanSuit
+    shoes: *humanShoes
+  femaleDisplacements:
+    # The human chest fit above the hip.
+    jumpsuit: *humanSuitFemale
+
+- type: wgLegStyle
+  id: WGLegsRodentiaDigitigrade
+  species: [ Rodentia ]
+  stance: Digitigrade
+  sprites:
+    LLeg: WGMobRodentiaLLegDigi
+    RLeg: WGMobRodentiaRLegDigi
+    LFoot: WGMobRodentiaLFootDigi
+    RFoot: WGMobRodentiaRFootDigi
+  displacementSlots: [ jumpsuit, outerClothing, shoes ]
+  displacements:
+    jumpsuit: *starlightSuit
+    outerClothing: *starlightOuter
+    shoes: *starlightShoes
+
+- type: wgLegStyle
+  id: WGLegsShadekinDigitigrade
+  species: [ Shadekin ]
+  stance: Digitigrade
+  sprites:
+    LLeg: WGMobShadekinLLegDigi
+    RLeg: WGMobShadekinRLegDigi
+    LFoot: WGMobShadekinLFootDigi
+    RFoot: WGMobShadekinRFootDigi
+  displacementSlots: [ jumpsuit, outerClothing, shoes ]
+  displacements:
+    jumpsuit: &shadekinSuit
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: suit_shadekin
+    outerClothing: *shadekinSuit
+    shoes: &shadekinShoes
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: shoes_shadekin
+
+- type: wgLegStyle
+  id: WGLegsSkrellDigitigrade
+  species: [ Skrell ]
+  stance: Digitigrade
+  sprites:
+    LLeg: WGMobSkrellLLegDigi
+    RLeg: WGMobSkrellRLegDigi
+    LFoot: WGMobSkrellLFootDigi
+    RFoot: WGMobSkrellRFootDigi
+  displacementSlots: [ jumpsuit, outerClothing, shoes ]
+  displacements:
+    jumpsuit: *humanSuit
+    outerClothing: *humanSuit
+    shoes: *humanShoes
+
+- type: wgLegStyle
+  id: WGLegsSlimeDigitigrade
+  species: [ SlimePerson ]
+  stance: Digitigrade
+  sprites:
+    LLeg: WGMobSlimeLLegDigi
+    RLeg: WGMobSlimeRLegDigi
+    LFoot: WGMobSlimeLFootDigi
+    RFoot: WGMobSlimeRFootDigi
+  displacementSlots: [ jumpsuit, outerClothing, shoes ]
+  displacements:
+    jumpsuit: *mammalSuit
+    outerClothing: *mammalSuit
+    shoes: *mammalShoes
+  femaleDisplacements:
+    # The human chest fit above the hip.
+    jumpsuit: &mammalSuitFemale
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: jumpsuit_female_mammal
+
+- type: wgLegStyle
+  id: WGLegsTajaranDigitigrade
+  species: [ Tajaran ]
+  stance: Digitigrade
+  sprites:
+    LLeg: WGMobTajaranLLegDigi
+    RLeg: WGMobTajaranRLegDigi
+    LFoot: WGMobTajaranLFootDigi
+    RFoot: WGMobTajaranRFootDigi
+  displacementSlots: [ jumpsuit, outerClothing, shoes ]
+  displacements:
+    jumpsuit: *starlightSuit
+    outerClothing: *starlightOuter
+    shoes: *starlightShoes
+
+- type: wgLegStyle
+  id: WGLegsThavenDigitigrade
+  species: [ Thaven ]
+  stance: Digitigrade
+  sprites:
+    LLeg: WGMobThavenLLegDigi
+    RLeg: WGMobThavenRLegDigi
+    LFoot: WGMobThavenLFootDigi
+    RFoot: WGMobThavenRFootDigi
+  displacementSlots: [ jumpsuit, outerClothing, shoes ]
+  displacements:
+    # The Thaven fit above the hip.
+    jumpsuit:
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: jumpsuit_thaven
+    outerClothing:
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: outerclothing_thaven
+    shoes: *humanShoes
+
+# Plantigrade legs for species that are digitigrade by default. Their own maps keep fitting the upper body.
+
+# The DeltaV legs Vulpkanin and Canine had, with the hip they were drawn for.
+- type: wgLegStyle
+  id: WGLegsVulpkaninPlantigrade
+  species: [ Vulpkanin, WGCanine ]
+  stance: Plantigrade
+  sprites:
+    LLeg: WGMobVulpkaninLLegPlanti
+    RLeg: WGMobVulpkaninRLegPlanti
+    LFoot: WGMobVulpkaninLFootPlanti
+    RFoot: WGMobVulpkaninRFootPlanti
+
+# The legs Reptilians had before they were made digitigrade.
+- type: wgLegStyle
+  id: WGLegsReptilianPlantigrade
+  species: [ Reptilian ]
+  stance: Plantigrade
+  sprites:
+    LLeg: MobReptilianLLeg
+    RLeg: MobReptilianRLeg
+    LFoot: MobReptilianLFoot
+    RFoot: MobReptilianRFoot
+  displacementSlots: [ jumpsuit, shoes ]
+  femaleDisplacements:
+    jumpsuit:
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: jumpsuit_reptilian_plantigrade_female
+
+- type: wgLegStyle
+  id: WGLegsSynthPlantigrade
+  species: [ Synth ]
+  stance: Plantigrade
+  sprites:
+    LLeg: WGMobSynthLLegPlanti
+    RLeg: WGMobSynthRLegPlanti
+    LFoot: WGMobSynthLFootPlanti
+    RFoot: WGMobSynthRFootPlanti
+  displacementSlots: [ jumpsuit, shoes, outerClothing ]
+  displacements:
+    jumpsuit:
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: jumpsuit_synth_plantigrade
+    outerClothing:
+      sizeMaps:
+        32:
+          sprite: _WG/LegStyle/displacement.rsi
+          state: outerclothing_synth_plantigrade

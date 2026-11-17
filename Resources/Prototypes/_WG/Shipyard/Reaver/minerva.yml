@@ -1,0 +1,36 @@
+# Author: Gooorn (Discord), antananat (github)
+
+- type: vessel
+  id: WGMinerva
+  parent: BaseVessel
+  name: 'RVR Minerva'
+  description: 'A hollowed out asteroid, formerly belonging to some mining corp. Now, with new walls and scavenged guns, it serves as a centerpiece of the Reaver fleet.'
+  price: 600000 # appraised at 172648
+  category: Large # 1077 tiles
+  purchasable: false
+  group: Custom
+  shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/Reaver/minerva.yml
+  guidebookPage: null
+  class:
+  - Capital
+  - Destroyer
+  engine:
+  - AME
+
+- type: gameMap
+  id: WGMinerva
+  mapName: 'RVR Minerva'
+  mapPath: /SharedMaps/_WG/Shipyard/Shuttles/Reaver/minerva.yml
+  minPlayers: 0
+  stations:
+    WGMinerva:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'RVR Minerva {1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

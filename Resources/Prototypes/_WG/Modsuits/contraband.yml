@@ -1,0 +1,66 @@
+# WOLFGATE(Modsuits): contraband parents for ported MODsuit modules.
+
+- type: entity
+  id: BaseWGModsuitSyndicateContraband
+  abstract: true
+  components:
+  - type: Contraband
+    severity: Syndicate
+
+- type: entity
+  id: BaseWGModsuitSecurityContraband
+  abstract: true
+  components:
+  - type: Contraband
+    severity: Restricted
+    allowedDepartments: [ Security ]
+
+- type: entity
+  parent: BaseItem
+  id: WGCandelaBeacon
+  name: Candela beacon
+  description: A compact beacon spool compatible with the MOD "Candela" module.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/station_beacon.rsi
+    state: icon
+  - type: Item
+    size: Small
+  - type: Tag
+    tags:
+    - MarkerBeacon
+  - type: ItemToggle
+  - type: Anchorable
+  - type: Physics
+    bodyType: Dynamic
+- type: entity
+  id: BaseWGModsuitMedicalContraband
+  abstract: true
+  components:
+  - type: Contraband
+    severity: Restricted
+    allowedDepartments: [ Medical ]
+
+- type: entity
+  id: BaseWGModsuitEngineeringContraband
+  abstract: true
+  components:
+  - type: Contraband
+    severity: Restricted
+    allowedDepartments: [ Engineering ]
+
+- type: entity
+  id: BaseWGModsuitCargoContraband
+  abstract: true
+  components:
+  - type: Contraband
+    severity: Restricted
+    allowedDepartments: [ Cargo ]
+
+- type: entity
+  id: BaseWGModsuitCommandContraband
+  abstract: true
+  components:
+  - type: Contraband
+    severity: Restricted
+    allowedDepartments: [ Command ]

@@ -1,0 +1,41 @@
+# Fonts a character can pick for their speech in the character creator. `font` is a client font prototype id.
+# Language fonts (Octatrax, Scratch, Thaveyan) are not offered; a language's own font still wins over the pick.
+# sizeScale evens out letter height against the default (Noto Sans), measured on x-height and cap height.
+
+- type: wgChatFont
+  id: WGChatFontDefault
+  name: wg-chat-font-default
+  font: Default
+  order: 0
+
+- type: wgChatFont
+  id: WGChatFontTerminal
+  name: wg-chat-font-terminal
+  font: WGRobotoMono
+  order: 1
+
+- type: wgChatFont
+  id: WGChatFontBoxfont
+  name: wg-chat-font-boxfont
+  font: BoxRound
+  order: 2
+
+- type: wgChatFont
+  id: WGChatFontIceberg
+  name: wg-chat-font-iceberg
+  font: WGIceberg
+  order: 3
+
+- type: wgChatFont
+  id: WGChatFontFondamento
+  name: wg-chat-font-fondamento
+  font: WGFondamento
+  sizeScale: 0.9
+  order: 4
+
+- type: wgChatFont
+  id: WGChatFontMinecraftia
+  name: wg-chat-font-minecraftia
+  font: WGMinecraftia
+  sizeScale: 0.83
+  order: 5

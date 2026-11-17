@@ -16,7 +16,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
-using Content.Shared._WF.RMCCore.Actions; // WOLFGATE(RMCCore)
+using Content.Shared._WG.RMCCore.Actions; // WOLFGATE(RMCCore)
 
 namespace Content.Shared.Actions;
 

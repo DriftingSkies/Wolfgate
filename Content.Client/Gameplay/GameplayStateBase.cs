@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Numerics;
-using Content.Client._WF.Vehicles.Interaction; // WOLFGATE(Vehicles)
+using Content.Client._WG.Vehicles.Interaction; // WOLFGATE(Vehicles)
 using Content.Client.Clickable;
 using Content.Client.UserInterface;
 using Content.Client.Viewport;

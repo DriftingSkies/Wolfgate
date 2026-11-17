@@ -1,0 +1,31 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+
+- type: vessel
+  id: Molotok
+  parent: BaseVesselIFFDisabled
+  name: BYP Molotok
+  description: A broad-headed ram made to fit the connection port of the Ledokol.
+  price: 60000
+  purchasable: false # voucher only
+  category: Large
+  group: Custom
+  access: USSP
+  shuttlePath: /SharedMaps/_WG/OldVessels/USSP/Ledokol/Attachments/molotok.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: Null
+
+- type: gameMap
+  id: Molotok
+  mapName: 'Molotok'
+  mapPath: /SharedMaps/_WG/OldVessels/USSP/Ledokol/Attachments/molotok.yml
+  minPlayers: 0
+  stations:
+    Molotok:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Molotok USSP Ram{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'

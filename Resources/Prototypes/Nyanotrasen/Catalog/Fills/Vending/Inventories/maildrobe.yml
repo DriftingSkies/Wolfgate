@@ -18,10 +18,10 @@
     RubberStampDenied: 3 # Frontier 1<3
     BoxFolderClipboard: 3 # Frontier
     BoxEnvelope: 4 # Frontier
-    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-    WFMeridianClothingHeadCostumeMailman: 2
-    WFMeridianClothingHeadPlaybunnyearsMailman: 2
-    WFMeridianClothingNeckTieBunnytieMailman: 2
-    WFMeridianClothingUnderMiscMailman: 2
-    WFMeridianClothingUnderRankCargoMailmanBunnysuit: 2
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+    WGMeridianClothingHeadCostumeMailman: 2
+    WGMeridianClothingHeadPlaybunnyearsMailman: 2
+    WGMeridianClothingNeckTieBunnytieMailman: 2
+    WGMeridianClothingUnderMiscMailman: 2
+    WGMeridianClothingUnderRankCargoMailmanBunnysuit: 2
     # WOLFGATE END

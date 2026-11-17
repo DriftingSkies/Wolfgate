@@ -36427,14 +36427,14 @@ entities:
     - type: Transform
       parent: 1
       pos: 5.5,24.5
-- proto: WFSpecialistVendorTSF
+- proto: WGSpecialistVendorTSF
   entities:
   - uid: 10746
     components:
     - type: Transform
       parent: 1
       pos: 14.5,5.5
-- proto: WFVendingMachineTsfOutfitter
+- proto: WGVendingMachineTsfOutfitter
   entities:
   - uid: 10747
     components:
@@ -71013,7 +71013,7 @@ entities:
     - type: Transform
       parent: 1
       pos: -11.5,-31.5
-- proto: WFContractBoardTSF
+- proto: WGContractBoardTSF
   entities:
   - uid: 3085
     components:
@@ -71044,7 +71044,7 @@ entities:
       parent: 1
       rot: -1.5707963267948966 rad
       pos: 12.5,3.5
-- proto: WFContractCargoPad
+- proto: WGContractCargoPad
   entities:
   - uid: 877
     components:
@@ -71072,7 +71072,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 53.5,0.5
-- proto: WFVendingMachineTraderHalcyon
+- proto: WGVendingMachineTraderHalcyon
   entities:
   - uid: 5675
     components:

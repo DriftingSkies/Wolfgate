@@ -33,7 +33,7 @@ public sealed partial class CEClientZLevelsSystem : CESharedZLevelsSystem
 
         SubscribeLocalEvent<CEZPhysicsComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<CEZPhysicsComponent, GetEyeOffsetEvent>(OnEyeOffset);
-        SubscribeLocalEvent<CEZPhysicsComponent, AfterAutoHandleStateEvent>((uid, comp, _) => WFNoteHeight(uid, comp.LocalPosition)); // WOLFGATE(Performance): a height from the server joins the sprite passes
+        SubscribeLocalEvent<CEZPhysicsComponent, AfterAutoHandleStateEvent>((uid, comp, _) => WGNoteHeight(uid, comp.LocalPosition)); // WOLFGATE(Performance): a height from the server joins the sprite passes
     }
 
     private void OnEyeOffset(Entity<CEZPhysicsComponent> ent, ref GetEyeOffsetEvent args)
@@ -51,7 +51,7 @@ public sealed partial class CEClientZLevelsSystem : CESharedZLevelsSystem
 
         ent.Comp.DrawDepthDefault = sprite.DrawDepth;
         ent.Comp.SpriteOffsetDefault = sprite.Offset;
-        WFNoteHeight(ent, ent.Comp.LocalPosition); // WOLFGATE(Performance): spawned off the ground
+        WGNoteHeight(ent, ent.Comp.LocalPosition); // WOLFGATE(Performance): spawned off the ground
     }
 
     public override void Shutdown()
@@ -91,7 +91,7 @@ internal sealed partial class CEClientZLevelsPreAnimSystem : EntitySystem
         // WOLFGATE(Performance) START: walk only raised entities; nothing else has a height to strip
         // var query = EntityQueryEnumerator<CEZPhysicsComponent, SpriteComponent>();
         // while (query.MoveNext(out var uid, out var zPhys, out var sprite))
-        foreach (var uid in _zLevels.WFRaised)
+        foreach (var uid in _zLevels.WGRaised)
         {
             if (!_zPhysQuery.TryComp(uid, out var zPhys) || !_spriteQuery.TryComp(uid, out var sprite))
                 continue;
@@ -170,7 +170,7 @@ internal sealed partial class CEClientZLevelsPostAnimSystem : EntitySystem
         // var query = EntityQueryEnumerator<CEZPhysicsComponent, SpriteComponent, TransformComponent>();
         // while (query.MoveNext(out var uid, out var zPhys, out var sprite, out var xform))
         _landed.Clear();
-        foreach (var uid in _zLevels.WFRaised)
+        foreach (var uid in _zLevels.WGRaised)
         {
             if (!_zPhysQuery.TryComp(uid, out var zPhys) || !_spriteQuery.TryComp(uid, out var sprite) ||
                 !_xformQuery.TryComp(uid, out var xform) || zPhys.LocalPosition == 0)
@@ -192,7 +192,7 @@ internal sealed partial class CEClientZLevelsPostAnimSystem : EntitySystem
         // WOLFGATE(Performance) START: removed after the walk, which can't change the set it enumerates
         foreach (var uid in _landed)
         {
-            _zLevels.WFRaised.Remove(uid);
+            _zLevels.WGRaised.Remove(uid);
         }
         // WOLFGATE END
     }

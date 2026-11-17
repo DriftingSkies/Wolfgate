@@ -611,9 +611,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     wings_BEHIND: wings_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_FarHorizons/Mobs/Customization/proto-avali/led_shapes_body.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_FarHorizons/Mobs/Customization/proto-avali/led_shapes_body.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: wings_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_FarHorizons/Mobs/Customization/proto-avali/led_shapes_body.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_FarHorizons/Mobs/Customization/proto-avali/led_shapes_body.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: wings_BEHIND
 
 #region ARACHNID

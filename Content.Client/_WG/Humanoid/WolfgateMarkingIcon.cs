@@ -1,0 +1,136 @@
+using System.Numerics;
+using Content.Client.Clickable;
+using Robust.Client.GameObjects;
+using Robust.Client.Graphics;
+using Robust.Client.UserInterface;
+using Robust.Client.UserInterface.Controls;
+using Robust.Client.Utility;
+using Robust.Shared.Graphics.RSI;
+using Robust.Shared.Utility;
+
+namespace Content.Client._WG.Humanoid;
+
+/// <summary>
+/// Preview of a whole marking: every one of its sprites stacked in draw order, each tinted with its own
+/// layer colour. Markings are routinely split across sprites that are only drawn from some angles, so the
+/// icon also falls back to a direction the marking is actually visible in rather than showing an empty box.
+/// </summary>
+public sealed class WolfgateMarkingIcon : Control
+{
+    /// <summary>Directions tried when the previewed one is empty, front first, back last.</summary>
+    private static readonly Direction[] Fallbacks =
+    {
+        Direction.South, Direction.East, Direction.West, Direction.North,
+    };
+
+    // Resolved per call, never kept in a static: each client has its own managers, and pooled test clients
+    // share one process, so a static would hand one client's managers to another client's thread.
+    private static SpriteSystem Sprites => IoCManager.Resolve<IEntitySystemManager>().GetEntitySystem<SpriteSystem>();
+
+    private static IClickMapManager ClickMaps => IoCManager.Resolve<IClickMapManager>();
+
+    private readonly IReadOnlyList<SpriteSpecifier> _sprites;
+    private readonly List<TextureRect> _layers = new();
+    private readonly float _scale;
+    private readonly float _size;
+
+    public WolfgateMarkingIcon(IReadOnlyList<SpriteSpecifier>? sprites, Direction direction, float scale = 2f, float size = 64f)
+    {
+        _sprites = sprites ?? Array.Empty<SpriteSpecifier>();
+        _scale = scale;
+        _size = size;
+        MinSize = new Vector2(size, size);
+        HorizontalAlignment = HAlignment.Center;
+
+        foreach (var _ in _sprites)
+        {
+            var layer = new TextureRect
+            {
+                TextureScale = new Vector2(scale, scale),
+                Stretch = TextureRect.StretchMode.KeepCentered,
+                HorizontalAlignment = HAlignment.Center,
+                VerticalAlignment = VAlignment.Center,
+            };
+            _layers.Add(layer);
+            AddChild(layer);
+        }
+
+        SetDirection(direction);
+    }
+
+    /// <summary>Colour per sprite layer; layers past the end of the list are left white.</summary>
+    public void SetColors(IReadOnlyList<Color>? colors)
+    {
+        for (var i = 0; i < _layers.Count; i++)
+            _layers[i].ModulateSelfOverride = colors != null && i < colors.Count ? colors[i] : Color.White;
+    }
+
+    /// <summary>Single colour for every layer, for tiles that are not applied yet.</summary>
+    public Color Tint
+    {
+        set
+        {
+            foreach (var layer in _layers)
+                layer.ModulateSelfOverride = value;
+        }
+    }
+
+    /// <summary>Draws the marking facing the given direction, or the nearest one it is not empty in.</summary>
+    public void SetDirection(Direction direction)
+    {
+        var shown = VisibleDirection(_sprites, direction);
+        for (var i = 0; i < _layers.Count; i++)
+        {
+            var texture = FrameFor(_sprites[i], shown);
+            // A sprite wider than the usual 32 px, such as a naga tail, is scaled down to stay inside the icon.
+            var fit = MathF.Min(_scale, _size / MathF.Max(1f, MathF.Max(texture.Width, texture.Height)));
+            _layers[i].TextureScale = new Vector2(fit, fit);
+            _layers[i].Texture = texture;
+        }
+    }
+
+    /// <summary>
+    /// The given direction if any sprite draws something in it, otherwise the first fallback that does.
+    /// Markings that are empty from every angle (the "none" and "bald" options) keep the asked-for direction.
+    /// </summary>
+    public static Direction VisibleDirection(IReadOnlyList<SpriteSpecifier> sprites, Direction preferred)
+    {
+        if (AnyVisible(sprites, preferred))
+            return preferred;
+
+        foreach (var dir in Fallbacks)
+        {
+            if (dir != preferred && AnyVisible(sprites, dir))
+                return dir;
+        }
+
+        return preferred;
+    }
+
+    /// <summary>Whether any of the sprites draws something in the given direction.</summary>
+    public static bool AnyVisible(IReadOnlyList<SpriteSpecifier> sprites, Direction direction)
+    {
+        foreach (var sprite in sprites)
+        {
+            if (ShowsInDirection(sprite, direction))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static bool ShowsInDirection(SpriteSpecifier sprite, Direction direction)
+    {
+        // Only RSI states carry per-direction frames; a flat texture always draws.
+        if (Sprites.RsiStateLike(sprite) is not RSI.State state)
+            return true;
+
+        return ClickMaps.HasOpaquePixels(state.RSI, state.StateId, direction.Convert(state.RsiDirections), 0);
+    }
+
+    /// <summary>First frame of a sprite for a direction; sprites without directions give their only frame.</summary>
+    public static Texture FrameFor(SpriteSpecifier sprite, Direction direction)
+    {
+        return Sprites.RsiStateLike(sprite).TextureFor(direction);
+    }
+}

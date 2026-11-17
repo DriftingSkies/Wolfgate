@@ -5,7 +5,7 @@
   description: An old SCAF suit painted in a PDV tan color scheme. The armor feels degraded, but lighter. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): ablative coat.
-  - type: WFAblativeCoat
+  - type: WGAblativeCoat
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/scaf_pirate.rsi
   - type: Item
@@ -55,11 +55,11 @@
   description: A combat hardsuit designed by the Phaethon Dynasty. Heavier, but still general-purpose, it sacrifices some of its protection for reinforced ballistic plating. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): spall liner.
-  - type: WFWoundWard
-    examine: wf-armor-spec-spall-liner-examine
+  - type: WGWoundWard
+    examine: wg-armor-spec-spall-liner-examine
     blocks:
-    - WFWolfmedLodgedRoundWound
-    - WFWolfmedShrapnelWound
+    - WGWolfmedLodgedRoundWound
+    - WGWolfmedShrapnelWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/syndicate.rsi
   - type: Clothing
@@ -100,9 +100,9 @@
   description: A fast combat hardsuit designed by the Phaethon Dynasty. The armor features reinforced plating in vital areas. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): auto-tourniquet, plasma reserve and steady hands.
-  - type: WFSteadyHands
-  - type: WFPlasmaReserve
-  - type: WFAutoTourniquet
+  - type: WGSteadyHands
+  - type: WGPlasmaReserve
+  - type: WGAutoTourniquet
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/pdv_medic.rsi
   - type: Item
@@ -151,11 +151,11 @@
   description: An adorned tacsuit designed with an imperfect nanolaminate composition. High maneuverability, sturdy armor.
   components:
   # WOLFGATE(ArmorSpecialization): commander's weave.
-  - type: WFWoundWard
-    examine: wf-armor-spec-commander-examine
+  - type: WGWoundWard
+    examine: wg-armor-spec-commander-examine
     blocks:
-    - WFWolfmedConcussionWound
-    - WFWolfmedArterialBleedWound
+    - WGWolfmedConcussionWound
+    - WGWolfmedArterialBleedWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/pdv_vizier.rsi
   - type: Clothing
@@ -221,7 +221,7 @@
   - type: Tag
     tags:
     - RogueHardsuit
-  - type: WFSoftShield # WOLFGATE(SoftShield): brute damage bleeds through the field dampened.
+  - type: WGSoftShield # WOLFGATE(SoftShield): brute damage bleeds through the field dampened.
   # Shielding
   - type: PersonalShield
     visuals:
@@ -270,7 +270,7 @@
   description: A combat hardsuit designed by the Phaethon Dynasty for Tarkhans. Like the CV-67, it uses an imperfect nanolaminate composition to save weight, and a hydraulic rig adds mobility. Painted in the royal Tarkhan white palette, it is a rare sight. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): limb lock.
-  - type: WFLimbLock
+  - type: WGLimbLock
     breakthrough: 40
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/basilisk.rsi

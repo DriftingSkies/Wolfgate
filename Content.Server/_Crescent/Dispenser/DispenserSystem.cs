@@ -57,11 +57,11 @@ public sealed partial class DispenserSystem : SharedDispenserSystem
         {
             args.Handled = true;
             // WOLFGATE(TradeGoods) START: chutes refuse goods not hauled away from where they were made, and quote the rest live
-            if (WfTakeSpecialCrate(uid, component, used, args.User, virtualItem, args.Used))
+            if (WgTakeSpecialCrate(uid, component, used, args.User, virtualItem, args.Used))
                 return;
             if (RefuseLocalGoods(uid, component, used, args.User))
                 return;
-            WfQuoteSale(uid, used, args.User);
+            WgQuoteSale(uid, used, args.User);
             // WOLFGATE END
             TryDispenseItem(uid, component, itemId);
 
@@ -72,7 +72,7 @@ public sealed partial class DispenserSystem : SharedDispenserSystem
             QueueDel(used);
         }
         // WOLFGATE(TradeGoods) START: chutes also take consignments they don't list
-        else if (WfTakeSpecialCrate(uid, component, used, args.User, virtualItem, args.Used))
+        else if (WgTakeSpecialCrate(uid, component, used, args.User, virtualItem, args.Used))
         {
             args.Handled = true;
         }
@@ -116,7 +116,7 @@ public sealed partial class DispenserSystem : SharedDispenserSystem
 
     public void Dispense(EntityUid uid, DispenserComponent component, string itemId)
     {
-        if (WfPayout(uid, component, itemId)) // WOLFGATE(TradeGoods): pay the live quote, print live prices
+        if (WgPayout(uid, component, itemId)) // WOLFGATE(TradeGoods): pay the live quote, print live prices
             return;
 
         var entity = Spawn(itemId, Transform(uid).Coordinates);

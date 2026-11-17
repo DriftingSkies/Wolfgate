@@ -1,0 +1,1678 @@
+# Faction board work: members only, faction credits on top, costs standing with rivals.
+
+# --- TSF Naval Requisitions (Halcyon) ---
+
+- type: wgContract
+  id: WGContractTSFFactionPatrol
+  contractor: WGContractorTSFRequisitions
+  category: Bounty
+  tier: 2
+  title: wg-contract-tsf-faction-patrol
+  briefing: wg-contract-tsf-faction-patrol-brief
+  reward: 27500, 35000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 2
+  credits: 15
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetSmuggler, WGContractTargetClaimJumper ]
+    minDistance: 3500
+    maxDistance: 5500
+
+- type: wgContract
+  id: WGContractTSFFactionSweep
+  contractor: WGContractorTSFRequisitions
+  category: Bounty
+  tier: 3
+  title: wg-contract-tsf-faction-sweep
+  briefing: wg-contract-tsf-faction-sweep-brief
+  reward: 50000, 62500
+  deposit: 3000
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1.2
+  credits: 30
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetRaiderPair ]
+    minDistance: 4000
+    maxDistance: 6500
+
+- type: wgContract
+  id: WGContractTSFFactionMateriel
+  contractor: WGContractorTSFRequisitions
+  category: Supply
+  tier: 2
+  title: wg-contract-tsf-faction-materiel
+  briefing: wg-contract-tsf-faction-materiel-brief
+  reward: 21900, 28900
+  minutes: 55
+  weight: 3
+  credits: 10
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WGContractorUSSPCommissariat: 1
+    WGContractorPDVQuartermaster: 2
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    goods:
+    - stack: Plasteel
+      count: 20, 40
+    - stack: Steel
+      count: 60, 100
+    - stack: Uranium
+      count: 10, 20
+    - entity: MedkitBruteFilled
+      count: 1, 3
+      value: 600
+
+- type: wgContract
+  id: WGContractTSFFactionColonyRun
+  contractor: WGContractorTSFRequisitions
+  category: Hauling
+  tier: 2
+  title: wg-contract-tsf-faction-colony-run
+  briefing: wg-contract-tsf-faction-colony-run-brief
+  reward: 13750, 17500
+  minutes: 50
+  weight: 3
+  credits: 10
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WGContractCourier
+    package: WGContractFreightSupplies
+    count: 2, 4
+    from: Contractor
+    to: Other
+    destinations: [ WGContractorStellarBlessing ]
+    perPackage: 2250
+    perKilometre: 1625
+
+- type: wgContract
+  id: WGContractTSFFactionConvoy
+  contractor: WGContractorTSFRequisitions
+  category: Escort
+  tier: 2
+  title: wg-contract-tsf-faction-convoy
+  briefing: wg-contract-tsf-faction-convoy-brief
+  reward: 20000, 25000
+  deposit: 1000
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1.2
+  credits: 15
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WGContractEscort
+    encounters: [ WGContractEscortLight ]
+    destinations: [ WGContractorStellarBlessing, WGContractorCaelPort ]
+    perKilometre: 1250
+
+- type: wgContract
+  id: WGContractTSFFactionRecorder
+  contractor: WGContractorTSFRequisitions
+  category: Salvage
+  tier: 2
+  title: wg-contract-tsf-faction-recorder
+  briefing: wg-contract-tsf-faction-recorder-brief
+  reward: 17500, 22500
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  credits: 8
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WGContractRecovery
+    item: WGContractFlightRecorder
+    minDistance: 3500
+    maxDistance: 5500
+    wrecks:
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+
+# --- USSP Commissariat (Camelot) ---
+
+- type: wgContract
+  id: WGContractUSSPFactionRations
+  contractor: WGContractorUSSPCommissariat
+  category: Supply
+  tier: 1
+  title: wg-contract-ussp-faction-rations
+  briefing: wg-contract-ussp-faction-rations-brief
+  reward: 15300, 21000
+  minutes: 55
+  weight: 4
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    goods:
+    - entity: FoodBreadPlain
+      count: 6, 12
+    - entity: FoodMeat
+      count: 10, 20
+    - entity: DrinkWaterBottleFull
+      count: 10, 20
+
+- type: wgContract
+  id: WGContractUSSPFactionReactor
+  contractor: WGContractorUSSPCommissariat
+  category: Supply
+  tier: 2
+  title: wg-contract-ussp-faction-reactor
+  briefing: wg-contract-ussp-faction-reactor-brief
+  reward: 28450, 37200
+  deposit: 1000
+  minutes: 60
+  weight: 3
+  harms:
+    WGContractorTSFRequisitions: 1
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    goods:
+    - stack: Uranium
+      count: 15, 25
+    - stack: Plasma
+      count: 20, 40
+    - stack: Plasteel
+      count: 20, 30
+
+- type: wgContract
+  id: WGContractUSSPFactionDefence
+  contractor: WGContractorUSSPCommissariat
+  category: Bounty
+  tier: 3
+  title: wg-contract-ussp-faction-defence
+  briefing: wg-contract-ussp-faction-defence-brief
+  reward: 60000, 70000
+  deposit: 3000
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1.2
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetRaiderPair ]
+    minDistance: 4000
+    maxDistance: 6500
+
+- type: wgContract
+  id: WGContractUSSPFactionSmugglers
+  contractor: WGContractorUSSPCommissariat
+  category: Bounty
+  tier: 2
+  title: wg-contract-ussp-faction-smugglers
+  briefing: wg-contract-ussp-faction-smugglers-brief
+  reward: 32500, 40000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1.5
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetSmuggler ]
+    minDistance: 3500
+    maxDistance: 5500
+
+- type: wgContract
+  id: WGContractUSSPFactionConvoy
+  contractor: WGContractorUSSPCommissariat
+  category: Escort
+  tier: 2
+  title: wg-contract-ussp-faction-convoy
+  briefing: wg-contract-ussp-faction-convoy-brief
+  reward: 22500, 28750
+  deposit: 1000
+  minutes: 70
+  crewBonus: 0.25
+  weight: 1.2
+  objective: !type:WGContractEscort
+    encounters: [ WGContractEscortLight ]
+    perKilometre: 1125
+
+# --- PDV Quartermaster (Helios) ---
+
+- type: wgContract
+  id: WGContractPDVFactionPrize
+  contractor: WGContractorPDVQuartermaster
+  category: Bounty
+  tier: 2
+  title: wg-contract-pdv-faction-prize
+  briefing: wg-contract-pdv-faction-prize-brief
+  reward: 27500, 35000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 2
+  credits: 15
+  creditEntity: Doubloon1
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetSmuggler, WGContractTargetClaimJumper ]
+    minDistance: 3500
+    maxDistance: 5500
+
+- type: wgContract
+  id: WGContractPDVFactionRivals
+  contractor: WGContractorPDVQuartermaster
+  category: Bounty
+  tier: 3
+  title: wg-contract-pdv-faction-rivals
+  briefing: wg-contract-pdv-faction-rivals-brief
+  reward: 50000, 62500
+  deposit: 3000
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1.2
+  credits: 30
+  creditEntity: Doubloon1
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetRaiderPair ]
+    minDistance: 4000
+    maxDistance: 6500
+
+- type: wgContract
+  id: WGContractPDVFactionArmoury
+  contractor: WGContractorPDVQuartermaster
+  category: Supply
+  tier: 2
+  title: wg-contract-pdv-faction-armoury
+  briefing: wg-contract-pdv-faction-armoury-brief
+  reward: 26250, 35000
+  minutes: 60
+  weight: 3
+  credits: 10
+  creditEntity: Doubloon1
+  harms:
+    WGContractorTSFRequisitions: 2
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    goods:
+    - stack: Plasteel
+      count: 20, 40
+    - stack: Plastitanium
+      count: 10, 20
+    - stack: PdvComposite
+      count: 10, 20
+    - stack: Uranium
+      count: 10, 20
+
+- type: wgContract
+  id: WGContractPDVFactionSalvage
+  contractor: WGContractorPDVQuartermaster
+  category: Salvage
+  tier: 2
+  title: wg-contract-pdv-faction-salvage
+  briefing: wg-contract-pdv-faction-salvage-brief
+  reward: 18750, 23750
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1.2
+  credits: 8
+  creditEntity: Doubloon1
+  objective: !type:WGContractRecovery
+    item: WGContractCargoManifest
+    minDistance: 3500
+    maxDistance: 5500
+    wrecks:
+    - /Maps/Salvage/cargo-1.yml
+    - /Maps/Salvage/hauling-shuttle.yml
+    - /Maps/Salvage/small-cargo.yml
+
+# --- Faction crew work ---
+
+- type: wgContract
+  id: WGContractTSFFactionOre
+  contractor: WGContractorTSFRequisitions
+  category: Mining
+  tier: 2
+  title: wg-contract-tsf-faction-ore
+  briefing: wg-contract-tsf-faction-ore-brief
+  reward: 87500, 105000
+  deposit: 2000
+  minutes: 90
+  minCrew: 2
+  crewBonus: 0.35
+  weight: 2
+  credits: 20
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WGContractorUSSPCommissariat: 1
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    goodsCap: 30000
+    goods:
+    - stack: SteelOre
+      count: 120, 160
+    - stack: PlasmaOre
+      count: 40, 60
+    - stack: UraniumOre
+      count: 30, 45
+
+- type: wgContract
+  id: WGContractTSFFactionAnomaly
+  contractor: WGContractorTSFRequisitions
+  category: Science
+  tier: 3
+  title: wg-contract-tsf-faction-anomaly
+  briefing: wg-contract-tsf-faction-anomaly-brief
+  reward: 40000, 50000
+  deposit: 2500
+  minutes: 65
+  minCrew: 2
+  crewBonus: 0.35
+  weight: 1
+  credits: 25
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WGContractSurvey
+    count: 2, 3
+    perAnomaly: 5000
+    minDistance: 4000
+    maxDistance: 6000
+    anomalies: [ AnomalyFlesh, AnomalyGravity, AnomalyElectricity, AnomalyPyroclastic ]
+    infestation:
+    - entity: MobFleshJaredSalvage
+      count: 2, 4
+    - entity: MobFleshGolemSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-pirate.yml
+    - /Maps/Salvage/outpost-arm.yml
+
+- type: wgContract
+  id: WGContractUSSPFactionOre
+  contractor: WGContractorUSSPCommissariat
+  category: Mining
+  tier: 2
+  title: wg-contract-ussp-faction-ore
+  briefing: wg-contract-ussp-faction-ore-brief
+  reward: 87500, 105000
+  deposit: 2000
+  minutes: 90
+  minCrew: 2
+  crewBonus: 0.35
+  weight: 2
+  harms:
+    WGContractorTSFRequisitions: 1
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    goodsCap: 30000
+    goods:
+    - stack: SteelOre
+      count: 120, 160
+    - stack: Coal
+      count: 90, 120
+    - stack: UraniumOre
+      count: 30, 45
+
+# --- Ammunition drives: faction boards, costing standing with rivals ---
+
+- type: wgContract
+  id: WGContractTSFFactionAmmo
+  contractor: WGContractorTSFRequisitions
+  category: Supply
+  tier: 2
+  title: wg-contract-tsf-faction-ammo
+  briefing: wg-contract-tsf-faction-ammo-brief
+  reward: 26250, 35000
+  minutes: 55
+  weight: 2.4
+  credits: 15
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WGContractorUSSPCommissariat: 1
+    WGContractorPDVQuartermaster: 1
+  objective: !type:WGContractSupply
+    premium: 1.25
+    goods:
+    - ammo: true
+      name: wg-contract-goods-ammo
+      count: 6, 10
+      value: 400
+
+- type: wgContract
+  id: WGContractUSSPFactionAmmo
+  contractor: WGContractorUSSPCommissariat
+  category: Supply
+  tier: 2
+  title: wg-contract-ussp-faction-ammo
+  briefing: wg-contract-ussp-faction-ammo-brief
+  reward: 26250, 35000
+  minutes: 55
+  weight: 2.4
+  harms:
+    WGContractorTSFRequisitions: 1
+  objective: !type:WGContractSupply
+    premium: 1.25
+    goods:
+    - ammo: true
+      name: wg-contract-goods-ammo
+      count: 6, 10
+      value: 400
+
+- type: wgContract
+  id: WGContractTSFFactionHull
+  contractor: WGContractorTSFRequisitions
+  category: Salvage
+  tier: 3
+  title: wg-contract-tsf-faction-hull
+  briefing: wg-contract-tsf-faction-hull-brief
+  reward: 40000, 50000
+  deposit: 2500
+  minutes: 75
+  minCrew: 2
+  crewBonus: 0.25
+  weight: 1
+  credits: 25
+  creditEntity: FederationMilitaryCredit1
+  requires:
+  - tag: WGTowRope
+    name: wg-contract-requires-rope
+  - entity: WGTetherInstaller
+    name: wg-contract-requires-tether-installer
+  objective: !type:WGContractTow
+    minDistance: 3500
+    maxDistance: 5500
+    stationClearance: 2500
+    infestation:
+    - entity: MobFleshJaredSalvage
+      count: 1, 3
+    wrecks:
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-pirate.yml
+    - /Maps/Salvage/small-syndicate.yml
+
+# --- USSP Commissariat: the freeport's own work ---
+
+- type: wgContract
+  id: WGContractUSSPFactionMail
+  contractor: WGContractorUSSPCommissariat
+  category: Delivery
+  tier: 1
+  title: wg-contract-ussp-faction-mail
+  briefing: wg-contract-ussp-faction-mail-brief
+  reward: 6500, 8500
+  minutes: 50
+  weight: 1.5
+  objective: !type:WGContractCourier
+    package: WGContractParcel
+    count: 2, 3
+    from: Other
+    to: Contractor
+    destinations: [ WGContractorCaelPort ]
+    perPackage: 750
+    perKilometre: 1000
+
+- type: wgContract
+  id: WGContractUSSPFactionClinic
+  contractor: WGContractorUSSPCommissariat
+  category: Supply
+  tier: 1
+  title: wg-contract-ussp-faction-clinic
+  briefing: wg-contract-ussp-faction-clinic-brief
+  reward: 12250, 16600
+  minutes: 50
+  weight: 2.4
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    goodsCap: 2000
+    goods:
+    - stack: Gauze
+      count: 6, 10
+    - stack: Ointment
+      count: 6, 10
+    - stack: Brutepack
+      count: 6, 10
+
+- type: wgContract
+  id: WGContractUSSPFactionApproaches
+  contractor: WGContractorUSSPCommissariat
+  category: Science
+  tier: 1
+  title: wg-contract-ussp-faction-approaches
+  briefing: wg-contract-ussp-faction-approaches-brief
+  reward: 5000, 7000
+  minutes: 45
+  weight: 1.2
+  objective: !type:WGContractSweep
+    points: 3, 4
+    perPoint: 1500
+    minDistance: 2000
+    maxDistance: 5000
+
+- type: wgContract
+  id: WGContractUSSPFactionBeacon
+  contractor: WGContractorUSSPCommissariat
+  category: Salvage
+  tier: 2
+  title: wg-contract-ussp-faction-beacon
+  briefing: wg-contract-ussp-faction-beacon-brief
+  reward: 16000, 21000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WGContractRepair
+    infestation:
+    - entity: MobCarpSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/small-1.yml
+    - /Maps/Salvage/small-2.yml
+    - /Maps/Salvage/small-tesla.yml
+
+- type: wgContract
+  id: WGContractUSSPFactionCustoms
+  contractor: WGContractorUSSPCommissariat
+  category: Bounty
+  tier: 2
+  title: wg-contract-ussp-faction-customs
+  briefing: wg-contract-ussp-faction-customs-brief
+  reward: 22000, 28000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WGContractInspect
+    crew:
+    - entity: MobSyndicateFootsoldier
+      count: 2, 3
+    wrecks:
+    - /Maps/Salvage/small-ship-1.yml
+    - /Maps/Salvage/small-cargo.yml
+    - /Maps/Salvage/hauling-shuttle.yml
+
+- type: wgContract
+  id: WGContractUSSPFactionScrapTow
+  contractor: WGContractorUSSPCommissariat
+  category: Salvage
+  tier: 2
+  title: wg-contract-ussp-faction-scrap-tow
+  briefing: wg-contract-ussp-faction-scrap-tow-brief
+  reward: 18000, 23000
+  deposit: 1000
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1
+  requires:
+  - tag: WGTowRope
+    name: wg-contract-requires-rope
+  - entity: WGTetherInstaller
+    name: wg-contract-requires-tether-installer
+  objective: !type:WGContractTow
+    minDistance: 3000
+    maxDistance: 5000
+    wrecks:
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+    - /Maps/Salvage/cargo-1.yml
+    - /Maps/Salvage/hauling-shuttle.yml
+
+- type: wgContract
+  id: WGContractUSSPFactionRecords
+  contractor: WGContractorUSSPCommissariat
+  category: Salvage
+  tier: 3
+  title: wg-contract-ussp-faction-records
+  briefing: wg-contract-ussp-faction-records-brief
+  reward: 45000, 55000
+  deposit: 3000
+  minutes: 65
+  minCrew: 2
+  crewBonus: 0.3
+  weight: 0.8
+  objective: !type:WGContractDownload
+    duration: 300
+    waveInterval: 45
+    waves:
+    - entity: MobFleshClampSalvage
+      count: 1, 2
+    - entity: MobFleshJaredSalvage
+      count: 0, 2
+    minDistance: 4000
+    maxDistance: 6000
+    wrecks:
+    - /Maps/Salvage/medium-library.yml
+    - /Maps/Salvage/medium-vault-1.yml
+    - /Maps/Salvage/security-chunk.yml
+
+- type: wgContract
+  id: WGContractUSSPFactionGunship
+  contractor: WGContractorUSSPCommissariat
+  category: Bounty
+  tier: 4
+  title: wg-contract-ussp-faction-gunship
+  briefing: wg-contract-ussp-faction-gunship-brief
+  reward: 95000, 115000
+  deposit: 5000
+  minutes: 75
+  minCrew: 3
+  crewBonus: 0.25
+  weight: 0.6
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetGunship ]
+    minDistance: 5000
+    maxDistance: 7000
+
+# --- PDV Quartermaster: Dynasty raiding, plunder and smuggling ---
+
+- type: wgContract
+  id: WGContractPDVFactionConvoyRaid
+  contractor: WGContractorPDVQuartermaster
+  category: Bounty
+  tier: 3
+  title: wg-contract-pdv-faction-convoy-raid
+  briefing: wg-contract-pdv-faction-convoy-raid-brief
+  reward: 60000, 72500
+  deposit: 3000
+  minutes: 70
+  minCrew: 2
+  crewBonus: 0.25
+  weight: 1
+  credits: 30
+  creditEntity: Doubloon1
+  excludePresets: [ WGContestedSector ]
+  harms:
+    WGContractorTSFRequisitions: 2
+    WGContractorHalcyon: 1
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetTsfConvoy ]
+    minDistance: 4000
+    maxDistance: 6500
+
+- type: wgContract
+  id: WGContractPDVFactionPatrolHunt
+  contractor: WGContractorPDVQuartermaster
+  category: Bounty
+  tier: 3
+  title: wg-contract-pdv-faction-patrol-hunt
+  briefing: wg-contract-pdv-faction-patrol-hunt-brief
+  reward: 55000, 67500
+  deposit: 3000
+  minutes: 65
+  crewBonus: 0.25
+  weight: 1
+  credits: 30
+  creditEntity: Doubloon1
+  excludePresets: [ WGContestedSector ]
+  harms:
+    WGContractorTSFRequisitions: 2
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetTsfPatrol ]
+    minDistance: 4000
+    maxDistance: 6500
+
+- type: wgContract
+  id: WGContractPDVFactionWarshipHunt
+  contractor: WGContractorPDVQuartermaster
+  category: Bounty
+  tier: 4
+  title: wg-contract-pdv-faction-warship-hunt
+  briefing: wg-contract-pdv-faction-warship-hunt-brief
+  reward: 120000, 140000
+  deposit: 6000
+  minutes: 80
+  minCrew: 3
+  crewBonus: 0.25
+  weight: 0.6
+  credits: 50
+  creditEntity: Doubloon1
+  excludePresets: [ WGContestedSector ]
+  harms:
+    WGContractorTSFRequisitions: 3
+    WGContractorHalcyon: 1
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetTsfHeavy ]
+    minDistance: 5000
+    maxDistance: 7000
+
+- type: wgContract
+  id: WGContractPDVFactionHunterKiller
+  contractor: WGContractorPDVQuartermaster
+  category: Bounty
+  tier: 3
+  title: wg-contract-pdv-faction-hunter-killer
+  briefing: wg-contract-pdv-faction-hunter-killer-brief
+  reward: 45000, 55000
+  deposit: 2500
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1
+  credits: 25
+  creditEntity: Doubloon1
+  excludePresets: [ WGContestedSector ]
+  harms:
+    WGContractorCaelMarshals: 2
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetMercHunter ]
+    minDistance: 4000
+    maxDistance: 6000
+
+- type: wgContract
+  id: WGContractPDVFactionHostage
+  contractor: WGContractorPDVQuartermaster
+  category: Bounty
+  tier: 3
+  title: wg-contract-pdv-faction-hostage
+  briefing: wg-contract-pdv-faction-hostage-brief
+  reward: 50000, 60000
+  deposit: 3000
+  minutes: 65
+  crewBonus: 0.25
+  weight: 0.8
+  credits: 25
+  creditEntity: Doubloon1
+  excludePresets: [ WGContestedSector ]
+  followUp: WGContractPDVFactionRansom
+  harms:
+    WGContractorTSFRequisitions: 2
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetTsfPatrol ]
+    minDistance: 4000
+    maxDistance: 6500
+
+# Second link of the hostage chain: the ransom, paid at the Halcyon and carried home.
+- type: wgContract
+  id: WGContractPDVFactionRansom
+  contractor: WGContractorPDVQuartermaster
+  category: Delivery
+  tier: 2
+  title: wg-contract-pdv-faction-ransom
+  briefing: wg-contract-pdv-faction-ransom-brief
+  reward: 25000, 30000
+  minutes: 50
+  weight: 0
+  credits: 20
+  creditEntity: Doubloon1
+  harms:
+    WGContractorTSFRequisitions: 1
+  objective: !type:WGContractCourier
+    package: WGContractStrongbox
+    from: Other
+    to: Contractor
+    destinations: [ WGContractorHalcyon ]
+    perKilometre: 1500
+
+- type: wgContract
+  id: WGContractPDVFactionPlunderTow
+  contractor: WGContractorPDVQuartermaster
+  category: Salvage
+  tier: 2
+  title: wg-contract-pdv-faction-plunder-tow
+  briefing: wg-contract-pdv-faction-plunder-tow-brief
+  reward: 20000, 25000
+  deposit: 1500
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1
+  credits: 15
+  creditEntity: Doubloon1
+  requires:
+  - tag: WGTowRope
+    name: wg-contract-requires-rope
+  - entity: WGTetherInstaller
+    name: wg-contract-requires-tether-installer
+  objective: !type:WGContractTow
+    minDistance: 3000
+    maxDistance: 5000
+    wrecks:
+    - /Maps/Salvage/cargo-1.yml
+    - /Maps/Salvage/hauling-shuttle.yml
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+
+- type: wgContract
+  id: WGContractPDVFactionContraband
+  contractor: WGContractorPDVQuartermaster
+  category: Hauling
+  tier: 2
+  title: wg-contract-pdv-faction-contraband
+  briefing: wg-contract-pdv-faction-contraband-brief
+  reward: 14000, 18000
+  deposit: 2000
+  minutes: 60
+  weight: 2.4
+  credits: 12
+  creditEntity: Doubloon1
+  harms:
+    WGContractorUSSPCommissariat: 1
+  objective: !type:WGContractCourier
+    package: WGContractFreightContraband
+    count: 2, 4
+    from: Other
+    to: Contractor
+    destinations: [ WGContractorCamelot ]
+    perPackage: 2000
+    perKilometre: 1500
+
+- type: wgContract
+  id: WGContractPDVFactionStrongbox
+  contractor: WGContractorPDVQuartermaster
+  category: Delivery
+  tier: 1
+  title: wg-contract-pdv-faction-strongbox
+  briefing: wg-contract-pdv-faction-strongbox-brief
+  reward: 7000, 9000
+  minutes: 50
+  weight: 1.5
+  credits: 6
+  creditEntity: Doubloon1
+  harms:
+    WGContractorCaelMarshals: 1
+  objective: !type:WGContractCourier
+    package: WGContractStrongbox
+    from: Other
+    to: Contractor
+    destinations: [ WGContractorCaelPort ]
+    perKilometre: 1250
+
+- type: wgContract
+  id: WGContractPDVFactionBlackMarket
+  contractor: WGContractorPDVQuartermaster
+  category: Supply
+  tier: 2
+  title: wg-contract-pdv-faction-black-market
+  briefing: wg-contract-pdv-faction-black-market-brief
+  reward: 26250, 35000
+  minutes: 55
+  weight: 2.4
+  credits: 10
+  creditEntity: Doubloon1
+  harms:
+    WGContractorTSFRequisitions: 1
+  objective: !type:WGContractSupply
+    premium: 1.25
+    goods:
+    - ammo: true
+      name: wg-contract-goods-ammo
+      count: 6, 10
+      value: 400
+    - stack: Plastitanium
+      count: 10, 20
+
+- type: wgContract
+  id: WGContractPDVFactionPicket
+  contractor: WGContractorPDVQuartermaster
+  category: Science
+  tier: 1
+  title: wg-contract-pdv-faction-picket
+  briefing: wg-contract-pdv-faction-picket-brief
+  reward: 5000, 7000
+  minutes: 45
+  weight: 1.5
+  credits: 5
+  creditEntity: Doubloon1
+  objective: !type:WGContractSweep
+    points: 3, 4
+    perPoint: 1500
+    minDistance: 2500
+    maxDistance: 5500
+
+- type: wgContract
+  id: WGContractPDVFactionWreckStrip
+  contractor: WGContractorPDVQuartermaster
+  category: Salvage
+  tier: 3
+  title: wg-contract-pdv-faction-wreck-strip
+  briefing: wg-contract-pdv-faction-wreck-strip-brief
+  reward: 40000, 50000
+  deposit: 2500
+  minutes: 60
+  crewBonus: 0.3
+  weight: 1
+  credits: 20
+  creditEntity: Doubloon1
+  harms:
+    WGContractorTSFRequisitions: 1
+  objective: !type:WGContractDownload
+    duration: 240
+    waveInterval: 50
+    waves:
+    - entity: MobFleshClampSalvage
+      count: 1, 2
+    - entity: MobFleshJaredSalvage
+      count: 0, 1
+    minDistance: 3500
+    maxDistance: 5500
+    wrecks:
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/engineering-chunk.yml
+    - /Maps/Salvage/medium-vault-1.yml
+
+- type: wgContract
+  id: WGContractPDVFactionFleetPlunder
+  contractor: WGContractorPDVQuartermaster
+  category: Salvage
+  tier: 3
+  title: wg-contract-pdv-faction-fleet-plunder
+  briefing: wg-contract-pdv-faction-fleet-plunder-brief
+  reward: 70000, 85000
+  deposit: 5000
+  minutes: 100
+  minCrew: 3
+  crewBonus: 0.3
+  weight: 0.6
+  credits: 35
+  creditEntity: Doubloon1
+  requires:
+  - tag: WGTowRope
+    name: wg-contract-requires-rope
+  - entity: WGTetherInstaller
+    name: wg-contract-requires-tether-installer
+  objective: !type:WGContractOperation
+    item: WGContractCargoManifest
+    count: 2, 3
+    anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyPyroclastic ]
+    infestation:
+    - entity: MobFleshJaredSalvage
+      count: 1, 3
+    wrecks:
+    - /Maps/Salvage/medium-pirate.yml
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+
+- type: wgContract
+  id: WGContractPDVFactionLevy
+  contractor: WGContractorPDVQuartermaster
+  category: Mining
+  tier: 2
+  title: wg-contract-pdv-faction-levy
+  briefing: wg-contract-pdv-faction-levy-brief
+  reward: 87500, 105000
+  deposit: 2000
+  minutes: 90
+  minCrew: 2
+  crewBonus: 0.35
+  weight: 2
+  credits: 20
+  creditEntity: Doubloon1
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    goodsCap: 30000
+    goods:
+    - stack: SteelOre
+      count: 120, 160
+    - stack: PlasmaOre
+      count: 40, 60
+    - stack: UraniumOre
+      count: 30, 45
+
+# --- TSF Naval Requisitions: counter-piracy, lane security and fleet logistics ---
+
+- type: wgContract
+  id: WGContractTSFFactionConvoyEscort
+  contractor: WGContractorTSFRequisitions
+  category: Escort
+  tier: 3
+  title: wg-contract-tsf-faction-convoy-escort
+  briefing: wg-contract-tsf-faction-convoy-escort-brief
+  reward: 45000, 55000
+  deposit: 3000
+  minutes: 75
+  minCrew: 2
+  crewBonus: 0.25
+  weight: 1
+  credits: 30
+  creditEntity: FederationMilitaryCredit1
+  excludePresets: [ WGContestedSector ]
+  harms:
+    WGContractorPDVQuartermaster: 1
+  objective: !type:WGContractEscort
+    encounters: [ WGContractEscortFederation ]
+    destinations: [ WGContractorCaelPort, WGContractorStellarBlessing, WGContractorMMC ]
+    perKilometre: 1500
+
+- type: wgContract
+  id: WGContractTSFFactionDynastyHunt
+  contractor: WGContractorTSFRequisitions
+  category: Bounty
+  tier: 3
+  title: wg-contract-tsf-faction-dynasty-hunt
+  briefing: wg-contract-tsf-faction-dynasty-hunt-brief
+  reward: 55000, 67500
+  deposit: 3000
+  minutes: 65
+  crewBonus: 0.25
+  weight: 1
+  credits: 30
+  creditEntity: FederationMilitaryCredit1
+  excludePresets: [ WGContestedSector ]
+  harms:
+    WGContractorPDVQuartermaster: 2
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetPdvPatrol ]
+    minDistance: 4000
+    maxDistance: 6500
+
+- type: wgContract
+  id: WGContractTSFFactionWarshipHunt
+  contractor: WGContractorTSFRequisitions
+  category: Bounty
+  tier: 4
+  title: wg-contract-tsf-faction-warship-hunt
+  briefing: wg-contract-tsf-faction-warship-hunt-brief
+  reward: 120000, 140000
+  deposit: 6000
+  minutes: 80
+  minCrew: 3
+  crewBonus: 0.25
+  weight: 0.6
+  credits: 50
+  creditEntity: FederationMilitaryCredit1
+  excludePresets: [ WGContestedSector ]
+  harms:
+    WGContractorPDVQuartermaster: 3
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetPdvHeavy ]
+    minDistance: 5000
+    maxDistance: 7000
+
+- type: wgContract
+  id: WGContractTSFFactionRescue
+  contractor: WGContractorTSFRequisitions
+  category: Bounty
+  tier: 3
+  title: wg-contract-tsf-faction-rescue
+  briefing: wg-contract-tsf-faction-rescue-brief
+  reward: 50000, 60000
+  deposit: 3000
+  minutes: 65
+  crewBonus: 0.25
+  weight: 0.8
+  credits: 25
+  creditEntity: FederationMilitaryCredit1
+  excludePresets: [ WGContestedSector ]
+  followUp: WGContractTSFFactionRescueBeacon
+  harms:
+    WGContractorPDVQuartermaster: 2
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetPdvPatrol ]
+    minDistance: 4000
+    maxDistance: 6500
+
+# Second link of the rescue chain: the captured crew's locator, recovered from where the Dynasty left it.
+- type: wgContract
+  id: WGContractTSFFactionRescueBeacon
+  contractor: WGContractorTSFRequisitions
+  category: Salvage
+  tier: 2
+  title: wg-contract-tsf-faction-rescue-beacon
+  briefing: wg-contract-tsf-faction-rescue-beacon-brief
+  reward: 25000, 30000
+  minutes: 50
+  crewBonus: 0.25
+  weight: 0
+  credits: 20
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WGContractRecovery
+    item: WGContractFlightRecorder
+    minDistance: 3500
+    maxDistance: 5500
+    infestation:
+    - entity: MobSyndicateFootsoldier
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/small-ship-1.yml
+    - /Maps/Salvage/small-cargo.yml
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+
+- type: wgContract
+  id: WGContractTSFFactionConfiscate
+  contractor: WGContractorTSFRequisitions
+  category: Salvage
+  tier: 2
+  title: wg-contract-tsf-faction-confiscate
+  briefing: wg-contract-tsf-faction-confiscate-brief
+  reward: 20000, 25000
+  deposit: 1500
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1
+  credits: 15
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WGContractorPDVQuartermaster: 1
+  requires:
+  - tag: WGTowRope
+    name: wg-contract-requires-rope
+  - entity: WGTetherInstaller
+    name: wg-contract-requires-tether-installer
+  objective: !type:WGContractTow
+    minDistance: 3000
+    maxDistance: 5000
+    wrecks:
+    - /Maps/Salvage/medium-pirate.yml
+    - /Maps/Salvage/small-syndicate.yml
+    - /Maps/Salvage/cargo-1.yml
+
+- type: wgContract
+  id: WGContractTSFFactionBlockade
+  contractor: WGContractorTSFRequisitions
+  category: Bounty
+  tier: 2
+  title: wg-contract-tsf-faction-blockade
+  briefing: wg-contract-tsf-faction-blockade-brief
+  reward: 22000, 28000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  credits: 12
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WGContractorUSSPCommissariat: 1
+  objective: !type:WGContractInspect
+    crew:
+    - entity: MobSyndicateFootsoldier
+      count: 2, 3
+    wrecks:
+    - /Maps/Salvage/small-ship-1.yml
+    - /Maps/Salvage/small-cargo.yml
+    - /Maps/Salvage/hauling-shuttle.yml
+
+- type: wgContract
+  id: WGContractTSFFactionBeacons
+  contractor: WGContractorTSFRequisitions
+  category: Salvage
+  tier: 2
+  title: wg-contract-tsf-faction-beacons
+  briefing: wg-contract-tsf-faction-beacons-brief
+  reward: 16000, 21000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  credits: 12
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WGContractRepair
+    infestation:
+    - entity: MobCarpSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/small-1.yml
+    - /Maps/Salvage/small-3.yml
+    - /Maps/Salvage/small-ai-survey-drone.yml
+
+- type: wgContract
+  id: WGContractTSFFactionSignalSweep
+  contractor: WGContractorTSFRequisitions
+  category: Science
+  tier: 2
+  title: wg-contract-tsf-faction-signal-sweep
+  briefing: wg-contract-tsf-faction-signal-sweep-brief
+  reward: 9000, 12000
+  minutes: 55
+  weight: 1.2
+  credits: 10
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WGContractorPDVQuartermaster: 1
+  objective: !type:WGContractSweep
+    points: 4, 5
+    perPoint: 1750
+    minDistance: 3000
+    maxDistance: 6500
+
+- type: wgContract
+  id: WGContractTSFFactionClassified
+  contractor: WGContractorTSFRequisitions
+  category: Salvage
+  tier: 3
+  title: wg-contract-tsf-faction-classified
+  briefing: wg-contract-tsf-faction-classified-brief
+  reward: 45000, 55000
+  deposit: 3000
+  minutes: 65
+  minCrew: 2
+  crewBonus: 0.3
+  weight: 0.8
+  credits: 25
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WGContractDownload
+    duration: 300
+    waveInterval: 45
+    waves:
+    - entity: MobSyndicateFootsoldier
+      count: 1, 2
+    - entity: MobCarpSalvage
+      count: 0, 2
+    minDistance: 4000
+    maxDistance: 6000
+    wrecks:
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+    - /Maps/Salvage/medium-ruined-emergency-shuttle.yml
+
+- type: wgContract
+  id: WGContractTSFFactionPrisoner
+  contractor: WGContractorTSFRequisitions
+  category: Delivery
+  tier: 1
+  title: wg-contract-tsf-faction-prisoner
+  briefing: wg-contract-tsf-faction-prisoner-brief
+  reward: 7000, 9000
+  minutes: 50
+  weight: 1.5
+  credits: 6
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WGContractorPDVQuartermaster: 1
+  objective: !type:WGContractCourier
+    package: WGContractPrisonerDossier
+    from: Other
+    to: Contractor
+    destinations: [ WGContractorCaelMarshals ]
+    perKilometre: 1250
+
+- type: wgContract
+  id: WGContractTSFFactionGunnery
+  contractor: WGContractorTSFRequisitions
+  category: Supply
+  tier: 2
+  title: wg-contract-tsf-faction-gunnery
+  briefing: wg-contract-tsf-faction-gunnery-brief
+  reward: 26250, 35000
+  minutes: 55
+  weight: 2.4
+  credits: 12
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WGContractorPDVQuartermaster: 1
+  objective: !type:WGContractSupply
+    premium: 1.25
+    goods:
+    - stack: Plasteel
+      count: 40, 60
+    - stack: Uranium
+      count: 20, 30
+
+- type: wgContract
+  id: WGContractTSFFactionFleetRecovery
+  contractor: WGContractorTSFRequisitions
+  category: Salvage
+  tier: 3
+  title: wg-contract-tsf-faction-fleet-recovery
+  briefing: wg-contract-tsf-faction-fleet-recovery-brief
+  reward: 70000, 85000
+  deposit: 5000
+  minutes: 100
+  minCrew: 3
+  crewBonus: 0.3
+  weight: 0.6
+  credits: 35
+  creditEntity: FederationMilitaryCredit1
+  requires:
+  - tag: WGTowRope
+    name: wg-contract-requires-rope
+  - entity: WGTetherInstaller
+    name: wg-contract-requires-tether-installer
+  objective: !type:WGContractOperation
+    item: WGContractFlightRecorder
+    count: 2, 3
+    anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyFlesh ]
+    infestation:
+    - entity: MobFleshJaredSalvage
+      count: 1, 3
+    wrecks:
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+    - /Maps/Salvage/medium-ruined-emergency-shuttle.yml
+
+- type: wgContract
+  id: WGContractTSFFactionMarineSurvey
+  contractor: WGContractorTSFRequisitions
+  category: Science
+  tier: 2
+  title: wg-contract-tsf-faction-marine-survey
+  briefing: wg-contract-tsf-faction-marine-survey-brief
+  reward: 18000, 23000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  credits: 12
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WGContractSurvey
+    count: 1, 2
+    perAnomaly: 3500
+    minDistance: 3000
+    maxDistance: 5000
+    anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyIce, AnomalyBluespace ]
+    infestation:
+    - entity: MobFleshClampSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/small-1.yml
+    - /Maps/Salvage/small-2.yml
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+
+- type: wgContract
+  id: WGContractTSFFactionScreen
+  contractor: WGContractorTSFRequisitions
+  category: Bounty
+  tier: 2
+  title: wg-contract-tsf-faction-screen
+  briefing: wg-contract-tsf-faction-screen-brief
+  reward: 25000, 32500
+  deposit: 1000
+  minutes: 50
+  weight: 1.2
+  crewBonus: 0.25
+  credits: 15
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WGContractorPDVQuartermaster: 1
+  objective: !type:WGContractPicket
+    encounters: [ WGContractTargetPdvPatrol ]
+    duration: 420
+    range: 400
+
+- type: wgContract
+  id: WGContractTSFFactionSensorNet
+  contractor: WGContractorTSFRequisitions
+  category: Science
+  tier: 2
+  title: wg-contract-tsf-faction-sensor-net
+  briefing: wg-contract-tsf-faction-sensor-net-brief
+  reward: 12000, 15000
+  minutes: 55
+  weight: 1.2
+  credits: 10
+  creditEntity: FederationMilitaryCredit1
+  harms:
+    WGContractorPDVQuartermaster: 1
+  objective: !type:WGContractDeploy
+    buoy: WGContractSensorBuoy
+    points: 3, 4
+    perPoint: 2500
+    minDistance: 3000
+    maxDistance: 5500
+
+- type: wgContract
+  id: WGContractPDVFactionHoldout
+  contractor: WGContractorPDVQuartermaster
+  category: Bounty
+  tier: 2
+  title: wg-contract-pdv-faction-holdout
+  briefing: wg-contract-pdv-faction-holdout-brief
+  reward: 25000, 32500
+  deposit: 1000
+  minutes: 50
+  weight: 1.2
+  crewBonus: 0.25
+  credits: 15
+  creditEntity: Doubloon1
+  harms:
+    WGContractorTSFRequisitions: 1
+  objective: !type:WGContractPicket
+    encounters: [ WGContractTargetTsfPatrol ]
+    duration: 420
+    range: 400
+
+- type: wgContract
+  id: WGContractUSSPFactionScreen
+  contractor: WGContractorUSSPCommissariat
+  category: Bounty
+  tier: 2
+  title: wg-contract-ussp-faction-screen
+  briefing: wg-contract-ussp-faction-screen-brief
+  reward: 22500, 30000
+  deposit: 1000
+  minutes: 50
+  weight: 1.2
+  crewBonus: 0.25
+  objective: !type:WGContractPicket
+    encounters: [ WGContractTargetClaimJumper, WGContractTargetSmuggler ]
+    duration: 420
+    range: 400
+
+- type: wgContract
+  id: WGContractTSFFactionPlanetDens
+  contractor: WGContractorTSFRequisitions
+  category: Bounty
+  tier: 3
+  title: wg-contract-tsf-faction-planet-dens
+  briefing: wg-contract-tsf-faction-planet-dens-brief
+  reward: 50000, 60000
+  deposit: 2500
+  minutes: 80
+  weight: 1.0
+  minCrew: 2
+  crewBonus: 0.25
+  credits: 15
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WGContractClear
+    wrecks: []
+    targets:
+      entity: WGContractCreatureDen
+      count: 3, 4
+    planet:
+      hostiles: 5, 8
+
+- type: wgContract
+  id: WGContractTSFFactionPlanetCore
+  contractor: WGContractorTSFRequisitions
+  category: Salvage
+  tier: 2
+  title: wg-contract-tsf-faction-planet-core
+  briefing: wg-contract-tsf-faction-planet-core-brief
+  reward: 24000, 30000
+  deposit: 1000
+  minutes: 70
+  weight: 1.1
+  credits: 15
+  creditEntity: FederationMilitaryCredit1
+  objective: !type:WGContractRecovery
+    wrecks: []
+    item: WGContractDataCore
+    count: 1, 1
+    planet:
+      hostiles: 3, 5
+
+- type: wgContract
+  id: WGContractUSSPFactionPlanetClaim
+  contractor: WGContractorUSSPCommissariat
+  category: Salvage
+  tier: 1
+  title: wg-contract-ussp-faction-planet-claim
+  briefing: wg-contract-ussp-faction-planet-claim-brief
+  reward: 10000, 14000
+  minutes: 70
+  weight: 1.4
+  objective: !type:WGContractConstruct
+    kits:
+    - entity: WGContractKitBeacon
+      count: 2, 3
+    planet:
+      hostiles: 1, 3
+
+- type: wgContract
+  id: WGContractUSSPFactionPlanetSurvey
+  contractor: WGContractorUSSPCommissariat
+  category: Science
+  tier: 2
+  title: wg-contract-ussp-faction-planet-survey
+  briefing: wg-contract-ussp-faction-planet-survey-brief
+  reward: 18000, 22000
+  deposit: 1000
+  minutes: 75
+  weight: 1.2
+  objective: !type:WGContractSurvey
+    wrecks: []
+    count: 2, 3
+    perAnomaly: 2500
+    anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyIce, AnomalyFlora, AnomalyBluespace ]
+    planet:
+      hostiles: 2, 4
+
+- type: wgContract
+  id: WGContractPDVFactionPlanetCache
+  contractor: WGContractorPDVQuartermaster
+  category: Salvage
+  tier: 2
+  title: wg-contract-pdv-faction-planet-cache
+  briefing: wg-contract-pdv-faction-planet-cache-brief
+  reward: 22000, 28000
+  deposit: 1000
+  minutes: 70
+  weight: 1.1
+  credits: 15
+  creditEntity: Doubloon1
+  objective: !type:WGContractInspect
+    wrecks: []
+    planet:
+      hostiles: 3, 5
+
+- type: wgContract
+  id: WGContractPDVFactionPlanetDownload
+  contractor: WGContractorPDVQuartermaster
+  category: Salvage
+  tier: 3
+  title: wg-contract-pdv-faction-planet-download
+  briefing: wg-contract-pdv-faction-planet-download-brief
+  reward: 45000, 55000
+  deposit: 2500
+  minutes: 80
+  weight: 0.9
+  minCrew: 2
+  crewBonus: 0.25
+  credits: 15
+  creditEntity: Doubloon1
+  objective: !type:WGContractDownload
+    wrecks: []
+    duration: 240
+    waveInterval: 45
+    planet:
+      hostiles: 3, 5
+      waveHostiles: 2, 4
+
+- type: wgContract
+  id: WGContractUSSPOutpostClaim
+  contractor: WGContractorUSSPCommissariat
+  category: Salvage
+  tier: 3
+  title: wg-contract-outpost-claim
+  briefing: wg-contract-outpost-claim-brief
+  reward: 55000, 65000
+  minutes: 30
+  weight: 1.0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WGContractUSSPOutpostClearance
+  objective: !type:WGContractConstruct
+    kits:
+    - entity: WGContractKitBeacon
+      count: 2, 2
+    planet:
+      hostiles: 3, 5
+
+- type: wgContract
+  id: WGContractUSSPOutpostClearance
+  contractor: WGContractorUSSPCommissariat
+  category: Salvage
+  tier: 3
+  title: wg-contract-outpost-clearance
+  briefing: wg-contract-outpost-clearance-brief
+  reward: 85000, 95000
+  minutes: 30
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WGContractUSSPOutpostPower
+  objective: !type:WGContractClear
+    wrecks: []
+    targets:
+      entity: WGContractCreatureDen
+      count: 3, 4
+    planet:
+      hostiles: 5, 8
+
+- type: wgContract
+  id: WGContractUSSPOutpostPower
+  contractor: WGContractorUSSPCommissariat
+  category: Salvage
+  tier: 3
+  title: wg-contract-outpost-power
+  briefing: wg-contract-outpost-power-brief
+  reward: 75000, 85000
+  minutes: 25
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WGContractUSSPOutpostFab
+  objective: !type:WGContractConstruct
+    kits:
+    - entity: WGContractKitGenerator
+      count: 1, 1
+    - entity: WGContractKitSolar
+      count: 4, 4
+    planet:
+      hostiles: 2, 4
+
+- type: wgContract
+  id: WGContractUSSPOutpostFab
+  contractor: WGContractorUSSPCommissariat
+  category: Salvage
+  tier: 4
+  title: wg-contract-outpost-fab
+  briefing: wg-contract-outpost-fab-brief
+  reward: 105000, 115000
+  minutes: 25
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WGContractUSSPOutpostHold
+  objective: !type:WGContractConstruct
+    kits:
+    - entity: WGContractKitFab
+      count: 1, 1
+    - entity: WGContractKitOreProcessor
+      count: 1, 1
+    - entity: WGContractKitAirMiner
+      count: 1, 1
+    planet:
+      hostiles: 2, 4
+
+- type: wgContract
+  id: WGContractUSSPOutpostHold
+  contractor: WGContractorUSSPCommissariat
+  category: Salvage
+  tier: 4
+  title: wg-contract-outpost-hold
+  briefing: wg-contract-outpost-hold-brief
+  reward: 115000, 125000
+  minutes: 30
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  followUp: WGContractUSSPOutpostCommission
+  objective: !type:WGContractDownload
+    wrecks: []
+    duration: 300
+    waveInterval: 45
+    terminal: WGContractColonyFabCore
+    planet:
+      hostiles: 3, 5
+      waveHostiles: 3, 4
+
+- type: wgContract
+  id: WGContractUSSPOutpostCommission
+  contractor: WGContractorUSSPCommissariat
+  category: Supply
+  tier: 4
+  title: wg-contract-outpost-commission
+  briefing: wg-contract-outpost-commission-brief
+  reward: 236250, 253750
+  minutes: 40
+  weight: 0
+  minCrew: 2
+  crewBonus: 0.25
+  objective: !type:WGContractSupply
+    goodsCap: 10000
+    goods:
+    - stack: Steel
+      count: 120, 150
+    - stack: Glass
+      count: 60, 80
+    - stack: Plasteel
+      count: 20, 30

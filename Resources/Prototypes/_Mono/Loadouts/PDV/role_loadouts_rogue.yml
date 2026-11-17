@@ -22,7 +22,7 @@
   - RogueSidearm
   - RogueMag
   - RoguePistolMag
-  - WFPdvRanksRakhshan # WOLFGATE(PdvRanks): Ottoman chat rank ladder
+  - WGPdvRanksRakhshan # WOLFGATE(PdvRanks): Ottoman chat rank ladder
   #- FactionArmorPlates
   canCustomizeName: true
 
@@ -50,7 +50,7 @@
   - RogueSidearm
   - RogueCommandMag
   - RoguePistolMag
-  - WFPdvRanksAsvaran # WOLFGATE(PdvRanks): Ottoman chat rank ladder
+  - WGPdvRanksAsvaran # WOLFGATE(PdvRanks): Ottoman chat rank ladder
   #- FactionArmorPlates
   canCustomizeName: true
 
@@ -77,7 +77,7 @@
   - RogueFirearmCommander
   - RogueSidearm
   - RogueCommandMag
-  - WFPdvRanksGrandVizier # WOLFGATE(PdvRanks): Ottoman chat rank ladder
+  - WGPdvRanksGrandVizier # WOLFGATE(PdvRanks): Ottoman chat rank ladder
   #- FactionArmorPlates
   canCustomizeName: true
 
@@ -130,7 +130,7 @@
   - RogueSidearm
   - RogueCommandMag
   - RoguePistolMag
-  - WFPdvRanksDenasvar # WOLFGATE(PdvRanks): Ottoman chat rank ladder
+  - WGPdvRanksDenasvar # WOLFGATE(PdvRanks): Ottoman chat rank ladder
   #- FactionArmorPlates
   canCustomizeName: true
 

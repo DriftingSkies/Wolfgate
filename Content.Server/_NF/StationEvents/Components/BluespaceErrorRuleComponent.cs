@@ -59,7 +59,7 @@ public sealed partial class BluespaceErrorRuleComponent : Component
     // WOLFGATE(LiveFixes) START: a vault guarded from nearby never left
     /// <summary>How many times populating the grids may extend the event; null for no limit.</summary>
     [DataField]
-    public int? WfMaxExtensions;
+    public int? WgMaxExtensions;
     // WOLFGATE END
 
     [DataField]

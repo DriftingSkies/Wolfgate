@@ -1,0 +1,7 @@
+- type: radioChannel
+  id: WGCompany
+  name: wg-company-radio
+  keycode: '4'
+  frequency: 1498
+  color: "#E3B65C"
+  longRange: true

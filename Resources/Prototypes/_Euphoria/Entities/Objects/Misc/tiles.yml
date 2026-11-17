@@ -17,7 +17,7 @@
 
 - type: tile
   id: MushWoodFloor
-  name: tiles-wf-euphoria-mushwood-floor
+  name: tiles-wg-euphoria-mushwood-floor
   sprite: /Textures/_Euphoria/Tiles/mushwood-floor.png
   variants: 1
   placementVariants:

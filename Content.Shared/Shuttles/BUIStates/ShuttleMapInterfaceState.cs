@@ -1,4 +1,4 @@
-using Content.Shared._WF.Shuttles; // WOLFGATE(Shuttles)
+using Content.Shared._WG.Shuttles; // WOLFGATE(Shuttles)
 using Content.Shared.Shuttles.Systems;
 using Content.Shared.Shuttles.UI.MapObjects;
 using Content.Shared.Timing;
@@ -29,14 +29,14 @@ public sealed class ShuttleMapInterfaceState
     /// <summary>
     /// Whether the ship has an FTL drive that can jump.
     /// </summary>
-    public readonly WFFtlDriveStatus FtlDrive; // WOLFGATE(Shuttles): the FTL page warns before a jump is tried
+    public readonly WGFtlDriveStatus FtlDrive; // WOLFGATE(Shuttles): the FTL page warns before a jump is tried
 
     public ShuttleMapInterfaceState(
         FTLState ftlState,
         StartEndTime ftlTime,
         List<ShuttleBeaconObject> destinations,
         List<ShuttleExclusionObject> exclusions, // WOLFGATE(Shuttles): the drive status is a required argument
-        WFFtlDriveStatus ftlDrive)
+        WGFtlDriveStatus ftlDrive)
     {
         FTLState = ftlState;
         FTLTime = ftlTime;

@@ -82,7 +82,7 @@
     openSound:
       path: /Audio/Machines/airlock_open.ogg
     closeSound:
-      path: /Audio/_WF/InteractionParticles/airlock_close.ogg # WOLFGATE(InteractionParticles): better door timings
+      path: /Audio/_WG/InteractionParticles/airlock_close.ogg # WOLFGATE(InteractionParticles): better door timings
     denySound:
       path: /Audio/Machines/airlock_deny.ogg
   - type: ContainerContainer

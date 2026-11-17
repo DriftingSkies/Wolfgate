@@ -59,7 +59,7 @@ namespace Content.Server.Verbs
 
             var response =
                 new VerbsResponseEvent(args.EntityUid, GetLocalVerbs(GetEntity(args.EntityUid), attached, verbTypes, force));
-            EntityManager.System<Content.Server._WF.NpcCrew.Systems.WFCrewUiDiagnosticsSystem>().Reply("verbs", player, response.Verbs?.Count ?? -1, args.EntityUid); // WOLFGATE(NpcCrew): opt-in tracing for missing menu replies after ghosting.
+            EntityManager.System<Content.Server._WG.NpcCrew.Systems.WGCrewUiDiagnosticsSystem>().Reply("verbs", player, response.Verbs?.Count ?? -1, args.EntityUid); // WOLFGATE(NpcCrew): opt-in tracing for missing menu replies after ghosting.
             RaiseNetworkEvent(response, player.Channel);
         }
 

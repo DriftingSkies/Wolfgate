@@ -1,0 +1,45 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+# Author Info
+# GitHub: Rubeebeebee
+# Discord: rubeebee
+
+# Shuttle Notes:
+#
+- type: vessel
+  id: Promise
+  parent: BaseVessel
+  name: DFNT Promise
+  description: An old Medical Ship design dating back from the fracture era. It comes equipped with everything a hospital ship would want, as well as a spacious crew accomodations for long term shifts.
+  price: 142676
+  category: Medium
+  group: Medical
+  shuttlePath: /SharedMaps/_WG/OldVessels/promise.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: null
+  class:
+  - Medical
+  - Chemistry
+  engine:
+  - AME
+
+- type: gameMap
+  id: Promise
+  mapName: 'DFNT Promise'
+  mapPath: /SharedMaps/_WG/OldVessels/promise.yml
+  minPlayers: 0
+  stations:
+    Promise:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Promise MED{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'
+        - type: StationJobs
+          availableJobs:
+            Contractor: [ 0, 0 ]
+            MdMedic: [ 0, 0 ]
+            # Pilot: [ 0, 0 ]
+            # Mercenary: [ 0, 0 ]

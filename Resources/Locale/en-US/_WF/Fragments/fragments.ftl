@@ -1,9 +1,0 @@
-wf-fragment-announcer = Sector Traffic Control
-wf-fragment-grid-name = Monolith Fragment
-wf-fragment-start-announcement = Long-range sensors are tracking a Monolith fragment falling into the sector between the Federation and Dynasty lines. Something aboard it is still alive.
-wf-fragment-arrived = The Monolith fragment has come to rest near ({$x}, {$y}). Its heart is beating, and the Remade are crawling out of the wretched stone to meet anyone who comes close. A timid alliance has been approved between the TSFMC and PDV in order to rid the sector of this threat.
-wf-fragment-cleared = The fragment heart near ({$x}, {$y}) has stopped beating. The Remade aboard are falling still, and the sector can breathe again.
-wf-fragment-cleared-joint = The fragment heart near ({$x}, {$y}) has stopped beating, broken by TSF and PDV crews fighting side by side. The sector is safer for it, and relations bolster. Further allocation of resources has been rewarded to both.
-wf-fragment-warning-announcement = The Monolith fragment is coming apart. In five minutes it drifts out of the sector, and whatever is still aboard goes with it.
-wf-fragment-departed = The broken Monolith fragment near ({$x}, {$y}) has drifted out of the sector, cold and quiet at last.
-wf-fragment-lost = The Monolith fragment near ({$x}, {$y}) has drifted out of the sector with its heart still beating. Whatever it was growing, it took with it.

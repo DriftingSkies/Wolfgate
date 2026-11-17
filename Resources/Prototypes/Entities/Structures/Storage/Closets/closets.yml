@@ -7,7 +7,7 @@
   description: It's a storage unit for tools.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-tools.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/engineering-tools.rsi
 
 # Radiation suit closet
 - type: entity
@@ -17,7 +17,7 @@
   description: "More comfortable than radiation poisioning."
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/engineering-radiation.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/engineering-radiation.rsi
 
 # Emergency closet
 - type: entity
@@ -27,7 +27,7 @@
   description: It's a storage unit for emergency breath masks and O2 tanks.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/emergency-oxygen.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/emergency-oxygen.rsi
 
 # Emergency N2 closet
 - type: entity
@@ -37,7 +37,7 @@
   description: It's full of life-saving equipment. Assuming, that is, that you breathe nitrogen.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/emergency-nitrogen.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/emergency-nitrogen.rsi
 
 # Fire safety closet
 - type: entity
@@ -47,7 +47,7 @@
   description: It's a storage unit for fire-fighting supplies.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/emergency-fire.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/emergency-fire.rsi
 
 # EOD closet
 - type: entity
@@ -57,7 +57,7 @@
   description: It's a storage unit for explosion-protective suits.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/bomb.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/bomb.rsi
 
 # Janitorial bomb suit closet
 - type: entity
@@ -69,7 +69,7 @@
   # categories: [ DoNotMap ] Mono
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/bomb.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/bomb.rsi
 
 # Biohazard
 
@@ -81,7 +81,7 @@
   description: It's a storage unit for level 3 biohazard gear.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/biohazard.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/biohazard.rsi
 
 # Science Variant
 - type: entity
@@ -89,7 +89,7 @@
   id: ClosetL3Science
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/biohazard-science.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/biohazard-science.rsi
 
 # Virology variant
 - type: entity
@@ -97,7 +97,7 @@
   parent: ClosetL3
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/biohazard-virology.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/biohazard-virology.rsi
 
 # Security variant
 - type: entity
@@ -105,7 +105,7 @@
   parent: ClosetL3
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/biohazard-security.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/biohazard-security.rsi
 
 # Janitor variant
 - type: entity
@@ -113,7 +113,7 @@
   parent: ClosetL3
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/biohazard-janitor.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/biohazard-janitor.rsi
 
 # Maintenance closet
 - type: entity
@@ -130,7 +130,7 @@
   description: It's a storage unit.
   components:
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Storage/Closets/antag-syndicate.rsi
+    sprite: _WG/Resprites/Wizden/Storage/Closets/antag-syndicate.rsi
 
 # Bluespace closet
 - type: entity

@@ -51,7 +51,7 @@
   - type: VehicleSmashable
     minContinueWeightClass: Heavy
     smashSound:
-      path: /Audio/_WF/Vehicles/effects/metal_crash.ogg
+      path: /Audio/_WG/Vehicles/effects/metal_crash.ogg
   - type: Door
     canPry: true
 

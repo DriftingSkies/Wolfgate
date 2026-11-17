@@ -88,7 +88,7 @@
 
 - type: entity
   id: OrganArachnidHeart
-  parent: [BaseArachnidOrgan, WFWolfmedOrganHeart] # WOLFGATE(Wolfmed): M4: OD16 parity, the heart can arrest (plan 9.2 group B; balance change)
+  parent: [BaseArachnidOrgan, WGWolfmedOrganHeart] # WOLFGATE(Wolfmed): M4: OD16 parity, the heart can arrest (plan 9.2 group B; balance change)
   name: heart
   description: "A disgustingly persistent little biological pump made for spiders."
   components:
@@ -118,7 +118,7 @@
 - type: entity
   id: OrganArachnidLiver
   # WOLFGATE(Wolfmed): Wolfmed liver data, so the organ can be hurt, scanned and treated
-  parent: [BaseHumanOrgan, WFWolfmedOrganLiver]
+  parent: [BaseHumanOrgan, WGWolfmedOrganLiver]
   name: liver
   description: "Pairing suggestion: chianti and fava beans."
   categories: [ HideSpawnMenu ]
@@ -147,7 +147,7 @@
 - type: entity
   id: OrganArachnidKidneys
   # WOLFGATE(Wolfmed): Wolfmed kidneys data, so the organ can be hurt, scanned and treated
-  parent: [BaseHumanOrgan, WFWolfmedOrganKidneys]
+  parent: [BaseHumanOrgan, WGWolfmedOrganKidneys]
   name: kidneys
   description: "Filters toxins from the bloodstream."
   categories: [ HideSpawnMenu ]
@@ -170,7 +170,7 @@
 - type: entity
   id: OrganArachnidEyes
   # WOLFGATE(Wolfmed): Wolfmed eyes data, so the organ can be hurt, scanned and treated
-  parent: [BaseArachnidOrgan, WFWolfmedOrganEyes]
+  parent: [BaseArachnidOrgan, WGWolfmedOrganEyes]
   name: eyes
   description: "Two was already too many."
   components:

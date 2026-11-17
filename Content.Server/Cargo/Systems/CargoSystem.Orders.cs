@@ -148,7 +148,7 @@ namespace Content.Server.Cargo.Systems
             if (args.Actor is not { Valid: true } player)
                 return;
 
-            if (WfShipRefuses(uid, player)) // WOLFGATE(ShipCommand): a commanded ship's order consoles turn the barred away
+            if (WgShipRefuses(uid, player)) // WOLFGATE(ShipCommand): a commanded ship's order consoles turn the barred away
                 return; // WOLFGATE(ShipCommand)
 
             if (!_accessReaderSystem.IsAllowed(player, uid))

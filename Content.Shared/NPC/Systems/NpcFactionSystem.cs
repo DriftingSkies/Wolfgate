@@ -185,18 +185,18 @@ public sealed partial class NpcFactionSystem : EntitySystem
             // otherwise having multiple factions is strictly negative
             .Where(target => !IsEntityFriendly((ent, ent.Comp1), target));
         if (!Resolve(ent, ref ent.Comp2, false))
-            return hostiles.Where(target => !WfNativeTruce(ent, target)); // WOLFGATE(PlanetNatives): planet NPCs leave each other alone.
+            return hostiles.Where(target => !WgNativeTruce(ent, target)); // WOLFGATE(PlanetNatives): planet NPCs leave each other alone.
 
         // ignore anything from enemy faction that we are explicitly friendly towards
         var faction = (ent.Owner, ent.Comp2);
         return hostiles
             .Union(GetHostiles(faction))
             .Where(target => !IsIgnored(faction, target))
-            .Where(target => !WfNativeTruce(ent, target)); // WOLFGATE(PlanetNatives): planet NPCs leave each other alone, even after a stray hit.
+            .Where(target => !WgNativeTruce(ent, target)); // WOLFGATE(PlanetNatives): planet NPCs leave each other alone, even after a stray hit.
     }
 
     // WOLFGATE(Performance) START: allocation-free hostile search for the NPC utility query
-    private readonly HashSet<Entity<NpcFactionMemberComponent>> _wfNearbyScratch = new();
+    private readonly HashSet<Entity<NpcFactionMemberComponent>> _wgNearbyScratch = new();
 
     /// <summary>Same result as <see cref="GetNearbyHostiles"/>, appended to <paramref name="result"/> without LINQ or per-call allocation.</summary>
     public void GetNearbyHostiles(Entity<NpcFactionMemberComponent?, FactionExceptionComponent?> ent, float range, List<EntityUid> result)
@@ -210,9 +210,9 @@ public sealed partial class NpcFactionSystem : EntitySystem
         var exception = ent.Comp2;
         var start = result.Count;
 
-        _wfNearbyScratch.Clear();
-        _lookup.GetEntitiesInRange(_xform.GetMapCoordinates(ent.Owner), range, _wfNearbyScratch);
-        foreach (var other in _wfNearbyScratch)
+        _wgNearbyScratch.Clear();
+        _lookup.GetEntitiesInRange(_xform.GetMapCoordinates(ent.Owner), range, _wgNearbyScratch);
+        foreach (var other in _wgNearbyScratch)
         {
             if (other.Owner == ent.Owner)
                 continue;
@@ -227,20 +227,20 @@ public sealed partial class NpcFactionSystem : EntitySystem
             if (hasException && exception!.Ignored.Contains(other.Owner))
                 continue;
 
-            if (WfNativeTruce(ent.Owner, other.Owner))
+            if (WgNativeTruce(ent.Owner, other.Owner))
                 continue;
 
             result.Add(other.Owner);
         }
 
-        _wfNearbyScratch.Clear();
+        _wgNearbyScratch.Clear();
 
         if (!hasException)
             return;
 
         foreach (var target in exception!.Hostiles)
         {
-            if (exception.Ignored.Contains(target) || WfNativeTruce(ent.Owner, target))
+            if (exception.Ignored.Contains(target) || WgNativeTruce(ent.Owner, target))
                 continue;
 
             var dupe = false;

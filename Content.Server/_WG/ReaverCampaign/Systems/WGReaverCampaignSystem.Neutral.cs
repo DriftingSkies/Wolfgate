@@ -1,0 +1,68 @@
+using System.Linq;
+using Content.Server._WG.Encounters.Components;
+using Content.Server._WG.NpcCrew.Components;
+using Content.Shared._WG.Encounters;
+using Content.Shared._WG.ReaverCampaign;
+using Content.Shared._WG.SectorControl;
+using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
+
+namespace Content.Server._WG.ReaverCampaign.Systems;
+
+public sealed partial class WGReaverCampaignSystem
+{
+    /// <summary>Whether the campaign's faction leaves a ship alone: no warning, fire, intercept, raid, mark or presence.</summary>
+    private bool Neutral(EntityUid grid)
+    {
+        return CampaignFor(State()) is { } campaign && _activity.IsNeutralTo(campaign.Faction, grid);
+    }
+
+    /// <summary>Whether the campaign's faction leaves a station alone.</summary>
+    private bool NeutralStation(EntityUid station)
+    {
+        return CampaignFor(State()) is { } campaign && _activity.IsNeutralStation(campaign.Faction, station);
+    }
+
+    /// <summary>The crewed ships on the sector map the campaign deals with: those of a neutral company or station, and those docked at a station, left out.</summary>
+    private HashSet<EntityUid> Crewed()
+    {
+        var map = _territory.SectorMap;
+        var ships = CampaignFor(State()) is { } campaign ? _activity.CrewedShips(map, campaign.Faction) : _activity.CrewedShips(map);
+        ships.RemoveWhere(_encounters.DockedAtStation);
+        return ships;
+    }
+
+    /// <summary>The stations in a cell the campaign may blockade; a neutral station is left out, so its cell is claimed like open space.</summary>
+    private List<Entity<MapGridComponent>> BlockadeTargets(WGReaverCampaignPrototype campaign, MapId map, WGSectorCell cell)
+    {
+        var stations = _territory.StationsIn(map, cell);
+        stations.RemoveAll(station => _activity.IsNeutralStation(campaign.Faction, station));
+        return stations;
+    }
+
+    /// <summary>
+    /// Spawns an encounter for the campaign, telling its ships which companies to leave alone. Its crews fire on
+    /// sight, which the sector's other Reaver encounters do not.
+    /// </summary>
+    private bool SpawnEncounter(WGEncounterPrototype prototype, MapCoordinates at, out EntityUid uid, bool offBudget = false)
+    {
+        // The bracket's gear goes on the tier the ships are picked by, not on the threat score.
+        var tier = State() is { } state ? GearTier(state) : (int?) null;
+        if (!_encounters.TrySpawn(prototype, at, out uid, offBudget: offBudget, tier: tier))
+            return false;
+        if (!TryComp<WGEncounterComponent>(uid, out var encounter))
+            return true;
+
+        var neutral = CampaignFor(State()) is { } campaign && _prototypes.TryIndex(campaign.Faction, out var faction)
+            ? faction.NeutralCompanies.Select(company => company.Id).ToList()
+            : new List<string>();
+        foreach (var ship in encounter.Ships.Values)
+        {
+            if (neutral.Count > 0)
+                ship.NeutralCompanies = neutral.ToList();
+            EnsureComp<WGCrewOnSightComponent>(ship.Grid).Spares = neutral.ToList();
+        }
+
+        return true;
+    }
+}

@@ -19,9 +19,9 @@
   # WOLFGATE(Genitals) START: split art, south frame on TailBehind
   # - sprite: _Goobstation/Mobs/Customization/Tajaran/tails.rsi
   #   state: tail
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
     state: tail_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
     state: tail_BEHIND
   # WOLFGATE END
 
@@ -42,9 +42,9 @@
   # WOLFGATE(Genitals) START: split art, south frame on TailBehind
   # - sprite: _Goobstation/Mobs/Customization/Tajaran/tails.rsi
   #   state: tail_anim
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
     state: tail_anim_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
     state: tail_anim_BEHIND
   # WOLFGATE END
 
@@ -65,13 +65,13 @@
   # WOLFGATE(Genitals) START: split art
   # - sprite: _Goobstation/Mobs/Customization/Tajaran/tails.rsi
   #   state: tail
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
     state: tail_FRONT
   # WOLFGATE END
   - sprite: _Goobstation/Mobs/Customization/Tajaran/tail_markings.rsi
     state: tail_rings
   # WOLFGATE(Genitals) START: south frame on TailBehind
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
     state: tail_BEHIND
   # WOLFGATE END
 
@@ -96,13 +96,13 @@
   #   state: tail_anim
   # - sprite: _Goobstation/Mobs/Customization/Tajaran/tail_markings.rsi
   #   state: tail_anim_rings
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
     state: tail_anim_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tail_markings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tail_markings.rsi
     state: tail_anim_rings_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tails.rsi
     state: tail_anim_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tail_markings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/tail_markings.rsi
     state: tail_anim_rings_BEHIND
   # WOLFGATE END
 
@@ -127,13 +127,13 @@
   #   state: m_tail_leopard_primary
   # - sprite: _Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
   #   state: m_tail_leopard_tertiary
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
     state: m_tail_leopard_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
     state: m_tail_leopard_tertiary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
     state: m_tail_leopard_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
     state: m_tail_leopard_tertiary_BEHIND
   # WOLFGATE END
 
@@ -158,13 +158,13 @@
   #   state: m_tail_leopard_primary_wag
   # - sprite: _Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
   #   state: m_tail_leopard_tertiary_wag
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
     state: m_tail_leopard_primary_wag_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
     state: m_tail_leopard_tertiary_wag_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
     state: m_tail_leopard_primary_wag_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi
     state: m_tail_leopard_tertiary_wag_BEHIND
   # WOLFGATE END
 

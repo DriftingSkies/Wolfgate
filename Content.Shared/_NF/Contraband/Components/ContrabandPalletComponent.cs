@@ -1,5 +1,5 @@
 using Content.Shared.Stacks;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Shared._NF.Contraband.Components;
 

@@ -55,7 +55,7 @@
         !type:CableDeviceNode
         nodeGroupID: HVPower
 
-# WOLFGATE(BrokenMachines) START: replaced by a broken prop in _WF/BrokenMachines
+# WOLFGATE(BrokenMachines) START: replaced by a broken prop in _WG/BrokenMachines
 # - type: entity
 #   id: LaserDrill
 #   name: automated laser drill

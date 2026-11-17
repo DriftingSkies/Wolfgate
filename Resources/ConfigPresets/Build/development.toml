@@ -40,6 +40,6 @@ see_own_notes = true
 company_whitelist = false
 
 # WOLFGATE(Planets) START: planet networks are on in development builds.
-[wf]
+[wg]
 planet_networks = true
 # WOLFGATE END

@@ -1,0 +1,47 @@
+# Street stock the Strangers dealer sells: cut to a low grade, so a cook's own product is worth more.
+
+- type: entity
+  parent: WGBaggieCocaine
+  id: WGBaggieCocaineCut
+  components:
+  - type: WGSolutionPurity
+    solution: baggie
+    reagents:
+      WGCocaine: 0.55
+
+- type: entity
+  parent: WGBaggieHeroin
+  id: WGBaggieHeroinCut
+  components:
+  - type: WGSolutionPurity
+    solution: baggie
+    reagents:
+      WGHeroin: 0.5
+
+- type: entity
+  parent: WGCrackRock
+  id: WGCrackRockCut
+  components:
+  - type: WGSolutionPurity
+    solution: food
+    reagents:
+      WGCrack: 0.5
+
+- type: entity
+  parent: WGCrystalShard
+  id: WGCrystalShardCut
+  components:
+  - type: WGSolutionPurity
+    solution: food
+    reagents:
+      Desoxyephedrine: 0.5
+
+# Only a habit trait hands this out; the dealers sell Halo at full grade.
+- type: entity
+  parent: WGVialHalo
+  id: WGVialHaloCut
+  components:
+  - type: WGSolutionPurity
+    solution: beaker
+    reagents:
+      WGHalo: 0.5

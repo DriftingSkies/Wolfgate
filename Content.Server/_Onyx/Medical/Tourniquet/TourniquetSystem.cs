@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Content.Shared._Shitmed.Targeting; // WOLFGATE(Wolfmed): D10 — Onyx's TargetingComponent registers as "Targeting", colliding with Shitmed's; use Shitmed's identical field instead
-using Content.Shared._WF.Wolfmed.Targeting; // WOLFGATE(Wolfmed): D10 — WoundTargetResolver replaces the absent TargetResolverSystem
-using Content.Server._WF.Wolfmed.Wounds; // WOLFGATE(Wolfmed): W5 — the necrosis clock a tourniquet starts
-using Content.Shared._WF.Wolfmed.Wounds; // WOLFGATE(Wolfmed): W2 — arterial bleeds decide where a tourniquet helps
+using Content.Shared._WG.Wolfmed.Targeting; // WOLFGATE(Wolfmed): D10 — WoundTargetResolver replaces the absent TargetResolverSystem
+using Content.Server._WG.Wolfmed.Wounds; // WOLFGATE(Wolfmed): W5 — the necrosis clock a tourniquet starts
+using Content.Shared._WG.Wolfmed.Wounds; // WOLFGATE(Wolfmed): W2 — arterial bleeds decide where a tourniquet helps
 using Content.Shared._Onyx.Wounds;
 using Content.Shared.Body.Systems;
 using Content.Shared.DoAfter;

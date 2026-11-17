@@ -6,7 +6,7 @@ using Content.Shared.FixedPoint;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Content.Shared._Onyx.Chemistry.Circulation;
-using Content.Shared._WF.Wolfmed.Wounds; // WOLFGATE(Wolfmed): UI2
+using Content.Shared._WG.Wolfmed.Wounds; // WOLFGATE(Wolfmed): UI2
 
 namespace Content.Shared._Onyx.Wounds;
 
@@ -47,7 +47,7 @@ public sealed partial class WoundPrototype : IPrototype
 
     /// <summary>
     /// WOLFGATE(Wolfmed): UI2: which bucket the analyzer's wounds tab files this wound under. Null lets
-    /// <see cref="Content.Shared._WF.Wolfmed.Wounds.WolfmedWoundCategories.Resolve"/> derive one from
+    /// <see cref="Content.Shared._WG.Wolfmed.Wounds.WolfmedWoundCategories.Resolve"/> derive one from
     /// <see cref="DamageTypes"/>; set it wherever the damage type would mislead.
     /// </summary>
     [DataField]

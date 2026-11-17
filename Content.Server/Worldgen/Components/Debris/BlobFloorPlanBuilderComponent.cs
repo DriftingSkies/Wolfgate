@@ -1,6 +1,6 @@
 ﻿using Content.Server.Worldgen.Systems.Debris;
 using Content.Shared.Maps;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Worldgen.Components.Debris;
 

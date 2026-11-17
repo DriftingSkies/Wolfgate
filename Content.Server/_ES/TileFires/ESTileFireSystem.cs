@@ -1,4 +1,4 @@
-using Content.Server._WF.GroundFire; // WOLFGATE(GroundFire)
+using Content.Server._WG.GroundFire; // WOLFGATE(GroundFire)
 using Content.Server.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Spreader;
@@ -27,7 +27,7 @@ public sealed class ESTileFireSystem : ESSharedTileFireSystem
     [Dependency] private readonly TurfSystem _turf = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly WFGroundFireSystem _wfGroundFire = default!; // WOLFGATE(GroundFire)
+    [Dependency] private readonly WGGroundFireSystem _wgGroundFire = default!; // WOLFGATE(GroundFire)
 
     private static EntProtoId _stage1Fire = "ESTileFire";
 
@@ -87,7 +87,7 @@ public sealed class ESTileFireSystem : ESSharedTileFireSystem
             return;
 
         // WOLFGATE(GroundFire) START: a fire on planet ground may only start so many more
-        if (!_wfGroundFire.CanSpread(ent))
+        if (!_wgGroundFire.CanSpread(ent))
         {
             RemCompDeferred<ActiveEdgeSpreaderComponent>(ent);
             return;
@@ -152,12 +152,12 @@ public sealed class ESTileFireSystem : ESSharedTileFireSystem
             if (flammable.FireStacks < ent.Comp.MinFirestacksToSpread || weights.Count == 0)
                 return;
 
-            if (!_wfGroundFire.CanSpread(ent)) // WOLFGATE(GroundFire): the budget runs out mid-spread
+            if (!_wgGroundFire.CanSpread(ent)) // WOLFGATE(GroundFire): the budget runs out mid-spread
                 return;
 
             var coords = _random.PickAndTake(weights);
             var spawned = Spawn(ent.Comp.Prototype, coords); // WOLFGATE(GroundFire): was a bare Spawn
-            _wfGroundFire.Spread(ent, spawned); // WOLFGATE(GroundFire): the child takes a share of the budget
+            _wgGroundFire.Spread(ent, spawned); // WOLFGATE(GroundFire): the child takes a share of the budget
 
             _flammable.AdjustFireStacks(ent, _random.NextFloat(0.25f, 1.25f) * -ent.Comp.FirestacksRemoveOnSpread, flammable);
             args.Updates--;

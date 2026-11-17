@@ -61,7 +61,7 @@ public sealed partial class ExplosionSystem
         // WOLFGATE(Performance) START: sessions on the explosion's map instead of every client
         // _pvsSys.AddGlobalOverride(explosionEntity);
         // WOLFGATE(NetTraffic): with explosion messages on, the entity stays in nullspace unsent.
-        if (!_wfNetExplosion.Enabled)
+        if (!_wgNetExplosion.Enabled)
             _pvsSys.AddSessionOverrides(explosionEntity, Filter.BroadcastMap(epicenter.MapId));
         // WOLFGATE END
 

@@ -11,7 +11,7 @@
     sprite: Objects/Materials/Sheets/glass.rsi
     size: Normal
   # WOLFGATE(CargoLoad): sheets weigh down the ship carrying them
-  - type: WFCargoMass
+  - type: WGCargoMass
     perUnit: 0.01
   - type: StaticPrice
     price: 0
@@ -56,7 +56,7 @@
     damageContainers:
       - Silicon
       # WOLFGATE(Wolfmed): IPCs, synthetic biotypes and Synths moved off Silicon and could no longer fix their optics
-      - WFSiliconWolfmed
+      - WGSiliconWolfmed
       - Synth
   - type: StackPrice
     price: 2

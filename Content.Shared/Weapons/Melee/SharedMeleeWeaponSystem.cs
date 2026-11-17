@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
-using Content.Shared._WF.Barricades; // WOLFGATE(Barricades)
-using Content.Shared._WF.Wolfmed.Sounds; // WOLFGATE(Wolfmed)
+using Content.Shared._WG.Barricades; // WOLFGATE(Barricades)
+using Content.Shared._WG.Wolfmed.Sounds; // WOLFGATE(Wolfmed)
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration.Logs;
 using Content.Shared.CombatMode;

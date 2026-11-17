@@ -1,0 +1,46 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+# Author Info
+# GitHub: tonotom1
+# Discord: rws
+
+# Shuttle Notes:
+# hi
+
+- type: vessel
+  id: Svinya
+  parent: BaseVessel
+  name: UW Svinya
+  description: A compact attack craft, bristling with small caliber armament.
+  price: 57633 # appraised at 50633
+  purchasable: false # voucher only - T0
+  category: Small
+  group: Ussp
+  access: USSP
+  shuttlePath: /SharedMaps/_WG/OldVessels/USSP/svinya.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: Null
+  class:
+  - Pursuit
+  engine:
+  - Plasma
+  cloakHunter: true # Do we keep this???
+
+- type: gameMap
+  id: Svinya
+  mapName: 'Svinya'
+  mapPath: /SharedMaps/_WG/OldVessels/USSP/svinya.yml
+  minPlayers: 0
+  stations:
+    Svinya:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Svinya USSP{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'
+        - type: StationJobs
+          availableJobs:
+           USSPSergeant: [ 0, 0 ]
+           USSPRifleman: [ 0, 0 ]

@@ -1,0 +1,42 @@
+# Pose actions, given to a borg for each pose its skin lists under wgBorgSkin.poses.
+- type: entity
+  id: WGActionBorgPoseRest
+  name: Rest
+  description: Settle down where you are. Use it again or move to get up.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    itemIconStyle: NoItem
+    icon:
+      sprite: _WG/BorgSkins/Actions/poses.rsi
+      state: rest
+    event: !type:WGBorgPoseActionEvent
+      pose: Rest
+
+- type: entity
+  id: WGActionBorgPoseSit
+  name: Sit
+  description: Sit where you are. Use it again or move to get up.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    itemIconStyle: NoItem
+    icon:
+      sprite: _WG/BorgSkins/Actions/poses.rsi
+      state: sit
+    event: !type:WGBorgPoseActionEvent
+      pose: Sit
+
+- type: entity
+  id: WGActionBorgPoseBellyUp
+  name: Belly up
+  description: Roll onto your back. Use it again or move to get up.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    itemIconStyle: NoItem
+    icon:
+      sprite: _WG/BorgSkins/Actions/poses.rsi
+      state: bellyup
+    event: !type:WGBorgPoseActionEvent
+      pose: BellyUp

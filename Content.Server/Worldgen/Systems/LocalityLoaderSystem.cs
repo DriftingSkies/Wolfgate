@@ -10,7 +10,7 @@ using Content.Server._NF.Salvage; // Frontier
 
 using EntityPosition = (Robust.Shared.GameObjects.EntityUid Entity, Robust.Shared.Map.EntityCoordinates Coordinates);
 using Content.Server.StationEvents.Events; // Frontier
-using Content.Shared._WF.Performance; // WOLFGATE(Performance)
+using Content.Shared._WG.Performance; // WOLFGATE(Performance)
 using Robust.Shared.Timing; // WOLFGATE(Performance)
 
 namespace Content.Server.Worldgen.Systems;
@@ -21,7 +21,7 @@ namespace Content.Server.Worldgen.Systems;
 public sealed partial class LocalityLoaderSystem : BaseWorldSystem
 {
     [Dependency] private TransformSystem _xformSys = default!;
-    [Dependency] private IGameTiming _wfTiming = default!; // WOLFGATE(Performance)
+    [Dependency] private IGameTiming _wgTiming = default!; // WOLFGATE(Performance)
     [Dependency] private LinkedLifecycleGridSystem _linkedLifecycleGrid = default!;
     private EntityQuery<LoadedChunkComponent> _loadedQuery;
     private EntityQuery<WorldControllerComponent> _controllerQuery;
@@ -43,14 +43,14 @@ public sealed partial class LocalityLoaderSystem : BaseWorldSystem
     {
         var e = EntityQueryEnumerator<LocalityLoaderComponent, TransformComponent>();
         // WOLFGATE(Performance) START: each loader checks twice a second on its own tick; a player can't outrun that
-        var wfPeriod = WFTickSpread.Period(_wfTiming, 0.5f);
-        var wfTick = _wfTiming.CurTick;
+        var wgPeriod = WGTickSpread.Period(_wgTiming, 0.5f);
+        var wgTick = _wgTiming.CurTick;
         // WOLFGATE END
 
         while (e.MoveNext(out var uid, out var loadable, out var xform))
         {
             // WOLFGATE(Performance): see above
-            if (!WFTickSpread.Due(uid, wfTick, wfPeriod))
+            if (!WGTickSpread.Due(uid, wgTick, wgPeriod))
                 continue;
 
             if (!_controllerQuery.TryComp(xform.MapUid, out var controller)) // Mono
@@ -113,9 +113,9 @@ public sealed partial class LocalityLoaderSystem : BaseWorldSystem
             // }
             //
             // _linkedLifecycleGrid.UnparentPlayersFromGrid(grid: entity, deleteGrid: false, ignoreLifeStage: true);
-            WFDespawnRestrictions(entity);
+            WGDespawnRestrictions(entity);
 
-            if (WFMayHoldPlayers(entity))
+            if (WGMayHoldPlayers(entity))
             {
                 // Do not delete the grid, it is being deleted.
                 _linkedLifecycleGrid.UnparentPlayersFromGrid(grid: entity, deleteGrid: false, ignoreLifeStage: true);

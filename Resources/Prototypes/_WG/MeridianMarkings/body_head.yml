@@ -1,0 +1,1248 @@
+- type: marking
+  id: WGMeridianMarkingAkulaHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: akula_head
+
+- type: marking
+  id: WGMeridianMarkingAkulaHighlightHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: akula_highlight_head
+
+- type: marking
+  id: WGMeridianMarkingAnimeEyesInnerHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FF0000"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: anime_eyes_inner_head
+
+- type: marking
+  id: WGMeridianMarkingBackStripeHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: back_stripe_head
+
+- type: marking
+  id: WGMeridianMarkingBatHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: bat_head
+
+- type: marking
+  id: WGMeridianMarkingBeeHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: bee_head
+
+- type: marking
+  id: WGMeridianMarkingBellySlimHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: belly_slim_head
+
+- type: marking
+  id: WGMeridianMarkingBlankRoundFaceUseWithMonsterMouthHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#CCCCCC"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: blank_round_face_use_with_monster_mouth_head
+
+- type: marking
+  id: WGMeridianMarkingBovineHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: bovine_head
+
+- type: marking
+  id: WGMeridianMarkingBovineSpotHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: bovine_spot_head
+
+- type: marking
+  id: WGMeridianMarkingBurntOffGrayscaleHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: burnt_off_grayscale_head
+
+- type: marking
+  id: WGMeridianMarkingClownCrossHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFF00"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: clown_cross_head
+
+- type: marking
+  id: WGMeridianMarkingClownLipsHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FF0033"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: clown_lips_head
+
+- type: marking
+  id: WGMeridianMarkingCorgiHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: corgi_head
+
+- type: marking
+  id: WGMeridianMarkingCorvidHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: corvid_head
+
+- type: marking
+  id: WGMeridianMarkingDalmatianHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: dalmatian_head
+
+- type: marking
+  id: WGMeridianMarkingDatasharkHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: datashark_head
+
+- type: marking
+  id: WGMeridianMarkingDeathheadGrayscaleHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: deathhead_grayscale_head
+
+- type: marking
+  id: WGMeridianMarkingDeerHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: deer_head
+
+- type: marking
+  id: WGMeridianMarkingDogSpotHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: dog_spot_head
+
+- type: marking
+  id: WGMeridianMarkingDrakeEyesHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FF0000"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: drake_eyes_head
+
+- type: marking
+  id: WGMeridianMarkingEarsHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: ears_head
+
+- type: marking
+  id: WGMeridianMarkingEeveeHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: eevee_head
+
+- type: marking
+  id: WGMeridianMarkingEyeBagsHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#484848"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: eye_bags_head
+
+- type: marking
+  id: WGMeridianMarkingEyelinerHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: eyeliner_head
+
+- type: marking
+  id: WGMeridianMarkingFennecHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: fennec_head
+
+- type: marking
+  id: WGMeridianMarkingFloofHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: floof_head
+
+- type: marking
+  id: WGMeridianMarkingFlushedCheeksHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#CCCCCC"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: flushed_cheeks_head
+
+- type: marking
+  id: WGMeridianMarkingFourEyesHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FF0000"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: four_eyes_head
+
+- type: marking
+  id: WGMeridianMarkingFoxHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: fox_head
+
+- type: marking
+  id: WGMeridianMarkingGothicGrayscaleHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: gothic_grayscale_head
+
+- type: marking
+  id: WGMeridianMarkingGuilmonMarkHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: guilmon_mark_head
+
+- type: marking
+  id: WGMeridianMarkingHarlequinHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: harlequin_head
+
+- type: marking
+  id: WGMeridianMarkingHarlequinReversedHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: harlequin_reversed_head
+
+- type: marking
+  id: WGMeridianMarkingHawkHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: hawk_head
+
+- type: marking
+  id: WGMeridianMarkingHuskyHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: husky_head
+
+- type: marking
+  id: WGMeridianMarkingHyenaHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: hyena_head
+
+- type: marking
+  id: WGMeridianMarkingHyenaSideHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: hyena_side_head
+
+- type: marking
+  id: WGMeridianMarkingInsectAntennaeHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#CCCCCC"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: insect_antennae_head
+
+- type: marking
+  id: WGMeridianMarkingJungleGrayscaleHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: jungle_grayscale_head
+
+- type: marking
+  id: WGMeridianMarkingLargeEyesHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FF0000"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: large_eyes_head
+
+- type: marking
+  id: WGMeridianMarkingLightbearerHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: lightbearer_head
+
+- type: marking
+  id: WGMeridianMarkingLoversGrayscaleHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: lovers_grayscale_head
+
+- type: marking
+  id: WGMeridianMarkingMonsterMouthHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#CCCCCC"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: monster_mouth_head
+
+- type: marking
+  id: WGMeridianMarkingMonsterMouthWhiteHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#CCCCCC"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: monster_mouth_white_head
+
+- type: marking
+  id: WGMeridianMarkingMonsterMouthWhiteEyeCompatibleHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#CCCCCC"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: monster_mouth_white_eye_compatible_head
+
+- type: marking
+  id: WGMeridianMarkingMonsterMouth2Head
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#CCCCCC"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: monster_mouth_2_head
+
+- type: marking
+  id: WGMeridianMarkingMoonflyGrayscaleHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: moonfly_grayscale_head
+
+- type: marking
+  id: WGMeridianMarkingOakwormGrayscaleHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: oakworm_grayscale_head
+
+- type: marking
+  id: WGMeridianMarkingOrcaHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: orca_head
+
+- type: marking
+  id: WGMeridianMarkingOtieHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: otie_head
+
+- type: marking
+  id: WGMeridianMarkingOtieSpotHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: otie_spot_head
+
+- type: marking
+  id: WGMeridianMarkingOtterHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: otter_head
+
+- type: marking
+  id: WGMeridianMarkingOtterHeadHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: otter_head_head
+
+- type: marking
+  id: WGMeridianMarkingPantherHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: panther_head
+
+- type: marking
+  id: WGMeridianMarkingPilotHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#CCCCCC"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: pilot_head
+
+- type: marking
+  id: WGMeridianMarkingPilotJawHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#CCCCCC"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: pilot_jaw_head
+
+- type: marking
+  id: WGMeridianMarkingPossumHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: possum_head
+
+- type: marking
+  id: WGMeridianMarkingRaccoonHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: raccoon_head
+
+- type: marking
+  id: WGMeridianMarkingRaccoonSpotHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: raccoon_spot_head
+
+- type: marking
+  id: WGMeridianMarkingRaggedGrayscaleHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: ragged_grayscale_head
+
+- type: marking
+  id: WGMeridianMarkingRatSpotHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: rat_spot_head
+
+- type: marking
+  id: WGMeridianMarkingRedPandaHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: red_panda_head
+
+- type: marking
+  id: WGMeridianMarkingRedPandaHeadHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: red_panda_head_head
+
+- type: marking
+  id: WGMeridianMarkingReddishGrayscaleHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: reddish_grayscale_head
+
+- type: marking
+  id: WGMeridianMarkingSabresuneHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: sabresune_head
+
+- type: marking
+  id: WGMeridianMarkingScleraHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FF0000"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: sclera_head
+
+- type: marking
+  id: WGMeridianMarkingScolipedeHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: scolipede_head
+
+- type: marking
+  id: WGMeridianMarkingSergalHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: sergal_head
+
+- type: marking
+  id: WGMeridianMarkingSharkHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: shark_head
+
+- type: marking
+  id: WGMeridianMarkingShepherdSpotHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: shepherd_spot_head
+
+- type: marking
+  id: WGMeridianMarkingSkunkHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: skunk_head
+
+- type: marking
+  id: WGMeridianMarkingSlothHeadHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: sloth_head_head
+
+- type: marking
+  id: WGMeridianMarkingSplotchesHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: splotches_head
+
+- type: marking
+  id: WGMeridianMarkingSplotchesSwappedHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: splotches_swapped_head
+
+- type: marking
+  id: WGMeridianMarkingTajaranHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: tajaran_head
+
+- type: marking
+  id: WGMeridianMarkingThreeEyesHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FF0000"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: three_eyes_head
+
+- type: marking
+  id: WGMeridianMarkingTigerSpotHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: tiger_spot_head
+
+- type: marking
+  id: WGMeridianMarkingTigerStripeHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: tiger_stripe_head
+
+- type: marking
+  id: WGMeridianMarkingWhiteflyGrayscaleHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: whitefly_grayscale_head
+
+- type: marking
+  id: WGMeridianMarkingWitchwingGrayscaleHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: witchwing_grayscale_head
+
+- type: marking
+  id: WGMeridianMarkingWolfHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: wolf_head
+
+- type: marking
+  id: WGMeridianMarkingWolfSpotHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: wolf_spot_head
+
+- type: marking
+  id: WGMeridianMarkingXenoHeadHead
+  bodyPart: Head
+  markingCategory: Head
+  speciesRestriction: [Avali, Dwarf, Felinid, Feroxi, Gingerbread, Goblin, Harpy, Human, Moth, Oni, Protogen, Reptilian, Rodentia, Shadekin, Skeleton, Skrell, SlimePerson, Vulpkanin, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SkinColoring
+  sprites:
+  - sprite: _WG/MeridianMarkings/body_head.rsi
+    state: xeno_head_head

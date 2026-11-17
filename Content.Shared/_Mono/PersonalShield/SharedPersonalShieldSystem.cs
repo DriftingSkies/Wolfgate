@@ -43,7 +43,7 @@ public sealed partial class SharedPersonalShieldSystem : EntitySystem
 
     private void OnBeforeDamageChanged(Entity<PersonalShieldComponent> ent, ref InventoryRelayedEvent<BeforeDamageChangedEvent> ev)
     {
-        if (HasComp<Content.Shared._WF.SoftShield.WFSoftShieldComponent>(ent)) // WOLFGATE(SoftShield): a soft shield lets hits through; WFSoftShieldSystem dampens them.
+        if (HasComp<Content.Shared._WG.SoftShield.WGSoftShieldComponent>(ent)) // WOLFGATE(SoftShield): a soft shield lets hits through; WGSoftShieldSystem dampens them.
             return;
 
         ref var args = ref ev.Args;

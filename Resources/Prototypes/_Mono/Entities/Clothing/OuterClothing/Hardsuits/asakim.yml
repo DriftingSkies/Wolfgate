@@ -6,7 +6,7 @@
   suffix: SelfUnremovable
   components:
   # WOLFGATE(ArmorSpecialization): limb lock.
-  - type: WFLimbLock
+  - type: WGLimbLock
     breakthrough: 60
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/asakim.rsi

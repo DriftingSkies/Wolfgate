@@ -5,8 +5,8 @@ using Content.Server._EinsteinEngines.Language;
 using Content.Server.Power.Components;
 using Content.Shared.Radio.Components;
 using Content.Shared._Mono.Radio;
-using Content.Shared._WF.ChatFont; // WOLFGATE(ChatFont)
-using Content.Shared._WF.Modsuits.Modules; // WOLFGATE(Modsuits)
+using Content.Shared._WG.ChatFont; // WOLFGATE(ChatFont)
+using Content.Shared._WG.Modsuits.Modules; // WOLFGATE(Modsuits)
 using Content.Shared.Chat;
 using Content.Shared.Database;
 using Content.Shared._EinsteinEngines.Language;
@@ -84,7 +84,7 @@ public sealed partial class RadioSystem : EntitySystem
             if (listener != null && !_language.CanUnderstand(listener, args.Language.ID))
                 msg = args.LanguageObfuscatedChatMsg;
 
-            msg = EntityManager.System<Content.Server._WF.Ghost.GhostOrbitSystem>().AddRadioSource(uid, msg, args.MessageSource); // WOLFGATE(Ghost): ghost orbit link
+            msg = EntityManager.System<Content.Server._WG.Ghost.GhostOrbitSystem>().AddRadioSource(uid, msg, args.MessageSource); // WOLFGATE(Ghost): ghost orbit link
             _netMan.ServerSendMessage(new MsgChatMessage { Message = msg }, actor.PlayerSession.Channel);
             // Einstein Engines - Languages end
 
@@ -224,7 +224,7 @@ public sealed partial class RadioSystem : EntitySystem
         // WOLFGATE(PlanetComms) START: planets have no telecom server; a working mass transceiver relays instead
         // var hasActiveServer = HasActiveServer(sourceMapId, channel.ID);
         var hasActiveServer = HasActiveServer(sourceMapId, channel.ID)
-            || EntityManager.System<Content.Server._WF.PlanetComms.WFPlanetCommsSystem>().RelaysTelecom(radioSource);
+            || EntityManager.System<Content.Server._WG.PlanetComms.WGPlanetCommsSystem>().RelaysTelecom(radioSource);
         // WOLFGATE END
         var sourceServerExempt = _exemptQuery.HasComp(radioSource);
 
@@ -311,16 +311,16 @@ public sealed partial class RadioSystem : EntitySystem
         var languageFont = language.SpeechOverride.FontId;
         if ((language.SpeechOverride.ObfuscationFont ?? false) && !obfuscated)
             languageFont = null;
-        var chatFont = languageFont == null ? CompOrNull<WFChatFontComponent>(source) : null;
+        var chatFont = languageFont == null ? CompOrNull<WGChatFontComponent>(source) : null;
         // WOLFGATE END
 
         return Loc.GetString(speech.Bold ? "chat-radio-message-wrap-bold" : "chat-radio-message-wrap",
             ("color", channel.Color),
             ("languageColor", languageColor),
             ("fontType", languageFont ?? chatFont?.Font ?? speech.FontId), // WOLFGATE(ChatFont): the speaker's picked font, under a language's own
-            ("fontSize", WFChatFontRules.ScaleSize(language.SpeechOverride.FontSize ?? speech.FontSize, chatFont)), // WOLFGATE(ChatFont): the picked font's size scale
+            ("fontSize", WGChatFontRules.ScaleSize(language.SpeechOverride.FontSize ?? speech.FontSize, chatFont)), // WOLFGATE(ChatFont): the picked font's size scale
             ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
-            ("channel", $"\\[{WFCrewChannelName(source, channel)}\\]"), // WOLFGATE(RoundSetup): show the private crew channel name
+            ("channel", $"\\[{WGCrewChannelName(source, channel)}\\]"), // WOLFGATE(RoundSetup): show the private crew channel name
             ("name", namestring),
             ("message", message));
     }

@@ -7,7 +7,7 @@ using Robust.Shared.Map.Components;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
 using Content.Shared.Tiles; // Frontier
-using Content.Shared._WF.Planets; // WOLFGATE(Planets)
+using Content.Shared._WG.Planets; // WOLFGATE(Planets)
 
 namespace Content.Shared.Maps;
 
@@ -192,13 +192,13 @@ public sealed partial class TileSystem : EntitySystem
         var restored = new Tile(plating.TileId);
 
         if (plating.ID == ContentTileDefinition.SpaceID
-            && TryComp<WFPlanetBuiltTilesComponent>(gridUid, out var built)
+            && TryComp<WGPlanetBuiltTilesComponent>(gridUid, out var built)
             && built.Underlay.Remove(tileRef.GridIndices, out var under))
         {
             restored = under;
         }
 
-        if (restored.IsEmpty) WfRecordHullTileDeconstruction(gridUid, tileRef.GridIndices); // WOLFGATE(Shuttles): cutting the last lattice leaves the hull survey before any split copies it.
+        if (restored.IsEmpty) WgRecordHullTileDeconstruction(gridUid, tileRef.GridIndices); // WOLFGATE(Shuttles): cutting the last lattice leaves the hull survey before any split copies it.
         _maps.SetTile(gridUid, mapGrid, tileRef.GridIndices, restored);
         // WOLFGATE END
 

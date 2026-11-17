@@ -30,7 +30,7 @@ public sealed partial class BiomeSystem
                 CanLoad(pSession.AttachedEntity.Value))
             {
                 var worldPos = _transform.GetWorldPosition(xform);
-                WfNoteBodyLoader(biome, worldPos); // WOLFGATE(Planets): a planet layer loads nearest its loaders first
+                WgNoteBodyLoader(biome, worldPos); // WOLFGATE(Planets): a planet layer loads nearest its loaders first
                 AddChunksInRange(biome, worldPos);
 
                 foreach (var layer in biome.MarkerLayers)
@@ -52,8 +52,8 @@ public sealed partial class BiomeSystem
                 }
 
                 var worldPos = _transform.GetWorldPosition(xform);
-                WfNoteLoader(biome, worldPos, WfLoadNowEyeRing); // WOLFGATE(Planets): less loads at once round an eye than round a body
-                AddChunksInRange(biome, worldPos, WfEyeLoadArea(xform)); // WOLFGATE(Planets): an eye on a cavern loads a box sized to its view
+                WgNoteLoader(biome, worldPos, WgLoadNowEyeRing); // WOLFGATE(Planets): less loads at once round an eye than round a body
+                AddChunksInRange(biome, worldPos, WgEyeLoadArea(xform)); // WOLFGATE(Planets): an eye on a cavern loads a box sized to its view
 
                 foreach (var layer in biome.MarkerLayers)
                 {

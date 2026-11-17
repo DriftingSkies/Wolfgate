@@ -203,7 +203,7 @@ namespace Content.Shared.Chemistry
 
         public readonly ChemMasterDrawSource DrawSource;
 
-        public Dictionary<string, float>? WFBufferPurity { get; set; } // WOLFGATE(WolfChem): grades of BufferReagents
+        public Dictionary<string, float>? WGBufferPurity { get; set; } // WOLFGATE(WolfChem): grades of BufferReagents
 
         public ChemMasterBoundUserInterfaceState(
             ChemMasterMode mode, ChemMasterSortingType sortingType, ContainerInfo? inputContainerInfo, ContainerInfo? outputContainerInfo,

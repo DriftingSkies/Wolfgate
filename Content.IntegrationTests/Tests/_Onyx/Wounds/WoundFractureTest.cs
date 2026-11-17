@@ -1,7 +1,7 @@
 using System.Linq;
 using Content.IntegrationTests.Fixtures;
 using Content.Shared._Onyx.Wounds;
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): Onyx's SharedBodySystem.TryDetachPart lives on WolfmedBodySystem here.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): Onyx's SharedBodySystem.TryDetachPart lives on WolfmedBodySystem here.
 using Content.Shared.Alert;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
@@ -127,11 +127,11 @@ public sealed class WoundFractureTest : GameTest
 
         await server.WaitAssertion(() =>
         {
-            // WOLFGATE(Wolfmed): W0 balance: every organic part points at WFWolfmedFractureProfile
-            // (_WF/Wolfmed/Body/fractures.yml), so that is the profile whose boundaries decide play. Onyx's
+            // WOLFGATE(Wolfmed): W0 balance: every organic part points at WGWolfmedFractureProfile
+            // (_WG/Wolfmed/Body/fractures.yml), so that is the profile whose boundaries decide play. Onyx's
             // OrganicFractureProfile is still shipped, unreferenced, as the vendored reference; its own
             // 20/35/50/60 is asserted below so an Onyx re-sync that moves it is still visible here.
-            ProtoId<FractureProfilePrototype> profileId = "WFWolfmedFractureProfile";
+            ProtoId<FractureProfilePrototype> profileId = "WGWolfmedFractureProfile";
             var profile = prototypes.Index(profileId);
             var onyx = prototypes.Index<FractureProfilePrototype>("OrganicFractureProfile");
             Assert.Multiple(() =>
@@ -201,7 +201,7 @@ public sealed class WoundFractureTest : GameTest
         {
             var body = entityManager.SpawnEntity("WoundFractureBody", map.GridCoords);
             var graph = entityManager.System<SharedBodySystem>();
-            var wfBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed): Onyx's SharedBodySystem.TryDetachPart lives here (§2.7).
+            var wgBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed): Onyx's SharedBodySystem.TryDetachPart lives here (§2.7).
             var routing = entityManager.System<WoundDamageRoutingSystem>();
             var fractures = entityManager.System<WoundFractureSystem>();
             var manipulation = entityManager.System<FractureEffectSystem>(); // class name, not the file name.
@@ -218,7 +218,7 @@ public sealed class WoundFractureTest : GameTest
             Assert.That(manipulation.GetDurationMultiplier(body), Is.EqualTo(1f).Within(0.001f),
                 "an undamaged body must not modify do-after duration.");
 
-            // WOLFGATE(Wolfmed): P2-D23, W0: 75 >= WFWolfmedFractureProfile's Comminuted threshold (45), whose
+            // WOLFGATE(Wolfmed): P2-D23, W0: 75 >= WGWolfmedFractureProfile's Comminuted threshold (45), whose
             // creationChance is 1, so the fracture is created deterministically. A 20 hit would roll Simple's
             // 0.5 and fail every other run.
             Assert.That(routing.TryApplyPartDamage(body, leg, Spec(75)));
@@ -260,7 +260,7 @@ public sealed class WoundFractureTest : GameTest
             // The leg is still Comminuted; detaching it removes the only mobility part, so the refresh raised
             // from OnPartChanged (OrganGotRemovedEvent, re-raised by WolfmedBodyPartLifecycleSystem) must
             // restore full speed.
-            Assert.That(wfBody.TryDetachPart(leg));
+            Assert.That(wgBody.TryDetachPart(leg));
             Assert.That(entityManager.GetComponent<MovementSpeedModifierComponent>(body).WalkSpeedModifier,
                 Is.EqualTo(1f).Within(0.001f));
         });
@@ -340,7 +340,7 @@ public sealed class WoundFractureTest : GameTest
 
             Assert.That(alerts.IsShowingAlert(body, BrokenBones), Is.False);
 
-            // WOLFGATE(Wolfmed): P2-D23, W0: 60 clears WFWolfmedFractureProfile's Comminuted threshold (45), whose
+            // WOLFGATE(Wolfmed): P2-D23, W0: 60 clears WGWolfmedFractureProfile's Comminuted threshold (45), whose
             // creationChance is 1, so this is the only fully deterministic way to put a fracture on the leg.
             // severityMultiplier: 1 makes severity == damage == 60.
             Assert.That(routing.TryApplyPartDamage(body, leg, Spec(60)));
@@ -385,7 +385,7 @@ public sealed class WoundFractureTest : GameTest
 
             // WOLFGATE(Wolfmed): P2-D23, W0: WoundFractureSystem.OnWoundChanged re-grades with no random roll, so
             // ChangeSeverity is a deterministic grade dial. 60 - 40 = 20 = Simple's threshold on
-            // WFWolfmedFractureProfile, still >= alertMinimumGrade.
+            // WGWolfmedFractureProfile, still >= alertMinimumGrade.
             Assert.That(wounds.ChangeSeverity(fracture.Owner, FixedPoint2.New(-40)));
             Assert.That(fracture.Comp2.Grade, Is.EqualTo(FractureGrade.Simple));
             Assert.That(alerts.IsShowingAlert(body, BrokenBones), Is.True);

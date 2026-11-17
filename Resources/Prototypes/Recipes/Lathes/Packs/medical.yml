@@ -6,8 +6,8 @@
   - Brutepack
   - Ointment
   - Gauze
-  - WFWolfmedSkinGraft # WOLFGATE(Wolfmed): W7: charring has no other exit, so the graft must be printable.
-  - WFWolfmedSuture # WOLFGATE(Wolfmed): playtest 5: the plain suture prints from the start, no research.
+  - WGWolfmedSkinGraft # WOLFGATE(Wolfmed): W7: charring has no other exit, so the graft must be printable.
+  - WGWolfmedSuture # WOLFGATE(Wolfmed): playtest 5: the plain suture prints from the start, no research.
 
 - type: latheRecipePack
   id: BasicChemistryStatic
@@ -25,7 +25,7 @@
   - Jug
   - ChemistryEmptyBottle01
   - ClothingEyesGlassesChemical
-  - WFPurityTester # WOLFGATE(WolfChem): purity testers print with the chemistry kit
+  - WGPurityTester # WOLFGATE(WolfChem): purity testers print with the chemistry kit
 
 - type: latheRecipePack
   id: SurgeryStatic
@@ -73,7 +73,7 @@
   - MedkitAdvanced
   - MedkitRadiation
   - MedkitCombat
-  - WFMedkitSynthetic # WOLFGATE(Wolfmed): ITEMS: the empty synthetic repair kit beside the other empty kits.
+  - WGMedkitSynthetic # WOLFGATE(Wolfmed): ITEMS: the empty synthetic repair kit beside the other empty kits.
   - SyringeCase
   - SyringeCaseAlt
 
@@ -88,7 +88,7 @@
   - ThermobathMachineCircuitboard
   - OperatingTableCircuitboard # Shitmed Change
   - OrganHarvesterMachineCircuitboard # :)
-  # - WFAutodocMachineCircuitboard # WOLFGATE(Wolfmed): AUTODOC: researched now, in NFMedicalBoards
+  # - WGAutodocMachineCircuitboard # WOLFGATE(Wolfmed): AUTODOC: researched now, in NFMedicalBoards
 
 # Shitmed
 - type: latheRecipePack
@@ -108,15 +108,15 @@
   - SynthLeftHand
   - SynthRightHand
   # WOLFGATE(Avali) START: Avali limbs
-  - WFSynthAvaliHeadEmpty
-  - WFSynthAvaliLeftArm
-  - WFSynthAvaliRightArm
-  - WFSynthAvaliLeftHand
-  - WFSynthAvaliRightHand
-  - WFSynthAvaliLeftLeg
-  - WFSynthAvaliRightLeg
-  - WFSynthAvaliLeftFoot
-  - WFSynthAvaliRightFoot
+  - WGSynthAvaliHeadEmpty
+  - WGSynthAvaliLeftArm
+  - WGSynthAvaliRightArm
+  - WGSynthAvaliLeftHand
+  - WGSynthAvaliRightHand
+  - WGSynthAvaliLeftLeg
+  - WGSynthAvaliRightLeg
+  - WGSynthAvaliLeftFoot
+  - WGSynthAvaliRightFoot
   # WOLFGATE END
 
 # Shitmed

@@ -52,7 +52,7 @@ public sealed partial class StarSystemMapSystem : SharedStarSystemMapSystem
             var coords = new EntityCoordinates(ent, ent.Comp.StarSystem.Star.Position);
             var spawned = SpawnAtPosition(starEnt.ID, coords);
             _metadata.SetEntityName(spawned, ent.Comp.StarSystem.Star.Name);
-            WfPinBody(ent, spawned, ent.Comp.StarSystem.Star.Position); // WOLFGATE(Planets): keep the star off hulls that arrive on top of it.
+            WgPinBody(ent, spawned, ent.Comp.StarSystem.Star.Position); // WOLFGATE(Planets): keep the star off hulls that arrive on top of it.
             _pvs.AddGlobalOverride(spawned);
         }
 
@@ -64,7 +64,7 @@ public sealed partial class StarSystemMapSystem : SharedStarSystemMapSystem
                 var spawnedPlanet = SpawnAtPosition(planetEnt.ID, planetCoords);
                 _metadata.SetEntityName(spawnedPlanet, planet.Name);
                 _pvs.AddGlobalOverride(spawnedPlanet);
-                WfPlanetSpawned(ent, spawnedPlanet, planet); // WOLFGATE(Planets): register sector bodies that have a Wolfgate surface.
+                WgPlanetSpawned(ent, spawnedPlanet, planet); // WOLFGATE(Planets): register sector bodies that have a Wolfgate surface.
             }
         }
     }

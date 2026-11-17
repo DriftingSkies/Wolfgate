@@ -11,11 +11,11 @@
   - USSP_Entry
   - Viper_Group
   - MMC
-  - WFAsf # WOLFGATE(Asf)
-  # WOLFGATE(LoreBook): the ADS guide stays in the guidebook under WFFactionsGuide; its lore page is here
-  # - WFAds # WOLFGATE(AdsIncursion)
-  - WFLoreAds # WOLFGATE(LoreBook)
-  - WFLoreReavers # WOLFGATE(LoreBook)
+  - WGAsf # WOLFGATE(Asf)
+  # WOLFGATE(LoreBook): the ADS guide stays in the guidebook under WGFactionsGuide; its lore page is here
+  # - WGAds # WOLFGATE(AdsIncursion)
+  - WGLoreAds # WOLFGATE(LoreBook)
+  - WGLoreReavers # WOLFGATE(LoreBook)
   - Underground
 - type: guideEntry
   id: TSFMC_Entry
@@ -23,7 +23,7 @@
   text: "/ServerInfo/_Mono/Guidebook/Factions/TSFMC.xml"
   priority: 2
   children:
-  # WOLFGATE(LoreBook): smuggling is a duty guide, kept in the guidebook under WFFactionsGuide
+  # WOLFGATE(LoreBook): smuggling is a duty guide, kept in the guidebook under WGFactionsGuide
   # - Smuggling
   - TSFMC_SOP
   - TSFMC_org
@@ -36,7 +36,7 @@
   priority: 3
   # WOLFGATE(ColdWar) START: the Vanguard's standing orders page
   children:
-  - WFPdvStandingOrders
+  - WGPdvStandingOrders
   # WOLFGATE END
 
 - type: guideEntry
@@ -124,9 +124,9 @@
   priority: 4
   # WOLFGATE(LoreBook) START: the station's judges
   children:
-  - WFLoreJudges
+  - WGLoreJudges
   # WOLFGATE END
-  - WFCommonWrit # WOLFGATE(Bench): the Common Writ
+  - WGCommonWrit # WOLFGATE(Bench): the Common Writ
 
 - type: guideEntry
   id: Underground

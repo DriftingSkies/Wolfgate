@@ -1,4 +1,4 @@
-using Content.Client._WF.MappingTools; // WOLFGATE(MappingTools)
+using Content.Client._WG.MappingTools; // WOLFGATE(MappingTools)
 using Content.Client.Actions;
 using Content.Client.Mapping;
 using Content.Client.Markers;

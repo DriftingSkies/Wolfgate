@@ -29,8 +29,8 @@ public sealed partial class LagCompensationSystem : EntitySystem
     public static readonly TimeSpan BufferTime = TimeSpan.FromMilliseconds(750);
 
     // WOLFGATE(Performance) START: only entities holding recent positions are culled each tick
-    private readonly HashSet<EntityUid> _wfHolding = new();
-    private readonly List<EntityUid> _wfDrained = new();
+    private readonly HashSet<EntityUid> _wgHolding = new();
+    private readonly List<EntityUid> _wgDrained = new();
     // WOLFGATE END
 
     public override void Initialize()
@@ -50,12 +50,12 @@ public sealed partial class LagCompensationSystem : EntitySystem
         // Cull any old ones from active updates
         // Probably fine to include ignored.
         // WOLFGATE(Performance) START: walk only the entities that hold positions instead of every lag-compensated mob
-        _wfDrained.Clear();
-        foreach (var uid in _wfHolding)
+        _wgDrained.Clear();
+        foreach (var uid in _wgHolding)
         {
             if (!TryComp(uid, out LagCompensationComponent? comp))
             {
-                _wfDrained.Add(uid);
+                _wgDrained.Add(uid);
                 continue;
             }
 
@@ -71,12 +71,12 @@ public sealed partial class LagCompensationSystem : EntitySystem
             }
 
             if (comp.Positions.Count == 0)
-                _wfDrained.Add(uid);
+                _wgDrained.Add(uid);
         }
 
-        foreach (var uid in _wfDrained)
+        foreach (var uid in _wgDrained)
         {
-            _wfHolding.Remove(uid);
+            _wgHolding.Remove(uid);
         }
         // WOLFGATE END
     }
@@ -87,7 +87,7 @@ public sealed partial class LagCompensationSystem : EntitySystem
             return; // probably being sent to nullspace for deletion.
 
         component.Positions.Enqueue((_timing.CurTime, args.NewPosition, args.NewRotation));
-        _wfHolding.Add(uid); // WOLFGATE(Performance): now holds a position to cull
+        _wgHolding.Add(uid); // WOLFGATE(Performance): now holds a position to cull
     }
 
     public (EntityCoordinates Coordinates, Angle Angle) GetCoordinatesAngle(EntityUid uid, ICommonSession? pSession,

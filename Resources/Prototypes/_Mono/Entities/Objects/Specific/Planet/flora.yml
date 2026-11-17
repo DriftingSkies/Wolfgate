@@ -150,7 +150,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactWood # WOLFGATE(Weapons)
+        collection: WGBulletImpactWood # WOLFGATE(Weapons)
   - type: Flammable
     fireSpread: true
     firestackFade: 0.5
@@ -240,7 +240,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactWood # WOLFGATE(Weapons)
+        collection: WGBulletImpactWood # WOLFGATE(Weapons)
   - type: Flammable
     fireSpread: true
     firestackFade: 0.5
@@ -311,7 +311,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactWood # WOLFGATE(Weapons)
+        collection: WGBulletImpactWood # WOLFGATE(Weapons)
   - type: Flammable
     fireSpread: true
     firestackFade: 0.5

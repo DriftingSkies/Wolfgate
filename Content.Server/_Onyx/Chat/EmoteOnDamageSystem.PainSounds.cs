@@ -1,6 +1,6 @@
 using Content.Shared.Chat;
 using Content.Shared._Onyx.Wounds; // WOLFGATE(Wolfmed): P2-D22 wound-host gate.
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade.
 using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
@@ -39,9 +39,9 @@ public sealed partial class EmoteOnDamageSystem
             return;
 
         // WOLFGATE(ArmorSpecialization): worn gear may silence pain noises (the mime's vow).
-        var wfNoise = new Content.Shared._WF.Wolfmed.Wounds.WolfmedPainNoiseAttemptEvent();
-        RaiseLocalEvent(uid, ref wfNoise);
-        if (wfNoise.Cancelled)
+        var wgNoise = new Content.Shared._WG.Wolfmed.Wounds.WolfmedPainNoiseAttemptEvent();
+        RaiseLocalEvent(uid, ref wgNoise);
+        if (wgNoise.Cancelled)
             return;
 
         var pain = args.DamageDelta is null ? totalDelta : 0f;

@@ -88,11 +88,11 @@
       - id: ClothingShoesTourist
       - id: ClothingUniformJumpsuitLoungewear
       - id: ClothingHeadHatCowboyRed
-      - id: WFScratchTicket # WOLFGATE(ScratchTickets): lost lottery tickets turn up in maintenance
+      - id: WGScratchTicket # WOLFGATE(ScratchTickets): lost lottery tickets turn up in maintenance
         weight: 3 # WOLFGATE(ScratchTickets)
-      - id: WFScratchTicketFoundry # WOLFGATE(ScratchTickets): the dearer tickets turn up less often
+      - id: WGScratchTicketFoundry # WOLFGATE(ScratchTickets): the dearer tickets turn up less often
         weight: 1 # WOLFGATE(ScratchTickets)
-      - id: WFScratchTicketTycoon # WOLFGATE(ScratchTickets)
+      - id: WGScratchTicketTycoon # WOLFGATE(ScratchTickets)
         weight: 0.25 # WOLFGATE(ScratchTickets)
     # Uncommon Group
     - !type:GroupSelector
@@ -125,7 +125,7 @@
       - id: RubberChicken
       # WOLFGATE(WolfChem) START: neuroware sticks turn up in maintenance
       - !type:NestedSelector
-        tableId: WFNeurowareStickLoot
+        tableId: WGNeurowareStickLoot
       # WOLFGATE END
       # Cult
       - !type:AllSelector

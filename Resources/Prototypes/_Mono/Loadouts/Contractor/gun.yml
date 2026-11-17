@@ -10,7 +10,7 @@
   #- ContractorArgentiLoadout
   - ContractorSvalinnLoadout
   - ContractorDoubleBarreledLoadout
-  - WFContractorMosinLoadout # WOLFGATE(Weapons)
+  - WGContractorMosinLoadout # WOLFGATE(Weapons)
   fallbacks:
   - ContractorMk32Loadout
 

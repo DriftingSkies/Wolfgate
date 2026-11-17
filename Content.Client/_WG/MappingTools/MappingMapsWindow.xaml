@@ -1,0 +1,45 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+                      xmlns:preview="clr-namespace:Content.Client._WG.ShipPreview"
+                      Title="{Loc 'wg-mapping-maps-title'}"
+                      MinSize="760 460"
+                      SetSize="980 620">
+    <BoxContainer Orientation="Horizontal" Margin="10" SeparationOverride="10">
+        <BoxContainer Orientation="Vertical" SetWidth="360" SeparationOverride="4">
+            <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                <LineEdit Name="SearchBar" Access="Public" HorizontalExpand="True"
+                          PlaceHolder="{Loc 'wg-mapping-maps-search'}" />
+                <Button Name="RefreshButton" Access="Public" Text="{Loc 'wg-mapping-maps-refresh'}" />
+            </BoxContainer>
+            <ItemList Name="FileList" Access="Public" VerticalExpand="True" SelectMode="Single" />
+        </BoxContainer>
+
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="6">
+            <preview:ShipPreviewControl Name="Preview" Access="Public" VerticalExpand="True" HorizontalExpand="True" />
+            <Label Name="PreviewInfo" Access="Public" StyleClasses="LabelSubText" ClipText="True" />
+            <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                <Button Name="OpenButton" Access="Public" HorizontalExpand="True" Disabled="True"
+                        Text="{Loc 'wg-mapping-maps-open'}" ToolTip="{Loc 'wg-mapping-maps-open-tooltip'}" TooltipDelay="0" />
+                <Button Name="LoadHereButton" Access="Public" HorizontalExpand="True" Disabled="True"
+                        Text="{Loc 'wg-mapping-maps-load-here'}" ToolTip="{Loc 'wg-mapping-maps-load-here-tooltip'}"
+                        TooltipDelay="0" />
+                <Button Name="OpenStackButton" Access="Public" HorizontalExpand="True" Disabled="True"
+                        Text="{Loc 'wg-mapping-maps-open-stack'}" ToolTip="{Loc 'wg-mapping-maps-open-stack-tooltip'}"
+                        TooltipDelay="0" />
+            </BoxContainer>
+
+            <Label Text="{Loc 'wg-mapping-maps-section-save'}" StyleClasses="LabelHeading" Margin="0 6 0 0" />
+            <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                <LineEdit Name="NameEdit" Access="Public" HorizontalExpand="True"
+                          PlaceHolder="{Loc 'wg-mapping-maps-name'}" />
+                <Button Name="SaveGridButton" Access="Public" Text="{Loc 'wg-mapping-maps-save-grid'}"
+                        ToolTip="{Loc 'wg-mapping-maps-save-grid-tooltip'}" TooltipDelay="0" />
+                <Button Name="SaveMapButton" Access="Public" Text="{Loc 'wg-mapping-maps-save-map'}"
+                        ToolTip="{Loc 'wg-mapping-maps-save-map-tooltip'}" TooltipDelay="0" />
+                <Button Name="SaveStackButton" Access="Public" Text="{Loc 'wg-mapping-maps-save-stack'}"
+                        ToolTip="{Loc 'wg-mapping-maps-save-stack-tooltip'}" TooltipDelay="0" />
+            </BoxContainer>
+            <Label Name="SaveFolderLabel" Access="Public" StyleClasses="LabelSubText" ClipText="True" />
+        </BoxContainer>
+    </BoxContainer>
+</controls:FancyWindow>

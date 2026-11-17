@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
-using Content.Server._WF.AsteroidMining; // WOLFGATE(Performance)
+using Content.Server._WG.AsteroidMining; // WOLFGATE(Performance)
 using Content.Shared.NPC;
 using Content.Shared.Physics;
 using Robust.Shared.Collections;
@@ -26,7 +26,7 @@ public sealed partial class PathfindingSystem
     public const int PathfindingCollisionMask = (int) CollisionGroup.MobMask;
     public const int PathfindingCollisionLayer = (int) CollisionGroup.MobLayer;
 
-    [Dependency] private EntityQuery<PhysicsComponent> _wfPhysicsQuery = default!; // WOLFGATE(Performance): aggregate pre-reject in OnMoveEvent
+    [Dependency] private EntityQuery<PhysicsComponent> _wgPhysicsQuery = default!; // WOLFGATE(Performance): aggregate pre-reject in OnMoveEvent
 
     /// <summary>
     ///     If true, UpdateGrid() will not process grids.
@@ -113,7 +113,7 @@ public sealed partial class PathfindingSystem
             // Would be better to handle that though this was safer and max it's taking is like 1-2ms every half-second.
             // WOLFGATE(Planets) START: a planet layer builds only the dirty chunks near someone, a slice an update
             // var dirt = new GridPathfindingChunk[comp.DirtyChunks.Count];
-            var building = WfChunksToBuild(uid, comp);
+            var building = WgChunksToBuild(uid, comp);
             if (building.Count == 0)
                 continue;
 
@@ -228,7 +228,7 @@ public sealed partial class PathfindingSystem
             }
 
             // comp.DirtyChunks.Clear(); // WOLFGATE(Planets): what wasn't built this update stays dirty
-            WfClearBuilt(comp, building); // WOLFGATE(Planets)
+            WgClearBuilt(comp, building); // WOLFGATE(Planets)
         }
     }
 
@@ -285,10 +285,10 @@ public sealed partial class PathfindingSystem
     private void OnMoveEvent(ref MoveEvent ev)
     {
         // WOLFGATE(Performance) START: the body's aggregate layer, mask and hard bound every fixture's, so skip the fixture walk
-        if (_wfPhysicsQuery.TryGetComponent(ev.Sender, out var wfBody) &&
-            (!wfBody.Hard ||
-             ((wfBody.CollisionMask & PathfindingCollisionLayer) == 0x0 &&
-              (wfBody.CollisionLayer & PathfindingCollisionMask) == 0x0)))
+        if (_wgPhysicsQuery.TryGetComponent(ev.Sender, out var wgBody) &&
+            (!wgBody.Hard ||
+             ((wgBody.CollisionMask & PathfindingCollisionLayer) == 0x0 &&
+              (wgBody.CollisionLayer & PathfindingCollisionMask) == 0x0)))
         {
             return;
         }
@@ -317,7 +317,7 @@ public sealed partial class PathfindingSystem
             var aabb = _lookup.GetAABBNoContainer(ev.Sender, ev.NewPosition.Position, ev.NewRotation);
             DirtyChunkArea(gridUid.Value, aabb);
             // WOLFGATE(Vehicles) START: a vehicle leaving a chunk frees the tiles its hull blocked there
-            if (oldGridUid == gridUid && WfCoversTiles(ev.Sender))
+            if (oldGridUid == gridUid && WgCoversTiles(ev.Sender))
                 DirtyChunkArea(gridUid.Value, _lookup.GetAABBNoContainer(ev.Sender, ev.OldPosition.Position, ev.OldRotation));
             // WOLFGATE END
         }
@@ -326,7 +326,7 @@ public sealed partial class PathfindingSystem
     private void OnGridInit(GridInitializeEvent ev)
     {
         // WOLFGATE(Performance) START: no NPC walks a mining rock, and building its nav chunks cost ~2.6 ms per new rock grid
-        if (HasComp<WFAsteroidGridComponent>(ev.EntityUid))
+        if (HasComp<WGAsteroidGridComponent>(ev.EntityUid))
             return;
         // WOLFGATE END
 
@@ -481,7 +481,7 @@ public sealed partial class PathfindingSystem
                     var xform = _xformQuery.GetComponent(ent);
 
                     if (xform.ParentUid != grid.Owner ||
-                        _maps.LocalToTile(grid.Owner, grid.Comp, xform.Coordinates) != tilePos && !WfCoversTiles(ent)) // WOLFGATE(Vehicles): a vehicle blocks every tile under its hull
+                        _maps.LocalToTile(grid.Owner, grid.Comp, xform.Coordinates) != tilePos && !WgCoversTiles(ent)) // WOLFGATE(Vehicles): a vehicle blocks every tile under its hull
                     {
                         continue;
                     }

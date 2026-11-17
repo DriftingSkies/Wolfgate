@@ -1,7 +1,7 @@
 using Robust.Shared.Audio;
 using Content.Server.Chat;
 using Content.Server.Chat.Systems;
-using Content.Shared._WF.Voice; // WOLFGATE(Voice)
+using Content.Shared._WG.Voice; // WOLFGATE(Voice)
 using Content.Shared.Speech;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;

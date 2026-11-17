@@ -1,0 +1,19 @@
+﻿- type: loadout
+  id: WGContractorHonkCoFlippo
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - HonkCoFlippo
+
+- type: loadout
+  id: WGContractorCrazyGlue
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - CrazyGlue

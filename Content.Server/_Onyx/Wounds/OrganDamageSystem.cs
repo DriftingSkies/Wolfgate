@@ -1,6 +1,6 @@
 using System.Linq;
 using Content.Shared.Body.Organ; // WOLFGATE(Wolfmed): Wolfgate keeps OrganComponent in Content.Shared.Body.Organ.
-using Content.Shared._WF.Wolfmed.Body; // WOLFGATE(Wolfmed): D8, organ health lives on WolfmedOrganComponent.
+using Content.Shared._WG.Wolfmed.Body; // WOLFGATE(Wolfmed): D8, organ health lives on WolfmedOrganComponent.
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared._Onyx.Body.Systems;
@@ -24,8 +24,8 @@ public sealed partial class OrganDamageSystem : EntitySystem
     [Dependency] private WoundBleedingSystem _bleeding = default!;
     [Dependency] private AmputationSystem _amputation = default!; // WOLFGATE(Wolfmed): D26 lifted in phase 3 (WP11-1); AmputationSystem is now vendored.
     [Dependency] private OrganHealthSystem _organHealth = default!;
-    [Dependency] private Content.Server._WF.Wolfmed.Wounds.WolfmedPartHitSystem _wfHits = default!; // WOLFGATE(Wolfmed): M1b
-    [Dependency] private Content.Server._WF.Wolfmed.Body.WolfmedOrganThresholdSystem _wfOrgans = default!; // WOLFGATE(Wolfmed): M3
+    [Dependency] private Content.Server._WG.Wolfmed.Wounds.WolfmedPartHitSystem _wgHits = default!; // WOLFGATE(Wolfmed): M1b
+    [Dependency] private Content.Server._WG.Wolfmed.Body.WolfmedOrganThresholdSystem _wgOrgans = default!; // WOLFGATE(Wolfmed): M3
 
     public override void Initialize()
     {
@@ -37,7 +37,7 @@ public sealed partial class OrganDamageSystem : EntitySystem
         // WOLFGATE(Wolfmed): M1b: wounds, bleeding and organs read the whole hit (Total); fractures and amputation read
         // only what was stored (Applied). One event per hit, so nothing is counted twice.
         var total = args with { Damage = args.Total, Overflow = null };
-        _wfHits.OnHit(part, args);
+        _wgHits.OnHit(part, args);
         _wounds.HandlePartDamageApplied(part, ref total);
         _fractures.HandlePartDamageApplied(part, ref args);
         _amputation.HandlePartDamageApplied(part, ref args); // WOLFGATE(Wolfmed): D26 lifted in phase 3 (WP11-1); order wounds -> fractures -> amputation -> bleeding is load-bearing.
@@ -46,16 +46,16 @@ public sealed partial class OrganDamageSystem : EntitySystem
         // WOLFGATE(ArmorSpecialization) START: a blast liner keeps an explosion from reaching the organs it covers.
         if (args.IsExplosion)
         {
-            var wfBlast = new Content.Shared._WF.Wolfmed.Wounds.WolfmedOrganBlastAttemptEvent(part.Owner);
-            RaiseLocalEvent(args.Body, ref wfBlast);
-            if (wfBlast.Cancelled)
+            var wgBlast = new Content.Shared._WG.Wolfmed.Wounds.WolfmedOrganBlastAttemptEvent(part.Owner);
+            RaiseLocalEvent(args.Body, ref wgBlast);
+            if (wgBlast.Cancelled)
                 return;
         }
         // WOLFGATE END
 
         // WOLFGATE(Wolfmed): M3: a part with reach lines takes organ damage by the size of the whole hit (plan §8), and
         // checks the head blow there; the roll below stays for parts without them.
-        if (_net.IsServer && _wfOrgans.HandleHit(part, total.Damage, args.Damage)) // WOLFGATE(Wolfmed): revival pass, the stored share weighs the organ damage
+        if (_net.IsServer && _wgOrgans.HandleHit(part, total.Damage, args.Damage)) // WOLFGATE(Wolfmed): revival pass, the stored share weighs the organ damage
             return;
 
         if (!_net.IsServer || !TryComp(part, out BodyPartComponent? bodyPart) || bodyPart.Body == null ||

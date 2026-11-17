@@ -3,9 +3,9 @@ using System.Linq;
 using System.Numerics;
 using Content.Client.DisplacementMap;
 using Content.Client.Inventory;
-using Content.Client._WF.LegStyle; // WOLFGATE(LegStyle)
-using Content.Client._WF.ClothingLayer; // WOLFGATE(ClothingLayer)
-using Content.Client._WF.NeckSuits; // WOLFGATE(NeckSuits)
+using Content.Client._WG.LegStyle; // WOLFGATE(LegStyle)
+using Content.Client._WG.ClothingLayer; // WOLFGATE(ClothingLayer)
+using Content.Client._WG.NeckSuits; // WOLFGATE(NeckSuits)
 using Content.Shared.Clothing;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Clothing.EntitySystems;
@@ -59,7 +59,7 @@ public sealed partial class ClientClothingSystem : ClothingSystem
     [Dependency] private DisplacementMapSystem _displacement = default!;
     [Dependency] private LegStyleSystem _legStyle = default!; // WOLFGATE(LegStyle)
     [Dependency] private ClothingLayerSystem _clothingLayer = default!; // WOLFGATE(ClothingLayer)
-    [Dependency] private WFNeckSuitVisualsSystem _neckSuit = default!; // WOLFGATE(NeckSuits)
+    [Dependency] private WGNeckSuitVisualsSystem _neckSuit = default!; // WOLFGATE(NeckSuits)
 
     public override void Initialize()
     {

@@ -19,7 +19,7 @@ namespace Content.Server.Destructible.Thresholds.Behaviors
             // WOLFGATE(Audio) START: destruction sounds share a budget, so a landing hull can't exhaust the client's sources.
             // A hull grinding out a landing destroys every alarm, light and window aboard in the same tick,
             // and one PlayPvs each is one OpenAL source each on every client that can hear them.
-            if (!system.WfDestructionSoundAllowed(owner))
+            if (!system.WgDestructionSoundAllowed(owner))
                 return;
             // WOLFGATE END
 

@@ -19,17 +19,17 @@
   #   - state: salvage-magnet-ready-blinking
   #     visible: false
   #     map: [ "enum.ToggleableVisuals.Layer" ]
-  - type: WFOreMagnet
+  - type: WGOreMagnet
     range: 30
   - type: Sprite
-    sprite: _WF/AsteroidMining/Structures/ore_magnet.rsi
+    sprite: _WG/AsteroidMining/Structures/ore_magnet.rsi
     layers:
     - state: off
-      map: [ "enum.WFOreMagnetVisualLayers.Base" ]
+      map: [ "enum.WGOreMagnetVisualLayers.Base" ]
     - state: glow
       shader: unshaded
       visible: false
-      map: [ "enum.WFOreMagnetVisualLayers.Glow" ]
+      map: [ "enum.WGOreMagnetVisualLayers.Glow" ]
   # WOLFGATE END
   - type: LitOnPowered
   - type: PointLight
@@ -88,7 +88,7 @@
       tags:
       - Ore
       - ArtifactFragment
-      - WFOreMagnetPickup # WOLFGATE(Lattice): exotic matter mined from asteroids
+      - WGOreMagnetPickup # WOLFGATE(Lattice): exotic matter mined from asteroids
   - type: UserInterface
     interfaces:
       enum.StorageUiKey.Key:
@@ -115,11 +115,11 @@
       #   enum.ToggleableVisuals.Layer:
       #     True: { visible: True }
       #     False: { visible: False }
-      enum.WFOreMagnetVisuals.Active:
-        enum.WFOreMagnetVisualLayers.Base:
+      enum.WGOreMagnetVisuals.Active:
+        enum.WGOreMagnetVisualLayers.Base:
           True: { state: on }
           False: { state: off }
-        enum.WFOreMagnetVisualLayers.Glow:
+        enum.WGOreMagnetVisualLayers.Glow:
           True: { visible: true }
           False: { visible: false }
       # WOLFGATE END

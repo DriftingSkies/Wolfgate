@@ -1,0 +1,767 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Meridian Rift at https://github.com/Aphelion-Moon/Meridian-Rift/tree/0fd8e40910402f2745e5e5e4adc7d37bd45fed40 (icons/mob/human/human_face.dmi, modular_nova/master_files/icons/mob/sprite_accessory/hair.dmi, modular_nova/master_files/icons/mob/sprite_accessory/more_hair.dmi), which carries the art of NovaSector, Skyrat-tg and tgstation. Layers merged per colour and centred for Wolfgate by Tools/_WG/MeridianMarkings/port.py.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "african_pigtails",
+      "directions": 4
+    },
+    {
+      "name": "afro_over_eyes",
+      "directions": 4
+    },
+    {
+      "name": "afropuff_double",
+      "directions": 4
+    },
+    {
+      "name": "afropuff_left",
+      "directions": 4
+    },
+    {
+      "name": "all_the_fuzz",
+      "directions": 4
+    },
+    {
+      "name": "amazon",
+      "directions": 4
+    },
+    {
+      "name": "anime_protagonist",
+      "directions": 4
+    },
+    {
+      "name": "astolfo",
+      "directions": 4
+    },
+    {
+      "name": "baum",
+      "directions": 4
+    },
+    {
+      "name": "beachwave",
+      "directions": 4
+    },
+    {
+      "name": "bedhead_4x",
+      "directions": 4
+    },
+    {
+      "name": "big_tails",
+      "directions": 4
+    },
+    {
+      "name": "bigger_tails",
+      "directions": 4
+    },
+    {
+      "name": "blunt_bangs",
+      "directions": 4
+    },
+    {
+      "name": "blunt_bangs_alt",
+      "directions": 4
+    },
+    {
+      "name": "bobcut_alt",
+      "directions": 4
+    },
+    {
+      "name": "bobcut_over_eye_1",
+      "directions": 4
+    },
+    {
+      "name": "bobcut_over_eye_2",
+      "directions": 4
+    },
+    {
+      "name": "bobcut_over_eye_3",
+      "directions": 4
+    },
+    {
+      "name": "bonnie",
+      "directions": 4
+    },
+    {
+      "name": "bonnie_short",
+      "directions": 4
+    },
+    {
+      "name": "bowl_cut_over_eyes",
+      "directions": 4
+    },
+    {
+      "name": "bun_head_4",
+      "directions": 4
+    },
+    {
+      "name": "chin_length_bob_cut",
+      "directions": 4
+    },
+    {
+      "name": "chunky_ponytail",
+      "directions": 4
+    },
+    {
+      "name": "chunky_twin_buns",
+      "directions": 4
+    },
+    {
+      "name": "clean",
+      "directions": 4
+    },
+    {
+      "name": "clown",
+      "directions": 4
+    },
+    {
+      "name": "coily",
+      "directions": 4
+    },
+    {
+      "name": "combed",
+      "directions": 4
+    },
+    {
+      "name": "combed_bob",
+      "directions": 4
+    },
+    {
+      "name": "comet",
+      "directions": 4
+    },
+    {
+      "name": "cotton",
+      "directions": 4
+    },
+    {
+      "name": "cotton_alt",
+      "directions": 4
+    },
+    {
+      "name": "country_side_braid",
+      "directions": 4
+    },
+    {
+      "name": "curly",
+      "directions": 4
+    },
+    {
+      "name": "curly_front",
+      "directions": 4
+    },
+    {
+      "name": "curtains",
+      "directions": 4
+    },
+    {
+      "name": "dawn",
+      "directions": 4
+    },
+    {
+      "name": "diagonal_bangs",
+      "directions": 4
+    },
+    {
+      "name": "double_drills",
+      "directions": 4
+    },
+    {
+      "name": "dreadtail",
+      "directions": 4
+    },
+    {
+      "name": "elegant_bun",
+      "directions": 4
+    },
+    {
+      "name": "emo_short",
+      "directions": 4
+    },
+    {
+      "name": "fingerwave",
+      "directions": 4
+    },
+    {
+      "name": "flowerchild",
+      "directions": 4
+    },
+    {
+      "name": "flowerchild_no_ponytail",
+      "directions": 4
+    },
+    {
+      "name": "flowerchild_ponytail_only",
+      "directions": 4
+    },
+    {
+      "name": "fluffball",
+      "directions": 4
+    },
+    {
+      "name": "fluffy",
+      "directions": 4
+    },
+    {
+      "name": "fluffy_long",
+      "directions": 4
+    },
+    {
+      "name": "fluffy_mess",
+      "directions": 4
+    },
+    {
+      "name": "fluffy_ponytail",
+      "directions": 4
+    },
+    {
+      "name": "fluffy_short",
+      "directions": 4
+    },
+    {
+      "name": "fortune_teller",
+      "directions": 4
+    },
+    {
+      "name": "frizzy_sidecut",
+      "directions": 4
+    },
+    {
+      "name": "froofy_long",
+      "directions": 4
+    },
+    {
+      "name": "geisha",
+      "directions": 4
+    },
+    {
+      "name": "gentle_bun",
+      "directions": 4
+    },
+    {
+      "name": "gently_brushed",
+      "directions": 4
+    },
+    {
+      "name": "glam_metal",
+      "directions": 4
+    },
+    {
+      "name": "gorgon",
+      "directions": 4
+    },
+    {
+      "name": "grande",
+      "directions": 4
+    },
+    {
+      "name": "hairfre",
+      "directions": 4
+    },
+    {
+      "name": "half_bob",
+      "directions": 4
+    },
+    {
+      "name": "half_shave_long_messy",
+      "directions": 4
+    },
+    {
+      "name": "half_shaved_2",
+      "directions": 4
+    },
+    {
+      "name": "half_shaved_long",
+      "directions": 4
+    },
+    {
+      "name": "half_shaved_long_2",
+      "directions": 4
+    },
+    {
+      "name": "half_shaved_messy",
+      "directions": 4
+    },
+    {
+      "name": "hightight",
+      "directions": 4
+    },
+    {
+      "name": "hightop_slant",
+      "directions": 4
+    },
+    {
+      "name": "holo_tuber",
+      "directions": 4
+    },
+    {
+      "name": "hyena_mane",
+      "directions": 4
+    },
+    {
+      "name": "jay",
+      "directions": 4
+    },
+    {
+      "name": "jessica",
+      "directions": 4
+    },
+    {
+      "name": "khmuro",
+      "directions": 4
+    },
+    {
+      "name": "killmonger",
+      "directions": 4
+    },
+    {
+      "name": "kobeni_1",
+      "directions": 4
+    },
+    {
+      "name": "kobeni_2",
+      "directions": 4
+    },
+    {
+      "name": "long_dreadlocks",
+      "directions": 4
+    },
+    {
+      "name": "long_dreads_up",
+      "directions": 4
+    },
+    {
+      "name": "long_gloomy_bangs",
+      "directions": 4
+    },
+    {
+      "name": "long_over_eye_alt",
+      "directions": 4
+    },
+    {
+      "name": "long_sidecut",
+      "directions": 4
+    },
+    {
+      "name": "long_sideparted",
+      "directions": 4
+    },
+    {
+      "name": "long_thin_ponytail",
+      "directions": 4
+    },
+    {
+      "name": "long_twintails",
+      "directions": 4
+    },
+    {
+      "name": "long_wavy",
+      "directions": 4
+    },
+    {
+      "name": "longer_alt",
+      "directions": 4
+    },
+    {
+      "name": "loose_slicked",
+      "directions": 4
+    },
+    {
+      "name": "low_bun",
+      "directions": 4
+    },
+    {
+      "name": "low_ponytail",
+      "directions": 4
+    },
+    {
+      "name": "manbun",
+      "directions": 4
+    },
+    {
+      "name": "mcsqueeb",
+      "directions": 4
+    },
+    {
+      "name": "medium_braid",
+      "directions": 4
+    },
+    {
+      "name": "medium_gloomy_bangs",
+      "directions": 4
+    },
+    {
+      "name": "mermaid",
+      "directions": 4
+    },
+    {
+      "name": "mirrored_half_bob",
+      "directions": 4
+    },
+    {
+      "name": "misshapen",
+      "directions": 4
+    },
+    {
+      "name": "mohawk_short",
+      "directions": 4
+    },
+    {
+      "name": "money_piece",
+      "directions": 4
+    },
+    {
+      "name": "morning",
+      "directions": 4
+    },
+    {
+      "name": "mullet",
+      "directions": 4
+    },
+    {
+      "name": "mullet_with_rat_tail",
+      "directions": 4
+    },
+    {
+      "name": "new_you",
+      "directions": 4
+    },
+    {
+      "name": "over_ear_1",
+      "directions": 4
+    },
+    {
+      "name": "over_eye_2",
+      "directions": 4
+    },
+    {
+      "name": "phoenix",
+      "directions": 4
+    },
+    {
+      "name": "phoenix_half_shaven",
+      "directions": 4
+    },
+    {
+      "name": "pigtails_4",
+      "directions": 4
+    },
+    {
+      "name": "pigtails_5",
+      "directions": 4
+    },
+    {
+      "name": "pigtails_antenna",
+      "directions": 4
+    },
+    {
+      "name": "pigtails_cupid",
+      "directions": 4
+    },
+    {
+      "name": "ponytail_alt",
+      "directions": 4
+    },
+    {
+      "name": "ponytail_feminine",
+      "directions": 4
+    },
+    {
+      "name": "ponytail_fro",
+      "directions": 4
+    },
+    {
+      "name": "ponytail_wavy",
+      "directions": 4
+    },
+    {
+      "name": "poofy_2",
+      "directions": 4
+    },
+    {
+      "name": "quad_curls",
+      "directions": 4
+    },
+    {
+      "name": "ring_tails",
+      "directions": 4
+    },
+    {
+      "name": "rows_1",
+      "directions": 4
+    },
+    {
+      "name": "rows_2",
+      "directions": 4
+    },
+    {
+      "name": "royal_curls",
+      "directions": 4
+    },
+    {
+      "name": "runner",
+      "directions": 4
+    },
+    {
+      "name": "runner_bun",
+      "directions": 4
+    },
+    {
+      "name": "sabitsuki",
+      "directions": 4
+    },
+    {
+      "name": "sadako",
+      "directions": 4
+    },
+    {
+      "name": "sergeant",
+      "directions": 4
+    },
+    {
+      "name": "shaggy",
+      "directions": 4
+    },
+    {
+      "name": "short_bangs_2",
+      "directions": 4
+    },
+    {
+      "name": "short_fluffy_ponytail",
+      "directions": 4
+    },
+    {
+      "name": "short_tassles",
+      "directions": 4
+    },
+    {
+      "name": "short_twintails",
+      "directions": 4
+    },
+    {
+      "name": "short_wavy",
+      "directions": 4
+    },
+    {
+      "name": "shorter_bangs",
+      "directions": 4
+    },
+    {
+      "name": "shorter_long_bedhead",
+      "directions": 4
+    },
+    {
+      "name": "shy",
+      "directions": 4
+    },
+    {
+      "name": "sidecut_bang",
+      "directions": 4
+    },
+    {
+      "name": "sideways_ponytail",
+      "directions": 4
+    },
+    {
+      "name": "simple",
+      "directions": 4
+    },
+    {
+      "name": "simple_ponytail",
+      "directions": 4
+    },
+    {
+      "name": "simple_ponytail_alt",
+      "directions": 4
+    },
+    {
+      "name": "simple_short",
+      "directions": 4
+    },
+    {
+      "name": "singed_blown_back",
+      "directions": 4
+    },
+    {
+      "name": "singed_pigtails",
+      "directions": 4
+    },
+    {
+      "name": "sleaze",
+      "directions": 4
+    },
+    {
+      "name": "slightly_messy",
+      "directions": 4
+    },
+    {
+      "name": "slime_blobby",
+      "directions": 4
+    },
+    {
+      "name": "slime_droplet",
+      "directions": 4
+    },
+    {
+      "name": "slime_fringe_long",
+      "directions": 4
+    },
+    {
+      "name": "slime_jelly",
+      "directions": 4
+    },
+    {
+      "name": "slime_ponytail_high",
+      "directions": 4
+    },
+    {
+      "name": "slime_ponytail_low",
+      "directions": 4
+    },
+    {
+      "name": "slime_spikes",
+      "directions": 4
+    },
+    {
+      "name": "slime_tails",
+      "directions": 4
+    },
+    {
+      "name": "slime_tails_2",
+      "directions": 4
+    },
+    {
+      "name": "slime_tendrils",
+      "directions": 4
+    },
+    {
+      "name": "spicy",
+      "directions": 4
+    },
+    {
+      "name": "spikey_long",
+      "directions": 4
+    },
+    {
+      "name": "spiky_4",
+      "directions": 4
+    },
+    {
+      "name": "stacy",
+      "directions": 4
+    },
+    {
+      "name": "straight",
+      "directions": 4
+    },
+    {
+      "name": "strict",
+      "directions": 4
+    },
+    {
+      "name": "strict_long",
+      "directions": 4
+    },
+    {
+      "name": "strict_short",
+      "directions": 4
+    },
+    {
+      "name": "swirl_curls_alt",
+      "directions": 4
+    },
+    {
+      "name": "swirly_curls",
+      "directions": 4
+    },
+    {
+      "name": "tayama",
+      "directions": 4
+    },
+    {
+      "name": "teshari_mohawk",
+      "directions": 4
+    },
+    {
+      "name": "teshari_mohawk_alt",
+      "directions": 4
+    },
+    {
+      "name": "thick_ponytail",
+      "directions": 4
+    },
+    {
+      "name": "tri_bun",
+      "directions": 4
+    },
+    {
+      "name": "tri_bun_long",
+      "directions": 4
+    },
+    {
+      "name": "twintail_floor",
+      "directions": 4
+    },
+    {
+      "name": "twintails_2",
+      "directions": 4
+    },
+    {
+      "name": "twintails_wavy",
+      "directions": 4
+    },
+    {
+      "name": "upwards",
+      "directions": 4
+    },
+    {
+      "name": "very_long_gloomy_bangs",
+      "directions": 4
+    },
+    {
+      "name": "victory",
+      "directions": 4
+    },
+    {
+      "name": "violet",
+      "directions": 4
+    },
+    {
+      "name": "violet_ponytail",
+      "directions": 4
+    },
+    {
+      "name": "viper",
+      "directions": 4
+    },
+    {
+      "name": "volaju_pompless",
+      "directions": 4
+    },
+    {
+      "name": "wife",
+      "directions": 4
+    },
+    {
+      "name": "wolfcut",
+      "directions": 4
+    },
+    {
+      "name": "zero_ponytail",
+      "directions": 4
+    },
+    {
+      "name": "ziegler",
+      "directions": 4
+    },
+    {
+      "name": "zoey",
+      "directions": 4
+    }
+  ]
+}

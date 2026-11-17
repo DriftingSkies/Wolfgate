@@ -1,0 +1,74 @@
+using Content.Shared.Dataset;
+using Content.Shared.Roles;
+using Robust.Shared.Prototypes;
+
+namespace Content.Shared._WG.NpcCrew;
+
+/// <summary>
+/// What kind of people crew a ship: the bodies they come in, what each role wears and carries, how skilled they
+/// are and who among them fights. Every crewman rolls his own body and loadout from the pools.
+/// </summary>
+[Prototype("wgCrewProfile")]
+public sealed partial class WGCrewProfilePrototype : IPrototype
+{
+    [IdDataField]
+    public string ID { get; private set; } = default!;
+
+    /// <summary>Crew body prototypes, one picked per crewman. List one more often to make it more common.</summary>
+    [DataField]
+    public List<EntProtoId> Bodies = new();
+
+    /// <summary>Skill levels, one picked for the whole crew.</summary>
+    [DataField]
+    public List<WGCrewSkill> Skills = new();
+
+    /// <summary>Loadouts by role, one picked per crewman of that role.</summary>
+    [DataField]
+    public Dictionary<ProtoId<WGCrewRolePrototype>, List<ProtoId<StartingGearPrototype>>> Loadouts = new();
+
+    /// <summary>Skill tiers a crewman with this loadout stands above (or, negative, below) the crew's skill.</summary>
+    [DataField]
+    public Dictionary<ProtoId<StartingGearPrototype>, int> SkillOffsets = new();
+
+    /// <summary>Roles that fight differently from their role's default.</summary>
+    [DataField]
+    public Dictionary<ProtoId<WGCrewRolePrototype>, WGCrewEngagement> Engagement = new();
+
+    /// <summary>Chance, from 0 to 1 by role, that a crewman is a coward: he never fights and takes shelter instead.</summary>
+    [DataField]
+    public Dictionary<ProtoId<WGCrewRolePrototype>, float> Cowards = new();
+
+    /// <summary>Datasets every crewman's first and last name are drawn from. Left out, each keeps the name his body rolled.</summary>
+    [DataField]
+    public ProtoId<DatasetPrototype>? FirstNames;
+
+    [DataField]
+    public ProtoId<DatasetPrototype>? LastNames;
+
+    /// <summary>Components every crewman gets, such as an accent.</summary>
+    [DataField]
+    public ComponentRegistry Components = new();
+
+    /// <summary>Whether its ships never count one another as attackers, however much fire passes between them: a machine fleet does not turn on itself.</summary>
+    [DataField]
+    public bool ForgivesOwn;
+
+    /// <summary>
+    /// Stray ship weapon hits in 30 s its ships let pass from any vessel not crewed by NPCs, whatever its colours, in
+    /// place of the few they allow their own faction: a station's guard takes a lot of fire before it turns.
+    /// </summary>
+    [DataField]
+    public int? StrayHits;
+
+    /// <summary>Whether its ships hold fire on any ship with a living player aboard, or docked to one, even under fire: a station's guard doesn't wreck people's ships to hit whoever is alongside them.</summary>
+    [DataField]
+    public bool SparesCrewedShips;
+
+    /// <summary>Titles its crews carry in place of a role's own, by role: an automaton is a Helm Unit, not a First Officer.</summary>
+    [DataField]
+    public Dictionary<ProtoId<WGCrewRolePrototype>, LocId> Titles = new();
+
+    /// <summary>Hull parts swapped out when a ship is crewed with this profile: a pirate hull loses its durasteel for plastitanium.</summary>
+    [DataField]
+    public Dictionary<EntProtoId, EntProtoId> HullSwaps = new();
+}

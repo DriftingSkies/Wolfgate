@@ -23,7 +23,7 @@
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
   - type: Sprite # WOLFGATE(Avali): Starlight organ sprites
-    sprite: _WF/Avali/organs.rsi
+    sprite: _WG/Avali/organs.rsi
     state: stomach
 
 - type: entity
@@ -41,7 +41,7 @@
     - id: Poison
     - id: Narcotic
   - type: Sprite # WOLFGATE(Avali): Starlight organ sprites
-    sprite: _WF/Avali/organs.rsi
+    sprite: _WG/Avali/organs.rsi
     state: heart-on
 
 - type: entity
@@ -58,7 +58,7 @@
     - id: Alcohol
       rateModifier: 0.1 # removes alcohol very slowly along with the stomach removing it as a drink
   - type: Sprite # WOLFGATE(Avali): Starlight organ sprites
-    sprite: _WF/Avali/organs.rsi
+    sprite: _WG/Avali/organs.rsi
     state: liver
   - type: Item # WOLFGATE(Avali): the Starlight sheet has no held liver
     sprite: Mobs/Species/Human/organs.rsi
@@ -72,7 +72,7 @@
   description: "The kidneys of an avali."
   components:
   - type: Sprite
-    sprite: _WF/Avali/organs.rsi
+    sprite: _WG/Avali/organs.rsi
     layers:
     - state: kidney-l
     - state: kidney-r
@@ -88,7 +88,7 @@
   - type: Metabolizer
     metabolizerTypes: [ Human, Avali ]
   - type: Sprite
-    sprite: _WF/Avali/organs.rsi
+    sprite: _WG/Avali/organs.rsi
     layers:
     - state: lung-l
     - state: lung-r

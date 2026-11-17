@@ -12,7 +12,7 @@
 - type: tile
   parent: CMPlanetBase
   id: CMPlanetRunedSandstone
-  name: tiles-wf-rmc-runed-sandstone
+  name: tiles-wg-rmc-runed-sandstone
   sprite: /Textures/_RMC14/Tiles/planet/runed_sandstone/runedsandstone.png
   footstepSounds:
     collection: FootstepWood
@@ -20,7 +20,7 @@
 - type: tile
   parent: CMPlanetBase
   id: RMCPlanetSandWet
-  name: tiles-wf-rmc-sand
+  name: tiles-wg-rmc-sand
   sprite: /Textures/_RMC14/Tiles/varadero/layer1.png
   variants: 8
   placementVariants:
@@ -46,7 +46,7 @@
 - type: tile
   parent: CMPlanetBase
   id: RMCPlanetShale
-  name: tiles-wf-rmc-shale
+  name: tiles-wg-rmc-shale
   sprite: /Textures/_RMC14/Tiles/planet/auto_shale/shale_1.png
   variants: 8
   placementVariants:
@@ -79,12 +79,12 @@
 - type: tile
   parent: CMTileBase
   id: CMPlanetTatami
-  name: tiles-wf-rmc-tatami-flooring
+  name: tiles-wg-rmc-tatami-flooring
   sprite: /Textures/_RMC14/Tiles/planet/interior/tatami.png
 
 - type: tile
   parent: CMPlanetBase
   id: RMCPlanetDirtBrownRoad
-  name: tiles-wf-rmc-dirt-road
+  name: tiles-wg-rmc-dirt-road
   sprite: /Textures/_RMC14/Tiles/planet/browndirt_road/browndirt_road.png
 # WOLFGATE END

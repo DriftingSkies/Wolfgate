@@ -4,7 +4,7 @@
  */
 
 using Content.Shared._CE.ZLevels.Core.Components;
-using Content.Shared._WF.WolfWeather; // WOLFGATE(WolfWeather)
+using Content.Shared._WG.WolfWeather; // WOLFGATE(WolfWeather)
 using Content.Shared.Weather;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;

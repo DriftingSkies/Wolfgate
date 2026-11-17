@@ -1,6 +1,6 @@
 using Content.Server.DoAfter;
 using Content.Server.Popups;
-using Content.Shared._WF.Performance; // WOLFGATE(Performance)
+using Content.Shared._WG.Performance; // WOLFGATE(Performance)
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Audio;
 using Content.Shared.Chemistry.Components.SolutionManager;
@@ -39,7 +39,7 @@ public sealed partial class DrainSystem : SharedDrainSystem
     // Mono
     private float _updateInterval = 1f;
     // private float _updateAccumulator = 0f; // WOLFGATE(Performance): each drain takes its own tick
-    [Dependency] private IGameTiming _wfTiming = default!; // WOLFGATE(Performance)
+    [Dependency] private IGameTiming _wgTiming = default!; // WOLFGATE(Performance)
 
     public override void Initialize()
     {
@@ -129,15 +129,15 @@ public sealed partial class DrainSystem : SharedDrainSystem
         // if (_updateAccumulator < _updateInterval)
         //     return;
         // _updateAccumulator -= _updateInterval;
-        var period = WFTickSpread.Period(_wfTiming, _updateInterval);
-        var tick = _wfTiming.CurTick;
+        var period = WGTickSpread.Period(_wgTiming, _updateInterval);
+        var tick = _wgTiming.CurTick;
 
         var managerQuery = GetEntityQuery<SolutionContainerManagerComponent>();
 
         var query = EntityQueryEnumerator<DrainComponent>();
         while (query.MoveNext(out var uid, out var drain))
         {
-            if (!WFTickSpread.Due(uid, tick, period) || _wfTiming.CurTime < drain.WFIdleUntil)
+            if (!WGTickSpread.Due(uid, tick, period) || _wgTiming.CurTime < drain.WGIdleUntil)
                 continue;
             // WOLFGATE END
 
@@ -170,7 +170,7 @@ public sealed partial class DrainSystem : SharedDrainSystem
 
                 if (_puddles.Count == 0 && drainSolution.Volume <= 0)
                 {
-                    drain.WFIdleUntil = _wfTiming.CurTime + TimeSpan.FromSeconds(5); // WOLFGATE(Performance): a dry drain searches less often
+                    drain.WGIdleUntil = _wgTiming.CurTime + TimeSpan.FromSeconds(5); // WOLFGATE(Performance): a dry drain searches less often
                     _ambientSoundSystem.SetAmbience(uid, false);
                     continue;
                 }

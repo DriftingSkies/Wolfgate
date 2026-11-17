@@ -1,0 +1,323 @@
+# Character-editor loadouts for the ASF roles. Each role's defaults (the group fallbacks) are the outfit it
+# started with before these existed; rank pieces (plumed beret, brimmed hat, cape,
+# greatcoat, robe, parade jacket) are the Envoy's.
+
+# Jumpsuits
+
+- type: loadout
+  id: WGAsfLoadoutUniformService
+  equipment:
+    jumpsuit: WGAsfClothingUniformService
+
+- type: loadout
+  id: WGAsfLoadoutUniformColonist
+  equipment:
+    jumpsuit: WGAsfClothingUniformColonist
+
+- type: loadout
+  id: WGAsfLoadoutUniformResearcher
+  equipment:
+    jumpsuit: WGAsfClothingUniformResearcher
+
+- type: loadout
+  id: WGAsfLoadoutUniformCasual
+  equipment:
+    jumpsuit: WGAsfClothingUniformCasual
+
+- type: loadout
+  id: WGAsfLoadoutUniformMedic
+  equipment:
+    jumpsuit: WGAsfClothingUniformMedic
+
+- type: loadout
+  id: WGAsfLoadoutUniformFormal
+  equipment:
+    jumpsuit: WGAsfClothingUniformFormal
+
+- type: loadout
+  id: WGAsfLoadoutUniformStarfleetJumpskirtBlack
+  equipment:
+    jumpsuit: WGAsfClothingUniformStarfleetJumpskirtBlack
+
+- type: loadout
+  id: WGAsfLoadoutUniformStarfleetJumpskirt
+  equipment:
+    jumpsuit: WGAsfClothingUniformStarfleetJumpskirt
+
+- type: loadoutGroup
+  id: WGAsfJumpsuitService
+  name: loadout-group-contractor-jumpsuit
+  loadouts:
+  - WGAsfLoadoutUniformService
+  - WGAsfLoadoutUniformFormal
+  - WGAsfLoadoutUniformCasual
+  - WGAsfLoadoutUniformColonist
+  - WGAsfLoadoutUniformResearcher
+  - WGAsfLoadoutUniformMedic
+  - WGAsfLoadoutUniformStarfleetJumpskirtBlack
+  - WGAsfLoadoutUniformStarfleetJumpskirt
+  fallbacks:
+  - WGAsfLoadoutUniformService
+
+- type: loadoutGroup
+  id: WGAsfJumpsuitResearcher
+  name: loadout-group-contractor-jumpsuit
+  loadouts:
+  - WGAsfLoadoutUniformResearcher
+  - WGAsfLoadoutUniformMedic
+  - WGAsfLoadoutUniformService
+  - WGAsfLoadoutUniformFormal
+  - WGAsfLoadoutUniformCasual
+  - WGAsfLoadoutUniformColonist
+  - WGAsfLoadoutUniformStarfleetJumpskirtBlack
+  - WGAsfLoadoutUniformStarfleetJumpskirt
+  fallbacks:
+  - WGAsfLoadoutUniformResearcher
+
+- type: loadoutGroup
+  id: WGAsfJumpsuitColonist
+  name: loadout-group-contractor-jumpsuit
+  loadouts:
+  - WGAsfLoadoutUniformColonist
+  - WGAsfLoadoutUniformService
+  - WGAsfLoadoutUniformCasual
+  - WGAsfLoadoutUniformFormal
+  - WGAsfLoadoutUniformResearcher
+  - WGAsfLoadoutUniformMedic
+  - WGAsfLoadoutUniformStarfleetJumpskirtBlack
+  - WGAsfLoadoutUniformStarfleetJumpskirt
+  fallbacks:
+  - WGAsfLoadoutUniformColonist
+
+# Bags
+
+- type: loadout
+  id: WGAsfLoadoutBackpack
+  equipment:
+    back: WGAsfClothingBackpack
+
+- type: loadout
+  id: WGAsfLoadoutSatchel
+  equipment:
+    back: WGAsfClothingBackpackSatchel
+
+- type: loadout
+  id: WGAsfLoadoutDuffel
+  equipment:
+    back: WGAsfClothingBackpackDuffel
+
+- type: loadoutGroup
+  id: WGAsfBackpack
+  name: loadout-group-contractor-backpack
+  loadouts:
+  - WGAsfLoadoutBackpack
+  - WGAsfLoadoutSatchel
+  - WGAsfLoadoutDuffel
+  fallbacks:
+  - WGAsfLoadoutBackpack
+
+# Head
+
+- type: loadout
+  id: WGAsfLoadoutBeretPlumed
+  equipment:
+    head: WGAsfClothingHeadBeretPlumed
+
+- type: loadout
+  id: WGAsfLoadoutBeret
+  equipment:
+    head: WGAsfClothingHeadBeret
+
+- type: loadout
+  id: WGAsfLoadoutCap
+  equipment:
+    head: WGAsfClothingHeadCap
+
+- type: loadout
+  id: WGAsfLoadoutHat
+  equipment:
+    head: WGAsfClothingHeadHat
+
+- type: loadout
+  id: WGAsfLoadoutConductorCap
+  equipment:
+    head: WGAsfClothingHeadConductorCap
+
+- type: loadoutGroup
+  id: WGAsfHeadEnvoy
+  name: loadout-group-contractor-head
+  loadouts:
+  - WGAsfLoadoutBeretPlumed
+  - WGAsfLoadoutBeret
+  - WGAsfLoadoutCap
+  - WGAsfLoadoutHat
+  - WGAsfLoadoutConductorCap
+  fallbacks:
+  - WGAsfLoadoutBeretPlumed
+
+- type: loadoutGroup
+  id: WGAsfHeadEnforcer
+  name: loadout-group-contractor-head
+  loadouts:
+  - WGAsfLoadoutBeret
+  - WGAsfLoadoutCap
+  - WGAsfLoadoutConductorCap
+  fallbacks:
+  - WGAsfLoadoutBeret
+
+- type: loadoutGroup
+  id: WGAsfHead
+  name: loadout-group-contractor-head
+  minLimit: 0
+  loadouts:
+  - WGAsfLoadoutBeret
+  - WGAsfLoadoutCap
+  - WGAsfLoadoutConductorCap
+
+# Neck
+
+- type: loadout
+  id: WGAsfLoadoutCapelet
+  equipment:
+    neck: WGAsfClothingNeckCapelet
+
+- type: loadout
+  id: WGAsfLoadoutCape
+  equipment:
+    neck: WGAsfClothingNeckCape
+
+- type: loadout
+  id: WGAsfLoadoutShroudEnvoy
+  equipment:
+    neck: WGAsfClothingNeckShroudEnvoy
+
+- type: loadout
+  id: WGAsfLoadoutShroudResearcher
+  equipment:
+    neck: WGAsfClothingNeckShroudResearcher
+
+- type: loadoutGroup
+  id: WGAsfNeckEnvoy
+  name: loadout-group-contractor-neck
+  loadouts:
+  - WGAsfLoadoutCapelet
+  - WGAsfLoadoutCape
+  - WGAsfLoadoutShroudEnvoy
+  - WGAsfLoadoutShroudResearcher
+  - WGMeridianLoadoutClothingAccessoryPandoraHope
+  - ContractorClothingNeckIFFPurple
+  - ContractorClothingNeckTieSci
+  - WGMeridianLoadoutClothingAccessorySpyBug
+  - WGMeridianLoadoutClothingAccessoryNovaAccMedalGlowcrystal
+  fallbacks:
+  - WGAsfLoadoutCapelet
+
+- type: loadoutGroup
+  id: WGAsfNeck
+  name: loadout-group-contractor-neck
+  minLimit: 0
+  loadouts:
+  - WGAsfLoadoutCapelet
+  - WGAsfLoadoutShroudResearcher
+  - WGMeridianLoadoutClothingAccessoryPandoraHope
+  - ContractorClothingNeckIFFPurple
+  - ContractorClothingNeckTieSci
+  - WGMeridianLoadoutClothingAccessorySpyBug
+  - WGMeridianLoadoutClothingAccessoryNovaAccMedalGlowcrystal
+
+# Outer clothing
+
+- type: loadout
+  id: WGAsfLoadoutGreatcoat
+  equipment:
+    outerClothing: WGAsfClothingOuterGreatcoat
+
+- type: loadout
+  id: WGAsfLoadoutParade
+  equipment:
+    outerClothing: WGAsfClothingOuterParade
+
+- type: loadout
+  id: WGAsfLoadoutRobe
+  equipment:
+    outerClothing: WGAsfClothingOuterRobe
+
+- type: loadout
+  id: WGAsfLoadoutOuterCoatLab
+  equipment:
+    outerClothing: WGAsfClothingOuterCoatLab
+
+- type: loadout
+  id: WGAsfLoadoutExplorerLabcoat
+  equipment:
+    outerClothing: WGAsfClothingOuterExplorerLabcoat
+
+- type: loadout
+  id: WGAsfLoadoutHaori
+  equipment:
+    outerClothing: WGAsfClothingOuterHaori
+
+- type: loadoutGroup
+  id: WGAsfOuterEnvoy
+  name: loadout-group-contractor-outerclothing
+  loadouts:
+  - WGAsfLoadoutGreatcoat
+  - WGAsfLoadoutParade
+  - WGAsfLoadoutRobe
+  - WGAsfLoadoutOuterCoatLab
+  - WGAsfLoadoutExplorerLabcoat
+  - WGAsfLoadoutHaori
+  fallbacks:
+  - WGAsfLoadoutGreatcoat
+
+- type: loadoutGroup
+  id: WGAsfOuter
+  name: loadout-group-contractor-outerclothing
+  loadouts:
+  - WGAsfLoadoutOuterCoatLab
+  - WGAsfLoadoutExplorerLabcoat
+  - WGAsfLoadoutHaori
+  fallbacks:
+  - WGAsfLoadoutOuterCoatLab
+
+- type: loadoutGroup
+  id: WGAsfOuterEnforcer
+  name: loadout-group-contractor-outerclothing
+  loadouts:
+  - MercenaryVestSlim
+  - MercenaryVestNormal
+  - MercenaryClothingOuterArmorBPVestLight
+  - MercenaryClothingOuterArmorBPVestMedium
+  - MercenaryClothingOuterArmorBPVestHeavy
+  - MercenaryClothingOuterArmorBPVestPolyvalent
+  - MercenaryClothingOuterArmorBPVestStabproof
+  fallbacks:
+  - MercenaryVestSlim
+
+# Gloves
+
+- type: loadout
+  id: WGAsfLoadoutGloves
+  equipment:
+    gloves: WGAsfClothingHandsGloves
+
+- type: loadout
+  id: WGAsfLoadoutGlovesInsulated
+  equipment:
+    gloves: ClothingHandsGlovesColorYellow
+
+- type: loadoutGroup
+  id: WGAsfGloves
+  name: loadout-group-contractor-gloves
+  minLimit: 0
+  loadouts:
+  - WGAsfLoadoutGloves
+
+- type: loadoutGroup
+  id: WGAsfGlovesColonist
+  name: loadout-group-contractor-gloves
+  loadouts:
+  - WGAsfLoadoutGlovesInsulated
+  - WGAsfLoadoutGloves
+  fallbacks:
+  - WGAsfLoadoutGlovesInsulated

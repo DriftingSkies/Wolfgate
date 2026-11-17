@@ -49,9 +49,9 @@
   colorLinks:
     rooster_tail_BEHIND: rooster_tail_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Harpy/harpy_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Harpy/harpy_tails.rsi
     state: rooster_tail_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Harpy/harpy_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Harpy/harpy_tails.rsi
     state: rooster_tail_BEHIND
   # WOLFGATE END
 

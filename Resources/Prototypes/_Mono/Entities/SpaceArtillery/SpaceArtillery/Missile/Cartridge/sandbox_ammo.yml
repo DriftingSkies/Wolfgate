@@ -157,9 +157,9 @@
     energy: 2
   # WOLFGATE(Warheads) START: impact sets off a nuclear payload; Explosive stays for when it is shot down
   # - type: ExplodeOnTrigger
-  - type: WFWarhead
-    payload: WFPayloadMissile
-  - type: WFImpactFuze
+  - type: WGWarhead
+    payload: WGPayloadMissile
+  - type: WGImpactFuze
   # WOLFGATE END
   - type: Explosive
     explosionType: HardBomb

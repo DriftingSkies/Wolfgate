@@ -1,0 +1,89 @@
+# The PDV's field medic, the counterpart of the TSF brigmedic.
+
+- type: job
+  id: WGPdvJarrah
+  name: job-name-wg-pdv-jarrah
+  description: job-description-wg-pdv-jarrah
+  playTimeTracker: JobWGPdvJarrah
+  requirements:
+    - !type:OverallPlaytimeRequirement
+      time: 72000 # 20hr
+    - !type:RoleTimeRequirement
+      role: JobPirate
+      time: 7200 # 2hr
+    - !type:TraitsRequirement
+      inverted: true
+      traits:
+      - Heretic
+  startingGear: WGPdvJarrahGear
+  alwaysUseSpawner: true
+  hideConsoleVisibility: true
+  canBeAntag: true
+  icon: JobIconWGPdvJarrah
+  supervisors: job-supervisors-wg-pdv-jarrah
+  weight: 25
+  displayWeight: 25
+  assignedCompany: PDV
+  setPreference: true
+  access:
+  - PDV
+  - Mercenary
+  accessGroups:
+  - GeneralAccess
+  guides:
+  - PDV_Entry
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: MailDisabled
+    - type: SpecialSectorStationRecord
+      recordGeneration: FalseRecord
+    - type: NpcFactionMember
+      factions:
+      - PirateNF
+    - type: SurgerySpeedModifier
+      SpeedModifier: 1.65
+    - type: RadioOnCryosleep
+      radioChannel: Freelance
+  - !type:AddImplantSpecial
+    implants: [ FreelanceTrackingImplant ]
+  - !type:AddLanguageSpecial
+    languagesSpoken:
+    - Freespeak
+    languagesUnderstood:
+    - Freespeak
+  - !type:GiveItemOnHolidaySpecial
+    holiday: FrontierBirthday
+    prototype: FrontierBirthdayGift
+
+- type: startingGear
+  id: WGPdvJarrahGear
+  equipment:
+    ears: ClothingHeadsetAltFreelancer
+    pocket1: BasePirateUplinkPirateCrew
+  storage:
+    back:
+    - EncryptionKeyMedical
+    - RadioHandheldNF
+
+- type: playTimeTracker
+  id: JobWGPdvJarrah
+
+- type: jobIcon
+  parent: JobIcon
+  id: JobIconWGPdvJarrah
+  icon:
+    sprite: /Textures/_WG/PdvMedic/job_icon.rsi
+    state: jarrah
+  jobName: job-name-wg-pdv-jarrah
+
+- type: entity
+  id: WGSpawnPointPdvJarrah
+  parent: SpawnPointJobBase
+  name: PDV Jarrah
+  components:
+  - type: SpawnPoint
+    job_id: WGPdvJarrah
+  - type: Sprite
+    sprite: Structures/Decoration/banner.rsi
+    state: banner-red

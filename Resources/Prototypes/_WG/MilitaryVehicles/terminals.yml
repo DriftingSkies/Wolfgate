@@ -1,0 +1,43 @@
+# The military outfitter (chassis to its pad, parts over the counter) and the station counter (licence and parts).
+# Names are in military_vehicles.ftl.
+
+- type: entity
+  parent: WGComputerVehicleShopExpeditionary
+  id: WGComputerMilitaryOutfitter
+  components:
+  - type: Sprite
+    sprite: _NF/Structures/Machines/computers.rsi
+    layers:
+    - map: [ "computerLayerBody" ]
+      state: computer
+    - map: [ "computerLayerKeyboard" ]
+      state: generic_keyboard
+    - map: [ "computerLayerScreen" ]
+      state: shipyard_security
+    - map: [ "computerLayerKeys" ]
+      state: generic_keys
+  - type: WGVehicleShop
+    catalog: WGMilitaryCatalogChassis
+    extraCatalogs:
+    - WGMilitaryCatalogParts
+
+- type: entity
+  parent: WGComputerVehicleShopExpeditionary
+  id: WGComputerMilitaryCounter
+  components:
+  - type: Sprite
+    sprite: _NF/Structures/Machines/computers.rsi
+    layers:
+    - map: [ "computerLayerBody" ]
+      state: computer
+    - map: [ "computerLayerKeyboard" ]
+      state: generic_keyboard
+    - map: [ "computerLayerScreen" ]
+      state: shipyard_security
+    - map: [ "computerLayerKeys" ]
+      state: generic_keys
+  - type: WGVehicleShop
+    catalog: WGMilitaryCatalogCounter
+    extraCatalogs:
+    - WGMilitaryCatalogParts
+    - WGMilitaryCatalogDrops

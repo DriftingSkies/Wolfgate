@@ -1,6 +1,6 @@
 ﻿using Content.Shared.Ghost;
 using Content.Shared.IdentityManagement.Components;
-using Content.Shared._WF.RMCCore.IdentityManagement; // WOLFGATE(RMCCore)
+using Content.Shared._WG.RMCCore.IdentityManagement; // WOLFGATE(RMCCore)
 using Content.Shared.Whitelist; // WOLFGATE(RMCCore)
 
 namespace Content.Shared.IdentityManagement;

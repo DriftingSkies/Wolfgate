@@ -1,0 +1,24 @@
+- type: constructionGraph
+  id: WGHash
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: brick
+      steps:
+      - material: LeavesCannabisDried
+        amount: 3
+        doAfter: 6
+  - node: brick
+    entity: WGHashBrick
+
+- type: construction
+  name: hash brick
+  id: WGHash
+  graph: WGHash
+  startNode: start
+  targetNode: brick
+  category: construction-category-misc
+  description: Dried cannabis pressed into a dense brick.
+  icon: { sprite: _WG/WolfChem/Narcotics/Objects/solids.rsi, state: hash }
+  objectType: Item

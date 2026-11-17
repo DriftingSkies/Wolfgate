@@ -93,7 +93,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
     // WOLFGATE(Performance) START: the sweep divided by the zero interval, so the sweep hand keeps a period of its own.
     // The request gate stays open; the throttle in RadarBlipsSystem owns the refresh rate.
     protected const float RadarSweepPeriod = 1f;
-    private float _wfSweep; // WOLFGATE(Performance): the sweep hand's own timer, since the request accumulator is zeroed each frame
+    private float _wgSweep; // WOLFGATE(Performance): the sweep hand's own timer, since the request accumulator is zeroed each frame
     // WOLFGATE END
     protected float _updateAccumulator = 0f;
 
@@ -138,8 +138,8 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
         OnMouseEntered += HandleMouseEntered;
         OnMouseExited += HandleMouseExited;
-        WfLoadDisplaySettings(); // WOLFGATE(Shuttles): start with the player's saved radar display choices.
-        WfAddPlanetScanner(); // WOLFGATE(PlanetScan): hovering a world opens its scan.
+        WgLoadDisplaySettings(); // WOLFGATE(Shuttles): start with the player's saved radar display choices.
+        WgAddPlanetScanner(); // WOLFGATE(PlanetScan): hovering a world opens its scan.
     }
 
     private void HandleMouseEntered(GUIMouseHoverEventArgs args)
@@ -154,7 +154,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
     public void SetMatrix(EntityCoordinates? coordinates, Angle? angle)
     {
-        _wfRadarOrigin = coordinates; // WOLFGATE(Planets): retain the moving origin while panned.
+        _wgRadarOrigin = coordinates; // WOLFGATE(Planets): retain the moving origin while panned.
         // WOLFGATE(Planets) START: a map-pinned radar must follow travel to another map.
         // Otherwise panning in space permanently hides orbit terrain (and contacts) by retaining the old map.
         if (_wasPanned && coordinates is { } next && _coordinates is { } previous &&
@@ -303,12 +303,12 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
         _radarModeButtons.AddChild(_radarRotationButton);
         _radarModeButtons.AddChild(_radarAnchorButton);
         _radarModeButtons.AddChild(_radarResetButton);
-        AddWfZoomToMouseButton(_radarModeButtons); // WOLFGATE(Shuttles): zoom toward the cursor toggle.
-        AddWfAllNamesButton(_radarModeButtons); // WOLFGATE(RadarLabels): every contact named toggle.
+        AddWgZoomToMouseButton(_radarModeButtons); // WOLFGATE(Shuttles): zoom toward the cursor toggle.
+        AddWgAllNamesButton(_radarModeButtons); // WOLFGATE(RadarLabels): every contact named toggle.
 
         parent.AddChild(_radarModeButtons);
-        AddWfTerrainButton(parent); // WOLFGATE(Planets): terrain toggle overlays the radar, not the settings column.
-        AddWfWaypointControls(parent); // WOLFGATE(Waypoints): the waypoint key and panel overlay the radar.
+        AddWgTerrainButton(parent); // WOLFGATE(Planets): terrain toggle overlays the radar, not the settings column.
+        AddWgWaypointControls(parent); // WOLFGATE(Waypoints): the waypoint key and panel overlay the radar.
         LayoutContainer.SetAnchorAndMarginPreset(_radarModeButtons, LayoutContainer.LayoutPreset.BottomLeft, margin: 10);
     }
 
@@ -347,8 +347,8 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
         Rotation,
         Anchor,
         Reset,
-        WfZoomToMouse, // WOLFGATE(Shuttles): zoom toward the cursor toggle.
-        WfAllNames // WOLFGATE(RadarLabels): every contact named toggle.
+        WgZoomToMouse, // WOLFGATE(Shuttles): zoom toward the cursor toggle.
+        WgAllNames // WOLFGATE(RadarLabels): every contact named toggle.
     }
 
     public sealed partial class RadarModeButton : BaseButton // WOLFGATE(CombatConsole): theme the original radar mode controls.
@@ -368,7 +368,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
         protected override void Draw(DrawingHandleScreen handle)
         {
             // WOLFGATE(CombatConsole) START: instrument scopes retain these buttons with the selected console palette.
-            if (WfDrawInstrument(handle))
+            if (WgDrawInstrument(handle))
                 return;
             // WOLFGATE END
             var alpha = DrawMode switch
@@ -452,11 +452,11 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
                         break;
                     }
                 // WOLFGATE(Shuttles) START: zoom toward the cursor toggle.
-                case RadarModeButtonIcon.WfZoomToMouse:
-                    WfDrawZoomToMouse(handle, center, radius, Color.Lime.WithAlpha(0.95f));
+                case RadarModeButtonIcon.WgZoomToMouse:
+                    WgDrawZoomToMouse(handle, center, radius, Color.Lime.WithAlpha(0.95f));
                     break;
-                case RadarModeButtonIcon.WfAllNames: // WOLFGATE(RadarLabels): every contact named toggle
-                    WfDrawAllNames(handle, center, radius, Color.Lime.WithAlpha(0.95f));
+                case RadarModeButtonIcon.WgAllNames: // WOLFGATE(RadarLabels): every contact named toggle
+                    WgDrawAllNames(handle, center, radius, Color.Lime.WithAlpha(0.95f));
                     break;
                 // WOLFGATE END
                 default:
@@ -489,7 +489,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
     protected override void KeyBindDown(GUIBoundKeyEventArgs args)
     {
         // WOLFGATE(Waypoints): a pick takes the click before the cockpit's aim handler or the guns see it.
-        if (WfTryPickWaypoint(args))
+        if (WgTryPickWaypoint(args))
             return;
 
         base.KeyBindDown(args);
@@ -503,14 +503,14 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
         _isMouseDown = true;
         _lastMousePos = args.RelativePosition;
-        _wfPressedAt = args.RelativePixelPosition; // WOLFGATE(PlanetSignals): where a click on a world began.
+        _wgPressedAt = args.RelativePixelPosition; // WOLFGATE(PlanetSignals): where a click on a world began.
         TryFireAtPosition(args.RelativePosition);
     }
 
     protected override void KeyBindUp(GUIBoundKeyEventArgs args)
     {
         // WOLFGATE(Waypoints): the release of a picking click stays out of the radar's click handling.
-        if (WfTrySwallowPickRelease(args))
+        if (WgTrySwallowPickRelease(args))
             return;
 
         base.KeyBindUp(args);
@@ -525,7 +525,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
         _isMouseDown = false;
 
         // WOLFGATE(PlanetSignals): a click on a world lists its signals.
-        if (WfTryOpenPlanetSignals(args.RelativePixelPosition, args.RelativePosition))
+        if (WgTryOpenPlanetSignals(args.RelativePixelPosition, args.RelativePosition))
             return;
 
         var coords = GetMouseEntityCoordinates(args.RelativePosition);
@@ -536,12 +536,12 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
     {
         base.FrameUpdate(args);
         // WOLFGATE(Performance) START: the sweep hand turns on its own timer, so it keeps moving while requests are throttled
-        _wfSweep += args.DeltaSeconds;
-        if (_wfSweep >= RadarSweepPeriod)
-            _wfSweep -= RadarSweepPeriod;
+        _wgSweep += args.DeltaSeconds;
+        if (_wgSweep >= RadarSweepPeriod)
+            _wgSweep -= RadarSweepPeriod;
         // WOLFGATE END
-        WfSaveDisplaySettings(); // WOLFGATE(Shuttles): keep a changed radar display choice for the next radar.
-        WfUpdateWaypoints(); // WOLFGATE(Waypoints): keep the panel on the grid's current list.
+        WgSaveDisplaySettings(); // WOLFGATE(Shuttles): keep a changed radar display choice for the next radar.
+        WgUpdateWaypoints(); // WOLFGATE(Waypoints): keep the panel on the grid's current list.
 
         _updateAccumulator += args.DeltaSeconds;
 
@@ -626,7 +626,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
         DrawBacking(handle);
 
         // WOLFGATE(Planets) START: a grid's map can change between BUI updates (FTL / planet layer travel).
-        if (_wasPanned && _wfRadarOrigin is { } radarOrigin)
+        if (_wasPanned && _wgRadarOrigin is { } radarOrigin)
             SetMatrix(radarOrigin, _rotation);
         // WOLFGATE END
 
@@ -667,7 +667,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
         var worldToView = worldToShuttle * shuttleToView;
 
         DrawStarSystem(handle, worldToShuttle, shuttleToView, xform.MapUid); // Far Horizons
-        DrawWfTerrain(handle, worldToView, xform.MapUid); // WOLFGATE(Planets): cached planetary terrain beneath radar contacts.
+        DrawWgTerrain(handle, worldToView, xform.MapUid); // WOLFGATE(Planets): cached planetary terrain beneath radar contacts.
         DrawSectorBorders(handle, worldToView, xform.MapID); // WOLFGATE(SectorControl): faction territory borders beneath radar contacts.
         DrawDroneRings(handle, worldToView, xform.MapUid); // WOLFGATE(DroneRings): draw rings where drones start to spawn.
 
@@ -691,8 +691,8 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
         DrawCircles(handle);
 
-        DrawWfPlanetSignals(handle, worldToView, xform); // WOLFGATE(PlanetSignals): sites and other layers' vessels on a world's radar.
-        DrawWfVehicleScanner(handle, worldToView); // WOLFGATE(Vehicles): a vehicle scanner marks the vehicle and its position.
+        DrawWgPlanetSignals(handle, worldToView, xform); // WOLFGATE(PlanetSignals): sites and other layers' vessels on a world's radar.
+        DrawWgVehicleScanner(handle, worldToView); // WOLFGATE(Vehicles): a vehicle scanner marks the vehicle and its position.
         DrawIFFBeacons(handle, worldToView, mapPos, xform.MapUid); // Far Horizons
 
         // Draw shields
@@ -700,9 +700,9 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
         DrawWolfgateShields(handle, xform, worldToView); // WOLFGATE(ShipShields): hull contours and directional coverage on all radar views.
         DrawCrewGroups(handle, xform, worldToView); // WOLFGATE(NpcCrew): Admin tags and battlegroup lines for NPC-crewed ships.
         DrawEncounterMarkers(handle, xform, worldToView); // WOLFGATE(Encounters): Sector markers for visible encounters.
-        DrawWfLatticePhantoms(handle, worldToView, xform.MapUid); // WOLFGATE(Lattice): radar contacts only this player sees.
-        DrawWfLatticeHex(handle, worldToView, xform.MapUid); // WOLFGATE(Lattice): the hex field's beams and the anchors' wards.
-        DrawWfWaypoints(handle, worldToView, xform.MapUid); // WOLFGATE(Waypoints): the crew's marked positions.
+        DrawWgLatticePhantoms(handle, worldToView, xform.MapUid); // WOLFGATE(Lattice): radar contacts only this player sees.
+        DrawWgLatticeHex(handle, worldToView, xform.MapUid); // WOLFGATE(Lattice): the hex field's beams and the anchors' wards.
+        DrawWgWaypoints(handle, worldToView, xform.MapUid); // WOLFGATE(Waypoints): the crew's marked positions.
 
         // Frontier Corvax: north line drawing
         DrawNorthLine(handle, worldRot);
@@ -747,7 +747,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
         // Mono edited: Frontier - collect blip location data outside foreach - more changes ahead
         _tempBlipDataList.Clear();
-        WfGatherEncounterGrids(); // WOLFGATE(RadarLabels): encounter ships draw as ships
+        WgGatherEncounterGrids(); // WOLFGATE(RadarLabels): encounter ships draw as ships
 
         _visibleGridsSet.Clear();
 
@@ -758,7 +758,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
         // First, figure out which angle to draw.
         // WOLFGATE(Performance) START: this divided by a zero interval and drew the sweep to a NaN point every frame
         // var updateRatio = _updateAccumulator / RadarUpdateInterval;
-        var updateRatio = _wfSweep / RadarSweepPeriod;
+        var updateRatio = _wgSweep / RadarSweepPeriod;
         // WOLFGATE END
 
         Angle angle = updateRatio * Math.Tau;
@@ -844,9 +844,9 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
             }
         }
         #endregion
-        WfDrawTags(handle); // WOLFGATE(RadarLabels): every contact's tag, laid out together over the scope.
-        DrawWfLatticeDeadZones(handle, worldToView, xform.MapUid); // WOLFGATE(Lattice): the Coda shows only as static on every scanner.
-        DrawWfCoordinateReadout(handle); // WOLFGATE(Waypoints): cursor and scanner coordinates over everything else.
+        WgDrawTags(handle); // WOLFGATE(RadarLabels): every contact's tag, laid out together over the scope.
+        DrawWgLatticeDeadZones(handle, worldToView, xform.MapUid); // WOLFGATE(Lattice): the Coda shows only as static on every scanner.
+        DrawWgCoordinateReadout(handle); // WOLFGATE(Waypoints): cursor and scanner coordinates over everything else.
     }
 
     private void DrawGrids(List<Entity<MapGridComponent>> _grids, DrawingHandleScreen handle, Entity<MapGridComponent>? ourGrid, bool renderFill)
@@ -932,7 +932,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
                         Loc.GetString($"shuttle-console-signature-infrared")
                         : _detection.HandleUnknownMassLabel(grid.Owner)
                     : _shuttles.GetIFFLabel(grid, self: false, component: iff);
-                labelName = WfLatticeGarble(labelName, gUid); // WOLFGATE(Lattice): contact names garble out past the Lattice's hold.
+                labelName = WgLatticeGarble(labelName, gUid); // WOLFGATE(Lattice): contact names garble out past the Lattice's hold.
 
                 var shouldDrawIFF = ShowIFF && labelName != null;
                 var shouldDrawDetailedIFF = ShowIFFDetailed && shouldDrawIFF; // Mono
@@ -957,7 +957,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
                 if (shouldDrawIFF)
                 {
-                    WfFlushGrids(handle); // WOLFGATE(AsteroidMining): queued outlines go under this label, as before
+                    WgFlushGrids(handle); // WOLFGATE(AsteroidMining): queued outlines go under this label, as before
                     //var gridCentre = Vector2.Transform(gridBody.LocalCenter, curGridToView);
                     //gridCentre.Y = -gridCentre.Y;
 
@@ -978,7 +978,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
 
                     // WOLFGATE(RadarLabels) START: the old test called contacts on the scope's diagonals outside it
                     // var isOutsideRadarCircle = uiDistance > Math.Abs(uiX) && uiDistance > Math.Abs(uiY);
-                    var isOutsideRadarCircle = !WfOnScope(uiPosition * UIScale);
+                    var isOutsideRadarCircle = !WgOnScope(uiPosition * UIScale);
                     // WOLFGATE END
                     if (isOutsideRadarCircle)
                     {
@@ -1072,15 +1072,15 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
                         var mainLabel = lines[0];
 
                         // WOLFGATE(RadarLabels) START: lines go to the scope's shared tag layout, which stacks overlapping tags.
-                        WfBeginTag(uiPosition * UIScale, (uiPosition + labelOffset) * UIScale, isMouseOver ? 3 : isPlayerShuttle ? 2 : 1,
-                            always: isMouseOver && WfHoverReveal || distance <= WfTagCloseRange, key: gUid.Id); // a ship this close keeps its name: it could be shooting
-                        WfTagLine(handle, mainLabel, UIScale * 0.9f, displayColor);
+                        WgBeginTag(uiPosition * UIScale, (uiPosition + labelOffset) * UIScale, isMouseOver ? 3 : isPlayerShuttle ? 2 : 1,
+                            always: isMouseOver && WgHoverReveal || distance <= WgTagCloseRange, key: gUid.Id); // a ship this close keeps its name: it could be shooting
+                        WgTagLine(handle, mainLabel, UIScale * 0.9f, displayColor);
                         if (shouldDrawDetailedIFF)
                         {
-                            WfTagLine(handle, !hideLabel ? lines[1] : Loc.GetString("shuttle-console-company-unknown"), UIScale * 0.7f, displayColor);
-                            WfTagLine(handle, coordsText, UIScale * 0.7f, displayColor);
+                            WgTagLine(handle, !hideLabel ? lines[1] : Loc.GetString("shuttle-console-company-unknown"), UIScale * 0.7f, displayColor);
+                            WgTagLine(handle, coordsText, UIScale * 0.7f, displayColor);
                             if (iff != null)
-                                WfTagLine(handle, trackIdText, UIScale * 0.7f, displayColor);
+                                WgTagLine(handle, trackIdText, UIScale * 0.7f, displayColor);
                         }
 
                         // // Draw main ship label with company color if available
@@ -1117,7 +1117,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
                     }
 
                     // WOLFGATE(RadarLabels): a contact on the scope is drawn as what it is; at the rim, or unknown, it keeps the triangle
-                    if (isOutsideRadarCircle || !WfQueueContactIcon(gUid, uiPosition, curGridToView, labelColor, hideLabel || blipOnly))
+                    if (isOutsideRadarCircle || !WgQueueContactIcon(gUid, uiPosition, curGridToView, labelColor, hideLabel || blipOnly))
                         NfAddBlipToList(_tempBlipDataList, isOutsideRadarCircle, uiPosition, uiXCentre, uiYCentre, labelColor, hideLabel ? default : gUid); // Frontier code
                                                                                                                                                         // End Frontier: IFF drawing functions
                 }
@@ -1158,12 +1158,12 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
             // WOLFGATE END
         }
 
-        WfQueueFieldRocks(handle, worldToView, mapPos.MapId, viewAABB, renderFill); // WOLFGATE(Performance): distant rocks from their field lists
+        WgQueueFieldRocks(handle, worldToView, mapPos.MapId, viewAABB, renderFill); // WOLFGATE(Performance): distant rocks from their field lists
         // WOLFGATE(AsteroidMining) START: per-grid draws moved out of the loop, so its grids batch into one draw call
-        WfFlushGrids(handle);
+        WgFlushGrids(handle);
         if (!renderFill)
             NfDrawBlips(handle, _tempBlipDataList);
-        WfDrawContactIcons(handle, !renderFill); // WOLFGATE(RadarLabels): contacts on the scope, by what they are
+        WgDrawContactIcons(handle, !renderFill); // WOLFGATE(RadarLabels): contacts on the scope, by what they are
 
         // If we've set the controlling console, and it's on a different grid
         // to the shuttle itself, then draw an additional marker to help the
@@ -1327,7 +1327,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
         Box2 viewBounds = new Box2(-dockRadius, -dockRadius, PixelSize.X + dockRadius, PixelSize.Y + dockRadius); // Frontier: Size<PixelSize
         if (_docks.TryGetValue(nent, out var docks))
         {
-            WfFlushGrids(handle); // WOLFGATE(AsteroidMining): docks draw over their grid's queued outline
+            WgFlushGrids(handle); // WOLFGATE(AsteroidMining): docks draw over their grid's queued outline
             foreach (var state in docks)
             {
                 var position = state.Coordinates.Position;
@@ -1349,7 +1349,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
                 //     Vector2.Transform(position + new Vector2(DockScale, DockScale), gridToView),
                 //     Vector2.Transform(position + new Vector2(-DockScale, DockScale), gridToView),
                 // };
-                if (WfDockVertices(position, positionInView, gridToView, DockScale) is not { } verts)
+                if (WgDockVertices(position, positionInView, gridToView, DockScale) is not { } verts)
                     break;
                 // WOLFGATE END
 
@@ -1363,7 +1363,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
             {
                 if (state.LabelName == null || labeled.Contains(state.LabelName))
                     continue;
-                if (!WfDockNamesShown(gridToView, DockScale)) // WOLFGATE(Shuttles): dock names only up close, so they don't crowd the contacts
+                if (!WgDockNamesShown(gridToView, DockScale)) // WOLFGATE(Shuttles): dock names only up close, so they don't crowd the contacts
                     break;
 
                 var position = state.Coordinates.Position;
@@ -1376,8 +1376,8 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
                 var labelDimensions = handle.GetDimensions(Font, state.LabelName, 0.9f);
                 // WOLFGATE(RadarLabels) START: dock names join the scope's shared tag layout.
                 // handle.DrawString(Font, (uiPosition / UIScale - labelDimensions / 2) * UIScale, state.LabelName, UIScale * 0.9f, _dockLabelColor);
-                WfBeginTag(uiPosition, (uiPosition / UIScale - labelDimensions / 2) * UIScale);
-                WfTagLine(handle, state.LabelName, UIScale * 0.9f, _dockLabelColor);
+                WgBeginTag(uiPosition, (uiPosition / UIScale - labelDimensions / 2) * UIScale);
+                WgTagLine(handle, state.LabelName, UIScale * 0.9f, _dockLabelColor);
                 // WOLFGATE END
             }
             // End Frontier

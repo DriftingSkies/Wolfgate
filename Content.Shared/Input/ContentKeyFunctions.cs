@@ -10,7 +10,7 @@ namespace Content.Shared.Input
         public static readonly BoundKeyFunction ActivateItemInWorld = "ActivateItemInWorld";
         public static readonly BoundKeyFunction AltActivateItemInWorld = "AltActivateItemInWorld";
         public static readonly BoundKeyFunction Drop = "Drop";
-        public static readonly BoundKeyFunction WFOfferItem = "WFOfferItem"; // WOLFGATE(ExtraInteractions): hold out the active item
+        public static readonly BoundKeyFunction WGOfferItem = "WGOfferItem"; // WOLFGATE(ExtraInteractions): hold out the active item
         public static readonly BoundKeyFunction ExamineEntity = "ExamineEntity";
         public static readonly BoundKeyFunction FocusChat = "FocusChatInputWindow";
         public static readonly BoundKeyFunction FocusLocalChat = "FocusLocalChatWindow";
@@ -164,21 +164,21 @@ namespace Content.Shared.Input
         public static readonly BoundKeyFunction MappingCancelEraseDecal = "MappingCancelEraseDecal";
         public static readonly BoundKeyFunction MappingOpenContextMenu = "MappingOpenContextMenu";
         // WOLFGATE(MappingTools) START: Select tool, clipboard, undo and z-level keys for the mapping tools
-        public static readonly BoundKeyFunction WFMappingEnableSelect = "WFMappingEnableSelect";
-        public static readonly BoundKeyFunction WFMappingSelect = "WFMappingSelect";
-        public static readonly BoundKeyFunction WFMappingSelectCancel = "WFMappingSelectCancel";
-        public static readonly BoundKeyFunction WFMappingCopy = "WFMappingCopy";
-        public static readonly BoundKeyFunction WFMappingCut = "WFMappingCut";
-        public static readonly BoundKeyFunction WFMappingPaste = "WFMappingPaste";
-        public static readonly BoundKeyFunction WFMappingDelete = "WFMappingDelete";
-        public static readonly BoundKeyFunction WFMappingRotate = "WFMappingRotate";
-        public static readonly BoundKeyFunction WFMappingMirror = "WFMappingMirror";
-        public static readonly BoundKeyFunction WFMappingMirrorVertical = "WFMappingMirrorVertical";
-        public static readonly BoundKeyFunction WFMappingUndo = "WFMappingUndo";
-        public static readonly BoundKeyFunction WFMappingRedo = "WFMappingRedo";
-        public static readonly BoundKeyFunction WFMappingLevelUp = "WFMappingLevelUp";
-        public static readonly BoundKeyFunction WFMappingLevelDown = "WFMappingLevelDown";
+        public static readonly BoundKeyFunction WGMappingEnableSelect = "WGMappingEnableSelect";
+        public static readonly BoundKeyFunction WGMappingSelect = "WGMappingSelect";
+        public static readonly BoundKeyFunction WGMappingSelectCancel = "WGMappingSelectCancel";
+        public static readonly BoundKeyFunction WGMappingCopy = "WGMappingCopy";
+        public static readonly BoundKeyFunction WGMappingCut = "WGMappingCut";
+        public static readonly BoundKeyFunction WGMappingPaste = "WGMappingPaste";
+        public static readonly BoundKeyFunction WGMappingDelete = "WGMappingDelete";
+        public static readonly BoundKeyFunction WGMappingRotate = "WGMappingRotate";
+        public static readonly BoundKeyFunction WGMappingMirror = "WGMappingMirror";
+        public static readonly BoundKeyFunction WGMappingMirrorVertical = "WGMappingMirrorVertical";
+        public static readonly BoundKeyFunction WGMappingUndo = "WGMappingUndo";
+        public static readonly BoundKeyFunction WGMappingRedo = "WGMappingRedo";
+        public static readonly BoundKeyFunction WGMappingLevelUp = "WGMappingLevelUp";
+        public static readonly BoundKeyFunction WGMappingLevelDown = "WGMappingLevelDown";
         // WOLFGATE END
-        public static readonly BoundKeyFunction WFMappingReferenceCancel = "WFMappingReferenceCancel"; // WOLFGATE(MappingMode): Escape drops a reference grid being placed
+        public static readonly BoundKeyFunction WGMappingReferenceCancel = "WGMappingReferenceCancel"; // WOLFGATE(MappingMode): Escape drops a reference grid being placed
     }
 }

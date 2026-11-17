@@ -55,7 +55,7 @@
   - type: AmmoLoader
     maxConnections: 8
     maxCapacity: 2000
-  - type: WFHullBond # WOLFGATE(HullBond): an ammo loader only bolts down on its first hull
+  - type: WGHullBond # WOLFGATE(HullBond): an ammo loader only bolts down on its first hull
   - type: ActivatableUI
     key: enum.AmmoLoaderUiKey.Key
   - type: ActivatableUIRequiresPower

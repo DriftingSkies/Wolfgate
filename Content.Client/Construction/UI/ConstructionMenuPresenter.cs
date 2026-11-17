@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Numerics;
-using Content.Client._WF.Construction; // WOLFGATE(Construction)
+using Content.Client._WG.Construction; // WOLFGATE(Construction)
 using Content.Client.Stylesheets;
 using Content.Client.UserInterface.Systems.MenuBar.Widgets;
 using Content.Shared.Construction.Prototypes;

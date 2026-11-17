@@ -1,0 +1,14 @@
+ent-WGRMCBootsBlack = black combat boots
+    .desc = Sturdy boots for long marches.
+ent-WGRMCBootsBrown = brown combat boots
+    .desc = Sturdy boots for long marches.
+ent-WGRMCBootsGrey = grey combat boots
+    .desc = Sturdy boots for long marches.
+ent-WGRMCBootsJungle = combat boots (jungle)
+    .desc = Sturdy boots for long marches.
+ent-WGRMCBootsUrban = combat boots (urban)
+    .desc = Sturdy boots for long marches.
+ent-WGRMCBootsJackboots = jackboots
+    .desc = Sturdy boots for long marches.
+ent-WGRMCBootsSwat = tactical combat boots
+    .desc = Sturdy boots for long marches.

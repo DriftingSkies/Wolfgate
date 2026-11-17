@@ -1,0 +1,257 @@
+
+- type: entity
+  parent: BaseGreeble
+  id: WGGreebleSmallDish
+  name: radar dish
+  suffix: small
+  description: Receives and transmits electromagnetic signals into space.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    offset: 0,1
+    sprite: _WG/Decorations/Greebles/32x32.rsi
+    layers:
+    - state: bronze-dish
+
+- type: entity
+  parent: BaseGreeble
+  id: WGGreebleBigDish
+  name: radar dish
+  suffix: large
+  description: Receives and transmits electromagnetic signals into space.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    offset: 0,1
+    sprite: _WG/Decorations/Greebles/96x96.rsi
+    layers:
+    - state: bronze-dish-96
+
+- type: entity
+  parent: BaseGreeble
+  id: WGGreebleBigDishAlt
+  name: radar dish
+  suffix: large alternate
+  description: Receives and transmits electromagnetic signals into space.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    offset: 0,1
+    sprite: _WG/Decorations/Greebles/96x96.rsi
+    layers:
+    - state: bronze-dish-96-2
+
+# Poles from Bubber
+- type: entity
+  parent: BaseGreeble
+  id: WGGreeblePole
+  name: steel pole
+  description: A metal pole, the likes of which are commonly used as an antenna, structural support, or simply to maneuver in zero-g.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    offset: 0,1
+    sprite: _WG/Decorations/Greebles/32x32.rsi
+    layers:
+    - state: pole
+
+- type: entity
+  parent: WGGreeblePole
+  id: WGGreeblePoleAnchor
+  name: steel pole
+  suffix: anchor
+  description: A metal pole, the likes of which are commonly used as an antenna, structural support, or simply to maneuver in zero-g.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    layers:
+    - state: pole-anchor
+
+- type: entity
+  parent: WGGreeblePole
+  id: WGGreeblePoleRight
+  name: steel pole
+  suffix: right end
+  description: A metal pole, the likes of which are commonly used as an antenna, structural support, or simply to maneuver in zero-g.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    layers:
+    - state: poleend-right
+
+- type: entity
+  parent: WGGreeblePole
+  id: WGGreeblePoleLeft
+  name: steel pole
+  suffix: left end
+  description: A metal pole, the likes of which are commonly used as an antenna, structural support, or simply to maneuver in zero-g.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    layers:
+    - state: poleend-left
+
+- type: entity
+  parent: WGGreeblePole
+  id: WGGreeblePoleStripes
+  name: steel pole
+  suffix: stripes
+  description: A metal pole, the likes of which are commonly used as an antenna, structural support, or simply to maneuver in zero-g.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    layers:
+    - state: pole-stripes
+
+#Tank greebles
+- type: entity
+  parent: BaseGreeble
+  id: WGGreebleSmallSphereTank
+  name: external tank
+  suffix: Small
+  description: A spherical tank with a significant internal volume when under pressure.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    offset: 0,1
+    sprite: _WG/Decorations/Greebles/32x32.rsi
+    layers:
+    - state: tanksmall
+
+- type: entity
+  parent: BaseGreeble
+  id: WGGreebleSphereTank
+  name: external tank
+  description: A large, spherical tank with a vast internal volume when under pressure.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    offset: 0.5,1.5
+    sprite: _WG/Decorations/Greebles/64x64.rsi
+    layers:
+    - state: tank
+
+- type: entity
+  parent: WGGreebleSphereTank
+  id: WGGreebleSphereTankOx
+  name: external tank
+  suffix: Blue Oxy
+  description: A large, spherical tank with a vast internal volume when under pressure. The blue stripes indicate it holds oxygen.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    layers:
+    - state: tank-ox
+
+- type: entity
+  parent: WGGreebleSphereTank
+  id: WGGreebleSphereTankNit
+  name: external tank
+  suffix: Red Nit
+  description: A large, spherical tank with a vast internal volume when under pressure. The red stripes indicate it holds nitrogen. Or something very flammable. It's a 50/50 chance.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    layers:
+    - state: tank-nit
+
+# Radiator greebles
+
+- type: entity
+  parent: BaseGreeble
+  id: WGGreebleRadiator
+  name: radiator
+  suffix: 3
+  description: A large, glowing-hot radiator for radiating excess heat from a spacecraft so the crew inside don't start frying.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    offset: 0,2
+    sprite: _WG/Decorations/Greebles/32x96.rsi
+    layers:
+    - state: radiator1
+  - type: PointLight
+    enabled: true
+    offset: 0,1.5
+    radius: 3
+    color: "#e3655c" # light red
+
+# Hull Panels
+- type: entity
+  parent: BaseGreeble
+  id: WGGreebleWidePanel
+  name: exterior panel
+  description: An exterior hull panel, protecting sensitive technical equipment.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    offset: 0.0,0.0
+    sprite: _WG/Decorations/Greebles/64x64.rsi
+    layers:
+    - state: widepanel
+
+- type: entity
+  parent: WGGreebleWidePanel
+  id: WGGreebleWidePanelAESA
+  name: AESA
+  description: An active electronically scanned array, protected by a heavy hull panel.
+
+- type: entity
+  parent: BaseGreeble
+  id: WGGreebleAntenna1
+  name: antenna
+  description: Like antennas to hell. Usually part of a ship or station's UHF communication systems.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    offset: -1,0
+    sprite: _WG/Decorations/Greebles/32x96.rsi
+    layers:
+    - state: wgantenna1
+    - state: wgantenna1_unshaded
+      shader: unshaded
+
+- type: entity
+  parent: BaseGreeble
+  id: WGGreebleAntenna2
+  name: antenna
+  description: Like antennas to hell. Usually part of a ship or station's UHF communication systems.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    offset: 0,2
+    sprite: _WG/Decorations/Greebles/32x96.rsi
+    layers:
+    - state: wgantenna2
+    - state: wgantenna2_unshaded
+      shader: unshaded
+
+- type: entity
+  parent: GreebleRadarpanel1
+  id: WGGreebleRadarpanel1Flipped
+  name: radar panel
+  suffix: flipped
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    offset: 0.5,0.5
+    sprite: _WG/Decorations/Greebles/64x64.rsi
+    layers:
+    - state: radarpanel1_flipped

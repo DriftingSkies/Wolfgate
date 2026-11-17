@@ -1,0 +1,53 @@
+# An IPC crew body for the Automated Defense System: built as WGMobCrewBodyHuman is, on the IPC player mob. A crew
+# profile gives it its role's kit and a loadout when spawned. The IPC mob has no ears slot, so its radio is its own.
+# It is built immune to vacuum, so it is never put in a suit, even at a post with no air, and speaks in the synthetic
+# verbs and face (WGAdsSynth).
+- type: entity
+  parent: [ MobIPC, MobPrying, WGCrewKit ]
+  id: WGMobCrewBodyIpc
+  name: automaton
+  description: A unit of the Automated Defense System, still following its directives.
+  suffix: NPC crew body
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: PressureImmunity
+  - type: BreathingImmunity
+  - type: TemperatureImmunity
+  - type: Speech
+    speechVerb: WGAdsSynth
+
+# The Automated Defense System's units: positronic automatons that need no air and shrug off vacuum and its cold. Every crew is at
+# the top of the ladder, and its hulls come plated in durasteel: the system fires on nobody first, so what it does fight
+# it must be able to outlast. They name themselves from its designations and serial numbers.
+- type: wgCrewProfile
+  id: WGCrewProfileAds
+  firstNames: WGNamesAdsDesignation
+  lastNames: WGNamesAdsSerial
+  components:
+  - type: PressureImmunity
+  - type: BreathingImmunity
+  - type: TemperatureImmunity
+  bodies:
+  - WGMobCrewBodyIpc
+  skills: [ Veteran ]
+  # One system: its ships never count one another as attackers, however much fire passes between them.
+  forgivesOwn: true
+  hullSwaps:
+    WallPlastitanium: WGWallDurasteel
+    WallPlastitaniumDiagonal: WGWallDurasteelDiagonal
+  titles:
+    WGCrewCaptain: wg-ads-title-captain
+    WGCrewPilot: wg-ads-title-pilot
+    WGCrewRadioOperator: wg-ads-title-radio-operator
+    WGCrewGunner: wg-ads-title-gunner
+    WGCrewEngineer: wg-ads-title-engineer
+    WGCrewDeckhand: wg-ads-title-deckhand
+    WGCrewMarine: wg-ads-title-marine
+  loadouts:
+    WGCrewDeckhand: [ WGCrewAdsUnit ]
+    WGCrewEngineer: [ WGCrewAdsUnit ]
+    WGCrewMarine: [ WGCrewAdsSentry ]
+    WGCrewPilot: [ WGCrewAdsOfficer ]
+    WGCrewRadioOperator: [ WGCrewAdsOfficer ]
+    WGCrewCaptain: [ WGCrewAdsOfficer ]
+    WGCrewGunner: [ WGCrewAdsOfficer ]

@@ -483,7 +483,7 @@ public sealed partial class HolopadSystem : SharedHolopadSystem
         if (!Resolve(entity.Owner, ref telephone, false))
             return;
 
-        // WOLFGATE(NetTraffic) START: a new state goes to everyone who sees the holopad; WFUiStateTrimSystem sets it on open
+        // WOLFGATE(NetTraffic) START: a new state goes to everyone who sees the holopad; WGUiStateTrimSystem sets it on open
         if (!_userInterfaceSystem.IsUiOpen(entity.Owner, HolopadUiKey.InteractionWindow)
             && !_userInterfaceSystem.IsUiOpen(entity.Owner, HolopadUiKey.AiActionWindow))
             return;

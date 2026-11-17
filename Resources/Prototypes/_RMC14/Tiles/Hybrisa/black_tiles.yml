@@ -8,7 +8,7 @@
 - type: tile
   parent: RMCFloorHybrisaBlackBase
   id: RMCFloorHybrisaBlack
-  name: tiles-wf-rmc-black-metal-tile
+  name: tiles-wg-rmc-black-metal-tile
   sprite: /Textures/_RMC14/Tiles/hybrisa/tileblack.png
 
 - type: tile
@@ -24,7 +24,7 @@
 - type: tile
   parent: RMCFloorHybrisaBlackBase
   id: RMCFloorHybrisaBlackCarpet
-  name: tiles-wf-rmc-black-carpet
+  name: tiles-wg-rmc-black-carpet
   sprite: /Textures/_RMC14/Tiles/hybrisa/carpetblack.png
 
 - type: tile

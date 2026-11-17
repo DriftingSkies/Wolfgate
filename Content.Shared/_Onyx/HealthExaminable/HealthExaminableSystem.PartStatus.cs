@@ -4,7 +4,7 @@ using Content.Shared._Onyx.Wounds;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.Damage; // WOLFGATE(Wolfmed): DamageableComponent lives here in Wolfgate, not in .Damage.Components.
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade and the PartStatusSystem severity shim.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade and the PartStatusSystem severity shim.
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.IdentityManagement;
 using Robust.Shared.Prototypes;

@@ -25,24 +25,24 @@ jobs:
       matrix:
         # Pinned: on ubuntu-26.04 the cockpit and console label-width tests fail with the same code.
         os: [ubuntu-24.04]
-        shard: [ wf-heavy, wf-npc, wf-planets, wf-rest-a, wf-rest-b, core ]
+        shard: [ wg-heavy, wg-npc, wg-planets, wg-rest-a, wg-rest-b, core ]
         # Balanced on per-module times from the NUnit XML, about 8 minutes of tests each.
         include:
-        - shard: wf-heavy
-          where: "test =~ 'Tests[.]_WF[.](Wolfmed|Vehicles|Remade|AdsIncursion)[.]'"
-        - shard: wf-npc
-          where: "test =~ 'Tests[.]_WF[.](Encounters|NpcCrew|RoundSetup)[.]'"
+        - shard: wg-heavy
+          where: "test =~ 'Tests[.]_WG[.](Wolfmed|Vehicles|Remade|AdsIncursion)[.]'"
+        - shard: wg-npc
+          where: "test =~ 'Tests[.]_WG[.](Encounters|NpcCrew|RoundSetup)[.]'"
         # Whole worlds built per test: on one runner with the rest they ran it out of memory.
-        - shard: wf-planets
-          where: "test =~ 'Tests[.]_WF[.](Planet[A-Za-z]*|Caverns|LivingWorld|SandMaw|ReaverCampaign|Administration)[.]'"
-        # The rest of _WF, split by module name: as one shard (about 2,300 tests) it ran its runner out of memory.
-        - shard: wf-rest-a
-          where: "test =~ 'Tests[.]_WF[.][A-L]' && test !~ 'Tests[.]_WF[.](Wolfmed|Vehicles|Remade|AdsIncursion|Encounters|NpcCrew|RoundSetup|Planet[A-Za-z]*|Caverns|LivingWorld|SandMaw|ReaverCampaign|Administration)[.]' && test !~ ShipyardTest"
-        - shard: wf-rest-b
-          where: "test =~ 'Tests[.]_WF[.]' && test !~ 'Tests[.]_WF[.][A-L]' && test !~ 'Tests[.]_WF[.](Wolfmed|Vehicles|Remade|AdsIncursion|Encounters|NpcCrew|RoundSetup|Planet[A-Za-z]*|Caverns|LivingWorld|SandMaw|ReaverCampaign|Administration)[.]' && test !~ ShipyardTest"
+        - shard: wg-planets
+          where: "test =~ 'Tests[.]_WG[.](Planet[A-Za-z]*|Caverns|LivingWorld|SandMaw|ReaverCampaign|Administration)[.]'"
+        # The rest of _WG, split by module name: as one shard (about 2,300 tests) it ran its runner out of memory.
+        - shard: wg-rest-a
+          where: "test =~ 'Tests[.]_WG[.][A-L]' && test !~ 'Tests[.]_WG[.](Wolfmed|Vehicles|Remade|AdsIncursion|Encounters|NpcCrew|RoundSetup|Planet[A-Za-z]*|Caverns|LivingWorld|SandMaw|ReaverCampaign|Administration)[.]' && test !~ ShipyardTest"
+        - shard: wg-rest-b
+          where: "test =~ 'Tests[.]_WG[.]' && test !~ 'Tests[.]_WG[.][A-L]' && test !~ 'Tests[.]_WG[.](Wolfmed|Vehicles|Remade|AdsIncursion|Encounters|NpcCrew|RoundSetup|Planet[A-Za-z]*|Caverns|LivingWorld|SandMaw|ReaverCampaign|Administration)[.]' && test !~ ShipyardTest"
         # Upstream and other forks; Content.Tests runs here too.
         - shard: core
-          where: "test !~ 'Tests[.]_WF[.]' && test !~ ShipyardTest"
+          where: "test !~ 'Tests[.]_WG[.]' && test !~ ShipyardTest"
           unit: true
     # WOLFGATE END
 

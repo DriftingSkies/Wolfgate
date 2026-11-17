@@ -15,7 +15,7 @@ using Robust.Client.UserInterface;
 using Content.Shared.IdentityManagement;
 using Robust.Client.Graphics;
 // WOLFGATE(Gags): use the existing GAGS colour editor for vending purchases
-using Content.Shared._WF.Gags;
+using Content.Shared._WG.Gags;
 
 namespace Content.Client.VendingMachines.UI
 {
@@ -50,7 +50,7 @@ namespace Content.Client.VendingMachines.UI
                     return;
 
                 var colors = RecolorColorRow.CurrentColors;
-                OnRecolorConfirmed?.Invoke(WFGagsColors.Same(colors, _recolorDefaults) ? null : colors);
+                OnRecolorConfirmed?.Invoke(WGGagsColors.Same(colors, _recolorDefaults) ? null : colors);
             };
             // WOLFGATE END
         }
@@ -158,7 +158,7 @@ namespace Content.Client.VendingMachines.UI
                 var itemName = Identity.Name(dummy, _entityManager);
                 var cost = 0; // mono
                 if (requiresCash) // frontier
-                    cost = WfLivePrice(entry.ID, GetPrice(entry, prototype, priceModifier)); // WOLFGATE(TradeGoods): trade vendors show the station's live price
+                    cost = WgLivePrice(entry.ID, GetPrice(entry, prototype, priceModifier)); // WOLFGATE(TradeGoods): trade vendors show the station's live price
 
                 string itemText;
 

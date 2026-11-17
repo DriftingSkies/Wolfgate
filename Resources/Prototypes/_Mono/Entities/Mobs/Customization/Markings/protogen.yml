@@ -10,9 +10,9 @@
   colorLinks:
     tail_protogen_BEHIND: tail_protogen_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/protogen_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/protogen_tails.rsi
     state: tail_protogen_FRONT # index 0 keeps the saved single colour
-  - sprite: _WF/Genitals/Mobs/Customization/protogen_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/protogen_tails.rsi
     state: tail_protogen_BEHIND
   # WOLFGATE END
 
@@ -28,9 +28,9 @@
   colorLinks:
     bushy_tail_protogen_BEHIND: bushy_tail_protogen_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/protogen_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/protogen_tails.rsi
     state: bushy_tail_protogen_FRONT # index 0 keeps the saved single colour
-  - sprite: _WF/Genitals/Mobs/Customization/protogen_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/protogen_tails.rsi
     state: bushy_tail_protogen_BEHIND
   # WOLFGATE END
 
@@ -46,9 +46,9 @@
   colorLinks:
     shark_tail_protogen_BEHIND: shark_tail_protogen_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/protogen_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/protogen_tails.rsi
     state: shark_tail_protogen_FRONT # index 0 keeps the saved single colour
-  - sprite: _WF/Genitals/Mobs/Customization/protogen_tails.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/protogen_tails.rsi
     state: shark_tail_protogen_BEHIND
   # WOLFGATE END
 

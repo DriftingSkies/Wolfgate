@@ -50,7 +50,7 @@ public sealed partial class SurveillanceCameraRouterSystem : EntitySystem
         // WOLFGATE(CameraNetworks) START: a local router hides its subnet from monitors on other grids
         // Cameras only send data here; everything else is a monitor, so a monitor carried off the grid loses its feed.
         if (command is not (SurveillanceCameraSystem.CameraDataMessage or SurveillanceCameraSystem.CameraSubnetDisconnectMessage)
-            && HasComp<Content.Server._WF.CameraNetworks.WFLocalCameraRouterComponent>(uid)
+            && HasComp<Content.Server._WG.CameraNetworks.WGLocalCameraRouterComponent>(uid)
             && Transform(args.Sender).GridUid != Transform(uid).GridUid)
             return;
         // WOLFGATE END

@@ -3,7 +3,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
-using Content.Server._WF.EngineCompat;
+using Content.Server._WG.EngineCompat;
 using Content.Shared.Administration;
 using Content.Shared.Chunking;
 using Content.Shared.Database;
@@ -38,7 +38,7 @@ namespace Content.Server.Decals
         [Dependency] private SharedMapSystem _mapSystem = default!;
         [Dependency] private SharedTransformSystem _transform = default!;
         [Dependency] private TurfSystem _turf = default!;
-        [Dependency] private WFGridSplitOriginSystem _splitOrigin = default!;
+        [Dependency] private WGGridSplitOriginSystem _splitOrigin = default!;
 
         private readonly Dictionary<NetEntity, HashSet<Vector2i>> _dirtyChunks = new();
         private readonly Dictionary<ICommonSession, Dictionary<NetEntity, HashSet<Vector2i>>> _previousSentChunks = new();
@@ -450,7 +450,7 @@ namespace Content.Server.Decals
 
             // WOLFGATE(NetTraffic): with PVS, dirty chunks gather over a few ticks so a chunk changed every tick goes once per flush
             if (PvsEnabled)
-                WfGatherDirtyChunks();
+                WgGatherDirtyChunks();
 
             /* // Mono edit: early return is redundant, if PVS is disabled, it will clear at end anyways.
             if (!PvsEnabled)

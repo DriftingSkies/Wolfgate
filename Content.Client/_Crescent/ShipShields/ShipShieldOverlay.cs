@@ -56,7 +56,7 @@ public sealed class ShipShieldOverlay : Overlay
         while (enumerator.MoveNext(out var uid, out var visuals, out var fixtures, out var xform))
         {
             // WOLFGATE(ShipShields) START: Hull shields use their own contour overlay.
-            if (_entManager.HasComponent<Content.Shared._WF.ShipShields.WFShipShieldVisualsComponent>(uid))
+            if (_entManager.HasComponent<Content.Shared._WG.ShipShields.WGShipShieldVisualsComponent>(uid))
                 continue;
             // WOLFGATE END
 

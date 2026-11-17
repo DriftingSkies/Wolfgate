@@ -1,0 +1,28 @@
+- type: marking
+  id: WGMeridianAntennaeDipped
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  layering:
+    dipped_BEHIND: TailBehind
+  colorLinks:
+    dipped_BEHIND: dipped
+  sprites:
+  - sprite: _WG/MeridianMarkings/antennae.rsi
+    state: dipped
+  - sprite: _WG/MeridianMarkings/antennae.rsi
+    state: dipped_BEHIND
+
+- type: marking
+  id: WGMeridianSynthAntennaTVAntennae
+  bodyPart: HeadTop
+  markingCategory: HeadTop
+  speciesRestriction: [IPC, Synth]
+  sprites:
+  - sprite: _WG/MeridianMarkings/antennae.rsi
+    state: tv_antennae

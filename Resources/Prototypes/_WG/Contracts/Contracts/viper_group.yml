@@ -1,0 +1,270 @@
+# The Viper Group's board at Camelot: deniable work, so no contract here costs standing with anyone.
+
+- type: wgContract
+  id: WGContractVGConvoyRaid
+  contractor: WGContractorViperGroup
+  category: Bounty
+  tier: 3
+  title: wg-contract-vg-convoy-raid
+  briefing: wg-contract-vg-convoy-raid-brief
+  reward: 50000, 62500
+  deposit: 3000
+  minutes: 60
+  weight: 1.0
+  minCrew: 2
+  crewBonus: 0.25
+  credits: 3
+  creditEntity: TradeGoodShipComponents
+  excludePresets: [ WGContestedSector ]
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetTsfConvoy ]
+    minDistance: 4000
+    maxDistance: 6000
+
+- type: wgContract
+  id: WGContractVGDynastyRaid
+  contractor: WGContractorViperGroup
+  category: Bounty
+  tier: 3
+  title: wg-contract-vg-dynasty-raid
+  briefing: wg-contract-vg-dynasty-raid-brief
+  reward: 50000, 62500
+  deposit: 3000
+  minutes: 60
+  weight: 1.0
+  minCrew: 2
+  crewBonus: 0.25
+  credits: 3
+  creditEntity: TradeGoodShipComponents
+  excludePresets: [ WGContestedSector ]
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetPdvPatrol ]
+    minDistance: 4000
+    maxDistance: 6000
+
+- type: wgContract
+  id: WGContractVGRivalCull
+  contractor: WGContractorViperGroup
+  category: Bounty
+  tier: 3
+  title: wg-contract-vg-rival-cull
+  briefing: wg-contract-vg-rival-cull-brief
+  reward: 45000, 55000
+  deposit: 2500
+  minutes: 60
+  weight: 1.0
+  crewBonus: 0.25
+  credits: 2
+  creditEntity: TradeGoodShipComponents
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetMercHunter ]
+    minDistance: 3500
+    maxDistance: 5500
+
+- type: wgContract
+  id: WGContractVGFangs
+  contractor: WGContractorViperGroup
+  category: Bounty
+  tier: 4
+  title: wg-contract-vg-fangs
+  briefing: wg-contract-vg-fangs-brief
+  reward: 95000, 115000
+  deposit: 5000
+  minutes: 75
+  weight: 0.6
+  minCrew: 3
+  crewBonus: 0.25
+  credits: 5
+  creditEntity: TradeGoodShipComponents
+  excludePresets: [ WGContestedSector ]
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetAce ]
+    minDistance: 4000
+    maxDistance: 6000
+
+- type: wgContract
+  id: WGContractVGProtection
+  contractor: WGContractorViperGroup
+  category: Bounty
+  tier: 2
+  title: wg-contract-vg-protection
+  briefing: wg-contract-vg-protection-brief
+  reward: 20000, 26000
+  deposit: 1000
+  minutes: 45
+  weight: 1.3
+  crewBonus: 0.25
+  credits: 1
+  creditEntity: TradeGoodShipComponents
+  objective: !type:WGContractPicket
+    encounters: [ WGContractTargetClaimJumper, WGContractTargetSmuggler ]
+    duration: 360
+
+- type: wgContract
+  id: WGContractVGPrizeHull
+  contractor: WGContractorViperGroup
+  category: Salvage
+  tier: 3
+  title: wg-contract-vg-prize-hull
+  briefing: wg-contract-vg-prize-hull-brief
+  reward: 40000, 50000
+  deposit: 2500
+  minutes: 75
+  weight: 1.0
+  minCrew: 2
+  crewBonus: 0.25
+  credits: 3
+  creditEntity: TradeGoodShipComponents
+  requires:
+  - tag: WGTowRope
+    name: wg-contract-requires-rope
+  - entity: WGTetherInstaller
+    name: wg-contract-requires-tether-installer
+  objective: !type:WGContractTow
+    minDistance: 3500
+    maxDistance: 5500
+    stationClearance: 2500
+    infestation:
+    - entity: MobSyndicateFootsoldier
+      count: 1, 3
+    wrecks:
+    - /Maps/Salvage/medium-pirate.yml
+    - /Maps/Salvage/small-syndicate.yml
+    - /Maps/Salvage/hauling-shuttle.yml
+
+- type: wgContract
+  id: WGContractVGRelicHunt
+  contractor: WGContractorViperGroup
+  category: Salvage
+  tier: 2
+  title: wg-contract-vg-relic-hunt
+  briefing: wg-contract-vg-relic-hunt-brief
+  reward: 22000, 28000
+  deposit: 1500
+  minutes: 60
+  weight: 1.2
+  crewBonus: 0.25
+  credits: 2
+  creditEntity: TradeGoodShipComponents
+  objective: !type:WGContractRecovery
+    item: WGContractStrongbox
+    count: 2, 3
+    minDistance: 3000
+    maxDistance: 5000
+    infestation:
+    - entity: MobFleshJaredSalvage
+      count: 1, 3
+    wrecks:
+    - /Maps/Salvage/small-syndicate.yml
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-pirate.yml
+
+- type: wgContract
+  id: WGContractVGDataHeist
+  contractor: WGContractorViperGroup
+  category: Salvage
+  tier: 2
+  title: wg-contract-vg-data-heist
+  briefing: wg-contract-vg-data-heist-brief
+  reward: 24000, 30000
+  deposit: 1500
+  minutes: 55
+  weight: 1.1
+  crewBonus: 0.3
+  credits: 2
+  creditEntity: TradeGoodShipComponents
+  objective: !type:WGContractDownload
+    duration: 180
+    waveInterval: 50
+    waves:
+    - entity: MobSyndicateFootsoldier
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-library.yml
+
+- type: wgContract
+  id: WGContractVGArms
+  contractor: WGContractorViperGroup
+  category: Supply
+  tier: 2
+  title: wg-contract-vg-arms
+  briefing: wg-contract-vg-arms-brief
+  reward: 26250, 35000
+  deposit: 0
+  minutes: 55
+  weight: 2.2
+  credits: 1
+  creditEntity: TradeGoodShipComponents
+  objective: !type:WGContractSupply
+    premium: 1.25
+    goods:
+    - ammo: true
+      name: wg-contract-goods-ammo
+      count: 6, 10
+      value: 400
+    - stack: Plasteel
+      count: 10, 20
+
+- type: wgContract
+  id: WGContractVGExtraction
+  contractor: WGContractorViperGroup
+  category: Salvage
+  tier: 3
+  title: wg-contract-vg-extraction
+  briefing: wg-contract-vg-extraction-brief
+  reward: 45000, 55000
+  deposit: 2500
+  minutes: 80
+  weight: 0.9
+  minCrew: 2
+  crewBonus: 0.25
+  credits: 3
+  creditEntity: TradeGoodShipComponents
+  objective: !type:WGContractRecovery
+    wrecks: []
+    item: WGContractStasisBag
+    count: 1, 1
+    planet:
+      hostiles: 5, 8
+
+- type: wgContract
+  id: WGContractVGPlanetRaid
+  contractor: WGContractorViperGroup
+  category: Bounty
+  tier: 3
+  title: wg-contract-vg-planet-raid
+  briefing: wg-contract-vg-planet-raid-brief
+  reward: 45000, 55000
+  deposit: 2500
+  minutes: 80
+  weight: 0.9
+  minCrew: 2
+  crewBonus: 0.25
+  credits: 3
+  creditEntity: TradeGoodShipComponents
+  objective: !type:WGContractClear
+    wrecks: []
+    targets:
+      entity: WGContractCreatureDen
+      count: 3, 4
+    planet:
+      hostiles: 5, 8
+
+- type: wgContract
+  id: WGContractVGCacheRun
+  contractor: WGContractorViperGroup
+  category: Salvage
+  tier: 2
+  title: wg-contract-vg-cache-run
+  briefing: wg-contract-vg-cache-run-brief
+  reward: 20000, 26000
+  deposit: 1000
+  minutes: 70
+  weight: 1.1
+  credits: 1
+  creditEntity: TradeGoodShipComponents
+  objective: !type:WGContractInspect
+    wrecks: []
+    planet:
+      hostiles: 3, 5

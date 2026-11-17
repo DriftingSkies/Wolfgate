@@ -4,7 +4,7 @@ using Content.Shared.EntityEffects;
 using Content.Shared.FixedPoint;
 using Content.Shared.Localizations;
 using Content.Shared._Onyx.Wounds; // WOLFGATE(Wolfmed): HOOK 9 - treatment-capability scope
-using Content.Server._WF.Wolfmed.Medical; // WOLFGATE(Wolfmed)
+using Content.Server._WG.Wolfmed.Medical; // WOLFGATE(Wolfmed)
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;

@@ -10,7 +10,7 @@
     sprite: Objects/Materials/ingots.rsi
     size: Normal
   # WOLFGATE(CargoLoad): ingots weigh down the ship carrying them
-  - type: WFCargoMass
+  - type: WGCargoMass
     perUnit: 0.025
   - type: StaticPrice
     price: 0

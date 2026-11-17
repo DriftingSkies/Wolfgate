@@ -1,7 +1,7 @@
 using Content.Server._Mono.Ships.Systems;
 using Content.Server._Mono.Shuttles.Components;
-using Content.Server._WF.Shuttles.Systems; // WOLFGATE(Shuttles)
-using Content.Shared._WF.Shuttles; // WOLFGATE(Shuttles)
+using Content.Server._WG.Shuttles.Systems; // WOLFGATE(Shuttles)
+using Content.Shared._WG.Shuttles; // WOLFGATE(Shuttles)
 using Content.Server.Power.EntitySystems;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Events;
@@ -122,13 +122,13 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
 
     private void OnDock(DockEvent ev)
     {
-        WFForgetDocks(); // WOLFGATE(Performance): consoles should see a new dock at once
+        WGForgetDocks(); // WOLFGATE(Performance): consoles should see a new dock at once
         RefreshShuttleConsoles();
     }
 
     private void OnUndock(UndockEvent ev)
     {
-        WFForgetDocks(); // WOLFGATE(Performance): consoles should see an undock at once
+        WGForgetDocks(); // WOLFGATE(Performance): consoles should see an undock at once
         RefreshShuttleConsoles();
     }
 
@@ -176,7 +176,7 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
         }
 
         RemovePilot(args.Actor);
-        WfDropClosedHelmState(uid); // WOLFGATE(NetTraffic): the last pilot left, so nobody needs the helm state
+        WgDropClosedHelmState(uid); // WOLFGATE(NetTraffic): the last pilot left, so nobody needs the helm state
     }
 
     private void OnConsoleUIOpenAttempt(
@@ -219,11 +219,11 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
     private bool TryPilot(EntityUid user, EntityUid uid)
     {
         // WOLFGATE(RoundSetup): failed scenario helms reject pilots until the crash is complete.
-        if (!WfCrashAllowsPilot(uid))
+        if (!WgCrashAllowsPilot(uid))
             return false;
 
         // WOLFGATE(ShipCommand): a helm kept for officers refuses anyone else.
-        if (!WfOfficersAllowPilot(user, uid))
+        if (!WgOfficersAllowPilot(user, uid))
             return false;
 
         if (!_tags.HasTag(user, CanPilotTag) ||
@@ -362,8 +362,8 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
     {
         // TODO: NEED TO MAKE SURE THIS UPDATES ON ANCHORING CHANGES!
         // WOLFGATE(Performance) START: every open console asks for this, so share one walk of the docks
-        if (WFTryGetCachedDocks(out var wfCached))
-            return wfCached;
+        if (WGTryGetCachedDocks(out var wgCached))
+            return wgCached;
         // WOLFGATE END
         var result = new Dictionary<NetEntity, List<DockingPortState>>();
         var query = AllEntityQuery<DockingComponent, TransformComponent, MetaDataComponent>();
@@ -395,13 +395,13 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
                 HighlightedRadarColor = comp.HighlightedRadarColor, // Frontier
                 DockType = comp.DockType, // Frontier
                 ReceiveOnly = comp.ReceiveOnly, // Frontier
-                WfClampedBy = WfClampedBy((uid, comp)), // WOLFGATE(Encounters): docking screens show clamped ports.
+                WgClampedBy = WgClampedBy((uid, comp)), // WOLFGATE(Encounters): docking screens show clamped ports.
             };
 
             gridDocks.Add(state);
         }
 
-        WFCacheDocks(result); // WOLFGATE(Performance)
+        WGCacheDocks(result); // WOLFGATE(Performance)
         return result;
     }
 
@@ -437,7 +437,7 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
                 default,
                 new List<ShuttleBeaconObject>(),
                 new List<ShuttleExclusionObject>(),
-                WFFtlDriveStatus.Missing); // WOLFGATE(Shuttles): a console off any grid has no drive
+                WGFtlDriveStatus.Missing); // WOLFGATE(Shuttles): a console off any grid has no drive
         }
 
         if (_ui.HasUi(consoleUid, ShuttleConsoleUiKey.Key)
@@ -450,8 +450,8 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
                 GetTractorCaptureSources(shuttleGridUid))
             {
                 ShieldShunt = GetWolfgateShieldShuntState(shuttleGridUid),
-                Boarding = GetWfBoardingState(shuttleGridUid), // WOLFGATE(BoardingAction): hacks and disruption, for the helm banner.
-                CockpitAutopilotActive = GetWfCockpitAutopilotStatus(entity), // WOLFGATE(Cockpit): report confirmed steering in the initial helm snapshot.
+                Boarding = GetWgBoardingState(shuttleGridUid), // WOLFGATE(BoardingAction): hacks and disruption, for the helm banner.
+                CockpitAutopilotActive = GetWgCockpitAutopilotStatus(entity), // WOLFGATE(Cockpit): report confirmed steering in the initial helm snapshot.
             });
             // WOLFGATE END
         }
@@ -462,8 +462,8 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
         base.Update(frameTime);
         UpdateTractorCaptureWarnings(frameTime); // WOLFGATE(TractorBeam)
         UpdateWolfgateShieldHelms(frameTime); // WOLFGATE(ShipShields): refresh open helm shield status on visible changes
-        UpdateWfCockpitStatuses(frameTime); // WOLFGATE(Cockpit): keep autopilot lamps current while any helm page is open.
-        UpdateWfFtlDrive(frameTime); // WOLFGATE(Shuttles): keep the FTL page current when a drive is built, removed or loses power
+        UpdateWgCockpitStatuses(frameTime); // WOLFGATE(Cockpit): keep autopilot lamps current while any helm page is open.
+        UpdateWgFtlDrive(frameTime); // WOLFGATE(Shuttles): keep the FTL page current when a drive is built, removed or loses power
 
         var toRemove = new ValueList<(EntityUid, PilotComponent)>();
         var query = EntityQueryEnumerator<PilotComponent>();
@@ -664,7 +664,7 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
             return;
 
         // WOLFGATE(RoundSetup) START: scenario crew admission is independent of helm power
-        if (WFHasCrewAdmission(owningStation.Value))
+        if (WGHasCrewAdmission(owningStation.Value))
             return;
         // WOLFGATE END
 

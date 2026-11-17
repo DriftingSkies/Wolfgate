@@ -1,0 +1,258 @@
+# Limb outlines bodies draw that differ from the human's, each with the base sprites that draw it.
+# Written by Tools/_WG/Augments/port.py; don't edit by hand.
+
+- type: wgAugmentShape
+  id: WGAugmentShapeAvaliLFoot
+  baseSprites:
+  - MobAvaliLFoot
+
+- type: wgAugmentShape
+  id: WGAugmentShapeAvaliLHand
+  baseSprites:
+  - MobAvaliLHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeAvaliLLeg
+  baseSprites:
+  - MobAvaliLLeg
+
+- type: wgAugmentShape
+  id: WGAugmentShapeAvaliRFoot
+  baseSprites:
+  - MobAvaliRFoot
+
+- type: wgAugmentShape
+  id: WGAugmentShapeAvaliRHand
+  baseSprites:
+  - MobAvaliRHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeAvaliRLeg
+  baseSprites:
+  - MobAvaliRLeg
+
+- type: wgAugmentShape
+  id: WGAugmentShapeChitinidLFoot
+  baseSprites:
+  - MobChitinidLFoot
+
+- type: wgAugmentShape
+  id: WGAugmentShapeChitinidLHand
+  baseSprites:
+  - MobChitinidLHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeChitinidRFoot
+  baseSprites:
+  - MobChitinidRFoot
+
+- type: wgAugmentShape
+  id: WGAugmentShapeChitinidRHand
+  baseSprites:
+  - MobChitinidRHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeDionaLArm
+  baseSprites:
+  - MobDionaLArm
+
+- type: wgAugmentShape
+  id: WGAugmentShapeDionaLFoot
+  baseSprites:
+  - MobDionaLFoot
+
+- type: wgAugmentShape
+  id: WGAugmentShapeDionaLHand
+  baseSprites:
+  - MobDionaLHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeDionaLLeg
+  baseSprites:
+  - MobDionaLLeg
+
+- type: wgAugmentShape
+  id: WGAugmentShapeDionaRArm
+  baseSprites:
+  - MobDionaRArm
+
+- type: wgAugmentShape
+  id: WGAugmentShapeDionaRFoot
+  baseSprites:
+  - MobDionaRFoot
+
+- type: wgAugmentShape
+  id: WGAugmentShapeDionaRHand
+  baseSprites:
+  - MobDionaRHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeDionaRLeg
+  baseSprites:
+  - MobDionaRLeg
+
+- type: wgAugmentShape
+  id: WGAugmentShapeFelionoidLHand
+  baseSprites:
+  - MobFelionoidLHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeFelionoidRHand
+  baseSprites:
+  - MobFelionoidRHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeHarpyLLeg
+  baseSprites:
+  - MobHarpyLLeg
+
+- type: wgAugmentShape
+  id: WGAugmentShapeHarpyRLeg
+  baseSprites:
+  - MobHarpyRLeg
+
+- type: wgAugmentShape
+  id: WGAugmentShapeMothLFoot
+  baseSprites:
+  - MobMothLFoot
+
+- type: wgAugmentShape
+  id: WGAugmentShapeMothLHand
+  baseSprites:
+  - MobMothLHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeMothRFoot
+  baseSprites:
+  - MobMothRFoot
+
+- type: wgAugmentShape
+  id: WGAugmentShapeMothRHand
+  baseSprites:
+  - MobMothRHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeProtogenLLeg
+  baseSprites:
+  - MobProtogenLLeg
+
+- type: wgAugmentShape
+  id: WGAugmentShapeProtogenRLeg
+  baseSprites:
+  - MobProtogenRLeg
+
+- type: wgAugmentShape
+  id: WGAugmentShapeResomiLArm
+  baseSprites:
+  - MobResomiLArm
+
+- type: wgAugmentShape
+  id: WGAugmentShapeResomiLFoot
+  baseSprites:
+  - MobResomiLFoot
+
+- type: wgAugmentShape
+  id: WGAugmentShapeResomiLHand
+  baseSprites:
+  - MobResomiLHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeResomiLLeg
+  baseSprites:
+  - MobResomiLLeg
+
+- type: wgAugmentShape
+  id: WGAugmentShapeResomiRArm
+  baseSprites:
+  - MobResomiRArm
+
+- type: wgAugmentShape
+  id: WGAugmentShapeResomiRFoot
+  baseSprites:
+  - MobResomiRFoot
+
+- type: wgAugmentShape
+  id: WGAugmentShapeResomiRHand
+  baseSprites:
+  - MobResomiRHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeResomiRLeg
+  baseSprites:
+  - MobResomiRLeg
+
+- type: wgAugmentShape
+  id: WGAugmentShapeShadekinLHand
+  baseSprites:
+  - MobShadekinLHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeShadekinRHand
+  baseSprites:
+  - MobShadekinRHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeSynthLArm
+  baseSprites:
+  - MobSynthLArm
+
+- type: wgAugmentShape
+  id: WGAugmentShapeSynthRArm
+  baseSprites:
+  - MobSynthRArm
+
+- type: wgAugmentShape
+  id: WGAugmentShapeThavenLHand
+  baseSprites:
+  - MobThavenLHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeThavenRHand
+  baseSprites:
+  - MobThavenRHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeVoxLHand
+  baseSprites:
+  - MobVoxLHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeVoxRHand
+  baseSprites:
+  - MobVoxRHand
+
+- type: wgAugmentShape
+  id: WGAugmentShapeRodentiaLFootDigi
+  baseSprites:
+  - WGMobRodentiaLFootDigi
+  - WGMobTajaranLFootDigi
+  - WGMobVulpkaninLFootDigi
+
+- type: wgAugmentShape
+  id: WGAugmentShapeRodentiaLLegDigi
+  baseSprites:
+  - WGMobRodentiaLLegDigi
+  - WGMobVulpkaninLLegDigi
+
+- type: wgAugmentShape
+  id: WGAugmentShapeRodentiaRFootDigi
+  baseSprites:
+  - WGMobRodentiaRFootDigi
+  - WGMobTajaranRFootDigi
+  - WGMobVulpkaninRFootDigi
+
+- type: wgAugmentShape
+  id: WGAugmentShapeRodentiaRLegDigi
+  baseSprites:
+  - WGMobRodentiaRLegDigi
+  - WGMobVulpkaninRLegDigi
+
+- type: wgAugmentShape
+  id: WGAugmentShapeTajaranLLegDigi
+  baseSprites:
+  - WGMobTajaranLLegDigi
+
+- type: wgAugmentShape
+  id: WGAugmentShapeTajaranRLegDigi
+  baseSprites:
+  - WGMobTajaranRLegDigi

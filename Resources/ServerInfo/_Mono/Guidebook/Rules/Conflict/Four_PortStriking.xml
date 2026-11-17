@@ -4,7 +4,7 @@
 <!-- WOLFGATE: fixed broken link, was MonolithRuleRoleplayEightSafeZones -->[bold]See the [textlink="Safe Zones rule" link="MonolithRuleRoleplaySevenSafeZones"] for areas that are always protected from strikes.[/bold]
 
 <!-- WOLFGATE: was color=blue, unreadable on the dark background -->Faction outposts (e.g., [color=#1a9fb5]Halcyon[/color]) are [color=#d93c3c][bold]not allowed[/bold][/color] to be striked until [color=#b8860b]a High Command announcement[/color] allowing it has been given, or if [color=#b8860b]admin permission[/color] has been given.
-<!-- WOLFGATE(ColdWar): the announcement is the war level going HOT -->-- The announcement is the war level going [color=#d93c3c][bold]HOT[/bold][/color] (see [textlink="Conflict Rule 5" link="WFRuleConflictFiveDeclaringWar"]). Strikes stop if it goes back to COLD.
+<!-- WOLFGATE(ColdWar): the announcement is the war level going HOT -->-- The announcement is the war level going [color=#d93c3c][bold]HOT[/bold][/color] (see [textlink="Conflict Rule 5" link="WGRuleConflictFiveDeclaringWar"]). Strikes stop if it goes back to COLD.
 <!-- WOLFGATE: rule colours readable on light and dark backgrounds -->-- For clarity, a "strike" in this context refers to any (organized or unorganized) hostile action intended to damage outposts, seize control, eliminate its occupants, or damage docked/undocked ships within a range of 256 meters that were not recently ([color=#b8860b][bold]2 minutes[/bold][/color]) in combat.
 -- Action should be taken to avoid camping spawn areas inside the outposts if possible.
 

@@ -1,6 +1,6 @@
 using Content.Server.Atmos.Components;
 using Content.Server.Shuttles.Systems;
-using Content.Server._WF.AsteroidMining; // WOLFGATE(AsteroidMining)
+using Content.Server._WG.AsteroidMining; // WOLFGATE(AsteroidMining)
 using Content.Server.Worldgen.Components.Debris; // WOLFGATE(Performance)
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Events;
@@ -26,7 +26,7 @@ public sealed partial class AutomaticAtmosSystem : EntitySystem
         if (_atmosphereSystem.HasAtmosphere(ent))
             return;
 
-        if (HasComp<WFAsteroidGridComponent>(ent)) // WOLFGATE(AsteroidMining): asteroid rocks are airless; atmos per rock grid is wasted work
+        if (HasComp<WGAsteroidGridComponent>(ent)) // WOLFGATE(AsteroidMining): asteroid rocks are airless; atmos per rock grid is wasted work
             return;
 
         if (HasComp<OwnedDebrisComponent>(ent)) // WOLFGATE(Performance): unclaimed wrecks never need an atmosphere

@@ -7,7 +7,7 @@ using Content.Shared.IdentityManagement;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
 using Content.Shared.Tag;
-using Content.Shared._WF.ShipCommand; // WOLFGATE(ShipCommand)
+using Content.Shared._WG.ShipCommand; // WOLFGATE(ShipCommand)
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Serialization;
 
@@ -68,9 +68,9 @@ public sealed partial class EmagSystem : EntitySystem
             return false;
 
         // WOLFGATE(ShipCommand) START: a ship with staff-only wires refuses an emag from anyone below its staff.
-        var wfAttempt = new WFEmagAttemptEvent(user, target);
-        RaiseLocalEvent(ref wfAttempt);
-        if (wfAttempt.Cancelled)
+        var wgAttempt = new WGEmagAttemptEvent(user, target);
+        RaiseLocalEvent(ref wgAttempt);
+        if (wgAttempt.Cancelled)
             return false;
         // WOLFGATE END
 

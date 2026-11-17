@@ -763,10 +763,10 @@ namespace Content.Server._DV.Mail.EntitySystems
                 }
 
                 // WOLFGATE(MeridianTraits) START: quirks add their own mail goodies
-                if (candidate.WfOwner is { } wfOwner)
+                if (candidate.WgOwner is { } wgOwner)
                 {
-                    var wfGoodies = new Content.Server._WF.MeridianTraits.WFMailGoodiesEvent(possibleParcels);
-                    RaiseLocalEvent(wfOwner, ref wfGoodies);
+                    var wgGoodies = new Content.Server._WG.MeridianTraits.WGMailGoodiesEvent(possibleParcels);
+                    RaiseLocalEvent(wgOwner, ref wgGoodies);
                 }
                 // WOLFGATE END
 
@@ -869,7 +869,7 @@ namespace Content.Server._DV.Mail.EntitySystems
         // WOLFGATE(MeridianTraits) START: the recipient's body, so quirks can add mail goodies
         // string ship) // Frontier: add ship
         string ship, // Frontier: add ship
-        EntityUid? wfOwner = null)
+        EntityUid? wgOwner = null)
         // WOLFGATE END
     {
         public readonly string Name = name;
@@ -878,6 +878,6 @@ namespace Content.Server._DV.Mail.EntitySystems
         public readonly HashSet<ProtoId<AccessLevelPrototype>> AccessTags = accessTags;
         public readonly bool MayReceivePriorityMail = mayReceivePriorityMail;
         public readonly string Ship = ship; // Frontier
-        public readonly EntityUid? WfOwner = wfOwner; // WOLFGATE(MeridianTraits): the recipient's body, for quirk mail goodies
+        public readonly EntityUid? WgOwner = wgOwner; // WOLFGATE(MeridianTraits): the recipient's body, for quirk mail goodies
     }
 }

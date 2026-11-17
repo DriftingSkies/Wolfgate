@@ -1,0 +1,388 @@
+# Operations each faction calls in from its static uplink (listings.yml). Read by WGOperationSystem.
+# PvP: Vault Transfer and Dynasty Arms Drop hold payloads that pay whichever faction turns them in at home.
+# PvE: the rest are guarded by NPCs; clearing them pays the caller its stake plus the reward.
+#
+# Risk ladder, a gamble beside the steady 8-30 credits a crew earns a faction contract. Higher rungs return more for
+# each credit staked, refund less on failure and tell the whole sector more precisely where the site is.
+#   Rung        Stake    Returned on clear   Refund   Spoils crate                       Who is told
+#   Routine     15-20    x2 (case or reward)  1/2      none                               caller's faction
+#   Hazard      30       x2.5                 1/2      5 sheets                           sector, 500 m
+#   Assault     50-60    x3-3.5               1/4      10 sheets, 1 ship crate            sector, 500 m
+#   High-value  80       x3.5                 none     15 sheets, 2 ship crates, uranium  sector, 100 m
+#   Extreme     100      x4                   none     15 sheets, 2 ship crates, uranium  sector, 100 m
+#
+# Planetside: planetChance rolls the site onto fresh ground on a random built world (never Carcinoma), clear of every
+# point of interest; a roll that finds no world falls back to space. planetChance 1 runs only planetside. A planetside
+# site gets planetExtraTime more warning and stay for the hop down, and is announced to the nearest 50 m on its world.
+
+- type: wgOperation
+  abstract: true
+  id: WGOperationBase
+  name: wg-operation-name-vault-transfer
+  company: TSF
+  grids: []
+  addComponents:
+  - type: Gravity
+    enabled: true
+    inherent: true
+  - type: IFF
+    color: "#E10F9B"
+  - type: ProtectedGrid
+    preventArtifactTriggers: true
+  - type: PreventPilot
+  - type: ForceAnchor
+
+# PvP: the payload pays whoever brings it home, so the caller risks its stake to the rival.
+
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationVaultTransfer
+  name: wg-operation-name-vault-transfer
+  company: TSF
+  jobs: [ Sheriff, Bailiff ]
+  grids:
+  - /Maps/_NF/Bluespace/vault.yml
+  stake: 100
+  cooldown: 3600
+  replace:
+    DataChitStorageServer: WGOperationVaultServer
+
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationArmsDrop
+  name: wg-operation-name-arms-drop
+  company: PDV
+  jobs: [ PirateCaptain, PirateFirstMate ]
+  grids:
+  - /Maps/_NF/Bluespace/cache.yml
+  stake: 100
+  cooldown: 3600
+  payloads:
+  - proto: WGOperationArmsCrate
+    count: 3
+
+# Routine: no guards and only the caller is told.
+
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationDeadDropTsf
+  name: wg-operation-name-dead-drop
+  company: TSF
+  grids:
+  - /Maps/_NF/Bluespace/vaultsmall.yml
+  planetChance: 0.5
+  planetGrids:
+  - /Maps/_WG/PlanetPois/mechanic_shop.yml
+  minDistance: 2500
+  maxDistance: 6000
+  stake: 15
+  inbound: 60
+  duration: 900
+  cooldown: 1200
+  broadcast: Faction
+  payloads:
+  - proto: WGOperationDeadDropCase
+    scatter: true
+
+- type: wgOperation
+  parent: WGOperationDeadDropTsf
+  id: WGOperationDeadDropPdv
+  company: PDV
+
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationSalvageTsf
+  name: wg-operation-name-salvage
+  company: TSF
+  grids:
+  - /Maps/_NF/Bluespace/cave.yml
+  stake: 20
+  reward: 20
+  duration: 1200
+  cooldown: 1800
+  broadcast: Faction
+
+- type: wgOperation
+  parent: WGOperationSalvageTsf
+  id: WGOperationSalvagePdv
+  company: PDV
+
+# Hazard: a light guard; half the stake back on failure.
+
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationSupplyDrop
+  name: wg-operation-name-supply-drop
+  company: TSF
+  jobs: [ Sheriff, Bailiff, SeniorOfficer ]
+  grids:
+  - /Maps/_Mono/Bluespace/prefracture.yml
+  planetChance: 0.5
+  stake: 30
+  reward: 45
+  clearSpawns:
+  - proto: WGOperationSpoilsSmallTsf
+  duration: 1200
+  npcPerMembers: 10
+  npcs:
+  - proto: MobMercenarySoldierPistol
+    count: 2
+
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationConvoyRaid
+  name: wg-operation-name-convoy-raid
+  company: PDV
+  jobs: [ PirateCaptain, PirateFirstMate, PDVDenasvar ]
+  grids:
+  - /Maps/_NF/Bluespace/vaultsmall.yml
+  stake: 30
+  reward: 45
+  clearSpawns:
+  - proto: WGOperationSpoilsSmallPdv
+  duration: 1200
+  npcPerMembers: 10
+  npcs:
+  - proto: MobSyndicateNavalDeckhandA
+    count: 2
+  - proto: MobSyndicateNavalOperatorA
+
+# Planetside only: a bandit hideout on a world, a few mercenaries holding it.
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationBanditDenTsf
+  name: wg-operation-name-bandit-den
+  company: TSF
+  jobs: [ Sheriff, Bailiff, SeniorOfficer ]
+  grids:
+  - /Maps/_WG/PlanetPois/abandoned_bandit_hideout.yml
+  planetChance: 1
+  stake: 30
+  reward: 45
+  clearSpawns:
+  - proto: WGOperationSpoilsSmallTsf
+  duration: 1200
+  npcPerMembers: 10
+  npcs:
+  - proto: MobMercenarySoldierPistol
+    count: 2
+  - proto: MobMercenaryBreacherShotgun
+
+- type: wgOperation
+  parent: WGOperationBanditDenTsf
+  id: WGOperationBanditDenPdv
+  company: PDV
+  jobs: [ PirateCaptain, PirateFirstMate, PDVDenasvar ]
+  clearSpawns:
+  - proto: WGOperationSpoilsSmallPdv
+
+# Assault: a real garrison; a quarter of the stake back on failure.
+
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationForwardBase
+  name: wg-operation-name-forward-base
+  company: TSF
+  jobs: [ Sheriff, Bailiff ]
+  grids:
+  - /Maps/_NF/Bluespace/vaultsmall.yml
+  planetChance: 0.3
+  planetGrids:
+  - /Maps/_WG/PlanetPois/verda_gas_station.yml
+  stake: 50
+  reward: 100
+  failRefund: 0.25
+  clearSpawns:
+  - proto: WGOperationSpoilsTsf
+  npcPerMembers: 8
+  npcs:
+  - proto: MobMercenarySoldierPistol
+    count: 2
+  - proto: MobMercenaryBreacherShotgun
+  - proto: MobMercenarySpecialistAssault
+  - proto: MobMercenaryCaptain
+
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationSmugglerRendezvous
+  name: wg-operation-name-smuggler-rendezvous
+  company: PDV
+  jobs: [ PirateCaptain, PirateFirstMate, PDVDenasvar ]
+  grids:
+  - /Maps/_NF/Bluespace/mcevent.yml
+  planetChance: 0.5
+  planetGrids:
+  - /Maps/_WG/PlanetPois/roadside_inn.yml
+  stake: 50
+  reward: 100
+  failRefund: 0.25
+  clearSpawns:
+  - proto: WGOperationSpoilsPdv
+  npcPerMembers: 8
+  npcs:
+  - proto: MobMercenarySoldierPistol
+    count: 2
+  - proto: MobMercenaryBreacherShotgun
+  - proto: MobMercenarySpecialistAssault
+  - proto: MobMercenaryCaptain
+
+# A wizard probe: few guards, each one dangerous, so it pays more per credit staked.
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationProbeTsf
+  name: wg-operation-name-probe
+  company: TSF
+  jobs: [ Sheriff, Bailiff, SeniorOfficer ]
+  grids:
+  - /Maps/_NF/Bluespace/wizardprobealt.yml
+  stake: 60
+  reward: 150
+  failRefund: 0.25
+  clearSpawns:
+  - proto: WGOperationSpoilsTsf
+  cooldown: 3000
+
+- type: wgOperation
+  parent: WGOperationProbeTsf
+  id: WGOperationProbePdv
+  company: PDV
+  jobs: [ PirateCaptain, PirateFirstMate, PDVDenasvar ]
+  clearSpawns:
+  - proto: WGOperationSpoilsPdv
+
+# Planetside only: a Syndicate garrison dug into an old planetary vault.
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationGarrisonTsf
+  name: wg-operation-name-garrison
+  company: TSF
+  jobs: [ Sheriff, Bailiff ]
+  grids:
+  - /Maps/_WG/PlanetPois/planetary_vault.yml
+  planetChance: 1
+  stake: 60
+  reward: 150
+  failRefund: 0.25
+  clearSpawns:
+  - proto: WGOperationSpoilsTsf
+  cooldown: 3000
+  npcPerMembers: 8
+  npcs:
+  - proto: MobSyndicateNavalOperatorA
+    count: 2
+  - proto: MobSyndicateNavalGrenadierA
+  - proto: MobSyndicateNavalMedicA
+  - proto: MobSyndicateNavalDeckhandA
+
+- type: wgOperation
+  parent: WGOperationGarrisonTsf
+  id: WGOperationGarrisonPdv
+  company: PDV
+  jobs: [ PirateCaptain, PirateFirstMate ]
+  clearSpawns:
+  - proto: WGOperationSpoilsPdv
+
+# High-value: a heavy garrison, announced to the sector to the nearest 100 m, nothing back on failure.
+
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationBlackSite
+  name: wg-operation-name-black-site
+  company: TSF
+  jobs: [ Sheriff, Bailiff ]
+  grids:
+  - /Maps/_NF/Bluespace/syndieftlintercept.yml
+  stake: 80
+  reward: 200
+  failRefund: 0
+  clearSpawns:
+  - proto: WGOperationSpoilsHeavyTsf
+  duration: 1800
+  cooldown: 3600
+  precision: 100
+  npcPerMembers: 5
+  npcs:
+  - proto: MobSyndicateNavalOperatorA
+    count: 3
+  - proto: MobSyndicateNavalGrenadierA
+    count: 2
+  - proto: MobSyndicateNavalChemwarriorA
+  - proto: MobSyndicateNavalMedicA
+  - proto: MobSyndicateNavalCommanderA
+
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationBloodMoon
+  name: wg-operation-name-blood-moon
+  company: PDV
+  jobs: [ PirateCaptain, PirateFirstMate ]
+  grids:
+  - /Maps/_NF/Bluespace/bloodmoon.yml
+  planetChance: 0.5
+  stake: 80
+  reward: 200
+  failRefund: 0
+  clearSpawns:
+  - proto: WGOperationSpoilsHeavyPdv
+  duration: 1800
+  cooldown: 3600
+  precision: 100
+  # The shrine's own cultists guard it; these join them, one more zealot per 5 PDV online.
+  npcPerMembers: 5
+  npcs:
+  - proto: MobBloodCultistZealotRanged
+  - proto: MobBloodCultistZealotMelee
+
+# Extreme, both: a quarantined wreck crawling with Remade, elites among them, adrift or crashed on a world. Remade here
+# belong to no Monolith, so nothing grows or climbs and the dead don't turn; there is never a Scion on it.
+
+- type: wgOperation
+  parent: WGOperationBase
+  id: WGOperationQuarantineTsf
+  name: wg-operation-name-quarantine
+  company: TSF
+  jobs: [ Sheriff, Bailiff ]
+  grids:
+  - /Maps/_Mono/Bluespace/prefracture.yml
+  planetChance: 0.35
+  stake: 100
+  reward: 300
+  failRefund: 0
+  clearSpawns:
+  - proto: WGOperationSpoilsHeavyTsf
+  duration: 1800
+  cooldown: 3600
+  precision: 100
+  npcPerMembers: 4
+  npcs:
+  - proto: WGRemadeSlasher
+    count: 4
+  - proto: WGRemadeLeaper
+    count: 2
+  - proto: WGRemadeSpitter
+    count: 2
+  - proto: WGRemadePuker
+  - proto: WGRemadeExploder
+  - proto: WGRemadeTwitcher
+  - proto: WGRemadeBrute
+  payloads:
+  - proto: WGEnvSacBig
+    count: 4
+    scatter: true
+  - proto: WGEnvGore
+    count: 6
+    scatter: true
+  - proto: WGEnvTendril
+    count: 4
+    scatter: true
+  - proto: WGEnvSpur
+    count: 3
+    scatter: true
+
+- type: wgOperation
+  parent: WGOperationQuarantineTsf
+  id: WGOperationQuarantinePdv
+  company: PDV
+  jobs: [ PirateCaptain, PirateFirstMate ]
+  clearSpawns:
+  - proto: WGOperationSpoilsHeavyPdv

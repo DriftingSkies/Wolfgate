@@ -7,7 +7,7 @@
     xmlns:playerTab="clr-namespace:Content.Client.Administration.UI.Tabs.PlayerTab"
     xmlns:objectsTab="clr-namespace:Content.Client.Administration.UI.Tabs.ObjectsTab"
     xmlns:panic="clr-namespace:Content.Client.Administration.UI.Tabs.PanicBunkerTab"
-    xmlns:wfTabs="clr-namespace:Content.Client._WF.Administration.UI.Tabs">
+    xmlns:wgTabs="clr-namespace:Content.Client._WG.Administration.UI.Tabs">
     <TabContainer Name="MasterTabContainer">
         <adminTab:AdminTab />
         <adminbusTab:AdminbusTab />
@@ -17,7 +17,7 @@
         <panic:PanicBunkerTab Name="PanicBunkerControl" Access="Public" />
         <playerTab:PlayerTab Name="PlayerTabControl" Access="Public" />
         <objectsTab:ObjectsTab Name="ObjectsTabControl" Access="Public" />
-        <!-- WOLFGATE(Administration): admin tooling tab (xmlns:wfTabs above) -->
-        <wfTabs:WolfgateTab />
+        <!-- WOLFGATE(Administration): admin tooling tab (xmlns:wgTabs above) -->
+        <wgTabs:WolfgateTab />
     </TabContainer>
 </DefaultWindow>

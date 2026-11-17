@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server.Administration.Logs;
-using Content.Server._WF.Remade.Gifts; // WOLFGATE(Remade)
+using Content.Server._WG.Remade.Gifts; // WOLFGATE(Remade)
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Construction; // Frontier
 using Content.Server.Fluids.EntitySystems;
@@ -411,7 +411,7 @@ namespace Content.Server.Lathe
                             _contraband.HandleContrabandValueByCompany(result, prodComp.Actor);
 
                             // WOLFGATE(Remade) START: lets a print from Monolith-made stock mark its product unsellable
-                            var printedEv = new WFLatheProducedEvent(result);
+                            var printedEv = new WGLatheProducedEvent(result);
                             RaiseLocalEvent(uid, ref printedEv);
                             // WOLFGATE END
                         }

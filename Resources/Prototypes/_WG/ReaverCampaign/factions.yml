@@ -1,0 +1,12 @@
+- type: wgSectorFaction
+  id: WGSectorFactionReavers
+  name: wg-sector-faction-reavers
+  color: "#D84A3A"
+  company: WGAshfallReavers
+  blockades: true
+  neutralCompanies:
+  - WGUnderground
+  neutralStations:
+  - Underground
+  enteredNotice: wg-reaver-notice-entered
+  leftNotice: wg-reaver-notice-left

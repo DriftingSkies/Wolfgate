@@ -1,6 +1,6 @@
 using System.Linq;
 using Content.IntegrationTests.Fixtures;
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): §2.7, Onyx's SharedBodySystem.TryDetachPart lives here.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): §2.7, Onyx's SharedBodySystem.TryDetachPart lives here.
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.Standing;
@@ -31,11 +31,11 @@ public sealed class BodyConsequencesTest : GameTest
         {
             var body = entityManager.SpawnEntity("MobHuman", map.GridCoords);
             var graph = entityManager.System<SharedBodySystem>();
-            var wfBody = entityManager.System<WolfmedBodySystem>();
+            var wgBody = entityManager.System<WolfmedBodySystem>();
             var leg = graph.GetBodyChildrenOfType(body, BodyPartType.Leg).First().Id;
             var feetBefore = graph.GetBodyChildrenOfType(body, BodyPartType.Foot).Count();
 
-            Assert.That(wfBody.TryDetachPart(leg), Is.True);
+            Assert.That(wgBody.TryDetachPart(leg), Is.True);
             Assert.Multiple(() =>
             {
                 Assert.That(graph.BodyHasChild(body, leg), Is.False);
@@ -57,11 +57,11 @@ public sealed class BodyConsequencesTest : GameTest
         {
             var body = entityManager.SpawnEntity("MobHuman", map.GridCoords);
             var graph = entityManager.System<SharedBodySystem>();
-            var wfBody = entityManager.System<WolfmedBodySystem>();
+            var wgBody = entityManager.System<WolfmedBodySystem>();
 
             // WOLFGATE(Wolfmed): Wolfgate goes down at zero legs, not at one (SharedBodySystem.Parts.cs:390).
             foreach (var leg in graph.GetBodyChildrenOfType(body, BodyPartType.Leg).ToArray())
-                Assert.That(wfBody.TryDetachPart(leg.Id), Is.True);
+                Assert.That(wgBody.TryDetachPart(leg.Id), Is.True);
 
             Assert.That(graph.BodyHasPartType(body, BodyPartType.Leg), Is.False);
             Assert.That(entityManager.System<StandingStateSystem>().IsDown(body), Is.True);

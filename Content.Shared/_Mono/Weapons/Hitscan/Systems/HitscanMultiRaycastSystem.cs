@@ -1,5 +1,5 @@
 using System.Linq;
-using Content.Shared._WF.ShipShields; // WOLFGATE(ShipShields)
+using Content.Shared._WG.ShipShields; // WOLFGATE(ShipShields)
 using Content.Shared._Mono.Weapons.Hitscan.Components;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Damage.Components;
@@ -38,7 +38,7 @@ public sealed partial class HitscanMultiRaycastSystem : EntitySystem
         var ray = new CollisionRay(mapCords.Position, args.ShotDirection, (int) ent.Comp.CollisionMask);
         var rayCastResults = _physics.IntersectRay(mapCords.MapId, ray, ent.Comp.MaxDistance, shooter, false);
         // WOLFGATE(ShipShields): shield fixtures are resolved against the visible perimeter
-        rayCastResults = rayCastResults.Where(hit => !HasComp<WFShipShieldVisualsComponent>(hit.HitEntity));
+        rayCastResults = rayCastResults.Where(hit => !HasComp<WGShipShieldVisualsComponent>(hit.HitEntity));
         var hitDistances = new Dictionary<EntityUid, float>(); // WOLFGATE(ShipShields)
         var hitCount = 0;
         var latestDistance = ent.Comp.MaxDistance;
@@ -81,7 +81,7 @@ public sealed partial class HitscanMultiRaycastSystem : EntitySystem
         };
 
         // WOLFGATE(ShipShields) START: stop piercing beams while retaining targets before the perimeter
-        var shieldTrace = new WFShipShieldHitscanTraceEvent(ent.Owner, trace) { HitDistances = hitDistances };
+        var shieldTrace = new WGShipShieldHitscanTraceEvent(ent.Owner, trace) { HitDistances = hitDistances };
         RaiseLocalEvent(ref shieldTrace);
         trace = shieldTrace.Trace;
         foreach (var hitEntity in trace.HitEntities)

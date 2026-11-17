@@ -16,7 +16,7 @@ namespace Content.Server.Symphony;
 
 /// <summary>
 /// What this build carries on top of its branch. A test merge build made through the publish workflow ships
-/// Resources/Symphony/testmerges.json, written by Tools/_WF/Ci/test_merge.py: the pull requests merged before packaging,
+/// Resources/Symphony/testmerges.json, written by Tools/_WG/Ci/test_merge.py: the pull requests merged before packaging,
 /// and any that were asked for but did not merge. Read once at startup; a build without the file has none.
 /// </summary>
 public static class SymphonyTestMerges

@@ -1,0 +1,9 @@
+# The Automated Defense System holds ground but never a station's cell, so it can't blockade: stations stay safe harbours.
+- type: wgSectorFaction
+  id: WGSectorFactionAds
+  name: wg-sector-faction-ads
+  color: "#9B4DFF"
+  company: WGAds
+  blockades: false
+  enteredNotice: wg-ads-notice-entered
+  leftNotice: wg-ads-notice-left

@@ -5,7 +5,7 @@ using Content.Server.Body.Components; // WOLFGATE(Wolfmed): BloodstreamComponent
 using Content.Server.Body.Systems; // WOLFGATE(Wolfmed): BloodstreamSystem is server-only here.
 using Content.Shared._Onyx.Medical.Tourniquet; // WOLFGATE(Wolfmed): P4-D10 relocates TourniquetSystem to Content.Server but keeps this namespace.
 using Content.Shared._Onyx.Wounds;
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): §2.7 TryDetachPart.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): §2.7 TryDetachPart.
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.CCVar;
@@ -55,8 +55,8 @@ public sealed class WoundBleedingTest : GameTest
         var server = Pair.Server;
         await server.WaitIdleAsync();
         // The literals below are Onyx's unscaled rates; wolfmed.bleed_rate slows every bleed in normal play.
-        var bleedRateBefore = server.CfgMan.GetCVar(Content.Shared._WF.Wolfmed.CCVar.WolfmedCVars.BleedRate);
-        await server.WaitPost(() => server.CfgMan.SetCVar(Content.Shared._WF.Wolfmed.CCVar.WolfmedCVars.BleedRate, 1f));
+        var bleedRateBefore = server.CfgMan.GetCVar(Content.Shared._WG.Wolfmed.CCVar.WolfmedCVars.BleedRate);
+        await server.WaitPost(() => server.CfgMan.SetCVar(Content.Shared._WG.Wolfmed.CCVar.WolfmedCVars.BleedRate, 1f));
         var entityManager = server.ResolveDependency<IEntityManager>();
         var map = await Pair.CreateTestMap();
 
@@ -64,7 +64,7 @@ public sealed class WoundBleedingTest : GameTest
         {
             var body = entityManager.SpawnEntity("WoundBleedingBody", map.GridCoords);
             var graph = entityManager.System<SharedBodySystem>();
-            var wfBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
+            var wgBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
             var wounds = entityManager.System<WoundSystem>();
             var bleeding = entityManager.System<WoundBleedingSystem>();
             var parts = graph.GetBodyChildren(body).ToList();
@@ -88,7 +88,7 @@ public sealed class WoundBleedingTest : GameTest
             Assert.That(bleeding.GetPartRate(torso), Is.EqualTo(1.5f).Within(0.001f));
             Assert.That(bloodstream.BleedAmount, Is.EqualTo(1.875f).Within(0.001f));
 
-            Assert.That(wfBody.TryDetachPart(head)); // WOLFGATE(Wolfmed)
+            Assert.That(wgBody.TryDetachPart(head)); // WOLFGATE(Wolfmed)
             Assert.That(bloodstream.BleedAmount, Is.EqualTo(1.5f).Within(0.001f));
             Assert.That(graph.AttachPart(torso, "head", head)); // WOLFGATE(Wolfmed)
             Assert.That(bloodstream.BleedAmount, Is.EqualTo(1.875f).Within(0.001f));
@@ -107,7 +107,7 @@ public sealed class WoundBleedingTest : GameTest
                     wounds.GetWounds((part.Id, entityManager.GetComponent<WoundableComponent>(part.Id))))
                 .Single().Comp.Prototype, Is.EqualTo(new ProtoId<WoundPrototype>("SystemicBleedingWound")));
         });
-        await server.WaitPost(() => server.CfgMan.SetCVar(Content.Shared._WF.Wolfmed.CCVar.WolfmedCVars.BleedRate, bleedRateBefore));
+        await server.WaitPost(() => server.CfgMan.SetCVar(Content.Shared._WG.Wolfmed.CCVar.WolfmedCVars.BleedRate, bleedRateBefore));
     }
 
     [Test]
@@ -313,8 +313,8 @@ public sealed class WoundBleedingTest : GameTest
 
             await server.WaitAssertion(() =>
             {
-                var wfBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
-                Assert.That(wfBody.TryDetachPart(heavy));
+                var wgBody = entityManager.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
+                Assert.That(wgBody.TryDetachPart(heavy));
             });
             await RunSeconds(1.2f);
             await server.WaitAssertion(() =>

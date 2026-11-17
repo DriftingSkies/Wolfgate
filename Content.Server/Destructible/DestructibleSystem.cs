@@ -48,20 +48,20 @@ namespace Content.Server.Destructible
         // Mono
         private EntityQuery<DestructibleComponent> _destructibleQuery;
 
-        // WOLFGATE(Audio) START: destruction-sound budget, see WfDestructionSoundAllowed.
-        [Dependency] private IGameTiming _wfTiming = default!;
+        // WOLFGATE(Audio) START: destruction-sound budget, see WgDestructionSoundAllowed.
+        [Dependency] private IGameTiming _wgTiming = default!;
 
         // A break clip runs about a second, so a per-tick budget would still leave thirty of them overlapping; the
         // window has to be at least as long as the sound for the budget to bound what is actually playing at once.
-        private readonly Content.Shared._WF.Audio.WFSoundBudget _wfDestructionSounds = new(8, TimeSpan.FromSeconds(1));
+        private readonly Content.Shared._WG.Audio.WGSoundBudget _wgDestructionSounds = new(8, TimeSpan.FromSeconds(1));
 
         /// <summary>
         /// Allows at most a handful of destruction sounds at a time on the grid the thing stands on, or on its map off
         /// every grid; nothing about the destruction itself is throttled, only the sound.
         /// </summary>
-        public bool WfDestructionSoundAllowed(EntityUid owner)
+        public bool WgDestructionSoundAllowed(EntityUid owner)
         {
-            return _wfDestructionSounds.Allow(Content.Shared._WF.Audio.WFSoundBudget.PlaceOf(Transform(owner)), _wfTiming.CurTime);
+            return _wgDestructionSounds.Allow(Content.Shared._WG.Audio.WGSoundBudget.PlaceOf(Transform(owner)), _wgTiming.CurTime);
         }
         // WOLFGATE END
 

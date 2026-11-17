@@ -1,0 +1,43 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+# Author Info
+# GitHub: starch70
+# Discord: _starch_
+
+# Shuttle Notes: its the goob nukeops shuttle exterior (docking ports are a bit different)
+#
+- type: vessel
+  id: Picses
+  parent: BaseVessel
+  name: SKR Picses
+  description: A compact but capable expedition ship, with durable hull plating too. This ship has a military IFF designation.
+  price: 82520
+  category: Medium
+  group: Expedition
+  shuttlePath: /SharedMaps/_WG/OldVessels/Expedition/picses.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: null
+  class:
+  - Expedition
+  engine:
+  - AME
+
+- type: gameMap
+  id: Picses
+  mapName: 'Picses'
+  mapPath: /SharedMaps/_WG/OldVessels/Expedition/picses.yml
+  minPlayers: 0
+  stations:
+    Picses:
+      stationProto: StandardFrontierExpeditionVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Picses EXP{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'
+        - type: StationJobs
+          availableJobs:
+            Contractor: [ 0, 0 ]
+            # Pilot: [ 0, 0 ]
+            # Mercenary: [ 0, 0 ]

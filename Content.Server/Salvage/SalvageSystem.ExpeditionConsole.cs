@@ -15,7 +15,7 @@ using Content.Shared.IdentityManagement; // Frontier
 using Content.Shared.NPC; // Frontier
 using Content.Server._NF.Salvage; // Frontier
 using Content.Server.Shuttles.Components;
-using Content.Server._WF.BoardingAction.Components; // WOLFGATE(BoardingAction)
+using Content.Server._WG.BoardingAction.Components; // WOLFGATE(BoardingAction)
 
 namespace Content.Server.Salvage;
 
@@ -54,7 +54,7 @@ public sealed partial class SalvageSystem
             return;
 
         // WOLFGATE(PlanetExpeditions) START: a site mission is claimed in place, with no jump
-        if (WfTryClaimPlanetMission(uid, component, station.Value, data, missionparams))
+        if (WgTryClaimPlanetMission(uid, component, station.Value, data, missionparams))
             return;
         // WOLFGATE END
 
@@ -79,20 +79,20 @@ public sealed partial class SalvageSystem
             }
 
             // WOLFGATE(BoardingAction) START: a held ship can't leave on an expedition, and must hear so before one is generated.
-            if (HasComp<WFFtlDisruptedComponent>(grid))
+            if (HasComp<WGFtlDisruptedComponent>(grid))
             {
                 PlayDenySound(uid, component);
-                _popupSystem.PopupEntity(Loc.GetString("wf-boarding-ftl-disrupted"), uid, PopupType.MediumCaution);
+                _popupSystem.PopupEntity(Loc.GetString("wg-boarding-ftl-disrupted"), uid, PopupType.MediumCaution);
                 UpdateConsoles(station.Value, data);
                 return;
             }
             // WOLFGATE END
 
             // WOLFGATE(PlanetExpeditions) START: a ship that can't leave a planet would build the map and never arrive, stuck claimed
-            if (_shuttle.WfRefusesFtlDeparture(grid))
+            if (_shuttle.WgRefusesFtlDeparture(grid))
             {
                 PlayDenySound(uid, component);
-                _popupSystem.PopupEntity(Loc.GetString("wf-expedition-leave-planet"), uid, PopupType.MediumCaution);
+                _popupSystem.PopupEntity(Loc.GetString("wg-expedition-leave-planet"), uid, PopupType.MediumCaution);
                 UpdateConsoles(station.Value, data);
                 return;
             }
@@ -184,7 +184,7 @@ public sealed partial class SalvageSystem
             return;
 
         // WOLFGATE(PlanetExpeditions) START: finishing a site mission gives it up
-        if (WfTryFinishPlanetMission(station.Value, data))
+        if (WgTryFinishPlanetMission(station.Value, data))
             return;
         // WOLFGATE END
 

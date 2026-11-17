@@ -1,4 +1,4 @@
-using Content.Shared._WF.MappingMode; // WOLFGATE(MappingMode)
+using Content.Shared._WG.MappingMode; // WOLFGATE(MappingMode)
 using Content.Shared.Administration.Managers; // WOLFGATE(MappingMode)
 using Content.Shared.ActionBlocker;
 using Content.Shared.Hands.Components;
@@ -14,7 +14,7 @@ namespace Content.Shared.Verbs
         [Dependency] private SharedInteractionSystem _interactionSystem = default!;
         [Dependency] private ActionBlockerSystem _actionBlockerSystem = default!;
         [Dependency] protected SharedContainerSystem ContainerSystem = default!;
-        [Dependency] private ISharedAdminManager _wfAdmin = default!; // WOLFGATE(MappingMode)
+        [Dependency] private ISharedAdminManager _wgAdmin = default!; // WOLFGATE(MappingMode)
 
         public override void Initialize()
         {
@@ -76,7 +76,7 @@ namespace Content.Shared.Verbs
             extraCategories = new();
 
             // WOLFGATE(MappingMode): mapping observers without admin data get no verbs; admins keep theirs
-            if (!force && HasComp<WFMappingObserverComponent>(user) && !_wfAdmin.IsAdmin(user))
+            if (!force && HasComp<WGMappingObserverComponent>(user) && !_wgAdmin.IsAdmin(user))
                 return verbs;
 
             // accessibility checks

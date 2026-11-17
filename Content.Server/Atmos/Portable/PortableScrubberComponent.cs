@@ -1,7 +1,7 @@
 using Content.Shared.Atmos;
 using Content.Shared.Guidebook;
 using Content.Shared.Construction.Prototypes; // Frontier
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Atmos.Portable
 {

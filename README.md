@@ -1,5 +1,5 @@
 <!-- WOLFGATE(Branding) START: rebrand from Monolith to Wolfgate -->
-<p align="center"><img alt="Wolfgate" width="800" height="266" src="Resources/Textures/_WF/Branding/Logo/logo.png" /></p>
+<p align="center"><img alt="Wolfgate" width="800" height="266" src="Resources/Textures/_WG/Branding/Logo/logo.png" /></p>
 
 Wolfgate is a fork of [Monolith](https://github.com/Monolith-Station/Monolith), itself a fork of [Frontier Station 14](https://github.com/new-frontiers-14/frontier-station-14), running on the [Robust Toolbox](https://github.com/space-wizards/RobustToolbox) engine written in C#.
 
@@ -19,13 +19,13 @@ If you want to host or create content for Wolfgate, this is the repo you need. I
 ## Contributing
 
 <!-- WOLFGATE(Branding) START: rebrand contributing section -->
-Contributions are welcome. Wolfgate-specific code lives in `_WF` folders, and edits to upstream files are marked with `// WOLFGATE` comments so they are easy to find when merging from Monolith.
+Contributions are welcome. Wolfgate-specific code lives in `_WG` folders, and edits to upstream files are marked with `// WOLFGATE` comments so they are easy to find when merging from Monolith.
 
 We are not accepting translations on this repository.
 <!-- WOLFGATE END -->
 
 <!-- WOLFGATE(Contributing): link the AI content policy -->
-AI use in contributions is covered by the [AI-generated content policy](Docs/_WF/Contributing/AI_POLICY.md).
+AI use in contributions is covered by the [AI-generated content policy](Docs/_WG/Contributing/AI_POLICY.md).
 
 ## Building
 

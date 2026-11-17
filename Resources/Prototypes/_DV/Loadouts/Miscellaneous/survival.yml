@@ -6,6 +6,6 @@
     species:
     - Feroxi
 # WOLFGATE(Biotype): the box is for flesh bodies, whatever the species
-  - !type:WFBiotypeLoadoutEffect
+  - !type:WGBiotypeLoadoutEffect
     biotypes:
     - Organic

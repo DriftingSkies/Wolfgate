@@ -1,0 +1,38 @@
+# The Lupercal armory's filled gun racks (v0.20): no stock rack holds lasers or heavy weapons, so these copy the
+# Mono filled racks' pattern.
+
+- type: entity
+  parent: StructureGunRack
+  id: WGLupercalGunRackLasers
+  suffix: Filled, Laser carbines, Lupercal
+  components:
+  - type: ContainerFill
+    containers:
+      weapon1:
+      - WeaponLaserCarbine
+      weapon2:
+      - WeaponLaserCarbine
+      weapon3:
+      - WeaponLaserCarbine
+      weapon4:
+      - WeaponLaserCarbine
+      weapon5:
+      - WeaponLaserCarbine
+
+- type: entity
+  parent: StructureGunRack
+  id: WGLupercalGunRackHeavy
+  suffix: Filled, Heavy weapons, Lupercal
+  components:
+  - type: ContainerFill
+    containers:
+      weapon1:
+      - WeaponPulseRifle
+      weapon2:
+      - WeaponPulseRifle
+      weapon3:
+      - WeaponXrayCannon
+      weapon4:
+      - WeaponXrayCannon
+      weapon5:
+      - WeaponLaserCannon

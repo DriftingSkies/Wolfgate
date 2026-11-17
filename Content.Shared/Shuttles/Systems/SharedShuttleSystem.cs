@@ -48,7 +48,7 @@ public abstract partial class SharedShuttleSystem : EntitySystem
         if (shuttleMap == targetMap)
             return true;
 
-        if (!WfAllowFTL(shuttleUid, mapUid)) // WOLFGATE(Planets): you only FTL out of a planet network from orbit, and never FTL into an orbit layer.
+        if (!WgAllowFTL(shuttleUid, mapUid)) // WOLFGATE(Planets): you only FTL out of a planet network from orbit, and never FTL into an orbit layer.
             return false;
 
         if (!TryComp<FTLDestinationComponent>(mapUid, out var destination) || !destination.Enabled)
@@ -251,7 +251,7 @@ public abstract partial class SharedShuttleSystem : EntitySystem
 
         // Check exclusion zones.
         // This needs to be passed in manually due to PVS.
-        if (exclusionZones != null && !WfIgnoresFtlExclusionZones(shuttleUid)) // WOLFGATE(ShipCommand): an unrestricted grid jumps into no-jump zones
+        if (exclusionZones != null && !WgIgnoresFtlExclusionZones(shuttleUid)) // WOLFGATE(ShipCommand): an unrestricted grid jumps into no-jump zones
         {
             foreach (var exclusion in exclusionZones)
             {

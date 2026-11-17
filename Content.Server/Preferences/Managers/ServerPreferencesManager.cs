@@ -138,12 +138,12 @@ namespace Content.Server.Preferences.Managers
 
             // WOLFGATE(Genitals) START: an unreadable anatomy column is kept only if the server loaded it that way
             // It must be unchanged from the stored one; a client's LoadFailed flag alone keeps nothing.
-            if (profile is HumanoidCharacterProfile { Genitals.LoadFailed: true } wfProfile
-                && !(curPrefs.Characters.TryGetValue(slot, out var wfOld)
-                     && wfOld is HumanoidCharacterProfile { Genitals.LoadFailed: true } wfOldProfile
-                     && wfOldProfile.Genitals.MemberwiseEquals(wfProfile.Genitals)))
+            if (profile is HumanoidCharacterProfile { Genitals.LoadFailed: true } wgProfile
+                && !(curPrefs.Characters.TryGetValue(slot, out var wgOld)
+                     && wgOld is HumanoidCharacterProfile { Genitals.LoadFailed: true } wgOldProfile
+                     && wgOldProfile.Genitals.MemberwiseEquals(wgProfile.Genitals)))
             {
-                profile = wfProfile.WithGenitals(wfProfile.Genitals.WithoutLoadFailed());
+                profile = wgProfile.WithGenitals(wgProfile.Genitals.WithoutLoadFailed());
             }
             // WOLFGATE END
 
@@ -161,12 +161,12 @@ namespace Content.Server.Preferences.Managers
             }
 
             // WOLFGATE(Augments) START: a client save can't unlock augments; new priced ones are bought from the bank here
-            var wfAugmentsSettled = false;
-            if (!authoritative && profile is HumanoidCharacterProfile wfAugmented)
+            var wgAugmentsSettled = false;
+            if (!authoritative && profile is HumanoidCharacterProfile wgAugmented)
             {
-                wfAugmentsSettled = SettleAugments(userId, ref wfAugmented,
+                wgAugmentsSettled = SettleAugments(userId, ref wgAugmented,
                     curPrefs.Characters.GetValueOrDefault(slot) as HumanoidCharacterProfile);
-                profile = wfAugmented;
+                profile = wgAugmented;
             }
             // WOLFGATE END
 
@@ -186,7 +186,7 @@ namespace Content.Server.Preferences.Managers
                 await _db.SaveCharacterSlotAsync(userId, profile, slot);
 
             // WOLFGATE(Augments): the creator shows the balance, unlocks and dropped augments the save left
-            if (wfAugmentsSettled)
+            if (wgAugmentsSettled)
                 ResendPreferences(userId, prefsData.Prefs);
         }
 

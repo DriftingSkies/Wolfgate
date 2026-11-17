@@ -1,0 +1,43 @@
+wg-lore-book-title = Lore Book
+wg-lore-book-subtitle = A chronicle of the Colossus Sector
+wg-lore-book-button = Lore Book
+wg-lore-book-button-tooltip = Open the lore book.
+wg-lore-book-contents = Contents
+wg-lore-book-search = Search the book...
+wg-lore-book-page-count = { $count } pages
+wg-lore-book-folio = — { $page } —
+wg-lore-book-previous = ‹ { $name }
+wg-lore-book-next = { $name } ›
+wg-lore-book-empty = The pages are blank.
+wg-lore-book-verb = Lore
+wg-lore-book-link-tooltip = Opens the lore book.
+
+wg-lore-entry-primer = Welcome to Colossus
+wg-lore-entry-present-day = The Sector Today
+wg-lore-entry-history = A Short History
+wg-lore-entry-system = The Kyphrus System
+wg-lore-entry-reavers = Ashfall Reavers
+wg-lore-entry-ads = Automated Defense System
+wg-lore-entry-judges = The Bench
+wg-lore-entry-collapse = The Collapse
+wg-lore-entry-carcinoma = Carcinoma
+wg-lore-entry-crocus = Crocus
+wg-lore-entry-threats = Things That Hunt
+wg-lore-entry-monolith = The Monolith
+wg-lore-entry-chimera = Chimera
+wg-lore-entry-xenonids = Xenonids
+wg-lore-entry-forbidden = Forbidden
+wg-lore-entry-guide = Lore Book
+wg-lore-entry-factions-guide = Factions
+
+# Lines the book writes into its own pages once it has been read too closely.
+wg-lore-book-whisper-1 = you have read this page before
+wg-lore-book-whisper-2 = it is not further out. it is underneath
+wg-lore-book-whisper-3 = the anchors are counting. they are almost done
+wg-lore-book-whisper-4 = someone is reading over your shoulder
+wg-lore-book-whisper-5 = this was not written here when you opened the book
+wg-lore-book-whisper-6 = the song has a part for you
+wg-lore-book-whisper-7 = close the book. close the book. close the
+wg-lore-book-whisper-8 = we did not build them either
+wg-lore-book-whisper-9 = the cat was real
+wg-lore-book-whisper-10 = you are further out than you think

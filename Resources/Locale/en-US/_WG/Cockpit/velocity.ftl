@@ -1,0 +1,10 @@
+wg-cockpit-velocity = VELOCITY
+wg-cockpit-velocity-forward = FWD
+wg-cockpit-velocity-aft = AFT
+wg-cockpit-velocity-port = P
+wg-cockpit-velocity-starboard = S
+wg-cockpit-velocity-help = Actual ship motion relative to its bow: forward up, aft down, port left, starboard right. The arrow shows drift direction, with extra sensitivity at low speeds. It grows steadily to full length at 100 m/s without changing scale; the readout shows exact speed. A centered dot means stopped. This does not follow the camera.
+wg-cockpit-coordinates = COORDINATES
+wg-cockpit-coordinates-x = X
+wg-cockpit-coordinates-y = Y
+wg-cockpit-coordinates-help = Where the ship is on the map, measured at its centre of mass. The SYS page lists the same position.

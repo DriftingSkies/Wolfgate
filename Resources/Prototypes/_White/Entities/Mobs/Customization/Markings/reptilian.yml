@@ -60,13 +60,13 @@
   # WOLFGATE END
   sprites:
     # WOLFGATE(Genitals) START: split tail art
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
       state: snake_large_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
       state: snake_large_overlay_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
       state: snake_large_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
       state: snake_large_overlay_BEHIND
     # WOLFGATE END
 
@@ -85,13 +85,13 @@
   # WOLFGATE END
   sprites:
     # WOLFGATE(Genitals) START: split tail art
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
       state: snake_large_wagging_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
       state: snake_large_wagging_overlay_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
       state: snake_large_wagging_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi
       state: snake_large_wagging_overlay_BEHIND
     # WOLFGATE END
 

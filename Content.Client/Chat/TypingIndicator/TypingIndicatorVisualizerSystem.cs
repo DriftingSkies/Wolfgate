@@ -3,7 +3,7 @@ using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Shared.Prototypes;
 using Content.Shared.Inventory;
-using Content.Shared._WF.TypingBubble; // WOLFGATE(TypingBubble)
+using Content.Shared._WG.TypingBubble; // WOLFGATE(TypingBubble)
 
 namespace Content.Client.Chat.TypingIndicator;
 
@@ -19,8 +19,8 @@ public sealed partial class TypingIndicatorVisualizerSystem : VisualizerSystem<T
             return;
 
         var currentTypingIndicator = component.TypingIndicatorPrototype;
-        if (TryComp<WFTypingBubbleComponent>(uid, out var wfBubble)) // WOLFGATE(TypingBubble): the profile's pick, under clothing's
-            currentTypingIndicator = wfBubble.Indicator; // WOLFGATE(TypingBubble)
+        if (TryComp<WGTypingBubbleComponent>(uid, out var wgBubble)) // WOLFGATE(TypingBubble): the profile's pick, under clothing's
+            currentTypingIndicator = wgBubble.Indicator; // WOLFGATE(TypingBubble)
 
         var evt = new BeforeShowTypingIndicatorEvent();
 

@@ -1,0 +1,362 @@
+# TSFMC Halcyon: munitions, reactor parts, dispatches, stock, pirate hunting.
+
+- type: wgContract
+  id: WGContractTSFMunitions
+  contractor: WGContractorHalcyon
+  category: Hauling
+  tier: 3
+  title: wg-contract-tsf-munitions
+  briefing: wg-contract-tsf-munitions-brief
+  reward: 25000, 32500
+  deposit: 5000
+  minutes: 60
+  weight: 2.4
+  harms:
+    WGContractorCamelot: 1
+  objective: !type:WGContractCourier
+    package: WGContractFreightMunitions
+    count: 3, 6
+    from: Board
+    to: Contractor
+    perPackage: 2750
+    perKilometre: 2125
+
+- type: wgContract
+  id: WGContractTSFReactorParts
+  contractor: WGContractorHalcyon
+  category: Hauling
+  tier: 4
+  title: wg-contract-tsf-reactor-parts
+  briefing: wg-contract-tsf-reactor-parts-brief
+  reward: 45000, 57500
+  deposit: 10000
+  minutes: 70
+  weight: 1.2
+  minPlayers: 4
+  harms:
+    WGContractorCamelot: 1
+  objective: !type:WGContractCourier
+    package: WGContractFreightReactor
+    count: 4, 6
+    from: Board
+    to: Contractor
+    perPackage: 3750
+    perKilometre: 2500
+
+- type: wgContract
+  id: WGContractTSFDispatches
+  contractor: WGContractorHalcyon
+  category: Delivery
+  tier: 2
+  title: wg-contract-tsf-dispatches
+  briefing: wg-contract-tsf-dispatches-brief
+  reward: 8750, 11250
+  deposit: 1000
+  minutes: 30
+  weight: 1.5
+  objective: !type:WGContractCourier
+    package: WGContractParcelPriority
+    count: 1, 2
+    from: Contractor
+    to: Other
+    perPackage: 1000
+    perKilometre: 1500
+
+- type: wgContract
+  id: WGContractTSFMedSupply
+  contractor: WGContractorHalcyon
+  category: Supply
+  tier: 2
+  title: wg-contract-tsf-med-supply
+  briefing: wg-contract-tsf-med-supply-brief
+  reward: 30600, 39400
+  deposit: 1000
+  minutes: 50
+  weight: 3
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    goodsCap: 7500
+    goods:
+    - entity: MedkitBruteFilled
+      count: 1, 3
+      value: 600
+    - entity: MedkitBurnFilled
+      count: 1, 3
+      value: 600
+    - stack: Bloodpack
+      count: 4, 8
+    - stack: Gauze
+      count: 10, 15
+
+- type: wgContract
+  id: WGContractTSFArmourStock
+  contractor: WGContractorHalcyon
+  category: Supply
+  tier: 3
+  title: wg-contract-tsf-armour-stock
+  briefing: wg-contract-tsf-armour-stock-brief
+  reward: 39400, 52500
+  deposit: 3000
+  minutes: 60
+  weight: 2
+  harms:
+    WGContractorCamelot: 1
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    goods:
+    - stack: Plasteel
+      count: 30, 50
+    - stack: Plastitanium
+      count: 10, 20
+    - stack: Uranium
+      count: 10, 20
+    - stack: ReinforcedGlass
+      count: 40, 60
+
+- type: wgContract
+  id: WGContractTSFRaiders
+  contractor: WGContractorHalcyon
+  category: Bounty
+  tier: 3
+  title: wg-contract-tsf-raiders
+  briefing: wg-contract-tsf-raiders-brief
+  reward: 57500, 70000
+  deposit: 4000
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1.2
+  minPlayers: 3
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetRaiderPair ]
+    minDistance: 4000
+    maxDistance: 6500
+
+- type: wgContract
+  id: WGContractTSFGunship
+  contractor: WGContractorHalcyon
+  category: Bounty
+  tier: 4
+  title: wg-contract-tsf-gunship
+  briefing: wg-contract-tsf-gunship-brief
+  reward: 95000, 112500
+  deposit: 8000
+  minutes: 60
+  crewBonus: 0.25
+  weight: 0.7
+  minPlayers: 5
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetGunship ]
+    minDistance: 4500
+    maxDistance: 7000
+
+- type: wgContract
+  id: WGContractTSFRecorder
+  contractor: WGContractorHalcyon
+  category: Salvage
+  tier: 3
+  title: wg-contract-tsf-recorder
+  briefing: wg-contract-tsf-recorder-brief
+  reward: 27500, 35000
+  deposit: 2000
+  minutes: 60
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WGContractRecovery
+    item: WGContractFlightRecorder
+    minDistance: 4000
+    maxDistance: 6500
+    wrecks:
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+    - /Maps/Salvage/medium-pirate.yml
+
+- type: wgContract
+  id: WGContractTSFEscortSupply
+  contractor: WGContractorHalcyon
+  category: Escort
+  tier: 3
+  title: wg-contract-tsf-escort-supply
+  briefing: wg-contract-tsf-escort-supply-brief
+  reward: 40000, 50000
+  deposit: 4000
+  minutes: 70
+  crewBonus: 0.25
+  weight: 0.8
+  minPlayers: 3
+  objective: !type:WGContractEscort
+    encounters: [ WGContractEscortHeavy ]
+    destinations: [ WGContractorCaelPort, WGContractorStellarBlessing ]
+    perKilometre: 1750
+
+# Second batch.
+
+- type: wgContract
+  id: WGContractHalcyonPouch
+  contractor: WGContractorHalcyon
+  category: Delivery
+  tier: 2
+  title: wg-contract-halcyon-pouch
+  briefing: wg-contract-halcyon-pouch-brief
+  reward: 12000, 15000
+  deposit: 2000
+  minutes: 45
+  weight: 0.8
+  harms:
+    WGContractorUSSPCommissariat: 1
+  objective: !type:WGContractCourier
+    package: WGContractDiplomaticPouch
+    from: Contractor
+    to: Other
+    destinations: [ WGContractorCamelot ]
+    perKilometre: 2000
+
+- type: wgContract
+  id: WGContractHalcyonShipwright
+  contractor: WGContractorHalcyon
+  category: Supply
+  tier: 2
+  title: wg-contract-halcyon-shipwright
+  briefing: wg-contract-halcyon-shipwright-brief
+  reward: 26250, 35000
+  deposit: 1500
+  minutes: 60
+  weight: 2.4
+  objective: !type:WGContractSupply
+    premium: 1.25
+    goodsCap: 15000
+    goods:
+    - entity: ThrusterFlatpack
+      count: 4, 8
+    - entity: GyroscopeFlatpack
+      count: 2, 4
+    - stack: Steel
+      count: 100, 150
+
+- type: wgContract
+  id: WGContractHalcyonPirateCull
+  contractor: WGContractorHalcyon
+  category: Bounty
+  tier: 3
+  title: wg-contract-halcyon-pirate-cull
+  briefing: wg-contract-halcyon-pirate-cull-brief
+  reward: 50000, 62500
+  deposit: 3000
+  minutes: 70
+  crewBonus: 0.25
+  weight: 1
+  # Contested Sector rounds have their own pirate invasion.
+  excludePresets: [ WGContestedSector ]
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetPirateCull ]
+    minDistance: 4000
+    maxDistance: 6000
+
+# New objectives.
+
+- type: wgContract
+  id: WGContractHalcyonBeacon
+  contractor: WGContractorHalcyon
+  category: Salvage
+  tier: 2
+  title: wg-contract-halcyon-beacon
+  briefing: wg-contract-halcyon-beacon-brief
+  reward: 16000, 21000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WGContractRepair
+    infestation:
+    - entity: MobCarpSalvage
+      count: 1, 3
+    wrecks:
+    - /Maps/Salvage/small-3.yml
+    - /Maps/Salvage/small-tesla.yml
+    - /Maps/Salvage/engineering-chunk.yml
+
+- type: wgContract
+  id: WGContractHalcyonFleetSalvage
+  contractor: WGContractorHalcyon
+  category: Salvage
+  tier: 3
+  title: wg-contract-halcyon-fleet-salvage
+  briefing: wg-contract-halcyon-fleet-salvage-brief
+  reward: 70000, 85000
+  deposit: 5000
+  minutes: 100
+  minCrew: 3
+  crewBonus: 0.3
+  weight: 0.6
+  requires:
+  - tag: WGTowRope
+    name: wg-contract-requires-rope
+  - entity: WGTetherInstaller
+    name: wg-contract-requires-tether-installer
+  objective: !type:WGContractOperation
+    item: WGContractFlightRecorder
+    count: 2, 3
+    anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyPyroclastic, AnomalyFlesh ]
+    infestation:
+    - entity: MobFleshJaredSalvage
+      count: 2, 3
+    - entity: MobFleshGolemSalvage
+      count: 0, 1
+    wrecks:
+    - /Maps/Salvage/medium-pirate.yml
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/medium-crashed-shuttle.yml
+
+# Fifth batch.
+
+- type: wgContract
+  id: WGContractHalcyonLaneSurvey
+  contractor: WGContractorHalcyon
+  category: Science
+  tier: 1
+  title: wg-contract-halcyon-lane-survey
+  briefing: wg-contract-halcyon-lane-survey-brief
+  reward: 5000, 7000
+  minutes: 45
+  weight: 1.2
+  objective: !type:WGContractSweep
+    points: 3, 4
+    perPoint: 1500
+    minDistance: 2000
+    maxDistance: 5000
+
+- type: wgContract
+  id: WGContractHalcyonSensorLine
+  contractor: WGContractorHalcyon
+  category: Science
+  tier: 2
+  title: wg-contract-halcyon-sensor-line
+  briefing: wg-contract-halcyon-sensor-line-brief
+  reward: 10000, 14000
+  minutes: 55
+  weight: 1.2
+  objective: !type:WGContractDeploy
+    buoy: WGContractSensorBuoy
+    points: 3, 4
+    perPoint: 2500
+    minDistance: 2500
+    maxDistance: 5000
+
+- type: wgContract
+  id: WGContractHalcyonPlanetRecorder
+  contractor: WGContractorHalcyon
+  category: Salvage
+  tier: 2
+  title: wg-contract-halcyon-planet-recorder
+  briefing: wg-contract-halcyon-planet-recorder-brief
+  reward: 20000, 26000
+  deposit: 1000
+  minutes: 70
+  weight: 1.2
+  objective: !type:WGContractRecovery
+    wrecks: []
+    item: WGContractFlightRecorder
+    count: 1, 1
+    planet:
+      hostiles: 3, 5

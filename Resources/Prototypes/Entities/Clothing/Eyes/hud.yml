@@ -29,7 +29,7 @@
     damageContainers:
     - Inorganic
     - Silicon
-    - WFSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
+    - WGSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
     - Synth # WOLFGATE(Wolfmed): the HardLight Synth's container, so its bar shows
   - type: Tag
     tags:
@@ -206,7 +206,7 @@
     damageContainers:
     - Biological
     - Inorganic
-    - WFSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
+    - WGSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
     - Synth # WOLFGATE(Wolfmed): the HardLight Synth's container, so its bar shows
   - type: ShowSyndicateIcons
   - type: Tag
@@ -227,7 +227,7 @@
     damageContainers:
     - Biological
     - Inorganic
-    - WFSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
+    - WGSiliconWolfmed # WOLFGATE(Wolfmed): playtest 3: the IPC's container, so its bar shows
     - Synth # WOLFGATE(Wolfmed): the HardLight Synth's container, so its bar shows
   - type: ShowHungerIcons
   - type: ShowThirstIcons

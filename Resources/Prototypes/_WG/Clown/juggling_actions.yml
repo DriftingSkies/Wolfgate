@@ -1,0 +1,11 @@
+- type: entity
+  id: ActionJuggle
+  name: juggle
+  description: Toss some items in the air.
+  components:
+  - type: InstantAction
+    itemIconStyle: NoItem
+    icon:
+      sprite: _WG/Clown/Juggling/beach_ball.rsi
+      state: icon
+    event: !type:JuggleActionEvent {}

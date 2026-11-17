@@ -8,13 +8,13 @@
 - type: tile
   parent: RMCFloorHybrisaGreenBase
   id: RMCFloorHybrisaGreenTile
-  name: tiles-wf-rmc-green-metal-tile
+  name: tiles-wg-rmc-green-metal-tile
   sprite: /Textures/_RMC14/Tiles/hybrisa/tilegreen.png
 
 - type: tile
   parent: RMCFloorHybrisaGreenBase
   id: RMCFloorHybrisaGreenCarpet
-  name: tiles-wf-rmc-green-carpet
+  name: tiles-wg-rmc-green-carpet
   sprite: /Textures/_RMC14/Tiles/hybrisa/carpetgreen.png
 
 - type: tile

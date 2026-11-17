@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
-using Content.Server._WF.ChatWebhook; // WOLFGATE(ChatWebhook)
-using Content.Shared._WF.ChatFont; // WOLFGATE(ChatFont)
+using Content.Server._WG.ChatWebhook; // WOLFGATE(ChatWebhook)
+using Content.Shared._WG.ChatFont; // WOLFGATE(ChatFont)
 using Content.Server.Chat.Managers;
 using Content.Server.Discord.DiscordLink;
 using Content.Server.GameTicking;
@@ -277,7 +277,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         // WOLFGATE END
 
         // WOLFGATE(Xenonids): a xeno's radio prefix sends the message to its hive instead
-        if (checkRadioPrefix && EntityManager.System<Content.Server._WF.Xenonids.Hive.XenoHiveChatSystem>().TrySendHiveMessage(source, message))
+        if (checkRadioPrefix && EntityManager.System<Content.Server._WG.Xenonids.Hive.XenoHiveChatSystem>().TrySendHiveMessage(source, message))
             return;
 
         // This message may have a radio prefix, and should then be whispered to the resolved radio channel
@@ -383,7 +383,7 @@ public sealed partial class ChatSystem : SharedChatSystem
 
         var wrappedMessage = Loc.GetString("chat-manager-sender-announcement-wrap-message", ("sender", sender), ("message", FormattedMessage.EscapeText(message)));
         // WOLFGATE(PlanetComms) START: sessions on a world with no mass transceiver up miss it
-        if (WFDispatchGlobalReachable(message, sender, wrappedMessage, playSound, announcementSound, colorOverride))
+        if (WGDispatchGlobalReachable(message, sender, wrappedMessage, playSound, announcementSound, colorOverride))
             return;
         // WOLFGATE END
         _chatManager.ChatMessageToAll(ChatChannel.Radio, message, wrappedMessage, default, false, true, colorOverride);
@@ -414,7 +414,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         Color? colorOverride = null)
     {
         sender ??= Loc.GetString("chat-manager-sender-announcement");
-        filter = _wfPlanetComms.Reachable(filter, source); // WOLFGATE(PlanetComms): off-world sources miss dark worlds
+        filter = _wgPlanetComms.Reachable(filter, source); // WOLFGATE(PlanetComms): off-world sources miss dark worlds
 
         var wrappedMessage = Loc.GetString("chat-manager-sender-announcement-wrap-message", ("sender", sender), ("message", FormattedMessage.EscapeText(message)));
         _chatManager.ChatMessageToManyFiltered(filter, ChatChannel.Radio, message, wrappedMessage, source ?? default, false, true, colorOverride);
@@ -455,7 +455,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         if (!EntityManager.TryGetComponent<StationDataComponent>(station, out var stationDataComp)) return;
 
         var filter = _stationSystem.GetInStation(stationDataComp);
-        filter = _wfPlanetComms.Reachable(filter, source); // WOLFGATE(PlanetComms): off-world sources miss dark worlds
+        filter = _wgPlanetComms.Reachable(filter, source); // WOLFGATE(PlanetComms): off-world sources miss dark worlds
 
         _chatManager.ChatMessageToManyFiltered(filter, ChatChannel.Radio, message, wrappedMessage, source, false, true, colorOverride);
 
@@ -693,7 +693,7 @@ public sealed partial class ChatSystem : SharedChatSystem
             if (MessageRangeCheck(session, data, range) != MessageRangeCheckResult.Full)
                 continue; // Won't get logged to chat, and ghosts are too far away to see the pop-up, so we just won't send it to them.
 
-            if (WfCantHear(listener, source, language)) // WOLFGATE(RMCCore): the deaf hear no whispers
+            if (WgCantHear(listener, source, language)) // WOLFGATE(RMCCore): the deaf hear no whispers
                 continue;
 
             // Einstein Engines - Language begin
@@ -1011,9 +1011,9 @@ public sealed partial class ChatSystem : SharedChatSystem
             var bubbleSource = channel is ChatChannel.Local or ChatChannel.Emotes ? data.BubbleSource ?? source : source; // WOLFGATE(Vehicles): a listener may see the speech bubble on another entity
 
             // WOLFGATE(RMCCore) START: the deaf catch only a few letters of nearby speech
-            if (channel == ChatChannel.Local && WfCantHear(listener, source, language))
+            if (channel == ChatChannel.Local && WgCantHear(listener, source, language))
             {
-                var deaf = WfDeafHeard(source, name, _language.CanUnderstand(listener, language.ID) ? message : obfuscated, language, speechVerb);
+                var deaf = WgDeafHeard(source, name, _language.CanUnderstand(listener, language.ID) ? message : obfuscated, language, speechVerb);
                 _chatManager.ChatMessageToOne(channel, deaf.Message, deaf.Wrapped, bubbleSource, entHideChat, session.Channel, author: author);
                 continue;
             }
@@ -1190,7 +1190,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         var languageFont = language.SpeechOverride.FontId;
         if ((language.SpeechOverride.ObfuscationFont ?? false) && (!obfuscated ?? false))
             languageFont = null;
-        var chatFont = languageFont == null ? CompOrNull<WFChatFontComponent>(source) : null;
+        var chatFont = languageFont == null ? CompOrNull<WGChatFontComponent>(source) : null;
         // WOLFGATE END
 
         // WOLFGATE(ChatFormatting): message may contain BBCode from emphasis conversion; pass through unescaped
@@ -1199,7 +1199,7 @@ public sealed partial class ChatSystem : SharedChatSystem
             ("entityName", namestring),
             ("verb", Loc.GetString(verbId)),
             ("fontType", languageFont ?? chatFont?.Font ?? speech.FontId), // WOLFGATE(ChatFont): the character's picked font, under a language's own
-            ("fontSize", WFChatFontRules.ScaleSize(language.SpeechOverride.FontSize ?? speech.FontSize, chatFont)), // WOLFGATE(ChatFont): the picked font's size scale
+            ("fontSize", WGChatFontRules.ScaleSize(language.SpeechOverride.FontSize ?? speech.FontSize, chatFont)), // WOLFGATE(ChatFont): the picked font's size scale
             ("message", message));
     }
     // Einstein Engines - Language end

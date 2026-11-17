@@ -22,7 +22,7 @@ public sealed partial class NPCRetaliationSystem : EntitySystem
     {
         SubscribeLocalEvent<NPCRetaliationComponent, DamageChangedEvent>(OnDamageChanged);
         SubscribeLocalEvent<NPCRetaliationComponent, DisarmedEvent>(OnDisarmed);
-        SubscribeLocalEvent<NPCRetaliationComponent, EntityUnpausedEvent>(WfOnUnpaused); // WOLFGATE(Dormancy): a pause doesn't run down who it remembers attacking it
+        SubscribeLocalEvent<NPCRetaliationComponent, EntityUnpausedEvent>(WgOnUnpaused); // WOLFGATE(Dormancy): a pause doesn't run down who it remembers attacking it
     }
 
     private void OnDamageChanged(Entity<NPCRetaliationComponent> ent, ref DamageChangedEvent args)
@@ -52,7 +52,7 @@ public sealed partial class NPCRetaliationSystem : EntitySystem
             return false;
 
         // WOLFGATE(NpcCrew): a crewman's ship may let an attacker off, such as its Boss
-        if (WfForgiven(ent.Owner, target))
+        if (WgForgiven(ent.Owner, target))
             return false;
 
         _npcFaction.AggroEntity(ent.Owner, target);

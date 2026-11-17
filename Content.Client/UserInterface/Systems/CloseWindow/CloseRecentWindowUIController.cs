@@ -43,7 +43,7 @@ public sealed partial class CloseRecentWindowUIController : UIController
         {
             var window = recentlyInteractedWindows[i];
             // WOLFGATE(Cockpit): Escape must not close the hidden helm that supplies the cockpit.
-            if (window is ShuttleConsoleWindow { WfCockpitActive: true })
+            if (window is ShuttleConsoleWindow { WgCockpitActive: true })
                 continue;
             recentlyInteractedWindows.RemoveAt(i); // Should always be removed as either the reference is stale or we're closing it
             if (window.IsOpen)
@@ -136,7 +136,7 @@ public sealed partial class CloseRecentWindowUIController : UIController
         {
             var window = recentlyInteractedWindows[i];
             // WOLFGATE(Cockpit): Escape must not close the hidden helm that supplies the cockpit.
-            if (window is ShuttleConsoleWindow { WfCockpitActive: true })
+            if (window is ShuttleConsoleWindow { WgCockpitActive: true })
                 continue;
             if (window.IsOpen)
                 return true;

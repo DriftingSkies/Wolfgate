@@ -1,0 +1,76 @@
+# Lore book pages. An entry with `lore: true` and all its children open in the lore book, not the guidebook.
+# Upstream chapters (BasicLore, Factions, MonoStarSystem) are marked lore in their own files.
+
+- type: guideEntry
+  id: WGLorePresentDay
+  name: wg-lore-entry-present-day
+  text: "/ServerInfo/_WG/LoreBook/PresentDay.xml"
+
+- type: guideEntry
+  id: WGLoreReavers
+  name: wg-lore-entry-reavers
+  text: "/ServerInfo/_WG/LoreBook/Factions/Reavers.xml"
+
+- type: guideEntry
+  id: WGLoreAds
+  name: wg-lore-entry-ads
+  text: "/ServerInfo/_WG/LoreBook/Factions/Ads.xml"
+
+- type: guideEntry
+  id: WGLoreJudges
+  name: wg-lore-entry-judges
+  text: "/ServerInfo/_WG/LoreBook/Factions/Judges.xml"
+
+- type: guideEntry
+  id: WGLoreCollapse
+  name: wg-lore-entry-collapse
+  text: "/ServerInfo/_WG/LoreBook/StarSystem/Collapse.xml"
+
+- type: guideEntry
+  id: WGLoreCarcinoma
+  name: wg-lore-entry-carcinoma
+  text: "/ServerInfo/_WG/LoreBook/StarSystem/Carcinoma.xml"
+
+- type: guideEntry
+  id: WGLoreCrocus
+  name: wg-lore-entry-crocus
+  text: "/ServerInfo/_WG/LoreBook/StarSystem/Crocus.xml"
+
+- type: guideEntry
+  id: WGLoreThreats
+  name: wg-lore-entry-threats
+  text: "/ServerInfo/_WG/LoreBook/Threats/Threats.xml"
+  lore: true
+  priority: 20
+  children:
+  - WGLoreChimera
+  - WGLoreXenonids
+
+# Pages that unsettle the book, kept together at the back.
+- type: guideEntry
+  id: WGLoreForbidden
+  name: wg-lore-entry-forbidden
+  text: "/ServerInfo/_WG/LoreBook/Forbidden.xml"
+  lore: true
+  priority: 30
+  children:
+  - WGLoreMonolith
+  - WGLoreUnmooring
+  - WGLoreLattice
+  - WGLoreChoir
+
+- type: guideEntry
+  id: WGLoreMonolith
+  name: wg-lore-entry-monolith
+  text: "/ServerInfo/_WG/LoreBook/Threats/Monolith.xml"
+  unease: 0.3
+
+- type: guideEntry
+  id: WGLoreChimera
+  name: wg-lore-entry-chimera
+  text: "/ServerInfo/_WG/LoreBook/Threats/Chimera.xml"
+
+- type: guideEntry
+  id: WGLoreXenonids
+  name: wg-lore-entry-xenonids
+  text: "/ServerInfo/_WG/LoreBook/Threats/Xenonids.xml"

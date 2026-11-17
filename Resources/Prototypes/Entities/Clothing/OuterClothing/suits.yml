@@ -298,7 +298,7 @@
   categories: [ DoNotMap ]
   components:
   # WOLFGATE(SuitTank) START: 2x2 storage for air tanks that feed internals
-  - type: WFSuitTankStorage
+  - type: WGSuitTankStorage
   - type: Storage
     grid:
     - 0,0,1,1

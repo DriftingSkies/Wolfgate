@@ -137,7 +137,7 @@ namespace Content.Shared.Chat
                 ChatChannel.OOC => Loc.GetString("chat-channel-humanized-ooc"),
                 ChatChannel.AdminChat => Loc.GetString("chat-channel-humanized-admin"),
                 ChatChannel.Dead => Loc.GetString("chat-channel-humanized-dead"),
-                ChatChannel.EventChat => Loc.GetString("wf-chat-channel-humanized-event"), // WOLFGATE(EventStaff)
+                ChatChannel.EventChat => Loc.GetString("wg-chat-channel-humanized-event"), // WOLFGATE(EventStaff)
                 _ => throw new ArgumentOutOfRangeException(nameof(channel), channel, null)
             };
         }

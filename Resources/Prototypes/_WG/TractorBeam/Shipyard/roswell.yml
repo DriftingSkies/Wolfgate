@@ -1,0 +1,43 @@
+- type: vessel
+  id: WGRoswell
+  parent: BaseVesselIFFDisabled
+  name: Judge Roswell
+  description: A compact arrestor and patrol vessel fitted with tractor beam equipment and a WRIT disabler harpoon.
+  price: 174669
+  purchasable: false
+  category: Medium
+  group: Sr
+  access: Caelestinus
+  mapchecker_group_override: Security
+  shuttlePath: /SharedMaps/_WG/TractorBeam/Shuttles/roswell.yml
+  guidebookPage: null
+  class:
+  - Patrol
+  - Pursuit
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WGRoswell
+  mapName: Roswell
+  mapPath: /SharedMaps/_WG/TractorBeam/Shuttles/roswell.yml
+  minPlayers: 0
+  stations:
+    WGRoswell:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Roswell Judge{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+
+- type: entity
+  parent: ShipVoucherFrontierGuard
+  id: WGShipVoucherRoswell
+  name: Judge Roswell ship voucher
+  description: Redeem for a Roswell-class arrestor at the Frontier Staff Shipyard.
+  components:
+  - type: ShipyardVoucher
+    vessels:
+    - WGRoswell

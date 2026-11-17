@@ -9,7 +9,7 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     tail_wagging_BEHIND: tail_wagging_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/felionoid_parts.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/felionoid_parts.rsi # WOLFGATE(Genitals): split art
       state: tail_wagging_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/felionoid_parts.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/felionoid_parts.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: tail_wagging_BEHIND

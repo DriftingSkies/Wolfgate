@@ -490,17 +490,17 @@
     mothtruebutterfly2_BEHIND: mothtruebutterfly2_FRONT
     mothtruebutterfly3_BEHIND: mothtruebutterfly3_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: mothtruebutterfly1_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: mothtruebutterfly2_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: mothtruebutterfly3_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: mothtruebutterfly1_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: mothtruebutterfly2_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: mothtruebutterfly3_BEHIND
   # WOLFGATE END
 
@@ -521,17 +521,17 @@
     rhinobeetle2_BEHIND: rhinobeetle2_FRONT
     rhinobeetle3_BEHIND: rhinobeetle3_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: rhinobeetle1_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: rhinobeetle2_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: rhinobeetle3_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: rhinobeetle1_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: rhinobeetle2_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: rhinobeetle3_BEHIND
   # WOLFGATE END
 
@@ -552,17 +552,17 @@
     glasswing2_BEHIND: glasswing2_FRONT
     glasswing3_BEHIND: glasswing3_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: glasswing1_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: glasswing2_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: glasswing3_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: glasswing1_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: glasswing2_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: glasswing3_BEHIND
   # WOLFGATE END
 
@@ -583,17 +583,17 @@
     bee2_BEHIND: bee2_FRONT
     bee3_BEHIND: bee3_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: bee1_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: bee2_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: bee3_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: bee1_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: bee2_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: bee3_BEHIND
   # WOLFGATE END
 
@@ -622,9 +622,9 @@
   colorLinks:
     mothfirefly1_BEHIND: mothfirefly1_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/animatedmarkings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/animatedmarkings.rsi
     state: mothfirefly1_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/animatedmarkings.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/animatedmarkings.rsi
     state: mothfirefly1_BEHIND
   # WOLFGATE END
   shader: unshaded
@@ -642,9 +642,9 @@
   colorLinks:
     mothfirefly2_BEHIND: mothfirefly2_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: mothfirefly2_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: mothfirefly2_BEHIND
   # WOLFGATE END
 
@@ -665,17 +665,17 @@
     beetle2_BEHIND: beetle2_FRONT
     beetle3_BEHIND: beetle3_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: beetle1_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: beetle2_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: beetle3_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: beetle1_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: beetle2_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: beetle3_BEHIND
   # WOLFGATE END
 
@@ -727,11 +727,11 @@
   colorLinks:
     snoth1_BEHIND: snoth1_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: snoth1_FRONT
   - sprite: _Impstation/Mobs/Customization/markingsbundle1.rsi
     state: snoth2
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/markingsbundle1.rsi
     state: snoth1_BEHIND
   # WOLFGATE END
 

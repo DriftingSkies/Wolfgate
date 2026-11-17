@@ -10,7 +10,7 @@ namespace Content.Server._Shitmed.DelayedDeath;
 public partial class DelayedDeathSystem : EntitySystem
 {
     [Dependency] private ChatSystem _chat = default!;
-    [Dependency] private Content.Server._WF.Wolfmed.Life.WolfmedLifeSystem _wolfmedLife = default!; // WOLFGATE(Wolfmed): BRAIN
+    [Dependency] private Content.Server._WG.Wolfmed.Life.WolfmedLifeSystem _wolfmedLife = default!; // WOLFGATE(Wolfmed): BRAIN
     [Dependency] private MobStateSystem _mobState = default!;
 
     public override void Initialize()

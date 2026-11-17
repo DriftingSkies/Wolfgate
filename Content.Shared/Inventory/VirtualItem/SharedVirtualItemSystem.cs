@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using Content.Shared._WF.RMCCore.Inventory; // WOLFGATE(Xenonids)
+using Content.Shared._WG.RMCCore.Inventory; // WOLFGATE(Xenonids)
 using Content.Shared.Hands;
 using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;

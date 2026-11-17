@@ -1,16 +1,16 @@
 <!-- WOLFGATE(Traits): the tr xmlns on the root tag below is for the card-based trait editor. -->
-<!-- WOLFGATE(Augments): the wfa xmlns on the root tag below is for the augment editor. -->
+<!-- WOLFGATE(Augments): the wga xmlns on the root tag below is for the augment editor. -->
 <BoxContainer xmlns="https://spacestation14.io"
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:humanoid="clr-namespace:Content.Client.Humanoid"
-         xmlns:wfh="clr-namespace:Content.Client._WF.Humanoid"
-         xmlns:wfg="clr-namespace:Content.Client._WF.Genitals.UI"
-         xmlns:tr="clr-namespace:Content.Client._WF.Traits.UI"
-         xmlns:wfa="clr-namespace:Content.Client._WF.Augments.UI"
+         xmlns:wgh="clr-namespace:Content.Client._WG.Humanoid"
+         xmlns:wgg="clr-namespace:Content.Client._WG.Genitals.UI"
+         xmlns:tr="clr-namespace:Content.Client._WG.Traits.UI"
+         xmlns:wga="clr-namespace:Content.Client._WG.Augments.UI"
          HorizontalExpand="True"
          SeparationOverride="0">
     <!-- WOLFGATE(Stylesheets) START: creator rebuilt as cards with a preview column (also covers the root tag above, which
-         cannot hold a comment: wfh/wfg xmlns and SeparationOverride added, cc/ui xmlns dropped). Control names and
+         cannot hold a comment: wgh/wgg xmlns and SeparationOverride added, cc/ui xmlns dropped). Control names and
          tab order are unchanged because the code-behind binds to them (tabs: Species, Appearance, Jobs, Traits,
          Company, Markings, then Description). -->
     <!-- upstream original, kept for merges ("- -" stands for a double hyphen):
@@ -224,7 +224,7 @@
             <BoxContainer Orientation="Vertical">
                 <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
                     <BoxContainer Orientation="Vertical" Margin="8" HorizontalExpand="True">
-                        <wfh:WolfgateSpeciesPicker Name="SpeciesPicker" HorizontalExpand="True" />
+                        <wgh:WolfgateSpeciesPicker Name="SpeciesPicker" HorizontalExpand="True" />
                     </BoxContainer>
                 </ScrollContainer>
             </BoxContainer>
@@ -238,9 +238,9 @@
                                 <BoxContainer Orientation="Vertical" SeparationOverride="6">
                                     <!-- WOLFGATE(Stylesheets): sex moved out of its own row and into the heading, as icon boxes. -->
                                     <BoxContainer Orientation="Horizontal" HorizontalExpand="True" SeparationOverride="6">
-                                        <Label Text="{Loc 'wf-creator-identity'}" StyleClasses="CreatorHeading" VAlign="Center" />
+                                        <Label Text="{Loc 'wg-creator-identity'}" StyleClasses="CreatorHeading" VAlign="Center" />
                                         <Control HorizontalExpand="True" />
-                                        <wfh:WolfgateSexSelector Name="SexSelector" VerticalAlignment="Center" />
+                                        <wgh:WolfgateSexSelector Name="SexSelector" VerticalAlignment="Center" />
                                     </BoxContainer>
                                     <BoxContainer HorizontalExpand="True" SeparationOverride="6">
                                         <Label Text="{Loc 'humanoid-profile-editor-species-label'}" StyleClasses="CreatorFieldLabel" VAlign="Center" />
@@ -251,7 +251,7 @@
                                     </BoxContainer>
                                     <!-- WOLFGATE(Humanoid): overrides the species name wherever it is shown. -->
                                     <BoxContainer HorizontalExpand="True" SeparationOverride="6">
-                                        <Label Text="{Loc 'wf-creator-custom-species-label'}" StyleClasses="CreatorFieldLabel" VAlign="Center" />
+                                        <Label Text="{Loc 'wg-creator-custom-species-label'}" StyleClasses="CreatorFieldLabel" VAlign="Center" />
                                         <Control HorizontalExpand="True" />
                                         <LineEdit Name="CustomSpeciesNameEdit" MinWidth="180" />
                                     </BoxContainer>
@@ -275,7 +275,7 @@
                             <!-- Body -->
                             <PanelContainer StyleClasses="CreatorCard" HorizontalExpand="True">
                                 <BoxContainer Orientation="Vertical" SeparationOverride="6">
-                                    <Label Text="{Loc 'wf-creator-body'}" StyleClasses="CreatorHeading" />
+                                    <Label Text="{Loc 'wg-creator-body'}" StyleClasses="CreatorHeading" />
                                     <BoxContainer HorizontalExpand="True" SeparationOverride="6">
                                         <Label Text="{Loc 'humanoid-profile-editor-height-label'}" StyleClasses="CreatorFieldLabel" VAlign="Center" MinWidth="60" />
                                         <Slider Name="HeightSlider" MinValue="0.8" MaxValue="1.2" Value="1.0" HorizontalExpand="True" VerticalAlignment="Center" />
@@ -297,26 +297,26 @@
                                     <BoxContainer Name="RgbSkinColorContainer" Visible="False" Orientation="Vertical" HorizontalExpand="True" />
                                     <!-- WOLFGATE(Biotype): organic or synthetic body, a two-way switch (HumanoidProfileEditor.Biotype.cs) -->
                                     <BoxContainer HorizontalExpand="True" SeparationOverride="6" Margin="0 6 0 0">
-                                        <Label Text="{Loc 'wf-biotype-label'}" StyleClasses="CreatorFieldLabel" VAlign="Center" />
+                                        <Label Text="{Loc 'wg-biotype-label'}" StyleClasses="CreatorFieldLabel" VAlign="Center" />
                                         <Control HorizontalExpand="True" />
-                                        <BoxContainer Name="BiotypeSwitch" MinWidth="240" ToolTip="{Loc 'wf-biotype-tooltip'}" />
+                                        <BoxContainer Name="BiotypeSwitch" MinWidth="240" ToolTip="{Loc 'wg-biotype-tooltip'}" />
                                     </BoxContainer>
                                     <!-- WOLFGATE(ChatFont): the font the character's speech is shown in (HumanoidProfileEditor.ChatFont.cs) -->
                                     <BoxContainer HorizontalExpand="True" SeparationOverride="6">
-                                        <Label Text="{Loc 'wf-chat-font-label'}" StyleClasses="CreatorFieldLabel" VAlign="Center" />
+                                        <Label Text="{Loc 'wg-chat-font-label'}" StyleClasses="CreatorFieldLabel" VAlign="Center" />
                                         <Control HorizontalExpand="True" />
-                                        <OptionButton Name="ChatFontButton" MinWidth="180" ToolTip="{Loc 'wf-chat-font-tooltip'}" />
+                                        <OptionButton Name="ChatFontButton" MinWidth="180" ToolTip="{Loc 'wg-chat-font-tooltip'}" />
                                     </BoxContainer>
                                     <RichTextLabel Name="ChatFontPreview" HorizontalExpand="True" />
                                     <!-- WOLFGATE(TypingBubble): the bubble shown over the character while they type (HumanoidProfileEditor.TypingBubble.cs) -->
-                                    <Label Text="{Loc 'wf-typing-bubble-label'}" StyleClasses="CreatorFieldLabel" Margin="0 6 0 0" />
+                                    <Label Text="{Loc 'wg-typing-bubble-label'}" StyleClasses="CreatorFieldLabel" Margin="0 6 0 0" />
                                     <GridContainer Name="TypingBubbleGrid" Columns="8" HSeparationOverride="2" VSeparationOverride="2" />
                                     <!-- WOLFGATE(Species): lets any species wear every species' markings (HumanoidProfileEditor.MismatchedParts.cs) -->
-                                    <CheckBox Name="MismatchedPartsCheckBox" Text="{Loc 'wf-mismatched-parts-toggle'}"
-                                              ToolTip="{Loc 'wf-mismatched-parts-tooltip'}" Margin="0 6 0 0" />
+                                    <CheckBox Name="MismatchedPartsCheckBox" Text="{Loc 'wg-mismatched-parts-toggle'}"
+                                              ToolTip="{Loc 'wg-mismatched-parts-tooltip'}" Margin="0 6 0 0" />
                                     <!-- WOLFGATE(LegStyle): digitigrade or plantigrade legs, for species with both (HumanoidProfileEditor.LegStyle.cs) -->
-                                    <CheckBox Name="DigitigradeLegsCheckBox" Text="{Loc 'wf-leg-style-digitigrade-toggle'}"
-                                              ToolTip="{Loc 'wf-leg-style-digitigrade-tooltip'}" Visible="False" />
+                                    <CheckBox Name="DigitigradeLegsCheckBox" Text="{Loc 'wg-leg-style-digitigrade-toggle'}"
+                                              ToolTip="{Loc 'wg-leg-style-digitigrade-tooltip'}" Visible="False" />
                                     <!-- WOLFGATE(BloodColour): blood colour toggle and picker, filled in by HumanoidProfileEditor.BloodColour.cs -->
                                     <BoxContainer Name="BloodColourContainer" Orientation="Vertical" HorizontalExpand="True" />
                                 </BoxContainer>
@@ -325,15 +325,15 @@
                         <!-- Hair -->
                         <PanelContainer Name="HairCard" StyleClasses="CreatorCard" HorizontalExpand="True">
                             <BoxContainer Orientation="Vertical" SeparationOverride="6">
-                                <Label Text="{Loc 'wf-creator-hair'}" StyleClasses="CreatorHeading" />
+                                <Label Text="{Loc 'wg-creator-hair'}" StyleClasses="CreatorHeading" />
                                 <!-- WOLFGATE(Humanoid): an even row, not a Box or Grid. Both measure each picker against the
                                      whole width, and a picker picks its tile columns from the width it is measured with, so
                                      hair took far too many columns: its tiles were cut off, or facial hair was pushed out of
                                      the card on a wide screen. The row measures each picker against its own half. -->
-                                <wfh:WolfgateEvenRow Separation="16" HorizontalExpand="True">
-                                    <wfh:WolfgateSlotMarkingPicker Name="HairStylePicker" Category="Hair" HorizontalExpand="True" />
-                                    <wfh:WolfgateSlotMarkingPicker Name="FacialHairPicker" Category="FacialHair" HorizontalExpand="True" />
-                                </wfh:WolfgateEvenRow>
+                                <wgh:WolfgateEvenRow Separation="16" HorizontalExpand="True">
+                                    <wgh:WolfgateSlotMarkingPicker Name="HairStylePicker" Category="Hair" HorizontalExpand="True" />
+                                    <wgh:WolfgateSlotMarkingPicker Name="FacialHairPicker" Category="FacialHair" HorizontalExpand="True" />
+                                </wgh:WolfgateEvenRow>
                             </BoxContainer>
                         </PanelContainer>
                         <!-- Eyes -->
@@ -391,27 +391,27 @@
                 <PanelContainer Name="CustomMarkingsCard" StyleClasses="CreatorCard" Margin="0 0 0 8">
                     <BoxContainer Name="CustomMarkingsBody" Orientation="Vertical" SeparationOverride="6">
                         <BoxContainer SeparationOverride="12">
-                            <Label Text="{Loc 'wf-custom-marking-library-title'}" StyleClasses="CreatorHeading" HorizontalExpand="True" VAlign="Center" />
+                            <Label Text="{Loc 'wg-custom-marking-library-title'}" StyleClasses="CreatorHeading" HorizontalExpand="True" VAlign="Center" />
                             <Button Name="CustomMarkingsButton" StyleClasses="CreatorToggle" />
                         </BoxContainer>
-                        <Label Text="{Loc 'wf-custom-marking-creator-hint'}" StyleClasses="CreatorFieldLabel" />
+                        <Label Text="{Loc 'wg-custom-marking-creator-hint'}" StyleClasses="CreatorFieldLabel" />
                     </BoxContainer>
                 </PanelContainer>
                 <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
                     <!-- WOLFGATE(Genitals): Genital ignored, so leftover genital markings never show here; anatomy has its own tab. -->
-                    <wfh:WolfgateMarkingPicker Name="Markings" IgnoreCategories="Hair,FacialHair,Genital" />
+                    <wgh:WolfgateMarkingPicker Name="Markings" IgnoreCategories="Hair,FacialHair,Genital" />
                 </ScrollContainer>
             </BoxContainer>
-            <!-- WOLFGATE(Genitals): anatomy tab (xmlns:wfg), appended last so tabs 0-5 keep their indices -->
+            <!-- WOLFGATE(Genitals): anatomy tab (xmlns:wgg), appended last so tabs 0-5 keep their indices -->
             <BoxContainer Name="GenitalsTab" Orientation="Vertical" Margin="8">
                 <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
-                    <wfg:WolfgateGenitalEditor Name="GenitalEditor" HorizontalExpand="True" />
+                    <wgg:WolfgateGenitalEditor Name="GenitalEditor" HorizontalExpand="True" />
                 </ScrollContainer>
             </BoxContainer>
-            <!-- WOLFGATE(Augments): augments tab (xmlns:wfa), after anatomy so earlier tabs keep their indices -->
+            <!-- WOLFGATE(Augments): augments tab (xmlns:wga), after anatomy so earlier tabs keep their indices -->
             <BoxContainer Name="AugmentsTab" Orientation="Vertical" Margin="8">
                 <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
-                    <wfa:WFAugmentEditor Name="AugmentEditor" HorizontalExpand="True" />
+                    <wga:WGAugmentEditor Name="AugmentEditor" HorizontalExpand="True" />
                 </ScrollContainer>
             </BoxContainer>
             <!-- WOLFGATE(Voice): voice tab, filled in by HumanoidProfileEditor.SpeechVoice.cs -->
@@ -433,7 +433,7 @@
     <PanelContainer StyleClasses="CreatorPreview" Margin="0 12 12 12" MinWidth="300">
         <ScrollContainer HScrollEnabled="False">
         <BoxContainer Orientation="Vertical" SeparationOverride="8" Margin="14 12">
-            <Label Text="{Loc 'wf-creator-preview'}" StyleClasses="CreatorHeading" />
+            <Label Text="{Loc 'wg-creator-preview'}" StyleClasses="CreatorHeading" />
             <!-- WOLFGATE(Stylesheets): fixed box. SpriteView sizes itself from the sprite's rotated bounding box, so a
                  species whose required marking uses a wide RSI (Shadekin's 64x32 tail) blew the whole pane
                  out. Fit shrinks those to the box instead. -->
@@ -453,7 +453,7 @@
                 <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
                     <Label Text="{Loc 'humanoid-profile-editor-flavortext-tab'}" StyleClasses="CreatorFieldLabel" VAlign="Center" />
                     <Control HorizontalExpand="True" />
-                    <Button Name="DescriptionExpand" Text="{Loc 'wf-creator-description-expand'}" StyleClasses="LinkButton" />
+                    <Button Name="DescriptionExpand" Text="{Loc 'wg-creator-description-expand'}" StyleClasses="LinkButton" />
                 </BoxContainer>
                 <PanelContainer StyleClasses="CreatorInset" HorizontalExpand="True">
                     <ScrollContainer HScrollEnabled="False" ReturnMeasure="True" MinHeight="96" MaxHeight="96" HorizontalExpand="True">

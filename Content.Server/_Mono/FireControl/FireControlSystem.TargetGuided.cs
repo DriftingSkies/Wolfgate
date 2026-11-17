@@ -12,7 +12,7 @@ namespace Content.Server._Mono.FireControl;
 public sealed partial class FireControlSystem
 {
     [Dependency] private TargetGuidedSystem _targetGuided = null!;
-    [Dependency] private Content.Server._WF.BoardingAction.WFHackHarpoonSystem _wfHack = default!; // WOLFGATE(BoardingAction)
+    [Dependency] private Content.Server._WG.BoardingAction.WGHackHarpoonSystem _wgHack = default!; // WOLFGATE(BoardingAction)
 
     /// <summary>
     /// List of active guided missiles that need cursor position updates
@@ -91,10 +91,10 @@ public sealed partial class FireControlSystem
         // WOLFGATE(ShipMissiles) START: tell a soft-launched missile where the console aimed, before its seeker locks
         foreach (var projectileUid in args.FiredProjectiles)
         {
-            if (TryComp<Content.Server._WF.ShipMissiles.WFMissileFlightComponent>(projectileUid, out var wfMissile) &&
-                !_wfHack.RefusesGuidance(projectileUid, targetCoords.Value))
+            if (TryComp<Content.Server._WG.ShipMissiles.WGMissileFlightComponent>(projectileUid, out var wgMissile) &&
+                !_wgHack.RefusesGuidance(projectileUid, targetCoords.Value))
             {
-                wfMissile.Designated = _xform.ToMapCoordinates(targetCoords.Value);
+                wgMissile.Designated = _xform.ToMapCoordinates(targetCoords.Value);
             }
         }
         // WOLFGATE END
@@ -116,7 +116,7 @@ public sealed partial class FireControlSystem
 
             // Set up initial target for guided missile
             guidedComp.TargetPosition = targetCoords.Value;
-            if (_wfHack.RefusesGuidance(projectileUid, targetCoords.Value)) // WOLFGATE(BoardingAction): a locked-down ship can't launch a missile at the hacker.
+            if (_wgHack.RefusesGuidance(projectileUid, targetCoords.Value)) // WOLFGATE(BoardingAction): a locked-down ship can't launch a missile at the hacker.
                 guidedComp.TargetPosition = null;
 
             // Add to our tracking list for cursor position updates

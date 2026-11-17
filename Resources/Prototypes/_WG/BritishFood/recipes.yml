@@ -1,0 +1,188 @@
+# British dishes. The hand pies, pasty and melt bake from raw pastry base, the Welsh cawl simmers in a bowl, and the
+# deep fried Mars bar is battered in the assembler before it goes in the deep fryer.
+
+- type: microwaveMealRecipe
+  id: WGRecipeHuntersChicken
+  name: wg-recipe-hunters-chicken
+  result: WGFoodHuntersChicken
+  time: 10
+  group: Savory
+  solids:
+    FoodMeatChickenCooked: 1
+    FoodMeatBaconCooked: 2
+    FoodCheeseSlice: 1
+  reagents:
+    BbqSauce: 5
+  recipeType:
+  - Oven
+
+- type: microwaveMealRecipe
+  id: WGRecipeSteakAlePie
+  name: wg-recipe-steak-ale-pie
+  result: WGFoodPieSteakAle
+  time: 15
+  group: Pie
+  solids:
+    FoodDoughPie: 1
+    FoodMeatCooked: 2
+    FoodOnion: 1
+    FoodMushroom: 1
+    FoodPlateTin: 1
+  reagents:
+    Ale: 10
+    TableSalt: 1
+    Blackpepper: 1
+  recipeType:
+  - Oven
+
+- type: microwaveMealRecipe
+  id: WGRecipePorkPie
+  name: wg-recipe-pork-pie
+  result: WGFoodPiePork
+  time: 15
+  group: Pie
+  solids:
+    FoodDoughPastryBaseRaw: 1
+    FoodMeat: 1
+  reagents:
+    TableSalt: 1
+    Blackpepper: 1
+  recipeType:
+  - Oven
+
+- type: microwaveMealRecipe
+  id: WGRecipeChickenMushroomPie
+  name: wg-recipe-chicken-mushroom-pie
+  result: WGFoodPieChickenMushroom
+  time: 15
+  group: Pie
+  solids:
+    FoodDoughPastryBaseRaw: 1
+    FoodMeatChickenCutlet: 1
+    FoodMushroom: 1
+  reagents:
+    Cream: 5
+  recipeType:
+  - Oven
+
+- type: microwaveMealRecipe
+  id: WGRecipeCornishPasty
+  name: wg-recipe-cornish-pasty
+  result: WGFoodCornishPasty
+  time: 15
+  group: Savory
+  solids:
+    FoodDoughPastryBaseRaw: 1
+    FoodMeatCutlet: 1
+    FoodPotato: 1
+    FoodOnion: 1
+  reagents:
+    Blackpepper: 1
+  recipeType:
+  - Oven
+
+- type: microwaveMealRecipe
+  id: WGRecipeCheesyBeanMelt
+  name: wg-recipe-cheesy-bean-melt
+  result: WGFoodCheesyBeanMelt
+  time: 15
+  group: Savory
+  solids:
+    FoodDoughPastryBaseRaw: 1
+    FoodMeatSausage: 1
+    FoodTinBeans: 1
+    FoodCheeseSlice: 1
+  recipeType:
+  - Oven
+
+- type: microwaveMealRecipe
+  id: WGRecipeBeansOnToast
+  name: wg-recipe-beans-on-toast
+  result: WGFoodBeansOnToast
+  time: 5
+  group: Breakfast
+  solids:
+    FoodBreadButteredToast: 1
+    FoodTinBeans: 1
+  recipeType:
+  - Oven
+
+- type: microwaveMealRecipe
+  id: WGRecipeWelshCawl
+  name: wg-recipe-welsh-cawl
+  result: WGFoodSoupWelshCawl
+  time: 15
+  group: Soup
+  solids:
+    FoodBowlBig: 1
+    FoodMeatCutlet: 2
+    FoodPotato: 1
+    FoodCarrot: 1
+    FoodOnion: 1
+  reagents:
+    Water: 10
+  recipeType:
+  - Oven
+
+# Egg whites and sugar bake into the meringue, then the cream and berries go on.
+- type: microwaveMealRecipe
+  id: WGRecipeEtonMess
+  name: wg-recipe-eton-mess
+  result: WGFoodEtonMess
+  time: 10
+  group: Dessert
+  solids:
+    DrinkGlass: 1
+    FoodBerries: 1
+  reagents:
+    Egg: 6
+    Sugar: 5
+    Cream: 5
+  recipeType:
+  - Oven
+
+- type: microwaveMealRecipe
+  id: WGRecipeScones
+  name: wg-recipe-scones
+  result: WGFoodScones
+  time: 10
+  group: BarsAndCookies
+  solids:
+    FoodDoughSlice: 2
+    FoodButterSlice: 1
+    FoodBerries: 1
+  reagents:
+    Cream: 5
+  recipeType:
+  - Oven
+
+# Raisins stand in for the dates.
+- type: microwaveMealRecipe
+  id: WGRecipeStickyToffeePudding
+  name: wg-recipe-sticky-toffee-pudding
+  result: WGFoodStickyToffeePudding
+  time: 10
+  group: Dessert
+  solids:
+    FoodCakePlainSlice: 1
+    FoodSnackRaisins: 1
+    FoodButterSlice: 1
+  reagents:
+    Sugar: 5
+    Cream: 5
+  recipeType:
+  - Oven
+
+- type: microwaveMealRecipe
+  id: WGRecipeMarsBarBattered
+  name: wg-recipe-mars-bar-battered
+  result: WGFoodMarsBarBattered
+  time: 5
+  group: Dessert
+  solids:
+    FoodSnackChocolateBar: 1
+  reagents:
+    Flour: 5
+    Egg: 6
+  recipeType:
+  - Assembler

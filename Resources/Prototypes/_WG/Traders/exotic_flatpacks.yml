@@ -1,0 +1,566 @@
+# Flatpacks for ship guns and ship systems that are otherwise only found already fitted to a hull. Sold by the exotic
+# traders; priced at what the fitted part is worth, before the trader's markup.
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretDravon
+  name: DRAVON autocannon flatpack
+  description: A flatpack used for constructing an ADBP-7 DRAVON 57mm autocannon. Mounts on a medium ballistic hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretDravon
+  - type: StaticPrice
+    price: 6000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretFang
+  name: Fang autocannon flatpack
+  description: A flatpack used for constructing a Fang heavy 57mm autocannon. Mounts on a heavy ballistic hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretFang
+  - type: StaticPrice
+    price: 7500
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretRAC30
+  name: RAC-30 autocannon flatpack
+  description: A flatpack used for constructing a RAC-30 Draupnir autocannon. Mounts on a medium ballistic hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretRAC30
+  - type: StaticPrice
+    price: 5000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretLongbow
+  name: Longbow autocannon flatpack
+  description: A flatpack used for constructing an L/65 Longbow 85mm autocannon. Mounts on a superheavy ballistic hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretLongbow
+  - type: StaticPrice
+    price: 30000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretAk820
+  name: AK820 autocannon flatpack
+  description: A flatpack used for constructing an AK820 100mm autocannon. Mounts on a heavy ballistic hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretAk820
+  - type: StaticPrice
+    price: 16000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretBofors
+  name: Bofors cannon flatpack
+  description: A flatpack used for constructing a Bofors 203mm cannon. Mounts on a heavy ballistic hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretBofors
+  - type: StaticPrice
+    price: 15000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretHydra
+  name: Hydra battery flatpack
+  description: A flatpack used for constructing a Hydra 130mm battery. Mounts on a heavy ballistic hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretHydra
+  - type: StaticPrice
+    price: 20000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretEquinox
+  name: EQUINOX cannon flatpack
+  description: A flatpack used for constructing a GS-001 EQUINOX 90mm AP cannon. Mounts on a medium ballistic hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretTarnyxReloadAP
+  - type: StaticPrice
+    price: 9000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretTarnyx
+  name: TARNYX EMP cannon flatpack
+  description: A flatpack used for constructing an ADBX-31 TARNYX 90mm EMP cannon. Mounts on a medium ballistic hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretTarnyxReload
+  - type: StaticPrice
+    price: 9000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretRubicon
+  name: RUBICON EMP launcher flatpack
+  description: A flatpack used for constructing an M220 RUBICON EMP launcher. Mounts on a light energy hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretM220
+  - type: StaticPrice
+    price: 4500
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretAdder
+  name: Adder scattercannon flatpack
+  description: A flatpack used for constructing an Adder scattercannon. Mounts on a light ballistic hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretAdderScattercannon
+  - type: StaticPrice
+    price: 2500
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretType54
+  name: Type-54C autopulser flatpack
+  description: A flatpack used for constructing a Type-54C plasma autopulser. Mounts on a medium energy hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretType54
+  - type: StaticPrice
+    price: 5000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretCerberus
+  name: Cerberus scattercannon flatpack
+  description: A flatpack used for constructing a TPC Cerberus plasma scattercannon. Mounts on a heavy energy hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretCerberus
+  - type: StaticPrice
+    price: 4000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretScylla
+  name: Scylla impulse driver flatpack
+  description: A flatpack used for constructing a TPC Scylla plasma impulse driver. Mounts on a superheavy energy hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretScylla
+  - type: StaticPrice
+    price: 50000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretDymere
+  name: DYMERE turbolaser flatpack
+  description: A flatpack used for constructing an ADEX-9 DYMERE turbolaser. Mounts on a superheavy energy hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretDymere
+  - type: StaticPrice
+    price: 50000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretPhalanx
+  name: Phalanx laser flatpack
+  description: A flatpack used for constructing an L-1 Phalanx point defence laser. Mounts on a light energy hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponLaserTurretL1Phalanx
+  - type: StaticPrice
+    price: 4000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretApollo
+  name: Apollo laser cannon flatpack
+  description: A flatpack used for constructing an L-20 Apollo mining laser cannon. Mounts on a heavy energy hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponLaserTurretApollo
+  - type: StaticPrice
+    price: 15000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretPrometheus
+  name: Prometheus laser cannon flatpack
+  description: A flatpack used for constructing a TPC Prometheus laser cannon. Mounts on a medium energy hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponLaserTurretPrometheus
+  - type: StaticPrice
+    price: 17500
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretFlare
+  name: Sunny flare system flatpack
+  description: A flatpack used for constructing a GS-002 Sunny flare system. Mounts on a superlight ballistic hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretFlare
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretVespera
+  name: VESPERA missile rack flatpack
+  description: A flatpack used for constructing an ADMP-50 VESPERA missile rack. Mounts on a medium missile hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretVespera
+  - type: StaticPrice
+    price: 4000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretVanyk
+  name: Vanyk missile pod flatpack
+  description: A flatpack used for constructing an ASM-150 Vanyk missile pod. Mounts on a light missile hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretVanyk
+  - type: StaticPrice
+    price: 5000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretTovek
+  name: TOVEK missile pod flatpack
+  description: A flatpack used for constructing an ADMX-250 TOVEK missile pod. Mounts on a medium missile hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretTovek
+  - type: StaticPrice
+    price: 10000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTurretPaladin
+  name: Paladin missile pod flatpack
+  description: A flatpack used for constructing an MLRS-382 Paladin missile pod. Mounts on a heavy missile hardpoint.
+  components:
+  - type: Flatpack
+    entity: WeaponTurretPaladin
+  - type: StaticPrice
+    price: 24500
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackShieldSentinel
+  name: MS-100 Sentinel shield generator flatpack
+  description: A flatpack used for constructing an MS-100 Sentinel shield generator.
+  components:
+  - type: Flatpack
+    entity: ShieldGeneratorSmall
+  - type: StaticPrice
+    price: 12000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackShieldAegis
+  name: MS-250 Aegis shield generator flatpack
+  description: A flatpack used for constructing an MS-250 Aegis shield generator.
+  components:
+  - type: Flatpack
+    entity: ShieldGeneratorMedium
+  - type: StaticPrice
+    price: 30000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackShieldTitan
+  name: MS-500 Titan shield generator flatpack
+  description: A flatpack used for constructing an MS-500 Titan shield generator.
+  components:
+  - type: Flatpack
+    entity: ShieldGenerator
+  - type: StaticPrice
+    price: 75000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackGravityGeneratorMini
+  name: mini gravity generator flatpack
+  description: A flatpack used for constructing a mini gravity generator.
+  components:
+  - type: Flatpack
+    entity: GravityGeneratorMini
+  - type: StaticPrice
+    price: 6000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackThrusterLarge
+  name: large thruster flatpack
+  description: A flatpack used for constructing a capital-grade large thruster.
+  components:
+  - type: Flatpack
+    entity: ThrusterLarge
+  - type: StaticPrice
+    price: 4000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackThrusterLargeT2
+  name: tuned large thruster flatpack
+  description: A flatpack used for constructing a large thruster built with upgraded parts.
+  components:
+  - type: Flatpack
+    entity: ThrusterLargePartsT2
+  - type: StaticPrice
+    price: 7000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackThrusterT2
+  name: tuned thruster flatpack
+  description: A flatpack used for constructing a thruster built with upgraded parts.
+  components:
+  - type: Flatpack
+    entity: ThrusterPartsT2
+  - type: StaticPrice
+    price: 2500
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackThrusterStealth
+  name: stealth thruster flatpack
+  description: A flatpack used for constructing a stealth thruster that leaves no plume.
+  components:
+  - type: Flatpack
+    entity: ThrusterRogueStealth
+  - type: StaticPrice
+    price: 9000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackThrusterNavy
+  name: navy large thruster flatpack
+  description: A flatpack used for constructing a navy-pattern large thruster.
+  components:
+  - type: Flatpack
+    entity: ThrusterLargeSecurity
+  - type: StaticPrice
+    price: 6000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackGyroscopeNavy
+  name: navy gyroscope flatpack
+  description: A flatpack used for constructing a navy-pattern gyroscope.
+  components:
+  - type: Flatpack
+    entity: GyroscopeSecurity
+  - type: StaticPrice
+    price: 5000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackSalvageMagnet
+  name: salvage magnet flatpack
+  description: A flatpack used for constructing a salvage magnet.
+  components:
+  - type: Flatpack
+    entity: SalvageMagnet
+  - type: StaticPrice
+    price: 8000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTractorBeam
+  name: tractor beam emitter flatpack
+  description: A flatpack used for constructing a tractor beam emitter.
+  components:
+  - type: Flatpack
+    entity: WGTractorBeamEmitter
+  - type: StaticPrice
+    price: 10000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackTractorBeamSmall
+  name: small tractor beam emitter flatpack
+  description: A flatpack used for constructing a small tractor beam emitter.
+  components:
+  - type: Flatpack
+    entity: WGTractorBeamEmitterSmall
+  - type: StaticPrice
+    price: 5000
+
+# Hardpoints: the mounts every ship gun anchors to, by class and size. Nothing else sells them, so a hull takes only the
+# guns it was launched with until the armourer comes by. Each draws power from the ship's APC.
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointBallisticSuperlight
+  name: superlight ballistic hardpoint flatpack
+  description: A flatpack used for constructing a superlight ballistic hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointBallisticSuperlight
+  - type: StaticPrice
+    price: 2000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointBallisticLight
+  name: light ballistic hardpoint flatpack
+  description: A flatpack used for constructing a light ballistic hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointBallisticLight
+  - type: StaticPrice
+    price: 4000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointBallisticMedium
+  name: medium ballistic hardpoint flatpack
+  description: A flatpack used for constructing a medium ballistic hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointBallisticMedium
+  - type: StaticPrice
+    price: 8000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointBallisticHeavy
+  name: heavy ballistic hardpoint flatpack
+  description: A flatpack used for constructing a heavy ballistic hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointBallisticHeavy
+  - type: StaticPrice
+    price: 16000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointBallisticSuperheavy
+  name: superheavy ballistic hardpoint flatpack
+  description: A flatpack used for constructing a superheavy ballistic hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointBallisticSuperheavy
+  - type: StaticPrice
+    price: 32000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointEnergySuperlight
+  name: superlight energy hardpoint flatpack
+  description: A flatpack used for constructing a superlight energy hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointEnergySuperlight
+  - type: StaticPrice
+    price: 2000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointEnergyLight
+  name: light energy hardpoint flatpack
+  description: A flatpack used for constructing a light energy hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointEnergyLight
+  - type: StaticPrice
+    price: 4000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointEnergyMedium
+  name: medium energy hardpoint flatpack
+  description: A flatpack used for constructing a medium energy hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointEnergyMedium
+  - type: StaticPrice
+    price: 8000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointEnergyHeavy
+  name: heavy energy hardpoint flatpack
+  description: A flatpack used for constructing a heavy energy hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointEnergyHeavy
+  - type: StaticPrice
+    price: 16000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointEnergySuperheavy
+  name: superheavy energy hardpoint flatpack
+  description: A flatpack used for constructing a superheavy energy hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointEnergySuperheavy
+  - type: StaticPrice
+    price: 32000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointMissileSuperlight
+  name: superlight missile hardpoint flatpack
+  description: A flatpack used for constructing a superlight missile hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointMissileSuperlight
+  - type: StaticPrice
+    price: 2000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointMissileLight
+  name: light missile hardpoint flatpack
+  description: A flatpack used for constructing a light missile hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointMissileLight
+  - type: StaticPrice
+    price: 4000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointMissileMedium
+  name: medium missile hardpoint flatpack
+  description: A flatpack used for constructing a medium missile hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointMissileMedium
+  - type: StaticPrice
+    price: 8000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointMissileHeavy
+  name: heavy missile hardpoint flatpack
+  description: A flatpack used for constructing a heavy missile hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointMissileHeavy
+  - type: StaticPrice
+    price: 16000
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHardpointMissileSuperheavy
+  name: superheavy missile hardpoint flatpack
+  description: A flatpack used for constructing a superheavy missile hardpoint, the mount a ship gun of that class and size anchors to.
+  components:
+  - type: Flatpack
+    entity: HardpointMissileSuperheavy
+  - type: StaticPrice
+    price: 32000

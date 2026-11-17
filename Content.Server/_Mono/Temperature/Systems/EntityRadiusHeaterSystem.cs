@@ -4,10 +4,10 @@ using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Temperature.Components;
 using Content.Server.Temperature.Systems;
-using Content.Shared._WF.Performance; // WOLFGATE(Performance)
+using Content.Shared._WG.Performance; // WOLFGATE(Performance)
 using Content.Shared.IgnitionSource;
 using Content.Shared.Item.ItemToggle.Components;
-using Content.Server._WF.Bonfires; // WOLFGATE(Bonfires)
+using Content.Server._WG.Bonfires; // WOLFGATE(Bonfires)
 using Content.Server.Atmos.Portable; // WOLFGATE(Warmth)
 using Content.Shared.Atmos.Components; // WOLFGATE(Warmth)
 using Content.Shared.Atmos.Piping.Portable.Components; // WOLFGATE(Warmth)
@@ -35,13 +35,13 @@ public sealed partial class EntityRadiusHeaterSystem : EntitySystem
         //     _updateTimer += TimeSpan.FromSeconds(frameTime);
         //     return;
         // }
-        var period = WFTickSpread.Period(_timing, _updateCooldown);
+        var period = WGTickSpread.Period(_timing, _updateCooldown);
         var tick = _timing.CurTick;
 
         var eqe = EntityQueryEnumerator<EntityRadiusHeaterComponent>();
 
         // while (eqe.MoveNext(out var uid, out var comp))
-        while (WFNextDue(ref eqe, tick, period, out var uid, out var comp))
+        while (WGNextDue(ref eqe, tick, period, out var uid, out var comp))
         // WOLFGATE END
         {
             // WOLFGATE(Warmth) START: the activation checks moved into IsActive, which the warmth system shares
@@ -86,7 +86,7 @@ public sealed partial class EntityRadiusHeaterSystem : EntitySystem
             return false;
 
         // WOLFGATE(Bonfires): a fire that has burnt out gives no warmth
-        if (TryComp<WFBonfireFuelComponent>(uid, out var fuel) && !fuel.Lit)
+        if (TryComp<WGBonfireFuelComponent>(uid, out var fuel) && !fuel.Lit)
             return false;
 
         return this.IsPowered(uid, EntityManager);

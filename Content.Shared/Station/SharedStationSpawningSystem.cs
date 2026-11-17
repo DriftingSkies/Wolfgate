@@ -61,7 +61,7 @@ public abstract partial class SharedStationSpawningSystem : EntitySystem
                 }
 
                 EquipStartingGear(entity, loadoutProto, raiseEvent: false);
-                ApplyWFGagsColors(entity, loadoutProto, items); // WOLFGATE(Gags): the colours picked in the loadout window
+                ApplyWGGagsColors(entity, loadoutProto, items); // WOLFGATE(Gags): the colours picked in the loadout window
                 equippedItems.Add(loadoutProto.ID); // Frontier
             }
 
@@ -223,7 +223,7 @@ public abstract partial class SharedStationSpawningSystem : EntitySystem
                 // WOLFGATE(Roles) START: a slot without storage (a modsuit on the back) no longer loses its starting items
                 else if (inventoryComp != null)
                 {
-                    WfStoreElsewhere(entity, entProtos, coords);
+                    WgStoreElsewhere(entity, entProtos, coords);
                 }
                 // WOLFGATE END
             }

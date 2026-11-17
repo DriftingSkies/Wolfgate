@@ -1,6 +1,6 @@
 using Content.Shared.DoAfter;
 using Robust.Shared.Audio;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 

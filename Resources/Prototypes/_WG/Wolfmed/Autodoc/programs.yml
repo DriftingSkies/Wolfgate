@@ -1,0 +1,196 @@
+# The autodoc's library. The base program ships on the machine; the other four need their disk in the slot.
+
+- type: autodocProgram
+  id: WGWolfmedAutodocProgramBase
+  name: wolfmed-autodoc-program-base
+  surgeries:
+  # Getting in and out.
+  - SurgeryOpenIncision
+  - SurgeryOpenRibcage
+  - SurgeryCloseIncision
+  - WGSurgeryCloseEvisceration
+  # Tending.
+  - SurgeryTendWoundsBrute
+  - SurgeryTendWoundsBurn
+  - WGSurgeryTendWoundsBruteDeep
+  - WGSurgeryTendWoundsBurnDeep
+  - WGSurgeryGraftSkin
+  - WGSurgeryRemoveNecroticFlesh
+  # Bleeding.
+  - WGSurgeryStopBleeding
+  - WGSurgeryStopInternalBleeding
+  - WGSurgeryRepairArtery
+  - WGSurgeryRepairTendon
+  # Bone and joints.
+  - WGSurgeryMendFracture
+  - WGSurgeryHealAmputationConsequence
+  - WGSurgeryRelocateJoint
+  # What is still stuck in the patient. Blocks every other treatment on its part until it is out.
+  - WGSurgeryRemoveEmbeddedObjects
+  # Organ repair in place. Removal and insertion need the transplant disk.
+  - WGSurgeryHealHeart
+  - WGSurgeryHealLungs
+  - WGSurgeryHealLiver
+  - WGSurgeryHealStomach
+  - WGSurgeryHealKidneys
+  # Xenomorph larva, listed only while the patient carries one.
+  - WGSurgeryAlienEmbryoRemoval
+  # Chest burst repair, listed only while the burst host can still be mended.
+  - WGSurgeryBurstChestRepair
+  # Mechanical.
+  - WGSurgeryWeldChassisBreach
+  - WGSurgeryWeldChassis
+  - WGSurgeryRewireChassis
+  - WGSurgeryReplaceServo
+  # Last resort.
+  - SurgeryRemovePart
+
+- type: autodocProgram
+  id: WGWolfmedAutodocProgramTransplant
+  name: wolfmed-autodoc-program-transplant
+  surgeries:
+  - SurgeryRemoveHeart
+  - SurgeryInsertHeart
+  - SurgeryRemoveLungs
+  - SurgeryInsertLungs
+  - SurgeryRemoveLiver
+  - SurgeryInsertLiver
+  - SurgeryRemoveStomach
+  - SurgeryInsertStomach
+  - WGSurgeryRemoveKidneys
+  - WGSurgeryInsertKidneys
+  - SurgeryInsertPump
+
+- type: autodocProgram
+  id: WGWolfmedAutodocProgramLimb
+  name: wolfmed-autodoc-program-limb
+  surgeries:
+  - SurgeryAttachLeftArm
+  - SurgeryAttachRightArm
+  - SurgeryAttachLeftLeg
+  - SurgeryAttachRightLeg
+  - SurgeryAttachLeftHand
+  - SurgeryAttachRightHand
+  - SurgeryAttachLeftFoot
+  - SurgeryAttachRightFoot
+  - SurgeryAttachHands
+
+- type: autodocProgram
+  id: WGWolfmedAutodocProgramNeuro
+  name: wolfmed-autodoc-program-neuro
+  surgeries:
+  - SurgeryAttachHead
+  - SurgeryRemoveBrain
+  - SurgeryInsertBrain
+  - SurgeryRemoveBorgBrain
+  - SurgeryInsertBorgBrain
+  - SurgeryRemoveEyes
+  - SurgeryInsertEyes
+  - WGSurgeryHealBrain
+  - WGSurgeryRepairBrain
+  # A slime's brain is the core in its torso.
+  - WGSurgeryHealSlimeCore
+  - WGSurgeryRepairSlimeCore
+  - WGSurgeryHealEyes
+  # M6: a machine's core, the positronic brain's repair (OD10). The IPC's is in the chassis, a synth's in the head.
+  - WGSurgeryRepairCore
+  - WGSurgeryRepairSynthCore
+  - WGSurgeryRepairChassisEyes
+  - WGSurgeryRepairChassisPump
+  - WGSurgeryRepairSynthPump
+
+- type: autodocProgram
+  id: WGWolfmedAutodocProgramCavity
+  name: wolfmed-autodoc-program-cavity
+  surgeries:
+  - SurgeryInsertItem
+
+# Per-surgery reagent overrides. Anything not listed here takes the pod's defaults: 15u anaesthetic before
+# the first incision of a surgery that opens the body, 10u antibiotic after it closes.
+
+- type: autodocProcedure
+  id: SurgeryTendWoundsBrute
+  anaesthetic: 0
+  antibiotic: 0
+
+- type: autodocProcedure
+  id: SurgeryTendWoundsBurn
+  anaesthetic: 0
+  antibiotic: 0
+
+- type: autodocProcedure
+  id: SurgeryRemovePart
+  anaesthetic: 25
+  antibiotic: 15
+
+- type: autodocProcedure
+  id: SurgeryOpenRibcage
+  anaesthetic: 25
+  antibiotic: 15
+
+- type: autodocProcedure
+  id: WGSurgeryWeldChassisBreach
+  anaesthetic: 0
+  antibiotic: 0
+
+- type: autodocProcedure
+  id: WGSurgeryReplaceServo
+  anaesthetic: 0
+  antibiotic: 0
+
+# Playtest 3 IPC 2: a welder and a coil from the outside. Nothing is opened, so nothing is dosed.
+- type: autodocProcedure
+  id: WGSurgeryWeldChassis
+  anaesthetic: 0
+  antibiotic: 0
+
+- type: autodocProcedure
+  id: WGSurgeryRewireChassis
+  anaesthetic: 0
+  antibiotic: 0
+
+# M6: a chassis has no blood to dose.
+- type: autodocProcedure
+  id: WGSurgeryRepairCore
+  anaesthetic: 0
+  antibiotic: 0
+
+- type: autodocProcedure
+  id: WGSurgeryRepairSynthCore
+  anaesthetic: 0
+  antibiotic: 0
+
+# The whole administrable list. A reagent that is not here is left in the beaker, whatever it is.
+
+# Playtest 5: safeUnits is each reagent's overdose line with a margin (Reagents/painkillers.yml, medicine.yml); the pod
+# never pushes past it. The sedation cap only ever bounded the sedatives, and a long brain repair poisoned a patient
+# with analgesic.
+- type: autodocReagents
+  id: WGWolfmedAutodocReagents
+  reagents:
+  - reagent: WGWolfmedOpiate
+    role: Anaesthetic
+    safeUnits: 12 # poison from 15
+  - reagent: WGWolfmedAnalgesic
+    role: Anaesthetic
+    safeUnits: 18 # poison from 20
+  - reagent: WGWolfmedStim
+    role: Fluid
+    safeUnits: 8 # poison from 10
+  - reagent: Spaceacillin
+    role: Antibiotic
+    safeUnits: 22 # poison from 25
+  - reagent: Ethanol
+    role: Antiseptic
+  - reagent: Saline
+    role: Fluid
+  - reagent: Blood
+    role: Fluid
+  # Playtest 3 IPC 2: a chassis's own fluid, and only a chassis's. Oil is not on the list, so an oil pack stays put.
+  - reagent: WGWolfmedHydraulicFluid
+    role: Fluid
+    machine: true
+  - reagent: Dexalin
+    role: Oxygen
+  - reagent: DexalinPlus
+    role: Oxygen

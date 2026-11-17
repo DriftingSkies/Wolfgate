@@ -30,7 +30,7 @@ namespace Content.Server.Body.Systems;
 public sealed partial class RespiratorSystem : EntitySystem
 {
     [Dependency] private IAdminLogManager _adminLogger = default!;
-    [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _wfDormancy = default!; // WOLFGATE(Dormancy): skips NPC bodies nobody is near
+    [Dependency] private Content.Server._WG.Dormancy.WGDormancySystem _wgDormancy = default!; // WOLFGATE(Dormancy): skips NPC bodies nobody is near
     [Dependency] private IGameTiming _gameTiming = default!;
     [Dependency] private AlertsSystem _alertsSystem = default!;
     [Dependency] private AtmosphereSystem _atmosSys = default!;
@@ -41,8 +41,8 @@ public sealed partial class RespiratorSystem : EntitySystem
     [Dependency] private IPrototypeManager _protoMan = default!;
     [Dependency] private SharedSolutionContainerSystem _solutionContainerSystem = default!;
     [Dependency] private ChatSystem _chat = default!;
-    [Dependency] private Content.Server._WF.Wolfmed.Life.WolfmedBreathingSystem _wolfmedBreathing = default!; // WOLFGATE(Wolfmed): M1a
-    [Dependency] private Content.Server._WF.Wolfmed.Life.WolfmedBreathingAlertSystem _wolfmedBreathingAlert = default!; // WOLFGATE(Wolfmed): M2
+    [Dependency] private Content.Server._WG.Wolfmed.Life.WolfmedBreathingSystem _wolfmedBreathing = default!; // WOLFGATE(Wolfmed): M1a
+    [Dependency] private Content.Server._WG.Wolfmed.Life.WolfmedBreathingAlertSystem _wolfmedBreathingAlert = default!; // WOLFGATE(Wolfmed): M2
 
     private static readonly ProtoId<MetabolismGroupPrototype> GasId = new("Gas");
 
@@ -78,7 +78,7 @@ public sealed partial class RespiratorSystem : EntitySystem
                 continue;
 
             respirator.NextUpdate += respirator.UpdateInterval;
-            if (_wfDormancy.BodySleeps(uid)) continue; // WOLFGATE(Dormancy): an NPC body no player is near on a planet skips its upkeep
+            if (_wgDormancy.BodySleeps(uid)) continue; // WOLFGATE(Dormancy): an NPC body no player is near on a planet skips its upkeep
 
             if (_mobState.IsDead(uid) || HasComp<BreathingImmunityComponent>(uid)) // Shitmed: BreathingImmunity
                 continue;
@@ -106,7 +106,7 @@ public sealed partial class RespiratorSystem : EntitySystem
             {
                 // WOLFGATE(Wolfmed): ARREST: a body whose heart has stopped looks dead, so it does not gasp. It still
                 // suffocates; the gasp is the only part of it anyone can see or hear.
-                if (!HasComp<Content.Shared._WF.Wolfmed.Life.WolfmedCardiacArrestComponent>(uid) &&
+                if (!HasComp<Content.Shared._WG.Wolfmed.Life.WolfmedCardiacArrestComponent>(uid) &&
                     _gameTiming.CurTime >= respirator.LastGaspEmoteTime + respirator.GaspEmoteCooldown)
                 {
                     respirator.LastGaspEmoteTime = _gameTiming.CurTime;
@@ -331,7 +331,7 @@ public sealed partial class RespiratorSystem : EntitySystem
         } // WOLFGATE(Wolfmed)
 
         // WOLFGATE(Wolfmed): skip the damage pipeline when there is no suffocation damage to recover.
-        if (Content.Server._WF.Wolfmed.Damage.WolfmedHealCheck.WouldHeal(CompOrNull<DamageableComponent>(ent), ent.Comp.DamageRecovery))
+        if (Content.Server._WG.Wolfmed.Damage.WolfmedHealCheck.WouldHeal(CompOrNull<DamageableComponent>(ent), ent.Comp.DamageRecovery))
         _damageableSys.TryChangeDamage(ent, ent.Comp.DamageRecovery);
     }
 

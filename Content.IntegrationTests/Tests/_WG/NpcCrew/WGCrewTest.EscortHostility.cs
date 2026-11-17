@@ -1,0 +1,219 @@
+#nullable enable
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using Content.Server._Mono.NPC.HTN;
+using Content.Server._WG.NpcCrew;
+using Content.Server._WG.NpcCrew.Components;
+using Content.Server._WG.NpcCrew.Systems;
+using Content.Server.Damage.Systems;
+using Content.Server.NPC.HTN;
+using Content.Server.Shuttles.Components;
+using Content.Shared._WG.NpcCrew;
+using Content.Shared.Damage;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Systems;
+using Content.Shared.NPC.Components;
+using Content.Shared.NPC.Systems;
+using Robust.Shared.GameObjects;
+using Robust.Shared.Map;
+
+namespace Content.IntegrationTests.Tests._WG.NpcCrew;
+
+public sealed partial class WGCrewTest
+{
+    private EntityUid ConvoyCrew(EntityUid grid, string role, string group, Vector2? position = null)
+    {
+        var member = Server.System<WGCrewSystem>().SpawnCrewman(role,
+            new EntityCoordinates(grid, position ?? new Vector2(2.5f)), group)!.Value;
+        SEntMan.GetComponent<HTNComponent>(member).Enabled = false;
+        return member;
+    }
+
+    /// <summary>An uncrewed freighter shares attacks through chained escorts, even after captain evasion begins.</summary>
+    [Test]
+    public async Task CrewEscortSharesAttacksAcrossGroupsAndEvasiveOrders()
+    {
+        var leader = await CreateDeck(new Vector2(500, 500), 7, true);
+        var a = await CreateDeck(new Vector2(600, 500), 7, true);
+        var b = await CreateDeck(new Vector2(700, 500), 7, true);
+        var c = await CreateDeck(new Vector2(800, 500), 7, true);
+        var hostile = await CreateDeck(new Vector2(900, 500), 7, true);
+        var second = await CreateDeck(new Vector2(1000, 500), 7, true);
+        await Server.WaitAssertion(() =>
+        {
+            var ships = new[] { a, b, c };
+            var groups = new[] { "alpha", "bravo", "charlie" };
+            var pilots = new EntityUid[3];
+            var captains = new EntityUid[3];
+            var flight = Server.System<WGPilotDutySystem>();
+            for (var i = 0; i < ships.Length; i++)
+            {
+                pilots[i] = ConvoyCrew(ships[i], "WGCrewPilot", groups[i]);
+                captains[i] = ConvoyCrew(ships[i], "WGCrewCaptain", groups[i], new Vector2(1.5f));
+                flight.Escort(pilots[i], i == 0 ? leader : ships[i - 1], 100);
+            }
+            var escorts = Server.System<WGCrewEscortSystem>();
+            Assert.That(escorts.GetFormation(leader), Is.EquivalentTo(new[] { leader, a, b, c }));
+            var radio = ConvoyCrew(a, "WGCrewRadioOperator", "alpha", new Vector2(4.5f));
+            var hit = new WGCrewHullHitEvent(leader, hostile);
+            SEntMan.EventBus.RaiseLocalEvent(leader, ref hit, true);
+            var alerts = Server.System<WGCrewAlertSystem>();
+            for (var i = 0; i < ships.Length; i++)
+            {
+                Assert.That(alerts.GetHostileShips(ships[i], groups[i]), Does.Contain(hostile));
+                Assert.That(SEntMan.GetComponent<WGPilotDutyComponent>(pilots[i]).Orders, Is.EqualTo(WGPilotOrder.Loiter));
+            }
+            Assert.That(escorts.GetFormation(leader), Is.EquivalentTo(new[] { leader, a, b, c }),
+                "Temporary captain orders must not disconnect escorts.");
+            Server.System<MobStateSystem>().ChangeMobState(captains[1], MobState.Dead);
+            Server.System<WGCaptainSystem>().Update(0f);
+            Assert.That(escorts.AreInFormation(b, leader), Is.True, "Losing the captain during evasion does not dissolve the assignment.");
+            hit = new WGCrewHullHitEvent(c, second);
+            SEntMan.EventBus.RaiseLocalEvent(c, ref hit, true);
+            for (var i = 0; i < ships.Length; i++)
+                Assert.That(alerts.GetHostileShips(ships[i], groups[i]), Is.EquivalentTo(new[] { hostile, second }));
+
+            // A replacement escort order creates a cycle without the original freighter.
+            flight.Escort(pilots[0], c, 100);
+            Assert.That(escorts.GetFormation(a), Is.EquivalentTo(new[] { a, b, c }));
+            Assert.That(escorts.AreInFormation(a, leader), Is.False);
+            alerts.ReportShipThreat(b, "bravo", hostile);
+            for (var i = 0; i < ships.Length; i++)
+                Assert.That(alerts.GetHostileShips(ships[i], groups[i]), Is.EquivalentTo(new[] { hostile, second }));
+        });
+    }
+
+    /// <summary>Explicit mission changes disconnect an escort even if its pilot died while other crew survived.</summary>
+    [TestCase("Hold", false)]
+    [TestCase("Follow", false)]
+    [TestCase("Pause", false)]
+    [TestCase("Pause", true)]
+    [TestCase("Cancel", true)]
+    [TestCase("Replace", true)]
+    [TestCase("Skip", true)]
+    public async Task CrewEscortMembershipEndsWithExplicitOrders(string change, bool deadPilot)
+    {
+        var leader = await CreateDeck(new Vector2(500, 500), 7, true);
+        var deck = await CreateDeck(new Vector2(600, 500), 7, true);
+        var hostile = await CreateDeck(new Vector2(700, 500), 7, true);
+        await Server.WaitAssertion(() =>
+        {
+            var pilot = ConvoyCrew(deck, "WGCrewPilot", "escort");
+            ConvoyCrew(deck, "WGCrewDeckhand", "escort", new Vector2(1.5f));
+            var objectives = Server.System<WGCrewObjectiveSystem>();
+            var escorts = Server.System<WGCrewEscortSystem>();
+            var flight = Server.System<WGPilotDutySystem>();
+            Assert.That(objectives.SetQueue(deck, "escort", new()
+            {
+                new WGCrewObjective { Kind = WGCrewObjectiveKind.Escort, Target = SEntMan.GetNetEntity(leader) },
+            }), Is.True);
+            objectives.Update(.5f);
+            Assert.That(escorts.AreInFormation(deck, leader), Is.True);
+            if (deadPilot)
+            {
+                Server.System<MobStateSystem>().ChangeMobState(pilot, MobState.Dead);
+                Assert.That(escorts.AreInFormation(deck, leader), Is.True,
+                    "Surviving crew retain their defensive assignment after losing the pilot.");
+            }
+            switch (change)
+            {
+                case "Hold": flight.Hold(pilot); break;
+                case "Follow": flight.Follow(pilot, leader, 100); break;
+                case "Pause": objectives.Control(deck, "escort", WGCrewSetupAction.Pause); break;
+                case "Cancel": objectives.Cancel(deck, "escort"); break;
+                case "Replace": Assert.That(objectives.SetQueue(deck, "escort", new()), Is.True); break;
+                case "Skip": objectives.Control(deck, "escort", WGCrewSetupAction.Skip); break;
+            }
+            Assert.That(escorts.AreInFormation(deck, leader), Is.False);
+            var hit = new WGCrewHullHitEvent(leader, hostile);
+            SEntMan.EventBus.RaiseLocalEvent(leader, ref hit, true);
+            Assert.That(Server.System<WGCrewAlertSystem>().IsAlerted(deck, "escort"), Is.False);
+        });
+    }
+
+    /// <summary>Queued future escort tasks and ordinary following do not join a convoy.</summary>
+    [Test]
+    public async Task CrewEscortMembershipRequiresCurrentEscort()
+    {
+        var leader = await CreateDeck(new Vector2(500, 500), 7, true);
+        var deck = await CreateDeck(new Vector2(600, 500), 7, true);
+        await Server.WaitAssertion(() =>
+        {
+            var pilot = ConvoyCrew(deck, "WGCrewPilot", "future");
+            var escorts = Server.System<WGCrewEscortSystem>();
+            Server.System<WGPilotDutySystem>().Follow(pilot, leader, 100);
+            Assert.That(escorts.AreInFormation(deck, leader), Is.False);
+            var objectives = Server.System<WGCrewObjectiveSystem>();
+            Assert.That(objectives.SetQueue(deck, "future", new()
+            {
+                new WGCrewObjective { Kind = WGCrewObjectiveKind.Hold, Duration = 100 },
+                new WGCrewObjective { Kind = WGCrewObjectiveKind.Escort, Target = SEntMan.GetNetEntity(leader) },
+            }), Is.True);
+            objectives.Update(.5f);
+            Assert.That(escorts.AreInFormation(deck, leader), Is.False);
+            Server.System<WGPilotDutySystem>().Escort(pilot, leader, 100);
+            Assert.That(escorts.AreInFormation(deck, leader), Is.True);
+            Server.System<MobStateSystem>().ChangeMobState(pilot, MobState.Dead);
+            Assert.That(escorts.AreInFormation(deck, leader), Is.False, "An entirely dead crew cannot maintain an alliance.");
+        });
+    }
+
+    /// <summary>Reported incoming fire overrides faction protection only until the vessel threat expires.</summary>
+    [Test]
+    public async Task CrewEscortRetaliatesAgainstSameFactionAndExpires()
+    {
+        var leader = await CreateDeck(new Vector2(500, 500), 7, true);
+        var deck = await CreateDeck(new Vector2(600, 500), 7, true);
+        var attacker = await CreateDeck(new Vector2(700, 500), 7, true);
+        EntityUid gunner = default, weapon = default, wall = default, stranger = default;
+        await Server.WaitPost(() =>
+        {
+            SEntMan.EnsureComponent<ShuttleComponent>(deck);
+            SEntMan.SpawnAtPosition("WGTestGunnery", new EntityCoordinates(deck, new Vector2(3.5f)));
+            stranger = SEntMan.SpawnAtPosition("MobHuman", new EntityCoordinates(attacker, new Vector2(3.5f)));
+            SEntMan.RemoveComponent<NpcFactionMemberComponent>(stranger);
+            var pilot = ConvoyCrew(deck, "WGCrewPilot", "defender", new Vector2(1.5f));
+            Server.System<WGPilotDutySystem>().Escort(pilot, leader, 100);
+            gunner = Server.System<WGCrewSystem>().SpawnCrewman(WGCrewRoles.Gunner,
+                new EntityCoordinates(deck, new Vector2(2.5f, 3.5f)), "defender")!.Value;
+            var factions = Server.System<NpcFactionSystem>();
+            foreach (var faction in SEntMan.GetComponent<NpcFactionMemberComponent>(gunner).Factions)
+                factions.AddFaction(attacker, faction.Id);
+            wall = SEntMan.SpawnAtPosition("WallSolid", new EntityCoordinates(attacker, new Vector2(2.5f)));
+            weapon = SEntMan.SpawnAtPosition(null, new EntityCoordinates(deck, new Vector2(4.5f)));
+            Server.System<WGCrewFriendlyFireSystem>().TrackWeapon(weapon, gunner);
+        });
+        await WaitUntil(() => SEntMan.GetComponent<WGGunnerDutyComponent>(gunner).AtConsole, 600, () => Describe(gunner));
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(Server.System<NpcFactionSystem>().IsEntityFriendly(gunner, attacker), Is.True);
+            Assert.That(Server.System<WGCrewFriendlyFireSystem>().Protected(weapon, wall), Is.True);
+            var hit = new WGCrewHullHitEvent(leader, attacker);
+            SEntMan.EventBus.RaiseLocalEvent(leader, ref hit, true);
+        });
+        await WaitUntil(() => SEntMan.HasComponent<ShipTargetingComponent>(gunner), 120, () => Describe(gunner));
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(SEntMan.GetComponent<ShipTargetingComponent>(gunner).Target.EntityId, Is.EqualTo(attacker));
+            var protection = Server.System<WGCrewFriendlyFireSystem>();
+            Assert.That(protection.Protected(weapon, wall), Is.False);
+            Assert.That(protection.Protected(weapon, stranger), Is.False, "A hostile ship does not shelter those aboard.");
+            Assert.That(protection.Protected(weapon, leader), Is.True, "The uncrewed escorted ship is protected without sharing a faction.");
+            var before = SEntMan.GetComponent<DamageableComponent>(wall).TotalDamage;
+            var damage = new DamageSpecifier { DamageDict = { ["Piercing"] = 5 } };
+            Server.System<DamageableSystem>().TryChangeDamage(wall, damage, ignoreResistances: true, origin: weapon);
+            Assert.That(SEntMan.GetComponent<DamageableComponent>(wall).TotalDamage > before, Is.True);
+        });
+        await WaitUntil(() => !Server.System<WGCrewAlertSystem>().IsAlerted(deck, "defender"),
+            4000, () => "Shared vessel threat did not expire without further incoming fire.");
+        await RunTicks(5);
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(SEntMan.HasComponent<ShipTargetingComponent>(gunner), Is.False);
+            Assert.That(Server.System<WGCrewFriendlyFireSystem>().Protected(weapon, wall), Is.True);
+            Assert.That(Server.System<WGCrewFriendlyFireSystem>().Protected(weapon, stranger), Is.True,
+                "A round that passes a hull spares whoever stands behind it.");
+        });
+    }
+}

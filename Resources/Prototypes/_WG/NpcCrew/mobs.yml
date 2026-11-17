@@ -1,0 +1,206 @@
+# NPC crew bodies. A random human with a real loadout; the weapon stays holstered until the crew HTN draws it.
+
+# What makes any humanoid body a crewman. Kept apart from the body so a crew profile can put it on other species.
+- type: entity
+  abstract: true
+  id: WGCrewKit
+  components:
+  - type: RandomHumanoidAppearance
+  - type: NpcFactionMember
+    factions:
+    - WGCrew
+  - type: NPCRetaliation
+    attackMemoryLength: 10
+  - type: InputMover
+  - type: MobMover
+  - type: HTN
+    sleepPlayerCheckRangeOverride: 64
+    rootTask:
+      task: WGCrewCompound
+    blackboard:
+      NavInteract: !type:Bool
+        true
+      NavPry: !type:Bool
+        true
+      NavSmash: !type:Bool
+        false
+      NavClimb: !type:Bool
+        false
+  - type: WGCrew
+  - type: WGCrewWeapon
+
+- type: entity
+  abstract: true
+  parent: [ BaseMobHuman, MobPrying, WGCrewKit ]
+  id: WGMobCrewBase
+  suffix: NPC crew
+
+# What a role adds to a body. The role prototypes name these, so a profile's body gets the same parts. They are
+# looked up at runtime, so they can't be abstract. A mob lists its kit first: the first parent wins a shared component.
+# Deckhands remember an attack for a minute too, so one hit buys a response long enough to walk to the attacker.
+- type: entity
+  id: WGCrewKitDeckhand
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: NPCRetaliation
+    attackMemoryLength: 60
+  - type: ShipRepairTool
+  - type: WGCrewRepair
+  - type: Tool
+    qualities:
+    - Applicating
+    - Prying
+
+# Remembers an attack for a minute so a fight is finished, not flickered, and can fly the ship.
+- type: entity
+  id: WGCrewKitOfficer
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: NPCRetaliation
+    attackMemoryLength: 60
+  - type: WGPilotDuty
+
+- type: entity
+  parent: WGCrewKitOfficer
+  id: WGCrewKitGunner
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WGGunnerDuty
+
+- type: entity
+  parent: [ WGCrewKitDeckhand, WGMobCrewBase ]
+  id: WGMobCrewDeckhand
+  name: deckhand
+  description: A spacer working for a wage.
+  components:
+  - type: Loadout
+    prototypes: [ WGCrewDeckhandGear ]
+
+# A janitor mops with his own hands, as a cleanbot does: the absorbent and its water are part of him.
+- type: entity
+  id: WGCrewKitJanitor
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Absorbent
+    pickupAmount: 15
+  - type: UseDelay
+    delay: 1.5
+  - type: SolutionRegeneration
+    solution: absorbed
+    generated:
+      reagents:
+      - ReagentId: Water
+        Quantity: 10
+  - type: SolutionPurge
+    solution: absorbed
+    preserve:
+    - Water
+    quantity: 10
+  - type: SolutionContainerManager
+    solutions:
+      absorbed:
+        maxVol: 50
+
+- type: entity
+  parent: [ WGCrewKitJanitor, WGMobCrewBase ]
+  id: WGMobCrewJanitor
+  name: janitor
+  description: Keeps the decks clean, and has opinions about boots.
+  components:
+  - type: Loadout
+    prototypes: [ WGCrewJanitorGear ]
+
+- type: entity
+  parent: WGMobCrewBase
+  id: WGMobCrewMarine
+  name: marine
+  description: Armoured, armed and paid to stay that way.
+  components:
+  - type: Loadout
+    prototypes: [ WGCrewMarineGear ]
+
+# Pilots, radio operators and captains. Remembers an attack for a minute so a fight is finished, not flickered. Any
+# officer can fly the ship when given the Pilot duty.
+- type: entity
+  parent: [ WGCrewKitOfficer, WGMobCrewBase ]
+  id: WGMobCrewOfficer
+  name: ship's officer
+  description: Somebody who signs the paperwork.
+  components:
+  - type: Loadout
+    prototypes: [ WGCrewOfficerGear ]
+
+- type: entity
+  parent: WGMobCrewOfficer
+  id: WGMobCrewGunner
+  components:
+  - type: WGCrew
+    role: WGCrewGunner
+    duty: Gunnery
+    engagement: WhenAttacked
+  - type: WGGunnerDuty
+
+# Bare crew bodies of other species, for crew profiles. They get their role's kit and a loadout when spawned.
+- type: entity
+  parent: [ BaseMobHuman, MobPrying, WGCrewKit ]
+  id: WGMobCrewBodyHuman
+  name: spacer
+  description: Crew of a working ship.
+  suffix: NPC crew body
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [ BaseMobReptilian, MobPrying, WGCrewKit ]
+  id: WGMobCrewBodyReptilian
+  name: spacer
+  description: Crew of a working ship.
+  suffix: NPC crew body
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [ BaseMobDwarf, MobPrying, WGCrewKit ]
+  id: WGMobCrewBodyDwarf
+  name: spacer
+  description: Crew of a working ship.
+  suffix: NPC crew body
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [ BaseMobMoth, MobPrying, WGCrewKit ]
+  id: WGMobCrewBodyMoth
+  name: spacer
+  description: Crew of a working ship.
+  suffix: NPC crew body
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [ BaseMobVulpkanin, MobPrying, WGCrewKit ]
+  id: WGMobCrewBodyVulpkanin
+  name: spacer
+  description: Crew of a working ship.
+  suffix: NPC crew body
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [ BaseMobTajaran, MobPrying, WGCrewKit ]
+  id: WGMobCrewBodyTajaran
+  name: spacer
+  description: Crew of a working ship.
+  suffix: NPC crew body
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [ BaseMobRodentia, MobPrying, WGCrewKit ]
+  id: WGMobCrewBodyRodentia
+  name: spacer
+  description: Crew of a working ship.
+  suffix: NPC crew body
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: [ BaseMobArachnid, MobPrying, WGCrewKit ]
+  id: WGMobCrewBodyArachnid
+  name: spacer
+  description: Crew of a working ship.
+  suffix: NPC crew body
+  categories: [ HideSpawnMenu ]

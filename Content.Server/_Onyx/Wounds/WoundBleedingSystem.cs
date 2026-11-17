@@ -22,8 +22,8 @@ public sealed partial class WoundBleedingSystem : EntitySystem
 {
     private static readonly ProtoId<WoundPrototype> SystemicBleedingWound = "SystemicBleedingWound";
 
-    [Dependency] private Content.Server._WF.Wolfmed.Wounds.WolfmedInfectionSystem _wfInfection = default!; // WOLFGATE(Wolfmed)
-    [Dependency] private Content.Server._WF.Wolfmed.Wounds.WolfmedCauterySystem _wfCautery = default!; // WOLFGATE(Wolfmed): playtest 1
+    [Dependency] private Content.Server._WG.Wolfmed.Wounds.WolfmedInfectionSystem _wgInfection = default!; // WOLFGATE(Wolfmed)
+    [Dependency] private Content.Server._WG.Wolfmed.Wounds.WolfmedCauterySystem _wgCautery = default!; // WOLFGATE(Wolfmed): playtest 1
     [Dependency] private SharedBodySystem _body = default!;
     [Dependency] private BloodstreamSystem _bloodstream = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
@@ -34,10 +34,10 @@ public sealed partial class WoundBleedingSystem : EntitySystem
     [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private WoundSystem _wounds = default!;
-    [Dependency] private Content.Shared._WF.Wolfmed.Wounds.WolfmedBleedGateSystem _wfBleedGate = default!; // WOLFGATE(Wolfmed)
+    [Dependency] private Content.Shared._WG.Wolfmed.Wounds.WolfmedBleedGateSystem _wgBleedGate = default!; // WOLFGATE(Wolfmed)
     // WOLFGATE(Performance) START: clotting deadlines are checked four times a second, not every tick
-    private static readonly TimeSpan WFClotScanInterval = TimeSpan.FromSeconds(0.25);
-    private TimeSpan _wfNextClotScan;
+    private static readonly TimeSpan WGClotScanInterval = TimeSpan.FromSeconds(0.25);
+    private TimeSpan _wgNextClotScan;
     // WOLFGATE END
 
     public override void Initialize()
@@ -81,8 +81,8 @@ public sealed partial class WoundBleedingSystem : EntitySystem
     }
     private void OnWoundChanged(Entity<WoundBleedingComponent> wound, ref WoundChangedEvent args)
     {
-        if (args.Severity > args.OldSeverity && !_wfInfection.ApplyingCreep && // WOLFGATE(Wolfmed): infection creep is not a new injury, it must not strip the dressing
-            (!TryComp(wound, out WoundComponent? wfCore) || _wfBleedGate.PartCanStartBleeding(wfCore.HoldingPart))) // WOLFGATE(Wolfmed): the body or its gear may refuse a deeper bleed.
+        if (args.Severity > args.OldSeverity && !_wgInfection.ApplyingCreep && // WOLFGATE(Wolfmed): infection creep is not a new injury, it must not strip the dressing
+            (!TryComp(wound, out WoundComponent? wgCore) || _wgBleedGate.PartCanStartBleeding(wgCore.HoldingPart))) // WOLFGATE(Wolfmed): the body or its gear may refuse a deeper bleed.
         {
             wound.Comp.BleedingSeverity += args.Severity - args.OldSeverity;
             // WOLFGATE(Wolfmed): playtest 4: a tourniquet stays tied whatever the wound does under it (the strap's own
@@ -132,7 +132,7 @@ public sealed partial class WoundBleedingSystem : EntitySystem
             return;
 
         if (-reduction.Float() <= bloodstream.BloodHealedSoundThreshold &&
-            _wfCautery.TryAnnounceWoundsClosing(args.Body)) // WOLFGATE(Wolfmed): playtest 1: once per cooldown, not every vacuum tick
+            _wgCautery.TryAnnounceWoundsClosing(args.Body)) // WOLFGATE(Wolfmed): playtest 1: once per cooldown, not every vacuum tick
         {
             _popup.PopupEntity(Loc.GetString("bloodstream-component-wounds-cauterized"), args.Body, args.Body,
                 PopupType.Medium);
@@ -147,15 +147,15 @@ public sealed partial class WoundBleedingSystem : EntitySystem
             return;
 
         // WOLFGATE(Performance) START: clotting deadlines are checked four times a second, not every tick
-        if (_timing.CurTime < _wfNextClotScan)
+        if (_timing.CurTime < _wgNextClotScan)
             return;
-        _wfNextClotScan = _timing.CurTime + WFClotScanInterval;
+        _wgNextClotScan = _timing.CurTime + WGClotScanInterval;
         // WOLFGATE END
 
         var query = EntityQueryEnumerator<WoundBleedingComponent, WoundComponent>();
         while (query.MoveNext(out var uid, out var bleeding, out var wound))
         {
-            if (WFRemoveClottedSystemicBleed(uid, bleeding, wound)) // WOLFGATE(Wolfmed): a clotted systemic bleed left an untreatable wound
+            if (WGRemoveClottedSystemicBleed(uid, bleeding, wound)) // WOLFGATE(Wolfmed): a clotted systemic bleed left an untreatable wound
                 continue;
 
             if (bleeding.AutomaticClottingAt is not { } deadline || _timing.CurTime < deadline)
@@ -187,7 +187,7 @@ public sealed partial class WoundBleedingSystem : EntitySystem
             return false;
 
         bleeding.BleedingSeverity = FixedPoint2.Max(FixedPoint2.Zero, bleeding.BleedingSeverity - amount);
-        if (WFRemoveStoppedSystemicBleed((wound.Owner, wound.Comp), bleeding)) // WOLFGATE(Wolfmed): a stopped systemic bleed left an untreatable wound
+        if (WGRemoveStoppedSystemicBleed((wound.Owner, wound.Comp), bleeding)) // WOLFGATE(Wolfmed): a stopped systemic bleed left an untreatable wound
             return true;
 
         // WOLFGATE(Wolfmed): gauze that stops a bleed stays on the wound as a dressing. Removing the component here let the
@@ -377,10 +377,10 @@ public sealed partial class WoundBleedingSystem : EntitySystem
 
         // WOLFGATE(Wolfmed): BRAIN: cardiac arrest drops passive bleeding to a trickle. Applied to the body's
         // cached rates rather than to each wound, so the arrest never has to re-derive every wound.
-        if (HasComp<Content.Shared._WF.Wolfmed.Life.WolfmedCardiacArrestComponent>(body))
+        if (HasComp<Content.Shared._WG.Wolfmed.Life.WolfmedCardiacArrestComponent>(body))
         {
             foreach (var stream in streamRates.Keys.ToArray())
-                streamRates[stream] *= Content.Server._WF.Wolfmed.Life.WolfmedLifeSystem.ArrestBleedFactor;
+                streamRates[stream] *= Content.Server._WG.Wolfmed.Life.WolfmedLifeSystem.ArrestBleedFactor;
         }
 
         _circulation.SetBleedRates(body, streamRates);
@@ -419,7 +419,7 @@ public sealed partial class WoundBleedingSystem : EntitySystem
         }
 
         wound.Comp.BaseRate = wound.Comp.BleedingSeverity.Float() * behavior.Rate * bleedingMultiplier *
-                              _configuration.GetCVar(Content.Shared._WF.Wolfmed.CCVar.WolfmedCVars.BleedRate); // WOLFGATE(Wolfmed): one knob for every bleed
+                              _configuration.GetCVar(Content.Shared._WG.Wolfmed.CCVar.WolfmedCVars.BleedRate); // WOLFGATE(Wolfmed): one knob for every bleed
         if (behavior.AwakeMultiplier > 1f && TryGetBody(core.HoldingPart, out var patient) &&
             !HasComp<SleepingComponent>(patient))
             wound.Comp.BaseRate *= behavior.AwakeMultiplier;
@@ -448,9 +448,9 @@ public sealed partial class WoundBleedingSystem : EntitySystem
 
         multiplier = profile.BleedingMultiplier;
         // WOLFGATE(MeridianTraits) START: a hemophage's thin blood runs faster
-        if (TryGetBody(part, out var wfBody) &&
-            TryComp(wfBody, out Content.Shared._WF.MeridianTraits.Hemophage.WFHemophageComponent? wfHemophage))
-            multiplier *= wfHemophage.BleedMultiplier;
+        if (TryGetBody(part, out var wgBody) &&
+            TryComp(wgBody, out Content.Shared._WG.MeridianTraits.Hemophage.WGHemophageComponent? wgHemophage))
+            multiplier *= wgHemophage.BleedMultiplier;
         // WOLFGATE END
         return true;
     }

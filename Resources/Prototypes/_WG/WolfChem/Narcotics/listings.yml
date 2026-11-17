@@ -1,0 +1,49 @@
+# The Underground's uplink chemicals tab: full-grade product and pristine combat sticks. The fence buys.
+
+- type: listing
+  id: WGUplinkBaggieCocaine
+  productEntity: WGBaggieCocaine
+  cost:
+    Telecrystal: 1
+  categories:
+  - UplinkChemicals
+
+- type: listing
+  id: WGUplinkBaggieHeroin
+  productEntity: WGBaggieHeroin
+  cost:
+    Telecrystal: 1
+  categories:
+  - UplinkChemicals
+
+- type: listing
+  id: WGUplinkCrystalShard
+  productEntity: WGCrystalShard
+  cost:
+    Telecrystal: 1
+  categories:
+  - UplinkChemicals
+
+- type: listing
+  id: WGUplinkNeurowareRedline
+  productEntity: WGNeurowareStickRedline
+  cost:
+    Telecrystal: 4
+  categories:
+  - UplinkChemicals
+
+- type: listing
+  id: WGUplinkNeurowareDamper
+  productEntity: WGNeurowareStickDamper
+  cost:
+    Telecrystal: 4
+  categories:
+  - UplinkChemicals
+
+- type: listing
+  id: WGUplinkNeurowareChoir
+  productEntity: WGNeurowareStickChoir
+  cost:
+    Telecrystal: 2
+  categories:
+  - UplinkChemicals

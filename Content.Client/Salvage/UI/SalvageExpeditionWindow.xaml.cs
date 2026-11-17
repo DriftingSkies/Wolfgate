@@ -115,16 +115,16 @@ public sealed partial class SalvageExpeditionWindow : FancyWindow,
             });
 
             // WOLFGATE(PlanetExpeditions) START: a site mission names its site and world
-            if (missionParams.WfSite != null)
+            if (missionParams.WgSite != null)
             {
                 lBox.AddChild(new Label
                 {
-                    Text = Loc.GetString("wf-expedition-window-site")
+                    Text = Loc.GetString("wg-expedition-window-site")
                 });
 
                 lBox.AddChild(new Label
                 {
-                    Text = Loc.GetString("wf-expedition-window-site-value", ("site", Loc.GetString(missionParams.WfSite)), ("world", missionParams.WfWorld ?? string.Empty)),
+                    Text = Loc.GetString("wg-expedition-window-site-value", ("site", Loc.GetString(missionParams.WgSite)), ("world", missionParams.WgWorld ?? string.Empty)),
                     FontColorOverride = StyleNano.NanoGold,
                     HorizontalAlignment = HAlignment.Left,
                     Margin = new Thickness(0f, 0f, 0f, 5f),
@@ -182,7 +182,7 @@ public sealed partial class SalvageExpeditionWindow : FancyWindow,
             });
 
             // WOLFGATE(PlanetExpeditions) START: a site has its world's biome and no modifiers to show
-            if (missionParams.WfSite == null)
+            if (missionParams.WgSite == null)
             {
             // WOLFGATE END
             // Biome

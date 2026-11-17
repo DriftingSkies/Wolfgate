@@ -1,0 +1,453 @@
+# Replacement kit crates, bought on the faction uplink by a player who already drew that kit this round.
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCrateTsfBreacher
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorM3G4
+    - id: WeaponShotgunEnforcer
+    - id: AmmoBox12_gaugeBuckshot
+    - id: AmmoBox12_gaugeSlug
+    - id: BreachingCharge
+      amount: 2
+    - id: TelescopicShield
+    - id: GrenadeFlashBang
+      amount: 2
+
+- type: listing
+  id: WGUplinkKitReplacementTsfBreacher
+  productEntity: WGKitCrateTsfBreacher
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfBreacher
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCrateTsfCombatEngineer
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorM3T
+    - id: WeaponSubMachineGunDrozd
+    - id: Magazine45_ACPSubMachineGunFMJ
+      amount: 2
+    - id: WeaponTurretMk290Packed
+    - id: WelderIndustrial
+    - id: SheetPlasteel
+    - id: SheetSteel
+    - id: ArmorPlateBlunt_Slash
+
+- type: listing
+  id: WGUplinkKitReplacementTsfCombatEngineer
+  productEntity: WGKitCrateTsfCombatEngineer
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfCombatEngineer
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCrateTsfCorpsman
+  components:
+  - type: StorageFill
+    contents:
+    - id: ClothingOuterHardsuitM82b
+    - id: WeaponPistolMk58
+    - id: Magazine45_ACPPistolFMJ
+    - id: ClothingBackpackDuffelSurgeryAdvancedFilled
+    - id: MedkitCombatFilled
+    - id: Bloodpack
+      amount: 2
+
+- type: listing
+  id: WGUplinkKitReplacementTsfCorpsman
+  productEntity: WGKitCrateTsfCorpsman
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfCorpsman
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCrateTsfMarksman
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCGhillie
+    - id: WeaponRifleRiversong
+    - id: Magazine68x52mmCaseless
+      amount: 2
+    - id: Binoculars
+    - id: SmokeGrenade
+
+- type: listing
+  id: WGUplinkKitReplacementTsfMarksman
+  productEntity: WGKitCrateTsfMarksman
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfMarksman
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCrateTsfPyrotechnician
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorM35
+    - id: WeaponShotgunEnforcer
+    - id: AmmoBox12_gaugeIncendiary
+      amount: 2
+    - id: GrenadeIncendiaryNfsd
+      amount: 3
+
+- type: listing
+  id: WGUplinkKitReplacementTsfPyrotechnician
+  productEntity: WGKitCrateTsfPyrotechnician
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfPyrotechnician
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCrateTsfRecon
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorXM4
+    - id: WeaponSubMachineGunDrozd
+    - id: Magazine45_ACPSubMachineGunFMJ
+      amount: 2
+    - id: ClothingNeckWearableCameraTSF
+    - id: JetpackBlackFilled
+    - id: Binoculars
+
+- type: listing
+  id: WGUplinkKitReplacementTsfRecon
+  productEntity: WGKitCrateTsfRecon
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfRecon
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCrateTsfHeavyGunner
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorML66A
+    - id: WeaponLMGGrizzly
+    - id: AmmoBox68x52mmCaseless
+      amount: 2
+    - id: TelescopicShield
+
+- type: listing
+  id: WGUplinkKitReplacementTsfHeavyGunner
+  productEntity: WGKitCrateTsfHeavyGunner
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfHeavyGunner
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCrateTsfShipGunner
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorM3L
+    - id: WeaponPistolMk58
+    - id: Magazine45_ACPPistolFMJ
+    - id: WGGunneryChipMilitary
+    - id: ClothingShoesBootsMag
+
+- type: listing
+  id: WGUplinkKitReplacementTsfShipGunner
+  productEntity: WGKitCrateTsfShipGunner
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfShipGunner
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCratePdvBoarder
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorUM5CU
+    - id: WeaponSubMachineGunMla73
+    - id: EnergyCutlass
+    - id: SyndicateJawsOfLife
+    - id: AccessBreaker
+    - id: SmokeGrenade
+      amount: 2
+
+- type: listing
+  id: WGUplinkKitReplacementPdvBoarder
+  productEntity: WGKitCratePdvBoarder
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvBoarder
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCratePdvArtificer
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorUL6
+    - id: WeaponRifleAk
+    - id: Magazine762x39mmFMJ
+      amount: 2
+    - id: ClothingBackpackDuffelPDVC4tBundle
+    - id: LandMineExplosive
+      amount: 2
+    - id: WelderIndustrial
+    - id: SheetPlasteel
+
+- type: listing
+  id: WGUplinkKitReplacementPdvArtificer
+  productEntity: WGKitCratePdvArtificer
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvArtificer
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCratePdvFieldMedic
+  components:
+  - type: StorageFill
+    contents:
+    - id: ClothingOuterHardsuitPDVMedic
+    - id: WeaponPistolViper
+    - id: Magazine9x19mmPistolFMJ
+    - id: HypopenBox
+    - id: NaniteApplicatorSyndicate
+    - id: Bloodpack
+      amount: 2
+
+- type: listing
+  id: WGUplinkKitReplacementPdvFieldMedic
+  productEntity: WGKitCratePdvFieldMedic
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvFieldMedic
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCratePdvSharpshooter
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCGhillieUDEP
+    - id: BriefcaseSyndieSniperBundleFilled
+    - id: Binoculars
+    - id: SmokeGrenade
+
+- type: listing
+  id: WGUplinkKitReplacementPdvSharpshooter
+  productEntity: WGKitCratePdvSharpshooter
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvSharpshooter
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCratePdvHeavy
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorUH7
+    - id: ClothingBackpackDuffelPDVFilledLMG
+    - id: TelescopicShield
+
+- type: listing
+  id: WGUplinkKitReplacementPdvHeavy
+  productEntity: WGKitCratePdvHeavy
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvHeavy
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCratePdvBurner
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorMilitiaHauberk
+    - id: ClothingBackpackDuffelPDVBurner
+    - id: GrenadeIncendiaryNfsd
+      amount: 3
+
+- type: listing
+  id: WGUplinkKitReplacementPdvBurner
+  productEntity: WGKitCratePdvBurner
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvBurner
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCratePdvAkinciRaider
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorCCC5
+    - id: WeaponRifleVympel
+    - id: Magazine556x45mmFMJ
+      amount: 2
+    - id: ChameleonPDA
+    - id: ClothingBackpackChameleon
+    - id: RadioJammer
+
+- type: listing
+  id: WGUplinkKitReplacementPdvAkinciRaider
+  productEntity: WGKitCratePdvAkinciRaider
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvAkinciRaider
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGKitCratePdvTopcu
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorUL6
+    - id: WeaponPistolViper
+    - id: Magazine9x19mmPistolFMJ
+    - id: WGGunneryChipMilitary
+    - id: ClothingShoesBootsMag
+
+- type: listing
+  id: WGUplinkKitReplacementPdvTopcu
+  productEntity: WGKitCratePdvTopcu
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvTopcu

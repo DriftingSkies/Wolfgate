@@ -1,5 +1,5 @@
 using Content.Shared.Explosion;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Anomaly.Components;
 

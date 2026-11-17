@@ -1,9 +1,0 @@
-- type: entity
-  parent: BasePlushieMoff
-  id: WFPlushieMedMoth #We love you Arcana
-  name: med moth plushie
-  description: One of the most legendary doctors this side of the milky way. Now in plushie form to watch over you and your medbay.
-  components:
-  - type: Sprite
-    sprite: _WF/Plushies/Objects/Fun/toys.rsi
-    state: plushie_medmoth

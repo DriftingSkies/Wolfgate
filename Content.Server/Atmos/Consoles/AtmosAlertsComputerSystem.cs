@@ -169,7 +169,7 @@ public sealed partial class AtmosAlertsComputerSystem : SharedAtmosAlertsCompute
             var fireAlarmEntriesForEachGrid = new Dictionary<EntityUid, AtmosAlertsComputerEntry[]>();
             var gaslockEntriesForEachGrid = new Dictionary<EntityUid, AtmosAlertsComputerEntry[]>(); // Frontier
 
-            WFResetAlarmBuckets(); // WOLFGATE(Performance): consoles with a closed UI share one sweep of the alarms
+            WGResetAlarmBuckets(); // WOLFGATE(Performance): consoles with a closed UI share one sweep of the alarms
 
             var query = AllEntityQuery<AtmosAlertsComputerComponent, TransformComponent>();
             while (query.MoveNext(out var ent, out var entConsole, out var entXform))
@@ -181,7 +181,7 @@ public sealed partial class AtmosAlertsComputerSystem : SharedAtmosAlertsCompute
                 if (!_userInterfaceSystem.IsUiOpen(ent, AtmosAlertsComputerUiKey.Key))
                 {
                     if (TryComp<AppearanceComponent>(ent, out var closedAppearance))
-                        _appearance.SetData(ent, AtmosAlertsComputerVisuals.ComputerLayerScreen, (int) WFHighestAlert(entXform.GridUid.Value, entConsole), closedAppearance);
+                        _appearance.SetData(ent, AtmosAlertsComputerVisuals.ComputerLayerScreen, (int) WGHighestAlert(entXform.GridUid.Value, entConsole), closedAppearance);
 
                     continue;
                 }

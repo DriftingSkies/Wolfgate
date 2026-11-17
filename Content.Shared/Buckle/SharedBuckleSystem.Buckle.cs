@@ -158,7 +158,7 @@ public abstract partial class SharedBuckleSystem
         if (args.OtherEntity == component.BuckledTo && component.DontCollide)
             args.Cancelled = true;
         // WOLFGATE(Seats): a seated body isn't pushed off its seat by tables, walls or a bunkmate.
-        else if (WFSeatIgnoresCollision(component, ref args))
+        else if (WGSeatIgnoresCollision(component, ref args))
             args.Cancelled = true;
     }
 

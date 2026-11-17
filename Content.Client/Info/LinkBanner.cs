@@ -1,6 +1,6 @@
 ﻿using Content.Client.Changelog;
-using Content.Client._WF.Roadmap; // WOLFGATE(Roadmap)
-using Content.Client._WF.Census; // WOLFGATE(Census)
+using Content.Client._WG.Roadmap; // WOLFGATE(Roadmap)
+using Content.Client._WG.Census; // WOLFGATE(Census)
 using Content.Client.UserInterface.Systems.EscapeMenu;
 using Content.Client.UserInterface.Systems.Guidebook;
 using Content.Shared.CCVar;
@@ -51,7 +51,7 @@ namespace Content.Client.Info
             buttons.AddChild(changelogButton);
 
             // WOLFGATE(Roadmap) START: roadmap link after the changelog
-            var roadmapButton = new Button { Text = Loc.GetString("wf-roadmap-button") };
+            var roadmapButton = new Button { Text = Loc.GetString("wg-roadmap-button") };
             roadmapButton.OnPressed += _ => UserInterfaceManager.GetUIController<RoadmapUIController>().ToggleRoadmap();
             buttons.AddChild(roadmapButton);
             // WOLFGATE END

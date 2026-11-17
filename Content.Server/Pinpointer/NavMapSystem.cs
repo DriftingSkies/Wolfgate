@@ -66,7 +66,7 @@ public sealed partial class NavMapSystem : SharedNavMapSystem
 
     private void OnStationInit(StationGridAddedEvent ev)
     {
-        if (WfSkipsNavMap(ev.GridId)) // WOLFGATE(Performance): a planet layer grid's nav map would cover the whole world and nothing shows it
+        if (WgSkipsNavMap(ev.GridId)) // WOLFGATE(Performance): a planet layer grid's nav map would cover the whole world and nothing shows it
             return;
 
         var comp = EnsureComp<NavMapComponent>(ev.GridId);
@@ -136,7 +136,7 @@ public sealed partial class NavMapSystem : SharedNavMapSystem
 
     private void DirtyChunk(Entity<NavMapComponent> entity, NavMapChunk chunk)
     {
-        entity.Comp.WFRemovedChunks.Remove(chunk.Origin); // WOLFGATE(Performance): back in use, so no longer a removal
+        entity.Comp.WGRemovedChunks.Remove(chunk.Origin); // WOLFGATE(Performance): back in use, so no longer a removal
         if (chunk.LastUpdate == _gameTiming.CurTick)
             return;
 
@@ -246,7 +246,7 @@ public sealed partial class NavMapSystem : SharedNavMapSystem
         // WOLFGATE(Performance) START: deltas name removed chunks; the rebuild below takes back any still in use
         foreach (var origin in component.Chunks.Keys)
         {
-            component.WFRemovedChunks[origin] = _gameTiming.CurTick;
+            component.WGRemovedChunks[origin] = _gameTiming.CurTick;
         }
         // WOLFGATE END
         component.Chunks.Clear();
@@ -271,12 +271,12 @@ public sealed partial class NavMapSystem : SharedNavMapSystem
             var chunkOrigin = SharedMapSystem.GetChunkIndices(tile, ChunkSize);
 
             var chunk = EnsureChunk(component, chunkOrigin);
-            component.WFRemovedChunks.Remove(chunkOrigin); // WOLFGATE(Performance): back in use, so no longer a removal
+            component.WGRemovedChunks.Remove(chunkOrigin); // WOLFGATE(Performance): back in use, so no longer a removal
             chunk.LastUpdate = _gameTiming.CurTick;
             RefreshTileEntityContents(uid, component, mapGrid, chunkOrigin, tile, setFloor: true);
         }
 
-        WFTrimRemovedChunks(component); // WOLFGATE(Performance): the history of removed chunks stays bounded
+        WGTrimRemovedChunks(component); // WOLFGATE(Performance): the history of removed chunks stays bounded
         Dirty(uid, component);
     }
 
@@ -342,8 +342,8 @@ public sealed partial class NavMapSystem : SharedNavMapSystem
         // WOLFGATE END
 
         // WOLFGATE(Performance): deltas name removed chunks, and the history of them stays bounded
-        entity.Comp.WFRemovedChunks[chunk.Origin] = _gameTiming.CurTick;
-        WFTrimRemovedChunks(entity.Comp);
+        entity.Comp.WGRemovedChunks[chunk.Origin] = _gameTiming.CurTick;
+        WGTrimRemovedChunks(entity.Comp);
         Dirty(entity);
         return true;
     }

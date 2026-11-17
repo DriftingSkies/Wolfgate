@@ -1,0 +1,6 @@
+- type: decal
+  id: WGVehicleTrack
+  defaultCleanable: true
+  sprite:
+    sprite: _WG/Vehicles/Tracks/tread.rsi
+    state: tread

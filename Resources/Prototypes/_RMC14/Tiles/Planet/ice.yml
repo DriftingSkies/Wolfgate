@@ -4,7 +4,7 @@
 - type: tile
   parent: CMPlanetBase
   id: RMCPlanetIce0
-  name: tiles-wf-rmc-ice
+  name: tiles-wg-rmc-ice
   sprite: /Textures/_RMC14/Tiles/planet/auto_ice/ice_0.png
   variants: 8
   placementVariants:

@@ -8,8 +8,8 @@ on:
       - "Resources/Prototypes/_Mono/Shipyard/**/*.yml" # Shipyard prototypes, Mono - set to mono files
       - "Content.IntegrationTests/Tests/_NF/ShipyardTests.cs" # Shipyard tests
       - "Resources/Prototypes/Entities/**/*.yml" # Mono Change, run when an entity may have changed price
-      - "Resources/SharedMaps/_WF/**/*.yml" # WOLFGATE(Ci): Wolfgate ship grids
-      - "Resources/Prototypes/_WF/**/*.yml" # WOLFGATE(Ci): Wolfgate vessels and entity prices, which sit in module folders
+      - "Resources/SharedMaps/_WG/**/*.yml" # WOLFGATE(Ci): Wolfgate ship grids
+      - "Resources/Prototypes/_WG/**/*.yml" # WOLFGATE(Ci): Wolfgate vessels and entity prices, which sit in module folders
       - ".github/workflows/nf-shipyard-tests.yml" # WOLFGATE(Ci): run when this workflow changes
       - "Content.*/**/Shipyard/**" # WOLFGATE(Ci): main CI skips these tests, so shipyard code and test changes run them here
 

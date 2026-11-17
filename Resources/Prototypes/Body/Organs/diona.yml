@@ -133,7 +133,7 @@
 # Organs that turn into nymphs on removal
 - type: entity
   id: OrganDionaBrainNymph
-  parent: [OrganDionaBrain, WFWolfmedOrganBrain] # WOLFGATE(Wolfmed): M4: OD16 parity, the nymph organ is the brain clock (plan 9.2 group C)
+  parent: [OrganDionaBrain, WGWolfmedOrganBrain] # WOLFGATE(Wolfmed): M4: OD16 parity, the nymph organ is the brain clock (plan 9.2 group C)
   categories: [ HideSpawnMenu ]
   name: brain
   description: "The source of incredible, unending intelligence. Honk."
@@ -146,7 +146,7 @@
 - type: entity
   id: OrganDionaStomachNymph
   # WOLFGATE(Wolfmed): Wolfmed stomach data, so the organ can be hurt, scanned and treated
-  parent: [OrganDionaStomach, WFWolfmedOrganStomach]
+  parent: [OrganDionaStomach, WGWolfmedOrganStomach]
   categories: [ HideSpawnMenu ]
   name: stomach
   description: "Gross. This is hard to stomach."
@@ -156,7 +156,7 @@
 
 - type: entity
   id: OrganDionaLungsNymph
-  parent: [OrganDionaLungs, WFWolfmedOrganLungs] # WOLFGATE(Wolfmed): M4: OD16 parity, Wolfmed lung data (plan 9.2 group C)
+  parent: [OrganDionaLungs, WGWolfmedOrganLungs] # WOLFGATE(Wolfmed): M4: OD16 parity, Wolfmed lung data (plan 9.2 group C)
   categories: [ HideSpawnMenu ]
   name: lungs
   description: "Filters oxygen from an atmosphere, which is then sent into the bloodstream to be used as an electron carrier."

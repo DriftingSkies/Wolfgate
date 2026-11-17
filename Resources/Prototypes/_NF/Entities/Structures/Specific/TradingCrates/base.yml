@@ -11,7 +11,7 @@
     valueElsewhere: 400
   - type: IgnoreMarketModifier
   # WOLFGATE(CargoLoad): trading crates load the ship carrying them
-  - type: WFCargoMass
+  - type: WGCargoMass
   - type: Icon
     sprite: Structures/Storage/Crates/secure.rsi
     state: icon

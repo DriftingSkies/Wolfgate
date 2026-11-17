@@ -1,5 +1,5 @@
 using Content.Shared._Onyx.Wounds; // WOLFGATE(Wolfmed): GUARD F
-using Content.Shared._WF.Wolfmed.Examine; // WOLFGATE(Wolfmed): LOOK
+using Content.Shared._WG.Wolfmed.Examine; // WOLFGATE(Wolfmed): LOOK
 using Content.Shared.Damage;
 using Content.Shared.Examine;
 using Content.Shared.FixedPoint;

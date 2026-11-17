@@ -5,11 +5,11 @@
   description: A basic EVA suit for MMC employees and non-combat use.
   components:
   # WOLFGATE(ArmorSpecialization): cave-in rating.
-  - type: WFWoundWard
-    examine: wf-armor-spec-mining-examine
+  - type: WGWoundWard
+    examine: wg-armor-spec-mining-examine
     hardens:
-      WFWolfmedCrushInjuryWound: 2
-      WFWolfmedOrganContusionWound: 2
+      WGWolfmedCrushInjuryWound: 2
+      WGWolfmedOrganContusionWound: 2
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/mmc_mining.rsi
   - type: Clothing
@@ -52,10 +52,10 @@
   description: A tactical combat suit for MMC asset protection and corporate security. It's very light, but not very defensive. # WOLFGATE(ArmorBalance): grammar pass.
   components:
   # WOLFGATE(ArmorSpecialization): tendon guards.
-  - type: WFWoundWard
-    examine: wf-armor-spec-tendon-ward-examine
+  - type: WGWoundWard
+    examine: wg-armor-spec-tendon-ward-examine
     blocks:
-    - WFWolfmedTendonCutWound
+    - WGWolfmedTendonCutWound
   - type: Sprite
     sprite: _Mono/Clothing/OuterClothing/Hardsuits/mmc_combat.rsi
   - type: Clothing

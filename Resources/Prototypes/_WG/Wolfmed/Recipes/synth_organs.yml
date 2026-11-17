@@ -1,0 +1,55 @@
+# Replacement synth organs off the exosuit fabricator, at the IPC organs' cost, so a destroyed one can be swapped out
+# with the ordinary remove and insert organ surgeries. The ccu is left out: it is the synth.
+
+- type: latheRecipePack
+  id: WGSynthOrgansStatic
+  recipes:
+  - WGOrganSynthEyes
+  - WGOrganSynthEars
+  - WGOrganSynthTongue
+  - WGOrganSynthHeart
+  - WGOrganSynthLungs
+  - WGOrganSynthStomach
+  - WGOrganSynthLiver
+  - WGOrganSynthKidneys
+  - WGOrganRadCollector # Synthetics: the chassis radiation collector (_WG/Synthetics/rad_collector.yml)
+
+- type: latheRecipe
+  parent: BaseIPCOrganRecipe
+  id: WGOrganSynthEyes
+  result: OrganSynthEyes
+
+- type: latheRecipe
+  parent: BaseIPCOrganRecipe
+  id: WGOrganSynthEars
+  result: OrganSynthEars
+
+- type: latheRecipe
+  parent: BaseIPCOrganRecipe
+  id: WGOrganSynthTongue
+  result: OrganSynthTongue
+
+- type: latheRecipe
+  parent: BaseIPCOrganRecipe
+  id: WGOrganSynthHeart
+  result: OrganSynthHeart
+
+- type: latheRecipe
+  parent: BaseIPCOrganRecipe
+  id: WGOrganSynthLungs
+  result: OrganSynthLungs
+
+- type: latheRecipe
+  parent: BaseIPCOrganRecipe
+  id: WGOrganSynthStomach
+  result: OrganSynthStomach
+
+- type: latheRecipe
+  parent: BaseIPCOrganRecipe
+  id: WGOrganSynthLiver
+  result: OrganSynthLiver
+
+- type: latheRecipe
+  parent: BaseIPCOrganRecipe
+  id: WGOrganSynthKidneys
+  result: OrganSynthKidneys

@@ -326,7 +326,7 @@
       tags:
       - PirateUplink
 
-# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WF/FactionBalance/supplies.yml)
+# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WG/FactionBalance/supplies.yml)
 # - type: listing
 #   id: UplinkPirateBlankId
 #   name: uplink-pirate-blank-id-name
@@ -343,7 +343,7 @@
 #       - PirateUplink
 # WOLFGATE END
 
-# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WF/FactionBalance/supplies.yml)
+# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WG/FactionBalance/supplies.yml)
 # - type: listing
 #   id: UplinkPiratePdaChameleon
 #   name: uplink-pirate-chameleon-pda-name
@@ -360,7 +360,7 @@
 #       - PirateUplink
 # WOLFGATE END
 
-# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WF/FactionBalance/supplies.yml)
+# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WG/FactionBalance/supplies.yml)
 # - type: listing
 #   id: UplinkPirateHeadsetChameleon
 #   name: uplink-pirate-chameleon-headset-name
@@ -377,7 +377,7 @@
 #       - PirateUplink
 # WOLFGATE END
 
-# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WF/FactionBalance/supplies.yml)
+# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WG/FactionBalance/supplies.yml)
 # - type: listing
 #   id: UplinkPirateBackpackChameleon
 #   name: uplink-pirate-chameleon-backpack-name
@@ -394,7 +394,7 @@
 #       - PirateUplink
 # WOLFGATE END
 
-# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WF/FactionBalance/supplies.yml)
+# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WG/FactionBalance/supplies.yml)
 # - type: listing
 #   id: UplinkPirateVoicemask
 #   name: uplink-pirate-voicemask-name
@@ -699,7 +699,7 @@
 
 # WOLFGATE: the uplink sells the Vympel but had no 5.56 for it; priced like the 6.35 magazine and big 7.62 box
 - type: listing
-  id: WFUplinkPirate556Mag
+  id: WGUplinkPirate556Mag
   name: uplink-pirate-5-56x45mm-magazine-name
   description: uplink-pirate-5-56x45mm-magazine-desc
   productEntity: Magazine556x45mmFMJ
@@ -715,7 +715,7 @@
 
 # WOLFGATE: the uplink sells the Vympel but had no 5.56 for it; priced like the 6.35 magazine and big 7.62 box
 - type: listing
-  id: WFUplinkPirate556AmmoBoxBig
+  id: WGUplinkPirate556AmmoBoxBig
   name: uplink-pirate-5-56x45mm-box-big-name
   description: uplink-pirate-5-56x45mm-box-big-desc
   productEntity: AmmoBox556x45mmBigFMJ
@@ -1754,9 +1754,9 @@
       tags:
       - FactionStaticUplinkPdv
   # WOLFGATE(FactionBalance) START: a free T0 has a per-player cooldown so it can't be printed endlessly
-  - !type:WFListingCooldownCondition
+  - !type:WGListingCooldownCondition
     key: T0Voucher
-  productEvent: !type:WFListingCooldownEvent
+  productEvent: !type:WGListingCooldownEvent
     key: T0Voucher
   raiseProductEventOnUser: true
   # WOLFGATE END

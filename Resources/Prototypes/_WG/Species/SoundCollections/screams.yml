@@ -1,0 +1,22 @@
+# Ported from HardLight
+- type: soundCollection
+  id: SiliconScreams
+  files:
+    - /Audio/Machines/robotscream_1.ogg
+    - /Audio/Machines/robotscream_2.ogg
+    - /Audio/Machines/robotscream_3.ogg
+    - /Audio/Machines/robotscream_4.ogg
+    - /Audio/Machines/robotscream_5.ogg
+    - /Audio/Machines/robotscream_6.ogg
+    - /Audio/Machines/robotscream_7.ogg
+    - /Audio/Machines/robotscream_8.ogg
+    - /Audio/Machines/robotscream_9.ogg
+
+# Ported from upstream space-station-14
+- type: soundCollection
+  id: WGVulpkaninScreams
+  files:
+    - /Audio/_WG/Species/Vulpkanin/vulp_scream1.ogg
+    - /Audio/_WG/Species/Vulpkanin/vulp_scream2.ogg
+    - /Audio/_WG/Species/Vulpkanin/vulp_scream3.ogg
+    - /Audio/_WG/Species/Vulpkanin/vulp_scream4.ogg

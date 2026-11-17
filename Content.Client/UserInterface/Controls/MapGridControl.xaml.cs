@@ -63,7 +63,7 @@ public partial class MapGridControl : LayoutContainer
     protected float WorldMinRange;
     protected float WorldMaxRange;
     public float WorldRange;
-    public Vector2 WorldRangeVector => WfFitInstrument ? WfViewportHalfExtents : new Vector2(WorldRange, WorldRange); // WOLFGATE(CombatConsole): cull responsive plots against both viewport dimensions.
+    public Vector2 WorldRangeVector => WgFitInstrument ? WgViewportHalfExtents : new Vector2(WorldRange, WorldRange); // WOLFGATE(CombatConsole): cull responsive plots against both viewport dimensions.
 
     /// <summary>
     /// We'll lerp between the radarrange and actual range
@@ -80,12 +80,12 @@ public partial class MapGridControl : LayoutContainer
     public Vector2 MaxRadarRangeVector => new Vector2(MaxRadarRange, MaxRadarRange);
 
     // WOLFGATE(CombatConsole): centre instrument plots in their available viewport.
-    protected virtual Vector2 MidPointVector => WfFitInstrument ? new Vector2(PixelWidth, PixelHeight) / 2f : new Vector2(MidPoint, MidPoint); // WOLFGATE(ShipAccess): virtual, so the door map can centre its drawing in a control of any size
+    protected virtual Vector2 MidPointVector => WgFitInstrument ? new Vector2(PixelWidth, PixelHeight) / 2f : new Vector2(MidPoint, MidPoint); // WOLFGATE(ShipAccess): virtual, so the door map can centre its drawing in a control of any size
 
     protected int MidPoint => SizeFull / 2;
-    protected int SizeFull => WfFitInstrument ? Math.Min(PixelWidth, PixelHeight) : (int)((UIDisplayRadius + MinimapMargin) * 2 * UIScale); // WOLFGATE(CombatConsole): fit scoped radar geometry to the shorter viewport edge.
+    protected int SizeFull => WgFitInstrument ? Math.Min(PixelWidth, PixelHeight) : (int)((UIDisplayRadius + MinimapMargin) * 2 * UIScale); // WOLFGATE(CombatConsole): fit scoped radar geometry to the shorter viewport edge.
     // WOLFGATE(CombatConsole): keep plotting and mouse coordinates on the same responsive scale.
-    protected virtual int ScaledMinimapRadius => WfFitInstrument ? Math.Max(1, SizeFull / 2 - (int)(MinimapMargin * UIScale)) : (int)(UIDisplayRadius * UIScale); // WOLFGATE(ShipAccess): virtual, so the door map can fit the hull to its own shorter side
+    protected virtual int ScaledMinimapRadius => WgFitInstrument ? Math.Max(1, SizeFull / 2 - (int)(MinimapMargin * UIScale)) : (int)(UIDisplayRadius * UIScale); // WOLFGATE(ShipAccess): virtual, so the door map can fit the hull to its own shorter side
     protected float MinimapScale => WorldRange != 0 ? ScaledMinimapRadius / WorldRange : 0f;
 
     public event Action<float>? WorldRangeChanged;
@@ -123,7 +123,7 @@ public partial class MapGridControl : LayoutContainer
         base.KeyBindDown(args);
 
         // WOLFGATE(Cockpit): use the same right-mouse gesture on every cockpit plot.
-        if (WfCockpitControls)
+        if (WgCockpitControls)
             return;
 
         if (!Draggable)
@@ -140,7 +140,7 @@ public partial class MapGridControl : LayoutContainer
     protected override void KeyBindUp(GUIBoundKeyEventArgs args)
     {
         // WOLFGATE(Cockpit) START: deliver releases to the borrowed plot's cockpit input handler.
-        if (WfCockpitControls)
+        if (WgCockpitControls)
         {
             base.KeyBindUp(args);
             if (args.Handled)
@@ -174,7 +174,7 @@ public partial class MapGridControl : LayoutContainer
         base.MouseWheel(args);
 
         // WOLFGATE(Cockpit): map zoom must not also scroll its containing panel.
-        if (WfCockpitControls)
+        if (WgCockpitControls)
             args.Handle();
 
         // Use multiplicative zoom for consistent zoom steps

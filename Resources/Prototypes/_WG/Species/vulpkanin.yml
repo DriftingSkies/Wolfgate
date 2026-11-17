@@ -1,0 +1,90 @@
+# Vulpkanin wear Starlight's Vulpkanin body and stand digitigrade by default; Canine shares everything but the
+# head. The body's art is written by Tools/_WG/LegStyle/port.py, and the legs (both stances) are leg style
+# sprites: Resources/Prototypes/_WG/LegStyle.
+- type: speciesBaseSprites
+  id: WGMobVulpkaninSprites
+  sprites:
+    Head: WGMobVulpkaninHead
+    Hair: MobHumanoidAnyMarking
+    FacialHair: MobHumanoidAnyMarking
+    Snout: MobHumanoidAnyMarking
+    Chest: WGMobVulpkaninTorso
+    UndergarmentTop: MobHumanoidAnyMarking
+    UndergarmentBottom: MobHumanoidAnyMarking
+    Genital: MobHumanoidAnyMarking
+    Penis: MobHumanoidAnyMarking
+    Breasts: MobHumanoidAnyMarking
+    HeadTop: MobHumanoidAnyMarking
+    HeadSide: MobHumanoidAnyMarking
+    Tail: MobHumanoidAnyMarking
+    TailBehind: MobHumanoidAnyMarking
+    TailOversuit: MobHumanoidAnyMarking
+    Eyes: MobHumanoidEyes
+    LArm: WGMobVulpkaninLArm
+    RArm: WGMobVulpkaninRArm
+    LHand: WGMobVulpkaninLHand
+    RHand: WGMobVulpkaninRHand
+    LLeg: WGMobVulpkaninLLegDigi
+    RLeg: WGMobVulpkaninRLegDigi
+    LFoot: WGMobVulpkaninLFootDigi
+    RFoot: WGMobVulpkaninRFootDigi
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninHead
+  baseSprite:
+    sprite: _WG/Species/Mobs/Species/Vulpkanin/parts.rsi
+    state: head_m
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninHeadMale
+  baseSprite:
+    sprite: _WG/Species/Mobs/Species/Vulpkanin/parts.rsi
+    state: head_m
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninHeadFemale
+  baseSprite:
+    sprite: _WG/Species/Mobs/Species/Vulpkanin/parts.rsi
+    state: head_f
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninTorso
+  baseSprite:
+    sprite: _WG/Species/Mobs/Species/Vulpkanin/parts.rsi
+    state: torso_m
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninTorsoMale
+  baseSprite:
+    sprite: _WG/Species/Mobs/Species/Vulpkanin/parts.rsi
+    state: torso_m
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninTorsoFemale
+  baseSprite:
+    sprite: _WG/Species/Mobs/Species/Vulpkanin/parts.rsi
+    state: torso_f
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninLArm
+  baseSprite:
+    sprite: _WG/Species/Mobs/Species/Vulpkanin/parts.rsi
+    state: l_arm
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninRArm
+  baseSprite:
+    sprite: _WG/Species/Mobs/Species/Vulpkanin/parts.rsi
+    state: r_arm
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninLHand
+  baseSprite:
+    sprite: _WG/Species/Mobs/Species/Vulpkanin/parts.rsi
+    state: l_hand
+
+- type: humanoidBaseSprite
+  id: WGMobVulpkaninRHand
+  baseSprite:
+    sprite: _WG/Species/Mobs/Species/Vulpkanin/parts.rsi
+    state: r_hand

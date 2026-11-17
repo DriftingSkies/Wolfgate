@@ -1,0 +1,205 @@
+- type: marking
+  id: WGMeridianFluffDeathshead
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: deathshead
+
+- type: marking
+  id: WGMeridianFluffFirewatch
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: firewatch
+
+- type: marking
+  id: WGMeridianFluffHarpyFluff
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: harpy_fluff
+
+- type: marking
+  id: WGMeridianFluffInsectFemaleTertiary
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: insect_female_tertiary
+
+- type: marking
+  id: WGMeridianFluffInsectMaleTertiary
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: insect_male_tertiary
+
+- type: marking
+  id: WGMeridianFluffInsectoid
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: insectoid
+
+- type: marking
+  id: WGMeridianFluffJungle
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: jungle
+
+- type: marking
+  id: WGMeridianFluffMoonFly
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: moon_fly
+
+- type: marking
+  id: WGMeridianFluffOakWorm
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: oak_worm
+
+- type: marking
+  id: WGMeridianFluffPlain
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: plain
+
+- type: marking
+  id: WGMeridianFluffPoison
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: poison
+
+- type: marking
+  id: WGMeridianFluffSnowDualColor
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: snow_dual_color_primary
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: snow_dual_color_secondary
+
+- type: marking
+  id: WGMeridianFluffTeshariMane
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: teshari_mane
+
+- type: marking
+  id: WGMeridianFluffThick
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: thick
+
+- type: marking
+  id: WGMeridianFluffWhiteFly
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: white_fly
+
+- type: marking
+  id: WGMeridianFluffWitchWing
+  bodyPart: HeadSide
+  markingCategory: HeadSide
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, WGCanine]
+  coloring:
+    default:
+      type:
+        !type:SimpleColoring
+          color: "#FFFFFF"
+  sprites:
+  - sprite: _WG/MeridianMarkings/fluff.rsi
+    state: witch_wing

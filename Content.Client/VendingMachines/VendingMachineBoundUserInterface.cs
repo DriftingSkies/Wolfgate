@@ -14,7 +14,7 @@ using Content.Shared._NF.Bank.Components; // Frontier
 using Content.Shared.Containers.ItemSlots; // Frontier
 using Content.Shared.Stacks; // Frontier
 // WOLFGATE(Gags): expose prototype defaults for eligible vending items
-using Content.Client._WF.Gags;
+using Content.Client._WG.Gags;
 using Robust.Shared.Prototypes;
 
 namespace Content.Client.VendingMachines
@@ -23,7 +23,7 @@ namespace Content.Client.VendingMachines
     {
         [Dependency] private CreditReceiverSystem _credit = default!; // Mono
         // WOLFGATE(Gags) START: apply the selected vendor colour options
-        [Dependency] private WFGagsSystem _gags = default!;
+        [Dependency] private WGGagsSystem _gags = default!;
         private VendingMachineInventoryEntry? _recolorEntry;
         // WOLFGATE END
 
@@ -73,7 +73,7 @@ namespace Content.Client.VendingMachines
             _menu.OnItemSelected += OnItemSelected;
             // WOLFGATE(Gags): recolouring requires explicit confirmation before purchase
             _menu.OnRecolorConfirmed += OnRecolorConfirmed;
-            _menu.WfVendor = Owner; // WOLFGATE(TradeGoods): the menu reads the vendor's live trade-good prices
+            _menu.WgVendor = Owner; // WOLFGATE(TradeGoods): the menu reads the vendor's live trade-good prices
             Update();
         }
 

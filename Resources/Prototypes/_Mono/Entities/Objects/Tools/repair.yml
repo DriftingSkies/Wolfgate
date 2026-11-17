@@ -8,12 +8,12 @@
   - type: ShipRepairTool
 # WOLFGATE(Resprites) START: SRD uses the shipyard RCD sprite
   - type: Sprite
-    sprite: _WF/Resprites/_WF/Objects/Tools/rcdshipyard.rsi
+    sprite: _WG/Resprites/_WG/Objects/Tools/rcdshipyard.rsi
     state: icon
   - type: Item
     size: Normal
   - type: Clothing
-    sprite: _WF/Resprites/_WF/Objects/Tools/rcdshipyard.rsi
+    sprite: _WG/Resprites/_WG/Objects/Tools/rcdshipyard.rsi
 # WOLFGATE END
     quickEquip: false
     slots:
@@ -110,7 +110,7 @@
       tags:
       - ShipRepairTool
   - type: Sprite
-    sprite: _WF/Resprites/_WF/Objects/Tools/rcdshipyard.rsi # WOLFGATE(Resprites): SRD uses the shipyard RCD sprite
+    sprite: _WG/Resprites/_WG/Objects/Tools/rcdshipyard.rsi # WOLFGATE(Resprites): SRD uses the shipyard RCD sprite
     state: ammo # WOLFGATE(Resprites): SRD uses the shipyard RCD sprite
   - type: Item
     heldPrefix: ammo # WOLFGATE(Resprites): SRD uses the shipyard RCD sprite

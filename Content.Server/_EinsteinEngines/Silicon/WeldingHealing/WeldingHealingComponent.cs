@@ -1,6 +1,6 @@
 using Content.Shared.Damage;
 using Content.Shared.Tools;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server._EinsteinEngines.Silicon.WeldingHealing
 {

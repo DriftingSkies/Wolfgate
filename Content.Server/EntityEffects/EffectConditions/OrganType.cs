@@ -2,7 +2,7 @@ using Content.Server.Body.Components;
 using Content.Shared.Body.Prototypes;
 using Content.Shared.EntityEffects;
 using Robust.Shared.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.EntityEffects.EffectConditions;
 

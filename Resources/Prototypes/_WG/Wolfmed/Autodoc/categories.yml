@@ -1,0 +1,132 @@
+# Headings for the pod's procedure list. Programs (programs.yml) say what the pod may do; this says how it is
+# grouped on screen. A surgery listed nowhere lands under the fallback heading.
+
+- type: autodocCategory
+  id: WGWolfmedAutodocCategoryBleeding
+  name: wolfmed-autodoc-category-bleeding
+  note: wolfmed-autodoc-category-bleeding-note
+  order: 10
+  surgeries:
+  - WGSurgeryStopBleeding
+  - WGSurgeryStopInternalBleeding
+  - WGSurgeryRepairArtery
+
+- type: autodocCategory
+  id: WGWolfmedAutodocCategoryWounds
+  name: wolfmed-autodoc-category-wounds
+  note: wolfmed-autodoc-category-wounds-note
+  order: 20
+  surgeries:
+  - SurgeryTendWoundsBrute
+  - SurgeryTendWoundsBurn
+  - WGSurgeryTendWoundsBruteDeep
+  - WGSurgeryTendWoundsBurnDeep
+  - WGSurgeryGraftSkin
+  - WGSurgeryRemoveNecroticFlesh
+  - WGSurgeryRepairTendon
+  - WGSurgeryCloseEvisceration
+
+- type: autodocCategory
+  id: WGWolfmedAutodocCategoryBones
+  name: wolfmed-autodoc-category-bones
+  note: wolfmed-autodoc-category-bones-note
+  order: 30
+  surgeries:
+  - WGSurgeryMendFracture
+  - WGSurgeryHealAmputationConsequence
+
+- type: autodocCategory
+  id: WGWolfmedAutodocCategoryOrgans
+  name: wolfmed-autodoc-category-organs
+  note: wolfmed-autodoc-category-organs-note
+  order: 40
+  surgeries:
+  - WGSurgeryHealHeart
+  - WGSurgeryHealLungs
+  - WGSurgeryHealLiver
+  - WGSurgeryHealStomach
+  - WGSurgeryHealKidneys
+  - SurgeryRemoveHeart
+  - SurgeryInsertHeart
+  - SurgeryRemoveLungs
+  - SurgeryInsertLungs
+  - SurgeryRemoveLiver
+  - SurgeryInsertLiver
+  - SurgeryRemoveStomach
+  - SurgeryInsertStomach
+  - WGSurgeryRemoveKidneys
+  - WGSurgeryInsertKidneys
+  - SurgeryInsertPump
+  - WGSurgeryAlienEmbryoRemoval
+  - WGSurgeryBurstChestRepair
+
+- type: autodocCategory
+  id: WGWolfmedAutodocCategoryNeuro
+  name: wolfmed-autodoc-category-neuro
+  note: wolfmed-autodoc-category-neuro-note
+  order: 50
+  surgeries:
+  - SurgeryAttachHead
+  - SurgeryRemoveBrain
+  - SurgeryInsertBrain
+  - SurgeryRemoveBorgBrain
+  - SurgeryInsertBorgBrain
+  - SurgeryRemoveEyes
+  - SurgeryInsertEyes
+  - WGSurgeryHealBrain
+  - WGSurgeryRepairBrain
+  - WGSurgeryHealSlimeCore
+  - WGSurgeryRepairSlimeCore
+  - WGSurgeryHealEyes
+  - WGSurgeryRepairCore
+  - WGSurgeryRepairSynthCore
+  - WGSurgeryRepairChassisEyes
+  - WGSurgeryRepairChassisPump
+  - WGSurgeryRepairSynthPump
+
+- type: autodocCategory
+  id: WGWolfmedAutodocCategoryLimbs
+  name: wolfmed-autodoc-category-limbs
+  note: wolfmed-autodoc-category-limbs-note
+  order: 60
+  surgeries:
+  - SurgeryAttachLeftArm
+  - SurgeryAttachRightArm
+  - SurgeryAttachLeftLeg
+  - SurgeryAttachRightLeg
+  - SurgeryAttachLeftHand
+  - SurgeryAttachRightHand
+  - SurgeryAttachLeftFoot
+  - SurgeryAttachRightFoot
+  - SurgeryAttachHands
+  - SurgeryRemovePart
+
+- type: autodocCategory
+  id: WGWolfmedAutodocCategoryMechanical
+  name: wolfmed-autodoc-category-mechanical
+  note: wolfmed-autodoc-category-mechanical-note
+  order: 70
+  surgeries:
+  - WGSurgeryWeldChassisBreach
+  - WGSurgeryWeldChassis # Playtest 3 IPC 2: the hand welder's repair
+  - WGSurgeryRewireChassis # Playtest 3 IPC 2: the hand coil's repair
+  - WGSurgeryReplaceServo
+
+- type: autodocCategory
+  id: WGWolfmedAutodocCategoryCavity
+  name: wolfmed-autodoc-category-cavity
+  note: wolfmed-autodoc-category-cavity-note
+  order: 80
+  surgeries:
+  - SurgeryInsertItem
+
+- type: autodocCategory
+  id: WGWolfmedAutodocCategoryAccess
+  name: wolfmed-autodoc-category-access
+  note: wolfmed-autodoc-category-access-note
+  order: 90
+  fallback: true
+  surgeries:
+  - SurgeryOpenIncision
+  - SurgeryOpenRibcage
+  - SurgeryCloseIncision

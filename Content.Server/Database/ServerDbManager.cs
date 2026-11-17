@@ -456,7 +456,7 @@ namespace Content.Server.Database
         [Dependency] private ILogManager _logMgr = default!;
 
         private ServerDbBase _db = default!;
-        private readonly Content.Server._WF.ProfileSaves.WFUserWriteQueue _wfProfileWrites = new(); // WOLFGATE(ProfileSaves)
+        private readonly Content.Server._WG.ProfileSaves.WGUserWriteQueue _wgProfileWrites = new(); // WOLFGATE(ProfileSaves)
         private LoggingProvider _msLogProvider = default!;
         private ILoggerFactory _msLoggerFactory = default!;
 
@@ -518,21 +518,21 @@ namespace Content.Server.Database
         {
             DbWriteOpsMetric.Inc();
             // WOLFGATE(ProfileSaves): a selection stays in order with a slot deletion, which also writes the selection
-            return _wfProfileWrites.Run(userId, () => RunDbCommand(() => _db.SaveSelectedCharacterIndexAsync(userId, index)));
+            return _wgProfileWrites.Run(userId, () => RunDbCommand(() => _db.SaveSelectedCharacterIndexAsync(userId, index)));
         }
 
         public Task SaveCharacterSlotAsync(NetUserId userId, ICharacterProfile? profile, int slot)
         {
             DbWriteOpsMetric.Inc();
             // WOLFGATE(ProfileSaves): overlapping saves of one player collide on the unique trait index
-            return _wfProfileWrites.Run(userId, () => RunDbCommand(() => _db.SaveCharacterSlotAsync(userId, profile, slot)));
+            return _wgProfileWrites.Run(userId, () => RunDbCommand(() => _db.SaveCharacterSlotAsync(userId, profile, slot)));
         }
 
         public Task DeleteSlotAndSetSelectedIndex(NetUserId userId, int deleteSlot, int newSlot)
         {
             DbWriteOpsMetric.Inc();
             // WOLFGATE(ProfileSaves): a deletion waits its turn behind the player's saves
-            return _wfProfileWrites.Run(userId, () => RunDbCommand(() => _db.DeleteSlotAndSetSelectedIndex(userId, deleteSlot, newSlot)));
+            return _wgProfileWrites.Run(userId, () => RunDbCommand(() => _db.DeleteSlotAndSetSelectedIndex(userId, deleteSlot, newSlot)));
         }
 
         public Task SaveAdminOOCColorAsync(NetUserId userId, Color color)

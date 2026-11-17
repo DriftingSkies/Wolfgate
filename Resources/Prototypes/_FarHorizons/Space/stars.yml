@@ -47,7 +47,7 @@
   name: Kyphrus
   # WOLFGATE(BlackHole) START: replace Kyphrus's stellar surface with an accreting black hole.
   # shader: MainSequenceStar
-  shader: WFBlackHole
+  shader: WGBlackHole
   # WOLFGATE END
   solarMass: 0.62
   # WOLFGATE(BlackHole) START: cast warm accretion light with a slightly inclined disk.

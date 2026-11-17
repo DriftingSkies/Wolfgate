@@ -8,14 +8,14 @@ namespace Content.Shared._NF.Shipyard.Components;
 /// Tied to an ID card when a ship is purchased. 1 ship per captain.
 /// </summary>
 // WOLFGATE(ShipAccess): networked, so the client knows which ship a deed is for
-// WOLFGATE(Performance): WFDeletedRefStateSystem sends the state, since the ship can be deleted first
-[RegisterComponent, NetworkedComponent, Access(typeof(SharedShipyardSystem), typeof(SharedShuttleRecordsSystem), typeof(SharedShuttleConsoleLockSystem), typeof(Content.Shared._WF.Performance.WFDeletedRefStateSystem))]
+// WOLFGATE(Performance): WGDeletedRefStateSystem sends the state, since the ship can be deleted first
+[RegisterComponent, NetworkedComponent, Access(typeof(SharedShipyardSystem), typeof(SharedShuttleRecordsSystem), typeof(SharedShuttleConsoleLockSystem), typeof(Content.Shared._WG.Performance.WGDeletedRefStateSystem))]
 public sealed partial class ShuttleDeedComponent : Component
 {
     public const int MaxNameLength = 30;
     public const int MaxSuffixLength = 4 + 1 + 4; // 4 digits, dash, up to 4 letters - should be enough
 
-    [DataField] // WOLFGATE(ShipAccess): the access tab and door prediction read it on the client, networked by WFDeletedRefStateSystem
+    [DataField] // WOLFGATE(ShipAccess): the access tab and door prediction read it on the client, networked by WGDeletedRefStateSystem
     public EntityUid? ShuttleUid = null;
 
     [DataField]

@@ -245,7 +245,7 @@ public partial class SharedBodySystem
     private void OnBodyPartRemoved(Entity<BodyPartComponent> ent, ref EntRemovedFromContainerMessage args)
     {
         // Body part removed from another body part.
-        if (WfCuttingLoose) // WOLFGATE(Augments): a part cut loose for an augment isn't lost
+        if (WgCuttingLoose) // WOLFGATE(Augments): a part cut loose for an augment isn't lost
             return;
 
         var removedUid = args.Entity;
@@ -821,7 +821,7 @@ public partial class SharedBodySystem
         // new base.
         var woundHost = _queryWoundHost.HasComp(bodyId);
         if (woundHost && walkSpeed <= 0f)
-            (walkSpeed, sprintSpeed, acceleration) = Content.Shared._WF.Wolfmed.Consciousness.WolfmedCrawlSystem.LeglessBase;
+            (walkSpeed, sprintSpeed, acceleration) = Content.Shared._WG.Wolfmed.Consciousness.WolfmedCrawlSystem.LeglessBase;
 
         Movement.ChangeBaseSpeed(bodyId, walkSpeed, sprintSpeed, acceleration, movement);
         if (woundHost) // WOLFGATE(Wolfmed): playtest 2

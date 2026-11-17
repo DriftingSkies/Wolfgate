@@ -1,7 +1,7 @@
 using System.Linq;
 using Content.IntegrationTests.Fixtures;
 using Content.Shared._Onyx.Wounds;
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): Onyx's SharedBodySystem.TryDetachPart lives on WolfmedBodySystem here.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): Onyx's SharedBodySystem.TryDetachPart lives on WolfmedBodySystem here.
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
 using Content.Shared.CCVar;
@@ -61,7 +61,7 @@ public sealed class WoundScarTest : GameTest
             configuration.SetCVar(CCVars.SurgeryScarChance, 1f);
             var body = entities.SpawnEntity("WoundScarBody", map.GridCoords);
             var graph = entities.System<SharedBodySystem>();
-            var wfBody = entities.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
+            var wgBody = entities.System<WolfmedBodySystem>(); // WOLFGATE(Wolfmed)
             var wounds = entities.System<WoundSystem>();
             var parts = graph.GetBodyChildren(body).ToList();
             var torso = parts.Single(candidate => candidate.Component.PartType == BodyPartType.Torso).Id; // WOLFGATE(Wolfmed): D9
@@ -80,7 +80,7 @@ public sealed class WoundScarTest : GameTest
             Assert.That(wounds.TreatWound(scar.Owner, FixedPoint2.New(1)), Is.False);
             Assert.That(wounds.RemoveWound(scar.Owner), Is.False);
 
-            Assert.That(wfBody.TryDetachPart(part)); // WOLFGATE(Wolfmed): §2.7
+            Assert.That(wgBody.TryDetachPart(part)); // WOLFGATE(Wolfmed): §2.7
             Assert.That(wounds.GetWounds((part, woundable)).Count(HasScar), Is.EqualTo(1));
             Assert.That(graph.AttachPart(torso, "head", part)); // WOLFGATE(Wolfmed): Shitmed's attach takes a slot id
             Assert.That(wounds.GetWounds((part, woundable)).Count(HasScar), Is.EqualTo(1));

@@ -1,6 +1,6 @@
 using System.Numerics; // WOLFGATE: Vector2 for the space-wind NaN guard
 using Content.Server.Atmos.Components;
-using Content.Shared._WF.Performance; // WOLFGATE(Performance)
+using Content.Shared._WG.Performance; // WOLFGATE(Performance)
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Mobs.Components;

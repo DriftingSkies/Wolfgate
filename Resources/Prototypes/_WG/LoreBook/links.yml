@@ -1,0 +1,90 @@
+# Entities with a lore button on examine. Everything that inherits from a listed prototype gets the same page.
+# Entities whose guidebook help points at a lore page get the button on their own.
+
+- type: wgLoreLink
+  id: WGLoreLinkTsf
+  entry: TSFMC_Entry
+  entities:
+  - ClothingUniformTSFMC
+  - ClothingUniformTSFMCDesert
+  - ClothingUniformTSFMCForest
+  - ClothingUniformTsfmcMopp
+  - ClothingUniformTSFMCDress
+  - ClothingUniformTSFMCEngi
+  - ClothingBackpackTsfmc
+  - ClothingHeadsetTsfmc
+
+- type: wgLoreLink
+  id: WGLoreLinkPdv
+  entry: PDV_Entry
+  entities:
+  - ClothingHeadHelmetCombatPDV
+  - ClothingHeadsetAltVanguardCommand
+
+- type: wgLoreLink
+  id: WGLoreLinkUssp
+  entry: USSP_Entry
+  entities:
+  - ClothingUniformUSSP
+  - ClothingUniformServiceDressUSSP
+  - ClothingHeadHelmetCombatUSSP
+  - ClothingHeadHelmetHeavyUSSP
+  - ClothingHeadsetUSSP
+
+- type: wgLoreLink
+  id: WGLoreLinkMmc
+  entry: MMC
+  entities:
+  - ClothingUniformMMC
+
+- type: wgLoreLink
+  id: WGLoreLinkAsf
+  entry: WGAsf
+  entities:
+  - WGAsfBanner
+  - WGAsfMarineBanner
+  - WGAsfClothingUniformService
+  - WGAsfClothingUniformColonist
+  - WGAsfClothingUniformResearcher
+
+- type: wgLoreLink
+  id: WGLoreLinkReavers
+  entry: WGLoreReavers
+  entities:
+  - WGClothingOuterHardsuitReaver
+  - WGClothingOuterHardsuitReaverCombat
+  - WGClothingOuterHardsuitReaverVoid
+  - WGClothingUniformReaverFatigues
+  - WGClothingUniformReaverDeck
+  - WGClothingUniformReaverEngine
+  - WGClothingHeadReaverBeret
+  - WGClothingNeckReaverCaptainCloak
+  - WGClothingNeckReaverWarlordCloak
+
+- type: wgLoreLink
+  id: WGLoreLinkAds
+  entry: WGLoreAds
+  entities:
+  - ShipRepairDeviceRedacted
+  - WGCrateAdsRepair
+  - WGCrateAdsArms
+
+- type: wgLoreLink
+  id: WGLoreLinkMonolith
+  entry: WGLoreMonolith
+  entities:
+  - WGMonolithScion
+  - WGRemadeBase
+  - MobMonolithicBase
+
+- type: wgLoreLink
+  id: WGLoreLinkXenonids
+  entry: WGLoreXenonids
+  entities:
+  - CMXenoBase
+
+- type: wgLoreLink
+  id: WGLoreLinkChimera
+  entry: WGLoreChimera
+  entities:
+  - ChimeraFleshKudzu

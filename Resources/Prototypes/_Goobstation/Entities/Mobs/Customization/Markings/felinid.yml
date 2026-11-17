@@ -11,12 +11,12 @@
     base_fox_tail_BEHIND: base_fox_tail_FRONT
     base_fox_tail_tip_BEHIND: base_fox_tail_tip_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Felinid/foxtail.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Felinid/foxtail.rsi
     state: base_fox_tail_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Felinid/foxtail.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Felinid/foxtail.rsi
     state: base_fox_tail_tip_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Felinid/foxtail.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Felinid/foxtail.rsi
     state: base_fox_tail_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Felinid/foxtail.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Felinid/foxtail.rsi
     state: base_fox_tail_tip_BEHIND
   # WOLFGATE END

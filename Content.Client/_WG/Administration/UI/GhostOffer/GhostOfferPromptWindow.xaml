@@ -1,0 +1,25 @@
+<!-- Names must avoid DefaultWindow's own: CloseButton, ContentsContainer, TitleLabel, WindowHeader. -->
+<DefaultWindow xmlns="https://spacestation14.io"
+               Title="{Loc 'wg-ghost-offer-prompt-title'}"
+               MinSize="400 0">
+    <BoxContainer Orientation="Vertical" Margin="8 4">
+        <Label Name="RoleNameLabel" StyleClasses="LabelHeading" />
+        <RichTextLabel Name="DescriptionLabel" HorizontalExpand="True" Margin="0 4" />
+        <RichTextLabel Name="RulesLabel" HorizontalExpand="True" Margin="0 0 0 4" />
+        <Label Name="HowLabel" StyleClasses="LabelSubText" />
+        <BoxContainer Orientation="Horizontal" Margin="0 8 0 0">
+            <Button Name="SignUpButton"
+                    Text="{Loc 'wg-ghost-offer-prompt-sign-up'}"
+                    StyleClasses="ButtonSquare"
+                    HorizontalExpand="True" />
+            <Button Name="FollowButton"
+                    Text="{Loc 'wg-ghost-offer-prompt-follow'}"
+                    StyleClasses="ButtonSquare"
+                    Margin="4 0" />
+            <Button Name="RolesButton"
+                    Text="{Loc 'wg-ghost-offer-prompt-all-roles'}"
+                    StyleClasses="ButtonSquare" />
+        </BoxContainer>
+        <Label Name="StatusLabel" StyleClasses="LabelSubText" Margin="0 4 0 0" />
+    </BoxContainer>
+</DefaultWindow>

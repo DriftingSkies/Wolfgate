@@ -138,7 +138,7 @@ public sealed partial class FireControlSystem : EntitySystem
         if (grid == null)
             return;
 
-        _wfHack.WarnGunner(uid, args.Actor, args.Selected, args.Coordinates); // WOLFGATE(BoardingAction): tell the gunner why locked guns stay silent.
+        _wgHack.WarnGunner(uid, args.Actor, args.Selected, args.Coordinates); // WOLFGATE(BoardingAction): tell the gunner why locked guns stay silent.
 
         // Fire the actual weapons
         FireWeapons((EntityUid)component.ConnectedServer, args.Selected, args.Coordinates, server);
@@ -261,7 +261,7 @@ public sealed partial class FireControlSystem : EntitySystem
 
         // WOLFGATE(CombatConsole): share docking discovery across same-tick gunnery snapshots.
         // NavInterfaceState navState = _shuttleConsoleSystem.GetNavState(uid, _shuttleConsoleSystem.GetAllDocks());
-        NavInterfaceState navState = _shuttleConsoleSystem.GetNavState(uid, WfGetDocks());
+        NavInterfaceState navState = _shuttleConsoleSystem.GetNavState(uid, WgGetDocks());
 
         List<FireControllableEntry> controllables = new();
         if (component.ConnectedServer != null && TryComp<FireControlServerComponent>(component.ConnectedServer, out var server))
@@ -289,10 +289,10 @@ public sealed partial class FireControlSystem : EntitySystem
         var array = controllables.ToArray();
 
         var state = new FireControlConsoleBoundInterfaceState(component.ConnectedServer != null, array, navState);
-        WfUpdateCombatState(uid, component, state); // WOLFGATE(CombatConsole): include group memory and countermeasure telemetry.
+        WgUpdateCombatState(uid, component, state); // WOLFGATE(CombatConsole): include group memory and countermeasure telemetry.
         // WOLFGATE(CombatConsole) START: publish only changed gunnery snapshots.
         // _ui.SetUiState(uid, FireControlConsoleUiKey.Key, state);
-        WfPublishState(uid, state);
+        WgPublishState(uid, state);
         // WOLFGATE END
     }
 

@@ -1,0 +1,36 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+
+- type: vessel
+  id: Ample
+  parent: BaseVessel
+  name: SKR Ample
+  description: A very light mining shuttle equipped with a PTK-1500e
+  price: 12021
+  category: Micro
+  group: Custom
+  mapchecker_group_override: Shipyard  # Treat this as a Shipyard vessel for mapchecker purposes
+  shuttlePath: /SharedMaps/_WG/OldVessels/Carrier/ample.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: Null
+  class:
+  - Salvage
+  engine:
+  - APU
+
+- type: gameMap
+  id: Ample
+  mapName: 'Ample'
+  mapPath: /SharedMaps/_WG/OldVessels/Carrier/ample.yml
+  minPlayers: 0
+  stations:
+    Ample:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Ample SNB{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs: {}

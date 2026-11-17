@@ -1,5 +1,5 @@
 // WOLFGATE(Xenoborgs) START: wizden#43282 + #45329 borg module blacklists, ported whole; logic in BorgModuleExtrasSystem.
-using Content.Shared._WF.Xenoborgs;
+using Content.Shared._WG.Xenoborgs;
 using Content.Shared.Whitelist;
 using Robust.Shared.GameStates;
 

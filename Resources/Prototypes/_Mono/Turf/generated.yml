@@ -201,7 +201,7 @@
   id: PlatingHalfV
   parent: PlatingSpace
   name: V half-plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/half_v.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/half_v.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['0.25, 0', '0.75, 0', '0.75, 1', '0.25, 1']
 
@@ -209,7 +209,7 @@
   id: PlatingHalfH
   parent: PlatingSpace
   name: H half-plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/half_h.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/half_h.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['0, 0.25', '0, 0.75', '1, 0.75', '1, 0.25']
 
@@ -217,7 +217,7 @@
   id: PlatingWedgeN
   parent: PlatingSpace
   name: north wedge plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/wedge_n.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/wedge_n.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['0, 1', '1, 1', '0.5, 0.5']
 
@@ -225,7 +225,7 @@
   id: PlatingWedgeE
   parent: PlatingSpace
   name: east wedge plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/wedge_e.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/wedge_e.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['1, 1', '1, 0', '0.5, 0.5']
 
@@ -233,7 +233,7 @@
   id: PlatingWedgeS
   parent: PlatingSpace
   name: south wedge plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/wedge_s.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/wedge_s.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['1, 0', '0, 0', '0.5, 0.5']
 
@@ -241,7 +241,7 @@
   id: PlatingWedgeW
   parent: PlatingSpace
   name: west wedge plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/wedge_w.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/wedge_w.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['0, 0', '0, 1', '0.5, 0.5']
 
@@ -249,7 +249,7 @@
   id: PlatingHalfTiltNESLower
   parent: PlatingSpace
   name: NE-S lower half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_ne_s_l.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_ne_s_l.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['0, 1', '1, 1', '1, 0', '0.5, 0']
 
@@ -257,7 +257,7 @@
   id: PlatingHalfTiltSEWLower
   parent: PlatingSpace
   name: SE-W lower half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_se_w_l.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_se_w_l.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['1, 1', '1, 0', '0, 0', '0, 0.5']
 
@@ -265,7 +265,7 @@
   id: PlatingHalfTiltSWNLower
   parent: PlatingSpace
   name: SW-N lower half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_sw_n_l.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_sw_n_l.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['1, 0', '0, 0', '0, 1', '0.5, 1']
 
@@ -273,7 +273,7 @@
   id: PlatingHalfTiltNWELower
   parent: PlatingSpace
   name: NW-E lower half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_nw_e_l.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_nw_e_l.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['0, 0', '0, 1', '1, 1', '1, 0.5']
 
@@ -281,7 +281,7 @@
   id: PlatingHalfTiltNESUpper
   parent: PlatingSpace
   name: NE-S upper half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_ne_s_u.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_ne_s_u.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['0.5, 1', '1, 1', '1, 0']
 
@@ -289,7 +289,7 @@
   id: PlatingHalfTiltSEWUpper
   parent: PlatingSpace
   name: SE-W upper half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_se_w_u.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_se_w_u.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['1, 0.5', '1, 0', '0, 0']
 
@@ -297,7 +297,7 @@
   id: PlatingHalfTiltSWNUpper
   parent: PlatingSpace
   name: SW-N upper half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_sw_n_u.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_sw_n_u.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['0.5, 0', '0, 0', '0, 1']
 
@@ -305,7 +305,7 @@
   id: PlatingHalfTiltNWEUpper
   parent: PlatingSpace
   name: NW-E upper half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_nw_e_u.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_nw_e_u.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['0, 0.5', '0, 1', '1, 1']
 
@@ -313,7 +313,7 @@
   id: PlatingHalfTiltNEWLower
   parent: PlatingSpace
   name: NE-W lower half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_ne_w_l.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_ne_w_l.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['0, 1', '1, 1', '1, 0', '0, 0.5']
 
@@ -321,7 +321,7 @@
   id: PlatingHalfTiltSENLower
   parent: PlatingSpace
   name: SE-N lower half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_se_n_l.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_se_n_l.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['1, 1', '1, 0', '0, 0', '0.5, 1']
 
@@ -329,7 +329,7 @@
   id: PlatingHalfTiltSWELower
   parent: PlatingSpace
   name: SW-E lower half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_sw_e_l.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_sw_e_l.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['1, 0', '0, 0', '0, 1', '1, 0.5']
 
@@ -337,7 +337,7 @@
   id: PlatingHalfTiltNWSLower
   parent: PlatingSpace
   name: NW-S lower half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_nw_s_l.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_nw_s_l.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['0, 0', '0, 1', '1, 1', '0.5, 0']
 
@@ -345,7 +345,7 @@
   id: PlatingHalfTiltNEWUpper
   parent: PlatingSpace
   name: NE-W upper half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_ne_w_u.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_ne_w_u.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['0, 1', '1, 1', '1, 0.5']
 
@@ -353,7 +353,7 @@
   id: PlatingHalfTiltSENUpper
   parent: PlatingSpace
   name: SE-N upper half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_se_n_u.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_se_n_u.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['1, 1', '1, 0', '0.5, 0']
 
@@ -361,7 +361,7 @@
   id: PlatingHalfTiltSWEUpper
   parent: PlatingSpace
   name: SW-E upper half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_sw_e_u.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_sw_e_u.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['1, 0', '0, 0', '0, 0.5']
 
@@ -369,7 +369,7 @@
   id: PlatingHalfTiltNWSUpper
   parent: PlatingSpace
   name: NW-S upper half-tilt plating
-  sprite: /Textures/_WF/Resprites/_WF/Tiles/halftilt_nw_s_u.png #WOLFGATE(Resprites): Repathed
+  sprite: /Textures/_WG/Resprites/_WG/Tiles/halftilt_nw_s_u.png #WOLFGATE(Resprites): Repathed
   variants: 1
   vertices: ['0, 0', '0, 1', '0.5, 1']
 # WOLFGATE END

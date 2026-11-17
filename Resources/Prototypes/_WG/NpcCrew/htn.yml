@@ -1,0 +1,338 @@
+# The crew root: fight, then work the duty the WGCrewDuty key names, then idle. The planner replans every half
+# second and swaps to an earlier branch as soon as it is valid. Station operators only fight their own attackers
+# and resume their job afterwards. Every duty starts by holstering; the fight starts by drawing. Skilled crew also
+# fall back to patch wounds, throw grenades round a held corner and brace for a hostile they may not hunt
+# (WGCrewSkills).
+- type: htnCompound
+  id: WGCrewCompound
+  branches:
+  # Sent to take someone alive: that comes before any other fight.
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewGrabOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewGrabDestination
+        rangeKey: InteractRange
+        removeKeyOnFinish: false
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewGrabOperator
+        perform: true
+  # Wounded in a fight: duck out of the hostile's sight and patch up (WGCrewFallBackSystem).
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewFallBackOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewFallBack
+        rangeKey: InteractRange
+        removeKeyOnFinish: false
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewPatchOperator
+  # A known hostile holding a corner out of sight: a grenade round it (WGCrewGrenadeSystem).
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewGrenadeOperator
+  - preconditions:
+    - !type:WGCrewMayFightPrecondition
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGDrawWeaponOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:WGReloadOperator
+    - !type:HTNCompoundTask
+      task: WGCrewFightCompound
+  # A hostile known aboard that he may not go after: weapon up, covering its approach.
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewBraceOperator
+  # A medic with a patient (WGCrewMedicSystem): walk to them, or with them in tow to a bed, and treat them there.
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewMedicOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:WGHolsterWeaponOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewMedicDestination
+        rangeKey: InteractRange
+        removeKeyOnFinish: false
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewMedicOperator
+        perform: true
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewWorkOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:WGHolsterWeaponOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewWorkDestination
+        rangeKey: InteractRange
+        removeKeyOnFinish: false
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewWorkOperator
+        perform: true
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewReturnOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewReturn
+        rangeKey: WGCrewPostRange
+  - preconditions:
+    - !type:KeyEqualsPrecondition
+      key: WGCrewDuty
+      value: Pilot
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGHolsterWeaponOperator
+    - !type:HTNCompoundTask
+      task: WGCrewPilotCompound
+  - preconditions:
+    - !type:KeyEqualsPrecondition
+      key: WGCrewDuty
+      value: Gunnery
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGHolsterWeaponOperator
+    - !type:HTNCompoundTask
+      task: WGCrewGunneryCompound
+  - preconditions:
+    - !type:KeyEqualsPrecondition
+      key: WGCrewDuty
+      value: Janitor
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGHolsterWeaponOperator
+    - !type:HTNCompoundTask
+      task: WGCrewJanitorCompound
+  - preconditions:
+    - !type:KeyEqualsPrecondition
+      key: WGCrewDuty
+      value: Guard
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGHolsterWeaponOperator
+    - !type:HTNCompoundTask
+      task: WGCrewGuardCompound
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGHolsterWeaponOperator
+    - !type:HTNCompoundTask
+      task: WGCrewIdleCompound
+
+# Shoot while the gun in hand has ammo, otherwise close in. Both fail without a target, which fails the fight branch.
+- type: htnCompound
+  id: WGCrewFightCompound
+  branches:
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WGCrewRangedCompound
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WGCrewMeleeCompound
+
+# Gunnery: walk to an available console and operate it until interrupted.
+- type: htnCompound
+  id: WGCrewGunneryCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGPickGunneryOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewGunneryCoordinates
+        rangeKey: InteractRange
+        removeKeyOnFinish: false
+    - !type:HTNPrimitiveTask
+      operator: !type:WGTakeGunneryOperator
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WGCrewIdleCompound
+
+# Guard: return to the assigned post, then idle nearby.
+- type: htnCompound
+  id: WGCrewGuardCompound
+  branches:
+  - preconditions:
+    - !type:KeyExistsPrecondition
+      key: WGCrewPost
+    - !type:CoordinatesNotInRangePrecondition
+      targetKey: WGCrewPost
+      rangeKey: WGCrewPostRange
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewPost
+        rangeKey: WGCrewPostRange
+        removeKeyOnFinish: false
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WGCrewIdleCompound
+
+# Janitor: mop the nearest puddles on its own ship (WGCrewShipPuddles), then wash dirt off the floor further out, then back to the post (WGCrewGuardCompound).
+- type: htnCompound
+  id: WGCrewJanitorCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:UtilityOperator
+        proto: WGCrewShipPuddles
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: true
+        removeKeyOnFinish: false
+        targetKey: TargetCoordinates
+        pathfindKey: TargetPathfind
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      preconditions:
+      - !type:TargetInRangePrecondition
+        targetKey: Target
+        rangeKey: InteractRange
+      operator: !type:InteractWithOperator
+        targetKey: Target
+      services:
+      - !type:UtilityService
+        id: PuddleService
+        proto: WGCrewShipPuddles
+        key: Target
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGPickDirtyTileOperator
+        range: 30
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        pathfindInPlanning: true
+        removeKeyOnFinish: false
+        targetKey: TargetCoordinates
+        pathfindKey: TargetPathfind
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCleanTileOperator
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WGCrewGuardCompound
+
+# Pilot: walk to the helm and take it; WGPilotDutySystem flies the orders from there. No usable helm: idle, and take
+# one as soon as the planner finds it.
+- type: htnCompound
+  id: WGCrewPilotCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGPickHelmOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewHelmCoords
+        rangeKey: InteractRange
+        removeKeyOnFinish: false
+    - !type:HTNPrimitiveTask
+      operator: !type:WGTakeHelmOperator
+  # No way to the square helm (a sealed cabin, a blocked passage): fly from the nearest one rather than not at all.
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGPickHelmOperator
+        anyHelm: true
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewHelmCoords
+        rangeKey: InteractRange
+        removeKeyOnFinish: false
+    - !type:HTNPrimitiveTask
+      operator: !type:WGTakeHelmOperator
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WGCrewIdleCompound
+
+# Idle at the assigned station instead of wandering across connected docks.
+- type: htnCompound
+  id: WGCrewIdleCompound
+  branches:
+  - preconditions:
+    - !type:KeyExistsPrecondition
+      key: WGCrewPost
+    - !type:CoordinatesNotInRangePrecondition
+      targetKey: WGCrewPost
+      rangeKey: WGCrewPostRange
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewPost
+        rangeKey: WGCrewPostRange
+        removeKeyOnFinish: false
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:RandomOperator
+        targetKey: IdleTime
+        minKey: MinimumIdleTime
+        maxKey: MaximumIdleTime
+    - !type:HTNPrimitiveTask
+      operator: !type:WaitOperator
+        key: IdleTime
+
+# Inventory reload/fallback is handled by WGCrewWeaponSystem; no loose weapon scavenging.
+- type: htnCompound
+  id: WGCrewRangedCompound
+  branches:
+  - preconditions:
+    - !type:WGCrewLoadedGunPrecondition
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewTargetOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        shutdownState: PlanFinished
+        pathfindInPlanning: true
+        removeKeyOnFinish: false
+        targetKey: TargetCoordinates
+        pathfindKey: TargetPathfind
+        stopOnLineOfSight: true
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewSidestepOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:GunOperator
+        targetKey: Target
+
+- type: htnCompound
+  id: WGCrewMeleeCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewTargetOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        shutdownState: PlanFinished
+        pathfindInPlanning: true
+        removeKeyOnFinish: false
+        targetKey: TargetCoordinates
+        pathfindKey: TargetPathfind
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      operator: !type:MeleeOperator
+        targetKey: Target
+      preconditions:
+      - !type:TargetInRangePrecondition
+        targetKey: Target
+        rangeKey: MeleeRange
+
+# The puddles a crew janitor mops: the cleanbot's NearbyPuddles, kept to the ship it serves.
+- type: utilityQuery
+  id: WGCrewShipPuddles
+  query:
+  - !type:ComponentQuery
+    components:
+    - type: Puddle
+  - !type:PuddleFilter
+  considerations:
+  - !type:WGTargetOnHomeGridCon
+    curve: !type:BoolCurve
+  - !type:TargetDistanceCon
+    curve: !type:PresetCurve
+      preset: TargetDistance
+  - !type:TargetAccessibleCon
+    curve: !type:BoolCurve
+  - !type:TargetInLOSOrCurrentCon
+    curve: !type:BoolCurve

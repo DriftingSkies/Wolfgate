@@ -1,9 +1,0 @@
-- files: ["impact_1.ogg", "impact_2.ogg", "impact_3.ogg"]
-  license: "CC-BY-SA-3.0"
-  copyright: "Original procedural shield impacts synthesized for Wolfgate: resonant membrane tones, pitch warble, filtered contact noise and dark echoes. No samples from the reference recording are included."
-  source: "https://github.com/VanguardControl/Wolfgate/blob/main/Tools/_WF/ShipShields/synthesize_impacts.py"
-
-- files: ["shield_on.ogg", "shield_off.ogg"]
-  license: "CC-BY-SA-3.0"
-  copyright: "Original shield generator startup and shutdown recordings by Gandalf (Gandalf2k15), supplied by the author for Wolfgate."
-  source: "https://github.com/Gandalf2k15"

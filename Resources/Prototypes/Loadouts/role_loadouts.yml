@@ -62,11 +62,11 @@
   - CommonBackpack
   # WOLFGATE(RoundSetup) START: hardsuits in the same group as the coats, so only one fills the slot
   # - BartenderOuterClothing
-  - WFShipCrewBartenderOuterClothing
+  - WGShipCrewBartenderOuterClothing
   # WOLFGATE END
   # WOLFGATE(RoundSetup) START: HUD glasses in the same group as the plain ones
   # - Glasses
-  - WFShipCrewGlasses
+  - WGShipCrewGlasses
   # WOLFGATE END
   - Survival
   # WOLFGATE(RoundSetup) START: ship crews take this job, so it also gets the survival box
@@ -96,11 +96,11 @@
   - CommonBackpack
   # WOLFGATE(RoundSetup) START: hardsuits in the same group as the coats, so only one fills the slot
   # - ChefOuterClothing
-  - WFShipCrewChefOuterClothing
+  - WGShipCrewChefOuterClothing
   # WOLFGATE END
   # WOLFGATE(RoundSetup) START: HUD glasses in the same group as the plain ones
   # - Glasses
-  - WFShipCrewGlasses
+  - WGShipCrewGlasses
   # WOLFGATE END
   - Survival
   # WOLFGATE(RoundSetup) START: ship crews take this job, so it also gets the survival box
@@ -157,11 +157,11 @@
   - CommonBackpack
   # WOLFGATE(RoundSetup) START: hardsuits in the same group as the coats, so only one fills the slot
   # - JanitorOuterClothing
-  - WFShipCrewJanitorOuterClothing
+  - WGShipCrewJanitorOuterClothing
   # WOLFGATE END
   # WOLFGATE(RoundSetup) START: HUD glasses in the same group as the plain ones
   # - Glasses
-  - WFShipCrewGlasses
+  - WGShipCrewGlasses
   # WOLFGATE END
   - Survival
   # WOLFGATE(RoundSetup) START: ship crews take this job, so it also gets the survival box
@@ -180,11 +180,11 @@
   - BotanistBackpack
   # WOLFGATE(RoundSetup) START: hardsuits in the same group as the coats, so only one fills the slot
   # - BotanistOuterClothing
-  - WFShipCrewBotanistOuterClothing
+  - WGShipCrewBotanistOuterClothing
   # WOLFGATE END
   # WOLFGATE(RoundSetup) START: HUD glasses in the same group as the plain ones
   # - Glasses
-  - WFShipCrewGlasses
+  - WGShipCrewGlasses
   # WOLFGATE END
   - Survival
   # WOLFGATE(RoundSetup) START: ship crews take this job, so it also gets the survival box
@@ -258,12 +258,12 @@
   - CargoTechnicianBackpack
   # WOLFGATE(RoundSetup) START: hardsuits in the same group as the coats, so only one fills the slot
   # - CargoTechnicianOuterClothing
-  - WFShipCrewCargoTechnicianOuterClothing
+  - WGShipCrewCargoTechnicianOuterClothing
   # WOLFGATE END
   - CargoTechnicianShoes
   # WOLFGATE(RoundSetup) START: HUD glasses in the same group as the plain ones
   # - Glasses
-  - WFShipCrewGlasses
+  - WGShipCrewGlasses
   # WOLFGATE END
   - Survival
   # WOLFGATE(RoundSetup) START: ship crews take this job, so it also gets the survival box
@@ -279,12 +279,12 @@
   - SalvageSpecialistBackpack
   # WOLFGATE(RoundSetup) START: hardsuits in the same group as the coats, so only one fills the slot
   # - SalvageSpecialistOuterClothing
-  - WFShipCrewSalvageSpecialistOuterClothing
+  - WGShipCrewSalvageSpecialistOuterClothing
   # WOLFGATE END
   - SalvageSpecialistShoes
   # WOLFGATE(RoundSetup) START: HUD glasses in the same group as the plain ones
   # - Glasses
-  - WFShipCrewGlasses
+  - WGShipCrewGlasses
   # WOLFGATE END
   - Survival
   # WOLFGATE(RoundSetup) START: ship crews take this job, so it also gets the survival box
@@ -327,14 +327,14 @@
   - StationEngineerBackpack
   # WOLFGATE(RoundSetup) START: hardsuits in the same group as the coats, so only one fills the slot
   # - StationEngineerOuterClothing
-  - WFShipCrewStationEngineerOuterClothing
+  - WGShipCrewStationEngineerOuterClothing
   # WOLFGATE END
   - StationEngineerShoes
   - StationEngineerID
   - SurvivalExtended
   # WOLFGATE(RoundSetup) START: ship crews take this job, so it also gets the survival box
   - ContractorBoxSurvival
-  - WFShipCrewGlasses
+  - WGShipCrewGlasses
   # WOLFGATE END
   - Trinkets
   - GroupSpeciesBreathTool
@@ -347,13 +347,13 @@
   - AtmosphericTechnicianBackpack
   # WOLFGATE(RoundSetup) START: hardsuits in the same group as the coats, so only one fills the slot
   # - AtmosphericTechnicianOuterClothing
-  - WFShipCrewAtmosphericTechnicianOuterClothing
+  - WGShipCrewAtmosphericTechnicianOuterClothing
   # WOLFGATE END
   - AtmosphericTechnicianShoes
   - SurvivalExtended
   # WOLFGATE(RoundSetup) START: ship crews take this job, so it also gets the survival box
   - ContractorBoxSurvival
-  - WFShipCrewGlasses
+  - WGShipCrewGlasses
   # WOLFGATE END
   - Trinkets
   - GroupSpeciesBreathTool
@@ -385,14 +385,14 @@
   - ScientistBackpack
   # WOLFGATE(RoundSetup) START: hardsuits in the same group as the coats, so only one fills the slot
   # - ScientistOuterClothing
-  - WFShipCrewScientistOuterClothing
+  - WGShipCrewScientistOuterClothing
   # WOLFGATE END
   - ScientistGloves
   - ScientistShoes
   - ScientistPDA
   # WOLFGATE(RoundSetup) START: HUD glasses in the same group as the plain ones
   # - Glasses
-  - WFShipCrewGlasses
+  - WGShipCrewGlasses
   # WOLFGATE END
   - Survival
   # WOLFGATE(RoundSetup) START: ship crews take this job, so it also gets the survival box
@@ -509,13 +509,13 @@
   - MedicalBackpack
   # WOLFGATE(RoundSetup) START: hardsuits in the same group as the coats, so only one fills the slot
   # - MedicalDoctorOuterClothing
-  - WFShipCrewMedicalDoctorOuterClothing
+  - WGShipCrewMedicalDoctorOuterClothing
   # WOLFGATE END
   - MedicalShoes
   - MedicalDoctorPDA
   # WOLFGATE(RoundSetup) START: HUD glasses in the same group as the plain ones
   # - Glasses
-  - WFShipCrewGlasses
+  - WGShipCrewGlasses
   # WOLFGATE END
   - SurvivalMedical
   # WOLFGATE(RoundSetup) START: ship crews take this job, so it also gets the survival box
@@ -545,13 +545,13 @@
   - ChemistBackpack
   # WOLFGATE(RoundSetup) START: hardsuits in the same group as the coats, so only one fills the slot
   # - ChemistOuterClothing
-  - WFShipCrewChemistOuterClothing
+  - WGShipCrewChemistOuterClothing
   # WOLFGATE END
   - MedicalShoes
   - SurvivalMedical
   # WOLFGATE(RoundSetup) START: ship crews take this job, so it also gets the survival box
   - ContractorBoxSurvival
-  - WFShipCrewGlasses
+  - WGShipCrewGlasses
   # WOLFGATE END
   - Trinkets
   - GroupSpeciesBreathToolMedical
@@ -567,12 +567,12 @@
   - MedicalBackpack
   # WOLFGATE(RoundSetup) START: hardsuits in the same group as the coats, so only one fills the slot
   # - ParamedicOuterClothing
-  - WFShipCrewParamedicOuterClothing
+  - WGShipCrewParamedicOuterClothing
   # WOLFGATE END
   - ParamedicShoes
   # WOLFGATE(RoundSetup) START: HUD glasses in the same group as the plain ones
   # - Glasses
-  - WFShipCrewGlasses
+  - WGShipCrewGlasses
   # WOLFGATE END
   - SurvivalMedical
   # WOLFGATE(RoundSetup) START: ship crews take this job, so it also gets the survival box

@@ -1,0 +1,4 @@
+- type: shader
+  id: WGExplosionShockwave
+  kind: source
+  path: "/Textures/_WG/Explosion/Shaders/shockwave.swsl"

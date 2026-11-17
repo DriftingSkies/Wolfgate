@@ -1,0 +1,177 @@
+# The hacking harpoon: a hardpoint gun, its dart, its cable and the arcing on a hacked ship's engines.
+
+- type: Tag
+  id: WGHackDart
+
+- type: ropeType
+  id: WGRopeHackCable
+  name: wg-boarding-rope-hack-cable
+  # A data cable: it pulls on nothing and parts past its full length.
+  stiffness: 0
+  dampingRatio: 0
+  maxStretch: 0.01
+  breakForce: 0
+  maxLength: 250
+  loadBearing: false
+  color: "#3fa7b5"
+  tautColor: "#9ff2ff"
+  width: 0.14
+  segmentsPerMetre: 1.5
+  texture: /Textures/_WG/BoardingAction/hack_cable.png
+  textureLength: 0.6
+  bendStiffness: 0.25
+  sparkColor: "#b8f6ff"
+  sparkSpacing: 10
+  breakSound:
+    collection: sparks
+
+- type: entity
+  id: WGHackDart
+  parent: WGShipHarpoon
+  name: hacking dart
+  description: A barbed intrusion probe for the ARACHNE hacking harpoon. Shields stop it.
+  components:
+  - type: Sprite
+    sprite: _WG/BoardingAction/hack_dart.rsi
+    noRot: false
+    layers:
+    - state: dart
+      map: [ "enum.ShipHarpoonVisualLayers.Base" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ShipHarpoonVisuals.Embedded:
+        enum.ShipHarpoonVisualLayers.Base:
+          True: { state: latched }
+          False: { state: dart }
+  - type: Item
+    size: Large
+  - type: ShipHarpoon
+    expendable: true
+  - type: ShipWeaponProjectile
+  - type: Tag
+    tags:
+    - WGHackDart
+  - type: Projectile
+    deleteOnCollide: false
+    onlyCollideWhenShot: true
+    damage:
+      types:
+        Piercing: 5
+  # Unlike a tow harpoon it has to carry the whole length of its cable.
+  - type: Physics
+    bodyType: Dynamic
+    linearDamping: 0
+    angularDamping: 0
+  - type: RadarBlip
+    radarColor: "#3fa7b5"
+    scale: 1
+    shape: triangle
+  - type: StaticPrice
+    price: 50
+
+- type: entity
+  id: WGHackHarpoonGun
+  name: ARACHNE hacking harpoon
+  parent:
+  - BallisticArtillery
+  - BallisticArtilleryTier1HP
+  suffix: Small, T1
+  description: Fires a dart on a 250 m data cable. A hit cuts the target's FTL and stops its guns firing on you, but locks your own guns until the cable is gone. Loaded by hand.
+  components:
+  - type: StaticPrice
+    price: 1000
+  - type: Sprite
+    sprite: _WG/BoardingAction/hack_harpoon_gun.rsi
+    layers:
+    - state: icon
+  - type: Appearance
+  - type: AmmoCounter
+  - type: FireControlRotate
+  - type: Actions
+  - type: CombatMode
+    isInCombatMode: true
+  - type: Gun
+    fireRate: 0.2
+    recoil: 0
+    minAngle: 0
+    maxAngle: 0
+    projectileSpeed: 150
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    shootThermalSignature: 200000
+    soundGunshot:
+      path: /Audio/Weapons/Guns/Gunshots/harpoon.ogg
+    soundEmpty:
+      path: /Audio/Weapons/Guns/Empty/empty.ogg
+  - type: BallisticAmmoProvider
+    capacity: 1
+    cycleable: false
+    soundInsert:
+      path: /Audio/Weapons/Guns/MagIn/kinetic_reload.ogg
+    whitelist:
+      tags:
+      - WGHackDart
+  - type: ContainerContainer
+    containers:
+      ballistic-ammo: !type:Container
+  - type: ShipHarpoonTurret
+    manned: false
+    ropeType: WGRopeHackCable
+  - type: RopeAttachPoint
+    maxRopes: 1
+  - type: WGHackHarpoonGun
+  - type: RadarBlip
+    radarColor: "#3fa7b5"
+    scale: 1
+    visibleFromOtherGrids: true
+    gridConfig:
+      color: "#3fa7b5"
+      shape: Square
+      respectZoom: true
+      rotate: true
+      bounds: "-0.7,-0.7,0.7,0.7"
+  - type: ShipGunType
+    shipType: Ballistic
+  - type: ShipGunClass
+    shipClass: Light
+  - type: ShipRepairable
+    repairTime: 10
+    repairCost: 20
+  - type: HardpointAnchorableOnly
+    class: Universal
+    size: Light
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGHackHarpoonGunFlatpack
+  name: ARACHNE flatpack
+  description: A flatpack used for constructing an ARACHNE hacking harpoon.
+  components:
+  - type: Flatpack
+    entity: WGHackHarpoonGun
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#3fa7b5"
+    - state: icon-default
+  - type: StaticPrice
+    price: 500
+
+- type: entity
+  id: WGEffectHackArc
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    drawdepth: Effects
+    sprite: _WG/BoardingAction/hack_arc.rsi
+    layers:
+    - state: arc
+      shader: unshaded
+  - type: PointLight
+    radius: 3
+    energy: 2
+    color: "#7fe9ff"
+    castShadows: false

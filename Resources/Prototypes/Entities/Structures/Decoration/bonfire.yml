@@ -15,11 +15,11 @@
         # WOLFGATE(Bonfires): named so the sprite can show a burnt-out fire
         map: ["fire"]
   # WOLFGATE(Bonfires) START: a fire burns its fuel down, goes out, and is fed and lit again
-  - type: WFBonfireFuel
+  - type: WGBonfireFuel
   - type: Appearance
   - type: GenericVisualizer
     visuals:
-      enum.WFBonfireVisuals.Lit:
+      enum.WGBonfireVisuals.Lit:
         base:
           True: { state: bonfire }
           False: { state: bonfire_extinguished }
@@ -69,5 +69,5 @@
   - type: PointLight
     color: "#FF5601"
   # WOLFGATE(Bonfires): lava-world decor with no logs to burn: it keeps burning
-  - type: WFBonfireFuel
+  - type: WGBonfireFuel
     infinite: true

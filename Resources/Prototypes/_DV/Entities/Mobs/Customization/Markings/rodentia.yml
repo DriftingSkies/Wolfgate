@@ -30,9 +30,9 @@
   colorLinks:
     mouse_BEHIND: mouse_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Rodentia/tail_markings.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Rodentia/tail_markings.rsi
       state: mouse_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Rodentia/tail_markings.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Rodentia/tail_markings.rsi
       state: mouse_BEHIND
   # WOLFGATE END
 
@@ -349,9 +349,9 @@
   colorLinks:
     mouse_BEHIND: mouse_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Rodentia/tail_markings.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Rodentia/tail_markings.rsi
       state: mouse_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Rodentia/tail_markings.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Rodentia/tail_markings.rsi
       state: mouse_BEHIND
   # WOLFGATE END
 
@@ -386,9 +386,9 @@
   colorLinks:
     short_BEHIND: short_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Rodentia/tail_markings.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Rodentia/tail_markings.rsi
       state: short_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Rodentia/tail_markings.rsi
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Rodentia/tail_markings.rsi
       state: short_BEHIND
   # WOLFGATE END
 

@@ -23,7 +23,7 @@
       - type: DeleteNearbyDrones
         distance: 4000
       # WOLFGATE(TradeGoods): names the station for its role in the sector economy
-      - type: WFTradeStation
+      - type: WGTradeStation
         id: Frontier
       components:
         - type: StationNameSetup

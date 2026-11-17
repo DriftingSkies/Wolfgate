@@ -1,0 +1,54 @@
+# Otho Kessler, the EVA outfitter at Caelestinus Central.
+- type: humanoidProfile
+  id: WGTraderAstroProfile
+  profile:
+    name: Otho Kessler
+    species: Human
+    age: 58
+    sex: Male
+    gender: Male
+    appearance:
+      hair: HumanHairBalding
+      hairColor: "#9C9990"
+      facialHair: HumanFacialHairFullbeard
+      facialHairColor: "#9C9990"
+      eyeColor: "#7C93A0"
+      skinColor: "#B98862"
+
+- type: startingGear
+  id: WGTraderAstroGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitPilot
+    outerClothing: ClothingOuterCoatBomber
+    shoes: ClothingShoesBootsPilot
+    neck: ClothingNeckScarfPilot
+    eyes: ClothingEyesGlassesPilot
+
+- type: traderDialogue
+  id: WGTraderAstroDialogue
+  greeting: trader-astro-greeting
+  farewell: trader-astro-farewell
+  options:
+  - prompt: trader-astro-prompt-shop
+    response: trader-astro-response-shop
+    action: OpenShop
+  - prompt: trader-astro-prompt-who
+    response: trader-astro-response-who
+    action: None
+
+- type: entity
+  id: WGTraderAstro
+  parent: WGBaseTrader
+  name: Otho Kessler
+  description: Fits crews for vacuum work; sells EVA suits, hardsuits and pilot's kit.
+  suffix: Trader, Astro
+  components:
+  - type: HumanoidAppearance
+    species: Human
+    initial: WGTraderAstroProfile
+  - type: Loadout
+    prototypes: [ WGTraderAstroGear ]
+  - type: Trader
+    dialogue: WGTraderAstroDialogue
+  - type: TraderShop
+    vendors: [ VendingMachineAstroVendPOI ]

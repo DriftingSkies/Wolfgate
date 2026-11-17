@@ -1,0 +1,289 @@
+- type: entity
+  parent: ClothingBeltWebbingsNormalTSFMC
+  id: WGRMCBeltMarine
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_marine/desert.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_marine/desert.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: desert
+      look: WGRMCLookBeltMarineDesert
+    - name: woodland
+      look: WGRMCLookBeltMarineJungleClassic
+    - name: winter
+      look: WGRMCLookBeltMarineSnowUrban
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltPDV
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_pdv.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_pdv.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltSparePouch
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_spare_pouch/desert.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_spare_pouch/desert.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: desert
+      look: WGRMCLookBeltSparePouchDesert
+    - name: woodland
+      look: WGRMCLookBeltSparePouchJungleClassic
+    - name: winter
+      look: WGRMCLookBeltSparePouchSnowUrban
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalTSFMC
+  id: WGRMCBeltMedicBag
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_medic_bag/desert.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_medic_bag/desert.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: desert
+      look: WGRMCLookBeltMedicBagDesert
+    - name: woodland
+      look: WGRMCLookBeltMedicBagJungleClassic
+    - name: winter
+      look: WGRMCLookBeltMedicBagSnowUrban
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalTSFMC
+  id: WGRMCBeltMortar
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_mortar/desert.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_mortar/desert.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: desert
+      look: WGRMCLookBeltMortarDesert
+    - name: woodland
+      look: WGRMCLookBeltMortarJungleClassic
+    - name: winter
+      look: WGRMCLookBeltMortarSnowUrban
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalTSFMC
+  id: WGRMCBeltHeavyGunner
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_heavy_gunner/desert.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_heavy_gunner/desert.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: desert
+      look: WGRMCLookBeltHeavyGunnerDesert
+    - name: woodland
+      look: WGRMCLookBeltHeavyGunnerJungleClassic
+    - name: winter
+      look: WGRMCLookBeltHeavyGunnerSnowUrban
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalTSFMC
+  id: WGRMCBeltHolster
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_holster/classic-jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_holster/classic-jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: woodland
+      look: WGRMCLookBeltHolsterClassicJungle
+    - name: desert
+      look: WGRMCLookBeltHolsterDesert
+    - name: snow
+      look: WGRMCLookBeltHolsterSnow
+    - name: urban
+      look: WGRMCLookBeltHolsterUrban
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalTSFMC
+  id: WGRMCBeltTanker
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_tanker.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_tanker.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltMedicBagPDV
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_medic_bag_pdv.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_medic_bag_pdv.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltHolsterPDV
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_holster_pdv.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_holster_pdv.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltMedicBagBlack
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_medic_bag_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_medic_bag_black.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltBlack
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_black.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_black.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltBlackLight
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_black_light.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_black_light.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltMedical
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_medical.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_medical.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltMachinegunner
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_machinegunner.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_machinegunner.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltUtility
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_utility.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_utility.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltCombatUtility
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_combat_utility.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_combat_utility.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltConstruction
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_construction.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_construction.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltSecurity
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_security.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_security.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltGrenade
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_grenade.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_grenade.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltHolsterSMG
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_holster_smg.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_holster_smg.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltTanAmmo
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_tan_ammo.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_tan_ammo.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltTanGeneral
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_tan_general.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_tan_general.rsi
+
+- type: entity
+  parent: ClothingBeltWebbingsNormalBlack
+  id: WGRMCBeltTanMedical
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_tan_medical.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Belt/belt_tan_medical.rsi

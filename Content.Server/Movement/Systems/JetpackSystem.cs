@@ -1,10 +1,10 @@
 using Content.Server.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server._Mono.Radar;
-using Content.Shared._WF.Planets.Jetpack; // WOLFGATE(Planets)
+using Content.Shared._WG.Planets.Jetpack; // WOLFGATE(Planets)
 using Content.Shared.Atmos.Components;
 using Content.Shared.Movement.Components;
-using Content.Shared._WF.Modsuits.Modules; // WOLFGATE(Modsuits)
+using Content.Shared._WG.Modsuits.Modules; // WOLFGATE(Modsuits)
 using Content.Shared.Movement.Systems;
 using Robust.Shared.Collections;
 using Robust.Shared.Timing;
@@ -16,7 +16,7 @@ public sealed partial class JetpackSystem : SharedJetpackSystem
     [Dependency] private GasTankSystem _gasTank = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private EntityManager _entityManager = default!;
-    [Dependency] private WFAtmosphericJetpackSystem _wfAtmosphericJetpack = default!; // WOLFGATE(Planets)
+    [Dependency] private WGAtmosphericJetpackSystem _wgAtmosphericJetpack = default!; // WOLFGATE(Planets)
 
     public override void Initialize()
     {
@@ -30,8 +30,8 @@ public sealed partial class JetpackSystem : SharedJetpackSystem
     protected override bool CanEnable(EntityUid uid, EntityUid user, JetpackComponent component)
     {
         // WOLFGATE(Planets) START: an atmospheric pack burns welding fuel from a solution, not gas from a tank.
-        if (TryComp<WFAtmosphericJetpackComponent>(uid, out var wfAtmospheric))
-            return base.CanEnable(uid, user, component) && _wfAtmosphericJetpack.CanFly((uid, wfAtmospheric), user);
+        if (TryComp<WGAtmosphericJetpackComponent>(uid, out var wgAtmospheric))
+            return base.CanEnable(uid, user, component) && _wgAtmosphericJetpack.CanFly((uid, wgAtmospheric), user);
         // WOLFGATE END
 
         // WOLFGATE(Modsuits) START: the ion jetpack module burns the suit core, not a gas tank
@@ -80,8 +80,8 @@ public sealed partial class JetpackSystem : SharedJetpackSystem
                 continue;
 
             // WOLFGATE(Planets) START: a wearer carried below orbit on a hull never changes parent, so the pack is cut here.
-            // An atmospheric pack has no gas tank, so it never reaches this loop; WFAtmosphericJetpackFuelSystem burns it.
-            if (comp.JetpackUser is { } wearer && WfInAtmosphere(wearer, uid))
+            // An atmospheric pack has no gas tank, so it never reaches this loop; WGAtmosphericJetpackFuelSystem burns it.
+            if (comp.JetpackUser is { } wearer && WgInAtmosphere(wearer, uid))
             {
                 toDisable.Add((uid, comp));
                 continue;

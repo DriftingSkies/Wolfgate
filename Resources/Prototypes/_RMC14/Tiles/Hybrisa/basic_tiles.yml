@@ -12,7 +12,7 @@
 - type: tile
   parent: CMPlanetBase
   id: RMCPlanetHybrisaAsphalt
-  name: tiles-wf-rmc-asphalt
+  name: tiles-wg-rmc-asphalt
   sprite: /Textures/_RMC14/Tiles/hybrisa/asphalt_old.png
   isSubfloor: false
 
@@ -24,7 +24,7 @@
 - type: tile
   parent: CMPlanetBase
   id: RMCPlanetHybrisaCement
-  name: tiles-wf-rmc-cement
+  name: tiles-wg-rmc-cement
   sprite: /Textures/_RMC14/Tiles/hybrisa/cement1.png
   isSubfloor: false
 
@@ -38,7 +38,7 @@
 - type: tile
   parent: RMCFloorHybrisaBasicBase
   id: RMCFloorHybrisaEngineerShip
-  name: tiles-wf-rmc-strange-metal-floor
+  name: tiles-wg-rmc-strange-metal-floor
   sprite: /Textures/_RMC14/Tiles/hybrisa/floor.png
 
 - type: tile

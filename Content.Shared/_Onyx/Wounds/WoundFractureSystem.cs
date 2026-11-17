@@ -1,6 +1,6 @@
 using Content.Shared.Body.Part;
-using Content.Shared._WF.Wolfmed.Body; // WOLFGATE(Wolfmed): D8 keeps Onyx's part fields on WolfmedBodyPartComponent.
-using Content.Shared._WF.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade.
+using Content.Shared._WG.Wolfmed.Body; // WOLFGATE(Wolfmed): D8 keeps Onyx's part fields on WolfmedBodyPartComponent.
+using Content.Shared._WG.Wolfmed.Compat; // WOLFGATE(Wolfmed): D12 damage facade.
 using Content.Shared.Damage; // WOLFGATE(Wolfmed): DamageableSystem/DamageableComponent live here, not in .Components/.Systems.
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
@@ -14,11 +14,11 @@ namespace Content.Shared._Onyx.Wounds;
 public sealed partial class WoundFractureSystem : EntitySystem
 {
     [Dependency] private INetManager _net = default!;
-    [Dependency] private WolfmedDamageableSystem _damage = default!; // WOLFGATE(Wolfmed): D12, Onyx-shaped damage API; see _WF/Wolfmed/Compat
+    [Dependency] private WolfmedDamageableSystem _damage = default!; // WOLFGATE(Wolfmed): D12, Onyx-shaped damage API; see _WG/Wolfmed/Compat
     [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private WoundSystem _wounds = default!;
-    [Dependency] private WolfmedBodyPartSystem _wfPart = default!; // WOLFGATE(Wolfmed): D8, Onyx's extra part fields.
+    [Dependency] private WolfmedBodyPartSystem _wgPart = default!; // WOLFGATE(Wolfmed): D8, Onyx's extra part fields.
 
     public override void Initialize() =>
         SubscribeLocalEvent<WoundFractureComponent, WoundChangedEvent>(OnWoundChanged);
@@ -150,7 +150,7 @@ public sealed partial class WoundFractureSystem : EntitySystem
         if (!Resolve(part, ref part.Comp, false) || !TryComp(part, out BodyPartComponent? bodyPart))
             return false;
 
-        var profileId = _wfPart.Get(part).FractureProfile; // WOLFGATE(Wolfmed): D8, FractureProfile lives on WolfmedBodyPartComponent.
+        var profileId = _wgPart.Get(part).FractureProfile; // WOLFGATE(Wolfmed): D8, FractureProfile lives on WolfmedBodyPartComponent.
         if (profileId is not { } id || !_prototypes.TryIndex(id, out var indexed))
             return false;
         profile = indexed;

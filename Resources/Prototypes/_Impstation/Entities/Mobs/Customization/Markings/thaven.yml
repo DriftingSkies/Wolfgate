@@ -169,13 +169,13 @@
     taileel1_BEHIND: taileel1_FRONT
     taileel2_BEHIND: taileel2_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
     state: taileel1_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
     state: taileel2_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: taileel1_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: taileel2_BEHIND
 
 - type: marking
@@ -193,9 +193,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     taileel3_BEHIND: taileel3_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art, anatomy zone only
     state: taileel3_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
     state: taileel3_BEHIND
   shader: unshaded
 
@@ -213,13 +213,13 @@
     tailnurse1_BEHIND: tailnurse1_FRONT
     tailnurse2_BEHIND: tailnurse2_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
     state: tailnurse1_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
     state: tailnurse2_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: tailnurse1_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: tailnurse2_BEHIND
 
 - type: marking
@@ -326,9 +326,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     carpish_BEHIND: carpish_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
     state: carpish_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: carpish_BEHIND
 
 - type: marking
@@ -343,9 +343,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     draconiclong_BEHIND: draconiclong_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
     state: draconiclong_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: draconiclong_BEHIND
 
 - type: marking
@@ -360,9 +360,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     fishtail_BEHIND: fishtail_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): split art
     state: fishtail_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/thaven/thaven.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: fishtail_BEHIND
     
 - type: marking

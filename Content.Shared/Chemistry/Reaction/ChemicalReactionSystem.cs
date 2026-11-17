@@ -165,7 +165,7 @@ namespace Content.Shared.Chemistry.Reaction
             var solution = comp.Solution;
 
             var energy = reaction.ConserveEnergy ? solution.GetThermalEnergy(_prototypeManager) : 0;
-            var wfGrade = WFReactionGrade(solution, reaction); // WOLFGATE(WolfChem): read before the reactants go
+            var wgGrade = WGReactionGrade(solution, reaction); // WOLFGATE(WolfChem): read before the reactants go
 
             //Remove reactants
             foreach (var reactant in reaction.Reactants)
@@ -183,7 +183,7 @@ namespace Content.Shared.Chemistry.Reaction
             {
                 products.Add(product.Key);
                 solution.AddReagent(product.Key, product.Value * unitReactions);
-                WFGradeProduct(solution, product.Key, product.Value * unitReactions, wfGrade); // WOLFGATE(WolfChem): the product takes the reaction's grade
+                WGGradeProduct(solution, product.Key, product.Value * unitReactions, wgGrade); // WOLFGATE(WolfChem): the product takes the reaction's grade
             }
 
             if (reaction.ConserveEnergy)

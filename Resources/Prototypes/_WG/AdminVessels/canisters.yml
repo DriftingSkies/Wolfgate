@@ -1,0 +1,118 @@
+# The Lupercal's admin gas stock: canisters that can't be destroyed, each holding a thousand times the usual gas at the
+# usual pressure. Not for sale: one of these is worth more than most ships.
+
+- type: entity
+  abstract: true
+  id: WGLupercalCanisterBase
+  suffix: Admin, Lupercal
+  description: An admin-grade canister that can't be destroyed and holds a thousand times what a normal one does. It can be attached to connector ports using a wrench.
+  components:
+  - type: CargoSellBlacklist
+
+- type: entity
+  parent: [ WGLupercalCanisterBase, BaseStructureIndestructible, OxygenCanister ]
+  id: WGLupercalCanisterOxygen
+  name: admin oxygen canister
+  components:
+  - type: GasCanister
+    gasMixture:
+      volume: 1500000
+      moles:
+        Oxygen: 2769360
+      temperature: 293.15
+
+- type: entity
+  parent: [ WGLupercalCanisterBase, BaseStructureIndestructible, NitrogenCanister ]
+  id: WGLupercalCanisterNitrogen
+  name: admin nitrogen canister
+  components:
+  - type: GasCanister
+    gasMixture:
+      volume: 1500000
+      moles:
+        Nitrogen: 2769360
+      temperature: 293.15
+
+- type: entity
+  parent: [ WGLupercalCanisterBase, BaseStructureIndestructible, CarbonDioxideCanister ]
+  id: WGLupercalCanisterCarbonDioxide
+  name: admin carbon dioxide canister
+  components:
+  - type: GasCanister
+    gasMixture:
+      volume: 1500000
+      moles:
+        CarbonDioxide: 2769360
+      temperature: 293.15
+
+- type: entity
+  parent: [ WGLupercalCanisterBase, BaseStructureIndestructible, PlasmaCanister ]
+  id: WGLupercalCanisterPlasma
+  name: admin plasma canister
+  components:
+  - type: GasCanister
+    gasMixture:
+      volume: 1500000
+      moles:
+        Plasma: 2769360
+      temperature: 293.15
+
+- type: entity
+  parent: [ WGLupercalCanisterBase, BaseStructureIndestructible, TritiumCanister ]
+  id: WGLupercalCanisterTritium
+  name: admin tritium canister
+  components:
+  - type: GasCanister
+    gasMixture:
+      volume: 1500000
+      moles:
+        Tritium: 2769360
+      temperature: 293.15
+
+- type: entity
+  parent: [ WGLupercalCanisterBase, BaseStructureIndestructible, WaterVaporCanister ]
+  id: WGLupercalCanisterWaterVapor
+  name: admin water vapor canister
+  components:
+  - type: GasCanister
+    gasMixture:
+      volume: 1500000
+      moles:
+        WaterVapor: 2769360
+      temperature: 293.15
+
+- type: entity
+  parent: [ WGLupercalCanisterBase, BaseStructureIndestructible, AmmoniaCanister ]
+  id: WGLupercalCanisterAmmonia
+  name: admin ammonia canister
+  components:
+  - type: GasCanister
+    gasMixture:
+      volume: 1500000
+      moles:
+        Ammonia: 2769360
+      temperature: 293.15
+
+- type: entity
+  parent: [ WGLupercalCanisterBase, BaseStructureIndestructible, NitrousOxideCanister ]
+  id: WGLupercalCanisterNitrousOxide
+  name: admin nitrous oxide canister
+  components:
+  - type: GasCanister
+    gasMixture:
+      volume: 1500000
+      moles:
+        NitrousOxide: 2769360
+      temperature: 293.15
+
+- type: entity
+  parent: [ WGLupercalCanisterBase, BaseStructureIndestructible, FrezonCanister ]
+  id: WGLupercalCanisterFrezon
+  name: admin frezon canister
+  components:
+  - type: GasCanister
+    gasMixture:
+      volume: 1500000
+      moles:
+        Frezon: 2769360
+      temperature: 293.15

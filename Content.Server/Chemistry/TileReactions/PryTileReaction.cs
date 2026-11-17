@@ -36,7 +36,7 @@ public sealed partial class PryTileReaction : ITileReaction
         }
 
         // WOLFGATE(Caverns) START: acid never opens ground over a cavern that no tool can dig, such as Aerumna's chromite.
-        if (entityManager.System<Content.Server._WF.Caverns.WFCavernDigSystem>().ResistsChemicalPrying(tile))
+        if (entityManager.System<Content.Server._WG.Caverns.WGCavernDigSystem>().ResistsChemicalPrying(tile))
             return FixedPoint2.Zero;
         // WOLFGATE END
 

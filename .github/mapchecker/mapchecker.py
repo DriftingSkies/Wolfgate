@@ -29,7 +29,7 @@ if __name__ == "__main__":
             "Resources/Prototypes/_DV/Entities",  # DeltaV
             "Resources/Prototypes/_Mono/Entities",  # Monolith
             "Resources/Prototypes/_Goob/Entities",  # Goob
-            "Resources/Prototypes/_WF",  # WOLFGATE(Ci): Wolfgate entities sit in module folders
+            "Resources/Prototypes/_WG",  # WOLFGATE(Ci): Wolfgate entities sit in module folders
         ]
     )
     parser.add_argument(
@@ -46,7 +46,7 @@ if __name__ == "__main__":
             "Resources/Prototypes/_Mono/Outpost",  # Colonial Outpost
             "Resources/Prototypes/_Mono/PointsOfInterest",  # Points of interest
             "Resources/Prototypes/_Mono/Shipyard",  # Shipyard ships.
-            "Resources/Prototypes/_WF",  # WOLFGATE(Ci): Wolfgate vessels and map prototypes sit in module folders
+            "Resources/Prototypes/_WG",  # WOLFGATE(Ci): Wolfgate vessels and map prototypes sit in module folders
         ]
     )
     parser.add_argument(

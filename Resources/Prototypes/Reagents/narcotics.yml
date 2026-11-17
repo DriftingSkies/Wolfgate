@@ -48,8 +48,8 @@
       metabolismRate: 0.01 # WOLFGATE(WolfChem): the crystal high and its effects last while it stays in the blood
       effects:
       # WOLFGATE(WolfChem) START: doses the Crystal profile for its overlay, dependence and crash
-      - !type:WFDose
-        profile: WFCrystal
+      - !type:WGDose
+        profile: WGCrystal
         perUnit: 1
       # WOLFGATE END
       # WOLFGATE(WolfChem) START: the speed is on the Crystal profile's tiers, so tolerance and the Burst twin get it
@@ -123,8 +123,8 @@
     Narcotic:
       effects:
       # WOLFGATE(WolfChem) START: builds the stimulant habit; it keeps its own speed, so it doesn't raise Crystal's level
-      - !type:WFDose
-        profile: WFCrystal
+      - !type:WGDose
+        profile: WGCrystal
         perUnit: 0.25
         dependenceOnly: true
       # WOLFGATE END
@@ -311,8 +311,8 @@
       metabolismRate: 0.02 # WOLFGATE(WolfChem): a cannabis high lasts while the THC stays in the blood
       effects:
       # WOLFGATE(WolfChem) START: doses the Cannabis profile
-      - !type:WFDose
-        profile: WFCannabis
+      - !type:WGDose
+        profile: WGCannabis
         perUnit: 1
       # WOLFGATE END
       - !type:HealthChange
@@ -350,8 +350,8 @@
       metabolismRate: 0.01 # WOLFGATE(WolfChem): nicotine builds up in the blood over a cigarette
       effects:
       # WOLFGATE(WolfChem) START: doses the Nicotine profile, which is what builds the habit
-      - !type:WFDose
-        profile: WFNicotine
+      - !type:WGDose
+        profile: WGNicotine
         perUnit: 1
       # WOLFGATE END
       - !type:HealthChange

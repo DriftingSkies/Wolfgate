@@ -251,16 +251,16 @@ public sealed partial class ShuttleSystem
         }
 
         // WOLFGATE(Planets) START: a hull mid-hop can't jump, nor can a ship docked to one
-        if (HasComp<Content.Server._WF.Planets.Hop.WFPlanetHopComponent>(shuttleUid))
+        if (HasComp<Content.Server._WG.Planets.Hop.WGPlanetHopComponent>(shuttleUid))
         {
-            reason = Loc.GetString("wf-orbit-hopping");
+            reason = Loc.GetString("wg-orbit-hopping");
             return false;
         }
 
         // Planet ground is the map's own grid: jumping it would move the whole world.
         if (HasComp<MapComponent>(shuttleUid))
         {
-            reason = Loc.GetString("wf-liftoff-refused-ground");
+            reason = Loc.GetString("wg-liftoff-refused-ground");
             return false;
         }
         // WOLFGATE END
@@ -269,7 +269,7 @@ public sealed partial class ShuttleSystem
         {
 
             // Too large to FTL
-            if (FTLMassLimit > 0 &&  shuttlePhysics.Mass > FTLMassLimit && !WfIgnoresFtlMassLimit(shuttleUid)) // WOLFGATE(ShipCommand): an unrestricted grid has no mass limit
+            if (FTLMassLimit > 0 &&  shuttlePhysics.Mass > FTLMassLimit && !WgIgnoresFtlMassLimit(shuttleUid)) // WOLFGATE(ShipCommand): an unrestricted grid has no mass limit
             {
                 reason = Loc.GetString("shuttle-console-mass");
                 return false;
@@ -383,7 +383,7 @@ public sealed partial class ShuttleSystem
         float? hyperspaceTime = null,
         string? priorityTag = null)
     {
-        if (WfRefusesFtlDeparture(shuttleUid)) // WOLFGATE(Planets): the docking branch never calls TrySetupFTL, so it asks the same gate.
+        if (WgRefusesFtlDeparture(shuttleUid)) // WOLFGATE(Planets): the docking branch never calls TrySetupFTL, so it asks the same gate.
             return;
 
         // TODO: Validation
@@ -573,10 +573,10 @@ public sealed partial class ShuttleSystem
     {
         component = null;
 
-        if (WfRefusesFtlDeparture(uid)) // WOLFGATE(Planets): a planet is left from orbit, never from the surface, the air or mid-transit.
+        if (WgRefusesFtlDeparture(uid)) // WOLFGATE(Planets): a planet is left from orbit, never from the surface, the air or mid-transit.
             return false;
 
-        if (WfDisruptedDeparture(uid)) // WOLFGATE(BoardingAction): a disrupted or hacked ship can't leave, whatever starts the jump.
+        if (WgDisruptedDeparture(uid)) // WOLFGATE(BoardingAction): a disrupted or hacked ship can't leave, whatever starts the jump.
             return false;
 
         if (HasComp<FTLComponent>(uid))
@@ -752,10 +752,10 @@ public sealed partial class ShuttleSystem
         DoTheDinosaur(xform);
         _dockSystem.SetDockBolts(entity, false);
 
-        var wfGroupMass = GetFtlGroupMass(uid); // WOLFGATE(Shuttles): docked grids that jumped along count toward the mass
+        var wgGroupMass = GetFtlGroupMass(uid); // WOLFGATE(Shuttles): docked grids that jumped along count toward the mass
         if (TryGetFTLDrive(entity, out _, out var globalDrive))
         {
-            MassAdjustFTLCooldown(wfGroupMass, globalDrive, out var massAdjustedCooldown); // WOLFGATE(Shuttles)
+            MassAdjustFTLCooldown(wgGroupMass, globalDrive, out var massAdjustedCooldown); // WOLFGATE(Shuttles)
             globalFtlCooldown = massAdjustedCooldown;
         }
 
@@ -861,7 +861,7 @@ public sealed partial class ShuttleSystem
                 var dockedShuttle = Comp<ShuttleComponent>(dockedUid);
                 if (TryGetFTLDrive(dockedUid, out _, out var drive))
                 {
-                    MassAdjustFTLCooldown(wfGroupMass, drive, out var massAdjustedCooldown); // WOLFGATE(Shuttles)
+                    MassAdjustFTLCooldown(wgGroupMass, drive, out var massAdjustedCooldown); // WOLFGATE(Shuttles)
                     ftlCooldown = massAdjustedCooldown;
                 }
                 if (HasComp<MapGridComponent>(xform.MapUid))
@@ -1506,7 +1506,7 @@ public sealed partial class ShuttleSystem
                     continue;
                 }
 
-                if (WfSetDownOn(uid, ent, mapUid.Value)) // WOLFGATE(Planets): a hull coming down on a planet hurts a mob under it and shoves it clear, and gibs nobody
+                if (WgSetDownOn(uid, ent, mapUid.Value)) // WOLFGATE(Planets): a hull coming down on a planet hurts a mob under it and shoves it clear, and gibs nobody
                     continue;
 
                 if (_bodyQuery.TryGetComponent(ent, out var mob))

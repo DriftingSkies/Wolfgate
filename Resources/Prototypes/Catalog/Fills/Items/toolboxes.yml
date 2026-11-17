@@ -80,8 +80,8 @@
       amount: 3
     - id: Pen
     # WOLFGATE(Photography)
-    - id: WFCamera
-    - id: WFCameraFilm
+    - id: WGCamera
+    - id: WGCameraFilm
     - id: MysteryFigureBox
       prob: 0.5
     - id: MysteryFigureBox

@@ -1,0 +1,282 @@
+# Drug chemistry. Recipes are invented for the game. Each wgReactionPurity entry shares its reaction's ID and sets the
+# temperature that gives full grade; the product's grade falls off linearly to the floor outside the tolerance.
+
+- type: reaction
+  id: WGCocaine
+  minTemp: 310
+  reactants:
+    WGCocaAlkaloid:
+      amount: 3
+    SodiumCarbonate:
+      amount: 1
+    Acetone:
+      amount: 1
+  products:
+    WGCocaine: 3
+
+- type: wgReactionPurity
+  id: WGCocaine
+  optimalTemp: 330
+  tolerance: 40
+  drift: 8
+
+# Cooked cocaine sets into rocks, one per 5 u.
+- type: reaction
+  id: WGCrackRock
+  minTemp: 370
+  reactants:
+    WGCocaine:
+      amount: 5
+    SodiumCarbonate:
+      amount: 1
+    Water:
+      amount: 1
+  effects:
+  - !type:WGCreateGradedEntity
+    entity: WGCrackRock
+
+- type: wgReactionPurity
+  id: WGCrackRock
+  optimalTemp: 385
+  tolerance: 30
+  drift: 8
+
+- type: reaction
+  id: WGHeroin
+  minTemp: 330
+  reactants:
+    WGOpium:
+      amount: 2
+    Vinegar:
+      amount: 1
+    Ammonia:
+      amount: 1
+  products:
+    WGHeroin: 2
+
+- type: wgReactionPurity
+  id: WGHeroin
+  optimalTemp: 350
+  tolerance: 30
+  drift: 8
+
+# Chilled opium sets into resin, one lump per 5 u, once water touches it. The water is a catalyst, so it can go in
+# last at the right temperature and doesn't count towards the grade.
+- type: reaction
+  id: WGOpiumResin
+  maxTemp: 270
+  reactants:
+    WGOpium:
+      amount: 5
+    Water:
+      amount: 1
+      catalyst: true
+  effects:
+  - !type:WGCreateGradedEntity
+    entity: WGOpiumResin
+
+- type: wgReactionPurity
+  id: WGOpiumResin
+  optimalTemp: 250
+  tolerance: 30
+  drift: 8
+
+# Chilled Desoxyephedrine sets into crystal shards, one per 5 u, once acetone touches it. The acetone is a catalyst,
+# like the water for resin.
+- type: reaction
+  id: WGCrystalShard
+  maxTemp: 240
+  reactants:
+    Desoxyephedrine:
+      amount: 5
+    Acetone:
+      amount: 1
+      catalyst: true
+  effects:
+  - !type:WGCreateGradedEntity
+    entity: WGCrystalShard
+
+- type: wgReactionPurity
+  id: WGCrystalShard
+  optimalTemp: 220
+  tolerance: 25
+  drift: 8
+
+- type: reaction
+  id: WGRedlineBase
+  minTemp: 340
+  reactants:
+    Ephedrine:
+      amount: 1
+    Phosphorus:
+      amount: 1
+    Plasma:
+      amount: 1
+  products:
+    WGRedlineBase: 2
+
+- type: wgReactionPurity
+  id: WGRedlineBase
+  optimalTemp: 360
+  tolerance: 25
+  drift: 8
+
+- type: reaction
+  id: WGRedline
+  reactants:
+    WGRedlineBase:
+      amount: 2
+    Epinephrine:
+      amount: 1
+    Iron:
+      amount: 1
+  products:
+    WGRedline: 3
+
+- type: wgReactionPurity
+  id: WGRedline
+  optimalTemp: 300
+  tolerance: 20
+  drift: 8
+
+- type: reaction
+  id: WGAnvilBase
+  minTemp: 320
+  reactants:
+    Bicaridine:
+      amount: 1
+    Silicon:
+      amount: 1
+    Lithium:
+      amount: 1
+  products:
+    WGAnvilBase: 2
+
+- type: wgReactionPurity
+  id: WGAnvilBase
+  optimalTemp: 340
+  tolerance: 25
+  drift: 8
+
+- type: reaction
+  id: WGAnvil
+  reactants:
+    WGAnvilBase:
+      amount: 2
+    Tramadol:
+      amount: 1
+    Mercury:
+      amount: 1
+  products:
+    WGAnvil: 3
+
+- type: wgReactionPurity
+  id: WGAnvil
+  optimalTemp: 290
+  tolerance: 20
+  drift: 8
+
+- type: reaction
+  id: WGHaloBase
+  minTemp: 300
+  reactants:
+    Happiness:
+      amount: 1
+    Oil:
+      amount: 1
+    Potassium:
+      amount: 1
+  products:
+    WGHaloBase: 2
+
+- type: wgReactionPurity
+  id: WGHaloBase
+  optimalTemp: 310
+  tolerance: 30
+  drift: 8
+
+- type: reaction
+  id: WGHalo
+  reactants:
+    WGHaloBase:
+      amount: 2
+    Ammonia:
+      amount: 1
+    Copper:
+      amount: 1
+  products:
+    WGHalo: 3
+
+- type: wgReactionPurity
+  id: WGHalo
+  optimalTemp: 340
+  tolerance: 20
+  drift: 8
+
+# Chorus needs ground exotic matter, so it comes from past the Lattice's hold.
+- type: reaction
+  id: WGChorusBase
+  maxTemp: 290
+  reactants:
+    WGLatticeResidue:
+      amount: 1
+    SpaceDrugs:
+      amount: 1
+    Ethanol:
+      amount: 1
+  products:
+    WGChorusBase: 2
+
+- type: wgReactionPurity
+  id: WGChorusBase
+  optimalTemp: 270
+  tolerance: 25
+  drift: 8
+
+- type: reaction
+  id: WGChorus
+  reactants:
+    WGChorusBase:
+      amount: 2
+    MindbreakerToxin:
+      amount: 1
+    Iodine:
+      amount: 1
+  products:
+    WGChorus: 3
+
+- type: wgReactionPurity
+  id: WGChorus
+  optimalTemp: 310
+  tolerance: 20
+  drift: 8
+
+# Cutting: flour stretches a powder a unit for a unit, and the grade drops to match, so the batch holds the same drug
+# in more doses. Only a tester, an analyzer or the buyer's nose tells.
+- type: reaction
+  id: WGCutCocaine
+  reactants:
+    WGCocaine:
+      amount: 1
+    Flour:
+      amount: 1
+  products:
+    WGCocaine: 2
+
+- type: wgReactionPurity
+  id: WGCutCocaine
+  fillers: [ Flour ]
+
+- type: reaction
+  id: WGCutHeroin
+  reactants:
+    WGHeroin:
+      amount: 1
+    Flour:
+      amount: 1
+  products:
+    WGHeroin: 2
+
+- type: wgReactionPurity
+  id: WGCutHeroin
+  fillers: [ Flour ]

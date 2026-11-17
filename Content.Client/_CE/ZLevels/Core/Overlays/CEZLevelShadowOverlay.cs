@@ -7,7 +7,7 @@ using System.Numerics;
 using Content.Client.Light;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._CE.ZLevels.Core.EntitySystems;
-using Content.Shared._WF.Planets; // WOLFGATE(Planets)
+using Content.Shared._WG.Planets; // WOLFGATE(Planets)
 using Content.Shared.Maps;
 using Robust.Client.Graphics;
 using Robust.Shared.Enums;
@@ -79,7 +79,7 @@ public sealed partial class CEZLevelShadowOverlay : Overlay
             // WOLFGATE(Planets) START: orbit is above the atmosphere, not a storey up.
             // A hull parked there shadowed the planet under it as a black patch at every zoom the projection happened
             // to land on.
-            if (_entManager.HasComponent<WFOrbitLayerComponent>(aboveMap))
+            if (_entManager.HasComponent<WGOrbitLayerComponent>(aboveMap))
                 break;
             // WOLFGATE END
 
@@ -161,7 +161,7 @@ public sealed partial class CEZLevelShadowOverlay : Overlay
         foreach (var grid in _grids)
         {
             // WOLFGATE(PlanetCities) START: a city's upper floors are buildings, roofed already, not a ship overhead.
-            if (_entManager.HasComponent<Content.Shared._WF.PlanetCities.WFPlanetCityGridComponent>(grid.Owner))
+            if (_entManager.HasComponent<Content.Shared._WG.PlanetCities.WGPlanetCityGridComponent>(grid.Owner))
                 continue;
             // WOLFGATE END
 

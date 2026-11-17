@@ -1,0 +1,72 @@
+# Ported from Starlight's Resources/Prototypes/_Moffstation/Entities/Effects/sparks.yml and bluespace_flash.yml.
+
+- type: entity
+  parent: ESEffectSparks
+  id: WGEffectSparksSilent
+  name: sparks
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EmitSoundOnSpawn
+    sound: null
+
+- type: entity
+  parent: ESEffectSparks
+  id: WGEffectSparksWelding
+  name: sparks
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EmitSoundOnSpawn
+    positional: true
+    sound:
+      collection: Welder
+      params:
+        volume: -3
+        variation: 0.250
+
+- type: entity
+  parent: ESEffectSparks
+  id: WGEffectSparksBluespace
+  name: sparks
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Effects/atmospherics.rsi
+    layers:
+    - state: frezon_old
+      shader: unshaded
+    drawdepth: Effects
+    noRot: true
+    loop: false
+  - type: EmitSoundOnSpawn
+    sound: null
+  - type: IgnitionSource
+    ignited: false
+  - type: PointLight
+    radius: 8
+    energy: 4
+    color: "#18abf5"
+  # The bluespace effect is spawned by portals. These sparks are spawned by the effect rather than directly, so they can
+  # fly back into the portal and create a new effect, which in turn spawns more sparks. Blocking them from teleporting
+  # stops that feedback loop. The other spark variants do not share this issue.
+  - type: PortalBlacklist
+
+- type: entity
+  id: EffectFlashBluespace
+  categories: [ HideSpawnMenu ]
+  components:
+  # Same flash as the plain EffectFlashBluespaceSimple; lockers and events that spawn this keep their light.
+  - type: PointLight
+    radius: 10.5
+    energy: 15
+    color: "#18abf5"
+  - type: ESTimedDespawn
+    lifetime: 1
+  - type: EmitSoundOnSpawn
+    sound:
+      path: /Audio/Effects/Lightning/lightningbolt.ogg
+  - type: TriggerOnSpawn
+  - type: ESSparkOnTrigger
+    count: 8
+    sparkPrototype: WGEffectSparksBluespace
+  # Spawns on portals, so it should stay in the same spot.
+  - type: PortalBlacklist

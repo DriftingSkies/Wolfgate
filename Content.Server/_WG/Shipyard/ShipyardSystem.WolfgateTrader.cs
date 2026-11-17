@@ -1,0 +1,542 @@
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Numerics;
+using System.Threading.Tasks;
+using Content.Server._Mono.Shuttles.Components;
+using Content.Server._WG.ShipAccess;
+using Content.Server._WG.ShipCommand;
+using Content.Server.Physics.Controllers;
+using Content.Server.Shuttles.Components;
+using Content.Server.StationEvents.Components;
+using Content.Shared._Mono.Company;
+using Content.Shared._Mono.Shipyard;
+using Content.Shared._Mono.Ships.Components;
+using Content.Shared._WG.ShipPa;
+using Content.Shared._NF.Shipyard;
+using Content.Shared._NF.Shipyard.BUI;
+using Content.Shared._NF.Shipyard.Components;
+using Content.Shared._NF.Shipyard.Events;
+using Content.Shared.Access.Components;
+using Content.Shared.Containers.ItemSlots;
+using Content.Shared.Shuttles.Components;
+using Content.Shared.Station.Components;
+using Content.Shared.UserInterface;
+using Robust.Shared.EntitySerialization;
+using Robust.Shared.Map.Components;
+using Robust.Shared.Serialization;
+using Robust.Shared.Serialization.Markdown;
+using Robust.Shared.Serialization.Markdown.Mapping;
+using YamlDotNet.Core;
+using YamlDotNet.RepresentationModel;
+using Robust.Shared.Prototypes;
+
+namespace Content.Server._NF.Shipyard.Systems;
+
+/// <summary>
+/// Lets an NPC stand in for a shipyard console, and lets a ship be copied out of the
+/// world and back into it. Lives in the shipyard partial because the console and deed components
+/// are access-restricted to it.
+/// </summary>
+public sealed partial class ShipyardSystem
+{
+    [Dependency] private IComponentFactory _wgComponentFactory = default!;
+    [Dependency] private ItemSlotsSystem _wgItemSlots = default!;
+    [Dependency] private WGShipAccessServerSystem _wgShipAccess = default!;
+
+    /// <summary>
+    /// Everything a shipyard console prototype carries that the purchase and sale handlers read.
+    /// Copied onto a host verbatim, so a host serves exactly the console's listing.
+    /// </summary>
+    private static readonly string[] HostedConsoleComponents =
+    [
+        "ShipyardConsole",
+        "ShipyardListing",
+        "AccessReader",
+        "CompanyAccessReader",
+    ];
+
+    #region Hosted consoles
+
+    /// <summary>
+    /// Copies a shipyard console prototype's listing onto another entity and reports the UI key it
+    /// is served on. The host must already declare that key in its UserInterface.
+    /// </summary>
+    public bool TryHostConsole(EntityUid host, EntProtoId consoleProto, [NotNullWhen(true)] out Enum? uiKey)
+    {
+        uiKey = null;
+
+        if (!_prototypeManager.TryIndex(consoleProto, out var proto))
+            return false;
+
+        if (!proto.TryComp<ActivatableUIComponent>(out var activatable, _wgComponentFactory)
+            || activatable.Key is not ShipyardConsoleUiKey key)
+        {
+            Log.Error($"{consoleProto} is not a shipyard console: no ActivatableUI shipyard key.");
+            return false;
+        }
+
+        if (!_ui.HasUi(host, key))
+        {
+            Log.Error($"{ToPrettyString(host)} cannot host {consoleProto}: no {key} interface declared.");
+            return false;
+        }
+
+        ClearHostedConsole(host);
+
+        var registry = new ComponentRegistry();
+        foreach (var name in HostedConsoleComponents)
+        {
+            if (proto.Components.TryGetValue(name, out var entry))
+                registry[name] = entry;
+        }
+
+        EntityManager.AddComponents(host, registry);
+
+        uiKey = key;
+        return true;
+    }
+
+    /// <summary>
+    /// Takes a hosted listing back off an entity.
+    /// </summary>
+    public void ClearHostedConsole(EntityUid host)
+    {
+        // Removing the console shuts its card slot down, which would delete a card still in it.
+        if (TryComp<ShipyardConsoleComponent>(host, out var console) && console.TargetIdSlot.HasItem)
+        {
+            _wgItemSlots.SetLock(host, console.TargetIdSlot, false);
+            _wgItemSlots.TryEject(host, console.TargetIdSlot, null, out _);
+        }
+
+        RemComp<ShipyardConsoleComponent>(host);
+        RemComp<ShipyardListingComponent>(host);
+        RemComp<AccessReaderComponent>(host);
+        RemComp<CompanyAccessReaderComponent>(host);
+    }
+
+    /// <summary>
+    /// Puts a card in a hosted console's slot and locks it, so only the host can take it back out.
+    /// </summary>
+    public bool TryInsertHostedId(EntityUid host, EntityUid idCard)
+    {
+        if (!TryComp<ShipyardConsoleComponent>(host, out var console))
+            return false;
+
+        _wgItemSlots.SetLock(host, console.TargetIdSlot, false);
+
+        if (!_wgItemSlots.TryInsert(host, console.TargetIdSlot, idCard, null))
+            return false;
+
+        _wgItemSlots.SetLock(host, console.TargetIdSlot, true);
+        return true;
+    }
+
+    /// <summary>
+    /// The last thing a console popped up at a customer; how a hosting trader learns why a sale was refused.
+    /// </summary>
+    public string? LastConsolePopup;
+
+    /// <summary>
+    /// Runs the console's own sell path with the customer as the actor. True when the deed left the card:
+    /// the hull itself is only queued for deletion, so it is still around when this returns.
+    /// </summary>
+    public bool TryHostedSell(EntityUid host, EntityUid customer, Enum uiKey, EntityUid idCard, out string? refusal)
+    {
+        refusal = null;
+
+        if (!TryComp<ShipyardConsoleComponent>(host, out var console))
+            return false;
+
+        LastConsolePopup = null;
+        OnSellMessage(host, console, new ShipyardConsoleSellMessage { Actor = customer, UiKey = uiKey });
+
+        if (!HasDeed(idCard))
+            return true;
+
+        refusal = LastConsolePopup;
+        return false;
+    }
+
+    /// <summary>
+    /// Runs the console's own unassign path: cooldown, voucher rules and all. True when the deed left the card.
+    /// </summary>
+    public bool TryHostedUnassign(EntityUid host, EntityUid customer, Enum uiKey, EntityUid idCard, out string? refusal)
+    {
+        refusal = null;
+
+        if (!TryComp<ShipyardConsoleComponent>(host, out var console))
+            return false;
+
+        LastConsolePopup = null;
+        OnUnassignDeedMessage(host, console, new ShipyardConsoleUnassignDeedMessage { Actor = customer, UiKey = uiKey });
+
+        if (!HasDeed(idCard))
+            return true;
+
+        refusal = LastConsolePopup;
+        return false;
+    }
+
+    /// <summary>
+    /// Runs the console's own rename path. True when the deed now carries the new name.
+    /// </summary>
+    public bool TryHostedRename(EntityUid host, EntityUid customer, Enum uiKey, EntityUid idCard, string name, out string? refusal)
+    {
+        refusal = null;
+
+        if (!TryComp<ShipyardConsoleComponent>(host, out var console))
+            return false;
+
+        LastConsolePopup = null;
+        OnRenameMessage(host, console, new ShipyardConsoleRenameMessage(name) { Actor = customer, UiKey = uiKey });
+
+        if (TryComp<ShuttleDeedComponent>(idCard, out var deed) && deed.ShuttleName == name)
+            return true;
+
+        refusal = LastConsolePopup;
+        return false;
+    }
+
+    /// <summary>
+    /// The full name of the ship a deed card points at.
+    /// </summary>
+    public string? GetDeedName(EntityUid idCard)
+    {
+        return TryComp<ShuttleDeedComponent>(idCard, out var deed) ? GetFullName(deed) : null;
+    }
+
+    /// <summary>
+    /// The cash a console can charge: what its host holds for it, or its own slot when nothing hosts it.
+    /// </summary>
+    public int GetConsoleCash(EntityUid console, EntityUid? buyer, int slotBalance)
+    {
+        var ev = new Content.Server._WG.Shipyard.ShipyardHostCashQueryEvent(buyer);
+        RaiseLocalEvent(console, ref ev);
+        return ev.Handled ? ev.Balance : slotBalance;
+    }
+
+    /// <summary>
+    /// Takes a purchase's cash share from the console's host, or from its own slot when nothing hosts it.
+    /// </summary>
+    private bool TryTakeConsoleCash(EntityUid console, EntityUid buyer, int amount)
+    {
+        var ev = new Content.Server._WG.Shipyard.ShipyardHostCashPaymentEvent(buyer, amount);
+        RaiseLocalEvent(console, ref ev);
+        return ev.Handled ? ev.Paid : _cash.TryCashPayment(console, amount, out _);
+    }
+
+    /// <summary>
+    /// Sends an open hosted listing the cash its host holds now; a counter changes without touching a slot.
+    /// </summary>
+    public void RefreshHostedCash(EntityUid host, Enum uiKey)
+    {
+        if (!_ui.TryGetUiState<ShipyardConsoleInterfaceState>(host, uiKey, out var state))
+            return;
+
+        var cash = GetConsoleCash(host, null, state.CashBalance);
+        if (cash == state.CashBalance)
+            return;
+
+        // A new state object: the UI system skips one it already holds.
+        _ui.SetUiState(host, uiKey, new ShipyardConsoleInterfaceState(
+            state.Balance,
+            cash,
+            state.AccessGranted,
+            state.ShipDeedTitle,
+            state.ShipSellValue,
+            state.IsTargetIdPresent,
+            state.UiKey,
+            state.ShipyardPrototypes,
+            state.ShipyardName,
+            state.FreeListings,
+            state.SellRate)
+        {
+            PriceMultiplier = state.PriceMultiplier,
+        });
+    }
+
+    #endregion
+
+    #region Pricing
+
+    /// <summary>
+    /// What a grid is worth before the sale rate and taxes.
+    /// </summary>
+    public int GetShipAppraisal(EntityUid shuttle)
+    {
+        return _wgShipServices.ResaleValue(shuttle, (int) _pricing.AppraiseGrid(shuttle, LacksPreserveOnSaleComp));
+    }
+
+    /// <summary>
+    /// The bill a console books before it pays its taxes out of it.
+    /// </summary>
+    public int GetPostSaleRateBill(EntityUid console, int appraisal)
+    {
+        if (TryComp<ShipyardConsoleComponent>(console, out var comp) && comp.IgnoreBaseSaleRate)
+            return appraisal;
+
+        return (int) (appraisal * _baseSaleRate);
+    }
+
+    /// <summary>
+    /// What the seller actually walks away with: the appraisal after the sale rate and taxes.
+    /// </summary>
+    public int GetShipResaleValue(EntityUid console, EntityUid shuttle)
+    {
+        return CalculateShipResaleValue(new Entity<ShipyardConsoleComponent?>(console, null), GetShipAppraisal(shuttle));
+    }
+
+    #endregion
+
+    #region Copying ships
+
+    /// <summary>
+    /// Strips everything bound to the old owner, so the saved copy comes back as an unclaimed hull.
+    /// Everything taken off here is put back by the system that owns it or by the buyer's deed; what
+    /// survives a sale on purpose, such as the repair record, is left alone.
+    /// </summary>
+    public void StripForResale(EntityUid grid)
+    {
+        RemComp<ShuttleDeedComponent>(grid);
+        RemComp<ShipOwnershipComponent>(grid);
+        RemComp<LinkedLifecycleGridParentComponent>(grid);
+        RemComp<StationMemberComponent>(grid);
+        RemComp<CompanyComponent>(grid);
+        RemComp<FTLComponent>(grid);
+
+        // Guests the seller waved aboard, by card and by borg, and the seller's allow list, codes, door rules and seals.
+        RemComp<ShipGuestAccessComponent>(grid);
+        _wgShipAccess.ClearForResale(grid);
+
+        // Job slots and the station they were counted against; the console saves them again on power loss.
+        RemComp<ShuttleConsoleJobSlotsComponent>(grid);
+
+        // Whoever was at the helm, and the consoles a crewed hull was counting: both are dead uids.
+        RemComp<PilotedShuttleComponent>(grid);
+        RemComp<CrewedShuttleComponent>(grid);
+
+        // The deed sets the lock again for the buyer, at the console's own default.
+        RemComp<FTLLockComponent>(grid);
+
+        // The PA timeline, which points at audio fetched for the old crew.
+        RemComp<ShipPaBroadcastComponent>(grid);
+
+        // A hull on the lot is not at general quarters; the PA ensures this again with its defaults.
+        RemComp<ShipAlertComponent>(grid);
+
+        // The buyer pays the lot's price for it, so the seller's bargain doesn't come with it.
+        RemComp<WGBargainComponent>(grid);
+    }
+
+    /// <summary>
+    /// Serialises a grid and everything on it to YAML in memory.
+    /// </summary>
+    public bool TrySaveShip(EntityUid grid, [NotNullWhen(true)] out string? data)
+    {
+        return TrySaveShip(grid, new List<EntityUid>(), out data);
+    }
+
+    /// <summary>
+    /// Serialises a grid and everything on it to YAML in memory. Mobs and mechs are flagged unsavable
+    /// so map saves skip them; <paramref name="carry"/> lists the ones to bring along regardless, and
+    /// their prototypes are made savable for the duration of the write.
+    /// </summary>
+    public bool TrySaveShip(EntityUid grid, List<EntityUid> carry, [NotNullWhen(true)] out string? data)
+    {
+        data = null;
+        if (!TrySaveShipDeferred(grid, carry, out var writing))
+            return false;
+
+        data = writing.GetAwaiter().GetResult();
+        return data != null;
+    }
+
+    /// <summary>
+    /// Serialises a grid now in one go, which has to happen on the main thread, and writes the YAML text on a worker.
+    /// The task gives null if the write failed. A sale uses <see cref="Content.Server._WG.Shipyard.WGHullRetireSystem"/>.
+    /// </summary>
+    public bool TrySaveShipDeferred(EntityUid grid, List<EntityUid> carry, [NotNullWhen(true)] out Task<string?>? writing)
+    {
+        writing = null;
+
+        if (!HasComp<MapGridComponent>(grid) || HasComp<MapComponent>(grid))
+        {
+            Log.Error($"{ToPrettyString(grid)} is not a plain grid, so it can't be copied for resale.");
+            return false;
+        }
+
+        // Ignore: a docked ship points at the station's docks, and none of that comes with it.
+        var options = SerializationOptions.Default;
+        options.MissingEntityBehaviour = MissingEntityBehaviour.Ignore;
+        options.LogAutoInclude = null;
+        options.Category = FileCategory.Grid;
+
+        var lifted = new List<EntityPrototype>();
+        foreach (var uid in carry)
+        {
+            if (MetaData(uid).EntityPrototype is { MapSavable: false } proto && !lifted.Contains(proto))
+                lifted.Add(proto);
+        }
+
+        foreach (var proto in lifted)
+            proto.MapSavable = true;
+
+        MappingDataNode node;
+        try
+        {
+            WGPruneDeadKeys(grid);
+
+            FileCategory category;
+            try
+            {
+                (node, category) = _mapLoader.SerializeEntitiesRecursive([grid], options);
+            }
+            catch (Exception e)
+            {
+                // One bad component shouldn't lose the ship: take off what won't save and try once more.
+                Log.Warning($"Copying {ToPrettyString(grid)} for resale failed, so looking for what won't save: {e.Message}");
+                WGStripUnsavable(grid, options);
+                (node, category) = _mapLoader.SerializeEntitiesRecursive([grid], options);
+            }
+
+            if (category != FileCategory.Grid)
+            {
+                Log.Error($"Failed to copy {ToPrettyString(grid)} for resale as a grid. Output: {category}");
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Error($"Failed to copy {ToPrettyString(grid)} for resale: {e}");
+            return false;
+        }
+        finally
+        {
+            foreach (var proto in lifted)
+                proto.MapSavable = false;
+        }
+
+        var name = ToPrettyString(grid).ToString();
+        writing = Task.Run(() => WGWriteCopy(node, name));
+        return true;
+    }
+
+    /// <summary>
+    /// Writes a serialised ship as YAML text, or null if that failed. Safe on a worker thread.
+    /// </summary>
+    public string? WGWriteCopy(MappingDataNode node, string name)
+    {
+        try
+        {
+            using var writer = new StringWriter();
+            var stream = new YamlStream { new YamlDocument(node.ToYaml()) };
+            stream.Save(new YamlMappingFix(new Emitter(writer)), false);
+            return writer.ToString();
+        }
+        catch (Exception e)
+        {
+            Log.Error($"Failed to write the copy of {name} for resale: {e}");
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Loads a saved ship back onto the shipyard's staging map, the way a purchase loads a vessel.
+    /// </summary>
+    public bool TryAddSavedShip(string data, [NotNullWhen(true)] out EntityUid? shuttleGrid)
+    {
+        shuttleGrid = null;
+
+        SetupShipyardIfNeeded();
+        if (ShipyardMap == null)
+            return false;
+
+        try
+        {
+            using var reader = new StringReader(data);
+            if (!_mapLoader.TryLoadGrid(ShipyardMap.Value, reader, "used ship", out var grid,
+                    offset: new Vector2(500f + _shuttleIndex, 1f)))
+            {
+                return false;
+            }
+
+            _shuttleIndex += grid.Value.Comp.LocalAABB.Width + ShuttleSpawnBuffer;
+            shuttleGrid = grid.Value.Owner;
+            return true;
+        }
+        catch (Exception e)
+        {
+            Log.Error($"Failed to load a used ship: {e}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// FTL-docks an already loaded grid to a station, the tail half of a shipyard purchase.
+    /// </summary>
+    public bool TryDockLoadedShuttle(EntityUid stationUid, EntityUid shuttleGrid)
+    {
+        if (!TryComp<StationDataComponent>(stationUid, out var stationData)
+            || !TryComp<ShuttleComponent>(shuttleGrid, out var shuttleComponent))
+        {
+            return false;
+        }
+
+        var targetGrid = _station.GetLargestGrid((stationUid, stationData));
+        if (targetGrid == null)
+            return false;
+
+        var ev = new ShipBoughtEvent();
+        RaiseLocalEvent(shuttleGrid, ev);
+        _shuttle.TryFTLDock(shuttleGrid, shuttleComponent, targetGrid.Value);
+        return true;
+    }
+
+    #endregion
+
+    #region Deeds
+
+    /// <summary>
+    /// The ship a deed card points at, if it still exists.
+    /// </summary>
+    public bool TryGetDeedShip(EntityUid idCard, out EntityUid shuttle)
+    {
+        shuttle = default;
+
+        if (!TryComp<ShuttleDeedComponent>(idCard, out var deed)
+            || deed.ShuttleUid is not { } uid
+            || TerminatingOrDeleted(uid))
+        {
+            return false;
+        }
+
+        shuttle = uid;
+        return true;
+    }
+
+    /// <summary>
+    /// Reads a ship's name and owner off its own deed.
+    /// </summary>
+    public bool TryGetShipDeedInfo(EntityUid uid, out string name, out string owner)
+    {
+        name = string.Empty;
+        owner = string.Empty;
+
+        if (!TryComp<ShuttleDeedComponent>(uid, out var deed))
+            return false;
+
+        name = GetFullName(deed);
+        owner = deed.ShuttleOwner ?? string.Empty;
+        return true;
+    }
+
+    /// <summary>
+    /// Whether a card already carries a deed, the rule that stops a second purchase.
+    /// </summary>
+    public bool HasDeed(EntityUid idCard)
+    {
+        return HasComp<ShuttleDeedComponent>(idCard);
+    }
+
+    #endregion
+}

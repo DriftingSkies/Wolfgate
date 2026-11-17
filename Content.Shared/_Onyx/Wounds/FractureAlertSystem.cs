@@ -2,7 +2,7 @@ using Content.Shared.Alert;
 using Content.Shared.Body;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
-using Content.Shared._WF.Wolfmed.Body; // WOLFGATE(Wolfmed): D8 keeps Onyx's part fields on WolfmedBodyPartComponent.
+using Content.Shared._WG.Wolfmed.Body; // WOLFGATE(Wolfmed): D8 keeps Onyx's part fields on WolfmedBodyPartComponent.
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Onyx.Wounds;
@@ -13,7 +13,7 @@ public sealed partial class FractureAlertSystem : EntitySystem
     [Dependency] private SharedBodySystem _body = default!;
     [Dependency] private WoundFractureSystem _fractures = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
-    [Dependency] private WolfmedBodyPartSystem _wfPart = default!; // WOLFGATE(Wolfmed): D8, Onyx's extra part fields.
+    [Dependency] private WolfmedBodyPartSystem _wgPart = default!; // WOLFGATE(Wolfmed): D8, Onyx's extra part fields.
 
     public void Refresh(EntityUid? body)
     {
@@ -24,7 +24,7 @@ public sealed partial class FractureAlertSystem : EntitySystem
         foreach (var (part, bodyPart) in _body.GetBodyChildren(uid))
         {
             // WOLFGATE(Wolfmed): D8, FractureProfile lives on WolfmedBodyPartComponent, not Shitmed's BodyPartComponent.
-            if (_wfPart.Get(part).FractureProfile is not { } profileId ||
+            if (_wgPart.Get(part).FractureProfile is not { } profileId ||
                 !_prototypes.TryIndex(profileId, out FractureProfilePrototype? profile) ||
                 profile.Alert is not { } alert)
                 continue;

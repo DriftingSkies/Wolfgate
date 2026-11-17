@@ -88,14 +88,14 @@
   - type: PowerSwitch
   # WOLFGATE(ShipShields) START: expose shared ship shield controls directly at every generator
   - type: ActivatableUI
-    key: enum.WFShipShieldUiKey.Key
+    key: enum.WGShipShieldUiKey.Key
   - type: ActivatableUIRequiresAccess
   - type: UserInterface
     interfaces:
-      enum.WFShipShieldUiKey.Key:
-        type: WFShipShieldGeneratorBoundUserInterface
+      enum.WGShipShieldUiKey.Key:
+        type: WGShipShieldGeneratorBoundUserInterface
   # WOLFGATE END
-  - type: WFHullBond # WOLFGATE(HullBond): a shield generator only bolts down on its first hull
+  - type: WGHullBond # WOLFGATE(HullBond): a shield generator only bolts down on its first hull
   - type: ApcPowerReceiver
     powerLoad: 60000
   - type: Appearance
@@ -119,9 +119,9 @@
     #     params:
     #       pitch: 0.5
     powerUpSound: !type:SoundPathSpecifier
-        path: "/Audio/_WF/ShipShields/shield_on.ogg"
+        path: "/Audio/_WG/ShipShields/shield_on.ogg"
     powerDownSound: !type:SoundPathSpecifier
-        path: "/Audio/_WF/ShipShields/shield_off.ogg"
+        path: "/Audio/_WG/ShipShields/shield_off.ogg"
     # WOLFGATE END
   - type: Machine
     board: MachineShieldMS500Circuitboard

@@ -57,7 +57,7 @@ public sealed partial class FactionTrackingSystem : EntitySystem // WOLFGATE(Net
         var ev = new TickerFactionCountEvent(isRoundStarted, bluforReady, redforReady, totalReady, bluforAlive, redforAlive);
         // WOLFGATE(NetTraffic) START: only changed counts go to everyone; players who joined since get the last ones
         // RaiseNetworkEvent(ev);
-        WfSendCounts(ev);
+        WgSendCounts(ev);
         // WOLFGATE END
     }
 
@@ -167,7 +167,7 @@ public sealed partial class FactionTrackingSystem : EntitySystem // WOLFGATE(Net
     private string? GetPreferredDepartment(ICommonSession session)
     {
         // WOLFGATE(RoundSetup) START: count faction crews by their validated setup job without changing saved preferences
-        if (EntityManager.System<Content.Server._WF.RoundSetup.WFRoundSetupSystem>().TryGetSelectedFactionJob(session.UserId, out var crewJob) &&
+        if (EntityManager.System<Content.Server._WG.RoundSetup.WGRoundSetupSystem>().TryGetSelectedFactionJob(session.UserId, out var crewJob) &&
             _jobs.TryGetDepartment(crewJob, out var crewDepartment))
             return crewDepartment.ID;
         // WOLFGATE END

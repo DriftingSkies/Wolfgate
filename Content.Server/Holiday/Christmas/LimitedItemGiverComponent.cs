@@ -1,6 +1,6 @@
 ﻿using Content.Shared.Storage;
 using Robust.Shared.Network;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Holiday.Christmas;
 

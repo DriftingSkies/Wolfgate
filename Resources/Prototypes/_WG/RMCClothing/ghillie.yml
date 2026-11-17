@@ -1,0 +1,10 @@
+- type: entity
+  id: WGActionGhilliePreparePosition
+  components:
+  - type: InstantAction
+    useDelay: 8
+    itemIconStyle: NoItem
+    icon:
+      sprite: _WG/RMCClothing/Actions/ghillie.rsi
+      state: prepare_position
+    event: !type:WGGhilliePreparePositionEvent

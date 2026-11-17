@@ -1,0 +1,32 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+
+- type: vessel
+  id: Kupol
+  parent: BaseVesselIFFDisabled
+  name: BYP Kupol
+  description: A gunnery unit made to make up for the lacking fire-power of the Ledokol.
+  limit: 1
+  price: 95500 # appraised at 86627 with hardpoints; classic reprice
+  purchasable: false # voucher only
+  category: Small
+  group: Custom
+  access: USSP
+  shuttlePath: /SharedMaps/_WG/OldVessels/USSP/Ledokol/Attachments/kupol.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: Null
+
+- type: gameMap
+  id: Kupol
+  mapName: 'Kupol'
+  mapPath: /SharedMaps/_WG/OldVessels/USSP/Ledokol/Attachments/kupol.yml
+  minPlayers: 0
+  stations:
+    Kupol:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Kupol USSP Ram{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'

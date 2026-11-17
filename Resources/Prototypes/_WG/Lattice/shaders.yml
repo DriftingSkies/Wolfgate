@@ -1,0 +1,19 @@
+- type: shader
+  id: WGLatticeSky
+  kind: source
+  path: "/Textures/_WG/Lattice/Shaders/lattice_sky.swsl"
+
+- type: shader
+  id: WGDriftPulse
+  kind: source
+  path: "/Textures/_WG/Lattice/Shaders/drift_pulse.swsl"
+
+- type: shader
+  id: WGLatticeBeam
+  kind: source
+  path: "/Textures/_WG/Lattice/Shaders/lattice_beam.swsl"
+
+- type: shader
+  id: WGTacetShockwave
+  kind: source
+  path: "/Textures/_WG/Lattice/Shaders/tacet_shockwave.swsl"

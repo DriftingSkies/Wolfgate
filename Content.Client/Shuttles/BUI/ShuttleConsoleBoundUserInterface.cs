@@ -34,12 +34,12 @@ public sealed partial class ShuttleConsoleBoundUserInterface : BoundUserInterfac
         _window.UndockAllRequest += OnUndockAllRequest;
         _window.ToggleFTLLockRequest += OnToggleFTLLockRequest;
         NfOpen(); // Frontier
-        WfOpen(); // WOLFGATE(Shuttles)
-        WfAccessOpen(); // WOLFGATE(ShipAccess)
-        WfShieldOpen(); // WOLFGATE(ShipShields): route shield allocation requests through the helm.
-        WfCockpitAutoEnter(); // WOLFGATE(Cockpit): enter the cockpit by itself when the helm opens while buckled.
-        WfHailOpen(); // WOLFGATE(Hailing): the hail window and its requests
-        WfBoardingOpen(); // WOLFGATE(BoardingAction): the banner's release button
+        WgOpen(); // WOLFGATE(Shuttles)
+        WgAccessOpen(); // WOLFGATE(ShipAccess)
+        WgShieldOpen(); // WOLFGATE(ShipShields): route shield allocation requests through the helm.
+        WgCockpitAutoEnter(); // WOLFGATE(Cockpit): enter the cockpit by itself when the helm opens while buckled.
+        WgHailOpen(); // WOLFGATE(Hailing): the hail window and its requests
+        WgBoardingOpen(); // WOLFGATE(BoardingAction): the banner's release button
     }
 
     private void OnToggleFTLLockRequest(List<NetEntity> dockEntities, bool enabled)

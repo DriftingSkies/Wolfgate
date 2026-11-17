@@ -20,7 +20,7 @@
 
 - type: entity
   id: OrganSynthBrain
-  parent: [BaseItem, WFWolfmedOrganPositronicBrain] # WOLFGATE(Wolfmed): M4: OD16 Synth is mechanical, the ccu is its positronic core
+  parent: [BaseItem, WGWolfmedOrganPositronicBrain] # WOLFGATE(Wolfmed): M4: OD16 Synth is mechanical, the ccu is its positronic core
   name: synth ccu
   suffix: Synth
   description: "Effectively a Synth's brain. It's somehow smoother than yours."
@@ -57,7 +57,7 @@
 - type: entity
   id: OrganSynthEyes
   # WOLFGATE(Wolfmed): Wolfmed eyes data, so the organ can be hurt, scanned and treated
-  parent: [BaseSynthOrgan, WFWolfmedOrganEyes]
+  parent: [BaseSynthOrgan, WGWolfmedOrganEyes]
   name: camera gimbal
   suffix: Synth
   description: "A small mechanical gimbal featuring several multi-spectrum cameras, responsible for Synth vision."
@@ -109,7 +109,7 @@
 - type: entity
   id: OrganSynthLungs
   # WOLFGATE(Wolfmed): Wolfmed lungs data, so the organ can be hurt, scanned and treated
-  parent: [BaseSynthOrgan, WFWolfmedOrganLungs]
+  parent: [BaseSynthOrgan, WGWolfmedOrganLungs]
   name: synth lungs
   suffix: Synth
   description: "Synth lungs simulating organic functions for internal cooling. Not very interesting on their own."
@@ -125,7 +125,7 @@
 
 - type: entity
   id: OrganSynthHeart
-  parent: [BaseSynthOrgan, WFWolfmedOrganIpcPump] # WOLFGATE(Wolfmed): M4: OD16 Synth is mechanical, the heart is its coolant pump
+  parent: [BaseSynthOrgan, WGWolfmedOrganIpcPump] # WOLFGATE(Wolfmed): M4: OD16 Synth is mechanical, the heart is its coolant pump
   name: synth heart
   suffix: Synth
   description: "A Synth heart. It doesn't do anything interesting yet."
@@ -148,7 +148,7 @@
 - type: entity
   id: OrganSynthStomach
   # WOLFGATE(Wolfmed): Wolfmed stomach data, so the organ can be hurt, scanned and treated
-  parent: [BaseSynthOrgan, WFWolfmedOrganStomach]
+  parent: [BaseSynthOrgan, WGWolfmedOrganStomach]
   name: synth stomach
   suffix: Synth
   description: "A Synth stomach. It can convert minerals to nutriment and nutriment to nanites."
@@ -185,7 +185,7 @@
 - type: entity
   id: OrganSynthLiver
   # WOLFGATE(Wolfmed): Wolfmed liver data, so the organ can be hurt, scanned and treated
-  parent: [BaseSynthOrgan, WFWolfmedOrganLiver]
+  parent: [BaseSynthOrgan, WGWolfmedOrganLiver]
   name: synth liver
   suffix: Synth
   description: "A Synth liver. It prevents poisoning from alcohol."
@@ -209,7 +209,7 @@
 - type: entity
   id: OrganSynthKidneys
   # WOLFGATE(Wolfmed): Wolfmed kidneys data, so the organ can be hurt, scanned and treated
-  parent: [BaseSynthOrgan, WFWolfmedOrganKidneys]
+  parent: [BaseSynthOrgan, WGWolfmedOrganKidneys]
   name: energy coil
   suffix: Synth
   description: "A Synth energy coil. It doesn't seem to do anything interesting yet."

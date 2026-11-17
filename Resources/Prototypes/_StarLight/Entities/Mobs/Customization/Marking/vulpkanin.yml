@@ -12,7 +12,7 @@
   id: PawSocksFeet
   bodyPart: RFoot
   markingCategory: Overlay
-  speciesRestriction: [Vulpkanin, WFCanine]
+  speciesRestriction: [Vulpkanin, WGCanine]
   sprites:
     - sprite: _Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi
       state: pawsocks_feet
@@ -21,7 +21,7 @@
   id: PawSocksLegs
   bodyPart: LLeg
   markingCategory: Legs
-  speciesRestriction: [Vulpkanin, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Vulpkanin, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
     - sprite: _Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi
       state: pawsocks_legs
@@ -30,7 +30,7 @@
   id: PawSocksHands
   bodyPart: RHand
   markingCategory: Overlay
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
     - sprite: _Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi
       state: pawsocks_hands
@@ -39,7 +39,7 @@
   id: PawSocksArms
   bodyPart: LArm
   markingCategory: Arms
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
     - sprite: _Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi
       state: pawsocks_arms
@@ -48,7 +48,7 @@
   id: FoxTail
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     vulp_tail_BEHIND: TailBehind
     vulp_tail_inner_BEHIND: TailBehind
@@ -56,20 +56,20 @@
     vulp_tail_BEHIND: vulp_tail_FRONT
     vulp_tail_inner_BEHIND: vulp_tail_inner_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
       state: vulp_tail_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
       state: vulp_tail_inner_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp_tail_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp_tail_inner_BEHIND
 
 - type: marking
   id: FoxEar
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
     - sprite: _Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi
       state: vulp_ear
@@ -80,7 +80,7 @@
   id: WolfTail
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     wolf_tail_BEHIND: TailBehind
     wolf_tail_inner_BEHIND: TailBehind
@@ -88,20 +88,20 @@
     wolf_tail_BEHIND: wolf_tail_FRONT
     wolf_tail_inner_BEHIND: wolf_tail_inner_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
       state: wolf_tail_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
       state: wolf_tail_inner_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: wolf_tail_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: wolf_tail_inner_BEHIND
 
 - type: marking
   id: FoxBelly
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
     - sprite: _Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi
       state: vulp_belly-torso
@@ -110,7 +110,7 @@
   id: FoxSnout
   bodyPart: Snout
   markingCategory: Snout
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
     - sprite: _Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi
       state: vulp_face
@@ -121,7 +121,7 @@
   id: FoxTailAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_fox_waggin_BEHIND: TailBehind
     tail_fox_inner_waggin_BEHIND: TailBehind
@@ -129,20 +129,20 @@
     tail_fox_waggin_BEHIND: tail_fox_waggin_FRONT
     tail_fox_inner_waggin_BEHIND: tail_fox_inner_waggin_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
       state: tail_fox_waggin_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
       state: tail_fox_inner_waggin_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: tail_fox_waggin_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: tail_fox_inner_waggin_BEHIND
 
 - type: marking
   id: WolfTailAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     tail_wolf_waggin_BEHIND: TailBehind
     tail_wolf_inner_waggin_BEHIND: TailBehind
@@ -150,20 +150,20 @@
     tail_wolf_waggin_BEHIND: tail_wolf_waggin_FRONT
     tail_wolf_inner_waggin_BEHIND: tail_wolf_inner_waggin_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
       state: tail_wolf_waggin_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): split art
       state: tail_wolf_inner_waggin_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: tail_wolf_waggin_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/vulpkanin.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: tail_wolf_inner_waggin_BEHIND
 
 - type: marking
   id: VulpTailAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     vulp_wag_BEHIND: TailBehind
     vulp_wag-tip_BEHIND: TailBehind
@@ -171,20 +171,20 @@
     vulp_wag_BEHIND: vulp_wag_FRONT
     vulp_wag-tip_BEHIND: vulp_wag-tip_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: vulp_wag_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: vulp_wag-tip_FRONT #fade
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp_wag_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp_wag-tip_BEHIND
 
 - type: marking
   id: VulpTailTipAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     vulp_wag_BEHIND: TailBehind
     vulp_wag-tip_BEHIND: TailBehind
@@ -192,20 +192,20 @@
     vulp_wag_BEHIND: vulp_wag_FRONT
     vulp_wag-tip_BEHIND: vulp_wag-tip_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: vulp_wag_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: vulp_wag-tip_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp_wag_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp_wag-tip_BEHIND
 
 - type: marking
   id: VulpTailAltAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     vulp_wag_BEHIND: TailBehind
     vulp_wag-fade_BEHIND: TailBehind
@@ -213,20 +213,20 @@
     vulp_wag_BEHIND: vulp_wag_FRONT
     vulp_wag-fade_BEHIND: vulp_wag-fade_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: vulp_wag_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: vulp_wag-fade_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp_wag_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp_wag-fade_BEHIND
 
 - type: marking
   id: VulpTailAltTipAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     vulp_wag_BEHIND: TailBehind
     vulp_wag-tip_BEHIND: TailBehind
@@ -234,20 +234,20 @@
     vulp_wag_BEHIND: vulp_wag_FRONT
     vulp_wag-tip_BEHIND: vulp_wag-tip_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: vulp_wag_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: vulp_wag-tip_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp_wag_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp_wag-tip_BEHIND
 
 - type: marking
   id: VulpTailFoxAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     fox_wag_BEHIND: TailBehind
     fox_wag-fade_BEHIND: TailBehind
@@ -255,20 +255,20 @@
     fox_wag_BEHIND: fox_wag_FRONT
     fox_wag-fade_BEHIND: fox_wag-fade_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: fox_wag_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: fox_wag-fade_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: fox_wag_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: fox_wag-fade_BEHIND
 
 - type: marking
   id: VulpTailFoxTipAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     fox_wag_BEHIND: TailBehind
     fox_wag-tip_BEHIND: TailBehind
@@ -276,35 +276,35 @@
     fox_wag_BEHIND: fox_wag_FRONT
     fox_wag-tip_BEHIND: fox_wag-tip_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: fox_wag_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: fox_wag-tip_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: fox_wag_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: fox_wag-tip_BEHIND
 
 - type: marking
   id: VulpTailBushyAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     bushfluff_wag_BEHIND: TailBehind
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     bushfluff_wag_BEHIND: bushfluff_wag_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: bushfluff_wag_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: bushfluff_wag_BEHIND
 
 - type: marking
   id: VulpTailCoyoteAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
     - sprite: _Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi
       state: coyote_wag
@@ -313,7 +313,7 @@
   id: VulpTailCorgiAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
     - sprite: _Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi
       state: corgi_wag
@@ -322,7 +322,7 @@
   id: VulpTailDalmatianAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine] # WOLFGATE(Species): Wolfgate species in the list
+  speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine] # WOLFGATE(Species): Wolfgate species in the list
   sprites:
     - sprite: _Starlight/Mobs/Customization/vulpkanin/tail_markings.rsi
       state: dalmatian_wag

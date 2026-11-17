@@ -80,9 +80,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_default_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_default_BEHIND
   # WOLFGATE END
 
@@ -101,13 +101,13 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_nub_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_nub_overlay_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_nub_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_nub_overlay_BEHIND
   # WOLFGATE END
 
@@ -124,9 +124,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_feathers_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_feathers_BEHIND
   # WOLFGATE END
 
@@ -143,13 +143,13 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_feathers_FRONT
   # WOLFGATE END
   - sprite: _Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_feathers_overlay
   # WOLFGATE(Genitals) START: split tail art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_feathers_BEHIND
   # WOLFGATE END
 
@@ -166,9 +166,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art, anatomy zone only
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_spiny_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_spiny_BEHIND
   # WOLFGATE END
 
@@ -187,13 +187,13 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art, anatomy zone only
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_spiny_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_spiny_overlay_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_spiny_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_spiny_overlay_BEHIND
   # WOLFGATE END
 
@@ -210,9 +210,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_fins_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_fins_BEHIND
   # WOLFGATE END
 
@@ -231,13 +231,13 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_fins_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_fins_overlay_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_fins_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_fins_overlay_BEHIND
   # WOLFGATE END
 
@@ -256,13 +256,13 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_feathers_seer_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_feathers_seer_overlay_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_feathers_seer_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_feathers_seer_overlay_BEHIND
   # WOLFGATE END
 
@@ -279,9 +279,9 @@
   # WOLFGATE END
   sprites:
   # WOLFGATE(Genitals) START: split tail art
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_feathers_seer_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi
     state: tail_feathers_seer_BEHIND
   # WOLFGATE END
 

@@ -1,0 +1,88 @@
+# Mapper-placed crew. Each marker spawns its role at map init and is that crewman's post.
+
+- type: entity
+  abstract: true
+  parent: MarkerBase
+  id: WGCrewSpawnPointBase
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Markers/jobs.rsi
+    layers:
+    - state: green
+
+- type: entity
+  parent: WGCrewSpawnPointBase
+  id: WGCrewSpawnPointDeckhand
+  name: crew spawn point (deckhand)
+  description: An NPC deckhand spawns here at round start and treats this spot as their post.
+  components:
+  - type: WGCrewSpawnPoint
+    role: WGCrewDeckhand
+  - type: Sprite
+    layers:
+    - state: green
+    - state: cargo_tech
+
+- type: entity
+  parent: WGCrewSpawnPointBase
+  id: WGCrewSpawnPointMarine
+  name: crew spawn point (marine)
+  description: An NPC marine spawns here at round start and treats this spot as their post.
+  components:
+  - type: WGCrewSpawnPoint
+    role: WGCrewMarine
+  - type: Sprite
+    layers:
+    - state: green
+    - state: ertsecurity
+
+- type: entity
+  parent: WGCrewSpawnPointBase
+  id: WGCrewSpawnPointPilot
+  name: crew spawn point (pilot)
+  description: An NPC first officer spawns here at round start and treats this spot as their post.
+  components:
+  - type: WGCrewSpawnPoint
+    role: WGCrewPilot
+  - type: Sprite
+    layers:
+    - state: green
+    - state: hop
+
+- type: entity
+  parent: WGCrewSpawnPointBase
+  id: WGCrewSpawnPointRadioOperator
+  name: crew spawn point (radio operator)
+  description: An NPC radio officer spawns here at round start and treats this spot as their post.
+  components:
+  - type: WGCrewSpawnPoint
+    role: WGCrewRadioOperator
+  - type: Sprite
+    layers:
+    - state: green
+    - state: curator
+
+- type: entity
+  parent: WGCrewSpawnPointBase
+  id: WGCrewSpawnPointCaptain
+  name: crew spawn point (captain)
+  description: An NPC captain spawns here at round start and treats this spot as their post.
+  components:
+  - type: WGCrewSpawnPoint
+    role: WGCrewCaptain
+  - type: Sprite
+    layers:
+    - state: green
+    - state: captain
+
+- type: entity
+  parent: WGCrewSpawnPointBase
+  id: WGCrewSpawnPointGunner
+  components:
+  - type: WGCrewSpawnPoint
+    role: WGCrewGunner
+  - type: Sprite
+    layers:
+    - state: green
+    - state: ertsecurity

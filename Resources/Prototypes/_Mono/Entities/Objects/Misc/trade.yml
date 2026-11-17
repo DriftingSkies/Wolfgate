@@ -48,7 +48,7 @@
   - type: Material
   - type: PhysicalComposition
     materialComposition:
-      WFMunitions: 10000
+      WGMunitions: 10000
   # WOLFGATE END
 
 - type: entity
@@ -80,7 +80,7 @@
   - type: Material
   - type: PhysicalComposition
     materialComposition:
-      WFMedicalStock: 10000
+      WGMedicalStock: 10000
   # WOLFGATE END
 
 - type: entity
@@ -139,7 +139,7 @@
   - type: Material
   - type: PhysicalComposition
     materialComposition:
-      WFReactorFuel: 10000
+      WGReactorFuel: 10000
   # WOLFGATE END
 
 # Yes, yes, I know, this makes zero sense to be explosive or have a critical mass, it's just hydrogen.
@@ -213,7 +213,7 @@
   - type: Material
   - type: PhysicalComposition
     materialComposition:
-      WFGunParts: 10000
+      WGGunParts: 10000
   # WOLFGATE END
 
 - type: entity
@@ -278,7 +278,7 @@
   - type: Material
   - type: PhysicalComposition
     materialComposition:
-      WFShipParts: 10000
+      WGShipParts: 10000
   # WOLFGATE END
 
 - type: entity

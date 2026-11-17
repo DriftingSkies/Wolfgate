@@ -1,0 +1,272 @@
+using System.Diagnostics.CodeAnalysis;
+using Content.Shared._Mono.Company;
+using Content.Shared._NF.Shipyard.Components;
+using Content.Shared._WG.Cyborgs;
+using Content.Shared.Access;
+using Content.Shared.Access.Components;
+using Content.Shared.Access.Systems;
+using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Inventory;
+using Content.Shared.StationRecords;
+using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
+
+namespace Content.Shared._WG.ShipAccess;
+
+/// <summary>
+/// Shared reads for ship access, used by the console tab on the client and by the server: who holds the deed,
+/// which record key a card carries, and the ship's faction. The doors themselves decide through their normal
+/// airlock access readers, which the server keeps in step.
+/// </summary>
+public sealed partial class WGShipAccessSystem : EntitySystem
+{
+    /// <summary>Tiles from the console within which a person's card can be added to the allow list.</summary>
+    public const float AddRange = 3f;
+
+    /// <summary>Digits in a ship or door code.</summary>
+    public const int CodeLength = 4;
+
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private SharedIdCardSystem _idCard = default!;
+    [Dependency] private IPrototypeManager _proto = default!;
+    [Dependency] private ISharedPlayerManager _player = default!;
+    [Dependency] private WGBorgIdCardSystem _borgCards = default!;
+
+    /// <summary>Whether the rule lets a code open the door.</summary>
+    public static bool TakesCode(WGDoorAccessRule rule)
+    {
+        return rule is WGDoorAccessRule.Code or WGDoorAccessRule.PlayersOrCode;
+    }
+
+    /// <summary>Whether the rule has a per-door card list.</summary>
+    public static bool TakesPlayers(WGDoorAccessRule rule)
+    {
+        return rule is WGDoorAccessRule.Players or WGDoorAccessRule.PlayersOrCode;
+    }
+
+    /// <summary>Whether a code is exactly four digits.</summary>
+    public static bool IsValidCode(string code)
+    {
+        if (code.Length != CodeLength)
+            return false;
+
+        foreach (var c in code)
+        {
+            if (c < '0' || c > '9')
+                return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>A door's rule, Default when it has no rule component.</summary>
+    public WGDoorAccessRule GetRule(EntityUid door)
+    {
+        return TryComp<WGDoorAccessRuleComponent>(door, out var rule) ? rule.Rule : WGDoorAccessRule.Default;
+    }
+
+    /// <summary>The card a person would swipe: the one in their active hand, else the one they wear or, for a cyborg, were issued. False when they carry none.</summary>
+    public bool TryGetCard(EntityUid user, out EntityUid card)
+    {
+        if (_idCard.TryFindIdCard(user, out var idCard))
+        {
+            card = idCard.Owner;
+            return true;
+        }
+
+        return _borgCards.TryGetCard(user, out card);
+    }
+
+    /// <summary>The crew record key a card carries. False for a card without a crew record, which no reader can be given.</summary>
+    public bool TryGetKey(EntityUid card, out WGShipAccessKey key)
+    {
+        if (TryComp<StationRecordKeyStorageComponent>(card, out var storage) && storage.Key is { } recordKey)
+        {
+            key = ToKey(recordKey);
+            return true;
+        }
+
+        key = default;
+        return false;
+    }
+
+    public WGShipAccessKey ToKey(StationRecordKey key)
+    {
+        return new WGShipAccessKey(GetNetEntity(key.OriginStation), key.Id);
+    }
+
+    public StationRecordKey ToRecordKey(WGShipAccessKey key)
+    {
+        return new StationRecordKey(key.Id, GetEntity(key.Station));
+    }
+
+    /// <summary>Finds the allow list entry for a record key.</summary>
+    public bool TryGetEntry(WGShipAccessComponent comp, WGShipAccessKey key, [NotNullWhen(true)] out WGShipAccessEntry? entry)
+    {
+        foreach (var e in comp.AllowList)
+        {
+            if (e.Key != key)
+                continue;
+
+            entry = e;
+            return true;
+        }
+
+        entry = null;
+        return false;
+    }
+
+    /// <summary>
+    /// A grid belongs to a faction when its CompanyComponent names a company with an access group or level of the
+    /// same id (USSP, TSF, PDV): any of those access levels on a card is what the door readers can check. "None",
+    /// empty and companies without access mean no faction.
+    /// </summary>
+    public bool IsFactionGrid(EntityUid grid, out IReadOnlyCollection<ProtoId<AccessLevelPrototype>> access)
+    {
+        access = Array.Empty<ProtoId<AccessLevelPrototype>>();
+        if (!TryComp<CompanyComponent>(grid, out var comp) || string.IsNullOrEmpty(comp.CompanyName.Id) || comp.CompanyName == "None")
+            return false;
+
+        var id = comp.CompanyName.Id;
+        if (_proto.TryIndex<AccessGroupPrototype>(id, out var group))
+            access = group.Tags;
+        else if (_proto.HasIndex<AccessLevelPrototype>(id))
+            access = new[] { new ProtoId<AccessLevelPrototype>(id) };
+
+        return access.Count > 0;
+    }
+
+    /// <summary>Whether the item holds the deed for this grid: an ID card, or the voucher the ship was bought with.</summary>
+    public bool IsDeedFor(EntityUid item, EntityUid grid)
+    {
+        return TryComp<ShuttleDeedComponent>(item, out var deed) && deed.ShuttleUid == grid;
+    }
+
+    /// <summary>
+    /// Whether the user holds this grid's deed: on an ID card in their hands or id slot, directly or in a PDA, on a
+    /// voucher in their hands, as Mono's own deed checks count it, or on a cyborg's issued card.
+    /// </summary>
+    public bool HasDeedFor(EntityUid user, EntityUid grid)
+    {
+        foreach (var item in _hands.EnumerateHeld(user))
+        {
+            if (HoldsDeedFor(item, grid))
+                return true;
+        }
+
+        if (_inventory.TryGetSlotEntity(user, "id", out var worn) && HoldsDeedFor(worn.Value, grid))
+            return true;
+
+        // A cyborg's issued card counts as worn while it is stowed.
+        return _borgCards.TryGetCard(user, out var issued) && IsDeedFor(issued, grid);
+    }
+
+    private bool HoldsDeedFor(EntityUid item, EntityUid grid)
+    {
+        return IsDeedFor(item, grid) || _idCard.TryGetIdCard(item, out var card) && IsDeedFor(card.Owner, grid);
+    }
+
+    /// <summary>Whether the user's player is one the ship is registered to, whatever body they are in.</summary>
+    public bool IsRegisteredTo(EntityUid user, WGShipAccessComponent comp)
+    {
+        return comp.OwnerUsers.Count > 0
+               && _player.TryGetSessionByEntity(user, out var session)
+               && comp.OwnerUsers.Contains(session.UserId);
+    }
+
+    /// <summary>
+    /// Who may edit the ship's access: the deed holder, a player an admin tool registered the ship to, or anyone
+    /// holding or wearing an ID card that carries one of the ship's owner keys.
+    /// </summary>
+    public bool IsOwner(EntityUid user, EntityUid grid)
+    {
+        if (HasDeedFor(user, grid))
+            return true;
+
+        return TryComp<WGShipAccessComponent>(grid, out var comp) && (IsRegisteredTo(user, comp) || HasOwnerCard(user, comp));
+    }
+
+    /// <summary>
+    /// Who may manage the ship's access (the access tab, the lock verbs, console locks): its owner, or someone another
+    /// system lets in (<see cref="WGShipManagerEvent"/>). Raised on both sides, so the client's tab matches the server.
+    /// </summary>
+    public bool CanManage(EntityUid user, EntityUid grid)
+    {
+        if (IsOwner(user, grid))
+            return true;
+
+        var ev = new WGShipManagerEvent(user);
+        RaiseLocalEvent(grid, ref ev);
+        return ev.Allowed;
+    }
+
+    /// <summary>Whether a held or worn ID card carries one of the ship's owner record keys.</summary>
+    private bool HasOwnerCard(EntityUid user, WGShipAccessComponent comp)
+    {
+        if (comp.OwnerKeys.Count == 0)
+            return false;
+
+        foreach (var item in _hands.EnumerateHeld(user))
+        {
+            if (IsOwnerCard(item, comp))
+                return true;
+        }
+
+        if (_inventory.TryGetSlotEntity(user, "id", out var worn) && IsOwnerCard(worn.Value, comp))
+            return true;
+
+        return _borgCards.TryGetCard(user, out var issued) && IsOwnerCard(issued, comp);
+    }
+
+    private bool IsOwnerCard(EntityUid item, WGShipAccessComponent comp)
+    {
+        return _idCard.TryGetIdCard(item, out var card)
+               && TryGetKey(card.Owner, out var key)
+               && comp.OwnerKeys.Contains(key);
+    }
+
+    /// <summary>
+    /// The ID card in the user's id slot, directly or in a PDA, or the one a cyborg was issued: their own, as opposed
+    /// to one they happen to hold.
+    /// </summary>
+    public bool TryGetWornCard(EntityUid user, out EntityUid card)
+    {
+        if (_inventory.TryGetSlotEntity(user, "id", out var worn) && _idCard.TryGetIdCard(worn.Value, out var idCard))
+        {
+            card = idCard.Owner;
+            return true;
+        }
+
+        return _borgCards.TryGetCard(user, out card);
+    }
+
+    /// <summary>The ID card in an item the user holds in hand, directly or in a PDA, so a card can be added without its owner present.</summary>
+    public bool TryGetHeldCard(EntityUid user, EntityUid item, out EntityUid card)
+    {
+        if (_hands.IsHolding(user, item) && _idCard.TryGetIdCard(item, out var idCard))
+        {
+            card = idCard.Owner;
+            return true;
+        }
+
+        card = default;
+        return false;
+    }
+
+    /// <summary>The name printed on a card, else the card's own name.</summary>
+    public string CardHolderName(EntityUid card)
+    {
+        return TryComp<IdCardComponent>(card, out var idCard) && !string.IsNullOrEmpty(idCard.FullName) ? idCard.FullName : Name(card);
+    }
+
+    /// <summary>The items in the user's hands that carry an ID card, each with that card.</summary>
+    public IEnumerable<(EntityUid Item, EntityUid Card)> HeldCards(EntityUid user)
+    {
+        foreach (var item in _hands.EnumerateHeld(user))
+        {
+            if (_idCard.TryGetIdCard(item, out var idCard))
+                yield return (item, idCard.Owner);
+        }
+    }
+}

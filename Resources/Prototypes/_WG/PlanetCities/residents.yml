@@ -1,0 +1,115 @@
+# The people living and working in a fixed city's buildings (a city's `residents`): civilians who potter about their
+# rooms, neutral to everyone and unarmed but for what they grab when hurt. A few odd characters among them.
+
+- type: entity
+  abstract: true
+  parent: BaseMobHuman
+  id: WGCityResidentBase
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: RandomHumanoidAppearance
+    randomizeName: true
+  - type: NpcFactionMember
+    factions:
+    - SimpleNeutral
+  - type: NPCRetaliation
+    attackMemoryLength: 20
+  - type: InputMover
+  - type: MobMover
+  - type: HTN
+    rootTask:
+      task: SimpleHumanoidHostileCompound
+    blackboard:
+      IdleRange: !type:Single
+        4
+
+- type: entity
+  parent: WGCityResidentBase
+  id: WGCityResident
+  name: resident
+  description: Lives and works around here.
+  components:
+  - type: Loadout
+    prototypes:
+    - WGCityResidentGearCargo
+    - WGCityResidentGearEngineer
+    - WGCityResidentGearJanitor
+    - WGCityResidentGearCook
+    - WGCityResidentGearBarkeep
+    - WGCityResidentGearFarmer
+    - WGCityResidentGearClerk
+    - WGCityResidentGearMedic
+    - WGCityResidentGearLibrarian
+
+- type: startingGear
+  id: WGCityResidentGearCargo
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitCargo
+    outerClothing: ClothingOuterVestHazard
+    head: ClothingHeadHatHardhatYellow
+    shoes: ClothingShoesBootsWork
+
+- type: startingGear
+  id: WGCityResidentGearEngineer
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitEngineering
+    outerClothing: ClothingOuterVestHazard
+    shoes: ClothingShoesBootsWork
+
+- type: startingGear
+  id: WGCityResidentGearJanitor
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitJanitor
+    shoes: ClothingShoesBootsWork
+
+- type: startingGear
+  id: WGCityResidentGearCook
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitChef
+    outerClothing: ClothingOuterApronChef
+    head: ClothingHeadHatChef
+    shoes: ClothingShoesColorBlack
+
+- type: startingGear
+  id: WGCityResidentGearBarkeep
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitBartender
+    outerClothing: ClothingOuterApronBar
+    shoes: ClothingShoesColorBlack
+
+- type: startingGear
+  id: WGCityResidentGearFarmer
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitHydroponics
+    shoes: ClothingShoesBootsWork
+
+- type: startingGear
+  id: WGCityResidentGearClerk
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorGrey
+    outerClothing: ClothingOuterWinterCoat
+    shoes: ClothingShoesColorBlack
+
+- type: startingGear
+  id: WGCityResidentGearMedic
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitMedicalDoctor
+    outerClothing: ClothingOuterCoatLab
+    shoes: ClothingShoesColorWhite
+
+- type: startingGear
+  id: WGCityResidentGearLibrarian
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitLibrarian
+    shoes: ClothingShoesColorBlack
+
+# Mostly ordinary residents, with the odd dealer, conspiracy nut or stalker among them.
+- type: entityTable
+  id: WGCityResidents
+  table: !type:GroupSelector
+    children:
+    - id: WGCityResident
+      weight: 17
+    - !type:NestedSelector
+      tableId: WGStrangersHouse
+      weight: 3

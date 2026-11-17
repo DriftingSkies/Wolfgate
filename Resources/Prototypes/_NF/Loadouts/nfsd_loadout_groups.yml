@@ -37,66 +37,66 @@
   loadouts:
   - NfsdClothingShoesBootsBrown
   - NfsdClothingShoesBootsCream
-  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-  - WFMeridianLoadoutClothingShoesBhopRocket
-  - WFMeridianLoadoutClothingShoesBhopRocketJet
-  - WFMeridianLoadoutClothingShoesBronze
-  - WFMeridianLoadoutClothingShoesColorableLaceups
-  - WFMeridianLoadoutClothingShoesColorableSandals
-  - WFMeridianLoadoutClothingShoesDiscoshoes
-  - WFMeridianLoadoutClothingShoesDivineArcher
-  - WFMeridianLoadoutClothingShoesFancyHeels
-  - WFMeridianLoadoutClothingShoesFancyHeelsSandals
-  - WFMeridianLoadoutClothingShoesGlow
-  - WFMeridianLoadoutClothingShoesGriffin
-  - WFMeridianLoadoutClothingShoesHighHeels
-  - WFMeridianLoadoutClothingShoesJackbootsArmadyne
-  - WFMeridianLoadoutClothingShoesJackbootsAshwalker
-  - WFMeridianLoadoutClothingShoesJackbootsAshwalkerLegate
-  - WFMeridianLoadoutClothingShoesJackbootsBlack
-  - WFMeridianLoadoutClothingShoesJackbootsDuckboots
-  - WFMeridianLoadoutClothingShoesJackbootsFloortile
-  - WFMeridianLoadoutClothingShoesJackbootsFrontierColonist
-  - WFMeridianLoadoutClothingShoesJackbootsGogoBoots
-  - WFMeridianLoadoutClothingShoesJackbootsKim
-  - WFMeridianLoadoutClothingShoesJackbootsKnee
-  - WFMeridianLoadoutClothingShoesJackbootsKneeRecolorable
-  - WFMeridianLoadoutClothingShoesJackbootsRecolorable
-  - WFMeridianLoadoutClothingShoesJackbootsTimbs
-  - WFMeridianLoadoutClothingShoesJackbootsToeless
-  - WFMeridianLoadoutClothingShoesJackbros
-  - WFMeridianLoadoutClothingShoesJungleboots
-  - WFMeridianLoadoutClothingShoesKindleKicks
-  - WFMeridianLoadoutClothingShoesRoman
-  - WFMeridianLoadoutClothingShoesRussian
-  - WFMeridianLoadoutClothingShoesSaints
-  - WFMeridianLoadoutClothingShoesSandalAlt
-  - WFMeridianLoadoutClothingShoesSingerb
-  - WFMeridianLoadoutClothingShoesSingerr
-  - WFMeridianLoadoutClothingShoesSingery
-  - WFMeridianLoadoutClothingShoesSneakersBlackRogue
-  - WFMeridianLoadoutClothingShoesSneakersMarisa
-  - WFMeridianLoadoutClothingShoesSneakersRainbow
-  - WFMeridianLoadoutClothingShoesSportBoots
-  - WFMeridianLoadoutClothingShoesSports
-  - WFMeridianLoadoutClothingShoesSwagshoes
-  - WFMeridianLoadoutClothingShoesWheelys
-  - WFMeridianLoadoutClothingShoesWheelysSkishoes
-  - WFMeridianLoadoutClothingShoesWinterbootsChristmas
-  - WFMeridianLoadoutClothingShoesWinterbootsIceBoots
-  - WFMeridianLoadoutClothingShoesWinterbootsIceBootsEva
-  - WFMeridianLoadoutClothingShoesWinterbootsIceBootsPrimitiveCatgirlBoots
-  - WFMeridianLoadoutClothingShoesWorkbootsBlack
-  - WFMeridianLoadoutClothingShoesWorkbootsToeless
-  - WFMeridianLoadoutClothingShoesWraps
-  - WFMeridianLoadoutClothingShoesWrapsAshwalker
-  - WFMeridianLoadoutClothingShoesWrapsAshwalkerMundanewraps
-  - WFMeridianLoadoutClothingShoesWrapsAshwalkerTribalwraps
-  - WFMeridianLoadoutClothingShoesWrapsBlue
-  - WFMeridianLoadoutClothingShoesWrapsCloth
-  - WFMeridianLoadoutClothingShoesWrapsColourable
-  - WFMeridianLoadoutClothingShoesWrapsRed
-  - WFMeridianLoadoutClothingShoesWrapsSilver
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+  - WGMeridianLoadoutClothingShoesBhopRocket
+  - WGMeridianLoadoutClothingShoesBhopRocketJet
+  - WGMeridianLoadoutClothingShoesBronze
+  - WGMeridianLoadoutClothingShoesColorableLaceups
+  - WGMeridianLoadoutClothingShoesColorableSandals
+  - WGMeridianLoadoutClothingShoesDiscoshoes
+  - WGMeridianLoadoutClothingShoesDivineArcher
+  - WGMeridianLoadoutClothingShoesFancyHeels
+  - WGMeridianLoadoutClothingShoesFancyHeelsSandals
+  - WGMeridianLoadoutClothingShoesGlow
+  - WGMeridianLoadoutClothingShoesGriffin
+  - WGMeridianLoadoutClothingShoesHighHeels
+  - WGMeridianLoadoutClothingShoesJackbootsArmadyne
+  - WGMeridianLoadoutClothingShoesJackbootsAshwalker
+  - WGMeridianLoadoutClothingShoesJackbootsAshwalkerLegate
+  - WGMeridianLoadoutClothingShoesJackbootsBlack
+  - WGMeridianLoadoutClothingShoesJackbootsDuckboots
+  - WGMeridianLoadoutClothingShoesJackbootsFloortile
+  - WGMeridianLoadoutClothingShoesJackbootsFrontierColonist
+  - WGMeridianLoadoutClothingShoesJackbootsGogoBoots
+  - WGMeridianLoadoutClothingShoesJackbootsKim
+  - WGMeridianLoadoutClothingShoesJackbootsKnee
+  - WGMeridianLoadoutClothingShoesJackbootsKneeRecolorable
+  - WGMeridianLoadoutClothingShoesJackbootsRecolorable
+  - WGMeridianLoadoutClothingShoesJackbootsTimbs
+  - WGMeridianLoadoutClothingShoesJackbootsToeless
+  - WGMeridianLoadoutClothingShoesJackbros
+  - WGMeridianLoadoutClothingShoesJungleboots
+  - WGMeridianLoadoutClothingShoesKindleKicks
+  - WGMeridianLoadoutClothingShoesRoman
+  - WGMeridianLoadoutClothingShoesRussian
+  - WGMeridianLoadoutClothingShoesSaints
+  - WGMeridianLoadoutClothingShoesSandalAlt
+  - WGMeridianLoadoutClothingShoesSingerb
+  - WGMeridianLoadoutClothingShoesSingerr
+  - WGMeridianLoadoutClothingShoesSingery
+  - WGMeridianLoadoutClothingShoesSneakersBlackRogue
+  - WGMeridianLoadoutClothingShoesSneakersMarisa
+  - WGMeridianLoadoutClothingShoesSneakersRainbow
+  - WGMeridianLoadoutClothingShoesSportBoots
+  - WGMeridianLoadoutClothingShoesSports
+  - WGMeridianLoadoutClothingShoesSwagshoes
+  - WGMeridianLoadoutClothingShoesWheelys
+  - WGMeridianLoadoutClothingShoesWheelysSkishoes
+  - WGMeridianLoadoutClothingShoesWinterbootsChristmas
+  - WGMeridianLoadoutClothingShoesWinterbootsIceBoots
+  - WGMeridianLoadoutClothingShoesWinterbootsIceBootsEva
+  - WGMeridianLoadoutClothingShoesWinterbootsIceBootsPrimitiveCatgirlBoots
+  - WGMeridianLoadoutClothingShoesWorkbootsBlack
+  - WGMeridianLoadoutClothingShoesWorkbootsToeless
+  - WGMeridianLoadoutClothingShoesWraps
+  - WGMeridianLoadoutClothingShoesWrapsAshwalker
+  - WGMeridianLoadoutClothingShoesWrapsAshwalkerMundanewraps
+  - WGMeridianLoadoutClothingShoesWrapsAshwalkerTribalwraps
+  - WGMeridianLoadoutClothingShoesWrapsBlue
+  - WGMeridianLoadoutClothingShoesWrapsCloth
+  - WGMeridianLoadoutClothingShoesWrapsColourable
+  - WGMeridianLoadoutClothingShoesWrapsRed
+  - WGMeridianLoadoutClothingShoesWrapsSilver
   # WOLFGATE END
   fallbacks:
   - NfsdClothingShoesBootsBrown
@@ -150,12 +150,12 @@
   - NfsdBoxSurvivalNfsdOxygen
   - NfsdBoxSurvivalNfsdNitrogen
   - NfsdBoxSurvivalNfsdVapor
-  - WFContractorBoxSurvivalSynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
+  - WGContractorBoxSurvivalSynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
   fallbacks:
   - NfsdBoxSurvivalNfsdOxygen
   - NfsdBoxSurvivalNfsdNitrogen
   - NfsdBoxSurvivalNfsdVapor
-  - WFContractorBoxSurvivalSynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
+  - WGContractorBoxSurvivalSynthetic # WOLFGATE(Synthetics): a synthetic body's box, in place of the breather ones
 
 - type: loadoutGroup
   id: NfsdFace
@@ -172,43 +172,43 @@
   hidden: true # No point in showing this, it gets auto-selected.
   loadouts:
   - NfsdClothingEyesGlasses
-  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-  - WFMeridianLoadoutClothingGlassesBiker
-  - WFMeridianLoadoutClothingGlassesBlindfoldColor
-  - WFMeridianLoadoutClothingGlassesBlindfoldWhite
-  - WFMeridianLoadoutClothingGlassesCold
-  - WFMeridianLoadoutClothingGlassesEyepatchRogue
-  - WFMeridianLoadoutClothingGlassesEyepatchWhite
-  - WFMeridianLoadoutClothingGlassesEyepatchWrap
-  - WFMeridianLoadoutClothingGlassesGeistGazers
-  - WFMeridianLoadoutClothingGlassesHeat
-  - WFMeridianLoadoutClothingGlassesHudArAviator
-  - WFMeridianLoadoutClothingGlassesHudArProjector
-  - WFMeridianLoadoutClothingGlassesHudEyepatchSci
-  - WFMeridianLoadoutClothingGlassesHudGunPermit
-  - WFMeridianLoadoutClothingGlassesMaterial
-  - WFMeridianLoadoutClothingGlassesMonocle
-  - WFMeridianLoadoutClothingGlassesNerveStaple
-  - WFMeridianLoadoutClothingGlassesNightmareVision
-  - WFMeridianLoadoutClothingGlassesOrange
-  - WFMeridianLoadoutClothingGlassesOsi
-  - WFMeridianLoadoutClothingGlassesPhantom
-  - WFMeridianLoadoutClothingGlassesPrismGlasses
-  - WFMeridianLoadoutClothingGlassesRed
-  - WFMeridianLoadoutClothingGlassesRegularCircle
-  - WFMeridianLoadoutClothingGlassesRegularHipster
-  - WFMeridianLoadoutClothingGlassesRegularKim
-  - WFMeridianLoadoutClothingGlassesRegularModern
-  - WFMeridianLoadoutClothingGlassesRegularThin
-  - WFMeridianLoadoutClothingGlassesSalesman
-  - WFMeridianLoadoutClothingGlassesSunglassesBig
-  - WFMeridianLoadoutClothingGlassesSunglassesChemical
-  - WFMeridianLoadoutClothingGlassesSunglassesGar
-  - WFMeridianLoadoutClothingGlassesSunglassesGarGiga
-  - WFMeridianLoadoutClothingGlassesSunglassesOval
-  - WFMeridianLoadoutClothingGlassesTrickblindfoldHamburg
-  - WFMeridianLoadoutClothingGlassesTrickblindfoldObsolete
-  - WFMeridianLoadoutClothingGlassesWelding
+  # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+  - WGMeridianLoadoutClothingGlassesBiker
+  - WGMeridianLoadoutClothingGlassesBlindfoldColor
+  - WGMeridianLoadoutClothingGlassesBlindfoldWhite
+  - WGMeridianLoadoutClothingGlassesCold
+  - WGMeridianLoadoutClothingGlassesEyepatchRogue
+  - WGMeridianLoadoutClothingGlassesEyepatchWhite
+  - WGMeridianLoadoutClothingGlassesEyepatchWrap
+  - WGMeridianLoadoutClothingGlassesGeistGazers
+  - WGMeridianLoadoutClothingGlassesHeat
+  - WGMeridianLoadoutClothingGlassesHudArAviator
+  - WGMeridianLoadoutClothingGlassesHudArProjector
+  - WGMeridianLoadoutClothingGlassesHudEyepatchSci
+  - WGMeridianLoadoutClothingGlassesHudGunPermit
+  - WGMeridianLoadoutClothingGlassesMaterial
+  - WGMeridianLoadoutClothingGlassesMonocle
+  - WGMeridianLoadoutClothingGlassesNerveStaple
+  - WGMeridianLoadoutClothingGlassesNightmareVision
+  - WGMeridianLoadoutClothingGlassesOrange
+  - WGMeridianLoadoutClothingGlassesOsi
+  - WGMeridianLoadoutClothingGlassesPhantom
+  - WGMeridianLoadoutClothingGlassesPrismGlasses
+  - WGMeridianLoadoutClothingGlassesRed
+  - WGMeridianLoadoutClothingGlassesRegularCircle
+  - WGMeridianLoadoutClothingGlassesRegularHipster
+  - WGMeridianLoadoutClothingGlassesRegularKim
+  - WGMeridianLoadoutClothingGlassesRegularModern
+  - WGMeridianLoadoutClothingGlassesRegularThin
+  - WGMeridianLoadoutClothingGlassesSalesman
+  - WGMeridianLoadoutClothingGlassesSunglassesBig
+  - WGMeridianLoadoutClothingGlassesSunglassesChemical
+  - WGMeridianLoadoutClothingGlassesSunglassesGar
+  - WGMeridianLoadoutClothingGlassesSunglassesGarGiga
+  - WGMeridianLoadoutClothingGlassesSunglassesOval
+  - WGMeridianLoadoutClothingGlassesTrickblindfoldHamburg
+  - WGMeridianLoadoutClothingGlassesTrickblindfoldObsolete
+  - WGMeridianLoadoutClothingGlassesWelding
   # WOLFGATE END
   fallbacks:
   - NfsdClothingEyesGlasses

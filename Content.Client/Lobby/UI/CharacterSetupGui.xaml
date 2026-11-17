@@ -60,7 +60,7 @@
                 -->
                 <PanelContainer StyleClasses="CreatorCard" MinWidth="320" Margin="24 12 0 12">
                     <BoxContainer Orientation="Vertical" SeparationOverride="6">
-                        <Label Text="{Loc 'wf-creator-slots'}" StyleClasses="CreatorHeading" />
+                        <Label Text="{Loc 'wg-creator-slots'}" StyleClasses="CreatorHeading" />
                         <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
                             <BoxContainer Name="Characters" Orientation="Vertical" SeparationOverride="4" />
                         </ScrollContainer>

@@ -1,6 +1,6 @@
 using System.Numerics;
 using Content.Client.Chat.Managers;
-using Content.Client._WF.ChatFont; // WOLFGATE(ChatFont)
+using Content.Client._WG.ChatFont; // WOLFGATE(ChatFont)
 using Content.Shared.CCVar;
 using Content.Shared.Chat;
 using Content.Shared.Speech;
@@ -202,7 +202,7 @@ namespace Content.Client.Chat.UI
         }
 
         // WOLFGATE(ChatFont): the bubble's text keeps the speaker's picked font
-        protected Type[] WFContentTags => WFChatFontTags.ForSpeaker(_entityManager, _senderEntity);
+        protected Type[] WGContentTags => WGChatFontTags.ForSpeaker(_entityManager, _senderEntity);
 
     }
 
@@ -250,7 +250,7 @@ namespace Content.Client.Chat.UI
                     MaxWidth = SpeechMaxWidth
                 };
 
-                label.SetMessage(ExtractAndFormatSpeechSubstring(message, "BubbleContent", fontColor), WFContentTags); // WOLFGATE(ChatFont)
+                label.SetMessage(ExtractAndFormatSpeechSubstring(message, "BubbleContent", fontColor), WGContentTags); // WOLFGATE(ChatFont)
 
                 var unfanciedPanel = new PanelContainer
                 {
@@ -277,7 +277,7 @@ namespace Content.Client.Chat.UI
 
             //We'll be honest. *Yes* this is hacky. Doing this in a cleaner way would require a bottom-up refactor of how saycode handles sending chat messages. -Myr
             bubbleHeader.SetMessage(ExtractAndFormatSpeechSubstring(message, "BubbleHeader", fontColor));
-            bubbleContent.SetMessage(ExtractAndFormatSpeechSubstring(message, "BubbleContent", fontColor), WFContentTags); // WOLFGATE(ChatFont): the speaker's picked font
+            bubbleContent.SetMessage(ExtractAndFormatSpeechSubstring(message, "BubbleContent", fontColor), WGContentTags); // WOLFGATE(ChatFont): the speaker's picked font
 
             //As for below: Some day this could probably be converted to xaml. But that is not today. -Myr
             var mainPanel = new PanelContainer

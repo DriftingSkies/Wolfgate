@@ -53,7 +53,7 @@
   id: VulpTailVulp
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Vulpkanin, WFCanine]
+  speciesRestriction: [Vulpkanin, WGCanine]
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     vulp_BEHIND: TailBehind
     vulp-tip_BEHIND: TailBehind
@@ -61,20 +61,20 @@
     vulp_BEHIND: vulp_FRONT
     vulp-tip_BEHIND: vulp-tip_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: vulp_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: vulp-tip_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp-tip_BEHIND
 
 - type: marking
   id: VulpTailVulpFade
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Vulpkanin, WFCanine]
+  speciesRestriction: [Vulpkanin, WGCanine]
   layering: # WOLFGATE(Genitals): the south frame draws behind the body, so the tail never covers anatomy
     vulp_BEHIND: TailBehind
     vulp-fade_BEHIND: TailBehind
@@ -82,11 +82,11 @@
     vulp_BEHIND: vulp_FRONT
     vulp-fade_BEHIND: vulp-fade_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: vulp_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): split art
       state: vulp-fade_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/Mobs/Customization/Vulpkanin/tail_markings.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: vulp-fade_BEHIND

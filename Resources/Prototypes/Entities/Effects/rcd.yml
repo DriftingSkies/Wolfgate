@@ -18,7 +18,7 @@
   - type: AnimationPlayer
   # WOLFGATE(InteractionParticles) START: RCD effects spray welding sparks
   - type: ESSparkOnTrigger
-    sparkPrototype: WFEffectSparksWelding
+    sparkPrototype: WGEffectSparksWelding
   - type: RepeatingTrigger
     delay: 1
   - type: TriggerOnSpawn

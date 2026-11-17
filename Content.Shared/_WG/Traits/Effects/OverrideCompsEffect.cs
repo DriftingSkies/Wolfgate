@@ -1,0 +1,17 @@
+using Robust.Shared.Prototypes;
+
+namespace Content.Shared._WG.Traits.Effects;
+
+/// <summary>
+/// Adds components and replaces any existing instance, overwriting its fields.
+/// </summary>
+public sealed partial class OverrideCompsEffect : BaseTraitEffect
+{
+    [DataField(required: true)]
+    public ComponentRegistry Components = new();
+
+    public override void Apply(TraitEffectContext ctx)
+    {
+        ctx.EntMan.AddComponents(ctx.Player, Components, removeExisting: true);
+    }
+}

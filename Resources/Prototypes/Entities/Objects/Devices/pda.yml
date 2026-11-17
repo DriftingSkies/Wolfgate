@@ -5,7 +5,7 @@
   name: PDA
   description: Personal Data Assistant.
   components:
-  - type: WFGameHubInstaller # WOLFGATE(GameHub): every PDA gets the Gamehub program
+  - type: WGGameHubInstaller # WOLFGATE(GameHub): every PDA gets the Gamehub program
   - type: Appearance
     appearanceDataInit:
      enum.PdaVisuals.PdaType:

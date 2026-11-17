@@ -433,7 +433,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactWood # WOLFGATE(Weapons)
+        collection: WGBulletImpactWood # WOLFGATE(Weapons)
   - type: Transform
     anchored: true
   - type: Physics
@@ -490,7 +490,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactConcrete # WOLFGATE(Weapons)
+        collection: WGBulletImpactConcrete # WOLFGATE(Weapons)
   - type: Destructible
     thresholds:
     - trigger:

@@ -1,0 +1,164 @@
+- type: wgTraitLayout
+  id: Physical
+  priority: 0
+  groups:
+  - name: wg-trait-group-toughness
+    traits:
+    - WillToLive
+    - Steadfast
+  - name: wg-trait-group-healing
+    traits:
+    - PlateletFactories
+    - NaniteRepairDrones
+    - LiquorLifeline
+    - ShadekinRegeneration
+    - ExtremeShadekinRegeneration
+  - name: wg-trait-group-resistances
+    traits:
+    - HardenedLymphocytes
+    - WGRadFiend
+    - TemperatureTolerance
+    - AlcoholTolerance
+    - WGHardenedSoles
+  - name: wg-trait-group-augments
+    traits:
+    - PrybarProsthetics
+    - BionicLegs
+    - BionicSpinarette
+    - StrikingCalluses
+  - name: wg-trait-group-skills
+    traits:
+    - Thieving
+    - SelfAware
+    - Voracious
+    - Helmsmanship
+  - name: wg-trait-group-training
+    traits:
+    - Clown
+    - Mime
+  - name: wg-trait-group-frailties
+    traits:
+    - Lethargy
+    - GlassJaw
+    - WillToDie
+    - Feeble
+    - OsteogenesisImperfecta
+    - Hemophilia
+    - WGFragility
+    - Redshirt
+    - Uncloneable
+  - name: wg-trait-group-habits
+    traits:
+    - WGDependentStimulant
+    - WGDependentOpioid
+    - WGDependentEmpathogen
+    - WGDependentCannabinoid
+    - WGDependentNicotine
+  - name: wg-trait-group-light-sensitivity
+    traits:
+    - MildLightSensitivity
+    - LightSensitivity
+    - ExtremeLightSensitivity
+  - name: wg-trait-group-background
+    traits:
+    - Ironman
+    - Heretic
+
+- type: wgTraitLayout
+  id: Disabilities
+  priority: 1
+  groups:
+  - name: wg-trait-group-sight
+    traits:
+    - Blindness
+    - PoorVision
+    - UltraVision
+    - DogVision
+  - name: wg-trait-group-hearing-feeling
+    traits:
+    - WGDeaf
+    - Paracusia
+    - PainNumbness
+  - name: wg-trait-group-body-mind
+    traits:
+    - Muted
+    - Narcolepsy
+    - Clumsy
+    - WheelchairBound
+    - Unrevivable
+
+- type: wgTraitLayout
+  id: Quirks
+  priority: 2
+  groups:
+  - name: wg-trait-group-behaviour
+    traits:
+    - Pacifist
+    - Pious
+    - WGPseudobulbarAffect
+    - Snoring
+    - WGPhotographer
+  - name: wg-trait-group-body
+    traits:
+    - HighPainThreshold
+    - LightweightDrunk
+    - WGIlluminated
+    - WGHemophagia
+    - WGHemophagiaMasquerade
+
+- type: wgTraitLayout
+  id: SpeechTraits
+  priority: 3
+  name: wg-trait-category-speech
+  groups:
+  - name: wg-trait-group-accents
+    traits:
+    - SouthernAccent
+    - CowboyAccent
+    - PirateAccent
+    - BoganAccent
+    - StreetpunkAccent
+    - GoblinAccent
+    - ScottishAccent
+    - GermanAccent
+    - FrenchAccent
+    - WGNeoFrenchAccent
+    - ItalianAccent
+    - SpanishAccent
+    - RussianAccent
+  - name: wg-trait-group-speech-patterns
+    traits:
+    - Accentless
+    - FrontalLisp
+    - SocialAnxiety
+    - Liar
+    - WGCanineTraits
+    - WGAvianTraits
+
+- type: wgTraitLayout
+  id: LanguageTraits
+  priority: 4
+  groups:
+  - name: wg-trait-group-extra-languages
+    traits:
+    - Tradeband
+    - SignLanguage
+    - SiikMaas
+    - NovuNederic
+    - MonoElyran
+    - MonoCanilunzt
+    - MonoFelyaic
+    - MonoClassical
+    - MonoMoffic
+    - MonoScratch
+    - MonoSqueakish
+    - MonoNovaCygniClassical
+    - MonoDraconic
+    - MonoAzaziba
+  - name: wg-trait-group-language-drawbacks
+    traits:
+    - Foreigner
+
+- type: wgTraitLayout
+  id: Height
+  priority: 5

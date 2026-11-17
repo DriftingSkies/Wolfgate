@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using Content.Shared.Tools;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Shared.Nyanotrasen.Digging;
 

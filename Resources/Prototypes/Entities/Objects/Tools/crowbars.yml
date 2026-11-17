@@ -24,7 +24,7 @@
     - Crowbar
   - type: WolfmedHitOverlaySound # WOLFGATE(Wolfmed): playtest 4, Bob's crowbar hits over the thud on flesh
     sound:
-      collection: WFWolfmedCrowbarHit
+      collection: WGWolfmedCrowbarHit
   - type: MeleeWeapon
     wideAnimationRotation: -135
     damage:

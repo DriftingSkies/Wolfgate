@@ -1,0 +1,318 @@
+# Real rope types. Tuning is derived from the fork's own constants rather than
+# guessed: Content.Server/Shuttles/Systems/ShuttleSystem.cs sets grid tile fixtures to
+# TileDensityMultiplier (0.5) of the engine's DefaultDensity (1), so a bare hull tile masses
+# ~0.5 kg/m2; walls, machines and cargo dwarf that. A "standard thruster" is the unit the
+# TractorBeam README balances against (maxForce 10,000 N = 50 standard thrusters => 200 N each,
+# matching ThrusterComponent.BaseThrust). A small, lightly loaded shuttle (roughly a 5x7 hull
+# plus a couple of machines, a few hundred kg of structure and fittings) with 4-6 thrusters
+# firing one way makes on the order of 800-1200 N of sustained thrust; 1000 N is used below as
+# "small shuttle at full thrust". Rope k = stiffness / restLength (see RopeTypePrototype doc
+# comments); figures below assume a ~10 m tie-off, so stiffness/10 gives the working spring rate.
+
+- type: ropeType
+  id: WGRopeHemp
+  name: rope-name-hemp
+  # k(10m) = 300 N/m; snaps well under a small shuttle's ~1000 N pull.
+  stiffness: 3000
+  dampingRatio: 0.6
+  maxStretch: 0.08
+  breakForce: 500
+  maxLength: 30
+  loadBearing: true
+  color: "#9c8460"
+  tautColor: "#e8d7a8"
+  width: 0.09
+  segmentsPerMetre: 3
+  stackType: WGRopeHemp
+  breakSound:
+    path: /Audio/Items/snap.ogg
+
+- type: ropeType
+  id: WGRopeSynthetic
+  name: rope-name-synthetic
+  # k(10m) = 1200 N/m; a 1000 N pull stretches it to ~0.83 m of its 1.2 m hard limit (visible
+  # sag/creak) without breaking - well under its 2200 N break force.
+  stiffness: 12000
+  dampingRatio: 0.65
+  maxStretch: 0.12
+  breakForce: 2200
+  maxLength: 30
+  loadBearing: true
+  color: "#3d4a52"
+  tautColor: "#a7c4d1"
+  width: 0.1
+  segmentsPerMetre: 3
+  stackType: WGRopeSynthetic
+  breakSound:
+    path: /Audio/Items/snap.ogg
+
+- type: ropeType
+  id: WGRopeBungee
+  name: rope-name-bungee
+  # Very soft (k(10m) = 150 N/m) with maxStretch 1.0: a small shuttle's pull runs it out to its
+  # full working length rather than snapping it. High break force so it survives that.
+  stiffness: 1500
+  dampingRatio: 0.35
+  maxStretch: 1.0
+  breakForce: 3000
+  maxLength: 30
+  loadBearing: true
+  color: "#3a5c3a"
+  tautColor: "#8fe08f"
+  width: 0.08
+  segmentsPerMetre: 4
+  stackType: WGRopeBungee
+  breakSound:
+    path: /Audio/Items/snap.ogg
+
+- type: ropeType
+  id: WGRopeSteelCable
+  name: rope-name-steel-cable
+  # k(10m) = 20,000 N/m; a 1000 N pull only stretches it ~0.05 m of its 0.2 m hard limit -
+  # effectively rigid. Holds a small shuttle at full thrust with room to spare.
+  stiffness: 200000
+  dampingRatio: 0.8
+  maxStretch: 0.02
+  breakForce: 20000
+  maxLength: 40
+  loadBearing: true
+  color: "#6b6f73"
+  tautColor: "#d8dadc"
+  width: 0.13
+  segmentsPerMetre: 2
+  stackType: WGRopeSteelCable
+  breakSound:
+    path: /Audio/Items/snap.ogg
+
+- type: ropeType
+  id: WGRopeTowCable
+  name: rope-name-tow-cable
+  # Capital-ship grade: steel cable at 4x stiffness and break force, for towing much heavier
+  # grids than the small-shuttle baseline above.
+  stiffness: 800000
+  dampingRatio: 0.85
+  maxStretch: 0.02
+  breakForce: 80000
+  maxLength: 60
+  loadBearing: true
+  color: "#6a6e72"
+  tautColor: "#c4c6c8"
+  width: 0.2
+  segmentsPerMetre: 2
+  texture: /Textures/_WG/Tether/tow_cable.png
+  textureLength: 0.8
+  bendStiffness: 0.25
+  stackType: WGRopeTowCable
+  breakSound:
+    path: /Audio/Items/snap.ogg
+
+# Stacks
+
+- type: stack
+  id: WGRopeHemp
+  name: rope-name-hemp
+  icon: { sprite: _WG/Tether/rope_hemp.rsi, state: icon }
+  spawn: WGRopeHempCoil1
+  maxCount: 30
+
+- type: stack
+  id: WGRopeSynthetic
+  name: rope-name-synthetic
+  icon: { sprite: _WG/Tether/rope_synthetic.rsi, state: icon }
+  spawn: WGRopeSyntheticCoil1
+  maxCount: 30
+
+- type: stack
+  id: WGRopeBungee
+  name: rope-name-bungee
+  icon: { sprite: _WG/Tether/rope_bungee.rsi, state: icon }
+  spawn: WGRopeBungeeCoil1
+  maxCount: 30
+
+- type: stack
+  id: WGRopeSteelCable
+  name: rope-name-steel-cable
+  icon: { sprite: _WG/Tether/rope_steel_cable.rsi, state: icon }
+  spawn: WGRopeSteelCableCoil1
+  maxCount: 30
+
+- type: stack
+  id: WGRopeTowCable
+  name: rope-name-tow-cable
+  icon: { sprite: _WG/Tether/rope_tow_cable.rsi, state: icon }
+  spawn: WGRopeTowCableCoil1
+  maxCount: 30
+
+# Coils. Sprites are a single supplied icon state each (no count-threshold layers).
+
+- type: entity
+  id: WGBaseRopeCoil
+  abstract: true
+  parent: BaseItem
+  components:
+  - type: Item
+    size: Small
+    storedRotation: -90
+  - type: Clickable
+  - type: Tag
+    tags:
+    - WGTowRope
+
+- type: entity
+  id: WGRopeHempCoil
+  parent: WGBaseRopeCoil
+  name: coil of hemp rope
+  description: A coil of plain hemp rope. Cheap and easy to make, but the weakest of the bunch.
+  components:
+  - type: Sprite
+    sprite: _WG/Tether/rope_hemp.rsi
+    state: icon
+  - type: Item
+    sprite: _WG/Tether/rope_hemp.rsi
+  - type: Stack
+    stackType: WGRopeHemp
+    count: 30
+  - type: RopeCoil
+    ropeType: WGRopeHemp
+    metresPerUnit: 1
+    slack: 1.15
+  - type: StaticPrice
+    price: 0
+  - type: StackPrice
+    price: 2
+
+- type: entity
+  id: WGRopeHempCoil1
+  parent: WGRopeHempCoil
+  suffix: 1
+  components:
+  - type: Stack
+    count: 1
+
+- type: entity
+  id: WGRopeSyntheticCoil
+  parent: WGBaseRopeCoil
+  name: coil of synthetic rope
+  description: A coil of woven synthetic rope. Stronger than hemp and stretches noticeably under load.
+  components:
+  - type: Sprite
+    sprite: _WG/Tether/rope_synthetic.rsi
+    state: icon
+  - type: Item
+    sprite: _WG/Tether/rope_synthetic.rsi
+  - type: Stack
+    stackType: WGRopeSynthetic
+    count: 30
+  - type: RopeCoil
+    ropeType: WGRopeSynthetic
+    metresPerUnit: 1
+    slack: 1.15
+  - type: StaticPrice
+    price: 0
+  - type: StackPrice
+    price: 4
+
+- type: entity
+  id: WGRopeSyntheticCoil1
+  parent: WGRopeSyntheticCoil
+  suffix: 1
+  components:
+  - type: Stack
+    count: 1
+
+- type: entity
+  id: WGRopeBungeeCoil
+  parent: WGBaseRopeCoil
+  name: coil of bungee cord
+  description: An elastic cord that stretches a long way before it takes any real strain.
+  components:
+  - type: Sprite
+    sprite: _WG/Tether/rope_bungee.rsi
+    state: icon
+  - type: Item
+    sprite: _WG/Tether/rope_bungee.rsi
+  - type: Stack
+    stackType: WGRopeBungee
+    count: 30
+  - type: RopeCoil
+    ropeType: WGRopeBungee
+    metresPerUnit: 1
+    slack: 1.15
+  - type: StaticPrice
+    price: 0
+  - type: StackPrice
+    price: 6
+
+- type: entity
+  id: WGRopeBungeeCoil1
+  parent: WGRopeBungeeCoil
+  suffix: 1
+  components:
+  - type: Stack
+    count: 1
+
+- type: entity
+  id: WGRopeSteelCableCoil
+  parent: WGBaseRopeCoil
+  name: coil of steel cable
+  description: A coil of braided steel cable. Barely stretches at all and holds a shuttle fast.
+  components:
+  - type: Sprite
+    sprite: _WG/Tether/rope_steel_cable.rsi
+    state: icon
+  - type: Item
+    sprite: _WG/Tether/rope_steel_cable.rsi
+  - type: Stack
+    stackType: WGRopeSteelCable
+    count: 30
+  - type: RopeCoil
+    ropeType: WGRopeSteelCable
+    metresPerUnit: 1
+    slack: 1.15
+  - type: StaticPrice
+    price: 0
+  - type: StackPrice
+    price: 8
+
+- type: entity
+  id: WGRopeSteelCableCoil1
+  parent: WGRopeSteelCableCoil
+  suffix: 1
+  components:
+  - type: Stack
+    count: 1
+
+- type: entity
+  id: WGRopeTowCableCoil
+  parent: WGBaseRopeCoil
+  name: coil of tow cable
+  description: Capital-ship grade tow cable. Heavier and far stronger than steel cable.
+  components:
+  - type: Sprite
+    sprite: _WG/Tether/rope_tow_cable.rsi
+    state: icon
+  - type: Item
+    sprite: _WG/Tether/rope_tow_cable.rsi
+    size: Normal
+  - type: Stack
+    stackType: WGRopeTowCable
+    count: 30
+  - type: RopeCoil
+    ropeType: WGRopeTowCable
+    metresPerUnit: 1
+    slack: 1.15
+  - type: StaticPrice
+    price: 0
+  - type: StackPrice
+    price: 20
+
+- type: entity
+  id: WGRopeTowCableCoil1
+  parent: WGRopeTowCableCoil
+  suffix: 1
+  components:
+  - type: Stack
+    count: 1
+
+- type: Tag
+  id: WGTowRope

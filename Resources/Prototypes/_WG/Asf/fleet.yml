@@ -1,0 +1,322 @@
+# Hulls adapted from Hullrot: Eclipsion's DSM ships.
+# Prices and loadouts are set against other factions' hulls of similar tile count; see Content.Shared/_WG/Asf/README.md.
+
+- type: vessel
+  id: WGAsfGleaner
+  parent: BaseVessel
+  name: ASF Gleaner
+  description: A one-man mining pod with 2 M12 mining lasers, an ore magnet and an ore box. No weapons, no shield.
+  price: 25000
+  category: Micro
+  group: Custom
+  shuttlePath: /SharedMaps/_WG/Asf/gleaner.yml
+  guidebookPage: null
+  class:
+  - Salvage
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WGAsfGleaner
+  mapName: 'ASF Gleaner'
+  mapPath: /SharedMaps/_WG/Asf/gleaner.yml
+  minPlayers: 0
+  stations:
+    WGAsfGleaner:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Gleaner ASF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          WGAsfEnforcer: [ 0, 0 ]
+          WGAsfFieldResearcher: [ 0, 0 ]
+          WGAsfColonist: [ 0, 0 ]
+
+- type: vessel
+  id: WGAsfPorter
+  parent: BaseVessel
+  name: ASF Porter
+  description: An unarmed hauler built around one long cargo hold, with loading bays on both sides and a conveyor at the stern. Bring an escort if the cargo is worth stealing.
+  price: 40000
+  category: Small
+  group: Custom
+  shuttlePath: /SharedMaps/_WG/Asf/porter.yml
+  guidebookPage: null
+  class:
+  - Cargo
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WGAsfPorter
+  mapName: 'ASF Porter'
+  mapPath: /SharedMaps/_WG/Asf/porter.yml
+  minPlayers: 0
+  stations:
+    WGAsfPorter:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Porter ASF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          WGAsfEnforcer: [ 0, 0 ]
+          WGAsfFieldResearcher: [ 0, 0 ]
+          WGAsfColonist: [ 0, 0 ]
+
+- type: vessel
+  id: WGAsfLamplighter
+  parent: BaseVessel
+  name: ASF Lamplighter
+  description: An unarmed survey ship with a small research bay behind the bridge, fitted with an R&D server, a protolathe, a circuit imprinter and an artifact analyzer. Analysis can start before you get home.
+  price: 38000
+  category: Small
+  group: Custom
+  shuttlePath: /SharedMaps/_WG/Asf/lamplighter.yml
+  guidebookPage: null
+  class:
+  - Science
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WGAsfLamplighter
+  mapName: 'ASF Lamplighter'
+  mapPath: /SharedMaps/_WG/Asf/lamplighter.yml
+  minPlayers: 0
+  stations:
+    WGAsfLamplighter:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Lamplighter ASF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          WGAsfEnforcer: [ 0, 0 ]
+          WGAsfFieldResearcher: [ 0, 0 ]
+          WGAsfColonist: [ 0, 0 ]
+
+# Armed hulls adapted from DSM Redemptor, Imparator, Dragoon and Praxis: plastitanium hulls, lasers first, a few
+# self-loading Serpent torpedoes, and shields from the gunship up.
+
+- type: vessel
+  id: WGAsfVigil
+  parent: BaseVessel
+  name: ASFN Vigil
+  description: A small escort fighter armed with a Type-12 Hummingbird cutting array and a Type-7 Flutter pulse array. No shield.
+  price: 40000
+  category: Small
+  group: Custom
+  shuttlePath: /SharedMaps/_WG/Asf/vigil.yml
+  guidebookPage: null
+  class:
+  - Fighter
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WGAsfVigil
+  mapName: 'ASFN Vigil'
+  mapPath: /SharedMaps/_WG/Asf/vigil.yml
+  minPlayers: 0
+  stations:
+    WGAsfVigil:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Vigil ASF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          WGAsfEnforcer: [ 0, 0 ]
+          WGAsfFieldResearcher: [ 0, 0 ]
+          WGAsfColonist: [ 0, 0 ]
+
+- type: vessel
+  id: WGAsfBulwark
+  parent: BaseVessel
+  name: ASFN Bulwark
+  description: A gunship with a Type-12 Hummingbird cutting array, a self-loading Serpent torpedo launcher and a small shield. Good at keeping raiders off a hauler, less good at chasing them down.
+  price: 75000
+  category: Small
+  group: Custom
+  shuttlePath: /SharedMaps/_WG/Asf/bulwark.yml
+  guidebookPage: null
+  class:
+  - Patrol
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WGAsfBulwark
+  mapName: 'ASFN Bulwark'
+  mapPath: /SharedMaps/_WG/Asf/bulwark.yml
+  minPlayers: 0
+  stations:
+    WGAsfBulwark:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Bulwark ASF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          WGAsfEnforcer: [ 0, 0 ]
+          WGAsfFieldResearcher: [ 0, 0 ]
+          WGAsfColonist: [ 0, 0 ]
+
+- type: vessel
+  id: WGAsfGuardian
+  parent: BaseVessel
+  name: ASFN Guardian
+  description: A Federation patrol corvette armed with an Apollo heavy laser, 2 Type-12 Hummingbird cutting arrays and 2 self-loading Tarnyx EMP cannons, plus a small shield and bunks for 2. Open the bow door before firing the Apollo.
+  price: 123000
+  category: Medium
+  group: Custom
+  shuttlePath: /SharedMaps/_WG/Asf/guardian.yml
+  guidebookPage: null
+  class:
+  - Patrol
+  - Corvette
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WGAsfGuardian
+  mapName: 'ASFN Guardian'
+  mapPath: /SharedMaps/_WG/Asf/guardian.yml
+  minPlayers: 0
+  stations:
+    WGAsfGuardian:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Guardian ASF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          WGAsfEnforcer: [ 0, 0 ]
+          WGAsfFieldResearcher: [ 0, 0 ]
+          WGAsfColonist: [ 0, 0 ]
+
+- type: vessel
+  id: WGAsfLodestar
+  parent: BaseVessel
+  name: ASFN Lodestar
+  description: The Federation's flagship frigate. Carries an MS-250 Aegis shield, 2 Apollo heavy lasers, 4 Type-12 Hummingbird cutting arrays, 2 Serpent torpedo launchers and 2 Type-7 Flutter pulse arrays, with a medbay, science wing and galley.
+  price: 250000
+  purchasable: false # voucher only: WGAsfVoucherLodestar
+  category: Medium
+  group: Custom
+  shuttlePath: /SharedMaps/_WG/Asf/lodestar.yml
+  guidebookPage: null
+  class:
+  - Frigate
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WGAsfLodestar
+  mapName: 'ASFN Lodestar'
+  mapPath: /SharedMaps/_WG/Asf/lodestar.yml
+  minPlayers: 0
+  stations:
+    WGAsfLodestar:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Lodestar ASF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          WGAsfEnforcer: [ 0, 0 ]
+          WGAsfFieldResearcher: [ 0, 0 ]
+          WGAsfColonist: [ 0, 0 ]
+
+#Created by SylvaraWasTaken on github, Sylvaratayn on Discord
+- type: vessel
+  id: WGAsfRevelation
+  parent: BaseVessel
+  name: ASF Revelation
+  description: 'A prototype ASF deep-space research vessel, built with self-sufficiency in mind. Kitted with a hyper-efficient Pinch reactor, an MS-100 shield generator, moderate armament to attack and collect datacores from Monolith drones, a single mining laser and ore magnet, a small tractor beam to mitigate ramming attacks, a small salvage bay, a lightly equipped research lab, and enough amenities to stay sane in the void for days at a time. The kitchen does not come stocked - remember to pack your own food and drinks! Equipped with two ASF Hummingbirds and two Flutters, its defensive capabilities are not to be taken lightly. However, due to budget constraints, the armor is particularly light and the engines are slightly underpowered. Exploration beyond the shallowest fringes of the Colossus Sector is inadvisable without support.'
+  price: 161912 # appraised at 140793, 15% markup
+  category: Medium # 313 tiles
+  group: Custom
+  shuttlePath: /SharedMaps/_WG/Asf/revelation.yml
+  guidebookPage: WGShipyardAsfRevelation
+  class:
+  - Science
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WGAsfRevelation
+  mapName: 'ASF Revelation'
+  mapPath: /SharedMaps/_WG/Asf/revelation.yml
+  minPlayers: 0
+  stations:
+    WGAsfRevelation:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Revelation ASF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          WGAsfEnforcer: [ 0, 0 ]
+          WGAsfFieldResearcher: [ 0, 0 ]
+          WGAsfColonist: [ 0, 0 ]
+
+#Created by SylvaraWasTaken on github, Sylvaratayn on Discord
+- type: vessel
+  id: WGAsfSurveyor
+  parent: BaseVessel
+  name: 'ASF Surveyor'
+  description: 'a ubiquitous ASF mining shuttle, seen all throughout their expanding territories, equipped with two M12 mining lasers and two side-mounted Flutter lasers. The Surveyor embodies ASF design principles: emphasizing crew safety, redundant systems, and defensive design, with wide turret arcs, powerful forward thrusters, and common use of shield generators. The generators are split apart on opposite sides of the ship, preventing any one critical hit from completely disabling the ship, and the cockpit is located dead-center with most critical systems, allowing the pilot to survive and escape even severe damage.  A relatively peaceful faction, the ASF have a severe lack of military shipyards, and so many of their most common hulls are refitted civilian ships. As such, the armor and defensive weaponry on the Surveyor is particularly light, relying more on shields and evasiveness to avoid combat and flee to safe locations.'
+  price: 86000 # initialized appraisal at 85704
+  category: Small # 189 tiles
+  group: Custom
+  shuttlePath: /SharedMaps/_WG/Asf/surveyor.yml
+  guidebookPage: WGShipyardAsfSurveyor
+  class:
+  - Salvage
+  engine:
+  - Uranium
+
+- type: gameMap
+  id: WGAsfSurveyor
+  mapName: 'ASF Surveyor'
+  mapPath: /SharedMaps/_WG/Asf/surveyor.yml
+  minPlayers: 0
+  stations:
+    WGAsfSurveyor:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Surveyor ASF{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

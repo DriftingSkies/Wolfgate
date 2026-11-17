@@ -11,11 +11,11 @@
     ClothingHeadsetRobotics: 2
     ClothingOuterWinterRobo: 2
     ClothingShoesBootsWinterRobo: 2 #Delta V: Add departmental winter boots
-    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WF/MeridianClothing/port.py
-    WFMeridianClothingHeadHoodedWinterhoodScienceRobotics: 2
-    WFMeridianClothingHeadPlaybunnyearsRoboticist: 2
-    WFMeridianClothingNeckTieBunnytieRoboticist: 2
-    WFMeridianClothingUnderRankRndRoboticist: 2
-    WFMeridianClothingUnderRankRndRoboticistSkirt: 2
-    WFMeridianClothingUnderRankRndScientistRoboticistBunnysuit: 2
+    # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
+    WGMeridianClothingHeadHoodedWinterhoodScienceRobotics: 2
+    WGMeridianClothingHeadPlaybunnyearsRoboticist: 2
+    WGMeridianClothingNeckTieBunnytieRoboticist: 2
+    WGMeridianClothingUnderRankRndRoboticist: 2
+    WGMeridianClothingUnderRankRndRoboticistSkirt: 2
+    WGMeridianClothingUnderRankRndScientistRoboticistBunnysuit: 2
     # WOLFGATE END

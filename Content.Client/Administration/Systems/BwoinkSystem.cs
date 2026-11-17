@@ -1,5 +1,5 @@
 ﻿#nullable enable
-using Content.Shared._WF.EventStaff; // WOLFGATE(EventStaff)
+using Content.Shared._WG.EventStaff; // WOLFGATE(EventStaff)
 using Content.Shared.Administration;
 using JetBrains.Annotations;
 using Robust.Shared.Network;

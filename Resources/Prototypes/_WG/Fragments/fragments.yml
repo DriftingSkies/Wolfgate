@@ -1,0 +1,126 @@
+# A Monolith fragment: a rare random event that drifts in between the TSF and PDV bases. Its heart sends Remade at
+# whoever comes near, harder the more come, and breaking it pays both factions, half again if both were aboard.
+# Read by WGFragmentRuleSystem. It never holds a Scion or anything else of a living Monolith.
+
+- type: entity
+  parent: BaseStationEventShortDelay
+  id: WGFragmentEvent
+  components:
+  - type: StationEvent
+    startAnnouncement: wg-fragment-start-announcement
+    startAudio:
+      path: /Audio/Announcements/attention.ogg
+    # The end is announced by the rule itself: lost, or departed once cleared.
+    warningAnnouncement: wg-fragment-warning-announcement
+    earliestStart: 30
+    weight: 3
+    duration: 2400
+    maxDuration: 2700
+    reoccurrenceDelay: 60
+  - type: WGFragmentRule
+    grids:
+    - /Maps/_Mono/Monolithic/monolithicasteroidsmallarena.yml
+    - /Maps/_Mono/Monolithic/monolithicasteroidsmallspindle.yml
+    - /Maps/_Mono/Monolithic/monolithicasteroidsmallship.yml
+    bases:
+    - FactionStaticUplinkTsf
+    - FactionStaticUplinkPdv
+    # No stake, and rare: more than a High-value operation's reward to each faction, half again for working together.
+    rewards:
+      TSF: 300
+      PDV: 300
+    replace:
+      MobMonolithicGestalt: [ WGRemadeSlasher, WGRemadeHopper ]
+      MobMonolithicGolom: [ WGRemadeSlasher, WGRemadeLeaper ]
+      MobMonolithicHellLocust: [ WGRemadeHopper, WGRemadeLeaper ]
+      MobMonolithicGolomRanged: [ WGRemadeSpitter, WGRemadeLurker ]
+    common:
+    - WGRemadeSlasher
+    - WGRemadeSlasher
+    - WGRemadeHopper
+    - WGRemadeLeaper
+    - WGRemadeSpitter
+    - WGRemadePuker
+    - WGRemadeExploder
+    elites:
+    - WGRemadeBrute
+    - WGRemadeTwitcher
+    - WGRemadeHunter
+    - WGRemadeDivider
+    decor:
+    - WGEnvSacBig
+    - WGEnvSacBeating
+    - WGEnvOrgans
+    - WGEnvSpur
+    - WGEnvSpurTall
+    - WGEnvTendril
+    - WGEnvGore
+    - WGEnvGoreSmear
+
+# The fragment's heart: a crystal grown through with flesh. Breaking it clears the fragment and stops its waves.
+- type: entity
+  id: WGFragmentHeart
+  name: fragment heart
+  description: A great shard of Monolith crystal, veined with something that beats. The Remade aboard come from it, and both the Federation and the Dynasty pay to see it broken.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    noRot: true
+    anchored: true
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    noRot: true
+    sprite: _Mono/Objects/Materials/monolith_crystal.rsi
+    scale: 2,2
+    color: "#E07070"
+    layers:
+    - state: crystal_large
+      shader: unshaded
+  - type: PointLight
+    radius: 5
+    energy: 2
+    color: "#C03050"
+  - type: AmbientSound
+    range: 10
+    volume: -4
+    sound:
+      path: /Audio/_WG/Remade/monolith/throb.ogg
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 3000
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          MonolithicCrystalLarge:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: RadarBlip
+    radarColor: "#A20FE1"
+    scale: 3
+    shape: hexagon
+    visibleFromOtherGrids: true

@@ -1,0 +1,34 @@
+# Classic ship: updated and replaced on Wolfgate
+#Author Info
+#zy.dras (Discord)
+- type: vessel
+  id: Sunrise
+  parent: BaseVessel
+  name: Sunrise
+  description: A private investigator's ship. Comes equiped with a suite of forensic tools for investigative work. Capable of subduing smugglers and CIV ships with it's EMP launchers, and running away from anything more dangerous.
+  price: 56768 #appraised at 49364, 15% markup
+  category: Small
+  group: Sr
+  access: Caelestinus # Oddball, matches guard ID, specific enough to exclude cadets
+  mapchecker_group_override: Security  # Treat this as a security vessel for mapchecker purposes
+  shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/sunrise.yml
+  guidebookPage: Null
+  class:
+  - Civilian
+  engine:
+  - Welding
+
+- type: gameMap
+  id: Sunrise
+  mapName: 'Sunrise'
+  mapPath: /SharedMaps/_WG/Shipyard/Shuttles/sunrise.yml
+  minPlayers: 0
+  stations:
+    Sunrise:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Sunrise SEC{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'

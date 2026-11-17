@@ -349,13 +349,13 @@
     skrell_shortfringetail_BEHIND: skrell_shortfringetail_FRONT
     skrell_shortfringetail_fringe_BEHIND: skrell_shortfringetail_fringe_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art, anatomy zone only
       state: skrell_shortfringetail_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art, anatomy zone only
       state: skrell_shortfringetail_fringe_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
       state: skrell_shortfringetail_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
       state: skrell_shortfringetail_fringe_BEHIND
 
 - type: marking
@@ -370,13 +370,13 @@
     skrell_fringetail_BEHIND: skrell_fringetail_FRONT
     skrell_fringetail_fringe_BEHIND: skrell_fringetail_fringe_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
       state: skrell_fringetail_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
       state: skrell_fringetail_fringe_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: skrell_fringetail_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: skrell_fringetail_fringe_BEHIND
 
 - type: marking
@@ -391,13 +391,13 @@
     skrell_longfringetail_BEHIND: skrell_longfringetail_FRONT
     skrell_longfringetail_fringe_BEHIND: skrell_longfringetail_fringe_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
       state: skrell_longfringetail_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
       state: skrell_longfringetail_fringe_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: skrell_longfringetail_BEHIND
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: skrell_longfringetail_fringe_BEHIND
 
 - type: marking
@@ -410,11 +410,11 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     skrell_xlongfringetail_BEHIND: skrell_xlongfringetail_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
       state: skrell_xlongfringetail_FRONT
     - sprite: _RMC14/Mobs/Skrells/tails.rsi
       state: skrell_xlongfringetail_fringe
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: skrell_xlongfringetail_BEHIND
 
 - type: marking
@@ -427,9 +427,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     skrell_tail_BEHIND: skrell_tail_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
       state: skrell_tail_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: skrell_tail_BEHIND
 
 - type: marking
@@ -442,9 +442,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     skrell_tail_short_BEHIND: skrell_tail_short_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art, anatomy zone only
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art, anatomy zone only
       state: skrell_tail_short_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): anatomy zone of the south frame on TailBehind
       state: skrell_tail_short_BEHIND
 
 - type: marking
@@ -457,9 +457,9 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     skrell_tail_long_BEHIND: skrell_tail_long_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
       state: skrell_tail_long_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: skrell_tail_long_BEHIND
 
 - type: marking
@@ -472,7 +472,7 @@
   colorLinks: # WOLFGATE(Genitals): both halves of a tail share one colour
     skrell_tail_xlong_BEHIND: skrell_tail_xlong_FRONT
   sprites:
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): split art
       state: skrell_tail_xlong_FRONT
-    - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+    - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_RMC14/Mobs/Skrells/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
       state: skrell_tail_xlong_BEHIND

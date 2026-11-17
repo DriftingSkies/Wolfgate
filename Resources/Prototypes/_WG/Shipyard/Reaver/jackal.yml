@@ -1,0 +1,35 @@
+# Author info
+# punishedbrungus (discord) Balls2zawall (github)
+- type: vessel
+  id: WGJackal
+  parent: BaseVessel
+  name: 'RVR Jackal'
+  description: 'A damaged Noble converted into a small artillery vessel.'
+  price: 67461 # appraised at 56218, 20%
+  category: Medium # 255 tiles
+  group: Custom
+  shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/Reaver/jackal.yml
+  guidebookPage: null
+  class:
+  - Fighter
+  - Pursuit
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: WGJackal
+  mapName: 'RVR - Jackal'
+  mapPath: /SharedMaps/_WG/Shipyard/Shuttles/Reaver/jackal.yml
+  minPlayers: 0
+  stations:
+    WGJackal:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Jackal RVR{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

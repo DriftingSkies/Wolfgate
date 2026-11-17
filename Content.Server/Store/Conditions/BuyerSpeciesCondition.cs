@@ -1,7 +1,7 @@
 using Content.Shared.Humanoid;
 using Content.Shared.Store;
 using Content.Shared.Humanoid.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 using Content.Shared.Mind;
 
 namespace Content.Server.Store.Conditions;

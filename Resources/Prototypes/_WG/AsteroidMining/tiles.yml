@@ -1,0 +1,10 @@
+# The invisible floor of an asteroid grid. It gives the rock a hull for ship collisions and radar; it can't be
+# removed, built on or blown open.
+- type: tile
+  id: WGAsteroidCore
+  name: tiles-wg-asteroid-core
+  sprite: /Textures/_WG/AsteroidMining/Tiles/asteroid_core.png
+  indestructible: true
+  deconstructTools: []
+  baseTurf: ""
+  heatCapacity: 10000

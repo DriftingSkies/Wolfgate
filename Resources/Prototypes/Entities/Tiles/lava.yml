@@ -30,10 +30,10 @@
   - type: SyncSprite
   - type: Clickable
   - type: Sprite
-    sprite: _WF/Resprites/Wizden/Tiles/TileEntities/liquid-lava.rsi # WOLFGATE(Resprites): Changed from "Tiles/Planet/lava.rsi" to "_WF/Resprites/Wizden/Tiles/TileEntities/liquid-lava.rsi" to match the new sprite.
+    sprite: _WG/Resprites/Wizden/Tiles/TileEntities/liquid-lava.rsi # WOLFGATE(Resprites): Changed from "Tiles/Planet/lava.rsi" to "_WG/Resprites/Wizden/Tiles/TileEntities/liquid-lava.rsi" to match the new sprite.
     drawdepth: BelowFloor
   - type: Icon
-    sprite: _WF/Resprites/Wizden/Tiles/TileEntities/liquid-lava.rsi # WOLFGATE(Resprites): Changed from "Tiles/Planet/lava.rsi" to "_WF/Resprites/Wizden/Tiles/TileEntities/liquid-lava.rsi" to match the new sprite.
+    sprite: _WG/Resprites/Wizden/Tiles/TileEntities/liquid-lava.rsi # WOLFGATE(Resprites): Changed from "Tiles/Planet/lava.rsi" to "_WG/Resprites/Wizden/Tiles/TileEntities/liquid-lava.rsi" to match the new sprite.
     state: full
   - type: IconSmooth
     key: lava # WOLFGATE(Resprites): Changed from "floor" to "lava" to match the new sprite.

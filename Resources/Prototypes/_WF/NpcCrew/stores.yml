@@ -1,7 +1,0 @@
-# The crate a crewed ship's fuel is stowed in. Filled at spawn with what its plant burns; the engineer feeds the plant
-# from it, and a boarder can carry it off.
-- type: entity
-  id: WFCrewFuelStores
-  parent: CrateEngineering
-  name: fuel stores
-  description: A crate of fuel for the ship's generators and reactor, stowed for the trip.

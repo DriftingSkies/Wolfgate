@@ -6,7 +6,7 @@
   placement:
     mode: PlaceFree
   components:
-  - type: WFCockpitSeat # WOLFGATE(Cockpit): allow every seat family to host the buckled piloting HUD.
+  - type: WGCockpitSeat # WOLFGATE(Cockpit): allow every seat family to host the buckled piloting HUD.
   - type: Animateable
   - type: Clickable
   - type: InteractionOutline
@@ -227,7 +227,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactWood # WOLFGATE(Weapons)
+        collection: WGBulletImpactWood # WOLFGATE(Weapons)
   - type: Sprite
     state: wooden
   - type: Construction
@@ -410,7 +410,7 @@
   - type: RangedDamageSound # WOLFGATE(Weapons): material bullet impacts
     soundGroups:
       Brute:
-        collection: WFBulletImpactWood # WOLFGATE(Weapons)
+        collection: WGBulletImpactWood # WOLFGATE(Weapons)
   - type: Sprite
     state: wooden-bench
   - type: Construction

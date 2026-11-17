@@ -1,0 +1,307 @@
+- type: entity
+  parent: ClothingUniformTSFMC
+  id: WGRMCUniformMarine
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_marine/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_marine/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookUniformMarineJungle
+    - name: desert
+      look: WGRMCLookUniformMarineDesert
+    - name: snow
+      look: WGRMCLookUniformMarineSnow
+    - name: urban
+      look: WGRMCLookUniformMarineUrban
+    - name: classic
+      look: WGRMCLookUniformMarineClassic
+
+- type: entity
+  parent: ClothingUniformTSFMC
+  id: WGRMCUniformMarineEngineer
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_marine_engineer/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_marine_engineer/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookUniformMarineEngineerJungle
+    - name: desert
+      look: WGRMCLookUniformMarineEngineerDesert
+    - name: snow
+      look: WGRMCLookUniformMarineEngineerSnow
+    - name: urban
+      look: WGRMCLookUniformMarineEngineerUrban
+    - name: classic
+      look: WGRMCLookUniformMarineEngineerClassic
+
+- type: entity
+  parent: ClothingUniformTSFMC
+  id: WGRMCUniformMarineMedic
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_marine_medic/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_marine_medic/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookUniformMarineMedicJungle
+    - name: desert
+      look: WGRMCLookUniformMarineMedicDesert
+    - name: snow
+      look: WGRMCLookUniformMarineMedicSnow
+    - name: urban
+      look: WGRMCLookUniformMarineMedicUrban
+    - name: classic
+      look: WGRMCLookUniformMarineMedicClassic
+
+- type: entity
+  parent: ClothingUniformTSFMC
+  id: WGRMCUniformMarineRTO
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_marine_rto/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_marine_rto/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookUniformMarineRTOJungle
+    - name: desert
+      look: WGRMCLookUniformMarineRTODesert
+    - name: snow
+      look: WGRMCLookUniformMarineRTOSnow
+    - name: urban
+      look: WGRMCLookUniformMarineRTOUrban
+    - name: classic
+      look: WGRMCLookUniformMarineRTOClassic
+
+- type: entity
+  parent: ClothingUniformTSFMC
+  id: WGRMCUniformMarineTanker
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_marine_tanker/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_marine_tanker/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookUniformMarineTankerJungle
+    - name: desert
+      look: WGRMCLookUniformMarineTankerDesert
+    - name: snow
+      look: WGRMCLookUniformMarineTankerSnow
+    - name: urban
+      look: WGRMCLookUniformMarineTankerUrban
+    - name: classic
+      look: WGRMCLookUniformMarineTankerClassic
+
+- type: entity
+  parent: ClothingUniformTSFMC
+  id: WGRMCUniformIntel
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_intel/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_intel/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookUniformIntelJungle
+    - name: snow
+      look: WGRMCLookUniformIntelSnow
+    - name: urban
+      look: WGRMCLookUniformIntelUrban
+
+- type: entity
+  parent: ClothingUniformTSFMC
+  id: WGRMCUniformBoiler
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_boiler/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_boiler/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookUniformBoilerJungle
+    - name: desert
+      look: WGRMCLookUniformBoilerDesert
+    - name: snow
+      look: WGRMCLookUniformBoilerSnow
+
+- type: entity
+  parent: ClothingUniformTSFMC
+  id: WGRMCUniformMP
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_mp/jungle.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_mp/jungle.rsi
+  - type: WGCamoPattern
+    patterns:
+    - name: jungle
+      look: WGRMCLookUniformMPJungle
+    - name: desert
+      look: WGRMCLookUniformMPDesert
+    - name: snow
+      look: WGRMCLookUniformMPSnow
+    - name: urban
+      look: WGRMCLookUniformMPUrban
+    - name: classic
+      look: WGRMCLookUniformMPClassic
+
+- type: entity
+  parent: ClothingUniformTSFMC
+  id: WGRMCUniformMarsoc
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_marsoc.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_marsoc.rsi
+
+- type: entity
+  parent: ClothingUniformTSFMC
+  id: WGRMCUniformDressEnlisted
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_dress_enlisted.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_dress_enlisted.rsi
+
+- type: entity
+  parent: ClothingUniformTSFMC
+  id: WGRMCUniformDressSenior
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_dress_senior.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_dress_senior.rsi
+
+- type: entity
+  parent: ClothingUniformTSFMC
+  id: WGRMCUniformDressGeneral
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_dress_general.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_dress_general.rsi
+
+- type: entity
+  parent: ClothingUniformJumpsuitNfsdTacCream
+  id: WGRMCUniformPDVArmy
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvarmy.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvarmy.rsi
+
+- type: entity
+  parent: ClothingUniformJumpsuitNfsdTacCream
+  id: WGRMCUniformPDV
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdv.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdv.rsi
+
+- type: entity
+  parent: ClothingUniformJumpsuitNfsdTacCream
+  id: WGRMCUniformPDVEngineer
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvengineer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvengineer.rsi
+
+- type: entity
+  parent: ClothingUniformJumpsuitNfsdTacCream
+  id: WGRMCUniformPDVMedic
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvmedic.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvmedic.rsi
+
+- type: entity
+  parent: ClothingUniformJumpsuitNfsdTacCream
+  id: WGRMCUniformPDVMP
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvmp.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvmp.rsi
+
+- type: entity
+  parent: ClothingUniformJumpsuitNfsdTacCream
+  id: WGRMCUniformPDVOfficer
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvofficer.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvofficer.rsi
+
+- type: entity
+  parent: ClothingUniformJumpsuitNfsdTacCream
+  id: WGRMCUniformPDVOfficerShirt
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvofficer_shirt.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvofficer_shirt.rsi
+
+- type: entity
+  parent: ClothingUniformJumpsuitNfsdTacCream
+  id: WGRMCUniformPDVSOF
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvsof.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvsof.rsi
+
+- type: entity
+  parent: ClothingUniformJumpsuitNfsdTacCream
+  id: WGRMCUniformPDVGuard
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvguard.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_pdvguard.rsi
+
+- type: entity
+  parent: ClothingUniformJumpsuitNfsdTacCream
+  id: WGRMCUniformMilitia
+  components:
+  - type: Sprite
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_militia.rsi
+    state: icon
+  - type: Clothing
+    sprite: _WG/RMCClothing/Clothing/Uniforms/uniform_militia.rsi

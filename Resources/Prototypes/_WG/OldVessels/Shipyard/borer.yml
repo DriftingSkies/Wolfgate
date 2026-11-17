@@ -1,0 +1,43 @@
+# Classic ship: removed upstream by Monolith#4624 (Wolfgate #51) and kept by Wolfgate.
+# Author Info
+# GitHub: Rubeebeebee
+# Discord: rubeebee
+
+# Shuttle Notes:
+#
+- type: vessel
+  id: Borer
+  parent: BaseVessel
+  name: SHS-DIS Borer
+  description: designed by SHM and produced in cooperation with DI, the borer is a cost effective ship for salvaging and derilect scrapping.
+  price: 37419
+  category: Small
+  group: Shipyard
+  shuttlePath: /SharedMaps/_WG/OldVessels/borer.yml
+  tags:
+  - WGClassicVessel
+  guidebookPage: Null
+  class:
+  - Salvage
+  engine:
+  - Plasma
+
+- type: gameMap
+  id: Borer
+  mapName: 'SHS-DIS Borer'
+  mapPath: /SharedMaps/_WG/OldVessels/borer.yml
+  minPlayers: 0
+  stations:
+    Borer:
+      stationProto: StandardFrontierVessel
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Borer CIV{1}'
+          nameGenerator:
+            !type:NanotrasenNameGenerator
+            prefixCreator: '14'
+        - type: StationJobs
+          availableJobs:
+            Contractor: [ 0, 0 ]
+            # Pilot: [ 0, 0 ]
+            # Mercenary: [ 0, 0 ]

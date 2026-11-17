@@ -1,5 +1,5 @@
 using System.Numerics;
-using Content.Shared._WF.ShipShields; // WOLFGATE(ShipShields)
+using Content.Shared._WG.ShipShields; // WOLFGATE(ShipShields)
 using Content.Shared.Physics;
 using Content.Shared.Weapons.Hitscan.Components;
 using Content.Shared.Weapons.Hitscan.Events;
@@ -52,7 +52,7 @@ public sealed partial class HitscanDiffractSystem : EntitySystem
             return;  // Let the original hitscan continue through glass
 
         // WOLFGATE(ShipShields) START: an intervening shield stops beams before they can split behind it
-        var shieldTrace = new WFShipShieldHitscanTraceEvent(hitscan.Owner, new HitscanRaycastFiredEvent
+        var shieldTrace = new WGShipShieldHitscanTraceEvent(hitscan.Owner, new HitscanRaycastFiredEvent
         {
             FromCoordinates = args.FromCoordinates,
             ShotDirection = args.ShotDirection,

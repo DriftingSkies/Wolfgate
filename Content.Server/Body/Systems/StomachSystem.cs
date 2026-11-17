@@ -1,5 +1,5 @@
 using Content.Server.Body.Components;
-using Content.Server._WF.Wolfmed.Medical; // WOLFGATE(Wolfmed)
+using Content.Server._WG.Wolfmed.Medical; // WOLFGATE(Wolfmed)
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Body.Organ;
 using Content.Shared.Chemistry.Components;
@@ -13,10 +13,10 @@ namespace Content.Server.Body.Systems
     public sealed partial class StomachSystem : EntitySystem
     {
         [Dependency] private IGameTiming _gameTiming = default!;
-        [Dependency] private Content.Server._WF.Dormancy.WFDormancySystem _wfDormancy = default!; // WOLFGATE(Dormancy): skips NPC bodies nobody is near
+        [Dependency] private Content.Server._WG.Dormancy.WGDormancySystem _wgDormancy = default!; // WOLFGATE(Dormancy): skips NPC bodies nobody is near
         [Dependency] private SharedSolutionContainerSystem _solutionContainerSystem = default!;
-        [Dependency] private Robust.Shared.Random.IRobustRandom _wfRandom = default!; // WOLFGATE(Wolfmed): spreads first updates
-        [Dependency] private Content.Server._WF.Wolfmed.Medical.WolfmedOralAbsorptionSystem _wolfmedAbsorption = default!; // WOLFGATE(Wolfmed): playtest 1
+        [Dependency] private Robust.Shared.Random.IRobustRandom _wgRandom = default!; // WOLFGATE(Wolfmed): spreads first updates
+        [Dependency] private Content.Server._WG.Wolfmed.Medical.WolfmedOralAbsorptionSystem _wolfmedAbsorption = default!; // WOLFGATE(Wolfmed): playtest 1
 
         public const string DefaultSolutionName = "stomach";
 
@@ -40,7 +40,7 @@ namespace Content.Server.Body.Systems
         {
             // WOLFGATE(Wolfmed): a random first update spreads stomachs spawned together over the interval.
             // ent.Comp.NextUpdate = _gameTiming.CurTime + ent.Comp.UpdateInterval;
-            ent.Comp.NextUpdate = _gameTiming.CurTime + ent.Comp.UpdateInterval * _wfRandom.NextDouble();
+            ent.Comp.NextUpdate = _gameTiming.CurTime + ent.Comp.UpdateInterval * _wgRandom.NextDouble();
         }
 
         private void OnUnpaused(Entity<StomachComponent> ent, ref EntityUnpausedEvent args)
@@ -57,7 +57,7 @@ namespace Content.Server.Body.Systems
                     continue;
 
                 stomach.NextUpdate += stomach.UpdateInterval;
-                if (_wfDormancy.BodySleeps(uid)) continue; // WOLFGATE(Dormancy): an NPC body no player is near on a planet skips its upkeep
+                if (_wgDormancy.BodySleeps(uid)) continue; // WOLFGATE(Dormancy): an NPC body no player is near on a planet skips its upkeep
 
                 // Get our solutions
                 if (!_solutionContainerSystem.ResolveSolution((uid, sol), DefaultSolutionName, ref stomach.Solution, out var stomachSolution))
@@ -85,11 +85,11 @@ namespace Content.Server.Body.Systems
                             if (reagent.Quantity > delta.ReagentQuantity.Quantity)
                                 reagent = new(reagent.Reagent, delta.ReagentQuantity.Quantity);
 
-                            var wfGrade = stomachSolution.GetPurity(reagent.Reagent.Prototype); // WOLFGATE(WolfChem): read before the removal prunes it
+                            var wgGrade = stomachSolution.GetPurity(reagent.Reagent.Prototype); // WOLFGATE(WolfChem): read before the removal prunes it
                             stomachSolution.RemoveReagent(reagent);
                             // WOLFGATE(WolfChem) START: a digested reagent keeps its grade
                             // transferSolution.AddReagent(reagent);
-                            transferSolution.AddReagent(reagent.Reagent, reagent.Quantity, wfGrade);
+                            transferSolution.AddReagent(reagent.Reagent, reagent.Quantity, wgGrade);
                             // WOLFGATE END
                         }
 

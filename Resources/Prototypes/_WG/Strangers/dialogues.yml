@@ -1,0 +1,255 @@
+# What the strangers say (strangers.yml). A node's line is spoken aloud; an option with a cost takes cash in hand, else
+# the bank, and goes to `broke` when the player can't pay; a node with no options ends the talk.
+# Only a provocation (an insult, a threat, refusing a mugger once he has made his) turns a stranger hostile. A polite
+# no, being broke or ignoring a hail ends the talk with a grumble at most.
+
+- type: wgStrangerDialogue
+  id: WGStrangerDialogueDealer
+  hail: wg-stranger-dealer-hail
+  start: pitch
+  ignored: shrug
+  nodes:
+    pitch:
+      line: wg-stranger-dealer-pitch
+      options:
+      - text: wg-stranger-dealer-ask
+        next: menu
+      - text: wg-stranger-dealer-no
+        next: shrug
+      - text: wg-stranger-dealer-threaten
+        next: snubbed
+    menu:
+      line: wg-stranger-dealer-menu
+      options:
+      - text: wg-stranger-dealer-buy
+        cost: 200
+        items: [ CigaretteSpaceDrugs, JointRainbow, BluntRainbow ]
+        next: sold
+        broke: broke
+      - text: wg-stranger-dealer-buy-hard
+        cost: 7000
+        items: [ WGBaggieCocaineCut, WGBaggieHeroinCut, WGCrackRockCut, WGCrystalShardCut ]
+        next: sold
+        broke: broke
+      - text: wg-stranger-dealer-buy-stick
+        next: sticks
+      - text: wg-stranger-dealer-buy-seeds
+        cost: 300
+        items: [ WGCocaSeeds, WGOpiumPoppySeeds ]
+        next: sold
+        broke: broke
+      - text: wg-stranger-dealer-buy-tester
+        cost: 150
+        items: [ WGPurityTester ]
+        next: sold
+        broke: broke
+      - text: wg-stranger-dealer-pass
+        next: shrug
+    sticks:
+      line: wg-stranger-dealer-sticks
+      options:
+      - text: wg-stranger-dealer-stick-whiteline
+        cost: 1350
+        items: [ WGNeurowareStickWhitelineCopy ]
+        next: sold
+        broke: broke
+      - text: wg-stranger-dealer-stick-null-loop
+        cost: 1350
+        items: [ WGNeurowareStickNullLoopCopy ]
+        next: sold
+        broke: broke
+      - text: wg-stranger-dealer-stick-burst
+        cost: 1350
+        items: [ WGNeurowareStickBurstCopy ]
+        next: sold
+        broke: broke
+      - text: wg-stranger-dealer-stick-idle
+        cost: 1350
+        items: [ WGNeurowareStickIdleCopy ]
+        next: sold
+        broke: broke
+      - text: wg-stranger-dealer-pass
+        next: shrug
+    sold:
+      line: wg-stranger-dealer-sold
+      action: Leave
+    broke:
+      line: wg-stranger-dealer-broke
+      action: Leave
+    shrug:
+      line: wg-stranger-dealer-shrug
+      action: Leave
+    snubbed:
+      line: wg-stranger-dealer-snubbed
+      action: Hostile
+
+- type: wgStrangerDialogue
+  id: WGStrangerDialogueMugger
+  hail: wg-stranger-mugger-hail
+  start: demand
+  ignored: waved
+  nodes:
+    demand:
+      line: wg-stranger-mugger-demand
+      options:
+      - text: wg-stranger-mugger-pay
+        cost: 150
+        next: paid
+        broke: refused
+      - text: wg-stranger-mugger-refuse
+        next: refused
+      - text: wg-stranger-mugger-bluff
+        next: bluffed
+    paid:
+      line: wg-stranger-mugger-paid
+      action: Leave
+    bluffed:
+      line: wg-stranger-mugger-bluffed
+      options:
+      - text: wg-stranger-mugger-pay
+        cost: 150
+        next: paid
+        broke: refused
+      - text: wg-stranger-mugger-refuse
+        next: refused
+    refused:
+      line: wg-stranger-mugger-refused
+      action: Hostile
+    waved:
+      line: wg-stranger-mugger-waved
+      action: Leave
+
+- type: wgStrangerDialogue
+  id: WGStrangerDialoguePreacher
+  hail: wg-stranger-preacher-hail
+  start: sermon
+  nodes:
+    sermon:
+      line: wg-stranger-preacher-sermon
+      options:
+      - text: wg-stranger-preacher-more
+        next: prophecy
+      - text: wg-stranger-preacher-mock
+        next: cursed
+      - text: wg-stranger-preacher-threaten
+        next: wrath
+    prophecy:
+      line: wg-stranger-preacher-prophecy
+      options:
+      - text: wg-stranger-preacher-donate
+        cost: 50
+        items: [ Bible ]
+        next: blessed
+        broke: pity
+      - text: wg-stranger-preacher-leave
+        next: cursed
+    blessed:
+      line: wg-stranger-preacher-blessed
+      action: Leave
+    pity:
+      line: wg-stranger-preacher-pity
+      action: Leave
+    cursed:
+      line: wg-stranger-preacher-cursed
+      action: Leave
+    wrath:
+      line: wg-stranger-preacher-wrath
+      action: Hostile
+
+- type: wgStrangerDialogue
+  id: WGStrangerDialogueConspiracist
+  hail: wg-stranger-conspiracist-hail
+  start: warning
+  nodes:
+    warning:
+      line: wg-stranger-conspiracist-warning
+      options:
+      - text: wg-stranger-conspiracist-who
+        next: theory
+      - text: wg-stranger-conspiracist-help
+        next: offended
+      - text: wg-stranger-conspiracist-insult
+        next: snapped
+    theory:
+      line: wg-stranger-conspiracist-theory
+      options:
+      - text: wg-stranger-conspiracist-believe
+        items: [ ClothingHeadTinfoil ]
+        next: gift
+      - text: wg-stranger-conspiracist-doubt
+        next: offended
+      - text: wg-stranger-conspiracist-accuse
+        next: snapped
+    gift:
+      line: wg-stranger-conspiracist-gift
+      action: Leave
+    offended:
+      line: wg-stranger-conspiracist-offended
+      action: Leave
+    snapped:
+      line: wg-stranger-conspiracist-snapped
+      action: Hostile
+
+- type: wgStrangerDialogue
+  id: WGStrangerDialogueBeggar
+  hail: wg-stranger-beggar-hail
+  start: plea
+  nodes:
+    plea:
+      line: wg-stranger-beggar-plea
+      options:
+      - text: wg-stranger-beggar-give
+        cost: 20
+        items: [ FlashlightLantern, Crowbar, FoodSnackChips ]
+        next: thanks
+        broke: sorry
+      - text: wg-stranger-beggar-refuse
+        next: sad
+      - text: wg-stranger-beggar-mock
+        next: spite
+    thanks:
+      line: wg-stranger-beggar-thanks
+      action: Leave
+    sorry:
+      line: wg-stranger-beggar-sorry
+      action: Leave
+    sad:
+      line: wg-stranger-beggar-sad
+      action: Leave
+    spite:
+      line: wg-stranger-beggar-spite
+      action: Hostile
+
+# The stalker never starts a conversation; this is what he says when someone confronts him.
+- type: wgStrangerDialogue
+  id: WGStrangerDialogueStalker
+  start: caught
+  nodes:
+    caught:
+      line: wg-stranger-stalker-caught
+      options:
+      - text: wg-stranger-stalker-who
+        next: nobody
+      - text: wg-stranger-stalker-leave
+        next: okay
+      - text: wg-stranger-stalker-threaten
+        next: unmasked
+    nobody:
+      line: wg-stranger-stalker-nobody
+      options:
+      - text: wg-stranger-stalker-leave
+        next: okay
+    okay:
+      line: wg-stranger-stalker-okay
+    unmasked:
+      line: wg-stranger-stalker-unmasked
+      action: Hostile
+
+# The squatter attacks on sight; this is all he has to say to anyone who gets a word in first.
+- type: wgStrangerDialogue
+  id: WGStrangerDialogueSquatter
+  start: mine
+  nodes:
+    mine:
+      line: wg-stranger-squatter-mine
+      action: Hostile

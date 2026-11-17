@@ -117,8 +117,8 @@ public sealed partial class ContentAudioSystem
         if (!_timing.IsFirstTimePredicted) //otherwise this will tick like 5x faster on client. thanks prediction
             return;
 
-        WfUpdatePlanetMusic(); // WOLFGATE(Planets): planet soundscapes replace ordinary ambient music.
-        WfUpdateCombatPlaylist(); // WOLFGATE(CombatMusic): the next combat track once one ends
+        WgUpdatePlanetMusic(); // WOLFGATE(Planets): planet soundscapes replace ordinary ambient music.
+        WgUpdateCombatPlaylist(); // WOLFGATE(CombatMusic): the next combat track once one ends
 
         if (_initialStationMusicBool)
         {
@@ -316,7 +316,7 @@ public sealed partial class ContentAudioSystem
                 _currentlyPlaying = MusicType.Combat;
 
                 // WOLFGATE(CombatMusic) START: the character's playlist, else the faction's tracks shuffled
-                WfPlayCombatTrack();
+                WgPlayCombatTrack();
                 // SoundCollectionPrototype soundcol = _proto.Index<SoundCollectionPrototype>(_musicProto.ID);
                 // string path = _random.Pick(soundcol.PickFiles).ToString();
                 // PlayMusicTrack(path, _musicProto.Sound.Params.Volume, _combatMusicFadeInTime, true);
@@ -427,7 +427,7 @@ public sealed partial class ContentAudioSystem
     private void PlayMusicTrack(string path, float volume, float fadein, bool combatMode)
     {
         // WOLFGATE(Planets) START: no ordinary ambient music on a planet, whether a biome, grid, timer or combat-exit request asked.
-        if (!combatMode && WfOnPlanet())
+        if (!combatMode && WgOnPlanet())
         {
             DisableAmbientMusic();
             _isCombatMusicPlaying = false;

@@ -1,0 +1,44 @@
+# The heavy vehicle licence: made out to whoever buys it at the station counter, or to the faction crew who start
+# with one. Carrying one lets the holder buy military chassis and weapon hardpoints. Names are in
+# military_vehicles.ftl.
+
+- type: entity
+  parent: BaseItem
+  id: WGHeavyVehicleLicence
+  components:
+  - type: Item
+    size: Tiny
+  - type: Sprite
+    sprite: Objects/Misc/id_cards.rsi
+    layers:
+    - state: gold
+  - type: WGHeavyVehicleLicence
+  - type: StaticPrice
+    price: 0
+
+# Faction crew who start the shift licensed: the NFSD, the TSF and the PDV's fighting and command jobs.
+- type: wgLicenceIssue
+  id: WGLicenceIssueFactions
+  licence: WGHeavyVehicleLicence
+  jobs:
+  # NFSD
+  - Sheriff
+  - SeniorOfficer
+  - Deputy
+  - Cadet
+  - Bailiff
+  - Brigmedic
+  - NFDetective
+  - PublicAffairsLiaison
+  # TSF
+  - TsfMarsoc
+  - TsfEngineer
+  - TsfInfantry
+  # PDV
+  - PDVPrince
+  - PDVAmbassador
+  - PDVTarkhan
+  - PdvInfantry
+  - PDVDenasvar
+  - WGPdvJarrah
+  - WGPdvArtificer

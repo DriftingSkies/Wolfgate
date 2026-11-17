@@ -8,27 +8,27 @@ public sealed partial class DeleteNearbyDronesSystem : EntitySystem
 {
     [Dependency] private LinkedLifecycleGridSystem _lifecycleGridSystem = default!;
     [Dependency] private TransformSystem _xform = default!;
-    private float _wfTimer; // WOLFGATE(Performance): throttle for Update
-    private readonly List<(EntityUid Uid, Robust.Shared.Map.MapId Map, System.Numerics.Vector2 Pos)> _wfDrones = new(); // WOLFGATE(Performance): drones read once per pass
+    private float _wgTimer; // WOLFGATE(Performance): throttle for Update
+    private readonly List<(EntityUid Uid, Robust.Shared.Map.MapId Map, System.Numerics.Vector2 Pos)> _wgDrones = new(); // WOLFGATE(Performance): drones read once per pass
 
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
 
         // WOLFGATE(Performance) START: throttled to 2 Hz, drones read once per pass, and only drones on the grid's own map count
-        _wfTimer += frameTime;
-        if (_wfTimer < 0.5f)
+        _wgTimer += frameTime;
+        if (_wgTimer < 0.5f)
             return;
-        _wfTimer = 0f;
+        _wgTimer = 0f;
 
-        _wfDrones.Clear();
+        _wgDrones.Clear();
         var droneScan = EntityQueryEnumerator<HostileDroneGridComponent, TransformComponent>();
         while (droneScan.MoveNext(out var droneUid, out _, out var droneXform))
         {
-            _wfDrones.Add((droneUid, droneXform.MapID, _xform.GetWorldPosition(droneXform)));
+            _wgDrones.Add((droneUid, droneXform.MapID, _xform.GetWorldPosition(droneXform)));
         }
 
-        if (_wfDrones.Count == 0)
+        if (_wgDrones.Count == 0)
             return;
 
         var gridQuery = EntityQueryEnumerator<DeleteNearbyDronesComponent, TransformComponent>();
@@ -36,7 +36,7 @@ public sealed partial class DeleteNearbyDronesSystem : EntitySystem
         {
             var gridPos = _xform.GetWorldPosition(gridXform);
             var limit = delComp.Distance * delComp.Distance;
-            foreach (var (droneUid, droneMap, dronePos) in _wfDrones)
+            foreach (var (droneUid, droneMap, dronePos) in _wgDrones)
             {
                 if (droneMap != gridXform.MapID || (gridPos - dronePos).LengthSquared() > limit)
                     continue;

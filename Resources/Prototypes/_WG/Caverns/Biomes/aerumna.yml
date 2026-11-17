@@ -1,0 +1,281 @@
+# Aerumna: the Umbral Deeps. Tight chromite crawls open into bedrock galleries, lit only by faint shadow blooms. Three big
+# halls lie in the dark: shadow groves of blue-black floor under dark wood, geode chambers of grey rock studded with pink
+# crystal, and, deepest of all, the xenonids' nest of brown hive floor, wild weeds, resin walls and eggs.
+# Layers run last to first and the first match wins. Walls only stand on chromite, so any other floor is open ground.
+
+- type: biomeTemplate
+  id: WGCavernBiomeAerumna
+  layers:
+  # Substrate and crawl floor.
+  - !type:BiomeTileLayer
+    tile: WGCavernFloorChromite
+    threshold: -1
+  # Shadow blooms along the crawls, lowest priority: dim, but close enough to find your way from one to the next.
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorChromite]
+    entities: [WGCavernShadowBloom]
+    threshold: 0.91
+    noise: { seed: 32, noiseType: OpenSimplex2, frequency: 1 }
+  # The crawls' own wildlife, sparse.
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorChromite]
+    entities: [WGCavernFaunaAerumna]
+    threshold: 0.985
+    noise: { seed: 38, noiseType: OpenSimplex2, frequency: 3 }
+  # Caps and lichen in the stretches where the rock is damp.
+  - !type:BiomeMetaLayer
+    template: WGCavernCrawlsAerumna
+    threshold: 0
+    noise: { seed: 511, noiseType: OpenSimplex2, fractalType: FBm, octaves: 2, frequency: 0.007 }
+  # Rock wherever ridged noise is at most the crawl threshold; the crawls are the ridges.
+  - !type:BiomeMetaLayer
+    template: WGCavernRockAerumna
+    invert: true
+    threshold: -0.58
+    noise: { seed: 7, noiseType: OpenSimplex2, fractalType: Ridged, octaves: 1, frequency: 0.05 }
+  # Bedrock galleries on the web.
+  - !type:BiomeMetaLayer
+    template: WGCavernChamberAerumna
+    threshold: 0.56
+    noise: { seed: 101, noiseType: OpenSimplex2, fractalType: FBm, octaves: 2, frequency: 0.012 }
+  # Shadow groves, then geode chambers, then the nest, each priority over the last.
+  - !type:BiomeMetaLayer
+    template: WGCavernGroveAerumna
+    threshold: 0.58
+    noise: { seed: 521, noiseType: OpenSimplex2, fractalType: FBm, octaves: 2, frequency: 0.008 }
+  - !type:BiomeMetaLayer
+    template: WGCavernGeodeAerumna
+    threshold: 0.62
+    noise: { seed: 531, noiseType: OpenSimplex2, fractalType: FBm, octaves: 2, frequency: 0.008 }
+  - !type:BiomeMetaLayer
+    template: WGCavernNestAerumna
+    threshold: 0.70
+    noise: { seed: 541, noiseType: OpenSimplex2, fractalType: FBm, octaves: 2, frequency: 0.007 }
+  # Slime geode chambers (_WG/WildSlimes) under the surface's pink crystal patches, over everything: the fungal forest
+  # and patch noises, their seeds less the cavern's seed offset of 7933, at lower thresholds so each chamber is a little
+  # wider than its patch.
+  - !type:BiomeMetaLayer
+    template: WGCavernSlimeZoneAerumna
+    threshold: 0.42
+    noise: { seed: -7862, noiseType: OpenSimplex2, frequency: 0.009, fractalType: FBm, octaves: 2 }
+
+- type: biomeTemplate
+  id: WGCavernCrawlsAerumna
+  layers:
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorChromite]
+    entities: [WGCavernUmbralCapPlant]
+    threshold: 0.94
+    noise: { seed: 551, noiseType: OpenSimplex2, frequency: 1 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorChromite]
+    entities: [WGCavernPaleLichenPlant]
+    threshold: 0.94
+    noise: { seed: 552, noiseType: OpenSimplex2, frequency: 1 }
+  # Rare.
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorChromite]
+    entities: [WGCavernAcidSpitter]
+    threshold: 0.99
+    noise: { seed: 553, noiseType: OpenSimplex2, frequency: 1 }
+
+- type: biomeTemplate
+  id: WGCavernRockAerumna
+  layers:
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorChromite]
+    entities: [WallRockChromite]
+    threshold: -1
+  # Common.
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorChromite]
+    entities: [WallRockChromiteTin, WallRockChromitePlasma]
+    threshold: 0.7
+    noise: { seed: 201, noiseType: OpenSimplex2, frequency: 0.09 }
+  # Uncommon.
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorChromite]
+    entities: [WallRockChromiteQuartz, WallRockChromiteUranium]
+    threshold: 0.8
+    noise: { seed: 202, noiseType: OpenSimplex2, frequency: 0.09 }
+  # Rare.
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorChromite]
+    entities: [WallRockChromiteSilver, WallRockChromiteGold]
+    threshold: 0.88
+    noise: { seed: 203, noiseType: OpenSimplex2, frequency: 0.09 }
+  # Very rare: diamonds, bluespace and the only anomaly rock.
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorChromite]
+    entities: [WallRockChromiteDiamond, WallRockChromiteBluespace, WallRockChromiteArtifactAnomaly]
+    threshold: 0.95
+    noise: { seed: 204, noiseType: OpenSimplex2, frequency: 0.2 }
+
+# Bedrock galleries: bare dark floor, pale lichen on it and the odd umbral cap.
+- type: biomeTemplate
+  id: WGCavernChamberAerumna
+  layers:
+  - !type:BiomeTileLayer
+    tile: WGCavernFloorBedrock
+    threshold: -1
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorBedrock]
+    entities: [WGCavernFaunaAerumna]
+    threshold: 0.95
+    noise: { seed: 37, noiseType: OpenSimplex2, frequency: 3 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorBedrock]
+    entities: [WGCavernShadowBloom]
+    threshold: 0.97
+    noise: { seed: 317, noiseType: OpenSimplex2, frequency: 1 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorBedrock]
+    entities: [WGCavernPaleLichenPlant]
+    threshold: 0.92
+    noise: { seed: 561, noiseType: OpenSimplex2, frequency: 1 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorBedrock]
+    entities: [WGCavernUmbralCapPlant]
+    threshold: 0.95
+    noise: { seed: 562, noiseType: OpenSimplex2, frequency: 1 }
+
+# Shadow groves: blue-black floor under dark wood, with blooms gathering beneath the trees.
+- type: biomeTemplate
+  id: WGCavernGroveAerumna
+  layers:
+  - !type:BiomeTileLayer
+    tile: WGCavernFloorUmbralShroud
+    threshold: -1
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorUmbralShroud]
+    entities: [ShadowTree, ShadowBasaltOne, ShadowBasaltTwo]
+    threshold: 0.5
+    noise: { seed: 309, noiseType: OpenSimplex2, frequency: 2 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorUmbralShroud]
+    entities: [WGCavernShadowBloom]
+    threshold: 0.93
+    noise: { seed: 321, noiseType: OpenSimplex2, frequency: 1 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorUmbralShroud]
+    entities: [WGCavernFaunaAerumnaGrove]
+    threshold: 0.95
+    noise: { seed: 571, noiseType: OpenSimplex2, frequency: 3 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorUmbralShroud]
+    entities: [WGCavernUmbralCapPlant]
+    threshold: 0.9
+    noise: { seed: 572, noiseType: OpenSimplex2, frequency: 1 }
+  # Rare.
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorUmbralShroud]
+    entities: [WGCavernAcidSpitter]
+    threshold: 0.99
+    noise: { seed: 573, noiseType: OpenSimplex2, frequency: 1 }
+
+# Geode chambers: grey rock with pink crystal in it, clusters to chip, geodes that burst and the odd radiant crystal.
+- type: biomeTemplate
+  id: WGCavernGeodeAerumna
+  layers:
+  - !type:BiomeTileLayer
+    tile: WGCavernFloorUmbralDusk
+    threshold: -1
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorUmbralDusk]
+    entities: [CrystalPink]
+    threshold: 0.88
+    noise: { seed: 310, noiseType: OpenSimplex2, frequency: 1 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorUmbralDusk]
+    entities: [WGCavernGeodeCluster]
+    threshold: 0.9
+    noise: { seed: 581, noiseType: OpenSimplex2, frequency: 1 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorUmbralDusk]
+    entities: [WGCavernFaunaAerumnaGeode]
+    threshold: 0.955
+    noise: { seed: 582, noiseType: OpenSimplex2, frequency: 3 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorUmbralDusk]
+    entities: [WGCavernPaleLichenPlant]
+    threshold: 0.94
+    noise: { seed: 583, noiseType: OpenSimplex2, frequency: 1 }
+  # Rare.
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorUmbralDusk]
+    entities: [WGCavernGeodeBloom]
+    threshold: 0.982
+    noise: { seed: 584, noiseType: OpenSimplex2, frequency: 1 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorUmbralDusk]
+    entities: [WGCavernRadiantCrystal]
+    threshold: 0.99
+    noise: { seed: 585, noiseType: OpenSimplex2, frequency: 1 }
+
+# The deep nest: dark crust under wild weeds, with small resin chambers, resin doors and eggs in them. Everything it
+# lays stands on the nest floor only; the weeds never spread and the eggs lie dormant until walked up to.
+- type: biomeTemplate
+  id: WGCavernNestAerumna
+  layers:
+  - !type:BiomeTileLayer
+    tile: WGCavernFloorNest
+    threshold: -1
+  # Wild weeds over most of the ground, thinning out in patches.
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorNest]
+    entities: [WGXenoWeedsWild]
+    threshold: -0.55
+    noise: { seed: 120, noiseType: OpenSimplex2, frequency: 0.6 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorNest]
+    entities: [WGCavernFaunaAerumnaNest]
+    threshold: 0.93
+    noise: { seed: 121, noiseType: OpenSimplex2, frequency: 3 }
+  # Small chambers: a ring of resin with gaps and doors round a floor of weeds and eggs.
+  - !type:BiomeMetaLayer
+    template: WGCavernNestChambersAerumna
+    threshold: 0.22
+    noise: { seed: 122, noiseType: OpenSimplex2, frequency: 0.08 }
+
+- type: biomeTemplate
+  id: WGCavernNestChambersAerumna
+  layers:
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorNest]
+    entities: [WallXenoResin]
+    threshold: -1
+    noise: { seed: 123, noiseType: OpenSimplex2, frequency: 1 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorNest]
+    entities: [DoorXenoResin]
+    threshold: 0.82
+    noise: { seed: 124, noiseType: OpenSimplex2, frequency: 0.5 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorNest]
+    entities: [WGXenoWeedsWild]
+    threshold: 0.82
+    noise: { seed: 125, noiseType: OpenSimplex2, frequency: 0.5 }
+  - !type:BiomeMetaLayer
+    template: WGCavernNestInteriorAerumna
+    threshold: 0.5
+    noise: { seed: 122, noiseType: OpenSimplex2, frequency: 0.08 }
+
+- type: biomeTemplate
+  id: WGCavernNestInteriorAerumna
+  layers:
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorNest]
+    entities: [WGXenoWeedsWild]
+    threshold: -1
+    noise: { seed: 126, noiseType: OpenSimplex2, frequency: 1 }
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorNest]
+    entities: [WGCavernFaunaAerumnaNest]
+    threshold: 0.8
+    noise: { seed: 127, noiseType: OpenSimplex2, frequency: 2 }
+  # Egg clusters, one to three eggs together.
+  - !type:BiomeEntityLayer
+    allowedTiles: [WGCavernFloorNest]
+    entities: [WGXenoEggWild]
+    threshold: 0.84
+    noise: { seed: 128, noiseType: OpenSimplex2, frequency: 0.8 }

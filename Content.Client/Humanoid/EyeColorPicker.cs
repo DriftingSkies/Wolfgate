@@ -1,6 +1,6 @@
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
-using Content.Client._WF.UserInterface.Controls; // WOLFGATE(UserInterface)
+using Content.Client._WG.UserInterface.Controls; // WOLFGATE(UserInterface)
 
 namespace Content.Client.Humanoid;
 

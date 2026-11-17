@@ -1,0 +1,7 @@
+- type: radioChannel
+  id: WGCrew
+  name: wg-round-setup-radio
+  keycode: 'k'
+  frequency: 1499
+  color: "#70DCC8"
+  longRange: true

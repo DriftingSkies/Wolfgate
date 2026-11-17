@@ -1,0 +1,320 @@
+# Sevastopol: data couriers, hardware, lost cores.
+
+- type: wgContract
+  id: WGContractSevDataCourier
+  contractor: WGContractorSevastopol
+  category: Delivery
+  tier: 1
+  title: wg-contract-sev-data-courier
+  briefing: wg-contract-sev-data-courier-brief
+  reward: 5500, 7500
+  minutes: 40
+  weight: 2.5
+  objective: !type:WGContractCourier
+    package: WGContractDataCase
+    count: 1, 2
+    from: Contractor
+    to: Other
+    perPackage: 750
+    perKilometre: 1250
+
+- type: wgContract
+  id: WGContractSevDataInbound
+  contractor: WGContractorSevastopol
+  category: Delivery
+  tier: 1
+  title: wg-contract-sev-data-inbound
+  briefing: wg-contract-sev-data-inbound-brief
+  reward: 5000, 7000
+  minutes: 40
+  weight: 2
+  objective: !type:WGContractCourier
+    package: WGContractDataCase
+    count: 1, 3
+    from: Board
+    to: Contractor
+    perPackage: 750
+    perKilometre: 1250
+
+- type: wgContract
+  id: WGContractSevSecureTransfer
+  contractor: WGContractorSevastopol
+  category: Delivery
+  tier: 3
+  title: wg-contract-sev-secure-transfer
+  briefing: wg-contract-sev-secure-transfer-brief
+  reward: 15000, 20000
+  deposit: 3000
+  minutes: 35
+  weight: 1
+  objective: !type:WGContractCourier
+    package: WGContractDataCase
+    count: 3, 5
+    from: Contractor
+    to: Other
+    perPackage: 1500
+    perKilometre: 1750
+
+- type: wgContract
+  id: WGContractSevServerRacks
+  contractor: WGContractorSevastopol
+  category: Hauling
+  tier: 2
+  title: wg-contract-sev-server-racks
+  briefing: wg-contract-sev-server-racks-brief
+  reward: 13750, 17500
+  deposit: 2000
+  minutes: 50
+  weight: 2.4
+  objective: !type:WGContractCourier
+    package: WGContractFreightComponents
+    count: 2, 3
+    from: Board
+    to: Contractor
+    perPackage: 2500
+    perKilometre: 1625
+
+- type: wgContract
+  id: WGContractSevHardware
+  contractor: WGContractorSevastopol
+  category: Supply
+  tier: 2
+  title: wg-contract-sev-hardware
+  briefing: wg-contract-sev-hardware-brief
+  reward: 19700, 26250
+  deposit: 1000
+  minutes: 50
+  weight: 3
+  objective: !type:WGContractSupply
+    pick: 2
+    premium: 1.5
+    goods:
+    - entity: PowerCellHigh
+      count: 4, 8
+    - stack: CableHV
+      count: 30, 60
+    - stack: Glass
+      count: 40, 60
+    - stack: Plastic
+      count: 30, 50
+    - stack: Gold
+      count: 5, 10
+
+- type: wgContract
+  id: WGContractSevCoreRecovery
+  contractor: WGContractorSevastopol
+  category: Salvage
+  tier: 2
+  title: wg-contract-sev-core-recovery
+  briefing: wg-contract-sev-core-recovery-brief
+  reward: 17500, 23750
+  deposit: 1000
+  minutes: 50
+  crewBonus: 0.25
+  weight: 1.2
+  objective: !type:WGContractRecovery
+    item: WGContractDataCore
+    minDistance: 3500
+    maxDistance: 5500
+    wrecks:
+    - /Maps/Salvage/small-ai-survey-drone.yml
+    - /Maps/Salvage/medium-ruined-emergency-shuttle.yml
+    - /Maps/Salvage/small-a-1.yml
+    - /Maps/Salvage/engineering-chunk.yml
+
+- type: wgContract
+  id: WGContractSevDataThief
+  contractor: WGContractorSevastopol
+  category: Bounty
+  tier: 2
+  title: wg-contract-sev-data-thief
+  briefing: wg-contract-sev-data-thief-brief
+  reward: 30000, 37500
+  deposit: 2000
+  minutes: 50
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WGContractBounty
+    encounters: [ WGContractTargetDataThief ]
+    minDistance: 3500
+    maxDistance: 5500
+
+- type: wgContract
+  id: WGContractSevSignalSurvey
+  contractor: WGContractorSevastopol
+  category: Science
+  tier: 2
+  title: wg-contract-sev-signal-survey
+  briefing: wg-contract-sev-signal-survey-brief
+  reward: 15000, 20000
+  deposit: 1000
+  minutes: 55
+  crewBonus: 0.25
+  weight: 1
+  objective: !type:WGContractSurvey
+    count: 1, 2
+    perAnomaly: 3500
+    minDistance: 3000
+    maxDistance: 5000
+    anomalies: [ AnomalyElectricity, AnomalyBluespace, AnomalyGravity ]
+    infestation:
+    - entity: MobCarpSalvage
+      count: 2, 4
+    wrecks:
+    - /Maps/Salvage/small-ai-survey-drone.yml
+    - /Maps/Salvage/small-tesla.yml
+    - /Maps/Salvage/engineering-chunk.yml
+
+# Second batch.
+
+- type: wgContract
+  id: WGContractSevElectronics
+  contractor: WGContractorSevastopol
+  category: Supply
+  tier: 2
+  title: wg-contract-sev-electronics
+  briefing: wg-contract-sev-electronics-brief
+  reward: 21900, 28900
+  deposit: 1000
+  minutes: 55
+  weight: 2.4
+  objective: !type:WGContractSupply
+    premium: 1.25
+    goods:
+    - component: MachineBoard
+      name: wg-contract-goods-machine-boards
+      count: 6, 10
+      value: 150
+    - component: ComputerBoard
+      name: wg-contract-goods-computer-boards
+      count: 3, 5
+      value: 150
+
+# New objectives.
+
+- type: wgContract
+  id: WGContractSevArchivePull
+  contractor: WGContractorSevastopol
+  category: Salvage
+  tier: 2
+  title: wg-contract-sev-archive-pull
+  briefing: wg-contract-sev-archive-pull-brief
+  reward: 22000, 28000
+  deposit: 1500
+  minutes: 55
+  crewBonus: 0.3
+  weight: 1
+  objective: !type:WGContractDownload
+    duration: 180
+    waveInterval: 50
+    waves:
+    - entity: MobCarpSalvage
+      count: 1, 2
+    - entity: MobFleshClampSalvage
+      count: 0, 1
+    wrecks:
+    - /Maps/Salvage/small-ai-survey-drone.yml
+    - /Maps/Salvage/engineering-chunk.yml
+    - /Maps/Salvage/medium-library.yml
+
+- type: wgContract
+  id: WGContractSevDeepArchive
+  contractor: WGContractorSevastopol
+  category: Salvage
+  tier: 3
+  title: wg-contract-sev-deep-archive
+  briefing: wg-contract-sev-deep-archive-brief
+  reward: 45000, 55000
+  deposit: 3000
+  minutes: 65
+  minCrew: 2
+  crewBonus: 0.3
+  weight: 0.8
+  objective: !type:WGContractDownload
+    duration: 300
+    waveInterval: 45
+    waves:
+    - entity: MobXenoDrone
+      count: 1, 2
+    - entity: MobXenoRunner
+      count: 1, 2
+    - entity: MobXenoSpitter
+      count: 0, 1
+    minDistance: 4000
+    maxDistance: 6000
+    wrecks:
+    - /Maps/Salvage/medium-vault-1.yml
+    - /Maps/Salvage/security-chunk.yml
+    - /Maps/Salvage/tick-colony.yml
+
+- type: wgContract
+  id: WGContractSevDebrisCharting
+  contractor: WGContractorSevastopol
+  category: Science
+  tier: 2
+  title: wg-contract-sev-debris-charting
+  briefing: wg-contract-sev-debris-charting-brief
+  reward: 9000, 12000
+  minutes: 55
+  weight: 1
+  objective: !type:WGContractSweep
+    points: 4, 5
+    perPoint: 1750
+    minDistance: 3000
+    maxDistance: 6500
+
+# Fifth batch.
+
+- type: wgContract
+  id: WGContractSevBackupTapes
+  contractor: WGContractorSevastopol
+  category: Delivery
+  tier: 2
+  title: wg-contract-sev-backup-tapes
+  briefing: wg-contract-sev-backup-tapes-brief
+  reward: 9000, 12000
+  deposit: 1000
+  minutes: 65
+  weight: 1
+  objective: !type:WGContractMailRun
+    package: WGContractDataCase
+    stops: 3, 4
+    perStop: 2000
+    perKilometre: 1000
+
+- type: wgContract
+  id: WGContractSevRelayChain
+  contractor: WGContractorSevastopol
+  category: Delivery
+  tier: 1
+  title: wg-contract-sev-relay-chain
+  briefing: wg-contract-sev-relay-chain-brief
+  reward: 5500, 7500
+  minutes: 45
+  weight: 1.2
+  objective: !type:WGContractDeploy
+    buoy: WGContractRelayBuoy
+    points: 2, 3
+    perPoint: 1500
+    minDistance: 1500
+    maxDistance: 4000
+
+- type: wgContract
+  id: WGContractSevPlanetArchive
+  contractor: WGContractorSevastopol
+  category: Salvage
+  tier: 2
+  title: wg-contract-sev-planet-archive
+  briefing: wg-contract-sev-planet-archive-brief
+  reward: 26000, 32000
+  deposit: 1500
+  minutes: 75
+  weight: 1.1
+  crewBonus: 0.3
+  objective: !type:WGContractDownload
+    wrecks: []
+    duration: 180
+    waveInterval: 45
+    planet:
+      hostiles: 2, 4
+      waveHostiles: 2, 3

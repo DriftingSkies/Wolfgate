@@ -18,8 +18,8 @@
                         HorizontalAlignment="Right" />
                 <!-- WOLFGATE(Options): SS13 keybind preset button -->
                 <Button Name="Ss13DefaultsButton"
-                        Text="{Loc 'wf-options-binds-ss13'}"
-                        ToolTip="{Loc 'wf-options-binds-ss13-tooltip'}"
+                        Text="{Loc 'wg-options-binds-ss13'}"
+                        ToolTip="{Loc 'wg-options-binds-ss13-tooltip'}"
                         Margin="8 0 0 0" />
             </BoxContainer>
         </controls:StripeBack>

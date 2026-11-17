@@ -3,7 +3,7 @@ using Content.Shared.Tag;
 using Content.Shared.Tools;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
-using Content.Shared._WF.EngineCompat;
+using Content.Shared._WG.EngineCompat;
 
 namespace Content.Server.Mech.Components;
 

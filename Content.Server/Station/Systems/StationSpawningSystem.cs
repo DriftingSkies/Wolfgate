@@ -35,7 +35,7 @@ using System.Linq;
 using Content.Shared.NameIdentifier; // Frontier
 using Content.Server._EinsteinEngines.Silicon.IPC;
 using Content.Shared.Radio.Components; // Goobstation
-using Content.Server._WF.Biotype; // WOLFGATE(Biotype)
+using Content.Server._WG.Biotype; // WOLFGATE(Biotype)
 
 namespace Content.Server.Station.Systems;
 
@@ -59,7 +59,7 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
     [Dependency] private IDependencyCollection _dependencyCollection = default!; // Frontier
     [Dependency] private IServerPreferencesManager _preferences = default!; // Frontier
     [Dependency] private InternalEncryptionKeySpawner _internalEncryption = default!; // Goobstation
-    [Dependency] private WFBiotypeSystem _biotype = default!; // WOLFGATE(Biotype)
+    [Dependency] private WGBiotypeSystem _biotype = default!; // WOLFGATE(Biotype)
 
     [Dependency] private BankSystem _bank = default!; // Frontier
     [Dependency] private MonoCoinsManager _coins = default!; // Mono
@@ -233,7 +233,7 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
                     {
                         bankBalance -= int.Max(0, loadoutProto.Price); // Treat negatives as zero.
                         EquipStartingGear(entity.Value, loadoutProto, raiseEvent: false);
-                        ApplyWFGagsColors(entity.Value, loadoutProto, items); // WOLFGATE(Gags): the colours picked in the loadout window
+                        ApplyWGGagsColors(entity.Value, loadoutProto, items); // WOLFGATE(Gags): the colours picked in the loadout window
                         equippedItems.Add(loadoutProto.ID);
 
                         // Add support for IPC encryption keys from loadout headsets

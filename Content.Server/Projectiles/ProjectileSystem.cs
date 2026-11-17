@@ -66,19 +66,19 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
         _fixQuery = GetEntityQuery<FixturesComponent>();
         // Mono
         UpdatesBefore.Add(typeof(SharedPhysicsSystem));
-        WfInitializeSweep(); // WOLFGATE(Weapons): the sweep subscribes to the physics substep
+        WgInitializeSweep(); // WOLFGATE(Weapons): the sweep subscribes to the physics substep
     }
 
     public override DamageSpecifier? ProjectileCollide(Entity<ProjectileComponent, PhysicsComponent> projectile, EntityUid target, MapCoordinates? collisionCoordinates, bool predicted = false)
     {
         var (uid, component, ourBody) = projectile;
-        RemComp<Content.Server._WF.Weapons.Projectiles.WFSweepHoldComponent>(uid); // WOLFGATE(Weapons): the hit landed, so the sweep need not land it
+        RemComp<Content.Server._WG.Weapons.Projectiles.WGSweepHoldComponent>(uid); // WOLFGATE(Weapons): the hit landed, so the sweep need not land it
         // Check if projectile is already spent (server-specific check)
         if (component.ProjectileSpent)
             return null;
 
         // WOLFGATE(ShipShields) START: a deflector field slows a round and lets it fly on unspent
-        if (_wfShipShields.PassWolfgateDeflector(target, uid, component))
+        if (_wgShipShields.PassWolfgateDeflector(target, uid, component))
             return null;
         // WOLFGATE END
 
@@ -171,9 +171,9 @@ public sealed partial class ProjectileSystem : SharedProjectileSystem
         base.Update(frameTime);
 
         // WOLFGATE(Weapons) START: the sweep is ProjectileSystem.Sweep.cs, run on the first physics substep
-        if (WfSweepReplacesUpstream)
+        if (WgSweepReplacesUpstream)
         {
-            _wfSweepTime = frameTime;
+            _wgSweepTime = frameTime;
             return;
         }
         // WOLFGATE END

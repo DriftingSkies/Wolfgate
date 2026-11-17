@@ -1,0 +1,80 @@
+using Content.Server._WG.Dormancy;
+using Content.Server._WG.NpcCrew.Components;
+using Content.Server.Atmos.EntitySystems;
+using Content.Server.NPC.Components;
+using Content.Server.NPC.HTN;
+using Content.Shared._WG.CCVar;
+using Content.Shared._WG.NpcCrew;
+using Robust.Shared.Configuration;
+using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
+
+namespace Content.Server._WG.NpcCrew.Systems;
+
+/// <summary>
+/// Decides which crew must keep thinking with no player nearby. Flying, gunnery, radio, alerts and boarding
+/// detection run in their own systems, so a crewman at his station with nothing to react to can sleep.
+/// </summary>
+public sealed partial class WGCrewSleepSystem : EntitySystem
+{
+    [Dependency] private IConfigurationManager _config = default!;
+    [Dependency] private WGCrewSystem _crew = default!;
+    [Dependency] private WGCrewAlertSystem _alerts = default!;
+    [Dependency] private WGCrewSecuritySystem _security = default!;
+    [Dependency] private WGCrewWorkSystem _work = default!;
+    [Dependency] private WGCrewEvaSystem _eva = default!;
+    [Dependency] private AtmosphereSystem _atmos = default!;
+    [Dependency] private WGDormancySystem _dormancy = default!;
+    [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+
+    private bool _sleepIdle;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        Subs.CVar(_config, NpcCrewCVars.SleepIdle, value => _sleepIdle = value, true);
+    }
+
+    /// <summary>Whether this NPC is crew that has to stay awake whatever the distance to the nearest player.</summary>
+    public bool StaysAwake(EntityUid uid)
+    {
+        if (!TryComp<WGCrewComponent>(uid, out var crew) || !crew.KeepActive)
+            return false;
+        if (!_sleepIdle)
+            return true;
+
+        // A camp or wreck crew on planet ground no player is near has no one to work for.
+        if (!_dormancy.IsActive(uid))
+            return false;
+
+        // Still on the way to the helm or the gunnery console.
+        if (crew.Duty == WGCrewDuties.Pilot && TryComp<WGPilotDutyComponent>(uid, out var pilot) && !pilot.AtHelm
+            || crew.Duty == WGCrewDuties.Gunnery && TryComp<WGGunnerDutyComponent>(uid, out var gunner) && !gunner.AtConsole)
+            return true;
+
+        var xform = Transform(uid);
+        if (_crew.HomeGrid(uid, crew) is not { } home || xform.GridUid != home)
+            return true;
+
+        // Off the spot the HTN wants him at, he walks there before he rests. Pilots and gunners work from their console.
+        if (crew.Duty != WGCrewDuties.Pilot && crew.Duty != WGCrewDuties.Gunnery && TryComp<HTNComponent>(uid, out var htn)
+            && htn.Blackboard.TryGetValue<EntityCoordinates>(WGCrewSystem.PostKey, out var post, EntityManager)
+            && !TerminatingOrDeleted(post.EntityId) && !_transform.InRange(xform.Coordinates, post, crew.PostRange + 1f))
+            return true;
+
+        if (_alerts.IsAlerted(home, crew.Group) || _security.HasThreat(uid) || _work.HomeGrid(uid) != null)
+            return true;
+
+        if (TryComp<NPCRetaliationComponent>(uid, out var retaliation) && retaliation.AttackMemories.Count > 0)
+            return true;
+
+        // Bad air has to be walked out of, except by a crewman kitted out or immune to stand in it.
+        if (HasComp<WGCrewVoidKitComponent>(uid) || _eva.IsImmune(uid))
+            return false;
+        if (!TryComp<MapGridComponent>(home, out var grid))
+            return true;
+        var air = _atmos.GetTileMixture(home, xform.MapUid, _map.LocalToTile(home, grid, xform.Coordinates));
+        return air == null || !WGCrewPlannerSystem.IsBreathable(air, air.Pressure);
+    }
+}

@@ -6,7 +6,7 @@
   id: KitsuneTailDefault
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine]
   coloring:
     default:
       type: !type:CategoryColoring
@@ -21,20 +21,20 @@
     kitsune_primary_BEHIND: kitsune_primary_FRONT
     kitsune_secondary_BEHIND: kitsune_secondary_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
     state: kitsune_primary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
     state: kitsune_secondary_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: kitsune_primary_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: kitsune_secondary_BEHIND
 
 - type: marking
   id: KitsuneTailsNine
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine]
   coloring:
     default:
       type: !type:CategoryColoring
@@ -49,20 +49,20 @@
     foxninetailstone1_BEHIND: foxninetailstone1_FRONT
     foxninetailstone2_BEHIND: foxninetailstone2_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
     state: foxninetailstone1_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
     state: foxninetailstone2_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: foxninetailstone1_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: foxninetailstone2_BEHIND
 
 - type: marking
   id: KitsuneTailsThree
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine]
   coloring:
     default:
       type: !type:CategoryColoring
@@ -77,20 +77,20 @@
     foxthreetailstone1_BEHIND: foxthreetailstone1_FRONT
     foxthreetailstone2_BEHIND: foxthreetailstone2_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
     state: foxthreetailstone1_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
     state: foxthreetailstone2_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: foxthreetailstone1_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: foxthreetailstone2_BEHIND
 
 - type: marking
   id: KitsuneTailsTwo
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine]
   coloring:
     default:
       type: !type:CategoryColoring
@@ -105,13 +105,13 @@
     foxtwotailstone1_BEHIND: foxtwotailstone1_FRONT
     foxtwotailstone2_BEHIND: foxtwotailstone2_FRONT
   sprites:
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
     state: foxtwotailstone1_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): split art
     state: foxtwotailstone2_FRONT
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: foxtwotailstone1_BEHIND
-  - sprite: _WF/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
+  - sprite: _WG/Genitals/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE(Genitals): south frame on TailBehind
     state: foxtwotailstone2_BEHIND
 
 # Ear Markings
@@ -120,7 +120,7 @@
   id: KitsuneEarsDefault
   bodyPart: Head
   markingCategory: HeadTop
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine]
   coloring:
     default:
       type: !type:CategoryColoring
@@ -138,7 +138,7 @@
   id: KitsuneEarsFox
   bodyPart: Head
   markingCategory: HeadTop
-  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WFCanine]
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, WGCanine]
   coloring:
     default:
       type: !type:CategoryColoring

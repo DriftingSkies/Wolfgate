@@ -1,0 +1,14 @@
+- type: construction
+  name: tether anchor eye
+  id: WGTetherAnchorEye
+  graph: WGTetherAnchorEye
+  startNode: start
+  targetNode: eye
+  category: construction-category-utilities
+  description: A padeye rope or cable can be tied off to. Bolts to any deck tile.
+  icon:
+    sprite: _WG/Tether/anchor_eye.rsi
+    state: icon
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canBuildInImpassable: true

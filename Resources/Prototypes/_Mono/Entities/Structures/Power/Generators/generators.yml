@@ -234,7 +234,7 @@
     repairCost: 100 # expensive
   # WOLFGATE(Drydock): build cost the drydock prices the reactor's rebuild and salvage from
   - type: Construction
-    graph: WFZPinchReactor
+    graph: WGZPinchReactor
     node: reactor
   - type: RadarBlip
     visibleFromOtherGrids: true

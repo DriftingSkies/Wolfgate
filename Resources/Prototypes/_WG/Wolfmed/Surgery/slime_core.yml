@@ -1,0 +1,56 @@
+# The slime's brain is its core, and the core sits in the torso's core slot, not in a head's brain slot. The two
+# brain surgeries list on a head with a brain in it, so a slime with a damaged brain had nothing listed on any part
+# and no way back. The same two on the torso: open the chest like any other chest organ, work on the core, close.
+
+- type: entity
+  parent: SurgeryBase
+  id: WGSurgeryHealSlimeCore
+  name: Heal Slime Core
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Surgery
+    requirement: SurgeryOpenRibcage
+    steps:
+    - WGSurgeryStepHealSlimeCore
+    - SurgeryStepSealOrganWound
+  - type: SurgeryPartCondition
+    part: Torso
+  - type: WolfmedSurgeryOrganDamagedCondition
+    slot: core
+
+- type: entity
+  parent: SurgeryBase
+  id: WGSurgeryRepairSlimeCore
+  name: Repair Slime Core
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Surgery
+    requirement: SurgeryOpenRibcage
+    steps:
+    - WGSurgeryStepRepairSlimeCore
+    - SurgeryStepSealOrganWound
+  - type: SurgeryPartCondition
+    part: Torso
+  - type: WolfmedSurgeryOrganDamagedCondition
+    slot: core
+    # As WGSurgeryRepairBrain: any damaged core, a destroyed one included.
+    anyDamage: true
+
+- type: entity
+  parent: WGSurgeryStepHealOrganBase
+  id: WGSurgeryStepHealSlimeCore
+  name: Heal the core
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WolfmedSurgeryOrganHealEffect
+    slot: core
+    amount: 3 # as WGSurgeryStepHealBrain
+
+- type: entity
+  parent: WGSurgeryStepRepairBrain
+  id: WGSurgeryStepRepairSlimeCore
+  name: Repair the core
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WolfmedSurgeryBrainRepairEffect
+    slot: core

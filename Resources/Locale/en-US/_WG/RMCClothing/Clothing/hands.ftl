@@ -1,0 +1,12 @@
+ent-WGRMCGlovesBlack = black combat gloves
+    .desc = Padded gloves for rough work.
+ent-WGRMCGlovesBrown = brown combat gloves
+    .desc = Padded gloves for rough work.
+ent-WGRMCGlovesGrey = grey combat gloves
+    .desc = Padded gloves for rough work.
+ent-WGRMCGlovesLightBrown = light brown combat gloves
+    .desc = Padded gloves for rough work.
+ent-WGRMCGlovesLeatherBlack = black leather combat gloves
+    .desc = Padded gloves for rough work.
+ent-WGRMCGlovesVeteran = veteran combat gloves
+    .desc = Padded gloves for rough work.

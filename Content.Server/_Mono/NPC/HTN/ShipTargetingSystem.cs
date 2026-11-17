@@ -1,7 +1,7 @@
 using Content.Server._Mono.FireControl;
 using Content.Server._Mono.Projectiles.TargetSeeking;
-using Content.Server._WF.ShipMissiles; // WOLFGATE(ShipMissiles)
-using Content.Shared._WF.Performance; // WOLFGATE(Performance)
+using Content.Server._WG.ShipMissiles; // WOLFGATE(ShipMissiles)
+using Content.Shared._WG.Performance; // WOLFGATE(Performance)
 using Content.Shared.Weapons.Hitscan.Components;
 using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Weapons.Ranged.Systems;
@@ -18,8 +18,8 @@ namespace Content.Server._Mono.NPC.HTN;
 public sealed partial class ShipTargetingSystem : EntitySystem
 {
     // WOLFGATE(Performance): how often a ship's guns are aimed; a shot attempt lasts 0.2 s, so they keep firing between
-    public const int WFAimPeriod = 2;
-    [Dependency] private IGameTiming _wfTiming = default!;
+    public const int WGAimPeriod = 2;
+    [Dependency] private IGameTiming _wgTiming = default!;
 
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private FireControlSystem _cannon = default!;
@@ -48,13 +48,13 @@ public sealed partial class ShipTargetingSystem : EntitySystem
 
     public override void Update(float frameTime)
     {
-        frameTime *= WFAimPeriod; // WOLFGATE(Performance): each turn covers the whole period
+        frameTime *= WGAimPeriod; // WOLFGATE(Performance): each turn covers the whole period
         var query = EntityQueryEnumerator<ShipTargetingComponent>();
 
         while (query.MoveNext(out var uid, out var comp))
         {
             // WOLFGATE(Performance): each ship aims on its own tick of the period
-            if (!WFTickSpread.Due(uid, _wfTiming.CurTick, WFAimPeriod))
+            if (!WGTickSpread.Due(uid, _wgTiming.CurTick, WGAimPeriod))
                 continue;
 
             var pilotXform = Transform(uid);
@@ -156,15 +156,15 @@ public sealed partial class ShipTargetingSystem : EntitySystem
                     // {
                     //     hitTime = _seeking.CalculateAdvancedTrackingTime(gunToDestVec, leadBy, seeking.Acceleration);
                     // }
-                    var wfSeekerAccel = 0f;
+                    var wgSeekerAccel = 0f;
                     if (bulletProto.TryGetComponent<TargetSeekingComponent>(out var seeking, Factory))
-                        wfSeekerAccel = seeking.Acceleration;
-                    if (bulletProto.TryGetComponent<WFMissileFlightComponent>(out var wfFlight, Factory))
-                        wfSeekerAccel = wfFlight.BoostAccel;
+                        wgSeekerAccel = seeking.Acceleration;
+                    if (bulletProto.TryGetComponent<WGMissileFlightComponent>(out var wgFlight, Factory))
+                        wgSeekerAccel = wgFlight.BoostAccel;
 
-                    if (wfSeekerAccel > 0f)
+                    if (wgSeekerAccel > 0f)
                     {
-                        hitTime = _seeking.CalculateAdvancedTrackingTime(gunToDestVec, leadBy, wfSeekerAccel);
+                        hitTime = _seeking.CalculateAdvancedTrackingTime(gunToDestVec, leadBy, wgSeekerAccel);
                     }
                     // WOLFGATE END
                     else

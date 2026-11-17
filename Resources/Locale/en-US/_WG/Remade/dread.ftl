@@ -1,0 +1,101 @@
+ent-WGRemadeGlimpse = something
+    .desc = Gone.
+ent-WGRemadeSmear = smear
+    .desc = Something was dragged through here. The blood is still wet.
+ent-WGRemadeSplatter = splatter
+    .desc = Fresh blood. Nobody is hurt, and nobody is here.
+
+# Whispers, quietest first. Each stage adds twelve; the Hymn also has wg-monolith-whisper-1 to 8.
+wg-dread-whisper-hymn-1 = Someone says {$name}. Nobody is there.
+wg-dread-whisper-hymn-2 = There is a hum under the deck. It follows you from room to room.
+wg-dread-whisper-hymn-3 = You catch yourself humming a tune you have never heard.
+wg-dread-whisper-hymn-4 = The ship ticks and settles. It sounds like footsteps.
+wg-dread-whisper-hymn-5 = A voice at the edge of hearing is counting. It is counting you.
+wg-dread-whisper-hymn-6 = You check behind you. You check again.
+wg-dread-whisper-hymn-7 = The vents are breathing out of time with you.
+wg-dread-whisper-hymn-8 = Someone has been in this room. The air is still warm.
+wg-dread-whisper-hymn-9 = You hear your name once, from very far away, and then not again.
+wg-dread-whisper-hymn-10 = The hum stops when you listen for it. It starts when you stop.
+wg-dread-whisper-hymn-11 = There is a second set of footsteps. It waits when you wait.
+wg-dread-whisper-hymn-12 = The lights are steady. Something about that is wrong.
+
+wg-dread-whisper-growth-1 = It is learning your steps.
+wg-dread-whisper-growth-2 = The song is louder when you are alone.
+wg-dread-whisper-growth-3 = Something wet moves in the walls, keeping time.
+wg-dread-whisper-growth-4 = You were not meant to find the stone. It wanted you to.
+wg-dread-whisper-growth-5 = The dead are listening, {$name}.
+wg-dread-whisper-growth-6 = Stop. Listen. It is in the vents.
+wg-dread-whisper-growth-7 = The song has a rhythm now. It matches your pulse.
+wg-dread-whisper-growth-8 = Do not look at the dark corner. It has already looked at you.
+wg-dread-whisper-growth-9 = The wall is warm where the hum is loudest.
+wg-dread-whisper-growth-10 = You can feel which way the stone is. You wish you couldn't.
+wg-dread-whisper-growth-11 = Someone is standing very still behind a door near you.
+wg-dread-whisper-growth-12 = It is quieter where the others used to be.
+
+wg-dread-whisper-harvest-1 = They are coming for you, {$name}. They have already started.
+wg-dread-whisper-harvest-2 = You can hear the Hymn. You can hear everyone else not hearing it.
+wg-dread-whisper-harvest-3 = Run. They can hear you thinking.
+wg-dread-whisper-harvest-4 = Behind you. No. Behind you.
+wg-dread-whisper-harvest-5 = Your friends are not finished. Neither are you.
+wg-dread-whisper-harvest-6 = It hurts less if you sing.
+wg-dread-whisper-harvest-7 = They are in the walls now, {$name}. They are in the floor.
+wg-dread-whisper-harvest-8 = The Hymn is not for them. It is for you.
+wg-dread-whisper-harvest-9 = Somebody you know has stopped breathing. They are still walking.
+wg-dread-whisper-harvest-10 = You are being counted, {$name}. You are being counted again.
+wg-dread-whisper-harvest-11 = Every sound you make tells it where you are.
+wg-dread-whisper-harvest-12 = The dead have started to hum.
+
+wg-dread-whisper-rapture-1 = Join the song, {$name}.
+wg-dread-whisper-rapture-2 = The song has no gaps now. It fills the ship.
+wg-dread-whisper-rapture-3 = Every door is a mouth.
+wg-dread-whisper-rapture-4 = You have already lost. Join the song.
+wg-dread-whisper-rapture-5 = Everyone near you is humming. Are you?
+wg-dread-whisper-rapture-6 = Open your eyes. They are already open.
+wg-dread-whisper-rapture-7 = Join the song. It will stop hurting.
+wg-dread-whisper-rapture-8 = The ship is singing. You are the only one still quiet.
+wg-dread-whisper-rapture-9 = Your own voice is in the vents, {$name}. It is saying come closer.
+wg-dread-whisper-rapture-10 = The dark is not empty. It is full, and it is patient.
+wg-dread-whisper-rapture-11 = Nothing here is going to stay as it is. Join the song.
+wg-dread-whisper-rapture-12 = You have been listening for a long time. You do not remember when you started.
+
+wg-dread-whisper-crescendo-1 = JOIN THE SONG.
+wg-dread-whisper-crescendo-2 = It is here. It is everywhere. It is you.
+wg-dread-whisper-crescendo-3 = The whole sector sings. You are the last note.
+wg-dread-whisper-crescendo-4 = There is no quiet left, {$name}. There is only the song.
+wg-dread-whisper-crescendo-5 = It knows your name. It knows all of them.
+wg-dread-whisper-crescendo-6 = Sing.
+wg-dread-whisper-crescendo-7 = JOIN THE SONG, {$name}.
+wg-dread-whisper-crescendo-8 = It is almost finished. Only you are still out of tune.
+wg-dread-whisper-crescendo-9 = Every voice in the sector says your name at once.
+wg-dread-whisper-crescendo-10 = There is no door. There is no dark. There is only the song.
+wg-dread-whisper-crescendo-11 = You are being sung to sleep.
+wg-dread-whisper-crescendo-12 = The last note is yours.
+
+# Writing on the floor. The Director draws on these as the stone climbs; 1 to 10 are in director.ftl.
+wg-remade-scrawl-11 = THE HYMN IS IN THE WALLS
+wg-remade-scrawl-12 = DO NOT SLEEP IN THE DARK
+wg-remade-scrawl-13 = IT TOOK THE ONES WHO LISTENED
+wg-remade-scrawl-14 = SING WITH US
+wg-remade-scrawl-15 = THE DECK IS HUNGRY
+wg-remade-scrawl-16 = DON'T LOOK UP
+wg-remade-scrawl-17 = WE ARE ALL THE STONE'S
+wg-remade-scrawl-18 = IT WAS ALWAYS GOING TO BE US
+wg-remade-scrawl-19 = THE DEAD DO NOT STAY DEAD
+wg-remade-scrawl-20 = NO ONE IS COMING
+wg-remade-scrawl-21 = EVERY DOOR IS A MOUTH
+wg-remade-scrawl-22 = I HEARD MY OWN VOICE IN THE VENTS
+wg-remade-scrawl-23 = STOP FEEDING IT
+wg-remade-scrawl-24 = THE SONG ENDS WHEN YOU DO
+wg-remade-scrawl-25 = YOU ARE HUMMING
+wg-remade-scrawl-26 = IT IS ALREADY IN THE SHIP
+wg-remade-scrawl-27 = JOIN THE SONG JOIN THE SONG JOIN THE SONG
+wg-remade-scrawl-28 = THE STONE WAKES
+wg-remade-scrawl-29 = NOTHING LEAVES
+wg-remade-scrawl-30 = CRESCENDO
+
+wg-remade-torment-name = Torment
+wg-remade-torment-description = They see and hear everything a Crescendo stone does to a crewman beside it, wherever they are. Nobody else does.
+wg-remade-torment-end-name = End torment
+wg-remade-torment-end-description = Lifts the torment.
+wg-remade-lockdown-smite-name = Biohazard lockdown
+wg-remade-lockdown-smite-description = Bolts the powered doors within 9 m of them for a minute and sounds the biohazard alarm. For other lengths, use wg_remade lockdown.

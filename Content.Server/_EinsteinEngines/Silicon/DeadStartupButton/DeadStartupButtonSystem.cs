@@ -26,7 +26,7 @@ public sealed partial class DeadStartupButtonSystem : SharedDeadStartupButtonSys
     [Dependency] private SiliconChargeSystem _siliconChargeSystem = default!;
     [Dependency] private PowerCellSystem _powerCell = default!;
     [Dependency] private ChatSystem _chatSystem = default!;
-    [Dependency] private Content.Server._WF.Wolfmed.Life.WolfmedRevivalSystem _wolfmedRevival = default!; // WOLFGATE(Wolfmed): M2
+    [Dependency] private Content.Server._WG.Wolfmed.Life.WolfmedRevivalSystem _wolfmedRevival = default!; // WOLFGATE(Wolfmed): M2
 
     /// <inheritdoc/>
     public override void Initialize()

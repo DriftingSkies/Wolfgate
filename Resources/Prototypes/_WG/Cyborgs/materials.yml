@@ -1,0 +1,90 @@
+# Construction module stacks. They start with stock; the ones with WGBorgStackRefill top back up from the cyborg's cell.
+
+- type: entity
+  parent: SheetSteel
+  id: WGSheetSteelBorg
+  suffix: Borg, Refilling
+  components:
+  - type: Stack
+    lingering: true
+    count: 15
+  - type: WGBorgStackRefill
+
+- type: entity
+  parent: SheetGlass
+  id: WGSheetGlassBorg
+  suffix: Borg, Refilling
+  components:
+  - type: Stack
+    lingering: true
+    count: 15
+  - type: WGBorgStackRefill
+
+- type: entity
+  parent: SheetPlastic
+  id: WGSheetPlasticBorg
+  suffix: Borg, Refilling
+  components:
+  - type: Stack
+    lingering: true
+    count: 15
+  - type: WGBorgStackRefill
+
+- type: entity
+  parent: PartRodMetal
+  id: WGPartRodMetalBorg
+  suffix: Borg, Refilling
+  components:
+  - type: Stack
+    lingering: true
+    count: 15
+  - type: WGBorgStackRefill
+
+- type: entity
+  parent: FloorTileItemSteel
+  id: WGFloorTileItemSteelBorg
+  suffix: Borg, Refilling
+  components:
+  - type: Stack
+    lingering: true
+    count: 15
+  - type: WGBorgStackRefill
+
+- type: entity
+  parent: FloorTileItemDark
+  id: WGFloorTileItemDarkBorg
+  suffix: Borg, Refilling
+  components:
+  - type: Stack
+    lingering: true
+    count: 15
+  - type: WGBorgStackRefill
+
+- type: entity
+  parent: FloorTileItemWhite
+  id: WGFloorTileItemWhiteBorg
+  suffix: Borg, Refilling
+  components:
+  - type: Stack
+    lingering: true
+    count: 15
+  - type: WGBorgStackRefill
+
+# Costlier stock: issued once, restocked by picking up more.
+- type: entity
+  parent: SheetPlasteel
+  id: WGSheetPlasteelBorg
+  suffix: Borg
+  components:
+  - type: Stack
+    lingering: true
+    count: 10
+
+- type: entity
+  parent: SheetRGlass
+  id: WGSheetRGlassBorg
+  suffix: Borg
+  components:
+  - type: Stack
+    lingering: true
+    count: 10

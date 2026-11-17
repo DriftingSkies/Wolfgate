@@ -12,9 +12,9 @@
       # WOLFGATE(Wolfmed) START: ITEMS: the standard kit's tourniquet, splint and painkillers in a bottle; playtest 5, a suture.
       # Fourteen of Medkit's fourteen cells with the tricordrazine; WolfmedAvailabilityTest spawns the kit.
       - id: Tourniquet
-      - id: WFWolfmedSplint
-      - id: WFWolfmedSuture
-      - id: WFWolfmedAnalgesicPillCanister
+      - id: WGWolfmedSplint
+      - id: WGWolfmedSuture
+      - id: WGWolfmedAnalgesicPillCanister
       # The kit is full, so the tricordrazine stays where Monolith#4822 put iron and copper (two cells for its one).
       - id: PillCanisterTricordrazine
       # - id: PillCanisterIron # Mono
@@ -35,7 +35,7 @@
       - id: PillCanisterDermaline
       # WOLFGATE(Wolfmed): W7: charring is a burn and nothing else in this kit reaches it.
       # Eight of fourteen cells - WolfmedAvailabilityTest spawns the kit so an overflow fails a test, not a round.
-      - id: WFWolfmedSkinGraft
+      - id: WGWolfmedSkinGraft
 
 - type: entity
   id: MedkitBruteFilled
@@ -50,11 +50,11 @@
       - id: PillCanisterCopper
       # WOLFGATE(Wolfmed): V5: bones break from blunt force, which is what this kit is for.
       # Thirteen of fourteen cells - WolfmedAvailabilityTest spawns the kit so an overflow fails a test, not a round.
-      - id: WFWolfmedSplint
-      - id: WFWolfmedOsteogenPillCanister # WOLFGATE(Wolfmed): ITEMS: knits the simple break the splint holds.
+      - id: WGWolfmedSplint
+      - id: WGWolfmedOsteogenPillCanister # WOLFGATE(Wolfmed): ITEMS: knits the simple break the splint holds.
       # WOLFGATE(Wolfmed) START: playtest 5: the trauma kit stops a bleed too.
       - id: Tourniquet
-      - id: WFWolfmedSuture
+      - id: WGWolfmedSuture
       # WOLFGATE END
 
 - type: entity
@@ -111,9 +111,9 @@
       - id: Tourniquet
       # WOLFGATE(Wolfmed) START: playtest 5: ahead of the standard kit, a splint, an epinephrine pen and a painkiller
       # a downed patient can take at once. Fourteen of fourteen cells.
-      - id: WFWolfmedSplint
+      - id: WGWolfmedSplint
       - id: EmergencyMedipen
-      - id: WFWolfmedAnalgesicPen
+      - id: WGWolfmedAnalgesicPen
       # WOLFGATE END
 
 - type: entity
@@ -131,7 +131,7 @@
       - id: BurnAutoInjector
       # WOLFGATE(Wolfmed) START: playtest 5: the combat kit had no tourniquet. Thirteen of its fourteen cells.
       - id: Tourniquet
-      - id: WFWolfmedSplint
+      - id: WGWolfmedSplint
       - id: EmergencyMedipen
       # WOLFGATE END
 

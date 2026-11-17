@@ -640,8 +640,8 @@ public abstract partial class SharedStrippableSystem : EntitySystem
         RaiseLocalEvent(targetPlayer, ref targetEv);
         if (notifyCrew) // WOLFGATE(InteractionParticles)
         {
-            var wfStripped = new Content.Shared._WF.NpcCrew.WFStripAttemptEvent(user, targetEv.Stealth); // WOLFGATE(NpcCrew): the one being stripped learns who is doing it
-            RaiseLocalEvent(targetPlayer, ref wfStripped); // WOLFGATE(NpcCrew)
+            var wgStripped = new Content.Shared._WG.NpcCrew.WGStripAttemptEvent(user, targetEv.Stealth); // WOLFGATE(NpcCrew): the one being stripped learns who is doing it
+            RaiseLocalEvent(targetPlayer, ref wgStripped); // WOLFGATE(NpcCrew)
         }
         return (targetEv.Time, targetEv.Stealth);
     }

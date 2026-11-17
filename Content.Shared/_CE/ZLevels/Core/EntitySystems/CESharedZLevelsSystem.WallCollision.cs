@@ -27,7 +27,7 @@ public abstract partial class CESharedZLevelsSystem
     // In the event that grid processing ever becomes multithreaded; may God grant salvation to your soul.
     private List<Box2Rotated> _sweptArea = new();
 
-    private readonly List<EntityUid> _wfWallScratch = new(); // WOLFGATE(Performance): reused by GetWallContacts
+    private readonly List<EntityUid> _wgWallScratch = new(); // WOLFGATE(Performance): reused by GetWallContacts
 
     /// <summary>
     /// Every wall the hull is currently sitting on, on the z-level it occupies.
@@ -71,15 +71,15 @@ public abstract partial class CESharedZLevelsSystem
         _previousGridPosition[gridUid] = (map, current);
 
         // WOLFGATE(Performance) START: pooled copy, WallCollides removes from the set while we walk it
-        _wfWallScratch.Clear();
-        _wfWallScratch.AddRange(walls);
+        _wgWallScratch.Clear();
+        _wgWallScratch.AddRange(walls);
 
-        foreach (var wall in _wfWallScratch)
+        foreach (var wall in _wgWallScratch)
         {
             WallCollides((gridUid, gridComp), wall, walls, contacts);
         }
 
-        _wfWallScratch.Clear();
+        _wgWallScratch.Clear();
         // WOLFGATE END
     }
 

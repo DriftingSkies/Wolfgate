@@ -27,12 +27,12 @@ public sealed class StationRadioReceiverSystem : EntitySystem
         //     _audio.SetGain(comp.SoundEntity, comp.Active ? comp.DefaultParams.Volume : 0f);
         // else if(comp.SoundEntity != null)
         //     _audio.SetGain(comp.SoundEntity, 0);
-        WfSetAudible(comp, args.Powered && comp.Active);
+        WgSetAudible(comp, args.Powered && comp.Active);
         // WOLFGATE END
     }
 
     // WOLFGATE START: one place that mutes or restores the playing track
-    private void WfSetAudible(StationRadioReceiverComponent comp, bool audible)
+    private void WgSetAudible(StationRadioReceiverComponent comp, bool audible)
     {
         if (comp.SoundEntity is not { } sound)
             return;
@@ -53,11 +53,11 @@ public sealed class StationRadioReceiverSystem : EntitySystem
     private void OnRadioToggle(EntityUid uid, StationRadioReceiverComponent comp, ActivateInWorldEvent args)
     {
         comp.Active = !comp.Active;
-        // WOLFGATE START: see WfSetAudible
+        // WOLFGATE START: see WgSetAudible
         // if (comp.SoundEntity != null && _power.IsPowered(uid))
         //     _audio.SetGain(comp.SoundEntity, comp.Active ? comp.DefaultParams.Volume : 0f);
         if (_power.IsPowered(uid))
-            WfSetAudible(comp, comp.Active);
+            WgSetAudible(comp, comp.Active);
         // WOLFGATE END
     }
 

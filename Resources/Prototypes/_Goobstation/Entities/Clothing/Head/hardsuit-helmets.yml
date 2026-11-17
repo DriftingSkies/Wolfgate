@@ -72,7 +72,7 @@
       passiveVisibilityRate: -0.4
       movementVisibilityRate: 0.4
   # WOLFGATE(Stealth): stealth toggle, the CV-53 helmet's night vision and a thermal pulse.
-  - type: WFStealthToggle
+  - type: WGStealthToggle
   - type: NightVision # Gen 4 quadtube
     relayOverlay: true
     goggleEffect: true

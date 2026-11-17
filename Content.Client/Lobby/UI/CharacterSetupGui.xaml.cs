@@ -11,7 +11,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
-using Content.Client._WF.Stylesheets; // WOLFGATE(Stylesheets)
+using Content.Client._WG.Stylesheets; // WOLFGATE(Stylesheets)
 
 namespace Content.Client.Lobby.UI
 {

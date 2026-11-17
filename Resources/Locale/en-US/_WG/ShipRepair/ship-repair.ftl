@@ -1,0 +1,10 @@
+wg-ship-repair-blocked = unable to repair: another grid is in the way
+wg-ship-repair-occupied = unable to repair: something else is anchored there
+wg-ship-repair-reserved = unable to repair: a detached section belongs here, reattach it first
+wg-ship-repair-edge = unable to repair: rebuild from the ship's edge inward
+wg-ship-repair-reattach-no-hull = unable to reattach: this wreck no longer belongs to a ship
+wg-ship-repair-reattach-charge = reattaching needs a full charge ({$charges}/{$max})
+wg-ship-repair-reattach-range = unable to reattach: too far from its place on the ship
+wg-ship-repair-reattach-blocked = unable to reattach: its place on the ship is blocked
+wg-ship-repair-reattach-apart = unable to reattach: rebuild the ship up to its place first
+wg-ship-repair-reattached = section reattached

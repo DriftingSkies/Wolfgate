@@ -19,7 +19,7 @@ using Content.Shared.Camera;
 using Content.Shared.CCVar;
 using Content.Shared.Damage;
 using Content.Shared.Database;
-using Content.Shared._WF.Explosion; // WOLFGATE(Explosion)
+using Content.Shared._WG.Explosion; // WOLFGATE(Explosion)
 using Content.Shared.Explosion;
 using Content.Shared.Explosion.Components;
 using Content.Shared.Explosion.EntitySystems;
@@ -48,7 +48,7 @@ using Robust.Shared.Timing; // Mono
 using Content.Shared.Stacks;
 using Content.Server.Stack;
 using Robust.Shared.Serialization.TypeSerializers.Implementations;
-using Content.Shared._WF.RMCCore.Explosion; // WOLFGATE(RMCCore)
+using Content.Shared._WG.RMCCore.Explosion; // WOLFGATE(RMCCore)
 
 
 namespace Content.Server.Explosion.EntitySystems;
@@ -84,7 +84,7 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
     [Dependency] private FlammableSystem _flammableSystem = default!;
     [Dependency] private DestructibleSystem _destructibleSystem = default!;
     [Dependency] private AtmosphereSystem _atmosphere = default!;
-    [Dependency] private Content.Server._WF.NetTraffic.WFNetExplosionSystem _wfNetExplosion = default!; // WOLFGATE(NetTraffic)
+    [Dependency] private Content.Server._WG.NetTraffic.WGNetExplosionSystem _wgNetExplosion = default!; // WOLFGATE(NetTraffic)
 
     private EntityQuery<FlammableComponent> _flammableQuery;
     private EntityQuery<PhysicsComponent> _physicsQuery;
@@ -332,7 +332,7 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
             return;
 
         // WOLFGATE(BattleLoad) START: bullet-sized blasts on a grid skip the queue, see ExplosionSystem.BattleLoad.cs
-        if (WFTryQueueMicroExplosion(gridPos!.Value, typeId, totalIntensity, maxTileIntensity, tileBreakScale, maxTileBreak, canCreateVacuum, uid))
+        if (WGTryQueueMicroExplosion(gridPos!.Value, typeId, totalIntensity, maxTileIntensity, tileBreakScale, maxTileBreak, canCreateVacuum, uid))
             return;
         // WOLFGATE END
 
@@ -409,7 +409,7 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
         if (addLog) // dont log if already created a separate, more detailed, log.
             _adminLogger.Add(LogType.Explosion, LogImpact.High, $"Explosion ({typeId}) spawned at {epicenter:coordinates} with intensity {totalIntensity} slope {slope}");
 
-        WFRecordExplosion(epicenter); // WOLFGATE(BattleLoad): counts towards battle heat
+        WGRecordExplosion(epicenter); // WOLFGATE(BattleLoad): counts towards battle heat
 
         // try to combine explosions on the same tile if they are the same type
         foreach (var queued in _queuedExplosions)
@@ -419,7 +419,7 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
                 continue;
 
             var dst = queued.Proto.MaxCombineDistance;
-            dst = WFCombineDistance(queued, epicenter, totalIntensity, dst); // WOLFGATE(BattleLoad): small blasts on one grid merge from further apart
+            dst = WGCombineDistance(queued, epicenter, totalIntensity, dst); // WOLFGATE(BattleLoad): small blasts on one grid merge from further apart
             if (!epicenter.TryDistance(EntityManager, queued.Epicenter, out var distance) || distance > dst)
                 continue;
 
@@ -479,8 +479,8 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
 
         var visualEnt = CreateExplosionVisualEntity(pos, queued.Proto.ID, spaceMatrix, spaceData, gridData.Values, iterationIntensity);
         // WOLFGATE(NetTraffic) START: the sounds go out in the explosion's message instead of as audio entities.
-        SoundSpecifier? wfNearSound = null, wfFarSound = null;
-        Filter? wfNear = null, wfFar = null;
+        SoundSpecifier? wgNearSound = null, wgFarSound = null;
+        Filter? wgNear = null, wgFar = null;
         // WOLFGATE END
 
         // WOLFGATE(Planets) START: a silent blast still carves its crater, it just does not shake, push or sound.
@@ -514,10 +514,10 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
                 : queued.Proto.Sound;
 
             // WOLFGATE(NetTraffic): sent with the explosion's message when that is on.
-            if (_wfNetExplosion.Enabled)
+            if (_wgNetExplosion.Enabled)
             {
-                wfNearSound = sound;
-                wfNear = filter;
+                wgNearSound = sound;
+                wgNear = filter;
             }
             else
             _audio.PlayStatic(sound, filter, entPos, true, sound.Params);
@@ -531,10 +531,10 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
                 : queued.Proto.SoundFar;
 
             // WOLFGATE(NetTraffic): sent with the explosion's message when that is on.
-            if (_wfNetExplosion.Enabled)
+            if (_wgNetExplosion.Enabled)
             {
-                wfFarSound = farSound;
-                wfFar = farFilter;
+                wgFarSound = farSound;
+                wgFar = farFilter;
             }
             else
             _audio.PlayGlobal(farSound, farFilter, true, farSound.Params);
@@ -542,8 +542,8 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
         // WOLFGATE END
 
         // WOLFGATE(NetTraffic): one message per player carries the overlay and the sound they hear.
-        if (_wfNetExplosion.Enabled)
-            _wfNetExplosion.Send(visualEnt, pos, entPos, wfNearSound, wfNear, wfFarSound, wfFar);
+        if (_wgNetExplosion.Enabled)
+            _wgNetExplosion.Send(visualEnt, pos, entPos, wgNearSound, wgNear, wgFarSound, wgFar);
 
         return new Explosion(this,
             queued.Proto,
