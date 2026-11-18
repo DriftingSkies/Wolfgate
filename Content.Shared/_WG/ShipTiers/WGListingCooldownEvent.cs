@@ -1,7 +1,9 @@
+using Robust.Shared.Serialization;
+
 namespace Content.Shared._WG.ShipTiers;
 
 /// <summary>Raised on the buyer of a listing that each player may buy only once per cooldown, such as a free T0 voucher.</summary>
-[DataDefinition]
+[DataDefinition, Serializable, NetSerializable]
 public sealed partial class WGListingCooldownEvent : EntityEventArgs
 {
     /// <summary>What the cooldown is tracked under; listings sharing a key share it.</summary>

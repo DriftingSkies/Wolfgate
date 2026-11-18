@@ -1,6 +1,7 @@
 using Content.Shared._Mono.Company;
 using Content.Shared.Roles;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.Manager.Attributes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
 using Robust.Shared.Utility;
@@ -151,8 +152,8 @@ public partial record struct WGOperationSpawn
     public bool Scatter;
 }
 
-/// <summary>Raised on the buyer when an operation's uplink listing is bought.</summary>
-[DataDefinition]
+/// <summary>Raised on the buyer when an operation's uplink listing is bought. Sent to clients with the listing.</summary>
+[DataDefinition, Serializable, NetSerializable]
 public sealed partial class WGCallOperationEvent : EntityEventArgs
 {
     [DataField(required: true)]
