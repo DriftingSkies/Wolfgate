@@ -26,6 +26,7 @@ Balance Rework doc.
 
 - [`Resources/Prototypes/_WG/FactionBalance/supplies.yml`](../../../Resources/Prototypes/_WG/FactionBalance/supplies.yml)
 - [`Resources/Prototypes/_WG/FactionBalance/uplink.yml`](../../../Resources/Prototypes/_WG/FactionBalance/uplink.yml)
+- [`Resources/Prototypes/_WG/FactionBalance/vouchers.yml`](../../../Resources/Prototypes/_WG/FactionBalance/vouchers.yml)
 
 ### Localization
 
@@ -77,6 +78,10 @@ Balance Rework doc.
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/Factions/shipyard.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/Factions/shipyard.yml)
   - voucher costs only the faction material, on one ladder from fighter to T2
   - T3 and capitals cost ship parts, the faction material, steel, plasteel and fissile uranium
+- [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/phaethon_dynasty.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/phaethon_dynasty.yml): generic T3 voucher
+- [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/tsfmc.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/tsfmc.yml): generic T3 voucher
+- [`Resources/Prototypes/_Mono/Research/Rogue/rogue_misc.yml`](../../../Resources/Prototypes/_Mono/Research/Rogue/rogue_misc.yml): generic T3 voucher
+- [`Resources/Prototypes/_Mono/Research/TSF/tsf_misc.yml`](../../../Resources/Prototypes/_Mono/Research/TSF/tsf_misc.yml): generic T3 voucher
 - [`Resources/Prototypes/_NF/Store/presets.yml`](../../../Resources/Prototypes/_NF/Store/presets.yml): rations, survival gear, tools and field medicine
 
 <!-- WOLFGATE-GENERATED END -->

@@ -39,6 +39,7 @@
   recipeUnlocks:
   - ShipVoucherKortikT3Recipe
   - ShipVoucherEuropaT3Recipe
+  - WGShipVoucherPdvT3Recipe # WOLFGATE(FactionBalance): generic T3 voucher
 # - ShipVoucherSaturnRecipe # WOLFGATE(Mining): Saturn moves to WGPdvCapitalVouchers
   technologyPrerequisites:
   - PdvTierTwoVouchers
