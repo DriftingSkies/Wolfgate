@@ -8,7 +8,7 @@
   materialDiscountScale: 0.2
   materials:
     WGShipParts: 120000
-    PdvComposite: 4000
-    Steel: 10000
-    Plasteel: 5000
-    UraniumFissile: 150
+    PdvComposite: 40000
+    Steel: 100000
+    Plasteel: 50000
+    UraniumFissile: 1500

@@ -19,9 +19,16 @@ docs=[]
 for d,_,fs in os.walk(protos):
     for f in fs:
         if f.endswith('.yml'):
+            path=os.path.join(d,f)
+            text=open(path,encoding='utf-8',errors='ignore').read()
             try:
-                data=yaml.load(open(os.path.join(d,f),encoding='utf-8',errors='ignore'),Loader=Loader)
-            except yaml.YAMLError:
+                data=yaml.load(text,Loader=Loader)
+            except yaml.YAMLError as e:
+                rel=os.path.relpath(path,root)
+                # A file that feeds the counts must parse; anything else only loses display names.
+                if re.search(r'(?m)^- type: (listing|latheRecipe|latheRecipePack)\s*$',text):
+                    sys.exit(f'audit.py: cannot parse {rel}: {e}')
+                print(f'audit.py: skipped {rel} (no listings or recipes): {e.problem}',file=sys.stderr)
                 continue
             if isinstance(data,list):
                 docs+=[x for x in data if isinstance(x,dict)]

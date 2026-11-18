@@ -57,7 +57,7 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
         SubscribeLocalEvent<WGFragmentHeartComponent, EntityTerminatingEvent>(OnHeartTerminating);
     }
 
-    /// <summary>Records who is aboard as the heart breaks, then freezes the list for the joint bonus.</summary>
+    /// <summary>Records who is aboard as the heart breaks, freezes the list and pays out at once.</summary>
     private void OnHeartTerminating(Entity<WGFragmentHeartComponent> ent, ref EntityTerminatingEvent args)
     {
         var rules = QueryActiveRules();
@@ -73,6 +73,7 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
                     RecordVisit(comp, player);
             }
             comp.HeartBroken = true;
+            Clear(comp);
         }
     }
 
@@ -145,7 +146,6 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
 
         comp.Remade.RemoveWhere(r => !Exists(r) || _mobState.IsDead(r));
 
-        // Boarders are counted before the heart check, so a heart broken since the last scan still credits them.
         var heartPos = comp.HeartUid is { } living && !TerminatingOrDeleted(living)
             ? _transform.GetMapCoordinates(living)
             : MapCoordinates.Nullspace;
@@ -245,14 +245,15 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
                 bases.Add(_transform.GetWorldPosition(xform));
         }
 
-        bool Clear(Vector2 point) => bases.All(p => (p - point).Length() >= comp.BaseClearance);
+        bool Valid(Vector2 point) => bases.All(p =>
+            (p - point).Length() >= comp.BaseClearance && (p - point).Length() <= comp.MaxDistance);
 
         if (bases.Count < 2)
         {
             for (var attempt = 0; attempt < 30; attempt++)
             {
                 var point = RobustRandom.NextVector2(2000f, 4000f);
-                if (Clear(point))
+                if (Valid(point))
                     return point;
             }
             return null;
@@ -276,10 +277,10 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
             var point = mid
                         + across * side * RobustRandom.NextFloat(minAcross, MathF.Max(minAcross, maxAcross))
                         + along * RobustRandom.NextFloat(-0.1f, 0.1f) * half;
-            if (bases.All(p => (p - point).Length() >= comp.BaseClearance && (p - point).Length() <= comp.MaxDistance))
+            if (Valid(point))
                 return point;
         }
-        return Clear(best) ? best : null;
+        return Valid(best) ? best : null;
     }
 
     /// <summary>A Remade answering to no Monolith: it never starves, and nothing it kills turns.</summary>

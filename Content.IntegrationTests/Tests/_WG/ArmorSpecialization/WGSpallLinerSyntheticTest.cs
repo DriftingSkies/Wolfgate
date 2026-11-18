@@ -1,6 +1,7 @@
 #nullable enable
 using System.Linq;
 using Content.IntegrationTests.Tests._WG.Wolfmed;
+using Content.Shared._Onyx.Wounds;
 using Content.Shared._Shitmed.Targeting;
 using Content.Shared._WG.Wolfmed.Compat;
 using Content.Shared._WG.Wolfmed.Wounds;
@@ -10,6 +11,7 @@ using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
 using Content.Shared.Inventory;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._WG.ArmorSpecialization;
 
@@ -106,6 +108,46 @@ public sealed class WGSpallLinerSyntheticTest : WolfmedGameTest
                 {
                     Assert.That(Embedded(bodies[0]), Is.GreaterThan(0), "a bare robolimb kept nothing.");
                     Assert.That(Embedded(bodies[1]), Is.Zero, "the spall liner let a round lodge in a robolimb.");
+                });
+            }
+            finally
+            {
+                rules.ForcedRoll = null;
+            }
+        });
+    }
+
+    /// <summary>A chassis round lodges on the flesh odds (20% light, 35% heavy); the breach opens either way.</summary>
+    [TestCase(12, 0.3f, false)]
+    [TestCase(30, 0.3f, true)]
+    [TestCase(12, 0.5f, false)]
+    [TestCase(30, 0.5f, false)]
+    public async Task ChassisRoundLodgeChanceTest(int damage, float roll, bool lodges)
+    {
+        var map = await CreateTestMap();
+
+        await Server.WaitAssertion(() =>
+        {
+            var rules = SEntMan.System<WolfmedWoundRuleSystem>();
+            rules.ForcedRoll = roll;
+            try
+            {
+                var body = SEntMan.SpawnEntity("MobIPC", map.GridCoords);
+                var bullet = SEntMan.SpawnEntity("Bullet9x19mmFMJ", map.GridCoords);
+                var hit = new DamageSpecifier();
+                hit.DamageDict["Piercing"] = FixedPoint2.New(damage);
+                SEntMan.System<DamageableSystem>().TryChangeDamage(body, hit, origin: body, tool: bullet,
+                    targetPart: TargetBodyPart.Torso);
+
+                var torso = SEntMan.System<SharedBodySystem>().GetBodyChildrenOfType(body, BodyPartType.Torso).Single().Id;
+                var breached = SEntMan.System<WoundSystem>()
+                    .GetWounds((torso, SEntMan.GetComponent<WoundableComponent>(torso)))
+                    .Any(w => w.Comp.Prototype == new ProtoId<WoundPrototype>("WGWolfmedBreachWound"));
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(Embedded(body) > 0, Is.EqualTo(lodges), $"{damage} damage at roll {roll}: wrong lodge outcome.");
+                    Assert.That(breached, Is.True, $"{damage} damage at roll {roll}: the breach did not open.");
                 });
             }
             finally
