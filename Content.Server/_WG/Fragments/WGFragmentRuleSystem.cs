@@ -5,6 +5,7 @@ using Content.Server._WG.Operations;
 using Content.Server._WG.Remade.Conversion;
 using Content.Server.StationEvents.Events;
 using Content.Shared._Mono.Company;
+using Content.Shared.Destructible;
 using Content.Shared.FixedPoint;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.Maps;
@@ -54,11 +55,14 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
     public override void Initialize()
     {
         base.Initialize();
-        SubscribeLocalEvent<WGFragmentHeartComponent, EntityTerminatingEvent>(OnHeartTerminating);
+        SubscribeLocalEvent<WGFragmentHeartComponent, DestructionEventArgs>(OnHeartBroken);
     }
 
-    /// <summary>Records who is aboard as the heart breaks, freezes the list and pays out at once.</summary>
-    private void OnHeartTerminating(Entity<WGFragmentHeartComponent> ent, ref EntityTerminatingEvent args)
+    /// <summary>
+    /// Records who is aboard as the heart breaks, freezes the list and pays out at once. Only a heart destroyed pays;
+    /// one deleted any other way, such as with a piece of the fragment cleaned up, does not.
+    /// </summary>
+    private void OnHeartBroken(Entity<WGFragmentHeartComponent> ent, ref DestructionEventArgs args)
     {
         var rules = QueryActiveRules();
         while (rules.MoveNext(out _, out var comp, out _))
@@ -164,11 +168,9 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
                 near.Add(pos);
         }
 
+        // A heart gone without breaking pays nothing; the fragment just stops sending waves.
         if (heartPos == MapCoordinates.Nullspace)
-        {
-            Clear(comp);
             return;
-        }
 
         if (Timing.CurTime < comp.NextWave)
             return;

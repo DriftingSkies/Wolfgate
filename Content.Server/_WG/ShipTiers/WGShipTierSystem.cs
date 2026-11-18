@@ -33,10 +33,9 @@ public sealed class WGShipTierSystem : EntitySystem
     private readonly Dictionary<string, List<TimeSpan>> _lockouts = new();
 
     /// <summary>
-    /// Hulls a capital purchase was checked against the cap for. Only these become capitals: an admin spawn or a used
-    /// hull from a trader raises the purchase event without the check, and takes no slot.
+    /// Capital purchases admitted under the cap, with the buyer's faction. Only these become capitals: an admin spawn
+    /// or a used hull from a trader raises the purchase event without the check, and takes no slot.
     /// </summary>
-    /// <summary>Capital purchases admitted under the cap, with the buyer's faction.</summary>
     private readonly Dictionary<EntityUid, ProtoId<CompanyPrototype>> _approved = new();
 
     private TimeSpan _nextCheck;
@@ -165,6 +164,10 @@ public sealed class WGShipTierSystem : EntitySystem
             return;
         _nextCheck = _timing.CurTime + TimeSpan.FromSeconds(1);
 
+        // A purchase cancelled after its cap check never reaches OnPurchased; its approval goes with the hull.
+        foreach (var hull in _approved.Keys.Where(hull => !Exists(hull)).ToList())
+            _approved.Remove(hull);
+
         var query = EntityQueryEnumerator<WGCapitalShipComponent>();
         while (query.MoveNext(out var uid, out var capital))
         {
@@ -214,7 +217,8 @@ public sealed class WGShipTierSystem : EntitySystem
     /// <summary>Marks the capital lost and locks its faction's slot.</summary>
     private void Lose(Entity<WGCapitalShipComponent> ent)
     {
-        if (!_protos.TryIndex(Rules, out var rules))
+        // A capital that never came through a purchase belongs to no faction and holds no slot to lock.
+        if (string.IsNullOrEmpty(ent.Comp.Company.Id) || !_protos.TryIndex(Rules, out var rules))
             return;
 
         ent.Comp.Lost = true;
@@ -231,7 +235,6 @@ public sealed class WGShipTierSystem : EntitySystem
             Loc.GetString("wg-ship-tiers-announcer"), colorOverride: Color.Orange);
     }
 
-    /// <summary>A capital written off for drifting is back in service: it holds its slot again instead of a lockout.</summary>
     /// <summary>Restores a lost capital, unless its slot has gone to a replacement; then it stays lost and grounded.</summary>
     private void TryRecover(Entity<WGCapitalShipComponent> ent)
     {

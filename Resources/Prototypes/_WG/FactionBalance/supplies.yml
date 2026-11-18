@@ -17,6 +17,11 @@
   parent: NFPouchFirstAid
   id: WGFieldDressingPouch
   components:
+  # Room for its five items: the first aid pouch holds eight cells and these take ten.
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,4,1
   - type: StorageFill
     contents:
     - id: Gauze

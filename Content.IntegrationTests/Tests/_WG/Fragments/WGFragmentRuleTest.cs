@@ -37,7 +37,7 @@ public sealed class WGFragmentRuleTest
             Assert.That(entMan.EntityQuery<WGMonolithComponent>(), Is.Empty, "a fragment holds a Monolith.");
             Assert.That(comp.Remade.All(entMan.HasComponent<WGRemadeComponent>), Is.True);
 
-            entMan.DeleteEntity(comp.HeartUid!.Value);
+            entMan.System<Content.Shared.Destructible.SharedDestructibleSystem>().DestroyEntity(comp.HeartUid!.Value);
         });
         await pair.RunSeconds(2f);
 
