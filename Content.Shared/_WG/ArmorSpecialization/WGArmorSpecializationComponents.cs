@@ -22,6 +22,13 @@ public sealed partial class WGWoundWardComponent : Component
     [DataField]
     public HashSet<ProtoId<WoundPrototype>> Blocks = new();
 
+    /// <summary>
+    /// Wounds the ward applies to anywhere on the body, not just under the armour: a round or fragment that would stay
+    /// in, which a spall liner catches wherever it hits.
+    /// </summary>
+    [DataField]
+    public HashSet<ProtoId<WoundPrototype>> Anywhere = new() { "WGWolfmedLodgedRoundWound", "WGWolfmedShrapnelWound" };
+
     /// <summary>Individual wound rules refused, for a ward narrower than a whole wound type (thrown dislocations only).</summary>
     [DataField]
     public HashSet<string> BlockRules = new();

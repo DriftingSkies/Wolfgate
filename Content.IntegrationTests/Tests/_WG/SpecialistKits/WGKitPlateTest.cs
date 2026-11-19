@@ -32,7 +32,7 @@ public sealed class WGKitPlateTest
             foreach (var kit in protos.EnumeratePrototypes<EntityPrototype>())
             {
                 if (!kit.HasComponent<WGSpecialistKitComponent>(factory)
-                    || !kit.TryGetComponent<CMVendorBundleComponent>(out var bundle, factory))
+                    || !kit.TryComp<CMVendorBundleComponent>(out var bundle, factory))
                     continue;
 
                 var plates = bundle.Bundle.Where(id => protos.Index(id).HasComponent<ArmorPlateItemComponent>(factory)).ToList();

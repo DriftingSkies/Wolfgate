@@ -18,7 +18,7 @@ public static class WGKitContents
         IComponentFactory factory)
     {
         if (!kit.HasComponent<WGSpecialistKitComponent>(factory)
-            || !kit.TryGetComponent<CMVendorBundleComponent>(out var bundle, factory)
+            || !kit.TryComp<CMVendorBundleComponent>(out var bundle, factory)
             || bundle.Bundle.Count == 0)
             return;
 

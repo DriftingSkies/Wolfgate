@@ -8,6 +8,7 @@ using Content.Server._WG.Remade.Conversion;
 using Content.Server._WG.ShipTiers;
 using Content.Server.Chat.Systems;
 using Content.Server.NPC.HTN;
+using Content.Server.Spawners.Components;
 using Content.Server.GameTicking;
 using Content.Server.Warps;
 using Content.Shared._Mono.Company;
@@ -16,6 +17,7 @@ using Content.Shared.FixedPoint;
 using Content.Shared.GameTicking;
 using Content.Shared.Maps;
 using Content.Shared.Mind;
+using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.NPC.Systems;
@@ -69,12 +71,30 @@ public sealed class WGOperationSystem : EntitySystem
     /// <summary>How long after arrival a PvE site keeps picking up guards its map spawns late.</summary>
     private static readonly TimeSpan GuardScanWindow = TimeSpan.FromSeconds(30);
 
+    /// <summary>How far from a spawner's spot, in metres, a mob may appear and still count as that spawner's guard.</summary>
+    private const float GuardSpawnRadius = 1.5f;
+
     public override void Initialize()
     {
         base.Initialize();
         SubscribeLocalEvent<CompanyComponent, WGCallOperationEvent>(OnCall);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(_ => _readyAt.Clear());
         SubscribeLocalEvent<RoundStartedEvent>(_ => MeasurePlanetGrids());
+        SubscribeLocalEvent<MobStateChangedEvent>(OnMobStateChanged);
+    }
+
+    /// <summary>Marks a site's guard as down when it goes critical or dies, so a guard gibbed afterwards still counts.</summary>
+    private void OnMobStateChanged(MobStateChangedEvent args)
+    {
+        if (args.NewMobState is not (MobState.Critical or MobState.Dead))
+            return;
+
+        var query = EntityQueryEnumerator<WGActiveOperationComponent>();
+        while (query.MoveNext(out _, out var active))
+        {
+            if (active.Npcs.Contains(args.Target))
+                active.Downed.Add(args.Target);
+        }
     }
 
     /// <summary>
@@ -225,10 +245,14 @@ public sealed class WGOperationSystem : EntitySystem
 
             // Spawners on the map can produce their mobs a moment after the grid loads.
             if (op.Reward > 0 && !active.Paid && active.Grid is { } scanned && _timing.CurTime < active.ArrivedAt + GuardScanWindow)
-                AddMapGuards(active, scanned);
+                AddMapGuards(active, scanned, true);
+
+            // A guard deleted without ever going down (despawned, cleaned up) neither holds up the clear nor pays for it.
+            active.Npcs.RemoveAll(npc => !Exists(npc) && !active.Downed.Contains(npc));
 
             // A cleared PvE site pays at once and stays until its time is up, for the loot; a clear seen after the deadline fails.
-            if (_timing.CurTime < active.EndsAt && !active.Paid && active.Npcs.Count > 0 && active.Npcs.All(npc => !Exists(npc) || _mobState.IsIncapacitated(npc)))
+            if (_timing.CurTime < active.EndsAt && !active.Paid && active.Npcs.Count > 0
+                && active.Npcs.All(npc => active.Downed.Contains(npc) || Exists(npc) && _mobState.IsIncapacitated(npc)))
             {
                 active.Paid = true;
                 Pay(op, op.Stake + op.Reward);
@@ -304,9 +328,17 @@ public sealed class WGOperationSystem : EntitySystem
 
         ent.Comp.ArrivedAt = _timing.CurTime;
 
-        // On a PvE site, NPCs the map spawns itself guard it too.
+        // On a PvE site, NPCs the map spawns itself guard it too; spawners still waiting mark where later ones appear.
         if (op.Reward > 0)
-            AddMapGuards(ent.Comp, grid.Value.Owner);
+        {
+            foreach (var child in _siteGrid.Children(grid.Value))
+            {
+                if (HasComp<ConditionalSpawnerComponent>(child) || HasComp<EntityTableSpawnerComponent>(child)
+                    || HasComp<TimedSpawnerComponent>(child))
+                    ent.Comp.GuardSpawns.Add(Transform(child).LocalPosition);
+            }
+            AddMapGuards(ent.Comp, grid.Value.Owner, false);
+        }
 
         var tiles = _siteGrid.OpenTiles(grid.Value);
         if (tiles.Count == 0)
@@ -344,18 +376,28 @@ public sealed class WGOperationSystem : EntitySystem
 
     /// <summary>
     /// Counts the NPCs on the site's grid that came with it among its guards; wildlife that wanders on, made before the
-    /// site, doesn't count.
+    /// site, doesn't count. After arrival, with <paramref name="atSpawners"/>, only mobs that appear where one of the
+    /// site's spawners sat count, so a pet or mob a player lets loose on the site never holds up its payout.
     /// </summary>
-    private void AddMapGuards(WGActiveOperationComponent active, EntityUid grid)
+    private void AddMapGuards(WGActiveOperationComponent active, EntityUid grid, bool atSpawners)
     {
-        var npcs = EntityQueryEnumerator<HTNComponent, MobStateComponent, TransformComponent, MetaDataComponent>();
-        while (npcs.MoveNext(out var npc, out _, out _, out var xform, out var meta))
+        if (atSpawners && active.GuardSpawns.Count == 0)
+            return;
+
+        foreach (var npc in _siteGrid.Children(grid))
         {
-            if (xform.GridUid == grid
-                && meta.CreationTick >= active.ArrivedTick
-                && !HasComp<ActorComponent>(npc)
-                && !active.Npcs.Contains(npc))
-                active.Npcs.Add(npc);
+            if (!HasComp<HTNComponent>(npc)
+                || !HasComp<MobStateComponent>(npc)
+                || HasComp<ActorComponent>(npc)
+                || MetaData(npc).CreationTick < active.ArrivedTick
+                || active.Npcs.Contains(npc))
+                continue;
+
+            var at = Transform(npc).LocalPosition;
+            if (atSpawners && !active.GuardSpawns.Any(spawn => (spawn - at).LengthSquared() <= GuardSpawnRadius * GuardSpawnRadius))
+                continue;
+
+            active.Npcs.Add(npc);
         }
     }
 

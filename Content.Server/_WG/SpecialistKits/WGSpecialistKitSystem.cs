@@ -63,11 +63,12 @@ public sealed class WGSpecialistKitSystem : EntitySystem
             || !TryComp<ActorComponent>(args.User, out var actor))
             return;
 
-        // One kit per account per round: a new body may replace its kit but not draw a different one.
+        // One kit per account per faction per round: a new body may replace its kit but not draw a different one. A
+        // player who respawns in the other faction may draw one of its kits.
         var user = actor.PlayerSession.UserId;
-        foreach (var ((_, other), drawn) in _holders)
+        foreach (var ((faction, other), drawn) in _holders)
         {
-            if (other != args.Entry.Id && drawn.Contains(user))
+            if (faction == company.CompanyName.Id && other != args.Entry.Id && drawn.Contains(user))
             {
                 args.Cancelled = true;
                 args.Reason = "wg-specialist-kit-one";

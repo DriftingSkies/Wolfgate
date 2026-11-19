@@ -50,7 +50,8 @@ in a fight and not only on paper. Each is one component on the suit, and each re
   - `WGFastHands`: the wearer's do-afters run 20% faster (`GetDoAfterDelayMultiplierEvent`).
   - `WGLowSignature`: motion trackers skip the wearer (`ProximityDetectionAttemptEvent`).
   - `WGUnrestricted`: guns the wearer holds spread 20% less (`GunRefreshModifiersEvent`).
-  - `WGSecondWind`: past 100 damage, a 30% speed burst for 6 seconds, ready again once healed below half that.
+  - `WGSecondWind`: past 70 damage, before the wearer goes critical, a 30% speed burst for 6 seconds, ready again once
+    healed below half that. A wearer already down or dead doesn't spend it.
   - Terrain runner is upstream's `SpeedModifierContactCapClothing`, which the snow slowdown in `GroundCover` now
     respects too; modular plates are Mono's armor plate holder (`ClothingArmorPlate`); webbing is a storage grid.
   The RMC armors get theirs from `Tools/_WG/RMCClothing/port.py` (`SPECIALTIES`).

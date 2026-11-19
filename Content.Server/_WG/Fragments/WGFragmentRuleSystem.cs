@@ -13,6 +13,7 @@ using Content.Shared.Maps;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Physics;
+using Content.Shared.Store.Components;
 using Content.Shared.Tag;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
@@ -326,27 +327,37 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
     /// <summary>Where the fragment lands, from the faction uplinks anchored on the map; carried handheld uplinks share the tags but aren't bases.</summary>
     private Vector2? PickSite(WGFragmentRuleComponent comp, MapId mapId)
     {
-        var bases = new List<Vector2>();
-        var uplinks = EntityQueryEnumerator<TagComponent, TransformComponent>();
-        while (uplinks.MoveNext(out _, out var tag, out var xform))
+        // One list per faction tag, so a faction with several uplinks (a base and a supercapital) still pairs with the other.
+        var factions = comp.Bases.Select(_ => new List<Vector2>()).ToList();
+        var uplinks = EntityQueryEnumerator<StoreComponent, TagComponent, TransformComponent>();
+        while (uplinks.MoveNext(out _, out _, out var tag, out var xform))
         {
-            if (xform.MapID == mapId && xform.Anchored && comp.Bases.Any(b => _tags.HasTag(tag, b)))
-                bases.Add(_transform.GetWorldPosition(xform));
+            if (xform.MapID != mapId || !xform.Anchored)
+                continue;
+
+            for (var i = 0; i < comp.Bases.Count; i++)
+            {
+                if (_tags.HasTag(tag, comp.Bases[i]))
+                    factions[i].Add(_transform.GetWorldPosition(xform));
+            }
         }
 
-        return SiteBetween(bases, comp.BaseClearance, comp.MaxOffset, RobustRandom);
+        return SiteBetween(factions.ElementAtOrDefault(0) ?? new(), factions.ElementAtOrDefault(1) ?? new(),
+            comp.BaseClearance, comp.MaxOffset, RobustRandom);
     }
 
     /// <summary>
-    /// A point on the line halfway between the two furthest-apart bases, so each faction travels about as far: the
-    /// clearance from both plus up to <paramref name="maxOffset"/> sideways. With fewer than two bases, a point 2-4 km
-    /// from the sector's middle. Null when no candidate is clear of every base.
+    /// A point on the line halfway between the nearest uplink of one faction and the nearest of the other, so each
+    /// travels about as far: the clearance from every uplink plus up to <paramref name="maxOffset"/> sideways. With a
+    /// faction missing, a point 2-4 km from the sector's middle. Null when no candidate is clear of every uplink.
     /// </summary>
-    public static Vector2? SiteBetween(IReadOnlyList<Vector2> bases, float clearance, float maxOffset, IRobustRandom random)
+    public static Vector2? SiteBetween(IReadOnlyList<Vector2> first, IReadOnlyList<Vector2> second, float clearance,
+        float maxOffset, IRobustRandom random)
     {
+        var bases = first.Concat(second).ToList();
         bool Valid(Vector2 point) => bases.All(p => (p - point).Length() >= clearance);
 
-        if (bases.Count < 2)
+        if (first.Count == 0 || second.Count == 0)
         {
             for (var attempt = 0; attempt < 30; attempt++)
             {
@@ -357,13 +368,13 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
             return null;
         }
 
-        var (a, b) = (bases[0], bases[1]);
-        for (var i = 0; i < bases.Count; i++)
+        var (a, b) = (first[0], second[0]);
+        foreach (var p in first)
         {
-            for (var j = i + 1; j < bases.Count; j++)
+            foreach (var q in second)
             {
-                if ((bases[j] - bases[i]).LengthSquared() > (b - a).LengthSquared())
-                    (a, b) = (bases[i], bases[j]);
+                if ((q - p).LengthSquared() < (b - a).LengthSquared())
+                    (a, b) = (p, q);
             }
         }
 

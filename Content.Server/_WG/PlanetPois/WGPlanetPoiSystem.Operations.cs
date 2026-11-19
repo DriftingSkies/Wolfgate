@@ -75,8 +75,14 @@ public sealed partial class WGPlanetPoiSystem
         var found = false;
         for (var attempt = 0; attempt < OperationSpotAttempts && !found; attempt++)
         {
-            if (!TryWreckSpot((ground, biome), grid, record.RoamerCentre, radius, table, reach, out spot))
-                return false;
+            // Only the last try sweeps the whole ring, so a crowded world costs one sweep at most, not one per try.
+            var last = attempt == OperationSpotAttempts - 1;
+            if (!TryWreckSpot((ground, biome), grid, record.RoamerCentre, radius, table, reach, out spot, sweepRing: last))
+            {
+                if (last)
+                    return false;
+                continue;
+            }
             var footprint = Footprint(spot, reach);
             found = !GridsNear(ground, mapId, spot, reach + WreckClearance)
                     && !record.Sites.Exists(other => other.Bounds.Intersects(footprint));

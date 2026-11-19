@@ -5,6 +5,7 @@ using Content.Shared.Examine;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
 using Content.Shared.ProximityDetection;
@@ -29,6 +30,7 @@ public sealed class WGVestSpecializationSystem : EntitySystem
     [Dependency] private MovementSpeedModifierSystem _movementSpeed = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
 
     private const string Slot = "outerClothing";
 
@@ -132,8 +134,9 @@ public sealed class WGVestSpecializationSystem : EntitySystem
                 || !TryComp<DamageableComponent>(wearer, out var damage))
                 continue;
 
+            // A wearer already down or dead can't use the burst, so it isn't spent on them.
             var state = EnsureComp<WGSecondWindStateComponent>(wearer.Value);
-            if (state.Spent || damage.TotalDamage < wind.Threshold)
+            if (state.Spent || damage.TotalDamage < wind.Threshold || _mobState.IsIncapacitated(wearer.Value))
                 continue;
 
             state.Spent = true;

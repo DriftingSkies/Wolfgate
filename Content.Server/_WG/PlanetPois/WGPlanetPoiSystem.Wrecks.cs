@@ -164,7 +164,7 @@ public sealed partial class WGPlanetPoiSystem
     /// landing zone and <paramref name="edgeMargin"/> (the table's when null) of the edge.
     /// </summary>
     private bool TryWreckSpot(Entity<BiomeComponent> ground, MapGridComponent grid, Vector2 centre, float radius, WGPlanetPoiTablePrototype table,
-        float reach, out Vector2 spot, int? edgeMargin = null)
+        float reach, out Vector2 spot, int? edgeMargin = null, bool sweepRing = true)
     {
         spot = default;
         var inner = table.CentreClear + reach + WreckClearance;
@@ -192,6 +192,9 @@ public sealed partial class WGPlanetPoiSystem
             if (Free(spot))
                 return true;
         }
+
+        if (!sweepRing)
+            return false;
 
         // Lakes and roads can leave only a few gaps big enough, which random tries miss: sweep the whole ring.
         var sweep = new List<Vector2>();

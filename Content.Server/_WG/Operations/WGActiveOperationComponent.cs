@@ -1,3 +1,4 @@
+using System.Numerics;
 using Content.Shared._WG.Operations;
 using Robust.Shared.Map;
 using Robust.Shared.Timing;
@@ -39,6 +40,14 @@ public sealed partial class WGActiveOperationComponent : Component
     /// <summary>The tick the site began loading: only NPCs made since then are its guards, not wildlife already there.</summary>
     [ViewVariables]
     public GameTick ArrivedTick;
+
+    /// <summary>Where spawners still on the site sat when it arrived; mobs that appear there later are its guards too.</summary>
+    [ViewVariables]
+    public List<Vector2> GuardSpawns = new();
+
+    /// <summary>Guards seen going critical or dead; one deleted after that, such as gibbed, still counts as down.</summary>
+    [ViewVariables]
+    public HashSet<EntityUid> Downed = new();
 
     /// <summary>Set once a cleared PvE site has paid the caller.</summary>
     [DataField]

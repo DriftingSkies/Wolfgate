@@ -37,7 +37,7 @@ public sealed class WGFragmentMathTest
         for (var seed = 0; seed < 50; seed++)
         {
             random.SetSeed(seed);
-            var site = WGFragmentRuleSystem.SiteBetween(bases, 2500f, 2000f, random);
+            var site = WGFragmentRuleSystem.SiteBetween(new[] { bases[0] }, new[] { bases[1] }, 2500f, 2000f, random);
             Assert.That(site, Is.Not.Null);
             var da = (site!.Value - bases[0]).Length();
             var db = (site.Value - bases[1]).Length();
@@ -47,12 +47,30 @@ public sealed class WGFragmentMathTest
     }
 
     [Test]
+    public void SitePairsAcrossFactionsNotWithinOne()
+    {
+        // The TSF has its base and a far supercapital; the fragment still lands between the TSF base and the PDV.
+        var tsf = new[] { new Vector2(3000f, 0f), new Vector2(-20000f, 0f) };
+        var pdv = new[] { new Vector2(3000f, 20000f) };
+        var random = new RobustRandom();
+        for (var seed = 0; seed < 30; seed++)
+        {
+            random.SetSeed(seed);
+            var site = WGFragmentRuleSystem.SiteBetween(tsf, pdv, 2500f, 2000f, random);
+            Assert.That(site, Is.Not.Null);
+            var toTsf = (site!.Value - tsf[0]).Length();
+            var toPdv = (site.Value - pdv[0]).Length();
+            Assert.That(MathF.Abs(toTsf - toPdv), Is.LessThanOrEqualTo(0.25f * MathF.Max(toTsf, toPdv)));
+        }
+    }
+
+    [Test]
     public void SiteWithOneBaseStaysClearOfIt()
     {
         var bases = new List<Vector2> { new(3000f, 0f) };
         var random = new RobustRandom();
         random.SetSeed(1);
-        var site = WGFragmentRuleSystem.SiteBetween(bases, 2500f, 2000f, random);
+        var site = WGFragmentRuleSystem.SiteBetween(bases, Array.Empty<Vector2>(), 2500f, 2000f, random);
         Assert.That(site, Is.Not.Null);
         Assert.That((site!.Value - bases[0]).Length(), Is.GreaterThanOrEqualTo(2500f));
     }
