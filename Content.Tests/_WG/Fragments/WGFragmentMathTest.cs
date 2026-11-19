@@ -4,6 +4,7 @@ using System.Numerics;
 using Content.Server._WG.Fragments;
 using NUnit.Framework;
 using Robust.Shared.Random;
+using Robust.Shared.Utility;
 
 namespace Content.Tests._WG.Fragments;
 
@@ -52,6 +53,44 @@ public sealed class WGFragmentMathTest
         var site = WGFragmentRuleSystem.SiteBetween(bases, 2500f, 2000f, random);
         Assert.That(site, Is.Not.Null);
         Assert.That((site!.Value - bases[0]).Length(), Is.GreaterThanOrEqualTo(2500f));
+    }
+
+    [Test]
+    public void CorruptionKeepsCoordinatesAndPlacesWordsAndBursts()
+    {
+        const string coords = "(12500, -3000)";
+        var message = $"The Monolith fragment has come to rest near {coords}. Its heart is beating, and the Remade are crawling out of the wretched stone.";
+        var words = new[] { "SEEING", "HUNGRY" };
+        for (var seed = 0; seed < 30; seed++)
+        {
+            var built = WGFragmentText.Build(message, coords, 0.25f, 1, 3, words, 90, new Random(seed));
+            Assert.That(built.Plain, Does.Contain(coords));
+            Assert.That(built.Markup, Does.Contain(coords));
+            Assert.That(built.Plain, Has.Length.EqualTo(message.Length));
+            Assert.That(built.Plain.Contains("SEEING") || built.Plain.Contains("HUNGRY"), Is.True);
+            Assert.That(built.Markup.Split("[scramble ").Length - 1, Is.EqualTo(3));
+            Assert.DoesNotThrow(() => FormattedMessage.FromMarkupOrThrow(built.Markup));
+            Assert.That(WGFragmentText.Build(message, coords, 0.25f, 1, 3, words, 90, new Random(seed)), Is.EqualTo(built));
+        }
+    }
+
+    [Test]
+    public void CleanLineIsUntouched()
+    {
+        const string message = "The fragment heart near (0, 0) has stopped beating.";
+        var built = WGFragmentText.Build(message, "(0, 0)", 0f, 0, 0, Array.Empty<string>(), 90, new Random(1));
+        Assert.That(built.Plain, Is.EqualTo(message));
+        Assert.That(built.Markup, Is.EqualTo(message));
+    }
+
+    [Test]
+    public void WhisperIsSpacedWithOneBurst()
+    {
+        var built = WGFragmentText.Whisper("We see you", 90);
+        Assert.That(built.Markup, Does.StartWith("w e"));
+        Assert.That(built.Markup, Does.EndWith("y o u"));
+        Assert.That(built.Markup.Split("[scramble ").Length - 1, Is.EqualTo(1));
+        Assert.DoesNotThrow(() => FormattedMessage.FromMarkupOrThrow(built.Markup));
     }
 
     [TestCase(250, false, 250)]

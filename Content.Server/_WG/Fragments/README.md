@@ -3,15 +3,24 @@
 Monolith fragments rebuilt around the Remade. A fragment is a rare random event (`WGFragmentEvent`, replacing Mono's
 `MonolithFragmentSmallAppearance` in the monolithic events table) that drifts in on the line halfway between the TSF and
 PDV bases (their anchored uplinks), at least 2.5 km from either and up to 2 km further off that line. Its Mono mobs are
-swapped for Remade, and a fragment heart sits at its middle. Each announcement has its own sound: `seeing.ogg` as it
-falls in, a heartbeat as it lands, an alarm before it leaves and a stinger when its heart breaks or it gets away.
+swapped for Remade, and a fragment heart sits at its middle.
+
+The fragment sends every announcement itself (`WGFragmentLine`, built by `WGFragmentText`), each with its own sound:
+`seeing.ogg` as it falls in, a heartbeat as it lands, a hull creak before it leaves, a stinger when its heart breaks or
+it gets away, and a storm wind once it leaves cold. The sender speaks in the Monolith's violet while the heart beats; the
+text goes corpse white, flesh, then arterial red, and both fade to ash once the heart breaks. The landing, the warning
+and the escape come through corrupted: Lattice noise, a garbled sender, hidden words written over real ones and bursts
+that flicker live through the client's `[scramble]` tag; the landing and the escape are followed by a whisper. The
+coordinates are never corrupted, and a world with no mass transceiver up misses these lines like any announcement.
 
 Admins can force one with `addgamerule WGFragmentEvent`; it lands 10 to 20 seconds after the first announcement.
 
-While the heart stands, it sends a wave of Remade every 90 seconds at the players within 40 m: two, plus one per three
-players, an elite every third wave, at most 16 alive. Nobody near, no wave. Breaking the heart (3000 damage) stops the
-waves and pays 300 to each faction's uplink, half again if members of both factions were aboard at some point before it
-broke. The fragment leaves after 40 to 45 minutes.
+It lands with a garrison of 8 Remade and 2 elites besides the mobs it swaps. While the heart stands, it sends a wave
+every 60 seconds at the living players within 60 m, on the fragment or a ship alongside: four, plus one per two players,
+an elite every other wave, at most 30 alive. Four in ten of a wave board other grids within 60 m of the heart, such as
+ships alongside; the rest land on the fragment, out of sight where they can. Nobody near, no wave. Breaking the heart
+(3000 damage) stops the waves and pays 300 to each faction's uplink, half again if members of both factions were aboard
+at some point before it broke. The fragment leaves after 20 minutes, with a warning 5 minutes before.
 
 The Remade here belong to no Monolith, so nothing grows, climbs or turns corpses. A fragment never holds a Scion, a
 splinter or any other `WGMonolith`.
@@ -26,8 +35,11 @@ Tuning is in `Resources/Prototypes/_WG/Fragments/fragments.yml`; the logic is `W
 ### Server
 
 - [`Content.Server/_WG/Fragments/WGFragmentHeartComponent.cs`](WGFragmentHeartComponent.cs)
+- [`Content.Server/_WG/Fragments/WGFragmentLine.cs`](WGFragmentLine.cs)
 - [`Content.Server/_WG/Fragments/WGFragmentRuleComponent.cs`](WGFragmentRuleComponent.cs)
+- [`Content.Server/_WG/Fragments/WGFragmentRuleSystem.Announcements.cs`](WGFragmentRuleSystem.Announcements.cs)
 - [`Content.Server/_WG/Fragments/WGFragmentRuleSystem.cs`](WGFragmentRuleSystem.cs)
+- [`Content.Server/_WG/Fragments/WGFragmentText.cs`](WGFragmentText.cs)
 
 ### Integration tests
 

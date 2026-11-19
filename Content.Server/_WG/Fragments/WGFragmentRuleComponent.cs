@@ -1,6 +1,5 @@
 using Content.Shared._Mono.Company;
 using Content.Shared.Tag;
-using Robust.Shared.Audio;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
@@ -38,21 +37,41 @@ public sealed partial class WGFragmentRuleComponent : Component
     [DataField]
     public float MaxOffset = 2000f;
 
-    /// <summary>Played with the announcement that the fragment has come to rest; the default chime if unset.</summary>
-    [DataField]
-    public SoundSpecifier? ArrivedSound;
+    /// <summary>Announced as the event starts, before the fragment is placed.</summary>
+    [DataField(required: true)]
+    public WGFragmentLine Sighted = default!;
 
-    /// <summary>Played with the announcement that its heart has broken.</summary>
-    [DataField]
-    public SoundSpecifier? ClearedSound;
+    /// <summary>Announced when the fragment lands.</summary>
+    [DataField(required: true)]
+    public WGFragmentLine Arrived = default!;
 
-    /// <summary>Played when it drifts off with its heart still beating.</summary>
-    [DataField]
-    public SoundSpecifier? LostSound;
+    /// <summary>Announced when the station event's end warning comes due.</summary>
+    [DataField(required: true)]
+    public WGFragmentLine Warning = default!;
 
-    /// <summary>Played when it drifts off after its heart was broken.</summary>
+    /// <summary>Announced when its heart breaks.</summary>
+    [DataField(required: true)]
+    public WGFragmentLine Broken = default!;
+
+    /// <summary>Announced when it leaves with its heart still beating.</summary>
+    [DataField(required: true)]
+    public WGFragmentLine Lost = default!;
+
+    /// <summary>Announced when it leaves after its heart was broken.</summary>
+    [DataField(required: true)]
+    public WGFragmentLine Departed = default!;
+
+    /// <summary>Space-separated words the corruption may spell out.</summary>
     [DataField]
-    public SoundSpecifier? DepartedSound;
+    public LocId HiddenWords = "wg-fragment-hidden-words";
+
+    /// <summary>Colour of the whisper that follows the worst lines.</summary>
+    [DataField]
+    public Color VoiceColor = Color.FromHex("#A05CC8");
+
+    /// <summary>Milliseconds between redraws of a flickering burst.</summary>
+    [DataField]
+    public int FlickerRate = 90;
 
     /// <summary>The entity whose breaking clears the fragment.</summary>
     [DataField]
@@ -85,9 +104,25 @@ public sealed partial class WGFragmentRuleComponent : Component
     [DataField]
     public int PlayersPerExtra = 3;
 
-    /// <summary>Players within this many metres of the heart wake it.</summary>
+    /// <summary>Living players within this many metres of the heart wake it, aboard the fragment or a ship alongside.</summary>
     [DataField]
     public float WakeRadius = 40f;
+
+    /// <summary>Waves also spawn on open tiles of other grids within this many metres of the heart, such as ships alongside.</summary>
+    [DataField]
+    public float SpawnRadius = 40f;
+
+    /// <summary>Share of a wave sent to those nearby grids when any are in range; the rest lands on the fragment.</summary>
+    [DataField]
+    public float NearbyShare = 0.4f;
+
+    /// <summary>Remade placed on the fragment as it lands, beside those swapped in for its mapped mobs.</summary>
+    [DataField]
+    public int Garrison;
+
+    /// <summary>Elites among the landing garrison.</summary>
+    [DataField]
+    public int GarrisonElites;
 
     /// <summary>Waves stop while this many of the fragment's Remade are alive.</summary>
     [DataField]
@@ -107,6 +142,7 @@ public sealed partial class WGFragmentRuleComponent : Component
     public TimeSpan NextCheck;
     public int Wave;
     public bool Cleared;
+    public bool WarningSent;
     /// <summary>Set when the heart breaks; <see cref="Present"/> stops taking new factions from then on.</summary>
     public bool HeartBroken;
     public readonly HashSet<EntityUid> Remade = new();

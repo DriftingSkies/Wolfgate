@@ -3,6 +3,7 @@ using System.Numerics;
 using Content.Server._Mono.Store;
 using Content.Server._WG.Operations;
 using Content.Server._WG.Remade.Conversion;
+using Content.Server.StationEvents.Components;
 using Content.Server.StationEvents.Events;
 using Content.Shared._Mono.Company;
 using Content.Shared.Destructible;
@@ -13,7 +14,6 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Physics;
 using Content.Shared.Tag;
-using Robust.Shared.Audio;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -27,7 +27,7 @@ namespace Content.Server._WG.Fragments;
 /// Places a Monolith fragment about as far from each faction base as the other, swaps its mobs for Remade, sends waves
 /// from its heart at whoever comes near, pays every faction when the heart breaks and removes the fragment at the end.
 /// </summary>
-public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComponent>
+public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComponent>
 {
     [Dependency] private CurrencyInjectionSystem _currency = default!;
     [Dependency] private LinkedLifecycleGridSystem _lifecycle = default!;
@@ -36,6 +36,7 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private TagSystem _tags = default!;
+    [Dependency] private TurfSystem _turf = default!;
     [Dependency] private WGSiteGridSystem _siteGrid = default!;
 
     /// <summary>A wave's size: the base, one more per <paramref name="perExtra"/> players, and room left under the cap.</summary>
@@ -57,6 +58,7 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
     {
         base.Initialize();
         SubscribeLocalEvent<WGFragmentHeartComponent, DestructionEventArgs>(OnHeartBroken);
+        InitializeAnnouncements();
     }
 
     /// <summary>
@@ -137,13 +139,26 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
         for (var i = 0; i < comp.DecorCount && comp.Decor.Count > 0; i++)
             Spawn(RobustRandom.Pick(comp.Decor), RobustRandom.Pick(tiles));
 
+        for (var i = 0; i < comp.Garrison && comp.Common.Count > 0; i++)
+            comp.Remade.Add(SpawnRemade(RobustRandom.Pick(comp.Common), RobustRandom.Pick(tiles)));
+        for (var i = 0; i < comp.GarrisonElites && comp.Elites.Count > 0; i++)
+            comp.Remade.Add(SpawnRemade(RobustRandom.Pick(comp.Elites), RobustRandom.Pick(tiles)));
+
         comp.NextWave = Timing.CurTime + comp.WaveInterval;
-        Announce("wg-fragment-arrived", comp.Site, comp.ArrivedSound);
+        Announce(comp, comp.Arrived, comp.Site);
     }
 
     protected override void ActiveTick(EntityUid uid, WGFragmentRuleComponent comp, GameRuleComponent gameRule, float frameTime)
     {
         base.ActiveTick(uid, comp, gameRule, frameTime);
+
+        // The station event times the end warning; the fragment sends it in its own voice.
+        if (!comp.WarningSent && comp.Grid != null && TryComp<StationEventComponent>(uid, out var stationEvent)
+            && stationEvent.WarningAnnounced)
+        {
+            comp.WarningSent = true;
+            Announce(comp, comp.Warning, comp.Site, calm: comp.HeartBroken);
+        }
 
         if (comp.Cleared || comp.Grid is not { } grid || !Exists(grid) || Timing.CurTime < comp.NextCheck)
             return;
@@ -155,18 +170,23 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
             ? _transform.GetMapCoordinates(living)
             : MapCoordinates.Nullspace;
         var near = new List<Vector2>();
+        var boarded = new HashSet<EntityUid>();
         var players = EntityQueryEnumerator<ActorComponent, MobStateComponent, TransformComponent>();
         while (players.MoveNext(out var player, out _, out var state, out var xform))
         {
-            if (xform.GridUid != grid || _mobState.IsDead(player, state))
+            if (_mobState.IsDead(player, state))
                 continue;
 
-            if (!comp.HeartBroken)
+            if (xform.GridUid == grid && !comp.HeartBroken)
                 RecordVisit(comp, player);
 
             var pos = _transform.GetWorldPosition(xform);
-            if ((pos - heartPos.Position).Length() <= comp.WakeRadius)
-                near.Add(pos);
+            if (xform.MapID != heartPos.MapId || (pos - heartPos.Position).Length() > comp.WakeRadius)
+                continue;
+
+            near.Add(pos);
+            if (xform.GridUid is { } aboard && aboard != grid)
+                boarded.Add(aboard);
         }
 
         // A heart gone without breaking pays nothing; the fragment just stops sending waves.
@@ -177,7 +197,15 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
             return;
         comp.NextWave = Timing.CurTime + comp.WaveInterval;
 
-        var size = WaveSize(near.Count, comp.Remade.Count, comp.WaveBase, comp.PlayersPerExtra, comp.MaxAlive);
+        // Remade carried off on a ship that left no longer hold a place under the cap.
+        var alive = comp.Remade.Count(r =>
+        {
+            var xform = Transform(r);
+            return xform.GridUid == grid
+                   || xform.MapID == heartPos.MapId
+                   && (_transform.GetWorldPosition(xform) - heartPos.Position).Length() <= comp.SpawnRadius;
+        });
+        var size = WaveSize(near.Count, alive, comp.WaveBase, comp.PlayersPerExtra, comp.MaxAlive);
         if (size == 0 || comp.Common.Count == 0)
             return;
 
@@ -186,23 +214,64 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
         var elite = comp.Elites.Count > 0 && comp.EliteEvery > 0 && comp.Wave % comp.EliteEvery == 0;
         if (elite)
             size--;
-        var spots = _siteGrid.OpenTiles((grid, Comp<MapGridComponent>(grid)));
-        // Out of sight where possible: tiles at least 6 m from every player near the heart.
-        var hidden = spots.Where(s =>
+        var own = OutOfSight(_siteGrid.OpenTiles((grid, Comp<MapGridComponent>(grid))), near, true);
+        var nearby = OutOfSight(NearbyTiles(comp, boarded, heartPos), near, false);
+        if (own.Count == 0 && nearby.Count == 0)
+            return;
+
+        for (var i = 0; i < size; i++)
+            comp.Remade.Add(SpawnRemade(RobustRandom.Pick(comp.Common), WaveSpot(comp, own, nearby)));
+
+        if (elite)
+            comp.Remade.Add(SpawnRemade(RobustRandom.Pick(comp.Elites), WaveSpot(comp, own, nearby)));
+    }
+
+    /// <summary>A spot for one Remade: a nearby grid by <see cref="WGFragmentRuleComponent.NearbyShare"/>, else the fragment.</summary>
+    private EntityCoordinates WaveSpot(WGFragmentRuleComponent comp, List<EntityCoordinates> own, List<EntityCoordinates> nearby)
+    {
+        var useNearby = nearby.Count > 0 && (own.Count == 0 || RobustRandom.Prob(comp.NearbyShare));
+        return RobustRandom.Pick(useNearby ? nearby : own);
+    }
+
+    /// <summary>
+    /// Open tiles within the spawn radius of the heart on the grids players near it are aboard, such as a ship
+    /// alongside; a grid nobody near the heart is on takes no Remade.
+    /// </summary>
+    private List<EntityCoordinates> NearbyTiles(WGFragmentRuleComponent comp, HashSet<EntityUid> boarded, MapCoordinates heart)
+    {
+        var tiles = new List<EntityCoordinates>();
+        if (comp.SpawnRadius <= 0f)
+            return tiles;
+
+        var area = new Circle(heart.Position, comp.SpawnRadius);
+        foreach (var other in boarded)
+        {
+            if (!TryComp<MapGridComponent>(other, out var gridComp))
+                continue;
+
+            foreach (var tile in MapSystem.GetTilesIntersecting(other, gridComp, area))
+            {
+                if (_turf.IsSpace(tile) || _turf.IsTileBlocked(tile, CollisionGroup.Impassable))
+                    continue;
+                tiles.Add(MapSystem.GridTileToLocal(other, gridComp, tile.GridIndices));
+            }
+        }
+
+        return tiles;
+    }
+
+    /// <summary>
+    /// The tiles at least 6 m from every player near the heart; with none, all of them if <paramref name="fallback"/>,
+    /// else none, so a cramped ship sends its share back to the fragment.
+    /// </summary>
+    private List<EntityCoordinates> OutOfSight(List<EntityCoordinates> tiles, List<Vector2> near, bool fallback)
+    {
+        var hidden = tiles.Where(s =>
         {
             var world = _transform.ToMapCoordinates(s).Position;
             return near.All(p => (p - world).Length() >= 6f);
         }).ToList();
-        if (hidden.Count > 0)
-            spots = hidden;
-        if (spots.Count == 0)
-            return;
-
-        for (var i = 0; i < size; i++)
-            comp.Remade.Add(SpawnRemade(RobustRandom.Pick(comp.Common), RobustRandom.Pick(spots)));
-
-        if (elite)
-            comp.Remade.Add(SpawnRemade(RobustRandom.Pick(comp.Elites), RobustRandom.Pick(spots)));
+        return hidden.Count > 0 || !fallback ? hidden : tiles;
     }
 
     protected override void Ended(EntityUid uid, WGFragmentRuleComponent comp, GameRuleComponent gameRule, GameRuleEndedEvent args)
@@ -210,8 +279,20 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
         base.Ended(uid, comp, gameRule, args);
 
         if (comp.Grid != null)
-            Announce(comp.Cleared ? "wg-fragment-departed" : "wg-fragment-lost", comp.Site,
-                comp.Cleared ? comp.DepartedSound : comp.LostSound);
+        {
+            if (comp.Cleared)
+                Announce(comp, comp.Departed, comp.Site);
+            else
+                Announce(comp, comp.Lost, comp.Site);
+        }
+
+        // Remade that boarded a ship leave with the fragment; those still on it go with its grid.
+        foreach (var remade in comp.Remade)
+        {
+            if (Exists(remade) && Transform(remade).GridUid != comp.Grid)
+                QueueDel(remade);
+        }
+        comp.Remade.Clear();
 
         if (comp.Grid is { } grid && Exists(grid))
             _lifecycle.UnparentPlayersFromGrid(grid, true);
@@ -232,7 +313,7 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
             _currency.InjectCurrency(id, new Dictionary<string, FixedPoint2> { [currency] = amount });
         }
 
-        Announce(joint ? "wg-fragment-cleared-joint" : "wg-fragment-cleared", comp.Site, comp.ClearedSound);
+        Announce(comp, comp.Broken, comp.Site, joint);
     }
 
     /// <summary>Where the fragment lands, from the faction uplinks anchored on the map; carried handheld uplinks share the tags but aren't bases.</summary>
@@ -307,16 +388,5 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
         var remade = Spawn(proto, at);
         EnsureComp<WGRemadeComponent>(remade);
         return remade;
-    }
-
-
-
-    /// <summary>A sector-wide announcement with the fragment's position to the nearest 250 m.</summary>
-    private void Announce(string key, MapCoordinates at, SoundSpecifier? sound)
-    {
-        var message = Loc.GetString(key,
-            ("x", (int) MathF.Round(at.X / 250f) * 250),
-            ("y", (int) MathF.Round(at.Y / 250f) * 250));
-        ChatSystem.DispatchGlobalAnnouncement(message, Loc.GetString("wg-fragment-announcer"), announcementSound: sound, colorOverride: Color.MediumPurple);
     }
 }

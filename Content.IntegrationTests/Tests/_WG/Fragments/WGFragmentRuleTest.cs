@@ -36,6 +36,8 @@ public sealed class WGFragmentRuleTest
                 "the heart isn't on the fragment.");
             Assert.That(entMan.EntityQuery<WGMonolithComponent>(), Is.Empty, "a fragment holds a Monolith.");
             Assert.That(comp.Remade.All(entMan.HasComponent<WGRemadeComponent>), Is.True);
+            Assert.That(comp.Remade.Count, Is.GreaterThanOrEqualTo(comp.Garrison + comp.GarrisonElites),
+                "the landing garrison is missing.");
 
             entMan.System<Content.Shared.Destructible.SharedDestructibleSystem>().DestroyEntity(comp.HeartUid!.Value);
         });

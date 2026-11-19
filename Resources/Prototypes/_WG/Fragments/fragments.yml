@@ -7,28 +7,76 @@
   id: WGFragmentEvent
   components:
   - type: StationEvent
-    startAnnouncement: wg-fragment-start-announcement
-    startAudio:
-      path: /Audio/_WG/Fragments/seeing.ogg
-    # The end is announced by the rule itself: lost, or departed once cleared.
-    warningAnnouncement: wg-fragment-warning-announcement
-    warningAudio:
-      path: /Audio/_WG/Remade/monolith/alarm.ogg
+    # Times the event and its end warning; every announcement is the rule's own.
     earliestStart: 30
     weight: 3
-    duration: 2400
-    maxDuration: 2700
+    # Twenty minutes, so crews go for the heart early; the warning still comes with five left.
+    duration: 1200
+    maxDuration: 1200
     reoccurrenceDelay: 60
   - type: WGFragmentRule
-    # Each announcement its own sting: a heartbeat on arrival, DS13 stingers for its heart breaking or getting away.
-    arrivedSound:
-      path: /Audio/_WG/Lattice/drift_pulse.ogg
-    clearedSound:
-      path: /Audio/_WG/Remade/betrayal/stinger_2.ogg
-    lostSound:
-      path: /Audio/_WG/Remade/betrayal/stinger_1.ogg
-    departedSound:
-      path: /Audio/_WG/Remade/betrayal/stinger_3.ogg
+    # The sender speaks in the Monolith's violet while the heart beats; the text goes corpse white, flesh, then
+    # arterial red as the fragment escalates, and both fade to ash once the heart breaks. The worst lines come
+    # through corrupted: noise that sometimes spells a hidden word, bursts that flicker live, and a whisper after.
+    sighted:
+      text: wg-fragment-start-announcement
+      sound:
+        path: /Audio/_WG/Fragments/seeing.ogg
+      textColor: "#D9D0C1"
+    arrived:
+      text: wg-fragment-arrived
+      sound:
+        path: /Audio/_WG/Lattice/drift_pulse.ogg
+      textColor: "#C9667E"
+      corruption: 0.12
+      senderCorruption: 0.15
+      hiddenWords: 1
+      flickers: 3
+      voice:
+      - wg-fragment-voice-land-1
+      - wg-fragment-voice-land-2
+      - wg-fragment-voice-land-3
+      - wg-fragment-voice-land-4
+      - wg-fragment-voice-land-5
+    warning:
+      text: wg-fragment-warning-announcement
+      sound:
+        path: /Audio/_Mono/Effects/Ambience/creak2.ogg
+        params:
+          volume: -3
+      corruption: 0.08
+      senderCorruption: 0.15
+      flickers: 1
+    broken:
+      text: wg-fragment-cleared
+      jointText: wg-fragment-cleared-joint
+      sound:
+        path: /Audio/_WG/Remade/betrayal/stinger_2.ogg
+      senderColor: "#6F6380"
+      textColor: "#8E7FA3"
+    lost:
+      text: wg-fragment-lost
+      sound:
+        path: /Audio/_WG/Remade/betrayal/stinger_3.ogg
+      corruption: 0.25
+      senderCorruption: 0.3
+      hiddenWords: 2
+      flickers: 4
+      voice:
+      - wg-fragment-voice-lost-1
+      - wg-fragment-voice-lost-2
+      - wg-fragment-voice-lost-3
+      - wg-fragment-voice-lost-4
+      voiceDelay: 4
+    # Empty and cold, but something is still written in it.
+    departed:
+      text: wg-fragment-departed
+      sound:
+        path: /Audio/Effects/Weather/wind_2_1.ogg
+      senderColor: "#6F6380"
+      textColor: "#8E7FA3"
+      corruption: 0.06
+      hiddenWords: 1
     grids:
     - /Maps/_Mono/Monolithic/monolithicasteroidsmallarena.yml
     - /Maps/_Mono/Monolithic/monolithicasteroidsmallspindle.yml
@@ -40,6 +88,18 @@
     rewards:
       TSF: 300
       PDV: 300
+    # Harder than a High-value operation: a garrison waiting on landing, a wave every minute that grows fast with the
+    # players near, an elite every other wave, and Remade boarding any ship within 60 m of the heart.
+    garrison: 8
+    garrisonElites: 2
+    waveInterval: 60
+    waveBase: 4
+    playersPerExtra: 2
+    eliteEvery: 2
+    maxAlive: 30
+    wakeRadius: 60
+    spawnRadius: 60
+    nearbyShare: 0.4
     replace:
       MobMonolithicGestalt: [ WGRemadeSlasher, WGRemadeHopper ]
       MobMonolithicGolom: [ WGRemadeSlasher, WGRemadeLeaper ]
