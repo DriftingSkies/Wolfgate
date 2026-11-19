@@ -1,5 +1,6 @@
 using Content.Shared._Mono.Company;
 using Content.Shared.Tag;
+using Robust.Shared.Audio;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
@@ -33,9 +34,25 @@ public sealed partial class WGFragmentRuleComponent : Component
     [DataField]
     public float BaseClearance = 2500f;
 
-    /// <summary>The furthest it lies from either of the two bases.</summary>
+    /// <summary>How far past that clearance it may drift sideways off the line halfway between the two bases.</summary>
     [DataField]
-    public float MaxDistance = 6000f;
+    public float MaxOffset = 2000f;
+
+    /// <summary>Played with the announcement that the fragment has come to rest; the default chime if unset.</summary>
+    [DataField]
+    public SoundSpecifier? ArrivedSound;
+
+    /// <summary>Played with the announcement that its heart has broken.</summary>
+    [DataField]
+    public SoundSpecifier? ClearedSound;
+
+    /// <summary>Played when it drifts off with its heart still beating.</summary>
+    [DataField]
+    public SoundSpecifier? LostSound;
+
+    /// <summary>Played when it drifts off after its heart was broken.</summary>
+    [DataField]
+    public SoundSpecifier? DepartedSound;
 
     /// <summary>The entity whose breaking clears the fragment.</summary>
     [DataField]

@@ -1,9 +1,12 @@
 # Fragments
 
 Monolith fragments rebuilt around the Remade. A fragment is a rare random event (`WGFragmentEvent`, replacing Mono's
-`MonolithFragmentSmallAppearance` in the monolithic events table) that drifts in about as far from the TSF base as from
-the PDV base, at least 2.5 km from any faction base. Its Mono mobs are swapped for Remade, and a fragment heart sits at
-its middle.
+`MonolithFragmentSmallAppearance` in the monolithic events table) that drifts in on the line halfway between the TSF and
+PDV bases (their anchored uplinks), at least 2.5 km from either and up to 2 km further off that line. Its Mono mobs are
+swapped for Remade, and a fragment heart sits at its middle. Each announcement has its own sound: `seeing.ogg` as it
+falls in, a heartbeat as it lands, an alarm before it leaves and a stinger when its heart breaks or it gets away.
+
+Admins can force one with `addgamerule WGFragmentEvent`; it lands 10 to 20 seconds after the first announcement.
 
 While the heart stands, it sends a wave of Remade every 90 seconds at the players within 40 m: two, plus one per three
 players, an elite every third wave, at most 16 alive. Nobody near, no wave. Breaking the heart (3000 damage) stops the

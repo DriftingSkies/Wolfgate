@@ -12,12 +12,23 @@
       path: /Audio/_WG/Fragments/seeing.ogg
     # The end is announced by the rule itself: lost, or departed once cleared.
     warningAnnouncement: wg-fragment-warning-announcement
+    warningAudio:
+      path: /Audio/_WG/Remade/monolith/alarm.ogg
     earliestStart: 30
     weight: 3
     duration: 2400
     maxDuration: 2700
     reoccurrenceDelay: 60
   - type: WGFragmentRule
+    # Each announcement its own sting: a heartbeat on arrival, DS13 stingers for its heart breaking or getting away.
+    arrivedSound:
+      path: /Audio/_WG/Lattice/drift_pulse.ogg
+    clearedSound:
+      path: /Audio/_WG/Remade/betrayal/stinger_2.ogg
+    lostSound:
+      path: /Audio/_WG/Remade/betrayal/stinger_1.ogg
+    departedSound:
+      path: /Audio/_WG/Remade/betrayal/stinger_3.ogg
     grids:
     - /Maps/_Mono/Monolithic/monolithicasteroidsmallarena.yml
     - /Maps/_Mono/Monolithic/monolithicasteroidsmallspindle.yml

@@ -13,6 +13,7 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Physics;
 using Content.Shared.Tag;
+using Robust.Shared.Audio;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -137,7 +138,7 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
             Spawn(RobustRandom.Pick(comp.Decor), RobustRandom.Pick(tiles));
 
         comp.NextWave = Timing.CurTime + comp.WaveInterval;
-        Announce("wg-fragment-arrived", comp.Site);
+        Announce("wg-fragment-arrived", comp.Site, comp.ArrivedSound);
     }
 
     protected override void ActiveTick(EntityUid uid, WGFragmentRuleComponent comp, GameRuleComponent gameRule, float frameTime)
@@ -209,7 +210,8 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
         base.Ended(uid, comp, gameRule, args);
 
         if (comp.Grid != null)
-            Announce(comp.Cleared ? "wg-fragment-departed" : "wg-fragment-lost", comp.Site);
+            Announce(comp.Cleared ? "wg-fragment-departed" : "wg-fragment-lost", comp.Site,
+                comp.Cleared ? comp.DepartedSound : comp.LostSound);
 
         if (comp.Grid is { } grid && Exists(grid))
             _lifecycle.UnparentPlayersFromGrid(grid, true);
@@ -230,59 +232,73 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
             _currency.InjectCurrency(id, new Dictionary<string, FixedPoint2> { [currency] = amount });
         }
 
-        Announce(joint ? "wg-fragment-cleared-joint" : "wg-fragment-cleared", comp.Site);
+        Announce(joint ? "wg-fragment-cleared-joint" : "wg-fragment-cleared", comp.Site, comp.ClearedSound);
     }
 
-    /// <summary>
-    /// A point roughly as far from every faction base as from the others, at least the clearance from any of them;
-    /// a random point near the sector's middle if the bases can't be found. Null when no candidate is clear of every base.
-    /// </summary>
+    /// <summary>Where the fragment lands, from the faction uplinks anchored on the map; carried handheld uplinks share the tags but aren't bases.</summary>
     private Vector2? PickSite(WGFragmentRuleComponent comp, MapId mapId)
     {
         var bases = new List<Vector2>();
         var uplinks = EntityQueryEnumerator<TagComponent, TransformComponent>();
-        while (uplinks.MoveNext(out var uplink, out var tag, out var xform))
+        while (uplinks.MoveNext(out _, out var tag, out var xform))
         {
-            if (xform.MapID == mapId && comp.Bases.Any(b => _tags.HasTag(tag, b)))
+            if (xform.MapID == mapId && xform.Anchored && comp.Bases.Any(b => _tags.HasTag(tag, b)))
                 bases.Add(_transform.GetWorldPosition(xform));
         }
 
-        bool Valid(Vector2 point) => bases.All(p =>
-            (p - point).Length() >= comp.BaseClearance && (p - point).Length() <= comp.MaxDistance);
+        return SiteBetween(bases, comp.BaseClearance, comp.MaxOffset, RobustRandom);
+    }
+
+    /// <summary>
+    /// A point on the line halfway between the two furthest-apart bases, so each faction travels about as far: the
+    /// clearance from both plus up to <paramref name="maxOffset"/> sideways. With fewer than two bases, a point 2-4 km
+    /// from the sector's middle. Null when no candidate is clear of every base.
+    /// </summary>
+    public static Vector2? SiteBetween(IReadOnlyList<Vector2> bases, float clearance, float maxOffset, IRobustRandom random)
+    {
+        bool Valid(Vector2 point) => bases.All(p => (p - point).Length() >= clearance);
 
         if (bases.Count < 2)
         {
             for (var attempt = 0; attempt < 30; attempt++)
             {
-                var point = RobustRandom.NextVector2(2000f, 4000f);
+                var point = random.NextVector2(2000f, 4000f);
                 if (Valid(point))
                     return point;
             }
             return null;
         }
 
-        var a = bases[0];
-        var b = bases.MaxBy(p => (p - a).LengthSquared());
+        var (a, b) = (bases[0], bases[1]);
+        for (var i = 0; i < bases.Count; i++)
+        {
+            for (var j = i + 1; j < bases.Count; j++)
+            {
+                if ((bases[j] - bases[i]).LengthSquared() > (b - a).LengthSquared())
+                    (a, b) = (bases[i], bases[j]);
+            }
+        }
+
         var mid = (a + b) / 2f;
         var axis = b - a;
         var half = axis.Length() / 2f;
         var along = half > 0 ? axis / (half * 2f) : Vector2.UnitX;
         var across = new Vector2(-along.Y, along.X);
 
-        // Along the line that splits the two bases, nudged at most a tenth of the way towards either.
-        var minAcross = MathF.Sqrt(MathF.Max(0f, comp.BaseClearance * comp.BaseClearance - half * half));
-        var maxAcross = MathF.Sqrt(MathF.Max(0f, comp.MaxDistance * comp.MaxDistance - half * half));
-        var best = mid + across * MathF.Max(minAcross, comp.BaseClearance);
+        // Far enough sideways that two close bases are each the clearance away; nudged at most a tenth towards either.
+        var minAcross = MathF.Sqrt(MathF.Max(0f, clearance * clearance - half * half));
         for (var attempt = 0; attempt < 30; attempt++)
         {
-            var side = RobustRandom.Prob(0.5f) ? 1f : -1f;
+            var side = random.Prob(0.5f) ? 1f : -1f;
             var point = mid
-                        + across * side * RobustRandom.NextFloat(minAcross, MathF.Max(minAcross, maxAcross))
-                        + along * RobustRandom.NextFloat(-0.1f, 0.1f) * half;
+                        + across * side * random.NextFloat(minAcross, minAcross + maxOffset)
+                        + along * random.NextFloat(-0.1f, 0.1f) * half;
             if (Valid(point))
                 return point;
         }
-        return Valid(best) ? best : null;
+
+        var furthest = mid + across * (minAcross + maxOffset);
+        return Valid(furthest) ? furthest : null;
     }
 
     /// <summary>A Remade answering to no Monolith: it never starves, and nothing it kills turns.</summary>
@@ -296,11 +312,11 @@ public sealed class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComp
 
 
     /// <summary>A sector-wide announcement with the fragment's position to the nearest 250 m.</summary>
-    private void Announce(string key, MapCoordinates at)
+    private void Announce(string key, MapCoordinates at, SoundSpecifier? sound)
     {
         var message = Loc.GetString(key,
             ("x", (int) MathF.Round(at.X / 250f) * 250),
             ("y", (int) MathF.Round(at.Y / 250f) * 250));
-        ChatSystem.DispatchGlobalAnnouncement(message, Loc.GetString("wg-fragment-announcer"), colorOverride: Color.MediumPurple);
+        ChatSystem.DispatchGlobalAnnouncement(message, Loc.GetString("wg-fragment-announcer"), announcementSound: sound, colorOverride: Color.MediumPurple);
     }
 }
