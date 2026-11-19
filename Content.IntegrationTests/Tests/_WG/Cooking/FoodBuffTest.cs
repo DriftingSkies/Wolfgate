@@ -95,6 +95,33 @@ public sealed class FoodBuffTest
     }
 
     [Test]
+    public async Task ComfortFadesAway()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var map = await pair.CreateTestMap();
+        EntityUid warmed = default;
+
+        // Comfort from somewhere other than a meal (a hearth, tending) fades to nothing and goes, without a meal time to
+        // compare against.
+        await server.WaitAssertion(() =>
+        {
+            warmed = entMan.SpawnEntity("MobHuman", map.GridCoords);
+            entMan.System<WGMealSystem>().AddComfort(warmed, 1f);
+            Assert.That(entMan.HasComponent<WGComfortComponent>(warmed), Is.True);
+        });
+
+        await pair.RunTicksSync(pair.SecondsToTicks(20));
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entMan.HasComponent<WGComfortComponent>(warmed), Is.False, "Faded comfort wasn't cleared.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
     public async Task TendingComfortAndTraits()
     {
         await using var pair = await PoolManager.GetServerClient();

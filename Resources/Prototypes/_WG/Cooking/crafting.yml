@@ -17,6 +17,20 @@
         doAfter: 2
   - node: built
     entity: WGHearthStove
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 8
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 2
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: hearth stove
@@ -49,6 +63,17 @@
         doAfter: 2
   - node: built
     entity: WGPrepBoard
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: prep board
@@ -81,6 +106,17 @@
         doAfter: 2
   - node: built
     entity: WGCampStove
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: folding camp stove

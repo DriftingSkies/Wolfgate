@@ -26,6 +26,7 @@ tables; don't edit `hunting.yml` or the marked table entries by hand.
 
 ### Prototypes
 
+- [`Resources/Prototypes/_WG/Hunting/crafting.yml`](../../../Resources/Prototypes/_WG/Hunting/crafting.yml)
 - [`Resources/Prototypes/_WG/Hunting/hunting.yml`](../../../Resources/Prototypes/_WG/Hunting/hunting.yml)
 
 ### Textures

@@ -46,6 +46,7 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 - [`Content.Shared/_WG/Cooking/WGMendOrgans.cs`](../../../Content.Shared/_WG/Cooking/WGMendOrgans.cs)
 - [`Content.Shared/_WG/Cooking/WGPrepBoardUi.cs`](../../../Content.Shared/_WG/Cooking/WGPrepBoardUi.cs)
 - [`Content.Shared/_WG/Cooking/WGStirUi.cs`](../../../Content.Shared/_WG/Cooking/WGStirUi.cs)
+- [`Content.Shared/_WG/Cooking/WGUniversalLoadoutSystem.cs`](../../../Content.Shared/_WG/Cooking/WGUniversalLoadoutSystem.cs)
 
 ### Client
 
@@ -63,11 +64,14 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 - [`Content.IntegrationTests/Tests/_WG/Cooking/KitchenFixesTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/KitchenFixesTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/KitchenUiTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/KitchenUiTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/MealBuffTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/MealBuffTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Cooking/MessKitAndCraftingTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/MessKitAndCraftingTest.cs)
 
 ### Prototypes
 
 - [`Resources/Prototypes/_WG/Cooking/cooking_base.yml`](../../../Resources/Prototypes/_WG/Cooking/cooking_base.yml)
+- [`Resources/Prototypes/_WG/Cooking/crafting.yml`](../../../Resources/Prototypes/_WG/Cooking/crafting.yml)
 - [`Resources/Prototypes/_WG/Cooking/kitchen.yml`](../../../Resources/Prototypes/_WG/Cooking/kitchen.yml)
+- [`Resources/Prototypes/_WG/Cooking/messkit.yml`](../../../Resources/Prototypes/_WG/Cooking/messkit.yml)
 - [`Resources/Prototypes/_WG/Cooking/seasoning.yml`](../../../Resources/Prototypes/_WG/Cooking/seasoning.yml)
 
 ### Localization

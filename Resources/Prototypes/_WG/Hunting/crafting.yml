@@ -14,6 +14,17 @@
         doAfter: 2
   - node: built
     entity: WGHuntSmokingRack
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 6
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: smoking rack
@@ -46,6 +57,17 @@
         doAfter: 2
   - node: built
     entity: WGHuntTanningRack
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 6
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: tanning rack

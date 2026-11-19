@@ -16,9 +16,9 @@ public sealed partial class WGComfortComponent : Component
     [DataField]
     public float Comfort;
 
-    /// <summary>When they last finished a home-cooked dish, for sharing a meal.</summary>
+    /// <summary>When they last finished a home-cooked dish, for sharing a meal; null if they haven't.</summary>
     [ViewVariables]
-    public TimeSpan LastMeal = TimeSpan.MinValue;
+    public TimeSpan? LastMeal;
 
     /// <summary>0 for nothing to show, 1 content, 2 cozy.</summary>
     [ViewVariables]
@@ -86,7 +86,7 @@ public sealed partial class WGMealSystem
         var shared = false;
         foreach (var other in _lookup.GetEntitiesInRange<WGComfortComponent>(Transform(eater).Coordinates, ShareReach))
         {
-            if (other.Owner == eater || now - other.Comp.LastMeal > ShareWithin)
+            if (other.Owner == eater || !AteLately(other.Comp, now))
                 continue;
             shared = true;
             AddComfort(other, SharedMealComfort);
@@ -118,7 +118,7 @@ public sealed partial class WGMealSystem
         while (query.MoveNext(out var uid, out var comfort))
         {
             comfort.Comfort = Math.Max(0f, comfort.Comfort - ComfortFade * seconds / 5f);
-            if (comfort.Comfort <= 0f && _timing.CurTime - comfort.LastMeal > ShareWithin)
+            if (comfort.Comfort <= 0f && !AteLately(comfort, _timing.CurTime))
                 _faded.Add(uid);
             else
                 UpdateTier((uid, comfort));
@@ -129,6 +129,12 @@ public sealed partial class WGMealSystem
     }
 
     private readonly List<EntityUid> _faded = new();
+
+    /// <summary>Whether they finished a home-cooked dish within <see cref="ShareWithin"/>.</summary>
+    private static bool AteLately(WGComfortComponent comfort, TimeSpan now)
+    {
+        return comfort.LastMeal is { } last && now - last <= ShareWithin;
+    }
 
     private void UpdateTier(Entity<WGComfortComponent> ent)
     {

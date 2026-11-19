@@ -66,6 +66,7 @@ project (art CC BY-SA 3.0). Everything here is sold at the Homestead Supply vend
 
 ### Prototypes
 
+- [`Resources/Prototypes/_WG/Farming/crafting.yml`](../../../Resources/Prototypes/_WG/Farming/crafting.yml)
 - [`Resources/Prototypes/_WG/Farming/crops.yml`](../../../Resources/Prototypes/_WG/Farming/crops.yml)
 - [`Resources/Prototypes/_WG/Farming/entities.yml`](../../../Resources/Prototypes/_WG/Farming/entities.yml)
 - [`Resources/Prototypes/_WG/Farming/goods.yml`](../../../Resources/Prototypes/_WG/Farming/goods.yml)
@@ -98,6 +99,7 @@ project (art CC BY-SA 3.0). Everything here is sold at the Homestead Supply vend
 
 ### Tools
 
+- [`Tools/_WG/Farming/gen_crafting.py`](../../../Tools/_WG/Farming/gen_crafting.py)
 - [`Tools/_WG/Farming/port_paragon.py`](../../../Tools/_WG/Farming/port_paragon.py)
 
 ### Docs

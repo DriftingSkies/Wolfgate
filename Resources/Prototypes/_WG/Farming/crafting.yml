@@ -14,6 +14,17 @@
         doAfter: 2
   - node: built
     entity: WGFarmKeg
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 8
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: brewing keg
@@ -46,6 +57,17 @@
         doAfter: 2
   - node: built
     entity: WGFarmPreservesJar
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetGlass1
+        amount: 4
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: preserves jar
@@ -81,6 +103,20 @@
         doAfter: 2
   - node: built
     entity: WGFarmCheesePress
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 6
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: cheese press
@@ -116,6 +152,20 @@
         doAfter: 2
   - node: built
     entity: WGFarmMayoMachine
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 6
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: mayonnaise machine
@@ -151,6 +201,20 @@
         doAfter: 2
   - node: built
     entity: WGFarmLoom
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 6
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: loom
@@ -186,6 +250,20 @@
         doAfter: 2
   - node: built
     entity: WGFarmMill
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 6
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: mill
@@ -218,6 +296,17 @@
         doAfter: 2
   - node: built
     entity: WGFarmComposter
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 8
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: composter
@@ -250,6 +339,17 @@
         doAfter: 2
   - node: built
     entity: WGFarmFertilizerBarrel
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 8
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: fertilizer barrel
@@ -288,6 +388,23 @@
         doAfter: 2
   - node: built
     entity: WGFarmNutrientMixer
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 6
+      - !type:SpawnPrototype
+        prototype: SheetGlass1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: nutrient mixer
@@ -320,6 +437,17 @@
         doAfter: 2
   - node: built
     entity: WGFarmCask
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 8
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: oak cask
@@ -352,6 +480,17 @@
         doAfter: 2
   - node: built
     entity: WGFarmBeeHive
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 6
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: bee hive
@@ -384,6 +523,17 @@
         doAfter: 2
   - node: built
     entity: WGFarmMushroomLog
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 4
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: mushroom log
@@ -422,6 +572,23 @@
         doAfter: 2
   - node: built
     entity: WGFarmComputeRack
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 8
+      - !type:SpawnPrototype
+        prototype: SheetGlass1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 6
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: compute rack
@@ -460,6 +627,23 @@
         doAfter: 2
   - node: built
     entity: WGFarmDigester
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 6
+      - !type:SpawnPrototype
+        prototype: SheetGlass1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: biogas digester
@@ -495,6 +679,20 @@
         doAfter: 2
   - node: built
     entity: WGFarmOreWasher
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 6
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: ore washer
@@ -530,6 +728,20 @@
         doAfter: 2
   - node: built
     entity: WGFarmGeodeCracker
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 6
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: geode cracker
@@ -565,6 +777,20 @@
         doAfter: 2
   - node: built
     entity: WGFarmGlassKiln
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 6
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: glass kiln
@@ -603,6 +829,23 @@
         doAfter: 2
   - node: built
     entity: WGFarmSeedMaker
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 6
+      - !type:SpawnPrototype
+        prototype: SheetGlass1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: seed maker
@@ -635,6 +878,17 @@
         doAfter: 2
   - node: built
     entity: WGFarmScarecrow
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 4
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: scarecrow
@@ -667,6 +921,17 @@
         doAfter: 2
   - node: built
     entity: WGSprinklerBasic
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: sprinkler
@@ -702,6 +967,20 @@
         doAfter: 2
   - node: built
     entity: WGSprinklerQuality
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 3
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 1
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: quality sprinkler
@@ -740,6 +1019,23 @@
         doAfter: 2
   - node: built
     entity: WGSprinklerAdvanced
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 4
+      - !type:SpawnPrototype
+        prototype: SheetGlass1
+        amount: 1
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 2
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: advanced sprinkler
@@ -772,6 +1068,17 @@
         doAfter: 2
   - node: built
     entity: WGFarmPackingTable
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 6
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: packing table
@@ -810,6 +1117,23 @@
         doAfter: 2
   - node: built
     entity: WGFarmOrderBoard
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 3
+      - !type:SpawnPrototype
+        prototype: SheetGlass1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 1
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: outpost order board
@@ -845,6 +1169,20 @@
         doAfter: 2
   - node: built
     entity: WGRainCatcher
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 4
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 2
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: rain catcher
@@ -883,6 +1221,23 @@
         doAfter: 2
   - node: built
     entity: WGMoistureVaporator
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 6
+      - !type:SpawnPrototype
+        prototype: SheetGlass1
+        amount: 2
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: moisture vaporator
@@ -918,6 +1273,20 @@
         doAfter: 2
   - node: built
     entity: WGSnowMelter
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 6
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 3
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: snow melter
@@ -956,6 +1325,23 @@
         doAfter: 2
   - node: built
     entity: WGGrowLamp
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: SheetSteel1
+        amount: 1
+      - !type:SpawnPrototype
+        prototype: SheetGlass1
+        amount: 1
+      - !type:SpawnPrototype
+        prototype: CableApcStack1
+        amount: 1
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: grow lamp

@@ -51,6 +51,9 @@ MACHINES = {
     "WGHuntTanningRack": ("Hunting", [("WoodPlank", 6)], False),
 }
 
+# The item each construction material is refunded as when a machine is pried apart.
+REFUND = {"Steel": "SheetSteel1", "Glass": "SheetGlass1", "WoodPlank": "MaterialWoodPlank1", "Cable": "CableApcStack1"}
+
 ICON_FALLBACK = {"WGGrowLamp": ("Structures/Wallmounts/Lighting/light_small.rsi", "base")}
 
 
@@ -89,6 +92,8 @@ def main():
         sprite, state = ICON_FALLBACK.get(eid, (resolve(ents, eid, "sprite"), resolve(ents, eid, "state")))
         steps = "".join(f"      - material: {m}\n        amount: {a}\n        doAfter: 2\n" for m, a in materials)
         conditions = "  - !type:WallmountCondition\n" if wall else "  - !type:TileNotBlocked\n"
+        # Pried apart, it drops whatever it held and gives its materials back.
+        refund = "".join(f"      - !type:SpawnPrototype\n        prototype: {REFUND[m]}\n        amount: {a}\n" for m, a in materials)
         out.setdefault(module, []).append(f"""- type: constructionGraph
   id: {eid}Graph
   start: start
@@ -99,6 +104,14 @@ def main():
       steps:
 {steps}  - node: built
     entity: {eid}
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {{}}
+{refund}      - !type:DeleteEntity {{}}
+      steps:
+      - tool: Prying
+        doAfter: 3
 
 - type: construction
   name: {name}

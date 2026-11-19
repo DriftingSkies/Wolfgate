@@ -17,6 +17,7 @@ Fishing on planets and outposts (`WGFishingSystem`). A fishing rod used on a pla
 
 ### Prototypes
 
+- [`Resources/Prototypes/_WG/Fishing/crafting.yml`](../../../Resources/Prototypes/_WG/Fishing/crafting.yml)
 - [`Resources/Prototypes/_WG/Fishing/fishing.yml`](../../../Resources/Prototypes/_WG/Fishing/fishing.yml)
 
 ### Localization
