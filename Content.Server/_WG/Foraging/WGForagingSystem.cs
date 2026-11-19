@@ -43,11 +43,7 @@ public sealed partial class WGForageNodeComponent : Component
     public bool Picked;
 }
 
-/// <summary>
-/// Foraging. Every minute, each planet map with players on it grows forage spots near a random player there, picked by
-/// the world's outside temperature (<c>wgForageTable</c>), on open ground that isn't water, up to a cap a world. A spot
-/// is picked by hand after a short gather and gives its loot; unpicked ones wither.
-/// </summary>
+/// <summary>Foraging.</summary>
 public sealed class WGForagingSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;

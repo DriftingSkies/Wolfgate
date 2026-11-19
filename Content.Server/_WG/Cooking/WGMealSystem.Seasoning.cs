@@ -62,10 +62,7 @@ public sealed partial class WGMealSystem
         return total;
     }
 
-    /// <summary>
-    /// Seasons a dish: its trait joins the dish's buff if there is room, or else it strengthens the buff twice as much.
-    /// Returns whether it took.
-    /// </summary>
+    /// <summary>Seasons a dish: adds its trait if there's room, otherwise doubles its strength bonus.</summary>
     public bool Season(Entity<WGMealComponent> dish, WGSeasoningPrototype seasoning, EntityUid used, EntityUid user)
     {
         if (dish.Comp.Seasonings.Contains(seasoning.ID))

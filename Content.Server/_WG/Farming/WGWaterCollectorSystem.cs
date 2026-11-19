@@ -24,7 +24,7 @@ public enum WGWaterSource : byte
     Snow,
 }
 
-/// <summary>A water collector: rain catcher, moisture vaporator or snow melter. It fills its tank and the sprinklers near it.</summary>
+/// <summary>A water collector: rain catcher, moisture vaporator or snow melter.</summary>
 [RegisterComponent, Access(typeof(WGWaterCollectorSystem))]
 public sealed partial class WGWaterCollectorComponent : Component
 {
@@ -47,10 +47,7 @@ public sealed partial class WGWaterCollectorComponent : Component
     public float Efficiency;
 }
 
-/// <summary>
-/// Fills water collectors from their world: rain catchers from rainfall (open sky only), vaporators from warm air,
-/// snow melters from snowfall and frost. Each then tops up the sprinklers within its reach from its tank.
-/// </summary>
+/// <summary>Fills water collectors from their world's weather and tops up nearby sprinklers.</summary>
 public sealed class WGWaterCollectorSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;

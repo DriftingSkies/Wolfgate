@@ -2,10 +2,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared._WG.Farming;
 
-/// <summary>
-/// How a seed farms on an outpost: the real minutes of growing it takes to ripen (minutes it is lit and watered), and the
-/// outdoor climate it grows in. The ID is the botany seed's ID.
-/// </summary>
+/// <summary>How a seed farms on an outpost: the real minutes of growing it takes to ripen (minutes it is lit and watered), and the outdoor climate it grows in.</summary>
 [Prototype("wgCrop")]
 public sealed partial class WGCropPrototype : IPrototype
 {

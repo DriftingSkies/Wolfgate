@@ -10,10 +10,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._WG.Farming;
 
-/// <summary>
-/// Holds a homestead test ground until its world has finished generating (every site, road and creature down), then
-/// wipes the patch to bare biome ground, so nothing the world placed late lands on the test ground, and lays it out.
-/// </summary>
+/// <summary>Builds a queued test ground once its world has finished generating.</summary>
 public sealed class WGHomesteadTestSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
@@ -53,10 +50,7 @@ public sealed class WGHomesteadTestSystem : EntitySystem
         }
     }
 
-    /// <summary>
-    /// Wipes the patch to bare ground: deletes whatever stands on it (keeping players), any other grid crossing it, and
-    /// roofs, resets its tiles to the biome's own, and pins them so the biome grows nothing back.
-    /// </summary>
+    /// <summary>Wipes the patch to bare biome ground and reserves it, keeping players.</summary>
     public void Clear(EntityUid ground, Box2 patch)
     {
         if (!TryComp<MapGridComponent>(ground, out var grid) || !TryComp<TransformComponent>(ground, out var xform))

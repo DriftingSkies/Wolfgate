@@ -23,11 +23,7 @@ public sealed partial class WGGameComponent : Component
     public List<EntProtoId> Offal = new();
 }
 
-/// <summary>
-/// Grades butchered game by how clean the kill was. The damage on the carcass against what killed it: a clean kill
-/// (little past the killing blow) gives better-quality meat, the prized cut and all the offal; a messy one (shot or
-/// torn to pieces) gives normal meat, loses a cut or two and the offal, and never the prized cut.
-/// </summary>
+/// <summary>Grades butchered game by how clean the kill was.</summary>
 public sealed class WGHuntingSystem : EntitySystem
 {
     [Dependency] private IRobustRandom _random = default!;

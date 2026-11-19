@@ -14,10 +14,7 @@ public sealed partial class WGUniversalLoadoutGroupPrototype : IPrototype
     public ProtoId<LoadoutGroupPrototype> Group;
 }
 
-/// <summary>
-/// Adds each <c>wgUniversalLoadoutGroup</c> to every job's loadout, so a group can reach every job without editing
-/// each job's loadout prototype. Jobs with no loadout groups at all (borgs, the AI) are left alone.
-/// </summary>
+/// <summary>Adds each <c>wgUniversalLoadoutGroup</c> to every job's loadout at startup.</summary>
 public sealed class WGUniversalLoadoutSystem : EntitySystem
 {
     [Dependency] private IPrototypeManager _proto = default!;

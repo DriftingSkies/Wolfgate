@@ -65,11 +65,7 @@ public sealed partial class WGProcessorComponent : Component
     public SeedData? Seed;
 }
 
-/// <summary>
-/// Runs processing machines: an item used on one starts a batch of the first recipe that takes it; work goes on while
-/// the machine is anchored and powered (or needs no power); the goods pop out with the input's quality. Supplies a recipe needs (bottles)
-/// are loaded by hand first.
-/// </summary>
+/// <summary>Runs processing machines: an item used on one starts a batch of the first recipe that takes it.</summary>
 public sealed class WGProcessorSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
@@ -315,8 +311,7 @@ public sealed class WGProcessorSystem : EntitySystem
         {
             if (recipe.Seeds)
             {
-                // A mutated seed is unique, and packets of it would share it, so one packet's mutations would change the
-                // others; only botany may copy a seed, so a mutated seed makes one packet.
+                // Packets would share a unique (mutated) seed, so it makes only one.
                 if (ent.Comp.Seed is { } seed && (i == 0 || !seed.Unique))
                     _botany.SpawnSeedPacket(seed, Transform(ent).Coordinates, ent);
                 continue;

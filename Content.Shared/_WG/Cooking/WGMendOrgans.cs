@@ -3,11 +3,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared._WG.Cooking;
 
-/// <summary>
-/// A soup's or stew's gentle mending: each metabolism tick restores a little health to the eater's inner organs, never
-/// past <see cref="Cap"/> of their maximum and never to a failed one, so home cooking helps between doctor's visits but
-/// doesn't replace them.
-/// </summary>
+/// <summary>Mends the eater's inner organs a little each tick, up to <see cref="Cap"/>, never reviving a failed one.</summary>
 public sealed partial class WGMendOrgans : EntityEffect
 {
     /// <summary>Health restored to each organ a tick, before reagent scaling.</summary>

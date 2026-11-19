@@ -38,10 +38,7 @@ public sealed partial class WGCookRecipePrototype : IPrototype
     public int Priority;
 }
 
-/// <summary>
-/// A stew or soup: one ingredient added to a boiling pot turns some of its water into the soup after a while (after
-/// Roguetown's stew recipes). Lower <see cref="Order"/> is tried first, so specific recipes win over generic ones.
-/// </summary>
+/// <summary>A soup an ingredient makes in a boiling pot.</summary>
 [Prototype("wgStewRecipe")]
 public sealed partial class WGStewRecipePrototype : IPrototype
 {
@@ -54,10 +51,7 @@ public sealed partial class WGStewRecipePrototype : IPrototype
     [DataField]
     public List<ProtoId<TagPrototype>> Tags = new();
 
-    /// <summary>
-    /// For a stew of several ingredients: what has to be stewing in the pot together. When the pot holds them all they
-    /// combine into this soup, one portion for each ingredient, in place of their separate soups.
-    /// </summary>
+    /// <summary>For a stew of several ingredients: what has to be stewing in the pot together.</summary>
     [DataField]
     public List<WGPrepIngredient> Combine = new();
 
@@ -121,11 +115,7 @@ public sealed partial class WGPrepIngredient
     public int Count = 1;
 }
 
-/// <summary>
-/// A seasoning, used on a home-cooked dish: up to two to a dish, each once. It adds its trait to the dish's buff if the
-/// dish has room (three traits at most), or else strengthens it twice as much. Taken from the item used: a unit of
-/// <see cref="Reagent"/> from whatever it holds (a salt shaker), or the item itself (a garlic bulb).
-/// </summary>
+/// <summary>A seasoning, used on a home-cooked dish: up to two to a dish, each once.</summary>
 [Prototype("wgSeasoning")]
 public sealed partial class WGSeasoningPrototype : IPrototype
 {

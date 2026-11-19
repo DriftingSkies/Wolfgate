@@ -26,17 +26,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._WG.Cooking;
 
-/// <summary>
-/// The kitchen, one system for every recipe. Hands-on cooking after Roguetown's hearths, sharing one recipe book with the
-/// game's kitchen recipes (<c>microwaveMealRecipe</c>): nothing becomes a meal in one step. On the prep board, "put
-/// together" turns ingredients into our raw dishes, into assembler recipes (sandwiches, salads) outright, or into an
-/// unbaked dish for any oven or microwave recipe, which then has to be cooked in a hearth's oven or pan.
-/// A hearth stove holds a pan or a pot on its hob and bakes in its oven
-/// while it has power. Food in a hot pan fries and food in the oven bakes, each after its <c>wgCookRecipe</c>'s seconds;
-/// left on the heat it smokes and then burns to a mess. A pot's water boils on the hob, and a <c>wgStewRecipe</c>
-/// ingredient added to boiling water becomes a portion of soup, ladled out into bowls. A prep board puts ingredients
-/// together into a raw dish (<c>wgPrepRecipe</c>) for the oven or the pan.
-/// </summary>
+/// <summary>Hands-on cooking for every kitchen recipe: hearths, pans, pots and the prep board.</summary>
 public sealed class WGCookingSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
@@ -102,8 +92,7 @@ public sealed class WGCookingSystem : EntitySystem
         SubscribeLocalEvent<PrototypesReloadedEventArgs>(_ => ClearRecipeCaches());
     }
 
-    // Recipe books, sorted once: the hearth looks them up every second for everything cooking, and the board on every
-    // change, so sorting the whole kitchen recipe list each time stalled the server.
+    // Recipe lists sorted once; re-sorting them on every lookup stalled the server.
     private Dictionary<WGCookMethod, List<WGCookRecipePrototype>>? _cookRecipes;
     private List<WGStewRecipePrototype>? _stewRecipes;
     private List<WGStewRecipePrototype>? _comboRecipes;
@@ -272,10 +261,7 @@ public sealed class WGCookingSystem : EntitySystem
             _popup.PopupEntity(Loc.GetString("wg-cook-oven-in", ("item", used)), ent, args.User);
     }
 
-    /// <summary>
-    /// Pours a container into the pot on the hob, or, if it is empty, ladles the pot's soup into it (soup before water,
-    /// so a bowl doesn't come up half water).
-    /// </summary>
+    /// <summary>Pours a container into the pot on the hob, or ladles soup (before water) into it if empty.</summary>
     private void Ladle(EntityUid pot, Entity<SolutionTransferComponent> container, EntityUid user)
     {
         if (!_solutions.TryGetSolution(pot, Comp<WGPotComponent>(pot).Solution, out var potSoln, out var potSolution))
@@ -323,8 +309,7 @@ public sealed class WGCookingSystem : EntitySystem
         if (take is not { } taken)
             return;
 
-        // Taken out, it keeps the heat it has had, so lifting a dish out to look at it doesn't start it over or save it
-        // from burning.
+        // Heat is kept when taken out, so lifting food out neither resets nor saves it.
         args.Handled = true;
         _hands.PickupOrDrop(args.User, taken);
     }
@@ -407,10 +392,7 @@ public sealed class WGCookingSystem : EntitySystem
         Combine(pot, user);
     }
 
-    /// <summary>
-    /// Folds the separate ingredients stewing in a pot into a stew of several, when they make one; the biggest stew that
-    /// fits wins. The combined stew starts its own time.
-    /// </summary>
+    /// <summary>Combines stewing ingredients into the biggest multi-ingredient stew they make.</summary>
     private void Combine(Entity<WGPotComponent> pot, EntityUid user)
     {
         _comboRecipes ??= _proto.EnumeratePrototypes<WGStewRecipePrototype>()
@@ -477,9 +459,7 @@ public sealed class WGCookingSystem : EntitySystem
         args.Verbs.Add(new AlternativeVerb
         {
             Text = Loc.GetString("wg-stir-verb"),
-            // On the hearth, not the pot: the pot sits in the hob, where the window's range check can't reach it
-            // and would close it at once. Told up front when there is nothing to stir or it was just stirred, rather
-            // than after the minigame.
+            // Opened on the hearth: the UI range check can't reach the pot inside it.
             Act = () =>
             {
                 if (StirBlocked((pot, potComp)) is { } why)
@@ -505,11 +485,7 @@ public sealed class WGCookingSystem : EntitySystem
             Stir((pot, potComp), args.Actor, args.Score);
     }
 
-    /// <summary>
-    /// Stirs the pot as the stirring minigame scored it: every stew in it comes on sooner by up to
-    /// <see cref="StirSpeedUp"/> seconds, and stirring adds up toward a bigger next portion. Counts once every
-    /// <see cref="StirEvery"/>; returns whether it counted.
-    /// </summary>
+    /// <summary>Stirs the pot as the stirring minigame scored it.</summary>
     public bool Stir(Entity<WGPotComponent> ent, EntityUid user, float score)
     {
         score = Math.Clamp(score, 0f, 1f);
@@ -752,10 +728,7 @@ public sealed class WGCookingSystem : EntitySystem
         }
     }
 
-    /// <summary>
-    /// Swaps an item for another in the same container, keeping its place in a pan or oven, and its quality: a gold
-    /// steak fries into a gold steak.
-    /// </summary>
+    /// <summary>Swaps an item for another in its container, keeping its quality.</summary>
     private EntityUid Replace(EntityUid item, EntProtoId result, bool keepQuality = true)
     {
         var quality = keepQuality ? CompOrNull<WGProduceQualityComponent>(item)?.Quality : null;
@@ -889,11 +862,7 @@ public sealed class WGCookingSystem : EntitySystem
         return _chopRecipes.FirstOrDefault(r => Matches(item, r.Inputs, r.Tags));
     }
 
-    /// <summary>
-    /// The ways an item can be cut on the board, each what it makes and how many: our chop recipe (minced meat, sliced
-    /// onion) and the game's own slicing (cutlets, onion slices, bread, cheese wheels, doughs), both offered when they
-    /// differ, so the board makes what every recipe needs.
-    /// </summary>
+    /// <summary>The ways an item can be cut on the board, each what it makes and how many.</summary>
     public List<(EntProtoId Result, int Count)> ChopOptions(EntityUid item)
     {
         var options = new List<(EntProtoId Result, int Count)>();
@@ -912,11 +881,7 @@ public sealed class WGCookingSystem : EntitySystem
         return options.Count > 0;
     }
 
-    /// <summary>
-    /// Chops one thing on the board the chosen way (<paramref name="option"/> of <see cref="ChopOptions"/>), scored by
-    /// the chopping minigame: a clean job (0.5 and up) keeps the full yield, a sloppy one loses a piece. The cook needs
-    /// a knife in hand.
-    /// </summary>
+    /// <summary>Chops an item on the board by <paramref name="option"/> of <see cref="ChopOptions"/>, scored by the minigame.</summary>
     public bool ChopItem(Entity<WGPrepBoardComponent> board, EntityUid item, EntityUid user, float score, int option = 0)
     {
         var contents = _containers.GetContainer(board, WGPrepBoardComponent.Contents);
@@ -1148,8 +1113,7 @@ public sealed class WGCookingSystem : EntitySystem
             return dish;
         }
 
-        // Then the kitchen's recipes: assembler ones (sandwiches, salads) come out ready; oven and microwave ones come
-        // out as an unbaked dish that still has to be cooked.
+        // Then the kitchen's recipes: assembler ones (sandwiches, salads) come out ready.
         var items = contents.ContainedEntities.ToList();
         var kitchen = KitchenRecipes((int) (MicrowaveRecipeType.Assembler | MicrowaveRecipeType.Oven | MicrowaveRecipeType.Microwave))
             .FirstOrDefault(r => Holds(items, r));

@@ -22,13 +22,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._WG.Farming;
 
-/// <summary>
-/// Botany's growth, reworked after Stardew and RimWorld, for every plant holder. A planted holder ages only while it is
-/// lit and watered: on a world with a day (a light cycle), only in daylight on open ground or under a powered grow lamp,
-/// and inside its crop's climate unless roofed under a lamp; on stations and ships, under their lights, always. A crop
-/// with a <c>wgCrop</c> entry ripens in that many real minutes of growing. Harvests roll a quality from how well the
-/// plant was cared for and its fertilizer.
-/// </summary>
+/// <summary>Botany's growth, reworked after Stardew and RimWorld, for every plant holder.</summary>
 public sealed class WGFarmingSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
@@ -193,10 +187,7 @@ public sealed class WGFarmingSystem : EntitySystem
         }
     }
 
-    /// <summary>
-    /// Birds peck at outdoor crops now and then, after Stardew's crows; a scarecrow within its range keeps them off.
-    /// Returns whether a bird struck this check.
-    /// </summary>
+    /// <summary>Rolls a bird peck on an outdoor crop unless a scarecrow covers it.</summary>
     private bool Pecked(EntityUid uid, PlantHolderComponent holder)
     {
         if (!_random.Prob(PeckChance))
@@ -246,10 +237,7 @@ public sealed class WGFarmingSystem : EntitySystem
         plot.LitChecks = plot.CaredChecks = 0;
     }
 
-    /// <summary>
-    /// Rolls a quality: full care gives about a third silver and a sixth gold. Each fertilizer step has an even chance to
-    /// lift it one more; only quality fertilizer (two steps) reaches iridium.
-    /// </summary>
+    /// <summary>Rolls a quality: full care gives about a third silver and a sixth gold.</summary>
     private WGCropQuality Roll(float care, int fertilizer)
     {
         var roll = _random.NextFloat();

@@ -6,11 +6,7 @@ using Content.Shared.FixedPoint;
 
 namespace Content.Server._WG.Cooking;
 
-/// <summary>
-/// Soups' and stews' gentle mending of the inner organs (<see cref="WGMendOrgans"/>), through Wolfmed's organ health:
-/// home cooking heals the soul. It never revives a failed organ and stops short of full health, leaving the rest to a
-/// doctor.
-/// </summary>
+/// <summary>Applies <see cref="WGMendOrgans"/> to Wolfmed organ health.</summary>
 public sealed class WGOrganMendSystem : EntitySystem
 {
     [Dependency] private OrganHealthSystem _organs = default!;

@@ -3,10 +3,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared._WG.Farming;
 
-/// <summary>
-/// One thing a processing machine does, after Stardew's artisan machines: one item in, goods out after a time. A
-/// recipe with no inputs runs by itself, over and over, as a bee hive or a compute rack does.
-/// </summary>
+/// <summary>One thing a processing machine does, after Stardew's artisan machines: one item in, goods out after a time.</summary>
 [Prototype("wgProcessRecipe")]
 public sealed partial class WGProcessRecipePrototype : IPrototype
 {

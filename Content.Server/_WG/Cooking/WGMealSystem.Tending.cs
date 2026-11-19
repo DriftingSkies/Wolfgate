@@ -12,10 +12,7 @@ namespace Content.Server._WG.Cooking;
 [RegisterComponent]
 public sealed partial class WGServingComponent : Component;
 
-/// <summary>
-/// Tending: spoon-feeding someone who is lying down. Each spoonful mends them a little (bruises, cuts, burns and their
-/// inner organs) and comforts them, and a dish fed that way stays with them half as long again.
-/// </summary>
+/// <summary>Tending: spoon-feeding someone who is lying down.</summary>
 public sealed partial class WGMealSystem
 {
     [Dependency] private SharedHandsSystem _hands = default!;
@@ -32,10 +29,7 @@ public sealed partial class WGMealSystem
             Tend(args.User, patient);
     }
 
-    /// <summary>
-    /// A spoonful from <paramref name="feeder"/> to <paramref name="patient"/>: if the patient is lying down and the
-    /// feeder holds a spoon, it mends and comforts them. Returns whether it was tending.
-    /// </summary>
+    /// <summary>A spoonful from <paramref name="feeder"/> to <paramref name="patient"/>.</summary>
     public bool Tend(EntityUid feeder, EntityUid patient)
     {
         if (feeder == patient || !_standing.IsDown(patient) || _mobs.IsDead(patient) || !HoldsSpoon(feeder))

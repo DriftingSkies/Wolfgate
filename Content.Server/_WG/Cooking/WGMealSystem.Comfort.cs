@@ -4,11 +4,7 @@ using Robust.Shared.Player;
 
 namespace Content.Server._WG.Cooking;
 
-/// <summary>
-/// How comfortable someone is: home cooking, a seat by a lit hearth, a meal shared with others and being spoon-fed
-/// when laid up all raise it, and it fades slowly. It only ever helps: content (40+) makes meal buffs 10% stronger, cozy
-/// (75+) 20%, and others can see it on examine. There is no penalty for being uncomfortable.
-/// </summary>
+/// <summary>How comfortable someone is, 0 to 100; it only ever helps.</summary>
 [RegisterComponent, Access(typeof(WGMealSystem))]
 public sealed partial class WGComfortComponent : Component
 {

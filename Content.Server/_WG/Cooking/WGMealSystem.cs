@@ -68,12 +68,7 @@ public sealed partial class WGWellFedComponent : Component
     public TimeSpan Until;
 }
 
-/// <summary>
-/// Meal buffs. One slot: a dish finished, or a soup drunk, replaces whatever buff came before. Its strength follows the
-/// dish's quality (silver +25%, gold +50%, iridium +100%) and its freshness: full for ten minutes, easing to half by
-/// forty, never less, and half as fast in a fridge. Effects: Energising walks and runs faster, Hearty slows hunger,
-/// Fresh slowly heals bruises and burns, Warming and Cooling hold the body's temperature, Fortifying slows bleeding.
-/// </summary>
+/// <summary>Meal buffs.</summary>
 public sealed partial class WGMealSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;

@@ -16,11 +16,7 @@ public sealed class WGPrepBoardState(List<WGPrepItemView> items, List<WGPrepReci
     public readonly List<WGPrepRecipeView> Recipes = recipes;
 }
 
-/// <summary>
-/// One thing on the board; <see cref="Cuts"/> is how many cuts chopping it takes, 0 if it doesn't chop, and
-/// <see cref="Options"/> names what each way of cutting it makes (minced meat, cutlets), with
-/// <see cref="OptionCuts"/> the cuts each takes.
-/// </summary>
+/// <summary>An item on the board, with its cut options and the cuts each takes.</summary>
 [Serializable, NetSerializable]
 public sealed record WGPrepItemView(NetEntity Entity, string Name, string? Prototype, int Cuts, List<string> Options, List<int> OptionCuts);
 
@@ -39,10 +35,7 @@ public sealed class WGPrepBoardTakeMessage(NetEntity item) : BoundUserInterfaceM
     public readonly NetEntity Item = item;
 }
 
-/// <summary>
-/// The chopping minigame is done: <see cref="Score"/> runs from 0 (every cut missed) to 1 (every cut clean and on its
-/// line). Clean chopping keeps the full yield; sloppy chopping loses a piece.
-/// </summary>
+/// <summary>A finished chop, scored 0 to 1.</summary>
 [Serializable, NetSerializable]
 public sealed class WGPrepBoardChopMessage(NetEntity item, float score, int option = 0) : BoundUserInterfaceMessage
 {

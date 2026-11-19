@@ -38,10 +38,7 @@ public sealed class WGPostedOrder
     public TimeSpan Expires;
 }
 
-/// <summary>
-/// Posts orders from the <c>wgFarmOrder</c> pool on each board, pays for each item handed in (more for better quality),
-/// pays a bonus when an order is filled, and replaces filled or stale orders.
-/// </summary>
+/// <summary>Posts <c>wgFarmOrder</c> orders on boards and pays for goods handed in.</summary>
 public sealed class WGOrderBoardSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;

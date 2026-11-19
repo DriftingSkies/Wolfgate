@@ -2,10 +2,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared._WG.Fishing;
 
-/// <summary>
-/// What bites in some water: a world's open water by its outside temperature, or a pond built on an outpost. The first
-/// table whose band holds the temperature is used; pond tables are used only for ponds.
-/// </summary>
+/// <summary>What bites in some water: a world's open water by its outside temperature, or a pond built on an outpost.</summary>
 [Prototype("wgFishTable")]
 public sealed partial class WGFishTablePrototype : IPrototype
 {

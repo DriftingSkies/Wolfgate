@@ -3,7 +3,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared._WG.Cooking;
 
-/// <summary>What a home-cooked meal does for whoever eats it. A meal carries up to three.</summary>
+/// <summary>What a home-cooked meal does for whoever eats it.</summary>
 public enum WGMealTrait : byte
 {
     /// <summary>A little faster on foot.</summary>
@@ -31,10 +31,7 @@ public enum WGMealTrait : byte
     Steady,
 }
 
-/// <summary>
-/// A soup's or a drink's meal buff, given as it is drunk: each metabolism tick refreshes it on the drinker, so a
-/// bowl keeps it up for as long as it lasts and <see cref="Minutes"/> after.
-/// </summary>
+/// <summary>A soup's or a drink's meal buff, given as it is drunk.</summary>
 public sealed partial class WGMealBuff : EntityEffect
 {
     [DataField(required: true)]

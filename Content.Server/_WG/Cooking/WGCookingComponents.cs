@@ -27,10 +27,7 @@ public sealed partial class WGHearthComponent : Component
     public float SizzleTimer;
 }
 
-/// <summary>
-/// An unbaked dish put together on a prep board from a kitchen recipe's ingredients (<c>microwaveMealRecipe</c>). It
-/// still has to be cooked, in a hearth's oven or pan, to become the dish.
-/// </summary>
+/// <summary>An unbaked kitchen recipe (<c>microwaveMealRecipe</c>) waiting to be cooked.</summary>
 [RegisterComponent, Access(typeof(WGCookingSystem))]
 public sealed partial class WGRawDishComponent : Component
 {

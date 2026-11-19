@@ -71,12 +71,7 @@ public sealed partial class WGBaitComponent : Component
 [RegisterComponent]
 public sealed partial class WGFishingSpotComponent : Component;
 
-/// <summary>
-/// Fishing. A rod used on open water (a planet's lakes and ponds, by its biome) or on a built pond casts the line. After
-/// a wait the fish bites and the angler has a moment to reel in, by using the rod; too early scares it off, too late
-/// lets it go. What bites follows the world's temperature (<c>wgFishTable</c>), and the catch rolls a quality, better
-/// with bait. Walking off snaps the line.
-/// </summary>
+/// <summary>Fishing.</summary>
 public sealed class WGFishingSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;

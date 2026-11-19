@@ -6,11 +6,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Client._WG.Cooking;
 
-/// <summary>
-/// The stirring minigame: the pot seen from above, its soup swirling, with a ring between its middle and its rim. The
-/// cook holds the spoon down and stirs round in circles; three full turns finish it. Turns made inside the ring count
-/// fully, strokes that scrape the rim or poke the middle count for less. Reports a score from 0 to 1.
-/// </summary>
+/// <summary>The stirring minigame: three turns round the pot inside its ring.</summary>
 public sealed class WGStirMinigame : Control
 {
     private static readonly Color PotColor = Color.FromHex("#2E2E34");

@@ -7,13 +7,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Client._WG.Cooking;
 
-/// <summary>
-/// The chopping minigame, after Casualties Unknown. The ingredient lies big on a wooden board with dashed guide lines
-/// across it, spaced over its own visible shape; the cook drags the knife down along each one. A cut that runs most of
-/// the way down the ingredient and stays near an uncut line scores by how straight and close it was, flashes, and the
-/// pieces either side slide apart; one that wanders off leaves a red scratch. When every line is cut, or the cook runs
-/// out of strokes, it reports a score from 0 to 1.
-/// </summary>
+/// <summary>The chopping minigame, after Casualties Unknown.</summary>
 public sealed class WGChopMinigame : Control
 {
     private static readonly Color BoardColor = Color.FromHex("#78583A");
@@ -58,10 +52,7 @@ public sealed class WGChopMinigame : Control
         MinSize = new Vector2(260, 260);
     }
 
-    /// <summary>
-    /// Starts over on <paramref name="texture"/> with <paramref name="cuts"/> guide lines across the ingredient's visible
-    /// shape, <paramref name="bounds"/> (fractions of the texture: left, top, right, bottom), or the middle if unknown.
-    /// </summary>
+    /// <summary>Starts over with <paramref name="cuts"/> guide lines across the ingredient's visible <paramref name="bounds"/>.</summary>
     public void Start(Texture? texture, UIBox2? bounds, int cuts)
     {
         _texture = texture;
@@ -262,8 +253,7 @@ public sealed class WGChopMinigame : Control
             }
         }
 
-        // Guide lines over the ingredient only. A fresh cut flashes white in the middle of its opening gap, then fades
-        // to green and away, leaving the gap to show the cut.
+        // Guide lines over the ingredient only.
         for (var i = 0; i < _guides.Count; i++)
         {
             var x = GuideX(i) * scale;

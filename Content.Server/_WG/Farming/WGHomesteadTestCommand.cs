@@ -18,12 +18,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._WG.Farming;
 
-/// <summary>
-/// Builds a test ground on a fresh world (its own air, pressure, day and climate) and sends the admin there, with every
-/// farming, cooking, fishing, foraging and hunting feature laid out ready to try:
-/// <c>wghomesteadtest [all|kitchen|farm|machines|fishing|hunting] [surface]</c>, Asclepiu by default. The patch keeps the
-/// world's own ground with nothing grown on it. Machines that take power are set to need none.
-/// </summary>
+/// <summary><c>wghomesteadtest [section] [surface]</c>: builds a test ground with every homestead feature on a fresh world.</summary>
 [AdminCommand(AdminFlags.Debug)]
 public sealed class WGHomesteadTestCommand : LocalizedEntityCommands
 {
@@ -40,10 +35,7 @@ public sealed class WGHomesteadTestCommand : LocalizedEntityCommands
 
     private const string DefaultSurface = "WGSurfaceAsclepiu";
 
-    /// <summary>
-    /// Where the patch starts on the world: centred on its middle, which planet POIs and their roads always leave clear
-    /// (every POI table keeps at least 64 tiles round the centre free), so nothing generated lands on the test ground.
-    /// </summary>
+    /// <summary>Patch origin near the world's centre, which POI generation keeps clear.</summary>
     private static readonly Vector2 Origin = new(-24, -14);
 
     private static readonly string[] Sections = { "all", "kitchen", "farm", "machines", "fishing", "hunting" };
@@ -88,8 +80,7 @@ public sealed class WGHomesteadTestCommand : LocalizedEntityCommands
             return;
         }
 
-        // The world places its sites, roads and creatures over the next while; lay the test ground once it is done, on
-        // a patch wiped clean of whatever landed there.
+        // The world places its sites, roads and creatures over the next while.
         shell.WriteLine(Loc.GetString("cmd-wghomesteadtest-waiting", ("surface", surfaceId)));
         var patch = new Box2(Origin, Origin + new Vector2(48, 28));
         _homestead.Queue(grid, patch, () =>
@@ -113,10 +104,7 @@ public sealed class WGHomesteadTestCommand : LocalizedEntityCommands
         });
     }
 
-    /// <summary>
-    /// Builds a standalone world from the surface and clears a 48 by 28 patch of its ground near the centre: the biome's
-    /// own tiles, with nothing grown on them. Returns the world's ground map, which is its own grid, or null.
-    /// </summary>
+    /// <summary>Builds a standalone world from the surface and returns its ground map.</summary>
     private EntityUid? BuildGround(WGPlanetSurfacePrototype surface)
     {
         if (_networks.BuildNetwork(surface, Vector2.Zero, Loc.GetString("cmd-wghomesteadtest-world-name"), null) is not { } network

@@ -14,11 +14,7 @@ using Robust.Client.UserInterface.CustomControls;
 
 namespace Content.Client._WG.Cooking;
 
-/// <summary>
-/// The prep board window: what lies on the board down the left, each with Chop and Take; the dishes it is working
-/// toward down the right, closest first, with what is there and what is missing; and Put together. Chop opens the
-/// chopping minigame over the ingredient.
-/// </summary>
+/// <summary>The prep board window: what lies on the board down the left, each with Chop and Take.</summary>
 public sealed class WGPrepBoardWindow : DefaultWindow
 {
     private static readonly Color ReadyColor = Color.FromHex("#6FCF6F");
@@ -126,10 +122,7 @@ public sealed class WGPrepBoardWindow : DefaultWindow
     /// <summary>Visible shapes already worked out, by sprite file and state.</summary>
     private static readonly Dictionary<string, UIBox2?> BoundsCache = new();
 
-    /// <summary>
-    /// Where the item's sprite has visible pixels, as fractions of a frame, read from its PNG file once and cached.
-    /// Reading the loaded texture pixel by pixel instead copies a whole texture atlas off the GPU for every pixel.
-    /// </summary>
+    /// <summary>The sprite's visible area as fractions of a frame, read from its PNG and cached.</summary>
     private static UIBox2? SpriteBounds(EntityUid uid, IEntityManager entMan)
     {
         // The first layer's own RSI, which may differ from the sprite's base one.

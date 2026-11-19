@@ -103,8 +103,7 @@ public sealed class FoodBuffTest
         var map = await pair.CreateTestMap();
         EntityUid warmed = default;
 
-        // Comfort from somewhere other than a meal (a hearth, tending) fades to nothing and goes, without a meal time to
-        // compare against.
+        // Comfort with no meal behind it fades and is removed.
         await server.WaitAssertion(() =>
         {
             warmed = entMan.SpawnEntity("MobHuman", map.GridCoords);

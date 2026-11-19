@@ -24,11 +24,7 @@ public sealed partial class WGAnimalMoodComponent : Component
     public TimeSpan LastPet;
 }
 
-/// <summary>
-/// Farm animal mood, for any animal that lays eggs, gives milk or grows wool: petting (once a while) and a fed belly
-/// raise it, hunger lowers it. A happy animal (70+) makes its
-/// eggs, milk and wool faster and lays better eggs; a miserable one (under 30) makes nothing.
-/// </summary>
+/// <summary>Mood for animals that lay eggs, give milk or grow wool.</summary>
 public sealed class WGAnimalMoodSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
