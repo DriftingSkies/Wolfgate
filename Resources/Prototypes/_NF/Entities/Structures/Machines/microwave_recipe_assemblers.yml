@@ -146,9 +146,15 @@
       microwave_entity_container: !type:Container
       machine_board: !type:Container
       machine_parts: !type:Container
+      # WOLFGATE(Cooking): the hearth's hob and oven, declared so spawning doesn't add them
+      wg-hob: !type:ContainerSlot
+      wg-oven: !type:Container
   - type: EmptyOnMachineDeconstruct
     containers:
     - microwave_entity_container
+    # WOLFGATE(Cooking): taken apart, the range drops what was on its hob and in its oven
+    - wg-hob
+    - wg-oven
   - type: GuideHelp
     guides:
     - Chef

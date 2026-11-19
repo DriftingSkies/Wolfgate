@@ -34,6 +34,9 @@
   name: brewing keg
   description: Ferments fruit into wine and wheat into beer. Load it with glass bottles first; each batch fills one. What goes in keeps its quality.
   components:
+  - type: Construction
+    graph: WGFarmKegGraph
+    node: built
   - type: Sprite
     sprite: _DV/Objects/Storage/keg.rsi
     state: base
@@ -48,6 +51,9 @@
   name: preserves jar
   description: Turns fruit into preserves and vegetables into pickles.
   components:
+  - type: Construction
+    graph: WGFarmPreservesJarGraph
+    node: built
   - type: Sprite
     sprite: Objects/Consumable/Drinks/jar.rsi
     state: icon
@@ -61,6 +67,9 @@
   name: cheese press
   description: Presses a carton of milk into a wheel of cheese overnight.
   components:
+  - type: Construction
+    graph: WGFarmCheesePressGraph
+    node: built
   - type: Sprite
     sprite: Structures/Machines/juicer.rsi
     state: juicer1
@@ -73,6 +82,9 @@
   name: mayonnaise machine
   description: Whips an egg into a jar of mayonnaise in a few hours.
   components:
+  - type: Construction
+    graph: WGFarmMayoMachineGraph
+    node: built
   - type: Sprite
     sprite: Structures/Machines/mixer.rsi
     state: mixer_loaded
@@ -85,6 +97,9 @@
   name: loom
   description: Weaves cotton into cloth.
   components:
+  - type: Construction
+    graph: WGFarmLoomGraph
+    node: built
   - type: Sprite
     sprite: _WG/Farming/props.rsi
     state: loom
@@ -97,6 +112,9 @@
   name: mill
   description: Grinds wheat into flour.
   components:
+  - type: Construction
+    graph: WGFarmMillGraph
+    node: built
   - type: Sprite
     sprite: _WG/Farming/props.rsi
     state: millstone
@@ -109,6 +127,9 @@
   name: composter
   description: Rots produce, meat and eggs into compost in half an hour. Compost feeds the fertilizer barrel and the nutrient mixer.
   components:
+  - type: Construction
+    graph: WGFarmComposterGraph
+    node: built
   - type: Sprite
     sprite: _WG/Farming/props.rsi
     state: composter
@@ -123,6 +144,9 @@
   name: fertilizer barrel
   description: Ages compost into basic fertilizer, and basic fertilizer into quality fertilizer.
   components:
+  - type: Construction
+    graph: WGFarmFertilizerBarrelGraph
+    node: built
   - type: Sprite
     sprite: _WG/Farming/props.rsi
     state: fertilizer_barrel
@@ -138,6 +162,9 @@
   name: nutrient mixer
   description: Mixes compost into speed-gro, and sand or clay ore into retaining soil.
   components:
+  - type: Construction
+    graph: WGFarmNutrientMixerGraph
+    node: built
   - type: Sprite
     sprite: Structures/Machines/genesplicer.rsi
     state: genesplicer_loaded
@@ -150,6 +177,9 @@
   name: oak cask
   description: Ages wine and cheese one quality step over two hours.
   components:
+  - type: Construction
+    graph: WGFarmCaskGraph
+    node: built
   - type: Sprite
     sprite: _WG/Farming/props.rsi
     state: cask
@@ -162,6 +192,9 @@
   name: bee hive
   description: Makes honey every hour, as long as at least two crops are growing within five tiles.
   components:
+  - type: Construction
+    graph: WGFarmBeeHiveGraph
+    node: built
   - type: Sprite
     sprite: _WG/Farming/props.rsi
     layers:
@@ -183,6 +216,9 @@
   name: mushroom log
   description: A spore-laced log that grows a few mushrooms every half hour, light or dark.
   components:
+  - type: Construction
+    graph: WGFarmMushroomLogGraph
+    node: built
   - type: Sprite
     sprite: _DV/Objects/Storage/keg.rsi
     state: base
@@ -198,6 +234,9 @@
   name: compute rack
   description: Mines encrypted ledgers that banks and corporate stations buy. Draws a great deal of power while it runs.
   components:
+  - type: Construction
+    graph: WGFarmComputeRackGraph
+    node: built
   - type: Sprite
     sprite: _WG/Farming/props.rsi
     state: compute_rack
@@ -214,6 +253,9 @@
   name: biogas digester
   description: Breaks produce and meat down into twice the compost a composter makes, in half the time.
   components:
+  - type: Construction
+    graph: WGFarmDigesterGraph
+    node: built
   - type: Sprite
     sprite: _WG/Farming/props.rsi
     state: digester
@@ -228,6 +270,9 @@
   name: ore washer
   description: Washes raw ore, turning up the odd geode.
   components:
+  - type: Construction
+    graph: WGFarmOreWasherGraph
+    node: built
   - type: Sprite
     sprite: Structures/Machines/ore_processor.rsi
     state: icon
@@ -240,6 +285,9 @@
   name: geode cracker
   description: Splits geodes open for the minerals and gems inside.
   components:
+  - type: Construction
+    graph: WGFarmGeodeCrackerGraph
+    node: built
   - type: Sprite
     sprite: Structures/Machines/cuttermachine.rsi
     state: icon
@@ -252,6 +300,9 @@
   name: glass kiln
   description: Blows a sheet of glass into two bottles for the brewing keg.
   components:
+  - type: Construction
+    graph: WGFarmGlassKilnGraph
+    node: built
   - type: Sprite
     sprite: _WG/Farming/kiln.rsi
     layers:
@@ -273,6 +324,9 @@
   name: seed maker
   description: Turns a harvested crop into one to three packets of its seeds.
   components:
+  - type: Construction
+    graph: WGFarmSeedMakerGraph
+    node: built
   - type: Sprite
     sprite: Structures/Machines/seed_extractor.rsi
     state: seedextractor
@@ -287,6 +341,9 @@
   name: scarecrow
   description: Keeps birds off the outdoor crops within eight tiles.
   components:
+  - type: Construction
+    graph: WGFarmScarecrowGraph
+    node: built
   - type: Sprite
     sprite: _WG/Farming/props.rsi
     state: scarecrow
@@ -302,6 +359,9 @@
   name: sprinkler
   description: Keeps the four plant holders beside it watered from its tank. Fill the tank with water.
   components:
+  - type: Construction
+    graph: WGSprinklerBasicGraph
+    node: built
   - type: SolutionContainerManager
     solutions:
       tank:
@@ -316,6 +376,8 @@
     scale: 0.6, 0.6
   - type: Fixtures
     fixtures: {}
+  - type: Physics
+    canCollide: false
   - type: WGSprinkler
     range: 1
   - type: StaticPrice
@@ -327,6 +389,9 @@
   name: quality sprinkler
   description: Keeps the eight plant holders round it watered from its tank. Fill the tank with water.
   components:
+  - type: Construction
+    graph: WGSprinklerQualityGraph
+    node: built
   - type: WGSprinkler
     range: 1
     square: true
@@ -339,6 +404,9 @@
   name: advanced sprinkler
   description: Keeps every plant holder within two tiles watered from its tank, while it has power. Fill the tank with water.
   components:
+  - type: Construction
+    graph: WGSprinklerAdvancedGraph
+    node: built
   - type: WGSprinkler
     range: 2
     square: true
@@ -354,6 +422,9 @@
   name: packing table
   description: Seals farm goods into trade crates for the market. 40 produce or home cooking make a Supplies crate, 15 wines, cheeses, preserves, honey or fine dishes a Luxuries crate, 30 cloth a Fabric crate, 20 bags of fertilizer a Fertilizer crate.
   components:
+  - type: Construction
+    graph: WGFarmPackingTableGraph
+    node: built
   - type: Sprite
     sprite: _WG/Farming/props.rsi
     state: packing_crate
@@ -370,6 +441,9 @@
   name: outpost order board
   description: Buyers across the sector post orders for farm and workshop goods here. Use the goods on it to deliver; examine it to read the orders.
   components:
+  - type: Construction
+    graph: WGFarmOrderBoardGraph
+    node: built
   - type: Sprite
     sprite: _WG/Farming/noticeboard.rsi
     state: noticeboard
@@ -410,6 +484,9 @@
   name: rain catcher
   description: A wide barrel that catches rain under an open sky. Free to run, but only fills while it rains. Feeds the sprinklers within six tiles.
   components:
+  - type: Construction
+    graph: WGRainCatcherGraph
+    node: built
   - type: Sprite
     sprite: _WG/Farming/props.rsi
     state: rain_catcher
@@ -425,6 +502,9 @@
   name: moisture vaporator
   description: Condenses water out of the air on power. Works best on hot worlds, slower in the cold, and not at all below freezing. Feeds the sprinklers within six tiles.
   components:
+  - type: Construction
+    graph: WGMoistureVaporatorGraph
+    node: built
   - type: Sprite
     sprite: Structures/Machines/server.rsi
     state: server
@@ -444,6 +524,9 @@
   name: snow melter
   description: Melts snowfall and frost into water on power, for frozen worlds. Feeds the sprinklers within six tiles.
   components:
+  - type: Construction
+    graph: WGSnowMelterGraph
+    node: built
   - type: Sprite
     sprite: Structures/Machines/thermobath.rsi
     state: base

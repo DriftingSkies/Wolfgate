@@ -121,6 +121,9 @@
       microwave_entity_container: !type:Container
       machine_board: !type:Container
       machine_parts: !type:Container
+      # WOLFGATE(Cooking): the hearth's hob and oven, declared so spawning doesn't add them
+      wg-hob: !type:ContainerSlot
+      wg-oven: !type:Container
   - type: AutomationSlots # Goobstation
     slots:
     - !type:AutomatedContainer

@@ -2333,6 +2333,9 @@
   name: hearth stove
   description: A brick oven with a hob on top. Set a pan or a pot on the hob, put dishes in the oven, and keep an eye on them so they don't burn. Needs power.
   components:
+  - type: Construction
+    graph: WGHearthStoveGraph
+    node: built
   - type: Sprite
     sprite: _WG/Cooking/hearth_stove.rsi
     layers:
@@ -2379,11 +2382,16 @@
   name: prep board
   description: Lay ingredients on it, then open it to chop them and put them together into a dish for the oven or the pan.
   components:
+  - type: Construction
+    graph: WGPrepBoardGraph
+    node: built
   - type: Sprite
     sprite: _WG/Cooking/prep_board.rsi
     state: icon
   - type: Fixtures
     fixtures: {}
+  - type: Physics
+    canCollide: false
   - type: WGPrepBoard
   - type: ContainerContainer
     containers:

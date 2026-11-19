@@ -533,6 +533,9 @@ def main():
   name: smoking rack
   description: Smokes meat into jerky and fish into dried fish that keep for a long trip. No power needed.
   components:
+  - type: Construction
+    graph: WGHuntSmokingRackGraph
+    node: built
   - type: Sprite
     sprite: _WG/Hunting/props.rsi
     layers:
@@ -558,6 +561,9 @@ def main():
   name: tanning rack
   description: Tans pelts and hides into leather.
   components:
+  - type: Construction
+    graph: WGHuntTanningRackGraph
+    node: built
   - type: Sprite
     sprite: _WG/Hunting/props.rsi
     state: tanning_rack

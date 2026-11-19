@@ -101,9 +101,12 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
   - show the pan or pot on the hob
   - no microwave screen; it cooks by hand
   - the pan or pot on the hob
+  - the hearth's hob and oven, declared so spawning doesn't add them
+  - taken apart, the range drops what was on its hob and in its oven
   - the food-o-mat only assembles; no oven from the microwave it is built on
 - [`Resources/Prototypes/Entities/Structures/Machines/microwave.yml`](../../../Resources/Prototypes/Entities/Structures/Machines/microwave.yml)
   - the microwave cooks hands-on as an oven-only hearth (Cooking module)
   - no microwave screen; it cooks by hand
+  - the hearth's hob and oven, declared so spawning doesn't add them
 
 <!-- WOLFGATE-GENERATED END -->

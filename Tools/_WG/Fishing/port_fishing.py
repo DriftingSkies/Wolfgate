@@ -390,6 +390,9 @@ def main():
   name: fish pond
   description: A stocked pond for an outpost. Cast a line into it with a fishing rod.
   components:
+  - type: Construction
+    graph: WGFishPondGraph
+    node: built
   - type: Sprite
     sprite: _WG/Fishing/fishing.rsi
     state: pond
