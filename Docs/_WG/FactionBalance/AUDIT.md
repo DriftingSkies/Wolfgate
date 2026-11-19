@@ -6,7 +6,7 @@ The specialist kits are in `Resources/Prototypes/_WG/SpecialistKits/kits.yml`.
 Counts are what a player sees in the uplink's tabs, against the 80-100 cap. Operations (their own tab, one per
 operation) and the kit replacement crates (shown only to a player who drew that kit) are listed apart.
 
-## TSF uplink (161 listings; 8 kit replacements)
+## TSF uplink (151 listings; 8 kit replacements)
 
 | Category | Item | Cost |
 |---|---|---|
@@ -42,24 +42,18 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | SecurityExplosives | smoke grenade (`SmokeGrenade`) | 2 |
 | SecurityExplosives | tear gas grenade (`TearGasGrenade`) | 2 |
 | SecurityExplosives | flashbang (`GrenadeFlashBang`) | 2 |
-| SecurityExplosives | flashbang (`GrenadeFlashBang`) | 2 |
-| SecurityExplosives | smoke grenade (`SmokeGrenade`) | 2 |
 | SecurityExplosives | stinger grenade (`GrenadeStinger`) | 3 |
-| SecurityExplosives | EmpGrenadeNfsd (`EmpGrenadeNfsd`) | 3 |
 | SecurityExplosives | EmpGrenadeNfsd (`EmpGrenadeNfsd`) | 3 |
 | SecurityExplosives | GrenadeIncendiaryNfsd (`GrenadeIncendiaryNfsd`) | 4 |
 | SecurityExplosives | GrenadeShrapnelNfsd (`GrenadeShrapnelNfsd`) | 4 |
 | SecurityExplosives | ExGrenadeNfsd (`ExGrenadeNfsd`) | 5 |
 | SecurityExplosives | breaching charge (`BreachingCharge`) | 5 |
 | SecurityExplosives | composition C-4 (`C4`) | 5 |
-| SecurityExplosives | breaching charge (`BreachingCharge`) | 5 |
 | SecurityExplosives | explosive mine (`LandMineExplosive`) | 5 |
 | SecurityExplosives | BoomRoach Reinforcement Radio (`ReinforcementRadioTSFBoomRoach`) | 30 |
 | SecurityExplosives | TSF 'Hiroshima' bunker buster (`TSFBomb`) | 75 |
 | SecurityHardsuits | M82c hardsuit (`ClothingOuterHardsuitM82c`) | 10 |
 | SecurityHardsuits | M82b hardsuit (`ClothingOuterHardsuitM82b`) | 10 |
-| SecurityHardsuits | M82c hardsuit (`ClothingOuterHardsuitM82c`) | 15 |
-| SecurityHardsuits | M82b hardsuit (`ClothingOuterHardsuitM82b`) | 45 |
 | SecurityHardsuits | M86 Mk.3(R) hardsuit (`ClothingOuterHardsuitM86`) | 45 |
 | SecurityHardsuits | TSFMC M92-X tacsuit (`ClothingOuterHardsuitNfsdExperimental`) | 90 |
 | SecurityMaterials | WGSheetPlastitanium5 (`WGSheetPlastitanium5`) | 25 |
@@ -104,7 +98,6 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | SecurityUtility | contraband forensics module (`ContrabandForensicsModule`) | 20 |
 | SecurityUtility | military gunnery co-processor chip (`WGGunneryChipMilitary`) | 20 |
 | SecurityUtility | TSFMC techfab machine board (`NfsdTechFabCircuitboard`) | 25 |
-| SecurityUtility | MedkitCombatFilled (`MedkitCombatFilled`) | 30 |
 | SecurityUtility | portable recharger (`PortableRecharger`) | 35 |
 | SecurityUtility | TSFMC energy shield (`EnergyShieldNfsd`) | 40 |
 | SecurityUtility | Defibrillator (`Defibrillator`) | 40 |
@@ -124,19 +117,16 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | SecurityWeapons | ClothingBeltSheathFilledNavy (`ClothingBeltSheathFilledNavy`) | 10 |
 | SecurityWeapons | MA Mk-58 (.45 ACP) (`WeaponPistolMk58`) | 10 |
 | SecurityWeapons | plasteel arming sword (`PlasteelArmingSword`) | 10 |
-| SecurityWeapons | Mateba (.357 magnum) (`WeaponRevolverMateba`) | 10 |
 | SecurityWeapons | emp emitter (`WeaponEmpEmitter`) | 15 |
 | SecurityWeapons | Enforcer (12 gauge) (`WeaponShotgunEnforcer`) | 15 |
 | SecurityWeapons | TCA QBZ-410 Lecter (6.8x52mm Caseless) (`WeaponRifleLecter`) | 15 |
 | SecurityWeapons | energy gun (`WeaponEnergyGun`) | 15 |
 | SecurityWeapons | Mateba (.357 magnum) (`WeaponRevolverMateba`) | 15 |
 | SecurityWeapons | breaching hammer (`SecBreachingHammer`) | 15 |
-| SecurityWeapons | TCA QBZ-410 Lecter (6.8x52mm Caseless) (`WeaponRifleLecter`) | 15 |
 | SecurityWeapons | TCA CS/LR-8 Drozd (.45 ACP) (`WeaponSubMachineGunDrozd`) | 15 |
 | SecurityWeapons | Kammerer (12 gauge) (`WeaponShotgunKammerer`) | 15 |
 | SecurityWeapons | disabler SMG (`WeaponDisablerSMG`) | 25 |
 | SecurityWeapons | TSFMC energy sword (`EnergySwordNfsd`) | 30 |
-| SecurityWeapons | Enforcer (12 gauge) (`WeaponShotgunEnforcer`) | 30 |
 | SecurityWeapons | VFD EG-4 energy revolver (`WeaponEnergyRevolver`) | 35 |
 | SecurityWeapons | TCA QBZ-91 Riversong (6.8x52mm Caseless) (`WeaponRifleRiversong`) | 45 |
 | SecurityWeapons | TCA QBZ-430 Annie (7.62x39mm) (`WeaponRifleAnnie`) | 75 |
@@ -172,12 +162,16 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | SecuritySupplies | hyper-capacity power cell (`PowerCellHyper`) | 8 |
 | SecuritySupplies | bulk ration crate (`WGCrateFoodRations`) | 15 |
 
-## PDV uplink (107 listings; 8 kit replacements)
+## PDV uplink (111 listings; 8 kit replacements)
 
 | Category | Item | Cost |
 |---|---|---|
 | PdvMaterials | SheetPdvComposite5 (`SheetPdvComposite5`) | 25 |
+| PdvMaterials | WGCrateMaterialsBasicFilledPdv (`WGCrateMaterialsBasicFilledPdv`) | 50 |
 | PdvMaterials | SheetPdvComposite15 (`SheetPdvComposite15`) | 75 |
+| PdvMaterials | WGCrateMaterialsIndustrialFilledPdv (`WGCrateMaterialsIndustrialFilledPdv`) | 75 |
+| PdvMaterials | WGCrateMaterialsAdvancedFilledPdv (`WGCrateMaterialsAdvancedFilledPdv`) | 100 |
+| PdvMaterials | WGCrateMaterialsExoticFilledPdv (`WGCrateMaterialsExoticFilledPdv`) | 130 |
 | PdvMaterials | SheetPdvComposite30 (`SheetPdvComposite30`) | 150 |
 | PdvVouchers | PDV T0 ship voucher (`ShipVoucherPdvT0`) | 0 |
 | PdvVouchers | PDV T1 ship voucher (`ShipVoucherPdvT1`) | 10 |
@@ -284,13 +278,13 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | PdvSupplies | hyper-capacity power cell (`PowerCellHyper`) | 8 |
 | PdvSupplies | bulk ration crate (`WGCrateFoodRations`) | 15 |
 
-## TSF lathe packs (39 recipes)
+## TSF lathe packs (40 recipes)
 
-TSF autosurgeon (WJY-21X sandevistan) flatpack, TSFMC advanced weapon cyborg module, TSFMC weapon cyborg module, night vision goggles, M82b hardsuit, M82c hardsuit, M86 Mk.3(R) hardsuit, TSFMC M92-X tacsuit, pocket crowbar, Demag, TSFMC energy shield, forensic scanner, medicated suture, motion detector, nanolaminate foam grenade, portable recharger, regenerative mesh, TSF Altair LPC [T3], TSF Andromeda LPC [T3], TSF Flyssa LPC [T4], TSFN Luda LPC [T4], TSFN Polaris LPC [T3], TSFMC T0 ship voucher, TSF T1 ship voucher, TSF T2 ship voucher, TSF Zephyr LPC, TCA QBU-284 'Shenzhen' coilgun AMR, QBH-20-C Calico energy rifle, QJH-50-C Smilodon automatic energy weapon, TCA QJY-68 Grizzly (6.8x52mm caseless), TCA QLU-907 Anubis TPGL (35x53mm grenade), TCA QBZ-430 Annie (7.62x39mm), TCA QBB-81-1 Dragonfang (7.62x51mm), TCA QBZ-410 Lecter (6.8x52mm Caseless), SKR-WS QBU-430 Bandit (8x65mm SKR), VFD QBU-243 Xian DMR (8x65mm SKR), TCA QBZ-91 Riversong (6.8x52mm Caseless), VFD QBZX-281 ICWS (5.56x45mm), TCA CS/LR-8 Drozd (.45 ACP)
+TSF autosurgeon (WJY-21X sandevistan) flatpack, TSFMC advanced weapon cyborg module, TSFMC weapon cyborg module, night vision goggles, M82b hardsuit, M82c hardsuit, M86 Mk.3(R) hardsuit, TSFMC M92-X tacsuit, pocket crowbar, Demag, TSFMC energy shield, forensic scanner, medicated suture, motion detector, nanolaminate foam grenade, portable recharger, regenerative mesh, TSF Altair LPC [T3], TSF Andromeda LPC [T3], TSF Flyssa LPC [T4], TSFN Luda LPC [T4], TSFN Polaris LPC [T3], TSFMC T0 ship voucher, TSF T1 ship voucher, TSF T2 ship voucher, TSF Zephyr LPC, TSF T3 ship voucher, TCA QBU-284 'Shenzhen' coilgun AMR, QBH-20-C Calico energy rifle, QJH-50-C Smilodon automatic energy weapon, TCA QJY-68 Grizzly (6.8x52mm caseless), TCA QLU-907 Anubis TPGL (35x53mm grenade), TCA QBZ-430 Annie (7.62x39mm), TCA QBB-81-1 Dragonfang (7.62x51mm), TCA QBZ-410 Lecter (6.8x52mm Caseless), SKR-WS QBU-430 Bandit (8x65mm SKR), VFD QBU-243 Xian DMR (8x65mm SKR), TCA QBZ-91 Riversong (6.8x52mm Caseless), VFD QBZX-281 ICWS (5.56x45mm), TCA CS/LR-8 Drozd (.45 ACP)
 
-## PDV lathe packs (46 recipes)
+## PDV lathe packs (47 recipes)
 
-AccessBreaker, PDV autosurgeon (VV/KE prosthetic heart) flatpack, PDV autosurgeon (E-SAPI dermal armor) flatpack, PDV autosurgeon (LS-210 IAS) flatpack, PDV advanced weapon cyborg module, PDV weapon cyborg module, thermal vision goggles, advanced gas mask, PDV CV-32 combat hardsuit, PDV CV-53 combat tacsuit, stealth hardsuit, juggernaut suit, PDV CV-82 combat tacsuit, PDV SCAF hardsuit, web vest, elite web vest, tactical magboots, dirty bomb, Emag, energy dagger, energy sword, heavy ballistic shield, hypospray, advanced nanite applicator, PDV Europa LPC [T3], PDV inertia LPC, PDV Kortik-R LPC [T3], PDV mock LPC, PDV T0 ship voucher, PDV T1 ship voucher, PDV T2 ship voucher, PDV Saturn LPC [T4], PDV snakelet LPC, advanced jaws of life, telescopic shield, PDV Foxtrot-II LPC [T4], MANPAT "Panzero" disposable anti-tank, LWC Python (.357 magnum), PA M-90 (7.62x51mm), PD-VI M-32 Vympel (5.56x45mm), PA M-12 Bulldog (12 gauge), PD-VI "Sultan's Pulsar" shotgun (4 gauge), SKR-WS M96 Hristov (14.5x114mm), CS C-20r submachine gun (9x19mm), SKR-WS MLA-73 (6.35x40mm caseless), VT-7 high-frequency blade
+AccessBreaker, PDV autosurgeon (VV/KE prosthetic heart) flatpack, PDV autosurgeon (E-SAPI dermal armor) flatpack, PDV autosurgeon (LS-210 IAS) flatpack, PDV advanced weapon cyborg module, PDV weapon cyborg module, thermal vision goggles, advanced gas mask, PDV CV-32 combat hardsuit, PDV CV-53 combat tacsuit, stealth hardsuit, juggernaut suit, PDV CV-82 combat tacsuit, PDV SCAF hardsuit, web vest, elite web vest, tactical magboots, dirty bomb, Emag, energy dagger, energy sword, heavy ballistic shield, hypospray, advanced nanite applicator, PDV Europa LPC [T3], PDV inertia LPC, PDV Kortik-R LPC [T3], PDV mock LPC, PDV T0 ship voucher, PDV T1 ship voucher, PDV T2 ship voucher, PDV T3 ship voucher, PDV Saturn LPC [T4], PDV snakelet LPC, advanced jaws of life, telescopic shield, PDV Foxtrot-II LPC [T4], MANPAT "Panzero" disposable anti-tank, LWC Python (.357 magnum), PA M-90 (7.62x51mm), PD-VI M-32 Vympel (5.56x45mm), PA M-12 Bulldog (12 gauge), PD-VI "Sultan's Pulsar" shotgun (4 gauge), SKR-WS M96 Hristov (14.5x114mm), CS C-20r submachine gun (9x19mm), SKR-WS MLA-73 (6.35x40mm caseless), VT-7 high-frequency blade
 
 ## Gaps
 

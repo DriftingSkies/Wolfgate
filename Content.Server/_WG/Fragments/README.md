@@ -42,6 +42,11 @@ Tuning is in `Resources/Prototypes/_WG/Fragments/fragments.yml`; the logic is `W
 
 - [`Resources/Locale/en-US/_WG/Fragments/fragments.ftl`](../../../Resources/Locale/en-US/_WG/Fragments/fragments.ftl)
 
+### Audio
+
+- [`Resources/Audio/_WG/Fragments/attributions.yml`](../../../Resources/Audio/_WG/Fragments/attributions.yml)
+- [`Resources/Audio/_WG/Fragments/seeing.ogg`](../../../Resources/Audio/_WG/Fragments/seeing.ogg)
+
 ## Non-modular edits
 
 - [`Resources/Prototypes/_Mono/Events/mono_monolithic_events.yml`](../../../Resources/Prototypes/_Mono/Events/mono_monolithic_events.yml): the Remade fragment between the faction bases replaces the plain one

@@ -1,6 +1,7 @@
 # Supplies: field rations, survival gear, tools and field medicine on both faction uplinks, the same price on each,
-# for crews that live out of their ship or on a world for an operation. Also the TSF's missing grenades, breaching
-# charges, tools and combat medicine, and the PDV infiltration kit that replaces its five loose chameleon listings.
+# for crews that live out of their ship or on a world for an operation. Also the TSF's missing jetpack, C4, tools,
+# defibrillator and injectors, and the PDV infiltration kit that replaces its five loose chameleon listings.
+# The TSF's grenades, breaching charges and combat medkit are already in _NF/Catalog/security_uplink_catalog.yml.
 # Listing names and descriptions come from the product entity; the two new entities' are in uplink.ftl.
 
 - type: storeCategory
@@ -607,77 +608,12 @@
       - SecurityUplink
 
 - type: listing
-  id: WGUplinkTsfFlashbang
-  productEntity: GrenadeFlashBang
-  cost:
-    FederationMilitaryCredit: 2
-  categories:
-  - UplinkSecurityExplosives
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - SecurityUplink
-
-- type: listing
-  id: WGUplinkTsfSmoke
-  productEntity: SmokeGrenade
-  cost:
-    FederationMilitaryCredit: 2
-  categories:
-  - UplinkSecurityExplosives
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - SecurityUplink
-
-- type: listing
-  id: WGUplinkTsfEmp
-  productEntity: EmpGrenadeNfsd
-  cost:
-    FederationMilitaryCredit: 3
-  categories:
-  - UplinkSecurityExplosives
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - SecurityUplink
-
-- type: listing
   id: WGUplinkTsfC4
   productEntity: C4
   cost:
     FederationMilitaryCredit: 5
   categories:
   - UplinkSecurityExplosives
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - SecurityUplink
-
-- type: listing
-  id: WGUplinkTsfBreachingCharge
-  productEntity: BreachingCharge
-  cost:
-    FederationMilitaryCredit: 5
-  categories:
-  - UplinkSecurityExplosives
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - SecurityUplink
-
-- type: listing
-  id: WGUplinkTsfMedkitCombat
-  productEntity: MedkitCombatFilled
-  cost:
-    FederationMilitaryCredit: 30
-  categories:
-  - UplinkSecurityUtility
   conditions:
   - !type:StoreWhitelistCondition
     whitelist:

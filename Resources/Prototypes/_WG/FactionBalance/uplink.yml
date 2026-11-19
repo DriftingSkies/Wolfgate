@@ -1,31 +1,6 @@
-# Uplink additions so both factions can buy what the other can: the TSF's mid and top hardsuits and its lathe
-# weapons, plus plates, medkits and gunnery chips. Names and descriptions come from the product entity.
-
-- type: listing
-  id: WGUplinkTsfHardsuitM82c
-  productEntity: ClothingOuterHardsuitM82c
-  cost:
-    FederationMilitaryCredit: 15
-  categories:
-  - UplinkSecurityHardsuits
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - SecurityUplink
-
-- type: listing
-  id: WGUplinkTsfHardsuitM82b
-  productEntity: ClothingOuterHardsuitM82b
-  cost:
-    FederationMilitaryCredit: 45
-  categories:
-  - UplinkSecurityHardsuits
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - SecurityUplink
+# Uplink additions so both factions can buy what the other can: the TSF's top hardsuits and its lathe weapons, plus
+# plates, medkits and gunnery chips, and the PDV's material crates. Names and descriptions come from the product
+# entity. The M82b, M82c, Lecter, Enforcer and Mateba are already in _NF/Catalog/security_uplink_catalog.yml.
 
 - type: listing
   id: WGUplinkTsfHardsuitM86
@@ -54,19 +29,6 @@
       - SecurityUplink
 
 - type: listing
-  id: WGUplinkTsfRifleLecter
-  productEntity: WeaponRifleLecter
-  cost:
-    FederationMilitaryCredit: 15
-  categories:
-  - UplinkSecurityWeapons
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - SecurityUplink
-
-- type: listing
   id: WGUplinkTsfSmgDrozd
   productEntity: WeaponSubMachineGunDrozd
   cost:
@@ -84,32 +46,6 @@
   productEntity: WeaponShotgunKammerer
   cost:
     FederationMilitaryCredit: 15
-  categories:
-  - UplinkSecurityWeapons
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - SecurityUplink
-
-- type: listing
-  id: WGUplinkTsfShotgunEnforcer
-  productEntity: WeaponShotgunEnforcer
-  cost:
-    FederationMilitaryCredit: 30
-  categories:
-  - UplinkSecurityWeapons
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - SecurityUplink
-
-- type: listing
-  id: WGUplinkTsfRevolverMateba
-  productEntity: WeaponRevolverMateba
-  cost:
-    FederationMilitaryCredit: 10
   categories:
   - UplinkSecurityWeapons
   conditions:
@@ -495,3 +431,91 @@
     whitelist:
       tags:
       - SecurityUplink
+
+# The PDV's material crates, at the TSF's prices. The exotic crate holds composite where the TSF's holds plastitanium.
+- type: entity
+  parent: [ CratePDVEquippment, StorageFillMaterialsBasicTsf ]
+  id: WGCrateMaterialsBasicFilledPdv
+  suffix: Filled, Basic Materials (full)
+
+- type: entity
+  parent: [ CratePDVEquippment, StorageFillMaterialsIndustrial ]
+  id: WGCrateMaterialsIndustrialFilledPdv
+  suffix: Filled, Industrial Materials (full)
+
+- type: entity
+  parent: [ CratePDVEquippment, StorageFillMaterialsAdvanced ]
+  id: WGCrateMaterialsAdvancedFilledPdv
+  suffix: Filled, Advanced Materials (full)
+
+- type: entity
+  parent: CratePDVEquippment
+  id: WGCrateMaterialsExoticFilledPdv
+  suffix: Filled, Exotic Materials (full)
+  components:
+  - type: StorageFill
+    contents:
+    - id: SheetPdvComposite10
+    - id: SheetUraniumDepleted
+    - id: SheetUraniumFissile1
+      amount: 2
+
+- type: listing
+  id: WGUplinkPdvMaterialsBasic
+  name: uplink-faction-materials-basic-name
+  description: uplink-faction-materials-basic-desc
+  productEntity: WGCrateMaterialsBasicFilledPdv
+  cost:
+    Doubloon: 50
+  categories:
+  - UplinkPdvMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMaterialsIndustrial
+  name: uplink-faction-materials-industrial-name
+  description: uplink-faction-materials-industrial-desc
+  productEntity: WGCrateMaterialsIndustrialFilledPdv
+  cost:
+    Doubloon: 75
+  categories:
+  - UplinkPdvMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMaterialsAdvanced
+  name: uplink-faction-materials-advanced-name
+  description: uplink-faction-materials-advanced-desc
+  productEntity: WGCrateMaterialsAdvancedFilledPdv
+  cost:
+    Doubloon: 100
+  categories:
+  - UplinkPdvMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMaterialsExotic
+  name: uplink-faction-materials-exotic-name
+  description: wg-uplink-pdv-materials-exotic-desc
+  productEntity: WGCrateMaterialsExoticFilledPdv
+  cost:
+    Doubloon: 130
+  categories:
+  - UplinkPdvMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
