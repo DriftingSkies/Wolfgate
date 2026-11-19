@@ -11,8 +11,8 @@ wg-fragment-departed = The broken Monolith fragment near {$coords} has drifted o
 wg-fragment-lost = The Monolith fragment near {$coords} has drifted out of the sector with its heart still beating. Whatever it was growing, it took with it.
 
 # Two-tone announcement: the sender in the Monolith's colour, the text in the line's own.
-wg-fragment-announcement-wrap = [font size=14][bold][color={$senderColor}]{$sender} Announcement:[/color][/font][font size=12]
-    [color={$textColor}]{$message}[/color][/bold][/font]
+wg-fragment-announcement-wrap = [font size=14][bold][color={$senderColor}]{$sender} Announcement:[/color][/font][font size=12][color={$textColor}]
+    {$message}[/color][/bold][/font]
 # The second voice that follows the worst lines.
 wg-fragment-voice-wrap = [font size=11][italic][color={$color}]{$message}[/color][/italic][/font]
 

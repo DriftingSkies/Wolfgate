@@ -6,7 +6,8 @@
   components:
   - type: StorageFill
     contents:
-    - id: WGRMCArmorM3G4
+    - id: WGKitArmorM3G4
+    - id: ArmorPlatePierce
     - id: WeaponShotgunEnforcer
     - id: AmmoBox12_gaugeBuckshot
     - id: AmmoBox12_gaugeSlug
@@ -37,7 +38,7 @@
   components:
   - type: StorageFill
     contents:
-    - id: WGRMCArmorM3T
+    - id: WGKitArmorM3T
     - id: WeaponSubMachineGunDrozd
     - id: Magazine45_ACPSubMachineGunFMJ
       amount: 2
@@ -125,7 +126,8 @@
   components:
   - type: StorageFill
     contents:
-    - id: WGRMCArmorM35
+    - id: WGKitArmorM35
+    - id: ArmorPlateHeat
     - id: WeaponShotgunEnforcer
     - id: AmmoBox12_gaugeIncendiary
       amount: 2
@@ -182,7 +184,8 @@
   components:
   - type: StorageFill
     contents:
-    - id: WGRMCArmorML66A
+    - id: WGKitArmorML66A
+    - id: ArmorPlatePierce
     - id: WeaponLMGGrizzly
     - id: AmmoBox68x52mmCaseless
       amount: 2
@@ -236,7 +239,8 @@
   components:
   - type: StorageFill
     contents:
-    - id: WGRMCArmorUM5CU
+    - id: WGKitArmorUM5CU
+    - id: ArmorPlatePierce
     - id: WeaponSubMachineGunMla73
     - id: EnergyCutlass
     - id: SyndicateJawsOfLife
@@ -265,7 +269,8 @@
   components:
   - type: StorageFill
     contents:
-    - id: WGRMCArmorUL6
+    - id: WGKitArmorUL6
+    - id: ArmorPlateBlunt_Slash
     - id: WeaponRifleAk
     - id: Magazine762x39mmFMJ
       amount: 2
@@ -351,7 +356,8 @@
   components:
   - type: StorageFill
     contents:
-    - id: WGRMCArmorUH7
+    - id: WGKitArmorUH7
+    - id: ArmorPlatePierce
     - id: ClothingBackpackDuffelPDVFilledLMG
     - id: TelescopicShield
 
@@ -376,7 +382,8 @@
   components:
   - type: StorageFill
     contents:
-    - id: WGRMCArmorMilitiaHauberk
+    - id: WGKitArmorMilitiaHauberk
+    - id: ArmorPlateHeat
     - id: ClothingBackpackDuffelPDVBurner
     - id: GrenadeIncendiaryNfsd
       amount: 3

@@ -14,7 +14,13 @@ public static class WGFragmentText
     /// <summary>The noise the flickering bursts draw from, the same set the Lattice garbles with.</summary>
     public const string Noise = "#$%@!&*?~^";
 
-    /// <summary>A line as chat markup, and as plain text for the logs.</summary>
+    /// <summary>
+    /// Bursts redraw at the base rate plus up to this many milliseconds. The client seeds a burst from the clock, its
+    /// rate and a hash that leaves out its attributes, so bursts at one rate would show the same noise in step.
+    /// </summary>
+    public const int RateSpread = 40;
+
+    /// <summary>A line as chat markup, and as it reads corrupted in plain text.</summary>
     public readonly record struct Built(string Markup, string Plain);
 
     private enum Kind : byte
@@ -97,6 +103,7 @@ public static class WGFragmentText
 
         var markup = new StringBuilder();
         var plain = new StringBuilder();
+        var rates = new HashSet<int>();
         for (var i = 0; i < chars.Count;)
         {
             var j = i;
@@ -105,7 +112,11 @@ public static class WGFragmentText
 
             if (chars[i].K == Kind.Flicker)
             {
-                markup.Append(Scramble(j - i, flickerRate));
+                // A rate of its own, so each burst flickers apart from the others.
+                var rate = flickerRate + random.Next(RateSpread);
+                for (var tries = 0; !rates.Add(rate) && tries < RateSpread; tries++)
+                    rate = flickerRate + random.Next(RateSpread);
+                markup.Append(Scramble(j - i, rate));
                 for (var k = i; k < j; k++)
                     plain.Append(Noise[random.Next(Noise.Length)]);
             }

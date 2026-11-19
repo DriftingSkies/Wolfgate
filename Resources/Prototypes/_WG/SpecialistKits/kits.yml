@@ -10,7 +10,8 @@
     state: icon
   - type: CMVendorBundle
     bundle:
-    - WGRMCArmorM3G4
+    - WGKitArmorM3G4
+    - ArmorPlatePierce
     - WeaponShotgunEnforcer
     - AmmoBox12_gaugeBuckshot
     - AmmoBox12_gaugeSlug
@@ -30,7 +31,7 @@
     state: icon
   - type: CMVendorBundle
     bundle:
-    - WGRMCArmorM3T
+    - WGKitArmorM3T
     - WeaponSubMachineGunDrozd
     - Magazine45_ACPSubMachineGunFMJ
     - Magazine45_ACPSubMachineGunFMJ
@@ -91,7 +92,8 @@
     state: icon
   - type: CMVendorBundle
     bundle:
-    - WGRMCArmorM35
+    - WGKitArmorM35
+    - ArmorPlateHeat
     - WeaponShotgunEnforcer
     - AmmoBox12_gaugeIncendiary
     - AmmoBox12_gaugeIncendiary
@@ -127,7 +129,8 @@
     state: icon
   - type: CMVendorBundle
     bundle:
-    - WGRMCArmorML66A
+    - WGKitArmorML66A
+    - ArmorPlatePierce
     - WeaponLMGGrizzly
     - AmmoBox68x52mmCaseless
     - AmmoBox68x52mmCaseless
@@ -162,7 +165,8 @@
     state: icon
   - type: CMVendorBundle
     bundle:
-    - WGRMCArmorUM5CU
+    - WGKitArmorUM5CU
+    - ArmorPlatePierce
     - WeaponSubMachineGunMla73
     - EnergyCutlass
     - SyndicateJawsOfLife
@@ -180,7 +184,8 @@
     state: icon
   - type: CMVendorBundle
     bundle:
-    - WGRMCArmorUL6
+    - WGKitArmorUL6
+    - ArmorPlateBlunt_Slash
     - WeaponRifleAk
     - Magazine762x39mmFMJ
     - Magazine762x39mmFMJ
@@ -239,7 +244,8 @@
     state: icon
   - type: CMVendorBundle
     bundle:
-    - WGRMCArmorUH7
+    - WGKitArmorUH7
+    - ArmorPlatePierce
     - ClothingBackpackDuffelPDVFilledLMG
     - TelescopicShield
   - type: WGSpecialistKit
@@ -256,7 +262,8 @@
     state: icon
   - type: CMVendorBundle
     bundle:
-    - WGRMCArmorMilitiaHauberk
+    - WGKitArmorMilitiaHauberk
+    - ArmorPlateHeat
     - ClothingBackpackDuffelPDVBurner
     - GrenadeIncendiaryNfsd
     - GrenadeIncendiaryNfsd

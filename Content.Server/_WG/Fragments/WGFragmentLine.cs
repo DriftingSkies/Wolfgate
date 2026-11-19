@@ -14,7 +14,7 @@ public sealed partial class WGFragmentLine
     [DataField]
     public LocId? JointText;
 
-    /// <summary>Played to everyone the line reaches; the volume in its params is kept.</summary>
+    /// <summary>Played to everyone the line reaches, 2 dB under its params' volume like any announcement.</summary>
     [DataField]
     public SoundSpecifier? Sound;
 

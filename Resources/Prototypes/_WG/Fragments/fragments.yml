@@ -89,7 +89,7 @@
       TSF: 300
       PDV: 300
     # Harder than a High-value operation: a garrison waiting on landing, a wave every minute that grows fast with the
-    # players near, an elite every other wave, and Remade boarding any ship within 60 m of the heart.
+    # players near, an elite every other wave, and Remade boarding a crewed ship within 60 m of the heart.
     garrison: 8
     garrisonElites: 2
     waveInterval: 60

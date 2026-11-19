@@ -108,7 +108,10 @@ public sealed partial class WGFragmentRuleComponent : Component
     [DataField]
     public float WakeRadius = 40f;
 
-    /// <summary>Waves also spawn on open tiles of other grids within this many metres of the heart, such as ships alongside.</summary>
+    /// <summary>
+    /// Waves also spawn within this many metres of the heart on grids a living player near the heart is aboard, such as
+    /// a crewed ship alongside.
+    /// </summary>
     [DataField]
     public float SpawnRadius = 40f;
 

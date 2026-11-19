@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Numerics;
 using Content.Server._WG.Fragments;
 using NUnit.Framework;
@@ -69,6 +71,8 @@ public sealed class WGFragmentMathTest
             Assert.That(built.Plain, Has.Length.EqualTo(message.Length));
             Assert.That(built.Plain.Contains("SEEING") || built.Plain.Contains("HUNGRY"), Is.True);
             Assert.That(built.Markup.Split("[scramble ").Length - 1, Is.EqualTo(3));
+            var rates = Regex.Matches(built.Markup, @"rate=(\d+)").Select(m => m.Groups[1].Value).ToList();
+            Assert.That(rates, Is.Unique, "two bursts share a rate, so they would flicker in step.");
             Assert.DoesNotThrow(() => FormattedMessage.FromMarkupOrThrow(built.Markup));
             Assert.That(WGFragmentText.Build(message, coords, 0.25f, 1, 3, words, 90, new Random(seed)), Is.EqualTo(built));
         }

@@ -17,8 +17,9 @@ Admins can force one with `addgamerule WGFragmentEvent`; it lands 10 to 20 secon
 
 It lands with a garrison of 8 Remade and 2 elites besides the mobs it swaps. While the heart stands, it sends a wave
 every 60 seconds at the living players within 60 m, on the fragment or a ship alongside: four, plus one per two players,
-an elite every other wave, at most 30 alive. Four in ten of a wave board other grids within 60 m of the heart, such as
-ships alongside; the rest land on the fragment, out of sight where they can. Nobody near, no wave. Breaking the heart
+an elite every other wave, at most 30 alive. Four in ten of a wave board a ship alongside: any grid a living player
+near the heart is aboard, within 60 m of it, on tiles at least 6 m from every player. The rest land on the fragment, out
+of sight where they can. When the fragment leaves, living Remade that boarded a ship leave with it; corpses stay. Nobody near, no wave. Breaking the heart
 (3000 damage) stops the waves and pays 300 to each faction's uplink, half again if members of both factions were aboard
 at some point before it broke. The fragment leaves after 20 minutes, with a warning 5 minutes before.
 

@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Client._WG.SpecialistKits; // WOLFGATE(SpecialistKits)
 using Content.Shared._RMC14.Vendors;
 using Content.Shared.Mind;
 using Content.Shared.Roles.Jobs;
@@ -101,6 +102,8 @@ public sealed class CMAutomatedVendorBui : BoundUserInterface
                         uiEntry.TooltipLabel.ToolTip = entity.Description;
                         uiEntry.TooltipLabel.TooltipDelay = 0;
                         uiEntry.TooltipLabel.TooltipSupplier = _ => tooltip;
+                        // WOLFGATE(SpecialistKits): a specialist kit lists its gear in a drop-down under its row
+                        WGKitContents.Attach(uiEntry, entity, _prototype, EntMan.ComponentFactory);
 
                         var sectionI = sectionIndex;
                         var entryI = entryIndex;

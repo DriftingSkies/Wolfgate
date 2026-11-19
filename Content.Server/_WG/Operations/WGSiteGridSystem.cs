@@ -27,10 +27,15 @@ public sealed class WGSiteGridSystem : EntitySystem
         var tiles = new List<EntityCoordinates>();
         foreach (var tile in _map.GetAllTiles(grid, grid.Comp))
         {
-            if (_turf.IsSpace(tile) || _turf.IsTileBlocked(tile, CollisionGroup.Impassable))
-                continue;
-            tiles.Add(_map.GridTileToLocal(grid, grid.Comp, tile.GridIndices));
+            if (IsOpen(tile))
+                tiles.Add(_map.GridTileToLocal(grid, grid.Comp, tile.GridIndices));
         }
         return tiles;
+    }
+
+    /// <summary>Whether a tile is floor that nothing blocks.</summary>
+    public bool IsOpen(TileRef tile)
+    {
+        return !_turf.IsSpace(tile) && !_turf.IsTileBlocked(tile, CollisionGroup.Impassable);
     }
 }

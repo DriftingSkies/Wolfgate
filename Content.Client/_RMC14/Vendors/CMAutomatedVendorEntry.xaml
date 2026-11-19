@@ -2,6 +2,9 @@
     xmlns="https://spacestation14.io"
     xmlns:cc="clr-namespace:Content.Client._RMC14.Vendors"
     HorizontalExpand="True">
+    <!-- WOLFGATE(SpecialistKits) START: a specialist kit lists its gear in a drop-down under its row -->
+    <BoxContainer Orientation="Vertical">
+    <!-- WOLFGATE END -->
     <BoxContainer Orientation="Horizontal">
         <LayeredTextureRect Name="Texture" Access="Public"
                             HorizontalExpand="False" VerticalExpand="False" />
@@ -10,4 +13,9 @@
         <cc:CMAutomatedVendorPanel Name="Panel" Access="Public" />
         <Button Text="?" Name="TooltipLabel" Access="Public" ModulateSelfOverride="#00000000" />
     </BoxContainer>
+    <!-- WOLFGATE(SpecialistKits) START: a specialist kit lists its gear in a drop-down under its row -->
+    <BoxContainer Name="Contents" Access="Public" Orientation="Vertical" Visible="False"
+                  SeparationOverride="2" Margin="40 4 0 6" />
+    </BoxContainer>
+    <!-- WOLFGATE END -->
 </cc:CMAutomatedVendorEntry>

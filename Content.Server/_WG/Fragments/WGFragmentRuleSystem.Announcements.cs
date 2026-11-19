@@ -63,10 +63,8 @@ public sealed partial class WGFragmentRuleSystem
         var text = Loc.GetString(joint && line.JointText is { } jointText ? jointText : line.Text, ("coords", coords ?? ""));
         var words = Loc.GetString(comp.HiddenWords).Split(' ', StringSplitOptions.RemoveEmptyEntries);
         var random = new System.Random(RobustRandom.Next());
-        var body = calm
-            ? WGFragmentText.Build(text, coords, 0f, 0, 0, words, comp.FlickerRate, random)
-            : WGFragmentText.Build(text, coords, line.Corruption, line.HiddenWords, line.Flickers, words,
-                comp.FlickerRate, random);
+        var body = WGFragmentText.Build(text, coords, calm ? 0f : line.Corruption, calm ? 0 : line.HiddenWords,
+            calm ? 0 : line.Flickers, words, comp.FlickerRate, random);
         var sender = WGLatticeMath.Garble(Loc.GetString("wg-fragment-announcer"), calm ? 0f : line.SenderCorruption,
             random.Next());
 
@@ -75,12 +73,13 @@ public sealed partial class WGFragmentRuleSystem
             ("sender", FormattedMessage.EscapeText(sender)),
             ("textColor", (calm ? comp.Broken.TextColor : line.TextColor).ToHexNoAlpha()),
             ("message", body.Markup));
-        Send(body.Plain, wrapped, line.Sound);
+        Send(text, wrapped, line.Sound);
 
         if (calm || line.Voice.Count == 0)
             return;
 
-        var whisper = WGFragmentText.Whisper(Loc.GetString(RobustRandom.Pick(line.Voice)), comp.FlickerRate);
+        var whisper = WGFragmentText.Whisper(Loc.GetString(RobustRandom.Pick(line.Voice)),
+            comp.FlickerRate + random.Next(WGFragmentText.RateSpread));
         var voice = Loc.GetString("wg-fragment-voice-wrap",
             ("color", comp.VoiceColor.ToHexNoAlpha()),
             ("message", whisper.Markup));
@@ -89,7 +88,7 @@ public sealed partial class WGFragmentRuleSystem
 
     /// <summary>
     /// Sends a chat line to every player in the round who can hear it: a world with no mass transceiver up misses it,
-    /// as it misses any other announcement.
+    /// as it misses any other announcement. <paramref name="plain"/> is the clean text, for the chat log and admin log.
     /// </summary>
     private void Send(string plain, string wrapped, SoundSpecifier? sound)
     {

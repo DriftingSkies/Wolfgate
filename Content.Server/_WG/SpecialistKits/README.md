@@ -15,6 +15,11 @@ weapon and the tools for the job.
 | Heavy (job) | Heavy Gunner (Fireteam Leader) | Heavy (Denasvar) |
 | Ship crew | Ship Gunner | Topçu |
 
+The front-line kits (Breach, Engineer, Heavy, Fire) come in plate-ready armor (`armor.yml`) with a plate for the role:
+ballistic for breach and heavy, trauma for engineers, heat for fire. Scouts, marksmen, medics and ship crew keep plain
+armor. `WGKitPlateTest` fails when a kit hands out a plate its armor can't hold. In the vendor, a kit's ▶ button opens
+a drop-down under its row listing the gear in it (`WGKitContents`, through a marked hook in RMC's vendor UI).
+
 Job kits are held to their job. Open kits are limited per faction: 1, plus 1 for every 10 members online, up to 3 a
 round. RMC's own `sharedSpecLimit` counts by entry position across every specialist vendor, so it would mix the two
 factions' kits; the limit is checked instead on `WGSpecialistKitVendAttemptEvent`, which a marked hook in
@@ -38,12 +43,21 @@ Entry points: `WGSpecialistKitSystem`, `WGSpecialistKitComponent` on each kit's 
 
 - [`Content.Shared/_WG/SpecialistKits/WGSpecialistKitComponent.cs`](../../../Content.Shared/_WG/SpecialistKits/WGSpecialistKitComponent.cs)
 
+### Client
+
+- [`Content.Client/_WG/SpecialistKits/WGKitContents.cs`](../../../Content.Client/_WG/SpecialistKits/WGKitContents.cs)
+
+### Integration tests
+
+- [`Content.IntegrationTests/Tests/_WG/SpecialistKits/WGKitPlateTest.cs`](../../../Content.IntegrationTests/Tests/_WG/SpecialistKits/WGKitPlateTest.cs)
+
 ### Unit tests
 
 - [`Content.Tests/_WG/SpecialistKits/WGSpecialistKitLimitTest.cs`](../../../Content.Tests/_WG/SpecialistKits/WGSpecialistKitLimitTest.cs)
 
 ### Prototypes
 
+- [`Resources/Prototypes/_WG/SpecialistKits/armor.yml`](../../../Resources/Prototypes/_WG/SpecialistKits/armor.yml)
 - [`Resources/Prototypes/_WG/SpecialistKits/kits.yml`](../../../Resources/Prototypes/_WG/SpecialistKits/kits.yml)
 - [`Resources/Prototypes/_WG/SpecialistKits/replacements.yml`](../../../Resources/Prototypes/_WG/SpecialistKits/replacements.yml)
 - [`Resources/Prototypes/_WG/SpecialistKits/vendors.yml`](../../../Resources/Prototypes/_WG/SpecialistKits/vendors.yml)
@@ -54,7 +68,10 @@ Entry points: `WGSpecialistKitSystem`, `WGSpecialistKitComponent` on each kit's 
 
 ## Non-modular edits
 
-- [`Content.Client/_RMC14/Vendors/CMAutomatedVendorBui.cs`](../../../Content.Client/_RMC14/Vendors/CMAutomatedVendorBui.cs): a section name may be a Fluent message, shown in the player's language
+- [`Content.Client/_RMC14/Vendors/CMAutomatedVendorBui.cs`](../../../Content.Client/_RMC14/Vendors/CMAutomatedVendorBui.cs)
+  - a specialist kit lists its gear in a drop-down under its row
+  - a section name may be a Fluent message, shown in the player's language
+- [`Content.Client/_RMC14/Vendors/CMAutomatedVendorEntry.xaml`](../../../Content.Client/_RMC14/Vendors/CMAutomatedVendorEntry.xaml): a specialist kit lists its gear in a drop-down under its row
 - [`Content.Shared/_RMC14/Vendors/SharedCMAutomatedVendorSystem.cs`](../../../Content.Shared/_RMC14/Vendors/SharedCMAutomatedVendorSystem.cs)
   - specialist kit limits that scale with faction members online
   - a kit is counted against its faction's limit only once it is handed out

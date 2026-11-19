@@ -36,8 +36,10 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private TagSystem _tags = default!;
-    [Dependency] private TurfSystem _turf = default!;
     [Dependency] private WGSiteGridSystem _siteGrid = default!;
+
+    /// <summary>Points sampled in the spawn circle on each boarded grid per wave.</summary>
+    private const int NearbySamples = 64;
 
     /// <summary>A wave's size: the base, one more per <paramref name="perExtra"/> players, and room left under the cap.</summary>
     public static int WaveSize(int players, int alive, int baseSize, int perExtra, int maxAlive)
@@ -180,8 +182,10 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
             if (xform.GridUid == grid && !comp.HeartBroken)
                 RecordVisit(comp, player);
 
+            if (xform.MapID != heartPos.MapId)
+                continue;
             var pos = _transform.GetWorldPosition(xform);
-            if (xform.MapID != heartPos.MapId || (pos - heartPos.Position).Length() > comp.WakeRadius)
+            if ((pos - heartPos.Position).Length() > comp.WakeRadius)
                 continue;
 
             near.Add(pos);
@@ -197,12 +201,14 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
             return;
         comp.NextWave = Timing.CurTime + comp.WaveInterval;
 
-        // Remade carried off on a ship that left no longer hold a place under the cap.
+        // Remade on the fragment, aboard a ship alongside or loose near the heart hold a place under the cap; those
+        // carried off on a ship that left don't.
         var alive = comp.Remade.Count(r =>
         {
             var xform = Transform(r);
-            return xform.GridUid == grid
-                   || xform.MapID == heartPos.MapId
+            if (xform.GridUid is { } on && (on == grid || boarded.Contains(on)))
+                return true;
+            return xform.MapID == heartPos.MapId
                    && (_transform.GetWorldPosition(xform) - heartPos.Position).Length() <= comp.SpawnRadius;
         });
         var size = WaveSize(near.Count, alive, comp.WaveBase, comp.PlayersPerExtra, comp.MaxAlive);
@@ -235,7 +241,8 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
 
     /// <summary>
     /// Open tiles within the spawn radius of the heart on the grids players near it are aboard, such as a ship
-    /// alongside; a grid nobody near the heart is on takes no Remade.
+    /// alongside; a grid nobody near the heart is on takes no Remade. Points in the circle are sampled, so a capital
+    /// alongside costs no more than a shuttle.
     /// </summary>
     private List<EntityCoordinates> NearbyTiles(WGFragmentRuleComponent comp, HashSet<EntityUid> boarded, MapCoordinates heart)
     {
@@ -243,17 +250,22 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
         if (comp.SpawnRadius <= 0f)
             return tiles;
 
-        var area = new Circle(heart.Position, comp.SpawnRadius);
         foreach (var other in boarded)
         {
             if (!TryComp<MapGridComponent>(other, out var gridComp))
                 continue;
 
-            foreach (var tile in MapSystem.GetTilesIntersecting(other, gridComp, area))
+            var seen = new HashSet<Vector2i>();
+            for (var i = 0; i < NearbySamples; i++)
             {
-                if (_turf.IsSpace(tile) || _turf.IsTileBlocked(tile, CollisionGroup.Impassable))
+                var point = heart.Position + new Angle(RobustRandom.NextDouble() * Math.Tau).ToVec()
+                            * comp.SpawnRadius * MathF.Sqrt(RobustRandom.NextFloat());
+                var indices = MapSystem.WorldToTile(other, gridComp, point);
+                if (!seen.Add(indices)
+                    || !MapSystem.TryGetTileRef(other, gridComp, indices, out var tile)
+                    || !_siteGrid.IsOpen(tile))
                     continue;
-                tiles.Add(MapSystem.GridTileToLocal(other, gridComp, tile.GridIndices));
+                tiles.Add(MapSystem.GridTileToLocal(other, gridComp, indices));
             }
         }
 
@@ -279,17 +291,12 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
         base.Ended(uid, comp, gameRule, args);
 
         if (comp.Grid != null)
-        {
-            if (comp.Cleared)
-                Announce(comp, comp.Departed, comp.Site);
-            else
-                Announce(comp, comp.Lost, comp.Site);
-        }
+            Announce(comp, comp.Cleared ? comp.Departed : comp.Lost, comp.Site);
 
-        // Remade that boarded a ship leave with the fragment; those still on it go with its grid.
+        // Living Remade that boarded a ship leave with the fragment; those on it go with its grid, and corpses stay.
         foreach (var remade in comp.Remade)
         {
-            if (Exists(remade) && Transform(remade).GridUid != comp.Grid)
+            if (Exists(remade) && !_mobState.IsDead(remade) && Transform(remade).GridUid != comp.Grid)
                 QueueDel(remade);
         }
         comp.Remade.Clear();
