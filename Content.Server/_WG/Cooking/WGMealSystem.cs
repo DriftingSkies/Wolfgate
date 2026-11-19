@@ -44,6 +44,14 @@ public sealed partial class WGMealComponent : Component
     /// <summary>Who is eating it, from the last bite: the food's own events name whoever holds the spoon instead.</summary>
     [ViewVariables]
     public EntityUid? Eater;
+
+    /// <summary>The seasonings on it, at most two (<c>wgSeasoning</c> IDs).</summary>
+    [DataField]
+    public List<string> Seasonings = new();
+
+    /// <summary>It was spoon-fed to someone lying down, so its buff lasts longer.</summary>
+    [ViewVariables]
+    public bool Tended;
 }
 
 /// <summary>Someone's one meal buff: what it does, how strong, and until when.</summary>
@@ -66,7 +74,7 @@ public sealed partial class WGWellFedComponent : Component
 /// forty, never less, and half as fast in a fridge. Effects: Energising walks and runs faster, Hearty slows hunger,
 /// Fresh slowly heals bruises and burns, Warming and Cooling hold the body's temperature, Fortifying slows bleeding.
 /// </summary>
-public sealed class WGMealSystem : EntitySystem
+public sealed partial class WGMealSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPrototypeManager _proto = default!;
@@ -90,12 +98,16 @@ public sealed class WGMealSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
-        SubscribeLocalEvent<WGMealComponent, ConsumeDoAfterEvent>(OnBite, before: [typeof(FoodSystem)]);
+        SubscribeLocalEvent<WGMealComponent, ConsumeDoAfterEvent>(OnBite, before: [typeof(FoodSystem), typeof(DrinkSystem)]);
         SubscribeLocalEvent<WGMealComponent, AfterFullyEatenEvent>(OnEaten);
         SubscribeLocalEvent<WGMealComponent, ExaminedEvent>(OnMealExamined);
         SubscribeLocalEvent<WGMealBuffEvent>(OnBuffEvent);
         SubscribeLocalEvent<WGWellFedComponent, RefreshMovementSpeedModifiersEvent>(OnRefreshSpeed);
         SubscribeLocalEvent<WGWellFedComponent, ExaminedEvent>(OnFedExamined);
+        InitializeSeasoning();
+        InitializeComfort();
+        InitializeTending();
+        InitializeCombat();
     }
 
     /// <summary>A dish's strength now: its own, by quality, by freshness.</summary>
@@ -115,19 +127,28 @@ public sealed class WGMealSystem : EntitySystem
 
     private void OnBite(Entity<WGMealComponent> ent, ref ConsumeDoAfterEvent args)
     {
-        if (!args.Cancelled && args.Target is { } eater)
-            ent.Comp.Eater = eater;
+        if (args.Cancelled || args.Target is not { } eater)
+            return;
+
+        ent.Comp.Eater = eater;
+        if (Tend(args.User, eater))
+            ent.Comp.Tended = true;
     }
 
     /// <summary>The buff goes to whoever ate the dish, also when someone else fed it to them.</summary>
     private void OnEaten(Entity<WGMealComponent> ent, ref AfterFullyEatenEvent args)
     {
-        Give(ent.Comp.Eater ?? args.User, ent.Comp.Traits, Strength(ent), ent.Comp.Minutes, popup: true);
+        var eater = ent.Comp.Eater ?? args.User;
+        // Spoon-fed to someone lying down, it stays with them half as long again.
+        var minutes = ent.Comp.Tended ? ent.Comp.Minutes * 1.5f : ent.Comp.Minutes;
+        Give(eater, ent.Comp.Traits, Strength(ent), minutes, popup: true);
+        AteHomeCooking(eater);
     }
 
     private void OnBuffEvent(ref WGMealBuffEvent args)
     {
         Give(args.Target, args.Traits, args.Strength, args.Minutes, popup: false);
+        AddComfort(args.Target, SoupComfort);
     }
 
     /// <summary>Gives the one meal buff, replacing any other; the same buff again is just kept up.</summary>
@@ -190,6 +211,8 @@ public sealed class WGMealSystem : EntitySystem
                 Apply(uid, buff, seconds);
         }
 
+        UpdateComfort(seconds);
+
         // Removed before the speed refresh, or the refresh still sees the buff and keeps its speed bonus.
         foreach (var uid in _expired)
         {
@@ -203,7 +226,8 @@ public sealed class WGMealSystem : EntitySystem
 
     private void Apply(EntityUid uid, WGWellFedComponent buff, float seconds)
     {
-        var s = buff.Strength;
+        // Comfort makes a good meal go further.
+        var s = buff.Strength * ComfortFactor(uid);
         foreach (var trait in buff.Traits)
         {
             switch (trait)
@@ -263,6 +287,8 @@ public sealed class WGMealSystem : EntitySystem
             : ent.Comp.Age <= FreshFor ? "wg-meal-warm" : fresh > 0.5f ? "wg-meal-cold" : "wg-meal-stale";
         args.PushMarkup(Loc.GetString(key));
         args.PushMarkup(Loc.GetString("wg-meal-gives", ("traits", Describe(ent.Comp.Traits))));
+        if (ent.Comp.Seasonings.Count > 0)
+            args.PushMarkup(Loc.GetString("wg-meal-seasoned", ("with", SeasoningNames(ent.Comp))));
     }
 
     private void OnFedExamined(Entity<WGWellFedComponent> ent, ref ExaminedEvent args)

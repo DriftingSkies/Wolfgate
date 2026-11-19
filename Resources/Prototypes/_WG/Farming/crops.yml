@@ -1,212 +1,213 @@
+# TESTING: grow times are a quarter of their tuned values for gathering test data; restore (x4) when outposts ship.
 # Outpost crops: real minutes of growing to ripen (time lit and watered), and the outdoor temperature band (C) they grow in.
 # The ID is the botany seed ID. Seeds with no entry grow on any climate at their stock speed, still only while lit.
 
 - type: wgCrop
   id: wheat
-  minutes: 60
+  minutes: 15
   minTemp: 2
   maxTemp: 30
 
 - type: wgCrop
   id: oat
-  minutes: 60
+  minutes: 15
   minTemp: 0
   maxTemp: 28
 
 - type: wgCrop
   id: rice
-  minutes: 90
+  minutes: 22.5
   minTemp: 15
   maxTemp: 38
 
 - type: wgCrop
   id: corn
-  minutes: 120
+  minutes: 30
   minTemp: 12
   maxTemp: 35
 
 - type: wgCrop
   id: soybeans
-  minutes: 75
+  minutes: 18.75
   minTemp: 10
   maxTemp: 32
 
 - type: wgCrop
   id: sugarcane
-  minutes: 135
+  minutes: 33.75
   minTemp: 18
   maxTemp: 40
 
 - type: wgCrop
   id: potato
-  minutes: 75
+  minutes: 18.75
   minTemp: 4
   maxTemp: 26
 
 - type: wgCrop
   id: carrots
-  minutes: 45
+  minutes: 11.25
   minTemp: 4
   maxTemp: 26
 
 - type: wgCrop
   id: cabbage
-  minutes: 60
+  minutes: 15
   minTemp: 0
   maxTemp: 24
 
 - type: wgCrop
   id: garlic
-  minutes: 60
+  minutes: 15
   minTemp: 0
   maxTemp: 26
 
 - type: wgCrop
   id: onion
-  minutes: 60
+  minutes: 15
   minTemp: 2
   maxTemp: 28
 
 - type: wgCrop
   id: onionred
-  minutes: 60
+  minutes: 15
   minTemp: 2
   maxTemp: 28
 
 - type: wgCrop
   id: tomato
-  minutes: 90
+  minutes: 22.5
   minTemp: 12
   maxTemp: 34
 
 - type: wgCrop
   id: eggplant
-  minutes: 90
+  minutes: 22.5
   minTemp: 15
   maxTemp: 35
 
 - type: wgCrop
   id: chili
-  minutes: 75
+  minutes: 18.75
   minTemp: 15
   maxTemp: 38
 
 - type: wgCrop
   id: pumpkin
-  minutes: 150
+  minutes: 37.5
   minTemp: 8
   maxTemp: 30
 
 - type: wgCrop
   id: watermelon
-  minutes: 150
+  minutes: 37.5
   minTemp: 18
   maxTemp: 38
 
 - type: wgCrop
   id: pea
-  minutes: 60
+  minutes: 15
   minTemp: 4
   maxTemp: 26
 
 - type: wgCrop
   id: berries
-  minutes: 75
+  minutes: 18.75
   minTemp: 6
   maxTemp: 30
 
 - type: wgCrop
   id: grape
-  minutes: 120
+  minutes: 30
   minTemp: 12
   maxTemp: 34
 
 - type: wgCrop
   id: apple
-  minutes: 150
+  minutes: 37.5
   minTemp: 2
   maxTemp: 28
 
 - type: wgCrop
   id: cherry
-  minutes: 135
+  minutes: 33.75
   minTemp: 4
   maxTemp: 28
 
 - type: wgCrop
   id: lemon
-  minutes: 150
+  minutes: 37.5
   minTemp: 14
   maxTemp: 36
 
 - type: wgCrop
   id: lime
-  minutes: 150
+  minutes: 37.5
   minTemp: 14
   maxTemp: 36
 
 - type: wgCrop
   id: orange
-  minutes: 150
+  minutes: 37.5
   minTemp: 14
   maxTemp: 36
 
 - type: wgCrop
   id: banana
-  minutes: 165
+  minutes: 41.25
   minTemp: 20
   maxTemp: 40
 
 - type: wgCrop
   id: pineapple
-  minutes: 165
+  minutes: 41.25
   minTemp: 20
   maxTemp: 40
 
 - type: wgCrop
   id: cocoa
-  minutes: 150
+  minutes: 37.5
   minTemp: 20
   maxTemp: 40
 
 - type: wgCrop
   id: teaPlant
-  minutes: 90
+  minutes: 22.5
   minTemp: 8
   maxTemp: 30
 
 - type: wgCrop
   id: tobacco
-  minutes: 105
+  minutes: 26.25
   minTemp: 12
   maxTemp: 34
 
 - type: wgCrop
   id: cotton
-  minutes: 105
+  minutes: 26.25
   minTemp: 15
   maxTemp: 36
 
 - type: wgCrop
   id: chanterelle
-  minutes: 45
+  minutes: 11.25
   minTemp: -5
   maxTemp: 22
 
 - type: wgCrop
   id: towercap
-  minutes: 75
+  minutes: 18.75
   minTemp: -5
   maxTemp: 25
 
 - type: wgCrop
   id: aloe
-  minutes: 75
+  minutes: 18.75
   minTemp: 15
   maxTemp: 40
 
 - type: wgCrop
   id: poppy
-  minutes: 60
+  minutes: 15
   minTemp: 5
   maxTemp: 30

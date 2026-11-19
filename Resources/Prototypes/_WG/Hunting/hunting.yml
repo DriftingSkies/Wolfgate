@@ -955,7 +955,7 @@
   - type: StaticPrice
     price: 80
   - type: WGMeal
-    traits: [ Hearty, Fortifying ]
+    traits: [ Hearty, Fortifying, Brawny ]
     strength: 1.0
     minutes: 12
 
@@ -1009,7 +1009,7 @@
   - type: StaticPrice
     price: 220
   - type: WGMeal
-    traits: [ Hearty, Fortifying, Energising ]
+    traits: [ Hearty, Brawny, Energising ]
     strength: 1.5
     minutes: 15
 
@@ -1124,7 +1124,7 @@
   - type: StaticPrice
     price: 45
   - type: WGMeal
-    traits: [ Hearty ]
+    traits: [ Hearty, Steady ]
     strength: 0.6
     minutes: 20
     neverStale: true
@@ -1152,7 +1152,7 @@
   - type: StaticPrice
     price: 40
   - type: WGMeal
-    traits: [ Fresh ]
+    traits: [ Fresh, Steady ]
     strength: 0.6
     minutes: 20
     neverStale: true
@@ -1379,6 +1379,13 @@
       effects:
       - !type:SatiateHunger
         factor: 2
+      - !type:WGMealBuff
+        traits: [ Hearty, Fortifying ]
+        strength: 1.25
+        minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.12
+        favours: [ liver ]
   pricePerUnit: 4
 
 - type: reagent
@@ -1394,6 +1401,13 @@
       effects:
       - !type:SatiateHunger
         factor: 2
+      - !type:WGMealBuff
+        traits: [ Hearty, Brawny, Warming ]
+        strength: 1.25
+        minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.12
+        favours: [ heart ]
   pricePerUnit: 4
 
 - type: wgStewRecipe

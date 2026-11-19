@@ -47,7 +47,7 @@ public sealed class MealBuffTest
             var ev = new AfterFullyEatenEvent(eater);
             entMan.EventBus.RaiseLocalEvent(gold, ref ev);
             var fed = entMan.GetComponent<WGWellFedComponent>(eater);
-            Assert.That(fed.Traits, Is.EquivalentTo(new[] { WGMealTrait.Hearty, WGMealTrait.Fortifying }));
+            Assert.That(fed.Traits, Is.EquivalentTo(new[] { WGMealTrait.Hearty, WGMealTrait.Fortifying, WGMealTrait.Steady }));
             var cake = entMan.SpawnEntity("WGFoodRaspberryCake", map.GridCoords);
             var ev2 = new AfterFullyEatenEvent(eater);
             entMan.EventBus.RaiseLocalEvent(cake, ref ev2);

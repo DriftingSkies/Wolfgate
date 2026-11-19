@@ -1,0 +1,59 @@
+# Seasonings (wgSeasoning): used on a home-cooked dish, up to two to a dish. Each adds its trait to the dish's buff if
+# there is room, or strengthens it twice as much. A reagent seasoning takes a unit from whatever holds it (a shaker, a
+# packet, a bottle); an item seasoning is used up whole.
+
+- type: wgSeasoning
+  id: WGSeasonSalt
+  name: wg-season-salt
+  reagent: TableSalt
+  bonus: 0.15
+
+- type: wgSeasoning
+  id: WGSeasonPepper
+  name: wg-season-pepper
+  reagent: Blackpepper
+  trait: Warming
+  bonus: 0.05
+
+- type: wgSeasoning
+  id: WGSeasonChili
+  name: wg-season-chili
+  reagent: CapsaicinOil
+  items: [ FoodChiliPepper ]
+  trait: Brawny
+  bonus: 0.05
+
+- type: wgSeasoning
+  id: WGSeasonGarlic
+  name: wg-season-garlic
+  items: [ FoodGarlic, WGFoodGarlicClove ]
+  trait: Fortifying
+  bonus: 0.05
+
+- type: wgSeasoning
+  id: WGSeasonSoy
+  name: wg-season-soy
+  reagent: Soysauce
+  trait: Steady
+  bonus: 0.05
+
+- type: wgSeasoning
+  id: WGSeasonVinegar
+  name: wg-season-vinegar
+  reagent: Vinegar
+  trait: Cooling
+  bonus: 0.05
+
+- type: wgSeasoning
+  id: WGSeasonBbq
+  name: wg-season-bbq
+  reagent: BbqSauce
+  trait: Hearty
+  bonus: 0.05
+
+- type: wgSeasoning
+  id: WGSeasonHoney
+  name: wg-season-honey
+  items: [ WGHoney ]
+  trait: Energising
+  bonus: 0.05

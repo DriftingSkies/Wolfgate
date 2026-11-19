@@ -19,6 +19,10 @@ public sealed partial class WGHearthComponent : Component
     [DataField]
     public float Heat = 1f;
 
+    /// <summary>Whether it must be anchored to burn; a folding camp stove only needs to sit on the ground.</summary>
+    [DataField]
+    public bool NeedsAnchor = true;
+
     [ViewVariables]
     public float SizzleTimer;
 }

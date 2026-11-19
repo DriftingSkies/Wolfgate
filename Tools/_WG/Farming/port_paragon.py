@@ -23,6 +23,9 @@ PROTOTYPES = ROOT / "Resources" / "Prototypes" / "_WG" / "Farming"
 LOCALE = ROOT / "Resources" / "Locale" / "en-US" / "_WG" / "Farming"
 COPYRIGHT = "Taken from Paragon Moon (Roguetown lineage), {file}; adapted for Wolfgate."
 
+# TESTING: crop minutes are divided by this for gathering test data; set back to 1 when outposts ship.
+GROW_SCALE = 4
+
 # id: (crop stage prefix, produce state, name, tag, minutes, min C, max C, regrows, yield, flavour)
 CROPS = {
     "wgCucumber": ("cucumber", "cucumber", "cucumber", "Vegetable", 60, 12, 34, True, 3, "cucumber"),
@@ -205,7 +208,7 @@ def main():
 """)
         entries.append(f"""- type: wgCrop
   id: {cid}
-  minutes: {minutes}
+  minutes: {minutes / GROW_SCALE:g}
   minTemp: {low}
   maxTemp: {high}
 """)

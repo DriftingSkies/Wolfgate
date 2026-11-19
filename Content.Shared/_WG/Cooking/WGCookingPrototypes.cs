@@ -121,6 +121,37 @@ public sealed partial class WGPrepIngredient
     public int Count = 1;
 }
 
+/// <summary>
+/// A seasoning, used on a home-cooked dish: up to two to a dish, each once. It adds its trait to the dish's buff if the
+/// dish has room (three traits at most), or else strengthens it twice as much. Taken from the item used: a unit of
+/// <see cref="Reagent"/> from whatever it holds (a salt shaker), or the item itself (a garlic bulb).
+/// </summary>
+[Prototype("wgSeasoning")]
+public sealed partial class WGSeasoningPrototype : IPrototype
+{
+    [IdDataField]
+    public string ID { get; private set; } = default!;
+
+    /// <summary>What the dish is seasoned with, for examine.</summary>
+    [DataField(required: true)]
+    public LocId Name;
+
+    /// <summary>A reagent taken a unit at a time from the item used.</summary>
+    [DataField]
+    public string? Reagent;
+
+    /// <summary>Or items used up whole.</summary>
+    [DataField]
+    public List<EntProtoId> Items = new();
+
+    [DataField]
+    public WGMealTrait? Trait;
+
+    /// <summary>Strength it adds to the dish's buff.</summary>
+    [DataField]
+    public float Bonus = 0.1f;
+}
+
 /// <summary>What sits on a hearth's hob, for its sprite.</summary>
 [Serializable, NetSerializable]
 public enum WGHobVisuals : byte

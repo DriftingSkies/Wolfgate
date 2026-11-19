@@ -53,7 +53,7 @@ MEALS = {
     "WGFoodFruitCake": (["Fresh", "Energising", "Hearty"], 1.1, 14, False),
     "WGFoodLimeCake": (["Energising", "Cooling"], 1.0, 12, False),
     "WGFoodStrawberryPie": (["Energising", "Fresh"], 1.0, 12, False),
-    "WGFoodQuiche": (["Hearty", "Fortifying"], 1.1, 12, False),
+    "WGFoodQuiche": (["Hearty", "Fortifying", "Steady"], 1.1, 12, False),
     "WGFoodScallopedPotatoes": (["Hearty", "Warming"], 1.0, 12, False),
     "WGFoodStuffedEggplant": (["Fresh", "Hearty"], 1.0, 12, False),
     "WGFoodOmelette": (["Fortifying", "Hearty"], 1.0, 10, False),
@@ -62,7 +62,7 @@ MEALS = {
     "WGFoodFriedOnion": (["Warming"], 0.7, 8, False),
     "WGFoodBakedPotato": (["Hearty", "Warming"], 0.9, 10, False),
     "WGFoodRoastTurnip": (["Hearty"], 0.8, 10, False),
-    "WGFoodRoastSeeds": (["Energising"], 0.7, 8, False),
+    "WGFoodRoastSeeds": (["Energising", "Steady"], 0.7, 8, False),
     "WGFoodFriedEgg": (["Fortifying"], 0.8, 8, False),
 }
 
@@ -72,8 +72,8 @@ SOUP_TRAITS = {
     "PotatoSoup": ["Hearty", "Warming"], "OnionSoup": ["Warming"], "CabbageSoup": ["Fresh", "Warming"],
     "TurnipSoup": ["Fresh"], "BerryStew": ["Energising", "Fresh", "Cooling"], "CheeseSoup": ["Hearty", "Fortifying"],
     "EggSoup": ["Fortifying", "Fresh"], "MushroomBroth": ["Warming", "Fresh"], "FishBroth": ["Fresh", "Cooling"],
-    "MeatStew": ["Hearty", "Fortifying", "Warming"], "VegetableStew": ["Fresh", "Hearty", "Warming"],
-    "HeartyStew": ["Hearty", "Fortifying", "Warming"], "FishChowder": ["Hearty", "Fresh", "Warming"],
+    "MeatStew": ["Hearty", "Fortifying", "Brawny"], "VegetableStew": ["Fresh", "Hearty", "Warming"],
+    "HeartyStew": ["Hearty", "Fortifying", "Warming"], "FishChowder": ["Hearty", "Fresh", "Steady"],
     "SeafoodBisque": ["Fresh", "Fortifying", "Cooling"], "CheeseOnionSoup": ["Warming", "Hearty"],
     "CreamOfMushroom": ["Warming", "Fresh", "Hearty"], "FruitPorridge": ["Hearty", "Energising"],
     "BorschtSoup": ["Fresh", "Warming"],
@@ -316,6 +316,8 @@ def main():
         traits: [ {', '.join(SOUP_TRAITS.get(sid, ["Hearty"]))} ]
         strength: {1.25 if combine else 1.0}
         minutes: 15
+      - !type:WGMendOrgans
+        amount: {0.12 if combine else 0.08}
   pricePerUnit: 3
 """)
         tag_line = f"  tags: [ {', '.join(tags)} ]\n" if tags else ""
@@ -369,6 +371,7 @@ def main():
     transferAmount: 30
   - type: Drink
     solution: drink
+  - type: WGServing
   - type: Appearance
   - type: SolutionContainerVisuals
     maxFillLevels: 2

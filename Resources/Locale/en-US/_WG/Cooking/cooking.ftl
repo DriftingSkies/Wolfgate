@@ -109,4 +109,37 @@ wg-meal-trait-fresh = mending
 wg-meal-trait-warming = warm through
 wg-meal-trait-cooling = cooled
 wg-meal-trait-fortifying = fortified
+wg-meal-trait-brawny = brawny
+wg-meal-trait-steady = steady at the helm
 reagent-effect-guidebook-wg-meal-buff = Gives a home-cooked meal's buff ({$traits}).
+reagent-effect-guidebook-wg-mend-organs = Gently mends the heart, lungs, liver, kidneys and stomach, up to {$cap}% of their health
+
+wg-meal-seasoned = Seasoned with {$with}.
+wg-season-done = You season {THE($dish)} with {$seasoning}.
+wg-season-already = It already has {$seasoning} on it.
+wg-season-full = It's seasoned enough already.
+wg-season-salt = salt
+wg-season-pepper = black pepper
+wg-season-chili = chili
+wg-season-garlic = garlic
+wg-season-soy = soy sauce
+wg-season-vinegar = vinegar
+wg-season-bbq = barbecue sauce
+wg-season-honey = honey
+
+wg-tend-feeder = You gently spoon-feed {THE($patient)}.
+wg-tend-patient = {CAPITALIZE(THE($feeder))} spoon-feeds you. It's soothing.
+
+wg-comfort-content = You feel content.
+wg-comfort-cozy = You feel warm and cozy.
+wg-comfort-shared = Sharing a meal makes it all the better.
+wg-comfort-examine-content = { $self ->
+    [1] You feel content.
+   *[other] {CAPITALIZE(SUBJECT($target))} {CONJUGATE-BE($target)} looking content.
+}
+wg-comfort-examine-cozy = { $self ->
+    [1] You feel warm and cozy.
+   *[other] {CAPITALIZE(SUBJECT($target))} {CONJUGATE-BE($target)} looking warm and cozy.
+}
+
+loadout-group-wg-mess-kit = Mess kit

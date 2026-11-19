@@ -316,11 +316,11 @@ def main():
         sheets.setdefault(src, (frames, (32, 32)))
         item_states[iid.lower()] = [frames[st][0]]
         meal = {
-            "WGFoodGameSteak": "  - type: WGMeal\n    traits: [ Hearty, Fortifying ]\n    strength: 1.0\n    minutes: 12\n",
+            "WGFoodGameSteak": "  - type: WGMeal\n    traits: [ Hearty, Fortifying, Brawny ]\n    strength: 1.0\n    minutes: 12\n",
             "WGFoodChewySteak": "  - type: WGMeal\n    traits: [ Hearty ]\n    strength: 0.5\n    minutes: 8\n",
-            "WGFoodPrimeSteak": "  - type: WGMeal\n    traits: [ Hearty, Fortifying, Energising ]\n    strength: 1.5\n    minutes: 15\n",
-            "WGFoodJerky": "  - type: WGMeal\n    traits: [ Hearty ]\n    strength: 0.6\n    minutes: 20\n    neverStale: true\n",
-            "WGFoodDriedFish": "  - type: WGMeal\n    traits: [ Fresh ]\n    strength: 0.6\n    minutes: 20\n    neverStale: true\n",
+            "WGFoodPrimeSteak": "  - type: WGMeal\n    traits: [ Hearty, Brawny, Energising ]\n    strength: 1.5\n    minutes: 15\n",
+            "WGFoodJerky": "  - type: WGMeal\n    traits: [ Hearty, Steady ]\n    strength: 0.6\n    minutes: 20\n    neverStale: true\n",
+            "WGFoodDriedFish": "  - type: WGMeal\n    traits: [ Fresh, Steady ]\n    strength: 0.6\n    minutes: 20\n    neverStale: true\n",
         }.get(iid, "")
         if kind in ("meat", "cooked", "preserved", "fat"):
             tags = {"meat": "WGGameMeat", "cooked": "WGHomeCooking", "preserved": "WGHomeCooking", "fat": "WGFat"}[kind]
@@ -430,6 +430,13 @@ def main():
       effects:
       - !type:SatiateHunger
         factor: 2
+      - !type:WGMealBuff
+        traits: [ Hearty, Fortifying ]
+        strength: 1.25
+        minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.12
+        favours: [ liver ]
   pricePerUnit: 4
 
 - type: reagent
@@ -445,6 +452,13 @@ def main():
       effects:
       - !type:SatiateHunger
         factor: 2
+      - !type:WGMealBuff
+        traits: [ Hearty, Brawny, Warming ]
+        strength: 1.25
+        minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.12
+        favours: [ heart ]
   pricePerUnit: 4
 
 - type: wgStewRecipe

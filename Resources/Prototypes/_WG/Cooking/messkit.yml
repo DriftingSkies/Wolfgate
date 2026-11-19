@@ -1,0 +1,75 @@
+# The mess kit: a folding camp stove and the cookware and utensils to cook a meal anywhere, offered in every job's
+# loadout (see WGUniversalLoadoutSystem).
+
+- type: entity
+  parent: BaseItem
+  id: WGCampStove
+  name: folding camp stove
+  description: A little fuel stove that folds flat. Set it on the ground and put a pan or a pot on it; it needs no power, but it has no oven.
+  components:
+  - type: Sprite
+    sprite: _Nuclear14/Structures/Furniture/cooking.rsi
+    state: campfire
+  - type: Item
+    size: Normal
+  - type: WGHearth
+    ovenCapacity: 0
+    heat: 0.75
+    needsAnchor: false
+  - type: Appearance
+  - type: ContainerContainer
+    containers:
+      wg-hob: !type:ContainerSlot
+      wg-oven: !type:Container
+  - type: UserInterface
+    interfaces:
+      enum.WGStirUiKey.Key:
+        type: WGStirBoundUserInterface
+  - type: StaticPrice
+    price: 60
+
+- type: entity
+  parent: BoxCardboard
+  id: WGMessKit
+  name: mess kit
+  description: A tin of cooking gear for meals away from a kitchen - a folding stove, a pan, a bowl, a spoon, a fork, a knife, and salt and pepper.
+  components:
+  - type: Item
+    size: Large
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+    - 0,0,5,3
+  - type: StorageFill
+    contents:
+    - id: WGCampStove
+    - id: WGCookPan
+    - id: WGCookBowl
+    - id: Spoon
+    - id: Fork
+    - id: KitchenKnife
+    - id: FoodCondimentPacketSalt
+      amount: 2
+    - id: FoodCondimentPacketPepper
+      amount: 2
+  - type: Sprite
+    layers:
+    - state: box
+
+- type: loadout
+  id: WGMessKitLoadout
+  storage:
+    back:
+    - WGMessKit
+
+- type: loadoutGroup
+  id: WGGroupMessKit
+  name: loadout-group-wg-mess-kit
+  minLimit: 0
+  maxLimit: 1
+  loadouts:
+  - WGMessKitLoadout
+
+- type: wgUniversalLoadoutGroup
+  id: WGMessKit
+  group: WGGroupMessKit

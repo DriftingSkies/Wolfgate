@@ -29,14 +29,21 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 
 ### Server
 
+- [`Content.Server/_WG/Cooking/MoverController.WGHelm.cs`](MoverController.WGHelm.cs)
 - [`Content.Server/_WG/Cooking/WGCookingComponents.cs`](WGCookingComponents.cs)
 - [`Content.Server/_WG/Cooking/WGCookingSystem.cs`](WGCookingSystem.cs)
+- [`Content.Server/_WG/Cooking/WGMealSystem.Combat.cs`](WGMealSystem.Combat.cs)
+- [`Content.Server/_WG/Cooking/WGMealSystem.Comfort.cs`](WGMealSystem.Comfort.cs)
 - [`Content.Server/_WG/Cooking/WGMealSystem.cs`](WGMealSystem.cs)
+- [`Content.Server/_WG/Cooking/WGMealSystem.Seasoning.cs`](WGMealSystem.Seasoning.cs)
+- [`Content.Server/_WG/Cooking/WGMealSystem.Tending.cs`](WGMealSystem.Tending.cs)
+- [`Content.Server/_WG/Cooking/WGOrganMendSystem.cs`](WGOrganMendSystem.cs)
 
 ### Shared
 
 - [`Content.Shared/_WG/Cooking/WGCookingPrototypes.cs`](../../../Content.Shared/_WG/Cooking/WGCookingPrototypes.cs)
 - [`Content.Shared/_WG/Cooking/WGMealBuff.cs`](../../../Content.Shared/_WG/Cooking/WGMealBuff.cs)
+- [`Content.Shared/_WG/Cooking/WGMendOrgans.cs`](../../../Content.Shared/_WG/Cooking/WGMendOrgans.cs)
 - [`Content.Shared/_WG/Cooking/WGPrepBoardUi.cs`](../../../Content.Shared/_WG/Cooking/WGPrepBoardUi.cs)
 - [`Content.Shared/_WG/Cooking/WGStirUi.cs`](../../../Content.Shared/_WG/Cooking/WGStirUi.cs)
 
@@ -51,6 +58,7 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WG/Cooking/ChopMinigameTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/ChopMinigameTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Cooking/FoodBuffTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/FoodBuffTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/HearthCookingTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/HearthCookingTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/KitchenFixesTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/KitchenFixesTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/KitchenUiTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/KitchenUiTest.cs)
@@ -60,6 +68,7 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 
 - [`Resources/Prototypes/_WG/Cooking/cooking_base.yml`](../../../Resources/Prototypes/_WG/Cooking/cooking_base.yml)
 - [`Resources/Prototypes/_WG/Cooking/kitchen.yml`](../../../Resources/Prototypes/_WG/Cooking/kitchen.yml)
+- [`Resources/Prototypes/_WG/Cooking/seasoning.yml`](../../../Resources/Prototypes/_WG/Cooking/seasoning.yml)
 
 ### Localization
 

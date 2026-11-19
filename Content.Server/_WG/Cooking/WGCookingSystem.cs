@@ -181,9 +181,13 @@ public sealed class WGCookingSystem : EntitySystem
 
     #region Hearth
 
-    private bool Lit(EntityUid uid)
+    /// <summary>Whether a hearth is burning: anchored and powered.</summary>
+    public bool Lit(EntityUid uid)
     {
-        return Transform(uid).Anchored && _power.IsPowered(uid);
+        // Anchored, or a camp stove set down on the ground rather than carried or packed away.
+        var placed = Transform(uid).Anchored
+            || TryComp<WGHearthComponent>(uid, out var hearth) && !hearth.NeedsAnchor && !_containers.IsEntityInContainer(uid);
+        return placed && _power.IsPowered(uid);
     }
 
     private EntityUid? HobItem(EntityUid hearth)

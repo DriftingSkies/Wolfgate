@@ -23,6 +23,12 @@ public enum WGMealTrait : byte
 
     /// <summary>Bleeding stops sooner.</summary>
     Fortifying,
+
+    /// <summary>Hits a little harder in a fight; gentler than any combat stimulant.</summary>
+    Brawny,
+
+    /// <summary>A steadier hand at a ship's helm: a little more thrust; gentler than any stimulant.</summary>
+    Steady,
 }
 
 /// <summary>

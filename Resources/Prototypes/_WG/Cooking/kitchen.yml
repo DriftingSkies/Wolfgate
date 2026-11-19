@@ -185,7 +185,7 @@
   - type: StaticPrice
     price: 260
   - type: WGMeal
-    traits: [ Hearty, Fortifying ]
+    traits: [ Hearty, Fortifying, Steady ]
     strength: 1.1
     minutes: 12
 
@@ -428,7 +428,7 @@
   - type: StaticPrice
     price: 50
   - type: WGMeal
-    traits: [ Energising ]
+    traits: [ Energising, Steady ]
     strength: 0.7
     minutes: 8
 
@@ -1496,6 +1496,8 @@
         traits: [ Hearty, Warming ]
         strength: 1.0
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.08
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1522,6 +1524,8 @@
         traits: [ Hearty, Warming ]
         strength: 1.0
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.08
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1548,6 +1552,8 @@
         traits: [ Hearty, Fresh ]
         strength: 1.0
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.08
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1574,6 +1580,8 @@
         traits: [ Hearty, Warming ]
         strength: 1.0
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.08
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1600,6 +1608,8 @@
         traits: [ Warming ]
         strength: 1.0
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.08
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1626,6 +1636,8 @@
         traits: [ Fresh, Warming ]
         strength: 1.0
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.08
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1652,6 +1664,8 @@
         traits: [ Fresh ]
         strength: 1.0
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.08
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1678,6 +1692,8 @@
         traits: [ Energising, Fresh, Cooling ]
         strength: 1.0
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.08
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1704,6 +1720,8 @@
         traits: [ Hearty, Fortifying ]
         strength: 1.0
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.08
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1730,6 +1748,8 @@
         traits: [ Fortifying, Fresh ]
         strength: 1.0
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.08
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1756,6 +1776,8 @@
         traits: [ Warming, Fresh ]
         strength: 1.0
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.08
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1782,6 +1804,8 @@
         traits: [ Fresh, Cooling ]
         strength: 1.0
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.08
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1805,9 +1829,11 @@
       - !type:SatiateHunger
         factor: 2
       - !type:WGMealBuff
-        traits: [ Hearty, Fortifying, Warming ]
+        traits: [ Hearty, Fortifying, Brawny ]
         strength: 1.0
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.08
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1834,6 +1860,8 @@
         traits: [ Fresh, Hearty, Warming ]
         strength: 1.25
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.12
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1866,6 +1894,8 @@
         traits: [ Hearty, Fortifying, Warming ]
         strength: 1.25
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.12
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1895,9 +1925,11 @@
       - !type:SatiateHunger
         factor: 2
       - !type:WGMealBuff
-        traits: [ Hearty, Fresh, Warming ]
+        traits: [ Hearty, Fresh, Steady ]
         strength: 1.25
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.12
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1930,6 +1962,8 @@
         traits: [ Fresh, Fortifying, Cooling ]
         strength: 1.25
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.12
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1958,6 +1992,8 @@
         traits: [ Warming, Hearty ]
         strength: 1.25
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.12
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -1988,6 +2024,8 @@
         traits: [ Warming, Fresh, Hearty ]
         strength: 1.25
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.12
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -2018,6 +2056,8 @@
         traits: [ Hearty, Energising ]
         strength: 1.25
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.12
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -2048,6 +2088,8 @@
         traits: [ Fresh, Warming ]
         strength: 1.25
         minutes: 15
+      - !type:WGMendOrgans
+        amount: 0.12
   pricePerUnit: 3
 
 - type: wgStewRecipe
@@ -2209,6 +2251,7 @@
     transferAmount: 30
   - type: Drink
     solution: drink
+  - type: WGServing
   - type: Appearance
   - type: SolutionContainerVisuals
     maxFillLevels: 2
