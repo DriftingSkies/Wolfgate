@@ -136,6 +136,16 @@
   id: WGFaunaThrasciasTundra
   table: !type:GroupSelector
     children:
+    # WOLFGATE-HUNTING START: game for hunting (Hunting module, Tools/_WG/Hunting/port_hunting.py)
+    - id: WGGameGoat
+      weight: 3
+    - !type:NestedSelector
+      tableId: WGHuntWolfPack
+      weight: 2
+    - !type:NestedSelector
+      tableId: WGHuntSaigaHerd
+      weight: 2
+    # WOLFGATE-HUNTING END
     # A bird flock (_WG/Birds); the leader spawns the rest.
     - id: WGMobBirdSnowGrouse
       weight: 3
@@ -159,6 +169,11 @@
   id: WGFaunaThrasciasIce
   table: !type:GroupSelector
     children:
+    # WOLFGATE-HUNTING START: game for hunting (Hunting module, Tools/_WG/Hunting/port_hunting.py)
+    - !type:NestedSelector
+      tableId: WGHuntWolfPack
+      weight: 1
+    # WOLFGATE-HUNTING END
     - id: WGMobThrasciasFrostBear
       weight: 4
     - id: MobArgocyteBarrier
@@ -194,6 +209,18 @@
   id: WGFaunaThrasciasBoreal
   table: !type:GroupSelector
     children:
+    # WOLFGATE-HUNTING START: game for hunting (Hunting module, Tools/_WG/Hunting/port_hunting.py)
+    - !type:NestedSelector
+      tableId: WGHuntWolfPack
+      weight: 3
+    - id: WGGameDirebear
+      weight: 1
+    - !type:NestedSelector
+      tableId: WGHuntSaigaHerd
+      weight: 3
+    - id: WGGameBadger
+      weight: 1
+    # WOLFGATE-HUNTING END
     # A bird flock (_WG/Birds); the leader spawns the rest.
     - id: WGMobBirdSnowGrouse
       weight: 2

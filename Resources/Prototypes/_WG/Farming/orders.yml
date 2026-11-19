@@ -1,0 +1,161 @@
+# Orders an outpost order board posts (wgFarmOrder): so many items for a price each and a bonus when filled. Pay is
+# set a little above what the goods fetch at a chute, so filling orders is worth the walk.
+
+- type: wgFarmOrder
+  id: WGOrderFruit
+  name: wg-order-name-fruit
+  tags: [ Fruit ]
+  minCount: 10
+  maxCount: 25
+  price: 30
+  bonus: 400
+
+- type: wgFarmOrder
+  id: WGOrderVegetables
+  name: wg-order-name-vegetables
+  tags: [ Vegetable ]
+  minCount: 10
+  maxCount: 25
+  price: 25
+  bonus: 350
+
+- type: wgFarmOrder
+  id: WGOrderWheat
+  name: wg-order-name-wheat
+  tags: [ Wheat ]
+  minCount: 15
+  maxCount: 30
+  price: 20
+  bonus: 300
+
+- type: wgFarmOrder
+  id: WGOrderEggs
+  name: wg-order-name-eggs
+  tags: [ Egg ]
+  minCount: 6
+  maxCount: 12
+  price: 40
+  bonus: 300
+
+- type: wgFarmOrder
+  id: WGOrderWine
+  name: wg-order-name-wine
+  items: [ DrinkWineBottleFull ]
+  minCount: 3
+  maxCount: 8
+  price: 260
+  bonus: 900
+  weight: 0.7
+
+- type: wgFarmOrder
+  id: WGOrderBeer
+  name: wg-order-name-beer
+  items: [ DrinkBeerBottleFull ]
+  minCount: 4
+  maxCount: 10
+  price: 140
+  bonus: 600
+
+- type: wgFarmOrder
+  id: WGOrderPreserves
+  name: wg-order-name-preserves
+  items: [ WGFruitPreserves, WGPickles ]
+  minCount: 3
+  maxCount: 8
+  price: 240
+  bonus: 700
+
+- type: wgFarmOrder
+  id: WGOrderCheese
+  name: wg-order-name-cheese
+  items: [ FoodCheese ]
+  minCount: 2
+  maxCount: 6
+  price: 300
+  bonus: 800
+  weight: 0.6
+
+- type: wgFarmOrder
+  id: WGOrderHoney
+  name: wg-order-name-honey
+  items: [ WGHoney ]
+  minCount: 2
+  maxCount: 5
+  price: 290
+  bonus: 600
+  weight: 0.6
+
+- type: wgFarmOrder
+  id: WGOrderCloth
+  name: wg-order-name-cloth
+  items: [ MaterialCloth1 ]
+  minCount: 10
+  maxCount: 30
+  price: 35
+  bonus: 500
+
+- type: wgFarmOrder
+  id: WGOrderFertilizer
+  name: wg-order-name-fertilizer
+  items: [ WGFertilizerBasic, WGFertilizerQuality ]
+  minCount: 5
+  maxCount: 15
+  price: 60
+  bonus: 400
+
+- type: wgFarmOrder
+  id: WGOrderLedgers
+  name: wg-order-name-ledgers
+  items: [ WGEncryptedLedger ]
+  minCount: 1
+  maxCount: 3
+  price: 1000
+  bonus: 1000
+  weight: 0.4
+
+- type: wgFarmOrder
+  id: WGOrderMushrooms
+  name: wg-order-name-mushrooms
+  items: [ FoodMushroom ]
+  minCount: 6
+  maxCount: 15
+  price: 35
+  bonus: 300
+
+- type: wgFarmOrder
+  id: WGOrderFineDishes
+  name: wg-order-name-fine-dishes
+  tags: [ WGFineFood ]
+  minCount: 2
+  maxCount: 5
+  price: 380
+  bonus: 900
+  weight: 0.6
+
+- type: wgFarmOrder
+  id: WGOrderHomeCooking
+  name: wg-order-name-home-cooking
+  tags: [ WGHomeCooking ]
+  minCount: 4
+  maxCount: 10
+  price: 140
+  bonus: 500
+
+- type: wgFarmOrder
+  id: WGOrderFish
+  name: wg-order-name-fish
+  tags: [ WGFish ]
+  minCount: 3
+  maxCount: 8
+  price: 80
+  bonus: 500
+
+- type: wgFarmOrder
+  id: WGOrderShellfish
+  name: wg-order-name-shellfish
+  tags: [ WGShellfish ]
+  minCount: 2
+  maxCount: 5
+  price: 110
+  bonus: 500
+  weight: 0.6

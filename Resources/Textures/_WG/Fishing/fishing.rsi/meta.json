@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Fish from Paragon Moon (modular/Neu_Food/icons/raw, cooked) and Meridian (icons/obj/aquarium/fish.dmi); rod, bait and pond from Meridian (icons/obj/fishing.dmi, aquarium/tanks.dmi); adapted for Wolfgate.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "wgfishcarp"
+    },
+    {
+      "name": "wgfisheel"
+    },
+    {
+      "name": "wgfishangler"
+    },
+    {
+      "name": "wgfishclownfish"
+    },
+    {
+      "name": "wgfishsole"
+    },
+    {
+      "name": "wgfishplaice"
+    },
+    {
+      "name": "wgfishseabass"
+    },
+    {
+      "name": "wgfishcod"
+    },
+    {
+      "name": "wgfishsalmon"
+    },
+    {
+      "name": "wgfishmudskipper"
+    },
+    {
+      "name": "wgfishsunfish"
+    },
+    {
+      "name": "wgfishshrimp"
+    },
+    {
+      "name": "wgfishcrab"
+    },
+    {
+      "name": "wgfishlobster"
+    },
+    {
+      "name": "wgfishoyster"
+    },
+    {
+      "name": "wgfishclam"
+    },
+    {
+      "name": "wgfishoctopus"
+    },
+    {
+      "name": "wgfisharcticchar"
+    },
+    {
+      "name": "wgfishperch"
+    },
+    {
+      "name": "wgfishpike"
+    },
+    {
+      "name": "wgfishcatfish"
+    },
+    {
+      "name": "wgfishsquid"
+    },
+    {
+      "name": "wgfishstingray"
+    },
+    {
+      "name": "wgfishsandsurfer"
+    },
+    {
+      "name": "wgfishgoldfish"
+    },
+    {
+      "name": "wgfishlanternfish"
+    },
+    {
+      "name": "wgfishpufferfish"
+    },
+    {
+      "name": "wgfishmonkfish"
+    },
+    {
+      "name": "wgfishswordfish"
+    },
+    {
+      "name": "fillet"
+    },
+    {
+      "name": "fillet-cooked"
+    },
+    {
+      "name": "shellfish"
+    },
+    {
+      "name": "shellfish-cooked"
+    },
+    {
+      "name": "rod"
+    },
+    {
+      "name": "worm"
+    },
+    {
+      "name": "doughball"
+    },
+    {
+      "name": "pond"
+    }
+  ]
+}

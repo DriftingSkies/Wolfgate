@@ -4,10 +4,14 @@
   name: microwave
   description: It's magic.
   components:
-  - type: Microwave
-    capacity: 10
-    canMicrowaveIdsSafely: false # Frontier: true<false
-    explosionChance: 1 # Frontier: 0.3<1
+  # WOLFGATE(Cooking) START: the microwave cooks hands-on as an oven-only hearth (Cooking module)
+  # - type: Microwave
+  #   capacity: 10
+  #   canMicrowaveIdsSafely: false # Frontier: true<false
+  #   explosionChance: 1 # Frontier: 0.3<1
+  - type: WGHearth
+    hob: false
+  # WOLFGATE END
   - type: Appearance
   - type: GenericVisualizer
     visuals:
@@ -34,8 +38,10 @@
         enum.MicrowaveVisualizerLayers.BaseUnlit:
           True: { visible: true }
           False: { visible: false }
-  - type: ActivatableUI
-    key: enum.MicrowaveUiKey.Key
+  # WOLFGATE(Cooking) START: no microwave screen; it cooks by hand
+  # - type: ActivatableUI
+  #   key: enum.MicrowaveUiKey.Key
+  # WOLFGATE END
   - type: DeviceLinkSink
     ports:
     - On
@@ -44,10 +50,12 @@
     receiveFrequencyId: BasicDevice
   - type: WirelessNetworkConnection
     range: 200
-  - type: UserInterface
-    interfaces:
-      enum.MicrowaveUiKey.Key:
-        type: MicrowaveBoundUserInterface
+  # WOLFGATE(Cooking) START: no microwave screen; it cooks by hand
+  # - type: UserInterface
+  #   interfaces:
+  #     enum.MicrowaveUiKey.Key:
+  #       type: MicrowaveBoundUserInterface
+  # WOLFGATE END
   - type: Physics
   - type: Fixtures
     fixtures:

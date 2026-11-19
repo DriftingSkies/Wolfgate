@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Paragon Moon (Roguetown lineage), modular/Neu_Food/icons/cookware/*.dmi; adapted for Wolfgate.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "wgcookpan"
+    },
+    {
+      "name": "wgcookpot"
+    },
+    {
+      "name": "wgcookpotcopper"
+    },
+    {
+      "name": "wgcookkettle"
+    },
+    {
+      "name": "wgcookbowl"
+    },
+    {
+      "name": "wgcookteapot"
+    },
+    {
+      "name": "wgcookcup"
+    },
+    {
+      "name": "wgcookplatter"
+    },
+    {
+      "name": "wgcookpeppermill"
+    },
+    {
+      "name": "wgcookrollingpin"
+    },
+    {
+      "name": "bowl-fill1"
+    },
+    {
+      "name": "bowl-fill2"
+    },
+    {
+      "name": "pot-fill1"
+    },
+    {
+      "name": "pot-fill2"
+    }
+  ]
+}

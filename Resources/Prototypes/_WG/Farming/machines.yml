@@ -1,0 +1,446 @@
+# Processing machines (WGProcessor). Each runs the wgProcessRecipe entries that name its machine kind, while its
+# outpost's producers may run: anchored on an outpost, powered if it takes power, someone home, under the hourly cap.
+
+- type: entity
+  abstract: true
+  parent: BaseStructureDynamic
+  id: WGProcessorBase
+  components:
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  abstract: true
+  parent: WGProcessorBase
+  id: WGProcessorPoweredBase
+  components:
+  - type: ApcPowerReceiver
+    powerLoad: 500
+  - type: ExtensionCableReceiver
+
+- type: entity
+  parent: WGProcessorBase
+  id: WGFarmKeg
+  name: brewing keg
+  description: Ferments fruit into wine and wheat into beer. Load it with glass bottles first; each batch fills one. What goes in keeps its quality.
+  components:
+  - type: Sprite
+    sprite: _DV/Objects/Storage/keg.rsi
+    state: base
+  - type: WGProcessor
+    machine: Keg
+  - type: StaticPrice
+    price: 600
+
+- type: entity
+  parent: WGProcessorBase
+  id: WGFarmPreservesJar
+  name: preserves jar
+  description: Turns fruit into preserves and vegetables into pickles.
+  components:
+  - type: Sprite
+    sprite: Objects/Consumable/Drinks/jar.rsi
+    state: icon
+    scale: 1.6, 1.6
+  - type: WGProcessor
+    machine: Jar
+
+- type: entity
+  parent: WGProcessorPoweredBase
+  id: WGFarmCheesePress
+  name: cheese press
+  description: Presses a carton of milk into a wheel of cheese overnight.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/juicer.rsi
+    state: juicer1
+  - type: WGProcessor
+    machine: CheesePress
+
+- type: entity
+  parent: WGProcessorPoweredBase
+  id: WGFarmMayoMachine
+  name: mayonnaise machine
+  description: Whips an egg into a jar of mayonnaise in a few hours.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/mixer.rsi
+    state: mixer_loaded
+  - type: WGProcessor
+    machine: Mayo
+
+- type: entity
+  parent: WGProcessorPoweredBase
+  id: WGFarmLoom
+  name: loom
+  description: Weaves cotton into cloth.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/sheetifier.rsi
+    state: base_machine
+  - type: WGProcessor
+    machine: Loom
+
+- type: entity
+  parent: WGProcessorPoweredBase
+  id: WGFarmMill
+  name: mill
+  description: Grinds wheat into flour.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/recycling.rsi
+    state: grinder-o0
+  - type: WGProcessor
+    machine: Mill
+
+- type: entity
+  parent: WGProcessorBase
+  id: WGFarmComposter
+  name: composter
+  description: Rots produce, meat and eggs into compost in half an hour. Compost feeds the fertilizer barrel and the nutrient mixer.
+  components:
+  - type: Sprite
+    sprite: _DV/Objects/Storage/keg.rsi
+    state: base
+    color: "#6B4F2A"
+  - type: WGProcessor
+    machine: Composter
+  - type: StaticPrice
+    price: 150
+
+- type: entity
+  parent: WGProcessorBase
+  id: WGFarmFertilizerBarrel
+  name: fertilizer barrel
+  description: Ages compost into basic fertilizer, and basic fertilizer into quality fertilizer.
+  components:
+  - type: Sprite
+    sprite: _DV/Objects/Storage/keg.rsi
+    state: base
+    color: "#8A9A5B"
+  - type: WGProcessor
+    machine: FertilizerBarrel
+  - type: StaticPrice
+    price: 250
+
+- type: entity
+  parent: WGProcessorPoweredBase
+  id: WGFarmNutrientMixer
+  name: nutrient mixer
+  description: Mixes compost into speed-gro, and sand or clay ore into retaining soil.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/genesplicer.rsi
+    state: genesplicer_loaded
+  - type: WGProcessor
+    machine: NutrientMixer
+
+- type: entity
+  parent: WGProcessorBase
+  id: WGFarmCask
+  name: oak cask
+  description: Ages wine and cheese one quality step over two hours.
+  components:
+  - type: Sprite
+    sprite: _DV/Objects/Storage/keg.rsi
+    state: base
+    color: "#5C3A21"
+  - type: WGProcessor
+    machine: Cask
+
+- type: entity
+  parent: WGProcessorBase
+  id: WGFarmBeeHive
+  name: bee hive
+  description: Makes honey every hour, as long as at least two crops are growing within five tiles.
+  components:
+  - type: Sprite
+    sprite: _DV/Objects/Storage/keg.rsi
+    state: base
+    color: "#E0B04F"
+  - type: WGProcessor
+    machine: BeeHive
+
+- type: entity
+  parent: WGProcessorBase
+  id: WGFarmMushroomLog
+  name: mushroom log
+  description: A spore-laced log that grows a few mushrooms every half hour, light or dark.
+  components:
+  - type: Sprite
+    sprite: _DV/Objects/Storage/keg.rsi
+    state: base
+    color: "#7A5C3A"
+  - type: WGProcessor
+    machine: MushroomLog
+  - type: StaticPrice
+    price: 200
+
+- type: entity
+  parent: WGProcessorPoweredBase
+  id: WGFarmComputeRack
+  name: compute rack
+  description: Mines encrypted ledgers that banks and corporate stations buy. Draws a great deal of power while it runs.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/server.rsi
+    state: server-on
+  - type: ApcPowerReceiver
+    powerLoad: 8000
+  - type: WGProcessor
+    machine: ComputeRack
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: WGProcessorPoweredBase
+  id: WGFarmDigester
+  name: biogas digester
+  description: Breaks produce and meat down into twice the compost a composter makes, in half the time.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/thermobath.rsi
+    state: base
+  - type: WGProcessor
+    machine: Digester
+  - type: StaticPrice
+    price: 900
+
+- type: entity
+  parent: WGProcessorPoweredBase
+  id: WGFarmOreWasher
+  name: ore washer
+  description: Washes raw ore, turning up the odd geode.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/ore_processor.rsi
+    state: icon
+  - type: WGProcessor
+    machine: OreWasher
+
+- type: entity
+  parent: WGProcessorPoweredBase
+  id: WGFarmGeodeCracker
+  name: geode cracker
+  description: Splits geodes open for the minerals and gems inside.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/cuttermachine.rsi
+    state: icon
+  - type: WGProcessor
+    machine: GeodeCracker
+
+- type: entity
+  parent: WGProcessorPoweredBase
+  id: WGFarmGlassKiln
+  name: glass kiln
+  description: Blows a sheet of glass into two bottles for the brewing keg.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/ore_processor.rsi
+    state: icon
+    color: "#A0D0E0"
+  - type: WGProcessor
+    machine: GlassKiln
+
+- type: entity
+  parent: WGProcessorPoweredBase
+  id: WGFarmSeedMaker
+  name: seed maker
+  description: Turns a harvested crop into one to three packets of its seeds.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/seed_extractor.rsi
+    state: seedextractor
+  - type: WGProcessor
+    machine: SeedMaker
+  - type: StaticPrice
+    price: 700
+
+- type: entity
+  parent: BaseStructureDynamic
+  id: WGFarmScarecrow
+  name: scarecrow
+  description: Keeps birds off the outdoor crops within eight tiles.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/juicer.rsi
+    state: juicer0
+    color: "#C8A060"
+  - type: WGScarecrow
+  - type: StaticPrice
+    price: 120
+
+# Watering. Each sprinkler waters from its own tank; fill it with water from a bucket or the water synthesizer.
+
+- type: entity
+  parent: BaseStructureDynamic
+  id: WGSprinklerBasic
+  name: sprinkler
+  description: Keeps the four plant holders beside it watered from its tank. Fill the tank with water.
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      tank:
+        maxVol: 200
+  - type: RefillableSolution
+    solution: tank
+  - type: ExaminableSolution
+    solution: tank
+  - type: Sprite
+    sprite: Structures/Machines/juicer.rsi
+    state: juicer0
+    scale: 0.6, 0.6
+  - type: Fixtures
+    fixtures: {}
+  - type: WGSprinkler
+    range: 1
+  - type: StaticPrice
+    price: 300
+
+- type: entity
+  parent: WGSprinklerBasic
+  id: WGSprinklerQuality
+  name: quality sprinkler
+  description: Keeps the eight plant holders round it watered from its tank. Fill the tank with water.
+  components:
+  - type: WGSprinkler
+    range: 1
+    square: true
+  - type: StaticPrice
+    price: 900
+
+- type: entity
+  parent: WGSprinklerBasic
+  id: WGSprinklerAdvanced
+  name: advanced sprinkler
+  description: Keeps every plant holder within two tiles watered from its tank, while it has power. Fill the tank with water.
+  components:
+  - type: WGSprinkler
+    range: 2
+    square: true
+  - type: ApcPowerReceiver
+    powerLoad: 200
+  - type: ExtensionCableReceiver
+  - type: StaticPrice
+    price: 2500
+
+- type: entity
+  parent: WGProcessorBase
+  id: WGFarmPackingTable
+  name: packing table
+  description: Seals farm goods into trade crates for the market. 40 produce or home cooking make a Supplies crate, 15 wines, cheeses, preserves, honey or fine dishes a Luxuries crate, 30 cloth a Fabric crate, 20 bags of fertilizer a Fertilizer crate.
+  components:
+  - type: Sprite
+    sprite: Structures/Storage/Crates/generic.rsi
+    state: icon
+  - type: WGProcessor
+    machine: PackingTable
+  - type: StaticPrice
+    price: 300
+
+# The order board.
+
+- type: entity
+  parent: BaseStructureDynamic
+  id: WGFarmOrderBoard
+  name: outpost order board
+  description: Buyers across the sector post orders for farm and workshop goods here. Use the goods on it to deliver; examine it to read the orders.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/smartfridge.rsi
+    state: smartfridge
+  - type: WGOrderBoard
+  - type: StaticPrice
+    price: 500
+
+# Water collectors (WGWaterCollector). Which one a farm wants depends on its world: rain catchers on wet worlds, moisture
+# vaporators on warm dry ones, snow melters on frozen ones. Each fills its own tank and the sprinklers within six tiles.
+
+- type: entity
+  abstract: true
+  parent: BaseStructureDynamic
+  id: WGWaterCollectorBase
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      tank:
+        maxVol: 400
+  - type: DrainableSolution
+    solution: tank
+  - type: ExaminableSolution
+    solution: tank
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  parent: WGWaterCollectorBase
+  id: WGRainCatcher
+  name: rain catcher
+  description: A wide barrel that catches rain under an open sky. Free to run, but only fills while it rains. Feeds the sprinklers within six tiles.
+  components:
+  - type: Sprite
+    sprite: _DV/Objects/Storage/keg.rsi
+    state: base
+    color: "#6A90B0"
+  - type: WGWaterCollector
+    source: Rain
+    rate: 1
+  - type: StaticPrice
+    price: 250
+
+- type: entity
+  parent: WGWaterCollectorBase
+  id: WGMoistureVaporator
+  name: moisture vaporator
+  description: Condenses water out of the air on power. Works best on hot worlds, slower in the cold, and not at all below freezing. Feeds the sprinklers within six tiles.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/server.rsi
+    state: server
+    color: "#C8B080"
+  - type: ApcPowerReceiver
+    powerLoad: 1200
+  - type: ExtensionCableReceiver
+  - type: WGWaterCollector
+    source: Vapour
+    rate: 0.6
+  - type: StaticPrice
+    price: 900
+
+- type: entity
+  parent: WGWaterCollectorBase
+  id: WGSnowMelter
+  name: snow melter
+  description: Melts snowfall and frost into water on power, for frozen worlds. Feeds the sprinklers within six tiles.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/thermobath.rsi
+    state: base
+    color: "#A0C8E0"
+  - type: ApcPowerReceiver
+    powerLoad: 1500
+  - type: ExtensionCableReceiver
+  - type: WGWaterCollector
+    source: Snow
+    rate: 0.8
+  - type: StaticPrice
+    price: 800

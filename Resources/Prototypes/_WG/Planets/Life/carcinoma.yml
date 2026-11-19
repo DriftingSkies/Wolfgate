@@ -119,6 +119,10 @@
   id: WGFaunaCarcinomaShore
   table: !type:GroupSelector
     children:
+    # WOLFGATE-HUNTING START: game for hunting (Hunting module, Tools/_WG/Hunting/port_hunting.py)
+    - id: WGGameMossback
+      weight: 3
+    # WOLFGATE-HUNTING END
     - !type:NestedSelector
       tableId: WGFaunaCarcinoma
       weight: 3

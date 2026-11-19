@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Paragon Moon (Roguetown lineage), modular/Neu_Food/icons/raw/*.dmi and cooked/*.dmi; adapted for Wolfgate.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "wgrawraspberrycake"
+    },
+    {
+      "name": "wgrawblackberrycake"
+    },
+    {
+      "name": "wgrawhoneycake"
+    },
+    {
+      "name": "wgrawfruitcake"
+    },
+    {
+      "name": "wgrawlimecake"
+    },
+    {
+      "name": "wgrawstrawberrypie"
+    },
+    {
+      "name": "wgrawquiche"
+    },
+    {
+      "name": "wgrawscallopedpotatoes"
+    },
+    {
+      "name": "wgrawstuffedeggplant"
+    },
+    {
+      "name": "wgrawomelette"
+    },
+    {
+      "name": "wgfoodpotatosliced"
+    },
+    {
+      "name": "wgfoodonionsliced"
+    },
+    {
+      "name": "wgfoodcabbagesliced"
+    },
+    {
+      "name": "wgfoodturnipsliced"
+    },
+    {
+      "name": "wgfoodcucumbersliced"
+    },
+    {
+      "name": "wgfoodgarlicclove"
+    },
+    {
+      "name": "wgfoodmeatmince"
+    }
+  ]
+}

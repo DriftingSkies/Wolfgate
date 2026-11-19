@@ -93,10 +93,16 @@ public sealed partial class EggLayerSystem : EntitySystem
             _hunger.ModifyHunger(uid, -egglayer.HungerUsage, hunger);
         }
 
+        // WOLFGATE(Farming) START: pass the eggs to animal mood to roll their quality
+        var wgEggs = new List<EntityUid>();
         foreach (var ent in EntitySpawnCollection.GetSpawns(egglayer.EggSpawn, _random))
         {
-            Spawn(ent, Transform(uid).Coordinates);
+            wgEggs.Add(Spawn(ent, Transform(uid).Coordinates));
         }
+
+        var wgLaid = new Content.Server._WG.Farming.WGEggLaidEvent(uid, wgEggs);
+        RaiseLocalEvent(ref wgLaid);
+        // WOLFGATE END
 
         // Sound + popups
         _audio.PlayPvs(egglayer.EggLaySound, uid);

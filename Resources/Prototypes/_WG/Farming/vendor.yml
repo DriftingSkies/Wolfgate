@@ -1,0 +1,53 @@
+# Homestead Supply: the farm, kitchen and fishing kit, for stations, ships and settlements to stock.
+
+- type: entity
+  parent: VendingMachineSeeds
+  id: WGVendingMachineHomestead
+  name: Homestead Supply
+  description: Everything for a farm, a kitchen and a fishing trip, from sprinklers and kegs to pans and rods.
+  components:
+  - type: VendingMachine
+    pack: WGHomesteadInventory
+
+- type: vendingMachineInventory
+  id: WGHomesteadInventory
+  startingInventory:
+    WGHearthStove: 2
+    WGPrepBoard: 4
+    WGCookPan: 4
+    WGCookPot: 4
+    WGCookPotCopper: 2
+    WGCookKettle: 2
+    WGCookBowl: 12
+    WGFishingRod: 4
+    WGBaitDoughball: 10
+    WGSprinklerBasic: 6
+    WGSprinklerQuality: 3
+    WGSprinklerAdvanced: 2
+    WGRainCatcher: 2
+    WGMoistureVaporator: 2
+    WGSnowMelter: 2
+    WGFarmScarecrow: 3
+    WGFarmKeg: 2
+    WGFarmPreservesJar: 2
+    WGFarmCheesePress: 1
+    WGFarmMayoMachine: 1
+    WGFarmLoom: 1
+    WGFarmMill: 1
+    WGFarmCask: 2
+    WGFarmComposter: 2
+    WGFarmFertilizerBarrel: 2
+    WGFarmNutrientMixer: 1
+    WGFarmGlassKiln: 1
+    WGFarmSeedMaker: 1
+    WGFarmBeeHive: 2
+    WGFarmMushroomLog: 2
+    WGFarmPackingTable: 1
+    WGFarmOrderBoard: 1
+    WGFarmComputeRack: 1
+    WGFarmDigester: 1
+    WGFarmOreWasher: 1
+    WGFarmGeodeCracker: 1
+    WGFishPond: 1
+    WGHuntSmokingRack: 2
+    WGHuntTanningRack: 2

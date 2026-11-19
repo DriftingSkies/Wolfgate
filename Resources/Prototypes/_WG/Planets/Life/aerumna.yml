@@ -25,6 +25,16 @@
   id: WGFaunaAerumnaForest
   table: !type:GroupSelector
     children:
+    # WOLFGATE-HUNTING START: game for hunting (Hunting module, Tools/_WG/Hunting/port_hunting.py)
+    - !type:NestedSelector
+      tableId: WGHuntSaigaHerd
+      weight: 2
+    - id: WGGameBobcat
+      weight: 1
+    - !type:NestedSelector
+      tableId: WGHuntWolfPack
+      weight: 1
+    # WOLFGATE-HUNTING END
     # A bird flock (_WG/Birds); the leader spawns the rest.
     - id: WGMobBirdCarrion
       weight: 2

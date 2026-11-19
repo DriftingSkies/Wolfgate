@@ -219,6 +219,10 @@
   id: WGFaunaFervidusAshfields
   table: !type:GroupSelector
     children:
+    # WOLFGATE-HUNTING START: game for hunting (Hunting module, Tools/_WG/Hunting/port_hunting.py)
+    - id: WGGameBigRat
+      weight: 2
+    # WOLFGATE-HUNTING END
     # A bird flock (_WG/Birds); the leader spawns the rest.
     - id: WGMobBirdAshHawk
       weight: 2

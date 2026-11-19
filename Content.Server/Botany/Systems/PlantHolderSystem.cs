@@ -1,3 +1,4 @@
+using System.Linq; // WOLFGATE(Farming)
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Botany.Components;
 using Content.Server.Kitchen.Components;
@@ -709,7 +710,11 @@ public sealed partial class PlantHolderSystem : EntitySystem
                 return false;
             }
 
-            _botany.Harvest(component.Seed, user, component.YieldMod);
+            // WOLFGATE(Farming) START: pass the harvest to farming to roll its quality
+            var wgProduce = _botany.Harvest(component.Seed, user, component.YieldMod).ToList();
+            var wgHarvested = new Content.Server._WG.Farming.WGPlantHarvestedEvent(plantholder, wgProduce);
+            RaiseLocalEvent(ref wgHarvested);
+            // WOLFGATE END
             AfterHarvest(plantholder, component);
             return true;
         }

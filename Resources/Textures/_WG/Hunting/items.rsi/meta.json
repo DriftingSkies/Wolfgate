@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Paragon Moon (Roguetown lineage), icons/roguetown/items/natural.dmi and modular/Neu_Food/icons; adapted for Wolfgate.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "wgmeatsaiga"
+    },
+    {
+      "name": "wgmeatgoat"
+    },
+    {
+      "name": "wgmeatbadger"
+    },
+    {
+      "name": "wgmeatraccoon"
+    },
+    {
+      "name": "wgmeatmole"
+    },
+    {
+      "name": "wgmeatwolf"
+    },
+    {
+      "name": "wgmeatdirebear"
+    },
+    {
+      "name": "wgmeatbobcat"
+    },
+    {
+      "name": "wgmeathyena"
+    },
+    {
+      "name": "wgmeatrous"
+    },
+    {
+      "name": "wgcutsaigabackstrap"
+    },
+    {
+      "name": "wgcutgoatshank"
+    },
+    {
+      "name": "wgcutdirebearhaunch"
+    },
+    {
+      "name": "wgcutbobcatloin"
+    },
+    {
+      "name": "wgfoodgamesteak"
+    },
+    {
+      "name": "wgfoodchewysteak"
+    },
+    {
+      "name": "wgfoodprimesteak"
+    },
+    {
+      "name": "wgfat"
+    },
+    {
+      "name": "wgtallow"
+    },
+    {
+      "name": "wgfoodjerky"
+    },
+    {
+      "name": "wgfooddriedfish"
+    },
+    {
+      "name": "wghide"
+    },
+    {
+      "name": "wgpeltwolf"
+    },
+    {
+      "name": "wgpeltgoat"
+    },
+    {
+      "name": "wgpeltmole"
+    },
+    {
+      "name": "wgpeltbobcat"
+    },
+    {
+      "name": "wgpeltdirebear"
+    },
+    {
+      "name": "wgpeltrat"
+    },
+    {
+      "name": "wgpeltraccoon"
+    },
+    {
+      "name": "wgleather"
+    },
+    {
+      "name": "wgbone"
+    }
+  ]
+}

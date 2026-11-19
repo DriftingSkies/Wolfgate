@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Plants from Paragon Moon (icons/roguetown/misc/crops.dmi); worm cast from Meridian (icons/obj/fishing.dmi); adapted for Wolfgate.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "wgforageberrybush"
+    },
+    {
+      "name": "wgforagestrawberries"
+    },
+    {
+      "name": "wgforageraspberries"
+    },
+    {
+      "name": "wgforageblackberries"
+    },
+    {
+      "name": "wgforageonions"
+    },
+    {
+      "name": "wgforagepoppies"
+    },
+    {
+      "name": "wgforagesunflowers"
+    },
+    {
+      "name": "wgforagetea"
+    },
+    {
+      "name": "wgforagecoffee"
+    },
+    {
+      "name": "wgforagenuts"
+    },
+    {
+      "name": "wgforageworms"
+    }
+  ]
+}

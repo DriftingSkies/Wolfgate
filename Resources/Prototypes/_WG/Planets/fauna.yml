@@ -5,6 +5,13 @@
   id: WGFaunaAsclepiu
   table: !type:GroupSelector
     children:
+    # WOLFGATE-HUNTING START: game for hunting (Hunting module, Tools/_WG/Hunting/port_hunting.py)
+    - !type:NestedSelector
+      tableId: WGHuntSaigaHerd
+      weight: 2
+    - id: WGGameRaccoon
+      weight: 1
+    # WOLFGATE-HUNTING END
     - id: MobFox
       weight: 4
     - id: MobLizard

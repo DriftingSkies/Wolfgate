@@ -5,18 +5,26 @@
   name: electric range
   description: A functional range with a range of functions.
   components:
-  - type: Microwave
-    capacity: 10
-    canMicrowaveIdsSafely: false
-    explosionChance: 0
-    lightningChance: 0
-    beginCookingSound: /Audio/_NF/Machines/egg-timer.ogg
-    foodDoneSound: /Audio/Machines/ding.ogg
-    loopingSound: /Audio/_NF/Effects/silence.ogg
-    validRecipeTypes: Oven
-    canHeat: true
-    canIrradiate: false
-    key: ElectricRangeKey
+  # WOLFGATE(Cooking) START: the range cooks hands-on as a hearth with a hob and an oven (Cooking module)
+  # - type: Microwave
+  #   capacity: 10
+  #   canMicrowaveIdsSafely: false
+  #   explosionChance: 0
+  #   lightningChance: 0
+  #   beginCookingSound: /Audio/_NF/Machines/egg-timer.ogg
+  #   foodDoneSound: /Audio/Machines/ding.ogg
+  #   loopingSound: /Audio/_NF/Effects/silence.ogg
+  #   validRecipeTypes: Oven
+  #   canHeat: true
+  #   canIrradiate: false
+  #   key: ElectricRangeKey
+  - type: WGHearth
+  # the stirring window opens on the range, since the pot inside it is out of the window's reach
+  - type: UserInterface
+    interfaces:
+      enum.WGStirUiKey.Key:
+        type: WGStirBoundUserInterface
+  # WOLFGATE END
   - type: Appearance
   - type: GenericVisualizer
     visuals:
@@ -39,8 +47,17 @@
           Low: { visible: true, state: range_low }
           Medium: { visible: true, state: range_medium }
           High: { visible: true, state: range_high }
-  - type: ActivatableUI
-    key: enum.MicrowaveUiKey.ElectricRangeKey
+      # WOLFGATE(Cooking) START: show the pan or pot on the hob
+      enum.WGHobVisuals.Cookware:
+        wg-hob:
+          None: { visible: false }
+          Pan: { visible: true, state: hob-pan }
+          Pot: { visible: true, state: hob-pot }
+      # WOLFGATE END
+  # WOLFGATE(Cooking) START: no microwave screen; it cooks by hand
+  # - type: ActivatableUI
+  #   key: enum.MicrowaveUiKey.ElectricRangeKey
+  # WOLFGATE END
   - type: DeviceLinkSink
     ports:
     - On
@@ -49,10 +66,12 @@
     receiveFrequencyId: BasicDevice
   - type: WirelessNetworkConnection
     range: 200
-  - type: UserInterface
-    interfaces:
-      enum.MicrowaveUiKey.ElectricRangeKey:
-        type: MicrowaveBoundUserInterface
+  # WOLFGATE(Cooking) START: no microwave screen; it cooks by hand
+  # - type: UserInterface
+  #   interfaces:
+  #     enum.MicrowaveUiKey.ElectricRangeKey:
+  #       type: MicrowaveBoundUserInterface
+  # WOLFGATE END
   - type: Physics
     bodyType: Static
   - type: Fixtures
@@ -91,6 +110,14 @@
       state: range_low
       shader: unshaded
       visible: false
+    # WOLFGATE(Cooking) START: the pan or pot on the hob
+    - sprite: _WG/Cooking/hearth_stove.rsi
+      state: hob-pan
+      map: ["wg-hob"]
+      offset: 0,0.3
+      scale: 0.6,0.6
+      visible: false
+    # WOLFGATE END
   - type: Destructible
     thresholds:
     - trigger:
@@ -157,6 +184,11 @@
   name: food-o-mat
   description: Assembles and prepares NT-approved meals. You don't know what it's doing in there.
   components:
+  # WOLFGATE(Cooking) START: the food-o-mat only assembles; no oven from the microwave it is built on
+  - type: WGHearth
+    hob: false
+    ovenCapacity: 0
+  # WOLFGATE END
   - type: Microwave
     explosionChance: 0
     lightningChance: 0

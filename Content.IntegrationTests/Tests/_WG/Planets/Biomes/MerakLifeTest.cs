@@ -65,6 +65,8 @@ public sealed class MerakLifeTest
     {
         "WGMobDesertTarantula", "MobLizard", "MobCobraSpace", "MobKangarooPlanet", "MobIronCrab", "MobQuartzCrab", "MobGoat", "MobCrab",
         "WGMobCrateMimic", "WGMobBirdGlassSwift",
+        // Game from the Hunting module.
+        "WGGameGoat", "WGGameBobcat", "WGGameHyena", "WGGameMole",
     };
 
     private static readonly string[] Plants =

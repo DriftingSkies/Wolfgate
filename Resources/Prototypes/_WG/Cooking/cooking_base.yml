@@ -1,0 +1,19 @@
+# An unbaked dish from a kitchen recipe, put together on the prep board (WGRawDish carries the recipe). It is named
+# "unbaked <dish>" when made, and has to be cooked in a hearth's oven or pan.
+- type: entity
+  parent: BaseItem
+  id: WGRawKitchenDish
+  name: unbaked dish
+  description: Put together and ready to cook. Bake it in a hearth's oven, or fry it in a pan if it's a quick dish. Don't forget it on the heat.
+  components:
+  - type: Sprite
+    sprite: Objects/Consumable/Food/ingredients.rsi
+    state: dough
+  - type: Item
+    size: Small
+  - type: WGRawDish
+  - type: StaticPrice
+    price: 10
+
+- type: Tag
+  id: WGChopped

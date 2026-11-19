@@ -6,6 +6,13 @@
   id: WGFaunaMerakDunes
   table: !type:GroupSelector
     children:
+    # WOLFGATE-HUNTING START: game for hunting (Hunting module, Tools/_WG/Hunting/port_hunting.py)
+    - !type:NestedSelector
+      tableId: WGHuntHyenaPack
+      weight: 2
+    - id: WGGameMole
+      weight: 1
+    # WOLFGATE-HUNTING END
     - id: WGMobDesertTarantula
       weight: 1
     - !type:NoneSelector
@@ -24,6 +31,15 @@
   id: WGFaunaMerakBadlands
   table: !type:GroupSelector
     children:
+    # WOLFGATE-HUNTING START: game for hunting (Hunting module, Tools/_WG/Hunting/port_hunting.py)
+    - !type:NestedSelector
+      tableId: WGHuntHyenaPack
+      weight: 2
+    - id: WGGameGoat
+      weight: 2
+    - id: WGGameBobcat
+      weight: 1
+    # WOLFGATE-HUNTING END
     - id: MobLizard
       weight: 3
     - id: MobCobraSpace

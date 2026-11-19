@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Paragon Moon (Roguetown lineage), modular/Neu_Food/icons/cooked/*.dmi; adapted for Wolfgate.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "wgfoodraspberrycake"
+    },
+    {
+      "name": "wgfoodblackberrycake"
+    },
+    {
+      "name": "wgfoodhoneycake"
+    },
+    {
+      "name": "wgfoodfruitcake"
+    },
+    {
+      "name": "wgfoodlimecake"
+    },
+    {
+      "name": "wgfoodstrawberrypie"
+    },
+    {
+      "name": "wgfoodquiche"
+    },
+    {
+      "name": "wgfoodscallopedpotatoes"
+    },
+    {
+      "name": "wgfoodstuffedeggplant"
+    },
+    {
+      "name": "wgfoodomelette"
+    },
+    {
+      "name": "wgfoodfriedcabbage"
+    },
+    {
+      "name": "wgfoodfriedpotato"
+    },
+    {
+      "name": "wgfoodfriedonion"
+    },
+    {
+      "name": "wgfoodbakedpotato"
+    },
+    {
+      "name": "wgfoodroastturnip"
+    },
+    {
+      "name": "wgfoodroastseeds"
+    },
+    {
+      "name": "wgfoodfriedegg"
+    }
+  ]
+}

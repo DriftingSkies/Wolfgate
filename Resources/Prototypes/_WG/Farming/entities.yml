@@ -1,0 +1,10 @@
+# A grow lamp: plants within its range grow at night and indoors while it has power.
+- type: entity
+  parent: PoweredSmallLight
+  id: WGGrowLamp
+  name: grow lamp
+  description: A violet lamp that lets plants beneath it grow through the night and indoors, as long as it has power.
+  components:
+  - type: PointLight
+    color: "#C77DFF"
+  - type: WGGrowLamp

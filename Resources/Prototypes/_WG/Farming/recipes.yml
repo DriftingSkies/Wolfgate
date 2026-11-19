@@ -1,0 +1,270 @@
+# What each processing machine makes (wgProcessRecipe), in real minutes of running. `needs` is a supply loaded into
+# the machine beforehand and used up each batch.
+
+- type: wgProcessRecipe
+  id: WGKegWine
+  machine: Keg
+  tags: [ Fruit ]
+  minutes: 90
+  outputs:
+  - id: DrinkWineBottleFull
+
+- type: wgProcessRecipe
+  id: WGKegBeer
+  machine: Keg
+  tags: [ Wheat ]
+  minutes: 45
+  outputs:
+  - id: DrinkBeerBottleFull
+
+- type: wgProcessRecipe
+  id: WGJarPreserves
+  machine: Jar
+  tags: [ Fruit ]
+  minutes: 60
+  outputs:
+  - id: WGFruitPreserves
+
+- type: wgProcessRecipe
+  id: WGJarPickles
+  machine: Jar
+  tags: [ Vegetable ]
+  minutes: 60
+  outputs:
+  - id: WGPickles
+
+- type: wgProcessRecipe
+  id: WGPressCheese
+  machine: CheesePress
+  inputs: [ DrinkMilkCarton ]
+  minutes: 30
+  outputs:
+  - id: FoodCheese
+
+- type: wgProcessRecipe
+  id: WGMayo
+  machine: Mayo
+  tags: [ Egg ]
+  minutes: 8
+  outputs:
+  - id: WGMayonnaise
+
+- type: wgProcessRecipe
+  id: WGLoomCloth
+  machine: Loom
+  inputs: [ MaterialCotton1 ]
+  minutes: 15
+  outputs:
+  - id: MaterialCloth1
+    count: 2
+
+- type: wgProcessRecipe
+  id: WGMillFlour
+  machine: Mill
+  tags: [ Wheat ]
+  minutes: 3
+  keepQuality: false
+  outputs:
+  - id: ReagentContainerFlour
+
+- type: wgProcessRecipe
+  id: WGCompostProduce
+  machine: Composter
+  produce: true
+  tags: [ Meat, Egg ]
+  minutes: 30
+  keepQuality: false
+  outputs:
+  - id: WGCompost
+
+- type: wgProcessRecipe
+  id: WGDigestProduce
+  machine: Digester
+  produce: true
+  tags: [ Meat, Egg ]
+  minutes: 15
+  keepQuality: false
+  outputs:
+  - id: WGCompost
+    count: 2
+
+- type: wgProcessRecipe
+  id: WGAgeBasicFertilizer
+  machine: FertilizerBarrel
+  inputs: [ WGCompost ]
+  minutes: 30
+  outputs:
+  - id: WGFertilizerBasic
+
+- type: wgProcessRecipe
+  id: WGAgeQualityFertilizer
+  machine: FertilizerBarrel
+  inputs: [ WGFertilizerBasic ]
+  minutes: 60
+  outputs:
+  - id: WGFertilizerQuality
+
+- type: wgProcessRecipe
+  id: WGMixSpeedGro
+  machine: NutrientMixer
+  inputs: [ WGCompost ]
+  minutes: 15
+  outputs:
+  - id: WGSpeedGro
+
+- type: wgProcessRecipe
+  id: WGMixRetainingSoil
+  machine: NutrientMixer
+  tags: [ Ore ]
+  minutes: 15
+  outputs:
+  - id: WGRetainingSoil
+    count: 2
+
+- type: wgProcessRecipe
+  id: WGCaskWine
+  machine: Cask
+  inputs: [ DrinkWineBottleFull ]
+  minutes: 120
+  qualityUp: true
+  outputs:
+  - id: DrinkWineBottleFull
+
+- type: wgProcessRecipe
+  id: WGCaskCheese
+  machine: Cask
+  inputs: [ FoodCheese ]
+  minutes: 120
+  qualityUp: true
+  outputs:
+  - id: FoodCheese
+
+- type: wgProcessRecipe
+  id: WGHiveHoney
+  machine: BeeHive
+  auto: true
+  needsPlants: 2
+  minutes: 60
+  outputs:
+  - id: WGHoney
+
+- type: wgProcessRecipe
+  id: WGLogMushrooms
+  machine: MushroomLog
+  auto: true
+  minutes: 30
+  outputs:
+  - id: FoodMushroom
+    count: 2
+
+- type: wgProcessRecipe
+  id: WGRackLedger
+  machine: ComputeRack
+  auto: true
+  minutes: 15
+  outputs:
+  - id: WGEncryptedLedger
+
+- type: wgProcessRecipe
+  id: WGWashOre
+  machine: OreWasher
+  tags: [ Ore ]
+  minutes: 3
+  outputs:
+  - id: WGGeode
+    weight: 1
+  - id: WGCompost
+    weight: 2
+
+- type: wgProcessRecipe
+  id: WGCrackGeode
+  machine: GeodeCracker
+  inputs: [ WGGeode ]
+  minutes: 2
+  keepQuality: false
+  outputs:
+  - id: SteelOre1
+    count: 3
+    weight: 5
+  - id: GoldOre1
+    count: 2
+    weight: 3
+  - id: MaterialDiamond1
+    weight: 1
+
+- type: wgProcessRecipe
+  id: WGKilnBottles
+  machine: GlassKiln
+  inputs: [ SheetGlass1 ]
+  minutes: 5
+  keepQuality: false
+  outputs:
+  - id: WGGlassBottle
+    count: 2
+
+- type: wgProcessRecipe
+  id: WGSeedMaker
+  machine: SeedMaker
+  produce: true
+  seeds: true
+  minutes: 10
+  keepQuality: false
+  outputs:
+  - id: WGGlassBottle # unused for seed recipes; the count is what matters
+    count: 1
+    weight: 3
+  - id: WGGlassBottle
+    count: 2
+    weight: 2
+  - id: WGGlassBottle
+    count: 3
+    weight: 1
+
+# The packing table seals farm goods into trade crates that sell on the live market (TradeGoods). Packing books nothing
+# against the producer cap: the goods were made already. Recipes are tried in ID order, so luxuries come first.
+
+- type: wgProcessRecipe
+  id: WGPackALuxuries
+  machine: PackingTable
+  tags: [ WGFineFood ]
+  inputs: [ DrinkWineBottleFull, FoodCheese, WGFruitPreserves, WGPickles, WGHoney ]
+  batch: 15
+  uncapped: true
+  minutes: 2
+  keepQuality: false
+  outputs:
+  - id: TradeGoodLuxuries
+
+- type: wgProcessRecipe
+  id: WGPackBFabric
+  machine: PackingTable
+  inputs: [ MaterialCloth1, WGLeather ]
+  batch: 30
+  uncapped: true
+  minutes: 2
+  keepQuality: false
+  outputs:
+  - id: TradeGoodFabric
+
+- type: wgProcessRecipe
+  id: WGPackCFertilizer
+  machine: PackingTable
+  inputs: [ WGFertilizerBasic, WGFertilizerQuality ]
+  batch: 20
+  uncapped: true
+  minutes: 2
+  keepQuality: false
+  outputs:
+  - id: TradeGoodFertilizer
+
+- type: wgProcessRecipe
+  id: WGPackDSupplies
+  machine: PackingTable
+  produce: true
+  tags: [ WGHomeCooking, WGFish, WGShellfish ]
+  batch: 40
+  uncapped: true
+  minutes: 2
+  keepQuality: false
+  outputs:
+  - id: TradeGoodSupplies

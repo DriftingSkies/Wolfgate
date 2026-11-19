@@ -1,3 +1,4 @@
+using Robust.Shared.Containers;
 #nullable enable
 using System.Linq;
 using System.Numerics;
@@ -114,7 +115,8 @@ public sealed partial class WGFeedbackBatch1102Test
             entMan.GetComponent<ApcPowerReceiverComponent>(microwave).Powered = true;
             var emag = entMan.SpawnEntity("Emag", map.GridCoords);
             var food = entMan.SpawnEntity("FoodApple", map.GridCoords);
-            var storage = entMan.GetComponent<MicrowaveComponent>(microwave).Storage;
+            // The microwave cooks by hand now (Cooking): what it takes goes into its oven.
+            var storage = entMan.System<SharedContainerSystem>().GetContainer(microwave, Content.Server._WG.Cooking.WGHearthComponent.Oven);
             Assert.That(entMan.HasComponent<EmagComponent>(emag));
 
             Assert.That(hands.TryPickupAnyHand(user, emag));

@@ -1,0 +1,190 @@
+# Farm goods made by the processing machines, and fertilizers.
+
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: WGFarmGoodBase
+  components:
+  - type: Item
+    size: Small
+  - type: Tag
+    tags:
+    - WGFarmGood
+
+- type: entity
+  parent: WGFarmGoodBase
+  id: WGFruitPreserves
+  name: fruit preserves
+  description: A jar of sweet fruit preserves.
+  components:
+  - type: Sprite
+    sprite: Objects/Consumable/Drinks/jar.rsi
+    state: icon
+    color: "#C04A6A"
+  - type: StaticPrice
+    price: 220
+
+- type: entity
+  parent: WGFarmGoodBase
+  id: WGPickles
+  name: pickles
+  description: A jar of pickled vegetables.
+  components:
+  - type: Sprite
+    sprite: Objects/Consumable/Drinks/jar.rsi
+    state: icon
+    color: "#7FA04A"
+  - type: StaticPrice
+    price: 200
+
+- type: entity
+  parent: WGFarmGoodBase
+  id: WGMayonnaise
+  name: mayonnaise
+  description: A jar of fresh mayonnaise.
+  components:
+  - type: Sprite
+    sprite: Objects/Consumable/Food/ingredients.rsi
+    state: mayo
+  - type: StaticPrice
+    price: 120
+
+- type: entity
+  parent: WGFarmGoodBase
+  id: WGHoney
+  name: jar of honey
+  description: Honey from an outpost's bees.
+  components:
+  - type: Sprite
+    sprite: Objects/Consumable/Drinks/jar.rsi
+    state: icon
+    color: "#E0A030"
+  - type: StaticPrice
+    price: 260
+
+- type: entity
+  parent: WGFarmGoodBase
+  id: WGEncryptedLedger
+  name: encrypted ledger
+  description: A disk of mined ledger blocks. Banks and corporate stations pay well for these.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/diskcases.rsi
+    state: icon_cargo
+  - type: StaticPrice
+    price: 900
+
+- type: entity
+  parent: WGFarmGoodBase
+  id: WGGeode
+  name: geode
+  description: A dull rock with something glittering inside. A geode cracker opens it.
+  components:
+  - type: Sprite
+    sprite: Objects/Materials/ore.rsi
+    state: spacequartz
+    color: "#9A8F80"
+  - type: StaticPrice
+    price: 80
+
+- type: entity
+  parent: BaseItem
+  id: WGGlassBottle
+  name: glass bottle
+  description: An empty bottle for the brewing keg.
+  components:
+  - type: Item
+    size: Tiny
+  - type: Sprite
+    sprite: _WG/Farming/glass_bottle.rsi
+    state: icon
+  - type: Stack
+    stackType: WGGlassBottle
+    count: 1
+  - type: StaticPrice
+    price: 10
+
+- type: stack
+  id: WGGlassBottle
+  name: wg-stack-glass-bottle
+  spawn: WGGlassBottle
+  maxCount: 20
+
+# Soil.
+
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: WGFertilizerBase
+  components:
+  - type: Item
+    size: Small
+  - type: Sprite
+    sprite: Objects/Consumable/Food/ingredients.rsi
+    state: flour-big
+
+- type: entity
+  parent: WGFertilizerBase
+  id: WGCompost
+  name: compost
+  description: Rotted-down scraps. Age it into fertilizer or mix it into speed-gro.
+  components:
+  - type: Sprite
+    color: "#5A4028"
+  - type: StaticPrice
+    price: 15
+
+- type: entity
+  parent: WGFertilizerBase
+  id: WGFertilizerBasic
+  name: basic fertilizer
+  description: Use it on a plant holder. Its next harvest may come out a quality step better.
+  components:
+  - type: Sprite
+    color: "#8A6A3A"
+  - type: WGFertilizer
+    quality: 1
+  - type: StaticPrice
+    price: 40
+
+- type: entity
+  parent: WGFertilizerBase
+  id: WGFertilizerQuality
+  name: quality fertilizer
+  description: Use it on a plant holder. Its next harvest may come out up to two quality steps better, even iridium.
+  components:
+  - type: Sprite
+    color: "#6A8A3A"
+  - type: WGFertilizer
+    quality: 2
+  - type: StaticPrice
+    price: 120
+
+- type: entity
+  parent: WGFertilizerBase
+  id: WGSpeedGro
+  name: speed-gro
+  description: Use it on a plant holder. Its crop grows a quarter faster.
+  components:
+  - type: Sprite
+    color: "#3A8A7A"
+  - type: WGFertilizer
+    speed: 0.25
+  - type: StaticPrice
+    price: 90
+
+- type: entity
+  parent: WGFertilizerBase
+  id: WGRetainingSoil
+  name: retaining soil
+  description: Use it on a plant holder. Once a planet day it waters a plant that has gone dry.
+  components:
+  - type: Sprite
+    color: "#7A7A8A"
+  - type: WGFertilizer
+    retain: true
+  - type: StaticPrice
+    price: 60
+
+- type: Tag
+  id: WGFarmGood
