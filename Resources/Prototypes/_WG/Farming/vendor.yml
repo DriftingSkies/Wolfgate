@@ -14,13 +14,30 @@
   startingInventory:
     WGHearthStove: 2
     WGPrepBoard: 4
+    WGCuttingBoard: 4
     WGCookPan: 4
     WGCookPot: 4
     WGCookPotCopper: 2
     WGCookKettle: 2
     WGCookBowl: 12
+    WGCookCup: 6
+    WGCookTeapot: 2
+    WGCookPlatter: 2
+    WGCookPeppermill: 2
+    WGCookRollingPin: 2
     WGFishingRod: 4
     WGBaitDoughball: 10
+    WGBlackberrySeeds: 5
+    WGCoffeeSeeds: 5
+    WGCucumberSeeds: 5
+    WGPearSeeds: 5
+    WGPlumSeeds: 5
+    WGRaspberrySeeds: 5
+    WGRocknutSeeds: 5
+    WGStrawberrySeeds: 5
+    WGSunflowerSeeds: 5
+    WGTangerineSeeds: 5
+    WGTurnipSeeds: 5
     WGSprinklerBasic: 6
     WGSprinklerQuality: 3
     WGSprinklerAdvanced: 2

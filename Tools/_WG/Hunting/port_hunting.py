@@ -90,8 +90,8 @@ ITEMS = {
     "WGFoodPrimeSteak": ("modular/Neu_Food/icons/cooked/cooked_meat.dmi", "frysteak", "prime steak", "A prized cut, seared just right.", 220, "cooked"),
     "WGFat": ("modular/Neu_Food/icons/raw/raw_meat.dmi", "fat", "animal fat", "A slab of raw fat. Render it in an oven for tallow.", 10, "fat"),
     "WGTallow": ("modular/Neu_Food/icons/raw/raw_meat.dmi", "fat", "tallow", "Rendered fat, for frying and candles.", 25, "fat"),
-    "WGOffalHeart": ("Mobs/Species/Human/organs.rsi", "heart-off", "animal heart", "A game animal's heart. Stewed, it strengthens the blood.", 20, "offal"),
-    "WGOffalLiver": ("Mobs/Species/Human/organs.rsi", "liver", "animal liver", "A game animal's liver. With onions, it mends a tired liver.", 20, "offal"),
+    "WGOffalHeart": ("_WG/Hunting/props.rsi", "heart", "animal heart", "A game animal's heart. Stewed, it strengthens the blood.", 20, "offal"),
+    "WGOffalLiver": ("_WG/Hunting/props.rsi", "liver", "animal liver", "A game animal's liver. With onions, it mends a tired liver.", 20, "offal"),
     "WGFoodJerky": ("modular/Neu_Food/icons/others/preserved_meat.dmi", "jerk1", "jerky", "Strips of smoked, dried meat that keep for a long trip.", 45, "preserved"),
     "WGFoodDriedFish": ("modular/Neu_Food/icons/others/preserved_meat.dmi", "dried_fish_filet", "dried fish", "A fillet of fish, smoked and dried hard.", 40, "preserved"),
     "WGHide": ("icons/roguetown/items/natural.dmi", "hide", "hide", "A raw animal hide. Tan it on a tanning rack.", 30, "pelt"),
@@ -534,9 +534,19 @@ def main():
   description: Smokes meat into jerky and fish into dried fish that keep for a long trip. No power needed.
   components:
   - type: Sprite
-    sprite: _DV/Objects/Storage/keg.rsi
-    state: base
-    color: "#5A4A40"
+    sprite: _WG/Hunting/props.rsi
+    layers:
+    - state: smoking_rack
+    - state: smoking_rack_working
+      map: [ "drying" ]
+      visible: false
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGProcessorVisuals.Working:
+        drying:
+          True: { visible: true }
+          False: { visible: false }
   - type: WGProcessor
     machine: SmokingRack
   - type: StaticPrice
@@ -549,9 +559,8 @@ def main():
   description: Tans pelts and hides into leather.
   components:
   - type: Sprite
-    sprite: _DV/Objects/Storage/keg.rsi
-    state: base
-    color: "#8A6A4A"
+    sprite: _WG/Hunting/props.rsi
+    state: tanning_rack
   - type: WGProcessor
     machine: TanningRack
   - type: StaticPrice

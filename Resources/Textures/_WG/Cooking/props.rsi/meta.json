@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Paragon Moon (Roguetown lineage; mayonnaise, ash and potato wedges from /tg/station via Paragon): icons/roguetown/misc/gadgets.dmi, icons/roguetown/misc/lighting.dmi, modular/Neu_Food/icons/raw/*.dmi, icons/obj/food/containers.dmi, icons/obj/objects.dmi, icons/obj/hydroponics/harvest.dmi; cutting board from Meridian (Nova Sector), modular_nova/modules/primitive_cooking_additions/icons/cooking_structures.dmi.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "cutting_board"
+    },
+    {
+      "name": "messkit"
+    },
+    {
+      "name": "camp_stove"
+    },
+    {
+      "name": "camp_stove_lit"
+    },
+    {
+      "name": "unbaked"
+    },
+    {
+      "name": "mayonnaise"
+    },
+    {
+      "name": "burned"
+    },
+    {
+      "name": "apple_sliced"
+    },
+    {
+      "name": "potato_wedges"
+    }
+  ]
+}

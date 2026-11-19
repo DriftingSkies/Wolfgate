@@ -553,7 +553,9 @@ public sealed class WGCookingSystem : EntitySystem
         var query = EntityQueryEnumerator<WGHearthComponent>();
         while (query.MoveNext(out var uid, out var hearth))
         {
-            if (!Lit(uid))
+            var lit = Lit(uid);
+            _appearance.SetData(uid, WGHobVisuals.Lit, lit);
+            if (!lit)
                 continue;
 
             var heat = seconds * hearth.Heat;

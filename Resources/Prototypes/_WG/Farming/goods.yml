@@ -18,9 +18,9 @@
   description: A jar of sweet fruit preserves.
   components:
   - type: Sprite
-    sprite: Objects/Consumable/Drinks/jar.rsi
-    state: icon
-    color: "#C04A6A"
+    sprite: _WG/Farming/props.rsi
+    state: preserves
+    color: "#D0506A"
   - type: StaticPrice
     price: 220
 
@@ -31,9 +31,8 @@
   description: A jar of pickled vegetables.
   components:
   - type: Sprite
-    sprite: Objects/Consumable/Drinks/jar.rsi
-    state: icon
-    color: "#7FA04A"
+    sprite: _WG/Farming/props.rsi
+    state: pickles
   - type: StaticPrice
     price: 200
 
@@ -44,8 +43,8 @@
   description: A jar of fresh mayonnaise.
   components:
   - type: Sprite
-    sprite: Objects/Consumable/Food/ingredients.rsi
-    state: mayo
+    sprite: _WG/Cooking/props.rsi
+    state: mayonnaise
   - type: StaticPrice
     price: 120
 
@@ -56,8 +55,8 @@
   description: Honey from an outpost's bees.
   components:
   - type: Sprite
-    sprite: Objects/Consumable/Drinks/jar.rsi
-    state: icon
+    sprite: _WG/Farming/props.rsi
+    state: honey
     color: "#E0A030"
   - type: StaticPrice
     price: 260
@@ -69,8 +68,8 @@
   description: A disk of mined ledger blocks. Banks and corporate stations pay well for these.
   components:
   - type: Sprite
-    sprite: Objects/Misc/diskcases.rsi
-    state: icon_cargo
+    sprite: _WG/Farming/props.rsi
+    state: ledger
   - type: StaticPrice
     price: 900
 
@@ -130,7 +129,9 @@
   description: Rotted-down scraps. Age it into fertilizer or mix it into speed-gro.
   components:
   - type: Sprite
-    color: "#5A4028"
+    sprite: _WG/Farming/props.rsi
+    state: fertilizer
+    color: "#7A5A38"
   - type: StaticPrice
     price: 15
 
@@ -141,7 +142,8 @@
   description: Use it on a plant holder. Its next harvest may come out a quality step better.
   components:
   - type: Sprite
-    color: "#8A6A3A"
+    sprite: _WG/Farming/props.rsi
+    state: fertilizer
   - type: WGFertilizer
     quality: 1
   - type: StaticPrice
@@ -154,7 +156,9 @@
   description: Use it on a plant holder. Its next harvest may come out up to two quality steps better, even iridium.
   components:
   - type: Sprite
-    color: "#6A8A3A"
+    sprite: _WG/Farming/props.rsi
+    state: fertilizer
+    color: "#B0E080"
   - type: WGFertilizer
     quality: 2
   - type: StaticPrice
@@ -167,7 +171,9 @@
   description: Use it on a plant holder. Its crop grows a quarter faster.
   components:
   - type: Sprite
-    color: "#3A8A7A"
+    sprite: _WG/Farming/props.rsi
+    state: fertilizer
+    color: "#80D0C0"
   - type: WGFertilizer
     speed: 0.25
   - type: StaticPrice
@@ -180,7 +186,9 @@
   description: Use it on a plant holder. Once a planet day it waters a plant that has gone dry.
   components:
   - type: Sprite
-    color: "#7A7A8A"
+    sprite: _WG/Farming/props.rsi
+    state: fertilizer
+    color: "#B0B0C0"
   - type: WGFertilizer
     retain: true
   - type: StaticPrice

@@ -8,8 +8,16 @@
   description: A little fuel stove that folds flat. Set it on the ground and put a pan or a pot on it; it needs no power, but it has no oven.
   components:
   - type: Sprite
-    sprite: _Nuclear14/Structures/Furniture/cooking.rsi
-    state: campfire
+    sprite: _WG/Cooking/props.rsi
+    layers:
+    - state: camp_stove
+      map: [ "stove" ]
+  - type: GenericVisualizer
+    visuals:
+      enum.WGHobVisuals.Lit:
+        stove:
+          True: { state: camp_stove_lit }
+          False: { state: camp_stove }
   - type: Item
     size: Normal
   - type: WGHearth
@@ -29,21 +37,48 @@
     price: 60
 
 - type: entity
+  parent: BaseItem
+  id: WGCuttingBoard
+  name: folding cutting board
+  description: A small board that folds in half. Lay a few ingredients on it, then use it to chop them and put them together, the same as a prep board.
+  components:
+  - type: Sprite
+    sprite: _WG/Cooking/props.rsi
+    state: cutting_board
+  - type: Item
+    size: Normal
+  - type: WGPrepBoard
+    capacity: 4
+  - type: ContainerContainer
+    containers:
+      wg-board: !type:Container
+  - type: ActivatableUI
+    key: enum.WGPrepBoardUiKey.Key
+    requireActiveHand: false
+  - type: UserInterface
+    interfaces:
+      enum.WGPrepBoardUiKey.Key:
+        type: WGPrepBoardBoundUserInterface
+  - type: StaticPrice
+    price: 30
+
+- type: entity
   parent: BoxCardboard
   id: WGMessKit
   name: mess kit
-  description: A tin of cooking gear for meals away from a kitchen - a folding stove, a pan, a bowl, a spoon, a fork, a knife, and salt and pepper.
+  description: A tin of cooking gear for meals away from a kitchen - a folding stove, a pan, a cutting board, a bowl, a spoon, a fork, a knife, and salt and pepper.
   components:
   - type: Item
     size: Large
   - type: Storage
     maxItemSize: Normal
     grid:
-    - 0,0,5,3
+    - 0,0,6,3
   - type: StorageFill
     contents:
     - id: WGCampStove
     - id: WGCookPan
+    - id: WGCuttingBoard
     - id: WGCookBowl
     - id: Spoon
     - id: Fork
@@ -53,8 +88,8 @@
     - id: FoodCondimentPacketPepper
       amount: 2
   - type: Sprite
-    layers:
-    - state: box
+    sprite: _WG/Cooking/props.rsi
+    state: messkit
 
 - type: loadout
   id: WGMessKitLoadout

@@ -135,3 +135,46 @@
   canBuildInImpassable: false
   conditions:
   - !type:TileNotBlocked
+
+- type: constructionGraph
+  id: WGCuttingBoardGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: WoodPlank
+        amount: 2
+        doAfter: 2
+  - node: built
+    entity: WGCuttingBoard
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers {}
+      - !type:SpawnPrototype
+        prototype: MaterialWoodPlank1
+        amount: 2
+      - !type:DeleteEntity {}
+      steps:
+      - tool: Prying
+        doAfter: 3
+
+- type: construction
+  name: folding cutting board
+  id: WGCuttingBoardRecipe
+  graph: WGCuttingBoardGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-machines
+  description: "A small board that folds in half. Lay a few ingredients on it, then use it to chop them and put them together, the same as a prep board."
+  icon:
+    sprite: _WG/Cooking/prep_board.rsi
+    state: icon
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canRotate: false
+  canBuildInImpassable: false
+  conditions:
+  - !type:TileNotBlocked

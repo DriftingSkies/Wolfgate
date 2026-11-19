@@ -1,0 +1,24 @@
+# Cargo order for fishing gear.
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGCrateFishing
+  name: fishing crate
+  description: Two fishing rods and bait to go with them.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGFishingRod
+      amount: 2
+    - id: WGBaitDoughball
+      amount: 2
+
+- type: cargoProduct
+  id: WGFishing
+  icon:
+    sprite: _WG/Fishing/fishing.rsi
+    state: rod
+  product: WGCrateFishing
+  cost: 500
+  category: cargoproduct-category-name-hydroponics
+  group: market

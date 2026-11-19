@@ -76,6 +76,7 @@ public sealed class WGProcessorSystem : EntitySystem
     [Dependency] private StackSystem _stack = default!;
     [Dependency] private TagSystem _tags = default!;
     [Dependency] private PowerReceiverSystem _power = default!;
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private BotanySystem _botany = default!;
 
     private static readonly TimeSpan Tick = TimeSpan.FromSeconds(1);
@@ -257,7 +258,10 @@ public sealed class WGProcessorSystem : EntitySystem
             if (comp.Recipe == null)
             {
                 if (AutoRecipe(comp.Machine) is not { } auto)
+                {
+                    _appearance.SetData(uid, WGProcessorVisuals.Working, false);
                     continue;
+                }
                 comp.Quality = WGCropQuality.Normal;
                 comp.Holding = null;
                 Start(ent, auto);
@@ -272,6 +276,7 @@ public sealed class WGProcessorSystem : EntitySystem
             comp.Idle = Gate(uid);
             if (comp.Idle == null && recipe.NeedsPlants > 0 && Planted(uid) < recipe.NeedsPlants)
                 comp.Idle = "wg-process-idle-plants";
+            _appearance.SetData(uid, WGProcessorVisuals.Working, comp.Idle == null);
             if (comp.Idle != null)
                 continue;
 

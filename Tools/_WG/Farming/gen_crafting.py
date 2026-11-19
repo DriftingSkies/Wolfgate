@@ -46,6 +46,7 @@ MACHINES = {
     "WGHearthStove": ("Cooking", [("Steel", 8), ("Cable", 2)], False),
     "WGPrepBoard": ("Cooking", [("WoodPlank", 3)], False),
     "WGCampStove": ("Cooking", [("Steel", 3)], False),
+    "WGCuttingBoard": ("Cooking", [("WoodPlank", 2)], False),
     "WGFishPond": ("Fishing", [("WoodPlank", 6), ("Glass", 2)], False),
     "WGHuntSmokingRack": ("Hunting", [("WoodPlank", 6)], False),
     "WGHuntTanningRack": ("Hunting", [("WoodPlank", 6)], False),

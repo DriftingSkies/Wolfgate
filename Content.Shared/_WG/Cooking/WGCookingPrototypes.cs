@@ -147,6 +147,9 @@ public sealed partial class WGSeasoningPrototype : IPrototype
 public enum WGHobVisuals : byte
 {
     Cookware,
+
+    /// <summary>Whether the hearth is burning.</summary>
+    Lit,
 }
 
 [Serializable, NetSerializable]

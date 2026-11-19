@@ -1,0 +1,36 @@
+# Cargo order for a kitchen's cookware.
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGCrateCookware
+  name: cookware crate
+  description: Pots, pans, a kettle, bowls, a prep board and the finer things for a kitchen.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGCookPot
+      amount: 2
+    - id: WGCookPotCopper
+    - id: WGCookKettle
+    - id: WGCookPan
+      amount: 2
+    - id: WGCookBowl
+      amount: 4
+    - id: WGCookCup
+      amount: 2
+    - id: WGCookTeapot
+    - id: WGCookPlatter
+    - id: WGCookPeppermill
+    - id: WGCookRollingPin
+    - id: WGPrepBoard
+    - id: WGCuttingBoard
+
+- type: cargoProduct
+  id: WGCookware
+  icon:
+    sprite: _WG/Cooking/cookware.rsi
+    state: wgcookpot
+  product: WGCrateCookware
+  cost: 900
+  category: cargoproduct-category-name-service
+  group: market

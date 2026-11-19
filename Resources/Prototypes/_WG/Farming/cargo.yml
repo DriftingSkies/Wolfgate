@@ -1,0 +1,63 @@
+# Cargo orders for the homestead: the Homestead Supply vendor as a flatpack, and the new crops' seeds.
+
+- type: entity
+  parent: BaseFlatpack
+  id: WGFlatpackHomesteadSupply
+  name: Homestead Supply flatpack
+  description: A flatpack used for constructing a Homestead Supply vending machine.
+  components:
+  - type: Flatpack
+    entity: WGVendingMachineHomestead
+  - type: StaticPrice
+    price: 3000
+
+- type: cargoProduct
+  id: WGHomesteadSupply
+  icon:
+    sprite: Structures/Machines/VendingMachines/seeds.rsi
+    state: normal-unshaded
+  product: WGFlatpackHomesteadSupply
+  cost: 4000
+  category: cargoproduct-category-name-hydroponics
+  group: market
+
+- type: entity
+  parent: CrateHydroponics
+  id: WGCrateHomesteadSeeds
+  name: homestead seeds crate
+  description: Two packets each of the homestead crops' seeds.
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGBlackberrySeeds
+      amount: 2
+    - id: WGCoffeeSeeds
+      amount: 2
+    - id: WGCucumberSeeds
+      amount: 2
+    - id: WGPearSeeds
+      amount: 2
+    - id: WGPlumSeeds
+      amount: 2
+    - id: WGRaspberrySeeds
+      amount: 2
+    - id: WGRocknutSeeds
+      amount: 2
+    - id: WGStrawberrySeeds
+      amount: 2
+    - id: WGSunflowerSeeds
+      amount: 2
+    - id: WGTangerineSeeds
+      amount: 2
+    - id: WGTurnipSeeds
+      amount: 2
+
+- type: cargoProduct
+  id: WGHomesteadSeeds
+  icon:
+    sprite: _WG/Farming/Crops/cucumber.rsi
+    state: seed
+  product: WGCrateHomesteadSeeds
+  cost: 800
+  category: cargoproduct-category-name-hydroponics
+  group: market

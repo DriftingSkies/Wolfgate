@@ -1043,8 +1043,8 @@
   description: Chopped and ready for the pot or the pan.
   components:
   - type: Sprite
-    sprite: _WG/Cooking/raw.rsi
-    state: wgfoodpotatosliced
+    sprite: _WG/Cooking/props.rsi
+    state: potato_wedges
   - type: SolutionContainerManager
     solutions:
       food:
@@ -1366,9 +1366,8 @@
   description: Chopped and ready for the pot or the pan.
   components:
   - type: Sprite
-    sprite: Objects/Specific/Hydroponics/apple.rsi
-    state: produce
-    scale: 0.75, 0.75
+    sprite: _WG/Cooking/props.rsi
+    state: apple_sliced
   - type: SolutionContainerManager
     solutions:
       food:
@@ -2406,8 +2405,8 @@
   description: Whatever it was, it stayed on the heat too long.
   components:
   - type: Sprite
-    sprite: Objects/Consumable/Food/ingredients.rsi
-    state: badrecipe
+    sprite: _WG/Cooking/props.rsi
+    state: burned
   - type: SolutionContainerManager
     solutions:
       food:

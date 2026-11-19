@@ -1066,8 +1066,8 @@
   description: A game animal's heart. Stewed, it strengthens the blood.
   components:
   - type: Sprite
-    sprite: Mobs/Species/Human/organs.rsi
-    state: heart-off
+    sprite: _WG/Hunting/props.rsi
+    state: heart
   - type: SolutionContainerManager
     solutions:
       food:
@@ -1087,7 +1087,7 @@
   description: A game animal's liver. With onions, it mends a tired liver.
   components:
   - type: Sprite
-    sprite: Mobs/Species/Human/organs.rsi
+    sprite: _WG/Hunting/props.rsi
     state: liver
   - type: SolutionContainerManager
     solutions:
@@ -1483,9 +1483,19 @@
   description: Smokes meat into jerky and fish into dried fish that keep for a long trip. No power needed.
   components:
   - type: Sprite
-    sprite: _DV/Objects/Storage/keg.rsi
-    state: base
-    color: "#5A4A40"
+    sprite: _WG/Hunting/props.rsi
+    layers:
+    - state: smoking_rack
+    - state: smoking_rack_working
+      map: [ "drying" ]
+      visible: false
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGProcessorVisuals.Working:
+        drying:
+          True: { visible: true }
+          False: { visible: false }
   - type: WGProcessor
     machine: SmokingRack
   - type: StaticPrice
@@ -1498,9 +1508,8 @@
   description: Tans pelts and hides into leather.
   components:
   - type: Sprite
-    sprite: _DV/Objects/Storage/keg.rsi
-    state: base
-    color: "#8A6A4A"
+    sprite: _WG/Hunting/props.rsi
+    state: tanning_rack
   - type: WGProcessor
     machine: TanningRack
   - type: StaticPrice

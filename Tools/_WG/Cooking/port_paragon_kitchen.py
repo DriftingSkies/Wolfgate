@@ -116,7 +116,7 @@ SIMPLE = [
 
 # Chopped on the prep board with a knife: id -> (sheet, state, name, chopped from, count)
 SLICES = {
-    "WGFoodPotatoSliced": ("raw/raw_veggies", "potato_sliced", "potato wedges", ["FoodPotato"], 2),
+    "WGFoodPotatoSliced": ("@_WG/Cooking/props.rsi", "potato_wedges", "potato wedges", ["FoodPotato"], 2),
     "WGFoodOnionSliced": ("raw/raw_veggies", "onion_sliced", "sliced onion", ["FoodOnion"], 2),
     "WGFoodCabbageSliced": ("raw/raw_veggies", "cabbage_sliced", "shredded cabbage", ["FoodCabbage"], 2),
     "WGFoodTurnipSliced": ("raw/raw_veggies", "turnip_sliced", "sliced turnip", ["WGFoodTurnip"], 2),
@@ -128,7 +128,7 @@ SLICES = {
     "WGFoodTomatoSliced": ("@Objects/Specific/Hydroponics/tomato.rsi", "produce", "sliced tomato", ["FoodTomato"], 3),
     "WGFoodEggplantSliced": ("@Objects/Specific/Hydroponics/eggplant.rsi", "produce", "sliced eggplant", ["FoodEggplant"], 3),
     "WGFoodChiliChopped": ("@Objects/Specific/Hydroponics/chili.rsi", "produce", "chopped chili", ["FoodChiliPepper"], 2),
-    "WGFoodAppleSliced": ("@Objects/Specific/Hydroponics/apple.rsi", "produce", "apple slices", ["FoodApple"], 4),
+    "WGFoodAppleSliced": ("@_WG/Cooking/props.rsi", "apple_sliced", "apple slices", ["FoodApple"], 4),
     "WGFoodLemonWedge": ("@Objects/Specific/Hydroponics/lemon.rsi", "produce", "lemon wedge", ["FoodLemon"], 4),
     "WGFoodLimeWedge": ("@Objects/Specific/Hydroponics/lime.rsi", "produce", "lime wedge", ["FoodLime"], 4),
     "WGFoodCornKernels": ("@Objects/Specific/Hydroponics/corn.rsi", "produce", "corn kernels", ["FoodCorn"], 2),
@@ -496,8 +496,8 @@ def main():
   description: Whatever it was, it stayed on the heat too long.
   components:
   - type: Sprite
-    sprite: Objects/Consumable/Food/ingredients.rsi
-    state: badrecipe
+    sprite: _WG/Cooking/props.rsi
+    state: burned
   - type: SolutionContainerManager
     solutions:
       food:

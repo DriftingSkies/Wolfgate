@@ -86,8 +86,8 @@
   description: Weaves cotton into cloth.
   components:
   - type: Sprite
-    sprite: Structures/Machines/sheetifier.rsi
-    state: base_machine
+    sprite: _WG/Farming/props.rsi
+    state: loom
   - type: WGProcessor
     machine: Loom
 
@@ -98,8 +98,8 @@
   description: Grinds wheat into flour.
   components:
   - type: Sprite
-    sprite: Structures/Machines/recycling.rsi
-    state: grinder-o0
+    sprite: _WG/Farming/props.rsi
+    state: millstone
   - type: WGProcessor
     machine: Mill
 
@@ -110,9 +110,8 @@
   description: Rots produce, meat and eggs into compost in half an hour. Compost feeds the fertilizer barrel and the nutrient mixer.
   components:
   - type: Sprite
-    sprite: _DV/Objects/Storage/keg.rsi
-    state: base
-    color: "#6B4F2A"
+    sprite: _WG/Farming/props.rsi
+    state: composter
   - type: WGProcessor
     machine: Composter
   - type: StaticPrice
@@ -125,9 +124,9 @@
   description: Ages compost into basic fertilizer, and basic fertilizer into quality fertilizer.
   components:
   - type: Sprite
-    sprite: _DV/Objects/Storage/keg.rsi
-    state: base
-    color: "#8A9A5B"
+    sprite: _WG/Farming/props.rsi
+    state: fertilizer_barrel
+    color: "#9AAA6B"
   - type: WGProcessor
     machine: FertilizerBarrel
   - type: StaticPrice
@@ -152,9 +151,8 @@
   description: Ages wine and cheese one quality step over two hours.
   components:
   - type: Sprite
-    sprite: _DV/Objects/Storage/keg.rsi
-    state: base
-    color: "#5C3A21"
+    sprite: _WG/Farming/props.rsi
+    state: cask
   - type: WGProcessor
     machine: Cask
 
@@ -165,9 +163,17 @@
   description: Makes honey every hour, as long as at least two crops are growing within five tiles.
   components:
   - type: Sprite
-    sprite: _DV/Objects/Storage/keg.rsi
-    state: base
-    color: "#E0B04F"
+    sprite: _WG/Farming/props.rsi
+    layers:
+    - state: bee_hive_empty
+      map: [ "hive" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGProcessorVisuals.Working:
+        hive:
+          True: { state: bee_hive }
+          False: { state: bee_hive_empty }
   - type: WGProcessor
     machine: BeeHive
 
@@ -193,8 +199,8 @@
   description: Mines encrypted ledgers that banks and corporate stations buy. Draws a great deal of power while it runs.
   components:
   - type: Sprite
-    sprite: Structures/Machines/server.rsi
-    state: server-on
+    sprite: _WG/Farming/props.rsi
+    state: compute_rack
   - type: ApcPowerReceiver
     powerLoad: 8000
   - type: WGProcessor
@@ -209,8 +215,8 @@
   description: Breaks produce and meat down into twice the compost a composter makes, in half the time.
   components:
   - type: Sprite
-    sprite: Structures/Machines/thermobath.rsi
-    state: base
+    sprite: _WG/Farming/props.rsi
+    state: digester
   - type: WGProcessor
     machine: Digester
   - type: StaticPrice
@@ -247,9 +253,17 @@
   description: Blows a sheet of glass into two bottles for the brewing keg.
   components:
   - type: Sprite
-    sprite: Structures/Machines/ore_processor.rsi
-    state: icon
-    color: "#A0D0E0"
+    sprite: _WG/Farming/kiln.rsi
+    layers:
+    - state: kiln
+      map: [ "kiln" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGProcessorVisuals.Working:
+        kiln:
+          True: { state: kiln_lit }
+          False: { state: kiln }
   - type: WGProcessor
     machine: GlassKiln
 
@@ -274,9 +288,8 @@
   description: Keeps birds off the outdoor crops within eight tiles.
   components:
   - type: Sprite
-    sprite: Structures/Machines/juicer.rsi
-    state: juicer0
-    color: "#C8A060"
+    sprite: _WG/Farming/props.rsi
+    state: scarecrow
   - type: WGScarecrow
   - type: StaticPrice
     price: 120
@@ -342,8 +355,8 @@
   description: Seals farm goods into trade crates for the market. 40 produce or home cooking make a Supplies crate, 15 wines, cheeses, preserves, honey or fine dishes a Luxuries crate, 30 cloth a Fabric crate, 20 bags of fertilizer a Fertilizer crate.
   components:
   - type: Sprite
-    sprite: Structures/Storage/Crates/generic.rsi
-    state: icon
+    sprite: _WG/Farming/props.rsi
+    state: packing_crate
   - type: WGProcessor
     machine: PackingTable
   - type: StaticPrice
@@ -358,8 +371,8 @@
   description: Buyers across the sector post orders for farm and workshop goods here. Use the goods on it to deliver; examine it to read the orders.
   components:
   - type: Sprite
-    sprite: Structures/Machines/smartfridge.rsi
-    state: smartfridge
+    sprite: _WG/Farming/noticeboard.rsi
+    state: noticeboard
   - type: WGOrderBoard
   - type: StaticPrice
     price: 500
@@ -398,9 +411,8 @@
   description: A wide barrel that catches rain under an open sky. Free to run, but only fills while it rains. Feeds the sprinklers within six tiles.
   components:
   - type: Sprite
-    sprite: _DV/Objects/Storage/keg.rsi
-    state: base
-    color: "#6A90B0"
+    sprite: _WG/Farming/props.rsi
+    state: rain_catcher
   - type: WGWaterCollector
     source: Rain
     rate: 1

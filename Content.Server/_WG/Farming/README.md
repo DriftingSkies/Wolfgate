@@ -56,6 +56,7 @@ project (art CC BY-SA 3.0). Everything here is sold at the Homestead Supply vend
 
 - [`Content.Shared/_WG/Farming/UdderSystem.Farming.cs`](../../../Content.Shared/_WG/Farming/UdderSystem.Farming.cs)
 - [`Content.Shared/_WG/Farming/WGCropPrototype.cs`](../../../Content.Shared/_WG/Farming/WGCropPrototype.cs)
+- [`Content.Shared/_WG/Farming/WGProcessorVisuals.cs`](../../../Content.Shared/_WG/Farming/WGProcessorVisuals.cs)
 - [`Content.Shared/_WG/Farming/WGProcessRecipePrototype.cs`](../../../Content.Shared/_WG/Farming/WGProcessRecipePrototype.cs)
 - [`Content.Shared/_WG/Farming/WoolySystem.Farming.cs`](../../../Content.Shared/_WG/Farming/WoolySystem.Farming.cs)
 
@@ -66,6 +67,7 @@ project (art CC BY-SA 3.0). Everything here is sold at the Homestead Supply vend
 
 ### Prototypes
 
+- [`Resources/Prototypes/_WG/Farming/cargo.yml`](../../../Resources/Prototypes/_WG/Farming/cargo.yml)
 - [`Resources/Prototypes/_WG/Farming/crafting.yml`](../../../Resources/Prototypes/_WG/Farming/crafting.yml)
 - [`Resources/Prototypes/_WG/Farming/crops.yml`](../../../Resources/Prototypes/_WG/Farming/crops.yml)
 - [`Resources/Prototypes/_WG/Farming/entities.yml`](../../../Resources/Prototypes/_WG/Farming/entities.yml)
@@ -96,11 +98,15 @@ project (art CC BY-SA 3.0). Everything here is sold at the Homestead Supply vend
 - [`Resources/Textures/_WG/Farming/Crops/tangerine.rsi/`](../../../Resources/Textures/_WG/Farming/Crops/tangerine.rsi/)
 - [`Resources/Textures/_WG/Farming/Crops/turnip.rsi/`](../../../Resources/Textures/_WG/Farming/Crops/turnip.rsi/)
 - [`Resources/Textures/_WG/Farming/glass_bottle.rsi/`](../../../Resources/Textures/_WG/Farming/glass_bottle.rsi/)
+- [`Resources/Textures/_WG/Farming/kiln.rsi/`](../../../Resources/Textures/_WG/Farming/kiln.rsi/)
+- [`Resources/Textures/_WG/Farming/noticeboard.rsi/`](../../../Resources/Textures/_WG/Farming/noticeboard.rsi/)
+- [`Resources/Textures/_WG/Farming/props.rsi/`](../../../Resources/Textures/_WG/Farming/props.rsi/)
 
 ### Tools
 
 - [`Tools/_WG/Farming/gen_crafting.py`](../../../Tools/_WG/Farming/gen_crafting.py)
 - [`Tools/_WG/Farming/port_paragon.py`](../../../Tools/_WG/Farming/port_paragon.py)
+- [`Tools/_WG/Farming/port_paragon_props.py`](../../../Tools/_WG/Farming/port_paragon_props.py)
 
 ### Docs
 

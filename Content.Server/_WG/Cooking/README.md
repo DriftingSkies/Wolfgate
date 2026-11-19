@@ -68,6 +68,7 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 
 ### Prototypes
 
+- [`Resources/Prototypes/_WG/Cooking/cargo.yml`](../../../Resources/Prototypes/_WG/Cooking/cargo.yml)
 - [`Resources/Prototypes/_WG/Cooking/cooking_base.yml`](../../../Resources/Prototypes/_WG/Cooking/cooking_base.yml)
 - [`Resources/Prototypes/_WG/Cooking/crafting.yml`](../../../Resources/Prototypes/_WG/Cooking/crafting.yml)
 - [`Resources/Prototypes/_WG/Cooking/kitchen.yml`](../../../Resources/Prototypes/_WG/Cooking/kitchen.yml)
@@ -85,6 +86,7 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 - [`Resources/Textures/_WG/Cooking/dishes.rsi/`](../../../Resources/Textures/_WG/Cooking/dishes.rsi/)
 - [`Resources/Textures/_WG/Cooking/hearth_stove.rsi/`](../../../Resources/Textures/_WG/Cooking/hearth_stove.rsi/)
 - [`Resources/Textures/_WG/Cooking/prep_board.rsi/`](../../../Resources/Textures/_WG/Cooking/prep_board.rsi/)
+- [`Resources/Textures/_WG/Cooking/props.rsi/`](../../../Resources/Textures/_WG/Cooking/props.rsi/)
 - [`Resources/Textures/_WG/Cooking/raw.rsi/`](../../../Resources/Textures/_WG/Cooking/raw.rsi/)
 
 ### Tools

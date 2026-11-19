@@ -7,8 +7,8 @@
   description: Put together and ready to cook. Bake it in a hearth's oven, or fry it in a pan if it's a quick dish. Don't forget it on the heat.
   components:
   - type: Sprite
-    sprite: Objects/Consumable/Food/ingredients.rsi
-    state: dough
+    sprite: _WG/Cooking/props.rsi
+    state: unbaked
   - type: Item
     size: Small
   - type: WGRawDish

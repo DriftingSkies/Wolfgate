@@ -40,6 +40,7 @@ tables; don't edit `hunting.yml` or the marked table entries by hand.
 - [`Resources/Textures/_WG/Hunting/items.rsi/`](../../../Resources/Textures/_WG/Hunting/items.rsi/)
 - [`Resources/Textures/_WG/Hunting/mole.rsi/`](../../../Resources/Textures/_WG/Hunting/mole.rsi/)
 - [`Resources/Textures/_WG/Hunting/mossback.rsi/`](../../../Resources/Textures/_WG/Hunting/mossback.rsi/)
+- [`Resources/Textures/_WG/Hunting/props.rsi/`](../../../Resources/Textures/_WG/Hunting/props.rsi/)
 - [`Resources/Textures/_WG/Hunting/raccoon.rsi/`](../../../Resources/Textures/_WG/Hunting/raccoon.rsi/)
 - [`Resources/Textures/_WG/Hunting/saiga.rsi/`](../../../Resources/Textures/_WG/Hunting/saiga.rsi/)
 - [`Resources/Textures/_WG/Hunting/saigabuck.rsi/`](../../../Resources/Textures/_WG/Hunting/saigabuck.rsi/)

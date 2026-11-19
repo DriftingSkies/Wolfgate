@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Paragon Moon (Roguetown lineage), icons/roguetown/misc/forge.dmi.",
+  "size": {
+    "x": 34,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "kiln"
+    },
+    {
+      "name": "kiln_lit"
+    }
+  ]
+}

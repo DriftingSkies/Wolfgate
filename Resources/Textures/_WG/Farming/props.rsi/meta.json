@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Paragon Moon (Roguetown lineage): icons/roguetown/misc/structure.dmi, icons/roguetown/items/misc.dmi, icons/roguetown/items/books.dmi, modular/Neu_Food/icons/others/honey.dmi, icons/obj/structures/apiary.dmi; and from Meridian (Nova Sector and /tg/station): modular_nova/modules/ashwalkers/icons/structures.dmi, icons/obj/pipes_n_cables/hydrochem/plumbers.dmi, icons/obj/machines/bitrunning.dmi, icons/obj/food/containers.dmi.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "loom"
+    },
+    {
+      "name": "millstone"
+    },
+    {
+      "name": "scarecrow"
+    },
+    {
+      "name": "cask"
+    },
+    {
+      "name": "fertilizer_barrel"
+    },
+    {
+      "name": "rain_catcher"
+    },
+    {
+      "name": "bee_hive"
+    },
+    {
+      "name": "bee_hive_empty"
+    },
+    {
+      "name": "packing_crate"
+    },
+    {
+      "name": "fertilizer"
+    },
+    {
+      "name": "honey"
+    },
+    {
+      "name": "ledger"
+    },
+    {
+      "name": "composter"
+    },
+    {
+      "name": "digester"
+    },
+    {
+      "name": "compute_rack"
+    },
+    {
+      "name": "pickles"
+    },
+    {
+      "name": "preserves"
+    }
+  ]
+}
