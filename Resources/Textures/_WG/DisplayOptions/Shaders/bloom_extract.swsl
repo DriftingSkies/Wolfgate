@@ -1,0 +1,29 @@
+// Light bloom, first pass. Box-filters the lit screen down to half size and keeps only the parts near full brightness,
+// with a soft knee, so lamps and glowing sprites bloom while ordinary lit floors and walls don't.
+
+light_mode unshaded;
+
+uniform sampler2D SCREEN_TEXTURE;
+uniform highp vec2 source_pixel_size; // 1 / the viewport's size in pixels.
+
+// Brightness, as the largest channel, that bloom starts from; the knee eases it in below that.
+const highp float threshold = 0.85;
+const highp float knee = 0.15;
+
+highp vec3 bloomBright(highp vec3 col) {
+    highp float brightness = max(col.r, max(col.g, col.b));
+    highp float soft = clamp(brightness - threshold + knee, 0.0, 2.0 * knee);
+    soft = soft * soft / (4.0 * knee + 0.0001);
+    return col * (max(soft, brightness - threshold) / max(brightness, 0.0001));
+}
+
+void fragment() {
+    // The four screen pixels under this half size pixel, so single bright pixels don't sparkle.
+    highp vec2 centre = FRAGCOORD.xy * 2.0;
+    highp vec3 col = zTextureSpec(SCREEN_TEXTURE, (centre + vec2(-0.5, -0.5)) * source_pixel_size).rgb;
+    col += zTextureSpec(SCREEN_TEXTURE, (centre + vec2(0.5, -0.5)) * source_pixel_size).rgb;
+    col += zTextureSpec(SCREEN_TEXTURE, (centre + vec2(-0.5, 0.5)) * source_pixel_size).rgb;
+    col += zTextureSpec(SCREEN_TEXTURE, (centre + vec2(0.5, 0.5)) * source_pixel_size).rgb;
+
+    COLOR = vec4(bloomBright(col * 0.25), 1.0);
+}

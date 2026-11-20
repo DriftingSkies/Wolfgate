@@ -86,7 +86,10 @@ namespace Content.Client.GameTicking.Managers
 
         private void OnAttentionRequest(RequestWindowAttentionEvent ev)
         {
-            _clyde.RequestWindowAttention();
+            // WOLFGATE(Notifications) START: the player can turn this window flash off
+            // _clyde.RequestWindowAttention();
+            Content.Client._WG.Notifications.WGWindowFlash.Request(Content.Shared._WG.Notifications.NotificationCVars.FlashRoundStart);
+            // WOLFGATE END
         }
 
         private void LateJoinStatus(TickerLateJoinStatusEvent message)

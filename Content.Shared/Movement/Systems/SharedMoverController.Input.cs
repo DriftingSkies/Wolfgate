@@ -310,6 +310,11 @@ namespace Content.Shared.Movement.Systems
 
         private void HandleDirChange(EntityUid entity, Direction dir, ushort subTick, bool state)
         {
+            if (WgTryTurnInPlace(entity, dir, state)) // WOLFGATE(TurnInPlace): the held turn key turns instead of moving
+                return; // WOLFGATE(TurnInPlace)
+            if (WgTryPixelShift(entity, dir, state)) // WOLFGATE(PixelShift): a held shift or tilt key nudges the sprite instead, and a step clears the shift
+                return; // WOLFGATE(PixelShift)
+
             // Relayed movement just uses the same keybinds given we're moving the relayed entity
             // the same as us.
 

@@ -55,8 +55,24 @@ public sealed class Ss13KeybindPresetTest
                     foreach (var combo in onFoot)
                     {
                         var functions = combo.Select(b => b.Function).Distinct().ToArray();
-                        if (functions.Length > 1 && functions.Any(preset.Contains))
+                        if (functions.Length > 1 && functions.Any(preset.Contains) && !IsSharedOnPurpose(functions))
                             Assert.Fail($"{combo.Key} is shared by {string.Join(", ", functions.Select(f => f.FunctionName))}");
+                    }
+
+                    foreach (var (first, then) in Ss13KeybindPreset.SharedKeys)
+                    {
+                        var chords = input.GetKeyBindings(first)
+                            .SelectMany(a => input.GetKeyBindings(then)
+                                .Where(b => (a.BaseKey, a.Mod1, a.Mod2, a.Mod3) == (b.BaseKey, b.Mod1, b.Mod2, b.Mod3))
+                                .Select(b => (First: a, Then: b)))
+                            .ToArray();
+                        Assert.That(chords, Is.Not.Empty, $"{first.FunctionName} and {then.FunctionName} don't share a key");
+
+                        foreach (var chord in chords)
+                        {
+                            Assert.That(chord.First.Priority, Is.GreaterThan(chord.Then.Priority),
+                                $"{first.FunctionName} must run before {then.FunctionName} on {chord.First.BaseKey}");
+                        }
                     }
 
                     Assert.That(input.IsKeyFunctionModified(EngineKeyFunctions.Use), Is.False);
@@ -70,6 +86,12 @@ public sealed class Ss13KeybindPresetTest
         });
 
         await pair.CleanReturnAsync();
+
+        bool IsSharedOnPurpose(BoundKeyFunction[] functions)
+        {
+            return functions.Length == 2 && Ss13KeybindPreset.SharedKeys.Any(s =>
+                functions.Contains(s.First) && functions.Contains(s.Then));
+        }
 
         void AssertType(BoundKeyFunction function, KeyBindingType type)
         {

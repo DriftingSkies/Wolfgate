@@ -720,6 +720,7 @@ namespace Content.Client.Lobby.UI
                 _previewRotation = _previewRotation.TurnCcw();
                 SetPreviewRotation(_previewRotation);
             };
+            InitializePreviewFrame(); // WOLFGATE(CharacterPreview): drag to turn, zoom, floor tile
 
             #endregion Dummy
 

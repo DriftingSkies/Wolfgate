@@ -1,5 +1,6 @@
 <!-- WOLFGATE(Traits): the tr xmlns on the root tag below is for the card-based trait editor. -->
 <!-- WOLFGATE(Augments): the wga xmlns on the root tag below is for the augment editor. -->
+<!-- WOLFGATE(CharacterPreview): the wfcp xmlns on the root tag below is for the preview frame. -->
 <BoxContainer xmlns="https://spacestation14.io"
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:humanoid="clr-namespace:Content.Client.Humanoid"
@@ -7,6 +8,7 @@
          xmlns:wgg="clr-namespace:Content.Client._WG.Genitals.UI"
          xmlns:tr="clr-namespace:Content.Client._WG.Traits.UI"
          xmlns:wga="clr-namespace:Content.Client._WG.Augments.UI"
+         xmlns:wfcp="clr-namespace:Content.Client._WG.CharacterPreview"
          HorizontalExpand="True"
          SeparationOverride="0">
     <!-- WOLFGATE(Stylesheets) START: creator rebuilt as cards with a preview column (also covers the root tag above, which
@@ -437,14 +439,20 @@
             <!-- WOLFGATE(Stylesheets): fixed box. SpriteView sizes itself from the sprite's rotated bounding box, so a
                  species whose required marking uses a wide RSI (Shadekin's 64x32 tail) blew the whole pane
                  out. Fit shrinks those to the box instead. -->
+            <!-- WOLFGATE(CharacterPreview): drag to turn, scroll to zoom, floor tile behind -->
+            <wfcp:WGPreviewFrame Name="PreviewFrame" SetSize="264 264" HorizontalAlignment="Center">
             <SpriteView Name="SpriteView" Scale="8 8" Margin="4" HorizontalAlignment="Center"
                         SetSize="256 256" Stretch="Fit" SizeFlagsStretchRatio="1" />
+            <!-- WOLFGATE(CharacterPreview): closes the preview frame -->
+            </wfcp:WGPreviewFrame>
             <BoxContainer Orientation="Horizontal" HorizontalAlignment="Center" SeparationOverride="0">
                 <Button Name="SpriteRotateLeft" Text="◀" StyleClasses="OpenRight" />
                 <!-- WOLFGATE(Stylesheets): separator dropped, the two rotate buttons now form one segmented control -->
                 <!-- <cc:VSeparator Margin="2 0 3 0" /> -->
                 <Button Name="SpriteRotateRight" Text="▶" StyleClasses="OpenLeft" />
             </BoxContainer>
+            <!-- WOLFGATE(CharacterPreview): floor tile picker -->
+            <Button Name="PreviewBackgroundButton" HorizontalAlignment="Center" StyleClasses="CreatorToggle" />
             <Button Name="ShowClothes" Pressed="True" ToggleMode="True" StyleClasses="CreatorToggle"
                     Text="{Loc 'humanoid-profile-editor-clothing'}" HorizontalAlignment="Center" />
             <!-- WOLFGATE(Humanoid): description moved out of its own tab and under the preview. The editor is capped

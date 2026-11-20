@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Numerics;
+using Content.Client._WG.PixelShift;
 using Content.Shared._WG.Xenonids.Mobs;
 using Content.Shared._WG.Xenonids;
 using Content.Shared._WG.Xenonids.HiveLeader;
@@ -28,6 +29,7 @@ public sealed partial class XenoPheromonesOverlay : Overlay
         Enum.GetValues<XenoPheromones>().ToImmutableArray();
 
     private readonly ContainerSystem _container;
+    private readonly WGPixelShiftVisualsSystem _pixelShift;
     private readonly SpriteSystem _sprite;
     private readonly TransformSystem _transform;
 
@@ -42,6 +44,7 @@ public sealed partial class XenoPheromonesOverlay : Overlay
         IoCManager.InjectDependencies(this);
 
         _container = _entity.System<ContainerSystem>();
+        _pixelShift = _entity.System<WGPixelShiftVisualsSystem>();
         _sprite = _entity.System<SpriteSystem>();
         _transform = _entity.System<TransformSystem>();
 
@@ -117,7 +120,7 @@ public sealed partial class XenoPheromonesOverlay : Overlay
         Matrix3x2 scaleMatrix,
         Matrix3x2 rotationMatrix)
     {
-        var (_, sprite, xform) = ent;
+        var (uid, sprite, xform) = ent;
         if (xform.MapID != args.MapId)
             return;
 
@@ -136,8 +139,8 @@ public sealed partial class XenoPheromonesOverlay : Overlay
 
         var texture = _sprite.GetFrame(icon, _timing.CurTime);
 
-        var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
-        var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter - 0.25f;
+        var yOffset = (bounds.Height + _pixelShift.UnshiftedOffset(uid, sprite).Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
+        var xOffset = (bounds.Width + _pixelShift.UnshiftedOffset(uid, sprite).X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter - 0.25f;
 
         var position = new Vector2(xOffset, yOffset);
         handle.DrawTexture(texture, position);

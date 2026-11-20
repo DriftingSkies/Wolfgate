@@ -74,8 +74,13 @@ namespace Content.Client.Flash
                 return;
 
             var worldHandle = args.WorldHandle;
-            _shader.SetParameter("percentComplete", PercentComplete);
-            worldHandle.UseShader(_shader);
+            // WOLFGATE(DarkFlash) START: a still fade for players who turn on dark flash
+            // _shader.SetParameter("percentComplete", PercentComplete);
+            // worldHandle.UseShader(_shader);
+            var shader = WgFlashShader();
+            shader.SetParameter("percentComplete", PercentComplete);
+            worldHandle.UseShader(shader);
+            // WOLFGATE END
             worldHandle.DrawTextureRectRegion(ScreenshotTexture, args.WorldBounds);
             worldHandle.UseShader(null);
         }

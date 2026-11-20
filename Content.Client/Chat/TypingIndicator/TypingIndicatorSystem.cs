@@ -1,3 +1,4 @@
+using Content.Shared._WG.HideTyping; // WOLFGATE(HideTyping)
 using Content.Shared.CCVar;
 using Content.Shared.Chat.TypingIndicator;
 using Robust.Client.Player;
@@ -23,6 +24,7 @@ public sealed partial class TypingIndicatorSystem : SharedTypingIndicatorSystem
         base.Initialize();
 
         Subs.CVar(_cfg, CCVars.ChatShowTypingIndicator, OnShowTypingChanged);
+        Subs.CVar(_cfg, HideTypingCVars.ShowMyTyping, show => { if (!show) ClientUpdateTyping(); }); // WOLFGATE(HideTyping): clear the indicator when turned off
     }
 
     public void ClientChangedChatText()
@@ -88,6 +90,9 @@ public sealed partial class TypingIndicatorSystem : SharedTypingIndicatorSystem
         var state = TypingIndicatorState.None;
         if (_isClientChatFocused)
             state = _isClientTyping ? TypingIndicatorState.Typing : TypingIndicatorState.Idle;
+
+        if (!_cfg.GetCVar(HideTypingCVars.ShowMyTyping)) // WOLFGATE(HideTyping): the player chose not to show it
+            state = TypingIndicatorState.None; // WOLFGATE(HideTyping)
 
         // send a networked event to server
         RaisePredictiveEvent(new TypingChangedEvent(state));

@@ -48,7 +48,9 @@ public sealed partial class MiscTab : Control
         Control.AddOptionCheckBox(CCVars.ShowOocPatronColor, ShowOocPatronColor);
         Control.AddOptionCheckBox(CCVars.LoocAboveHeadShow, ShowLoocAboveHeadCheckBox);
         Control.AddOptionCheckBox(CCVars.HudHeldItemShow, ShowHeldItemCheckBox);
+        WgAddScreentipOptions(); // WOLFGATE(Screentips): screentip position and colour
         Control.AddOptionCheckBox(CCVars.CombatModeIndicatorsPointShow, ShowCombatModeIndicatorsCheckBox);
+        Control.AddOptionCheckBox(Content.Shared._WG.CombatFacing.WGCombatFacingCVars.FaceCursor, WGCombatFaceCursorCheckBox); // WOLFGATE(CombatFacing): face the cursor in combat mode
         Control.AddOptionCheckBox(CCVars.OpaqueStorageWindow, OpaqueStorageWindowCheckBox);
         Control.AddOptionCheckBox(CCVars.ChatEnableFancyBubbles, FancySpeechBubblesCheckBox);
         Control.AddOptionCheckBox(CCVars.ChatFancyNameBackground, FancyNameBackgroundsCheckBox);
@@ -59,6 +61,11 @@ public sealed partial class MiscTab : Control
         Control.AddOptionCheckBox(MonoCVars.RadioNoiseEnabled, RadioNoiseCheckBox); // Mono
         Control.AddOptionCheckBox(MonoCVars.AreaEchoEnabled, AreaEchoCheckBox); // Mono
         Control.AddOptionCheckBox(MonoCVars.AreaEchoHighResolution, AreaEchoHighResolutionCheckBox); // Mono
+        Control.AddOptionCheckBox(CCVars.OutlineEnabled, OutlineCheckBox); // WOLFGATE(DisplayOptions): hover outline toggle
+        Control.AddOptionCheckBox(Content.Shared._WG.HideTyping.HideTypingCVars.ShowMyTyping, ShowMyTypingCheckBox); // WOLFGATE(HideTyping): typing indicator opt-out
+        WgAddSpeechBubbleOptions(); // WOLFGATE(SpeechBubbles): speech bubble toggles and length
+        WgAddNotificationOptions(); // WOLFGATE(Notifications): window flash and alert sound settings
+        WgAddChatTextSizeOptions(); // WOLFGATE(ChatTextSize): chat text size and line spacing
 
         Control.Initialize();
     }

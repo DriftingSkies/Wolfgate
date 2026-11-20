@@ -8,6 +8,7 @@
 
 using Content.Shared.Radio.Components;
 using Content.Server.Silicons.Laws;
+using Content.Server._WG.Cyborgs; // WOLFGATE(Cyborgs)
 using Content.Shared._CorvaxNext.Silicons.Borgs;
 using Content.Shared._CorvaxNext.Silicons.Borgs.Components;
 using Content.Shared.Actions;
@@ -33,6 +34,7 @@ public sealed partial class AiRemoteControlSystem : SharedAiRemoteControlSystem
     [Dependency] private SharedTransformSystem _xformSystem = default!;
 
     [Dependency] private SharedMapSystem _map = default!;
+    [Dependency] private WGAiRemoteLinkSystem _aiLink = default!; // WOLFGATE(Cyborgs)
 
     public override void Initialize()
     {
@@ -107,8 +109,12 @@ public sealed partial class AiRemoteControlSystem : SharedAiRemoteControlSystem
         if (!TryComp<AiRemoteControllerComponent>(entity, out var aiRemoteComp))
             return;
 
-        if (!_map.TryFindGridAt(Transform(ai).MapPosition, out var grid, out var _) || Transform(entity).GridUid != grid)
-            return; // Mono no controlling borgs outside the ai's grid.
+        // WOLFGATE(Cyborgs) START: a borg the AI already controlled stays reachable off the core's grid
+        // if (!_map.TryFindGridAt(Transform(ai).MapPosition, out var grid, out var _) || Transform(entity).GridUid != grid)
+        //     return; // Mono no controlling borgs outside the ai's grid.
+        if (!_aiLink.CanReach(ai, entity))
+            return;
+        // WOLFGATE END
 
         if (TryComp(entity, out IntrinsicRadioTransmitterComponent? transmitter))
         {
@@ -129,6 +135,7 @@ public sealed partial class AiRemoteControlSystem : SharedAiRemoteControlSystem
         _mind.ControlMob(ai, entity);
         aiRemoteComp.AiHolder = ai;
         aiRemoteComp.LinkedMind = mindId;
+        _aiLink.Link(ai, entity); // WOLFGATE(Cyborgs): lets this AI reconnect once the borg leaves the grid
 
         stationAiHeldComp.CurrentConnectedEntity = entity;
 
@@ -154,8 +161,12 @@ public sealed partial class AiRemoteControlSystem : SharedAiRemoteControlSystem
 
         while (query.MoveNext(out var queryUid, out var comp))
         {
-            if (Transform(queryUid).GridUid != aiGrid)
+            // WOLFGATE(Cyborgs) START: list linked borgs off the core's grid too
+            // if (Transform(queryUid).GridUid != aiGrid)
+            //     continue;
+            if (!_aiLink.CanReach(uid, queryUid))
                 continue;
+            // WOLFGATE END
             var data = new RemoteDevicesData
             {
                 NetEntityUid = GetNetEntity(queryUid),

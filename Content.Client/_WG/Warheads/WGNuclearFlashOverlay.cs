@@ -1,5 +1,7 @@
 using System.Numerics;
+using Content.Shared._WG.DarkFlash;
 using Robust.Client.Graphics;
+using Robust.Shared.Configuration;
 using Robust.Client.Player;
 using Robust.Shared.Enums;
 
@@ -11,6 +13,7 @@ namespace Content.Client._WG.Warheads;
 public sealed partial class WGNuclearFlashOverlay : Overlay
 {
     [Dependency] private IClyde _clyde = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private IEntityManager _entMan = default!;
     [Dependency] private IPlayerManager _player = default!;
 
@@ -63,8 +66,10 @@ public sealed partial class WGNuclearFlashOverlay : Overlay
         if (strongest <= 0.005f)
             return;
 
-        // White first, warming to amber as it fades.
-        var color = Color.InterpolateBetween(new Color(1f, 0.75f, 0.45f), Color.White, Math.Clamp(strongest * 1.4f, 0f, 1f));
+        // White first, warming to amber as it fades; black for players with dark flash on.
+        var color = _cfg.GetCVar(DarkFlashCVars.Enabled)
+            ? Color.Black
+            : Color.InterpolateBetween(new Color(1f, 0.75f, 0.45f), Color.White, Math.Clamp(strongest * 1.4f, 0f, 1f));
         args.ScreenHandle.DrawRect(new UIBox2(Vector2.Zero, _clyde.ScreenSize),
             color.WithAlpha(Math.Clamp(strongest, 0f, 0.97f)));
     }

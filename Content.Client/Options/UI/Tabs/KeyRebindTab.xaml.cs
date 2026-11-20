@@ -173,6 +173,7 @@ namespace Content.Client.Options.UI.Tabs
 
             AddHeader("ui-options-header-general");
             AddCheckBox("ui-options-hotkey-keymap", _cfg.GetCVar(CVars.DisplayUSQWERTYHotkeys), HandleToggleUSQWERTYCheckbox);
+            AddCheckBox("ui-options-wg-worn-storage-click-opens", _cfg.GetCVar(Content.Shared._WG.WornStorage.WornStorageCVars.ClickOpens), HandleToggleWornStorageClick); // WOLFGATE(WornStorage): SS13 worn storage click
 
             AddHeader("ui-options-header-movement");
             AddButton(EngineKeyFunctions.MoveUp);
@@ -183,6 +184,13 @@ namespace Content.Client.Options.UI.Tabs
             AddCheckBox("ui-options-hotkey-toggle-walk", _cfg.GetCVar(CCVars.ToggleWalk), HandleToggleWalk);
             AddButton(ContentKeyFunctions.ToggleStanding);
             AddCheckBox("ui-options-function-auto-get-up", _cfg.GetCVar(CCVars.AutoGetUp), HandleToggleAutoGetUp); // WD EDIT
+            AddButton(Content.Shared._WG.TurnInPlace.WGTurnInPlaceKeys.WGTurnInPlace); // WOLFGATE(TurnInPlace): hold to turn without moving
+            // WOLFGATE(PixelShift) START: hold keys that shift or tilt your sprite, their speeds and their reset
+            AddButton(Content.Shared._WG.PixelShift.WGPixelShiftKeys.WGPixelShift);
+            AddButton(Content.Shared._WG.PixelShift.WGPixelShiftKeys.WGPixelTilt);
+            AddButton(Content.Shared._WG.PixelShift.WGPixelShiftKeys.WGPixelShiftReset);
+            WgAddPixelShiftSpeeds();
+            // WOLFGATE END
             InitToggleWalk();
 
             AddHeader("ui-options-header-camera");
@@ -206,6 +214,9 @@ namespace Content.Client.Options.UI.Tabs
             AddButton(ContentKeyFunctions.ExamineEntity);
             AddButton(ContentKeyFunctions.SwapHands);
             AddButton(ContentKeyFunctions.SwapHandsPrevious); // Frontier
+            AddButton(Content.Shared._WG.HandSelect.WGHandSelectKeys.WGSelectLeftHand); // WOLFGATE(HandSelect): swap to left hand
+            AddButton(Content.Shared._WG.HandSelect.WGHandSelectKeys.WGSelectRightHand); // WOLFGATE(HandSelect): swap to right hand
+            AddButton(Content.Shared._WG.CancelInteractions.WGCancelInteractionKeys.WGCancelInteractions); // WOLFGATE(CancelInteractions): cancel own do-afters
             AddButton(ContentKeyFunctions.MoveStoredItem);
             AddButton(ContentKeyFunctions.RotateStoredItem);
             AddButton(ContentKeyFunctions.SaveItemLocation);

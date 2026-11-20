@@ -454,6 +454,11 @@ public sealed partial class ChatUIController : UIController
             return;
         }
 
+        // WOLFGATE(SpeechBubbles) START: the player's speech bubble toggles
+        if (!WgShowSpeechBubble(ent, msg, speechType))
+            return;
+        // WOLFGATE END
+
         EnqueueSpeechBubble(ent, msg, speechType);
     }
 
@@ -905,10 +910,12 @@ public sealed partial class ChatUIController : UIController
             }
         }
 
+        var wgBeforeHighlights = msg.WrappedMessage; // WOLFGATE(Notifications): tells whether a highlight matched
         foreach (var highlight in _highlights)
         {
             msg.WrappedMessage = SharedChatSystem.InjectTagAroundString(msg, highlight, "color", _highlightsColor);
         }
+        WgOnHighlights(msg, wgBeforeHighlights); // WOLFGATE(Notifications): sound and window flash on a highlight
 
         // Log all incoming chat to repopulate when filter is un-toggled
         if (!msg.HideChat)

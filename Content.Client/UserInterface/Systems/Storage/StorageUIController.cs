@@ -352,11 +352,15 @@ public sealed partial class StorageUIController : UIController, IOnSystemChanged
                     window.Reclaim(dragLoc, control);
                 }
             }
+            // WOLFGATE(WornStorage): a storage dragged out of its window is taken out
+            else if (targetStorage == null)
+                DropStoredStorageOutside(targetControl, dragEnt, sourceStorage);
 
             targetStorage?.FlagDirty();
         }
         // If we just clicked, then take it out of the bag.
-        else
+        // WOLFGATE(WornStorage): a click on a stored storage opens it instead of taking it out
+        else if (!TryOpenStoredStorage(control.Entity, sourceStorage))
         {
             EntityManager.RaisePredictiveEvent(new StorageInteractWithItemEvent(
                 EntityManager.GetNetEntity(control.Entity),
