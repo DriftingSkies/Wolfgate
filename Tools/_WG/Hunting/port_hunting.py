@@ -555,7 +555,7 @@ def main():
   - type: WGProcessor
     machine: SmokingRack
   - type: StaticPrice
-    price: 300
+    price: 60
   - type: GuideHelp
     guides:
     - WGHunting
@@ -575,7 +575,7 @@ def main():
   - type: WGProcessor
     machine: TanningRack
   - type: StaticPrice
-    price: 300
+    price: 60
   - type: GuideHelp
     guides:
     - WGHunting

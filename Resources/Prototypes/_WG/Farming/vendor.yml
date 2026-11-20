@@ -12,8 +12,8 @@
 - type: vendingMachineInventory
   id: WGHomesteadInventory
   startingInventory:
-    WGHearthStove: 2
-    WGPrepBoard: 4
+    WGHearthStoveFlatpack: 2
+    WGPrepBoardFlatpack: 4
     WGCuttingBoard: 4
     WGCookPan: 4
     WGCookPot: 4
@@ -38,33 +38,33 @@
     WGSunflowerSeeds: 5
     WGTangerineSeeds: 5
     WGTurnipSeeds: 5
-    WGSprinklerBasic: 6
-    WGSprinklerQuality: 3
-    WGSprinklerAdvanced: 2
-    WGRainCatcher: 2
-    WGMoistureVaporator: 2
-    WGSnowMelter: 2
-    WGFarmScarecrow: 3
-    WGFarmKeg: 2
-    WGFarmPreservesJar: 2
-    WGFarmCheesePress: 1
-    WGFarmMayoMachine: 1
-    WGFarmLoom: 1
-    WGFarmMill: 1
-    WGFarmCask: 2
-    WGFarmComposter: 2
-    WGFarmFertilizerBarrel: 2
-    WGFarmNutrientMixer: 1
-    WGFarmGlassKiln: 1
-    WGFarmSeedMaker: 1
-    WGFarmBeeHive: 2
-    WGFarmMushroomLog: 2
-    WGFarmPackingTable: 1
-    WGFarmOrderBoard: 1
-    WGFarmComputeRack: 1
-    WGFarmDigester: 1
-    WGFarmOreWasher: 1
-    WGFarmGeodeCracker: 1
-    WGFishPond: 1
-    WGHuntSmokingRack: 2
-    WGHuntTanningRack: 2
+    WGSprinklerBasicFlatpack: 6
+    WGSprinklerQualityFlatpack: 3
+    WGSprinklerAdvancedFlatpack: 2
+    WGRainCatcherFlatpack: 2
+    WGMoistureVaporatorFlatpack: 2
+    WGSnowMelterFlatpack: 2
+    WGFarmScarecrowFlatpack: 3
+    WGFarmKegFlatpack: 2
+    WGFarmPreservesJarFlatpack: 2
+    WGFarmCheesePressFlatpack: 1
+    WGFarmMayoMachineFlatpack: 1
+    WGFarmLoomFlatpack: 1
+    WGFarmMillFlatpack: 1
+    WGFarmCaskFlatpack: 2
+    WGFarmComposterFlatpack: 2
+    WGFarmFertilizerBarrelFlatpack: 2
+    WGFarmNutrientMixerFlatpack: 1
+    WGFarmGlassKilnFlatpack: 1
+    WGFarmSeedMakerFlatpack: 1
+    WGFarmBeeHiveFlatpack: 2
+    WGFarmMushroomLogFlatpack: 2
+    WGFarmPackingTableFlatpack: 1
+    WGFarmOrderBoardFlatpack: 1
+    WGFarmComputeRackFlatpack: 1
+    WGFarmDigesterFlatpack: 1
+    WGFarmOreWasherFlatpack: 1
+    WGFarmGeodeCrackerFlatpack: 1
+    WGFishPondFlatpack: 1
+    WGHuntSmokingRackFlatpack: 2
+    WGHuntTanningRackFlatpack: 2

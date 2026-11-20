@@ -145,13 +145,14 @@ public sealed class WGFarmingSystem : EntitySystem
         var indoors = TryComp<MapGridComponent>(grid, out var gridComp) && TryComp<RoofComponent>(grid, out var roof)
             && _roofs.IsRooved((grid, gridComp, roof), _maps.TileIndicesFor(grid, gridComp, xform.Coordinates));
         var lamp = UnderLamp(uid);
-        // Without a day (stations, ships) the room's own lights grow plants; on a world, the sun or a lamp.
-        var daylight = day == null || !indoors
-            && SharedLightCycleSystem.CalculateLightLevel(day, (float) (_timing.CurTime + day.Offset).TotalSeconds) >= DayLight;
+        // Without a day (stations, ships) the room's own lights grow plants; on a world, the sun or a lamp. A roof is a
+        // greenhouse's: daylight still reaches the plants under it.
+        var daylight = day == null
+            || SharedLightCycleSystem.CalculateLightLevel(day, (float) (_timing.CurTime + day.Offset).TotalSeconds) >= DayLight;
 
         string? reason = null;
         if (!daylight && !lamp)
-            reason = indoors ? "wg-farm-reason-dark-indoors" : "wg-farm-reason-night";
+            reason = "wg-farm-reason-night";
         else if (crop != null && day != null && !(indoors && lamp) && map != null && _climate.GetOutsideTemperature(map.Value) is { } kelvin)
         {
             var celsius = kelvin - 273.15f;

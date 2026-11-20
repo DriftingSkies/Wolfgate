@@ -1,0 +1,368 @@
+# Homestead Supply's structures come flatpacked: set one down where it should stand and use a wrench on it to
+# unpack it. Each costs what the structure does.
+
+- type: entity
+  abstract: true
+  parent: BaseFlatpack
+  id: WGHomesteadFlatpackBase
+  components:
+  - type: Flatpack
+    qualityNeeded: Anchoring
+  - type: Sprite
+    layers:
+    - state: base
+    - state: overlay
+      color: "#9FED58"
+    - state: icon-default
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGHearthStoveFlatpack
+  name: hearth stove flatpack
+  description: A flatpacked hearth stove. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGHearthStove
+  - type: StaticPrice
+    price: 900
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGPrepBoardFlatpack
+  name: prep board flatpack
+  description: A flatpacked prep board. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGPrepBoard
+  - type: StaticPrice
+    price: 60
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGSprinklerBasicFlatpack
+  name: sprinkler flatpack
+  description: A flatpacked sprinkler. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGSprinklerBasic
+  - type: StaticPrice
+    price: 300
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGSprinklerQualityFlatpack
+  name: quality sprinkler flatpack
+  description: A flatpacked quality sprinkler. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGSprinklerQuality
+  - type: StaticPrice
+    price: 900
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGSprinklerAdvancedFlatpack
+  name: advanced sprinkler flatpack
+  description: A flatpacked advanced sprinkler. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGSprinklerAdvanced
+  - type: StaticPrice
+    price: 2500
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGRainCatcherFlatpack
+  name: rain catcher flatpack
+  description: A flatpacked rain catcher. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGRainCatcher
+  - type: StaticPrice
+    price: 250
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGMoistureVaporatorFlatpack
+  name: moisture vaporator flatpack
+  description: A flatpacked moisture vaporator. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGMoistureVaporator
+  - type: StaticPrice
+    price: 900
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGSnowMelterFlatpack
+  name: snow melter flatpack
+  description: A flatpacked snow melter. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGSnowMelter
+  - type: StaticPrice
+    price: 800
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmScarecrowFlatpack
+  name: scarecrow flatpack
+  description: A flatpacked scarecrow. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmScarecrow
+  - type: StaticPrice
+    price: 120
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmKegFlatpack
+  name: brewing keg flatpack
+  description: A flatpacked brewing keg. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmKeg
+  - type: StaticPrice
+    price: 600
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmPreservesJarFlatpack
+  name: preserves jar flatpack
+  description: A flatpacked preserves jar. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmPreservesJar
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmCheesePressFlatpack
+  name: cheese press flatpack
+  description: A flatpacked cheese press. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmCheesePress
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmMayoMachineFlatpack
+  name: mayonnaise machine flatpack
+  description: A flatpacked mayonnaise machine. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmMayoMachine
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmLoomFlatpack
+  name: loom flatpack
+  description: A flatpacked loom. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmLoom
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmMillFlatpack
+  name: mill flatpack
+  description: A flatpacked mill. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmMill
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmCaskFlatpack
+  name: oak cask flatpack
+  description: A flatpacked oak cask. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmCask
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmComposterFlatpack
+  name: composter flatpack
+  description: A flatpacked composter. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmComposter
+  - type: StaticPrice
+    price: 150
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmFertilizerBarrelFlatpack
+  name: fertilizer barrel flatpack
+  description: A flatpacked fertilizer barrel. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmFertilizerBarrel
+  - type: StaticPrice
+    price: 250
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmNutrientMixerFlatpack
+  name: nutrient mixer flatpack
+  description: A flatpacked nutrient mixer. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmNutrientMixer
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmGlassKilnFlatpack
+  name: glass kiln flatpack
+  description: A flatpacked glass kiln. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmGlassKiln
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmSeedMakerFlatpack
+  name: seed maker flatpack
+  description: A flatpacked seed maker. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmSeedMaker
+  - type: StaticPrice
+    price: 700
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmBeeHiveFlatpack
+  name: bee hive flatpack
+  description: A flatpacked bee hive. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmBeeHive
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmMushroomLogFlatpack
+  name: mushroom log flatpack
+  description: A flatpacked mushroom log. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmMushroomLog
+  - type: StaticPrice
+    price: 200
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmPackingTableFlatpack
+  name: packing table flatpack
+  description: A flatpacked packing table. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmPackingTable
+  - type: StaticPrice
+    price: 300
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmOrderBoardFlatpack
+  name: outpost order board flatpack
+  description: A flatpacked outpost order board. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmOrderBoard
+  - type: StaticPrice
+    price: 500
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmComputeRackFlatpack
+  name: compute rack flatpack
+  description: A flatpacked compute rack. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmComputeRack
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmDigesterFlatpack
+  name: biogas digester flatpack
+  description: A flatpacked biogas digester. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmDigester
+  - type: StaticPrice
+    price: 900
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmOreWasherFlatpack
+  name: ore washer flatpack
+  description: A flatpacked ore washer. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmOreWasher
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFarmGeodeCrackerFlatpack
+  name: geode cracker flatpack
+  description: A flatpacked geode cracker. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFarmGeodeCracker
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGFishPondFlatpack
+  name: fish pond flatpack
+  description: A flatpacked fish pond. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGFishPond
+  - type: StaticPrice
+    price: 1500
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGHuntSmokingRackFlatpack
+  name: smoking rack flatpack
+  description: A flatpacked smoking rack. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGHuntSmokingRack
+  - type: StaticPrice
+    price: 300
+
+- type: entity
+  parent: WGHomesteadFlatpackBase
+  id: WGHuntTanningRackFlatpack
+  name: tanning rack flatpack
+  description: A flatpacked tanning rack. Set it down where it should stand and use a wrench on it to unpack it.
+  components:
+  - type: Flatpack
+    entity: WGHuntTanningRack
+  - type: StaticPrice
+    price: 300

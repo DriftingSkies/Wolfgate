@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Shared.EntityEffects;
 using Robust.Shared.Prototypes;
 
@@ -45,7 +46,8 @@ public sealed partial class WGMealBuff : EntityEffect
     public float Minutes = 10f;
 
     protected override string? ReagentEffectGuidebookText(IPrototypeManager prototype, IEntitySystemManager entSys)
-        => Loc.GetString("reagent-effect-guidebook-wg-meal-buff", ("traits", string.Join(", ", Traits)));
+        => Loc.GetString("reagent-effect-guidebook-wg-meal-buff",
+            ("traits", string.Join(", ", Traits.Select(t => Loc.GetString("wg-meal-trait-" + t.ToString().ToLowerInvariant())))));
 
     public override void Effect(EntityEffectBaseArgs args)
     {

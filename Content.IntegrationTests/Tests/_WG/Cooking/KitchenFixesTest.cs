@@ -10,7 +10,6 @@ using Content.Shared.FixedPoint;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Server.Nutrition.Components;
-using Content.Shared.Power.EntitySystems;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
 
@@ -72,7 +71,7 @@ public sealed class KitchenFixesTest
         {
             var cook = entMan.SpawnEntity("MobHuman", map.GridCoords);
             var hearth = entMan.SpawnEntity("WGHearthStove", map.GridCoords);
-            entMan.System<SharedPowerReceiverSystem>().SetNeedsPower(hearth, false);
+            WGHearthFire.Light(entMan, hearth);
             pan = entMan.SpawnEntity("WGCookPan", map.GridCoords);
             entMan.EventBus.RaiseLocalEvent(hearth, new InteractUsingEvent(cook, pan, hearth, map.GridCoords));
 

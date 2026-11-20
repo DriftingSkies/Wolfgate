@@ -35,8 +35,8 @@
   category: construction-category-machines
   description: "Smokes meat into jerky and fish into dried fish that keep for a long trip. No power needed."
   icon:
-    sprite: _DV/Objects/Storage/keg.rsi
-    state: base
+    sprite: _WG/Hunting/props.rsi
+    state: smoking_rack
   objectType: Structure
   placementMode: SnapgridCenter
   canRotate: false
@@ -78,8 +78,8 @@
   category: construction-category-machines
   description: "Tans pelts and hides into leather."
   icon:
-    sprite: _DV/Objects/Storage/keg.rsi
-    state: base
+    sprite: _WG/Hunting/props.rsi
+    state: tanning_rack
   objectType: Structure
   placementMode: SnapgridCenter
   canRotate: false

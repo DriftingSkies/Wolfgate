@@ -499,7 +499,7 @@
   seconds: 60
 
 - type: microwaveMealRecipe
-  id: RecipeWGRaspberryCake
+  id: WGRecipeRaspberryCake
   name: raspberry cake recipe
   result: WGFoodRaspberryCake
   time: 20
@@ -548,7 +548,7 @@
   seconds: 60
 
 - type: microwaveMealRecipe
-  id: RecipeWGBlackberryCake
+  id: WGRecipeBlackberryCake
   name: blackberry cake recipe
   result: WGFoodBlackberryCake
   time: 20
@@ -597,7 +597,7 @@
   seconds: 60
 
 - type: microwaveMealRecipe
-  id: RecipeWGHoneyCake
+  id: WGRecipeHoneyCake
   name: honey cake recipe
   result: WGFoodHoneyCake
   time: 20
@@ -650,7 +650,7 @@
   seconds: 75
 
 - type: microwaveMealRecipe
-  id: RecipeWGFruitCake
+  id: WGRecipeFruitCake
   name: fruit cake recipe
   result: WGFoodFruitCake
   time: 25
@@ -699,7 +699,7 @@
   seconds: 60
 
 - type: microwaveMealRecipe
-  id: RecipeWGLimeCake
+  id: WGRecipeLimeCake
   name: lime cake recipe
   result: WGFoodLimeCake
   time: 20
@@ -748,7 +748,7 @@
   seconds: 60
 
 - type: microwaveMealRecipe
-  id: RecipeWGStrawberryPie
+  id: WGRecipeStrawberryPie
   name: strawberry pie recipe
   result: WGFoodStrawberryPie
   time: 20
@@ -799,7 +799,7 @@
   seconds: 50
 
 - type: microwaveMealRecipe
-  id: RecipeWGQuiche
+  id: WGRecipeQuiche
   name: quiche recipe
   result: WGFoodQuiche
   time: 16
@@ -848,7 +848,7 @@
   seconds: 45
 
 - type: microwaveMealRecipe
-  id: RecipeWGScallopedPotatoes
+  id: WGRecipeScallopedPotatoes
   name: scalloped potatoes recipe
   result: WGFoodScallopedPotatoes
   time: 15
@@ -899,7 +899,7 @@
   seconds: 45
 
 - type: microwaveMealRecipe
-  id: RecipeWGStuffedEggplant
+  id: WGRecipeStuffedEggplant
   name: stuffed eggplant recipe
   result: WGFoodStuffedEggplant
   time: 15
@@ -950,7 +950,7 @@
   seconds: 25
 
 - type: microwaveMealRecipe
-  id: RecipeWGOmelette
+  id: WGRecipeOmelette
   name: omelette recipe
   result: WGFoodOmelette
   time: 8
@@ -2331,7 +2331,7 @@
   parent: BaseStructure
   id: WGHearthStove
   name: hearth stove
-  description: A brick oven with a hob on top. Set a pan or a pot on the hob, put dishes in the oven, and keep an eye on them so they don't burn. Needs power.
+  description: A brick oven with a hob on top that burns wood like a fireplace. Feed it planks or logs, light it with a flame, then set a pan or a pot on the hob and put dishes in the oven. Keep an eye on them so they don't burn.
   components:
   - type: Construction
     graph: WGHearthStoveGraph
@@ -2352,7 +2352,7 @@
   - type: Appearance
   - type: GenericVisualizer
     visuals:
-      enum.PowerDeviceVisuals.Powered:
+      enum.WGHobVisuals.Lit:
         lit:
           True: { visible: true }
           False: { visible: false }
@@ -2361,9 +2361,21 @@
           None: { visible: false }
           Pan: { visible: true, state: hob-pan }
           Pot: { visible: true, state: hob-pot }
-  - type: ApcPowerReceiver
-    powerLoad: 1500
-  - type: ExtensionCableReceiver
+  - type: WGBonfireFuel
+    fuel: 0
+    lit: false
+  - type: PointLight
+    enabled: false
+    radius: 2
+    energy: 1.5
+    color: "#FF6F00"
+  - type: AmbientSound
+    enabled: false
+    volume: -8
+    range: 4
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Anchorable
   - type: WGHearth
   - type: UserInterface
     interfaces:
@@ -2374,7 +2386,7 @@
       wg-hob: !type:ContainerSlot
       wg-oven: !type:Container
   - type: StaticPrice
-    price: 900
+    price: 60
   - type: GuideHelp
     guides:
     - WGCooking
@@ -2408,7 +2420,7 @@
       enum.WGPrepBoardUiKey.Key:
         type: WGPrepBoardBoundUserInterface
   - type: StaticPrice
-    price: 60
+    price: 30
 
 - type: entity
   parent: FoodBase

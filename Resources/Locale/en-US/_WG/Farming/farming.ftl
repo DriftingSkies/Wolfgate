@@ -1,6 +1,5 @@
 wg-farm-reason-growing = [color=#6FCF6F]It is growing.[/color]
 wg-farm-reason-night = [color=#E0B04F]It rests through the night.[/color]
-wg-farm-reason-dark-indoors = [color=#E05A4F]It has no light here. Plant it outside or under a grow lamp.[/color]
 wg-farm-reason-dry = [color=#E05A4F]It needs water to grow.[/color]
 wg-farm-reason-cold = [color=#E05A4F]It is too cold outside for this crop. A roofed greenhouse with a grow lamp would let it grow.[/color]
 wg-farm-reason-hot = [color=#E05A4F]It is too hot outside for this crop. A roofed greenhouse with a grow lamp would let it grow.[/color]
@@ -66,7 +65,9 @@ wg-process-stock = It holds {$count} {$item}.
 wg-stack-glass-bottle = glass bottle
 
 wg-process-loaded = It holds {$count} of the {$batch} it needs.
-wg-process-loading-other = It is part-way through packing something else. Finish that crate first.
+wg-process-loading-other = It is part-way through packing something else. Finish that crate first, or empty it out.
+wg-process-unload-verb = Empty it out
+wg-process-unloaded = You take back what was loaded into it.
 wg-process-batch-started = That fills it. It gets to work.
 wg-order-name-fine-dishes = cakes, pies or quiches
 wg-order-name-home-cooking = home-cooked dishes

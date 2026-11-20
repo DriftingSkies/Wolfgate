@@ -7,6 +7,7 @@ using Content.Shared.Animals;
 using Content.Shared.Examine;
 using Content.Shared.Interaction;
 using Content.Shared.Nutrition.Components;
+using Robust.Shared.Player;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 
@@ -71,17 +72,28 @@ public sealed class WGAnimalMoodSystem : EntitySystem
             var hungry = TryComp<HungerComponent>(uid, out var hunger) && hunger.CurrentThreshold <= HungerThreshold.Peckish;
             mood.Mood = Math.Clamp(mood.Mood + (hungry ? -4f : 1f), 0f, 100f);
 
-            // Happy animals bring their next product forward; miserable ones push it back.
-            var shift = mood.Mood >= 70f ? -Tick * 0.5 : mood.Mood < 30f ? Tick : TimeSpan.Zero;
-            if (shift == TimeSpan.Zero)
+            // Happy animals bring their next product forward; miserable ones push it back, at half the pace. A played
+            // animal makes nothing (upstream skips it), so nothing builds up to come out at once when the player leaves.
+            var shift = mood.Mood >= 70f ? -Tick * 0.5 : mood.Mood < 30f ? Tick * 0.5 : TimeSpan.Zero;
+            if (shift == TimeSpan.Zero || HasComp<ActorComponent>(uid))
                 continue;
             if (TryComp<EggLayerComponent>(uid, out var egg))
-                _eggs.WgSetNextGrowth(egg, egg.NextGrowth + shift);
+                _eggs.WgSetNextGrowth(egg, Shifted(egg.NextGrowth, shift));
             if (TryComp<UdderComponent>(uid, out var udder))
-                _udders.WgSetNextGrowth(udder, udder.NextGrowth + shift);
+                _udders.WgSetNextGrowth(udder, Shifted(udder.NextGrowth, shift));
             if (TryComp<WoolyComponent>(uid, out var wool))
-                _wool.WgSetNextGrowth(wool, wool.NextGrowth + shift);
+                _wool.WgSetNextGrowth(wool, Shifted(wool.NextGrowth, shift));
         }
+    }
+
+    /// <summary>A product's next time moved by a shift, but never brought forward past now.</summary>
+    private TimeSpan Shifted(TimeSpan next, TimeSpan shift)
+    {
+        var now = _timing.CurTime;
+        if (shift > TimeSpan.Zero || next <= now)
+            return shift > TimeSpan.Zero ? next + shift : next;
+        var moved = next + shift;
+        return moved < now ? now : moved;
     }
 
     private void OnPet(Entity<WGAnimalMoodComponent> ent, ref InteractHandEvent args)

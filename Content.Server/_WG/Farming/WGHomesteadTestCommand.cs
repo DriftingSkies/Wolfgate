@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Server._WG.Bonfires;
 using Content.Server._WG.Planets;
 using Content.Server.Administration;
 using Content.Server.Parallax;
@@ -25,6 +26,7 @@ public sealed class WGHomesteadTestCommand : LocalizedEntityCommands
     [Dependency] private ITileDefinitionManager _tiles = default!;
     [Dependency] private IPrototypeManager _proto = default!;
     [Dependency] private BiomeSystem _biomes = default!;
+    [Dependency] private WGBonfireFuelSystem _fire = default!;
     [Dependency] private WGPlanetNetworkSystem _networks = default!;
     [Dependency] private WGHomesteadTestSystem _homestead = default!;
     [Dependency] private MobStateSystem _mobs = default!;
@@ -124,6 +126,12 @@ public sealed class WGHomesteadTestCommand : LocalizedEntityCommands
         var uid = EntityManager.SpawnEntity(id, new EntityCoordinates(grid, Origin + at + new Vector2(0.5f, 0.5f)));
         if (EntityManager.HasComponent<ApcPowerReceiverComponent>(uid))
             _power.SetNeedsPower(uid, false);
+        // A wood-burning hearth comes stocked and lit, as a powered one comes on.
+        if (EntityManager.TryGetComponent<WGBonfireFuelComponent>(uid, out var fire))
+        {
+            fire.Fuel = fire.MaxFuel;
+            _fire.SetLit((uid, fire), true);
+        }
         return uid;
     }
 

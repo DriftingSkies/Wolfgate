@@ -10,7 +10,8 @@ burn. Examining it says whether it burns well, burns low, or is out and what it 
 A fire that is out gives no warmth (`EntityRadiusHeaterSystem.IsActive` asks), so it neither warms bodies nor melts
 snow, its light and crackle go off, it stops lighting things (`AlwaysHot`), and its sprite shows the burnt logs
 (`WGBonfireVisuals.Lit`, drawn by a `GenericVisualizer`). `LegionnaireBonfire` (lava-world decor) and the cavern camp's
-fire are `infinite` and never go out. Fireplaces are not fuelled.
+fire are `infinite` and never go out. Fireplaces are not fuelled. The Cooking module's hearth stove burns on the same
+fuel: it starts cold and empty, and cooks only while lit (`WGCookingSystem.Lit`).
 
 Entry points: `WGBonfireFuelSystem.AddFuel`, `SetLit`, `FuelOf`.
 

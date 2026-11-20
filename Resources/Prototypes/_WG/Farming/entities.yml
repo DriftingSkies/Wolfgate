@@ -15,3 +15,5 @@
   - type: PointLight
     color: "#C77DFF"
   - type: WGGrowLamp
+  - type: StaticPrice
+    price: 19

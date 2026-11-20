@@ -146,7 +146,7 @@ public sealed class ReviewFixesTest
         {
             cook = entMan.SpawnEntity("MobHuman", map.GridCoords);
             hearth = entMan.SpawnEntity("WGHearthStove", map.GridCoords);
-            entMan.System<SharedPowerReceiverSystem>().SetNeedsPower(hearth, false);
+            WGHearthFire.Light(entMan, hearth);
             pot = entMan.SpawnEntity("WGCookPot", map.GridCoords);
             Assert.That(solutions.TryGetSolution(pot, "pot", out var soln), Is.True);
             solutions.TryAddReagent(soln!.Value, "Water", FixedPoint2.New(60));
@@ -240,7 +240,7 @@ public sealed class ReviewFixesTest
         {
             cook = entMan.SpawnEntity("MobHuman", map.GridCoords);
             hearth = entMan.SpawnEntity("WGHearthStove", map.GridCoords);
-            entMan.System<SharedPowerReceiverSystem>().SetNeedsPower(hearth, false);
+            WGHearthFire.Light(entMan, hearth);
             pot = entMan.SpawnEntity("WGCookPot", map.GridCoords);
             Assert.That(solutions.TryGetSolution(pot, "pot", out var soln), Is.True);
             solutions.TryAddReagent(soln!.Value, "Water", FixedPoint2.New(60));

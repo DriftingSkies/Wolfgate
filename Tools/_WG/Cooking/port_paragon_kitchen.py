@@ -282,7 +282,7 @@ def main():
         yml.append(f"- type: wgCookRecipe\n  id: WGCook{rid[5:]}\n  method: {method}\n  inputs: [ {rid} ]\n  result: {result}\n  seconds: {seconds}\n")
         # The same raw dish cooks in the kitchen machines too, so one recipe book serves every kitchen.
         machine = "Oven" if method == "Bake" else "Microwave"
-        yml.append(f"- type: microwaveMealRecipe\n  id: RecipeWG{rid[5:]}\n  name: {DISHES[result][2]} recipe\n  result: {result}\n  time: {max(5, seconds // 3)}\n  group: Breads\n  recipeType: {machine}\n  solids:\n    {rid}: 1\n")
+        yml.append(f"- type: microwaveMealRecipe\n  id: WGRecipe{rid[5:]}\n  name: {DISHES[result][2]} recipe\n  result: {result}\n  time: {max(5, seconds // 3)}\n  group: Breads\n  recipeType: {machine}\n  solids:\n    {rid}: 1\n")
 
     for i, (method, inputs, result, seconds) in enumerate(SIMPLE):
         yml.append(f"- type: wgCookRecipe\n  id: WGCookSimple{i:02d}\n  method: {method}\n  inputs: [ {', '.join(inputs)} ]\n  result: {result}\n  seconds: {seconds}\n")
@@ -422,7 +422,7 @@ def main():
   parent: BaseStructure
   id: WGHearthStove
   name: hearth stove
-  description: A brick oven with a hob on top. Set a pan or a pot on the hob, put dishes in the oven, and keep an eye on them so they don't burn. Needs power.
+  description: A brick oven with a hob on top that burns wood like a fireplace. Feed it planks or logs, light it with a flame, then set a pan or a pot on the hob and put dishes in the oven. Keep an eye on them so they don't burn.
   components:
   - type: Construction
     graph: WGHearthStoveGraph
@@ -443,7 +443,7 @@ def main():
   - type: Appearance
   - type: GenericVisualizer
     visuals:
-      enum.PowerDeviceVisuals.Powered:
+      enum.WGHobVisuals.Lit:
         lit:
           True: { visible: true }
           False: { visible: false }
@@ -452,9 +452,21 @@ def main():
           None: { visible: false }
           Pan: { visible: true, state: hob-pan }
           Pot: { visible: true, state: hob-pot }
-  - type: ApcPowerReceiver
-    powerLoad: 1500
-  - type: ExtensionCableReceiver
+  - type: WGBonfireFuel
+    fuel: 0
+    lit: false
+  - type: PointLight
+    enabled: false
+    radius: 2
+    energy: 1.5
+    color: "#FF6F00"
+  - type: AmbientSound
+    enabled: false
+    volume: -8
+    range: 4
+    sound:
+      path: /Audio/Ambience/Objects/fireplace.ogg
+  - type: Anchorable
   - type: WGHearth
   - type: UserInterface
     interfaces:
@@ -499,7 +511,7 @@ def main():
       enum.WGPrepBoardUiKey.Key:
         type: WGPrepBoardBoundUserInterface
   - type: StaticPrice
-    price: 60
+    price: 30
 
 - type: entity
   parent: FoodBase

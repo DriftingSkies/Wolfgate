@@ -1,6 +1,7 @@
 using System.Numerics;
 using Content.Server._WG.Planets.Bounds;
 using Content.Server.Parallax;
+using Content.Server.Shuttles.Components;
 using Content.Shared.Light.Components;
 using Content.Shared.Light.EntitySystems;
 using Robust.Shared.Map;
@@ -69,9 +70,18 @@ public sealed class WGHomesteadTestSystem : EntitySystem
 
         var grids = new List<Entity<MapGridComponent>>();
         _maps.FindGridsIntersecting(mapId, world, ref grids);
+        // Debris only: a ship, or any grid with someone aboard, is left where it is.
+        var crewed = new HashSet<EntityUid>();
+        var actors = EntityQueryEnumerator<ActorComponent, TransformComponent>();
+        while (actors.MoveNext(out _, out _, out var actorXform))
+        {
+            if (actorXform.GridUid is { } actorGrid)
+                crewed.Add(actorGrid);
+        }
+
         foreach (var other in grids)
         {
-            if (other.Owner != ground)
+            if (other.Owner != ground && !crewed.Contains(other.Owner) && !HasComp<ShuttleComponent>(other))
                 QueueDel(other);
         }
 

@@ -10,10 +10,7 @@
     - to: built
       steps:
       - material: Steel
-        amount: 8
-        doAfter: 2
-      - material: Cable
-        amount: 2
+        amount: 10
         doAfter: 2
   - node: built
     entity: WGHearthStove
@@ -23,10 +20,7 @@
       - !type:EmptyAllContainers {}
       - !type:SpawnPrototype
         prototype: SheetSteel1
-        amount: 8
-      - !type:SpawnPrototype
-        prototype: CableApcStack1
-        amount: 2
+        amount: 10
       - !type:DeleteEntity {}
       steps:
       - tool: Prying
@@ -39,7 +33,7 @@
   startNode: start
   targetNode: built
   category: construction-category-machines
-  description: "A brick oven with a hob on top. Set a pan or a pot on the hob, put dishes in the oven, and keep an eye on them so they don't burn. Needs power."
+  description: "A brick oven with a hob on top that burns wood like a fireplace. Feed it planks or logs, light it with a flame, then set a pan or a pot on the hob and put dishes in the oven. Keep an eye on them so they don't burn."
   icon:
     sprite: _WG/Cooking/hearth_stove.rsi
     state: oven
@@ -127,8 +121,8 @@
   category: construction-category-machines
   description: "A little fuel stove that folds flat. Set it on the ground and put a pan or a pot on it; it needs no power, but it has no oven."
   icon:
-    sprite: _Nuclear14/Structures/Furniture/cooking.rsi
-    state: campfire
+    sprite: _WG/Cooking/props.rsi
+    state: camp_stove
   objectType: Structure
   placementMode: SnapgridCenter
   canRotate: false
@@ -168,10 +162,10 @@
   startNode: start
   targetNode: built
   category: construction-category-machines
-  description: "A small board that folds in half. Lay a few ingredients on it, then use it to chop them and put them together, the same as a prep board."
+  description: "A board that folds in half. Lay ingredients on it, then use it to chop them and put them together, the same as a prep board."
   icon:
-    sprite: _WG/Cooking/prep_board.rsi
-    state: icon
+    sprite: _WG/Cooking/props.rsi
+    state: cutting_board
   objectType: Structure
   placementMode: SnapgridCenter
   canRotate: false

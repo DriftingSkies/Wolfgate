@@ -1,5 +1,8 @@
 using System.Linq;
+using Content.Server._WG.Bonfires;
 using Content.Server._WG.Farming;
+using Content.Server.Construction;
+using Content.Server.Construction.Components;
 using Content.Server.Nutrition.Components;
 using Content.Server.Popups;
 using Content.Server.Power.EntitySystems;
@@ -8,12 +11,16 @@ using Content.Shared._WG.Farming;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Chemistry.EntitySystems;
+using Content.Shared.Construction.NodeEntities;
+using Content.Shared.Construction.Steps;
 using Content.Shared.Kitchen;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Examine;
 using Content.Shared.FixedPoint;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
+using Content.Shared.Item;
+using Content.Shared.Storage;
 using Content.Shared.Popups;
 using Content.Shared.Tag;
 using Content.Shared.Verbs;
@@ -35,9 +42,12 @@ public sealed class WGCookingSystem : EntitySystem
     [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private UserInterfaceSystem _ui = default!;
     [Dependency] private AudioSystem _audio = default!;
+    [Dependency] private ConstructionSystem _construction = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private WGBonfireFuelSystem _fire = default!;
     [Dependency] private SharedContainerSystem _containers = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private SharedItemSystem _item = default!;
     [Dependency] private PopupSystem _popup = default!;
     [Dependency] private PowerReceiverSystem _power = default!;
     [Dependency] private SharedSolutionContainerSystem _solutions = default!;
@@ -60,6 +70,9 @@ public sealed class WGCookingSystem : EntitySystem
     /// <summary>Seconds past done (or of heat, for food with no recipe) before food smokes, and before it burns.</summary>
     private const float SmokeAfter = 30f;
     private const float BurnAfter = 60f;
+
+    /// <summary>Seconds of heat something that cooks by temperature alone (raw meat into a steak) takes.</summary>
+    private const float HeatStepTime = 30f;
 
     private static readonly TimeSpan Tick = TimeSpan.FromSeconds(1);
     private static readonly SoundSpecifier Sizzle = new SoundPathSpecifier("/Audio/Effects/sizzle.ogg");
@@ -91,6 +104,7 @@ public sealed class WGCookingSystem : EntitySystem
         SubscribeLocalEvent<WGPrepBoardComponent, WGPrepBoardChopMessage>(OnChopMessage);
         SubscribeLocalEvent<WGPrepBoardComponent, ExaminedEvent>(OnBoardExamined);
         SubscribeLocalEvent<WGPrepBoardComponent, GetVerbsEvent<AlternativeVerb>>(OnBoardVerbs);
+        SubscribeLocalEvent<WGPrepBoardComponent, ContainerGettingInsertedAttemptEvent>(OnBoardStowAttempt);
         SubscribeLocalEvent<PrototypesReloadedEventArgs>(_ => ClearRecipeCaches());
     }
 
@@ -102,6 +116,7 @@ public sealed class WGCookingSystem : EntitySystem
     private List<WGChopRecipePrototype>? _chopRecipes;
     private HashSet<string>? _comboTags;
     private readonly Dictionary<(int Types, bool Secret), List<FoodRecipePrototype>> _kitchenRecipes = new();
+    private Dictionary<string, List<FoodRecipePrototype>>? _singleRecipes;
 
     /// <summary>Kitchen recipe types the prep board makes.</summary>
     private const int BoardTypes = (int) (MicrowaveRecipeType.Assembler | MicrowaveRecipeType.Oven | MicrowaveRecipeType.Microwave);
@@ -121,6 +136,7 @@ public sealed class WGCookingSystem : EntitySystem
         _prepRecipes = null;
         _chopRecipes = null;
         _comboTags = null;
+        _singleRecipes = null;
         _kitchenRecipes.Clear();
     }
 
@@ -181,13 +197,19 @@ public sealed class WGCookingSystem : EntitySystem
 
     #region Hearth
 
-    /// <summary>Whether a hearth is burning: anchored and powered.</summary>
+    /// <summary>Whether a hearth is burning: placed, and its fire lit if it burns wood, or else powered.</summary>
     public bool Lit(EntityUid uid)
     {
-        // Anchored, or a camp stove set down on the ground rather than carried or packed away.
-        var placed = Transform(uid).Anchored
+        if (!Placed(uid))
+            return false;
+        return TryComp<WGBonfireFuelComponent>(uid, out var fire) ? fire.Lit : _power.IsPowered(uid);
+    }
+
+    /// <summary>Whether a hearth stands where it can burn: anchored, or a camp stove set down rather than carried or packed.</summary>
+    private bool Placed(EntityUid uid)
+    {
+        return Transform(uid).Anchored
             || TryComp<WGHearthComponent>(uid, out var hearth) && !hearth.NeedsAnchor && !_containers.IsEntityInContainer(uid);
-        return placed && _power.IsPowered(uid);
     }
 
     /// <summary>Whether a hearth gives off a fire's warmth: lit and with a hob, so not a microwave or food-o-mat.</summary>
@@ -211,7 +233,8 @@ public sealed class WGCookingSystem : EntitySystem
     /// <summary>Whether the oven takes an item: anything that bakes, any food, or an unbaked dish this hearth can cook.</summary>
     private bool Ovenable(EntityUid hearth, EntityUid item)
     {
-        return (CookRecipe(item, WGCookMethod.Bake) != null || HasComp<FoodComponent>(item) || HasComp<WGRawDishComponent>(item))
+        return (CookRecipe(item, WGCookMethod.Bake) != null || HasComp<FoodComponent>(item) || HasComp<WGRawDishComponent>(item)
+                || HeatResult(hearth, item, WGCookMethod.Bake) != null)
             && CanCook(hearth, item);
     }
 
@@ -232,6 +255,10 @@ public sealed class WGCookingSystem : EntitySystem
         var onHob = HobItem(ent);
 
         if (!ent.Comp.HasHob && ent.Comp.OvenCapacity <= 0)
+            return;
+
+        // Wood goes on a wood-burning hearth's fire, even a log the oven would otherwise take as food.
+        if (TryComp<WGBonfireFuelComponent>(ent, out var fire) && _fire.FuelOf((ent, fire), used) > 0f)
             return;
 
         // Cookware goes on the hob.
@@ -261,7 +288,7 @@ public sealed class WGCookingSystem : EntitySystem
 
         // A pan on the hob takes what can be fried; a pot takes what can be stewed.
         if (onHob is { } cookware && TryComp<WGPanComponent>(cookware, out var pan)
-            && (CookRecipe(used, WGCookMethod.Fry) != null || IsFryable(used)))
+            && (CookRecipe(used, WGCookMethod.Fry) != null || IsFryable(used) || HeatResult(ent, used, WGCookMethod.Fry) != null))
         {
             args.Handled = true;
             AddToPan((cookware, pan), used, args.User);
@@ -597,6 +624,10 @@ public sealed class WGCookingSystem : EntitySystem
         {
             var lit = Lit(uid);
             _appearance.SetData(uid, WGHobVisuals.Lit, lit);
+
+            // A wood fire in a stove wrenched loose goes out rather than burning its wood for nothing.
+            if (!lit && TryComp<WGBonfireFuelComponent>(uid, out var fire) && fire.Lit && !Placed(uid))
+                _fire.SetLit((uid, fire), false);
             if (!lit)
                 continue;
 
@@ -641,6 +672,76 @@ public sealed class WGCookingSystem : EntitySystem
     {
         return TryComp<WGRawDishComponent>(item, out var raw) && _proto.TryIndex<FoodRecipePrototype>(raw.Recipe, out var recipe)
             && (recipe.RecipeType & (int) MicrowaveRecipeType.Microwave) != 0 && (recipe.RecipeType & (int) MicrowaveRecipeType.Oven) == 0;
+    }
+
+    /// <summary>
+    /// What heat alone turns an item into, past the hearth's own recipes: a kitchen recipe of that one item and nothing
+    /// else (dough into bread), or else its construction graph's heating step (raw meat into a steak). Null if neither.
+    /// </summary>
+    private (EntProtoId Result, float Seconds, int Count)? HeatResult(EntityUid hearth, EntityUid item, WGCookMethod method)
+    {
+        if (MetaData(item).EntityPrototype?.ID is not { } id)
+            return null;
+
+        if (SingleRecipes().TryGetValue(id, out var recipes))
+        {
+            // The oven bakes oven recipes first, then microwave ones; the pan fries only what a microwave would cook.
+            var recipe = recipes
+                .Where(r => method == WGCookMethod.Bake || (r.RecipeType & (int) MicrowaveRecipeType.Microwave) != 0)
+                .Where(r => !r.SecretRecipe || SecretRecipes(hearth).Contains(r.ID))
+                .OrderByDescending(r => method == WGCookMethod.Bake && (r.RecipeType & (int) MicrowaveRecipeType.Oven) != 0)
+                .ThenBy(r => r.ID)
+                .FirstOrDefault();
+            if (recipe != null)
+                return (recipe.Result, recipe.CookTime * HearthTimeScale + RawDishTime, Math.Max(1, recipe.ResultCount));
+        }
+
+        return HeatStep(item) is { } result ? (result, HeatStepTime, 1) : null;
+    }
+
+    /// <summary>The entity an item's construction graph turns it into once heated, if it has such a step.</summary>
+    private EntProtoId? HeatStep(EntityUid item)
+    {
+        if (!HasComp<ConstructionComponent>(item)
+            || _construction.GetCurrentGraph(item) is not { } graph
+            || _construction.GetCurrentNode(item) is not { } node)
+            return null;
+
+        foreach (var edge in node.Edges)
+        {
+            // The heating step must be the edge's only step, and lead to an entity: an egg's leads to it bursting.
+            if (edge.Steps.Count != 1 || edge.Steps[0] is not TemperatureConstructionGraphStep { MinTemperature: not null }
+                || !graph.Nodes.TryGetValue(edge.Target, out var target)
+                || target.Entity is not StaticNodeEntity { Id: { } result }
+                || result == MetaData(item).EntityPrototype?.ID)
+                continue;
+            return result;
+        }
+
+        return null;
+    }
+
+    /// <summary>Oven and microwave recipes of one item alone and no reagents, by that item.</summary>
+    private Dictionary<string, List<FoodRecipePrototype>> SingleRecipes()
+    {
+        if (_singleRecipes != null)
+            return _singleRecipes;
+
+        _singleRecipes = new Dictionary<string, List<FoodRecipePrototype>>();
+        const int heated = (int) (MicrowaveRecipeType.Oven | MicrowaveRecipeType.Microwave);
+        foreach (var recipe in _proto.EnumeratePrototypes<FoodRecipePrototype>())
+        {
+            if ((recipe.RecipeType & heated) == 0 || recipe.IngredientsReagents.Count > 0 || recipe.IngredientsSolids.Count != 1)
+                continue;
+            var (solid, count) = recipe.IngredientsSolids.First();
+            if (count != FixedPoint2.New(1))
+                continue;
+            if (!_singleRecipes.TryGetValue(solid, out var list))
+                _singleRecipes[solid] = list = new List<FoodRecipePrototype>();
+            list.Add(recipe);
+        }
+
+        return _singleRecipes;
     }
 
     /// <summary>The kitchen's oven and microwave recipes, most ingredients first, as the kitchen machines try them.</summary>
@@ -771,6 +872,28 @@ public sealed class WGCookingSystem : EntitySystem
             var done = EnsureComp<WGHeatingComponent>(cooked);
             done.Done = true;
             _popup.PopupEntity(Loc.GetString("wg-cook-done", ("item", cooked)), hearth, PopupType.Medium);
+            return;
+        }
+
+        // Dough into bread, raw meat into a steak: what heat alone makes of it, as a kitchen machine would.
+        if (!state.Done && HeatResult(hearth, food, method) is { } heated)
+        {
+            if (state.Heat < heated.Seconds)
+                return;
+
+            var container = _containers.TryGetContainingContainer(food, out var holder) ? holder : null;
+            var quality = CompOrNull<WGProduceQualityComponent>(food)?.Quality;
+            var made = Replace(food, heated.Result);
+            for (var i = 1; i < heated.Count; i++)
+            {
+                var extra = container != null ? SpawnCooked(heated.Result, container) : Spawn(heated.Result, Transform(made).Coordinates);
+                EnsureComp<WGHeatingComponent>(extra).Done = HeatResult(hearth, extra, method) == null;
+                SetQuality(extra, quality);
+            }
+
+            // Coffee roasts on from light to dark; anything else is finished and only burns from here.
+            EnsureComp<WGHeatingComponent>(made).Done = HeatResult(hearth, made, method) == null;
+            _popup.PopupEntity(Loc.GetString("wg-cook-done", ("item", made)), hearth, PopupType.Medium);
             return;
         }
 
@@ -961,6 +1084,13 @@ public sealed class WGCookingSystem : EntitySystem
             return;
 
         args.Handled = true;
+        if (ent.Comp.MaxItemSize is { } max && TryComp<ItemComponent>(used, out var usedItem)
+            && _item.GetSizePrototype(usedItem.Size) > _item.GetSizePrototype(max))
+        {
+            _popup.PopupEntity(Loc.GetString("wg-cook-board-too-big", ("item", used)), ent, args.User);
+            return;
+        }
+
         var contents = _containers.GetContainer(ent, WGPrepBoardComponent.Contents);
         if (contents.ContainedEntities.Count >= ent.Comp.Capacity)
         {
@@ -972,6 +1102,14 @@ public sealed class WGCookingSystem : EntitySystem
             return;
         _popup.PopupEntity(Loc.GetString("wg-cook-board-in", ("item", args.Used)), ent, args.User);
         UpdateBoardUi(ent);
+    }
+
+    /// <summary>A folding board only folds into a bag or kit once it's cleared, so it carries nothing packed away.</summary>
+    private void OnBoardStowAttempt(Entity<WGPrepBoardComponent> ent, ref ContainerGettingInsertedAttemptEvent args)
+    {
+        if (HasComp<StorageComponent>(args.Container.Owner)
+            && _containers.GetContainer(ent, WGPrepBoardComponent.Contents).ContainedEntities.Count > 0)
+            args.Cancel();
     }
 
     private WGChopRecipePrototype? ChopRecipe(EntityUid item)
@@ -1165,7 +1303,10 @@ public sealed class WGCookingSystem : EntitySystem
     {
         if (ingredient.Ids.Count > 0 && _proto.TryIndex<EntityPrototype>(ingredient.Ids[0], out var proto))
             return ingredient.Ids.Count > 1 ? Loc.GetString("wg-cook-board-any", ("name", proto.Name)) : proto.Name;
-        return ingredient.Tag?.Id ?? "?";
+        // Matched only by tag: named by its own string if it has one.
+        return ingredient.Tag is { } tag && Loc.TryGetString("wg-cook-tag-" + tag.Id.ToLowerInvariant(), out var named)
+            ? named
+            : Loc.GetString("wg-cook-board-something");
     }
 
     private bool Fits(EntityUid item, WGPrepIngredient ingredient)

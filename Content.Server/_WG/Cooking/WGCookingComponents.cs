@@ -1,3 +1,6 @@
+using Content.Shared.Item;
+using Robust.Shared.Prototypes;
+
 namespace Content.Server._WG.Cooking;
 
 /// <summary>A hearth stove: a hob that holds one pan or pot over the fire, and an oven that bakes what is put in it.</summary>
@@ -104,8 +107,13 @@ public sealed partial class WGPrepBoardComponent : Component
 {
     public const string Contents = "wg-board";
 
+    /// <summary>Room for the biggest kitchen recipes, such as a crazy hamburger, with a jug of anything they need.</summary>
     [DataField]
-    public int Capacity = 8;
+    public int Capacity = 12;
+
+    /// <summary>The largest item it takes, for a board small enough to carry; null for any.</summary>
+    [DataField]
+    public ProtoId<ItemSizePrototype>? MaxItemSize;
 }
 
 /// <summary>Heat an item has taken in a pan or an oven; added as it cooks.</summary>

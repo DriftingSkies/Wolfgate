@@ -5,7 +5,6 @@ using Content.Shared._WG.Farming;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.FixedPoint;
 using Content.Shared.Nutrition;
-using Content.Shared.Power.EntitySystems;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
 
@@ -70,7 +69,7 @@ public sealed class MealBuffTest
         {
             cook = entMan.SpawnEntity("MobHuman", map.GridCoords);
             var hearth = entMan.SpawnEntity("WGHearthStove", map.GridCoords);
-            entMan.System<SharedPowerReceiverSystem>().SetNeedsPower(hearth, false);
+            WGHearthFire.Light(entMan, hearth);
             pot = entMan.SpawnEntity("WGCookPot", map.GridCoords);
             var solutions = entMan.System<SharedSolutionContainerSystem>();
             Assert.That(solutions.TryGetSolution(pot, "pot", out var soln), Is.True);

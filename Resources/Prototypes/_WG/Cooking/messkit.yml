@@ -37,13 +37,13 @@
       enum.WGStirUiKey.Key:
         type: WGStirBoundUserInterface
   - type: StaticPrice
-    price: 60
+    price: 18
 
 - type: entity
   parent: BaseItem
   id: WGCuttingBoard
   name: folding cutting board
-  description: A small board that folds in half. Lay a few ingredients on it, then use it to chop them and put them together, the same as a prep board.
+  description: A board that folds in half. Lay ingredients on it, then use it to chop them and put them together, the same as a prep board. Clear it before you pack it away.
   components:
   - type: Construction
     graph: WGCuttingBoardGraph
@@ -54,7 +54,7 @@
   - type: Item
     size: Normal
   - type: WGPrepBoard
-    capacity: 4
+    maxItemSize: Normal
   - type: ContainerContainer
     containers:
       wg-board: !type:Container
@@ -66,7 +66,7 @@
       enum.WGPrepBoardUiKey.Key:
         type: WGPrepBoardBoundUserInterface
   - type: StaticPrice
-    price: 30
+    price: 20
 
 - type: entity
   parent: BoxCardboard

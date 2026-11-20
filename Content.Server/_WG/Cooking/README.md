@@ -5,11 +5,15 @@ SS14; art CC BY-SA 3.0), with ideas from Meridian. It replaces the game's microw
 microwave becomes an oven-only hearth and the electric range a hearth with a hob and an oven (marked edits). Nothing
 becomes a meal from raw ingredients in one step.
 
-- **Hearth** (`WGHearthComponent`): a hob slot for one pan or pot and an oven, working while it has power. Use cookware
+- **Hearth** (`WGHearthComponent`): a hob slot for one pan or pot and an oven. The hearth stove burns wood like a
+  bonfire (`WGBonfireFuel`: fed planks or logs, lit with a flame); the converted microwave and range work while powered,
+  and the camp stove needs neither. Use cookware
   on it to set it on the hob; use food on it to fry it, stew it or bake it. An empty hand takes food out of the pan,
   then the oven, then the cookware off.
 - **Frying and baking** (`wgCookRecipe`): food takes heat each second and becomes its result after the recipe's
-  seconds; left on, it smokes, then burns to a mess.
+  seconds; left on, it smokes, then burns to a mess. Food with no such recipe still cooks if heat alone makes it
+  something: a kitchen recipe of that one item and no reagents (dough into bread, cake batter into cake), or its
+  construction graph's heating step (raw meat, cutlets and bacon into cooked ones, coffee beans roasting on).
 - **Stews** (`wgStewRecipe`): a pot of water boils on a lit hob; an ingredient added to boiling water becomes a portion
   of soup, and ingredients stewing together that make a stew of several (`combine`) become it instead. Soup shows in
   pots and bowls in its colour; ladle it out with a bowl.
@@ -63,11 +67,13 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 - [`Content.IntegrationTests/Tests/_WG/Cooking/ChopMinigameTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/ChopMinigameTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/FoodBuffTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/FoodBuffTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/HearthCookingTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/HearthCookingTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Cooking/HomesteadFeedbackTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/HomesteadFeedbackTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/KitchenFixesTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/KitchenFixesTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/KitchenUiTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/KitchenUiTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/MealBuffTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/MealBuffTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/MessKitAndCraftingTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/MessKitAndCraftingTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/ReviewFixesTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/ReviewFixesTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Cooking/WGHearthFire.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/WGHearthFire.cs)
 
 ### Prototypes
 
@@ -124,6 +130,6 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 - [`Resources/Prototypes/Guidebook/service.yml`](../../../Resources/Prototypes/Guidebook/service.yml): the cooking guide sits under the chef's page
 - [`Resources/ServerInfo/Guidebook/Service/Chef.xml`](../../../Resources/ServerInfo/Guidebook/Service/Chef.xml)
   - link the hands-on cooking guide
-  - dishes are put together on a prep board and cooked on a hearth
+  - dishes are put together on a prep board and cooked on a hearth Upstream: - Check the Wiki (or Food Recipes) guidebook for things you can make, and put all the listed ingredients into a microwave to cook it into a meal.
 
 <!-- WOLFGATE-GENERATED END -->

@@ -43,8 +43,8 @@ public sealed class HearthCookingTest
             frying = entMan.SpawnEntity("WGHearthStove", map.GridCoords);
             stewing = entMan.SpawnEntity("WGHearthStove", map.GridCoords);
             board = entMan.SpawnEntity("WGPrepBoard", map.GridCoords);
-            power.SetNeedsPower(frying, false);
-            power.SetNeedsPower(stewing, false);
+            WGHearthFire.Light(entMan, frying);
+            WGHearthFire.Light(entMan, stewing);
 
             // A pan on the hob, an egg in the pan.
             var pan = entMan.SpawnEntity("WGCookPan", map.GridCoords);

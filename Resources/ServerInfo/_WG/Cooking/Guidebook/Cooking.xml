@@ -12,10 +12,11 @@ There's nothing like a hot meal after a long shift. Cooking here is done by hand
 </Box>
 
 ## Around the kitchen
-- The [bold]hearth stove[/bold] is the heart of any kitchen: a hob on top for a pan or pot, and an oven below. It needs power to stay lit. You can build one from the construction menu with some steel and a little LV cable.
-- The old [bold]microwave[/bold] now works as an oven with no hob, and the [bold]electric range[/bold] works as a hearth with both.
+- The [bold]hearth stove[/bold] is the heart of any kitchen: a hob on top for a pan or pot, and an oven below. It burns wood, just like a fireplace: feed it planks or logs, then light it with a lighter, a match or a welder. When the fire burns low, put on more wood. You can build one from the construction menu with some steel.
+- The old [bold]microwave[/bold] now works as an oven with no hob, and the [bold]electric range[/bold] works as a hearth with both. These two still run on power rather than wood.
 - The [bold]prep board[/bold] is where ingredients are chopped and dishes come together. You can build one from a few wood planks.
 - If the cupboards are bare, order a [bold]cookware crate[/bold] from cargo. It comes with pots, pans, bowls, a prep board and a few nice extras.
+- The [bold]Homestead Supply[/bold] vendor sells the hearth stove and the prep board flatpacked. Set the flatpack down where it should stand and use a wrench on it to unpack it. A wrench also fastens the stove down, or frees it to be moved.
 
 ## 1. At the prep board
 Use ingredients on the board to lay them out, then click the board to open it. It shows what's on the board and every dish those ingredients could become, with what you have and what's still missing for each.
@@ -27,6 +28,8 @@ A few dishes come off the board ready to eat. Most come out [bold]unbaked[/bold]
 
 ## 2. Over the fire
 Set a pan on the hob, then use food on the hearth. Anything that fries goes into the pan, and everything else goes into the oven.
+
+Some things don't need the prep board at all. Raw meat, cutlets, bacon, sausages, patties and meatballs fry in the pan or roast in the oven. A plain lump of dough bakes straight into bread, and the same goes for dough slices, dough ropes, cornmeal dough, flattened tortillas and cake batter. Corn pops in the pan, donk pockets warm through, coffee beans roast a shade darker the longer they're left, and tea and tobacco leaves dry in the oven.
 
 You'll be told when it's done. [color=#E05A4F]Don't wander off:[/color] left too long, it starts to smoke, and soon after, it burns to a crisp. To take things out, use an empty hand on the hearth. It gives you the food in the pan first, then what's in the oven, then the cookware itself. Examine the hearth to see how everything is getting on.
 
@@ -76,5 +79,5 @@ Food is best fresh. A dish stays hot for a good while after it comes off the fir
 <GuideEntityEmbed Entity="WGCampStove"/>
 <GuideEntityEmbed Entity="WGCuttingBoard"/>
 </Box>
-Every job can bring a [bold]mess kit[/bold] from its loadout. It holds a folding camp stove, a pan, a cutting board, a bowl, utensils, a knife, and a little salt and pepper. Set the stove down on the ground and put a pan or pot on it. It needs no power, but it has no oven either, so stick to frying and soups. The folding cutting board works just like a small prep board.
+Every job can bring a [bold]mess kit[/bold] from its loadout. It holds a folding camp stove, a pan, a cutting board, a bowl, utensils, a knife, and a little salt and pepper. Set the stove down on the ground and put a pan or pot on it. It needs no power, but it has no oven either, so stick to frying and soups. The folding cutting board works just like the prep board, with just as much room on it. Clear it before you pack it away.
 </Document>

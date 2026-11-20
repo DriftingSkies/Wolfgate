@@ -61,7 +61,9 @@ tables; don't edit `hunting.yml` or the marked table entries by hand.
 
 ## Non-modular edits
 
-- [`Content.Server/Kitchen/EntitySystems/SharpSystem.cs`](../../Kitchen/EntitySystems/SharpSystem.cs): let hunting grade the cuts by how clean the kill was, before the carcass goes
+- [`Content.Server/Kitchen/EntitySystems/SharpSystem.cs`](../../Kitchen/EntitySystems/SharpSystem.cs)
+  - collect the cuts for hunting to grade
+  - let hunting grade the cuts by how clean the kill was, before the carcass goes
 - [`Resources/Prototypes/Guidebook/service.yml`](../../../Resources/Prototypes/Guidebook/service.yml): the hunting guide sits under the chef's page
 - [`Resources/ServerInfo/Guidebook/Service/Chef.xml`](../../../Resources/ServerInfo/Guidebook/Service/Chef.xml): game from the worlds gives finer cuts from a clean kill
 

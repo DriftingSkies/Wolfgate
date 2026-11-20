@@ -43,7 +43,7 @@ MACHINES = {
     "WGMoistureVaporator": ("Farming", MACHINE_GLASS, False),
     "WGSnowMelter": ("Farming", MACHINE, False),
     "WGGrowLamp": ("Farming", [("Steel", 1), ("Glass", 1), ("Cable", 1)], True),
-    "WGHearthStove": ("Cooking", [("Steel", 8), ("Cable", 2)], False),
+    "WGHearthStove": ("Cooking", [("Steel", 10)], False),
     "WGPrepBoard": ("Cooking", [("WoodPlank", 3)], False),
     "WGCampStove": ("Cooking", [("Steel", 3)], False),
     "WGCuttingBoard": ("Cooking", [("WoodPlank", 2)], False),

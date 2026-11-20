@@ -10,6 +10,7 @@ using Content.Shared.Examine;
 using Content.Shared.Interaction;
 using Content.Shared.Stacks;
 using Content.Shared.Tag;
+using Content.Shared.Verbs;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
@@ -60,6 +61,10 @@ public sealed partial class WGProcessorComponent : Component
     [DataField]
     public int Loaded;
 
+    /// <summary>The prototypes loaded toward the batch so far, to hand back if it's emptied before it fills.</summary>
+    [DataField]
+    public List<EntProtoId> LoadedIds = new();
+
     /// <summary>The seed of the produce put in, for a seed maker.</summary>
     [ViewVariables]
     public SeedData? Seed;
@@ -87,6 +92,7 @@ public sealed class WGProcessorSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<WGProcessorComponent, InteractUsingEvent>(OnInteractUsing);
         SubscribeLocalEvent<WGProcessorComponent, ExaminedEvent>(OnExamined);
+        SubscribeLocalEvent<WGProcessorComponent, GetVerbsEvent<AlternativeVerb>>(OnVerbs);
         SubscribeLocalEvent<PrototypesReloadedEventArgs>(_ => _recipes.Clear());
     }
 
@@ -172,6 +178,14 @@ public sealed class WGProcessorSystem : EntitySystem
         ent.Comp.Loading = recipe.ID;
         var want = recipe.Batch - ent.Comp.Loaded;
         var count = Math.Min(want, TryComp<StackComponent>(item, out var stack) ? stack.Count : 1);
+        // A stack hands back as single items of its kind.
+        var single = stack != null && _proto.TryIndex<StackPrototype>(stack.StackTypeId, out var stackProto) ? stackProto.Spawn.Id
+            : MetaData(item).EntityPrototype?.ID;
+        if (single != null)
+        {
+            for (var i = 0; i < count; i++)
+                ent.Comp.LoadedIds.Add(single);
+        }
         if (stack != null && stack.Count > count)
             _stack.SetCount(item, stack.Count - count, stack);
         else
@@ -189,10 +203,40 @@ public sealed class WGProcessorSystem : EntitySystem
             ent.Comp.Stock[needs.Id] = Math.Max(0, ent.Comp.Stock.GetValueOrDefault(needs.Id) - 1);
         ent.Comp.Loading = null;
         ent.Comp.Loaded = 0;
+        ent.Comp.LoadedIds.Clear();
         ent.Comp.Quality = WGCropQuality.Normal;
         ent.Comp.Holding = null;
         Start(ent, recipe);
         _popup.PopupEntity(Loc.GetString("wg-process-batch-started"), ent, user);
+    }
+
+    /// <summary>Offers to empty a batch that is part loaded, so a machine is never stuck waiting on one recipe.</summary>
+    private void OnVerbs(Entity<WGProcessorComponent> ent, ref GetVerbsEvent<AlternativeVerb> args)
+    {
+        if (!args.CanAccess || !args.CanInteract || ent.Comp.Loading == null)
+            return;
+
+        var user = args.User;
+        args.Verbs.Add(new AlternativeVerb
+        {
+            Text = Loc.GetString("wg-process-unload-verb"),
+            Act = () => Unload(ent, user),
+        });
+    }
+
+    /// <summary>Hands back what was loaded toward an unfinished batch and clears it.</summary>
+    public void Unload(Entity<WGProcessorComponent> ent, EntityUid user)
+    {
+        if (ent.Comp.Loading == null)
+            return;
+
+        var at = Transform(ent).Coordinates;
+        foreach (var id in ent.Comp.LoadedIds)
+            Spawn(id, at);
+        ent.Comp.Loading = null;
+        ent.Comp.Loaded = 0;
+        ent.Comp.LoadedIds.Clear();
+        _popup.PopupEntity(Loc.GetString("wg-process-unloaded"), ent, user);
     }
 
     /// <summary>Loads a supply some recipe of the machine needs, such as a bottle into a keg.</summary>

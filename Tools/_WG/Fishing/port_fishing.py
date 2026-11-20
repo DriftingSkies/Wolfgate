@@ -399,9 +399,10 @@ def main():
   - type: Sprite
     sprite: _WG/Fishing/fishing.rsi
     state: pond
+  - type: Anchorable
   - type: WGFishingSpot
   - type: StaticPrice
-    price: 1500
+    price: 76
   - type: GuideHelp
     guides:
     - WGFishing

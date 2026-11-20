@@ -112,12 +112,12 @@ public sealed partial class SharpSystem : EntitySystem
         var spawnEntities = EntitySpawnCollection.GetSpawns(butcher.SpawnedEntities, _robustRandom);
         var coords = _transform.GetMapCoordinates(args.Args.Target.Value);
         EntityUid popupEnt = default!;
-        var wgSpawned = new List<EntityUid>(); // WOLFGATE(Hunting)
+        var wgSpawned = new List<EntityUid>(); // WOLFGATE(Hunting): collect the cuts for hunting to grade
         foreach (var proto in spawnEntities)
         {
             // distribute the spawned items randomly in a small radius around the origin
             popupEnt = Spawn(proto, coords.Offset(_robustRandom.NextVector2(0.25f)));
-            wgSpawned.Add(popupEnt); // WOLFGATE(Hunting)
+            wgSpawned.Add(popupEnt); // WOLFGATE(Hunting): collect the cuts for hunting to grade
         }
 
         // WOLFGATE(Hunting) START: let hunting grade the cuts by how clean the kill was, before the carcass goes
