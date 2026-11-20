@@ -14,6 +14,7 @@ using Content.Shared.Medical.SuitSensor;
 using Content.Shared.Popups;
 using Content.Shared.Preferences;
 using Content.Shared.Roles;
+using Content.Shared.StatusIcon.Components;
 using Content.Shared.Strip.Components;
 using Robust.Shared.Containers;
 using Robust.Shared.Player;
@@ -110,6 +111,9 @@ public sealed partial class WGAvatarBodySystem : EntitySystem
         comp.Built = built;
         comp.Profile = profile;
         _godmode.EnableGodmode(body);
+
+        // Ghosts see status icons through containers, so the body's SSD and job icons would be drawn on the observer.
+        RemComp<StatusIconComponent>(body);
 
         var worn = _inventory.GetSlotEnumerator(body);
         while (worn.NextItem(out var item))

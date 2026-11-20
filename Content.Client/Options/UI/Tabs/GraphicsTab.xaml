@@ -8,6 +8,8 @@
                 <Label Text="{Loc 'ui-options-display-label'}" StyleClasses="LabelKeyText"/>
                 <CheckBox Name="VSyncCheckBox" Text="{Loc 'ui-options-vsync'}" />
                 <CheckBox Name="FullscreenCheckBox" Text="{Loc 'ui-options-fullscreen'}" />
+                <!-- WOLFGATE(DisplayOptions): frame rate cap -->
+                <ui:OptionDropDown Name="DropDownMaxFps" Title="{Loc 'ui-options-wg-max-fps'}" />
 
                 <!-- Quality -->
                 <Label Text="{Loc 'ui-options-quality-label'}" StyleClasses="LabelKeyText"/>
@@ -15,8 +17,15 @@
                 <!-- WOLFGATE(InteractionParticles): interaction particle visibility -->
                 <ui:OptionDropDown Name="DropDownInteractionParticles" Title="{Loc 'ui-options-interaction-particles'}" ToolTip="{Loc 'ui-options-interaction-particles-tooltip'}" />
                 <CheckBox Name="ViewportLowResCheckBox" Text="{Loc 'ui-options-vp-low-res'}" />
+                <!-- WOLFGATE(DisplayOptions): space background toggle -->
+                <CheckBox Name="ParallaxEnabledCheckBox" Text="{Loc 'ui-options-wg-parallax-enabled'}" />
                 <CheckBox Name="ParallaxLowQualityCheckBox" Text="{Loc 'ui-options-parallax-low-quality'}" />
                 <CheckBox Name="AmbientOcclusionCheckBox" Text="{Loc 'ui-options-ambient-occlusion'}" />
+                <!-- WOLFGATE(DisplayOptions) START: light bloom and film grain -->
+                <CheckBox Name="BloomCheckBox" Text="{Loc 'ui-options-wg-bloom'}" />
+                <ui:OptionSlider Name="BloomStrengthSlider" Title="{Loc 'ui-options-wg-bloom-strength'}" />
+                <CheckBox Name="GrainCheckBox" Text="{Loc 'ui-options-wg-grain'}" />
+                <!-- WOLFGATE END -->
                 <!-- Far Horizons start -->
                 <CheckBox Name="RenderStarSystemCheckBox" Text="{Loc 'ui-options-render-star-system'}" />
                 <!-- Far Horizons end -->

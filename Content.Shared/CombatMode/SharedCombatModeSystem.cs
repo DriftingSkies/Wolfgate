@@ -80,6 +80,9 @@ public abstract partial class SharedCombatModeSystem : EntitySystem
         if (!component.ToggleMouseRotator || IsNpc(entity) && !_mind.TryGetMind(entity, out _, out _))
             return;
 
+        if (value && !WgFacesCursor(entity)) // WOLFGATE(CombatFacing): the player turned facing the cursor off
+            return; // WOLFGATE(CombatFacing)
+
         SetMouseRotatorComponents(entity, value);
     }
 

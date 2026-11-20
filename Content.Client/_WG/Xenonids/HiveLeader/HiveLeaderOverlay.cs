@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._WG.PixelShift;
 using Content.Client.Overlays;
 using Content.Shared._WG.Xenonids.Mobs;
 using Content.Shared._WG.Xenonids;
@@ -23,6 +24,7 @@ public sealed partial class HiveLeaderOverlay : Overlay
     [Dependency] private IPrototypeManager _prototype = default!;
     [Dependency] private IGameTiming _timing = default!;
 
+    private readonly WGPixelShiftVisualsSystem _pixelShift;
     private readonly SpriteSystem _sprite;
     private readonly TransformSystem _transform;
 
@@ -38,6 +40,7 @@ public sealed partial class HiveLeaderOverlay : Overlay
     {
         IoCManager.InjectDependencies(this);
 
+        _pixelShift = _entity.System<WGPixelShiftVisualsSystem>();
         _sprite = _entity.System<SpriteSystem>();
         _transform = _entity.System<TransformSystem>();
 
@@ -82,8 +85,8 @@ public sealed partial class HiveLeaderOverlay : Overlay
             handle.SetTransform(matrix);
 
             var texture = _sprite.GetFrame(icon, _timing.CurTime);
-            var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height + 0.15f;
-            var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter - 0.6f;
+            var yOffset = (bounds.Height + _pixelShift.UnshiftedOffset(uid, sprite).Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height + 0.15f;
+            var xOffset = (bounds.Width + _pixelShift.UnshiftedOffset(uid, sprite).X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter - 0.6f;
 
             var position = new Vector2(xOffset, yOffset);
             handle.DrawTexture(texture, position);

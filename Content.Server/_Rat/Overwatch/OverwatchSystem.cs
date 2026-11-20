@@ -24,6 +24,7 @@ using Robust.Shared.Prototypes;
 using Content.Shared.Sticky.Components;
 using Content.Server._Mono.Overwatch.Components;
 using Content.Shared.Sticky;
+using Content.Server._WG.Cyborgs; // WOLFGATE(Cyborgs)
 
 namespace Content.Server._Rat.Overwatch;
 
@@ -60,6 +61,7 @@ public sealed class OverwatchSystem : EntitySystem
     [Dependency] private IChatManager _chatManager = default!;
     [Dependency] private SharedTransformSystem _transformSystem = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private WGAiOverwatchSystem _wgAiOverwatch = default!; // WOLFGATE(Cyborgs)
 
     /// <summary>
     /// Пары наблюдения: watcher -> target.
@@ -556,7 +558,7 @@ public sealed class OverwatchSystem : EntitySystem
             _viewSubscriberSystem.RemoveViewSubscriber(target, actorComp.PlayerSession);
         }
 
-        _eyeSystem.SetTarget(watcher, null);
+        _eyeSystem.SetTarget(watcher, _wgAiOverwatch.ReleaseTarget(watcher)); // WOLFGATE(Cyborgs): an AI's view returns to its remote eye
         _watchingPairs.Remove(watcher);
         watchingComp.Watching = null;
         watchingComp.Console = null;
@@ -588,7 +590,7 @@ public sealed class OverwatchSystem : EntitySystem
             _viewSubscriberSystem.RemoveViewSubscriber(target, actorComp.PlayerSession);
         }
 
-        _eyeSystem.SetTarget(ent.Owner, null);
+        _eyeSystem.SetTarget(ent.Owner, _wgAiOverwatch.ReleaseTarget(ent.Owner)); // WOLFGATE(Cyborgs): an AI's view returns to its remote eye
         _watchingPairs.Remove(ent.Owner);
         ent.Comp.Console = null;
     }

@@ -570,6 +570,10 @@
   - type: GhostTakeoverAvailable
   - type: RandomMetadata
     nameSegments: [ TSFMCCoreNameset ]
+  # WOLFGATE(Cyborgs) START: passes TSF company readers (requisition station, overwatch console)
+  - type: Company
+    companyName: TSF
+  # WOLFGATE END
   - type: LanguageKnowledge
     speaks:
     - TauCetiBasic
@@ -663,6 +667,10 @@
   - type: GhostTakeoverAvailable
   - type: RandomMetadata
     nameSegments: [ PDVCoreNameset ]
+  # WOLFGATE(Cyborgs) START: passes PDV company readers (requisition station, overwatch console)
+  - type: Company
+    companyName: PDV
+  # WOLFGATE END
   - type: LanguageKnowledge
     speaks:
     - TauCetiBasic
