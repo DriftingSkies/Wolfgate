@@ -1,8 +1,11 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server._Mono.Store;
+using Content.Server._NF.Bank;
+using Content.Server._WG.Companies;
 using Content.Server._WG.Operations;
 using Content.Server._WG.Remade.Conversion;
+using Content.Server.Preferences.Managers;
 using Content.Server.StationEvents.Components;
 using Content.Server.StationEvents.Events;
 using Content.Shared._Mono.Company;
@@ -12,7 +15,9 @@ using Content.Shared.GameTicking.Components;
 using Content.Shared.Maps;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
+using Content.Shared._NF.Bank.Components;
 using Content.Shared.Physics;
+using Content.Shared.Preferences;
 using Content.Shared.Store.Components;
 using Content.Shared.Tag;
 using Robust.Shared.EntitySerialization.Systems;
@@ -30,7 +35,11 @@ namespace Content.Server._WG.Fragments;
 /// </summary>
 public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragmentRuleComponent>
 {
+    [Dependency] private BankSystem _bank = default!;
+    [Dependency] private WGCompanySystem _companies = default!;
     [Dependency] private CurrencyInjectionSystem _currency = default!;
+    [Dependency] private ISharedPlayerManager _players = default!;
+    [Dependency] private IServerPreferencesManager _prefs = default!;
     [Dependency] private LinkedLifecycleGridSystem _lifecycle = default!;
     [Dependency] private MapLoaderSystem _loader = default!;
     [Dependency] private MetaDataSystem _metaData = default!;
@@ -77,20 +86,28 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
                 continue;
 
             var players = EntityQueryEnumerator<ActorComponent, MobStateComponent, TransformComponent>();
-            while (players.MoveNext(out var player, out _, out var state, out var xform))
+            while (players.MoveNext(out var player, out var actor, out var state, out var xform))
             {
                 if (xform.GridUid == grid && !_mobState.IsDead(player, state))
-                    RecordVisit(comp, player);
+                    RecordVisit(comp, player, actor);
             }
             comp.HeartBroken = true;
             Clear(comp);
         }
     }
 
-    private void RecordVisit(WGFragmentRuleComponent comp, EntityUid player)
+    private void RecordVisit(WGFragmentRuleComponent comp, EntityUid player, ActorComponent actor)
     {
+        RecordParticipant(comp, actor.PlayerSession);
         if (TryComp<CompanyComponent>(player, out var company) && comp.Rewards.ContainsKey(company.CompanyName))
             comp.Present.Add(company.CompanyName);
+    }
+
+    /// <summary>Notes the character slot a player takes part as, the first time they do.</summary>
+    private void RecordParticipant(WGFragmentRuleComponent comp, ICommonSession session)
+    {
+        if (!comp.Participants.ContainsKey(session.UserId) && _companies.PlayedSlot(session) is { } slot)
+            comp.Participants[session.UserId] = slot;
     }
 
     protected override void Started(EntityUid uid, WGFragmentRuleComponent comp, GameRuleComponent gameRule, GameRuleStartedEvent args)
@@ -175,13 +192,13 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
         var near = new List<Vector2>();
         var boarded = new HashSet<EntityUid>();
         var players = EntityQueryEnumerator<ActorComponent, MobStateComponent, TransformComponent>();
-        while (players.MoveNext(out var player, out _, out var state, out var xform))
+        while (players.MoveNext(out var player, out var actor, out var state, out var xform))
         {
             if (_mobState.IsDead(player, state))
                 continue;
 
             if (xform.GridUid == grid && !comp.HeartBroken)
-                RecordVisit(comp, player);
+                RecordVisit(comp, player, actor);
 
             if (xform.MapID != heartPos.MapId)
                 continue;
@@ -190,6 +207,8 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
                 continue;
 
             near.Add(pos);
+            if (!comp.HeartBroken)
+                RecordParticipant(comp, actor.PlayerSession);
             if (xform.GridUid is { } aboard && aboard != grid)
                 boarded.Add(aboard);
         }
@@ -321,7 +340,41 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
             _currency.InjectCurrency(id, new Dictionary<string, FixedPoint2> { [currency] = amount });
         }
 
+        PayParticipants(comp);
+
         Announce(comp, comp.Broken, comp.Site, joint);
+    }
+
+    /// <summary>Deposits the participant reward, untaxed, to every player who took part and is still connected.</summary>
+    private void PayParticipants(WGFragmentRuleComponent comp)
+    {
+        if (comp.ParticipantReward <= 0)
+            return;
+
+        foreach (var (user, slot) in comp.Participants)
+        {
+            if (!_players.TryGetSessionById(user, out var session) || !Deposit(session, slot, comp.ParticipantReward))
+                continue;
+            ChatManager.DispatchServerMessage(session,
+                Loc.GetString("wg-fragment-participant-paid", ("amount", comp.ParticipantReward)));
+        }
+    }
+
+    /// <summary>
+    /// Deposits untaxed into the bank of the character in <paramref name="slot"/>, through the body's account when that
+    /// is the selected character so its balance stays in step, as company payroll does.
+    /// </summary>
+    private bool Deposit(ICommonSession session, int slot, int amount)
+    {
+        if (!_prefs.TryGetCachedPreferences(session.UserId, out var prefs)
+            || !prefs.Characters.TryGetValue(slot, out var character)
+            || character is not HumanoidCharacterProfile profile)
+            return false;
+
+        if (prefs.SelectedCharacterIndex == slot && session.AttachedEntity is { } body && HasComp<BankAccountComponent>(body))
+            return _bank.TryBankDeposit(body, amount, tax: false);
+
+        return _bank.TryBankDeposit(session, prefs, profile, amount, out _);
     }
 
     /// <summary>Where the fragment lands, from the faction uplinks anchored on the map; carried handheld uplinks share the tags but aren't bases.</summary>

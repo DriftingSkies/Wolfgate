@@ -20,6 +20,7 @@ using Content.Shared.Mind;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.NPC.Components;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Roles.Jobs;
 using Content.Shared.Physics;
@@ -245,7 +246,16 @@ public sealed class WGOperationSystem : EntitySystem
 
             // Spawners on the map can produce their mobs a moment after the grid loads.
             if (op.Reward > 0 && !active.Paid && active.Grid is { } scanned && _timing.CurTime < active.ArrivedAt + GuardScanWindow)
+            {
                 AddMapGuards(active, scanned, true);
+                // Turrets aren't guards, but one a spawner makes late still fights for the site.
+                foreach (var child in _siteGrid.Children(scanned))
+                {
+                    if (MetaData(child).CreationTick >= active.ArrivedTick
+                        && AtGuardSpawn(active, Transform(child).LocalPosition))
+                        JoinGuardFaction(child, op);
+                }
+            }
 
             // A guard deleted without ever going down (despawned, cleaned up) neither holds up the clear nor pays for it.
             active.Npcs.RemoveAll(npc => !Exists(npc) && !active.Downed.Contains(npc));
@@ -370,6 +380,16 @@ public sealed class WGOperationSystem : EntitySystem
             }
         }
 
+        // Everything that came with a PvE site fights for it, turrets included, whatever faction its map gave it.
+        if (op.Reward > 0)
+        {
+            foreach (var child in _siteGrid.Children(grid.Value))
+            {
+                if (MetaData(child).CreationTick >= ent.Comp.ArrivedTick)
+                    JoinGuardFaction(child, op);
+            }
+        }
+
         var stay = ent.Comp.EndsAt - _timing.CurTime;
         Announce(op.Reward > 0 ? "wg-operation-arrived-pve" : "wg-operation-arrived", op, ent.Comp, ("minutes", (int) Math.Round(stay.TotalMinutes)));
     }
@@ -393,12 +413,30 @@ public sealed class WGOperationSystem : EntitySystem
                 || active.Npcs.Contains(npc))
                 continue;
 
-            var at = Transform(npc).LocalPosition;
-            if (atSpawners && !active.GuardSpawns.Any(spawn => (spawn - at).LengthSquared() <= GuardSpawnRadius * GuardSpawnRadius))
+            if (atSpawners && !AtGuardSpawn(active, Transform(npc).LocalPosition))
                 continue;
 
             active.Npcs.Add(npc);
         }
+    }
+
+    /// <summary>Whether a point on the site lies where one of its spawners sat at arrival.</summary>
+    private static bool AtGuardSpawn(WGActiveOperationComponent active, Vector2 at)
+    {
+        return active.GuardSpawns.Any(spawn => (spawn - at).LengthSquared() <= GuardSpawnRadius * GuardSpawnRadius);
+    }
+
+    /// <summary>Moves an NPC or turret of a site into the operation's guard faction, if it names one; players are left alone.</summary>
+    private void JoinGuardFaction(EntityUid uid, WGOperationPrototype op)
+    {
+        if (op.GuardFaction is not { } faction
+            || HasComp<ActorComponent>(uid)
+            || !TryComp<NpcFactionMemberComponent>(uid, out var member)
+            || member.Factions.Count == 1 && _faction.IsMember((uid, member), faction))
+            return;
+
+        _faction.ClearFactions((uid, member), false);
+        _faction.AddFaction((uid, member), faction);
     }
 
     /// <summary>Drops a cleared site's spoils at its warp point, or on open tiles.</summary>

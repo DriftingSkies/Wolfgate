@@ -11,7 +11,9 @@ Each faction runs one operation at a time, and each operation has its own cooldo
   them in at home is paid. A payload still on the site when it leaves, or destroyed, pays nobody.
 - **PvE**: a risk ladder, from Routine (Dead Drop, Salvage) through Hazard, Assault and High-value to Extreme
   (Quarantine Breach), set out at the top of `operations.yml`. NPCs guard the site: those the map spawns and those the
-  operation adds, one more for every `npcPerMembers` members of the caller's faction online. When all are down the
+  operation adds, one more for every `npcPerMembers` members of the caller's faction online.
+  `guardFaction` puts every NPC and turret the site brings into one faction, so a map mapped with PDV guards (the
+  Dug-in Garrison's vault) still fights a PDV caller. When all are down the
   caller gets its stake back plus the reward, and a spoils crate locked to its faction drops on the site; if the site
   leaves first, `failRefund` of the stake comes back. Higher rungs return more per credit staked, refund less and are
   announced to the whole sector more precisely; a test holds the first two in order.
@@ -52,6 +54,7 @@ costs its operation's stake.
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WG/Operations/WGOperationGuardFactionTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGOperationGuardFactionTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Operations/WGOperationPlanetSiteTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGOperationPlanetSiteTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Operations/WGOperationPrototypeTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGOperationPrototypeTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Operations/WGStoreProductEventNetTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGStoreProductEventNetTest.cs)

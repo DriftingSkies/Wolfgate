@@ -142,6 +142,7 @@
   - proto: WGOperationSpoilsSmallPdv
   duration: 1200
   npcPerMembers: 10
+  guardFaction: SyndicateNF
   npcs:
   - proto: MobSyndicateNavalDeckhandA
     count: 2
@@ -267,6 +268,8 @@
   - proto: WGOperationSpoilsTsf
   cooldown: 3000
   npcPerMembers: 8
+  # The vault is mapped with PDV guards and a PDV turret; they join the Syndicate here, so they fight a PDV caller too.
+  guardFaction: SyndicateNF
   npcs:
   - proto: MobSyndicateNavalOperatorA
     count: 2
@@ -301,6 +304,7 @@
   cooldown: 3600
   precision: 100
   npcPerMembers: 5
+  guardFaction: SyndicateNF
   npcs:
   - proto: MobSyndicateNavalOperatorA
     count: 3

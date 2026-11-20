@@ -6,7 +6,7 @@ The specialist kits are in `Resources/Prototypes/_WG/SpecialistKits/kits.yml`.
 Counts are what a player sees in the uplink's tabs, against the 80-100 cap. Operations (their own tab, one per
 operation) and the kit replacement crates (shown only to a player who drew that kit) are listed apart.
 
-## TSF uplink (151 listings; 8 kit replacements)
+## TSF uplink (152 listings; 8 kit replacements)
 
 | Category | Item | Cost |
 |---|---|---|
@@ -150,6 +150,7 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | SecuritySupplies | ziptie box (`BoxZiptie`) | 2 |
 | SecuritySupplies | NFBedrollFolded (`NFBedrollFolded`) | 2 |
 | SecuritySupplies | body bag box (`BoxBodyBag`) | 2 |
+| SecuritySupplies | fire extinguisher (`FireExtinguisher`) | 2 |
 | SecuritySupplies | survival box (`BoxSurvivalSecurity`) | 3 |
 | SecuritySupplies | ExtendedEmergencyOxygenTankFilled (`ExtendedEmergencyOxygenTankFilled`) | 3 |
 | SecuritySupplies | entrenching tool (`CMEntrenchingTool`) | 3 |
@@ -162,7 +163,7 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | SecuritySupplies | hyper-capacity power cell (`PowerCellHyper`) | 8 |
 | SecuritySupplies | bulk ration crate (`WGCrateFoodRations`) | 15 |
 
-## PDV uplink (111 listings; 8 kit replacements)
+## PDV uplink (112 listings; 8 kit replacements)
 
 | Category | Item | Cost |
 |---|---|---|
@@ -266,6 +267,7 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | PdvSupplies | ziptie box (`BoxZiptie`) | 2 |
 | PdvSupplies | NFBedrollFolded (`NFBedrollFolded`) | 2 |
 | PdvSupplies | body bag box (`BoxBodyBag`) | 2 |
+| PdvSupplies | fire extinguisher (`FireExtinguisher`) | 2 |
 | PdvSupplies | extended-capacity survival box (`BoxSurvivalSyndicate`) | 3 |
 | PdvSupplies | ExtendedEmergencyOxygenTankFilled (`ExtendedEmergencyOxygenTankFilled`) | 3 |
 | PdvSupplies | entrenching tool (`CMEntrenchingTool`) | 3 |

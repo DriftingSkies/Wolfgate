@@ -57,7 +57,7 @@
     lost:
       text: wg-fragment-lost
       sound:
-        path: /Audio/_WG/Remade/betrayal/stinger_3.ogg
+        path: /Audio/_WG/Remade/betrayal/stinger_1.ogg
       corruption: 0.25
       senderCorruption: 0.3
       hiddenWords: 2
@@ -84,15 +84,18 @@
     bases:
     - FactionStaticUplinkTsf
     - FactionStaticUplinkPdv
-    # No stake, and rare: more than a High-value operation's reward to each faction, half again for working together.
+    # No stake, and rare: well past an Extreme operation's reward to each faction, half again for working together,
+    # and every player who took part is paid too, whatever their faction, so outside crews come to help.
     rewards:
-      TSF: 300
-      PDV: 300
-    # Harder than a High-value operation: a garrison waiting on landing, a wave every minute that grows fast with the
-    # players near, an elite every other wave, and Remade boarding a crewed ship within 60 m of the heart.
+      TSF: 500
+      PDV: 500
+    participantReward: 250000
+    # Harder than a High-value operation: a garrison waiting on landing, a wave every two minutes that grows fast with
+    # the players near, an elite every other wave, and Remade boarding a crewed ship within 60 m of the heart. The gap
+    # leaves crews time to push for the heart between waves.
     garrison: 8
     garrisonElites: 2
-    waveInterval: 60
+    waveInterval: 120
     waveBase: 4
     playersPerExtra: 2
     eliteEvery: 2

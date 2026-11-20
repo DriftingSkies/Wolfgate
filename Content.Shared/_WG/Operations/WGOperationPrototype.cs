@@ -1,4 +1,5 @@
 using Content.Shared._Mono.Company;
+using Content.Shared.NPC.Prototypes;
 using Content.Shared.Roles;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
@@ -96,6 +97,13 @@ public sealed partial class WGOperationPrototype : IPrototype, IInheritingProtot
     /// <summary>One more NPC, of the first kind, for this many caller faction members online; 0 for none.</summary>
     [DataField]
     public int NpcPerMembers;
+
+    /// <summary>
+    /// The NPC faction every guard and turret that comes with a PvE site joins, so a map's own guards can't side with
+    /// the caller; null leaves them in their mapped factions.
+    /// </summary>
+    [DataField]
+    public ProtoId<NpcFactionPrototype>? GuardFaction;
 
     /// <summary>Components added to the site's grid.</summary>
     [DataField]

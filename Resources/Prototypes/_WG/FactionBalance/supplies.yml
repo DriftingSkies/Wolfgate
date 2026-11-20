@@ -304,6 +304,19 @@
       tags:
       - SecurityUplink
 
+- type: listing
+  id: WGUplinkTsfSupplyExtinguisher
+  productEntity: FireExtinguisher
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - WGUplinkSecuritySupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
 # PDV supplies
 
 - type: listing
@@ -556,6 +569,19 @@
 - type: listing
   id: WGUplinkPdvSupplyBodyBags
   productEntity: BoxBodyBag
+  cost:
+    Doubloon: 2
+  categories:
+  - WGUplinkPdvSupplies
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvSupplyExtinguisher
+  productEntity: FireExtinguisher
   cost:
     Doubloon: 2
   categories:

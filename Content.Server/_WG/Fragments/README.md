@@ -16,12 +16,15 @@ coordinates are never corrupted, and a world with no mass transceiver up misses 
 Admins can force one with `addgamerule WGFragmentEvent`; it lands 10 to 20 seconds after the first announcement.
 
 It lands with a garrison of 8 Remade and 2 elites besides the mobs it swaps. While the heart stands, it sends a wave
-every 60 seconds at the living players within 60 m, on the fragment or a ship alongside: four, plus one per two players,
+every 120 seconds at the living players within 60 m, on the fragment or a ship alongside: four, plus one per two players,
 an elite every other wave, at most 30 alive. Four in ten of a wave board a ship alongside: any grid a living player
 near the heart is aboard, within 60 m of it, on tiles at least 6 m from every player. The rest land on the fragment, out
 of sight where they can. When the fragment leaves, living Remade that boarded a ship leave with it; corpses stay. Nobody near, no wave. Breaking the heart
-(3000 damage) stops the waves and pays 300 to each faction's uplink, half again if members of both factions were aboard
-at some point before it broke. The fragment leaves after 20 minutes, with a warning 5 minutes before.
+(3000 damage) stops the waves and pays 500 to each faction's uplink, half again if members of both factions were aboard
+at some point before it broke. Every player who was aboard or within 60 m of the heart while it stood, whatever their
+faction, also gets 250,000 thalers, untaxed, in the bank of the character they took part as, so outside crews have a
+reason to help.
+The fragment leaves after 20 minutes, with a warning 5 minutes before.
 
 The Remade here belong to no Monolith, so nothing grows, climbs or turns corpses. A fragment never holds a Scion, a
 splinter or any other `WGMonolith`.

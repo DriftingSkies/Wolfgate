@@ -9,6 +9,8 @@ wg-fragment-cleared-joint = The fragment heart near {$coords} has stopped beatin
 wg-fragment-warning-announcement = The Monolith fragment is coming apart. In five minutes it drifts out of the sector, and whatever is still aboard goes with it.
 wg-fragment-departed = The broken Monolith fragment near {$coords} has drifted out of the sector, cold and quiet at last.
 wg-fragment-lost = The Monolith fragment near {$coords} has drifted out of the sector with its heart still beating. Whatever it was growing, it took with it.
+# Sent to each player paid for taking part when the heart breaks.
+wg-fragment-participant-paid = The fragment heart is broken. {$amount} thalers have been deposited to your account for taking part.
 
 # Two-tone announcement: the sender in the Monolith's colour, the text in the line's own.
 wg-fragment-announcement-wrap = [font size=14][bold][color={$senderColor}]{$sender} Announcement:[/color][/font][font size=12][color={$textColor}]

@@ -1,6 +1,7 @@
 using Content.Shared._Mono.Company;
 using Content.Shared.Tag;
 using Robust.Shared.Map;
+using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
@@ -24,6 +25,10 @@ public sealed partial class WGFragmentRuleComponent : Component
     /// <summary>Tags on each faction's static uplink; the fragment lies about as far from every one of them.</summary>
     [DataField(required: true)]
     public List<ProtoId<TagPrototype>> Bases = new();
+
+    /// <summary>Thalers deposited, untaxed, to every player who took part when the heart breaks, whatever their faction.</summary>
+    [DataField]
+    public int ParticipantReward;
 
     /// <summary>Share added to every faction's reward when members of each were aboard before the heart broke.</summary>
     [DataField]
@@ -150,4 +155,9 @@ public sealed partial class WGFragmentRuleComponent : Component
     public bool HeartBroken;
     public readonly HashSet<EntityUid> Remade = new();
     public readonly HashSet<ProtoId<CompanyPrototype>> Present = new();
+    /// <summary>
+    /// Players who were aboard or near the heart while it stood, with the character slot they first took part as;
+    /// frozen with <see cref="Present"/>.
+    /// </summary>
+    public readonly Dictionary<NetUserId, int> Participants = new();
 }
