@@ -27,7 +27,7 @@ public sealed class ReviewFixesTest
 {
     private static readonly ProtoId<DamageTypePrototype> Blunt = "Blunt";
 
-    private static string? Proto(IEntityManager entMan, EntityUid uid)
+    private static string Proto(IEntityManager entMan, EntityUid uid)
     {
         return entMan.GetComponent<MetaDataComponent>(uid).EntityPrototype?.ID;
     }
