@@ -6,7 +6,7 @@
   parent: BaseVessel
   name: 'GGS Viscount'
   description: 'A competitively priced interceptor from General Gravitonics Shipyards, the Viscount is the second in the "Royal" line. Slightly bigger than its predecessor, it comes with an FTL drive and missiles to catch its quarry. It is armed with 2 ASM-150 missile pods, 2 ADBP 57mm Dravon autocannons, an MS-100 Shield generator, and an ASM-220 torpedo launcher. The motto for this vessel is "Celerity and strength."'
-  price: 120446 # appraised at 96357, 25% markup
+  price: 121700 # appraised at 97360, 25% markup
   category: Small # 127 tiles
   group: Shipyard
   shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/viscount.yml
@@ -16,7 +16,7 @@
   - Pursuit
   - Mercenary
   engine:
-  - Uranium
+  - Bananium
 
 - type: gameMap
   id: WGViscount

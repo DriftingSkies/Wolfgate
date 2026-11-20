@@ -8250,3 +8250,13 @@ Entries:
   id: 100525
   time: '2026-11-20T08:24:19.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/517
+- author: Balls2zawall
+  changes:
+    - type: Fix
+      message: >-
+        The Viscount's generator was set to default power output values, it's
+        been given a shiny new one with higher output courtesy of the Dunn-Kikko
+        corporation.
+  id: 100526
+  time: '2026-11-20T09:41:55.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/753

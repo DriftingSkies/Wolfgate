@@ -4,7 +4,7 @@ meta:
   engineVersion: 291.0.4
   forkId: wolfgate-mapping
   forkVersion: 20261117-170338-3118dcd-0c9797b9
-  time: 11/19/2026 04:59:43
+  time: 11/19/2026 22:43:03
   entityCount: 714
 maps: []
 grids:
@@ -544,20 +544,20 @@ entities:
     components:
     - type: Transform
       parent: 1
-      rot: 1.5707963267948966 rad
-      pos: -18.5,-6.5
+      rot: -1.5707963267948966 rad
+      pos: -18.5,-4.5
   - uid: 394
     components:
     - type: Transform
       parent: 1
-      rot: 1.5707963267948966 rad
+      rot: -1.5707963267948966 rad
       pos: -18.5,-5.5
   - uid: 395
     components:
     - type: Transform
       parent: 1
-      rot: 1.5707963267948966 rad
-      pos: -18.5,-4.5
+      rot: -1.5707963267948966 rad
+      pos: -18.5,-6.5
 - proto: APCBasic
   entities:
   - uid: 137
@@ -782,20 +782,20 @@ entities:
       pos: -7.5,-7.5
 - proto: BoxColoredLightbulb
   entities:
-  - uid: 401
+  - uid: 518
     components:
     - type: Transform
       parent: 1
-      pos: -13.700239,-18.198704
+      pos: -9.911072,-18.686813
     - type: Physics
       canCollide: False
 - proto: BoxColoredLighttube
   entities:
-  - uid: 400
+  - uid: 42
     components:
     - type: Transform
       parent: 1
-      pos: -13.173686,-18.185204
+      pos: -9.911072,-18.217018
     - type: Physics
       canCollide: False
 - proto: BoxTrashbag
@@ -1247,6 +1247,16 @@ entities:
     - type: Transform
       parent: 1
       pos: -13.5,-14.5
+  - uid: 382
+    components:
+    - type: Transform
+      parent: 1
+      pos: -11.5,-18.5
+  - uid: 400
+    components:
+    - type: Transform
+      parent: 1
+      pos: -11.5,-19.5
   - uid: 511
     components:
     - type: Transform
@@ -1257,11 +1267,6 @@ entities:
     - type: Transform
       parent: 1
       pos: -12.5,-18.5
-  - uid: 518
-    components:
-    - type: Transform
-      parent: 1
-      pos: -12.5,-19.5
   - uid: 519
     components:
     - type: Transform
@@ -1329,6 +1334,11 @@ entities:
     - type: Transform
       parent: 1
       pos: -13.5,-16.5
+  - uid: 381
+    components:
+    - type: Transform
+      parent: 1
+      pos: -12.5,-19.5
 - proto: CableMV
   entities:
   - uid: 176
@@ -1550,24 +1560,12 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: -13.5,-19.5
-  - uid: 42
-    components:
-    - type: Transform
-      parent: 1
-      rot: 3.141592653589793 rad
-      pos: -12.5,-19.5
   - uid: 43
     components:
     - type: Transform
       parent: 1
       rot: 3.141592653589793 rad
-      pos: -12.5,-18.5
-  - uid: 44
-    components:
-    - type: Transform
-      parent: 1
-      rot: 3.141592653589793 rad
-      pos: -13.5,-18.5
+      pos: -12.5,-17.5
   - uid: 46
     components:
     - type: Transform
@@ -1586,12 +1584,6 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: -12.5,-16.5
-  - uid: 63
-    components:
-    - type: Transform
-      parent: 1
-      rot: 3.141592653589793 rad
-      pos: -12.5,-17.5
   - uid: 64
     components:
     - type: Transform
@@ -1652,6 +1644,12 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: -10.5,-18.5
+  - uid: 554
+    components:
+    - type: Transform
+      parent: 1
+      rot: 3.141592653589793 rad
+      pos: -12.5,-18.5
 - proto: CatwalkMono
   entities:
   - uid: 20
@@ -3094,9 +3092,9 @@ entities:
     - type: Transform
       parent: 1
       pos: -12.5,-14.5
-- proto: LockerWallMaterialsFuelPlasmaFilled
+- proto: LockerWallMaterialsFuelUraniumFilled
   entities:
-  - uid: 513
+  - uid: 44
     components:
     - type: Transform
       parent: 1
@@ -3174,27 +3172,17 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: -10.5,3.5
-- proto: PortableGeneratorPacmanShuttle
+- proto: PortableGeneratorSuperPacmanShuttle
   entities:
-  - uid: 1531
+  - uid: 63
     components:
     - type: Transform
       parent: 1
       pos: -12.5,-19.5
+    - type: FuelGenerator
+      targetPower: 50000
 - proto: Poweredlight
   entities:
-  - uid: 381
-    components:
-    - type: Transform
-      parent: 1
-      rot: 1.5707963267948966 rad
-      pos: -13.5,-18.5
-  - uid: 382
-    components:
-    - type: Transform
-      parent: 1
-      rot: -1.5707963267948966 rad
-      pos: -9.5,-18.5
   - uid: 383
     components:
     - type: Transform
@@ -3237,6 +3225,18 @@ entities:
       parent: 1
       rot: -1.5707963267948966 rad
       pos: -17.5,-7.5
+  - uid: 543
+    components:
+    - type: Transform
+      parent: 1
+      rot: 1.5707963267948966 rad
+      pos: -13.5,-17.5
+  - uid: 548
+    components:
+    - type: Transform
+      parent: 1
+      rot: -1.5707963267948966 rad
+      pos: -9.5,-17.5
 - proto: RadarEdgeMarkerCenter
   entities:
   - uid: 150
@@ -4385,6 +4385,12 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: -14.5,-1.5
+  - uid: 542
+    components:
+    - type: Transform
+      parent: 1
+      rot: 3.141592653589793 rad
+      pos: -11.5,-18.5
   - uid: 602
     components:
     - type: Transform
@@ -4523,12 +4529,6 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: -14.5,-21.5
-  - uid: 1517
-    components:
-    - type: Transform
-      parent: 1
-      rot: 3.141592653589793 rad
-      pos: -11.5,-18.5
   - uid: 1519
     components:
     - type: Transform
