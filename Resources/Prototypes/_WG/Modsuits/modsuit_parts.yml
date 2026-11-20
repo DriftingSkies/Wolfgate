@@ -388,6 +388,8 @@
     slots:
       cell_slot:
         name: power-cell-slot-component-slot-name-default
+        whitelistFailPopup: modsuit-cell-slot-wrong-item
+        insertOnInteract: false
         whitelist:
           components:
           - PowerCell
@@ -414,6 +416,8 @@
     slots:
       cell_slot:
         name: power-cell-slot-component-slot-name-default
+        whitelistFailPopup: modsuit-cell-slot-wrong-item
+        insertOnInteract: false
         startingItem: PowerCellHigh
         whitelist:
           components:
@@ -433,6 +437,8 @@
     slots:
       cell_slot:
         name: power-cell-slot-component-slot-name-default
+        whitelistFailPopup: modsuit-cell-slot-wrong-item
+        insertOnInteract: false
         startingItem: PowerCellHyper
         whitelist:
           components:
@@ -460,11 +466,11 @@
     - ModsuitCore
   - type: ModCore
   - type: Battery
-    maxCharge: 1080
-    startingCharge: 1080
+    maxCharge: 67500
+    startingCharge: 67500
   - type: BatterySelfRecharger
     autoRecharge: true
-    autoRechargeRate: 3
+    autoRechargeRate: 187.5
   - type: PhysicalComposition
     materialComposition:
       Steel: 100
@@ -491,11 +497,11 @@
     - ModsuitCore
   - type: ModCore
   - type: Battery
-    maxCharge: 1440
-    startingCharge: 1440
+    maxCharge: 90000
+    startingCharge: 90000
   - type: BatterySelfRecharger
     autoRecharge: true
-    autoRechargeRate: 4
+    autoRechargeRate: 250
   - type: PhysicalComposition
     materialComposition:
       Steel: 300
@@ -520,15 +526,15 @@
     - ModsuitCore
   - type: ModCore
   - type: Battery
-    maxCharge: 720
-    startingCharge: 720
+    maxCharge: 45000
+    startingCharge: 45000
   - type: ModCoreRefuelable
     fuel: {}
     fuelPrototypes:
     - SheetPlasma
     - SheetPlasma1
     - SheetPlasma10
-    chargePerFuel: 180
+    chargePerFuel: 11250
   - type: PhysicalComposition
     materialComposition:
       Plasma: 100
@@ -555,8 +561,8 @@
     - ModsuitCore
   - type: ModCore
   - type: Battery
-    maxCharge: 1000000
-    startingCharge: 1000000
+    maxCharge: 62500000
+    startingCharge: 62500000
   - type: BatterySelfRecharger
     autoRecharge: true
-    autoRechargeRate: 1000
+    autoRechargeRate: 62500

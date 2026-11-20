@@ -55,6 +55,10 @@
   - type: NpcFactionMember
     factions:
     - TSFMC
+  # WOLFGATE(Cyborgs) START: built and ghost-role borgs pass TSF company readers, not only job-spawned ones
+  - type: Company
+    companyName: TSF
+  # WOLFGATE END
   - type: Access
     tags:
     - Tsfmc
@@ -117,6 +121,10 @@
   - type: NpcFactionMember
     factions:
     - PirateNF
+  # WOLFGATE(Cyborgs) START: built and ghost-role borgs pass PDV company readers, not only job-spawned ones
+  - type: Company
+    companyName: PDV
+  # WOLFGATE END
   - type: Access
     tags:
     - PDV

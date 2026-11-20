@@ -27,8 +27,9 @@ public sealed partial class ModKinesisModuleComponent : Component
     [DataField]
     public float ThrowThreshold = 1.5f;
 
+    /// <summary>Joules spent per grab; TG's kinesis charges 3.0 DEFAULT_CHARGE_DRAIN.</summary>
     [DataField]
-    public float GrabPower = 10f;
+    public float GrabPower = 150f;
 
     [DataField]
     public EntityWhitelist? Blacklist;

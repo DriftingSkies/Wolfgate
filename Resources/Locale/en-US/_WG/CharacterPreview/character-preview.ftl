@@ -1,0 +1,10 @@
+wg-preview-background = Floor: { $tile }
+wg-preview-background-0 = None
+wg-preview-background-1 = Steel
+wg-preview-background-2 = White
+wg-preview-background-3 = Dark
+wg-preview-background-4 = Plating
+wg-preview-background-5 = Wood
+wg-preview-background-6 = Linoleum
+wg-preview-background-7 = Cafeteria
+wg-preview-background-8 = Grass

@@ -30,6 +30,8 @@
       slots:
         mod-core:
           name: modsuit-core-slot-name
+          whitelistFailPopup: modsuit-core-slot-wrong-item
+          lockedFailPopup: modsuit-core-slot-locked
           startingItem: ModsuitCoreStandardAntique
           whitelist:
             components:
@@ -269,6 +271,8 @@
       slots:
         mod-core:
           name: modsuit-core-slot-name
+          whitelistFailPopup: modsuit-core-slot-wrong-item
+          lockedFailPopup: modsuit-core-slot-locked
           startingItem: ModsuitCoreStandardAntique
           whitelist:
             components:
@@ -998,6 +1002,8 @@
     slots:
       mod-core:
         name: modsuit-core-slot-name
+        whitelistFailPopup: modsuit-core-slot-wrong-item
+        lockedFailPopup: modsuit-core-slot-locked
         startingItem: ModsuitCoreStandardMicroreactor
         whitelist:
           components:
@@ -1207,6 +1213,8 @@
     slots:
       mod-core:
         name: modsuit-core-slot-name
+        whitelistFailPopup: modsuit-core-slot-wrong-item
+        lockedFailPopup: modsuit-core-slot-locked
         startingItem: ModsuitCoreStandardMicroreactor
         whitelist:
           components:
@@ -1433,6 +1441,8 @@
       slots:
         mod-core:
           name: modsuit-core-slot-name
+          whitelistFailPopup: modsuit-core-slot-wrong-item
+          lockedFailPopup: modsuit-core-slot-locked
           startingItem: ModsuitCoreStandardAntique
           whitelist:
             components:
@@ -1625,6 +1635,8 @@
       slots:
         mod-core:
           name: modsuit-core-slot-name
+          whitelistFailPopup: modsuit-core-slot-wrong-item
+          lockedFailPopup: modsuit-core-slot-locked
           startingItem: ModsuitCoreStandardMicroreactor
           whitelist:
             components:
@@ -1832,6 +1844,8 @@
       slots:
         mod-core:
           name: modsuit-core-slot-name
+          whitelistFailPopup: modsuit-core-slot-wrong-item
+          lockedFailPopup: modsuit-core-slot-locked
           startingItem: ModsuitCoreStandardHyper
           whitelist:
             components:
@@ -2033,6 +2047,8 @@
       slots:
         mod-core:
           name: modsuit-core-slot-name
+          whitelistFailPopup: modsuit-core-slot-wrong-item
+          lockedFailPopup: modsuit-core-slot-locked
           startingItem: ModsuitCoreStandardMicroreactor
           whitelist:
             components:
@@ -2227,6 +2243,8 @@
       slots:
         mod-core:
           name: modsuit-core-slot-name
+          whitelistFailPopup: modsuit-core-slot-wrong-item
+          lockedFailPopup: modsuit-core-slot-locked
           startingItem: ModsuitCoreStandardMicroreactor
           whitelist:
             components:
@@ -2413,6 +2431,8 @@
       slots:
         mod-core:
           name: modsuit-core-slot-name
+          whitelistFailPopup: modsuit-core-slot-wrong-item
+          lockedFailPopup: modsuit-core-slot-locked
           startingItem: ModsuitCoreStandardMicroreactor
           whitelist:
             components:
@@ -2601,6 +2621,8 @@
       slots:
         mod-core:
           name: modsuit-core-slot-name
+          whitelistFailPopup: modsuit-core-slot-wrong-item
+          lockedFailPopup: modsuit-core-slot-locked
           startingItem: ModsuitCoreStandardMicroreactor
           whitelist:
             components:
@@ -2787,6 +2809,8 @@
       slots:
         mod-core:
           name: modsuit-core-slot-name
+          whitelistFailPopup: modsuit-core-slot-wrong-item
+          lockedFailPopup: modsuit-core-slot-locked
           startingItem: ModsuitCoreStandardMicroreactor
           whitelist:
             components:

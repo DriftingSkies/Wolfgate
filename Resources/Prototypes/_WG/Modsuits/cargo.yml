@@ -28,6 +28,6 @@
     sprite: _Goobstation/Objects/Specific/Robotics/modsuit_parts.rsi
     state: shell
   product: WGCrateModsuitKit
-  cost: 5000
+  cost: 16000
   category: cargoproduct-category-name-engineering
   group: market

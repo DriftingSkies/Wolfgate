@@ -7,17 +7,20 @@ using Content.Server.Preferences.Managers;
 using Content.Shared._WG.AdminObserver;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
+using Content.Shared.Ghost;
 using Content.Shared.Humanoid;
 using Content.Shared.Inventory;
 using Content.Shared.Medical.SuitSensor;
 using Content.Shared.Mind.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Preferences;
+using Content.Shared.StatusIcon.Components;
 using Robust.Client.GameObjects;
 using Robust.Shared;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Maths;
 
 namespace Content.IntegrationTests.Tests._WG.AdminObserver;
 
@@ -67,6 +70,8 @@ public sealed class AvatarBodyTest
                 Assert.That(entMan.HasComponent<HumanoidAppearanceComponent>(body));
                 Assert.That(entMan.HasComponent<GodmodeComponent>(body));
                 Assert.That(entMan.GetComponent<MindContainerComponent>(body).HasMind, Is.False);
+                Assert.That(entMan.HasComponent<StatusIconComponent>(body), Is.False,
+                    "Ghosts see icons through containers, so the body's SSD icon would hang over the observer.");
                 Assert.That(containers.TryGetContainingContainer((body, null, null), out var held) && held.Owner == observer && held.ID == WGAvatarBodySystem.Slot,
                     "The body rides in the observer's container.");
                 Assert.That(inventory.TryGetSlotEntity(body, "jumpsuit", out _), "With no outfit chosen it wears its job's loadout.");
@@ -185,6 +190,59 @@ public sealed class AvatarBodyTest
         await server.WaitPost(() => manifest.Unmanifest(observer));
         await pair.RunTicksSync(10);
         Assert.That(ClientHolds(netBody), Is.False, "Hidden again, the body leaves with the observer.");
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task HidingKeepsTheGhostColour()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
+        var server = pair.Server;
+        var client = pair.Client;
+        var entMan = server.EntMan;
+        var manifest = server.System<WGManifestSystem>();
+        var store = server.System<WGAdminObserverStore>();
+        var map = await pair.CreateTestMap();
+        var session = await AdminKitFixture.Admin(pair);
+        var observer = await AdminKitFixture.Enter(pair, session, map.GridCoords);
+        var tint = Color.FromHex("#40C0FF");
+
+        await server.WaitPost(() =>
+        {
+            var ghost = entMan.GetComponent<GhostComponent>(observer);
+#pragma warning disable RA0002
+            ghost.Color = tint;
+#pragma warning restore RA0002
+            entMan.Dirty(observer, ghost);
+        });
+        await pair.RunTicksSync(10);
+
+        var netObserver = entMan.GetNetEntity(observer);
+        Color Drawn()
+        {
+            var sprite = client.EntMan.GetComponent<SpriteComponent>(client.EntMan.GetEntity(netObserver));
+            return sprite.TryGetLayer(0, out var layer) ? layer.Color : default;
+        }
+
+        await client.WaitAssertion(() => Assert.That(Drawn(), Is.EqualTo(tint)));
+
+        await server.WaitAssertion(() =>
+            Assert.That(manifest.TryManifest(session, store.Get(session)!.Presets[1].Name, out var message), message));
+        await pair.RunTicksSync(15);
+        await client.WaitAssertion(() =>
+        {
+            var sprite = client.EntMan.GetComponent<SpriteComponent>(client.EntMan.GetEntity(netObserver));
+            Assert.Multiple(() =>
+            {
+                Assert.That(sprite.LayerMapTryGet(HumanoidVisualLayers.Chest, out _), "Manifested, it is drawn as its character.");
+                Assert.That(sprite.LayerMapTryGet("ghostVariant", out _), Is.False);
+            });
+        });
+
+        await server.WaitAssertion(() => Assert.That(manifest.TryUnmanifest(session, out var message), message));
+        await pair.RunTicksSync(10);
+        await client.WaitAssertion(() => Assert.That(Drawn(), Is.EqualTo(tint), "Hidden again, the observer keeps its ghost colour."));
 
         await pair.CleanReturnAsync();
     }

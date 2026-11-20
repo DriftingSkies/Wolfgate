@@ -1,7 +1,6 @@
 # ASF field modsuit: the Minerva (RD) modsuit re-plated for field work. Armour matches the TSF M82c; the chestplate
-# takes armour plates like every modsuit. The Aegis upgrade adds a personal shield on the control unit, because the
-# chestplate's item toggle already drives its seal (ComponentToggler), so a shield toggle there would unseal it.
-# The shield only comes up while the suit is sealed (ShieldRequiresSeal).
+# takes armour plates like every modsuit. The Aegis upgrade adds a built-in hardlight shield module on the control
+# unit; it only runs while the suit is sealed, so alt-clicking the shield cannot unseal the chestplate.
 
 # Field
 
@@ -21,6 +20,8 @@
       gloves: WGAsfClothingModsuitGauntletsField
       outerClothing: WGAsfClothingModsuitChestplateField
       shoes: WGAsfClothingModsuitBootsField
+    inbuiltModules:
+    - ModsuitModuleVoidBoots
   - type: StaticPrice
     price: 5000
 
@@ -37,11 +38,16 @@
     - ModsuitModulePepperShoulders
     - ModsuitModuleRestraintAssist
     - ModsuitModuleHeadProtector
+    inbuiltModules:
+    - ModsuitModuleBuiltinInsulation
+    - ModsuitModuleVoidBoots
   # WOLFGATE(Modsuits): a MOD core replaces the power cell
   - type: ItemSlots
     slots:
       mod-core:
         name: modsuit-core-slot-name
+        whitelistFailPopup: modsuit-core-slot-wrong-item
+        lockedFailPopup: modsuit-core-slot-locked
         startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:
@@ -114,13 +120,11 @@
   components:
   - type: Sprite
     sprite: _WG/Asf/Clothing/Shoes/modsuit.rsi
-  - type: Magboots # voidboots: hold on outside a grid too
-    requiresGrid: false
 
 # Aegis: same armour, plus a hardlight personal shield in the control unit; grey armour so it reads apart
 
 - type: entity
-  parent: [ WGAsfClothingModsuitField, MonoEnergyShieldClothing, BaseFactionGearOtherFactionT3 ]
+  parent: [ WGAsfClothingModsuitField, BaseFactionGearOtherFactionT3 ]
   id: WGAsfClothingModsuitAegis
   components:
   - type: Contraband
@@ -139,32 +143,9 @@
       gloves: WGAsfClothingModsuitGauntletsAegis
       outerClothing: WGAsfClothingModsuitChestplateAegis
       shoes: WGAsfClothingModsuitBootsAegis
-  - type: PersonalShield
-    visuals:
-      fillLevel: 0.15
-      hexDensity: 3
-      pixelGrid: 96
-      color: "#A66BE0"
-      scale: 2.0
-    shield:
-      requiredSlot: BACK
-      maxCharge: 250
-      regenRate: 5
-      spinupTime: 1
-      breakCooldown: 20
-      powerDraw: 0.5
-      blockModifier:
-        coefficients:
-          Heat: 1.25
-          Radiation: 1.5
-  - type: ShieldRequiresSeal
-  - type: Battery
-    maxCharge: 100
-    startingCharge: 100
-  - type: BatterySelfRecharger
-    autoRecharge: true
-    autoRechargeRate: 5
-    autoRechargePauseTime: 5
+    inbuiltModules:
+    - ModsuitModuleBuiltinAegisShield
+    - ModsuitModuleVoidBoots
   - type: ExtendDescription
     descriptionList:
     - description: wg-asf-modsuit-aegis-shield-hint
@@ -186,11 +167,17 @@
     - ModsuitModulePepperShoulders
     - ModsuitModuleRestraintAssist
     - ModsuitModuleHeadProtector
+    inbuiltModules:
+    - ModsuitModuleBuiltinInsulation
+    - ModsuitModuleBuiltinAegisShield
+    - ModsuitModuleVoidBoots
   # WOLFGATE(Modsuits): a MOD core replaces the power cell
   - type: ItemSlots
     slots:
       mod-core:
         name: modsuit-core-slot-name
+        whitelistFailPopup: modsuit-core-slot-wrong-item
+        lockedFailPopup: modsuit-core-slot-locked
         startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:

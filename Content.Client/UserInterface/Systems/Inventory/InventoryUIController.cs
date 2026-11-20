@@ -96,6 +96,7 @@ public sealed partial class InventoryUIController : UIController, IOnStateEntere
         var button = new SlotButton(data);
         button.Pressed += ItemPressed;
         button.StoragePressed += StoragePressed;
+        button.Unpressed += OnWornStorageSlotUnpressed; // WOLFGATE(WornStorage): release of a held worn storage click
         button.Hover += SlotButtonHovered;
 
         return button;
@@ -279,6 +280,11 @@ public sealed partial class InventoryUIController : UIController, IOnStateEntere
 
         if (args.Function == EngineKeyFunctions.UIClick)
         {
+            // WOLFGATE(WornStorage) START: click opens worn storage, drag to a hand takes it off
+            if (TryHoldWornStorageClick(args, control))
+                return;
+            // WOLFGATE END
+
             _inventorySystem.UIInventoryActivate(control.SlotName);
             args.Handle();
             return;

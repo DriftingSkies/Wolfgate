@@ -8250,3 +8250,88 @@ Entries:
   id: 100525
   time: '2026-11-20T08:24:19.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/517
+- author: Balls2zawall
+  changes:
+    - type: Fix
+      message: >-
+        The Viscount's generator was set to default power output values, it's
+        been given a shiny new one with higher output courtesy of the Dunn-Kikko
+        corporation.
+  id: 100526
+  time: '2026-11-20T09:41:55.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/753
+- author: Happyowl93
+  changes:
+    - type: Fix
+      message: A faction AI core whose player ghosts opens up as a ghost role again.
+    - type: Fix
+      message: >-
+        TSFMC and PDV AIs can use their faction's requisition station and
+        overwatch console.
+    - type: Fix
+      message: >-
+        Destroying an AI core while its AI is in a borg no longer causes errors
+        later.
+    - type: Tweak
+      message: >-
+        AI cores taken as a ghost role use the Station AI name from your
+        character's loadout.
+    - type: Tweak
+      message: >-
+        AIs can reconnect to borgs they have controlled after those borgs leave
+        the station's grid.
+    - type: Tweak
+      message: >-
+        Faction AIs can use their faction's requisition station and overwatch
+        console, including viewing marine cameras.
+    - type: Fix
+      message: >-
+        TSF and PDV borgs built mid-round can use their faction's requisition
+        station.
+  id: 100527
+  time: '2026-11-20T16:16:06.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/755
+- author: ImogenOC
+  changes:
+    - type: Add
+      message: >-
+        Added a hold key to turn in place without moving (Controls → Movement;
+        Ctrl in the SS13 preset).
+    - type: Add
+      message: >-
+        Added pixel shift and tilt: hold a key and tap the movement keys to
+        nudge or lean your sprite (B and V in the SS13 preset). Everyone sees
+        it; walking or the reset key puts it back.
+    - type: Add
+      message: >-
+        Added a Misc option to stop combat mode from turning you toward the
+        cursor.
+  id: 100528
+  time: '2026-11-20T16:45:59.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/688
+- author: ImogenOC
+  changes:
+    - type: Add
+      message: >-
+        Keybinds to swap straight to your left or right hand, and to cancel your
+        own interactions in progress.
+    - type: Add
+      message: >-
+        Screentips: an option to show the name of what's under your cursor, at
+        the top of the view or next to the cursor.
+    - type: Add
+      message: >-
+        The character editor preview can be turned by dragging, zoomed with the
+        scroll wheel, and shown on a floor tile.
+  id: 100529
+  time: '2026-11-20T16:46:37.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/690
+- author: ImogenOC
+  changes:
+    - type: Fix
+      message: >-
+        Admins manifested as their character no longer show as SSD, and keep
+        their ghost colour after hiding.
+  id: 100530
+  time: '2026-11-20T16:46:55.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/739

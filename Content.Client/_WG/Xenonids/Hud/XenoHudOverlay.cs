@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._WG.PixelShift;
 using Content.Client.Overlays;
 using Content.Shared._WG.Xenonids.Mobs;
 using Content.Shared._WG.RMCCore.Shields;
@@ -50,6 +51,7 @@ public sealed partial class XenoHudOverlay : Overlay
 
     private readonly MobStateSystem _mobState;
     private readonly MobThresholdSystem _mobThresholds;
+    private readonly WGPixelShiftVisualsSystem _pixelShift;
     private readonly SpriteSystem _sprite;
     private readonly TransformSystem _transform;
 
@@ -84,6 +86,7 @@ public sealed partial class XenoHudOverlay : Overlay
 
         _mobState = _entity.System<MobStateSystem>();
         _mobThresholds = _entity.System<MobThresholdSystem>();
+        _pixelShift = _entity.System<WGPixelShiftVisualsSystem>();
         _sprite = _entity.System<SpriteSystem>();
         _transform = _entity.System<TransformSystem>();
 
@@ -184,8 +187,8 @@ public sealed partial class XenoHudOverlay : Overlay
             handle.SetTransform(matrix);
 
             var offset = (float) texture.Height / EyeManager.PixelsPerMeter;
-            var yOffset = -(bounds.Height / 2f) - sprite.Offset.Y;
-            var xOffset = (bounds.Width / 2f) + sprite.Offset.X - (float) texture.Width / EyeManager.PixelsPerMeter;
+            var yOffset = -(bounds.Height / 2f) - _pixelShift.UnshiftedOffset(uid, sprite).Y;
+            var xOffset = (bounds.Width / 2f) + _pixelShift.UnshiftedOffset(uid, sprite).X - (float) texture.Width / EyeManager.PixelsPerMeter;
             handle.DrawTexture(texture, new Vector2(xOffset, yOffset), member.IconColor);
         }
     }
@@ -263,8 +266,8 @@ public sealed partial class XenoHudOverlay : Overlay
 
             var texture = _sprite.GetFrame(icon, _timing.CurTime);
 
-            var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
-            var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
+            var yOffset = (bounds.Height + _pixelShift.UnshiftedOffset(uid, sprite).Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
+            var xOffset = (bounds.Width + _pixelShift.UnshiftedOffset(uid, sprite).X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
 
             var position = new Vector2(xOffset, yOffset);
             handle.DrawTexture(texture, position);
@@ -302,8 +305,8 @@ public sealed partial class XenoHudOverlay : Overlay
             var icon = new Rsi(_rsiPath, $"acid_stacks{level}");
             var texture = _sprite.GetFrame(icon, _timing.CurTime);
 
-            var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
-            var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
+            var yOffset = (bounds.Height + _pixelShift.UnshiftedOffset(uid, sprite).Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
+            var xOffset = (bounds.Width + _pixelShift.UnshiftedOffset(uid, sprite).X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
 
             var position = new Vector2(xOffset, yOffset);
             handle.DrawTexture(texture, position);
@@ -342,8 +345,8 @@ public sealed partial class XenoHudOverlay : Overlay
             var icon = new Rsi(_rsiPath, $"hudxenoupgrade{comp.Rank}");
             var texture = _sprite.GetFrame(icon, _timing.CurTime);
 
-            var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
-            var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
+            var yOffset = (bounds.Height + _pixelShift.UnshiftedOffset(uid, sprite).Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
+            var xOffset = (bounds.Width + _pixelShift.UnshiftedOffset(uid, sprite).X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
 
             var position = new Vector2(xOffset, yOffset);
             handle.DrawTexture(texture, position);
@@ -381,8 +384,8 @@ public sealed partial class XenoHudOverlay : Overlay
             var icon = new Rsi(_rsiPath, (comp.IsCriticalTag ? $"prae_tag_yellow" : $"prae_tag"));
             var texture = _sprite.GetFrame(icon, _timing.CurTime - comp.TimeAdded, false);
 
-            var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float)texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
-            var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float)texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
+            var yOffset = (bounds.Height + _pixelShift.UnshiftedOffset(uid, sprite).Y) / 2f - (float)texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
+            var xOffset = (bounds.Width + _pixelShift.UnshiftedOffset(uid, sprite).X) / 2f - (float)texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
 
             var position = new Vector2(xOffset, yOffset);
             handle.DrawTexture(texture, position);
@@ -423,8 +426,8 @@ public sealed partial class XenoHudOverlay : Overlay
             var icon = new Rsi(_rsiPathSlow, $"stomp");
             var texture = _sprite.GetFrame(icon, _timing.CurTime);
 
-            var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float)texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
-            var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float)texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
+            var yOffset = (bounds.Height + _pixelShift.UnshiftedOffset(uid, sprite).Y) / 2f - (float)texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
+            var xOffset = (bounds.Width + _pixelShift.UnshiftedOffset(uid, sprite).X) / 2f - (float)texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
 
             var position = new Vector2(xOffset, yOffset);
             handle.DrawTexture(texture, position);
@@ -465,8 +468,8 @@ public sealed partial class XenoHudOverlay : Overlay
             var icon = new Rsi(_rsiPathFreeze, $"freeze");
             var texture = _sprite.GetFrame(icon, _timing.CurTime);
 
-            var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float)texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
-            var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float)texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
+            var yOffset = (bounds.Height + _pixelShift.UnshiftedOffset(uid, sprite).Y) / 2f - (float)texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
+            var xOffset = (bounds.Width + _pixelShift.UnshiftedOffset(uid, sprite).X) / 2f - (float)texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
 
             var position = new Vector2(xOffset, yOffset);
             handle.DrawTexture(texture, position);
@@ -503,8 +506,8 @@ public sealed partial class XenoHudOverlay : Overlay
             var icon = comp.InfectedIcons[level];
             var texture = _sprite.GetFrame(icon, _timing.CurTime);
 
-            var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
-            var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
+            var yOffset = (bounds.Height + _pixelShift.UnshiftedOffset(uid, sprite).Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height;
+            var xOffset = (bounds.Width + _pixelShift.UnshiftedOffset(uid, sprite).X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width;
 
             var position = new Vector2(xOffset, yOffset);
             handle.DrawTexture(texture, position);
@@ -561,8 +564,8 @@ public sealed partial class XenoHudOverlay : Overlay
         var texture = _sprite.GetFrame(icon, _timing.CurTime);
 
         var bounds = _sprite.GetLocalBounds((ent.Owner, sprite));
-        var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height + xeno.HudOffset.Y;
-        var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width + xeno.HudOffset.X;
+        var yOffset = (bounds.Height + _pixelShift.UnshiftedOffset(uid, sprite).Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height + xeno.HudOffset.Y;
+        var xOffset = (bounds.Width + _pixelShift.UnshiftedOffset(uid, sprite).X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width + xeno.HudOffset.X;
 
         var position = new Vector2(xOffset, yOffset);
         handle.DrawTexture(texture, position);
@@ -586,8 +589,8 @@ public sealed partial class XenoHudOverlay : Overlay
         var texture = _sprite.GetFrame(icon, _timing.CurTime);
 
         var bounds = _sprite.GetLocalBounds((ent.Owner, sprite));
-        var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height + xeno.HudOffset.Y;
-        var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width + xeno.HudOffset.X;
+        var yOffset = (bounds.Height + _pixelShift.UnshiftedOffset(uid, sprite).Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height + xeno.HudOffset.Y;
+        var xOffset = (bounds.Width + _pixelShift.UnshiftedOffset(uid, sprite).X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width + xeno.HudOffset.X;
 
         var position = new Vector2(xOffset, yOffset);
         handle.DrawTexture(texture, position);
@@ -624,8 +627,8 @@ public sealed partial class XenoHudOverlay : Overlay
         var texture = _sprite.GetFrame(icon, _timing.CurTime);
 
         var bounds = _sprite.GetLocalBounds((ent.Owner, sprite));
-        var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float)texture.Height / EyeManager.PixelsPerMeter * bounds.Height + xeno.HudOffset.Y;
-        var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float)texture.Width / EyeManager.PixelsPerMeter * bounds.Width + xeno.HudOffset.X;
+        var yOffset = (bounds.Height + _pixelShift.UnshiftedOffset(uid, sprite).Y) / 2f - (float)texture.Height / EyeManager.PixelsPerMeter * bounds.Height + xeno.HudOffset.Y;
+        var xOffset = (bounds.Width + _pixelShift.UnshiftedOffset(uid, sprite).X) / 2f - (float)texture.Width / EyeManager.PixelsPerMeter * bounds.Width + xeno.HudOffset.X;
 
         var position = new Vector2(xOffset, yOffset);
         handle.DrawTexture(texture, position);
@@ -644,7 +647,7 @@ public sealed partial class XenoHudOverlay : Overlay
 
     private void UpdatePurpleBar(Entity<XenoComponent, SpriteComponent> ent, DrawingHandleWorld handle, double energy, double max, int? generationCap)
     {
-        var (_, xeno, sprite) = ent;
+        var (uid, xeno, sprite) = ent;
         var level = ContentHelpers.RoundToLevels(energy, max, 11);
         var name = level > 0 ? $"{level * 10}" : "0";
         var state = $"xenoenergy{name}";
@@ -652,8 +655,8 @@ public sealed partial class XenoHudOverlay : Overlay
         var texture = _sprite.GetFrame(icon, _timing.CurTime);
 
         var bounds = _sprite.GetLocalBounds((ent.Owner, sprite));
-        var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height + xeno.HudOffset.Y;
-        var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width + xeno.HudOffset.X;
+        var yOffset = (bounds.Height + _pixelShift.UnshiftedOffset(uid, sprite).Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height + xeno.HudOffset.Y;
+        var xOffset = (bounds.Width + _pixelShift.UnshiftedOffset(uid, sprite).X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width + xeno.HudOffset.X;
 
         var position = new Vector2(xOffset, yOffset);
         handle.DrawTexture(texture, position);

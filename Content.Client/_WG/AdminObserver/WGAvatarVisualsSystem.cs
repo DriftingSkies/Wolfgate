@@ -2,6 +2,7 @@ using Content.Client.Clothing;
 using Content.Client.Hands.Systems;
 using Content.Client.Inventory;
 using Content.Shared._WG.AdminObserver;
+using Content.Shared.Ghost;
 using Content.Shared.Hands.Components;
 using Content.Shared.Inventory;
 using Content.Shared.Item;
@@ -125,6 +126,10 @@ public sealed partial class WGAvatarVisualsSystem : EntitySystem
         _sprite.CopySprite((EntityUid.Invalid, own), (ent.Owner, ent.Comp));
         if (TryComp<AppearanceComponent>(ent, out var appearance))
             _appearance.QueueUpdate(ent, appearance);
+
+        // The prototype's sprite is untinted; the ghost system only tints on a state change, which hiding doesn't send.
+        if (TryComp<GhostComponent>(ent, out var ghost))
+            _sprite.LayerSetColor((ent.Owner, ent.Comp), 0, ghost.Color);
 
         // Its own sprite shows what it wears and holds again.
         if (TryComp<InventoryComponent>(ent, out var inventory))

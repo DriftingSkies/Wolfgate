@@ -1,0 +1,14 @@
+- type: shader
+  id: WGBloomExtract
+  kind: source
+  path: "/Textures/_WG/DisplayOptions/Shaders/bloom_extract.swsl"
+
+- type: shader
+  id: WGBloomBlur
+  kind: source
+  path: "/Textures/_WG/DisplayOptions/Shaders/bloom_blur.swsl"
+
+- type: shader
+  id: WGBloomComposite
+  kind: source
+  path: "/Textures/_WG/DisplayOptions/Shaders/bloom_composite.swsl"

@@ -12,6 +12,20 @@ namespace Content.Shared._WG.Modsuits.Systems;
 public sealed partial class ModSuitSystem
 {
     private static readonly TimeSpan PowerAlertInterval = TimeSpan.FromSeconds(1);
+
+    /// <summary>
+    /// Converts the port's TG-derived drain numbers to TG watts: the 0.8 theme drain becomes 50 W, so a
+    /// TG-sized MOD cell lasts as long as it does on TG station.
+    /// Module costs are authored as the TG value times <see cref="TgCostUnit"/>.
+    /// </summary>
+    public const float PowerDrainScale = 62.5f;
+
+    /// <summary>
+    /// TG expresses module costs as multiples of DEFAULT_CHARGE_DRAIN; the port's theme baseline is 0.8,
+    /// so a TG cost of X is written as 0.8X and drains 50X joules per second.
+    /// </summary>
+    public const float TgCostUnit = 0.8f;
+
     private TimeSpan _nextPowerAlertUpdate;
 
     public EntityUid? GetCore(Entity<ModSuitComponent> ent)
@@ -96,6 +110,18 @@ public sealed partial class ModSuitSystem
         Dirty(ent);
     }
 
+    /// <summary>Sets a module's idle drain and replicates it, for costs that change with the module's state.</summary>
+    public void SetModuleIdlePower(EntityUid moduleUid, float power)
+    {
+        if (TerminatingOrDeleted(moduleUid)
+            || !TryComp<ModModuleComponent>(moduleUid, out var module)
+            || module.IdlePower == power)
+            return;
+
+        module.IdlePower = power;
+        Dirty(moduleUid, module);
+    }
+
     public float GetThemeDrain(Entity<ModSuitComponent> ent)
     {
         return _proto.Index(ent.Comp.Theme).ChargeDrain;
@@ -108,7 +134,7 @@ public sealed partial class ModSuitSystem
 
         var drain = GetThemeDrain(ent);
         if (ent.Comp.State != ModSuitState.Active)
-            return drain;
+            return drain * PowerDrainScale;
 
         foreach (var module in ent.Comp.ModulesContainer.ContainedEntities)
         {
@@ -120,7 +146,7 @@ public sealed partial class ModSuitSystem
                 drain += moduleComp.ActivePower;
         }
 
-        return drain;
+        return drain * PowerDrainScale;
     }
 
     /// <summary>Wolfgate's batteries have no charge-rate hook, so the drain is applied in <see cref="UpdatePowerDrain"/>.</summary>
@@ -235,7 +261,7 @@ public sealed partial class ModSuitSystem
         var charge = GetCharge(battery);
         if (charge <= 0f)
         {
-            SetPowered(ent, false);
+            DepletePower(ent);
             return;
         }
 
@@ -244,7 +270,18 @@ public sealed partial class ModSuitSystem
             return;
 
         if (!_battery.TryUseCharge(battery.AsNullable(), drain) || GetCharge(battery) <= 0f)
-            SetPowered(ent, false);
+            DepletePower(ent);
+    }
+
+    /// <summary>Cuts the modules and unseals the suit once its core is empty.</summary>
+    private void DepletePower(Entity<ModSuitComponent> ent)
+    {
+        SetPowered(ent, false);
+
+        if (ent.Comp.State == ModSuitState.Active)
+            StartDeactivation(ent);
+        else if (ent.Comp.State == ModSuitState.Activating)
+            ForceDeactivate(ent, false);
     }
 
     private void UpdatePowerAlert(Entity<ModSuitComponent> ent)

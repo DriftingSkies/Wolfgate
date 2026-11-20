@@ -1,3 +1,4 @@
+using Content.Client._WG.PixelShift; // WOLFGATE(PixelShift)
 using Content.Shared.StatusIcon;
 using Content.Shared.StatusIcon.Components;
 using Robust.Client.GameObjects;
@@ -18,6 +19,7 @@ public sealed partial class StatusIconOverlay : Overlay
     private readonly SpriteSystem _sprite;
     private readonly TransformSystem _transform;
     private readonly StatusIconSystem _statusIcon;
+    private readonly WGPixelShiftVisualsSystem _wgPixelShift; // WOLFGATE(PixelShift): icons stay put while the body shifts
     private readonly ShaderInstance _unshadedShader;
 
     public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowFOV;
@@ -29,6 +31,7 @@ public sealed partial class StatusIconOverlay : Overlay
         _sprite = _entity.System<SpriteSystem>();
         _transform = _entity.System<TransformSystem>();
         _statusIcon = _entity.System<StatusIconSystem>();
+        _wgPixelShift = _entity.System<WGPixelShiftVisualsSystem>(); // WOLFGATE(PixelShift)
         _unshadedShader = _prototype.Index<ShaderPrototype>("unshaded").Instance();
     }
 
@@ -69,6 +72,7 @@ public sealed partial class StatusIconOverlay : Overlay
             var accOffsetL = 8; // Frontier: 0<8 - do not overlap the speech bubble
             var accOffsetR = 0;
             icons.Sort();
+            var spriteOffset = _wgPixelShift.UnshiftedOffset(uid, sprite); // WOLFGATE(PixelShift): icons stay put while the body shifts
 
             foreach (var proto in icons)
             {
@@ -93,8 +97,8 @@ public sealed partial class StatusIconOverlay : Overlay
                         accOffsetL += texture.Height;
                         countL++;
                     }
-                    yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float) (accOffsetL - proto.Offset) / EyeManager.PixelsPerMeter;
-                    xOffset = -(bounds.Width + sprite.Offset.X) / 2f;
+                    yOffset = (bounds.Height + spriteOffset.Y) / 2f - (float) (accOffsetL - proto.Offset) / EyeManager.PixelsPerMeter; // WOLFGATE(PixelShift)
+                    xOffset = -(bounds.Width + spriteOffset.X) / 2f; // WOLFGATE(PixelShift)
 
                 }
                 else
@@ -106,8 +110,8 @@ public sealed partial class StatusIconOverlay : Overlay
                         accOffsetR += texture.Height;
                         countR++;
                     }
-                    yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float) (accOffsetR - proto.Offset) / EyeManager.PixelsPerMeter;
-                    xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter;
+                    yOffset = (bounds.Height + spriteOffset.Y) / 2f - (float) (accOffsetR - proto.Offset) / EyeManager.PixelsPerMeter; // WOLFGATE(PixelShift)
+                    xOffset = (bounds.Width + spriteOffset.X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter; // WOLFGATE(PixelShift)
 
                 }
 

@@ -1,0 +1,21 @@
+// Light bloom, blur pass. One axis of a separable nine-tap Gaussian, in five linearly filtered taps. The overlay runs it
+// once across and once down, between two half size textures of the same size.
+
+light_mode unshaded;
+
+uniform sampler2D bloom_texture;
+uniform highp vec2 direction; // The blur axis, scaled by the spacing between taps in texels.
+
+void fragment() {
+    highp vec2 uv = FRAGCOORD.xy * SCREEN_PIXEL_SIZE;
+    highp vec2 stepNear = direction * 1.3846153846 * SCREEN_PIXEL_SIZE;
+    highp vec2 stepFar = direction * 3.2307692308 * SCREEN_PIXEL_SIZE;
+
+    highp vec3 col = zTextureSpec(bloom_texture, uv).rgb * 0.2270270270;
+    col += zTextureSpec(bloom_texture, uv + stepNear).rgb * 0.3162162162;
+    col += zTextureSpec(bloom_texture, uv - stepNear).rgb * 0.3162162162;
+    col += zTextureSpec(bloom_texture, uv + stepFar).rgb * 0.0702702703;
+    col += zTextureSpec(bloom_texture, uv - stepFar).rgb * 0.0702702703;
+
+    COLOR = vec4(col, 1.0);
+}

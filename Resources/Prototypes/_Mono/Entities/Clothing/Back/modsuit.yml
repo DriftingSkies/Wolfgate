@@ -50,6 +50,8 @@
     slots:
       mod-core:
         name: modsuit-core-slot-name
+        whitelistFailPopup: modsuit-core-slot-wrong-item
+        lockedFailPopup: modsuit-core-slot-locked
         startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:
@@ -109,6 +111,8 @@
     slots:
       mod-core:
         name: modsuit-core-slot-name
+        whitelistFailPopup: modsuit-core-slot-wrong-item
+        lockedFailPopup: modsuit-core-slot-locked
         startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:
@@ -179,6 +183,8 @@
     slots:
       mod-core:
         name: modsuit-core-slot-name
+        whitelistFailPopup: modsuit-core-slot-wrong-item
+        lockedFailPopup: modsuit-core-slot-locked
         startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:
@@ -250,6 +256,8 @@
     - ModsuitModuleTether
     - ModsuitModuleMagboots
     - ModsuitModuleHeadProtector
+    inbuiltModules:
+    - ModsuitModuleBuiltinInsulation
   # WOLFGATE END
   # WOLFGATE(Modsuits) START: a MOD core replaces the power cell
   # - type: ItemSlots
@@ -264,6 +272,8 @@
     slots:
       mod-core:
         name: modsuit-core-slot-name
+        whitelistFailPopup: modsuit-core-slot-wrong-item
+        lockedFailPopup: modsuit-core-slot-locked
         startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:
@@ -349,6 +359,8 @@
     slots:
       mod-core:
         name: modsuit-core-slot-name
+        whitelistFailPopup: modsuit-core-slot-wrong-item
+        lockedFailPopup: modsuit-core-slot-locked
         startingItem: ModsuitCoreStandardHighCapacity
         whitelist:
           components:

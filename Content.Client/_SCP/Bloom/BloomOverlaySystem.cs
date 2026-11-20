@@ -106,6 +106,7 @@ public sealed partial class LightingOverlaySystem : EntitySystem
 
     private void OnAllEnabledChanged(bool value)
     {
+        value = false; // WOLFGATE(DisplayOptions): WGBloomOverlay replaces these per-lamp overlays
         _allEnabled = value;
         _cone.Enabled = value && _coneEnabled;
         _point.Enabled = value;
