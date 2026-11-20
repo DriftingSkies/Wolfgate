@@ -181,6 +181,8 @@ def main():
         write_rsi(tex / f"{gid[6:].lower()}.rsi", {"alive": frames[alive], "dead": frames[dead]}, size, f"{MOBS}/{src}.dmi")
         parent = "MobReindeerDoe" if kind == "prey" else "MobBearSpace"
         spawned = "".join(f"    - id: {item}\n      amount: {amount}\n" + (f"      prob: {prob}\n" if prob < 1 else "") for item, amount, prob in butchered)
+        # The reindeer base takes cold damage below 260 K; Thrascias's tundra is 180 K. Bear-based game has no Temperature.
+        hardy = "  - type: Temperature\n    coldDamageThreshold: 0\n" if parent == "MobReindeerDoe" else ""
         behaviour = """  - type: HTN
     rootTask:
       task: WGVerdaSkittishCompound
@@ -224,9 +226,9 @@ def main():
     baseSprintSpeed: {speed}
   - type: Butcherable
     spawned:
-{spawned}{game_comp}  # Native wildlife breathes its own world's air, thin or not.
+{spawned}{game_comp}  # Native wildlife breathes its own world's air, thin or not, and bears its cold.
   - type: BreathingImmunity
-{behaviour}""")
+{hardy}{behaviour}""")
 
     for pid, (game, low, high) in PACKS.items():
         y.append(f"- type: entityTable\n  id: {pid}\n  table: !type:AllSelector\n    children:\n    - id: {game}\n      rolls: !type:RangeNumberSelector\n        range: {low}, {high}\n")

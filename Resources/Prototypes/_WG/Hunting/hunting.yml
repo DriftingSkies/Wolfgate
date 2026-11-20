@@ -38,8 +38,10 @@
   - type: WGGame
     prizedCut: WGCutSaigaBackstrap
     offal: [ WGOffalHeart, WGOffalLiver ]
-  # Native wildlife breathes its own world's air, thin or not.
+  # Native wildlife breathes its own world's air, thin or not, and bears its cold.
   - type: BreathingImmunity
+  - type: Temperature
+    coldDamageThreshold: 0
   - type: HTN
     rootTask:
       task: WGVerdaSkittishCompound
@@ -89,8 +91,10 @@
   - type: WGGame
     prizedCut: WGCutSaigaBackstrap
     offal: [ WGOffalHeart, WGOffalLiver ]
-  # Native wildlife breathes its own world's air, thin or not.
+  # Native wildlife breathes its own world's air, thin or not, and bears its cold.
   - type: BreathingImmunity
+  - type: Temperature
+    coldDamageThreshold: 0
   - type: HTN
     rootTask:
       task: WGVerdaSkittishCompound
@@ -140,8 +144,10 @@
   - type: WGGame
     prizedCut: WGCutGoatShank
     offal: [ WGOffalHeart, WGOffalLiver ]
-  # Native wildlife breathes its own world's air, thin or not.
+  # Native wildlife breathes its own world's air, thin or not, and bears its cold.
   - type: BreathingImmunity
+  - type: Temperature
+    coldDamageThreshold: 0
   - type: HTN
     rootTask:
       task: WGVerdaSkittishCompound
@@ -192,8 +198,10 @@
       amount: 1
   - type: WGGame
     offal: [ WGOffalHeart, WGOffalLiver ]
-  # Native wildlife breathes its own world's air, thin or not.
+  # Native wildlife breathes its own world's air, thin or not, and bears its cold.
   - type: BreathingImmunity
+  - type: Temperature
+    coldDamageThreshold: 0
   - type: HTN
     rootTask:
       task: WGVerdaSkittishCompound
@@ -242,8 +250,10 @@
       prob: 0.8
   - type: WGGame
     offal: [ WGOffalHeart, WGOffalLiver ]
-  # Native wildlife breathes its own world's air, thin or not.
+  # Native wildlife breathes its own world's air, thin or not, and bears its cold.
   - type: BreathingImmunity
+  - type: Temperature
+    coldDamageThreshold: 0
   - type: HTN
     rootTask:
       task: WGVerdaSkittishCompound
@@ -294,8 +304,10 @@
       amount: 2
   - type: WGGame
     offal: [ WGOffalHeart, WGOffalLiver ]
-  # Native wildlife breathes its own world's air, thin or not.
+  # Native wildlife breathes its own world's air, thin or not, and bears its cold.
   - type: BreathingImmunity
+  - type: Temperature
+    coldDamageThreshold: 0
   - type: HTN
     rootTask:
       task: WGVerdaSkittishCompound
@@ -344,7 +356,7 @@
       prob: 0.8
   - type: WGGame
     offal: [ WGOffalHeart, WGOffalLiver ]
-  # Native wildlife breathes its own world's air, thin or not.
+  # Native wildlife breathes its own world's air, thin or not, and bears its cold.
   - type: BreathingImmunity
   - type: MeleeWeapon
     damage:
@@ -391,7 +403,7 @@
   - type: WGGame
     prizedCut: WGCutDirebearHaunch
     offal: [ WGOffalHeart, WGOffalLiver ]
-  # Native wildlife breathes its own world's air, thin or not.
+  # Native wildlife breathes its own world's air, thin or not, and bears its cold.
   - type: BreathingImmunity
   - type: MeleeWeapon
     damage:
@@ -436,7 +448,7 @@
   - type: WGGame
     prizedCut: WGCutBobcatLoin
     offal: [ WGOffalHeart, WGOffalLiver ]
-  # Native wildlife breathes its own world's air, thin or not.
+  # Native wildlife breathes its own world's air, thin or not, and bears its cold.
   - type: BreathingImmunity
   - type: MeleeWeapon
     damage:
@@ -480,7 +492,7 @@
       prob: 0.8
   - type: WGGame
     offal: [ WGOffalHeart, WGOffalLiver ]
-  # Native wildlife breathes its own world's air, thin or not.
+  # Native wildlife breathes its own world's air, thin or not, and bears its cold.
   - type: BreathingImmunity
   - type: MeleeWeapon
     damage:
@@ -524,7 +536,7 @@
       prob: 0.8
   - type: WGGame
     offal: [ WGOffalHeart, WGOffalLiver ]
-  # Native wildlife breathes its own world's air, thin or not.
+  # Native wildlife breathes its own world's air, thin or not, and bears its cold.
   - type: BreathingImmunity
   - type: MeleeWeapon
     damage:
@@ -565,7 +577,7 @@
       amount: 1
       prob: 0.8
   - type: WGGame
-  # Native wildlife breathes its own world's air, thin or not.
+  # Native wildlife breathes its own world's air, thin or not, and bears its cold.
   - type: BreathingImmunity
   - type: MeleeWeapon
     damage:
