@@ -98,14 +98,21 @@ public sealed partial class WGMealSystem
 
     private void UpdateComfort(float seconds)
     {
-        // Warmth by a lit hearth.
-        var hearths = EntityQueryEnumerator<WGHearthComponent, TransformComponent>();
-        while (hearths.MoveNext(out var uid, out _, out var xform))
+        // Warmth by a lit hearth with a fire (not a microwave). Players are far fewer than hearths, so look from them.
+        var actors = EntityQueryEnumerator<ActorComponent, TransformComponent>();
+        while (actors.MoveNext(out var uid, out _, out var xform))
         {
-            if (!_cooking.Lit(uid))
+            if (CompOrNull<WGComfortComponent>(uid)?.Comfort >= HearthComfortCap)
                 continue;
-            foreach (var actor in _lookup.GetEntitiesInRange<ActorComponent>(xform.Coordinates, HearthReach))
-                AddComfort(actor, HearthComfort, HearthComfortCap);
+            _nearHearths.Clear();
+            _lookup.GetEntitiesInRange(xform.Coordinates, HearthReach, _nearHearths);
+            foreach (var hearth in _nearHearths)
+            {
+                if (!_cooking.Warms(hearth))
+                    continue;
+                AddComfort(uid, HearthComfort, HearthComfortCap);
+                break;
+            }
         }
 
         // It fades slowly; gone at nothing.
@@ -125,6 +132,7 @@ public sealed partial class WGMealSystem
     }
 
     private readonly List<EntityUid> _faded = new();
+    private readonly HashSet<Entity<WGHearthComponent>> _nearHearths = new();
 
     /// <summary>Whether they finished a home-cooked dish within <see cref="ShareWithin"/>.</summary>
     private static bool AteLately(WGComfortComponent comfort, TimeSpan now)

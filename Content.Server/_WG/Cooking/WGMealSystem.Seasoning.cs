@@ -38,10 +38,13 @@ public sealed partial class WGMealSystem
     }
 
     /// <summary>The seasoning an item gives, if any: by what it is, or by a reagent it holds a unit of.</summary>
+    private List<WGSeasoningPrototype>? _seasonings;
+
     public WGSeasoningPrototype? SeasoningFor(EntityUid item)
     {
         var id = MetaData(item).EntityPrototype?.ID;
-        foreach (var seasoning in _proto.EnumeratePrototypes<WGSeasoningPrototype>().OrderBy(s => s.ID))
+        _seasonings ??= _proto.EnumeratePrototypes<WGSeasoningPrototype>().OrderBy(s => s.ID).ToList();
+        foreach (var seasoning in _seasonings)
         {
             if (id != null && seasoning.Items.Any(i => i.Id == id))
                 return seasoning;

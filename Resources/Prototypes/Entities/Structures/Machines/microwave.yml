@@ -129,11 +129,17 @@
     - !type:AutomatedContainer
       input: AutomationSlotInput
       output: AutomationSlotInput
-      containerId: microwave_entity_container
-      maxItems: 10 # have to manually keep it in sync with capacity on Microwave at the top
+      # WOLFGATE(Cooking) START: automation feeds the hearth's oven; nothing cooks in the old microwave container
+      # containerId: microwave_entity_container
+      # maxItems: 10 # have to manually keep it in sync with capacity on Microwave at the top
+      containerId: wg-oven
+      maxItems: 4 # WGHearth ovenCapacity
+      # WOLFGATE END
   - type: EmptyOnMachineDeconstruct
     containers:
     - microwave_entity_container
+    # WOLFGATE(Cooking): taken apart, the microwave drops what was in its oven
+    - wg-oven
   - type: GuideHelp
     guides:
     - Chef
@@ -181,11 +187,16 @@
   name: donk co. microwave
   description: So advanced, it can cook donk-pockets in a mere 2.5 seconds!
   components:
-  - type: Microwave
-    cookTimeMultiplier: 0.5
-    capacity: 10
-    canMicrowaveIdsSafely: false
-    explosionChance: 1 # Frontier 0.3<1
+  # WOLFGATE(Cooking) START: a faster oven-only hearth like its parent; it alone bakes its secret recipes
+  # - type: Microwave
+  #   cookTimeMultiplier: 0.5
+  #   capacity: 10
+  #   canMicrowaveIdsSafely: false
+  #   explosionChance: 1 # Frontier 0.3<1
+  - type: WGHearth
+    hob: false
+    heat: 2
+  # WOLFGATE END
   - type: Sprite
     sprite: Structures/Machines/microwave_syndie.rsi
     drawdepth: SmallObjects

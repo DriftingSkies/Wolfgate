@@ -173,8 +173,12 @@
   parent: KitchenElectricRange
   name: donk co. electric range
   components:
-  - type: Microwave
-    cookTimeMultiplier: 0.5
+  # WOLFGATE(Cooking) START: a faster hearth like its parent; it alone bakes its secret recipes
+  # - type: Microwave
+  #   cookTimeMultiplier: 0.5
+  - type: WGHearth
+    heat: 2
+  # WOLFGATE END
   - type: Sprite
     sprite: _NF/Structures/Machines/oven_syndie.rsi
   - type: Machine
@@ -263,6 +267,15 @@
     interfaces:
       enum.MicrowaveUiKey.AssemblerKey:
         type: AssemblerBoundUserInterface
+  # WOLFGATE(Cooking) START: automation keeps feeding the assembler's own container, not the oven its parent's now feeds
+  - type: AutomationSlots
+    slots:
+    - !type:AutomatedContainer
+      input: AutomationSlotInput
+      output: AutomationSlotInput
+      containerId: microwave_entity_container
+      maxItems: 10
+  # WOLFGATE END
 
 # POI versions of microwave machines
 

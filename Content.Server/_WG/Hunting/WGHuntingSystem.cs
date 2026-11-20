@@ -21,6 +21,10 @@ public sealed partial class WGGameComponent : Component
     /// <summary>Offal it gives, each on its own chance, fewer from a messy kill.</summary>
     [DataField]
     public List<EntProtoId> Offal = new();
+
+    /// <summary>Total damage when it died, so later harm to the carcass doesn't change the grade; null while alive.</summary>
+    [DataField]
+    public float? DeathDamage;
 }
 
 /// <summary>Grades butchered game by how clean the kill was.</summary>
@@ -41,16 +45,25 @@ public sealed class WGHuntingSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<WGButcheredEvent>(OnButchered);
+        SubscribeLocalEvent<WGGameComponent, MobStateChangedEvent>(OnMobStateChanged);
     }
 
-    /// <summary>How clean the kill was: 0 clean, 1 fair, 2 messy.</summary>
+    private void OnMobStateChanged(Entity<WGGameComponent> ent, ref MobStateChangedEvent args)
+    {
+        if (args.NewMobState == MobState.Dead)
+            ent.Comp.DeathDamage = CompOrNull<DamageableComponent>(ent)?.TotalDamage.Float();
+        else if (args.NewMobState == MobState.Alive)
+            ent.Comp.DeathDamage = null;
+    }
+
+    /// <summary>How clean the kill was, by its damage when it died: 0 clean, 1 fair, 2 messy.</summary>
     public int KillGrade(EntityUid carcass)
     {
-        if (!TryComp<DamageableComponent>(carcass, out var damage)
-            || !_thresholds.TryGetThresholdForState(carcass, MobState.Dead, out var dead) || dead.Value <= 0)
+        var total = CompOrNull<WGGameComponent>(carcass)?.DeathDamage ?? CompOrNull<DamageableComponent>(carcass)?.TotalDamage.Float();
+        if (total == null || !_thresholds.TryGetThresholdForState(carcass, MobState.Dead, out var dead) || dead.Value <= 0)
             return 1;
 
-        var ratio = damage.TotalDamage.Float() / dead.Value.Float();
+        var ratio = total.Value / dead.Value.Float();
         return ratio <= Clean ? 0 : ratio >= Messy ? 2 : 1;
     }
 

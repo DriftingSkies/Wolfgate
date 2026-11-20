@@ -182,7 +182,8 @@ public sealed class WGFarmingSystem : EntitySystem
         }
         else if (plot.Stalled)
         {
-            holder.SkipAging = 0;
+            // The stall only ever raised SkipAging to 1, which botany counts down in a cycle; zeroing it would also
+            // wipe skips botany added itself (cryoxadone, harvests, forced updates).
             plot.Stalled = false;
         }
     }

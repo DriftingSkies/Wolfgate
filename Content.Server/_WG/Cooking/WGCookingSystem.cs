@@ -9,6 +9,7 @@ using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Kitchen;
+using Content.Shared.Kitchen.Components;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Examine;
 using Content.Shared.FixedPoint;
@@ -100,6 +101,7 @@ public sealed class WGCookingSystem : EntitySystem
     private List<WGChopRecipePrototype>? _chopRecipes;
     private HashSet<string>? _comboTags;
     private readonly Dictionary<int, List<FoodRecipePrototype>> _kitchenRecipes = new();
+    private const int SecretKey = 1 << 30;
 
     private void ClearRecipeCaches()
     {
@@ -177,6 +179,12 @@ public sealed class WGCookingSystem : EntitySystem
         var placed = Transform(uid).Anchored
             || TryComp<WGHearthComponent>(uid, out var hearth) && !hearth.NeedsAnchor && !_containers.IsEntityInContainer(uid);
         return placed && _power.IsPowered(uid);
+    }
+
+    /// <summary>Whether a hearth gives off a fire's warmth: lit and with a hob, so not a microwave or food-o-mat.</summary>
+    public bool Warms(Entity<WGHearthComponent> hearth)
+    {
+        return hearth.Comp.HasHob && Lit(hearth);
     }
 
     private EntityUid? HobItem(EntityUid hearth)
@@ -602,12 +610,14 @@ public sealed class WGCookingSystem : EntitySystem
     }
 
     /// <summary>The kitchen's oven and microwave recipes, most ingredients first, as the kitchen machines try them.</summary>
-    private List<FoodRecipePrototype> KitchenRecipes(int types)
+    /// <param name="secret">Also secret recipes, which only a hearth whose FoodRecipeProvider lists them bakes.</param>
+    private List<FoodRecipePrototype> KitchenRecipes(int types, bool secret = false)
     {
-        if (_kitchenRecipes.TryGetValue(types, out var cached))
+        var key = secret ? types | SecretKey : types;
+        if (_kitchenRecipes.TryGetValue(key, out var cached))
             return cached;
-        return _kitchenRecipes[types] = _proto.EnumeratePrototypes<FoodRecipePrototype>()
-            .Where(r => (r.RecipeType & types) != 0)
+        return _kitchenRecipes[key] = _proto.EnumeratePrototypes<FoodRecipePrototype>()
+            .Where(r => (secret || !r.SecretRecipe) && (r.RecipeType & types) != 0)
             .OrderByDescending(r => r.IngredientCount())
             .ThenBy(r => r.ID)
             .ToList();
@@ -646,18 +656,17 @@ public sealed class WGCookingSystem : EntitySystem
     /// <summary>Uses up a kitchen recipe's ingredients from the items.</summary>
     private void Consume(IReadOnlyList<EntityUid> items, FoodRecipePrototype recipe)
     {
+        // Picked before anything is deleted: a deleted item has no metadata left to match the next solid against.
+        var solids = new HashSet<EntityUid>();
         foreach (var (id, count) in recipe.IngredientsSolids)
-        {
-            foreach (var item in items.Where(e => MetaData(e).EntityPrototype?.ID == id).Take(count.Int()).ToList())
-                Del(item);
-        }
+            solids.UnionWith(items.Where(e => MetaData(e).EntityPrototype?.ID == id).Take(count.Int()));
 
         foreach (var (reagent, amount) in recipe.IngredientsReagents)
         {
             var left = amount;
             foreach (var item in items)
             {
-                if (left <= FixedPoint2.Zero || TerminatingOrDeleted(item) || !TryComp<SolutionContainerManagerComponent>(item, out var manager))
+                if (left <= FixedPoint2.Zero || solids.Contains(item) || !TryComp<SolutionContainerManagerComponent>(item, out var manager))
                     continue;
                 foreach (var (_, soln) in _solutions.EnumerateSolutions((item, manager)))
                 {
@@ -669,6 +678,9 @@ public sealed class WGCookingSystem : EntitySystem
                 }
             }
         }
+
+        foreach (var item in solids)
+            Del(item);
     }
 
     /// <summary>Heats one item: it turns into its recipe's result when done, then smokes, then burns.</summary>
@@ -684,6 +696,13 @@ public sealed class WGCookingSystem : EntitySystem
         // An unbaked kitchen dish cooks into its recipe's result, in the oven or the pan.
         if (!state.Done && TryComp<WGRawDishComponent>(food, out var raw) && _proto.TryIndex<FoodRecipePrototype>(raw.Recipe, out var kitchen))
         {
+            // A secret recipe bakes only in a hearth that provides it; anywhere else it just sits.
+            if (kitchen.SecretRecipe && !Provides(hearth, kitchen.ID))
+            {
+                state.Heat -= heat;
+                return;
+            }
+
             if (state.Heat < kitchen.CookTime * HearthTimeScale + RawDishTime)
                 return;
 
@@ -728,6 +747,12 @@ public sealed class WGCookingSystem : EntitySystem
             Replace(food, BurnedMess, keepQuality: false);
             _popup.PopupEntity(Loc.GetString("wg-cook-burned"), hearth, PopupType.LargeCaution);
         }
+    }
+
+    /// <summary>Whether a hearth's FoodRecipeProvider lists a secret recipe.</summary>
+    private bool Provides(EntityUid hearth, string recipe)
+    {
+        return TryComp<FoodRecipeProviderComponent>(hearth, out var provider) && provider.ProvidedRecipes.Any(r => r.Id == recipe);
     }
 
     /// <summary>Swaps an item for another in its container, keeping its quality.</summary>
@@ -805,14 +830,16 @@ public sealed class WGCookingSystem : EntitySystem
         foreach (var job in pot.Comp.Jobs.ToList())
         {
             job.Left -= heat;
-            if (job.Left > 0)
+            // Only the water still in the pot turns into soup; ladling it out early makes less, and none waits for more.
+            var water = solution.GetTotalPrototypeQuantity(Water);
+            if (job.Left > 0 || water <= FixedPoint2.Zero)
                 continue;
 
             pot.Comp.Jobs.Remove(job);
             if (!_proto.TryIndex<WGStewRecipePrototype>(job.Recipe, out var recipe))
                 continue;
 
-            var portion = FixedPoint2.New(pot.Comp.Portion * job.Portions);
+            var portion = FixedPoint2.Min(FixedPoint2.New(pot.Comp.Portion * job.Portions), water);
             _solutions.RemoveReagent(soln.Value, Water, portion);
             // A well-stirred pot gives a bigger portion.
             var made = pot.Comp.Stirred >= 1f ? portion * (1f + StirBonus) : portion;
@@ -902,16 +929,45 @@ public sealed class WGCookingSystem : EntitySystem
         var count = score >= 0.5f ? pieces : Math.Max(1, pieces - 1);
         var name = Name(item);
         var quality = CompOrNull<WGProduceQualityComponent>(item)?.Quality;
+        // The pieces share what is left in the item, as slicing does: a half-eaten or poisoned item gives the same.
+        Solution? left = null;
+        var trash = new List<EntProtoId>();
+        if (TryComp<FoodComponent>(item, out var food))
+        {
+            trash.AddRange(food.Trash);
+            if (_solutions.TryGetSolution(item, food.Solution, out var soln, out _))
+                left = _solutions.SplitSolution(soln.Value, soln.Value.Comp.Solution.Volume);
+        }
+
         _containers.Remove(item, contents);
         Del(item);
+        var share = left == null ? FixedPoint2.Zero : left.Volume / FixedPoint2.New(count);
         for (var i = 0; i < count; i++)
-            SetQuality(SpawnInContainerOrDrop(result, board, WGPrepBoardComponent.Contents), quality);
+        {
+            var piece = SpawnInContainerOrDrop(result, board, WGPrepBoardComponent.Contents);
+            SetQuality(piece, quality);
+            if (left != null)
+                FillPiece(piece, left.SplitSolution(share));
+        }
+
+        foreach (var junk in trash)
+            Spawn(junk, Transform(board).Coordinates);
 
         _audio.PlayPvs(ChopSound, board);
         var key = score >= 0.85f ? "wg-cook-board-chopped-clean" : score >= 0.5f ? "wg-cook-board-chopped" : "wg-cook-board-chopped-sloppy";
         _popup.PopupEntity(Loc.GetString(key, ("item", name), ("count", count)), board, user);
         UpdateBoardUi(board);
         return true;
+    }
+
+    /// <summary>Replaces a chopped piece's own reagents with its share of the item's, as far as it holds.</summary>
+    private void FillPiece(EntityUid piece, Solution share)
+    {
+        if (!TryComp<FoodComponent>(piece, out var food) || !_solutions.TryGetSolution(piece, food.Solution, out var soln, out var solution))
+            return;
+
+        _solutions.RemoveAllSolution(soln.Value);
+        _solutions.TryAddSolution(soln.Value, share.SplitSolution(solution.AvailableVolume));
     }
 
     private void OnChopMessage(Entity<WGPrepBoardComponent> ent, ref WGPrepBoardChopMessage args)
@@ -1115,10 +1171,11 @@ public sealed class WGCookingSystem : EntitySystem
             return dish;
         }
 
-        // Then the kitchen's recipes: assembler ones (sandwiches, salads) come out ready.
+        // Then the kitchen's recipes: assembler ones (sandwiches, salads) come out ready. Secret ones can be put
+        // together but aren't advertised, and only a hearth that provides them bakes them.
         var items = contents.ContainedEntities.ToList();
-        var kitchen = KitchenRecipes((int) (MicrowaveRecipeType.Assembler | MicrowaveRecipeType.Oven | MicrowaveRecipeType.Microwave))
-            .FirstOrDefault(r => Holds(items, r));
+        var kitchen = KitchenRecipes((int) (MicrowaveRecipeType.Assembler | MicrowaveRecipeType.Oven | MicrowaveRecipeType.Microwave), secret: true)
+            .FirstOrDefault(r => Holds(items, r) && (!r.SecretRecipe || (r.RecipeType & (int) MicrowaveRecipeType.Assembler) == 0));
         if (kitchen == null)
             return null;
 

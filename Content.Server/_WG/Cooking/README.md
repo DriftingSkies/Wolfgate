@@ -16,7 +16,8 @@ becomes a meal from raw ingredients in one step.
 - **Prep board** (`wgPrepRecipe`, `wgChopRecipe`, and every kitchen recipe): lay ingredients on it, chop them with a
   knife, then *Put together* (alt-click). Our raw dishes and the game's assembler recipes come out ready to cook or
   eat; every game oven or microwave recipe comes out as an unbaked dish (`WGRawKitchenDish`) that still has to be cooked
-  in a hearth's oven or pan.
+  in a hearth's oven or pan. A secret recipe (`secretRecipe`) isn't listed on the board and bakes only in a hearth whose
+  `FoodRecipeProvider` names it, such as the Donk Co. microwave and range.
 - **One recipe book**: the game's `microwaveMealRecipe`s cook by hand as above, and each of our raw dishes is also a
   `microwaveMealRecipe`.
 
@@ -65,6 +66,7 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 - [`Content.IntegrationTests/Tests/_WG/Cooking/KitchenUiTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/KitchenUiTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/MealBuffTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/MealBuffTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/MessKitAndCraftingTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/MessKitAndCraftingTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Cooking/ReviewFixesTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/ReviewFixesTest.cs)
 
 ### Prototypes
 
@@ -103,10 +105,15 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
   - the pan or pot on the hob
   - the hearth's hob and oven, declared so spawning doesn't add them
   - taken apart, the range drops what was on its hob and in its oven
+  - a faster hearth like its parent; it alone bakes its secret recipes
   - the food-o-mat only assembles; no oven from the microwave it is built on
+  - automation keeps feeding the assembler's own container, not the oven its parent's now feeds
 - [`Resources/Prototypes/Entities/Structures/Machines/microwave.yml`](../../../Resources/Prototypes/Entities/Structures/Machines/microwave.yml)
   - the microwave cooks hands-on as an oven-only hearth (Cooking module)
   - no microwave screen; it cooks by hand
   - the hearth's hob and oven, declared so spawning doesn't add them
+  - automation feeds the hearth's oven; nothing cooks in the old microwave container
+  - taken apart, the microwave drops what was in its oven
+  - a faster oven-only hearth like its parent; it alone bakes its secret recipes
 
 <!-- WOLFGATE-GENERATED END -->

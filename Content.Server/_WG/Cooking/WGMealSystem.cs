@@ -99,6 +99,7 @@ public sealed partial class WGMealSystem : EntitySystem
         SubscribeLocalEvent<WGMealBuffEvent>(OnBuffEvent);
         SubscribeLocalEvent<WGWellFedComponent, RefreshMovementSpeedModifiersEvent>(OnRefreshSpeed);
         SubscribeLocalEvent<WGWellFedComponent, ExaminedEvent>(OnFedExamined);
+        SubscribeLocalEvent<PrototypesReloadedEventArgs>(_ => _seasonings = null);
         InitializeSeasoning();
         InitializeComfort();
         InitializeTending();

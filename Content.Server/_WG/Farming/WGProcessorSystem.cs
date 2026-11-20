@@ -87,6 +87,20 @@ public sealed class WGProcessorSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<WGProcessorComponent, InteractUsingEvent>(OnInteractUsing);
         SubscribeLocalEvent<WGProcessorComponent, ExaminedEvent>(OnExamined);
+        SubscribeLocalEvent<PrototypesReloadedEventArgs>(_ => _recipes.Clear());
+    }
+
+    // Each machine's recipes, by id; looked up every second for every idle machine.
+    private readonly Dictionary<string, List<WGProcessRecipePrototype>> _recipes = new();
+
+    private List<WGProcessRecipePrototype> Recipes(string machine)
+    {
+        if (_recipes.TryGetValue(machine, out var cached))
+            return cached;
+        return _recipes[machine] = _proto.EnumeratePrototypes<WGProcessRecipePrototype>()
+            .Where(r => r.Machine == machine)
+            .OrderBy(r => r.ID)
+            .ToList();
     }
 
     private void OnInteractUsing(Entity<WGProcessorComponent> ent, ref InteractUsingEvent args)
@@ -185,7 +199,7 @@ public sealed class WGProcessorSystem : EntitySystem
     private bool TryStock(Entity<WGProcessorComponent> ent, EntityUid item, EntityUid user)
     {
         var id = MetaData(item).EntityPrototype?.ID;
-        if (id == null || !_proto.EnumeratePrototypes<WGProcessRecipePrototype>().Any(r => r.Machine == ent.Comp.Machine && r.Needs?.Id == id))
+        if (id == null || !Recipes(ent.Comp.Machine).Any(r => r.Needs?.Id == id))
             return false;
 
         var have = ent.Comp.Stock.GetValueOrDefault(id);
@@ -225,9 +239,9 @@ public sealed class WGProcessorSystem : EntitySystem
     private WGProcessRecipePrototype? Match(string machine, EntityUid item)
     {
         var id = MetaData(item).EntityPrototype?.ID;
-        foreach (var recipe in _proto.EnumeratePrototypes<WGProcessRecipePrototype>().OrderBy(r => r.ID))
+        foreach (var recipe in Recipes(machine))
         {
-            if (recipe.Machine != machine || recipe.Auto)
+            if (recipe.Auto)
                 continue;
             if (id != null && recipe.Inputs.Any(i => i.Id == id)
                 || recipe.Tags.Count > 0 && _tags.HasAnyTag(item, recipe.Tags)
@@ -290,7 +304,7 @@ public sealed class WGProcessorSystem : EntitySystem
 
     private WGProcessRecipePrototype? AutoRecipe(string machine)
     {
-        return _proto.EnumeratePrototypes<WGProcessRecipePrototype>().Where(r => r.Auto && r.Machine == machine).MinBy(r => r.ID);
+        return Recipes(machine).FirstOrDefault(r => r.Auto);
     }
 
     private int Planted(EntityUid uid)
