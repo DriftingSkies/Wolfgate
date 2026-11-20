@@ -1,8 +1,10 @@
 using System.Linq;
+using System.Numerics;
+using Content.Server.Nutrition.Components;
 using Content.Server._WG.Cooking;
+using Content.Server._WG.Farming;
 using Content.Server._WG.Fishing;
 using Content.Server._WG.Hunting;
-using Content.Server.Nutrition.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
@@ -11,8 +13,10 @@ using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Power.EntitySystems;
+using Content.Shared._WG.Farming;
 using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._WG.Cooking;
@@ -29,7 +33,7 @@ public sealed class ReviewFixesTest
     }
 
     [Test]
-    public async Task SecretRecipesBakeOnlyInTheirMachine()
+    public async Task SecretRecipesOnlyBesideTheirMachine()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -49,37 +53,130 @@ public sealed class ReviewFixesTest
             power.SetNeedsPower(plain, false);
             power.SetNeedsPower(donk, false);
 
-            var raws = new EntityUid[2];
-            for (var i = 0; i < 2; i++)
+            // The same ingredients on a board beside the Donk Co. microwave and on one far from any.
+            EntityUid Assemble(EntityCoordinates at)
             {
-                var board = entMan.SpawnEntity("WGPrepBoard", map.GridCoords);
-                var beaker = entMan.SpawnEntity("Beaker", map.GridCoords);
+                var board = entMan.SpawnEntity("WGPrepBoard", at);
+                var beaker = entMan.SpawnEntity("Beaker", at);
                 Assert.That(solutions.TryGetSolution(beaker, "beaker", out var soln), Is.True);
                 solutions.TryAddReagent(soln!.Value, "TableSalt", FixedPoint2.New(5));
                 solutions.TryAddReagent(soln.Value, "Blackpepper", FixedPoint2.New(5));
-                foreach (var item in new[] { entMan.SpawnEntity("FoodDough", map.GridCoords), entMan.SpawnEntity("PartRodMetal1", map.GridCoords), beaker })
-                    entMan.EventBus.RaiseLocalEvent(board, new InteractUsingEvent(cook, item, board, map.GridCoords));
+                foreach (var item in new[] { entMan.SpawnEntity("FoodDough", at), entMan.SpawnEntity("PartRodMetal1", at), beaker })
+                    entMan.EventBus.RaiseLocalEvent(board, new InteractUsingEvent(cook, item, board, at));
 
                 var raw = cooking.Assemble((board, entMan.GetComponent<WGPrepBoardComponent>(board)), cook);
-                Assert.That(raw, Is.Not.Null, "The board didn't put the secret recipe together.");
-                Assert.That(entMan.GetComponent<WGRawDishComponent>(raw!.Value).Recipe, Is.EqualTo("RecipeBaguetteSword"));
-                raws[i] = raw.Value;
+                Assert.That(raw, Is.Not.Null, "The board put nothing together.");
+                return raw!.Value;
             }
 
-            entMan.EventBus.RaiseLocalEvent(plain, new InteractUsingEvent(cook, raws[0], plain, map.GridCoords));
-            entMan.EventBus.RaiseLocalEvent(donk, new InteractUsingEvent(cook, raws[1], donk, map.GridCoords));
-            Assert.That(containers.GetContainer(plain, WGHearthComponent.Oven).ContainedEntities, Has.Count.EqualTo(1));
+            var secret = Assemble(map.GridCoords);
+            var ordinary = Assemble(new EntityCoordinates(map.MapUid, new Vector2(40, 40)));
+            Assert.That(entMan.GetComponent<WGRawDishComponent>(secret).Recipe, Is.EqualTo("RecipeBaguetteSword"),
+                "A board beside the Donk Co. microwave didn't offer its recipe.");
+            Assert.That(entMan.GetComponent<WGRawDishComponent>(ordinary).Recipe, Is.EqualTo("RecipeBaguette"),
+                "A board far from any Donk Co. machine made a secret recipe.");
+
+            // A plain microwave refuses the secret dish, by hand or by any other insert, and takes the ordinary one.
+            var refused = new InteractUsingEvent(cook, secret, plain, map.GridCoords);
+            entMan.EventBus.RaiseLocalEvent(plain, refused);
+            Assert.That(refused.Handled, Is.True);
+            var plainOven = containers.GetContainer(plain, WGHearthComponent.Oven);
+            Assert.That(plainOven.ContainedEntities, Is.Empty, "A plain microwave took a secret dish.");
+            Assert.That(containers.Insert(entMan.SpawnEntity("PartRodMetal1", map.GridCoords), plainOven), Is.False,
+                "The oven took something it can't cook.");
+            entMan.EventBus.RaiseLocalEvent(plain, new InteractUsingEvent(cook, ordinary, plain, map.GridCoords));
+            entMan.EventBus.RaiseLocalEvent(donk, new InteractUsingEvent(cook, secret, donk, map.GridCoords));
+            Assert.That(plainOven.ContainedEntities, Has.Count.EqualTo(1));
             Assert.That(containers.GetContainer(donk, WGHearthComponent.Oven).ContainedEntities, Has.Count.EqualTo(1));
         });
 
-        // The Donk Co. oven bakes it in (15 * 2 + 15) / 2 seconds; the plain one never does.
+        // The Donk Co. oven bakes in (15 * 2 + 15) / 2 seconds.
         await pair.RunTicksSync(pair.SecondsToTicks(30));
         await server.WaitAssertion(() =>
         {
             Assert.That(containers.GetContainer(donk, WGHearthComponent.Oven).ContainedEntities.Select(e => Proto(entMan, e)),
                 Is.EqualTo(new[] { "WeaponBaguette" }), "The Donk Co. microwave didn't bake its own recipe.");
-            Assert.That(containers.GetContainer(plain, WGHearthComponent.Oven).ContainedEntities.Select(e => Proto(entMan, e)),
-                Is.EqualTo(new[] { "WGRawKitchenDish" }), "A plain microwave baked a secret recipe.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task DishQualityIsTheUsedIngredients()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var cook = entMan.SpawnEntity("MobHuman", map.GridCoords);
+            var board = entMan.SpawnEntity("WGPrepBoard", map.GridCoords);
+            for (var i = 0; i < 4; i++)
+            {
+                var slice = entMan.SpawnEntity("FoodDoughSlice", map.GridCoords);
+                if (i == 0)
+                    entMan.AddComponent<WGProduceQualityComponent>(slice).Quality = WGCropQuality.Gold;
+                entMan.EventBus.RaiseLocalEvent(board, new InteractUsingEvent(cook, slice, board, map.GridCoords));
+            }
+
+            // A bun takes one slice: the gold one, laid down first. The three left over don't water it down.
+            var bun = entMan.System<WGCookingSystem>().Assemble((board, entMan.GetComponent<WGPrepBoardComponent>(board)), cook);
+            Assert.That(bun, Is.Not.Null);
+            Assert.That(entMan.GetComponent<WGRawDishComponent>(bun!.Value).Recipe, Is.EqualTo("RecipeBun"));
+            Assert.That(entMan.GetComponentOrNull<WGProduceQualityComponent>(bun.Value)?.Quality, Is.EqualTo(WGCropQuality.Gold),
+                "Leftover ingredients lowered the dish's quality.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task DryPotKeepsItsStewForMoreWater()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var solutions = entMan.System<SharedSolutionContainerSystem>();
+        var map = await pair.CreateTestMap();
+        EntityUid cook = default, hearth = default, pot = default;
+
+        await server.WaitAssertion(() =>
+        {
+            cook = entMan.SpawnEntity("MobHuman", map.GridCoords);
+            hearth = entMan.SpawnEntity("WGHearthStove", map.GridCoords);
+            entMan.System<SharedPowerReceiverSystem>().SetNeedsPower(hearth, false);
+            pot = entMan.SpawnEntity("WGCookPot", map.GridCoords);
+            Assert.That(solutions.TryGetSolution(pot, "pot", out var soln), Is.True);
+            solutions.TryAddReagent(soln!.Value, "Water", FixedPoint2.New(60));
+            entMan.EventBus.RaiseLocalEvent(hearth, new InteractUsingEvent(cook, pot, hearth, map.GridCoords));
+        });
+
+        // Two stews; then all the water but one portion is taken out, so the second finishes dry.
+        await pair.RunTicksSync(pair.SecondsToTicks(25));
+        await server.WaitAssertion(() =>
+        {
+            foreach (var id in new[] { "WheatBushel", "OatBushel" })
+                entMan.EventBus.RaiseLocalEvent(hearth, new InteractUsingEvent(cook, entMan.SpawnEntity(id, map.GridCoords), hearth, map.GridCoords));
+            Assert.That(entMan.GetComponent<WGPotComponent>(pot).Jobs, Has.Count.EqualTo(2));
+            Assert.That(solutions.TryGetSolution(pot, "pot", out var soln), Is.True);
+            solutions.RemoveReagent(soln!.Value, "Water", FixedPoint2.New(30));
+        });
+
+        await pair.RunTicksSync(pair.SecondsToTicks(40));
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entMan.GetComponent<WGPotComponent>(pot).Jobs, Has.Count.EqualTo(1), "The stew left without water was lost or finished.");
+            Assert.That(solutions.TryGetSolution(pot, "pot", out var soln), Is.True);
+            solutions.TryAddReagent(soln!.Value, "Water", FixedPoint2.New(30));
+        });
+
+        // Water back in: it boils again and the waiting stew finishes.
+        await pair.RunTicksSync(pair.SecondsToTicks(30));
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entMan.GetComponent<WGPotComponent>(pot).Jobs, Is.Empty, "The waiting stew didn't finish once water was added.");
         });
 
         await pair.CleanReturnAsync();

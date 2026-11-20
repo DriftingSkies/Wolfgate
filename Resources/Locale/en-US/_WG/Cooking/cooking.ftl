@@ -22,6 +22,7 @@ wg-cook-hearth-lit = The hearth is hot.
 wg-cook-hearth-cold = The hearth is cold. It needs power.
 wg-cook-hearth-hob = {CAPITALIZE(THE($item))} sits on the hob.
 wg-cook-hearth-oven = In the oven: {THE($item)}, {$state}.
+wg-cook-hearth-cant-cook = This hearth doesn't know how to cook {THE($item)}.
 wg-cook-state-raw = raw
 wg-cook-state-cooking = cooking
 wg-cook-state-done = done
@@ -36,6 +37,7 @@ wg-cook-board-empty = The board is empty.
 wg-cook-board-holds = On the board: {$items}.
 wg-cook-stew-combine = The ingredients come together into a single stew.
 wg-cook-pot-becoming = It is becoming {$soup}.
+wg-cook-pot-dry = The pot has boiled dry. Add water to finish the stew.
 wg-cook-board-chopped = You chop {$item} into {$count ->
     [one] a piece
    *[other] {$count} pieces

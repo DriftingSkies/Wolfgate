@@ -10,6 +10,10 @@ public sealed partial class WGFarmPlotComponent : Component
     [DataField]
     public bool Stalled;
 
+    /// <summary>The SkipAging value the stall last set, raising it from 0 to 1; 0 if it added none. Taken back when growing resumes.</summary>
+    [DataField]
+    public int StallSkip;
+
     /// <summary>Checks this plant was lit, and of those how many it was also watered and fed; sets harvest quality.</summary>
     [DataField]
     public int LitChecks;

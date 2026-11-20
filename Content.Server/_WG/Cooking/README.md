@@ -16,8 +16,9 @@ becomes a meal from raw ingredients in one step.
 - **Prep board** (`wgPrepRecipe`, `wgChopRecipe`, and every kitchen recipe): lay ingredients on it, chop them with a
   knife, then *Put together* (alt-click). Our raw dishes and the game's assembler recipes come out ready to cook or
   eat; every game oven or microwave recipe comes out as an unbaked dish (`WGRawKitchenDish`) that still has to be cooked
-  in a hearth's oven or pan. A secret recipe (`secretRecipe`) isn't listed on the board and bakes only in a hearth whose
-  `FoodRecipeProvider` names it, such as the Donk Co. microwave and range.
+  in a hearth's oven or pan. A secret recipe (`secretRecipe`) is offered only by a board within reach of a hearth that
+  provides it (`FoodRecipeProvider`, such as the Donk Co. microwave and range), and only such a hearth takes and cooks
+  it.
 - **One recipe book**: the game's `microwaveMealRecipe`s cook by hand as above, and each of our raw dishes is also a
   `microwaveMealRecipe`.
 

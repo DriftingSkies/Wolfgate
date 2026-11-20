@@ -177,13 +177,20 @@ public sealed class WGFarmingSystem : EntitySystem
             reason = plot.Reason = "wg-farm-reason-pecked";
         if (reason != null)
         {
-            holder.SkipAging = Math.Max(holder.SkipAging, 1);
+            // Holds the plant for a cycle, unless botany already does (cryoxadone, a harvest, a forced update).
+            if (holder.SkipAging < 1)
+            {
+                holder.SkipAging = 1;
+                plot.StallSkip = 1;
+            }
             plot.Stalled = true;
         }
         else if (plot.Stalled)
         {
-            // The stall only ever raised SkipAging to 1, which botany counts down in a cycle; zeroing it would also
-            // wipe skips botany added itself (cryoxadone, harvests, forced updates).
+            // Takes back only the stall's own skip, if botany hasn't spent it yet; botany's own skips stay.
+            if (plot.StallSkip > 0 && holder.SkipAging >= plot.StallSkip)
+                holder.SkipAging--;
+            plot.StallSkip = 0;
             plot.Stalled = false;
         }
     }
