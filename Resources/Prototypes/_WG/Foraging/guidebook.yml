@@ -1,0 +1,4 @@
+- type: guideEntry
+  id: WGForaging
+  name: guide-entry-wg-foraging
+  text: "/ServerInfo/_WG/Foraging/Guidebook/Foraging.xml"

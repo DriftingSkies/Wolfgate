@@ -989,6 +989,9 @@
   - type: WGFishingRod
   - type: StaticPrice
     price: 150
+  - type: GuideHelp
+    guides:
+    - WGFishing
 
 - type: entity
   parent: BaseItem
@@ -1046,6 +1049,9 @@
   - type: WGFishingSpot
   - type: StaticPrice
     price: 1500
+  - type: GuideHelp
+    guides:
+    - WGFishing
 
 - type: Tag
   id: WGFish

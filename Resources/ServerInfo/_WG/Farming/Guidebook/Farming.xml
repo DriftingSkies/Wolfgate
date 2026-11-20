@@ -1,0 +1,95 @@
+<Document>
+# Farming
+There's something special about food you grew yourself. Farming is slow, steady work: plant a seed, keep it watered and fed, make sure it gets its light, and it will see you right. Look after your plants well, and the harvest comes out all the finer for it.
+
+<Box>
+<GuideEntityEmbed Entity="hydroponicsTray"/>
+<GuideEntityEmbed Entity="WGSprinklerBasic"/>
+<GuideEntityEmbed Entity="WGGrowLamp"/>
+<GuideEntityEmbed Entity="WGFarmScarecrow"/>
+<GuideEntityEmbed Entity="WGFertilizerBasic"/>
+</Box>
+
+## Getting set up
+- The [bold]Homestead Supply[/bold] vendor stocks the seeds, sprinklers, scarecrows, water collectors and every farm machine on this page, along with kitchen and fishing gear. If there isn't one nearby, cargo can order one as a flatpack.
+- Its seeds are for the homestead crops: blackberries, coffee, cucumbers, pears, plums, raspberries, rocknuts, strawberries, sunflowers, tangerines and turnips. Cargo also sells a crate of them, and wild seeds turn up while [textlink="foraging" link="WGForaging"].
+- Every farm machine, and the grow lamp, can also be built from the construction menu.
+- Planting, harvesting and plant genetics work just as they always have. See [textlink="Botany" link="Botany"] for the basics.
+
+## What a plant needs
+- [bold]Water[/bold]: keep the soil wet. A plant that runs dry stops growing.
+- [bold]Light[/bold]: on a station or ship, the room lights are enough. On a world, plants grow by day and rest through the night, and anything planted indoors needs a [bold]grow lamp[/bold] overhead.
+- [bold]The right weather[/bold]: every crop has its own idea of what's comfortable. Out in the open, a crop stops growing when it's too hot or too cold. A roofed greenhouse with a grow lamp lets it grow whatever the weather is doing outside.
+- [bold]A little peace[/bold]: on a world, birds will now and then swoop down to peck at crops left out in the open. A [bold]scarecrow[/bold] keeps them away.
+
+A plant short of light or the right weather simply waits until things improve. A thirsty or hungry plant still suffers, just as it always has. Examine a plant to see how it's getting on and what it's waiting for.
+
+## Watering
+<Box>
+<GuideEntityEmbed Entity="WGSprinklerBasic"/>
+<GuideEntityEmbed Entity="WGSprinklerQuality"/>
+<GuideEntityEmbed Entity="WGSprinklerAdvanced"/>
+<GuideEntityEmbed Entity="WGRainCatcher"/>
+<GuideEntityEmbed Entity="WGMoistureVaporator"/>
+<GuideEntityEmbed Entity="WGSnowMelter"/>
+</Box>
+A bucket does the job, but sprinklers save your back. Fill a sprinkler's tank with water, and it keeps the plant holders around it watered. A plain [bold]sprinkler[/bold] reaches the holders right beside it, a [bold]quality sprinkler[/bold] waters all the way around itself, and an [bold]advanced sprinkler[/bold] reaches further still, as long as it has power.
+
+On a world, water collectors keep the sprinklers near them topped up for you:
+- A [bold]rain catcher[/bold] costs nothing to run, but it only fills while rain falls on it.
+- A [bold]moisture vaporator[/bold] draws water out of the air on power. It does best on hot worlds and gives up below freezing.
+- A [bold]snow melter[/bold] turns snow and frost into water on power, for the frozen worlds.
+
+## Quality
+Every crop you pick by hand comes out [bold]normal[/bold], [color=#C0C0C0]silver[/color] or [color=#FFD700]gold[/color]. Keep a plant watered and fed with nutrients all through its growing, and it comes out finer more often. Fertilizer helps even more, and quality fertilizer can bring out the rare [color=#B57EDC]iridium[/color].
+
+Finer produce sells for more, and it stays fine through everything you make from it: gold fruit makes gold wine. It also makes for stronger home-cooked meals. See [textlink="Cooking" link="WGCooking"].
+
+## Fertilizer and compost
+Use fertilizer on a plant holder, before or after planting. It stays in the soil until that plant is gone, so a crop that regrows keeps it harvest after harvest.
+- [bold]Basic fertilizer[/bold]: the harvest may come out a step finer.
+- [bold]Quality fertilizer[/bold]: the harvest may come out up to two steps finer, even iridium.
+- [bold]Speed-gro[/bold]: the crop grows faster.
+- [bold]Retaining soil[/bold]: on a world, it gives a dry plant a drink once a day.
+
+You can make all of these yourself. A [bold]composter[/bold] rots spare produce, meat and eggs down into compost, and a [bold]biogas digester[/bold] does the same faster, on power. A [bold]fertilizer barrel[/bold] ages compost into basic fertilizer, and basic fertilizer into quality fertilizer. A [bold]nutrient mixer[/bold] turns compost into speed-gro, sand or clay ore into retaining soil, and bones from the hunt into quality fertilizer.
+
+## From the field to the pantry
+<Box>
+<GuideEntityEmbed Entity="WGFarmKeg"/>
+<GuideEntityEmbed Entity="WGFarmPreservesJar"/>
+<GuideEntityEmbed Entity="WGFarmCheesePress"/>
+<GuideEntityEmbed Entity="WGFarmBeeHive"/>
+<GuideEntityEmbed Entity="WGFarmCask"/>
+</Box>
+A basket of fresh produce is worth a little, but what you make from it is worth a good deal more. Use produce on a machine to start a batch, and the goods turn up beside it when it's done. Examine a machine to see how it's coming along. Machines must be anchored to work, and some need power too. Whatever comes out keeps the quality of what went in.
+
+- [bold]Brewing keg[/bold]: ferments fruit into wine and wheat into beer. Load it with glass bottles first.
+- [bold]Glass kiln[/bold]: blows sheets of glass into bottles for the keg.
+- [bold]Preserves jar[/bold]: turns fruit into preserves and vegetables into pickles.
+- [bold]Cheese press[/bold]: presses a carton of milk into a wheel of cheese.
+- [bold]Mayonnaise machine[/bold]: whips eggs into mayonnaise.
+- [bold]Mill[/bold]: grinds wheat into flour.
+- [bold]Loom[/bold]: weaves cotton into cloth.
+- [bold]Oak cask[/bold]: ages wine and cheese into something finer.
+- [bold]Seed maker[/bold]: turns a crop into packets of its own seeds.
+- [bold]Bee hive[/bold]: makes honey on its own, as long as there are crops growing nearby.
+- [bold]Mushroom log[/bold]: grows mushrooms on its own, light or dark.
+
+For the workshop, there's also a [bold]compute rack[/bold] that mines encrypted ledgers (it draws a great deal of power), an [bold]ore washer[/bold] that turns up the odd geode, and a [bold]geode cracker[/bold] to open them.
+
+## Animals
+Hens, cows, goats and any other animal that lays eggs, gives milk or grows wool has a mood of its own.
+- [bold]Pet them[/bold] now and then by clicking them with an empty hand. They like that.
+- [bold]Keep them fed[/bold]. A hungry animal soon grows miserable.
+
+A happy animal lays, fills with milk or grows its wool sooner, and a miserable one holds back. Happy hens lay finer eggs, too. Examine an animal to see how it's feeling.
+
+## Selling your goods
+<Box>
+<GuideEntityEmbed Entity="WGFarmOrderBoard"/>
+<GuideEntityEmbed Entity="WGFarmPackingTable"/>
+</Box>
+- The [bold]outpost order board[/bold] is where buyers across the sector post what they're after: fruit, eggs, wine, cheese, honey, cloth, fertilizer, home cooking, fresh fish, pelts, jerky and more. Examine it to read the orders, then use the goods on it to deliver. You're paid into your bank account for each item, with a little extra when an order is filled. Finer goods fetch more. Orders don't stand forever, but new ones keep coming.
+- The [bold]packing table[/bold] seals goods into trade crates for the market. Produce, home cooking and fish fill a supplies crate. Wine, cheese, preserves, pickles, honey and fine dishes fill a luxury goods crate. Cloth and leather fill a fabric crate, and bags of fertilizer fill a fertilizer crate. Keep loading it, and it seals the crate once it's full.
+</Document>

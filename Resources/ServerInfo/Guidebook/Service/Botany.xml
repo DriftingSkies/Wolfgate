@@ -1,6 +1,8 @@
 <Document>
 # Botany
 As a botanist, it is your job to grow enough food to stop the chef from seeking "alternative sources". Grow lots of wheat, and when you get tired of that, grow weed. Make weed smoothies and spike drinks with nettles. Just keep growing plants, and you'll do great!
+<!-- WOLFGATE(Farming): link the farming guide for light, weather, quality and farm machines -->[textlink="Click here to learn how farming works: light, weather, quality and farm machines." link="WGFarming"]
+<!-- WOLFGATE(Foraging): link the foraging guide -->[textlink="Click here to learn about foraging for wild plants and seeds." link="WGForaging"]
 
 ## Starting your shift
 First identify the machines around you that you will be using. Coordinate with the Chef to see if they want anything specific to be grown, otherwise grow wheat and bananas and whatever else you feel like growing. You may also grow plants for Chemistry (Medbay), the Bartender, or to sell by Cargo.

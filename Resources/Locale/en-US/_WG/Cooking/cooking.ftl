@@ -145,3 +145,5 @@ wg-comfort-examine-cozy = { $self ->
 }
 
 loadout-group-wg-mess-kit = Mess kit
+
+guide-entry-wg-cooking = Cooking

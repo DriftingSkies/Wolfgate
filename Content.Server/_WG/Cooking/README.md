@@ -74,6 +74,7 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 - [`Resources/Prototypes/_WG/Cooking/cargo.yml`](../../../Resources/Prototypes/_WG/Cooking/cargo.yml)
 - [`Resources/Prototypes/_WG/Cooking/cooking_base.yml`](../../../Resources/Prototypes/_WG/Cooking/cooking_base.yml)
 - [`Resources/Prototypes/_WG/Cooking/crafting.yml`](../../../Resources/Prototypes/_WG/Cooking/crafting.yml)
+- [`Resources/Prototypes/_WG/Cooking/guidebook.yml`](../../../Resources/Prototypes/_WG/Cooking/guidebook.yml)
 - [`Resources/Prototypes/_WG/Cooking/kitchen.yml`](../../../Resources/Prototypes/_WG/Cooking/kitchen.yml)
 - [`Resources/Prototypes/_WG/Cooking/messkit.yml`](../../../Resources/Prototypes/_WG/Cooking/messkit.yml)
 - [`Resources/Prototypes/_WG/Cooking/seasoning.yml`](../../../Resources/Prototypes/_WG/Cooking/seasoning.yml)
@@ -91,6 +92,10 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 - [`Resources/Textures/_WG/Cooking/prep_board.rsi/`](../../../Resources/Textures/_WG/Cooking/prep_board.rsi/)
 - [`Resources/Textures/_WG/Cooking/props.rsi/`](../../../Resources/Textures/_WG/Cooking/props.rsi/)
 - [`Resources/Textures/_WG/Cooking/raw.rsi/`](../../../Resources/Textures/_WG/Cooking/raw.rsi/)
+
+### Guidebook
+
+- [`Resources/ServerInfo/_WG/Cooking/Guidebook/Cooking.xml`](../../../Resources/ServerInfo/_WG/Cooking/Guidebook/Cooking.xml)
 
 ### Tools
 
@@ -116,5 +121,9 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
   - automation feeds the hearth's oven; nothing cooks in the old microwave container
   - taken apart, the microwave drops what was in its oven
   - a faster oven-only hearth like its parent; it alone bakes its secret recipes
+- [`Resources/Prototypes/Guidebook/service.yml`](../../../Resources/Prototypes/Guidebook/service.yml): the cooking guide sits under the chef's page
+- [`Resources/ServerInfo/Guidebook/Service/Chef.xml`](../../../Resources/ServerInfo/Guidebook/Service/Chef.xml)
+  - link the hands-on cooking guide
+  - dishes are put together on a prep board and cooked on a hearth
 
 <!-- WOLFGATE-GENERATED END -->

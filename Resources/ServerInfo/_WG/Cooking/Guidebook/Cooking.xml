@@ -1,0 +1,80 @@
+<Document>
+# Cooking
+There's nothing like a hot meal after a long shift. Cooking here is done by hand, the old-fashioned way: you chop, you stir, and you keep one eye on the oven. Nothing goes from raw to ready in a single step, but a meal made with care stays with you long after the plate is clean.
+
+<Box>
+<GuideEntityEmbed Entity="WGHearthStove"/>
+<GuideEntityEmbed Entity="WGPrepBoard"/>
+<GuideEntityEmbed Entity="WGCookPan"/>
+<GuideEntityEmbed Entity="WGCookPot"/>
+<GuideEntityEmbed Entity="WGCookBowl"/>
+<GuideEntityEmbed Entity="KitchenKnife"/>
+</Box>
+
+## Around the kitchen
+- The [bold]hearth stove[/bold] is the heart of any kitchen: a hob on top for a pan or pot, and an oven below. It needs power to stay lit. You can build one from the construction menu with some steel and a little LV cable.
+- The old [bold]microwave[/bold] now works as an oven with no hob, and the [bold]electric range[/bold] works as a hearth with both.
+- The [bold]prep board[/bold] is where ingredients are chopped and dishes come together. You can build one from a few wood planks.
+- If the cupboards are bare, order a [bold]cookware crate[/bold] from cargo. It comes with pots, pans, bowls, a prep board and a few nice extras.
+
+## 1. At the prep board
+Use ingredients on the board to lay them out, then click the board to open it. It shows what's on the board and every dish those ingredients could become, with what you have and what's still missing for each.
+
+- [bold]Chopping[/bold]: with a knife in hand, press an ingredient's [bold]Chop[/bold] button and draw the knife down along each dashed line. Take your time. Clean, straight cuts keep every piece, but a sloppy cut loses one.
+- [bold]Putting together[/bold]: once a dish has everything it needs, press [bold]Put together[/bold] or alt-click the board.
+
+A few dishes come off the board ready to eat. Most come out [bold]unbaked[/bold] or raw and still need some time over the fire.
+
+## 2. Over the fire
+Set a pan on the hob, then use food on the hearth. Anything that fries goes into the pan, and everything else goes into the oven.
+
+You'll be told when it's done. [color=#E05A4F]Don't wander off:[/color] left too long, it starts to smoke, and soon after, it burns to a crisp. To take things out, use an empty hand on the hearth. It gives you the food in the pan first, then what's in the oven, then the cookware itself. Examine the hearth to see how everything is getting on.
+
+## 3. A pot of soup
+<Box>
+<GuideEntityEmbed Entity="WGCookPot"/>
+<GuideEntityEmbed Entity="WGCookBowl"/>
+<GuideEntityEmbed Entity="Spoon"/>
+</Box>
+- Set a pot on the hob, pour in some water, and wait for it to come to a rolling boil.
+- Drop ingredients into the boiling water. Each one turns some of the water into soup. Some ingredients stewed together make something richer: minced meat, potato wedges and sliced onion, for instance, become a hearty stew.
+- [bold]Stirring[/bold]: alt-click the hearth and choose [bold]Stir the pot[/bold], then give it a few smooth turns around the ring. A good stir brings the stew along faster and makes the next portion bigger. Let it rest a little between stirs.
+- When it's ready, use a bowl on the hearth to ladle some out. Keep an eye on the water: a pot that boils dry stops cooking until you top it up.
+
+## Which dishes do you good
+Anything you cook will fill you up, but only proper home cooking stays with you after the plate is clean. If a dish does you good, examining it tells you how. Home cooking means:
+
+- [bold]Simple hearth cooking[/bold]: fried eggs, fried potatoes, fried onions, fried cabbage, baked potatoes, roast turnips and roasted seeds.
+- [bold]Dishes from the prep board[/bold]: omelettes, quiche, scalloped potatoes, stuffed eggplant, strawberry pie, and raspberry, blackberry, lime, honey and fruit cakes.
+- [bold]Soups and stews[/bold]: everything that comes out of the pot, from a plain bowl of porridge to a rich seafood bisque, along with the hunter's stews of liver and onion or heart and potato.
+- [bold]Your own catch[/bold]: fish and shellfish you've caught and cooked yourself. See [textlink="Fishing" link="WGFishing"].
+- [bold]Game from the hunt[/bold]: game steaks, chewy steaks and prime steaks, and jerky and dried fish for the road. See [textlink="Hunting" link="WGHunting"].
+
+The old station recipes, like burgers, pizzas and pasta, still cook by hand and still fill you up, but they won't do anything more for you.
+
+## What a good meal does
+A home-cooked dish stays with you for several minutes after you finish it. You only feel the benefits of your latest meal, so eating something different replaces them. Soup does you good a little with every sip, and every soup and stew also gently mends your heart, lungs, liver, kidneys and stomach.
+
+- [bold]Energised[/bold]: makes you a little quicker on your feet.
+- [bold]Full for longer[/bold]: keeps hunger away for longer.
+- [bold]Mending[/bold]: slowly heals bruises, cuts and burns.
+- [bold]Warm through[/bold] and [bold]Cooled[/bold]: keep the cold or the heat at bay.
+- [bold]Fortified[/bold]: slows bleeding.
+- [bold]Brawny[/bold]: puts a little more weight behind your blows.
+- [bold]Steady at the helm[/bold]: gives a ship you pilot a little more thrust.
+
+Food is best fresh. A dish stays hot for a good while after it comes off the fire, then slowly loses some of its goodness as it cools and goes stale. A fridge or freezer keeps it fresh for longer, and jerky and dried fish never go stale at all. Cook with silver, gold or iridium produce, and the dish will be all the better for it.
+
+## Making it better
+- [bold]Season it[/bold]: use a seasoning on a dish. Each one adds its own benefit if there's room, or makes the dish stronger if there isn't. A dish only has room for a couple of seasonings, so choose well. Salt simply makes everything better. Pepper warms you, chili makes you brawny, garlic fortifies you, soy sauce keeps you steady, vinegar cools you, barbecue sauce makes a meal more filling, and honey gives you energy.
+- [bold]Eat together[/bold]: a shared meal tastes better. Eating near someone who has just eaten makes you both more comfortable, and so does warming yourself by a lit hearth (a microwave won't do). The more content and cozy you feel, the more a good meal does for you.
+- [bold]Look after the sick[/bold]: with a spoon in hand, feed someone who is lying down. Each spoonful soothes them and heals them a little, and the meal's benefits stay with them for longer.
+
+## Cooking on the road
+<Box>
+<GuideEntityEmbed Entity="WGMessKit"/>
+<GuideEntityEmbed Entity="WGCampStove"/>
+<GuideEntityEmbed Entity="WGCuttingBoard"/>
+</Box>
+Every job can bring a [bold]mess kit[/bold] from its loadout. It holds a folding camp stove, a pan, a cutting board, a bowl, utensils, a knife, and a little salt and pepper. Set the stove down on the ground and put a pan or pot on it. It needs no power, but it has no oven either, so stick to frying and soups. The folding cutting board works just like a small prep board.
+</Document>

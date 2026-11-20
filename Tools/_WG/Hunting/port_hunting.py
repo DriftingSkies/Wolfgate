@@ -556,6 +556,9 @@ def main():
     machine: SmokingRack
   - type: StaticPrice
     price: 300
+  - type: GuideHelp
+    guides:
+    - WGHunting
 
 - type: entity
   parent: WGProcessorBase
@@ -573,6 +576,9 @@ def main():
     machine: TanningRack
   - type: StaticPrice
     price: 300
+  - type: GuideHelp
+    guides:
+    - WGHunting
 
 - type: Tag
   id: WGGameMeat

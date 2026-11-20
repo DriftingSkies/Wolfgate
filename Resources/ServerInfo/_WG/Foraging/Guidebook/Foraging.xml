@@ -1,0 +1,26 @@
+<Document>
+# Foraging
+The worlds have a way of providing, if you know where to look. Wherever folks wander on open ground, wild plants spring up nearby: berries ripe for picking, mushrooms in the damp, and worms just under the soil.
+
+<Box>
+<GuideEntityEmbed Entity="WGForageBerryBush"/>
+<GuideEntityEmbed Entity="WGForageMushrooms"/>
+<GuideEntityEmbed Entity="WGForageSunflowers"/>
+<GuideEntityEmbed Entity="WGForageWorms"/>
+</Box>
+
+## Picking
+Keep an eye on the ground as you go. Forage spots grow on open, dry ground near people out on a world. Click one with an empty hand and take a moment to gather what it has. They don't last forever, though: a spot left unpicked withers away after a while.
+
+## What grows where
+What you find follows the weather:
+- [bold]Frozen worlds[/bold]: wild berry bushes, mushroom rings, rocknut trees and worm casts.
+- [bold]Cool worlds[/bold]: wild berry bushes, wild strawberries, wild raspberry canes, mushroom rings, wild onions and worm casts.
+- [bold]Warm worlds[/bold]: wild berry bushes, wild brambles heavy with blackberries, wild sunflowers, wild poppies, wild tea shrubs, wild onions and worm casts.
+- [bold]Hot worlds[/bold]: wild coffee shrubs, wild sunflowers, wild poppies, wild tea shrubs and worm casts.
+
+## Making the most of it
+- Now and then a spot gives up a few seeds along with its fruit: berries, strawberries, raspberries, blackberries, sunflowers, coffee and rocknuts. Take them home and plant them. See [textlink="Farming" link="WGFarming"].
+- Worm casts give worms, the best bait there is. See [textlink="Fishing" link="WGFishing"].
+- Wild fruit, onions and mushrooms all go into the pot or onto the prep board. See [textlink="Cooking" link="WGCooking"].
+</Document>

@@ -4,6 +4,8 @@ A fella has gotta eat, and it's the chef's job to make sure folks have something
 
 
 [textlink="Click here to see a list of food recipes." link="FoodRecipes"]
+<!-- WOLFGATE(Cooking): link the hands-on cooking guide -->[textlink="Click here to learn how cooking works." link="WGCooking"]
+<!-- WOLFGATE(Fishing): link the fishing guide -->[textlink="Click here to learn how to fish." link="WGFishing"]
 
 First and foremost, you'll need to familiarize yourself with the kitchen, and the tools available to you.
 
@@ -27,7 +29,7 @@ It's hard to put into words how to play chef without feeling like you're being g
 
 - Check what you have on hand when it comes to ingredients, most kitchens have some Flour, Rice, Eggs, Monkey Cubes, and a few other things to get started with.
 - Try your hand at mixing up some dough by putting water and flour together in a beaker. (Use the sinks!)
-- Check the Wiki (or Food Recipes) guidebook for things you can make, and put all the listed ingredients into a microwave to cook it into a meal.
+<!-- WOLFGATE(Cooking): dishes are put together on a prep board and cooked on a hearth -->- Check the Wiki (or Food Recipes) guidebook for things you can make, put the dish together on a prep board, then cook it on a hearth. [textlink="Cooking" link="WGCooking"] explains how.
 - Set up mouse traps. Yes, really. It's easy to see all your hard work disappear if you don't take precautions for mice infestations.
 
 Once you're a bit more experienced and familiar with what you can make, it might be best to put together a few menus, or a "cheat sheet" so you can give a list of ingredients to botany.
@@ -64,6 +66,7 @@ Alt-Click on a Cow with a container in your hand. (Beakers, Buckets, Milk Jugs, 
 </Box>
 ## How to Butcher:
 In most cases, you should be able to use a knife directly on a creature that's dead. It's best to do this in the freezer, as the results are... messy.
+<!-- WOLFGATE(Hunting): game from the worlds gives finer cuts from a clean kill -->Game animals hunted out on the worlds give finer cuts from a clean kill. [textlink="Hunting" link="WGHunting"] explains how.
 
 Monkeys, however, (and other humanoids), need to be dragged onto a meatspike to be butchered.
 <Box>

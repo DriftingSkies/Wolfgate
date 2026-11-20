@@ -20,6 +20,7 @@ Fishing on planets and outposts (`WGFishingSystem`). A fishing rod used on a pla
 - [`Resources/Prototypes/_WG/Fishing/cargo.yml`](../../../Resources/Prototypes/_WG/Fishing/cargo.yml)
 - [`Resources/Prototypes/_WG/Fishing/crafting.yml`](../../../Resources/Prototypes/_WG/Fishing/crafting.yml)
 - [`Resources/Prototypes/_WG/Fishing/fishing.yml`](../../../Resources/Prototypes/_WG/Fishing/fishing.yml)
+- [`Resources/Prototypes/_WG/Fishing/guidebook.yml`](../../../Resources/Prototypes/_WG/Fishing/guidebook.yml)
 
 ### Localization
 
@@ -29,12 +30,17 @@ Fishing on planets and outposts (`WGFishingSystem`). A fishing rod used on a pla
 
 - [`Resources/Textures/_WG/Fishing/fishing.rsi/`](../../../Resources/Textures/_WG/Fishing/fishing.rsi/)
 
+### Guidebook
+
+- [`Resources/ServerInfo/_WG/Fishing/Guidebook/Fishing.xml`](../../../Resources/ServerInfo/_WG/Fishing/Guidebook/Fishing.xml)
+
 ### Tools
 
 - [`Tools/_WG/Fishing/port_fishing.py`](../../../Tools/_WG/Fishing/port_fishing.py)
 
 ## Non-modular edits
 
-None.
+- [`Resources/Prototypes/Guidebook/service.yml`](../../../Resources/Prototypes/Guidebook/service.yml): the fishing guide sits under the chef's page
+- [`Resources/ServerInfo/Guidebook/Service/Chef.xml`](../../../Resources/ServerInfo/Guidebook/Service/Chef.xml): link the fishing guide
 
 <!-- WOLFGATE-GENERATED END -->

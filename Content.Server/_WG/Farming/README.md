@@ -72,6 +72,7 @@ project (art CC BY-SA 3.0). Everything here is sold at the Homestead Supply vend
 - [`Resources/Prototypes/_WG/Farming/crops.yml`](../../../Resources/Prototypes/_WG/Farming/crops.yml)
 - [`Resources/Prototypes/_WG/Farming/entities.yml`](../../../Resources/Prototypes/_WG/Farming/entities.yml)
 - [`Resources/Prototypes/_WG/Farming/goods.yml`](../../../Resources/Prototypes/_WG/Farming/goods.yml)
+- [`Resources/Prototypes/_WG/Farming/guidebook.yml`](../../../Resources/Prototypes/_WG/Farming/guidebook.yml)
 - [`Resources/Prototypes/_WG/Farming/machines.yml`](../../../Resources/Prototypes/_WG/Farming/machines.yml)
 - [`Resources/Prototypes/_WG/Farming/orders.yml`](../../../Resources/Prototypes/_WG/Farming/orders.yml)
 - [`Resources/Prototypes/_WG/Farming/paragon_crops.yml`](../../../Resources/Prototypes/_WG/Farming/paragon_crops.yml)
@@ -102,6 +103,10 @@ project (art CC BY-SA 3.0). Everything here is sold at the Homestead Supply vend
 - [`Resources/Textures/_WG/Farming/noticeboard.rsi/`](../../../Resources/Textures/_WG/Farming/noticeboard.rsi/)
 - [`Resources/Textures/_WG/Farming/props.rsi/`](../../../Resources/Textures/_WG/Farming/props.rsi/)
 
+### Guidebook
+
+- [`Resources/ServerInfo/_WG/Farming/Guidebook/Farming.xml`](../../../Resources/ServerInfo/_WG/Farming/Guidebook/Farming.xml)
+
 ### Tools
 
 - [`Tools/_WG/Farming/gen_crafting.py`](../../../Tools/_WG/Farming/gen_crafting.py)
@@ -116,5 +121,7 @@ project (art CC BY-SA 3.0). Everything here is sold at the Homestead Supply vend
 
 - [`Content.Server/Animals/Systems/EggLayerSystem.cs`](../../Animals/Systems/EggLayerSystem.cs): pass the eggs to animal mood to roll their quality
 - [`Content.Server/Botany/Systems/PlantHolderSystem.cs`](../../Botany/Systems/PlantHolderSystem.cs): pass the harvest to farming to roll its quality
+- [`Resources/Prototypes/Guidebook/service.yml`](../../../Resources/Prototypes/Guidebook/service.yml): the farming guide sits under the botany page
+- [`Resources/ServerInfo/Guidebook/Service/Botany.xml`](../../../Resources/ServerInfo/Guidebook/Service/Botany.xml): link the farming guide for light, weather, quality and farm machines
 
 <!-- WOLFGATE-GENERATED END -->

@@ -1,0 +1,52 @@
+<Document>
+# Hunting
+Out on the worlds, there's game for anyone patient enough to track it and steady enough to bring it down. A good hunter kills cleanly and wastes nothing: the meat feeds the table, the pelts fetch a fair price, and even the bones go back into the garden.
+
+<Box>
+<GuideEntityEmbed Entity="WGGameSaiga"/>
+<GuideEntityEmbed Entity="WGGameGoat"/>
+<GuideEntityEmbed Entity="WGGameWolf"/>
+<GuideEntityEmbed Entity="WGGameDirebear"/>
+</Box>
+
+## What's out there
+[bold]Prey[/bold] runs. Saiga, wild goats, badgers, raccoons and giant moles bolt the moment you get close, so creep up quietly or bring something with reach.
+
+[bold]Predators[/bold] hunt you right back. Wolves and hyenas run in packs, bobcats strike from cover, rous and mossbacks won't back down from a fight, and a direbear is best hunted with friends.
+
+Each world has its own game, suited to its climate:
+- [bold]Cold tundra and northern forests[/bold]: wolves, wild goats, saiga, badgers and the odd direbear.
+- [bold]Woodland[/bold]: badgers, raccoons, bobcats, saiga and the rare direbear.
+- [bold]Dunes and badlands[/bold]: hyenas, giant moles, wild goats and bobcats.
+- [bold]Ash fields[/bold]: rous, rodents of unusual size.
+- [bold]Shores[/bold]: mossbacks and raccoons.
+
+## A clean kill
+Butcher a carcass with a knife, as you would any animal. You'll get its meat, a pelt or hide, and usually some bones. Badgers, moles and direbears give a slab of fat as well.
+
+How it died matters. Bring it down cleanly, without battering it more than you need to, and you're told it was a clean kill. A clean kill gives finer meat, the animal's heart and liver, and from some animals a prized cut: a saiga backstrap, a goat shank, a bobcat loin or a direbear haunch. A messy kill spoils some of the meat and leaves little offal worth taking.
+
+## In the kitchen
+See [textlink="Cooking" link="WGCooking"] for the prep board and the hearth.
+- [bold]Game meat[/bold] fries or bakes into game steaks, or chops into mince for stews.
+- [bold]Tough meat[/bold] from goats, wolves and moles comes out chewy if you fry it. Bake it or stew it instead.
+- [bold]Prized cuts[/bold] sear into prime steaks.
+- [bold]Heart and liver[/bold] make hunter's stews. Stew a heart with potato wedges for hunter's heart stew, or a liver with sliced onion for liver and onion stew.
+- [bold]Fat[/bold] renders down into tallow in the oven.
+
+Game steaks, prime steaks, jerky and dried fish all count as home cooking.
+
+## The racks
+<Box>
+<GuideEntityEmbed Entity="WGHuntSmokingRack"/>
+<GuideEntityEmbed Entity="WGHuntTanningRack"/>
+</Box>
+- The [bold]smoking rack[/bold] smokes meat into jerky and fish fillets into dried fish. Neither ever goes stale, so they're just the thing for a long trip. It needs no power.
+- The [bold]tanning rack[/bold] tans pelts and hides into leather.
+- Bones ground in a nutrient mixer make quality fertilizer. See [textlink="Farming" link="WGFarming"].
+
+Both racks are sold at the Homestead Supply vendor, and you can build them from the construction menu.
+
+## Selling
+The outpost order board often wants pelts and jerky, and the packing table packs leather into fabric crates.
+</Document>

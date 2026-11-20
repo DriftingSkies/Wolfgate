@@ -12,3 +12,5 @@ wg-fish-rod-examine = {$bait ->
    *[other] It has {$bait} bait left.
 }
 wg-stack-worm = worm
+
+guide-entry-wg-fishing = Fishing

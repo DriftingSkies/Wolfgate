@@ -27,7 +27,12 @@ tables; don't edit `hunting.yml` or the marked table entries by hand.
 ### Prototypes
 
 - [`Resources/Prototypes/_WG/Hunting/crafting.yml`](../../../Resources/Prototypes/_WG/Hunting/crafting.yml)
+- [`Resources/Prototypes/_WG/Hunting/guidebook.yml`](../../../Resources/Prototypes/_WG/Hunting/guidebook.yml)
 - [`Resources/Prototypes/_WG/Hunting/hunting.yml`](../../../Resources/Prototypes/_WG/Hunting/hunting.yml)
+
+### Localization
+
+- [`Resources/Locale/en-US/_WG/Hunting/hunting.ftl`](../../../Resources/Locale/en-US/_WG/Hunting/hunting.ftl)
 
 ### Textures
 
@@ -46,6 +51,10 @@ tables; don't edit `hunting.yml` or the marked table entries by hand.
 - [`Resources/Textures/_WG/Hunting/saigabuck.rsi/`](../../../Resources/Textures/_WG/Hunting/saigabuck.rsi/)
 - [`Resources/Textures/_WG/Hunting/wolf.rsi/`](../../../Resources/Textures/_WG/Hunting/wolf.rsi/)
 
+### Guidebook
+
+- [`Resources/ServerInfo/_WG/Hunting/Guidebook/Hunting.xml`](../../../Resources/ServerInfo/_WG/Hunting/Guidebook/Hunting.xml)
+
 ### Tools
 
 - [`Tools/_WG/Hunting/port_hunting.py`](../../../Tools/_WG/Hunting/port_hunting.py)
@@ -53,5 +62,7 @@ tables; don't edit `hunting.yml` or the marked table entries by hand.
 ## Non-modular edits
 
 - [`Content.Server/Kitchen/EntitySystems/SharpSystem.cs`](../../Kitchen/EntitySystems/SharpSystem.cs): let hunting grade the cuts by how clean the kill was, before the carcass goes
+- [`Resources/Prototypes/Guidebook/service.yml`](../../../Resources/Prototypes/Guidebook/service.yml): the hunting guide sits under the chef's page
+- [`Resources/ServerInfo/Guidebook/Service/Chef.xml`](../../../Resources/ServerInfo/Guidebook/Service/Chef.xml): game from the worlds gives finer cuts from a clean kill
 
 <!-- WOLFGATE-GENERATED END -->

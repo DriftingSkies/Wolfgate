@@ -1,0 +1,4 @@
+- type: guideEntry
+  id: WGFishing
+  name: guide-entry-wg-fishing
+  text: "/ServerInfo/_WG/Fishing/Guidebook/Fishing.xml"

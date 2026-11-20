@@ -91,3 +91,5 @@ cmd-wghomesteadtest-bad-surface = There is no planet surface called {$surface}.
 cmd-wghomesteadtest-no-world = The test world couldn't be built. Planet networks may be off (wg.planet_networks).
 cmd-wghomesteadtest-world-name = Homestead test world
 cmd-wghomesteadtest-waiting = Building the {$surface} test world. You'll be sent there once it has finished generating (up to two minutes).
+
+guide-entry-wg-farming = Farming

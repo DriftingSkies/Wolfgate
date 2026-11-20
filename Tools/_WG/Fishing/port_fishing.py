@@ -342,6 +342,9 @@ def main():
   - type: WGFishingRod
   - type: StaticPrice
     price: 150
+  - type: GuideHelp
+    guides:
+    - WGFishing
 
 - type: entity
   parent: BaseItem
@@ -399,6 +402,9 @@ def main():
   - type: WGFishingSpot
   - type: StaticPrice
     price: 1500
+  - type: GuideHelp
+    guides:
+    - WGFishing
 
 - type: Tag
   id: WGFish
@@ -428,6 +434,9 @@ def main():
   - type: Sprite
 {sprite}
     drawdepth: FloorObjects
+  - type: GuideHelp
+    guides:
+    - WGForaging
   - type: WGForageNode
     loot:
 {lines}""")

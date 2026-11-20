@@ -5,6 +5,10 @@
   name: grow lamp
   description: A violet lamp that lets plants beneath it grow through the night and indoors, as long as it has power.
   components:
+  - type: GuideHelp
+    guides:
+    - WGFarming
+    - Botany
   - type: Construction
     graph: WGGrowLampGraph
     node: built

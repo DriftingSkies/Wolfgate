@@ -1,0 +1,43 @@
+<Document>
+# Fishing
+Few things are as peaceful as an afternoon by the water with a rod in your hand. Out on the worlds, the lakes and ponds are full of fish for anyone with a little patience, and what you land makes for a fine supper.
+
+<Box>
+<GuideEntityEmbed Entity="WGFishingRod"/>
+<GuideEntityEmbed Entity="WGBaitWorm"/>
+<GuideEntityEmbed Entity="WGBaitDoughball"/>
+<GuideEntityEmbed Entity="WGFishPond"/>
+</Box>
+
+## Getting started
+- You'll need a [bold]fishing rod[/bold]. The Homestead Supply vendor sells them, and cargo sells a fishing crate with a couple of rods and some bait.
+- Any lake or pond out on a world will do. If there's no water near home, build a [bold]fish pond[/bold] from the construction menu or buy one from the Homestead Supply. It comes stocked.
+
+## Casting and reeling in
+- Use the rod on the water to cast your line, then settle in and wait. Stay put, though: wander off, and the line goes slack.
+- When something bites, you'll know it. Use the rod right away to reel it in. Pull too soon and you'll scare it off, but wait too long and it slips the hook.
+- If nothing seems to live in the water, try somewhere else.
+
+## Bait
+Bait the hook by using bait on the rod. It holds a good few at once, and each cast takes one. Examine the rod to see how much is left.
+
+- [bold]Worms[/bold] are the best bait. Dig them up from worm casts while you're out [textlink="foraging" link="WGForaging"].
+- [bold]Dough balls[/bold] will do in a pinch. Chop a slice of dough on a prep board to roll a few.
+
+A baited hook brings the fish in sooner, and it lands finer ones: [color=#C0C0C0]silver[/color], [color=#FFD700]gold[/color], or now and then even [color=#B57EDC]iridium[/color]. Worms do better than dough balls.
+
+## What's biting
+Fish follow the weather, so each kind of world has its own catch:
+- [bold]Frozen worlds[/bold]: arctic char, cod, salmon, plaice, crab, lanternfish and monkfish.
+- [bold]Cool worlds[/bold]: carp, perch, pike, salmon, cod, sole, crab, clams and eels.
+- [bold]Warm worlds[/bold]: carp, catfish, perch, eels, sea bass, shrimp, sunfish, oysters and goldfish.
+- [bold]Hot worlds[/bold]: clownfish, anglerfish, lobster, octopus, squid, stingray, mudskippers, pufferfish, sand surfers and swordfish.
+- [bold]A fish pond[/bold]: carp, catfish, perch, shrimp and goldfish.
+
+## From the water to the table
+- Chop a fish on a prep board to fillet it, or a shellfish to pick out its meat. See [textlink="Cooking" link="WGCooking"].
+- Fry or bake a fillet, or fry the shellfish meat. In the pot, fillets make fish broth, or fish chowder with potato and onion, and shellfish meat makes a rich seafood bisque.
+- Cooked fish and shellfish count as home cooking, so a good fish supper does you good.
+- A smoking rack turns fillets into dried fish that never goes stale. See [textlink="Hunting" link="WGHunting"].
+- The outpost order board often wants fresh fish and shellfish, and the packing table packs fish into supplies crates.
+</Document>

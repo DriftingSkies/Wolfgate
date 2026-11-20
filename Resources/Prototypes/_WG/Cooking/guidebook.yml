@@ -1,0 +1,4 @@
+- type: guideEntry
+  id: WGCooking
+  name: guide-entry-wg-cooking
+  text: "/ServerInfo/_WG/Cooking/Guidebook/Cooking.xml"

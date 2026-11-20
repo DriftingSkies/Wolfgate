@@ -6,6 +6,10 @@
   parent: BaseStructureDynamic
   id: WGProcessorBase
   components:
+  - type: GuideHelp
+    guides:
+    - WGFarming
+    - Botany
   - type: Damageable
     damageContainer: StructuralInorganic
   - type: Destructible
@@ -341,6 +345,10 @@
   name: scarecrow
   description: Keeps birds off the outdoor crops within eight tiles.
   components:
+  - type: GuideHelp
+    guides:
+    - WGFarming
+    - Botany
   - type: Construction
     graph: WGFarmScarecrowGraph
     node: built
@@ -359,6 +367,10 @@
   name: sprinkler
   description: Keeps the four plant holders beside it watered from its tank. Fill the tank with water.
   components:
+  - type: GuideHelp
+    guides:
+    - WGFarming
+    - Botany
   - type: Construction
     graph: WGSprinklerBasicGraph
     node: built
@@ -441,6 +453,10 @@
   name: outpost order board
   description: Buyers across the sector post orders for farm and workshop goods here. Use the goods on it to deliver; examine it to read the orders.
   components:
+  - type: GuideHelp
+    guides:
+    - WGFarming
+    - Botany
   - type: Construction
     graph: WGFarmOrderBoardGraph
     node: built
@@ -459,6 +475,10 @@
   parent: BaseStructureDynamic
   id: WGWaterCollectorBase
   components:
+  - type: GuideHelp
+    guides:
+    - WGFarming
+    - Botany
   - type: SolutionContainerManager
     solutions:
       tank:

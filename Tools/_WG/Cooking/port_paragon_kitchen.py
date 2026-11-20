@@ -466,6 +466,10 @@ def main():
       wg-oven: !type:Container
   - type: StaticPrice
     price: 900
+  - type: GuideHelp
+    guides:
+    - WGCooking
+    - FoodRecipes
 
 - type: entity
   parent: BaseStructureDynamic
