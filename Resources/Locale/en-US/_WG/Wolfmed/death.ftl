@@ -5,6 +5,15 @@ wolfmed-death-banner-sub = Your body has given out.
 wolfmed-arrest-banner = YOUR HEART HAS STOPPED
 wolfmed-arrest-banner-sub = Minutes left. Someone has to find you.
 
+# The seconds between a stopped heart and the collapse.
+wolfmed-arrest-collapse-start = Your chest seizes. Your heart has stopped!
+wolfmed-arrest-collapse-numb = Your hands go cold and numb.
+wolfmed-arrest-collapse-legs = Your legs are giving out.
+
+# Admin smite.
+wolfmed-smite-heart-attack-name = Heart attack
+wolfmed-smite-heart-attack-description = Stops their heart. They fade on their feet for a while, then collapse and need a defibrillator.
+
 # BRAIN: what the paddles say.
 wolfmed-defib-success = Sinus rhythm restored.
 wolfmed-defib-no-response = No response. Charge again.

@@ -447,6 +447,10 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         if (!otherXform.Anchored && HasComp<ItemComponent>(other))
             return false;
 
+        // What rides on the vehicle (a rider buckled to it) moves with it and is never in its way.
+        if (otherXform.ParentUid == vehicle)
+            return false;
+
         if (!physicsQ.TryComp(other, out var otherBody) || !otherBody.CanCollide)
             return false;
 

@@ -200,6 +200,13 @@ public sealed class WolfmedCVars
         CVarDef.Create("wolfmed.arrest_shock_damage", 60f, CVar.SERVERONLY);
 
     /// <summary>
+    /// Seconds a stopped heart leaves the patient on their feet, fading, before the collapse. Zero collapses at once.
+    /// A pulled heart and an electrocution always collapse at once.
+    /// </summary>
+    public static readonly CVarDef<float> ArrestCollapseSeconds =
+        CVarDef.Create("wolfmed.arrest_collapse_seconds", 45f, CVar.SERVERONLY);
+
+    /// <summary>
     /// Seconds of a stopped heart that drain brain oxygenation from full to nothing. 180 since playtest 5 ("cardiac
     /// arrest onsets too fast, people dying is way more work to fix"; was 120): with wolfmed.brain_damage_rate 0.05,
     /// brain death is about 7.5 minutes after an arrest from a full brain, was 4.

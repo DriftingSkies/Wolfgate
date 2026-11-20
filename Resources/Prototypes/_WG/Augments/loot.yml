@@ -1,0 +1,21 @@
+# One scavenged augment, picked from augments.yml by price: the bare part or organ, or the autosurgeon for an
+# upgrade. Found only on the floors of wrecks (the spawner is in the wreck debris floor list). The spawner marks
+# it as worth what the augment sells back for, so it is rare.
+
+- type: entityTable
+  id: WGAugmentScavengeTable
+  table: !type:WGAugmentSelector {}
+
+- type: entity
+  parent: MarkerBase
+  id: WGAugmentScavengeSpawner
+  name: scavenged augment spawner
+  components:
+  - type: Sprite
+    layers:
+    - state: red
+    - sprite: _EinsteinEngines/Mobs/Species/Cybernetics/bishop/bishop_main.rsi
+      state: r_arm-combined
+  - type: WGAugmentScavengeSpawner
+    table: !type:NestedSelector
+      tableId: WGAugmentScavengeTable

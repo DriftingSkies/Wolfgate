@@ -2,6 +2,8 @@ using Content.Shared.Chemistry.Reaction;
 using System.Collections.Generic;
 using System.Linq;
 using Content.Server._WG.WolfChem.Narcotics;
+using Content.Server._WG.WolfChem.Purity;
+using Content.Shared._WG.WolfChem.Purity;
 using Content.Server.Botany;
 using Content.Server.Cargo.Systems;
 using Content.Server.Nutrition.Components;
@@ -167,6 +169,69 @@ public sealed class SubstanceTest
         });
 
         await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// Desoxyephedrine is graded by its cooking temperature, and a crystal shard of 99.1% or better shows the blue tint.
+    /// </summary>
+    [Test]
+    public async Task DesoxyGradeAndCrystalTintTest()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var appearance = server.System<SharedAppearanceSystem>();
+
+        await server.WaitAssertion(() =>
+        {
+            server.System<ChemicalReactionSystem>().WGOptimumShift.Clear();
+            var lab = new Lab(server, map.GridCoords);
+
+            var inputs = new[] { ("Ephedrine", 5f), ("Carbon", 5f), ("Iodine", 5f), ("Phosphorus", 5f) };
+            var clean = lab.React(385f, null, inputs);
+            var careless = lab.React(400f, null, inputs);
+            Assert.Multiple(() =>
+            {
+                Assert.That(clean.GetPurity("Desoxyephedrine"), Is.EqualTo(1f).Within(0.001f));
+                Assert.That(careless.GetPurity("Desoxyephedrine"), Is.EqualTo(0.7f).Within(0.01f),
+                    "15 K off the optimum should cost half of the way to the floor.");
+            });
+
+            lab.React(220f, null, ("Desoxyephedrine", 5), ("Acetone", 1));
+            var top = Shards(server, map.MapId);
+            lab.React(230f, null, ("Desoxyephedrine", 5), ("Acetone", 1));
+            var low = Shards(server, map.MapId).Except(top).ToList();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(top, Has.Count.EqualTo(1));
+                Assert.That(low, Has.Count.EqualTo(1));
+                Assert.That(appearance.TryGetData<bool>(top[0], WGPurityTintVisuals.Tinted, out var topTint) && topTint, Is.True,
+                    "A full-grade shard should be tinted.");
+                Assert.That(appearance.TryGetData<bool>(low[0], WGPurityTintVisuals.Tinted, out var lowTint) && lowTint, Is.False,
+                    "A shard set 10 K off the optimum should not be tinted.");
+            });
+
+            var cut = server.EntMan.SpawnEntity("WGCrystalShardCut", map.GridCoords);
+            Assert.That(appearance.TryGetData<bool>(cut, WGPurityTintVisuals.Tinted, out var cutTint) && cutTint, Is.False,
+                "Dealer-cut stock should not be tinted.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Crystal shards on a map.</summary>
+    private static List<EntityUid> Shards(RobustIntegrationTest.ServerIntegrationInstance server, MapId map)
+    {
+        var found = new List<EntityUid>();
+        var query = server.EntMan.EntityQueryEnumerator<WGPurityTintComponent, MetaDataComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out _, out var meta, out var xform))
+        {
+            if (meta.EntityPrototype?.ID == "WGCrystalShard" && xform.MapID == map)
+                found.Add(uid);
+        }
+
+        return found;
     }
 
     private static readonly string[] Products =

@@ -91,6 +91,7 @@ Skipped ("dirty-disposed").
 - [`Content.Server/_WG/Wolfmed/Life/WolfmedDyingActionsSystem.cs`](Life/WolfmedDyingActionsSystem.cs)
 - [`Content.Server/_WG/Wolfmed/Life/WolfmedExecutionSystem.Confirm.cs`](Life/WolfmedExecutionSystem.Confirm.cs)
 - [`Content.Server/_WG/Wolfmed/Life/WolfmedExecutionSystem.cs`](Life/WolfmedExecutionSystem.cs)
+- [`Content.Server/_WG/Wolfmed/Life/WolfmedHeartAttackSmiteSystem.cs`](Life/WolfmedHeartAttackSmiteSystem.cs)
 - [`Content.Server/_WG/Wolfmed/Life/WolfmedLifeSystem.cs`](Life/WolfmedLifeSystem.cs)
 - [`Content.Server/_WG/Wolfmed/Life/WolfmedOverheatComponent.cs`](Life/WolfmedOverheatComponent.cs)
 - [`Content.Server/_WG/Wolfmed/Life/WolfmedOverheatSystem.cs`](Life/WolfmedOverheatSystem.cs)
@@ -227,6 +228,7 @@ Skipped ("dirty-disposed").
 - [`Content.Shared/_WG/Wolfmed/Hud/WolfmedSyntheticHudLinePrototype.cs`](../../../Content.Shared/_WG/Wolfmed/Hud/WolfmedSyntheticHudLinePrototype.cs)
 - [`Content.Shared/_WG/Wolfmed/Hud/WolfmedSyntheticHudLineSystem.cs`](../../../Content.Shared/_WG/Wolfmed/Hud/WolfmedSyntheticHudLineSystem.cs)
 - [`Content.Shared/_WG/Wolfmed/Life/SharedExecutionSystem.Wolfmed.cs`](../../../Content.Shared/_WG/Wolfmed/Life/SharedExecutionSystem.Wolfmed.cs)
+- [`Content.Shared/_WG/Wolfmed/Life/WolfmedArrestCollapseSystem.cs`](../../../Content.Shared/_WG/Wolfmed/Life/WolfmedArrestCollapseSystem.cs)
 - [`Content.Shared/_WG/Wolfmed/Life/WolfmedCoreHeatComponent.cs`](../../../Content.Shared/_WG/Wolfmed/Life/WolfmedCoreHeatComponent.cs)
 - [`Content.Shared/_WG/Wolfmed/Life/WolfmedCritActionsSystem.cs`](../../../Content.Shared/_WG/Wolfmed/Life/WolfmedCritActionsSystem.cs)
 - [`Content.Shared/_WG/Wolfmed/Life/WolfmedDormant.cs`](../../../Content.Shared/_WG/Wolfmed/Life/WolfmedDormant.cs)
@@ -348,6 +350,7 @@ Skipped ("dirty-disposed").
 - [`Content.IntegrationTests/Tests/_WG/Wolfmed/Range/WolfmedRangeMapGenerator.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/Range/WolfmedRangeMapGenerator.cs)
 - [`Content.IntegrationTests/Tests/_WG/Wolfmed/Range/WolfmedRangeMapTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/Range/WolfmedRangeMapTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Wolfmed/Scenarios/WolfmedArrestClockTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/Scenarios/WolfmedArrestClockTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Wolfmed/Scenarios/WolfmedArrestCollapseTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/Scenarios/WolfmedArrestCollapseTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Wolfmed/Scenarios/WolfmedBreathingClockTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/Scenarios/WolfmedBreathingClockTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Wolfmed/Scenarios/WolfmedBurnScenarioTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/Scenarios/WolfmedBurnScenarioTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Wolfmed/Scenarios/WolfmedCauseScenarioTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/Scenarios/WolfmedCauseScenarioTest.cs)
@@ -927,6 +930,7 @@ Skipped ("dirty-disposed").
 - [`Content.Client/UserInterface/Systems/Hands/Controls/HandsContainer.cs`](../../../Content.Client/UserInterface/Systems/Hands/Controls/HandsContainer.cs)
   - a hand reattached after the other keeps its side; right, middle, then left
   - the hand bar's order, as the server sorts hands
+- [`Content.IntegrationTests/PoolManager.Cvars.cs`](../../../Content.IntegrationTests/PoolManager.Cvars.cs): arrest tests expect the collapse at once; the collapse test turns it on
 - [`Content.IntegrationTests/Tests/_Onyx/Body/BodyConsequencesTest.cs`](../../../Content.IntegrationTests/Tests/_Onyx/Body/BodyConsequencesTest.cs)
   - §2.7, Onyx's SharedBodySystem.TryDetachPart lives here.
   - Onyx's version asserts Nubody behaviour Wolfgate does not have. Its `Groin` part does not exist

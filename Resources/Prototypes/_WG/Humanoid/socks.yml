@@ -1,0 +1,104 @@
+# Socks and stockings, worn under clothes as an undergarment marking.
+- type: marking
+  id: WGUndergarmentStripedStockings
+  bodyPart: UndergarmentSocks
+  markingCategory: UndergarmentSocks
+  speciesRestriction: [Oni, Felinid, Human, Diona, Gingerbread, Arachnid, Dwarf, Skeleton, Moth, SlimePerson, IPC, Skrell, Shadekin, Rodentia, Feroxi, Chitinid, Avali, Thaven, Yowie, Tajaran, Hydrakin, Kobold, Goblin, Protogen, Asakim]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  sprites:
+  - sprite: _WG/Humanoid/undergarment_socks.rsi
+    state: Striped_Stockings
+
+- type: marking
+  id: WGUndergarmentFishnetStockings
+  bodyPart: UndergarmentSocks
+  markingCategory: UndergarmentSocks
+  speciesRestriction: [Oni, Felinid, Human, Diona, Gingerbread, Arachnid, Dwarf, Skeleton, Moth, SlimePerson, IPC, Skrell, Shadekin, Rodentia, Feroxi, Chitinid, Avali, Thaven, Yowie, Tajaran, Hydrakin, Kobold, Goblin, Protogen, Asakim]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#39393F'
+  sprites:
+  - sprite: _WG/Humanoid/undergarment_socks.rsi
+    state: Fishnet_Stockings
+
+- type: marking
+  id: WGUndergarmentStockings
+  bodyPart: UndergarmentSocks
+  markingCategory: UndergarmentSocks
+  speciesRestriction: [Oni, Felinid, Human, Diona, Gingerbread, Arachnid, Dwarf, Skeleton, Moth, SlimePerson, IPC, Skrell, Shadekin, Rodentia, Feroxi, Chitinid, Avali, Thaven, Yowie, Tajaran, Hydrakin, Kobold, Goblin, Protogen, Asakim]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#39393F'
+  sprites:
+  - sprite: _WG/Humanoid/undergarment_socks.rsi
+    state: Stockings
+
+- type: marking
+  id: WGUndergarmentThighHighs
+  bodyPart: UndergarmentSocks
+  markingCategory: UndergarmentSocks
+  speciesRestriction: [Oni, Felinid, Human, Diona, Gingerbread, Arachnid, Dwarf, Skeleton, Moth, SlimePerson, IPC, Skrell, Shadekin, Rodentia, Feroxi, Chitinid, Avali, Thaven, Yowie, Tajaran, Hydrakin, Kobold, Goblin, Protogen, Asakim]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#39393F'
+  sprites:
+  - sprite: _WG/Humanoid/undergarment_socks.rsi
+    state: Thigh_Highs
+
+- type: marking
+  id: WGUndergarmentKneeHighs
+  bodyPart: UndergarmentSocks
+  markingCategory: UndergarmentSocks
+  speciesRestriction: [Oni, Felinid, Human, Diona, Gingerbread, Arachnid, Dwarf, Skeleton, Moth, SlimePerson, IPC, Skrell, Shadekin, Rodentia, Feroxi, Chitinid, Avali, Thaven, Yowie, Tajaran, Hydrakin, Kobold, Goblin, Protogen, Asakim]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#39393F'
+  sprites:
+  - sprite: _WG/Humanoid/undergarment_socks.rsi
+    state: Knee_Highs
+
+- type: marking
+  id: WGUndergarmentSocks
+  bodyPart: UndergarmentSocks
+  markingCategory: UndergarmentSocks
+  speciesRestriction: [Oni, Felinid, Human, Diona, Gingerbread, Arachnid, Dwarf, Skeleton, Moth, SlimePerson, IPC, Skrell, Shadekin, Rodentia, Feroxi, Chitinid, Avali, Thaven, Yowie, Tajaran, Hydrakin, Kobold, Goblin, Protogen, Asakim]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  sprites:
+  - sprite: _WG/Humanoid/undergarment_socks.rsi
+    state: Socks
+
+- type: marking
+  id: WGUndergarmentShortSocks
+  bodyPart: UndergarmentSocks
+  markingCategory: UndergarmentSocks
+  speciesRestriction: [Oni, Felinid, Human, Diona, Gingerbread, Arachnid, Dwarf, Skeleton, Moth, SlimePerson, IPC, Skrell, Shadekin, Rodentia, Feroxi, Chitinid, Avali, Thaven, Yowie, Tajaran, Hydrakin, Kobold, Goblin, Protogen, Asakim]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  sprites:
+  - sprite: _WG/Humanoid/undergarment_socks.rsi
+    state: Short_Socks
+
+- type: marking
+  id: WGUndergarmentPantyhose
+  bodyPart: UndergarmentSocks
+  markingCategory: UndergarmentSocks
+  speciesRestriction: [Oni, Felinid, Human, Diona, Gingerbread, Arachnid, Dwarf, Skeleton, Moth, SlimePerson, IPC, Skrell, Shadekin, Rodentia, Feroxi, Chitinid, Avali, Thaven, Yowie, Tajaran, Hydrakin, Kobold, Goblin, Protogen, Asakim]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#39393F'
+  sprites:
+  - sprite: _WG/Humanoid/undergarment_socks.rsi
+    state: Pantyhose

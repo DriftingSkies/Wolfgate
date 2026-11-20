@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from tgstation at commit https://github.com/tgstation/tgstation/commit/1b7f17f1078f2d0f9acc1e570861e604982794c6, via Meridian Rift",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "11x11"
+    },
+    {
+      "name": "19x19"
+    },
+    {
+      "name": "23x19"
+    },
+    {
+      "name": "23x23"
+    },
+    {
+      "name": "24x24"
+    },
+    {
+      "name": "11x11-wip"
+    },
+    {
+      "name": "19x19-wip"
+    },
+    {
+      "name": "23x19-wip"
+    },
+    {
+      "name": "23x23-wip"
+    },
+    {
+      "name": "24x24-wip"
+    },
+    {
+      "name": "11x11-frame"
+    },
+    {
+      "name": "19x19-frame"
+    },
+    {
+      "name": "23x19-frame"
+    },
+    {
+      "name": "23x23-frame"
+    },
+    {
+      "name": "24x24-frame"
+    }
+  ]
+}

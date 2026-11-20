@@ -31,6 +31,7 @@ public sealed partial class AtmosphereSystem
 
     private void OnAtmosphereRemove(EntityUid uid, GridAtmosphereComponent component, ComponentRemove args)
     {
+        WGAtmospheresChanged(); // WOLFGATE(Performance): rebuild the cached grid atmosphere list
         for (var i = 0; i < _currentRunAtmosphere.Count; i++)
         {
             if (_currentRunAtmosphere[i].Owner != uid)
@@ -53,6 +54,7 @@ public sealed partial class AtmosphereSystem
 
     private void OnGridAtmosphereStartup(EntityUid uid, GridAtmosphereComponent component, ComponentStartup args)
     {
+        WGAtmospheresChanged(); // WOLFGATE(Performance): rebuild the cached grid atmosphere list
         if (!TryComp(uid, out MapGridComponent? mapGrid))
             return;
 

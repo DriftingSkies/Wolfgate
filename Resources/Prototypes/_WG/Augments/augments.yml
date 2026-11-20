@@ -1,5 +1,5 @@
-# The choices in the creator's Augments tab. Only the base cybernetic limbs for now; more kinds (plating, missing
-# limbs, organs) and priced augments, which are bought once from the character's bank, can be added here.
+# Every piece of cyberware a character can carry between rounds, and the choices in the creator's Augments tab.
+# A new cybernetic part, organ or upgrading autosurgeon belongs here too, or it is lost at the end of each round.
 
 - type: wgAugment
   id: WGAugmentCyberLeftArm
@@ -36,3 +36,495 @@
   kind: Limb
   part: WGAugmentRightLeg
   styled: true
+
+# Plain cybernetic hands and feet: cosmetic, so free and never scavenged.
+
+- type: wgAugment
+  id: WGAugmentCyberLeftHand
+  slot: LeftHand
+  kind: Limb
+  part: LeftHandCybernetic
+  styled: true
+
+- type: wgAugment
+  id: WGAugmentCyberRightHand
+  slot: RightHand
+  kind: Limb
+  part: RightHandCybernetic
+  styled: true
+
+- type: wgAugment
+  id: WGAugmentCyberLeftFoot
+  slot: LeftFoot
+  kind: Limb
+  part: LeftFootCybernetic
+  styled: true
+
+- type: wgAugment
+  id: WGAugmentCyberRightFoot
+  slot: RightFoot
+  kind: Limb
+  part: RightFootCybernetic
+  styled: true
+
+# The chest converted in place: styled like the cyber limbs, synthetic, and holding a third implant. A torso can't be
+# swapped like a limb, since the rest of the body hangs from it.
+- type: wgAugment
+  id: WGAugmentCyberChest
+  name: wg-augment-cyber-chest
+  description: wg-augment-cyber-chest-desc
+  icon: { sprite: Objects/Specific/Robotics/cyborg_parts.rsi, state: borg_chest }
+  slot: Chest
+  kind: Plating
+  styled: true
+  implantSlots: 3
+  price: 400000
+
+# The cyberware found, bought and installed in rounds. Each is bought once in the creator or kept from a round
+# it was installed in; scavengers find the part, organ or autosurgeon, rarer the dearer it is. Better limbs hold more
+# implants (implantSlots); an implant's slot is the part it goes in, and host says whether that part must be synthetic.
+# The creator draws the installed entity's sprite beside each; autosurgeons all look alike, so implants name an icon.
+
+- type: wgAugment
+  id: WGAugmentJawsOfLifeLeftArm
+  slot: LeftArm
+  kind: Limb
+  part: JawsOfLifeLeftArm
+  styled: true
+  price: 200000
+  implantSlots: 2
+  order: 10
+
+- type: wgAugment
+  id: WGAugmentJawsOfLifeRightArm
+  slot: RightArm
+  kind: Limb
+  part: JawsOfLifeRightArm
+  styled: true
+  price: 200000
+  implantSlots: 2
+  order: 10
+
+- type: wgAugment
+  id: WGAugmentSpeedLeftLeg
+  slot: LeftLeg
+  kind: Limb
+  part: SpeedLeftLeg
+  styled: true
+  price: 200000
+  implantSlots: 2
+  order: 10
+
+- type: wgAugment
+  id: WGAugmentSpeedRightLeg
+  slot: RightLeg
+  kind: Limb
+  part: SpeedRightLeg
+  styled: true
+  price: 200000
+  implantSlots: 2
+  order: 10
+
+- type: wgAugment
+  id: WGAugmentDexLeftHand
+  slot: LeftHand
+  kind: Limb
+  part: DexLeftHand
+  styled: true
+  price: 100000
+  order: 10
+
+- type: wgAugment
+  id: WGAugmentDexRightHand
+  slot: RightHand
+  kind: Limb
+  part: DexRightHand
+  styled: true
+  price: 100000
+  order: 10
+
+- type: wgAugment
+  id: WGAugmentCyberEyes
+  slot: Eyes
+  kind: Organ
+  organ: BasicCyberneticEyes
+  price: 75000
+
+- type: wgAugment
+  id: WGAugmentSecurityEyes
+  slot: Eyes
+  kind: Organ
+  organ: SecurityCyberneticEyes
+  price: 150000
+  order: 10
+
+- type: wgAugment
+  id: WGAugmentMedicalEyes
+  slot: Eyes
+  kind: Organ
+  organ: MedicalCyberneticEyes
+  price: 150000
+  order: 10
+
+- type: wgAugment
+  id: WGAugmentThermalTintEyes
+  name: wg-augment-thermal-tint-eyes
+  description: wg-augment-thermal-tint-eyes-desc
+  slot: Eyes
+  kind: Organ
+  organ: WGAugmentThermalTintEyes
+  price: 1000000
+  order: 20
+
+- type: wgAugment
+  id: WGAugmentInternalAirSystem
+  slot: Lungs
+  kind: Organ
+  organ: OrganInternalAirSystem
+  price: 150000
+
+- type: wgAugment
+  id: WGAugmentScrubberLiver
+  slot: Liver
+  kind: Organ
+  organ: WGAugmentScrubberLiver
+  price: 150000
+
+- type: wgAugment
+  id: WGAugmentPDVHeart
+  slot: Heart
+  kind: Organ
+  organ: OrganPDVAdvancedHeart
+  price: 250000
+
+- type: wgAugment
+  id: WGAugmentSakimotoHeart
+  slot: Heart
+  kind: Organ
+  organ: OrganHeartMMCSakimoto
+  price: 500000
+  order: 10
+
+- type: wgAugment
+  id: WGAugmentShuntHeart
+  slot: Heart
+  kind: Organ
+  organ: OrganHeartTSFShunt
+  price: 750000
+  order: 10
+
+- type: wgAugment
+  id: WGAugmentLeukoSandevistan
+  slot: Heart
+  kind: Organ
+  organ: OrganHeartTSFSandevistan
+  price: 1500000
+  order: 20
+
+- type: wgAugment
+  id: WGAugmentSandevistan
+  slot: Heart
+  kind: Organ
+  organ: OrganHeartSandevistan
+  price: 2500000
+  order: 20
+
+- type: wgAugment
+  id: WGAugmentLeftMantisBlade
+  name: wg-augment-mantis-blade-left
+  description: wg-augment-mantis-blade-desc
+  icon: { sprite: _Goobstation/Objects/Weapons/Melee/mantis_blade.rsi, state: icon }
+  slot: LeftArm
+  kind: Upgrade
+  host: Synthetic
+  autosurgeon: AutosurgeonLeftMantisBladeMieyo
+  price: 800000
+
+- type: wgAugment
+  id: WGAugmentRightMantisBlade
+  name: wg-augment-mantis-blade-right
+  description: wg-augment-mantis-blade-desc
+  icon: { sprite: _Goobstation/Objects/Weapons/Melee/mantis_blade.rsi, state: icon-mirrored }
+  slot: RightArm
+  kind: Upgrade
+  host: Synthetic
+  autosurgeon: AutosurgeonRightMantisBladeMieyo
+  price: 800000
+
+- type: wgAugment
+  id: WGAugmentDermalArmor
+  name: wg-augment-dermal-armor
+  description: wg-augment-dermal-armor-desc
+  icon: { sprite: _Mono/Objects/Misc/cybernetics.rsi, state: armor-chest }
+  slot: Chest
+  kind: Upgrade
+  autosurgeon: AutosurgeonDermalArmorPDV
+  price: 600000
+
+- type: wgAugment
+  id: WGAugmentHaloBurst
+  name: wg-augment-halo-burst
+  description: wg-augment-halo-burst-desc
+  icon: { sprite: Objects/Weapons/Grenades/shrapnelgrenade.rsi, state: icon }
+  slot: Chest
+  kind: Upgrade
+  autosurgeon: WGAutosurgeonHaloBurst
+  price: 2500000
+  order: 20
+
+- type: wgAugment
+  id: WGAugmentHaloStun
+  name: wg-augment-halo-stun
+  description: wg-augment-halo-stun-desc
+  icon: { sprite: Objects/Weapons/Grenades/stingergrenade.rsi, state: icon }
+  slot: Chest
+  kind: Upgrade
+  autosurgeon: WGAutosurgeonHaloStun
+  price: 1500000
+  order: 20
+
+- type: wgAugment
+  id: WGAugmentMuscleFibers
+  name: wg-augment-muscle-fibers
+  description: wg-augment-muscle-fibers-desc
+  icon: { sprite: _Mono/Objects/Misc/cybernetics.rsi, state: muscule }
+  slot: Chest
+  kind: Upgrade
+  autosurgeon: AutosurgeonMuscleFibersMieyo
+  price: 500000
+
+- type: wgAugment
+  id: WGAugmentLeftToolArm
+  name: wg-augment-tool-arm
+  description: wg-augment-tool-arm-desc
+  icon: { sprite: _WG/Augments/tool_arm.rsi, state: implant }
+  slot: LeftArm
+  kind: Upgrade
+  host: Synthetic
+  autosurgeon: WGAutosurgeonLeftToolArm
+  price: 300000
+
+- type: wgAugment
+  id: WGAugmentRightToolArm
+  name: wg-augment-tool-arm
+  description: wg-augment-tool-arm-desc
+  icon: { sprite: _WG/Augments/tool_arm.rsi, state: implant }
+  slot: RightArm
+  kind: Upgrade
+  host: Synthetic
+  autosurgeon: WGAutosurgeonRightToolArm
+  price: 300000
+
+- type: wgAugment
+  id: WGAugmentLeftSmartlink
+  name: wg-augment-smartlink
+  description: wg-augment-smartlink-desc
+  icon: { sprite: _Mono/Objects/Misc/cybernetics.rsi, state: circuit }
+  slot: LeftHand
+  kind: Upgrade
+  host: Synthetic
+  autosurgeon: WGAutosurgeonLeftSmartlink
+  price: 800000
+
+- type: wgAugment
+  id: WGAugmentRightSmartlink
+  name: wg-augment-smartlink
+  description: wg-augment-smartlink-desc
+  icon: { sprite: _Mono/Objects/Misc/cybernetics.rsi, state: circuit }
+  slot: RightHand
+  kind: Upgrade
+  host: Synthetic
+  autosurgeon: WGAutosurgeonRightSmartlink
+  price: 800000
+
+- type: wgAugment
+  id: WGAugmentLeftFingerLighter
+  name: wg-augment-finger-lighter
+  description: wg-augment-finger-lighter-desc
+  icon: { sprite: Objects/Tools/lighters.rsi, state: zippo_icon_base }
+  slot: LeftHand
+  kind: Upgrade
+  autosurgeon: WGAutosurgeonLeftFingerLighter
+  price: 100000
+  order: 10
+
+- type: wgAugment
+  id: WGAugmentRightFingerLighter
+  name: wg-augment-finger-lighter
+  description: wg-augment-finger-lighter-desc
+  icon: { sprite: Objects/Tools/lighters.rsi, state: zippo_icon_base }
+  slot: RightHand
+  kind: Upgrade
+  autosurgeon: WGAutosurgeonRightFingerLighter
+  price: 100000
+  order: 10
+
+- type: wgAugment
+  id: WGAugmentLeftArmLaser
+  name: wg-augment-arm-laser
+  description: wg-augment-arm-laser-desc
+  icon: { sprite: _WG/Augments/arm_laser.rsi, state: icon }
+  slot: LeftArm
+  kind: Upgrade
+  host: Synthetic
+  autosurgeon: WGAutosurgeonLeftArmLaser
+  price: 1200000
+
+- type: wgAugment
+  id: WGAugmentRightArmLaser
+  name: wg-augment-arm-laser
+  description: wg-augment-arm-laser-desc
+  icon: { sprite: _WG/Augments/arm_laser.rsi, state: icon }
+  slot: RightArm
+  kind: Upgrade
+  host: Synthetic
+  autosurgeon: WGAutosurgeonRightArmLaser
+  price: 1200000
+
+# One shield to a body: two would cover front and back at once.
+- type: wgAugment
+  id: WGAugmentLeftHandShield
+  name: wg-augment-hand-shield
+  description: wg-augment-hand-shield-desc
+  icon: { sprite: Objects/Weapons/Melee/e_shield.rsi, state: eshield-icon }
+  slot: LeftHand
+  kind: Upgrade
+  host: Synthetic
+  exclusive: HandShield
+  autosurgeon: WGAutosurgeonLeftHandShield
+  price: 1000000
+
+- type: wgAugment
+  id: WGAugmentRightHandShield
+  name: wg-augment-hand-shield
+  description: wg-augment-hand-shield-desc
+  icon: { sprite: Objects/Weapons/Melee/e_shield.rsi, state: eshield-icon }
+  slot: RightHand
+  kind: Upgrade
+  host: Synthetic
+  exclusive: HandShield
+  autosurgeon: WGAutosurgeonRightHandShield
+  price: 1000000
+
+- type: wgAugment
+  id: WGAugmentOpticalCamo
+  name: wg-augment-optical-camo
+  description: wg-augment-optical-camo-desc
+  icon: { sprite: _Goobstation/Objects/Specific/Robotics/mod_modules.rsi, state: cloak_traitor }
+  slot: Chest
+  kind: Upgrade
+  autosurgeon: WGAutosurgeonOpticalCamo
+  price: 1500000
+  order: 20
+
+- type: wgAugment
+  id: WGAugmentShoulderCannon
+  name: wg-augment-shoulder-cannon
+  description: wg-augment-shoulder-cannon-desc
+  icon: { sprite: _WG/Augments/shoulder_cannon.rsi, state: icon }
+  slot: Chest
+  kind: Upgrade
+  host: Synthetic
+  autosurgeon: WGAutosurgeonShoulderCannon
+  price: 2000000
+  order: 20
+
+# Monolith's removed combat traits (Vigor, Tenacity, Trap Avoider), back as cyberware that is paid for and can be lost.
+# Tenacity raised the damage crit threshold, which Wolfmed doesn't use, so the pain editor dulls pain instead.
+- type: wgAugment
+  id: WGAugmentAdrenalBooster
+  name: wg-augment-adrenal-booster
+  description: wg-augment-adrenal-booster-desc
+  icon: { sprite: _Mono/Objects/Misc/cybernetics.rsi, state: booster }
+  slot: Chest
+  kind: Upgrade
+  host: Organic
+  autosurgeon: WGAutosurgeonAdrenalBooster
+  price: 600000
+  speciesBlacklist: [ Oni ]
+
+- type: wgAugment
+  id: WGAugmentPainEditor
+  name: wg-augment-pain-editor
+  description: wg-augment-pain-editor-desc
+  icon: { sprite: _Mono/Objects/Misc/cybernetics.rsi, state: cranial_aug }
+  slot: Head
+  kind: Upgrade
+  host: Organic
+  autosurgeon: WGAutosurgeonPainEditor
+  price: 400000
+
+- type: wgAugment
+  id: WGAugmentReflexBooster
+  name: wg-augment-reflex-booster
+  description: wg-augment-reflex-booster-desc
+  icon: { sprite: _WG/Augments/reflex_booster.rsi, state: icon }
+  slot: Head
+  kind: Upgrade
+  host: Organic
+  autosurgeon: WGAutosurgeonReflexBooster
+  price: 1000000
+
+- type: wgAugment
+  id: WGAugmentHoloProjector
+  name: wg-augment-holo-projector
+  description: wg-augment-holo-projector-desc
+  icon: { sprite: _WG/Augments/holo_projector.rsi, state: icon }
+  slot: Chest
+  kind: Upgrade
+  autosurgeon: WGAutosurgeonHoloProjector
+  price: 800000
+
+- type: wgAugment
+  id: WGAugmentLeftThreatSole
+  name: wg-augment-threat-sole
+  description: wg-augment-threat-sole-desc
+  icon: { sprite: Objects/Misc/landmine.rsi, state: landmine }
+  slot: LeftFoot
+  kind: Upgrade
+  autosurgeon: WGAutosurgeonLeftThreatSole
+  price: 300000
+  speciesBlacklist: [ Felinid, Tajaran, Harpy ]
+
+- type: wgAugment
+  id: WGAugmentRightThreatSole
+  name: wg-augment-threat-sole
+  description: wg-augment-threat-sole-desc
+  icon: { sprite: Objects/Misc/landmine.rsi, state: landmine }
+  slot: RightFoot
+  kind: Upgrade
+  autosurgeon: WGAutosurgeonRightThreatSole
+  price: 300000
+  speciesBlacklist: [ Felinid, Tajaran, Harpy ]
+
+- type: wgAugment
+  id: WGAugmentNutrimentPump
+  name: wg-augment-nutriment-pump
+  description: wg-augment-nutriment-pump-desc
+  icon: { sprite: _WG/Augments/implants.rsi, state: nutriment_pump }
+  slot: Chest
+  kind: Upgrade
+  host: Organic
+  autosurgeon: WGAutosurgeonNutrimentPump
+  price: 200000
+
+- type: wgAugment
+  id: WGAugmentReviver
+  name: wg-augment-reviver
+  description: wg-augment-reviver-desc
+  icon: { sprite: _WG/Augments/implants.rsi, state: reviver }
+  slot: Chest
+  kind: Upgrade
+  host: Organic
+  autosurgeon: WGAutosurgeonReviver
+  price: 1200000
+
+- type: wgAugment
+  id: WGAugmentIatricMonitor
+  name: wg-augment-iatric-monitor
+  description: wg-augment-iatric-monitor-desc
+  icon: { sprite: _WG/Augments/implants.rsi, state: iatric_monitor }
+  slot: Head
+  kind: Upgrade
+  autosurgeon: WGAutosurgeonIatricMonitor
+  price: 150000

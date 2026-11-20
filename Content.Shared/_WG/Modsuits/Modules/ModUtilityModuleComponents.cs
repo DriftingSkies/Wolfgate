@@ -118,6 +118,10 @@ public sealed partial class ModRecyclerUnloadActionEvent : Content.Shared.Action
 [RegisterComponent, NetworkedComponent]
 public sealed partial class ModMagneticHarnessComponent : Component
 {
+    /// <summary>The module that granted this harness, used to charge its per-catch cost.</summary>
+    [DataField]
+    public EntityUid? Module;
+
     [DataField]
     public List<string> Slots = new() { "back", "suitstorage" };
 

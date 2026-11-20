@@ -304,11 +304,14 @@ public sealed class VehicleClientTest
 
             foreach (var proto in client.ProtoMan.EnumeratePrototypes<EntityPrototype>())
             {
-                // A vehicle with a doorway has its driver in a body of their own, which has a context.
+                // A vehicle with a doorway, or a seat to buckle into, has its driver in a body of their own, which has a context;
+                // the Bison has a cab but is still driven from itself by remote.
                 if (proto.Abstract ||
                     VehicleSpawnDefaultsTest.IsTestVehicle(proto.ID) ||
                     !proto.TryComp<RMCVehicleComponent>(out _, factory) ||
-                    proto.TryComp<VehicleEnterComponent>(out _, factory) ||
+                    (proto.TryComp<VehicleEnterComponent>(out _, factory) ||
+                     proto.TryComp<Content.Shared.Buckle.Components.StrapComponent>(out _, factory)) &&
+                    !proto.TryComp<Content.Shared._WG.Vehicles.Bison.CMUCargoVehicleComponent>(out _, factory) ||
                     !proto.TryComp<VehicleSoundComponent>(out var sound, factory) ||
                     sound.HornSound == null)
                 {

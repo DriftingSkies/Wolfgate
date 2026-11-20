@@ -120,11 +120,18 @@
       - map: [ "enum.HumanoidVisualLayers.UndergarmentBottom" ]
       - map: [ "accessory1" ]
       - map: [ "accessory2" ]
+      # WOLFGATE(Humanoid) START: feet under the uniform, with socks between them
+      - map: [ "enum.HumanoidVisualLayers.LFoot" ]
+      - map: [ "enum.HumanoidVisualLayers.RFoot" ]
+      - map: [ "enum.HumanoidVisualLayers.UndergarmentSocks" ]
+      # WOLFGATE END
       - map: [ "jumpsuit" ]
       - map: [ "enum.HumanoidVisualLayers.LHand" ]
       - map: [ "enum.HumanoidVisualLayers.RHand" ]
-      - map: [ "enum.HumanoidVisualLayers.LFoot" ]
-      - map: [ "enum.HumanoidVisualLayers.RFoot" ]
+      # WOLFGATE(Humanoid) START: feet moved under the uniform above
+      # - map: [ "enum.HumanoidVisualLayers.LFoot" ]
+      # - map: [ "enum.HumanoidVisualLayers.RFoot" ]
+      # WOLFGATE END
       - map: [ "enum.HumanoidVisualLayers.Handcuffs" ]
         color: "#ffffff"
         sprite: Objects/Misc/handcuffs.rsi

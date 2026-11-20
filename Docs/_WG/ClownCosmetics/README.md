@@ -93,7 +93,6 @@ Coyote outfits sit on `ClothingUniformSkirtBase`, and the unicycle handles like 
 - [`Resources/Textures/_WG/ClownCosmetics/Clothing/Shoes/Specific/circusclownshoes.rsi/`](../../../Resources/Textures/_WG/ClownCosmetics/Clothing/Shoes/Specific/circusclownshoes.rsi/)
 - [`Resources/Textures/_WG/ClownCosmetics/Clothing/Shoes/Specific/clown_jokestershoes.rsi/`](../../../Resources/Textures/_WG/ClownCosmetics/Clothing/Shoes/Specific/clown_jokestershoes.rsi/)
 - [`Resources/Textures/_WG/ClownCosmetics/Clothing/Shoes/Specific/jestereviljanglers.rsi/`](../../../Resources/Textures/_WG/ClownCosmetics/Clothing/Shoes/Specific/jestereviljanglers.rsi/)
-- [`Resources/Textures/_WG/ClownCosmetics/Clothing/Under/mime_socks.rsi/`](../../../Resources/Textures/_WG/ClownCosmetics/Clothing/Under/mime_socks.rsi/)
 - [`Resources/Textures/_WG/ClownCosmetics/Clothing/Uniforms/candy_clown.rsi/`](../../../Resources/Textures/_WG/ClownCosmetics/Clothing/Uniforms/candy_clown.rsi/)
 - [`Resources/Textures/_WG/ClownCosmetics/Clothing/Uniforms/clown_spots.rsi/`](../../../Resources/Textures/_WG/ClownCosmetics/Clothing/Uniforms/clown_spots.rsi/)
 - [`Resources/Textures/_WG/ClownCosmetics/Clothing/Uniforms/harlequin.rsi/`](../../../Resources/Textures/_WG/ClownCosmetics/Clothing/Uniforms/harlequin.rsi/)

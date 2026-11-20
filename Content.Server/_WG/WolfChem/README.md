@@ -52,9 +52,9 @@ for it and the Medical guide a player page.
 
 Selling at a cargo pallet is where the risk is (`WGNarcoticHeatSystem`). Each seller has a heat of their own: the street
 value they sold lately, cooling at `wg.narcotics.heat_cooling` a second and capped at `heat_cap`. A buyer pays in full up
-to `heat_free` and then less and less, down to `heat_floor` of the value (`WGNarcoticHeatMath.Payout`), so the most a
-seller earns at full price is the cooling rate and a stockpile sold at once, or held to the end of the round, fetches a
-fraction. The fall is gentle (`heat_scale`), so selling past the line still pays: what it costs is exposure. The line
+to `heat_free` and then less and less, down to `heat_floor` of the value, and only `heat_glut_floor` for what is sold
+past `heat_cap`, where the market is saturated (`WGNarcoticHeatMath.Payout`), so the most a seller earns at full price
+is the cooling rate and a stockpile sold at once, or held to the end of the round, fetches a small fraction. The fall is gentle (`heat_scale`), so selling past the line still pays: what it costs is exposure. The line
 itself is fuzzy: each seller's sits up to `heat_fuzz` of `heat_free` either side of it, holds through a visit and is
 drawn anew once they have kept from selling for `heat_fuzz_time`, so a load can't be sized to it beforehand. Heat follows the player, not the body, and nobody else's price moves. The console shows the cut price, and the
 buyer's manner (a popup only the seller sees, before and after a sale) tells them which tier they are in, and when
@@ -70,8 +70,11 @@ body. Smuggling crates sold at open
 chutes share this heat, price cut and tip (`Share` and `Sold`, called by TradeGoods `WGTradeContrabandSystem`), so a
 seller can't work both at full price. `WGNarcoticStockSystem` adds up the narcotics aboard each deeded ship every 30 s
 and, from `stock_signature` of street value up, puts a radar blip on its largest lot that every radar in reach sees. At
-a contraband pallet a narcotic hands in for its flat reward plus a point per `turn_in_value` it holds
-(`WGNarcoticGoodsSystem.TurnIn`), so seizing a stockpile pays.
+a contraband pallet narcotics hand in for a point per `turn_in_value` of the street value they hold together
+(`WGNarcoticGoodsSystem.TurnIn`), with no flat reward, and the pallet takes every one it counted: seizing a stockpile
+pays the same in a tank or in baggies, and splitting one into doses earns nothing more. A point cashes for 2,000,
+which at 15,000 a point is about 13% of the value: under the `heat_floor` a dump sells for, so handing in never beats
+selling.
 
 Entry points: `WGDose` and `WGClearIntoxication` (entity effects), `SharedWGIntoxicationSystem` (levels, tiers,
 `IsNeurowareHost`), `WGIntoxicationSystem.Tick`, `WGDependenceSystem.Tick`, `WGDeliverySystem`,
@@ -99,6 +102,9 @@ which `Solution`'s add, split, transfer and remove methods keep in step. They co
 
 Dispensers give standard grade. Touch reactions, tile reactions and fuel ignore grades for now.
 
+`WGPurityTint` sets an appearance flag while one reagent is at or above a grade (99.1% by default); a crystal shard
+that good turns blue through a `GenericVisualizer`.
+
 ## Neuroware
 
 Drugs for synthetics. A body whose brain organ has `WGNeurowareHost` (the positronic brains) ignores chemical doses
@@ -123,6 +129,7 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
 
 ### Server
 
+- [`Content.Server/_WG/WolfChem/Narcotics/BotanySystem.Narcotics.cs`](Narcotics/BotanySystem.Narcotics.cs)
 - [`Content.Server/_WG/WolfChem/Narcotics/HealthAnalyzerSystem.Narcotics.cs`](Narcotics/HealthAnalyzerSystem.Narcotics.cs)
 - [`Content.Server/_WG/WolfChem/Narcotics/MetabolizerSystem.Granular.cs`](Narcotics/MetabolizerSystem.Granular.cs)
 - [`Content.Server/_WG/WolfChem/Narcotics/WGAlcoholSystem.cs`](Narcotics/WGAlcoholSystem.cs)
@@ -154,6 +161,8 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
 - [`Content.Server/_WG/WolfChem/Purity/WGPuritySystem.cs`](Purity/WGPuritySystem.cs)
 - [`Content.Server/_WG/WolfChem/Purity/WGPurityTesterComponent.cs`](Purity/WGPurityTesterComponent.cs)
 - [`Content.Server/_WG/WolfChem/Purity/WGPurityTesterSystem.cs`](Purity/WGPurityTesterSystem.cs)
+- [`Content.Server/_WG/WolfChem/Purity/WGPurityTintComponent.cs`](Purity/WGPurityTintComponent.cs)
+- [`Content.Server/_WG/WolfChem/Purity/WGPurityTintSystem.cs`](Purity/WGPurityTintSystem.cs)
 - [`Content.Server/_WG/WolfChem/Purity/WGSolutionPurityComponent.cs`](Purity/WGSolutionPurityComponent.cs)
 - [`Content.Server/_WG/WolfChem/Purity/WGSolutionPuritySystem.cs`](Purity/WGSolutionPuritySystem.cs)
 
@@ -178,6 +187,7 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
 - [`Content.Shared/_WG/WolfChem/Purity/Solution.Purity.cs`](../../../Content.Shared/_WG/WolfChem/Purity/Solution.Purity.cs)
 - [`Content.Shared/_WG/WolfChem/Purity/WGPurityCVars.cs`](../../../Content.Shared/_WG/WolfChem/Purity/WGPurityCVars.cs)
 - [`Content.Shared/_WG/WolfChem/Purity/WGPurityText.cs`](../../../Content.Shared/_WG/WolfChem/Purity/WGPurityText.cs)
+- [`Content.Shared/_WG/WolfChem/Purity/WGPurityTintVisuals.cs`](../../../Content.Shared/_WG/WolfChem/Purity/WGPurityTintVisuals.cs)
 - [`Content.Shared/_WG/WolfChem/Purity/WGReactionPurityPrototype.cs`](../../../Content.Shared/_WG/WolfChem/Purity/WGReactionPurityPrototype.cs)
 
 ### Client
@@ -202,8 +212,10 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
 - [`Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/DrugPilotingTest.cs`](../../../Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/DrugPilotingTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/DrugSpeechTest.cs`](../../../Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/DrugSpeechTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/ExoticSenseTest.cs`](../../../Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/ExoticSenseTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/HarvestedNarcoticMarksTest.cs`](../../../Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/HarvestedNarcoticMarksTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/HeroinSedationTest.cs`](../../../Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/HeroinSedationTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/IntoxicationTest.cs`](../../../Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/IntoxicationTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/NarcoticHandInTest.cs`](../../../Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/NarcoticHandInTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/NarcoticHeatTest.cs`](../../../Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/NarcoticHeatTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/NarcoticTipPlanetTest.cs`](../../../Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/NarcoticTipPlanetTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/NodTest.cs`](../../../Content.IntegrationTests/Tests/_WG/WolfChem/Narcotics/NodTest.cs)
@@ -291,7 +303,9 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
 - [`Content.Client/Chemistry/UI/ChemMasterWindow.xaml.cs`](../../../Content.Client/Chemistry/UI/ChemMasterWindow.xaml.cs)
 - [`Content.Client/UserInterface/Systems/Chat/ChatUIController.cs`](../../../Content.Client/UserInterface/Systems/Chat/ChatUIController.cs): chat seen through the local player's high, before tags split the message text
 - [`Content.IntegrationTests/Pair/TestPair.cs`](../../../Content.IntegrationTests/Pair/TestPair.cs): records radio sends for the narcotic heat test
-- [`Content.Server/_NF/Contraband/Systems/ContrabandTurnInSystem.cs`](../../_NF/Contraband/Systems/ContrabandTurnInSystem.cs): a narcotic hands in for what it holds
+- [`Content.Server/_NF/Contraband/Systems/ContrabandTurnInSystem.cs`](../../_NF/Contraband/Systems/ContrabandTurnInSystem.cs)
+  - the street value of the narcotics handed in, summed over the pallets
+  - narcotics hand in for what they hold together
 - [`Content.Server/Body/Systems/MetabolizerSystem.cs`](../../Body/Systems/MetabolizerSystem.cs)
   - impurity damage
   - a rate below 0.01 u a tick builds up instead of rounding to nothing
@@ -301,7 +315,9 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
 - [`Content.Server/Body/Systems/StomachSystem.cs`](../../Body/Systems/StomachSystem.cs)
   - read before the removal prunes it
   - a digested reagent keeps its grade
-- [`Content.Server/Botany/Systems/BotanySystem.Produce.cs`](../../Botany/Systems/BotanySystem.Produce.cs): narcotic produce is graded by potency
+- [`Content.Server/Botany/Systems/BotanySystem.Produce.cs`](../../Botany/Systems/BotanySystem.Produce.cs)
+  - narcotic produce is graded by potency
+  - produce that grew a street drug is a narcotic
 - [`Content.Server/Cargo/Systems/PricingSystem.cs`](../../Cargo/Systems/PricingSystem.cs): a reagent is worth its grade
 - [`Content.Server/Chemistry/EntitySystems/ChemMasterSystem.cs`](../../Chemistry/EntitySystems/ChemMasterSystem.cs)
   - read before the removal prunes it
@@ -358,6 +374,7 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
 - [`Resources/Prototypes/Entities/Objects/Specific/Hydroponics/leaves.yml`](../../../Resources/Prototypes/Entities/Objects/Specific/Hydroponics/leaves.yml)
   - fits a baggie
   - fits a baggie and a bong bowl
+- [`Resources/Prototypes/Entities/Structures/Machines/chemistry.yml`](../../../Resources/Prototypes/Entities/Structures/Machines/chemistry.yml): cold enough for crystal shards and opium resin
 - [`Resources/Prototypes/Guidebook/medical.yml`](../../../Resources/Prototypes/Guidebook/medical.yml): drugs, grades and neuroware
 - [`Resources/Prototypes/Hydroponics/seeds.yml`](../../../Resources/Prototypes/Hydroponics/seeds.yml): the opium poppy is a poppy mutation
 - [`Resources/Prototypes/Reagents/cleaning.yml`](../../../Resources/Prototypes/Reagents/cleaning.yml)

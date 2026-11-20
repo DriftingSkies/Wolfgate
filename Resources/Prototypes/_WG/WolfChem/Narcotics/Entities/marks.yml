@@ -9,7 +9,7 @@
   - type: Contraband
     severity: Class3Chem
     turnInValues:
-      FederationMilitaryCredit: 5
+      FederationMilitaryCredit: 0 # no flat reward: a hand-in pays by street value (wg.narcotics.turn_in_value)
   - type: ItemTax
     taxAccounts:
       Medical: -0.05

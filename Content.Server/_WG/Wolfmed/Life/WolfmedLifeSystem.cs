@@ -23,8 +23,12 @@ using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.Electrocution;
 using Content.Shared.FixedPoint;
+using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Jittering;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Movement.Systems;
+using Content.Shared.Popups;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -41,7 +45,7 @@ namespace Content.Server._WG.Wolfmed.Life;
 // organ being destroyed, which is ordinary MobState.Dead with nothing permanent attached.
 public sealed partial class WolfmedLifeSystem : EntitySystem
 {
-    /// <summary>Pressure key for a stopped heart. Full, so an arrested body is always unconscious.</summary>
+    /// <summary>Pressure key for a stopped heart. It climbs to full over the collapse, then holds the body unconscious.</summary>
     public const string ArrestPressure = "arrest";
 
     /// <summary>Pressure key for a brain running out of oxygen while the heart still beats.</summary>
@@ -60,6 +64,15 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     public const float ArrestBleedFactor = 0.25f;
 
     private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(1);
+
+    /// <summary>Collapse share at which the hands go numb: shaking, and held items start to fall.</summary>
+    private const float CollapseNumb = 0.33f;
+
+    /// <summary>Collapse share at which the legs give out, just before the pressure downs the body.</summary>
+    private const float CollapseLegs = 0.6f;
+
+    /// <summary>Chance a second, at the end of the collapse, that the held item falls.</summary>
+    private const float CollapseDropChance = 0.3f;
 
     [Dependency] private BloodstreamSystem _bloodstream = default!;
 
@@ -89,7 +102,10 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     [Dependency] private WolfmedRadiationSystem _radiation = default!;
     [Dependency] private WolfmedBodyTemperatureSystem _temperature = default!;
     [Dependency] private WolfmedVacuumSystem _vacuum = default!;
-    [Dependency] private Content.Shared.Popups.SharedPopupSystem _popup = default!; // Playtest 5
+    [Dependency] private SharedPopupSystem _popup = default!; // Playtest 5
+    [Dependency] private SharedHandsSystem _hands = default!;
+    [Dependency] private SharedJitteringSystem _jitter = default!;
+    [Dependency] private MovementSpeedModifierSystem _movement = default!;
 
     private readonly WGTickBuckets _due = new();
 
@@ -110,6 +126,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     // Cached cvars, kept current by Subs.CVar.
     private float _arrestBlood;
     private float _arrestCauseMemorySeconds;
+    private float _arrestCollapseSeconds;
     private float _arrestOxygenation;
     private float _arrestSepsis;
     private float _arrestSepsisChance;
@@ -151,6 +168,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         base.Initialize();
         Subs.CVar(_cfg, WolfmedCVars.ArrestBlood, value => _arrestBlood = value, true);
         Subs.CVar(_cfg, WolfmedCVars.ArrestCauseMemorySeconds, value => _arrestCauseMemorySeconds = value, true);
+        Subs.CVar(_cfg, WolfmedCVars.ArrestCollapseSeconds, value => _arrestCollapseSeconds = value, true);
         Subs.CVar(_cfg, WolfmedCVars.ArrestOxygenation, value => _arrestOxygenation = value, true);
         Subs.CVar(_cfg, WolfmedCVars.ArrestSepsis, value => _arrestSepsis = value, true);
         Subs.CVar(_cfg, WolfmedCVars.ArrestSepsisChance, value => _arrestSepsisChance = value, true);
@@ -204,6 +222,10 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     public bool OwnsDeath(EntityUid body) => _consciousness.OwnsMobState(body);
 
     public bool InArrest(EntityUid body) => HasComp<WolfmedCardiacArrestComponent>(body);
+
+    /// <summary>In arrest and past the collapse: down for good, and Dying.</summary>
+    public bool ArrestCollapsed(EntityUid body) =>
+        TryComp(body, out WolfmedCardiacArrestComponent? arrest) && arrest.CollapseFraction() >= 1f;
 
     /// <summary>The brain organ's oxygenation clock, or null for a body that has no brain to run one.</summary>
     public Entity<WolfmedBrainComponent>? GetBrain(EntityUid body)
@@ -468,6 +490,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
             // The heart-restored exit still runs: it is the only way out of arrest that needs no clock, and
             // without it a chassis with its pump back would stay arrested until a defibrillator found it.
             TryEndHeartArrest(body);
+            UpdateCollapse(body, _mobState.IsDead(body), seconds);
             _consciousness.SetExternalPressure(body, HypoxiaPressure, 0f);
             // M3: a chassis's positronic core under its line holds it Downed, cause Core (plan §3.6).
             UpdateInjury(body, _consciousnessCoreDown);
@@ -486,6 +509,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         }
 
         UpdateTrauma(body);
+        UpdateCollapse(body, dead, seconds);
         UpdatePressures(body, brain, dead);
         UpdateVitalSigns(body);
     }
@@ -545,7 +569,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
     {
         "blood" => WolfmedCauseSource.ArrestBlood,
         "oxygen" => WolfmedCauseSource.ArrestOxygen,
-        "heart" => WolfmedCauseSource.ArrestHeart,
+        "heart" or WolfmedHeartAttackSmiteSystem.Cause => WolfmedCauseSource.ArrestHeart,
         "sepsis" => WolfmedCauseSource.ArrestSepsis,
         "shock" => WolfmedCauseSource.ArrestShock,
         "cold" => WolfmedCauseSource.ArrestCold, // M5
@@ -880,11 +904,9 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         return EndArrest(body);
     }
 
-    /// <summary>Arrest is a full pressure; hypoxia short of it ramps between the two CVars.</summary>
+    /// <summary>Hypoxia short of arrest ramps between the two CVars; the arrest pressure is <see cref="UpdateCollapse"/>'s.</summary>
     private void UpdatePressures(EntityUid body, Entity<WolfmedBrainComponent> brain, bool dead)
     {
-        _consciousness.SetExternalPressure(body, ArrestPressure, !dead && InArrest(body) ? 1f : 0f);
-
         var start = _brainPressureStart;
         var outAt = _brainPressureOut;
         var level = 0f;
@@ -1208,8 +1230,11 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
             SetOxygenation(brain, value);
     }
 
-    /// <summary>Stops the heart. Only a defibrillator, a restored heart or a rejuvenate starts it again.</summary>
-    public bool StartArrest(EntityUid body, string cause)
+    /// <summary>
+    /// Stops the heart. Only a defibrillator, a restored heart or a rejuvenate starts it again. The body stays on
+    /// its feet for the collapse unless <paramref name="atOnce"/> or the cause is a shock.
+    /// </summary>
+    public bool StartArrest(EntityUid body, string cause, bool atOnce = false)
     {
         if (TerminatingOrDeleted(body) || !OwnsDeath(body) || InArrest(body) || _mobState.IsDead(body) ||
             GetBrain(body) == null)
@@ -1218,6 +1243,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         var arrest = AddComp<WolfmedCardiacArrestComponent>(body);
         arrest.StartTime = _timing.CurTime;
         arrest.Cause = cause;
+        arrest.CollapseSeconds = atOnce || cause == "shock" ? 0f : MathF.Max(0f, _arrestCollapseSeconds);
         Dirty(body, arrest);
 
         // M4 (OD16): a species with no heart collapses instead; the texts read this before the pressure lands.
@@ -1228,13 +1254,66 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
             Dirty(body, consciousness);
         }
 
-        _consciousness.SetExternalPressure(body, ArrestPressure, 1f);
         _bleeding.RefreshBody(body);
         UpdateVitalSigns(body);
 
-        // M1a: only the Dying may let go (plan §5.4).
-        _dyingActions.Grant(body);
+        if (arrest.CollapseSeconds > 0f)
+            _popup.PopupEntity(Loc.GetString("wolfmed-arrest-collapse-start"), body, body, PopupType.LargeCaution);
+
+        UpdateCollapse(body, false, 0f);
         return true;
+    }
+
+    /// <summary>
+    /// Moves the arrest pressure along the collapse: on their feet and fading, numb hands that drop things, legs
+    /// giving out, then down for good with the Dying actions.
+    /// </summary>
+    private void UpdateCollapse(EntityUid body, bool dead, float seconds)
+    {
+        if (dead || !TryComp(body, out WolfmedCardiacArrestComponent? arrest))
+        {
+            _consciousness.SetExternalPressure(body, ArrestPressure, 0f);
+            return;
+        }
+
+        if (seconds > 0f && arrest.CollapseElapsed < arrest.CollapseSeconds)
+        {
+            arrest.CollapseElapsed = MathF.Min(arrest.CollapseSeconds, arrest.CollapseElapsed + seconds);
+            Dirty(body, arrest);
+        }
+
+        var share = arrest.CollapseFraction();
+        _consciousness.SetExternalPressure(body, ArrestPressure, share);
+
+        if (share >= 1f)
+        {
+            if (arrest.Collapsed)
+                return;
+
+            // M1a: only the Dying may let go (plan §5.4).
+            arrest.Collapsed = true;
+            _movement.RefreshMovementSpeedModifiers(body);
+            _dyingActions.Grant(body);
+            return;
+        }
+
+        _movement.RefreshMovementSpeedModifiers(body);
+
+        var stage = share >= CollapseLegs ? 2 : share >= CollapseNumb ? 1 : 0;
+        if (stage > arrest.Stage)
+        {
+            arrest.Stage = stage;
+            var key = stage == 2 ? "wolfmed-arrest-collapse-legs" : "wolfmed-arrest-collapse-numb";
+            _popup.PopupEntity(Loc.GetString(key), body, body, PopupType.MediumCaution);
+        }
+
+        if (share < CollapseNumb || seconds <= 0f)
+            return;
+
+        var worse = (share - CollapseNumb) / (1f - CollapseNumb);
+        _jitter.DoJitter(body, TimeSpan.FromSeconds(2), true, 2f + 8f * worse, 4f + 4f * worse);
+        if (_random.Prob(Math.Clamp(CollapseDropChance * worse * seconds, 0f, 1f)))
+            _hands.TryDrop(body, checkActionBlocker: false);
     }
 
     /// <summary>Ends a cardiac arrest and lifts its pressure; false when the body was not in arrest.</summary>
@@ -1255,6 +1334,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         RemComp<WolfmedCardiacArrestComponent>(body);
         _dyingActions.Revoke(body);
         _consciousness.SetExternalPressure(body, ArrestPressure, 0f);
+        _movement.RefreshMovementSpeedModifiers(body);
         _bleeding.RefreshBody(body);
         UpdateVitalSigns(body);
         return true;
@@ -1329,7 +1409,7 @@ public sealed partial class WolfmedLifeSystem : EntitySystem
         if (!HasComp<HeartComponent>(organ))
             return;
 
-        StartArrest(body, "heart");
+        StartArrest(body, "heart", atOnce: true);
         _shutdown.Refresh(body);
     }
 

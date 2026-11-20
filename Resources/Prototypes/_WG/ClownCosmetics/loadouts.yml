@@ -301,18 +301,6 @@
     - WGClothingMaskSusMime
 
 - type: loadout
-  id: WGContractorClothingUnderSocksMime
-  effects:
-  - !type:GroupLoadoutEffect
-    proto: ContractorT1
-  hideEffects:
-  - !type:GroupLoadoutEffect
-    proto: ShoesCapableNF
-  price: 0
-  equipment:
-    shoes: WGClothingUnderSocksMime
-
-- type: loadout
   id: WGContractorClothingMaskMimeSecurity
   effects:
   - !type:GroupLoadoutEffect

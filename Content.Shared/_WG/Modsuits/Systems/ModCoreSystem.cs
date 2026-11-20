@@ -1,4 +1,5 @@
 using Content.Shared._WG.Modsuits.Components;
+using Content.Shared.Construction.Components;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Emp;
 using Content.Shared.Interaction;
@@ -6,11 +7,13 @@ using Content.Shared.Popups;
 using Content.Shared.Power;
 using Content.Shared.Power.Components;
 using Content.Shared.Power.EntitySystems;
+using Content.Shared.PowerCell;
 using Content.Shared.PowerCell.Components;
 using Content.Shared.Stacks;
 using Content.Shared.Whitelist;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
+using Robust.Shared.Network;
 
 namespace Content.Shared._WG.Modsuits.Systems;
 
@@ -22,9 +25,13 @@ public sealed partial class ModCoreSystem : EntitySystem
 
         SubscribeLocalEvent<ModCoreComponent, PowerCellChangedEvent>(OnPowerCellChanged);
         SubscribeLocalEvent<ModCoreComponent, EmpAttemptEvent>(OnEmpAttempt);
+        SubscribeLocalEvent<ModCoreComponent, EntInsertedIntoContainerMessage>(OnCellInserted);
+        SubscribeLocalEvent<ModCoreComponent, EntRemovedFromContainerMessage>(OnCellRemoved);
+        SubscribeLocalEvent<ModCoreComponent, InteractUsingEvent>(OnCellInteractUsing);
         SubscribeLocalEvent<ModCoreRefuelableComponent, InteractUsingEvent>(OnRefuel);
     }
 
+    [Dependency] private INetManager _net = default!;
     [Dependency] private EntityWhitelistSystem _whitelist = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedBatterySystem _battery = default!;
@@ -39,6 +46,109 @@ public sealed partial class ModCoreSystem : EntitySystem
     private void OnEmpAttempt(Entity<ModCoreComponent> ent, ref EmpAttemptEvent args)
     {
         RelayToSuit(ent, ref args);
+    }
+
+    /// <summary>
+    /// Inserts cells on the server only. A predicted insertion into the core's container slot made large cells
+    /// such as power cages collide with the container state when the server confirmed them.
+    /// </summary>
+    private void OnCellInteractUsing(Entity<ModCoreComponent> ent, ref InteractUsingEvent args)
+    {
+        if (args.Handled || _net.IsClient)
+            return;
+
+        if (!TryComp<PowerCellSlotComponent>(ent, out var slotInfo)
+            || !_itemSlots.TryGetSlot(ent.Owner, slotInfo.CellSlotId, out var slot))
+            return;
+
+        // Leave other items unhandled so bags, labelers and price guns still work on a loose core.
+        if (!HasComp<PowerCellComponent>(args.Used))
+            return;
+
+        args.Handled = true;
+
+        if (slot.HasItem)
+        {
+            _popup.PopupEntity(Loc.GetString("modsuit-cell-slot-occupied"), ent, args.User);
+            return;
+        }
+
+        if (!_itemSlots.TryInsert(ent.Owner, slot, args.Used, args.User))
+        {
+            var message = slot.WhitelistFailPopup is { } popup
+                ? Loc.GetString(popup)
+                : Loc.GetString("modsuit-cell-slot-wrong-item");
+            _popup.PopupEntity(message, ent, args.User);
+        }
+    }
+
+    private void OnCellInserted(Entity<ModCoreComponent> ent, ref EntInsertedIntoContainerMessage args)
+    {
+        if (_net.IsClient
+            || !TryComp<PowerCellSlotComponent>(ent, out var slot)
+            || args.Container.ID != slot.CellSlotId)
+            return;
+
+        ScaleCell(ent, args.Entity);
+    }
+
+    private void OnCellRemoved(Entity<ModCoreComponent> ent, ref EntRemovedFromContainerMessage args)
+    {
+        if (_net.IsClient
+            || !TryComp<PowerCellSlotComponent>(ent, out var slot)
+            || args.Container.ID != slot.CellSlotId)
+            return;
+
+        RestoreCell(args.Entity);
+    }
+
+    /// <summary>Gives a MOD cell the TG station capacity for its tier while it sits in the core.</summary>
+    private void ScaleCell(Entity<ModCoreComponent> core, EntityUid cell)
+    {
+        if (HasComp<ModsuitCellComponent>(cell) || !HasComp<BatteryComponent>(cell))
+            return;
+
+        var ev = new GetChargeEvent();
+        RaiseLocalEvent(cell, ref ev);
+
+        var target = core.Comp.DefaultCellCharge;
+        if (TryComp<MachinePartComponent>(cell, out var part)
+            && part.Rating >= 1
+            && part.Rating <= core.Comp.CellChargeByRating.Count)
+            target = core.Comp.CellChargeByRating[part.Rating - 1];
+
+        if (target <= 0f || MathF.Abs(target - ev.MaxCharge) < 0.01f)
+            return;
+
+        var marker = AddComp<ModsuitCellComponent>(cell);
+        marker.OriginalMaxCharge = ev.MaxCharge;
+        marker.ScaledMaxCharge = target;
+
+        var ratio = ev.MaxCharge > 0f ? ev.CurrentCharge / ev.MaxCharge : 0f;
+        _battery.SetMaxCharge(cell, target);
+        _battery.ChangeCharge(cell, ratio * target - GetCharge(cell));
+    }
+
+    /// <summary>Puts the cell's real capacity and charge back when it leaves the core.</summary>
+    private void RestoreCell(EntityUid cell)
+    {
+        if (!TryComp<ModsuitCellComponent>(cell, out var marker))
+            return;
+
+        var ev = new GetChargeEvent();
+        RaiseLocalEvent(cell, ref ev);
+        var ratio = marker.ScaledMaxCharge > 0f ? ev.CurrentCharge / marker.ScaledMaxCharge : 0f;
+
+        _battery.SetMaxCharge(cell, marker.OriginalMaxCharge);
+        _battery.ChangeCharge(cell, ratio * marker.OriginalMaxCharge - GetCharge(cell));
+        RemComp<ModsuitCellComponent>(cell);
+    }
+
+    private float GetCharge(EntityUid uid)
+    {
+        var ev = new GetChargeEvent();
+        RaiseLocalEvent(uid, ref ev);
+        return ev.CurrentCharge;
     }
 
     private void RelayToSuit<T>(Entity<ModCoreComponent> ent, ref T args) where T : notnull

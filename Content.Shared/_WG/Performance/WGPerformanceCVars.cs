@@ -23,4 +23,18 @@ public sealed class WGPerformanceCVars
     /// <summary>How close a player's view has to be for a rock grid to be sent to them, in metres.</summary>
     public static readonly CVarDef<float> AsteroidSendRange =
         CVarDef.Create("wg.asteroids.send_range", 128f, CVar.SERVERONLY);
+
+    /// <summary>
+    /// Whether a sleeping mover with no input, player or relay leaves MoverController's update list until something
+    /// wakes it. Off walks every mover each physics step and skips the idle ones there.
+    /// </summary>
+    public static readonly CVarDef<bool> ParkIdleMovers =
+        CVarDef.Create("wg.movers.park", true, CVar.SERVERONLY);
+
+    /// <summary>
+    /// Whether space wind skips its search for entities on a tile whose pressure difference is too weak to throw
+    /// anything. Off searches every high-pressure tile.
+    /// </summary>
+    public static readonly CVarDef<bool> WindSkipWeakTiles =
+        CVarDef.Create("wg.atmos.wind_skip_weak", true, CVar.SERVERONLY);
 }

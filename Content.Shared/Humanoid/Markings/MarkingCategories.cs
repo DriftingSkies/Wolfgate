@@ -28,6 +28,7 @@ namespace Content.Shared.Humanoid.Markings
         Eyes,
         // WOLFGATE END
         Chassis, // WOLFGATE(Species): IPC body parts get their own points instead of filling the body categories
+        UndergarmentSocks, // WOLFGATE(Humanoid): give socks their own marking category
     }
 
     public static class MarkingCategoriesConversion
@@ -65,6 +66,7 @@ namespace Content.Shared.Humanoid.Markings
                 HumanoidVisualLayers.RArmExtension => MarkingCategories.Arms, // Frontier: species-specific layer
                 HumanoidVisualLayers.LArmExtension => MarkingCategories.Arms, // Frontier: species-specific layer
                 HumanoidVisualLayers.Eyes => MarkingCategories.Eyes, // WOLFGATE(Species): eye markings get their own category
+                HumanoidVisualLayers.UndergarmentSocks => MarkingCategories.UndergarmentSocks, // WOLFGATE(Humanoid): map the socks layer to its category
                 _ => MarkingCategories.Overlay
             };
         }

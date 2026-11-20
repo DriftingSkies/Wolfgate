@@ -49,6 +49,7 @@ public static partial class PoolManager
         ("wg.newbie.welcome", "false"), // WOLFGATE(Newbie): welcome popups would open over other tests' windows
         ("wg.lorebook.seen_edition", "1000"), // WOLFGATE(LoreBook): a new edition's lore book would open over other tests' windows
         ("wg.companies.create_hours", "0"), // WOLFGATE(Companies): test players have no playtime
+        ("wolfmed.arrest_collapse_seconds", "0"), // WOLFGATE(Wolfmed): arrest tests expect the collapse at once; the collapse test turns it on
         ("wg.companies.create_fee", "0"), // WOLFGATE(Companies): tests check balances without the creation fee
         (CCVars.StorageLimit.Name, "1")// Frontier: test failures with multiple storage
     };

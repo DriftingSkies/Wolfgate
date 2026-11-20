@@ -1,5 +1,7 @@
 using Content.Shared._WG.Vehicles.Base;
 using Content.Shared._WG.Vehicles.Grid;
+using Content.Shared._WG.Warheads;
+using Content.Shared.DragDrop;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Timing;
 
@@ -17,6 +19,29 @@ public sealed partial class SharedCMUCargoVehicleSystem : EntitySystem
 
         SubscribeLocalEvent<CMUCargoVehicleComponent, VehicleCanRunEvent>(OnVehicleCanRun);
         SubscribeLocalEvent<CMUCargoVehicleComponent, VehicleCollisionEvent>(OnVehicleCollision);
+        SubscribeLocalEvent<CMUCargoVehicleComponent, CanDropTargetEvent>(OnCanDropTarget);
+        SubscribeLocalEvent<WGWarheadComponent, CanDragEvent>(OnWarheadCanDrag);
+    }
+
+    /// <summary>A warhead can be dragged with the mouse, so it can be dropped onto a carrier.</summary>
+    private void OnWarheadCanDrag(Entity<WGWarheadComponent> ent, ref CanDragEvent args)
+    {
+        args.Handled = true;
+    }
+
+    /// <summary>A loose warhead can be dropped onto a carrier with an empty bed to load it; the server checks the rest.</summary>
+    private void OnCanDropTarget(Entity<CMUCargoVehicleComponent> ent, ref CanDropTargetEvent args)
+    {
+        if (!ent.Comp.CarriesWarheads ||
+            ent.Comp.ArmingMode != CMUCargoVehicleArmingMode.None ||
+            !HasComp<WGWarheadComponent>(args.Dragged) ||
+            Transform(args.Dragged).Anchored)
+        {
+            return;
+        }
+
+        args.CanDrop = true;
+        args.Handled = true;
     }
 
     private void OnVehicleCanRun(Entity<CMUCargoVehicleComponent> ent, ref VehicleCanRunEvent args)

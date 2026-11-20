@@ -53,7 +53,7 @@ public sealed partial class WGCreateGradedEntity : EntityEffect
                     solution.SetPurity(reagent.Prototype, solution.GetPurity(reagent.Prototype) * grade);
                 }
 
-                entMan.Dirty(soln);
+                solutions.UpdateChemicals(soln, needsReactionsProcessing: false);
             }
         }
     }

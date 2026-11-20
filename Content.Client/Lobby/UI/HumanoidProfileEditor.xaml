@@ -411,7 +411,7 @@
             <!-- WOLFGATE(Augments): augments tab (xmlns:wga), after anatomy so earlier tabs keep their indices -->
             <BoxContainer Name="AugmentsTab" Orientation="Vertical" Margin="8">
                 <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
-                    <wga:WGAugmentEditor Name="AugmentEditor" HorizontalExpand="True" />
+                    <wga:WGAugmentEditor Name="AugmentEditor" HorizontalExpand="True" VerticalExpand="True" />
                 </ScrollContainer>
             </BoxContainer>
             <!-- WOLFGATE(Voice): voice tab, filled in by HumanoidProfileEditor.SpeechVoice.cs -->

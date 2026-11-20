@@ -118,14 +118,26 @@ public sealed class WGNarcoticGoodsSystem : EntitySystem
         return value;
     }
 
-    /// <summary>What a narcotic hands in for at a contraband pallet: its flat reward plus a point for every <c>wg.narcotics.turn_in_value</c> it holds.</summary>
-    public int TurnIn(EntityUid uid, int reward)
+    /// <summary>
+    /// What a narcotic adds to a contraband hand-in: its flat reward, plus a point each time the street value handed
+    /// in so far, kept in <paramref name="pool"/>, fills another <c>wg.narcotics.turn_in_value</c>. It goes into
+    /// <paramref name="taken"/> whether or not it brought a point, so a pallet pays for all it is given, however it is
+    /// packed, and leaves nothing behind to be counted again.
+    /// </summary>
+    public int TurnIn(EntityUid uid, int reward, ref double pool, HashSet<EntityUid> taken)
     {
         var rate = _cfg.GetCVar(WGNarcoticsCVars.TurnInValue);
         if (rate <= 0 || !_tag.HasTag(uid, Tag))
             return reward;
 
-        return reward + (int) (StreetValue(uid) / rate);
+        var value = StreetValue(uid);
+        if (value <= 0)
+            return reward;
+
+        var before = (int) (pool / rate);
+        pool += value;
+        taken.Add(uid);
+        return reward + (int) (pool / rate) - before;
     }
 
     /// <summary>Marks a thing as a narcotic, or takes back a mark this system gave; ready-made products keep theirs.</summary>

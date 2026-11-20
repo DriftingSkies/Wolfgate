@@ -1,0 +1,76 @@
+# The Judge Line app, installed on vagrants' PDAs at spawn: call a judge ship to an emergency.
+- type: entity
+  parent: NFBasePDACartridge
+  id: WGJudgeLineCartridge
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-sec
+  - type: Icon
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-sec
+  - type: UIFragment
+    ui: !type:JudgeLineUi
+  - type: Cartridge
+    programName: wg-judgeline-program-name
+    icon:
+      sprite: Objects/Misc/books.rsi
+      state: icon_law
+    readonly: true
+  - type: WGJudgeLineCartridge
+
+# What the judges hand a stranded crew: fuel for the common generators, repair stock and air.
+- type: entity
+  parent: CrateEngineering
+  id: WGJudgeLineReliefCrate
+  components:
+  - type: StorageFill
+    contents:
+    - id: SheetPlasma10
+      amount: 2
+    - id: SheetUranium10
+    - id: SheetSteel10
+      amount: 2
+    - id: SheetGlass10
+    - id: PartRodMetal10
+    - id: Welder
+    - id: ToolboxMechanicalFilled
+    - id: OxygenTankFilled
+      amount: 2
+    - id: ClothingMaskBreath
+      amount: 2
+
+# The ship a vagrant's call sends out. It drops out of FTL near the caller and works the emergency under the Judge
+# Line's orders (WGJudgeLineSystem), then leaves; nothing schedules it. Pinned while it works, so neither its clock nor
+# finished orders take it away. It fights the sector's threats like the patrols, and anyone the caller's ship is
+# fighting once it is allied with it.
+- type: wgEncounter
+  id: WGEncounterJudgeResponder
+  name: wg-encounter-name-judge-responder
+  start: Manual
+  category: Patrol
+  icon: Shield
+  cost: 0
+  ships:
+  - key: judge
+    navigation: WGCrewNavigationWarship
+    vessels: [ Hornet, Lightning, Petra, WGRoswell ]
+    deckhands: 0
+    guards: 2
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner, WGCrewDeckhand, WGCrewEngineer, WGCrewParamedic ] # deckhand posts become the guards
+    extra: [ WGCrewParamedic ] # no judge ship has a medbay post
+    side: judges
+    faction: WGCrew
+    company: WGJudges
+    profile: WGCrewProfileJudge
+    boarding: Ignore # the caller may come aboard
+    docking: Ignore
+    distress: false
+    disengage: Deter
+    disengageRange: 2500
+    warnRange: 1500
+    attackRange: 400
+    zoneTargets: AtWar
+    knownThreatsOnly: true
+    npcTargetsOnly: true

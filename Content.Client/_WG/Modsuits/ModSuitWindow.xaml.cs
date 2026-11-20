@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using Content.Client.UserInterface.Controls;
@@ -47,8 +48,10 @@ public sealed partial class ModSuitWindow : FancyWindow
     private Label? _aiValue;
 
     private const int ActionButtonWidth = 42;
-    private const int ValueColumnWidth = 34;
+    private const int ValueColumnWidth = 40;
     private const int LabelColumnWidth = 96;
+    // The name column is whatever the fixed columns leave at the 600-wide minimum window.
+    private const int NameColumnMaxWidth = 240;
     private static readonly ResPath IconRsiPath = new("/Textures/_WG/Modsuits/icons.rsi");
 
     private static readonly Color PrimaryColor = Color.FromHex("#3E5774");
@@ -179,8 +182,8 @@ public sealed partial class ModSuitWindow : FancyWindow
         }
 
         ChargeText.Text = Loc.GetString("modsuit-ui-charge-bar",
-            ("current", (int) MathF.Round(suit.Comp.Charge)),
-            ("max", (int) MathF.Round(suit.Comp.MaxCharge)),
+            ("current", (suit.Comp.Charge / 1_000f).ToString("0", CultureInfo.InvariantCulture)),
+            ("max", (suit.Comp.MaxCharge / 1_000f).ToString("0", CultureInfo.InvariantCulture)),
             ("percent", (int) MathF.Round(ratio * 100f)));
     }
 
@@ -309,13 +312,18 @@ public sealed partial class ModSuitWindow : FancyWindow
         {
             MinHeight = 18,
             StyleBoxOverride = new StyleBoxFlat(new Color(0, 0, 0, 0)),
+            ToolTip = meta.EntityName,
         };
         heading.Label.FontColorOverride = Color.White;
+        // Keep long names from widening the row and shifting the power columns.
+        heading.Label.ClipText = true;
+        heading.Label.HorizontalExpand = true;
 
         var body = new CollapsibleBody();
         var description = new RichTextLabel
         {
             HorizontalExpand = true,
+            MaxWidth = NameColumnMaxWidth,
             Margin = new Thickness(12, 2, 0, 2),
         };
         description.SetMessage(meta.EntityDescription);
@@ -363,9 +371,9 @@ public sealed partial class ModSuitWindow : FancyWindow
         StyleButton(row.Pin, module.Pinned ? GoodColor : PrimaryColor);
 
         row.Heading.Label.FontColorOverride = module.Active ? GoodColor : Color.White;
-        var idlePower = module.IdlePower;
-        var activePower = module.ActivePower;
-        var usePower = module.UsePower;
+        var idlePower = module.IdlePower * ModSuitSystem.PowerDrainScale;
+        var activePower = module.ActivePower * ModSuitSystem.PowerDrainScale;
+        var usePower = module.UsePower * ModSuitSystem.PowerDrainScale;
         var complexity = module.Complexity;
         row.Idle.Text = idlePower.ToString("0.##");
         row.ActivePower.Text = activePower.ToString("0.##");
@@ -407,6 +415,7 @@ public sealed partial class ModSuitWindow : FancyWindow
         {
             Texture = GetIcon(icon),
             MinSize = new Vector2(ValueColumnWidth, 20),
+            MaxSize = new Vector2(ValueColumnWidth, 20),
             Stretch = TextureRect.StretchMode.KeepAspectCentered,
             VerticalAlignment = VAlignment.Center,
             ToolTip = Loc.GetString(tooltip),
@@ -534,6 +543,7 @@ public sealed partial class ModSuitWindow : FancyWindow
         return new Label
         {
             MinWidth = ValueColumnWidth,
+            MaxWidth = ValueColumnWidth,
             HorizontalAlignment = HAlignment.Center,
             VerticalAlignment = VAlignment.Center,
             ClipText = true,

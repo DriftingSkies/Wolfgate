@@ -256,6 +256,14 @@ public sealed partial class ModGunModulesSystem : VirtualController
         if (_timing.ApplyingState)
             return;
 
+        // TG charges 0.4 while stormtrooper mode is on and 0.6 while sharpshooter is on.
+        SetAssistantIdlePower(ent, ent.Comp.Mode switch
+        {
+            ModShootingMode.Stormtrooper => 0.4f * ModSuitSystem.TgCostUnit,
+            ModShootingMode.Sharpshooter => 0.6f * ModSuitSystem.TgCostUnit,
+            _ => 0f,
+        });
+
         var assistant = EnsureComp<ModShootingAssistantComponent>(wearer);
         assistant.Module = ent;
         assistant.Mode = ent.Comp.Mode;
@@ -265,6 +273,9 @@ public sealed partial class ModGunModulesSystem : VirtualController
 
     private void RemoveAssistant(Entity<ModShootingAssistantModuleComponent> ent, EntityUid wearer)
     {
+        if (!_timing.ApplyingState)
+            SetAssistantIdlePower(ent, 0f);
+
         if (_timing.ApplyingState
             || TerminatingOrDeleted(wearer)
             || !TryComp<ModShootingAssistantComponent>(wearer, out var assistant)
@@ -274,6 +285,11 @@ public sealed partial class ModGunModulesSystem : VirtualController
         assistant.Mode = ModShootingMode.Off;
         RefreshShooter(wearer);
         RemCompDeferred(wearer, assistant);
+    }
+
+    private void SetAssistantIdlePower(EntityUid ent, float power)
+    {
+        _modSuit.SetModuleIdlePower(ent, power);
     }
 
     private void RefreshShooter(EntityUid wearer)

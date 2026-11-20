@@ -67,6 +67,7 @@ public sealed partial class MoverController : SharedMoverController
         SubscribeLocalEvent<PilotComponent, GetShuttleInputsEvent>(OnPilotGetInputs); // Mono
 
         SubscribeLocalEvent<PilotedShuttleComponent, StartCollideEvent>(PilotedShuttleRelayEvent<StartCollideEvent>); // Mono
+        WGInitializeParking(); // WOLFGATE(Performance): idle movers leave the update list until woken
     }
 
     private void OnEntityPaused(Entity<ActiveInputMoverComponent> ent, ref EntityPausedEvent args)
@@ -199,6 +200,7 @@ public sealed partial class MoverController : SharedMoverController
     public override void UpdateBeforeSolve(bool prediction, float frameTime)
     {
         base.UpdateBeforeSolve(prediction, frameTime);
+        WGWakeParked(); // WOLFGATE(Performance): woken movers rejoin before the walk
 
         // We use _seenMovers here as well as in UpdateMoverStatus—this means we
         // cannot have any events get fired while we use it in this while loop.
@@ -219,14 +221,13 @@ public sealed partial class MoverController : SharedMoverController
 
             // WOLFGATE(Performance) START: a sleeping, input-less, player-less mover has nothing to move
             if (activeComp.RelayedFrom == null
-                && moverComp.HeldMoveButtons == MoveButtons.None
-                && (Timing.CurTick > moverComp.LastInputTick
-                    || (moverComp.CurTickWalkMovement == Vector2.Zero && moverComp.CurTickSprintMovement == Vector2.Zero))
+                && WGIdleInput(moverComp)
                 && !_wgActorQuery.HasComp(uid)
                 && PhysicsQuery.TryComp(uid, out var wgBody)
                 && !wgBody.Awake)
             {
                 _wgIdleSkipped++;
+                WGQueuePark(uid);
                 continue;
             }
             // WOLFGATE END
@@ -245,7 +246,7 @@ public sealed partial class MoverController : SharedMoverController
         }
 
         ActiveMoverGauge.Set(_moversToUpdate.Count);
-        WGIdleSkippedGauge.Set(_wgIdleSkipped); // WOLFGATE(Performance): idle movers skipped
+        WGParkQueued(); // WOLFGATE(Performance): parks idle movers and sets the skipped gauge
 
         foreach (var ent in _moversToUpdate)
         {

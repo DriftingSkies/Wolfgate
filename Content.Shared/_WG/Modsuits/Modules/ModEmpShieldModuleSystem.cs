@@ -10,13 +10,24 @@ public sealed partial class ModEmpShieldModuleSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<ModSuitComponent, EmpAttemptEvent>(OnSuitEmpAttempt);
+        SubscribeLocalEvent<ModSuitComponent, ContainedEmpAttemptEvent>(OnSuitContainedEmpAttempt);
     }
 
     private void OnSuitEmpAttempt(Entity<ModSuitComponent> ent, ref EmpAttemptEvent args)
     {
-        if (args.Cancelled)
-            return;
+        if (HasShield(ent))
+            args.Cancelled = true;
+    }
 
+    /// <summary>Shields the core, its cell and the installed modules from an EMP aimed at them directly.</summary>
+    private void OnSuitContainedEmpAttempt(Entity<ModSuitComponent> ent, ref ContainedEmpAttemptEvent args)
+    {
+        if (HasShield(ent))
+            args.Cancelled = true;
+    }
+
+    private bool HasShield(Entity<ModSuitComponent> ent)
+    {
         foreach (var module in ent.Comp.ModulesContainer.ContainedEntities)
         {
             if (!TryComp<ModEmpShieldModuleComponent>(module, out var shield)
@@ -24,8 +35,9 @@ public sealed partial class ModEmpShieldModuleSystem : EntitySystem
                 || shield.RequireActive && !moduleComp.Active)
                 continue;
 
-            args.Cancelled = true;
-            return;
+            return true;
         }
+
+        return false;
     }
 }

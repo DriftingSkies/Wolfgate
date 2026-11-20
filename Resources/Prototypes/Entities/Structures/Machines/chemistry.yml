@@ -51,6 +51,7 @@
     heatingPower: 1200
     coolingPower: 400
     maxTemperature: 1200
+    minTemperature: 200 # WOLFGATE(WolfChem): cold enough for crystal shards and opium resin
   - type: ContainerContainer
     containers:
       beakerSlot: !type:ContainerSlot

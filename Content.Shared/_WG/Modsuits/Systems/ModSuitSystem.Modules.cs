@@ -321,7 +321,7 @@ public sealed partial class ModSuitSystem
                 if (!used.Handled)
                     return false;
 
-                TryUseCharge(suit, moduleComp.UsePower);
+                TryUseCharge(suit, GetUseCost(moduleComp));
                 StartCooldown(module);
                 return true;
             default:
@@ -346,7 +346,7 @@ public sealed partial class ModSuitSystem
                 if (moduleComp.Type == ModModuleType.Active)
                     DeselectActiveModules(suit, moduleUid);
 
-                TryUseCharge(suit, moduleComp.UsePower);
+                TryUseCharge(suit, GetUseCost(moduleComp));
                 StartCooldown(module);
                 SetModuleActive(suit, module, true);
                 return true;
@@ -385,7 +385,7 @@ public sealed partial class ModSuitSystem
         }
 
         var needsPower = module.Comp.UsePower > 0f || module.Comp.ActivePower > 0f;
-        if (needsPower && (!suit.Comp.Powered || !HasCharge(suit, module.Comp.UsePower)))
+        if (needsPower && (!suit.Comp.Powered || !HasCharge(suit, GetUseCost(module.Comp))))
         {
             PopupFail(suit, user, "modsuit-no-power");
             return false;
@@ -473,10 +473,12 @@ public sealed partial class ModSuitSystem
         if (!CanAccess(suit, user) || !CanUseModule(suit, module, user))
             return false;
 
-        TryUseCharge(suit, moduleComp.UsePower);
+        TryUseCharge(suit, GetUseCost(moduleComp));
         StartCooldown(module);
         return true;
     }
+
+    private static float GetUseCost(ModModuleComponent module) => module.UsePower * PowerDrainScale;
 
     public void RelayToActiveModules(Entity<ModSuitComponent> suit, object ev)
     {

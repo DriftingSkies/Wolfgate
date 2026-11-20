@@ -59,7 +59,6 @@ public sealed class AsfModsuitTest
             human = entities.SpawnEntity("MobHuman", coords);
             suit = entities.SpawnEntity("WGAsfClothingModsuitAegisPowerCell", coords);
 
-            Assert.That(entities.GetComponent<PersonalShieldComponent>(suit).Shield.RequiredSlot, Is.EqualTo(SlotFlags.BACK));
             Assert.That(inventory.TryEquip(human, suit, "back", silent: true, force: true), Is.True);
         });
 
@@ -87,6 +86,7 @@ public sealed class AsfModsuitTest
         {
             var comp = entities.GetComponent<ModSuitComponent>(suit);
             Assert.That(comp.State, Is.EqualTo(ModSuitState.Active));
+            Assert.That(entities.GetComponent<PersonalShieldComponent>(suit).Shield.RequiredSlot, Is.EqualTo(SlotFlags.BACK));
             Assert.That(toggle.TryActivate(suit, human, predicted: false), Is.True, "The shield should switch on once the suit is sealed.");
         });
 
@@ -105,7 +105,8 @@ public sealed class AsfModsuitTest
         {
             var comp = entities.GetComponent<ModSuitComponent>(suit);
             Assert.That(comp.State, Is.EqualTo(ModSuitState.Inactive));
-            Assert.That(toggle.IsActivated(suit), Is.False, "Unsealing the suit should drop the shield.");
+            Assert.That(entities.HasComponent<PersonalShieldComponent>(suit), Is.False,
+                "Unsealing the suit should drop the shield.");
         });
 
         await pair.CleanReturnAsync();

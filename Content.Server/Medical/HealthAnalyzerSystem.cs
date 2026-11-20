@@ -285,6 +285,7 @@ public sealed partial class HealthAnalyzerSystem : EntitySystem
             body,
             part != null ? GetNetEntity(part) : null,
             BuildWoundDiagnostics(target), BuildOrganInfo(target), BuildChemicalInfo(target, bloodstream), BuildVitalDamage(target) // WOLFGATE(Wolfmed): HOOK 23
-        ) { Conditions = _wgConditions.Build(target) }); // WOLFGATE(WolfChem): drug levels, held effects and dependence
+        ) { Conditions = _wgConditions.Build(target), // WOLFGATE(WolfChem): drug levels, held effects and dependence
+            Augments = _wgAugments.ReadInstalled(target) }); // WOLFGATE(Augments): the cyberware in the body
     }
 }

@@ -16,13 +16,13 @@ public sealed partial class ModModuleComponent : Component
     [DataField]
     public int Complexity;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float IdlePower;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float ActivePower;
 
-    [DataField]
+    [DataField, AutoNetworkedField]
     public float UsePower;
 
     [DataField]

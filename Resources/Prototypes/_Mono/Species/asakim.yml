@@ -26,6 +26,7 @@
     Penis: MobHumanoidAnyMarking
     Breasts: MobHumanoidAnyMarking
     # WOLFGATE END
+    UndergarmentSocks: MobHumanoidAnyMarking # WOLFGATE(Humanoid): allow socks markings for this species sprite set
     Tail: MobHumanoidAnyMarking
     # WOLFGATE(Genitals) START: split tail layers ported from HardLight/Floof
     TailBehind: MobHumanoidAnyMarking

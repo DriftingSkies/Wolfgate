@@ -101,8 +101,9 @@ public sealed partial class ModSphereTransformModuleComponent : Component
     [DataField]
     public float MissileSpeed = 20f;
 
+    /// <summary>Joules spent per missile; three missiles cost TG's 3.0 DEFAULT_CHARGE_DRAIN.</summary>
     [DataField]
-    public float MissilePower = 30f;
+    public float MissilePower = 50f;
 
     [DataField]
     public float MissileMaxPressure = Atmospherics.OneAtmosphere * 0.5f;
@@ -145,8 +146,9 @@ public sealed partial class ModSphereDrillComponent : Component
     [DataField]
     public float SpeedCost = 1.4f;
 
+    /// <summary>Joules spent per mined tile; TG's drill charges 1.0 DEFAULT_CHARGE_DRAIN.</summary>
     [DataField]
-    public float PowerCost = 5f;
+    public float PowerCost = 50f;
 
     [DataField]
     public EntityWhitelist? Whitelist;

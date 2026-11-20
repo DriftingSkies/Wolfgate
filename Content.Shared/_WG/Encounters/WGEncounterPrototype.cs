@@ -247,6 +247,10 @@ public sealed partial class WGEncounterShip
     [DataField]
     public List<ProtoId<WGCrewRolePrototype>> Roles = new();
 
+    /// <summary>Roles crewed even where the ship has no post for them, standing beside the last post.</summary>
+    [DataField]
+    public List<ProtoId<WGCrewRolePrototype>> Extra = new();
+
     /// <summary>Others aboard who are not crew, such as a trader, spawned in the hold.</summary>
     [DataField]
     public List<EntProtoId> Passengers = new();

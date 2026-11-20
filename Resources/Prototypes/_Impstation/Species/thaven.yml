@@ -38,6 +38,7 @@
     HeadSide: MobHumanoidAnyMarking
     UndergarmentTop: MobHumanoidAnyMarking
     UndergarmentBottom: MobHumanoidAnyMarking
+    UndergarmentSocks: MobHumanoidAnyMarking # WOLFGATE(Humanoid): allow socks markings for this species sprite set
     Tail: MobHumanoidAnyMarking
     Chest: MobThavenTorso
     Genital: MobHumanoidAnyMarking

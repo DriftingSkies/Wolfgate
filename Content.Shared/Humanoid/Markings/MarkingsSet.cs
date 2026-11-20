@@ -140,9 +140,9 @@ public sealed partial class MarkingSet
         Points = MarkingPoints.CloneMarkingPointDictionary(other.Points);
     }
 
-    // WOLFGATE(Genitals) START: one undergarment top and one bottom per character
+    // WOLFGATE(Genitals) START: one optional marking per undergarment category
     /// <summary>
-    /// One undergarment top and one bottom per character, for every species. Works on the cloned points,
+    /// One marking in each undergarment category per character, for every species. Works on the cloned points,
     /// never the prototype's: a missing entry becomes an optional budget of 1 with no default markings, and an
     /// entry above 1 is lowered to 1.
     /// </summary>
@@ -150,6 +150,7 @@ public sealed partial class MarkingSet
     {
         LimitToOne(points, MarkingCategories.UndergarmentTop);
         LimitToOne(points, MarkingCategories.UndergarmentBottom);
+        LimitToOne(points, MarkingCategories.UndergarmentSocks);
     }
 
     /// <summary>Caps one category of a cloned points dictionary at a single marking.</summary>

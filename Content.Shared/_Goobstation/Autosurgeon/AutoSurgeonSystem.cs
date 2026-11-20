@@ -16,7 +16,7 @@ namespace Content.Shared._Goobstation.Autosurgeon;
 
 // There might be some goidacode inside, I warned you.
 // It should also maybe be in _Shitmed instead of here, but who cares.
-public sealed class AutoSurgeonSystem : EntitySystem
+public sealed partial class AutoSurgeonSystem : EntitySystem // WOLFGATE(Augments): augments reapply and detect upgrades
 {
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedBodySystem _body = default!;

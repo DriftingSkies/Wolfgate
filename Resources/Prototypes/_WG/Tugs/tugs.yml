@@ -1,0 +1,157 @@
+# Luggage tugs (Content.Server/_WG/Tugs/README.md). Names and descriptions are in Resources/Locale/en-US/_WG/Tugs/tugs.ftl.
+
+# A sit-on tug driven by the CMU grid mover. It has no interior: whoever buckles into it is the operator.
+- type: entity
+  id: WGLuggageTug
+  categories: [ WGVehicles ]
+  save: false
+  components:
+  - type: CleanupImmune
+  - type: FTLSmashImmune
+  - type: StaticPrice
+    price: 2500
+  - type: RMCVehicle
+    movementKind: Grid
+  - type: LagCompensation
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Dynamic
+  - type: Fixtures
+    fixtures:
+      world:
+        shape:
+          !type:PhysShapeAabb
+          bounds: -0.4,-0.4,0.4,0.4
+        density: 300
+        mask:
+        - Impassable
+        - HighImpassable
+        - LowImpassable
+        - LargeMobLayer
+        - Vehicle
+        layer:
+        - LargeMobLayer
+        - Vehicle
+      mob:
+        shape:
+          !type:PhysShapeAabb
+          bounds: -0.4,-0.4,0.4,0.4
+        density: 300
+        mask:
+        - MidImpassable
+        - LargeMobLayer
+        layer:
+        - LargeMobLayer
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  # A full-speed wall hit costs about 55 (WGVehicleImpactDamageSystem, Light), so a dozen wreck it.
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 600
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  # Drawn over the rider when it faces up or down the screen, like the ride-on ATV (WGTugVisualsSystem).
+  - type: Sprite
+    drawdepth: Objects
+    sprite: _WG/Tugs/tug.rsi
+    state: tug
+  # A rider on a moving body gets nudged by physics; the default 3 mm tolerance would throw them off.
+  - type: Strap
+    position: Stand
+    buckleOffset: "0.1, -0.05"
+    unbuckleDistanceSquared: 0.09
+  - type: GridVehicleMover
+    weightClass: Light
+    freeSteering: true
+    maxRotationSpeedDegrees: 110
+    rotationAccelerationDegrees: 220
+    rotationDecelerationDegrees: 240
+    maxSpeed: 5
+    acceleration: 3
+    deceleration: 8
+    maxReverseSpeed: 2
+    reverseAcceleration: 2
+    turnDelay: 0
+    turnInPlace: false
+    canPushVehicles: false
+  - type: VehicleFall
+    bodyHealth: 300
+  - type: VehicleSound
+    hornSound: /Audio/Effects/double_beep.ogg
+    hornCooldown: 1
+    mobCollisionSound:
+      path: /Audio/Effects/metal_thud1.ogg
+      params:
+        volume: -4
+    collisionSoundCooldown: 1.5
+  # No ignition: the motor whines up when someone buckles in and winds down when they get off, and the drive loop
+  # follows the speed (WGVehicleAudioSystem). The whine is silent at rest, as an electric tug is.
+  - type: WGVehicleEngineAudio
+    startSound: /Audio/_WG/Tugs/motor_start.ogg
+    stopSound: /Audio/_WG/Tugs/motor_stop.ogg
+    driveLoop: /Audio/_WG/Tugs/motor_loop.ogg
+    drivePitch: 0.75, 1.25
+    tracksLoop: /Audio/_WG/Vehicles/RCSM/wheels/road.ogg
+    tracksPitch: 0.9, 1.2
+    startDelay: 0.6
+    throttleResponse: 4
+    loopParams:
+      volume: -6
+      maxDistance: 12
+  - type: WGTug
+
+# A trolley that couples behind a tug and carries one strapped crate.
+- type: entity
+  id: WGLuggageTrolley
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: false
+  - type: Clickable
+  - type: StaticPrice
+    price: 300
+  - type: Sprite
+    drawdepth: SmallObjects
+    sprite: _WG/Tugs/trolley.rsi
+    layers:
+    - state: trolley
+    - state: trolley_handlebars
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Dynamic
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: -0.4,-0.3,0.4,0.3
+        density: 150
+        mask:
+        - MachineMask
+        layer:
+        - MidImpassable
+        - LowImpassable
+  - type: Pullable
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 150
+      behaviors:
+      - !type:EmptyAllContainersBehaviour
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: ContainerContainer
+    containers:
+      wg-trolley-cargo: !type:ContainerSlot
+        showEnts: True
+  - type: WGTugTrolley

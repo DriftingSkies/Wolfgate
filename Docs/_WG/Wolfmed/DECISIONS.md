@@ -5125,3 +5125,14 @@ pain), blasts 107 / 411, thigh cut 50 / 109. Every revive held. Not yet re-measu
 
 Changed feel to watch in playtest: one thigh cut with an artery downs in about two minutes (was four), the artery now carrying the cut's
 severity; a blast still leaves three small wounds per part, one of each kind.
+
+## Arrest collapse (2026-11-17)
+
+A stopped heart no longer drops the patient at once. The arrest pressure climbs from 0 to 1 over
+`wolfmed.arrest_collapse_seconds` (45), counted on the life tick (`WolfmedCardiacArrestComponent.CollapseElapsed`),
+so the patient knows and can call for help: slowed and unable to sprint from the stop, shaking and dropping held items
+from a third in, Downed at 0.7 (the pressure's Downed share, about 31 s), Unconscious and Dying at 45 s. The Dying
+actions and the ghost command's Dying dialog wait for the collapse (`ArrestCollapsed`). The brain clock still runs from
+the stop, so the window is part of the 7.5 minutes to brain death. A pulled heart and a shock (electrocution or pain
+shock) collapse at once. The client view fades from 0.15 to the crit level over the collapse instead of jumping
+straight to it.

@@ -10,8 +10,8 @@ it does not touch CMU's diverged hardpoint code. Ids are CMU's: `CMUCargoCarrier
 ## What it is
 
 The carrier is an `RMCVehicle` with the grid mover, and it is its own operator: `CMUCargoVehicleSystem` sets the
-carrier as its operator at map init, and `RMCVehicleSystem` puts `RMCVehicleOperator` on the carrier itself. It has no
-interior, no hardpoints and no integrity; its `Damageable` uses `VehicleFrameCLFVan` on `StructuralInorganic`. It gets
+carrier as its operator at map init, and `RMCVehicleSystem` puts `RMCVehicleOperator` on the carrier itself. It has the
+van's cab (`van_interior.yml`, a door on each side) but no hardpoints and no integrity; its `Damageable` uses `VehicleFrameCLFVan` on `StructuralInorganic`. It gets
 the spawn defaults every Wolfgate vehicle has: `save: false`, `CleanupImmune`, `FTLSmashImmune` and a `StaticPrice`. The
 price is 5000, a placeholder for the owner to set. Admins spawn the carrier and its controller separately; CMU's
 deployment crate (`CMUCrateCargoCarrier`) is not ported, since it is built on RMC's strapped case and the requisitions
@@ -59,9 +59,22 @@ The carrier has `VehicleFall` like every vehicle, so driving it off an edge with
 other, so a landing that takes it to 300 arms the self-destruct as automatic arming does: control ends, the pilot is back in
 their body, the carrier stops, and five seconds later it blows up and leaves its wreck. Its cargo falls with it.
 
+## The cab
+
+A driver who sits in the cab's driver seat takes the wheel from the carrier: a remote pilot is sent home, and the
+controller is refused while they drive. When the driver gets up the carrier is its own operator again and the remote
+works (`CMUCargoVehicleSystem.Interior.cs`).
+
 ## Cargo
 
-The bay is opened and closed with the verbs on the carrier or the action. A crate the user is pulling is loaded with a
+The cargo rides in view on the bed (`cargoOffset`, in the carrier's frame), drawn above the carrier
+(`CMUCargoOnBed`, client `CMUCargoOnBedSystem`). A loose (unanchored) nuclear warhead (`WGWarhead`) is cargo too
+(`carriesWarheads`): drag it onto the carrier with the mouse and the bay opens and loading starts. When the carrier blows
+up a warhead on the bed is set down where it stood, not torn open like a crate. The biggest chassis, `WGWarheadStrategic`,
+overhangs the bed.
+
+
+The bay is opened and closed with the verbs on the carrier or the action. A crate or warhead the user is pulling is loaded with a
 verb (a 2 second do-after, within 2.5 tiles); the crate comes out beside the user when unloaded. Cargo needs the bay
 open, the self-destruct not armed and the carrier standing still. CMU asked for a power-loader grabbable entity storage;
 here a crate is an entity storage whose prototype is, or inherits from, one of the carrier's `crateParents` (`CrateGeneric`

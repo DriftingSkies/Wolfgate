@@ -28,7 +28,7 @@ public sealed class WGNarcoticsCVars
     public static readonly CVarDef<float> HeatScale =
         CVarDef.Create("wg.narcotics.heat_scale", 250000f, CVar.SERVERONLY);
 
-    /// <summary>The least share of its value a buyer pays, however hot the seller: what a dump sells for.</summary>
+    /// <summary>The least share of its value a buyer pays below <see cref="HeatCap"/>.</summary>
     public static readonly CVarDef<float> HeatFloor =
         CVarDef.Create("wg.narcotics.heat_floor", 0.15f, CVar.SERVERONLY);
 
@@ -41,11 +41,18 @@ public sealed class WGNarcoticsCVars
         CVarDef.Create("wg.narcotics.heat_cooling", 150f, CVar.SERVERONLY);
 
     /// <summary>
-    /// The most heat a seller holds, so the longest wait back to full price is this over the cooling. Keep it past
-    /// where the price reaches its floor (free + scale * ln(1 / floor)), or a seller at the cap sells on above the floor.
+    /// The most heat a seller holds, and the heat past which the market is saturated and a buyer pays only
+    /// <see cref="HeatGlutFloor"/>. The longest wait back to full price is this over the cooling.
     /// </summary>
     public static readonly CVarDef<float> HeatCap =
         CVarDef.Create("wg.narcotics.heat_cap", 1000000f, CVar.SERVERONLY);
+
+    /// <summary>
+    /// The share of its value a buyer pays for what is sold past <see cref="HeatCap"/>. At 0.02 a cold dump of 145M
+    /// street value fetches about 3.6M, near what careful selling earns over a whole round.
+    /// </summary>
+    public static readonly CVarDef<float> HeatGlutFloor =
+        CVarDef.Create("wg.narcotics.heat_glut_floor", 0.02f, CVar.SERVERONLY);
 
     /// <summary>Heat past which a tip describes the seller and customs puts a warrant out on them.</summary>
     public static readonly CVarDef<float> HeatHot =
@@ -71,7 +78,11 @@ public sealed class WGNarcoticsCVars
     public static readonly CVarDef<float> StockSignature =
         CVarDef.Create("wg.narcotics.stock_signature", 200000f, CVar.SERVERONLY);
 
-    /// <summary>Street value that adds one point to a narcotic's contraband hand-in reward; 0 leaves the flat reward.</summary>
+    /// <summary>
+    /// Street value that adds one point to a narcotic's contraband hand-in reward; 0 leaves the flat reward. A point
+    /// cashes for 2,000, so 15,000 pays about 13% of the value: keep it under <see cref="HeatFloor"/>, or handing in
+    /// beats selling hot.
+    /// </summary>
     public static readonly CVarDef<float> TurnInValue =
-        CVarDef.Create("wg.narcotics.turn_in_value", 5000f, CVar.SERVERONLY);
+        CVarDef.Create("wg.narcotics.turn_in_value", 15000f, CVar.SERVERONLY);
 }

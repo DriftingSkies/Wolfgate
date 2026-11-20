@@ -148,7 +148,8 @@ public sealed partial class WGNarcoticHeatSystem : EntitySystem
     private double Payout(Seller record, double heat, double value)
     {
         return WGNarcoticHeatMath.Payout(heat, value, Free(record), _cfg.GetCVar(WGNarcoticsCVars.HeatScale),
-            _cfg.GetCVar(WGNarcoticsCVars.HeatFloor));
+            _cfg.GetCVar(WGNarcoticsCVars.HeatFloor), _cfg.GetCVar(WGNarcoticsCVars.HeatCap),
+            _cfg.GetCVar(WGNarcoticsCVars.HeatGlutFloor));
     }
 
     /// <summary>The tier this seller is in now.</summary>

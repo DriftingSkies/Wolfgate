@@ -1,4 +1,8 @@
 modsuit-core-slot-name = Core
+modsuit-core-slot-wrong-item = That doesn't fit the core slot.
+modsuit-core-slot-locked = The core slot is locked shut.
+modsuit-cell-slot-wrong-item = That cell doesn't fit this MOD core.
+modsuit-cell-slot-occupied = This MOD core already has a cell.
 modsuit-core-full = The core is already fully charged!
 modsuit-core-refueled = You feed the core.
 
@@ -180,7 +184,7 @@ modsuit-ui-user-status = User Status
 modsuit-ui-user-name = Name
 modsuit-ui-user-assignment = Assignment
 modsuit-ui-suit-unpowered = SUIT UNPOWERED
-modsuit-ui-charge-bar = {$current} of {$max} ({$percent}%)
+modsuit-ui-charge-bar = {$current} of {$max} kJ ({$percent}%)
 modsuit-ui-no-core-detected = No Core Detected
 modsuit-ui-cell-missing = Power Cell Missing
 modsuit-ui-complexity-used = {$current} of {$max} complexity used

@@ -1,0 +1,14 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+                      xmlns:paintings="clr-namespace:Content.Client._WG.Paintings"
+                      Title="{Loc 'wg-painting-view-title'}"
+                      MinSize="420 380">
+    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="6">
+        <PanelContainer Name="Wall" VerticalExpand="True">
+            <paintings:WGCanvasControl Name="PaintingView" Locked="True" FrameWidth="14" TargetSize="480"
+                                       HorizontalExpand="True" VerticalExpand="True" Margin="16" />
+        </PanelContainer>
+        <Label Name="PaintingTitle" StyleClasses="LabelHeading" HorizontalAlignment="Center" />
+        <Label Name="PaintingArtist" StyleClasses="LabelSecondaryColor" HorizontalAlignment="Center" />
+    </BoxContainer>
+</controls:FancyWindow>

@@ -89,6 +89,9 @@ public sealed partial class HumanoidProfileEditor
         // Traits and loadouts can list biotypes they refuse.
         RefreshTraits();
         RefreshLoadouts();
+
+        // The other biotype's body has other parts and organs.
+        UpdateAugments();
     }
 
     /// <summary>The tooltip line naming the biotypes that can't take the trait, or null when it lists none.</summary>

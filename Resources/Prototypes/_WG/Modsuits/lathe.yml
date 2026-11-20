@@ -237,6 +237,16 @@
 
 - type: latheRecipe
   parent: BaseModsuitModuleRecipe
+  id: ModsuitModuleVoidBoots
+  result: ModsuitModuleVoidBoots
+  materials:
+    Steel: 800
+    Silver: 400
+    Gold: 200
+    Bluespace: 300
+
+- type: latheRecipe
+  parent: BaseModsuitModuleRecipe
   id: ModsuitModuleWelding
   result: ModsuitModuleWelding
   materials:
@@ -790,6 +800,7 @@
   - ModsuitModuleVisorDiagnostic
   - ModsuitModuleReagentScanner
   - ModsuitModuleMagboots
+  - ModsuitModuleVoidBoots
   - ModsuitModuleTRay
   - ModsuitModuleTether
   - ModsuitModuleMister

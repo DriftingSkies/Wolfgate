@@ -25,6 +25,7 @@
     Head: MobAvaliHead
     UndergarmentTop: MobHumanoidAnyMarking
     UndergarmentBottom: MobHumanoidAnyMarking
+    UndergarmentSocks: MobHumanoidAnyMarking # WOLFGATE(Humanoid): allow socks markings for this species sprite set
     Genital: MobHumanoidAnyMarking
     Penis: MobHumanoidAnyMarking
     Breasts: MobHumanoidAnyMarking

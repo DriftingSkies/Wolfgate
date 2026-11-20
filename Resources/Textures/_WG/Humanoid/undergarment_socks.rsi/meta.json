@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Taken from TG Station, Icon by Conflee",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "Striped_Stockings",
+            "directions": 4
+        },
+        {
+            "name": "Fishnet_Stockings",
+            "directions": 4
+        },
+        {
+            "name": "Stockings",
+            "directions": 4
+        },
+        {
+            "name": "Thigh_Highs",
+            "directions": 4
+        },
+        {
+            "name": "Knee_Highs",
+            "directions": 4
+        },
+        {
+            "name": "Socks",
+            "directions": 4
+        },
+        {
+            "name": "Short_Socks",
+            "directions": 4
+        },
+        {
+            "name": "Pantyhose",
+            "directions": 4
+        }
+    ]
+}

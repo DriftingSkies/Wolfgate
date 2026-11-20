@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Taken from Meridian Rift (https://github.com/AphelionDevelopment/Meridian-Rift), tgstation-derived: the tools from icons/obj/items_cyborg.dmi at commit bef6efdc18d1d11789ad3208669dbd7d9a85d95f, implant from icons/obj/medical/organs/organs.dmi at commit 96baace94d70621c07e80ef4ba0e4a56f9cbee71",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "screwdriver",
+      "delays": [
+        [
+          0.1,
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "wrench",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "crowbar",
+      "delays": [
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "name": "wirecutter",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "multitool",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "welder",
+      "delays": [
+        [
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "welder-flame",
+      "delays": [
+        [
+          0.1,
+          0.1
+        ]
+      ]
+    },
+    {
+      "name": "implant"
+    }
+  ]
+}

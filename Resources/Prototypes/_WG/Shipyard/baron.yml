@@ -1,0 +1,36 @@
+# Author Info
+# punishedbrungus (Discord) balls2zawall (Github)
+
+- type: vessel
+  id: WGBaron
+  parent: BaseVessel
+  name: 'GGS Baron'
+  description: 'The first of the "Royal" line from General Gravitonics Shipyards, the Baron is a small but deadly fighter in the hands of the right pilot. Although it lacks onboard gravity, it is equipped with 2 AK570s, 2 Prometheus laser cannons, and an MS-100 shield generator. The motto of this vessel is "Fight, and win."'
+  price: 73441 # appraised at 58753, 25% markup
+  category: Small # 72 tiles
+  group: Shipyard
+  shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/baron.yml
+  guidebookPage: null
+  class:
+  - Fighter
+  - Mercenary
+  engine:
+  - Uranium
+
+- type: gameMap
+  id: WGBaron
+  mapName: 'GGS Baron'
+  mapPath: /SharedMaps/_WG/Shipyard/Shuttles/baron.yml
+  minPlayers: 0
+  stations:
+    WGBaron:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Baron MIL{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

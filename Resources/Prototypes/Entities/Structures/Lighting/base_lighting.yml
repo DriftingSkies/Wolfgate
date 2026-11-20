@@ -23,6 +23,7 @@
   - type: SpriteSetRenderOrder
     renderOrder: 1
   # WOLFGATE END
+  - type: WGWallBackfaceVisuals # WOLFGATE(WallmountFov): hide from eyes behind the wall the sprite is drawn on
   - type: Construction
     graph: LightFixture
     node: tubeLight

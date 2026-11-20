@@ -429,6 +429,12 @@ public sealed partial class WGEncounterSystem
         if (ship.Deckhands <= 0)
             posts.RemoveAll(post => post.Role == WGCrewRoles.Deckhand.Id);
 
+        foreach (var role in ship.Extra)
+        {
+            if (posts.Count > 0 && !posts.Any(post => post.Role == role.Id))
+                posts.Add(new WGCrewSetupPost { Role = role.Id, Position = posts[^1].Position });
+        }
+
         // An engineer keeps the plant fuelled from the stores, where the ship's roles allow one: posted beside the plant,
         // or failing a safe tile there, in a deckhand's place or alongside the last of the crew.
         if (ship.Engineer && (ship.Roles.Count == 0 || ship.Roles.Any(role => role == WGCrewRoles.Engineer)) && _work.HasPlant(grid))

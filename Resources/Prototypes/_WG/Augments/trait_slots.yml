@@ -1,4 +1,5 @@
-# Traits that put their own limbs on the body at spawn. A character with one can't take augments in these slots.
+# Traits that put their own limbs or organs in the body at spawn. A character with one can't take augments in these
+# slots. Hands, feet and implants under a trait's limbs are put back after it runs (WGAugmentSystem.Traits.cs).
 
 - type: wgAugmentTraitSlots
   id: PrybarProsthetics
@@ -7,3 +8,17 @@
 - type: wgAugmentTraitSlots
   id: BionicLegs
   slots: [ LeftLeg, RightLeg ]
+
+# The tumor replaces the heart.
+- type: wgAugmentTraitSlots
+  id: WGHemophagia
+  slots: [ Heart ]
+
+- type: wgAugmentTraitSlots
+  id: WGHemophagiaMasquerade
+  slots: [ Heart ]
+
+# The dwarf liver replaces the liver.
+- type: wgAugmentTraitSlots
+  id: LiquorLifeline
+  slots: [ Liver ]

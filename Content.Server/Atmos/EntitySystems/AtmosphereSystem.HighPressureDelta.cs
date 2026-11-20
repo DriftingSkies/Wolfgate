@@ -141,6 +141,9 @@ namespace Content.Server.Atmos.EntitySystems
                     tile.PressureSpecificTarget = curTile;
             }
 
+            if (WGWindTooWeak(tile)) // WOLFGATE(Performance): wind below the throw force moves nothing, so skip the search
+                return;
+
             _entSet.ClearAndTrim(); // WOLFGATE(Performance): a crowded tile left the set huge and slowed every clear
             _lookup.GetLocalEntitiesIntersecting(tile.GridIndex, tile.GridIndices, _entSet, 0f);
 

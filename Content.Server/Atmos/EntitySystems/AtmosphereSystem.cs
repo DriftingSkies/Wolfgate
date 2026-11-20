@@ -61,6 +61,7 @@ public sealed partial class AtmosphereSystem : SharedAtmosphereSystem
         InitializeCommands();
         InitializeCVars();
         InitializeGridAtmosphere();
+        WGInitializeGridCache(); // WOLFGATE(Performance): an unpaused grid rejoins the cached grid atmosphere list
         InitializeMap();
 
         _mapAtmosQuery = GetEntityQuery<MapAtmosphereComponent>();

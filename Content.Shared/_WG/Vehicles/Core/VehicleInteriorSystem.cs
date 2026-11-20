@@ -930,14 +930,16 @@ public sealed partial class VehicleInteriorSystem : EntitySystem
             !HasComp<VehicleDriverSeatComponent>(seat) ||
             !TryGetVehicleFromInterior(seat, out var vehicle) ||
             !TryComp(vehicle, out RMCVehicleComponent? vehicleComp) ||
-            vehicleComp.Operator != null && vehicleComp.Operator != ent.Owner)
+            vehicleComp.Operator != null && vehicleComp.Operator != ent.Owner && vehicleComp.Operator != vehicle.Value)
         {
             RemCompDeferred<VehicleDriverRecoveryComponent>(ent);
             return;
         }
 
-        // Still down or asleep: they stay on the list for the next time they get up.
-        if (!_vehicles.TrySetOperator((vehicle.Value, vehicleComp), ent.Owner, removeExisting: false))
+        // Still down or asleep: they stay on the list for the next time they get up. A vehicle that is its own operator
+        // (the Bison at rest) has nobody at the wheel to keep.
+        var selfDriven = vehicleComp.Operator == vehicle.Value;
+        if (!_vehicles.TrySetOperator((vehicle.Value, vehicleComp), ent.Owner, removeExisting: selfDriven))
             return;
 
         _vehicleLock.EnableLockAction(ent.Owner, vehicle.Value);
@@ -975,7 +977,8 @@ public sealed partial class VehicleInteriorSystem : EntitySystem
         if (_net.IsClient)
             return;
 
-        if (!HasComp<VehicleEnterComponent>(args.Vehicle.Owner))
+        // A vehicle that is its own operator (the Bison at rest) has no driver to give a view.
+        if (!HasComp<VehicleEnterComponent>(args.Vehicle.Owner) || ent.Owner == args.Vehicle.Owner)
             return;
 
         _eye.SetTarget(ent.Owner, args.Vehicle.Owner);

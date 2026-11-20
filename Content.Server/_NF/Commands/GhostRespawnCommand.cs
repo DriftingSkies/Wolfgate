@@ -1,4 +1,5 @@
 using Content.Server._Corvax.Respawn;
+using Content.Server._WG.Augments; // WOLFGATE(Augments)
 using Content.Server.GameTicking;
 using Content.Server.Mind;
 using Content.Shared.Administration;
@@ -65,6 +66,7 @@ public sealed partial class GhostRespawnCommand : IConsoleCommand
             }
         }
 
+        _entity.GetEntitySystem<WGAugmentSystem>().ForfeitAugments(shell.Player); // WOLFGATE(Augments): respawning instead of cryo loses the character's augments
         var gameTicker = _entityManager.EntitySysManager.GetEntitySystem<GameTicker>();
         gameTicker.Respawn(shell.Player);
     }

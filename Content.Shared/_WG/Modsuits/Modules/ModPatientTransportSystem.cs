@@ -1,3 +1,5 @@
+using Content.Shared._WG.Modsuits.Components;
+using Content.Shared._WG.Modsuits.Systems;
 using Content.Shared.Cuffs;
 using Content.Shared.Cuffs.Components;
 using Content.Shared.Damage.Components;
@@ -36,6 +38,7 @@ public sealed partial class ModPatientTransportSystem : EntitySystem
     }
 
     [Dependency] private INetManager _net = default!;
+    [Dependency] private ModSuitSystem _modSuit = default!;
     [Dependency] private PullingSystem _pulling = default!;
     [Dependency] private SharedCuffableSystem _cuffable = default!;
     [Dependency] private StaminaSystem _stamina = default!;
@@ -122,6 +125,7 @@ public sealed partial class ModPatientTransportSystem : EntitySystem
 
         ent.Comp.LinkedBag = bag;
         Dirty(ent);
+        SetLinkedIdlePower(ent, linked: true);
 
         _audio.PlayPvs(ent.Comp.Sound, bag);
         _pendingPulls.Add((args.User, bag));
@@ -137,8 +141,13 @@ public sealed partial class ModPatientTransportSystem : EntitySystem
     }
     private void OnBagShutdown(Entity<ModHardlightBagComponent> ent, ref ComponentShutdown args)
     {
-        if (ent.Comp.Projector is not { } projector
-            || !TryComp<ModPatientTransportComponent>(projector, out var transport)
+        if (ent.Comp.Projector is not { } projector)
+            return;
+
+        // Clear the drain even if the projector lost its transport component before the bag did.
+        ResetLinkedIdlePower(projector);
+
+        if (!TryComp<ModPatientTransportComponent>(projector, out var transport)
             || transport.LinkedBag != ent.Owner)
             return;
 
@@ -204,18 +213,37 @@ public sealed partial class ModPatientTransportSystem : EntitySystem
             _stamina.TakeStaminaDamage(args.Entity, stamina.CritThreshold, stamina, immediate: true);
     }
 
+    /// <summary>Applies the extra idle drain a linked bag costs; TG keeps criminal capture at 3.0.</summary>
+    private void SetLinkedIdlePower(Entity<ModPatientTransportComponent> ent, bool linked)
+    {
+        if (!TryComp<ModDeviceItemComponent>(ent, out var item) || item.Module is not { } moduleUid)
+            return;
+
+        _modSuit.SetModuleIdlePower(moduleUid, linked ? ent.Comp.LinkedIdlePower : 0f);
+    }
+
+    /// <summary>Clears the linked-bag idle drain through the device, even without the transport component.</summary>
+    private void ResetLinkedIdlePower(EntityUid projector)
+    {
+        if (TryComp<ModDeviceItemComponent>(projector, out var item) && item.Module is { } moduleUid)
+            _modSuit.SetModuleIdlePower(moduleUid, 0f);
+    }
+
     private void Dissolve(EntityUid bag)
     {
         if (_net.IsClient || TerminatingOrDeleted(bag) || EntityManager.IsQueuedForDeletion(bag))
             return;
 
-        if (TryComp<ModHardlightBagComponent>(bag, out var bagComp)
-            && bagComp.Projector is { } projector
-            && TryComp<ModPatientTransportComponent>(projector, out var transport))
+        if (TryComp<ModHardlightBagComponent>(bag, out var bagComp) && bagComp.Projector is { } projector)
         {
-            transport.LinkedBag = null;
-            Dirty(projector, transport);
-            _audio.PlayPvs(transport.Sound, bag);
+            ResetLinkedIdlePower(projector);
+
+            if (TryComp<ModPatientTransportComponent>(projector, out var transport))
+            {
+                transport.LinkedBag = null;
+                Dirty(projector, transport);
+                _audio.PlayPvs(transport.Sound, bag);
+            }
         }
 
         _entityStorage.EmptyContents(bag);

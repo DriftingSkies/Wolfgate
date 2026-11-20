@@ -4,7 +4,9 @@
   mapPath: /Maps/saltern.yml
   minPlayers: 0
   maxPlayers: 35
-  fallback: true
+  # WOLFGATE(MapPool) START: Saltern doesn't load on this fork, so it must never be the fallback.
+  # fallback: true
+  # WOLFGATE END
   stations:
     Saltern:
       stationProto: StandardNanotrasenStation

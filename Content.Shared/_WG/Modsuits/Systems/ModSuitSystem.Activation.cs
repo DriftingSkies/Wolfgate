@@ -43,7 +43,7 @@ public sealed partial class ModSuitSystem
             return false;
         }
 
-        if (!HasCharge(ent, GetThemeDrain(ent)))
+        if (!HasCharge(ent, GetThemeDrain(ent) * PowerDrainScale))
         {
             PopupFail(ent, user, "modsuit-no-power");
             return false;

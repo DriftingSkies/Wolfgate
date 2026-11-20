@@ -51,6 +51,9 @@ public sealed partial class ModGrantComponentsModuleSystem : EntitySystem
             return;
 
         _modSuit.GrantComponents(uid, ent.Comp.Components);
+        if (ent.Comp.Components.ContainsKey("ModMagneticHarness")
+            && TryComp<ModMagneticHarnessComponent>(uid, out var harness))
+            harness.Module = ent.Owner;
         ent.Comp.GrantedTo = uid;
         Dirty(ent);
 

@@ -14,17 +14,26 @@ public static class WGNarcoticHeatMath
     /// <summary>
     /// What a buyer pays for <paramref name="value"/> of narcotics from a seller at <paramref name="heat"/>. Every credit
     /// is paid at the heat it is sold at: in full up to <paramref name="free"/>, then falling by a factor of e for each
-    /// <paramref name="scale"/> above it, down to <paramref name="floor"/> of its value.
+    /// <paramref name="scale"/> above it, down to <paramref name="floor"/> of its value. What is sold past
+    /// <paramref name="cap"/> pays only <paramref name="glut"/> of its value, as the market is saturated.
     /// </summary>
-    public static double Payout(double heat, double value, double free, double scale, double floor)
+    public static double Payout(double heat, double value, double free, double scale, double floor,
+        double cap = double.PositiveInfinity, double glut = 0)
     {
         if (value <= 0)
             return 0;
 
         heat = Math.Max(0, heat);
+        var saturated = Over(heat, value, cap) * Math.Clamp(glut, 0, 1);
+        var end = Math.Min(heat + value, cap);
+        return end > heat ? saturated + Curve(heat, end, free, scale, floor) : saturated;
+    }
+
+    /// <summary>What the heat from <paramref name="heat"/> to <paramref name="end"/> pays below the cap.</summary>
+    private static double Curve(double heat, double end, double free, double scale, double floor)
+    {
         free = Math.Max(0, free);
         floor = Math.Clamp(floor, 0, 1);
-        var end = heat + value;
 
         var paid = Math.Max(0, Math.Min(end, free) - heat);
         if (end <= free)

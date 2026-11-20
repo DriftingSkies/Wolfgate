@@ -125,6 +125,7 @@ public sealed partial class WolfmedDiagnosticPanel : BoxContainer
 
     private void DrawOrgans(HealthAnalyzerScannedUserMessage msg)
     {
+        CyberwareList.Populate(msg.ScanMode == true ? msg.Augments : null);
         if (msg.ScanMode != true || msg.Organs == null)
         {
             if (_organsUnavailable)
@@ -236,6 +237,7 @@ public sealed partial class WolfmedDiagnosticPanel : BoxContainer
         OrgansContainer.RemoveAllChildren();
         _organRows.Clear();
         _organsUnavailable = false;
+        CyberwareList.Populate(null);
     }
 
     private void DrawChemicals(HealthAnalyzerScannedUserMessage msg)
