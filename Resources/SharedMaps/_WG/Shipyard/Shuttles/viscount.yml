@@ -4,8 +4,8 @@ meta:
   engineVersion: 291.0.4
   forkId: wolfgate-mapping
   forkVersion: 20261117-170338-3118dcd-0c9797b9
-  time: 11/19/2026 17:34:32
-  entityCount: 276
+  time: 11/20/2026 07:22:22
+  entityCount: 279
 maps: []
 grids:
 - 2
@@ -1053,13 +1053,20 @@ entities:
       parent: 2
       rot: 3.141592653589793 rad
       pos: -5.5,-1.5
-- proto: LockerWallMaterialsFuelUraniumFilled
+- proto: LockerWallColorL2RadiationFilled
   entities:
-  - uid: 40
+  - uid: 280
     components:
     - type: Transform
       parent: 2
       pos: -2.5,-2.5
+- proto: LockerWallMaterialsFuelBananiumFilled
+  entities:
+  - uid: 279
+    components:
+    - type: Transform
+      parent: 2
+      pos: -3.5,-2.5
 - proto: MachineFTLDrive25S
   entities:
   - uid: 163
@@ -1079,6 +1086,13 @@ entities:
       pos: -0.5,-1.5
 - proto: PlasmaReinforcedWindowDirectional
   entities:
+  - uid: 83
+    components:
+    - type: Transform
+      parent: 2
+      pos: -3.5,-3.5
+    - type: DeltaPressure
+      gridUid: 2
   - uid: 165
     components:
     - type: Transform
@@ -1087,13 +1101,15 @@ entities:
       pos: 2.5,-4.5
     - type: DeltaPressure
       gridUid: 2
-- proto: PortableGeneratorSuperPacmanShuttle
+- proto: PortableGeneratorDKJrShuttle
   entities:
-  - uid: 83
+  - uid: 40
     components:
     - type: Transform
       parent: 2
       pos: -3.5,-3.5
+    - type: FuelGenerator
+      targetPower: 80000
 - proto: PoweredWarmSmallLight
   entities:
   - uid: 135
@@ -2020,6 +2036,14 @@ entities:
       parent: 2
       rot: -1.5707963267948966 rad
       pos: 2.5,-4.5
+    - type: DeltaPressure
+      gridUid: 2
+  - uid: 278
+    components:
+    - type: Transform
+      parent: 2
+      rot: 1.5707963267948966 rad
+      pos: -3.5,-3.5
     - type: DeltaPressure
       gridUid: 2
 - proto: WindowReinforcedDirectional
