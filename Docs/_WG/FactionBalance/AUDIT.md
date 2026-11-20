@@ -49,7 +49,7 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | SecurityExplosives | ExGrenadeNfsd (`ExGrenadeNfsd`) | 5 |
 | SecurityExplosives | breaching charge (`BreachingCharge`) | 5 |
 | SecurityExplosives | composition C-4 (`C4`) | 5 |
-| SecurityExplosives | explosive mine (`LandMineExplosive`) | 5 |
+| SecurityExplosives | WGLandMineExplosive (`WGLandMineExplosive`) | 5 |
 | SecurityExplosives | BoomRoach Reinforcement Radio (`ReinforcementRadioTSFBoomRoach`) | 30 |
 | SecurityExplosives | TSF 'Hiroshima' bunker buster (`TSFBomb`) | 75 |
 | SecurityHardsuits | M82c hardsuit (`ClothingOuterHardsuitM82c`) | 10 |
@@ -211,7 +211,7 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | PirateExplosives | GrenadeShrapnelNfsd (`GrenadeShrapnelNfsd`) | 4 |
 | PirateExplosives | composition C-4 (`C4`) | 5 |
 | PirateExplosives | ExGrenadeNfsd (`ExGrenadeNfsd`) | 5 |
-| PirateExplosives | explosive mine (`LandMineExplosive`) | 5 |
+| PirateExplosives | WGLandMineExplosive (`WGLandMineExplosive`) | 5 |
 | PirateExplosives | ImperiRoach reinforcement radio (`ReinforcementRadioPDVImperiroach`) | 30 |
 | PirateExplosives | C-4 bundle (`ClothingBackpackDuffelPDVC4tBundle`) | 60 |
 | PirateExplosives | PDV 'Adam' bunker buster (`PDVBomb`) | 75 |

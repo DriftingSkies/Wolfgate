@@ -275,7 +275,7 @@
     - id: Magazine762x39mmFMJ
       amount: 2
     - id: ClothingBackpackDuffelPDVC4tBundle
-    - id: LandMineExplosive
+    - id: WGLandMineExplosive
       amount: 2
     - id: WelderIndustrial
     - id: SheetPlasteel

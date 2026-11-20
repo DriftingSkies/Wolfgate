@@ -13,7 +13,9 @@
     # Twenty minutes, so crews go for the heart early; the warning still comes with five left.
     duration: 1200
     maxDuration: 1200
-    reoccurrenceDelay: 60
+    # Two hours apart and three a round at most, so a fragment stays an occasion.
+    reoccurrenceDelay: 120
+    maxOccurrences: 3
   - type: WGFragmentRule
     # The sender speaks in the Monolith's violet while the heart beats; the text goes corpse white, flesh, then
     # arterial red as the fragment escalates, and both fade to ash once the heart breaks. The worst lines come

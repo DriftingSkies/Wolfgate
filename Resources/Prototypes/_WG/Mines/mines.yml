@@ -1,0 +1,70 @@
+# A mine that is a safe item until set on a floor tile next to you. It arms a few seconds after it is set, and any
+# multitool disarms it back into an item. The upstream LandMineExplosive is always live and can't be picked up.
+- type: entity
+  parent: BaseItem
+  id: WGLandMineExplosive
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/landmine.rsi
+    layers:
+    - state: landmine-inactive
+      map: [ "enum.ToggleableVisuals.Layer" ]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ToggleableVisuals.Enabled:
+        enum.ToggleableVisuals.Layer:
+          True: { state: landmine }
+          False: { state: landmine-inactive }
+  - type: Item
+    size: Normal
+  # A set mine is a sleeping static body; collision wake would stop it sensing anyone.
+  - type: CollisionWake
+    enabled: false
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        density: 30
+        mask:
+        - ItemMask
+      slips:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        hard: false
+        layer:
+        - LowImpassable
+  - type: StepTrigger
+    requiredTriggeredSpeed: 0
+    stepOn: true
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:TriggerBehavior
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: ExplodeOnTrigger
+  - type: Explosive
+    explosionType: Default
+    maxIntensity: 10
+    intensitySlope: 3
+    totalIntensity: 120 # as LandMineExplosive, about a 4 tile radius
+    canCreateVacuum: false
+  - type: WGArmableMine
+    armSound:
+      path: /Audio/Effects/beep1.ogg
+      params:
+        volume: -2
+        maxDistance: 5
+    stepSound:
+      path: /Audio/Effects/beep_landmine.ogg
+      params:
+        maxDistance: 10

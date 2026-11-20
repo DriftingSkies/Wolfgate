@@ -290,7 +290,7 @@
 
 - type: listing
   id: WGUplinkTsfLandMine
-  productEntity: LandMineExplosive
+  productEntity: WGLandMineExplosive
   cost:
     FederationMilitaryCredit: 5
   categories:
@@ -381,7 +381,7 @@
 
 - type: listing
   id: WGUplinkPdvLandMine
-  productEntity: LandMineExplosive
+  productEntity: WGLandMineExplosive
   cost:
     Doubloon: 5
   categories:

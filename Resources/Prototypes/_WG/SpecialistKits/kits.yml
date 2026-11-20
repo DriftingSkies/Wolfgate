@@ -190,8 +190,8 @@
     - Magazine762x39mmFMJ
     - Magazine762x39mmFMJ
     - ClothingBackpackDuffelPDVC4tBundle
-    - LandMineExplosive
-    - LandMineExplosive
+    - WGLandMineExplosive
+    - WGLandMineExplosive
     - WelderIndustrial
     - SheetPlasteel
   - type: WGSpecialistKit

@@ -49,6 +49,7 @@ Entry points: `WGSpecialistKitSystem`, `WGSpecialistKitComponent` on each kit's 
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WG/SpecialistKits/WGKitMineTest.cs`](../../../Content.IntegrationTests/Tests/_WG/SpecialistKits/WGKitMineTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/SpecialistKits/WGKitPlateTest.cs`](../../../Content.IntegrationTests/Tests/_WG/SpecialistKits/WGKitPlateTest.cs)
 
 ### Unit tests
