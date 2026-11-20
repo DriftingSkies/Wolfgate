@@ -9126,21 +9126,11 @@ entities:
     - type: Transform
       parent: 1
       pos: -14.5,38.5
-    - type: AccessReader
-      access:
-      - - Medical
-      - - Security
-    - type: WGMappingAccessFill
   - uid: 4666
     components:
     - type: Transform
       parent: 1
       pos: -15.5,38.5
-    - type: AccessReader
-      access:
-      - - Medical
-      - - Security
-    - type: WGMappingAccessFill
   - uid: 7181
     components:
     - type: Transform

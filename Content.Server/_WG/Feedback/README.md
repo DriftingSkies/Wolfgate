@@ -156,6 +156,7 @@ refresh of everyone.
 - [`Content.IntegrationTests/Tests/_WG/Feedback/WGFeedbackBatch1112Test.cs`](../../../Content.IntegrationTests/Tests/_WG/Feedback/WGFeedbackBatch1112Test.cs)
 - [`Content.IntegrationTests/Tests/_WG/Feedback/WGFeedbackBatch1114Test.cs`](../../../Content.IntegrationTests/Tests/_WG/Feedback/WGFeedbackBatch1114Test.cs)
 - [`Content.IntegrationTests/Tests/_WG/Feedback/WGFeedbackBatch1115Test.cs`](../../../Content.IntegrationTests/Tests/_WG/Feedback/WGFeedbackBatch1115Test.cs)
+- [`Content.IntegrationTests/Tests/_WG/Feedback/WGFeedbackBatch1118Test.cs`](../../../Content.IntegrationTests/Tests/_WG/Feedback/WGFeedbackBatch1118Test.cs)
 - [`Content.IntegrationTests/Tests/_WG/Feedback/WGGasTankLeakTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Feedback/WGGasTankLeakTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Feedback/WGTsfPayrollAccessTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Feedback/WGTsfPayrollAccessTest.cs)
 

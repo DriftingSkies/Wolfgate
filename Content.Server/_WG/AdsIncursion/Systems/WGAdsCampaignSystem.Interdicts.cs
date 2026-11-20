@@ -180,6 +180,13 @@ public sealed partial class WGAdsCampaignSystem
                 continue;
             }
 
+            if (comp.Hunting)
+            {
+                if (HuntOver(comp, target))
+                    EndInterdict(sweep);
+                continue;
+            }
+
             var cell = _territory.GridCell(target);
             if (_territory.Owner(map, cell) == campaign.Faction)
                 comp.TargetOutsideSince = null;
@@ -215,6 +222,8 @@ public sealed partial class WGAdsCampaignSystem
             return;
 
         sweep.Interdicting = null;
+        sweep.Hunting = false;
+        sweep.Attacking = false;
         sweep.Resume = new List<Vector2>();
         sweep.TargetOutsideSince = null;
         sweep.TargetFarSince = null;

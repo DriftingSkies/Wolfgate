@@ -16,6 +16,17 @@ public sealed class WGShipAdminRepairTab : WGShipAdminTab
     private readonly WGShipAdminText _snapshot;
     private readonly ConfirmButton _retake;
     private readonly ConfirmButton _restore;
+    private readonly List<Button> _quick = new();
+
+    /// <summary>The parts with a one-press button of their own.</summary>
+    private static readonly WGShipAdminFixParts[] QuickParts =
+    {
+        WGShipAdminFixParts.Air,
+        WGShipAdminFixParts.Fires,
+        WGShipAdminFixParts.Trash,
+        WGShipAdminFixParts.Puddles,
+        WGShipAdminFixParts.Lights,
+    };
 
     public override string Title => Loc.GetString("wg-ship-admin-tab-repair");
 
@@ -32,11 +43,16 @@ public sealed class WGShipAdminRepairTab : WGShipAdminTab
         var boxes = new GridContainer { Columns = 2 };
         foreach (var part in Enum.GetValues<WGShipAdminFixParts>())
         {
-            if (part is WGShipAdminFixParts.None or WGShipAdminFixParts.All)
+            if (part is WGShipAdminFixParts.None or WGShipAdminFixParts.All or WGShipAdminFixParts.Default)
                 continue;
 
             var key = $"wg-ship-admin-repair-part-{part.ToString().ToLowerInvariant()}";
-            var box = new CheckBox { Text = Loc.GetString(key), ToolTip = Loc.GetString($"{key}-tooltip"), Pressed = true };
+            var box = new CheckBox
+            {
+                Text = Loc.GetString(key),
+                ToolTip = Loc.GetString($"{key}-tooltip"),
+                Pressed = (WGShipAdminFixParts.Default & part) != 0,
+            };
             _parts[part] = box;
             boxes.AddChild(box);
         }
@@ -52,6 +68,21 @@ public sealed class WGShipAdminRepairTab : WGShipAdminTab
         buttons.AddChild(_scan);
         buttons.AddChild(_fix);
         Body.AddChild(buttons);
+
+        Body.AddChild(Heading(Loc.GetString("wg-ship-admin-repair-quick-heading")));
+        Body.AddChild(Note(Loc.GetString("wg-ship-admin-repair-quick-note")));
+        var quick = new GridContainer { Columns = 3 };
+        foreach (var part in QuickParts)
+        {
+            var key = $"wg-ship-admin-repair-quick-{part.ToString().ToLowerInvariant()}";
+            var button = new Button { Text = Loc.GetString(key), ToolTip = Loc.GetString($"wg-ship-admin-repair-part-{part.ToString().ToLowerInvariant()}-tooltip"), StyleClasses = { "ButtonSquare" } };
+            var only = part;
+            button.OnPressed += _ => Send(new WGShipAdminFixMessage(Grid, only));
+            _quick.Add(button);
+            quick.AddChild(button);
+        }
+
+        Body.AddChild(quick);
 
         Body.AddChild(Heading(Loc.GetString("wg-ship-admin-repair-snapshot-heading")));
         _snapshot = Note(string.Empty);
@@ -108,6 +139,8 @@ public sealed class WGShipAdminRepairTab : WGShipAdminTab
 
         Gate(_scan, WGShipAdminAction.Scan, flags);
         Gate(_fix, WGShipAdminAction.Fix, flags, !fixing);
+        foreach (var button in _quick)
+            Gate(button, WGShipAdminAction.Fix, flags, !fixing);
         Gate(_retake, WGShipAdminAction.Snapshot, flags, !fixing);
         Gate(_restore, WGShipAdminAction.Restore, flags, hasSnapshot && !fixing);
     }

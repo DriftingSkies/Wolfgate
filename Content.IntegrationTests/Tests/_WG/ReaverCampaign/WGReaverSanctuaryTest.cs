@@ -6,6 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Content.Server._WG.Encounters.Components;
+using Content.Server._WG.NpcCrew.Components;
 using Content.Server._WG.NpcCrew.Systems;
 using Content.Server._WG.ReaverCampaign.Components;
 using Content.Server._WG.ReaverCampaign.Systems;
@@ -98,6 +99,29 @@ public sealed class WGReaverSanctuaryTest : WGReaverTestBase
             Assert.That(patrol.Comp1.Intercepting, Is.Null, "The patrol gives the ship up.");
             Assert.That(Orders(patrol.Owner, "lead").Select(order => order.Kind), Is.All.EqualTo(WGCrewObjectiveKind.GoTo),
                 "It flies its route and home.");
+        });
+    }
+
+    /// <summary>A hull stolen from the campaign has no sanctuary: patrols are sent after it, and keep after it, while it is berthed.</summary>
+    [Test]
+    public async Task StolenHullIsHuntedWhileBerthed()
+    {
+        await StartCampaign();
+        await Server.WaitAssertion(() =>
+        {
+            var campaign = Server.System<WGReaverCampaignSystem>();
+            FoundAt(Home);
+            campaign.SetTier(1);
+            var ship = SpawnGrid(CentreOf(Home.Neighbour(1)), "Test Hauler");
+            var station = SpawnStation(CentreOf(Home.Neighbour(1)), "Test Depot");
+            SEntMan.EnsureComponent<WGCrewSeizedHullComponent>(ship);
+            Berth(ship, station);
+
+            Assert.That(campaign.TryRecover(ship), Is.EqualTo(1), "A patrol is launched after it.");
+            var patrol = campaign.Patrols().Single();
+            Assert.That(patrol.Comp1.Recovering, Is.True);
+            campaign.CheckIntercepts();
+            Assert.That(patrol.Comp1.Intercepting, Is.EqualTo(ship), "The patrol does not give it up.");
         });
     }
 

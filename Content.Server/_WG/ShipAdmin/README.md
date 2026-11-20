@@ -6,24 +6,61 @@ category) on a grid or anything standing on one, or from the Shipmaster action s
 over a ship. The verb and the action open it on that ship; opened with no ship named, it starts on the ship the
 admin is over.
 
-The left side lists ships: grids with a deed, an owner, ship access or a vessel design, or every grid with the
-All grids filter (the first 500). It is sorted on the client, nearest first by default: the ship the viewer is on,
+Two big page buttons along the bottom of the window switch between the ships page and the spawn page. The spawn
+page replaces the old Spawn Vessel window and its admin tab button (`Spawn/WGShipAdminSpawnPanel`): vessels by
+category with a preview, an owner and a name, spawned through `spawnvessel`. `shipmaster spawn` opens the panel
+on it, and a ship the admin spawns is selected on the ships page. Spawning needs the Spawn flag as before.
+
+The left side of the ships page lists ships. Ships and ports lists grids with a deed, an owner, ship access or a
+vessel design, then the ports and bases they dock at (`IsPort`: trade stations and outposts, planet cargo hubs, station grids that
+aren't a ship's own). All grids lists every grid (the first 500). A note under the filter says so, since the Move
+tab's lists follow it. The list is sorted on the client, nearest first by default: the ship the viewer is on,
 then ships on their map by distance, then the rest; name, owner and most aboard are the other sorts. Each row has
 an arrow and a distance to its ship, as does the selected ship's header. They are worked out on the client four
-times a second from where it sees the ships (or where the list last had them) and send nothing. The right side
-shows the selected ship in tabs:
+times a second from where it sees the ships (or where the list last had them) and send nothing. A click on an
+arrow or distance jumps the admin there: a ghost to the ship's middle, a body to the open floor nearest it. The
+right side shows the selected ship in tabs:
 
 - **Overview**: design, position, what it is docked to, every owner (deed cards, vouchers and registered
   accounts, with who is online), access mode and lock, who is aboard. Scan appraises it and counts its damage.
-- **Ownership**: transfer to a connected player, add a co-owner by account, remove one owner, release.
+- **Ownership**: transfer to a connected player, add a co-owner by account, remove one owner, release, and set
+  the hull faction or the player company it flies for without changing its owner.
 - **Access**: lock, mode (Public included, which only staff set), allow list, reset door rules and the ship code.
-- **Repair**: a fix of ticked parts, and the repair snapshot (re-take, restore).
-- **Move**: bring it to the admin, send it to a position or another grid, dock it, undock, halt, clear pilots,
-  FTL lock and jump cooldown.
+- **Repair**: a fix of ticked parts, quick fixes that run one part at once (air, fires, trash, puddles, lights),
+  and the repair snapshot (re-take, restore).
+- **Move**: bring it to the admin, send it to a position or another grid, dock it at any free dock or one picked
+  from the target's docks (those in use are shown and can't be picked), Stop Knotting, return to orbit, undock,
+  halt, clear pilots, FTL lock and jump cooldown.
 - **Systems**: rename, radar colour and visibility, shields (raise, drop, restore to full, set strength), power,
   protections.
 - **Upgrades**: refit tiers, best machine parts, hull modifiers, all free.
-- **Danger**: bring everyone aboard to the admin, strip to a bare hull, delete.
+- **Danger**: aim an event at the ship, bring everyone aboard to the admin, strip to a bare hull, delete.
+
+Stop Knotting undocks the ship, breaks ropes and harpoons on it, lets go of tractor beams on it or from it, and
+sets it down at rest in the nearest clear space (`ShuttleSystem.TryFTLProximity` from where it is). Return to
+orbit is for a ship on a planet's ground or air layer: the planet hop takes it and the ships docked to it up to the
+orbit layer, as the planet's pull does.
+
+## Events aimed at a ship
+
+The event list is the station events that happen aboard and pick their target through the game rule pickers
+(`AboardEvents`), plus every station event that loads ships. An aboard event gets `WGEventTargetComponent` before
+it starts; `GameRuleSystem.WGEventTarget.cs` marks the rule whose start is running, and `TryGetRandomStation(s)`
+and `TryFindRandomTile` then return that station and a tile on that grid, or nothing: an aimed event never falls
+back to another station. It needs the ship to have a station, which bought ships do; the aim is that station, which
+for a ship is the ship alone, and a grid whose station has other grids is refused, since vents, critters and
+sentience pick across the whole station. Most station events wait out a warning delay, so the panel says the event is queued,
+and if it then finds nothing aboard the pickers raise `WGEventTargetMissedEvent` and the admin is told. An arrival
+event's ships load when it is added and are moved beside the target before it starts.
+
+## Gunnery after a rebuild
+
+A gun only joins gunnery when it is linked to the hardpoint under it, and upstream only a gun looks for its
+hardpoint. A hardpoint rebuilt or wrenched down under a gun that was already there now takes it
+(`SharedHardpointSystem.WGRelink.cs`), and a gun whose hardpoint died drops the dead link. The fix's Consoles part
+and a restore mount every unlinked gun aboard, then relink gunnery a tick later (`FireControlSystem.WgRelinkGrid`,
+which does what each gunnery console's Refresh button does) instead of waiting up to a minute for the hardpoint
+refresh. A ship whose gunnery server isn't up yet is tried again each second for half a minute.
 
 The Admin flag opens the panel and runs every action; the ones that are hard to undo ask for a second press.
 `WGShipAdminPermissions` is the one table: the server checks it on every message and the window greys what the
@@ -82,22 +119,31 @@ Entry points: `WGShipAdminSystem` (`Open`, `BuildList`, `BuildDetail`, and one p
 
 ### Server
 
+- [`Content.Server/_WG/ShipAdmin/FireControlSystem.WGRelink.cs`](FireControlSystem.WGRelink.cs)
+- [`Content.Server/_WG/ShipAdmin/GameRuleSystem.WGEventTarget.cs`](GameRuleSystem.WGEventTarget.cs)
 - [`Content.Server/_WG/ShipAdmin/ShipShieldsSystem.WGShipAdmin.cs`](ShipShieldsSystem.WGShipAdmin.cs)
 - [`Content.Server/_WG/ShipAdmin/ShuttleConsoleLockSystem.WGShipAdmin.cs`](ShuttleConsoleLockSystem.WGShipAdmin.cs)
+- [`Content.Server/_WG/ShipAdmin/WGEventTargetComponent.cs`](WGEventTargetComponent.cs)
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminCommand.cs`](WGShipAdminCommand.cs)
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminEui.cs`](WGShipAdminEui.cs)
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Access.cs`](WGShipAdminSystem.Access.cs)
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Action.cs`](WGShipAdminSystem.Action.cs)
+- [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Affiliation.cs`](WGShipAdminSystem.Affiliation.cs)
+- [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Clean.cs`](WGShipAdminSystem.Clean.cs)
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.cs`](WGShipAdminSystem.cs)
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Danger.cs`](WGShipAdminSystem.Danger.cs)
+- [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Events.cs`](WGShipAdminSystem.Events.cs)
+- [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Jump.cs`](WGShipAdminSystem.Jump.cs)
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Move.cs`](WGShipAdminSystem.Move.cs)
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Ownership.cs`](WGShipAdminSystem.Ownership.cs)
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Query.cs`](WGShipAdminSystem.Query.cs)
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Repair.cs`](WGShipAdminSystem.Repair.cs)
+- [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Rescue.cs`](WGShipAdminSystem.Rescue.cs)
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Systems.cs`](WGShipAdminSystem.Systems.cs)
 
 ### Shared
 
+- [`Content.Shared/_WG/ShipAdmin/SharedHardpointSystem.WGRelink.cs`](../../../Content.Shared/_WG/ShipAdmin/SharedHardpointSystem.WGRelink.cs)
 - [`Content.Shared/_WG/ShipAdmin/WGShipAdminEuiTypes.cs`](../../../Content.Shared/_WG/ShipAdmin/WGShipAdminEuiTypes.cs)
 - [`Content.Shared/_WG/ShipAdmin/WGShipAdminManagerSystem.cs`](../../../Content.Shared/_WG/ShipAdmin/WGShipAdminManagerSystem.cs)
 - [`Content.Shared/_WG/ShipAdmin/WGShipAdminPermissions.cs`](../../../Content.Shared/_WG/ShipAdmin/WGShipAdminPermissions.cs)
@@ -105,6 +151,8 @@ Entry points: `WGShipAdminSystem` (`Open`, `BuildList`, `BuildDetail`, and one p
 ### Client
 
 - [`Content.Client/_WG/ShipAdmin/ConfirmButton.WGShipAdmin.cs`](../../../Content.Client/_WG/ShipAdmin/ConfirmButton.WGShipAdmin.cs)
+- [`Content.Client/_WG/ShipAdmin/Spawn/WGShipAdminSpawnPanel.xaml`](../../../Content.Client/_WG/ShipAdmin/Spawn/WGShipAdminSpawnPanel.xaml)
+- [`Content.Client/_WG/ShipAdmin/Spawn/WGShipAdminSpawnPanel.xaml.cs`](../../../Content.Client/_WG/ShipAdmin/Spawn/WGShipAdminSpawnPanel.xaml.cs)
 - [`Content.Client/_WG/ShipAdmin/Tabs/WGShipAdminAccessTab.cs`](../../../Content.Client/_WG/ShipAdmin/Tabs/WGShipAdminAccessTab.cs)
 - [`Content.Client/_WG/ShipAdmin/Tabs/WGShipAdminDangerTab.cs`](../../../Content.Client/_WG/ShipAdmin/Tabs/WGShipAdminDangerTab.cs)
 - [`Content.Client/_WG/ShipAdmin/Tabs/WGShipAdminMoveTab.cs`](../../../Content.Client/_WG/ShipAdmin/Tabs/WGShipAdminMoveTab.cs)
@@ -129,6 +177,7 @@ Entry points: `WGShipAdminSystem` (`Open`, `BuildList`, `BuildDetail`, and one p
 - [`Content.IntegrationTests/Tests/_WG/ShipAdmin/ShipAdminOwnershipTest.cs`](../../../Content.IntegrationTests/Tests/_WG/ShipAdmin/ShipAdminOwnershipTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/ShipAdmin/ShipAdminPanelTest.cs`](../../../Content.IntegrationTests/Tests/_WG/ShipAdmin/ShipAdminPanelTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/ShipAdmin/ShipAdminRepairTest.cs`](../../../Content.IntegrationTests/Tests/_WG/ShipAdmin/ShipAdminRepairTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/ShipAdmin/ShipAdminRescueTest.cs`](../../../Content.IntegrationTests/Tests/_WG/ShipAdmin/ShipAdminRescueTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/ShipAdmin/ShipAdminSystemsTest.cs`](../../../Content.IntegrationTests/Tests/_WG/ShipAdmin/ShipAdminSystemsTest.cs)
 
 ### Unit tests
@@ -146,9 +195,18 @@ Entry points: `WGShipAdminSystem` (`Open`, `BuildList`, `BuildDetail`, and one p
 
 ## Non-modular edits
 
+- [`Content.Server/GameTicking/Rules/GameRuleSystem.cs`](../../GameTicking/Rules/GameRuleSystem.cs): mark the starting rule so its target pickers honour where staff aimed it
+- [`Content.Server/GameTicking/Rules/GameRuleSystem.Utility.cs`](../../GameTicking/Rules/GameRuleSystem.Utility.cs)
+  - an event staff aimed at one station goes there or nowhere
+  - an event staff aimed at one ship lands on that ship
 - [`Content.Server/Shuttles/Systems/ShuttleConsoleLockSystem.cs`](../../Shuttles/Systems/ShuttleConsoleLockSystem.cs)
   - account owners and admins get the lock verbs with empty hands
   - a manager with no deed card toggles the helm lock, and is not made a guest
 - [`Content.Shared.Database/LogType.cs`](../../../Content.Shared.Database/LogType.cs): admin ship panel actions
+- [`Content.Shared/_Crescent/Hardpoints/SharedHardpointSystem.cs`](../../../Content.Shared/_Crescent/Hardpoints/SharedHardpointSystem.cs)
+  - partial for the gun relink
+  - a rebuilt hardpoint takes the gun above it
+  - drop the dead link, so a rebuilt hardpoint can take the gun again
+  - a hardpoint wrenched down under a gun that is already in place takes it
 
 <!-- WOLFGATE-GENERATED END -->

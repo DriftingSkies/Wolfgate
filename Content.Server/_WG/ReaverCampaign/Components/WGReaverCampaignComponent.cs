@@ -74,6 +74,10 @@ public sealed partial class WGReaverCampaignComponent : Component
     [ViewVariables]
     public Dictionary<EntityUid, TimeSpan> InsideSince = new();
 
+    /// <summary>Hulls boarders took from the campaign, and when patrols are next sent after each.</summary>
+    [ViewVariables]
+    public Dictionary<EntityUid, TimeSpan> Stolen = new();
+
     /// <summary>When each player ship may next be intercepted.</summary>
     [ViewVariables]
     public Dictionary<EntityUid, TimeSpan> InterceptCooldowns = new();

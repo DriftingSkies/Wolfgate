@@ -2,6 +2,7 @@
 using System.Numerics;
 using Content.Server._NF.SectorServices;
 using Content.Server._WG.TradeGoods.Systems;
+using Content.Server._WG.WolfChem.Narcotics;
 using Content.Shared._WG.TradeGoods;
 using Content.Shared.Contraband;
 using Robust.Shared.GameObjects;
@@ -12,7 +13,7 @@ namespace Content.IntegrationTests.Tests._WG.TradeGoods;
 
 /// <summary>
 /// Smuggling crates: bought at the Underground's vendor, bought by open chutes for cash and telecrystals and never by the
-/// fence, seizable by security, and each flag adds to the seller's one warrant up to the cap. The fence takes sealed
+/// fence, and seizable by security. A sale heats its seller, and a hot seller is paid less. The fence takes sealed
 /// freight only.
 /// </summary>
 [TestFixture]
@@ -30,14 +31,12 @@ public sealed class TradeContrabandTest
         var map = await pair.CreateTestMap();
         var entMan = server.EntMan;
         var market = entMan.System<WGTradeMarketSystem>();
-        var contraband = entMan.System<WGTradeContrabandSystem>();
 
         await server.WaitAssertion(() =>
         {
             var chute = TradeTestWorld.MarketChute(entMan, map);
             var (fenceGrid, fence) = TradeTestWorld.Station(entMan, map, new Vector2(0f, 60f), "WG test fence", TradeTestWorld.Fence);
             var vendor = entMan.SpawnEntity(FenceVendor, new EntityCoordinates(fenceGrid, 0.5f, 0.5f));
-            var profile = market.Profile(map.Grid.Owner);
 
             // The Underground's vendor sells it live; open chutes list it above that, the fence not at all.
             var buy = market.BuyQuote(vendor, Contraband)!.Value;
@@ -47,31 +46,6 @@ public sealed class TradeContrabandTest
 
             var crate = entMan.SpawnEntity(Contraband, map.GridCoords);
             Assert.That(entMan.HasComponent<ContrabandComponent>(crate), Is.True, "Security should be able to seize it.");
-
-            // A flagged seller gets a warrant in their name; each further flag adds to that same warrant, up to the cap.
-            // The board lives on the sector service; a test map hosts one if the server has none.
-            if (!entMan.EntityExists(entMan.System<SectorServiceSystem>().GetServiceEntity()))
-                entMan.AddComponent<StationSectorServiceHostComponent>(map.MapUid);
-            var seller = entMan.SpawnEntity(null, map.GridCoords);
-            entMan.System<MetaDataSystem>().SetEntityName(seller, "WG contraband test seller");
-            var warrant = contraband.Flag(seller, map.Grid.Owner, null);
-            Assert.That(warrant, Is.Not.Null, "Flagging a seller posted no warrant.");
-            Assert.That(warrant!.Name, Is.EqualTo("WG contraband test seller"));
-            Assert.That(warrant.Reward, Is.EqualTo(profile.ContrabandWarrant));
-
-            var raised = contraband.Flag(seller, map.Grid.Owner, null);
-            Assert.That(raised, Is.Not.Null, "A second flag dropped the warrant.");
-            Assert.That(raised!.ContractId, Is.EqualTo(warrant.ContractId), "A second flag posted a second warrant.");
-            Assert.That(raised.Reward, Is.EqualTo(Math.Min(profile.ContrabandWarrant * 2, profile.ContrabandWarrantCap)));
-
-            var steps = profile.ContrabandWarrantCap / profile.ContrabandWarrant + 2;
-            for (var i = 0; i < steps; i++)
-            {
-                raised = contraband.Flag(seller, map.Grid.Owner, null);
-            }
-
-            Assert.That(raised!.ContractId, Is.EqualTo(warrant.ContractId));
-            Assert.That(raised.Reward, Is.EqualTo(profile.ContrabandWarrantCap), "The warrant grew past its cap.");
         });
 
         await pair.CleanReturnAsync();
@@ -95,7 +69,7 @@ public sealed class TradeContrabandTest
             var seller = entMan.SpawnEntity(null, map.GridCoords);
 
             var before = market.Quote(chute, Contraband)!.Value;
-            Assert.That(before.Amount, Is.EqualTo(20000));
+            Assert.That(before.Amount, Is.EqualTo(30000));
             const int sales = 5;
             for (var i = 0; i < sales; i++)
             {
@@ -106,6 +80,50 @@ public sealed class TradeContrabandTest
 
             // Each sale also leaves the profile's telecrystals at the chute.
             Assert.That(TradeTestHelpers.StackOnMap(entMan, map.MapId, "Telecrystal"), Is.EqualTo(sales * market.Profile(map.Grid.Owner).ContrabandTelecrystals), "Contraband sales paid the wrong telecrystals.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task ContrabandHeatsItsSeller()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = false });
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entMan = server.EntMan;
+        var market = entMan.System<WGTradeMarketSystem>();
+        var heat = entMan.System<WGNarcoticHeatSystem>();
+
+        await server.WaitAssertion(() =>
+        {
+            var chute = TradeTestWorld.MarketChute(entMan, map);
+            if (!entMan.EntityExists(entMan.System<SectorServiceSystem>().GetServiceEntity()))
+                entMan.AddComponent<StationSectorServiceHostComponent>(map.MapUid);
+            var far = TradeTestWorld.Grid(entMan, map, new Vector2(5000f, 0f), "WG test far yard");
+            var seller = entMan.SpawnEntity(null, map.GridCoords);
+            var other = entMan.SpawnEntity(null, map.GridCoords);
+            var listed = market.Quote(chute, Contraband)!.Value.Amount;
+
+            // A crate adds what the chute lists it at to its seller's heat, and nobody else's.
+            market.Sell(chute, TradeTestWorld.Hauled(entMan, far, map.GridCoords, Contraband), seller);
+            Assert.Multiple(() =>
+            {
+                Assert.That(heat.Heat(seller), Is.EqualTo(listed).Within(1));
+                Assert.That(heat.Heat(other), Is.Zero);
+            });
+
+            // It is the heat narcotics give: a seller hot from those is paid a fraction for a crate, and told why.
+            heat.Sold(seller, chute, map.Grid.Owner, 900_000);
+            var crate = TradeTestWorld.Hauled(entMan, far, map.GridCoords, Contraband);
+            var hot = market.Quote(chute, Contraband, crate, seller)!.Value;
+            Assert.Multiple(() =>
+            {
+                Assert.That(hot.Amount, Is.EqualTo(heat.Payout(seller, listed)).Within(1));
+                Assert.That(hot.Amount, Is.LessThan(listed / 2));
+                Assert.That(hot.Reason, Is.EqualTo((LocId) "wg-trade-reason-heat"));
+                Assert.That(market.Quote(chute, Contraband, crate, other)!.Value.Amount, Is.EqualTo(listed), "One seller's heat cut another's price.");
+            });
         });
 
         await pair.CleanReturnAsync();

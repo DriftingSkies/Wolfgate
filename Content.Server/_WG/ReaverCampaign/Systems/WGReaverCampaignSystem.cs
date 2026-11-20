@@ -245,6 +245,7 @@ public sealed partial class WGReaverCampaignSystem : EntitySystem
         TendRaids();
         TendResponses();
         TendIntercepts(state);
+        TickStolen(state);
         TendMarks();
         if (!running || Campaign is not { } campaign)
         {

@@ -5,6 +5,7 @@ using System.Text;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
 using Content.Server._WG.ChatWebhook; // WOLFGATE(ChatWebhook)
+using Content.Shared._WG.AdminObserver; // WOLFGATE(AdminObserver)
 using Content.Shared._WG.ChatFont; // WOLFGATE(ChatFont)
 using Content.Server.Chat.Managers;
 using Content.Server.Discord.DiscordLink;
@@ -190,7 +191,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         LanguagePrototype? languageOverride = null // Einstein Engines - Language
         )
     {
-        if (HasComp<GhostComponent>(source))
+        if (HasComp<GhostComponent>(source) && !HasComp<WGManifestedComponent>(source)) // WOLFGATE(AdminObserver): a manifested admin observer speaks in character
         {
             // Ghosts can only send dead chat messages, so we'll forward it to InGame OOC.
             TrySendInGameOOCMessage(source, message, InGameOOCChatType.Dead, range == ChatTransmitRange.HideChat, shell, player);

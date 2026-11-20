@@ -73,6 +73,9 @@ public abstract partial class SharedShipRepairSystem : EntitySystem
             if (TerminatingOrDeleted(childEnt))
                 continue;
 
+            if (EntityManager.IsQueuedForDeletion(childEnt)) // WOLFGATE: a hull mod's replaced fittings are still queued on the tick it snapshots
+                continue;
+
             var childXform = Transform(childEnt);
             // only ents directly parented to grid and anchored
             if (childXform.ParentUid != gridUid || !childXform.Anchored)

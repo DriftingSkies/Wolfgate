@@ -362,7 +362,7 @@ public sealed partial class WolfmedConsciousnessSystem : SharedWolfmedConsciousn
             {
                 "blood" => WolfmedCauseSource.ArrestBlood,
                 "oxygen" => WolfmedCauseSource.ArrestOxygen,
-                "heart" => WolfmedCauseSource.ArrestHeart,
+                "heart" or WolfmedHeartAttackSmiteSystem.Cause => WolfmedCauseSource.ArrestHeart,
                 "sepsis" => WolfmedCauseSource.ArrestSepsis,
                 "shock" => WolfmedCauseSource.ArrestShock,
                 "cold" => WolfmedCauseSource.ArrestCold, // M5

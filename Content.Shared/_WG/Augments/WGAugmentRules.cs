@@ -1,8 +1,11 @@
 using System.Linq;
 using System.Text;
+using Content.Shared._Shitmed.Cybernetics;
+using Content.Shared._WG.Biotype;
 using Content.Shared._WG.LegStyle;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Prototypes;
+using Content.Shared.Damage;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Preferences;
@@ -16,6 +19,12 @@ public static class WGAugmentRules
 {
     private const char EntrySeparator = ';';
     private const char FieldSeparator = ':';
+    private const string ImplantEntry = "Implant";
+    private const string FoundEntry = "Found";
+    private const string FoundSuffix = ":" + FoundEntry;
+
+    /// <summary>Slots implants were stored under before a part could hold several.</summary>
+    private static readonly string[] LegacyImplantSlots = ["LeftArmImplant", "RightArmImplant", "Dermal", "Muscles"];
 
     /// <summary>The body slot holding the part a limb augment replaces, or the organ an organ augment replaces.</summary>
     public static string PartSlot(WGAugmentSlot slot) => slot switch
@@ -25,8 +34,68 @@ public static class WGAugmentRules
         WGAugmentSlot.RightArm => "right arm",
         WGAugmentSlot.LeftLeg => "left leg",
         WGAugmentSlot.RightLeg => "right leg",
+        WGAugmentSlot.LeftHand => "left hand",
+        WGAugmentSlot.RightHand => "right hand",
+        WGAugmentSlot.LeftFoot => "left foot",
+        WGAugmentSlot.RightFoot => "right foot",
         _ => "torso",
     };
+
+    /// <summary>The share of its price, in percent, an augment taken off in the creator pays back.</summary>
+    public const int RefundPercent = 50;
+
+    /// <summary>What a paid-for augment taken off in the creator pays back.</summary>
+    public static int Refund(WGAugmentPrototype augment) => augment.Price * RefundPercent / 100;
+
+    /// <summary>What an augment the profile owns pays back when taken off: nothing for one kept from a round.</summary>
+    public static int Refund(HumanoidCharacterProfile profile, WGAugmentPrototype augment)
+    {
+        return profile.AugmentFound.Contains(augment.ID) ? 0 : Refund(augment);
+    }
+
+    /// <summary>Implants a part the species was born with holds: two in the torso, one in any other part.</summary>
+    public static int NaturalImplantSlots(WGAugmentSlot slot) => slot == WGAugmentSlot.Chest ? 2 : 1;
+
+    /// <summary>The limb a hand or foot sits on, which it comes with unless picked on its own.</summary>
+    public static WGAugmentSlot? LimbAbove(WGAugmentSlot slot) => slot switch
+    {
+        WGAugmentSlot.LeftHand => WGAugmentSlot.LeftArm,
+        WGAugmentSlot.RightHand => WGAugmentSlot.RightArm,
+        WGAugmentSlot.LeftFoot => WGAugmentSlot.LeftLeg,
+        WGAugmentSlot.RightFoot => WGAugmentSlot.RightLeg,
+        _ => null,
+    };
+
+    /// <summary>The entity an augment puts in the body, which is also what scavengers find of it.</summary>
+    public static EntProtoId? Installed(WGAugmentPrototype augment) => augment.Kind switch
+    {
+        WGAugmentKind.Limb => augment.Part,
+        WGAugmentKind.Organ => augment.Organ,
+        WGAugmentKind.Upgrade => augment.Autosurgeon,
+        _ => null,
+    };
+
+    /// <summary>The augment's name: its own, else the installed entity's.</summary>
+    public static string Name(WGAugmentPrototype augment, IPrototypeManager proto)
+    {
+        if (augment.Name is { } name)
+            return Loc.GetString(name);
+        return Installed(augment) is { } id && proto.TryIndex(id, out var entity) ? entity.Name : augment.ID;
+    }
+
+    /// <summary>The augment's description: its own, else the installed entity's.</summary>
+    public static string Description(WGAugmentPrototype augment, IPrototypeManager proto)
+    {
+        if (augment.Description is { } description)
+            return Loc.GetString(description);
+        return Installed(augment) is { } id && proto.TryIndex(id, out var entity) ? entity.Description : string.Empty;
+    }
+
+    /// <summary>How often scavengers find an augment, against the others: the inverse of its price.</summary>
+    public static float ScavengeWeight(WGAugmentPrototype augment)
+    {
+        return augment.Price > 0 && Installed(augment) != null ? 100_000f / augment.Price : 0f;
+    }
 
     /// <summary>The organ slot an organ augment fills, or null for a part.</summary>
     public static string? OrganSlot(WGAugmentSlot slot) => slot switch
@@ -48,21 +117,45 @@ public static class WGAugmentRules
         WGAugmentSlot.RightArm => [HumanoidVisualLayers.RArm, HumanoidVisualLayers.RHand],
         WGAugmentSlot.LeftLeg => [HumanoidVisualLayers.LLeg, HumanoidVisualLayers.LFoot],
         WGAugmentSlot.RightLeg => [HumanoidVisualLayers.RLeg, HumanoidVisualLayers.RFoot],
+        WGAugmentSlot.LeftHand => [HumanoidVisualLayers.LHand],
+        WGAugmentSlot.RightHand => [HumanoidVisualLayers.RHand],
+        WGAugmentSlot.LeftFoot => [HumanoidVisualLayers.LFoot],
+        WGAugmentSlot.RightFoot => [HumanoidVisualLayers.RFoot],
         _ => [],
     };
 
-    /// <summary>Whether the species' body has the part or organ this slot works on.</summary>
-    public static bool SlotAvailable(string species, WGAugmentSlot slot, IPrototypeManager proto, IComponentFactory factory)
+    /// <summary>Whether the character's body has the part or organ this slot works on.</summary>
+    public static bool SlotAvailable(string species,
+        WGAugmentSlot slot,
+        IPrototypeManager proto,
+        IComponentFactory factory,
+        WGBiotype biotype = WGBiotype.Default)
     {
-        if (!proto.TryIndex<SpeciesPrototype>(species, out var speciesProto)
-            || !proto.TryIndex(speciesProto.Prototype, out var mob)
-            || !mob.TryComp(out BodyComponent? body, factory)
-            || body.Prototype is not { } bodyId
-            || !proto.TryIndex<BodyPrototype>(bodyId, out var bodyProto)
-            || !bodyProto.Slots.TryGetValue(PartSlot(slot), out var part))
+        if (Body(species, biotype, proto, factory) is not { } body
+            || !body.Slots.TryGetValue(PartSlot(slot), out var part))
             return false;
 
         return OrganSlot(slot) is not { } organ || part.Organs.ContainsKey(organ);
+    }
+
+    /// <summary>
+    /// The body a character is built with: its species' own, or the biotype's when it is converted to a biotype that
+    /// isn't its species' (a synthetic human gets the chassis, with no heart to replace).
+    /// </summary>
+    private static BodyPrototype? Body(string species, WGBiotype biotype, IPrototypeManager proto, IComponentFactory factory)
+    {
+        if (!proto.TryIndex<SpeciesPrototype>(species, out var speciesProto))
+            return null;
+
+        var effective = WGBiotypeRules.Resolve(biotype, speciesProto);
+        var overlay = effective == speciesProto.Biotype
+            ? null
+            : proto.EnumeratePrototypes<WGBiotypePrototype>().FirstOrDefault(o => o.Biotype == effective);
+        var id = overlay?.Body
+                 ?? (proto.TryIndex(speciesProto.Prototype, out var mob) && mob.TryComp(out BodyComponent? body, factory)
+                     ? body.Prototype
+                     : null);
+        return id is { } bodyId && proto.TryIndex(bodyId, out var bodyProto) ? bodyProto : null;
     }
 
     /// <summary>The sprite a style draws on a layer, the digitigrade one on digitigrade legs.</summary>
@@ -126,17 +219,178 @@ public static class WGAugmentRules
             .ToList();
     }
 
-    /// <summary>The augments a species may take in a slot, in order.</summary>
-    public static List<WGAugmentPrototype> AugmentsFor(string species, WGAugmentSlot slot, IPrototypeManager proto, IComponentFactory factory)
+    /// <summary>The augments a character of the species and biotype may take in a slot, in order.</summary>
+    public static List<WGAugmentPrototype> AugmentsFor(string species,
+        WGAugmentSlot slot,
+        IPrototypeManager proto,
+        IComponentFactory factory,
+        WGBiotype biotype = WGBiotype.Default)
     {
-        if (!SlotAvailable(species, slot, proto, factory))
+        if (!SlotAvailable(species, slot, proto, factory, biotype))
             return new List<WGAugmentPrototype>();
 
         return proto.EnumeratePrototypes<WGAugmentPrototype>()
-            .Where(a => a.Slot == slot && !a.SpeciesBlacklist.Contains(species))
+            .Where(a => a.Slot == slot && a.Kind != WGAugmentKind.Upgrade && !a.SpeciesBlacklist.Contains(species))
             .OrderBy(a => a.Order)
             .ThenBy(a => a.ID)
             .ToList();
+    }
+
+    /// <summary>The implants a character of the species and biotype may take in a slot's part, in order.</summary>
+    public static List<WGAugmentPrototype> ImplantsFor(string species,
+        WGAugmentSlot slot,
+        IPrototypeManager proto,
+        IComponentFactory factory,
+        WGBiotype biotype = WGBiotype.Default)
+    {
+        if (!SlotAvailable(species, slot, proto, factory, biotype))
+            return new List<WGAugmentPrototype>();
+
+        return proto.EnumeratePrototypes<WGAugmentPrototype>()
+            .Where(a => a.Slot == slot && a.Kind == WGAugmentKind.Upgrade && !a.SpeciesBlacklist.Contains(species))
+            .OrderBy(a => a.Order)
+            .ThenBy(a => a.ID)
+            .ToList();
+    }
+
+    /// <summary>
+    /// How many implants the slot's part holds with these choices: the picked limb's count, plating's if it holds
+    /// more than the natural part, none for a missing one or a hand or foot whose limb is missing, one in a trait's
+    /// limb, else the natural part's.
+    /// </summary>
+    public static int ImplantSlots(WGAugmentSlot slot,
+        IReadOnlyDictionary<WGAugmentSlot, WGAugmentChoice> choices,
+        IReadOnlyDictionary<WGAugmentSlot, ProtoId<TraitPrototype>> claimed,
+        IPrototypeManager proto)
+    {
+        if (claimed.ContainsKey(slot))
+            return 1;
+        if (choices.TryGetValue(slot, out var choice) && proto.TryIndex(choice.Augment, out var augment))
+        {
+            if (augment.Kind == WGAugmentKind.Limb)
+                return augment.ImplantSlots;
+            if (augment.Kind == WGAugmentKind.Plating)
+                return Math.Max(augment.ImplantSlots, NaturalImplantSlots(slot));
+            if (augment.Kind == WGAugmentKind.Missing)
+                return 0;
+        }
+        else if (LimbAbove(slot) is { } above
+                 && choices.TryGetValue(above, out var limb)
+                 && proto.TryIndex(limb.Augment, out var limbAugment)
+                 && limbAugment.Kind == WGAugmentKind.Missing)
+        {
+            return 0;
+        }
+
+        return NaturalImplantSlots(slot);
+    }
+
+    /// <summary>
+    /// Whether the slot's part is synthetic with these choices: a picked or trait limb or plating is, a hand or foot not picked
+    /// on its own is what its limb is, and a natural part is if its prototype is cybernetic or not built of flesh
+    /// (an IPC's, or the chassis of a synthetic biotype).
+    /// </summary>
+    public static bool Synthetic(string species,
+        WGAugmentSlot slot,
+        IReadOnlyDictionary<WGAugmentSlot, WGAugmentChoice> choices,
+        IReadOnlyDictionary<WGAugmentSlot, ProtoId<TraitPrototype>> claimed,
+        IPrototypeManager proto,
+        IComponentFactory factory,
+        WGBiotype biotype = WGBiotype.Default)
+    {
+        if (claimed.ContainsKey(slot))
+            return true;
+        if (choices.TryGetValue(slot, out var choice)
+            && proto.TryIndex(choice.Augment, out var augment)
+            && augment.Kind == WGAugmentKind.Limb)
+            return augment.Part is not { } part || SyntheticPart(part, proto, factory);
+        if (choices.TryGetValue(slot, out var plated)
+            && proto.TryIndex(plated.Augment, out var plating)
+            && plating.Kind == WGAugmentKind.Plating)
+            return true;
+
+        if (LimbAbove(slot) is { } above && (claimed.ContainsKey(above) || choices.ContainsKey(above)))
+            return Synthetic(species, above, choices, claimed, proto, factory, biotype);
+
+        return NaturalPart(species, biotype, slot, proto, factory) is { } natural && SyntheticPart(natural, proto, factory);
+    }
+
+    private static bool SyntheticPart(EntProtoId part, IPrototypeManager proto, IComponentFactory factory)
+    {
+        if (!proto.TryIndex(part, out var entity))
+            return false;
+        if (entity.TryComp(out CyberneticsComponent? _, factory))
+            return true;
+        return entity.TryComp(out DamageableComponent? damageable, factory)
+               && damageable.DamageContainerID is { } container
+               && container.Id != "Biological"
+               && container.Id != "OrganicPart";
+    }
+
+    /// <summary>The part prototype the character's body has in the slot.</summary>
+    private static EntProtoId? NaturalPart(string species,
+        WGBiotype biotype,
+        WGAugmentSlot slot,
+        IPrototypeManager proto,
+        IComponentFactory factory)
+    {
+        if (Body(species, biotype, proto, factory) is not { } body
+            || !body.Slots.TryGetValue(PartSlot(slot), out var part)
+            || part.Part is not { } partId)
+            return null;
+
+        return partId;
+    }
+
+    /// <summary>Whether an implant goes in a part that is or isn't synthetic.</summary>
+    public static bool HostFits(WGAugmentPrototype implant, bool synthetic) => implant.Host switch
+    {
+        WGAugmentHost.Organic => !synthetic,
+        WGAugmentHost.Synthetic => synthetic,
+        _ => true,
+    };
+
+    /// <summary>
+    /// Drops implants the species can't take, that don't fit the part the choices leave in their slot, those past
+    /// what the part holds and those that share an exclusive group with one already kept, keeping the first by order.
+    /// </summary>
+    public static HashSet<ProtoId<WGAugmentPrototype>> ValidateImplants(string species,
+        IReadOnlyDictionary<WGAugmentSlot, WGAugmentChoice> choices,
+        IEnumerable<ProtoId<WGAugmentPrototype>>? implants,
+        IEnumerable<ProtoId<TraitPrototype>> traits,
+        IPrototypeManager proto,
+        IComponentFactory factory,
+        WGBiotype biotype = WGBiotype.Default)
+    {
+        var valid = new HashSet<ProtoId<WGAugmentPrototype>>();
+        if (implants == null)
+            return valid;
+
+        var claimed = ClaimedSlots(traits, proto);
+        var used = new Dictionary<WGAugmentSlot, int>();
+        var groups = new HashSet<string>();
+        var picked = implants
+            .Select(id => proto.TryIndex(id, out var augment) ? augment : null)
+            .OfType<WGAugmentPrototype>()
+            .Where(a => a.Kind == WGAugmentKind.Upgrade)
+            .Distinct()
+            .OrderBy(a => a.Order)
+            .ThenBy(a => a.ID);
+        foreach (var implant in picked)
+        {
+            var slot = implant.Slot;
+            if (implant.SpeciesBlacklist.Contains(species)
+                || !SlotAvailable(species, slot, proto, factory, biotype)
+                || !HostFits(implant, Synthetic(species, slot, choices, claimed, proto, factory, biotype))
+                || used.GetValueOrDefault(slot) >= ImplantSlots(slot, choices, claimed, proto)
+                || implant.Exclusive is { } group && !groups.Add(group))
+                continue;
+
+            used[slot] = used.GetValueOrDefault(slot) + 1;
+            valid.Add(implant.ID);
+        }
+
+        return valid;
     }
 
     /// <summary>Whether the profile's legs are digitigrade.</summary>
@@ -162,14 +416,16 @@ public static class WGAugmentRules
     }
 
     /// <summary>
-    /// Drops choices the species can't take, slots a trait claims, augments that don't belong to their slot and
-    /// styles that don't fit, and gives a styled augment without a style the first one that fits.
+    /// Drops choices the species or the biotype's body can't take, slots a trait claims, augments that don't belong to
+    /// their slot, styles that don't fit and hands or feet under a missing limb, and gives a styled augment without a
+    /// style the first one that fits.
     /// </summary>
     public static Dictionary<WGAugmentSlot, WGAugmentChoice> Validate(string species,
         IReadOnlyDictionary<WGAugmentSlot, WGAugmentChoice>? choices,
         IEnumerable<ProtoId<TraitPrototype>> traits,
         IPrototypeManager proto,
-        IComponentFactory factory)
+        IComponentFactory factory,
+        WGBiotype biotype = WGBiotype.Default)
     {
         var claimed = ClaimedSlots(traits, proto);
         var valid = new Dictionary<WGAugmentSlot, WGAugmentChoice>();
@@ -182,8 +438,9 @@ public static class WGAugmentRules
                 || claimed.ContainsKey(slot)
                 || !proto.TryIndex(choice.Augment, out var augment)
                 || augment.Slot != slot
+                || augment.Kind == WGAugmentKind.Upgrade
                 || augment.SpeciesBlacklist.Contains(species)
-                || !SlotAvailable(species, slot, proto, factory))
+                || !SlotAvailable(species, slot, proto, factory, biotype))
                 continue;
 
             ProtoId<WGAugmentStylePrototype>? style = null;
@@ -200,26 +457,53 @@ public static class WGAugmentRules
             valid[slot] = new WGAugmentChoice(augment.ID, style);
         }
 
+        // A hand or foot can't go on a limb that isn't there.
+        foreach (var slot in valid.Keys.ToList())
+        {
+            if (LimbAbove(slot) is { } above
+                && valid.TryGetValue(above, out var limb)
+                && proto.TryIndex(limb.Augment, out var limbAugment)
+                && limbAugment.Kind == WGAugmentKind.Missing)
+                valid.Remove(slot);
+        }
+
         return valid;
     }
 
-    /// <summary>The price still owed for the profile's augments: priced ones it picked but hasn't unlocked.</summary>
-    public static int Owed(HumanoidCharacterProfile profile, IPrototypeManager proto)
+    /// <summary>Every augment the profile picked: its slot choices and its implants.</summary>
+    public static IEnumerable<ProtoId<WGAugmentPrototype>> Picked(HumanoidCharacterProfile profile)
     {
-        var owed = 0;
-        foreach (var choice in profile.Augments.Values)
-        {
-            if (proto.TryIndex(choice.Augment, out var augment)
-                && augment.Price > 0
-                && !profile.AugmentUnlocks.Contains(augment.ID))
-                owed += augment.Price;
-        }
-
-        return owed;
+        return profile.Augments.Values.Select(c => c.Augment).Concat(profile.AugmentImplants);
     }
 
-    /// <summary>Choices as stored in the database: slot:augment[:style] entries.</summary>
-    public static string ToStored(IReadOnlyDictionary<WGAugmentSlot, WGAugmentChoice> choices)
+    /// <summary>The price due for priced augments the profile picked but hasn't unlocked.</summary>
+    public static int Due(HumanoidCharacterProfile profile, IPrototypeManager proto)
+    {
+        var due = 0;
+        foreach (var id in Picked(profile).Distinct())
+        {
+            if (proto.TryIndex(id, out var augment) && augment.Price > 0 && !profile.AugmentUnlocks.Contains(id))
+                due += augment.Price;
+        }
+
+        return due;
+    }
+
+    /// <summary>The unlocked augments the profile no longer picks, which are sold back or scrapped when it is saved.</summary>
+    public static List<WGAugmentPrototype> Sold(HumanoidCharacterProfile profile, IPrototypeManager proto)
+    {
+        var picked = Picked(profile).ToHashSet();
+        return profile.AugmentUnlocks
+            .Where(u => !picked.Contains(u))
+            .Select(u => proto.TryIndex(u, out var augment) ? augment : null)
+            .OfType<WGAugmentPrototype>()
+            .OrderBy(a => a.ID)
+            .ToList();
+    }
+
+    /// <summary>Choices and implants as stored in the database: slot:augment[:style] and Implant:augment entries.</summary>
+    public static string ToStored(IReadOnlyDictionary<WGAugmentSlot, WGAugmentChoice> choices,
+        IEnumerable<ProtoId<WGAugmentPrototype>> implants)
     {
         var builder = new StringBuilder();
         foreach (var (slot, choice) in choices.OrderBy(c => c.Key))
@@ -231,10 +515,17 @@ public static class WGAugmentRules
                 builder.Append(FieldSeparator).Append(style.Id);
         }
 
+        foreach (var implant in implants.Select(i => i.Id).Order())
+        {
+            if (builder.Length > 0)
+                builder.Append(EntrySeparator);
+            builder.Append(ImplantEntry).Append(FieldSeparator).Append(implant);
+        }
+
         return builder.ToString();
     }
 
-    /// <summary>Reads <see cref="ToStored(IReadOnlyDictionary{WGAugmentSlot, WGAugmentChoice})"/> text. Entries it can't read are dropped.</summary>
+    /// <summary>Reads the slot choices of <see cref="ToStored(IReadOnlyDictionary{WGAugmentSlot, WGAugmentChoice}, IEnumerable{ProtoId{WGAugmentPrototype}})"/> text. Entries it can't read are dropped.</summary>
     public static Dictionary<WGAugmentSlot, WGAugmentChoice> FromStored(string? stored)
     {
         var choices = new Dictionary<WGAugmentSlot, WGAugmentChoice>();
@@ -253,21 +544,55 @@ public static class WGAugmentRules
         return choices;
     }
 
-    /// <summary>Unlocked augments as stored in the database, separated by semicolons.</summary>
-    public static string ToStored(IEnumerable<ProtoId<WGAugmentPrototype>> unlocks)
+    /// <summary>Reads the implants of stored choices, including those saved in the old one-per-slot implant slots.</summary>
+    public static HashSet<ProtoId<WGAugmentPrototype>> ImplantsFromStored(string? stored)
     {
-        return string.Join(EntrySeparator, unlocks.Select(u => u.Id).Order());
+        var implants = new HashSet<ProtoId<WGAugmentPrototype>>();
+        if (string.IsNullOrEmpty(stored))
+            return implants;
+
+        foreach (var entry in stored.Split(EntrySeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            var fields = entry.Split(FieldSeparator);
+            if (fields.Length >= 2 && (fields[0] == ImplantEntry || LegacyImplantSlots.Contains(fields[0])))
+                implants.Add(fields[1]);
+        }
+
+        return implants;
     }
 
-    /// <summary>Reads stored unlocks.</summary>
+    /// <summary>Unlocked augments as stored in the database: augment or augment:Found entries.</summary>
+    public static string ToStored(IEnumerable<ProtoId<WGAugmentPrototype>> unlocks, HashSet<ProtoId<WGAugmentPrototype>> found)
+    {
+        return string.Join(EntrySeparator,
+            unlocks.Select(u => found.Contains(u) ? u.Id + FoundSuffix : u.Id).Order());
+    }
+
+    /// <summary>Reads stored unlocks, paid for and found.</summary>
     public static HashSet<ProtoId<WGAugmentPrototype>> UnlocksFromStored(string? stored)
+    {
+        return UnlocksFromStored(stored, false);
+    }
+
+    /// <summary>Reads the stored unlocks that were found. One stored before this was tracked was paid for.</summary>
+    public static HashSet<ProtoId<WGAugmentPrototype>> FoundFromStored(string? stored)
+    {
+        return UnlocksFromStored(stored, true);
+    }
+
+    private static HashSet<ProtoId<WGAugmentPrototype>> UnlocksFromStored(string? stored, bool foundOnly)
     {
         var unlocks = new HashSet<ProtoId<WGAugmentPrototype>>();
         if (string.IsNullOrEmpty(stored))
             return unlocks;
 
-        foreach (var id in stored.Split(EntrySeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-            unlocks.Add(id);
+        foreach (var entry in stored.Split(EntrySeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            var fields = entry.Split(FieldSeparator);
+            if (!foundOnly || fields.Length > 1 && fields[1] == FoundEntry)
+                unlocks.Add(fields[0]);
+        }
+
         return unlocks;
     }
 }

@@ -108,13 +108,13 @@ or cloth only have a heavier steel shell, and fissile fuel is unchanged.
 Contraband (`WGTradeContrabandSystem`, `contrabandGoods`): the smuggling crate is sold by the Underground's fence vendor
 (`WGVendingMachineFence`) and bought well by every open chute, after the usual
 haul, at a fixed street price: sales never glut it, no event raises what chutes pay for it and buying it never makes
-the vendor dearer. The margin is small (15,000 to buy, 20,000 to sell); each sale also drops `contrabandTelecrystals`
+the vendor dearer. It doubles its price (15,000 to buy, 30,000 to sell) for a seller with no heat on them: a sale adds
+the crate's street price to the seller's heat, the one narcotics use (WolfChem `WGNarcoticHeatSystem`), the chute pays a
+hot seller less (`wg-trade-reason-heat`, shown in their quotes only), Caelestinus Security, the TSF and the PDV get
+its tip-off, which never names anyone, and a seller who sells past the hot line gets its warrant, which pays whoever brings them down.
+Each sale also drops `contrabandTelecrystals`
 telecrystals at the chute, the black market's steady source of them. It shows on radar from other grids like the PDV supply crates. It is Frontier contraband, so security can seize it at their contraband pallet for
-faction credits. Each sale at an open chute has a `contrabandWarrantChance` of customs flagging the seller: each flag
-adds `contrabandWarrant` to one criminal warrant on the bounty board in their name, up to `contrabandWarrantCap`, so a
-bigger run is a bigger target. A warrant taken off the board starts over. The warrant is a notice only: nothing pays
-it out automatically. Security hears who sold it where, and the warrant's total, on `contrabandAlertChannel`, at most
-once per `contrabandAlertCooldown` for each seller. Hidden markets don't buy it. While the Reaver campaign runs, every few crates sold at open chutes fund the Reavers (ReaverCampaign `.Funding`).
+faction credits. Hidden markets don't buy it. While the Reaver campaign runs, every few crates sold at open chutes fund the Reavers (ReaverCampaign `.Funding`).
 
 Only the drop buys it (`WGTradeContrabandSystem.Drop`): one open station whose chute lists contraband, never a
 wandering merchant, hidden market or blockaded station. Every other open chute refuses a smuggling crate with a popup.

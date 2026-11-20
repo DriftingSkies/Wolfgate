@@ -1,4 +1,5 @@
 using Content.Shared._WG.Lattice;
+using Content.Shared._WG.ShipCommand;
 using Content.Shared._WG.Shuttles;
 
 namespace Content.Shared.Shuttles.Systems;
@@ -14,7 +15,8 @@ public abstract partial class SharedShuttleSystem
         if (!TryGetFTLDrive(shuttleUid, out var drive, out _))
             return WGFtlDriveStatus.Missing;
 
-        if (TryComp<WGDriftComponent>(shuttleUid, out var drift) && drift.NoFtl)
+        if (TryComp<WGDriftComponent>(shuttleUid, out var drift) && drift.NoFtl
+            && CompOrNull<WGFtlUnrestrictedComponent>(shuttleUid)?.IgnoreLattice != true)
             return WGFtlDriveStatus.Unmoored;
 
         return _powerReceiverSystem.IsPowered(drive.Value) ? WGFtlDriveStatus.Ready : WGFtlDriveStatus.Unpowered;

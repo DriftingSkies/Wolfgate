@@ -1,0 +1,204 @@
+# Canvases are painted pixel by pixel with a crayon or a paint palette held, then finished under a title.
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: WGBaseCanvas
+  name: canvas
+  description: A blank canvas. Hold a crayon or a paint palette and use it on the canvas to paint.
+  components:
+  - type: Item
+    size: Small
+  - type: ActivatableUI
+    key: enum.WGCanvasUiKey.Key
+  - type: UserInterface
+    interfaces:
+      enum.WGCanvasUiKey.Key:
+        type: WGCanvasBoundUserInterface
+  - type: StaticPrice
+    price: 5
+    vendPrice: 40
+
+- type: entity
+  parent: WGBaseCanvas
+  id: WGCanvas11x11
+  suffix: 11x11
+  components:
+  - type: Sprite
+    sprite: _WG/Paintings/canvas.rsi
+    layers:
+    - state: 11x11
+      map: ["enum.WGPaintingVisualLayers.Canvas"]
+    - state: 11x11
+      map: ["enum.WGPaintingVisualLayers.Art"]
+      visible: false
+    - state: 11x11-wip
+      map: ["enum.WGPaintingVisualLayers.Wip"]
+      visible: false
+  - type: WGCanvas
+    width: 11
+    height: 11
+
+- type: entity
+  parent: WGBaseCanvas
+  id: WGCanvas19x19
+  suffix: 19x19
+  components:
+  - type: Sprite
+    sprite: _WG/Paintings/canvas.rsi
+    layers:
+    - state: 19x19
+      map: ["enum.WGPaintingVisualLayers.Canvas"]
+    - state: 19x19
+      map: ["enum.WGPaintingVisualLayers.Art"]
+      visible: false
+    - state: 19x19-wip
+      map: ["enum.WGPaintingVisualLayers.Wip"]
+      visible: false
+  - type: WGCanvas
+    width: 19
+    height: 19
+
+- type: entity
+  parent: WGBaseCanvas
+  id: WGCanvas23x19
+  suffix: 23x19
+  components:
+  - type: Sprite
+    sprite: _WG/Paintings/canvas.rsi
+    layers:
+    - state: 23x19
+      map: ["enum.WGPaintingVisualLayers.Canvas"]
+    - state: 23x19
+      map: ["enum.WGPaintingVisualLayers.Art"]
+      visible: false
+    - state: 23x19-wip
+      map: ["enum.WGPaintingVisualLayers.Wip"]
+      visible: false
+  - type: WGCanvas
+    width: 23
+    height: 19
+
+- type: entity
+  parent: WGBaseCanvas
+  id: WGCanvas23x23
+  suffix: 23x23
+  components:
+  - type: Sprite
+    sprite: _WG/Paintings/canvas.rsi
+    layers:
+    - state: 23x23
+      map: ["enum.WGPaintingVisualLayers.Canvas"]
+    - state: 23x23
+      map: ["enum.WGPaintingVisualLayers.Art"]
+      visible: false
+    - state: 23x23-wip
+      map: ["enum.WGPaintingVisualLayers.Wip"]
+      visible: false
+  - type: WGCanvas
+    width: 23
+    height: 23
+
+- type: entity
+  parent: WGBaseCanvas
+  id: WGCanvas24x24
+  suffix: 24x24
+  components:
+  - type: Sprite
+    sprite: _WG/Paintings/canvas.rsi
+    layers:
+    - state: 24x24
+      map: ["enum.WGPaintingVisualLayers.Canvas"]
+    - state: 24x24
+      map: ["enum.WGPaintingVisualLayers.Art"]
+      visible: false
+    - state: 24x24-wip
+      map: ["enum.WGPaintingVisualLayers.Wip"]
+      visible: false
+  - type: WGCanvas
+    width: 24
+    height: 24
+
+- type: entity
+  parent: WGBaseCanvas
+  id: WGCanvas36x24
+  name: large canvas
+  suffix: 36x24
+  components:
+  - type: Item
+    size: Normal
+  - type: Sprite
+    sprite: _WG/Paintings/canvas_large.rsi
+    layers:
+    - state: 36x24
+      map: ["enum.WGPaintingVisualLayers.Canvas"]
+    - state: 36x24
+      map: ["enum.WGPaintingVisualLayers.Art"]
+      visible: false
+    - state: 36x24-wip
+      map: ["enum.WGPaintingVisualLayers.Wip"]
+      visible: false
+  - type: WGCanvas
+    width: 36
+    height: 24
+  - type: StaticPrice
+    price: 10
+    vendPrice: 80
+
+- type: entity
+  parent: WGBaseCanvas
+  id: WGCanvas45x27
+  name: large canvas
+  suffix: 45x27
+  components:
+  - type: Item
+    size: Normal
+  - type: Sprite
+    sprite: _WG/Paintings/canvas_large.rsi
+    layers:
+    - state: 45x27
+      map: ["enum.WGPaintingVisualLayers.Canvas"]
+    - state: 45x27
+      map: ["enum.WGPaintingVisualLayers.Art"]
+      visible: false
+    - state: 45x27-wip
+      map: ["enum.WGPaintingVisualLayers.Wip"]
+      visible: false
+  - type: WGCanvas
+    width: 45
+    height: 27
+  - type: StaticPrice
+    price: 10
+    vendPrice: 80
+
+- type: entity
+  parent: BaseItem
+  id: WGPaintPalette
+  name: paint palette
+  description: Paints any colour on a canvas. Colours can be saved on it, and it remembers the ones used last.
+  components:
+  - type: Sprite
+    sprite: _WG/Paintings/palette.rsi
+    state: palette
+  - type: Item
+    size: Small
+  - type: WGPaintPalette
+    swatches:
+    - "#000000"
+    - "#3F3F46"
+    - "#9CA3AF"
+    - "#FFFFFF"
+    - "#7F1D1D"
+    - "#DC2626"
+    - "#F97316"
+    - "#FACC15"
+    - "#14532D"
+    - "#22C55E"
+    - "#0D9488"
+    - "#3B82F6"
+    - "#1E3A8A"
+    - "#7E22CE"
+    - "#78350F"
+    - "#F5C9A0"
+  - type: StaticPrice
+    price: 20
+    vendPrice: 150

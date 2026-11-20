@@ -1,6 +1,7 @@
 using System.Numerics;
 using Content.Shared._WG.Modsuits.Components;
 using Content.Shared._WG.Modsuits.Systems;
+using Content.Shared.ActionBlocker;
 using Content.Shared.Interaction;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Pulling.Systems;
@@ -21,6 +22,7 @@ public sealed partial class ModKinesisSystem : VirtualController
 {
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private INetManager _net = default!;
+    [Dependency] private ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private EntityWhitelistSystem _whitelist = default!;
     [Dependency] private ModSuitSystem _modSuit = default!;
     [Dependency] private PullingSystem _pulling = default!;
@@ -32,7 +34,18 @@ public sealed partial class ModKinesisSystem : VirtualController
     private const float LeashSlack = 1.5f;
     private const float ThrowDistanceFactor = 0.6f;
 
-    [SubscribeLocalEvent]
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<ModKinesisModuleComponent, ModModuleActivatedEvent>(OnActivated);
+        SubscribeLocalEvent<ModKinesisModuleComponent, ModModuleDeactivatedEvent>(OnDeactivated);
+        SubscribeLocalEvent<ModKinesisModuleComponent, ModSuitWearerChangedEvent>(OnWearerChanged);
+        SubscribeNetworkEvent<ModKinesisGrabEvent>(OnGrab);
+        SubscribeNetworkEvent<ModKinesisCursorEvent>(OnCursor);
+        SubscribeNetworkEvent<ModKinesisReleaseEvent>(OnRelease);
+    }
+
     private void OnActivated(Entity<ModKinesisModuleComponent> ent, ref ModModuleActivatedEvent args)
     {
         if (_timing.ApplyingState || args.Wearer is not { } wearer)
@@ -46,13 +59,11 @@ public sealed partial class ModKinesisSystem : VirtualController
         Dirty(ent);
     }
 
-    [SubscribeLocalEvent]
     private void OnDeactivated(Entity<ModKinesisModuleComponent> ent, ref ModModuleDeactivatedEvent args)
     {
         Stop(ent);
     }
 
-    [SubscribeLocalEvent]
     private void OnWearerChanged(Entity<ModKinesisModuleComponent> ent, ref ModSuitWearerChangedEvent args)
     {
         Stop(ent);
@@ -74,7 +85,6 @@ public sealed partial class ModKinesisSystem : VirtualController
         Dirty(ent);
     }
 
-    [SubscribeNetworkEvent]
     private void OnGrab(ModKinesisGrabEvent msg, EntitySessionEventArgs args)
     {
         if (args.SenderSession.AttachedEntity is not { } user
@@ -82,6 +92,7 @@ public sealed partial class ModKinesisSystem : VirtualController
             || module.Comp.Held != null
             || !TryGetEntity(msg.Target, out var target)
             || !CanGrab(module, user, target.Value)
+            || !TryGetCursor(msg.Cursor, out var cursor)
             || !_modSuit.TryGetModuleSuit(module, out var suit)
             || !_modSuit.TryUseCharge(suit, module.Comp.GrabPower))
             return;
@@ -90,7 +101,7 @@ public sealed partial class ModKinesisSystem : VirtualController
             _pulling.TryStopPull(target.Value, pullable, user);
 
         module.Comp.Held = target;
-        module.Comp.Cursor = TransformSystem.ToMapCoordinates(GetCoordinates(msg.Cursor));
+        module.Comp.Cursor = cursor;
         Dirty(module);
 
         var held = EnsureComp<ModKinesisHeldComponent>(target.Value);
@@ -104,16 +115,25 @@ public sealed partial class ModKinesisSystem : VirtualController
         module.Comp.HoldStream = _audio.PlayPvs(module.Comp.HoldSound, target.Value)?.Entity;
     }
 
-    [SubscribeNetworkEvent]
     private void OnCursor(ModKinesisCursorEvent msg, EntitySessionEventArgs args)
     {
-        if (args.SenderSession.AttachedEntity is not { } user || !TryGetModule(user, out var module))
+        if (args.SenderSession.AttachedEntity is not { } user
+            || !TryGetModule(user, out var module)
+            || !TryGetCursor(msg.Cursor, out var cursor))
             return;
 
-        module.Comp.Cursor = TransformSystem.ToMapCoordinates(GetCoordinates(msg.Cursor));
+        module.Comp.Cursor = cursor;
     }
 
-    [SubscribeNetworkEvent]
+    /// <summary>Converts a client cursor into map coordinates, rejecting unresolved or non-finite ones.</summary>
+    public bool TryGetCursor(NetCoordinates net, out MapCoordinates cursor)
+    {
+        cursor = TransformSystem.ToMapCoordinates(GetCoordinates(net), logError: false);
+        return cursor.MapId != MapId.Nullspace
+               && float.IsFinite(cursor.Position.X)
+               && float.IsFinite(cursor.Position.Y);
+    }
+
     private void OnRelease(ModKinesisReleaseEvent msg, EntitySessionEventArgs args)
     {
         if (args.SenderSession.AttachedEntity is { } user && TryGetModule(user, out var module))
@@ -133,9 +153,11 @@ public sealed partial class ModKinesisSystem : VirtualController
         return true;
     }
 
-    private bool CanGrab(Entity<ModKinesisModuleComponent> module, EntityUid user, EntityUid target)
+    /// <summary>Whether <paramref name="user"/> may grab <paramref name="target"/> right now.</summary>
+    public bool CanGrab(Entity<ModKinesisModuleComponent> module, EntityUid user, EntityUid target)
     {
         if (target == user
+            || !_actionBlocker.CanInteract(user, null)
             || TerminatingOrDeleted(target)
             || _container.IsEntityInContainer(target)
             || !TryComp<PhysicsComponent>(target, out var body)
@@ -198,6 +220,7 @@ public sealed partial class ModKinesisSystem : VirtualController
                 continue;
 
             if (module.User is not { } user
+                || !_actionBlocker.CanInteract(user, null)
                 || TerminatingOrDeleted(held)
                 || _container.IsEntityInContainer(held)
                 || Transform(held).Anchored

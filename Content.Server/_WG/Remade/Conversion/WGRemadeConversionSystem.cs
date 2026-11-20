@@ -71,12 +71,15 @@ public sealed partial class WGRemadeConversionSystem : EntitySystem
         ScanCorpses(now);
     }
 
-    /// <summary>Whether this body can still turn: a dead, whole-headed humanoid or animal not already turning.</summary>
-    public bool CanConvert(EntityUid uid)
+    /// <summary>
+    /// Whether this body can still turn: a dead, whole-headed humanoid or animal not already turning.
+    /// <paramref name="once"/> skips the death check, for a body that would turn once it dies.
+    /// </summary>
+    public bool CanConvert(EntityUid uid, bool once = false)
     {
         if (TerminatingOrDeleted(uid)
             || !IsTurnable(uid)
-            || !_mobState.IsDead(uid)
+            || !once && !_mobState.IsDead(uid)
             || HasComp<WGRemadeConvertingComponent>(uid)
             || HasComp<WGNecrotoxinProtectedComponent>(uid))
         {

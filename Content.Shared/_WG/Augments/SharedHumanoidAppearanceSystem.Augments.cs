@@ -53,7 +53,8 @@ public abstract partial class SharedHumanoidAppearanceSystem
         }
 
         var digitigrade = WGAugmentRules.Digitigrade(profile, _proto);
-        foreach (var (slot, choice) in profile.Augments)
+        // In slot order, so a hand's style draws over the one its arm put on that hand.
+        foreach (var (slot, choice) in profile.Augments.OrderBy(a => a.Key))
         {
             if (!_proto.TryIndex(choice.Augment, out var augment))
                 continue;

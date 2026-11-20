@@ -2,7 +2,6 @@
     xmlns="https://spacestation14.io"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cc="clr-namespace:Content.Client.Administration.UI.CustomControls"
-    xmlns:vessel="clr-namespace:Content.Client._WG.Administration.UI.VesselSpawn"
     xmlns:internet="clr-namespace:Content.Client._WG.Administration.UI.InternetSound"
     xmlns:power="clr-namespace:Content.Client._WG.Administration.UI.GridPower"
     xmlns:ert="clr-namespace:Content.Client._WG.Administration.UI.Ert"
@@ -18,7 +17,6 @@
             <cc:UICommandButton Command="wg_crew" Text="{Loc wg-crew-setup-title}" WindowType="{x:Type crew:WGCrewSetupWindow}" />
             <cc:UICommandButton Command="wg_vehiclecrew" Text="{Loc wg-vehiclecrew-panel-title}" WindowType="{x:Type vehiclecrew:WGVehicleCrewPanel}" />
             <cc:UICommandButton Command="wg_encounter" Text="{Loc wg-encounter-admin-title}" WindowType="{x:Type encounters:WGEncounterWindow}" />
-            <cc:UICommandButton Command="spawnvessel" Text="{Loc wg-admin-tab-spawn-vessel}" WindowType="{x:Type vessel:VesselSpawnWindow}" />
             <cc:UICommandButton Command="playinternetsound" Text="{Loc wg-admin-tab-internet-sound}" WindowType="{x:Type internet:InternetSoundAdminWindow}" />
             <cc:CommandButton Command="rpannounce" Text="{Loc wg-announce-button}" />
             <cc:CommandButton Command="wg_defconpanel" Text="{Loc wg-defcon-panel-button}" />
@@ -28,6 +26,7 @@
             <cc:CommandButton Command="testdummies" Text="{Loc wg-test-dummy-button}" />
             <cc:CommandButton Command="nukedesigner" Text="{Loc wg-nuke-designer-button}" />
             <cc:CommandButton Command="shipmaster" Text="{Loc wg-ship-admin-button}" />
+            <cc:CommandButton Command="observerpanel" Text="{Loc wg-admin-tab-observer-panel}" />
         </GridContainer>
     </ScrollContainer>
 </Control>

@@ -552,7 +552,7 @@ public sealed partial class ChatUIController : UIController
 
             // Can only send local / radio / emote when attached to a non-ghost entity.
             // TODO: this logic is iffy (checking if controlling something that's NOT a ghost), is there a better way to check this?
-            if (_ghost is not {IsGhost: true})
+            if (_ghost is not {IsGhost: true} || WGManifested) // WOLFGATE(AdminObserver): a manifested admin observer speaks in character
             {
                 CanSendChannels |= ChatSelectChannel.Local;
                 CanSendChannels |= ChatSelectChannel.Whisper;
@@ -710,7 +710,7 @@ public sealed partial class ChatUIController : UIController
 
     public ChatSelectChannel MapLocalIfGhost(ChatSelectChannel channel)
     {
-        if (channel == ChatSelectChannel.Local && _ghost is {IsGhost: true})
+        if (channel == ChatSelectChannel.Local && _ghost is {IsGhost: true} && !WGManifested) // WOLFGATE(AdminObserver): Local stays Local for a manifested admin observer
             return ChatSelectChannel.Dead;
 
         return channel;
@@ -781,7 +781,7 @@ public sealed partial class ChatUIController : UIController
 
         if (chatChannel == ChatSelectChannel.Local)
         {
-            if (_ghost?.IsGhost != true)
+            if (_ghost?.IsGhost != true || WGManifested) // WOLFGATE(AdminObserver): Local stays Local for a manifested admin observer
                 return (chatChannel, text, null, null); // Goobstation - Starlight collective mind port
             else
                 chatChannel = ChatSelectChannel.Dead;

@@ -25,6 +25,7 @@ public sealed partial class WGCrewFriendlyFireSystem : EntitySystem
     [Dependency] private WGCrewAlertSystem _alerts = default!;
     [Dependency] private WGCrewEscortSystem _escorts = default!;
     [Dependency] private WGCrewSystem _crew = default!;
+    [Dependency] private WGCrewRallySystem _rally = default!;
     [Dependency] private MobStateSystem _mobs = default!;
     [Dependency] private SharedProjectileSystem _projectiles = default!;
     [Dependency] private IGameTiming _timing = default!;
@@ -116,6 +117,8 @@ public sealed partial class WGCrewFriendlyFireSystem : EntitySystem
         if (args.Tool is { } beam && HasComp<HitscanBasicDamageComponent>(beam))
             ReportBeamHit(ent.Owner, origin);
         ReportMechHit(ent.Owner, origin);
+        if (!HasComp<MobStateComponent>(ent))
+            _rally.Tampered(ent.Owner, shooter);
     }
 
     /// <summary>Reports a free-flying mech's hit on a ship or anyone aboard as that ship coming under attack.</summary>

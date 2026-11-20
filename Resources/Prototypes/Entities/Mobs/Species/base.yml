@@ -27,9 +27,12 @@
     - map: [ "enum.HumanoidVisualLayers.UndergarmentTop" ] # WOLFGATE(Genitals): underwear/genital layers ported from HardLight
     - map: [ "enum.HumanoidVisualLayers.Penis" ] # WOLFGATE(Genitals): underwear/genital layers ported from HardLight
     - map: [ "enum.HumanoidVisualLayers.UndergarmentBottom" ] # WOLFGATE(Genitals): underwear/genital layers ported from HardLight
-    - map: ["jumpsuit"]
+    # WOLFGATE(Humanoid) START: draw socks over feet and under uniforms
     - map: ["enum.HumanoidVisualLayers.LFoot"]
     - map: ["enum.HumanoidVisualLayers.RFoot"]
+    - map: [ "enum.HumanoidVisualLayers.UndergarmentSocks" ]
+    - map: ["jumpsuit"]
+    # WOLFGATE END
     - map: ["enum.HumanoidVisualLayers.LHand"]
     - map: ["enum.HumanoidVisualLayers.RHand"]
     - map: [ "gloves" ]
@@ -428,10 +431,13 @@
     - map: [ "enum.HumanoidVisualLayers.UndergarmentTop" ] # WOLFGATE(Genitals): underwear/genital layers ported from HardLight
     - map: [ "enum.HumanoidVisualLayers.Penis" ] # WOLFGATE(Genitals): underwear/genital layers ported from HardLight
     - map: [ "enum.HumanoidVisualLayers.UndergarmentBottom" ] # WOLFGATE(Genitals): underwear/genital layers ported from HardLight
-    - map: ["jumpsuit"]
-    - map: [ "balaclava" ]
+    # WOLFGATE(Humanoid) START: draw socks over feet and under uniforms
     - map: ["enum.HumanoidVisualLayers.LFoot"]
     - map: ["enum.HumanoidVisualLayers.RFoot"]
+    - map: [ "enum.HumanoidVisualLayers.UndergarmentSocks" ]
+    - map: ["jumpsuit"]
+    # WOLFGATE END
+    - map: [ "balaclava" ]
     - map: ["enum.HumanoidVisualLayers.LHand"]
     - map: ["enum.HumanoidVisualLayers.RHand"]
     - map: ["enum.HumanoidVisualLayers.Handcuffs"]

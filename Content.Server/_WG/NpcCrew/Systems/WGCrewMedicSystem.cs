@@ -314,8 +314,7 @@ public sealed partial class WGCrewMedicSystem : EntitySystem
 
         if (medic.Comp.Patient is { } patient)
         {
-            if (TryComp<PullableComponent>(patient, out var pullable) && pullable.Puller == medic.Owner)
-                _pulling.TryStopPull(patient, pullable, medic);
+            LetGo(medic.Owner, patient);
 
             if (_claims.TryGetValue(patient, out var owner) && owner == medic.Owner)
                 _claims.Remove(patient);
@@ -387,7 +386,7 @@ public sealed partial class WGCrewMedicSystem : EntitySystem
             if (_interaction.InRangeUnobstructed(mob, heading, Reach))
                 return Arrive(ent, patient, heading);
 
-            if (++medic.PullTries > MaxPullTries || !_pulling.TryStartPull(mob, patient))
+            if (++medic.PullTries > MaxPullTries || !TakeHold(mob, patient))
             {
                 if (medic.PullTries > MaxPullTries)
                     Release(ent);
@@ -405,7 +404,7 @@ public sealed partial class WGCrewMedicSystem : EntitySystem
             {
                 medic.Destination = destination;
                 Say(ent, "wg-crew-medic-take-in");
-                _pulling.TryStartPull(mob, patient);
+                TakeHold(mob, patient);
                 return true;
             }
 
@@ -716,9 +715,7 @@ public sealed partial class WGCrewMedicSystem : EntitySystem
         if (!_interaction.InRangeUnobstructed(medic.Owner, destination, Reach))
             return true;
 
-        if (TryComp<PullableComponent>(patient, out var pullable))
-            _pulling.TryStopPull(patient, pullable, medic);
-
+        LetGo(medic.Owner, patient);
         return Arrive(medic, patient, destination);
     }
 
@@ -777,7 +774,7 @@ public sealed partial class WGCrewMedicSystem : EntitySystem
         if (medic.Comp.Pod is { } pod && InPod(pod, patient) || medic.Comp.Table is { } table && OnTable(table, patient))
             return true;
 
-        if (CompOrNull<PullableComponent>(patient)?.Puller is { } puller && puller != medic.Owner)
+        if (HeldByOther(medic.Owner, patient))
             return false;
 
         // The ships may have undocked, or the patient been barred or turned on the crew, since he took them.
@@ -875,8 +872,7 @@ public sealed partial class WGCrewMedicSystem : EntitySystem
 
     private bool MayTreat(Entity<WGCrewMedicComponent> medic, EntityUid patient, EntityUid home)
     {
-        if (_container.IsEntityInContainer(patient)
-            || CompOrNull<PullableComponent>(patient)?.Puller is { } puller && puller != medic.Owner)
+        if (_container.IsEntityInContainer(patient) || HeldByOther(medic.Owner, patient))
             return false;
 
         // Nobody who attacked him lately.
@@ -902,11 +898,6 @@ public sealed partial class WGCrewMedicSystem : EntitySystem
         }
 
         return false;
-    }
-
-    private bool Drags(EntityUid mob, EntityUid patient)
-    {
-        return CompOrNull<PullableComponent>(patient)?.Puller == mob;
     }
 
     /// <summary>Lying in a bed in Medical; on a grid with no medical beds, in any bed that heals.</summary>

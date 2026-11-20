@@ -34,7 +34,7 @@ public sealed class WGBaggieSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<WGBaggieComponent, SolutionTransferAttemptEvent>(OnTransferAttempt);
-        // Before the spiker, which would empty a pill into it, and the storage, which takes a solid without a word.
+        // Before the spiker, which would empty a pill into it.
         SubscribeLocalEvent<WGBaggieComponent, InteractUsingEvent>(OnInteractUsing,
             before: new[] { typeof(SolutionSpikerSystem), typeof(SharedStorageSystem) });
         SubscribeLocalEvent<WGBaggieComponent, UseInHandEvent>(OnUseInHand);
@@ -55,7 +55,7 @@ public sealed class WGBaggieSystem : EntitySystem
         if (args.Handled)
             return;
 
-        // A solid that fits goes in; one that doesn't is left to the storage to refuse.
+        // A solid that fits goes in. The storage doesn't click-insert, so anything else falls through to the pour.
         if (TryComp<StorageComponent>(ent, out var storage) && _storage.CanInsert(ent, args.Used, out _, storage))
         {
             args.Handled = true;

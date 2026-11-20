@@ -626,11 +626,14 @@ namespace Content.Server.Atmos.EntitySystems
                 _currentRunAtmosphereIndex = 0;
                 _currentRunAtmosphere.Clear();
 
-                var query = EntityQueryEnumerator<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent>();
-                while (query.MoveNext(out var uid, out var atmos, out var overlay, out var grid, out var xform ))
-                {
-                    _currentRunAtmosphere.Add((uid, atmos, overlay, grid, xform));
-                }
+                // WOLFGATE(Performance) START: reuse the grid atmosphere list instead of walking every grid each tick
+                // var query = EntityQueryEnumerator<GridAtmosphereComponent, GasTileOverlayComponent, MapGridComponent, TransformComponent>();
+                // while (query.MoveNext(out var uid, out var atmos, out var overlay, out var grid, out var xform ))
+                // {
+                //     _currentRunAtmosphere.Add((uid, atmos, overlay, grid, xform));
+                // }
+                WGQueueRunAtmospheres();
+                // WOLFGATE END
             }
 
             // We set this to true just in case we have to stop processing due to time constraints.

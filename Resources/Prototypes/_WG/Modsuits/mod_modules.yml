@@ -419,6 +419,7 @@
   - type: ModModule
     moduleType: Toggle
     removable: false
+    cooldown: 1.5
     activePower: 0.8
     requiredParts:
     - head
@@ -428,6 +429,7 @@
     - type: ThermalVision
       isEquipment: true
       isActive: true
+      toggleAction: null
       lightRadius: 15
 
 - type: entity
@@ -826,7 +828,7 @@
   parent: BaseModsuitModule
   id: ModsuitModulePepperShoulders
   name: MOD pepper shoulders module
-  description: A module that attaches two pepper sprayers on shoulders of a MODsuit, releasing a cloud of capsaicin around the wearer on command.
+  description: A module that attaches two pepper sprayers on shoulders of a MODsuit, releasing a cloud of tear gas around the wearer on command.
   components:
   - type: Sprite
     state: pepper_shoulder
@@ -1281,7 +1283,7 @@
     spreadAmount: 8
     solution:
       reagents:
-      - ReagentId: CapsaicinOil
+      - ReagentId: TearGas
         Quantity: 30
   - type: EmitSoundOnTrigger
     sound: /Audio/Effects/smoke.ogg
@@ -1814,6 +1816,7 @@
     moduleType: Toggle
     complexity: 2
     activePower: 0.8
+    cooldown: 1.5
     removable: true
     requiredParts:
     - head
@@ -2096,6 +2099,7 @@
     state: joint_torsion
   - type: ModModule
     complexity: 1
+    allowDuplicates: true
     requiredParts:
     - shoes
   - type: ModJointTorsionModule
@@ -2240,54 +2244,60 @@
     materialComposition: {}
 
 - type: entity
-  parent: BaseItem
+  parent: BalloonSyn
   id: ModsuitBalloonRed
   name: red balloon
   suffix: MOD
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: _Goobstation/Objects/Specific/Robotics/mod_modules.rsi
-    state: bloon
+    sprite: Objects/Fun/toys.rsi
+    state: synb
     color: "#ff4d4d"
   - type: Item
-    size: Tiny
+    size: Small
+    sprite: Objects/Fun/toys.rsi
+    heldPrefix: synb
   - type: StaticPrice
     price: 0
   - type: PhysicalComposition
     materialComposition: {}
 
 - type: entity
-  parent: BaseItem
+  parent: BalloonSyn
   id: ModsuitBalloonBlue
   name: blue balloon
   suffix: MOD
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: _Goobstation/Objects/Specific/Robotics/mod_modules.rsi
-    state: bloon
+    sprite: Objects/Fun/toys.rsi
+    state: synb
     color: "#4d7dff"
   - type: Item
-    size: Tiny
+    size: Small
+    sprite: Objects/Fun/toys.rsi
+    heldPrefix: synb
   - type: StaticPrice
     price: 0
   - type: PhysicalComposition
     materialComposition: {}
 
 - type: entity
-  parent: BaseItem
+  parent: BalloonSyn
   id: ModsuitBalloonGreen
   name: green balloon
   suffix: MOD
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
-    sprite: _Goobstation/Objects/Specific/Robotics/mod_modules.rsi
-    state: bloon
+    sprite: Objects/Fun/toys.rsi
+    state: synb
     color: "#4dff7d"
   - type: Item
-    size: Tiny
+    size: Small
+    sprite: Objects/Fun/toys.rsi
+    heldPrefix: synb
   - type: StaticPrice
     price: 0
   - type: PhysicalComposition

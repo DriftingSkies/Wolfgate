@@ -1,0 +1,46 @@
+<BoxContainer xmlns="https://spacestation14.io"
+              xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+              Orientation="Vertical"
+              HorizontalExpand="True"
+              VerticalExpand="True">
+    <LineEdit Name="SearchBar"
+              PlaceHolder="{Loc 'wg-observer-kit-search'}"
+              HorizontalExpand="True"
+              Margin="0 0 0 4" />
+    <PanelContainer VerticalExpand="True" HorizontalExpand="True">
+        <PanelContainer.PanelOverride>
+            <gfx:StyleBoxFlat BackgroundColor="#141414" BorderColor="#333333" BorderThickness="1" />
+        </PanelContainer.PanelOverride>
+        <ScrollContainer HScrollEnabled="False"
+                         VerticalExpand="True"
+                         HorizontalExpand="True"
+                         Margin="2">
+            <BoxContainer Name="Items"
+                          Orientation="Vertical"
+                          HorizontalExpand="True"
+                          SeparationOverride="1" />
+        </ScrollContainer>
+    </PanelContainer>
+    <BoxContainer Name="UnplacedBox"
+                  Orientation="Vertical"
+                  HorizontalExpand="True"
+                  Visible="False"
+                  Margin="0 4 0 0">
+        <Label Text="{Loc 'wg-observer-kit-unplaced-header'}" StyleClasses="LabelKeyText" />
+        <RichTextLabel Name="UnplacedNote" HorizontalExpand="True" />
+        <BoxContainer Name="UnplacedItems"
+                      Orientation="Vertical"
+                      HorizontalExpand="True"
+                      SeparationOverride="1" />
+    </BoxContainer>
+    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 4 0 0">
+        <Button Name="PutAwayButton"
+                Text="{Loc 'wg-observer-kit-put-away'}"
+                StyleClasses="ButtonSquare"
+                HorizontalExpand="True" />
+        <Button Name="SaveButton"
+                Text="{Loc 'wg-observer-kit-save'}"
+                StyleClasses="ButtonSquare"
+                HorizontalExpand="True" />
+    </BoxContainer>
+</BoxContainer>

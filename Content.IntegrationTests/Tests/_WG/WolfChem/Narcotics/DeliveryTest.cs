@@ -1,4 +1,3 @@
-using Content.Server._Mono.Cargo;
 using Content.Server._WG.WolfChem.Narcotics;
 using Content.Server._WG.WolfChem.Neuroware;
 using Content.Server.Body.Components;
@@ -139,7 +138,7 @@ public sealed class DeliveryTest
 
     /// <summary>
     /// Anything holding a street drug, a beaker or a storage tank as much as a baggie, and a blank stick that takes a copy, is a
-    /// narcotic like the ready-made ones: tagged, contraband and reported on sale. Emptied, or holding something
+    /// narcotic like the ready-made ones: tagged, contraband and counted as stock. Emptied, or holding something
     /// harmless, it is not.
     /// </summary>
     [Test]
@@ -158,7 +157,7 @@ public sealed class DeliveryTest
             bool Marked(EntityUid uid)
             {
                 var tagged = tags.HasTag(uid, WGNarcoticGoodsSystem.Tag);
-                Assert.That(entMan.HasComponent<SoldAlertComponent>(uid), Is.EqualTo(tagged));
+                Assert.That(entMan.HasComponent<WGNarcoticStockComponent>(uid), Is.EqualTo(tagged));
                 Assert.That(entMan.HasComponent<ContrabandComponent>(uid), Is.EqualTo(tagged));
                 Assert.That(entMan.HasComponent<ItemTaxComponent>(uid), Is.EqualTo(tagged));
                 return tagged;
@@ -210,7 +209,10 @@ public sealed class DeliveryTest
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>A baggie takes its listed powders and solid drugs and nothing else, and a sealed vial won't pour.</summary>
+    /// <summary>
+    /// A baggie takes its listed powders and solid drugs and nothing else, a beaker click pours powder in and a
+    /// table click lays it out, and a sealed vial won't pour.
+    /// </summary>
     [Test]
     public async Task BaggieWhitelistTest()
     {
@@ -223,20 +225,40 @@ public sealed class DeliveryTest
         {
             var solutions = server.System<SharedSolutionContainerSystem>();
             var transfer = server.System<SolutionTransferSystem>();
+            var hands = server.System<SharedHandsSystem>();
+            var interaction = server.System<SharedInteractionSystem>();
             var user = entMan.SpawnEntity("MobHuman", map.GridCoords);
 
-            FixedPoint2 Pour(string reagent)
+            // Clicks the baggie with a held beaker, as a player pours.
+            EntityUid Pour(string reagent)
             {
                 var beaker = entMan.SpawnEntity("Beaker", map.GridCoords);
                 var baggie = entMan.SpawnEntity("WGBaggie", map.GridCoords);
                 solutions.TryGetSolution(beaker, "beaker", out var from, out _);
                 solutions.TryAddReagent(from!.Value, reagent, FixedPoint2.New(10));
-                solutions.TryGetSolution(baggie, "baggie", out var to, out _);
-                return transfer.Transfer(user, beaker, from.Value, baggie, to!.Value, FixedPoint2.New(5));
+                Assert.That(hands.TryPickupAnyHand(user, beaker), Is.True);
+                interaction.InteractUsing(user, beaker, baggie, map.GridCoords);
+                Assert.That(hands.TryDrop(user, beaker), Is.True);
+                return baggie;
             }
 
-            Assert.That(Pour("WGCocaine"), Is.EqualTo(FixedPoint2.New(5)), "Cocaine pours into a baggie.");
-            Assert.That(Pour("Water"), Is.EqualTo(FixedPoint2.Zero), "Water doesn't.");
+            FixedPoint2 Powder(EntityUid baggie, string reagent)
+            {
+                solutions.TryGetSolution(baggie, "baggie", out _, out var powder);
+                return powder!.GetTotalPrototypeQuantity(reagent);
+            }
+
+            var coke = Pour("WGCocaine");
+            Assert.That(Powder(coke, "WGCocaine"), Is.EqualTo(FixedPoint2.New(10)), "Cocaine pours into a baggie.");
+            Assert.That(entMan.GetComponent<StorageComponent>(coke).Container.ContainedEntities, Is.Empty,
+                "The beaker isn't put in.");
+            Assert.That(Powder(Pour("Water"), "Water"), Is.EqualTo(FixedPoint2.Zero), "Water doesn't.");
+
+            var table = entMan.SpawnEntity("Table", map.GridCoords);
+            Assert.That(hands.TryPickupAnyHand(user, coke), Is.True);
+            Assert.That(interaction.InteractUsing(user, coke, table, map.GridCoords), Is.True);
+            Assert.That(Powder(coke, "WGCocaine"), Is.EqualTo(FixedPoint2.New(7.5)), "A table click lays a line.");
+            Assert.That(hands.IsHolding(user, coke), Is.True, "The baggie stays in hand.");
 
             var storage = server.System<SharedStorageSystem>();
             var bag = entMan.SpawnEntity("WGBaggie", map.GridCoords);

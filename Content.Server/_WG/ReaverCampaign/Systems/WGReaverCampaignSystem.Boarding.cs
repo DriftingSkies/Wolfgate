@@ -40,11 +40,16 @@ public sealed partial class WGReaverCampaignSystem
             Log.Info($"Reaver ship {ToPrettyString(args.Grid)} was boarded; a patrol goes after {ToPrettyString(ship)}.");
     }
 
-    /// <summary>A hull taken from the campaign is hunted at once, like a ship that stayed too long in held space.</summary>
+    /// <summary>A hull taken from the campaign is hunted at once, and for as long as boarders hold it.</summary>
     private void OnShipSeized(ref WGEncounterShipSeizedEvent args)
     {
-        if (Running && !Held && IsCampaignEncounter(args.Encounter))
-            TryIntercept(args.Grid);
+        // Taken while the campaign is held, it is remembered and hunted once the campaign runs again.
+        if (!IsCampaignEncounter(args.Encounter) || State(true) is not { } state)
+            return;
+
+        state.Stolen[args.Grid] = _timing.CurTime + StolenRetry;
+        if (Running && !Held)
+            TryRecover(args.Grid);
     }
 
     /// <summary>Whether any of a crew's new hostiles is a player standing on its ship.</summary>

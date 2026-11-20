@@ -530,4 +530,9 @@ public enum LogType
     /// <summary>Staff changed a ship from the admin ship panel.</summary>
     WGShipAdmin = 12494,
     // WOLFGATE END
+
+    // WOLFGATE(Paintings) START: paintings finished, scanned, ordered and blocked
+    /// <summary>Paintings finished, scanned into the catalogue, ordered, removed and blocked.</summary>
+    WGPainting = 12495,
+    // WOLFGATE END
 }

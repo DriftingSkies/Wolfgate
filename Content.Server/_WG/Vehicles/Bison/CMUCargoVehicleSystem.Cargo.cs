@@ -2,7 +2,9 @@ using System.Linq;
 using Content.Server.Storage.Components;
 using Content.Shared._WG.Vehicles.Bison;
 using Content.Shared._WG.Vehicles.Grid.Components;
+using Content.Shared._WG.Warheads;
 using Content.Shared.DoAfter;
+using Content.Shared.DragDrop;
 using Content.Shared.Inventory.VirtualItem;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Popups;
@@ -76,6 +78,8 @@ public sealed partial class CMUCargoVehicleSystem
         if (!_containers.Insert(crate, ent.Comp.CargoContainer!))
             return;
 
+        PlaceOnBed(ent, crate);
+
         _popup.PopupEntity(
             Loc.GetString("cmu-cargo-vehicle-load-finished", ("crate", crate)),
             ent.Owner,
@@ -92,6 +96,7 @@ public sealed partial class CMUCargoVehicleSystem
             return;
 
         _containers.Remove(crate, ent.Comp.CargoContainer!);
+        RemComp<CMUCargoOnBedComponent>(crate);
         var offset = _random.NextAngle().ToWorldVec() * 0.8f;
 
         // Not the user's own coordinates: a user buckled to a chair is parented to it, and the crate would go with the chair.
@@ -181,8 +186,6 @@ public sealed partial class CMUCargoVehicleSystem
                vehicle.Comp.CargoContainer is { ContainedEntity: null } cargoContainer &&
                !TerminatingOrDeleted(crate) &&
                IsLoadableCrate(vehicle, crate) &&
-               TryComp(user, out PullerComponent? puller) &&
-               puller.Pulling == crate &&
                IsNear(user, vehicle.Owner) &&
                IsNear(crate, vehicle.Owner) &&
                _containers.CanInsert(crate, cargoContainer);
@@ -229,9 +232,15 @@ public sealed partial class CMUCargoVehicleSystem
         return true;
     }
 
-    /// <summary>A crate is an entity storage whose prototype is, or inherits from, one of the carrier's crate parents.</summary>
+    /// <summary>Cargo is a loose nuclear warhead, or an entity storage whose prototype is, or inherits from, one of the carrier's crate parents.</summary>
     private bool IsLoadableCrate(Entity<CMUCargoVehicleComponent> vehicle, EntityUid uid)
     {
+        if (Transform(uid).Anchored)
+            return false;
+
+        if (vehicle.Comp.CarriesWarheads && HasComp<WGWarheadComponent>(uid))
+            return true;
+
         if (!HasComp<EntityStorageComponent>(uid) ||
             !TryComp(uid, out MetaDataComponent? meta) ||
             meta.EntityPrototype is not { } prototype)
@@ -255,7 +264,15 @@ public sealed partial class CMUCargoVehicleSystem
             return;
 
         _containers.Remove(crate, vehicle.Comp.CargoContainer);
+        RemComp<CMUCargoOnBedComponent>(crate);
         var coords = Transform(vehicle.Owner).Coordinates;
+
+        // A warhead survives the carrier: it is dropped where the carrier stood.
+        if (HasComp<WGWarheadComponent>(crate))
+        {
+            _transform.SetCoordinates(crate, coords);
+            return;
+        }
 
         if (TryComp(crate, out EntityStorageComponent? storage))
         {
@@ -273,6 +290,38 @@ public sealed partial class CMUCargoVehicleSystem
         }
 
         QueueDel(crate);
+    }
+
+    /// <summary>Dragging a warhead or crate onto the carrier opens the bay and starts loading it.</summary>
+    private void OnVehicleDragDropTarget(Entity<CMUCargoVehicleComponent> ent, ref DragDropTargetEvent args)
+    {
+        if (args.Handled || !IsLoadableCrate(ent, args.Dragged))
+            return;
+
+        args.Handled = true;
+        if (ent.Comp.ArmingMode != CMUCargoVehicleArmingMode.None)
+        {
+            Popup(args.User, "cmu-cargo-vehicle-cargo-armed");
+            return;
+        }
+
+        if (ent.Comp.CargoContainer?.ContainedEntity != null)
+        {
+            Popup(args.User, "cmu-cargo-vehicle-bed-full");
+            return;
+        }
+
+        if (!ent.Comp.BayOpen)
+            ToggleBay(ent, args.User);
+
+        StartLoad(ent, args.User, args.Dragged);
+    }
+
+    /// <summary>Sets loaded cargo on the bed, in view and drawn above the carrier.</summary>
+    private void PlaceOnBed(Entity<CMUCargoVehicleComponent> vehicle, EntityUid cargo)
+    {
+        _transform.SetLocalPositionRotation(cargo, vehicle.Comp.CargoOffset, Angle.Zero);
+        EnsureComp<CMUCargoOnBedComponent>(cargo);
     }
 
     private bool IsNear(EntityUid first, EntityUid second)

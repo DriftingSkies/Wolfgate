@@ -131,6 +131,7 @@ public sealed partial class ContrabandTurnInSystem : SharedContrabandTurnInSyste
     {
         amount = 0;
         toSell = new HashSet<EntityUid>();
+        var street = 0.0; // WOLFGATE(WolfChem): the street value of the narcotics handed in, summed over the pallets
 
         foreach (var (palletUid, _) in GetContrabandPallets(gridUid))
         {
@@ -157,6 +158,7 @@ public sealed partial class ContrabandTurnInSystem : SharedContrabandTurnInSyste
                         continue;
 
                     var value = comp.TurnInValues[console.RewardType];
+                    value = EntityManager.System<Content.Server._WG.WolfChem.Narcotics.WGNarcoticGoodsSystem>().TurnIn(ent, value, ref street, toSell); // WOLFGATE(WolfChem): narcotics hand in for what they hold together
                     // Mono Begin - Accounting for stacks of contraband
                     if (TryComp<StackComponent>(ent, out var stackcomp))
                         value *= stackcomp.Count;

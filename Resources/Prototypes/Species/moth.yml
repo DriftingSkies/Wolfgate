@@ -21,6 +21,7 @@
     Chest: MobMothTorso
     UndergarmentTop: MobHumanoidAnyMarking # WOLFGATE(Genitals): underwear/genital layers ported from HardLight
     UndergarmentBottom: MobHumanoidAnyMarking # WOLFGATE(Genitals): underwear/genital layers ported from HardLight
+    UndergarmentSocks: MobHumanoidAnyMarking # WOLFGATE(Humanoid): allow socks markings for this species sprite set
     Genital: MobHumanoidAnyMarking # WOLFGATE(Genitals): underwear/genital layers ported from HardLight
     Penis: MobHumanoidAnyMarking # WOLFGATE(Genitals): underwear/genital layers ported from HardLight
     Breasts: MobHumanoidAnyMarking # WOLFGATE(Genitals): underwear/genital layers ported from HardLight

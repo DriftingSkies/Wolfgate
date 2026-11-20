@@ -24,6 +24,14 @@ it died in. Every spesos bounty is multiplied by the `population` bracket's `bou
 `nodeVoucher` (node, deployment, dreadnought) or `sweepVoucher` (anything else), unless it still holds one. A crewed ship that stays `interdictDwell` in ADS space has the nearest sweep sent to hold beside it and
 query it.
 
+Emergencies (`.Hijack`) pull sweeps off patrol, past the leash and out of held space: an ADS hull seized by boarders
+goes on the campaign's `Stolen` list and has the three nearest sweeps, at any range, sent to destroy it, made up again
+every 30 s until it is broken or back in ADS hands; an ADS ship fired on, tampered with by a boarder, or with a
+crewman downed by a player has two sent after the attacking vessel, or the nearest ship within 1.5 km taken for the
+boarders', or one sent to hold beside it when there is none. With no sweep in reach the nearest node launches one. A
+hunt ends when its target is out of the fight, docked at a station or back in ADS hands, and one after anything but a
+stolen hull after ten minutes.
+
 Every ADS zone interrogates (`zoneTargets: Interrogate`, `WGEncounterInterrogationSystem` in `Encounters`): each crewed
 player ship in a warning zone is hailed and asked whether it is a threat. Only a ship that answers YES or fires on the
 ADS is warned off and fired on; NO leaves it alone for 15 minutes, no answer for 3. The crews are bare IPC automatons,
@@ -88,6 +96,7 @@ challenge [q r] | dreadnought | pause | resume | clear`, and see every campaign 
 - [`Content.Server/_WG/AdsIncursion/Systems/WGAdsCampaignSystem.Deployments.cs`](Systems/WGAdsCampaignSystem.Deployments.cs)
 - [`Content.Server/_WG/AdsIncursion/Systems/WGAdsCampaignSystem.Disputes.cs`](Systems/WGAdsCampaignSystem.Disputes.cs)
 - [`Content.Server/_WG/AdsIncursion/Systems/WGAdsCampaignSystem.Dreadnought.cs`](Systems/WGAdsCampaignSystem.Dreadnought.cs)
+- [`Content.Server/_WG/AdsIncursion/Systems/WGAdsCampaignSystem.Hijack.cs`](Systems/WGAdsCampaignSystem.Hijack.cs)
 - [`Content.Server/_WG/AdsIncursion/Systems/WGAdsCampaignSystem.Hold.cs`](Systems/WGAdsCampaignSystem.Hold.cs)
 - [`Content.Server/_WG/AdsIncursion/Systems/WGAdsCampaignSystem.Interdicts.cs`](Systems/WGAdsCampaignSystem.Interdicts.cs)
 - [`Content.Server/_WG/AdsIncursion/Systems/WGAdsCampaignSystem.Mining.cs`](Systems/WGAdsCampaignSystem.Mining.cs)
@@ -110,6 +119,7 @@ challenge [q r] | dreadnought | pause | resume | clear`, and see every campaign 
 - [`Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsChallengeTest.cs`](../../../Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsChallengeTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsContentTest.cs`](../../../Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsContentTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsDreadnoughtTest.cs`](../../../Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsDreadnoughtTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsHijackTest.cs`](../../../Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsHijackTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsInterrogationTest.cs`](../../../Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsInterrogationTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsMiningTest.cs`](../../../Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsMiningTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsNodeTest.cs`](../../../Content.IntegrationTests/Tests/_WG/AdsIncursion/WGAdsNodeTest.cs)

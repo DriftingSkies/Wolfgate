@@ -37,17 +37,28 @@ public sealed partial class ModDeviceSelectorSystem : EntitySystem
     [Dependency] private SharedActionsSystem _actions = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
 
-    [SubscribeLocalEvent]
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<ModDeviceSelectorComponent, MapInitEvent>(OnMapInit);
+        SubscribeLocalEvent<ModDeviceSelectorComponent, ModSuitWearerChangedEvent>(OnWearerChanged);
+        SubscribeLocalEvent<ModDeviceSelectorComponent, ModModuleInstalledEvent>(OnInstalled);
+        SubscribeLocalEvent<ModDeviceSelectorComponent, ModModuleRemovedEvent>(OnRemoved);
+        SubscribeLocalEvent<ModDeviceSelectorComponent, ModSelectDeviceActionEvent>(OnSelectAction);
+        SubscribeLocalEvent<ModDeviceSelectorComponent, RadialSelectorSelectedMessage>(OnSelected);
+    }
+
     private void OnMapInit(Entity<ModDeviceSelectorComponent> ent, ref MapInitEvent args)
     {
-        if (!_actionContainer.EnsureAction(ent, ref ent.Comp.SelectActionEntity, ent.Comp.SelectAction))
+        if (!_actionContainer.EnsureAction(ent, ref ent.Comp.SelectActionEntity, out var action,
+                ent.Comp.SelectAction))
             return;
 
-        _actions.SetEntityIcon(ent.Comp.SelectActionEntity.Value, ent.Owner);
+        _actions.SetEntityIcon(ent.Comp.SelectActionEntity.Value, ent.Owner, action);
         Dirty(ent);
     }
 
-    [SubscribeLocalEvent]
     private void OnWearerChanged(Entity<ModDeviceSelectorComponent> ent, ref ModSuitWearerChangedEvent args)
     {
         if (args.OldWearer is { } old)
@@ -57,14 +68,12 @@ public sealed partial class ModDeviceSelectorSystem : EntitySystem
             GrantSelectAction(ent, wearer);
     }
 
-    [SubscribeLocalEvent]
     private void OnInstalled(Entity<ModDeviceSelectorComponent> ent, ref ModModuleInstalledEvent args)
     {
         if (TryComp<ModSuitComponent>(args.Suit, out var suit) && suit.Wearer is { } wearer)
             GrantSelectAction(ent, wearer);
     }
 
-    [SubscribeLocalEvent]
     private void OnRemoved(Entity<ModDeviceSelectorComponent> ent, ref ModModuleRemovedEvent args)
     {
         if (TryGetSelectAction(ent, out var action) && action.Comp.AttachedEntity is { } user)
@@ -76,7 +85,7 @@ public sealed partial class ModDeviceSelectorSystem : EntitySystem
     {
         action = default;
         if (ent.Comp.SelectActionEntity is not { } actionUid
-            || !TryComp<BaseActionComponent>(actionUid, out var actionComp))
+            || !_actions.TryGetActionData(actionUid, out var actionComp, logError: false))
             return false;
 
         action = (actionUid, actionComp);
@@ -103,7 +112,6 @@ public sealed partial class ModDeviceSelectorSystem : EntitySystem
         _actions.RemoveProvidedAction(user, ent, action.Owner);
     }
 
-    [SubscribeLocalEvent]
     private void OnSelectAction(Entity<ModDeviceSelectorComponent> ent, ref ModSelectDeviceActionEvent args)
     {
         if (args.Handled
@@ -120,7 +128,6 @@ public sealed partial class ModDeviceSelectorSystem : EntitySystem
         _ui.OpenUi(ent.Owner, RadialSelectorUiKey.Key, args.Performer);
     }
 
-    [SubscribeLocalEvent]
     private void OnSelected(Entity<ModDeviceSelectorComponent> ent, ref RadialSelectorSelectedMessage args)
     {
         _ui.CloseUi(ent.Owner, RadialSelectorUiKey.Key, args.Actor);

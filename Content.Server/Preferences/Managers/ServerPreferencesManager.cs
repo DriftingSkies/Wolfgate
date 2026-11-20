@@ -147,6 +147,8 @@ namespace Content.Server.Preferences.Managers
             }
             // WOLFGATE END
 
+            var wgSentBalance = (profile as HumanoidCharacterProfile)?.BankBalance; // WOLFGATE(Augments): the balance the client last saw, to tell a stale copy
+
             // Mono
             if (!authoritative && profile is HumanoidCharacterProfile humanoid)
             {
@@ -164,8 +166,8 @@ namespace Content.Server.Preferences.Managers
             var wgAugmentsSettled = false;
             if (!authoritative && profile is HumanoidCharacterProfile wgAugmented)
             {
-                wgAugmentsSettled = SettleAugments(userId, ref wgAugmented,
-                    curPrefs.Characters.GetValueOrDefault(slot) as HumanoidCharacterProfile);
+                wgAugmentsSettled = SettleAugments(userId, slot, ref wgAugmented,
+                    curPrefs.Characters.GetValueOrDefault(slot) as HumanoidCharacterProfile, wgSentBalance);
                 profile = wgAugmented;
             }
             // WOLFGATE END

@@ -35,7 +35,27 @@ public sealed partial class ModGunModulesSystem : VirtualController
     private readonly HashSet<Entity<ProjectileComponent>> _projectiles = new();
     private readonly List<EntityUid> _released = new();
 
-    [SubscribeLocalEvent]
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<ModProjectileDampenerModuleComponent, ModModuleActivatedEvent>(OnDampenerActivated);
+        SubscribeLocalEvent<ModProjectileDampenerModuleComponent, ModModuleDeactivatedEvent>(OnDampenerDeactivated);
+        SubscribeLocalEvent<ModProjectileDampenerModuleComponent, ModSuitWearerChangedEvent>(OnDampenerWearerChanged);
+        SubscribeLocalEvent<ModDampenedProjectileComponent, ProjectileHitEvent>(OnDampenedHit);
+        SubscribeLocalEvent<ModShootingAssistantModuleComponent, MapInitEvent>(OnAssistantMapInit);
+        SubscribeLocalEvent<ModShootingAssistantModuleComponent, ModSuitWearerChangedEvent>(OnAssistantWearerChanged);
+        SubscribeLocalEvent<ModShootingAssistantModuleComponent, ModModuleInstalledEvent>(OnAssistantInstalled);
+        SubscribeLocalEvent<ModShootingAssistantModuleComponent, ModModuleRemovedEvent>(OnAssistantRemoved);
+        SubscribeLocalEvent<ModShootingAssistantModuleComponent, ModModuleActivatedEvent>(OnAssistantActivated);
+        SubscribeLocalEvent<ModShootingAssistantModuleComponent, ModModuleDeactivatedEvent>(OnAssistantDeactivated);
+        SubscribeLocalEvent<ModShootingAssistantModuleComponent, ModShootingModeActionEvent>(OnCycleMode);
+        SubscribeLocalEvent<GunComponent, GunRefreshModifiersEvent>(OnAssistantGunRefresh,
+            after: new[] { typeof(SharedWieldableSystem) });
+        SubscribeLocalEvent<ModShootingAssistantComponent, RefreshMovementSpeedModifiersEvent>(OnAssistantSpeed);
+        SubscribeLocalEvent<PlayerShotProjectileEvent>(OnPlayerShot);
+    }
+
     private void OnDampenerActivated(Entity<ModProjectileDampenerModuleComponent> ent, ref ModModuleActivatedEvent args)
     {
         if (_timing.ApplyingState || args.Wearer is not { } wearer)
@@ -49,13 +69,11 @@ public sealed partial class ModGunModulesSystem : VirtualController
         Dirty(wearer, field);
     }
 
-    [SubscribeLocalEvent]
     private void OnDampenerDeactivated(Entity<ModProjectileDampenerModuleComponent> ent, ref ModModuleDeactivatedEvent args)
     {
         RemoveField(ent);
     }
 
-    [SubscribeLocalEvent]
     private void OnDampenerWearerChanged(Entity<ModProjectileDampenerModuleComponent> ent, ref ModSuitWearerChangedEvent args)
     {
         if (args.OldWearer is { } old && TryComp<ModDampenerFieldComponent>(old, out var field) && field.Module == ent.Owner)
@@ -75,7 +93,6 @@ public sealed partial class ModGunModulesSystem : VirtualController
         }
     }
 
-    [SubscribeLocalEvent]
     private void OnDampenedHit(Entity<ModDampenedProjectileComponent> ent, ref ProjectileHitEvent args)
     {
         args.Damage *= ent.Comp.DamageMultiplier;
@@ -144,13 +161,12 @@ public sealed partial class ModGunModulesSystem : VirtualController
         }
     }
 
-    [SubscribeLocalEvent]
     private void OnAssistantMapInit(Entity<ModShootingAssistantModuleComponent> ent, ref MapInitEvent args)
     {
-        if (!_actionContainer.EnsureAction(ent, ref ent.Comp.CycleActionEntity, ent.Comp.CycleAction))
+        if (!_actionContainer.EnsureAction(ent, ref ent.Comp.CycleActionEntity, out var action, ent.Comp.CycleAction))
             return;
 
-        _actions.SetEntityIcon(ent.Comp.CycleActionEntity.Value, ent.Owner);
+        _actions.SetEntityIcon(ent.Comp.CycleActionEntity.Value, ent.Owner, action);
         Dirty(ent);
     }
 
@@ -159,14 +175,13 @@ public sealed partial class ModGunModulesSystem : VirtualController
     {
         action = default;
         if (ent.Comp.CycleActionEntity is not { } actionUid
-            || !TryComp<BaseActionComponent>(actionUid, out var actionComp))
+            || !_actions.TryGetActionData(actionUid, out var actionComp, logError: false))
             return false;
 
         action = (actionUid, actionComp);
         return true;
     }
 
-    [SubscribeLocalEvent]
     private void OnAssistantWearerChanged(Entity<ModShootingAssistantModuleComponent> ent, ref ModSuitWearerChangedEvent args)
     {
         if (_timing.ApplyingState)
@@ -184,7 +199,6 @@ public sealed partial class ModGunModulesSystem : VirtualController
             _actions.AddAction(wearer, newAction.Owner, ent.Owner, action: newAction.Comp);
     }
 
-    [SubscribeLocalEvent]
     private void OnAssistantInstalled(Entity<ModShootingAssistantModuleComponent> ent, ref ModModuleInstalledEvent args)
     {
         if (!_timing.ApplyingState
@@ -194,7 +208,6 @@ public sealed partial class ModGunModulesSystem : VirtualController
             _actions.AddAction(wearer, action.Owner, ent.Owner, action: action.Comp);
     }
 
-    [SubscribeLocalEvent]
     private void OnAssistantRemoved(Entity<ModShootingAssistantModuleComponent> ent, ref ModModuleRemovedEvent args)
     {
         if (_timing.ApplyingState
@@ -206,21 +219,18 @@ public sealed partial class ModGunModulesSystem : VirtualController
         RemoveAssistant(ent, user);
     }
 
-    [SubscribeLocalEvent]
     private void OnAssistantActivated(Entity<ModShootingAssistantModuleComponent> ent, ref ModModuleActivatedEvent args)
     {
         if (args.Wearer is { } wearer)
             ApplyAssistant(ent, wearer);
     }
 
-    [SubscribeLocalEvent]
     private void OnAssistantDeactivated(Entity<ModShootingAssistantModuleComponent> ent, ref ModModuleDeactivatedEvent args)
     {
         if (args.Wearer is { } wearer)
             RemoveAssistant(ent, wearer);
     }
 
-    [SubscribeLocalEvent]
     private void OnCycleMode(Entity<ModShootingAssistantModuleComponent> ent, ref ModShootingModeActionEvent args)
     {
         if (args.Handled || !_modSuit.TryGetModuleSuit(ent, out var suit) || suit.Comp.Wearer != args.Performer)
@@ -276,7 +286,6 @@ public sealed partial class ModGunModulesSystem : VirtualController
         }
     }
 
-    [SubscribeLocalEvent(after: [typeof(SharedWieldableSystem)])]
     private void OnAssistantGunRefresh(Entity<GunComponent> ent, ref GunRefreshModifiersEvent args)
     {
         if (!TryComp<ModShootingAssistantComponent>(ent.Comp.Holder, out var assistant)
@@ -299,7 +308,6 @@ public sealed partial class ModGunModulesSystem : VirtualController
         }
     }
 
-    [SubscribeLocalEvent]
     private void OnAssistantSpeed(Entity<ModShootingAssistantComponent> ent, ref RefreshMovementSpeedModifiersEvent args)
     {
         if (ent.Comp.Mode != ModShootingMode.Sharpshooter
@@ -309,7 +317,6 @@ public sealed partial class ModGunModulesSystem : VirtualController
         args.ModifySpeed(module.SharpshooterMoveSpeed, module.SharpshooterMoveSpeed);
     }
 
-    [SubscribeLocalEvent]
     private void OnPlayerShot(ref PlayerShotProjectileEvent args)
     {
         if (!TryComp<ModShootingAssistantComponent>(args.User, out var assistant)

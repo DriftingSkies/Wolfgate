@@ -199,7 +199,7 @@ public sealed partial class WGAdsCampaignSystem
             }
 
             comp.LastSeen = _transform.GetWorldPosition(lead.Grid);
-            if (held.Count == 0 || InOrBeside(held, _territory.GridCell(lead.Grid)))
+            if (held.Count == 0 || comp.Hunting || InOrBeside(held, _territory.GridCell(lead.Grid)))
             {
                 comp.OutsideSince = null;
                 continue;

@@ -156,6 +156,8 @@ namespace Content.Client.Input
             aghost.AddFunction(ContentKeyFunctions.TryPullObject);
             aghost.AddFunction(ContentKeyFunctions.MovePulledObject);
             aghost.AddFunction(ContentKeyFunctions.ReleasePulledObject);
+            aghost.AddFunction(Content.Shared._WG.AdminObserver.WGAdminObserverKeys.WGToggleManifest); // WOLFGATE(AdminObserver): the manifest key works in the admin observer
+            aghost.AddFunction(Content.Shared._WG.AdminObserver.WGAdminObserverKeys.WGOpenObserverPanel); // WOLFGATE(AdminObserver): the observer panel key works in the admin observer
 
             var ghost = contexts.New("ghost", "human");
             ghost.AddFunction(EngineKeyFunctions.MoveUp);
@@ -169,6 +171,7 @@ namespace Content.Client.Input
             common.AddFunction(ContentKeyFunctions.OpenTileSpawnWindow);
             common.AddFunction(ContentKeyFunctions.OpenDecalSpawnWindow);
             common.AddFunction(ContentKeyFunctions.OpenAdminMenu);
+            common.AddFunction(Content.Shared._WG.AdminObserver.WGAdminObserverKeys.WGToggleAghost); // WOLFGATE(AdminObserver): the admin ghost key works from any body
             common.AddFunction(ContentKeyFunctions.OpenGuidebook);
 
             // WOLFGATE(Xenonids) START: RMC's resist key and the xenonid input context xeno mobs use

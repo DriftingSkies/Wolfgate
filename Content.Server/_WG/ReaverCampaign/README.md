@@ -79,7 +79,8 @@ preset `WGContestedSector`; `wg.reavers.enabled` forces it on without the rule),
 the storyteller's side are weighted up by tier through `WGEncounterWeightEvent`.
 
 A lead out of the fight (crew dead, disabled, hull shot to pieces, or no one at the helm for two minutes) breaks its
-patrol, raid, convoy, reinforcement or stronghold. A patrol that chases out of held space and the ring round it is
+raid, convoy, reinforcement or stronghold. A patrol instead hands the lead to its wing, which takes the lead's orders,
+and is broken only once no ship of it is left in the fight. A patrol that chases out of held space and the ring round it is
 called back. A hub hit by a player ship recalls the patrols within two cells and, with no reinforcement docked, sends a
 sortie pack after the attacker every five minutes. A cell sector control gives back to a ship that held it is announced;
 a standing hub's own cell is never given back.
@@ -88,7 +89,9 @@ Reaver space has a cost. A crewed ship that stays a minute in held space (`inter
 within three cells, or a fresh one from the nearest stronghold, turned on it to close and attack, and is warned with
 the patrol's bearing and range; the patrol gives up when the ship is disabled or gone, or has been out of held space
 or out of reach for twenty seconds, then flies the rest of its route, and the ship is left alone for `interceptCooldown`.
-How many intercepts run at once is set by tier (`intercepts`). A ship that hits a stronghold or helps kill a patrol is
+How many intercepts run at once is set by tier (`intercepts`). A campaign hull boarders seize goes on the `Stolen` list
+(`.Stolen`): two patrols, at any range, past the leash and even while it is docked at a station, are kept after it, made up every 30 s, until it is broken or
+back in Reaver hands. A ship that hits a stronghold or helps kill a patrol is
 marked for half an hour: raids weigh it three times as heavy and hunt it anywhere on the map.
 
 `WGReaverCampaignSystem` is the driver, in partials by concern: `.Strongholds` (founding, regroup, breaking),
@@ -176,6 +179,7 @@ Ship raids favour laden ships (up to three times the weight for a hold worth 100
 - [`Content.Server/_WG/ReaverCampaign/Systems/WGReaverCampaignSystem.Retakes.cs`](Systems/WGReaverCampaignSystem.Retakes.cs)
 - [`Content.Server/_WG/ReaverCampaign/Systems/WGReaverCampaignSystem.Rewards.cs`](Systems/WGReaverCampaignSystem.Rewards.cs)
 - [`Content.Server/_WG/ReaverCampaign/Systems/WGReaverCampaignSystem.Spread.cs`](Systems/WGReaverCampaignSystem.Spread.cs)
+- [`Content.Server/_WG/ReaverCampaign/Systems/WGReaverCampaignSystem.Stolen.cs`](Systems/WGReaverCampaignSystem.Stolen.cs)
 - [`Content.Server/_WG/ReaverCampaign/Systems/WGReaverCampaignSystem.Strongholds.cs`](Systems/WGReaverCampaignSystem.Strongholds.cs)
 - [`Content.Server/_WG/ReaverCampaign/Systems/WGReaverCampaignSystem.Threat.cs`](Systems/WGReaverCampaignSystem.Threat.cs)
 

@@ -46,6 +46,7 @@ namespace Content.Shared.Humanoid
         Fire,
         LArmExtension, // Frontier: a species-specific extension layer, e.g. for harpy wings
         RArmExtension, // Frontier: a species-specific extension layer, e.g. for harpy wings
+        UndergarmentSocks, // WOLFGATE(Humanoid): add a character-creator layer for socks
 
     }
 }

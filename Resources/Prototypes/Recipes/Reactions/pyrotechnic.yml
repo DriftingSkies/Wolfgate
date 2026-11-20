@@ -40,12 +40,22 @@
       amount: 3
   effects:
   - !type:ExplosionReactionEffect
+    # WOLFGATE START: only a batch overheated past 400 K explodes, so a controlled one can be made
+    conditions:
+    - !type:SolutionTemperature
+      min: 400
+    # WOLFGATE END
     explosionType: Default # 15 damage per intensity.
     maxIntensity: 200
     intensityPerUnit: 5
     intensitySlope: 5
     maxTotalIntensity: 200
   - !type:PopupMessage
+    # WOLFGATE START: the explosion popup shows only when it explodes
+    conditions:
+    - !type:SolutionTemperature
+      min: 400
+    # WOLFGATE END
     messages: [ "clf3-explosion" ]
     type: Pvs
     visualType: LargeCaution

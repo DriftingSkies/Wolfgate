@@ -109,6 +109,12 @@ public sealed partial class WGCrewWeaponSystem
     }
 
     /// <summary>Only living hostile targets in the crewman's current vision justify drawing or reloading.</summary>
+    /// <summary>Drops a crewman's cached threat check, so the next one looks afresh.</summary>
+    public void ForgetThreat(EntityUid uid)
+    {
+        _threats.Remove(uid);
+    }
+
     public bool HasLiveThreat(EntityUid uid)
     {
         var now = _timing.CurTime;

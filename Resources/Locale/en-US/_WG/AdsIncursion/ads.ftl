@@ -156,6 +156,12 @@ wg-ads-sweep-destroyed-held = ADS sweep destroyed at {$callsign}. { $paid ->
 # Said to a ship the ADS sends an interdictor to query, and on the common channel
 wg-ads-interdict-warning = DISARMAMENT DIRECTIVE. ADS interdictor closing on {$ship} to query it, bearing {$bearing}, {$range} km.
 
+# Said to a ship the ADS sends sweeps to destroy: one that attacked, boarded or seized an ADS ship
+wg-ads-hunt-warning = TERMINATION DIRECTIVE. {$ship} has attacked ADS assets. Sweep inbound to destroy it, bearing {$bearing}, {$range} km.
+
+# Said aboard a hull taken from the ADS, when a sweep is sent to destroy it
+wg-ads-stolen-warning = RECLAMATION DIRECTIVE. {$ship} is stolen ADS property. Sweep inbound to destroy it, bearing {$bearing}, {$range} km.
+
 # Said to a ship mining a rock in held space, then to one that went on mining
 wg-ads-mining-warning = DIRECTIVE. {$ship}, these resources are protected. Cease mining or your vessel will be logged as a threat.
 wg-ads-mining-declared = THREAT LOGGED. {$ship} ignored a cease-mining directive and will be made combat-ineffective.

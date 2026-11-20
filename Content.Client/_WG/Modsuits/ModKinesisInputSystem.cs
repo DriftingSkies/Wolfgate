@@ -1,6 +1,5 @@
 using System.Numerics;
 using Content.Client.Construction;
-using Content.Client.Graphics;
 using Content.Client.Interaction;
 using Content.Client.UserInterface.Systems.Actions;
 using Content.Shared._WG.Modsuits.Modules;
@@ -14,7 +13,6 @@ using Robust.Shared.Input;
 using Robust.Shared.Input.Binding;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
-using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.Client._WG.Modsuits;
@@ -25,7 +23,6 @@ public sealed partial class ModKinesisInputSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IInputManager _input = default!;
     [Dependency] private IPlayerManager _player = default!;
-    [Dependency] private IPrototypeManager _prototype = default!;
     [Dependency] private IUserInterfaceManager _ui = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SpriteSystem _sprite = default!;
@@ -33,15 +30,13 @@ public sealed partial class ModKinesisInputSystem : EntitySystem
 
     private const float CursorTolerance = 0.1f;
 
-    private const string OutlineShaderId = "mod-kinesis-outline";
-    private static readonly ProtoId<ShaderPrototype> OutlineShader = "SelectionOutlineInrange";
-    private static readonly Color OutlineColor = Color.FromHex("#9ad8ffcc");
+    private static readonly Color HighlightColor = Color.FromHex("#9ad8ff");
+    private const float HighlightBlend = 0.5f;
 
     private bool _holding;
     private Vector2? _lastCursor;
-    private readonly HashSet<EntityUid> _outlined = new();
+    private readonly Dictionary<EntityUid, Color> _highlighted = new();
     private readonly List<EntityUid> _stale = new();
-    private ShaderInstance? _outlineShader;
 
     public override void Initialize()
     {
@@ -131,16 +126,16 @@ public sealed partial class ModKinesisInputSystem : EntitySystem
         var query = EntityQueryEnumerator<ModKinesisHeldComponent, SpriteComponent>();
         while (query.MoveNext(out var uid, out _, out var sprite))
         {
-            if (_outlined.Contains(uid))
+            if (_highlighted.ContainsKey(uid))
                 continue;
 
-            _outlined.Add(uid);
-            _outlineShader ??= CreateOutlineShader();
-            _sprite.SetPostShader((uid, sprite), new SpriteComponent.PostShaderArgs(OutlineShaderId, _outlineShader));
+            _highlighted[uid] = sprite.Color;
+            var tint = Color.InterpolateBetween(sprite.Color, HighlightColor, HighlightBlend);
+            _sprite.SetColor((uid, sprite), tint.WithAlpha(sprite.Color.A));
         }
 
         _stale.Clear();
-        foreach (var uid in _outlined)
+        foreach (var uid in _highlighted.Keys)
         {
             if (!HasComp<ModKinesisHeldComponent>(uid))
                 _stale.Add(uid);
@@ -148,16 +143,10 @@ public sealed partial class ModKinesisInputSystem : EntitySystem
 
         foreach (var uid in _stale)
         {
-            _outlined.Remove(uid);
+            var color = _highlighted[uid];
+            _highlighted.Remove(uid);
             if (_spriteQuery.TryComp(uid, out var sprite))
-                _sprite.RemovePostShader((uid, sprite), OutlineShaderId);
+                _sprite.SetColor((uid, sprite), color);
         }
-    }
-
-    private ShaderInstance CreateOutlineShader()
-    {
-        var shader = _prototype.Index(OutlineShader).InstanceUnique();
-        shader.SetParameter("outline_color", OutlineColor);
-        return shader;
     }
 }

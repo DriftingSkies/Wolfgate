@@ -1,0 +1,26 @@
+# Avatars: the presets an admin observer manifests as.
+wg-observer-kind-character = Character
+wg-observer-kind-ghost = Ghost
+wg-observer-kind-mob = Mob
+wg-observer-kind-object = Object
+wg-observer-preset-default-tag = Default
+wg-observer-preset-delete = Delete
+wg-observer-preset-description-placeholder = What players read when they examine you
+wg-observer-preset-dress-avatar = Dress avatar
+wg-observer-preset-edit = Edit
+wg-observer-preset-name-placeholder = Name players will see
+wg-observer-preset-new = New avatar
+wg-observer-preset-no-characters = You have no saved characters to use.
+wg-observer-preset-outfit-saved = Outfit saved.
+wg-observer-preset-pick-character = Choose a character
+wg-observer-preset-pick-outfit = Choose an outfit
+wg-observer-preset-pick-prototype = Choose what to look like
+wg-observer-preset-prototype-invalid = "{$id}" cannot be used as an avatar.
+wg-observer-preset-prototype-static-note = This copies the default look. It will not animate or change state.
+wg-observer-preset-save-outfit = Save outfit to this avatar
+wg-observer-preset-set-default = Make default
+wg-observer-preset-stock-bluespace = Bluespace Technician
+wg-observer-preset-stock-ghost = Ghost
+wg-observer-preset-stock-own = My character
+wg-observer-preset-stock-subspace = Subspace Technician
+wg-observer-preset-pick-outfit-confirm = Use this outfit

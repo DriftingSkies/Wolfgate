@@ -1,6 +1,6 @@
-# The Bison remote cargo carrier from Colonial Marines Universe. It has no interior and no hardpoints: it is its own
-# operator, and whoever holds its paired controller drives it by visiting it. Names and descriptions are in
-# Resources/Locale/en-US/_WG/Vehicles/bison.ftl.
+# The Bison remote cargo carrier from Colonial Marines Universe. It has no hardpoints. It is its own operator, so whoever
+# holds its paired controller drives it by visiting it; a driver in its van cab takes over until they get up. Names and
+# descriptions are in Resources/Locale/en-US/_WG/Vehicles/bison.ftl.
 - type: entity
   id: CMUCargoCarrier
   categories: [ WGVehicles ]
@@ -15,12 +15,26 @@
     price: 5000
   - type: ContainerContainer
     containers:
+      # The crate or warhead rides in view on the bed (CMUCargoVehicle.cargoOffset).
       cmu-cargo-crate: !type:ContainerSlot
         ent: null
-        showEnts: False
-        occludes: True
+        showEnts: True
+        occludes: False
   - type: RMCVehicle
     movementKind: Grid
+  # The van's cab, with doors on both sides.
+  - type: VehicleEnter
+    interiorPath: /Maps/_WG/Vehicles/Interiors/van_interior.yml
+    enterDoAfter: 1.0
+    exitDoAfter: 1.0
+    maxPassengers: 4
+    entryPoints:
+    - offset: 0.75,-0.3
+      radius: 0.6
+      interiorCoords: 3.5,-0.34
+    - offset: -0.75,-0.3
+      radius: 0.6
+      interiorCoords: 3.25,-1
   - type: LagCompensation
   - type: Clickable
   - type: Physics

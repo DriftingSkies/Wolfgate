@@ -95,7 +95,9 @@ public sealed partial class ModSuitSystem
         var proto = MetaData(module).EntityPrototype?.ID;
         foreach (var installed in ent.Comp.ModulesContainer.ContainedEntities)
         {
-            if (proto != null && MetaData(installed).EntityPrototype?.ID == proto)
+            if (!module.Comp.AllowDuplicates
+                && proto != null
+                && MetaData(installed).EntityPrototype?.ID == proto)
             {
                 reason = "modsuit-module-duplicate";
                 return false;

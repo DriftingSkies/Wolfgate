@@ -28,6 +28,7 @@ and `InRoundCreatorWindow`, whose close button asks about unsaved edits first.
   - IOnStateExited\<GameplayState> added
   - slot picked in the in-round creator; picking there must not select the character
   - holds the creator during a round
+  - the creator open over a round shows what the server changed
   - the creator opened from the game menu, over the round
   - shows the picked slot, which in a round need not be the selected one
   - in a round the creator lives in its own window

@@ -20,6 +20,12 @@ public sealed partial class ShipShieldsSystem
     // The surface covers one tick of travel below the default projectile raycast cutoff.
     private const float ShieldSurfaceRadius = 0.65f;
 
+    /// <summary>How far, in metres, a shield may trail its ship before it is moved.</summary>
+    private const float ShieldFollowSlack = 0.01f;
+
+    /// <summary>How far a shield may trail its ship's turn before it is moved: about 1 cm at a 100 m hull edge.</summary>
+    private const double ShieldFollowSlackRadians = 0.0001;
+
     [Dependency] private SharedMapSystem _wgShieldMap = default!;
     private readonly HashSet<EntityUid> _wgChangedShieldHulls = new();
     private float _wgHullAccumulator;
@@ -91,7 +97,13 @@ public sealed partial class ShipShieldsSystem
         // One call, so a ship's move costs the shield one move event and one lookup update rather than two.
         var coordinates = _transformSystem.ToCoordinates(origin);
         var rotation = _transformSystem.GetWorldRotation(grid) - _transformSystem.GetWorldRotation(coordinates.EntityId);
-        _transformSystem.SetCoordinates(shield, Transform(shield), coordinates, rotation);
+        var shieldTransform = Transform(shield);
+        // Moving the shield reinserts every perimeter fixture; a drift this small isn't worth it, and the gap never grows past it.
+        if (shieldTransform.ParentUid == coordinates.EntityId &&
+            (shieldTransform.LocalPosition - coordinates.Position).LengthSquared() < ShieldFollowSlack * ShieldFollowSlack &&
+            Math.Abs(Angle.ShortestDistance(shieldTransform.LocalRotation, rotation).Theta) < ShieldFollowSlackRadians)
+            return;
+        _transformSystem.SetCoordinates(shield, shieldTransform, coordinates, rotation);
     }
 
     /// <summary>Passes shots from the protected ship, other protected autonomous fire and rounds a deflector already slowed.</summary>

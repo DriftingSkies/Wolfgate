@@ -1,0 +1,22 @@
+# Name and description come from Fluent (ent-WGActionManifest).
+- type: entity
+  id: WGActionManifest
+  components:
+  - type: InstantAction
+    icon: Interface/Actions/eyeclose.png
+    iconOn: Interface/Actions/eyeopen.png
+    keywords: [ "admin", "observer", "avatar", "visible" ]
+    priority: -3
+    checkCanInteract: false
+    event: !type:WGToggleManifestEvent
+
+# Name and description come from Fluent (ent-WGActionObserverPanel).
+- type: entity
+  id: WGActionObserverPanel
+  components:
+  - type: InstantAction
+    icon: Interface/Actions/eyeopen.png
+    keywords: [ "admin", "observer", "panel", "avatar", "kit" ]
+    priority: -2
+    checkCanInteract: false
+    event: !type:WGOpenObserverPanelEvent

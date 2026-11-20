@@ -49370,15 +49370,46 @@ entities:
         172:
         - - Pressed
           - DoorBolt
-- proto: LockableButtonBrig
+- proto: LockableButtonTSFMC
   entities:
+  - uid: 7359
+    components:
+    - type: Transform
+      parent: 1
+      pos: 9.5,17.5
+    - type: DeviceLinkSource
+      linkedPorts:
+        1243:
+        - - Pressed
+          - Toggle
+        1244:
+        - - Pressed
+          - Toggle
+        1245:
+        - - Pressed
+          - Toggle
+  - uid: 7360
+    components:
+    - type: Transform
+      parent: 1
+      rot: 3.141592653589793 rad
+      pos: 7.5,13.5
+    - type: DeviceLinkSource
+      linkedPorts:
+        1245:
+        - - Pressed
+          - Toggle
+        1244:
+        - - Pressed
+          - Toggle
+        1243:
+        - - Pressed
+          - Toggle
   - uid: 7354
     components:
     - type: Transform
       parent: 1
       pos: -8.237229,13.5
-- proto: LockableButtonSecurity
-  entities:
   - uid: 7355
     components:
     - type: Transform
@@ -49443,41 +49474,6 @@ entities:
         - - Pressed
           - Toggle
         1240:
-        - - Pressed
-          - Toggle
-- proto: LockableButtonTSFMC
-  entities:
-  - uid: 7359
-    components:
-    - type: Transform
-      parent: 1
-      pos: 9.5,17.5
-    - type: DeviceLinkSource
-      linkedPorts:
-        1243:
-        - - Pressed
-          - Toggle
-        1244:
-        - - Pressed
-          - Toggle
-        1245:
-        - - Pressed
-          - Toggle
-  - uid: 7360
-    components:
-    - type: Transform
-      parent: 1
-      rot: 3.141592653589793 rad
-      pos: 7.5,13.5
-    - type: DeviceLinkSource
-      linkedPorts:
-        1245:
-        - - Pressed
-          - Toggle
-        1244:
-        - - Pressed
-          - Toggle
-        1243:
         - - Pressed
           - Toggle
 - proto: LockerAtmosphericsFilled

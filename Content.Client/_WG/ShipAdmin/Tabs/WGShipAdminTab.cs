@@ -68,6 +68,11 @@ public abstract class WGShipAdminTab : ScrollContainer
     {
     }
 
+    /// <summary>Called with the player companies each time the list is sent, for tabs that pick one.</summary>
+    public virtual void SetCompanies(List<WGShipAdminCompany> companies)
+    {
+    }
+
     protected void Send(EuiMessageBase message)
     {
         OnMessage?.Invoke(message);

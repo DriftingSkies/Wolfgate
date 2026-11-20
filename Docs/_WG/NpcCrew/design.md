@@ -344,7 +344,7 @@ sealed and custom lists continue to enforce their normal rules.
 
 ### 8. Crew setup tool (admin)
 
-The test and setup surface: a **Crew Setup** window in the Wolfgate admin tab, next to Spawn Vessel and ERT Builder and
+The test and setup surface: a **Crew Setup** window in the Wolfgate admin tab, next to ERT Builder and
 built the same way (a `DefaultWindow` on the client, one request event to an admin-checked server system, a result
 event back). It is the last compartment to build, because it only drives the others, but its backend is not GUI code:
 the planner that decides where crew go is `WGCrewPlanner`, a server class the setup tool, the `wg_crew` command and

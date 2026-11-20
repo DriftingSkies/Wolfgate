@@ -21,7 +21,7 @@
   gasMolesVisible: 2
   color: 8b0000
   reagent: Healium
-  pricePerMole: 18 #Mono 3<18
+  pricePerMole: 6 # WOLFGATE: healium is a small premium on the frezon it takes, 18 -> 6 (Mono 3<18)
 
 - type: gas
   id: 11

@@ -81,6 +81,13 @@
   tolerance: 30
   drift: 8
 
+# Grades the upstream Desoxyephedrine reaction (370 K and up), so a careless cook sells for less.
+- type: wgReactionPurity
+  id: Desoxyephedrine
+  optimalTemp: 385
+  tolerance: 30
+  drift: 8
+
 # Chilled Desoxyephedrine sets into crystal shards, one per 5 u, once acetone touches it. The acetone is a catalyst,
 # like the water for resin.
 - type: reaction

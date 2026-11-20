@@ -271,6 +271,9 @@ public sealed partial class WGAdsCampaignSystem
     {
         if (IsDreadnoughtGrid(args.AttackerGrid))
             _reavers.RecordCampaignHit(args.Grid, args.AttackerGrid);
+
+        if (_alerts.IsAttacker(args.Grid, args.AttackerGrid))
+            Emergency(args.Grid, args.AttackerGrid);
     }
 
     /// <summary>A dreadnought's ship weapon hit on a Reaver hub's shield counts as an attack on the stronghold.</summary>

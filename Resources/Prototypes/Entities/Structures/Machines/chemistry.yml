@@ -32,11 +32,26 @@
       map: [ "enum.ThermobathVisuals.HasBeakerAndCooling" ]
     - state: lid_hot
       map: [ "enum.ThermobathVisuals.HasBeakerAndHeating" ]
+  # WOLFGATE: a tabletop machine's fixture, so it anchors on tables and counters like the grinder
+  - type: Physics
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.3,-0.3,0.3,0.3"
+        density: 190
+        mask:
+        - TabletopMachineMask
+        layer:
+        - TabletopMachineLayer
+
   - type: Thermobath
   - type: Thermoregulator
     heatingPower: 1200
     coolingPower: 400
     maxTemperature: 1200
+    minTemperature: 200 # WOLFGATE(WolfChem): cold enough for crystal shards and opium resin
   - type: ContainerContainer
     containers:
       beakerSlot: !type:ContainerSlot

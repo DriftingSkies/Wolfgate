@@ -54,6 +54,7 @@ public sealed partial class HealthAnalyzerSystem
             BuildVitalDamage(target))
         {
             Conditions = _wgConditions.Build(target),
+            Augments = _wgAugments.ReadInstalled(target),
         };
     }
 }

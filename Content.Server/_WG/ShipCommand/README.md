@@ -214,7 +214,8 @@ berth cranes that take no part upgrades.
 ## Unrestricted FTL
 
 A grid with `WGFtlUnrestrictedComponent` (a vessel adds it through its prototype's
-`addComponents`) jumps with other ships' helms close by, past the server's FTL mass limit and into exclusion zones,
+`addComponents`) jumps with other ships' helms close by, past the server's FTL mass limit, into exclusion zones and out of and into the Lattice's outer bands where drives die
+(`IgnoreLattice`, read by the Lattice's `IgnoresLattice`; a Scion aboard still keeps it out of a sealed hex),
 each switchable on the component. The checks are marked one-line guards in `ShuttleConsoleSystem.FTL.cs`,
 `ShuttleSystem.FasterThanLight.cs` and `SharedShuttleSystem.cs`, calling the helpers in
 `SharedShuttleSystem.ShipCommand.cs`. `WGFtlDriveUnrestricted` is a heavy bluespace core with a range past the

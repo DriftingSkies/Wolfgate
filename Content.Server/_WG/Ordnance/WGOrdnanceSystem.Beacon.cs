@@ -145,6 +145,7 @@ public sealed partial class WGOrdnanceSystem
         ent.Comp.Rumbled = false;
         ent.Comp.PlantedBy = user;
         _transform.AnchorEntity(ent.Owner);
+        _ghostNotice.Notify(ent, Content.Server._WG.Ghost.GhostNoticeKind.Nuclear, Loc.GetString("wg-ghost-notice-beacon"), ent.Comp.Delay);
     }
 
     private void UpdateBeacons()

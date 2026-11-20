@@ -1,7 +1,9 @@
 using System.Globalization;
+using Content.Shared._Mono.Company;
 using Content.Shared._WG.ShipAdmin;
 using Content.Shared.Administration;
 using Robust.Client.UserInterface.Controls;
+using Robust.Shared.Prototypes;
 
 namespace Content.Client._WG.ShipAdmin.Tabs;
 
@@ -79,7 +81,12 @@ public sealed class WGShipAdminOverviewTab : WGShipAdminTab
             _lines.AddChild(Line(Loc.GetString("wg-ship-admin-overview-company"), detail.Company));
 
         if (detail.Faction.Length > 0)
-            _lines.AddChild(Line(Loc.GetString("wg-ship-admin-overview-faction"), detail.Faction));
+        {
+            var faction = IoCManager.Resolve<IPrototypeManager>().TryIndex<CompanyPrototype>(detail.Faction, out var proto)
+                ? Loc.GetString(proto.Name)
+                : detail.Faction;
+            _lines.AddChild(Line(Loc.GetString("wg-ship-admin-overview-faction"), faction));
+        }
 
         _lines.AddChild(Heading(Loc.GetString("wg-ship-admin-overview-aboard", ("count", detail.OccupantCount))));
         foreach (var occupant in detail.Occupants)

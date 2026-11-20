@@ -160,7 +160,7 @@
       key: WGCrewPost
     - !type:CoordinatesNotInRangePrecondition
       targetKey: WGCrewPost
-      rangeKey: WGCrewPostRange
+      rangeKey: WGCrewPostLeaveRange
     tasks:
     - !type:HTNPrimitiveTask
       operator: !type:MoveToOperator
@@ -255,7 +255,7 @@
       key: WGCrewPost
     - !type:CoordinatesNotInRangePrecondition
       targetKey: WGCrewPost
-      rangeKey: WGCrewPostRange
+      rangeKey: WGCrewPostLeaveRange
     tasks:
     - !type:HTNPrimitiveTask
       operator: !type:MoveToOperator

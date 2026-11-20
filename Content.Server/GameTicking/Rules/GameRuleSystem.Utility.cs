@@ -30,6 +30,11 @@ public abstract partial class GameRuleSystem<T> where T: IComponent
     /// </summary>
     protected bool TryGetRandomStation([NotNullWhen(true)] out EntityUid? station, Func<EntityUid, bool>? filter = null)
     {
+        // WOLFGATE(ShipAdmin) START: an event staff aimed at one station goes there or nowhere
+        if (WgAimedStation(filter, out station))
+            return station != null;
+        // WOLFGATE END
+
         var stations = new ValueList<EntityUid>(Count<StationEventEligibleComponent>());
 
         filter ??= _ => true;
@@ -59,6 +64,14 @@ public abstract partial class GameRuleSystem<T> where T: IComponent
     /// </summary>
     protected bool TryGetRandomStations(int min, int max, [NotNullWhen(true)] out List<EntityUid>? station, Func<EntityUid, bool>? filter = null)
     {
+        // WOLFGATE(ShipAdmin) START: an event staff aimed at one station goes there or nowhere
+        if (WgAimedStation(filter, out var aimed))
+        {
+            station = aimed is { } only ? new List<EntityUid> { only } : null;
+            return station != null;
+        }
+        // WOLFGATE END
+
         var stations = new ValueList<EntityUid>(Count<StationEventEligibleComponent>());
 
         filter ??= _ => true;
@@ -102,6 +115,10 @@ public abstract partial class GameRuleSystem<T> where T: IComponent
         targetStation = EntityUid.Invalid;
         targetGrid = EntityUid.Invalid;
         targetCoords = EntityCoordinates.Invalid;
+        // WOLFGATE(ShipAdmin) START: an event staff aimed at one ship lands on that ship
+        if (WgAimedTile(out var aimedFound, out tile, out targetStation, out targetGrid, out targetCoords))
+            return aimedFound && targetStation != null;
+        // WOLFGATE END
         if (TryGetRandomStation(out targetStation))
         {
             return TryFindRandomTileOnStation((targetStation.Value, Comp<StationDataComponent>(targetStation.Value)),

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Cargo trolley from DS13 at https://github.com/DeadSpace13/DS13-2.0/blob/master/icons/obj/vehicles.dmi, originally Daedalus Dock (Adds Trolleys to Cargo, DS13-2.0#131)",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "trolley",
+      "directions": 4
+    },
+    {
+      "name": "trolley_handlebars",
+      "directions": 4
+    }
+  ]
+}

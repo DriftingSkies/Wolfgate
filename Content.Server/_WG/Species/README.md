@@ -78,6 +78,7 @@ it back up to Okay after any drain, a Kelotane overdose included, before their d
 
 ### Client
 
+- [`Content.Client/_WG/Species/ClientClothingSystem.SpeciesStates.cs`](../../../Content.Client/_WG/Species/ClientClothingSystem.SpeciesStates.cs)
 - [`Content.Client/_WG/Species/HumanoidAppearanceSystem.MismatchedParts.cs`](../../../Content.Client/_WG/Species/HumanoidAppearanceSystem.MismatchedParts.cs)
 - [`Content.Client/_WG/Species/HumanoidProfileEditor.MismatchedParts.cs`](../../../Content.Client/_WG/Species/HumanoidProfileEditor.MismatchedParts.cs)
 
@@ -199,6 +200,7 @@ it back up to Okay after any drain, a Kelotane overdose included, before their d
   - hoisted out of the loop
   - emote filter rewritten to match the server
 - [`Content.Client/Clothing/ClientClothingSystem.cs`](../../../Content.Client/Clothing/ClientClothingSystem.cs)
+  - a missing species state falls back to the plain one
   - explicit clothingVisuals layers pick their species state too, as in HardLight
   - check the state actually drawn, which may now be the species one
 - [`Content.Client/Humanoid/HumanoidAppearanceSystem.cs`](../../../Content.Client/Humanoid/HumanoidAppearanceSystem.cs)

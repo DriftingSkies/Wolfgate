@@ -4,6 +4,7 @@ using Content.Server._WG.Lattice;
 using Content.Server.Shuttles.Systems;
 using Content.Shared._WG.DroneRings;
 using Content.Shared._WG.Lattice;
+using Content.Shared._WG.ShipCommand;
 using Content.Shared._WG.Shuttles;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -37,9 +38,18 @@ public sealed class WGLatticeFtlTest
             Assert.That(shuttles.CanFTL(map.Grid, out var reason), Is.False, "a ship jumped out of Untethered space.");
             Assert.That(reason, Is.EqualTo(Robust.Shared.Localization.Loc.GetString("wg-lattice-ftl-dead")), "the ship was refused for something other than the Lattice.");
 
+            // With a drive aboard, the band is what stops it.
+            entities.SpawnEntity("WGFtlDriveUnrestricted", map.GridCoords);
             var drift = entities.EnsureComponent<WGDriftComponent>(map.Grid);
             drift.NoFtl = true;
-            Assert.That(shuttles.GetFtlDriveStatus(map.Grid), Is.AnyOf(WGFtlDriveStatus.Missing, WGFtlDriveStatus.Unmoored));
+            Assert.That(shuttles.GetFtlDriveStatus(map.Grid), Is.EqualTo(WGFtlDriveStatus.Unmoored));
+
+            // An admin vessel's unrestricted FTL jumps out of the outer bands (the Lupercal, v0.30): its drive answers to
+            // power alone.
+            entities.AddComponent<WGFtlUnrestrictedComponent>(map.Grid);
+            Assert.That(lattice.IgnoresLattice(map.Grid), Is.True);
+            Assert.That(shuttles.CanFTL(map.Grid, out var unrestricted), Is.True, $"an unrestricted ship was refused: {unrestricted}");
+            Assert.That(shuttles.GetFtlDriveStatus(map.Grid), Is.AnyOf(WGFtlDriveStatus.Ready, WGFtlDriveStatus.Unpowered));
         });
 
         await pair.CleanReturnAsync();

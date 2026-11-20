@@ -1,0 +1,14 @@
+# Economy goods the Mono packs list but never got a recipe for.
+
+# Super components: the T2 brick's recipe a tier up. There is no T3 matter bin to press, so two T2 bins stand in.
+- type: latheRecipe
+  id: WGComponentBrickEconomy3
+  result: ComponentBrickEconomy3
+  categories:
+  - Components
+  completetime: 25
+  entities:
+    MicroprocessorEconomy3: 1
+    ArmorPlateEconomy3: 1
+    MatterBinEconomy2: 2
+    ComponentBrickEconomy2: 1

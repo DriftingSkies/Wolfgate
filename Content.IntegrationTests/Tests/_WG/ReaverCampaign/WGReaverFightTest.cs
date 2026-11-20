@@ -106,9 +106,12 @@ public sealed class WGReaverFightTest : WGReaverTestBase
         maps.SetTiles((grid, gridComp), tiles.Take(tiles.Count / 2 + 2).Select(tile => (tile.GridIndices, Tile.Empty)).ToList());
     }
 
-    /// <summary>A patrol whose lead has no crew left is broken even with its wing alive: its cell is freed, its bounty paid and the wing sent home.</summary>
+    /// <summary>
+    /// A patrol whose lead has no crew left hands the lead to its wing, which flies on with its orders. Once the wing is
+    /// lost too the patrol is broken: its cell is freed and its bounty paid.
+    /// </summary>
     [Test]
-    public async Task PatrolWhoseLeadIsLostIsBrokenAndPaid()
+    public async Task PatrolWhoseLeadIsLostFliesOnUnderItsWing()
     {
         await StartCampaign();
         var neighbour = Home.Neighbour(1);
@@ -127,20 +130,33 @@ public sealed class WGReaverFightTest : WGReaverTestBase
             campaign.CheckPatrols();
             Assert.That(SEntMan.GetComponent<WGEncounterComponent>(patrol).Resolution, Is.Null, "Both ships are in the fight.");
 
+            var waypoint = CentreOf(neighbour) + new Vector2(300f, 0f);
+            Assert.That(Server.System<WGEncounterSystem>().SetOrders(patrol, "lead", new List<WGCrewObjective>
+            {
+                new() { Kind = WGCrewObjectiveKind.GoTo, Position = waypoint, Range = 50f },
+            }), Is.True);
+
             KillCrew(patrol, "lead");
             campaign.CheckPatrols();
             var encounter = SEntMan.GetComponent<WGEncounterComponent>(patrol);
-            Assert.That(encounter.Resolution, Is.EqualTo(WGEncounterResolution.Destroyed), "The wing alone does not keep it going.");
+            Assert.That(encounter.Resolution, Is.Null, "The wing keeps the patrol going.");
+            Assert.That(SEntMan.GetComponent<WGReaverPatrolComponent>(patrol).Lead, Is.EqualTo("wing"), "The wing takes the lead.");
+            Assert.That(Orders(patrol, "wing").Select(order => order.Position), Has.Member(waypoint),
+                "It flies the lead's own remaining orders.");
+
+            Place(Hull(patrol, "wing"), CentreOf(neighbour));
+            KillCrew(patrol, "wing");
+            campaign.CheckPatrols();
+            Assert.That(encounter.Resolution, Is.EqualTo(WGEncounterResolution.Destroyed), "With no ship left in the fight it is broken.");
             Assert.That(Server.System<WGSectorTerritorySystem>().Owner(MapData.MapId, neighbour), Is.Null, "The cell it was lost in is clear.");
             Assert.That(campaign.State()!.PatrolsDestroyed, Is.EqualTo(1));
             Assert.That(Balance() - before, Is.EqualTo(PatrolBounty));
-            Assert.That(Orders(patrol, "wing").Select(order => order.Kind), Is.EqualTo(new[] { WGCrewObjectiveKind.GoTo }), "The wing is sent home.");
         });
     }
 
-    /// <summary>A lead that lost most of its hull is out of the fight although its crew live, and its zones leave the radar while its wing's stay.</summary>
+    /// <summary>A lead that lost most of its hull is out of the fight although its crew live, its zones leave the radar while its wing's stay, and the wing takes the lead.</summary>
     [Test]
-    public async Task LeadShotToPiecesIsBrokenAndLeavesTheRadarZones()
+    public async Task LeadShotToPiecesIsOutAndLeavesTheRadarZones()
     {
         await StartCampaign();
         EntityUid patrol = default, stronghold = default;
@@ -173,12 +189,13 @@ public sealed class WGReaverFightTest : WGReaverTestBase
         Assert.That(markers.Single(marker => marker.Grid == lead).WarnRange, Is.Zero, "A wreck draws no zones.");
         Assert.That(markers.Single(marker => marker.Grid == wing).WarnRange, Is.EqualTo(900f), "Its wing still does.");
 
-        // As a campaign patrol it is broken at once.
+        // As a campaign patrol its wing takes the lead at once.
         await Server.WaitAssertion(() =>
         {
             MakePatrol(patrol, stronghold, CentreOf(Home));
             Server.System<WGReaverCampaignSystem>().CheckPatrols();
-            Assert.That(SEntMan.GetComponent<WGEncounterComponent>(patrol).Resolution, Is.EqualTo(WGEncounterResolution.Destroyed));
+            Assert.That(SEntMan.GetComponent<WGEncounterComponent>(patrol).Resolution, Is.Null);
+            Assert.That(SEntMan.GetComponent<WGReaverPatrolComponent>(patrol).Lead, Is.EqualTo("wing"));
         });
     }
 

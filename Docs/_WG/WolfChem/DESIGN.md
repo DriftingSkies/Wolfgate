@@ -480,13 +480,35 @@ synthetic HUD (`Content.Server/_WG/Wolfmed/Hud/WolfmedSyntheticHudSystem.cs`, cl
 
 - Every product carries `Contraband` with `Class3Chem`, except hash: it is legal like the cannabis it is pressed
   from, and THC has no price, so nothing holding it is marked either.
-- Solid products get a `StaticPrice` scaled by grade, and the `ItemTax` and `SoldAlert` setup that
+- Solid products get a `StaticPrice` scaled by grade, and the `ItemTax` setup that
   `FentanylSolidified` uses (`Resources/Prototypes/_Mono/Entities/Objects/Misc/solids.yml`).
 - The contraband is the reagent, not the container: any item or anchorable structure holding a priced narcotic in a
-  solution (beaker, jug, syringe, pill, baggie, vial, storage tank) gains the same tag, contraband, tax and sold alert (`WGNarcoticGoodsSystem`,
+  solution (beaker, jug, syringe, pill, baggie, vial, storage tank) gains the same tag, contraband, tax and stock marker (`WGNarcoticGoodsSystem`,
   `WGNarcoticMarks`) and loses them when emptied. A blank stick that takes a copy gains them for good, unless the
   program's profile is `legal` (cannabis, whose twin is Idle).
   Narcotics sold on a cargo pallet fund the Reaver campaign by value (`fundingGoodsValue`).
+- Selling is a string of small risks, not one safe moment. A sale used to pay in full at once at any pallet, with an
+  alert that named the pallet and a cap that counted containers, so the best play was one tank sold as the round
+  ended. Now each seller has a private heat (`WGNarcoticHeatSystem`): street value sold lately, cooling over time.
+  The buyer pays less the hotter the seller, inside a sale too, so income at full price is capped by the cooling
+  rate and a dump pays a fraction whenever it happens; no rule depends on knowing when the round ends. Heat is the
+  seller's alone, so one dealer's dump doesn't move another grower's price, and the buyer's manner at the console
+  tells each seller where they stand. Tips to Caelestinus Security, the TSF and the PDV sharpen with heat (place,
+  then ship model, then species and clothing) and never name anyone. Heat follows the player, so selling through
+  other people spreads it and takes a crew. Smuggling crates sold at open chutes count toward the same heat at their
+  street price, so the two trades share one allowance.
+- Going past the line is meant to tempt. The price falls gently past `heat_free` (a load of twice the allowance still
+  fetches about 70%), so fewer, bigger runs are worth taking; what they cost is exposure. Past `heat_hot` customs
+  puts a warrant out in the seller's name on the bounty board, which grows by a share of everything sold past that
+  line (`warrant_share`, `warrant_cap`), stays up after the heat has cooled and pays whoever kills them. The share is
+  kept under what the buyer holds back past the line, so a seller and a friend can't farm it. The careful seller makes
+  more over a round; the greedy one makes it sooner and is hunted for it.
+- The line is fuzzy (`heat_fuzz`): each seller's sits up to 15% either side of `heat_free` and is drawn anew between
+  visits, so nobody arrives with exactly a window's worth. The seller at the console with a little too much, deciding
+  whether to sell it anyway, is the moment the design is after.
+- A stockpile is itself at risk: a deeded ship holding `wg.narcotics.stock_signature` of street value shows a radar
+  blip to everyone in reach (`WGNarcoticStockSystem`), and a narcotic handed in at a contraband pallet pays by its
+  worth, so seizing or raiding it is worth the trip.
 - The Strangers dealer (`Resources/Prototypes/_WG/Strangers/dialogues.yml:7`) sells low-grade product, seeds,
   the purity tester and neuroware copies. The Reaver runner (`WGEncounterReaverDealer`, a trader ship flying
   Ashfall colours) sells full grades, seeds, kit and pristine sticks, and buys nothing; the Underground market tab buys and sells them

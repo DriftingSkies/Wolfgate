@@ -1,0 +1,931 @@
+# Cyberware Wolfgate adds: the organs, the items its implants fold out, their actions and the autosurgeons that
+# install them. augments.yml lists each as a wgAugment.
+
+# Organs
+
+- type: entity
+  parent: OrganHumanLiver
+  id: WGAugmentScrubberLiver
+  name: PD-VI HF-12 prosthetic liver
+  description: A Vanguard prosthetic liver. It strips alcohol, poison and narcotics out of the blood far faster than flesh can, so don't count on stimulants lasting either.
+  components:
+  - type: Sprite
+    sprite: _WG/Augments/implants.rsi
+    state: scrubber_liver
+  - type: Item
+    sprite: Mobs/Species/Human/organs.rsi # the flesh liver's inhands; there are no synthetic ones
+  - type: Metabolizer
+    maxReagents: 3
+    metabolizerTypes: [ Human ]
+    groups:
+    - id: Alcohol
+      rateModifier: 4
+    - id: Poison
+      rateModifier: 4
+    - id: Narcotic
+      rateModifier: 4
+  - type: WolfmedOrgan
+    clearanceFactor: 3
+
+# Eyes that cycle a thermal band and three night-vision phosphors. No flash immunity, so a flash still blinds them.
+- type: entity
+  parent: BaseCyberneticEyes
+  id: WGAugmentThermalTintEyes
+  name: PD-VI OV-40 "Tapetum" ocular suite
+  description: Vanguard scout optics, with a thermal mode that picks out body heat through walls and three night-vision tints. A flash still gets through.
+  components:
+  - type: Organ
+    onAdd:
+    - type: EyeProtection
+    - type: ThermalVision
+      toggleAction: null
+    # The phosphor only shows through the goggle shader; one lens far wider than the screen keeps its edges clear.
+    - type: NightVision
+      lightingColor: "#FFFFFF32"
+      goggleEffect: true
+      viewCircleCount: 1
+      viewCircleRadius: 100000
+    - type: WGThermalTints
+      tints:
+      - color: "#ff6a4d" # thermal
+        tint: 0.42, 0.12, 0.08
+      - nightVision: true # green phosphor
+        color: "#5cff6e"
+      - nightVision: true # Gen 4 cyan phosphor
+        color: "#41D7D9"
+      - nightVision: true # white phosphor
+        color: "#FFE4B3"
+
+# Deployed items
+
+# The tool arm's heads. Each is the hand tool it stands in for, a fifth faster like the omnitool, with its own sprite;
+# the inhand sprites stay the hand tool's.
+
+- type: entity
+  categories: [ DoNotMap, HideSpawnMenu ]
+  parent: Screwdriver
+  id: WGAugmentToolArmScrewdriver
+  name: integrated screwdriver
+  description: A powered screwdriver head on the end of a cybernetic forearm.
+  components:
+  - type: Sprite
+    sprite: _WG/Augments/tool_arm.rsi
+    layers:
+    - state: screwdriver
+  - type: RandomSprite
+    available: []
+  - type: Tool
+    speedModifier: 1.2
+
+- type: entity
+  categories: [ DoNotMap, HideSpawnMenu ]
+  parent: Wrench
+  id: WGAugmentToolArmWrench
+  name: integrated wrench
+  description: A powered wrench head on the end of a cybernetic forearm.
+  components:
+  - type: Sprite
+    sprite: _WG/Augments/tool_arm.rsi
+    state: wrench
+  - type: Tool
+    speedModifier: 1.2
+
+- type: entity
+  categories: [ DoNotMap, HideSpawnMenu ]
+  parent: Crowbar
+  id: WGAugmentToolArmCrowbar
+  name: integrated crowbar
+  description: A hydraulic pry bar on the end of a cybernetic forearm.
+  components:
+  - type: Sprite
+    sprite: _WG/Augments/tool_arm.rsi
+    state: crowbar
+  - type: Tool
+    speedModifier: 1.2
+
+- type: entity
+  categories: [ DoNotMap, HideSpawnMenu ]
+  parent: Wirecutter
+  id: WGAugmentToolArmWirecutter
+  name: integrated wirecutters
+  description: Powered cutting jaws on the end of a cybernetic forearm.
+  components:
+  - type: Sprite
+    sprite: _WG/Augments/tool_arm.rsi
+    layers:
+    - state: wirecutter
+  - type: RandomSprite
+    available: []
+  - type: Tool
+    speedModifier: 1.2
+
+- type: entity
+  categories: [ DoNotMap, HideSpawnMenu ]
+  parent: Multitool
+  id: WGAugmentToolArmMultitool
+  name: integrated multitool
+  description: A multitool probe on the end of a cybernetic forearm.
+  components:
+  - type: Sprite
+    sprite: _WG/Augments/tool_arm.rsi
+    layers:
+    - state: multitool
+  - type: Item
+    sprite: _NF/Objects/Tools/multitool.rsi
+  - type: Tool
+    speedModifier: 1.2
+
+- type: entity
+  categories: [ DoNotMap, HideSpawnMenu ]
+  parent: WelderIndustrial
+  id: WGAugmentToolArmWelder
+  name: integrated welding tool
+  description: A welding torch on the end of a cybernetic forearm. Its tank tops itself up every time it folds away.
+  components:
+  - type: Sprite
+    sprite: _WG/Augments/tool_arm.rsi
+    layers:
+    - state: welder
+    - state: welder-flame
+      visible: false
+      shader: unshaded
+      map: ["enum.ToggleableVisuals.Layer"]
+  - type: Tool
+    speedModifier: 1.2
+
+- type: entity
+  categories: [ DoNotMap, HideSpawnMenu ]
+  parent: Lighter
+  id: WGAugmentFingerLighterFlame
+  name: finger lighter
+  description: A lighter built into a fingertip.
+
+# The Hotaru's beam: a light laser with a little more bite.
+- type: entity
+  parent: RedLightLaser
+  id: WGArmLaserBeam
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: HitscanBasicDamage
+    damage:
+      types:
+        Heat: 14
+
+# The Hotaru's emitter. It runs off a cell in the arm, which keeps its charge while folded away.
+- type: entity
+  categories: [ DoNotMap, HideSpawnMenu ]
+  parent: BaseItem
+  id: WGAugmentArmLaserGun
+  name: arm laser
+  description: A laser emitter that slides out of a cybernetic forearm. It fires as fast as you can hold the trigger, until the cell in the arm runs dry.
+  components:
+  - type: Sprite
+    sprite: _WG/Augments/arm_laser.rsi
+    state: icon
+  - type: Item
+    size: Huge
+    sprite: _WG/Augments/arm_laser.rsi
+  - type: Gun
+    fireRate: 5
+    projectileSpeed: 60
+    selectedMode: FullAuto
+    availableModes: [ FullAuto ]
+    minAngle: 1
+    maxAngle: 12
+    angleIncrease: 1.5
+    angleDecay: 12
+    cameraRecoilScalar: 0.3
+    soundGunshot:
+      path: /Audio/Weapons/Guns/Gunshots/laser.ogg
+  - type: WGTwinLaser
+  - type: HitscanBatteryAmmoProvider
+    proto: WGArmLaserBeam
+    fireCost: 40
+  - type: Battery
+    maxCharge: 1000
+    startingCharge: 1000
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 30
+    autoRechargePause: true
+    autoRechargePauseTime: 1.5
+  - type: AmmoCounter
+  - type: Appearance
+
+# The Zaslon's shield. WGHandShieldSystem does the blocking; the item only fills the hand and shows it.
+- type: entity
+  categories: [ DoNotMap, HideSpawnMenu ]
+  parent: BaseItem
+  id: WGAugmentHandShieldProjector
+  name: hand shield
+  description: A pane of hard light thrown up from the palm. It stops shots and blows from the front, until it runs out of charge.
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Melee/e_shield.rsi
+    layers:
+    - state: eshield-icon
+    - state: eshield-on
+      shader: unshaded
+  - type: Item
+    size: Huge
+    inhandVisuals:
+      left:
+      - sprite: Objects/Weapons/Melee/e_shield.rsi
+        state: inhand-left-shield
+        shader: unshaded
+      right:
+      - sprite: Objects/Weapons/Melee/e_shield.rsi
+        state: inhand-right-shield
+        shader: unshaded
+  - type: HeldSpeedModifier
+    walkModifier: 0.85
+    sprintModifier: 0.85
+  - type: PointLight
+    radius: 1.5
+    energy: 0.7
+    color: "#678AD9"
+
+# The Grom's bolt: slow, so it can be dodged at range.
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: BaseBullet
+  id: WGShoulderCannonBolt
+  name: plasma bolt
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Heat: 80
+        Radiation: 10
+  - type: Reflective
+    reflective:
+    - Energy
+  - type: Sprite
+    sprite: _Mono/Objects/SpaceArtillery/plasmashot.rsi
+    scale: 0.7, 0.7
+    layers:
+    - state: plasmashot
+      shader: unshaded
+  - type: PointLight
+    color: "#FF00AA"
+    radius: 2
+    energy: 2
+  - type: TimedDespawn
+    lifetime: 2
+
+# The Corona's charges, thrown out in a ring; WGBurstLauncherSystem sets them off together. The shield holds the wearer meanwhile.
+- type: entity
+  abstract: true
+  id: WGHaloOrbBase
+  name: corona charge
+  description: An amber charge hanging in the air, about to go off.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WG/Augments/halo_orb.rsi
+    state: orb
+    drawdepth: Effects
+    shader: unshaded
+    noRot: true
+  - type: PointLight
+    color: "#ffa733"
+    radius: 1.5
+    energy: 1.5
+  - type: Physics
+    bodyType: Dynamic
+    fixedRotation: true
+  - type: Fixtures
+    fixtures:
+      orb: # stops at walls and passes people
+        shape: !type:PhysShapeCircle
+          radius: 0.1
+        density: 1
+        hard: true
+        mask:
+        - Impassable
+  - type: TimedDespawn # in case the fuse is missed
+    lifetime: 4
+
+- type: entity
+  parent: WGHaloOrbBase
+  id: WGHaloOrbLethal
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WGHaloOrb
+    damage:
+      types:
+        Piercing: 15
+        Heat: 10
+  - type: WolfmedDamageCause
+    cause: Explosion
+
+- type: entity
+  parent: WGHaloOrbBase
+  id: WGHaloOrbStun
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WGHaloOrb
+    staminaDamage: 40
+
+- type: entity
+  id: WGHaloShield
+  name: corona shield
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _WG/Augments/halo_shield.rsi
+    state: shield
+    drawdepth: Effects
+    shader: unshaded
+    noRot: true
+  - type: PointLight
+    color: "#ffd84a"
+    radius: 2
+    energy: 1
+  - type: TimedDespawn # in case the fuse is missed
+    lifetime: 3
+
+- type: entity
+  id: WGHaloBlast
+  name: corona blast
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Effects/explosion.rsi
+    state: explosionfast
+    scale: 0.8, 0.8 # the blast's reach
+    drawdepth: Effects
+    noRot: true
+    shader: unshaded
+  - type: TimedDespawn
+    lifetime: 0.48
+  - type: PointLight
+    color: "#ffa733"
+    radius: 2.5
+    energy: 2
+
+# The Kagemusha's copies of its owner. The client dresses a copy in its owner's sprite; it wanders like someone
+# idling, has no heat for thermals to see, and flickers out when struck or after twenty seconds.
+- type: entity
+  id: WGHoloDecoy
+  name: hologram
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    noRot: true
+    drawdepth: Mobs
+  - type: WGHoloDecoy
+  - type: Clickable
+  - type: InteractionOutline
+  - type: MobCollision
+  - type: GravityAffected
+  - type: Physics
+    bodyType: KinematicController
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape: !type:PhysShapeCircle
+          radius: 0.35
+        density: 50
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: InputMover
+  - type: MobMover
+  - type: MovementSpeedModifier
+  - type: Damageable
+  - type: HTN
+    rootTask:
+      task: IdleCompound
+    blackboard:
+      IdleRange: !type:Single # how far each stroll goes
+        6
+      MinimumIdleTime: !type:Single # the pause between strolls
+        0.3
+      MaximumIdleTime: !type:Single
+        1.5
+  - type: TimedDespawn
+    lifetime: 20
+  - type: SpawnOnDespawn
+    prototype: WGHoloDecoyPuff
+
+- type: entity
+  id: WGHoloDecoyPuff
+  name: hologram flicker
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: Effects/chempuff.rsi
+    state: chempuff
+    drawdepth: Effects
+    shader: unshaded
+    noRot: true
+    scale: 2, 2
+    color: "#a8f4ffcc"
+  - type: PointLight
+    color: "#7fe6ff"
+    radius: 1.5
+    energy: 1
+  - type: TimedDespawn
+    lifetime: 0.25
+  - type: EmitSoundOnSpawn
+    sound:
+      path: /Audio/Effects/pop.ogg
+      params:
+        volume: -8
+
+# Actions
+
+- type: entity
+  id: WGActionToggleLeftToolArm
+  name: Left Tool Arm
+  description: Pick a tool to fold out of your left arm. Pick the one that's out to put it away.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 1
+    icon: { sprite: _WG/Augments/tool_arm.rsi, state: implant }
+    itemIconStyle: NoItem
+    event: !type:WGToggleDeployableImplantEvent
+
+- type: entity
+  parent: WGActionToggleLeftToolArm
+  id: WGActionToggleRightToolArm
+  name: Right Tool Arm
+  description: Pick a tool to fold out of your right arm. Pick the one that's out to put it away.
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  id: WGActionToggleLeftFingerLighter
+  name: Toggle Left Finger Lighter
+  description: Flick the lighter in your left fingertip on or off.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 1
+    icon: { sprite: Objects/Tools/lighters.rsi, state: lighter_flame }
+    itemIconStyle: NoItem
+    event: !type:WGToggleDeployableImplantEvent
+
+- type: entity
+  parent: WGActionToggleLeftFingerLighter
+  id: WGActionToggleRightFingerLighter
+  name: Toggle Right Finger Lighter
+  description: Flick the lighter in your right fingertip on or off.
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  id: WGActionIatricScan
+  name: Vitals Readout
+  description: Check your own vitals on the readout behind your eye.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 1
+    checkCanInteract: false
+    icon: { sprite: _WG/Augments/implants.rsi, state: iatric_monitor }
+    itemIconStyle: NoItem
+    event: !type:WGIatricScanEvent
+  - type: HealthAnalyzer
+    silent: true
+  - type: UserInterface
+    interfaces:
+      enum.HealthAnalyzerUiKey.Key:
+        type: HealthAnalyzerBoundUserInterface
+  - type: WGIatricScanner
+
+- type: entity
+  id: WGActionCycleThermalTint
+  name: Cycle Vision
+  description: Switch your eyes to the next mode, from thermal through green, cyan and white night vision, then off.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 0.5
+    checkCanInteract: false
+    icon: { sprite: _White/Clothing/Eyes/Goggles/thermal.rsi, state: icon }
+    itemIconStyle: NoItem
+    event: !type:WGCycleThermalTintEvent
+
+- type: entity
+  id: WGActionHaloBurst
+  name: Corona Frag
+  description: Throw a ring of frag charges out around you. They go off two seconds later, and you're held in place behind a shield until they do. Holds two charges.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    charges: 2
+    icon: { sprite: Objects/Weapons/Grenades/shrapnelgrenade.rsi, state: icon }
+    itemIconStyle: NoItem
+    event: !type:WGFireBurstLauncherEvent
+
+- type: entity
+  parent: WGActionHaloBurst
+  id: WGActionHaloStun
+  name: Corona Concussion
+  description: Throw a ring of concussion charges out around you. They go off two seconds later, and you're held in place behind a shield until they do. Holds two charges.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    charges: 2
+    icon: { sprite: Objects/Weapons/Grenades/stingergrenade.rsi, state: icon }
+    itemIconStyle: NoItem
+    event: !type:WGFireBurstLauncherEvent
+
+- type: entity
+  id: WGActionHoloProject
+  name: Body Double
+  description: Cast two holographic copies of yourself around the room and swap places with one of them. They wander for twenty seconds and vanish when hit.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 90
+    icon: { sprite: _WG/Augments/holo_projector.rsi, state: icon }
+    itemIconStyle: NoItem
+    event: !type:WGHoloProjectEvent
+
+- type: entity
+  id: WGActionToggleLeftArmLaser
+  name: Left Arm Laser
+  description: Slide the laser out of your left forearm, or put it away.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 1
+    icon: { sprite: _WG/Augments/arm_laser.rsi, state: icon }
+    itemIconStyle: NoItem
+    event: !type:WGToggleDeployableImplantEvent
+
+- type: entity
+  parent: WGActionToggleLeftArmLaser
+  id: WGActionToggleRightArmLaser
+  name: Right Arm Laser
+  description: Slide the laser out of your right forearm, or put it away.
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  id: WGActionToggleLeftHandShield
+  name: Left Hand Shield
+  description: Raise a shield from your left palm, or lower it. It only covers your front, and it only recharges while lowered.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 1
+    icon: { sprite: Objects/Weapons/Melee/e_shield.rsi, state: eshield-on }
+    itemIconStyle: NoItem
+    event: !type:WGToggleDeployableImplantEvent
+
+- type: entity
+  parent: WGActionToggleLeftHandShield
+  id: WGActionToggleRightHandShield
+  name: Right Hand Shield
+  description: Raise a shield from your right palm, or lower it. It only covers your front, and it only recharges while lowered.
+  categories: [ HideSpawnMenu ]
+
+- type: entity
+  id: WGActionOpticalCamo
+  name: Optical Camouflage
+  description: Fade from sight for twenty seconds. Attacking, shooting or getting hurt drops it early. Use it again to drop it yourself.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 1
+    icon: { sprite: _Goobstation/Objects/Specific/Robotics/mod_modules.rsi, state: cloak_traitor }
+    itemIconStyle: NoItem
+    event: !type:WGToggleOpticalCamoEvent
+
+- type: entity
+  id: WGActionDeployShoulderCannon
+  name: Shoulder Cannon
+  description: Swing the cannon up over your shoulder, or fold it away again. While it's up, middle-click to fire at a spot.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: InstantAction
+    useDelay: 1
+    icon: { sprite: _WG/Augments/shoulder_cannon.rsi, state: icon }
+    itemIconStyle: NoItem
+    event: !type:WGToggleShoulderCannonEvent
+
+# Autosurgeons
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonLeftToolArm
+  name: autosurgeon (left RM-5 "Verstak")
+  description: Builds a Vanguard tool set into a cybernetic left forearm.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Arm
+    targetBodyPartSymmetry: Left
+    componentsToPart:
+    - type: WGToolArm
+      items:
+      - WGAugmentToolArmScrewdriver
+      - WGAugmentToolArmWrench
+      - WGAugmentToolArmWelder
+      - WGAugmentToolArmCrowbar
+      - WGAugmentToolArmWirecutter
+      - WGAugmentToolArmMultitool
+      action: WGActionToggleLeftToolArm
+      deploySound: /Audio/Items/change_drill.ogg
+      retractSound: /Audio/Items/change_drill.ogg
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonRightToolArm
+  name: autosurgeon (right RM-5 "Verstak")
+  description: Builds a Vanguard tool set into a cybernetic right forearm.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Arm
+    targetBodyPartSymmetry: Right
+    componentsToPart:
+    - type: WGToolArm
+      items:
+      - WGAugmentToolArmScrewdriver
+      - WGAugmentToolArmWrench
+      - WGAugmentToolArmWelder
+      - WGAugmentToolArmCrowbar
+      - WGAugmentToolArmWirecutter
+      - WGAugmentToolArmMultitool
+      action: WGActionToggleRightToolArm
+      deploySound: /Audio/Items/change_drill.ogg
+      retractSound: /Audio/Items/change_drill.ogg
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonLeftSmartlink
+  name: autosurgeon (left SL-4 "Shojun")
+  description: Links a cybernetic left hand to whatever gun it holds, taming the recoil.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Hand
+    targetBodyPartSymmetry: Left
+    componentsToPart:
+    - type: WGSmartlink
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonRightSmartlink
+  name: autosurgeon (right SL-4 "Shojun")
+  description: Links a cybernetic right hand to whatever gun it holds, taming the recoil.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Hand
+    targetBodyPartSymmetry: Right
+    componentsToPart:
+    - type: WGSmartlink
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonLeftFingerLighter
+  name: autosurgeon (left HB-2 "Hibana")
+  description: Fits a lighter into a fingertip of the left hand.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Hand
+    targetBodyPartSymmetry: Left
+    componentsToPart:
+    - type: WGFingerLighter
+      items: [ WGAugmentFingerLighterFlame ]
+      action: WGActionToggleLeftFingerLighter
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonRightFingerLighter
+  name: autosurgeon (right HB-2 "Hibana")
+  description: Fits a lighter into a fingertip of the right hand.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Hand
+    targetBodyPartSymmetry: Right
+    componentsToPart:
+    - type: WGFingerLighter
+      items: [ WGAugmentFingerLighterFlame ]
+      action: WGActionToggleRightFingerLighter
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonAdrenalBooster
+  name: autosurgeon (KR-14 "Ryvok")
+  description: Wires a Marine Corps combat booster into the adrenal glands. More stamina, and a second wind when you get knocked down.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Torso
+    componentsToUser:
+    - type: Vigor
+    - type: WGAdrenalBooster
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonPainEditor
+  name: autosurgeon (EVT-130 "Mushin")
+  description: Fits a pain inhibitor to the brainstem, dulling the pain of every wound.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Head
+    componentsToUser:
+    - type: WGPainEditor
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonReflexBooster
+  name: autosurgeon (NR-8 "Strizh")
+  description: Fits a reflex booster to the spinal cord. Sharper flying and the odd dodged bullet, at the cost of rawer nerves.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Head
+    componentsToUser:
+    - type: WGReflexBooster
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonLeftThreatSole
+  name: autosurgeon (left SP-9 "Sapyor")
+  description: Lines the left sole with sensors that keep you from setting off floor traps.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Foot
+    targetBodyPartSymmetry: Left
+    componentsToUser:
+    - type: TrapAvoider
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonRightThreatSole
+  name: autosurgeon (right SP-9 "Sapyor")
+  description: Lines the right sole with sensors that keep you from setting off floor traps.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Foot
+    targetBodyPartSymmetry: Right
+    componentsToUser:
+    - type: TrapAvoider
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonNutrimentPump
+  name: autosurgeon (PN-3 "Paek")
+  description: Fits a ration pump beside the stomach that feeds you when you're starving.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Torso
+    componentsToUser:
+    - type: WGNutrimentPump
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonReviver
+  name: autosurgeon (EVT-090 "Fukkatsu")
+  description: Wires a defibrillator to the heart that shocks it back when it stops.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Torso
+    componentsToUser:
+    - type: WGReviver
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonIatricMonitor
+  name: autosurgeon (EVT-120 "Kanshi")
+  description: Fits a vitals readout behind the eye.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Head
+    componentsToUser:
+    - type: WGIatricMonitor
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonHaloBurst
+  name: autosurgeon (KR-30 "Corona")
+  description: Packs frag charges around the ribcage, to throw out in a ring.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Torso
+    componentsToUser:
+    - type: WGHaloBurst
+      orb: WGHaloOrbLethal
+      action: WGActionHaloBurst
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonHaloStun
+  name: autosurgeon (KR-31 "Corona")
+  description: Packs concussion charges around the ribcage, to throw out in a ring.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Torso
+    componentsToUser:
+    - type: WGHaloStun
+      orb: WGHaloOrbStun
+      action: WGActionHaloStun
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonHoloProjector
+  name: autosurgeon (KG-7 "Kagemusha")
+  description: Threads holo emitters under the skin of the chest, to cast copies of you to hide among.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Torso
+    componentsToUser:
+    - type: WGHoloProjector
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonLeftArmLaser
+  name: autosurgeon (left HT-6 "Hotaru")
+  description: Builds a Mieyo laser emitter into a cybernetic left forearm.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Arm
+    targetBodyPartSymmetry: Left
+    componentsToPart:
+    - type: WGArmLaser
+      items: [ WGAugmentArmLaserGun ]
+      action: WGActionToggleLeftArmLaser
+      keepCharge: true
+      deploySound: /Audio/Weapons/Guns/MagIn/batrifle_magin.ogg
+      retractSound: /Audio/Weapons/Guns/MagOut/batrifle_magout.ogg
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonRightArmLaser
+  name: autosurgeon (right HT-6 "Hotaru")
+  description: Builds a Mieyo laser emitter into a cybernetic right forearm.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Arm
+    targetBodyPartSymmetry: Right
+    componentsToPart:
+    - type: WGArmLaser
+      items: [ WGAugmentArmLaserGun ]
+      action: WGActionToggleRightArmLaser
+      keepCharge: true
+      deploySound: /Audio/Weapons/Guns/MagIn/batrifle_magin.ogg
+      retractSound: /Audio/Weapons/Guns/MagOut/batrifle_magout.ogg
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonLeftHandShield
+  name: autosurgeon (left ZS-3 "Zaslon")
+  description: Fits a Vanguard shield projector into the palm of a cybernetic left hand.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Hand
+    targetBodyPartSymmetry: Left
+    componentsToPart:
+    - type: WGHandShield
+      items: [ WGAugmentHandShieldProjector ]
+      action: WGActionToggleLeftHandShield
+      deploySound: /Audio/Weapons/ebladeon.ogg
+      retractSound: /Audio/Weapons/ebladeoff.ogg
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonRightHandShield
+  name: autosurgeon (right ZS-3 "Zaslon")
+  description: Fits a Vanguard shield projector into the palm of a cybernetic right hand.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Hand
+    targetBodyPartSymmetry: Right
+    componentsToPart:
+    - type: WGHandShield
+      items: [ WGAugmentHandShieldProjector ]
+      action: WGActionToggleRightHandShield
+      deploySound: /Audio/Weapons/ebladeon.ogg
+      retractSound: /Audio/Weapons/ebladeoff.ogg
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonOpticalCamo
+  name: autosurgeon (KG-9 "Kasumi")
+  description: Lays a mesh of light-bending cells under the skin, to fade from sight for a while.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Torso
+    componentsToUser:
+    - type: WGOpticalCamo
+      # The MOD cloaking module's stealth, a shade better: it settles faster, and moving gives less away.
+      components:
+      - type: Stealth
+        enabledOnDeath: false
+        enabledOnCrit: false
+      - type: StealthOnMove
+        passiveVisibilityRate: -0.5
+        movementVisibilityRate: 0.6
+        maxInvisibilityPenalty: 0.4
+
+- type: entity
+  parent: BaseAutosurgeon
+  id: WGAutosurgeonShoulderCannon
+  name: autosurgeon (KR-40 "Grom")
+  description: Bolts a Marine Corps plasma cannon on a folding arm behind the shoulder of a cybernetic chest.
+  components:
+  - type: AutoSurgeon
+    targetBodyPart: Torso
+    componentsToUser:
+    - type: WGShoulderCannon

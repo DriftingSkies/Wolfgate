@@ -1,0 +1,17 @@
+cmd-manifest-desc = Makes your admin observer visible to players as an avatar preset. With no preset it uses your default.
+cmd-manifest-help = Usage: {$command} [preset name]
+cmd-unmanifest-desc = Hides your admin observer from players again.
+cmd-unmanifest-help = Usage: {$command}
+wg-observer-action-manifest-name = Manifest
+wg-observer-action-manifest-desc = Become visible to players as your chosen avatar. Use it again to hide.
+ent-WGActionManifest = { wg-observer-action-manifest-name }
+    .desc = { wg-observer-action-manifest-desc }
+wg-observer-entry-bluespace = Bluespace
+wg-observer-entry-pod = Pod
+wg-observer-entry-silent = Silent
+wg-observer-manifest-done = Players can now see you as {$name}.
+wg-observer-manifest-hidden = You are ghosted again.
+wg-observer-manifest-no-permission = You are not cool enough to manifest.
+wg-observer-manifest-not-observer = Only an admin observer can manifest.
+wg-observer-manifest-unknown-preset = You have no avatar preset called "{$name}".
+wg-observer-manifest-not-manifested = You are already demanifested.

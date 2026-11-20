@@ -1,0 +1,35 @@
+# Author Info
+# moroniccape91 (Discord) Moro91GIT (Github)
+- type: vessel
+  id: WGCommuter
+  parent: BaseVessel
+  name: 'ASY Commuter'
+  description: 'A mass-produced fast-moving human-designed unarmed civilian transport licensed by Artemis Shipyards. It is used commonly for moving personnel or small amounts of cargo from and to planetary surfaces thanks to it''s small cargo hold and passenger bay with a total capacity of six, pilot excluded. The only defence it boasts is a GS-002 flare system on both sides of the hull. Atmospheric-rated thrusters included.'
+  price: 59882 # appraised at 49902, 20% markup
+  category: Small # 135 tiles
+  group: Shipyard
+  shuttlePath: /SharedMaps/_WG/Community/commuter.yml
+  guidebookPage: null
+  class:
+  - Cargo
+  - Civilian
+  engine:
+  - Uranium
+
+- type: gameMap
+  id: WGCommuter
+  mapName: 'ASY Commuter'
+  mapPath: /SharedMaps/_WG/Community/commuter.yml
+  minPlayers: 0
+  stations:
+    WGCommuter:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Commuter CIV{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

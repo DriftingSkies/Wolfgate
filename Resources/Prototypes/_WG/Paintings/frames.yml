@@ -1,0 +1,354 @@
+- type: entity
+  abstract: true
+  parent: BaseSign
+  id: WGBasePaintingFrame
+  name: painting frame
+  description: A wall frame for a finished canvas. Wirecutters take the painting back out.
+  components:
+  - type: Sprite
+    layers:
+    - sprite: _WG/Paintings/frame.rsi
+      state: frame-empty
+      map: ["enum.WGPaintingVisualLayers.Canvas"]
+    - sprite: _WG/Paintings/canvas.rsi
+      state: 11x11
+      map: ["enum.WGPaintingVisualLayers.Art"]
+      visible: false
+    - sprite: _WG/Paintings/canvas.rsi
+      state: 11x11-frame
+      map: ["enum.WGPaintingVisualLayers.Frame"]
+      visible: false
+  - type: WGPaintingFrame
+  - type: ContainerContainer
+    containers:
+      painting: !type:ContainerSlot
+  - type: UserInterface
+    interfaces:
+      enum.WGPaintingViewUiKey.Key:
+        type: WGPaintingViewBoundUserInterface
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 15
+      behaviors:
+      - !type:EmptyAllContainersBehaviour
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  abstract: true
+  parent: WGBasePaintingFrame
+  id: WGBasePaintingFrameLarge
+  name: large painting frame
+  description: A wall frame for a finished large canvas. Wirecutters take the painting back out.
+  components:
+  - type: Sprite
+    layers:
+    - sprite: _WG/Paintings/frame.rsi
+      state: frame-large-empty
+      map: ["enum.WGPaintingVisualLayers.Canvas"]
+    - sprite: _WG/Paintings/canvas_large.rsi
+      state: 36x24
+      map: ["enum.WGPaintingVisualLayers.Art"]
+      visible: false
+    - sprite: _WG/Paintings/canvas_large.rsi
+      state: 36x24-frame
+      map: ["enum.WGPaintingVisualLayers.Frame"]
+      visible: false
+  - type: WGPaintingFrame
+    large: true
+
+- type: entity
+  parent: WGBasePaintingFrame
+  id: WGPaintingFrame
+  components:
+  - type: Construction
+    graph: WGPaintingFrameGraph
+    node: PaintingFrameNode
+
+- type: entity
+  parent: WGBasePaintingFrameLarge
+  id: WGPaintingFrameLarge
+  components:
+  - type: Construction
+    graph: WGPaintingFrameGraph
+    node: LargePaintingFrameNode
+
+# Gallery frames hang a print of a random catalogue painting when the round starts.
+- type: entity
+  parent: WGBasePaintingFrame
+  id: WGPaintingFrameGallery
+  suffix: Gallery
+  components:
+  - type: WGPaintingFrame
+    gallery: true
+
+- type: entity
+  parent: WGBasePaintingFrameLarge
+  id: WGPaintingFrameGalleryLarge
+  suffix: Gallery
+  components:
+  - type: WGPaintingFrame
+    large: true
+    gallery: true
+
+- type: entity
+  parent: BaseStructureDynamic
+  id: WGEasel
+  name: easel
+  description: Holds a canvas up while it is painted.
+  components:
+  - type: Sprite
+    noRot: true
+    layers:
+    - sprite: _WG/Paintings/easel.rsi
+      state: easel
+    - sprite: _WG/Paintings/canvas.rsi
+      state: 11x11
+      map: ["enum.WGPaintingVisualLayers.Canvas"]
+      visible: false
+    - sprite: _WG/Paintings/canvas.rsi
+      state: 11x11
+      map: ["enum.WGPaintingVisualLayers.Art"]
+      visible: false
+    - sprite: _WG/Paintings/canvas.rsi
+      state: 11x11-wip
+      map: ["enum.WGPaintingVisualLayers.Wip"]
+      visible: false
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.3,-0.4,0.3,0.4"
+        density: 30
+        mask:
+        - MachineMask
+        layer:
+        - MidImpassable
+  - type: WGEasel
+  - type: ItemSlots
+    slots:
+      canvas:
+        name: wg-easel-slot-canvas
+        whitelist:
+          components:
+          - WGCanvas
+  - type: ContainerContainer
+    containers:
+      canvas: !type:ContainerSlot
+  - type: Construction
+    graph: WGEaselGraph
+    node: EaselNode
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Wood
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 30
+      behaviors:
+      - !type:EmptyAllContainersBehaviour
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          MaterialWoodPlank1:
+            min: 1
+            max: 2
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: constructionGraph
+  id: WGPaintingFrameGraph
+  start: start
+  graph:
+  - node: start
+    actions:
+    - !type:DestroyEntity { }
+    edges:
+    - to: PaintingFrameNode
+      completed:
+      - !type:SnapToGrid { }
+      steps:
+      - tag: WGPaintingFrameKit
+        name: wg-painting-construction-frame-kit
+        icon:
+          sprite: _WG/Paintings/frame.rsi
+          state: frame-empty
+        doAfter: 1
+    - to: LargePaintingFrameNode
+      completed:
+      - !type:WGHangLargeFrame { }
+      steps:
+      - tag: WGPaintingFrameLargeKit
+        name: wg-painting-construction-frame-large-kit
+        icon:
+          sprite: _WG/Paintings/frame.rsi
+          state: frame-large-empty
+        doAfter: 1
+  - node: PaintingFrameNode
+    entity: WGPaintingFrame
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers { }
+      - !type:SpawnPrototype
+        prototype: WGPaintingFrameKit
+      steps:
+      - tool: Screwing
+        doAfter: 3
+  - node: LargePaintingFrameNode
+    entity: WGPaintingFrameLarge
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers { }
+      - !type:SpawnPrototype
+        prototype: WGPaintingFrameLargeKit
+      steps:
+      - tool: Screwing
+        doAfter: 3
+
+- type: construction
+  id: WGPaintingFrameConstruction
+  name: painting frame
+  description: A wall frame for a finished canvas, put up from a painting frame kit.
+  graph: WGPaintingFrameGraph
+  startNode: start
+  targetNode: PaintingFrameNode
+  category: construction-category-misc
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canRotate: true
+  canBuildInImpassable: true
+  conditions:
+  - !type:WallmountCondition
+  - !type:WGPaintingFrameSpace
+  icon:
+    sprite: _WG/Paintings/frame.rsi
+    state: frame-empty
+
+- type: construction
+  id: WGPaintingFrameLargeConstruction
+  name: large painting frame
+  description: A wall frame for a finished large canvas, put up from a large painting frame kit. It spans two wall tiles, the one you pick and the one east of it.
+  graph: WGPaintingFrameGraph
+  startNode: start
+  targetNode: LargePaintingFrameNode
+  category: construction-category-misc
+  objectType: Structure
+  placementMode: SnapgridCenter
+  canRotate: true
+  canBuildInImpassable: true
+  conditions:
+  - !type:WallmountCondition
+  - !type:WGPaintingFrameSpace
+    large: true
+  icon:
+    sprite: _WG/Paintings/frame.rsi
+    state: frame-large-empty
+
+- type: constructionGraph
+  id: WGEaselGraph
+  start: start
+  graph:
+  - node: start
+    actions:
+    - !type:DestroyEntity { }
+  - node: EaselNode
+    entity: WGEasel
+    edges:
+    - to: start
+      completed:
+      - !type:EmptyAllContainers { }
+      - !type:SpawnPrototype
+        prototype: WGEaselFlatpack
+      steps:
+      - tool: Prying
+        doAfter: 2
+
+# Frame kits and the easel flatpack are sold by John Wolfgate and the Wolfgate vendor.
+- type: Tag
+  id: WGPaintingFrameKit
+
+- type: Tag
+  id: WGPaintingFrameLargeKit
+
+- type: entity
+  parent: BaseItem
+  id: WGPaintingFrameKit
+  name: painting frame kit
+  description: A flat-packed painting frame. Put it up on a wall from the construction menu.
+  components:
+  - type: Sprite
+    sprite: _WG/Paintings/frame.rsi
+    state: frame-empty
+  - type: Item
+    size: Small
+  - type: Tag
+    tags:
+    - WGPaintingFrameKit
+  - type: StaticPrice
+    price: 10
+    vendPrice: 60
+
+- type: entity
+  parent: WGPaintingFrameKit
+  id: WGPaintingFrameLargeKit
+  name: large painting frame kit
+  description: A flat-packed frame for a large painting. Put it up from the construction menu on a wall two tiles wide, facing north or south.
+  components:
+  - type: Sprite
+    sprite: _WG/Paintings/frame.rsi
+    state: frame-large-empty
+  - type: Item
+    size: Normal
+  - type: Tag
+    tags:
+    - WGPaintingFrameLargeKit
+  - type: StaticPrice
+    price: 20
+    vendPrice: 100
+
+- type: entity
+  parent: BaseNFFlatpack
+  id: WGEaselFlatpack
+  name: easel flatpack
+  description: A flatpack holding an easel. Use a multitool on it to unpack it; a crowbar packs the easel back up.
+  components:
+  - type: Flatpack
+    entity: WGEasel
+  - type: Sprite
+    layers:
+    - state: service_tray
+  - type: StaticPrice
+    price: 30
+    vendPrice: 200
+
+# The art PDA app: browse and order paintings, and scan finished canvases into the catalogue.
+- type: entity
+  parent: NFBasePDACartridge
+  id: WGArtCartridge
+  name: art cartridge
+  description: A PDA program for the sector's art catalogue. Use the PDA on a finished canvas to scan it in.
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-lib
+  - type: Icon
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-lib
+  - type: UIFragment
+    ui: !type:WGArtAppUi
+  - type: Cartridge
+    programName: wg-art-app-program-name
+    icon: { sprite: _WG/Paintings/palette.rsi, state: palette }
+    readonly: true
+  - type: WGArtApp
+  - type: StaticPrice
+    price: 50
+    vendPrice: 500

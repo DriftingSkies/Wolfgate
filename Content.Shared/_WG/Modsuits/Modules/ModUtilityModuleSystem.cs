@@ -33,19 +33,32 @@ public sealed partial class ModUtilityModuleSystem : EntitySystem
 
     private const string HatSlotPart = "head";
 
-    [SubscribeLocalEvent]
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<ModEmpWardComponent, EmpAttemptEvent>(OnWardEmpAttempt);
+        SubscribeLocalEvent<ModEmpWardComponent, ContainedEmpAttemptEvent>(OnWardContainedEmpAttempt);
+        SubscribeLocalEvent<ModSignRadioComponent, LanguageRadioAttemptEvent>(OnSignRadio);
+        SubscribeLocalEvent<ModJumpJetModuleComponent, ModModuleUsedEvent>(OnJumpJetUsed);
+        SubscribeLocalEvent<ModJointTorsionModuleComponent, ModModuleActivatedEvent>(OnJointTorsionActivated);
+        SubscribeLocalEvent<ModHatStabilizerModuleComponent, ModModuleInstalledEvent>(OnHatStabilizerInstalled);
+        SubscribeLocalEvent<ModHatStabilizerModuleComponent, ModModuleRemovedEvent>(OnHatStabilizerRemoved);
+        SubscribeLocalEvent<ModHatHolderComponent, ItemSlotInsertAttemptEvent>(OnHatInsertAttempt);
+        SubscribeLocalEvent<ModHatHolderComponent, EntInsertedIntoContainerMessage>(OnHatInserted);
+        SubscribeLocalEvent<ModHatHolderComponent, EntRemovedFromContainerMessage>(OnHatRemoved);
+    }
+
     private void OnWardEmpAttempt(Entity<ModEmpWardComponent> ent, ref EmpAttemptEvent args)
     {
         args.Cancelled = true;
     }
 
-    [SubscribeLocalEvent]
     private void OnWardContainedEmpAttempt(Entity<ModEmpWardComponent> ent, ref ContainedEmpAttemptEvent args)
     {
         args.Cancelled = true;
     }
 
-    [SubscribeLocalEvent]
     private void OnSignRadio(Entity<ModSignRadioComponent> ent, ref LanguageRadioAttemptEvent args)
     {
         if (ent.Comp.Languages.Count != 0 && !ent.Comp.Languages.Contains(args.Language))
@@ -55,7 +68,6 @@ public sealed partial class ModUtilityModuleSystem : EntitySystem
         args.TranslateTo = ent.Comp.TranslateTo;
     }
 
-    [SubscribeLocalEvent]
     private void OnJumpJetUsed(Entity<ModJumpJetModuleComponent> ent, ref ModModuleUsedEvent args)
     {
         var user = args.User;
@@ -73,7 +85,6 @@ public sealed partial class ModUtilityModuleSystem : EntitySystem
         args.Handled = true;
     }
 
-    [SubscribeLocalEvent]
     private void OnJointTorsionActivated(Entity<ModJointTorsionModuleComponent> ent, ref ModModuleActivatedEvent args)
     {
         ent.Comp.LastPosition = null;
@@ -108,7 +119,6 @@ public sealed partial class ModUtilityModuleSystem : EntitySystem
         }
     }
 
-    [SubscribeLocalEvent]
     private void OnHatStabilizerInstalled(Entity<ModHatStabilizerModuleComponent> ent, ref ModModuleInstalledEvent args)
     {
         if (_timing.ApplyingState
@@ -131,7 +141,6 @@ public sealed partial class ModUtilityModuleSystem : EntitySystem
         ent.Comp.Helmet = helmet;
     }
 
-    [SubscribeLocalEvent]
     private void OnHatStabilizerRemoved(Entity<ModHatStabilizerModuleComponent> ent, ref ModModuleRemovedEvent args)
     {
         if (_timing.ApplyingState || ent.Comp.Helmet is not { } helmet || TerminatingOrDeleted(helmet))
@@ -148,7 +157,6 @@ public sealed partial class ModUtilityModuleSystem : EntitySystem
         _item.VisualsChanged(helmet);
     }
 
-    [SubscribeLocalEvent]
     private void OnHatInsertAttempt(Entity<ModHatHolderComponent> ent, ref ItemSlotInsertAttemptEvent args)
     {
         if (args.Slot.ID != ent.Comp.SlotId)
@@ -160,14 +168,12 @@ public sealed partial class ModUtilityModuleSystem : EntitySystem
             args.Cancelled = true;
     }
 
-    [SubscribeLocalEvent]
     private void OnHatInserted(Entity<ModHatHolderComponent> ent, ref EntInsertedIntoContainerMessage args)
     {
         if (args.Container.ID == ent.Comp.SlotId)
             _item.VisualsChanged(ent);
     }
 
-    [SubscribeLocalEvent]
     private void OnHatRemoved(Entity<ModHatHolderComponent> ent, ref EntRemovedFromContainerMessage args)
     {
         if (args.Container.ID == ent.Comp.SlotId)

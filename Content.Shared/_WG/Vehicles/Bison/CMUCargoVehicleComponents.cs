@@ -45,6 +45,14 @@ public sealed partial class CMUCargoVehicleComponent : Component
     [DataField]
     public List<EntProtoId> CrateParents = new() { "CrateGeneric" };
 
+    /// <summary>Whether a nuclear warhead can be loaded as cargo.</summary>
+    [DataField]
+    public bool CarriesWarheads = true;
+
+    /// <summary>Where the cargo sits on the bed, in the carrier's frame (south-facing, so +Y is the rear).</summary>
+    [DataField]
+    public System.Numerics.Vector2 CargoOffset = new(0f, 0.45f);
+
     [DataField]
     public FixedPoint2 AutomaticArmDamage = FixedPoint2.New(300);
 

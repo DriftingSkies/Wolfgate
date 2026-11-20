@@ -7,6 +7,7 @@ using Content.Shared._WG.Vehicles.Falling;
 using Content.Shared.Actions;
 using Content.Shared.Damage;
 using Content.Shared.DoAfter;
+using Content.Shared.DragDrop;
 using Content.Shared.Hands;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
@@ -70,6 +71,8 @@ public sealed partial class CMUCargoVehicleSystem : EntitySystem
         SubscribeLocalEvent<CMUCargoVehicleComponent, EntityTerminatingEvent>(OnVehicleTerminating, before: new[] { typeof(MindSystem) });
         SubscribeLocalEvent<CMUCargoVehicleComponent, GetVerbsEvent<AlternativeVerb>>(OnVehicleGetVerbs);
         SubscribeLocalEvent<CMUCargoVehicleComponent, InteractUsingEvent>(OnVehicleInteractUsing);
+        SubscribeLocalEvent<CMUCargoVehicleComponent, DragDropTargetEvent>(OnVehicleDragDropTarget);
+        SubscribeLocalEvent<CMUCargoVehicleComponent, VehicleOperatorSetEvent>(OnVehicleOperatorSet);
         SubscribeLocalEvent<CMUCargoVehicleComponent, CMUCargoVehicleLoadDoAfterEvent>(OnLoadDoAfter);
         SubscribeLocalEvent<CMUCargoVehicleComponent, CMUCargoVehicleUnloadDoAfterEvent>(OnUnloadDoAfter);
         SubscribeLocalEvent<CMUCargoVehicleComponent, TriggerEvent>(OnVehicleTriggered, before: new[] { typeof(TriggerSystem) });
@@ -97,6 +100,8 @@ public sealed partial class CMUCargoVehicleSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+
+        RetakeWheels();
 
         if (_timing.CurTime < _nextSessionValidation)
             return;

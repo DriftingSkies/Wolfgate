@@ -204,12 +204,17 @@ public sealed partial class WGReaverCampaignSystem
             var (_, comp, encounter) = patrol;
             if (!encounter.Ships.TryGetValue(comp.Lead, out var lead) || !_encounters.InFight(lead))
             {
-                BreakLead(patrol.Owner, encounter, comp.Lead);
-                continue;
+                if (!TryPromote(patrol))
+                {
+                    BreakLead(patrol.Owner, encounter, comp.Lead);
+                    continue;
+                }
+
+                lead = encounter.Ships[comp.Lead];
             }
 
             comp.LastSeen = _transform.GetWorldPosition(lead.Grid);
-            if (held.Count == 0 || InOrBeside(held, _territory.GridCell(lead.Grid)))
+            if (held.Count == 0 || comp.Recovering || InOrBeside(held, _territory.GridCell(lead.Grid)))
             {
                 comp.OutsideSince = null;
                 continue;
@@ -219,6 +224,72 @@ public sealed partial class WGReaverCampaignSystem
             if (now - comp.OutsideSince >= LeashDelay)
                 CallOff(patrol);
         }
+    }
+
+    /// <summary>
+    /// Hands a patrol whose lead is out of the fight to another of its ships still in it: that one takes the lead's
+    /// orders, and the rest escort it. False if none is left.
+    /// </summary>
+    private bool TryPromote(Entity<WGReaverPatrolComponent, WGEncounterComponent> patrol)
+    {
+        var (uid, comp, encounter) = patrol;
+        string? heir = null;
+        foreach (var (key, ship) in encounter.Ships)
+        {
+            if (key != comp.Lead && !TerminatingOrDeleted(ship.Grid) && _encounters.InFight(ship))
+            {
+                heir = key;
+                break;
+            }
+        }
+
+        if (heir == null)
+            return false;
+
+        var old = comp.Lead;
+        // The lead's own queue may hold an order the heir cannot take, such as one on a target since gone.
+        if ((LeadQueue(patrol) is not { } queue || !_encounters.SetOrders(uid, heir, queue))
+            && !_encounters.SetOrders(uid, heir, FallbackOrders(comp)))
+            return false;
+
+        comp.Lead = heir;
+        comp.OutsideSince = null;
+        var grid = GetNetEntity(encounter.Ships[heir].Grid);
+        foreach (var (key, ship) in encounter.Ships)
+        {
+            if (key != heir && key != old && !TerminatingOrDeleted(ship.Grid))
+                _encounters.SetOrders(uid, key, new List<WGCrewObjective> { new() { Kind = WGCrewObjectiveKind.Escort, Target = grid } });
+        }
+
+        Log.Info($"Reaver patrol {ToPrettyString(uid)} lost its lead {old}; {heir} takes over.");
+        return true;
+    }
+
+    /// <summary>The orders a patrol's lead has left, read from its crew's queue; null if it has none.</summary>
+    private List<WGCrewObjective>? LeadQueue(Entity<WGReaverPatrolComponent, WGEncounterComponent> patrol)
+    {
+        var (_, comp, encounter) = patrol;
+        return encounter.Ships.TryGetValue(comp.Lead, out var lead) && _objectives.TryGetQueue(lead.Grid, lead.Group, out var orders)
+               && orders.Count > 0
+            ? orders
+            : null;
+    }
+
+    /// <summary>A patrol's orders rebuilt from what it was doing: its recall, else its chase and the rest of its route, else home.</summary>
+    private List<WGCrewObjective> FallbackOrders(WGReaverPatrolComponent comp)
+    {
+        if (comp.Recalled && StrongholdLead(comp.Stronghold) is { } hub)
+            return RecallOrders(_transform.GetWorldPosition(hub), hub);
+
+        var orders = new List<WGCrewObjective>();
+        if (comp.Intercepting is { } target && !TerminatingOrDeleted(target))
+        {
+            orders.Add(new() { Kind = WGCrewObjectiveKind.GoTo, Position = _transform.GetWorldPosition(target), Range = InterceptApproach });
+            orders.Add(new() { Kind = WGCrewObjectiveKind.Attack, Target = GetNetEntity(target) });
+        }
+
+        orders.AddRange(RouteOrders(comp, comp.Intercepting != null ? comp.Resume : new List<Vector2>()));
+        return orders;
     }
 
     /// <summary>

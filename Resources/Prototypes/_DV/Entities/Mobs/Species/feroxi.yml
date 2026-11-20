@@ -55,11 +55,18 @@
         # its fine, but its still very stupid that it has to be done like this instead of allowing sprites to just directly insert a stencil clear.
         # sprite refactor when
         state: l_leg
+      # WOLFGATE(Humanoid) START: feet under the uniform, with socks between them
+      - map: [ "enum.HumanoidVisualLayers.LFoot" ]
+      - map: [ "enum.HumanoidVisualLayers.RFoot" ]
+      - map: [ "enum.HumanoidVisualLayers.UndergarmentSocks" ]
+      # WOLFGATE END
       - map: [ "jumpsuit" ]
       - map: [ "enum.HumanoidVisualLayers.LHand" ]
       - map: [ "enum.HumanoidVisualLayers.RHand" ]
-      - map: [ "enum.HumanoidVisualLayers.LFoot" ]
-      - map: [ "enum.HumanoidVisualLayers.RFoot" ]
+      # WOLFGATE(Humanoid) START: feet moved under the uniform above
+      # - map: [ "enum.HumanoidVisualLayers.LFoot" ]
+      # - map: [ "enum.HumanoidVisualLayers.RFoot" ]
+      # WOLFGATE END
       - map: [ "enum.HumanoidVisualLayers.Handcuffs" ]
         color: "#ffffff"
         sprite: Objects/Misc/handcuffs.rsi
@@ -155,11 +162,18 @@
       # its fine, but its still very stupid that it has to be done like this instead of allowing sprites to just directly insert a stencil clear.
       # sprite refactor when
       state: l_leg
+    # WOLFGATE(Humanoid) START: feet under the uniform, with socks between them
+    - map: [ "enum.HumanoidVisualLayers.LFoot" ]
+    - map: [ "enum.HumanoidVisualLayers.RFoot" ]
+    - map: [ "enum.HumanoidVisualLayers.UndergarmentSocks" ]
+    # WOLFGATE END
     - map: [ "jumpsuit" ]
     - map: [ "enum.HumanoidVisualLayers.LHand" ]
     - map: [ "enum.HumanoidVisualLayers.RHand" ]
-    - map: [ "enum.HumanoidVisualLayers.LFoot" ]
-    - map: [ "enum.HumanoidVisualLayers.RFoot" ]
+    # WOLFGATE(Humanoid) START: feet moved under the uniform above
+    # - map: [ "enum.HumanoidVisualLayers.LFoot" ]
+    # - map: [ "enum.HumanoidVisualLayers.RFoot" ]
+    # WOLFGATE END
     - map: [ "enum.HumanoidVisualLayers.Handcuffs" ]
       color: "#ffffff"
       sprite: Objects/Misc/handcuffs.rsi

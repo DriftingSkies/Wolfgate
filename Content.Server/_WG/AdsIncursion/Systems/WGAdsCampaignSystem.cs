@@ -154,7 +154,8 @@ public sealed partial class WGAdsCampaignSystem : EntitySystem
         SubscribeLocalEvent<WGSectorCellClearingEvent>(OnClearing);
         SubscribeLocalEvent<WGSectorContestResolvedEvent>(OnContestResolved);
         SubscribeLocalEvent<RoundEndTextAppendEvent>(OnRoundEndText);
-        SubscribeLocalEvent<WGCrewHullHitEvent>(OnHullHit);
+        SubscribeLocalEvent<WGCrewHullHitEvent>(OnHullHit, after: [typeof(WGCrewAlertSystem)]);
+        InitializeHijack();
         SubscribeLocalEvent<WGShipShieldAttackedEvent>(OnShieldHit);
     }
 
@@ -178,6 +179,7 @@ public sealed partial class WGAdsCampaignSystem : EntitySystem
         _nextDreadnoughtTry = TimeSpan.Zero;
         _legend = null;
         _clearingPending.Clear();
+        _emergencies.Clear();
         _campaignDirty = true;
         Paused = false;
     }
@@ -224,6 +226,7 @@ public sealed partial class WGAdsCampaignSystem : EntitySystem
         TendSentinels();
         TendSweeps(state);
         TendInterdicts(state);
+        TickStolen(state);
         TendChallenges(state, !held);
         TendPickets();
         TendDreadnoughts();

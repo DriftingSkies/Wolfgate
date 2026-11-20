@@ -22,6 +22,13 @@ public sealed class WGShipAdminEui : BaseEui
             _window.UpdateState(ships);
     }
 
+    public override void HandleMessage(EuiMessageBase msg)
+    {
+        base.HandleMessage(msg);
+        if (msg is WGShipAdminDocksMessage docks)
+            _window.Move.SetDocks(docks.Target, docks.Docks);
+    }
+
     public override void Opened()
     {
         _window.OpenCentered();

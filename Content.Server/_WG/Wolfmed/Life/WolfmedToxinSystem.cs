@@ -99,9 +99,9 @@ public sealed partial class WolfmedToxinSystem : EntitySystem
     }
 
     /// <summary>
-    /// Poison cleared a second: wolfmed.toxin_clearance through a working liver, times the organ's
-    /// impairedClearanceFactor while it is impaired, nothing through a failed or missing one. Nothing for the dead
-    /// or a machine.
+    /// Poison cleared a second: wolfmed.toxin_clearance through a working liver, times the organ's clearanceFactor
+    /// and its impairedClearanceFactor while it is impaired, nothing through a failed or missing one. Nothing for
+    /// the dead or a machine.
     /// </summary>
     public float GetClearanceRate(EntityUid body)
     {
@@ -117,6 +117,7 @@ public sealed partial class WolfmedToxinSystem : EntitySystem
             if (!TryComp(organ, out WolfmedOrganComponent? health))
                 return rate;
 
+            rate *= MathF.Max(0f, health.ClearanceFactor);
             return health.Band switch
             {
                 WolfmedOrganBand.Failed => 0f,

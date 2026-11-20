@@ -129,6 +129,7 @@
     - map: ["enum.HumanoidVisualLayers.Penis"]
     - map: ["enum.HumanoidVisualLayers.UndergarmentBottom"]
     # WOLFGATE END
+    - map: ["enum.HumanoidVisualLayers.UndergarmentSocks"] # WOLFGATE(Humanoid): socks marking over the feet, under clothes
     - map: ["socks"]
     - map: ["underpants"]
     - map: ["undershirt"]

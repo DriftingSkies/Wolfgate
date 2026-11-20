@@ -222,6 +222,7 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
         if (EntityManager.TryGetComponent(uid, out InputMoverComponent? controller))
         {
             controller.CurTickSprintMovement = Vector2.Zero;
+            controller.CurTickWalkMovement = Vector2.Zero; // WOLFGATE(NpcCrew): crew may have been walking past a puddle
 
             var ev = new SpriteMoveEvent(false);
             RaiseLocalEvent(uid, ref ev);
@@ -336,6 +337,7 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
         }
 
         component.CurTickSprintMovement = value;
+        CrewWalkNearSlip(uid, component); // WOLFGATE(NpcCrew): crew walk past a slippery puddle instead of running into it
         component.LastInputTick = _timing.CurTick;
         component.LastInputSubTick = ushort.MaxValue;
 

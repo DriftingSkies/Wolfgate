@@ -170,6 +170,7 @@ public sealed partial class GhostOrbitSystem : EntitySystem
     private void AddInterests(List<GhostOrbitTarget> targets, HashSet<EntityUid> seen, bool isAdmin)
     {
         AddInterest<GhostInterestComponent>(targets, seen, isAdmin, null);
+        AddGameModeInterests(targets, seen, isAdmin);
         AddInterest<SingularityComponent>(targets, seen, isAdmin, "wg-ghost-orbit-interest-singularity");
         AddInterest<TeslaEnergyBallComponent>(targets, seen, isAdmin, "wg-ghost-orbit-interest-tesla");
         AddInterest<NukeComponent>(targets, seen, isAdmin, "wg-ghost-orbit-interest-nuke");
@@ -193,7 +194,7 @@ public sealed partial class GhostOrbitSystem : EntitySystem
                 Entity = GetNetEntity(uid),
                 Name = meta.EntityName,
                 Category = GhostOrbitCategory.Interest,
-                Detail = label != null ? Loc.GetString(label) : meta.EntityPrototype?.Name,
+                Detail = GameModeDetail(uid) ?? (label != null ? Loc.GetString(label) : meta.EntityPrototype?.Name),
                 Prototype = meta.EntityPrototype?.ID,
                 Followers = CountFollowers(uid, isAdmin),
             };

@@ -35,6 +35,7 @@
   - ElectromagnetEconomy3Alt
   - OpticsEconomy2Alt
   - ComponentBrickEconomy2
+  - WGComponentBrickEconomy3 # WOLFGATE(Lathe): super components had no recipe
   - ArmorPlate4
   - ArmorPlate4Alt
   # Commented out materials until we give them a use

@@ -28,6 +28,7 @@ public sealed partial class WGOrdnanceSystem : EntitySystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private TurfSystem _turf = default!;
     [Dependency] private WGDefconSystem _defcon = default!;
+    [Dependency] private Content.Server._WG.Ghost.GhostNoticeSystem _ghostNotice = default!;
 
     private static readonly TimeSpan PlaceInterval = TimeSpan.FromSeconds(5);
     private static readonly Color AnnounceColor = Color.FromHex("#e0a020");

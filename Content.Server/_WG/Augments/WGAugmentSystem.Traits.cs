@@ -2,12 +2,15 @@ using Content.Shared._WG.Augments;
 using Content.Shared._WG.LegStyle;
 using Content.Shared.Body.Components;
 using Content.Shared.Humanoid;
+using Content.Shared.Preferences;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server._WG.Augments;
 
 public sealed partial class WGAugmentSystem
 {
+    [Dependency] private SharedHumanoidAppearanceSystem _humanoid = default!;
+
     /// <summary>The style limbs fitted by a trait (Prybar Prosthetics, Bionic Legs) are drawn in: the bishop chassis they always had.</summary>
     public static readonly ProtoId<WGAugmentStylePrototype> TraitLimbStyle = "WGAugmentStyleEEBishop";
 
@@ -47,5 +50,20 @@ public sealed partial class WGAugmentSystem
         }
 
         Dirty(body, humanoid);
+    }
+
+    /// <summary>
+    /// Puts the profile's augments back after its traits ran. A trait that fits its own limbs deletes the old ones with
+    /// the hands, feet and implants on them; installing again only adds what is missing.
+    /// </summary>
+    internal void ReapplyOverTraits(EntityUid body, HumanoidCharacterProfile profile)
+    {
+        if (WGAugmentRules.ClaimedSlots(profile.TraitPreferences, _proto).Count == 0
+            || !TryComp<HumanoidAppearanceComponent>(body, out var humanoid))
+            return;
+
+        var ev = new WGApplyAugmentsEvent(profile);
+        RaiseLocalEvent(body, ref ev);
+        _humanoid.ApplyAugmentVisuals(body, profile, humanoid, keepUnpicked: true);
     }
 }

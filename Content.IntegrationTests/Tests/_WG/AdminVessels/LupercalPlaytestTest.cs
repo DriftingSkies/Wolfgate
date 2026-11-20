@@ -29,9 +29,12 @@ using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._WG.AdminVessels;
 
-/// <summary>The fixes from the Lupercal's first playtest (v0.29), on a freshly spawned ship.</summary>
+/// <summary>
+/// The fixes from the Lupercal's playtests, the first (v0.29) and the second (v0.30, LupercalPlaytestTest.Second.cs), on
+/// one freshly spawned ship: a Lupercal is heavy, and each test that spawns one holds a whole server.
+/// </summary>
 [TestFixture]
-public sealed class LupercalPlaytestTest
+public sealed partial class LupercalPlaytestTest
 {
     [Test]
     public async Task SpawnsHardenedAndLockedDown()
@@ -139,6 +142,8 @@ public sealed class LupercalPlaytestTest
             server.System<MobStateSystem>().ChangeMobState(crewman, MobState.Dead);
             Assert.That(tags.HasTag(crewman, "DoorBumpOpener"), Is.False, "A dead one doesn't.");
         });
+
+        await SecondPlaytest(pair, map, grid);
 
         await pair.CleanReturnAsync();
     }

@@ -33,6 +33,7 @@ public sealed partial class WGMonolithSystem : EntitySystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private WGCorruptionSystem _corruption = default!;
     [Dependency] private WGRemadeClearSystem _clear = default!;
+    [Dependency] private Content.Server._WG.Ghost.GhostNoticeSystem _ghostNotice = default!;
 
     private static readonly TimeSpan TickRate = TimeSpan.FromSeconds(1);
     private static readonly TimeSpan CorpseCountRate = TimeSpan.FromSeconds(5);
@@ -271,6 +272,12 @@ public sealed partial class WGMonolithSystem : EntitySystem
         {
             _light.SetEnabled(ent, stage != WGMonolithStage.Quiet, light);
             _light.SetRadius(ent, 2f + 2f * (int) stage, light);
+        }
+
+        if (stage > old)
+        {
+            var stageName = Loc.GetString($"wg-monolith-stage-{stage.ToString().ToLowerInvariant()}");
+            _ghostNotice.Notify(ent, Content.Server._WG.Ghost.GhostNoticeKind.Monolith, Loc.GetString("wg-ghost-notice-scion-stage", ("stage", stageName)));
         }
 
         if (stage == WGMonolithStage.Crescendo && old != WGMonolithStage.Crescendo)

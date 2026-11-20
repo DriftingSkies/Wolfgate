@@ -1,0 +1,205 @@
+# The staff marker's visuals. Every sprite is used where it already is; none is copied.
+
+# The sigil beside the head: by rank, never chosen. Its priority stays above the new-player mark's, which has to
+# be drawn before every other icon of the right-hand column (MarkTakesNoHudSlotTest).
+- type: ssdIcon
+  id: WGStaffSigilAdmin
+  icon:
+    sprite: /Textures/Interface/Misc/job_icons.rsi
+    state: Admin
+  locationPreference: Right
+  priority: 0
+
+- type: ssdIcon
+  id: WGStaffSigilHost
+  icon:
+    sprite: /Textures/Interface/Misc/job_icons.rsi
+    state: MindShield
+  locationPreference: Right
+  priority: 0
+
+- type: shader
+  id: WGStaffMarkerTint
+  kind: source
+  path: "/Textures/_WG/AdminObserver/Shaders/staff_tint.swsl"
+  params:
+    minimum: 0
+
+- type: shader
+  id: WGStaffMarkerTintSolid
+  kind: source
+  path: "/Textures/_WG/AdminObserver/Shaders/staff_tint.swsl"
+  params:
+    minimum: 1
+
+# The aura's light. Each client spawns its own beside a marked entity; the server never does.
+- type: entity
+  id: WGStaffMarkerAuraLight
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: PointLight
+    radius: 2.5
+    energy: 2
+    softness: 1
+    netsync: false
+
+# Ground rings.
+- type: wgStaffMarkerVariant
+  id: WGStaffRingBoiler
+  visual: Ring
+  default: true
+  order: 0
+  size: 1.5
+  sprite:
+    sprite: _WG/Xenonids/Effects/xeno_boiler_telegraph.rsi
+    state: boiler_telegraph
+
+- type: wgStaffMarkerVariant
+  id: WGStaffRingBrackets
+  visual: Ring
+  order: 1
+  size: 1.25
+  sprite:
+    sprite: _WG/Xenonids/Effects/effects.rsi
+    state: placement_zone
+
+- type: wgStaffMarkerVariant
+  id: WGStaffRingPulseOut
+  visual: Ring
+  order: 2
+  size: 1.5
+  sprite:
+    sprite: _WG/Xenonids/Effects/xeno_telegraph_big.rsi
+    state: expand_out
+
+- type: wgStaffMarkerVariant
+  id: WGStaffRingPulseIn
+  visual: Ring
+  order: 3
+  size: 1.5
+  reversed: true
+  sprite:
+    sprite: _WG/Xenonids/Effects/xeno_telegraph_big.rsi
+    state: expand_out
+
+# Glyphs.
+- type: wgStaffMarkerVariant
+  id: WGStaffGlyphStar
+  visual: Glyph
+  default: true
+  order: 0
+  size: 0.5
+  sprite:
+    sprite: _WG/Encounters/ranks.rsi
+    state: star
+
+- type: wgStaffMarkerVariant
+  id: WGStaffGlyphShield
+  visual: Glyph
+  order: 1
+  size: 0.5
+  sprite:
+    sprite: _WG/Encounters/markers.rsi
+    state: shield
+
+- type: wgStaffMarkerVariant
+  id: WGStaffGlyphGhost
+  visual: Glyph
+  order: 2
+  size: 0.5
+  sprite:
+    sprite: _WG/Encounters/markers.rsi
+    state: ghost
+
+- type: wgStaffMarkerVariant
+  id: WGStaffGlyphCrayonStar
+  visual: Glyph
+  order: 3
+  size: 0.5
+  sprite:
+    sprite: Effects/crayondecals.rsi
+    state: star
+
+- type: wgStaffMarkerVariant
+  id: WGStaffGlyphEye
+  visual: Glyph
+  order: 4
+  size: 0.5
+  sprite:
+    sprite: _WG/Xenonids/Effects/xeno_eye.rsi
+    state: hudeye1
+
+- type: wgStaffMarkerVariant
+  id: WGStaffGlyphSparkle
+  visual: Glyph
+  order: 5
+  size: 0.5
+  sprite:
+    sprite: _WG/Xenonids/Effects/effects.rsi
+    state: sparkle
+
+- type: wgStaffMarkerVariant
+  id: WGStaffGlyphSparkles
+  visual: Glyph
+  order: 6
+  size: 1
+  orbit: false
+  sprite:
+    sprite: _WG/Xenonids/Effects/effects.rsi
+    state: shieldsparkles
+
+- type: wgStaffMarkerVariant
+  id: WGStaffGlyphSparks
+  visual: Glyph
+  order: 7
+  size: 0.5
+  sprite:
+    sprite: Effects/sparks.rsi
+    state: sparks
+
+# The psi sprite is black, so it takes the colour as a whole shape.
+- type: wgStaffMarkerVariant
+  id: WGStaffGlyphPsi
+  visual: Glyph
+  order: 8
+  size: 0.5
+  solid: true
+  sprite:
+    sprite: Nyanotrasen/Icons/psi.rsi
+    state: psi
+
+# Shields.
+- type: wgStaffMarkerVariant
+  id: WGStaffShieldBubble
+  name: wg-staff-marker-variant-shield-bubble
+  visual: Shield
+  default: true
+  order: 0
+  size: 1.5
+  sprite:
+    sprite: _Goobstation/Effects/stasis.rsi
+    state: effect
+
+- type: wgStaffMarkerVariant
+  id: WGStaffShieldSkin
+  name: wg-staff-marker-variant-shield-skin
+  visual: Shield
+  kind: Shader
+  order: 1
+  size: 1.5
+
+# Auras.
+- type: wgStaffMarkerVariant
+  id: WGStaffAuraLight
+  name: wg-staff-marker-variant-aura-light
+  visual: Aura
+  kind: Light
+  default: true
+  order: 0
+
+- type: wgStaffMarkerVariant
+  id: WGStaffAuraOutline
+  name: wg-staff-marker-variant-aura-outline
+  visual: Aura
+  kind: Shader
+  order: 1

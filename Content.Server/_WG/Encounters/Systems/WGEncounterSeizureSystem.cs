@@ -8,6 +8,7 @@ using Content.Shared.Ghost;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Shuttles.Components;
 using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.Server._WG.Encounters.Systems;
@@ -15,7 +16,8 @@ namespace Content.Server._WG.Encounters.Systems;
 /// <summary>
 /// Notices encounter ships that boarders have taken and marks them with <see cref="WGCrewSeizedHullComponent"/>: one
 /// with none of its crew left alive aboard and a stranger on it, or with a stranger its crew is fighting at its helm.
-/// A crew back aboard with the boarders gone takes the ship back. Hulks are left to their salvage claim.
+/// Every ship of its own side nearby then takes it for an attacker, and keeps doing so while it stays seized. A crew
+/// back aboard with the boarders gone takes the ship back. Hulks are left to their salvage claim.
 /// </summary>
 public sealed partial class WGEncounterSeizureSystem : EntitySystem
 {
@@ -25,8 +27,17 @@ public sealed partial class WGEncounterSeizureSystem : EntitySystem
     [Dependency] private WGCrewAlertSystem _alerts = default!;
     [Dependency] private WGCrewSecuritySystem _security = default!;
     [Dependency] private WGCrewEscortSystem _escorts = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
 
-    /// <summary>How long a ship must lie crewless with strangers aboard, or retaken with none, before it changes hands.</summary>
+    /// <summary>How far off the ships of a seized hull's own side learn it is in enemy hands.</summary>
+    public const float HijackRange = 15000f;
+
+    /// <summary>How often a seized hull is reported to its side again, inside the alert's window.</summary>
+    private static readonly TimeSpan HijackReport = TimeSpan.FromSeconds(5);
+
+    private TimeSpan _nextReport;
+
+    /// <summary>How long a seized ship's crew must be back aboard with no strangers before they take it back.</summary>
     public static readonly TimeSpan SeizeDelay = TimeSpan.FromSeconds(15);
 
     private static readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
@@ -82,7 +93,8 @@ public sealed partial class WGEncounterSeizureSystem : EntitySystem
 
             var crew = _crews[grid];
             var helmsman = Helmsman(grid, strangers);
-            if (crew.Count == 0 ? helmsman != null || Due(grid) : helmsman is { } pilot && Fought(grid, crew, pilot))
+            // With its whole crew down, a stranger aboard holds it.
+            if (crew.Count == 0 || helmsman is { } pilot && Fought(grid, crew, pilot))
                 Seize(grid);
         }
 
@@ -93,6 +105,16 @@ public sealed partial class WGEncounterSeizureSystem : EntitySystem
                 RemComp<WGCrewSeizedHullComponent>(grid);
             else if (_crews[grid].Count > 0 && !_strangers.ContainsKey(grid) && Due(grid))
                 Retake(grid);
+        }
+
+        if (_timing.CurTime >= _nextReport)
+        {
+            _nextReport = _timing.CurTime + HijackReport;
+            foreach (var grid in _held)
+            {
+                if (IsSeized(grid))
+                    ReportHijack(grid);
+            }
         }
 
         _stale.Clear();
@@ -120,11 +142,59 @@ public sealed partial class WGEncounterSeizureSystem : EntitySystem
         Log.Info($"Encounter ship {ToPrettyString(grid)} was seized by boarders.");
         var ev = new WGEncounterShipSeizedEvent(grid, marker.Encounter);
         RaiseLocalEvent(ref ev);
+        ReportHijack(grid);
         return true;
+    }
+
+    /// <summary>
+    /// Has every crewed ship of a seized hull's own side within <see cref="HijackRange"/> take it for an attacker
+    /// and a declared threat: its colours no longer excuse it, and an interrogating zone asks it nothing.
+    /// </summary>
+    private void ReportHijack(EntityUid seized)
+    {
+        if (TerminatingOrDeleted(seized))
+            return;
+
+        var company = Company(seized);
+        var profile = CompOrNull<WGCrewShipProfileComponent>(seized)?.Profile;
+        var at = _transform.GetMapCoordinates(seized);
+        var query = EntityQueryEnumerator<WGEncounterComponent>();
+        while (query.MoveNext(out _, out var encounter))
+        {
+            foreach (var ship in encounter.Ships.Values)
+            {
+                if (ship.Grid == seized || ship.Derelict || TerminatingOrDeleted(ship.Grid) || IsSeized(ship.Grid)
+                    || !SameSide(ship.Grid, company, profile))
+                    continue;
+
+                var there = _transform.GetMapCoordinates(ship.Grid);
+                if (there.MapId != at.MapId || (there.Position - at.Position).LengthSquared() > HijackRange * HijackRange)
+                    continue;
+
+                ship.Declared.Add(seized);
+                _alerts.ReportHijack(ship.Grid, ship.Group, seized);
+            }
+        }
+    }
+
+    /// <summary>Whether a ship flies for the side a seized hull was taken from: the same crew profile or company family.</summary>
+    private bool SameSide(EntityUid grid, string? company, ProtoId<WGCrewProfilePrototype>? profile)
+    {
+        if (profile != null && CompOrNull<WGCrewShipProfileComponent>(grid)?.Profile == profile)
+            return true;
+
+        return !string.IsNullOrEmpty(company) && WGCompanyFamily.Same(company, Company(grid));
     }
 
     private void Retake(EntityUid grid)
     {
+        var query = EntityQueryEnumerator<WGEncounterComponent>();
+        while (query.MoveNext(out _, out var encounter))
+        {
+            foreach (var ship in encounter.Ships.Values)
+                ship.Declared.Remove(grid);
+        }
+
         RemComp<WGCrewSeizedHullComponent>(grid);
         _pending.Remove(grid);
         _escorts.Invalidate();

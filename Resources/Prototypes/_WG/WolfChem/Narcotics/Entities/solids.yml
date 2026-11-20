@@ -54,7 +54,9 @@
   components:
   - type: Sprite
     sprite: _WG/WolfChem/Narcotics/Objects/solids.rsi
-    state: crystal
+    layers:
+    - state: crystal
+      map: [ "enum.WGPurityTintVisuals.Tinted" ]
   - type: SolutionContainerManager
     solutions:
       food:
@@ -62,6 +64,16 @@
         reagents:
         - ReagentId: Desoxyephedrine
           Quantity: 5
+  # A shard of 99.1% or better turns blue.
+  - type: WGPurityTint
+    reagent: Desoxyephedrine
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.WGPurityTintVisuals.Tinted:
+        enum.WGPurityTintVisuals.Tinted:
+          True: { color: "#5c9cff" }
+          False: { color: "#ffffff" }
 
 - type: entity
   parent: WGBaseDrugSolid
@@ -122,11 +134,13 @@
     maxFillLevels: 2
     fillBaseName: fill-
   # Solids go in with a click and come out one at a time on use (WGBaggieSystem); the window stays on the verb.
+  # No click insert, so a beaker's click falls through to the pour.
   - type: Storage
     grid:
     - 0,0,1,1
     maxItemSize: Small
     openOnActivate: false
+    clickInsert: false
     whitelist:
       tags:
       - WGBaggable

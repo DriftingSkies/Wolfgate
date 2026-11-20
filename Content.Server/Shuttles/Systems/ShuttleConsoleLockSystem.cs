@@ -856,6 +856,7 @@ public sealed partial class ShuttleConsoleLockSystem : SharedShuttleConsoleLockS
         // Grant guest access to the cyborg
         guestAccess.GuestCyborgs.Add(cyborg);
         Dirty(gridUid, guestAccess);
+        _wgShipAccess.OnGuestAccessGranted(gridUid, cyborg); // WOLFGATE(ShipAccess): a borg's card joins the allow list too, so its doors open
 
         // Log.Debug("TryGrantCyborgGuestAccess: Successfully granted guest access to cyborg {0} on grid {1}", cyborg, gridUid);
 

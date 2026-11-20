@@ -153,7 +153,7 @@ public sealed partial class TestPair : RobustIntegrationTest.TestPair, IAsyncDis
             entSysMan.LoadExtraSystemType<DeviceNetworkTestSystem>();
             entSysMan.LoadExtraSystemType<TestDestructibleListenerSystem>();
             entSysMan.LoadExtraSystemType<VehicleEventProbeSystem>(); // WOLFGATE(Vehicles): records the events the vehicle mover raises
-            entSysMan.LoadExtraSystemType<RadioProbeSystem>(); // WOLFGATE(WolfChem): records radio sends for the sold-alert test
+            entSysMan.LoadExtraSystemType<RadioProbeSystem>(); // WOLFGATE(WolfChem): records radio sends for the narcotic heat test
         };
         return opts;
     }

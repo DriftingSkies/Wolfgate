@@ -44,6 +44,7 @@ public sealed partial class WolfgateMarkingPicker : BoxContainer
         HumanoidVisualLayers.Eyes, HumanoidVisualLayers.Chest,
         HumanoidVisualLayers.LArm, HumanoidVisualLayers.RArm, HumanoidVisualLayers.LHand, HumanoidVisualLayers.RHand,
         HumanoidVisualLayers.LLeg, HumanoidVisualLayers.RLeg, HumanoidVisualLayers.LFoot, HumanoidVisualLayers.RFoot,
+        HumanoidVisualLayers.UndergarmentSocks,
         HumanoidVisualLayers.Tail, HumanoidVisualLayers.Wings,
     };
 

@@ -71,7 +71,10 @@ public abstract partial class GameRuleSystem<T> : EntitySystem where T : ICompon
     {
         if (!TryComp<GameRuleComponent>(uid, out var ruleData))
             return;
-        Started(uid, component, ruleData, args);
+        // WOLFGATE(ShipAdmin) START: mark the starting rule so its target pickers honour where staff aimed it
+        // Started(uid, component, ruleData, args);
+        WgStarted(uid, component, ruleData, args);
+        // WOLFGATE END
     }
 
     private void OnGameRuleEnded(EntityUid uid, T component, ref GameRuleEndedEvent args)

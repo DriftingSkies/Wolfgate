@@ -24,6 +24,12 @@ public sealed partial class WGShipAdminCommand : LocalizedEntityCommands
             return;
         }
 
+        if (args.Length > 0 && args[0] == WGShipAdminCommands.SpawnArg)
+        {
+            _ships.Open(player, null, spawnPage: true);
+            return;
+        }
+
         EntityUid? grid = null;
         if (args.Length > 0)
         {
@@ -45,7 +51,7 @@ public sealed partial class WGShipAdminCommand : LocalizedEntityCommands
     public override CompletionResult GetCompletion(IConsoleShell shell, string[] args)
     {
         return args.Length == 1
-            ? CompletionResult.FromHintOptions(new[] { Here }, Loc.GetString("cmd-shipmaster-hint-grid"))
+            ? CompletionResult.FromHintOptions(new[] { Here, WGShipAdminCommands.SpawnArg }, Loc.GetString("cmd-shipmaster-hint-grid"))
             : CompletionResult.Empty;
     }
 }

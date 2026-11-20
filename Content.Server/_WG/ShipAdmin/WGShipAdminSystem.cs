@@ -1,3 +1,4 @@
+using Content.Server._WG.Administration.Systems;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
 using Content.Server.EUI;
@@ -39,6 +40,8 @@ public sealed partial class WGShipAdminSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<GetVerbsEvent<Verb>>(OnGetVerbs);
         SubscribeLocalEvent<WGShipAdminOpenActionEvent>(OnOpenAction);
+        SubscribeLocalEvent<WGAdminVesselSpawnedEvent>(OnVesselSpawned);
+        SubscribeLocalEvent<WGEventTargetComponent, WGEventTargetMissedEvent>(OnEventTargetMissed);
     }
 
     public override void Update(float frameTime)
@@ -74,18 +77,31 @@ public sealed partial class WGShipAdminSystem : EntitySystem
     /// Opens the panel for an admin, or reselects in the one they have open. A new panel with no ship named starts
     /// on the ship the admin is over.
     /// </summary>
-    public void Open(ICommonSession admin, EntityUid? grid)
+    public void Open(ICommonSession admin, EntityUid? grid, bool spawnPage = false)
     {
         if (_panels.TryGetValue(admin, out var open))
         {
             if (grid != null)
                 open.Select(grid);
 
+            if (spawnPage)
+                open.ShowSpawnPage();
+
             open.RefreshList();
             return;
         }
 
-        _eui.OpenEui(new WGShipAdminEui(grid ?? ShipUnder(admin)), admin);
+        _eui.OpenEui(new WGShipAdminEui(grid ?? ShipUnder(admin), spawnPage), admin);
+    }
+
+    /// <summary>A ship an admin spawned from the panel's spawn page is selected in their panel, ready to work on.</summary>
+    private void OnVesselSpawned(WGAdminVesselSpawnedEvent args)
+    {
+        if (args.Spawner is not { } admin || !_panels.TryGetValue(admin, out var panel) || TerminatingOrDeleted(args.Grid))
+            return;
+
+        panel.Select(args.Grid);
+        panel.Finish(true, Loc.GetString("wg-ship-admin-result-spawned", ("ship", Name(args.Grid))));
     }
 
     public void PanelOpened(WGShipAdminEui panel)
@@ -170,6 +186,17 @@ public sealed partial class WGShipAdminSystem : EntitySystem
                 break;
             case WGShipAdminAction.ResetDoors:
                 panel.Finish(ResetDoors(panel.Player, grid, notify, out var reset), reset);
+                break;
+            case WGShipAdminAction.JumpTo:
+                // A jump changes no row; the result line is enough.
+                var jumped = JumpTo(panel.Player, grid, out var jumpResult);
+                panel.SetResult(jumpResult, !jumped);
+                break;
+            case WGShipAdminAction.Unstick:
+                panel.Finish(Unstick(panel.Player, grid, out var unstuck), unstuck);
+                break;
+            case WGShipAdminAction.ReturnToOrbit:
+                panel.Finish(ReturnToOrbit(panel.Player, grid, out var orbited), orbited);
                 break;
             default:
                 panel.SetResult(Loc.GetString("wg-ship-admin-result-unknown"), true);

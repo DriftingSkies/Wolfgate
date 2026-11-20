@@ -12,6 +12,7 @@ namespace Content.Client._WG.Modsuits;
 public sealed partial class ModSuitVisualizerSystem : VisualizerSystem<ModSuitSealedVisualsComponent>
 {
     [Dependency] private SharedItemSystem _item = default!;
+    [Dependency] private ClientClothingSystem _clothing = default!;
 
     public override void Initialize()
     {
@@ -34,7 +35,8 @@ public sealed partial class ModSuitVisualizerSystem : VisualizerSystem<ModSuitSe
 
         if (TryComp(args.Equipee, out InventoryComponent? inventory)
             && inventory.SpeciesId != null
-            && ent.Comp.ClothingVisuals.TryGetValue($"{args.Slot}-{inventory.SpeciesId}", out var speciesLayers))
+            && ent.Comp.ClothingVisuals.TryGetValue($"{args.Slot}-{inventory.SpeciesId}", out var speciesLayers)
+            && (!TryComp(ent, out ClothingComponent? clothing) || _clothing.SpeciesStatesExist(ent, clothing, speciesLayers)))
             layers = speciesLayers;
 
         var i = 0;

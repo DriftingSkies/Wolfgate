@@ -113,17 +113,18 @@
     shape: hexagon
     visibleFromOtherGrids: true
 
-# What open chutes list a smuggling crate at, a modest margin over the fence's price; the telecrystals a sale pays come on top.
+# What open chutes list a smuggling crate at, twice the fence's price, to a seller with no heat on them; the telecrystals
+# a sale pays come on top.
 - type: entity
   parent: SpaceCash
   id: WGSpaceCashContraband
-  suffix: 20000
+  suffix: 30000
   components:
   - type: Icon
     sprite: _NF/Objects/Economy/cash.rsi
     state: cash_10000
   - type: Stack
-    count: 20000
+    count: 30000
 
 - type: entity
   parent: VendingMachineTraderBaikal

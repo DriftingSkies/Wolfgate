@@ -90,6 +90,14 @@ public sealed class WGChoirTest
             Assert.That(entities.System<MobStateSystem>().IsDead(unlucky), Is.True, "the bad side of the toss didn't die.");
             Assert.That(entities.HasComponent<Content.Server._WG.Remade.Conversion.WGRemadeConvertingComponent>(unlucky), Is.True,
                 "the bad side of the toss isn't turning Remade.");
+
+            // Someone who can't turn, here dosed with necrotoxin protection, joins instead of dying for nothing.
+            var shielded = entities.SpawnEntity("MobHuman", map.GridCoords);
+            entities.EnsureComponent<WGChoirOfferComponent>(shielded);
+            entities.EnsureComponent<Content.Server._WG.Remade.Counterplay.WGNecrotoxinProtectedComponent>(shielded);
+            choir.Answer(shielded, true);
+            Assert.That(entities.HasComponent<WGChoirMemberComponent>(shielded), Is.True, "a body that can't turn didn't join.");
+            Assert.That(entities.System<MobStateSystem>().IsDead(shielded), Is.False, "a body that can't turn died anyway.");
         });
 
         await pair.CleanReturnAsync();

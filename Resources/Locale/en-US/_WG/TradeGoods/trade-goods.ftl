@@ -35,6 +35,7 @@ wg-trade-reason-defector = enemy buyer
 wg-trade-reason-scarce = scarce
 wg-trade-reason-restock = restocking
 wg-trade-reason-sealed-only = sealed only
+wg-trade-reason-heat = heat on you
 
 wg-trade-goods-medical = medical supplies
 wg-trade-goods-supplies = supplies
@@ -112,18 +113,9 @@ wg-trade-defector-warrant = Sold war goods to {$navy} in wartime.
 
 ## Contraband
 
-wg-trade-contraband-customs = Customs
-wg-trade-contraband-warrant = Sold contraband at {$station}.
-wg-trade-contraband-flagged = Customs flag: {$seller} sold contraband at {$station}. Their warrant stands at {$reward} { $reward ->
-        [one] thaler
-       *[other] thalers
-    }.
-wg-trade-contraband-flagged-ship = Customs flag: {$seller} of {$ship} sold contraband at {$station}. Their warrant stands at {$reward} { $reward ->
-        [one] thaler
-       *[other] thalers
-    }.
 wg-trade-contraband-drop = The drop has moved to {$station}. For the next {$minutes} minutes, smuggling crates sell there and nowhere else.
 wg-trade-contraband-drop-leak = Customs tip: smugglers are moving their crates through {$station}.
+wg-trade-contraband-tip-goods = smuggling crates
 
 ## Priority deliveries
 

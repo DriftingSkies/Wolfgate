@@ -1,0 +1,24 @@
+# The observer panel.
+cmd-observerpanel-desc = Opens the admin observer panel.
+wg-admin-tab-observer-panel = Observer Panel
+wg-observer-action-panel-desc = Avatars, staff marker, kit and tools.
+wg-observer-action-panel-name = Observer panel
+wg-observer-panel-hide-button = Hide
+wg-observer-panel-manifest-button = Manifest
+wg-observer-panel-marker-colour = Colour
+wg-observer-panel-marker-visuals = Visuals
+wg-observer-panel-marker-wording = Shown as
+wg-observer-panel-section-entry = Arrival
+wg-observer-panel-section-marker = Staff marker
+wg-observer-panel-section-presets = Avatars
+wg-observer-panel-state-hidden = Hidden from players
+wg-observer-panel-state-manifested = Visible to players as {$name}
+wg-observer-panel-tab-kit = Kit
+wg-observer-panel-tab-people = People
+wg-observer-panel-tab-presence = Presence
+wg-observer-panel-tab-tools = Tools
+wg-observer-panel-title = Admin Observer
+wg-observer-panel-tool-orbit = Orbit menu
+wg-observer-panel-tool-radar = Mass scanner
+ent-WGActionObserverPanel = { wg-observer-action-panel-name }
+    .desc = { wg-observer-action-panel-desc }

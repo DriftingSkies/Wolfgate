@@ -30,6 +30,9 @@ public enum OutfitMenuMode
 
     /// <summary>Dresses the target itself through the upstream <c>setoutfit</c> command.</summary>
     Set,
+
+    /// <summary>Applies nothing: hands the chosen gear's ID to <see cref="SpawnOutfitMenu.OnPicked"/>. Needs no target.</summary>
+    Pick,
 }
 
 /// <summary>
@@ -61,6 +64,15 @@ public sealed partial class SpawnOutfitMenu : DefaultWindow
     private NetEntity? _target;
     private OutfitEntry? _selected;
     private OutfitCategory? _categoryFilter;
+
+    /// <summary>Raised in <see cref="OutfitMenuMode.Pick"/> with the starting gear chosen, just before the window closes.</summary>
+    public event Action<string>? OnPicked;
+
+    /// <summary>The confirm button's text, for a caller in <see cref="OutfitMenuMode.Pick"/> to word; it sets the title too.</summary>
+    public string ConfirmText
+    {
+        set => ConfirmButton.Text = value;
+    }
 
     public SpawnOutfitMenu(OutfitMenuMode mode, NetEntity? target = null)
     {
@@ -105,9 +117,10 @@ public sealed partial class SpawnOutfitMenu : DefaultWindow
         if (_mode == OutfitMenuMode.Spawn)
             return;
 
-        Title = Loc.GetString(_mode == OutfitMenuMode.Ghost ? "wg-spawn-outfit-ghost-title" : "wg-spawn-outfit-set-title");
         BodySelect.Visible = false;
         ControlCheck.Visible = false;
+        if (_mode != OutfitMenuMode.Pick)
+            Title = Loc.GetString(_mode == OutfitMenuMode.Ghost ? "wg-spawn-outfit-ghost-title" : "wg-spawn-outfit-set-title");
     }
 
     /// <summary>
@@ -116,7 +129,7 @@ public sealed partial class SpawnOutfitMenu : DefaultWindow
     private void UpdateTargetInfo()
     {
         TargetInfo.Visible = false;
-        if (_mode == OutfitMenuMode.Spawn || _target is not { } target)
+        if (_mode is OutfitMenuMode.Spawn or OutfitMenuMode.Pick || _target is not { } target)
             return;
 
         var name = _entityManager.TryGetEntity(target, out var uid)
@@ -363,7 +376,7 @@ public sealed partial class SpawnOutfitMenu : DefaultWindow
     private void UpdateDetails()
     {
         GearContents.RemoveAllChildren();
-        ConfirmButton.Disabled = _selected == null || _target == null;
+        ConfirmButton.Disabled = _selected == null || _target == null && _mode != OutfitMenuMode.Pick;
 
         if (_selected == null)
         {
@@ -409,6 +422,13 @@ public sealed partial class SpawnOutfitMenu : DefaultWindow
 
     private void Confirm()
     {
+        if (_selected != null && _mode == OutfitMenuMode.Pick)
+        {
+            OnPicked?.Invoke(_selected.Gear.ID);
+            Close();
+            return;
+        }
+
         if (_selected == null || _target is not { } target)
             return;
 

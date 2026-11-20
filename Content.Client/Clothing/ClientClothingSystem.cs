@@ -119,6 +119,9 @@ public sealed partial class ClientClothingSystem : ClothingSystem
         if (inventory.SpeciesId != null)
             item.ClothingVisuals.TryGetValue($"{visualSlot}-{inventory.SpeciesId}", out layers);
 
+        if (layers != null && !SpeciesStatesExist(uid, item, layers)) // WOLFGATE(Species): a missing species state falls back to the plain one
+            layers = null;
+
         // if that returned nothing, attempt to find generic data
         if (layers == null && !item.ClothingVisuals.TryGetValue(visualSlot, out layers))
         {

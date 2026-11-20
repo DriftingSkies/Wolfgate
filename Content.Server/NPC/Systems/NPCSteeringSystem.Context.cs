@@ -331,6 +331,9 @@ public sealed partial class NPCSteeringSystem
                 // and I don't want to spam grafana even harder than it gets spammed rn.
                 Log.Debug($"NPC {ToPrettyString(uid)} found stuck at {ourCoordinates}");
                 needsPath = true;
+                // WOLFGATE(NpcCrew): stuck crew stop short of a held spot or step aside, as a repath runs back into the same body
+                if (TryUnstickCrew(uid, steering, xform, direction, targetDistance))
+                    return true;
 
                 if (stuckTime.TotalSeconds > maxStuckTime * 3)
                 {
@@ -462,6 +465,9 @@ public sealed partial class NPCSteeringSystem
             steering.PathfindToken = null;
             return;
         }
+
+        if (IsCrewSidestepping(uid, steering)) // WOLFGATE(NpcCrew): a crewman stepping aside reaches that tile before a repath
+            return;
 
         if (!needsPath && steering.CurrentPath.Count > 0)
         {

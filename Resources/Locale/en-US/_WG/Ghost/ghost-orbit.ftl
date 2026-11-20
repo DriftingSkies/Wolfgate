@@ -46,3 +46,13 @@ wg-ghost-orbit-interest-nuke = Nuclear device
 wg-ghost-orbit-interest-disk = Nuke disk
 wg-ghost-orbit-interest-rift = Dragon rift
 wg-ghost-orbit-interest-anomaly = Anomaly
+
+wg-ghost-orbit-interest-warhead = Warhead
+wg-ghost-orbit-interest-warhead-safe = Warhead, safe
+wg-ghost-orbit-interest-warhead-armed = Warhead, armed
+wg-ghost-orbit-interest-warhead-countdown = Warhead, counting down
+wg-ghost-orbit-interest-warhead-final = Warhead, final seconds
+wg-ghost-orbit-interest-beacon = Nuclear drop beacon
+wg-ghost-orbit-interest-scion = Monolith Scion
+wg-ghost-orbit-interest-scion-stage = Monolith Scion, {$stage}
+wg-ghost-orbit-interest-flesh-ship = Flesh ship

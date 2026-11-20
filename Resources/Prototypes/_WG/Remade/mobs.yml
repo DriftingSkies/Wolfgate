@@ -110,6 +110,7 @@
   - type: MovementIgnoreGravity
   - type: ProtectedFromStepTriggers
   - type: ZombieImmune
+  - type: WGRemadeNoDevices
   - type: Speech
     enabled: false
   # An empty body, not the animal one: a Remade's limbs are its own (WGRemadeLimbs), and the animal's parts, organs and

@@ -25,6 +25,7 @@ public sealed class HealthAnalyzerScannedUserMessage : BoundUserInterfaceMessage
     public List<HealthAnalyzerChemicalInfo>? Chemicals; // WOLFGATE(Wolfmed): EXT 2 — bloodstream/chemical/stomach/lung contents.
     public FixedPoint2? VitalDamage; // WOLFGATE(Wolfmed): EXT 2 — the damage figure that decides crit on a wound host.
     public Content.Shared._WG.WolfChem.Narcotics.WGAnalyzerConditions? Conditions; // WOLFGATE(WolfChem): drug levels, held effects and dependence
+    public List<Robust.Shared.Prototypes.ProtoId<Content.Shared._WG.Augments.WGAugmentPrototype>>? Augments; // WOLFGATE(Augments): the cyberware in the body, for the organs tab
 
     // WOLFGATE(Wolfmed) START: EXT 2, the constructor takes four appended optional parameters.
     // public HealthAnalyzerScannedUserMessage(NetEntity? targetEntity, float temperature, float bloodLevel, bool? scanMode, bool? bleeding, bool? unrevivable, bool? uncloneable, Dictionary<TargetBodyPart, TargetIntegrity>? body, NetEntity? part = null) // Shitmed Change

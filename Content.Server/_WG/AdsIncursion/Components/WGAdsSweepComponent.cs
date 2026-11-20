@@ -28,6 +28,17 @@ public sealed partial class WGAdsSweepComponent : Component
     [ViewVariables]
     public EntityUid? Interdicting;
 
+    /// <summary>
+    /// Whether it was pulled off patrol to answer an emergency: it follows <see cref="Interdicting"/> out of held space
+    /// and to any range, and is never leashed back.
+    /// </summary>
+    [ViewVariables]
+    public bool Hunting;
+
+    /// <summary>Whether its hunt is an attack, not a hold beside an ADS ship in trouble.</summary>
+    [ViewVariables]
+    public bool Attacking;
+
     /// <summary>When it was sent to interdict.</summary>
     [ViewVariables]
     public TimeSpan InterdictSince;

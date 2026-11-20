@@ -1,3 +1,4 @@
+using Content.Server.Body.Components;
 using Content.Server.Temperature.Components;
 using Content.Server.Temperature.Systems;
 using Content.Shared._WG.Modsuits.Components;
@@ -23,7 +24,10 @@ public sealed partial class ModThermalRegulatorModuleSystem : EntitySystem
                 || !TryComp<TemperatureComponent>(wearer, out var temperature))
                 continue;
 
-            var difference = regulator.TargetTemperature - temperature.CurrentTemperature;
+            var target = TryComp<ThermalRegulatorComponent>(wearer, out var body)
+                ? body.NormalBodyTemperature
+                : regulator.TargetTemperature;
+            var difference = target - temperature.CurrentTemperature;
             if (MathF.Abs(difference) < 0.01f)
                 continue;
 

@@ -605,6 +605,8 @@ public sealed partial class WGDrydockSystem
             : JobCranes(job).FirstOrDefault(c => !TerminatingOrDeleted(c));
         var drop = DropSpot(crane.Valid ? crane : console);
 
+        // A chop shop pays in thalers for the whole ship, its fittings included, so it hands none of them out as well.
+        var chop = HasComp<WGDrydockChopShopComponent>(console);
         var yield = new Dictionary<string, int>();
         var anchored = new List<EntityUid>();
         _map.GetAnchoredEntities((ship, grid), item.TileIndex, anchored);
@@ -614,11 +616,11 @@ public sealed partial class WGDrydockSystem
                 continue;
 
             ReleaseMobs(uid);
-            if (IsSalvagedWhole(uid))
+            if (!chop && IsSalvagedWhole(uid))
             {
                 SalvageHardware(uid, crane, drop);
             }
-            else
+            else if (!chop)
             {
                 SalvageParts(uid, crane, drop);
                 if (pay != null && MetaData(uid).EntityPrototype is { } proto)
@@ -635,7 +637,6 @@ public sealed partial class WGDrydockSystem
 
         EnsureComp<WGHulkComponent>(ship).LastWork = _timing.CurTime;
         // A chop shop pays in thalers, not materials.
-        var chop = HasComp<WGDrydockChopShopComponent>(console);
         if (yield.Count > 0 && !chop)
         {
             DepositYield(crane, drop, yield);

@@ -3,9 +3,9 @@ using Robust.Shared.GameStates;
 namespace Content.Shared._WG.Wolfmed.Life;
 
 /// <summary>
-/// The heart has stopped. The body is Critical through an external pressure, the crit heartbeat goes silent,
-/// bleeding slows to a trickle and the brain's oxygenation clock runs at its fastest. Only a defibrillator,
-/// a working heart with blood behind it, or a rejuvenate takes this off.
+/// The heart has stopped. The arrest pressure climbs over <see cref="CollapseSeconds"/> until the body is
+/// Critical, the crit heartbeat goes silent, bleeding slows to a trickle and the brain's oxygenation clock runs
+/// at its fastest. Only a defibrillator, a working heart with blood behind it, or a rejuvenate takes this off.
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class WolfmedCardiacArrestComponent : Component
@@ -17,6 +17,26 @@ public sealed partial class WolfmedCardiacArrestComponent : Component
     /// <summary>Why it stopped, for the admin log and the analyzer's wording.</summary>
     [ViewVariables]
     public string Cause = string.Empty;
+
+    /// <summary>Seconds from the stop to the full collapse; zero for a collapse at once.</summary>
+    [AutoNetworkedField]
+    public float CollapseSeconds;
+
+    /// <summary>Life-tick seconds since the stop, counted up to <see cref="CollapseSeconds"/>.</summary>
+    [AutoNetworkedField]
+    public float CollapseElapsed;
+
+    /// <summary>The last collapse warning shown to the patient. Server only.</summary>
+    [ViewVariables]
+    public int Stage;
+
+    /// <summary>Whether the collapse has finished and the Dying actions are granted. Server only.</summary>
+    [ViewVariables]
+    public bool Collapsed;
+
+    /// <summary>How far into the collapse the body is, 0 at the stop and 1 once it is down for good.</summary>
+    public float CollapseFraction() =>
+        CollapseSeconds <= 0f ? 1f : Math.Clamp(CollapseElapsed / CollapseSeconds, 0f, 1f);
 }
 
 /// <summary>

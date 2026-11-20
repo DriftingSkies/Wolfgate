@@ -14,7 +14,14 @@ public sealed partial class ModHatVisualsSystem : EntitySystem
     [Dependency] private ISerializationManager _serialization = default!;
     [Dependency] private ItemSlotsSystem _itemSlots = default!;
 
-    [SubscribeLocalEvent(after: [typeof(ClientClothingSystem), typeof(ModSuitVisualizerSystem), typeof(ToggleableVisualsSystem)])]
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<ModHatHolderComponent, GetEquipmentVisualsEvent>(OnGetEquipmentVisuals,
+            after: [typeof(ClientClothingSystem), typeof(ModSuitVisualizerSystem), typeof(ToggleableVisualsSystem)]);
+    }
+
     private void OnGetEquipmentVisuals(Entity<ModHatHolderComponent> ent, ref GetEquipmentVisualsEvent args)
     {
         if (_itemSlots.GetItemOrNull(ent, ent.Comp.SlotId) is not { } hat)

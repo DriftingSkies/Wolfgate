@@ -46,6 +46,13 @@ public enum WGShipAdminAction : byte
     Eject,
     Strip,
     Delete,
+
+    JumpTo,
+    SetFaction,
+    SetCompany,
+    Unstick,
+    ReturnToOrbit,
+    StartEvent,
 }
 
 /// <summary>The one table of which admin flag each panel action needs. The server checks it and the window greys buttons by it.</summary>

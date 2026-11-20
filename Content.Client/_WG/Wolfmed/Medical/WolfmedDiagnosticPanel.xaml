@@ -1,5 +1,6 @@
 <BoxContainer xmlns="https://spacestation14.io"
               xmlns:graphics="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+              xmlns:augments="clr-namespace:Content.Client._WG.Augments.UI"
               Orientation="Vertical"
               HorizontalExpand="True"
               VerticalExpand="True">
@@ -65,7 +66,11 @@
                 </ScrollContainer>
 
                 <ScrollContainer Name="OrgansTab" VerticalExpand="True" HorizontalExpand="True" Visible="False" HScrollEnabled="False">
-                    <BoxContainer Name="OrgansContainer" Orientation="Vertical" HorizontalExpand="True" />
+                    <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                        <BoxContainer Name="OrgansContainer" Orientation="Vertical" HorizontalExpand="True" />
+                        <!-- The cyberware in the body, under the organs. -->
+                        <augments:WGAugmentScanList Name="CyberwareList" />
+                    </BoxContainer>
                 </ScrollContainer>
 
                 <ScrollContainer Name="ChemicalsTab" VerticalExpand="True" HorizontalExpand="True" Visible="False" HScrollEnabled="False">

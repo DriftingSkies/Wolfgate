@@ -40,6 +40,7 @@ namespace Content.Server.Atmos.EntitySystems
         private void InitializeCVars()
         {
             Subs.CVar(_cfg, CCVars.SpaceWind, value => SpaceWind = value, true);
+            Subs.CVar(_cfg, Content.Shared._WG.Performance.WGPerformanceCVars.WindSkipWeakTiles, value => _wgWindSkipWeak = value, true); // WOLFGATE(Performance): skip wind searches too weak to push
             Subs.CVar(_cfg, CCVars.SpaceWindPressureForceDivisorThrow, value => SpaceWindPressureForceDivisorThrow = value, true);
             Subs.CVar(_cfg, CCVars.SpaceWindPressureForceDivisorPush, value => SpaceWindPressureForceDivisorPush = value, true);
             Subs.CVar(_cfg, CCVars.SpaceWindMaxVelocity, value => SpaceWindMaxVelocity = value, true);

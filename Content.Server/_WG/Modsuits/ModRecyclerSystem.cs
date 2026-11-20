@@ -35,17 +35,26 @@ public sealed partial class ModRecyclerSystem : VirtualController
 
     private readonly HashSet<Entity<ItemComponent>> _items = new();
 
-    [SubscribeLocalEvent]
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<ModRecyclerModuleComponent, MapInitEvent>(OnMapInit);
+        SubscribeLocalEvent<ModRecyclerModuleComponent, ModSuitWearerChangedEvent>(OnWearerChanged);
+        SubscribeLocalEvent<ModRecyclerModuleComponent, ModModuleInstalledEvent>(OnInstalled);
+        SubscribeLocalEvent<ModRecyclerModuleComponent, ModModuleRemovedEvent>(OnRemoved);
+        SubscribeLocalEvent<ModRecyclerModuleComponent, ModRecyclerUnloadActionEvent>(OnUnload);
+    }
+
     private void OnMapInit(Entity<ModRecyclerModuleComponent> ent, ref MapInitEvent args)
     {
-        if (!_actionContainer.EnsureAction(ent, ref ent.Comp.UnloadActionEntity, ent.Comp.UnloadAction))
+        if (!_actionContainer.EnsureAction(ent, ref ent.Comp.UnloadActionEntity, out var action, ent.Comp.UnloadAction))
             return;
 
-        _actions.SetEntityIcon(ent.Comp.UnloadActionEntity.Value, ent.Owner);
+        _actions.SetEntityIcon(ent.Comp.UnloadActionEntity.Value, ent.Owner, action);
         Dirty(ent);
     }
 
-    [SubscribeLocalEvent]
     private void OnWearerChanged(Entity<ModRecyclerModuleComponent> ent, ref ModSuitWearerChangedEvent args)
     {
         if (args.OldWearer is { } old)
@@ -55,7 +64,6 @@ public sealed partial class ModRecyclerSystem : VirtualController
             GrantUnloadAction(ent, wearer);
     }
 
-    [SubscribeLocalEvent]
     private void OnInstalled(Entity<ModRecyclerModuleComponent> ent, ref ModModuleInstalledEvent args)
     {
         if (TryComp<ModSuitComponent>(args.Suit, out var suit) && suit.Wearer is { } wearer)
@@ -67,14 +75,13 @@ public sealed partial class ModRecyclerSystem : VirtualController
     {
         action = default;
         if (ent.Comp.UnloadActionEntity is not { } actionUid
-            || !TryComp<BaseActionComponent>(actionUid, out var actionComp))
+            || !_actions.TryGetActionData(actionUid, out var actionComp, logError: false))
             return false;
 
         action = (actionUid, actionComp);
         return true;
     }
 
-    [SubscribeLocalEvent]
     private void OnRemoved(Entity<ModRecyclerModuleComponent> ent, ref ModModuleRemovedEvent args)
     {
         if (TryGetUnloadAction(ent, out var action) && action.Comp.AttachedEntity is { } user)
@@ -93,7 +100,6 @@ public sealed partial class ModRecyclerSystem : VirtualController
             _actions.RemoveProvidedAction(user, ent, action.Owner);
     }
 
-    [SubscribeLocalEvent]
     private void OnUnload(Entity<ModRecyclerModuleComponent> ent, ref ModRecyclerUnloadActionEvent args)
     {
         if (args.Handled

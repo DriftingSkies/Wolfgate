@@ -136,6 +136,34 @@ public sealed partial class WGCompanySystem
         Dirty(ship, flown);
     }
 
+    /// <summary>
+    /// Flies a ship for a company, or for none, as staff set it: the radar colour and Company access follow.
+    /// False when the company doesn't exist.
+    /// </summary>
+    public bool SetShipCompany(EntityUid ship, int? companyId)
+    {
+        TryComp<WGShipAccessComponent>(ship, out var access);
+        if (companyId is not { } id)
+        {
+            RemComp<WGCompanyShipComponent>(ship);
+            if (access != null)
+                _shipAccess.SetCompany((ship, access), null, null, Array.Empty<WGShipAccessKey>());
+            return true;
+        }
+
+        if (!_companies.TryGetValue(id, out var company))
+            return false;
+        var flown = EnsureComp<WGCompanyShipComponent>(ship);
+        flown.CompanyId = company.Id;
+        flown.Name = company.Name;
+        flown.Tag = company.Tag;
+        flown.Colour = company.Colour;
+        Dirty(ship, flown);
+        if (access != null)
+            _shipAccess.SetCompany((ship, access), company.Id, company.Name, CompanyKeys(company));
+        return true;
+    }
+
     /// <summary>A ship that stops flying for a company gets its own IFF colour back.</summary>
     private void OnCompanyShipRemoved(Entity<WGCompanyShipComponent> ship, ref ComponentShutdown args)
     {

@@ -11623,6 +11623,9 @@ entities:
     - type: Transform
       pos: -8.5,10.5
       parent: 1
+    - type: GasMiner
+      maxExternalPressure: 6500
+      spawnAmount: 2
 - proto: GasMixerFlipped
   entities:
   - uid: 1656

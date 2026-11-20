@@ -224,6 +224,7 @@ shut out of a helm that ended up on a broken-off section.
 - [`Content.Server/Sandbox/SandboxSystem.cs`](../../Sandbox/SandboxSystem.cs): all access is not a key to every locked ship
 - [`Content.Server/Shuttles/Systems/ShuttleConsoleLockSystem.cs`](../../Shuttles/Systems/ShuttleConsoleLockSystem.cs)
   - a guest's card also joins the allow list
+  - a borg's card joins the allow list too, so its doors open
   - a held voucher with the deed, or a player the ship is registered to, holds deed access too
   - resetting guests also empties the allow list, and that alone counts as a reset
   - a ship with Wolfgate access keeps its lock on the grid, not in Mono's readers

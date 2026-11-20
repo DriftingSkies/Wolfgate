@@ -206,25 +206,9 @@ public sealed partial class WGTradeMarketPrototype : IPrototype
     [DataField]
     public List<EntProtoId> SealedOnlyChutes = new();
 
-    /// <summary>Contraband goods: open chutes buy them, but a sale may get the seller flagged by customs.</summary>
+    /// <summary>Contraband goods: open chutes buy them, and a sale heats the seller as narcotics do.</summary>
     [DataField]
     public List<EntProtoId> ContrabandGoods = new();
-
-    /// <summary>Chance one contraband sale at an open chute gets the seller flagged.</summary>
-    [DataField]
-    public float ContrabandWarrantChance = 0.25f;
-
-    /// <summary>What each flag adds to the seller's warrant.</summary>
-    [DataField]
-    public int ContrabandWarrant = 20000;
-
-    /// <summary>The most a seller's contraband warrant grows to.</summary>
-    [DataField]
-    public int ContrabandWarrantCap = 300000;
-
-    /// <summary>After security hears of a seller, how long before a further flag on them is radioed again.</summary>
-    [DataField]
-    public TimeSpan ContrabandAlertCooldown = TimeSpan.FromMinutes(5);
 
     /// <summary>Telecrystals a contraband sale at an open chute pays beside the cash; 0 pays none.</summary>
     [DataField]
@@ -242,7 +226,7 @@ public sealed partial class WGTradeMarketPrototype : IPrototype
     [DataField]
     public Color ContrabandDropColor = Color.FromHex("#d84a4a");
 
-    /// <summary>The radio channel security hears a flagged sale on.</summary>
+    /// <summary>The radio channel security hears of the drop on.</summary>
     [DataField]
     public ProtoId<RadioChannelPrototype> ContrabandAlertChannel = "Nfsd";
 

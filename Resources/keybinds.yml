@@ -509,6 +509,12 @@ binds:
 - function: OpenAdminMenu
   type: State
   key: F7
+# WOLFGATE(AdminObserver) START: admin ghost and back to body, SS13's aghost key
+- function: WGToggleAghost
+  type: State
+  key: F5
+  mod1: Shift
+# WOLFGATE END
 - function: OpenDecalSpawnWindow
   type: State
   key: F8

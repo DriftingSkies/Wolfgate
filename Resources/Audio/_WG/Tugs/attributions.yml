@@ -1,0 +1,7 @@
+- files:
+  - "motor_start.ogg"
+  - "motor_loop.ogg"
+  - "motor_stop.ogg"
+  license: "Custom"
+  copyright: "RCSM (War Thunder sound mod), build of 2026-09-07: electric_flaps_start, electric_flaps and electric_flaps_end. Converted to mono OGG."
+  source: "https://forum.warthunder.com/t/sound-mod-rcsm/218982"

@@ -77,6 +77,8 @@ namespace Content.Server.Database
         // WOLFGATE END
         public DbSet<WolfgateShipCommandPreset> WolfgateShipCommandPreset { get; set; } = null!; // WOLFGATE(ShipCommand): players' ship presets
         public DbSet<WolfgateNanoChatNumber> WolfgateNanoChatNumber { get; set; } = null!; // WOLFGATE(NanoChat): each character's number
+        public DbSet<WolfgatePainting> WolfgatePainting { get; set; } = null!; // WOLFGATE(Paintings): the art catalogue
+        public DbSet<WolfgateAdminObserver> WolfgateAdminObserver { get; set; } = null!; // WOLFGATE(AdminObserver): admins' observer settings
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -625,6 +627,12 @@ namespace Content.Server.Database
 
             modelBuilder.Entity<WolfgateNanoChatNumber>()
                 .HasIndex(n => n.Number)
+                .IsUnique();
+            // WOLFGATE END
+
+            // WOLFGATE(AdminObserver) START: one observer document per admin
+            modelBuilder.Entity<WolfgateAdminObserver>()
+                .HasIndex(o => o.PlayerUserId)
                 .IsUnique();
             // WOLFGATE END
         }
@@ -2371,6 +2379,57 @@ namespace Content.Server.Database
         public Profile Profile { get; set; } = null!;
 
         public int Number { get; set; }
+    }
+    // WOLFGATE END
+
+    // WOLFGATE(Paintings) START: paintings scanned into the art catalogue
+    /// <summary>A painting in the art catalogue, stored once under the hash of its pixels.</summary>
+    public class WolfgatePainting
+    {
+        [Key, MaxLength(64)]
+        public string Hash { get; set; } = null!;
+
+        public int Width { get; set; }
+
+        public int Height { get; set; }
+
+        /// <summary>Raw RGBA, row by row.</summary>
+        [Required]
+        public byte[] Pixels { get; set; } = null!;
+
+        [Required, MaxLength(64)]
+        public string Title { get; set; } = null!;
+
+        /// <summary>The signature: a character name, or anonymous.</summary>
+        [Required, MaxLength(64)]
+        public string Artist { get; set; } = null!;
+
+        /// <summary>The player who painted it, who may take it out of the catalogue.</summary>
+        public Guid? AuthorUserId { get; set; }
+
+        public Guid ScannedByUserId { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        /// <summary>Blocked by an admin: hidden, never sent and can't be scanned again.</summary>
+        public bool Blocked { get; set; }
+    }
+    // WOLFGATE END
+
+    // WOLFGATE(AdminObserver) START: an admin's saved observer presets, staff marker and kit
+    /// <summary>An admin's observer settings.</summary>
+    public class WolfgateAdminObserver
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public Guid PlayerUserId { get; set; }
+
+        /// <summary>The settings as JSON (WGAdminObserverData).</summary>
+        [Required]
+        public string Data { get; set; } = "";
+
+        public DateTime Saved { get; set; }
     }
     // WOLFGATE END
 }

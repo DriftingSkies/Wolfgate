@@ -319,6 +319,9 @@ public sealed partial class WGCrewAlertSystem : EntitySystem
             AlertShip(recipient.Grid, recipient.Group, attacker, gunfire: gunfire);
     }
 
+    /// <summary>Reports a hull taken from a crew's own side as an attacker that has opened fire, whatever its colours.</summary>
+    public void ReportHijack(EntityUid grid, string group, EntityUid hull) => ReportAttack(grid, hull, group, gunfire: true);
+
     /// <summary>Reports an explicit vessel threat to a crew and every ship in its escort formation.</summary>
     public void ReportShipThreat(EntityUid grid, string group, EntityUid attacker) => ReportAttack(grid, attacker, group);
 

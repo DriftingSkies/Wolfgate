@@ -54,6 +54,7 @@ public sealed partial class WGChoirSystem : EntitySystem
     [Dependency] private NpcFactionSystem _factions = default!;
     [Dependency] private SharedActionsSystem _actions = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private Content.Server._WG.Ghost.GhostNoticeSystem _ghostNotice = default!;
 
     public const string Faction = "WGChoir";
     private const string ActionPrototype = "WGChoirActionAnswer";
@@ -108,6 +109,7 @@ public sealed partial class WGChoirSystem : EntitySystem
         _popup.PopupEntity(Loc.GetString("wg-choir-offer-popup"), mob, session, PopupType.LargeCaution);
         Tell(session, Loc.GetString("wg-choir-offer"));
         _chat.SendAdminAlert(mob, Loc.GetString("wg-choir-admin-offered"));
+        _ghostNotice.Notify(mob, Content.Server._WG.Ghost.GhostNoticeKind.Choir, Loc.GetString("wg-ghost-notice-choir-offered", ("player", mob)));
     }
 
     /// <summary>Makes someone Choir.</summary>
@@ -128,6 +130,7 @@ public sealed partial class WGChoirSystem : EntitySystem
         MarkPda(mob);
         _adminLog.Add(LogType.Action, LogImpact.High, $"{ToPrettyString(mob):player} joined the Choir");
         _chat.SendAdminAlert(mob, Loc.GetString("wg-choir-admin-joined"));
+        _ghostNotice.Notify(mob, Content.Server._WG.Ghost.GhostNoticeKind.Choir, Loc.GetString("wg-ghost-notice-choir-joined", ("player", mob)));
         if (_player.TryGetSessionByEntity(mob, out var session))
         {
             _popup.PopupEntity(Loc.GetString("wg-choir-joined-popup"), mob, session, PopupType.LargeCaution);
@@ -248,10 +251,10 @@ public sealed partial class WGChoirSystem : EntitySystem
         Answer(mob, _random.Prob(AbominationChance));
     }
 
-    /// <summary>Answers with a known outcome. A body that can't turn Remade, such as a cyborg's, always joins.</summary>
+    /// <summary>Answers with a known outcome. A body that can't turn Remade, such as a cyborg's or a protected one, always joins.</summary>
     public void Answer(EntityUid mob, bool abomination)
     {
-        if (!abomination || !_conversion.IsTurnable(mob))
+        if (!abomination || !_conversion.CanConvert(mob, once: true))
         {
             Join(mob);
             return;
@@ -264,7 +267,8 @@ public sealed partial class WGChoirSystem : EntitySystem
             _popup.PopupEntity(Loc.GetString("wg-choir-abomination-popup"), mob, session, PopupType.LargeCaution);
 
         _mobState.ChangeMobState(mob, MobState.Dead);
-        _rising.Raise(mob, false);
+        if (_rising.Raise(mob, false))
+            _ghostNotice.Notify(mob, Content.Server._WG.Ghost.GhostNoticeKind.Choir, Loc.GetString("wg-ghost-notice-choir-turning", ("player", mob)));
     }
 
     private void OnOfferShutdown(Entity<WGChoirOfferComponent> ent, ref ComponentShutdown args)

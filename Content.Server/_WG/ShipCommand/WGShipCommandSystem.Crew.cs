@@ -4,6 +4,7 @@ using Content.Server._WG.NpcCrew.Systems;
 using Content.Server.NPC.Components;
 using Content.Shared._WG.NpcCrew;
 using Content.Shared._WG.ShipCommand;
+using Content.Shared.Mobs.Components;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Timing;
 
@@ -70,6 +71,11 @@ public sealed partial class WGShipCommandSystem
             return;
         }
 
+        // Only people are judged by standing and zone; walls and other structures are left to the crew's own rules, or
+        // the crew's rounds would pass through every wall outside a zone.
+        if (!HasComp<MobStateComponent>(args.Other))
+            return;
+
         args.Authorized = Welcome(grid, args.Crew, args.Other, out var response);
         if (args.Authorized == false)
             args.Response = response;
@@ -91,6 +97,10 @@ public sealed partial class WGShipCommandSystem
             response = WGCrewSecurityResponse.Hostile;
             return false;
         }
+
+        // The ship's own roster, its counter staff among them, belong wherever their posts are.
+        if (TryComp<WGShipRosterMemberComponent>(visitor, out var member) && member.Grid == grid.Owner)
+            return true;
 
         var authority = GetAuthority(visitor, grid, out var listed);
         switch (authority)

@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server._WG.Encounters.Components;
+using Content.Server._WG.NpcCrew.Components;
 using Content.Server._WG.ReaverCampaign.Components;
 using Content.Shared._WG.NpcCrew;
 using Content.Shared._WG.ReaverCampaign;
@@ -180,11 +181,19 @@ public sealed partial class WGReaverCampaignSystem
                 || TerminatingOrDeleted(lead.Grid))
                 continue;
 
-            // A target that berthed at a station is out of reach.
+            // A target that berthed at a station is out of reach, unless it is a hull stolen from the campaign.
             if (TerminatingOrDeleted(target) || Transform(target).MapID != map || _status.IsDisabled(target)
-                || _encounters.DockedAtStation(target))
+                || !comp.Recovering && _encounters.DockedAtStation(target))
             {
                 EndIntercept(patrol);
+                continue;
+            }
+
+            // A stolen hull is chased anywhere until it is broken or back in the campaign's hands.
+            if (comp.Recovering)
+            {
+                if (!HasComp<WGCrewSeizedHullComponent>(target))
+                    EndIntercept(patrol);
                 continue;
             }
 
@@ -230,6 +239,7 @@ public sealed partial class WGReaverCampaignSystem
             return;
 
         patrol.Intercepting = null;
+        patrol.Recovering = false;
         patrol.Resume = new List<Vector2>();
         patrol.TargetOutsideSince = null;
         patrol.TargetFarSince = null;

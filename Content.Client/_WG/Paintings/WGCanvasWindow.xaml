@@ -1,0 +1,70 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+                      xmlns:paintings="clr-namespace:Content.Client._WG.Paintings"
+                      Title="{Loc 'wg-canvas-window-title'}"
+                      MinSize="860 560">
+    <BoxContainer Orientation="Vertical" Margin="8" SeparationOverride="8">
+        <BoxContainer Orientation="Horizontal" VerticalExpand="True" SeparationOverride="8">
+            <!-- The canvas on a dark backdrop -->
+            <PanelContainer Name="Backdrop" HorizontalExpand="True" VerticalExpand="True">
+                <BoxContainer Orientation="Vertical" Margin="12">
+                    <paintings:WGCanvasControl Name="CanvasView" HorizontalExpand="True" VerticalExpand="True" />
+                    <Label Name="Signature" StyleClasses="LabelSubHeading" HorizontalAlignment="Center"
+                           Margin="0 8 0 0" Visible="False" />
+                </BoxContainer>
+            </PanelContainer>
+
+            <!-- Tools and colours -->
+            <BoxContainer Name="SidePanel" Orientation="Vertical" MinWidth="300" MaxWidth="300" SeparationOverride="6">
+                <Label Text="{Loc 'wg-canvas-section-tools'}" StyleClasses="LabelSubHeading" />
+                <BoxContainer Orientation="Horizontal">
+                    <Button Name="PencilButton" Text="{Loc 'wg-canvas-tool-pencil'}" ToggleMode="True"
+                            HorizontalExpand="True" StyleClasses="OpenRight" />
+                    <Button Name="FillButton" Text="{Loc 'wg-canvas-tool-fill'}" ToggleMode="True"
+                            HorizontalExpand="True" StyleClasses="OpenBoth" />
+                    <Button Name="PickerButton" Text="{Loc 'wg-canvas-tool-picker'}" ToggleMode="True"
+                            HorizontalExpand="True" StyleClasses="OpenLeft" />
+                </BoxContainer>
+                <CheckBox Name="GridCheck" Text="{Loc 'wg-canvas-grid'}" />
+
+                <PanelContainer StyleClasses="LowDivider" Margin="0 4" />
+                <Label Text="{Loc 'wg-canvas-section-colour'}" StyleClasses="LabelSubHeading" />
+                <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                    <PanelContainer Name="BrushSwatch" MinSize="40 40" VerticalAlignment="Center" />
+                    <BoxContainer Orientation="Vertical" VerticalAlignment="Center" HorizontalExpand="True">
+                        <Label Name="BrushHex" />
+                        <Label Name="ToolLabel" StyleClasses="LabelSubText" />
+                    </BoxContainer>
+                </BoxContainer>
+
+                <BoxContainer Name="PalettePanel" Orientation="Vertical" SeparationOverride="6">
+                    <ColorSelectorSliders Name="Sliders" IsAlphaVisible="False" />
+
+                    <PanelContainer StyleClasses="LowDivider" Margin="0 4" />
+                    <BoxContainer Orientation="Horizontal" SeparationOverride="6">
+                        <Label Text="{Loc 'wg-canvas-section-palette'}" StyleClasses="LabelSubHeading"
+                               HorizontalExpand="True" VerticalAlignment="Center" />
+                        <Label Name="PaletteCount" StyleClasses="LabelSubText" VerticalAlignment="Center" />
+                        <Button Name="SaveColourButton" Text="{Loc 'wg-canvas-save-colour'}" StyleClasses="OpenBoth" />
+                    </BoxContainer>
+                    <GridContainer Name="SavedSwatches" Columns="8" HSeparationOverride="4" VSeparationOverride="4" />
+                    <Label Name="PaletteEmpty" Text="{Loc 'wg-canvas-palette-empty'}" StyleClasses="LabelSubText" />
+
+                    <Label Text="{Loc 'wg-canvas-section-recent'}" StyleClasses="LabelSubHeading" />
+                    <GridContainer Name="RecentSwatches" Columns="8" HSeparationOverride="4" VSeparationOverride="4" />
+                </BoxContainer>
+            </BoxContainer>
+        </BoxContainer>
+
+        <BoxContainer Name="FinishPanel" Orientation="Vertical" SeparationOverride="6">
+            <PanelContainer StyleClasses="LowDivider" />
+            <BoxContainer Orientation="Horizontal" SeparationOverride="8">
+                <LineEdit Name="TitleEdit" HorizontalExpand="True" PlaceHolder="{Loc 'wg-canvas-title-placeholder'}" />
+                <CheckBox Name="AnonymousCheck" Text="{Loc 'wg-canvas-anonymous-checkbox'}" />
+                <controls:ConfirmButton Name="FinishButton" Text="{Loc 'wg-canvas-finish'}"
+                                        ConfirmationText="{Loc 'wg-canvas-finish-confirm'}" MinWidth="110" />
+            </BoxContainer>
+            <Label Text="{Loc 'wg-canvas-help'}" StyleClasses="LabelSubText" />
+        </BoxContainer>
+    </BoxContainer>
+</controls:FancyWindow>

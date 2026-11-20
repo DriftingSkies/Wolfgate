@@ -59,6 +59,32 @@ public sealed class ClothingLayerTest : InteractionTest
         });
     }
 
+    [TestCase("MobHuman")]
+    [TestCase("MobHumanDummy")]
+    [TestCase("MobArachnid")]
+    [TestCase("MobMoth")]
+    public async Task SocksMarkingDrawsUnderOutfits(string mob)
+    {
+        var target = await SpawnTarget(mob);
+        await Equip(target, (Jumpsuit, "jumpsuit"), (Labcoat, "outerClothing"));
+
+        await Client.WaitAssertion(() =>
+        {
+            var spriteUid = ToClient(target);
+            var sprite = CEntMan.GetComponent<SpriteComponent>(spriteUid);
+            var sprites = CEntMan.System<SpriteSystem>();
+            Assert.That(sprites.LayerMapTryGet((spriteUid, sprite), HumanoidVisualLayers.UndergarmentSocks, out var socks, false),
+                Is.True, "The body has no socks marking layer.");
+            Assert.That(sprites.LayerMapTryGet((spriteUid, sprite), HumanoidVisualLayers.LFoot, out var leftFoot, false),
+                Is.True, "The body has no left foot layer.");
+            Assert.That(sprites.LayerMapTryGet((spriteUid, sprite), HumanoidVisualLayers.RFoot, out var rightFoot, false),
+                Is.True, "The body has no right foot layer.");
+            Assert.That(socks, Is.GreaterThan(Math.Max(leftFoot, rightFoot)), "Socks render over the feet.");
+            Assert.That(socks, Is.LessThan(Indices(target, "jumpsuit").Min()), "The uniform renders over socks.");
+            Assert.That(socks, Is.LessThan(Indices(target, "outerClothing").Min()), "Outer clothing renders over socks.");
+        });
+    }
+
     [TestCase(NativeDress)]
     [TestCase(MaidDress)]
     public async Task DressDrawsOverShoesInEitherOrder(string dress)

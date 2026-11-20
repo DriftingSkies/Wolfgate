@@ -34,6 +34,10 @@ public sealed partial class ModModuleComponent : Component
     [DataField, AutoNetworkedField]
     public bool Removable = true;
 
+    /// <summary>Whether the suit may hold several copies of this module.</summary>
+    [DataField]
+    public bool AllowDuplicates;
+
     [DataField]
     public EntityWhitelist? Incompatible;
 

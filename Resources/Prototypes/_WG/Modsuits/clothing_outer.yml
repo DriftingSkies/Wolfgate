@@ -47,6 +47,11 @@
   description: A special modular suit spaceproof cover designed for compact folding inside modular suit control.
   categories: [ HideSpawnMenu ]
   components:
+  # Armor specialization: cold seal.
+  - type: WGWoundWard
+    examine: wg-armor-spec-cold-sealed-examine
+    blocks:
+    - WGWolfmedFrostbiteWound
   - type: Appearance
   - type: AllowSuitStorage
   - type: Sprite
@@ -107,6 +112,12 @@
   description: A robust modular suit cover with ceramic inserts for extra protection.
   categories: [ HideSpawnMenu ]
   components:
+  # Armor specialization: spall liner.
+  - type: WGWoundWard
+    examine: wg-armor-spec-spall-liner-examine
+    blocks:
+    - WGWolfmedLodgedRoundWound
+    - WGWolfmedShrapnelWound
   - type: Appearance
   - type: AllowSuitStorage
   - type: Sprite
@@ -176,6 +187,14 @@
   description: A robust modular suit cover with EXTRA ceramic inserts for slightly more protection.
   categories: [ HideSpawnMenu ]
   components:
+  # Armor specialization: bone plating and blast liner.
+  - type: WGBlastLiner
+  - type: WGWoundWard
+    examine: wg-armor-spec-bone-plating-examine
+    hardens:
+      InternalBleedingWound: 2
+      WGWolfmedCrushInjuryWound: 2
+      WGWolfmedDislocationWound: 2
   - type: Appearance
   - type: AllowSuitStorage
   - type: Sprite
@@ -246,6 +265,10 @@
   description: A white and blue-ish-grey steel plate for keeping out the harsh void of space and the occasional bullet.
   categories: [ HideSpawnMenu ]
   components:
+  # Armor specialization: plasma reserve, steady hands and emergency stasis weave.
+  - type: WGSteadyHands
+  - type: WGStasisWeave
+  - type: WGPlasmaReserve
   - type: Appearance
   - type: AllowSuitStorage
   - type: Sprite
@@ -313,6 +336,13 @@
   description: A tough armor plate to defend against harsh atmospheric conditions and shockwaves.
   categories: [ HideSpawnMenu ]
   components:
+  # Armor specialization: insulation and servo assist.
+  - type: WGServoAssist
+  - type: WGWoundWard
+    examine: wg-armor-spec-insulation-examine
+    blocks:
+    - WGWolfmedInternalBurnWound
+    - WGWolfmedShortCircuitWound
   - type: Appearance
   - type: AllowSuitStorage
   - type: Sprite
@@ -381,6 +411,18 @@
   description: A fire-proof armor plate to defend against harsh atmospheric conditions.
   categories: [ HideSpawnMenu ]
   components:
+  # Armor specialization: fire rating and sealed layer.
+  - type: WGAblativeCoat
+    damageType: Heat
+    maxCharge: 80
+    charge: 80
+    regenRate: 10
+    examine: wg-armor-spec-fire-rated-examine
+  - type: WGWoundWard
+    examine: wg-armor-spec-sealed-examine
+    blocks:
+    - WGWolfmedChemicalBurnWound
+    - WGWolfmedFrostbiteWound
   - type: Appearance
   - type: AllowSuitStorage
   - type: Sprite
@@ -447,6 +489,9 @@
   description: A bulky bomb and bat proof chunk of steel.
   categories: [ HideSpawnMenu ]
   components:
+  # Armor specialization: EMP hardening and decon coating.
+  - type: WGEmpHardened
+  - type: WGDeconCoating
   - type: Appearance
   - type: AllowSuitStorage
   - type: Sprite
@@ -516,6 +561,12 @@
   description: This shit is made out of DIAMONDS, man, this armor was forged with GEMS.
   categories: [ HideSpawnMenu ]
   components:
+  # Armor specialization: concussion ward and EMP hardening.
+  - type: WGEmpHardened
+  - type: WGWoundWard
+    examine: wg-armor-spec-concussion-ward-examine
+    blocks:
+    - WGWolfmedConcussionWound
   - type: Appearance
   - type: AllowSuitStorage
   - type: GroupExamine

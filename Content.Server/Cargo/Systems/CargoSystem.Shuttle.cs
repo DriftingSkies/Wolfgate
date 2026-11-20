@@ -95,6 +95,8 @@ public sealed partial class CargoSystem
         amount += noModAmount;
         // End Frontier
 
+        amount = Math.Max(0, amount - WgAppraisalCut(uid, toSell, gridUid)); // WOLFGATE(CargoSales): the console shows what whoever is looking at it would be paid
+
         // WOLFGATE(CargoSales) START: a pallet that would be refused pays nothing, so it shows nothing
         if (WgRefuseOverLimit(uid, WgWithContents(toSell)))
             amount = 0;
@@ -337,7 +339,7 @@ public sealed partial class CargoSystem
 
         var ev = new EntitySoldEvent(toSell, gridUid); // Mono: moved here so refused sales dont count as sold
         RaiseLocalEvent(ref ev);
-        WgRaisePalletSale(allEntsToDelete, gridUid); // WOLFGATE(CargoSales): a pallet sale event that leaves out contraband turn-ins
+        WgRaisePalletSale(consoleUid, allEntsToDelete, gridUid); // WOLFGATE(CargoSales): a pallet sale event that leaves out contraband turn-ins
 
         foreach (var ent in allEntsToDelete)
         {
@@ -388,10 +390,13 @@ public sealed partial class CargoSystem
 
             var message = Loc.GetString(alert.Message, ("item", name), ("count", count), ("location", location));
             var speaker = Transform(console).GridUid ?? console;
-            foreach (var channel in alert.Channels)
-            {
-                _radio.SendRadioMessage(speaker, message, channel, console, jammable: alert.Jammable);
-            }
+            // WOLFGATE(CargoSales) START: the alert goes out from off any map, so a world with its comms down doesn't swallow it
+            // foreach (var channel in alert.Channels)
+            // {
+            //     _radio.SendRadioMessage(speaker, message, channel, console, jammable: alert.Jammable);
+            // }
+            WgSendSoldAlert(speaker, message, alert, console);
+            // WOLFGATE END
         }
     }
 
@@ -598,10 +603,12 @@ public sealed partial class CargoSystem
         if (WgShipRefuses(uid, args.Actor)) // WOLFGATE(ShipCommand): a commanded ship's sale pallets don't buy from the barred
             return; // WOLFGATE(ShipCommand)
 
+        WgBeginSale(args.Actor); // WOLFGATE(CargoSales): the pallet sale event names who sold
         if (!SellPallets((uid, component), gridUid, out var price, out var noMultiplierPrice, out var blackMarketTaxAmount, out var frontierTaxAmount, out var nfsdTaxAmount, out var medicalTaxAmount, out var currencyInjections)) // Frontier: convert first arg to Entity, add noMultiplierPrice
             return;
 
         price += noMultiplierPrice;
+        price = Math.Max(0, price - _wgSaleCut); // WOLFGATE(CargoSales): what the sale's handlers held back
 
         // End Frontier: market modifiers & immune objects
         // Mono Begin

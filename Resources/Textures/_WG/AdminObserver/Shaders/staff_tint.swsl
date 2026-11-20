@@ -1,0 +1,11 @@
+// Draws a sprite as its brightness alone, unlit, so the colour it is drawn with becomes its colour whatever hue
+// the art has. `minimum` lifts dark art: at 1 the whole shape takes the colour.
+light_mode unshaded;
+
+uniform highp float minimum;
+
+void fragment() {
+    highp vec4 base = zTexture(UV);
+    highp float value = max(minimum, max(base.r, max(base.g, base.b)));
+    COLOR = vec4(vec3(value), base.a);
+}

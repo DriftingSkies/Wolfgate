@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Client.UserInterface.Controls;
 using Content.Shared._WG.ShipAdmin;
 using Content.Shared.Administration;
@@ -13,6 +14,31 @@ public sealed class WGShipAdminDangerTab : WGShipAdminTab
     private readonly ConfirmButton _strip;
     private readonly CheckBox _bring;
     private readonly ConfirmButton _delete;
+    private readonly WGShipAdminDropdown _events;
+    private readonly ConfirmButton _startEvent;
+    private readonly List<string> _eventIds = new();
+
+    /// <summary>Gives the events the server offers, once per list.</summary>
+    public void SetEvents(List<WGShipAdminEvent> events)
+    {
+        var picked = _events.SelectedId >= 0 && _events.SelectedId < _eventIds.Count ? _eventIds[_events.SelectedId] : null;
+        if (_eventIds.SequenceEqual(events.Select(e => e.Id)))
+            return;
+
+        _events.Clear();
+        _eventIds.Clear();
+        foreach (var choice in events)
+        {
+            var label = Loc.GetString(choice.Arrival ? "wg-ship-admin-danger-event-arrival" : "wg-ship-admin-danger-event-aboard", ("name", choice.Name));
+            _events.AddItem(label, _eventIds.Count);
+            _eventIds.Add(choice.Id);
+        }
+
+        var index = picked == null ? -1 : _eventIds.IndexOf(picked);
+        _events.SelectId(Math.Max(0, index));
+        if (picked != null && index < 0)
+            _startEvent.WgCancel();
+    }
 
     public override string Title => Loc.GetString("wg-ship-admin-tab-danger");
 
@@ -20,6 +46,21 @@ public sealed class WGShipAdminDangerTab : WGShipAdminTab
     {
         _aboard = Status();
         Body.AddChild(_aboard);
+
+        Body.AddChild(Heading(Loc.GetString("wg-ship-admin-danger-event-heading")));
+        Body.AddChild(Note(Loc.GetString("wg-ship-admin-danger-event-note")));
+        _events = Dropdown(300);
+        _startEvent = Confirm("wg-ship-admin-danger-event-start");
+
+        // A press confirms the event picked at the first press, never another one picked between them.
+        _events.OnItemSelected += _ => _startEvent.WgCancel();
+        _startEvent.OnPressed += _ =>
+        {
+            var index = _events.SelectedId;
+            if (index >= 0 && index < _eventIds.Count)
+                Send(new WGShipAdminEventMessage(Grid, _eventIds[index]));
+        };
+        Body.AddChild(Row(_events, _startEvent));
 
         Body.AddChild(Heading(Loc.GetString("wg-ship-admin-danger-eject-heading")));
         Body.AddChild(Note(Loc.GetString("wg-ship-admin-danger-eject-note")));
@@ -48,6 +89,7 @@ public sealed class WGShipAdminDangerTab : WGShipAdminTab
         Gate(_eject, WGShipAdminAction.Eject, flags, detail.OccupantCount > 0);
         Gate(_strip, WGShipAdminAction.Strip, flags);
         Gate(_delete, WGShipAdminAction.Delete, flags);
+        Gate(_startEvent, WGShipAdminAction.StartEvent, flags, _eventIds.Count > 0);
     }
 
     private static ConfirmButton Confirm(string key)

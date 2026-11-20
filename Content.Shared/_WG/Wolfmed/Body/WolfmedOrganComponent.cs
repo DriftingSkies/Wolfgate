@@ -50,6 +50,9 @@ public sealed partial class WolfmedOrganComponent : Component
     /// </summary>
     [DataField] public float ImpairedClearanceFactor = 1f;
 
+    /// <summary>Toxin clearance multiplier while this organ is not failed, on top of the impaired one (a scrubber liver: 3).</summary>
+    [DataField] public float ClearanceFactor = 1f;
+
     /// <summary>OK, impaired or failed, from health against <see cref="ImpairedBelow"/>.</summary>
     public WolfmedOrganBand Band =>
         Health <= FixedPoint2.Zero ? WolfmedOrganBand.Failed

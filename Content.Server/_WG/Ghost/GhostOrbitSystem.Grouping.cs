@@ -1,3 +1,4 @@
+using Content.Server._WG.Ordnance;
 using Content.Server._WG.Planets;
 using Content.Server.GameTicking;
 using Content.Server.Nuke;
@@ -100,12 +101,15 @@ public sealed partial class GhostOrbitSystem
 
     /// <summary>
     /// Whether a point of interest is worth listing now: a nuke only while armed, the disk only out loose or in someone's
-    /// hands or pockets. The rest always are.
+    /// hands or pockets, a drop beacon only once planted. The rest always are.
     /// </summary>
     private bool InterestActive(EntityUid uid)
     {
         if (TryComp<NukeComponent>(uid, out var nuke))
             return nuke.Status == NukeStatus.ARMED;
+
+        if (TryComp<WGOrdnanceBeaconComponent>(uid, out var beacon))
+            return beacon.LandsAt != null;
 
         if (HasComp<NukeDiskComponent>(uid))
         {

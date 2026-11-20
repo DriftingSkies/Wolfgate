@@ -33,6 +33,10 @@ public sealed class WGAlertsWrapUIController : UIController
             LayoutContainer.SetGrowVertical(alerts, LayoutContainer.GrowDirection.End);
         }
 
+        // Window size and alert count change the room under the chat as well as chat resizes.
+        if (screen is DefaultGameScreen normal)
+            normal.WgPlaceAlerts();
+
         // The part-status doll and anything else below the grid stays inside the column.
         var below = alerts.DesiredSize.Y - alerts.AlertContainer.DesiredSize.Y;
         var height = MathF.Max(64, targeting.Position.Y - alerts.Position.Y - below - Gap);

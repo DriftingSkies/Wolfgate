@@ -119,12 +119,8 @@
   # The Underground fence only fences freight taken off NPC haulers.
   sealedOnlyChutes: [ WGCargoChuteUnderground ]
   # Smuggling crates from the Underground: open chutes pay a fixed price that sales never glut, plus telecrystals, but
-  # customs flags some sellers, and each flag adds to their warrant up to the cap.
+  # each sale heats its seller as narcotics do (wg.narcotics.* cvars).
   contrabandGoods: [ WGTradeGoodContraband ]
-  contrabandWarrantChance: 0.25
-  contrabandWarrant: 20000
-  contrabandWarrantCap: 300000
-  contrabandAlertCooldown: 300
   contrabandTelecrystals: 2
   contrabandAlertChannel: Nfsd
   # Only one open station buys it at a time. The Underground hears where at once, security ten minutes later.

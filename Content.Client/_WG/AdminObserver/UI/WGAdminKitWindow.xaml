@@ -1,0 +1,7 @@
+<DefaultWindow xmlns="https://spacestation14.io"
+               xmlns:ui="clr-namespace:Content.Client._WG.AdminObserver.UI"
+               Title="{Loc 'wg-observer-kit-title'}"
+               MinSize="380 420"
+               SetSize="420 560">
+    <ui:WGAdminKitControl Name="Kit" Margin="4" />
+</DefaultWindow>

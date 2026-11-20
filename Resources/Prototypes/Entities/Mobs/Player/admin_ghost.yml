@@ -108,8 +108,19 @@
   - type: ShowAntagIcons
   - type: Inventory
     templateId: aghost
-  - type: Loadout
-    prototypes: [ NFMobAghostGear ] # Frontier MobAghostGear<NFMobAghostGear
+  # WOLFGATE(AdminObserver) START: the kit comes from the admin's saved layout, or WGAdminObserverGear
+  # - type: Loadout
+  #   prototypes: [ NFMobAghostGear ] # Frontier MobAghostGear<NFMobAghostGear
+  - type: WGAdminObserver
+  # WOLFGATE END
+  # WOLFGATE(AdminObserver) START: a manifested observer says, whispers and emotes as the living do
+  - type: Speech
+  - type: Emoting
+  - type: TypingIndicator
+  # WOLFGATE END
+  # WOLFGATE(AdminObserver) START: the staff marker's sigil is drawn as a status icon
+  - type: StatusIcon
+  # WOLFGATE END
   - type: BypassInteractionChecks
   - type: BankAccount # Frontier
   - type: ShowHealthBars # Monolith

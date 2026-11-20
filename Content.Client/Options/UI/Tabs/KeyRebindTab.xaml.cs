@@ -277,6 +277,11 @@ namespace Content.Client.Options.UI.Tabs
             AddButton(ContentKeyFunctions.OpenTileSpawnWindow);
             AddButton(ContentKeyFunctions.OpenDecalSpawnWindow);
             AddButton(ContentKeyFunctions.OpenAdminMenu);
+            // WOLFGATE(AdminObserver) START: admin ghost, manifest and observer panel keys
+            AddButton(Content.Shared._WG.AdminObserver.WGAdminObserverKeys.WGToggleAghost);
+            AddButton(Content.Shared._WG.AdminObserver.WGAdminObserverKeys.WGToggleManifest);
+            AddButton(Content.Shared._WG.AdminObserver.WGAdminObserverKeys.WGOpenObserverPanel);
+            // WOLFGATE END
             AddButton(EngineKeyFunctions.WindowCloseAll);
             AddButton(EngineKeyFunctions.WindowCloseRecent);
             AddButton(EngineKeyFunctions.EscapeMenu);

@@ -126,8 +126,8 @@ stores nothing in its cranes. When a break starts it fixes the payout at `valueS
 shipyard price, from the ship's `VesselComponent` or its vessel station, else what the grid appraises at. Each tile
 lifted prints its share by the console, weighted by its work time (what was stripped off it), onto the stack already
 lying there; the last tile of the hull prints whatever is left. An abort or a destroyed console keeps what was printed
-and pays no more. The console shows the payout before the break. Stripped boards, parts and guns land beside the
-cranes as usual.
+and pays no more. The console shows the payout before the break. The payout covers the fittings too, so a chop shop
+hands out no stripped boards, parts or guns.
 
 A faction's ship (its `CompanyComponent`, from the voucher or the buyer's ID, or the faction a player company's flag
 hides) can't be broken by a member of that faction, at a chop shop or a mobile drydock, so a faction can't strip its own

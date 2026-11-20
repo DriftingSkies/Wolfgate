@@ -26,6 +26,7 @@ public sealed partial class WGMonolithTapSystem : EntitySystem
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
     [Dependency] private WGMatterSystem _matter = default!;
     [Dependency] private WGMonolithSystem _monolith = default!;
+    [Dependency] private Content.Server._WG.Ghost.GhostNoticeSystem _ghostNotice = default!;
 
     private static readonly TimeSpan RefreshRate = TimeSpan.FromSeconds(1);
 
@@ -114,6 +115,7 @@ public sealed partial class WGMonolithTapSystem : EntitySystem
         _adminLog.Add(LogType.Action, LogImpact.High,
             $"{ToPrettyString(args.User):user} fed {ToPrettyString(corpse):corpse} to {ToPrettyString(monolith):monolith}");
         _popup.PopupEntity(Loc.GetString("wg-monolith-tap-fed", ("corpse", corpse)), ent, PopupType.LargeCaution);
+        _ghostNotice.Notify(ent, Content.Server._WG.Ghost.GhostNoticeKind.Monolith, Loc.GetString("wg-ghost-notice-offering", ("corpse", corpse)));
         QueueDel(corpse);
         SendState(ent);
     }

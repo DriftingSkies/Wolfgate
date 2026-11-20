@@ -437,6 +437,21 @@ public sealed partial class WGCrewWorkSystem
         return false;
     }
 
+    /// <summary>Whether a grid's whole plant is out: it has one, every generator and antimatter engine is empty and no reactor stands.</summary>
+    public bool PlantOut(EntityUid grid)
+    {
+        var any = false;
+        foreach (var machine in Plant(grid))
+        {
+            if (!(HasComp<FuelGeneratorComponent>(machine) && _generators.GetFuel(machine) <= 0f
+                  || TryComp<AmeControllerComponent>(machine, out var controller) && Antimatter(controller) <= 0))
+                return false;
+            any = true;
+        }
+
+        return any;
+    }
+
     /// <summary>Whether a grid has a plant an engineer could tend: a fuel generator, an antimatter engine or a fission reactor.</summary>
     public bool HasPlant(EntityUid grid) => Plant(grid).Count > 0;
 

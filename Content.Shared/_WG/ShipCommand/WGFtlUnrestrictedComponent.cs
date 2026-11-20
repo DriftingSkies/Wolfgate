@@ -17,4 +17,8 @@ public sealed partial class WGFtlUnrestrictedComponent : Component
     /// <summary>Jump into no-jump (exclusion) zones.</summary>
     [DataField, AutoNetworkedField]
     public bool IgnoreExclusionZones = true;
+
+    /// <summary>Jump out of and into the Lattice's outer bands, where other ships' drives die.</summary>
+    [DataField, AutoNetworkedField]
+    public bool IgnoreLattice = true;
 }

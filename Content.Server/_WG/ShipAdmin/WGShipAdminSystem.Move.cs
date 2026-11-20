@@ -3,6 +3,7 @@ using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Systems;
 using Content.Shared._WG.ShipAdmin;
 using Content.Shared.Database;
+using Content.Server.Shuttles;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.Shuttles.Systems;
 using Robust.Shared.Map;
@@ -86,6 +87,130 @@ public sealed partial class WGShipAdminSystem
         return true;
     }
 
+    /// <summary>Every dock of a grid, by name, with what is docked to it.</summary>
+    public List<WGShipAdminDock> ListDocks(EntityUid target)
+    {
+        var docks = new List<WGShipAdminDock>();
+        var unnamed = 0;
+        foreach (var dock in _docking.GetDocks(target))
+        {
+            unnamed++;
+            var name = dock.Comp.Name is { } label
+                ? Loc.GetString(label)
+                : Loc.GetString("wg-ship-admin-dock-unnamed", ("number", unnamed));
+            var holder = dock.Comp.DockedWith is { } other ? Transform(other).GridUid : null;
+            docks.Add(new WGShipAdminDock
+            {
+                Dock = GetNetEntity(dock),
+                Name = name,
+                DockedWith = holder is { } held ? Name(held) : string.Empty,
+                DockedWithGrid = holder is { } heldGrid ? GetNetEntity(heldGrid) : null,
+            });
+        }
+
+        docks.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.CurrentCultureIgnoreCase));
+        return docks;
+    }
+
+    /// <summary>
+    /// Docks a ship at one dock of another grid, trying each of the ship's free docks against it. With no dock
+    /// named it docks at whichever fits, or sets down alongside.
+    /// </summary>
+    public bool DockAt(ICommonSession admin, EntityUid grid, EntityUid target, EntityUid? dock, out string result)
+    {
+        if (dock == null)
+            return Move(admin, grid, new WGShipAdminMoveMessage(GetNetEntity(grid), WGShipAdminMoveKind.DockAt, GetNetEntity(target), Vector2.Zero), out result);
+
+        if (!CanMove(grid, out result))
+            return false;
+
+        if (target == grid || !HasComp<MapGridComponent>(target)
+            || !TryComp<DockingComponent>(dock, out var targetDock) || Transform(dock.Value).GridUid != target)
+        {
+            result = Loc.GetString("wg-ship-admin-result-move-bad-target");
+            return false;
+        }
+
+        if (targetDock.DockedWith is { } held && Transform(held).GridUid != grid)
+        {
+            result = Loc.GetString("wg-ship-admin-result-dock-occupied", ("dock", DockName(dock.Value, targetDock)), ("with", Name(Transform(held).GridUid ?? held)));
+            return false;
+        }
+
+        // Undocked first, so the ship's own docks and the grid it hangs on don't stand in the way. The berth is
+        // remembered, and the ship goes back into it when nothing fits.
+        var berth = new List<(Entity<DockingComponent> Own, Entity<DockingComponent> Other)>();
+        foreach (var own in _docking.GetDocks(grid))
+        {
+            if (own.Comp.DockedWith is { } other && TryComp<DockingComponent>(other, out var otherDock))
+                berth.Add((own, (other, otherDock)));
+        }
+
+        _docking.UndockDocks(grid);
+        DockingConfig? config = null;
+        foreach (var own in _docking.GetDocks(grid))
+        {
+            config = _docking.GetDockingConfig(grid, target, own.Owner, own.Comp, dock.Value, targetDock);
+            if (config != null)
+                break;
+        }
+
+        if (config == null)
+        {
+            foreach (var (own, other) in berth)
+            {
+                if (!TerminatingOrDeleted(own) && !TerminatingOrDeleted(other) && !own.Comp.Docked && !other.Comp.Docked)
+                    _docking.Dock(own, other);
+            }
+
+            result = Loc.GetString("wg-ship-admin-result-dock-no-fit", ("dock", DockName(dock.Value, targetDock)), ("ship", Name(grid)));
+            return false;
+        }
+
+        _shuttle.FTLDock((grid, Transform(grid)), config);
+        Stop(grid);
+        Audit(admin, LogImpact.Medium, grid, $"docked it at {ToPrettyString(dock.Value)} on {ToPrettyString(target)}");
+        result = Loc.GetString("wg-ship-admin-result-docked-at", ("ship", Name(grid)), ("dock", DockName(dock.Value, targetDock)), ("where", Name(target)));
+        return true;
+    }
+
+    private string DockName(EntityUid dock, DockingComponent comp)
+    {
+        return comp.Name is { } label ? Loc.GetString(label) : Name(dock);
+    }
+
+    /// <summary>
+    /// Stop Knotting: frees a ship that is caught on another grid or wedged in debris. It is undocked, its pilots
+    /// cleared and it is set down at rest in the nearest clear space, clear of every grid including its old spot.
+    /// </summary>
+    public bool Unstick(ICommonSession admin, EntityUid grid, out string result)
+    {
+        if (!CanMove(grid, out result))
+            return false;
+
+        var xform = Transform(grid);
+        if (xform.MapUid is not { } map)
+        {
+            result = Loc.GetString("wg-ship-admin-result-move-failed");
+            return false;
+        }
+
+        _docking.UndockDocks(grid);
+        ReleaseBindings(grid);
+        Stop(grid);
+        var here = new EntityCoordinates(map, _transform.GetWorldPosition(xform));
+        if (!_shuttle.TryFTLProximity((grid, xform), here))
+        {
+            result = Loc.GetString("wg-ship-admin-result-move-failed");
+            return false;
+        }
+
+        Stop(grid);
+        Audit(admin, LogImpact.Medium, grid, "unstuck it (Stop Knotting)");
+        result = Loc.GetString("wg-ship-admin-result-unstuck", ("ship", Name(grid)));
+        return true;
+    }
+
     /// <summary>Releases every dock on the ship.</summary>
     public bool Undock(ICommonSession admin, EntityUid grid, out string result)
     {
@@ -157,6 +282,13 @@ public sealed partial class WGShipAdminSystem
         if (TryComp<FTLComponent>(grid, out var ftl) && ftl.State != FTLState.Cooldown)
         {
             result = Loc.GetString("wg-ship-admin-result-ftl-jumping");
+            return false;
+        }
+
+        // A hop to or from a planet lands the ship at its own recorded spot, whatever is done to it meanwhile.
+        if (_hop.IsHopping(grid))
+        {
+            result = Loc.GetString("wg-ship-admin-result-hopping");
             return false;
         }
 

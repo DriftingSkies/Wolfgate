@@ -15,7 +15,7 @@ namespace Content.Shared._Crescent.Hardpoints;
 /// <summary>
 /// This handles...
 /// </summary>
-public class SharedHardpointSystem : EntitySystem
+public partial class SharedHardpointSystem : EntitySystem // WOLFGATE(ShipAdmin): partial for the gun relink
 {
     [Dependency] private SharedTransformSystem _transformSystem = default!;
     [Dependency] private SharedMapSystem _mapSystem = default!;
@@ -30,6 +30,7 @@ public class SharedHardpointSystem : EntitySystem
         SubscribeLocalEvent<HardpointAnchorableOnlyComponent, AnchorStateChangedEvent>(OnAnchorChange);
         SubscribeLocalEvent<HardpointAnchorableOnlyComponent, MapInitEvent>(OnMapLoad);
         SubscribeLocalEvent<HardpointComponent, AnchorStateChangedEvent>(OnHardpointAnchor);
+        SubscribeLocalEvent<HardpointComponent, MapInitEvent>(WgOnHardpointMapInit); // WOLFGATE(ShipAdmin): a rebuilt hardpoint takes the gun above it
         SubscribeLocalEvent<HardpointAnchorableOnlyComponent, ComponentRemove>(OnShipgunRemove);
         SubscribeLocalEvent<HardpointAnchorableOnlyComponent, ExaminedEvent>(OnExamined);
         // TODO: ACCOUNT FOR REMOVING IT IN ADMIN MODE
@@ -81,6 +82,10 @@ public class SharedHardpointSystem : EntitySystem
         if (component.anchoredTo == null || TerminatingOrDeleted(uid) //this should literally never happen
             || TerminatingOrDeleted(component.anchoredTo.Value)) // WOLFGATE: a hardpoint deleted first threw on its transform
         {
+            // WOLFGATE(ShipAdmin) START: drop the dead link, so a rebuilt hardpoint can take the gun again
+            if (component.anchoredTo is { } dead && TerminatingOrDeleted(dead))
+                component.anchoredTo = null;
+            // WOLFGATE END
             return;
         }
 
@@ -95,6 +100,13 @@ public class SharedHardpointSystem : EntitySystem
 
     public void OnHardpointAnchor(EntityUid target, HardpointComponent comp, ref AnchorStateChangedEvent args)
     {
+        // WOLFGATE(ShipAdmin) START: a hardpoint wrenched down under a gun that is already in place takes it
+        if (args.Anchored && MetaData(target).EntityLifeStage == EntityLifeStage.MapInitialized)
+        {
+            WgLinkGunsOnTile((target, comp));
+            return;
+        }
+        // WOLFGATE END
         if (args.Anchored || comp.anchoring is null || TerminatingOrDeleted(target))
             return;
         // WOLFGATE(Shuttles) START: a gun destroyed in the same impact is already gone; unanchoring it threw mid-crash

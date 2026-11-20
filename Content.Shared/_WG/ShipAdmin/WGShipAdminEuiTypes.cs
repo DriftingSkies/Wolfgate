@@ -13,6 +13,9 @@ namespace Content.Shared._WG.ShipAdmin;
 public static class WGShipAdminCommands
 {
     public const string Panel = "shipmaster";
+
+    /// <summary>The argument that opens the panel on its spawn page.</summary>
+    public const string SpawnArg = "spawn";
 }
 
 /// <summary>Raised by the action staff get while they are over a ship: opens Shipmaster on it.</summary>
@@ -22,7 +25,7 @@ public sealed partial class WGShipAdminOpenActionEvent : InstantActionEvent;
 [Serializable, NetSerializable]
 public enum WGShipAdminFilter : byte
 {
-    /// <summary>Grids with a deed, an owner, ship access or a vessel design.</summary>
+    /// <summary>Grids with a deed, an owner, ship access or a vessel design, and the ports and bases they dock at.</summary>
     PlayerShips,
     AllGrids,
 }
@@ -144,7 +147,15 @@ public sealed class WGShipAdminDetail
     public List<WGShipAccessEntry> AllowList = new();
     public string Crew = string.Empty;
     public string Company = string.Empty;
+
+    /// <summary>The player company the ship flies for, if any.</summary>
+    public int? CompanyId;
+
+    /// <summary>The hull's faction prototype; for a ship flying for a player company, the one it gets back when it stops.</summary>
     public string Faction = string.Empty;
+
+    /// <summary>Whether the ship is down on a planet, so it can be sent back to orbit.</summary>
+    public bool OnPlanet;
 
     public List<WGShipAdminOccupant> Occupants = new();
     public int OccupantCount;
@@ -244,7 +255,19 @@ public enum WGShipAdminFixParts : ushort
     /// <summary>Clears stuck pilots and reconnects consoles and gunnery.</summary>
     Consoles = 1 << 7,
 
-    All = Structures | Hull | Air | Fires | Power | Fuel | Bolts | Consoles,
+    /// <summary>Deletes loose trash: wrappers, cans, cigarette butts and the like.</summary>
+    Trash = 1 << 8,
+
+    /// <summary>Mops up every puddle on the floor.</summary>
+    Puddles = 1 << 9,
+
+    /// <summary>Puts a working lamp in every empty, broken or burned light fitting; switches are left as they are.</summary>
+    Lights = 1 << 10,
+
+    All = Structures | Hull | Air | Fires | Power | Fuel | Bolts | Consoles | Trash | Puddles | Lights,
+
+    /// <summary>What a fix ticks to begin with: everything but deleting trash.</summary>
+    Default = All & ~Trash,
 }
 
 /// <summary>The panel's state. The list is only sent when it was rebuilt; null keeps the client's copy.</summary>
@@ -253,6 +276,12 @@ public sealed class WGShipAdminEuiState : EuiStateBase
 {
     public List<WGShipAdminRow>? Ships;
     public bool Truncated;
+
+    /// <summary>Every player company, sent with the list.</summary>
+    public List<WGShipAdminCompany>? Companies;
+
+    /// <summary>The events staff can aim at a ship, sent with the list.</summary>
+    public List<WGShipAdminEvent>? Events;
     public WGShipAdminFilter Filter;
     public WGShipAdminDetail? Selected;
     public AdminFlags ViewerFlags;
@@ -261,6 +290,9 @@ public sealed class WGShipAdminEuiState : EuiStateBase
     public string Result = string.Empty;
     public bool ResultError;
     public int ResultSeq;
+
+    /// <summary>A counter that changes each time the panel is asked to show its spawn page.</summary>
+    public int SpawnPageSeq;
 }
 
 /// <summary>Selects a ship, or none.</summary>
@@ -430,6 +462,88 @@ public sealed class WGShipAdminModifierMessage(NetEntity grid, string modifier) 
 {
     public readonly NetEntity Grid = grid;
     public readonly string Modifier = modifier;
+}
+
+/// <summary>A player company a ship can fly for.</summary>
+[Serializable, NetSerializable]
+public sealed class WGShipAdminCompany
+{
+    public int Id;
+    public string Name = string.Empty;
+    public string Tag = string.Empty;
+}
+
+/// <summary>An event staff can aim at a ship.</summary>
+[Serializable, NetSerializable]
+public sealed class WGShipAdminEvent
+{
+    public string Id = string.Empty;
+    public string Name = string.Empty;
+
+    /// <summary>A ship that arrives beside the target, rather than something that happens aboard it.</summary>
+    public bool Arrival;
+}
+
+/// <summary>Starts an event aimed at a ship.</summary>
+[Serializable, NetSerializable]
+public sealed class WGShipAdminEventMessage(NetEntity grid, string rule) : EuiMessageBase
+{
+    public readonly NetEntity Grid = grid;
+    public readonly string Rule = rule;
+}
+
+/// <summary>Docks a ship at one dock of another grid, or at any free one when no dock is named.</summary>
+[Serializable, NetSerializable]
+public sealed class WGShipAdminDockMessage(NetEntity grid, NetEntity target, NetEntity? dock) : EuiMessageBase
+{
+    public readonly NetEntity Grid = grid;
+    public readonly NetEntity Target = target;
+    public readonly NetEntity? Dock = dock;
+}
+
+/// <summary>Asks for the docks of a grid, for the dock picker.</summary>
+[Serializable, NetSerializable]
+public sealed class WGShipAdminDocksRequestMessage(NetEntity target) : EuiMessageBase
+{
+    public readonly NetEntity Target = target;
+}
+
+/// <summary>One dock of the grid the dock picker shows.</summary>
+[Serializable, NetSerializable]
+public sealed class WGShipAdminDock
+{
+    public NetEntity Dock;
+    public string Name = string.Empty;
+
+    /// <summary>The name of the grid docked to it, or empty when it is free; for display.</summary>
+    public string DockedWith = string.Empty;
+
+    /// <summary>The grid docked to it, or null when it is free.</summary>
+    public NetEntity? DockedWithGrid;
+}
+
+/// <summary>The docks of the grid the dock picker asked about.</summary>
+[Serializable, NetSerializable]
+public sealed class WGShipAdminDocksMessage(NetEntity target, List<WGShipAdminDock> docks) : EuiMessageBase
+{
+    public readonly NetEntity Target = target;
+    public readonly List<WGShipAdminDock> Docks = docks;
+}
+
+/// <summary>Sets the faction the hull flies for; null or empty takes it off.</summary>
+[Serializable, NetSerializable]
+public sealed class WGShipAdminFactionMessage(NetEntity grid, string? faction) : EuiMessageBase
+{
+    public readonly NetEntity Grid = grid;
+    public readonly string? Faction = faction;
+}
+
+/// <summary>Sets the player company the ship flies for; null takes it out of any.</summary>
+[Serializable, NetSerializable]
+public sealed class WGShipAdminCompanyMessage(NetEntity grid, int? company) : EuiMessageBase
+{
+    public readonly NetEntity Grid = grid;
+    public readonly int? Company = company;
 }
 
 /// <summary>An action on a ship that needs no more than a switch.</summary>

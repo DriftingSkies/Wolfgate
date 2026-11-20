@@ -5,8 +5,8 @@ namespace Content.Server._WG.NpcCrew;
 
 /// <summary>
 /// What a crew skill level means in numbers and in tactics. NPC crew are meant to lose to a player of equal kit who
-/// moves and spends ammunition: their handicaps are the ones a player can see (stray aim, a slow first shot, softer
-/// hits), and how much they can take is left to the armour they wear.
+/// moves and spends ammunition: their handicaps are the ones a player can see (stray aim and softer hits; they
+/// fire the moment a gun is up), and how much they can take is left to the armour they wear.
 /// </summary>
 public static class WGCrewSkills
 {
@@ -64,28 +64,28 @@ public static class WGCrewSkills
 
     private static readonly Profile Green = new()
     {
-        AimError = 18f, ShootDelay = 1.4f, ReacquireDelay = 0.5f, GunneryError = 30f, Leading = 0.3f, Handling = 0.7f,
+        AimError = 18f, ShootDelay = 0f, ReacquireDelay = 0f, GunneryError = 30f, Leading = 0.3f, Handling = 0.7f,
         Evasion = 0.4f, DodgesFire = false, DamageTaken = 1.3f, DamageDealt = 0.35f,
         Braces = false, Throws = false, CookTime = 0f, Sidesteps = false, FallsBack = false, HuntParty = 1,
     };
 
     private static readonly Profile Regular = new()
     {
-        AimError = 9f, ShootDelay = 0.9f, ReacquireDelay = 0.25f, GunneryError = 14f, Leading = 0.7f, Handling = 0.9f,
+        AimError = 9f, ShootDelay = 0f, ReacquireDelay = 0f, GunneryError = 14f, Leading = 0.7f, Handling = 0.9f,
         Evasion = 0.75f, DodgesFire = true, DamageTaken = 1.15f, DamageDealt = 0.46f,
         Braces = true, Throws = true, CookTime = 0f, Sidesteps = false, FallsBack = false, HuntParty = 1,
     };
 
     private static readonly Profile Veteran = new()
     {
-        AimError = 4f, ShootDelay = 0.5f, ReacquireDelay = 0.15f, GunneryError = 5f, Leading = 1f, Handling = 1f,
+        AimError = 4f, ShootDelay = 0f, ReacquireDelay = 0f, GunneryError = 5f, Leading = 1f, Handling = 1f,
         Evasion = 1f, DodgesFire = true, DamageTaken = 1f, DamageDealt = 0.63f,
         Braces = true, Throws = true, CookTime = 1f, Sidesteps = true, FallsBack = true, HuntParty = 2,
     };
 
     private static readonly Profile Elite = new()
     {
-        AimError = 0f, ShootDelay = 0.25f, ReacquireDelay = 0.1f, GunneryError = 0f, Leading = 1f, Handling = 1.1f,
+        AimError = 0f, ShootDelay = 0f, ReacquireDelay = 0f, GunneryError = 0f, Leading = 1f, Handling = 1.1f,
         Evasion = 1.25f, DodgesFire = true, DamageTaken = 1f, DamageDealt = 0.86f,
         Braces = true, Throws = true, CookTime = 1.3f, Sidesteps = true, FallsBack = true, HuntParty = 2,
     };

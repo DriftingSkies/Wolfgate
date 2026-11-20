@@ -51,6 +51,7 @@ public sealed class WGSiegeSystem : EntitySystem
     [Dependency] private WGEncounterSchedulerSystem _scheduler = default!;
     [Dependency] private WGEncounterSystem _encounters = default!;
     [Dependency] private WGLatticeSystem _lattice = default!;
+    [Dependency] private Content.Server._WG.Ghost.GhostNoticeSystem _ghostNotice = default!;
 
     private const string FleetPrototype = "WGEncounterNecroticFleet";
     private static readonly TimeSpan TickRate = TimeSpan.FromSeconds(1);
@@ -283,6 +284,7 @@ public sealed class WGSiegeSystem : EntitySystem
                 Overgrow(state.Grid);
                 _meta.SetEntityName(state.Grid, Loc.GetString("wg-siege-ship-name"));
                 _shuttle.SetIFFColor(state.Grid, FleshColor);
+                _ghostNotice.Notify(state.Grid, Content.Server._WG.Ghost.GhostNoticeKind.Monolith, Loc.GetString("wg-ghost-notice-flesh-ship", ("anchor", core)));
             }
 
             return true;

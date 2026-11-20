@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._WG.WallmountFov; // WOLFGATE(WallmountFov)
 using Content.Shared._Scp.ScpCCVars;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
@@ -20,6 +21,7 @@ public sealed partial class LightingOverlaySystem : EntitySystem
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private TransformSystem _transform = default!;
     [Dependency] private SpriteSystem _sprite = default!;
+    [Dependency] private WGWallBackfaceSystem _wallBackface = default!; // WOLFGATE(WallmountFov): skips lamps hidden behind their wall
 
     private EntityQuery<EyeComponent> _eyeQuery;
     private EntityQuery<TransformComponent> _transformQuery;
@@ -74,6 +76,10 @@ public sealed partial class LightingOverlaySystem : EntitySystem
         while (query.MoveNext(out var uid, out _, out var pointLight, out var xform))
         {
             if (!pointLight.Enabled)
+                continue;
+
+            // WOLFGATE(WallmountFov): no bloom from a lamp on the far face of a wall, which FOV leaves in view
+            if (_wallBackface.IsHidden(uid))
                 continue;
 
             var (worldPos, _, worldMatrix) = _transform.GetWorldPositionRotationMatrix(xform, _transformQuery);

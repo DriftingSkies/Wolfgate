@@ -37,6 +37,7 @@
       params:
         volume: -6
   - type: EmitSoundOnUse
+    handle: false # WOLFGATE: leave the use for the paper's own window to open
     sound:
       path: /Audio/_Goobstation/Items/handling/paper_use.ogg
       params:

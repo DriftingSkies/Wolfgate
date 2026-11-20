@@ -231,7 +231,7 @@ public sealed partial class WGCrewMedicSystem
         if (_interaction.InRangeUnobstructed(medic.Owner, pod, Reach))
             return Deliver(medic, patient, (pod, comp));
 
-        _pulling.TryStartPull(medic, patient);
+        TakeHold(medic, patient);
         return true;
     }
 
@@ -327,7 +327,7 @@ public sealed partial class WGCrewMedicSystem
         if (_interaction.InRangeUnobstructed(medic.Owner, bed, Reach) && _interaction.InRangeUnobstructed(medic.Owner, patient, Reach))
             Arrive(medic, patient, bed);
         else
-            _pulling.TryStartPull(medic, patient);
+            TakeHold(medic, patient);
     }
 
     /// <summary>

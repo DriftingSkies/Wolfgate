@@ -1,4 +1,6 @@
 using Content.Server.Body.Components;
+using Content.Shared._WG.WolfChem.Narcotics;
+using Content.Shared.Cargo.Components;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Reagent;
@@ -6,6 +8,7 @@ using Content.Shared.Construction.Components;
 using Content.Shared.FixedPoint;
 using Content.Shared.Item;
 using Content.Shared.Tag;
+using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server._WG.WolfChem.Narcotics;
@@ -13,11 +16,12 @@ namespace Content.Server._WG.WolfChem.Narcotics;
 /// <summary>
 /// The contraband is the drug, not what it comes in. Any item or movable structure with a street drug in one of its
 /// solutions, a beaker, syringe, pill, baggie, vial or storage tank, is marked the way the ready-made products are,
-/// with the <c>WGNarcotic</c> tag and the contraband, sale tax and sold alert of <c>WGNarcoticMarks</c>, and loses
+/// with the <c>WGNarcotic</c> tag and the contraband, sale tax and stock marker of <c>WGNarcoticMarks</c>, and loses
 /// them once the drug is out. A blank stick that takes a copy is marked for good.
 /// </summary>
 public sealed class WGNarcoticGoodsSystem : EntitySystem
 {
+    [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private IPrototypeManager _prototype = default!;
     [Dependency] private SharedSolutionContainerSystem _solutions = default!;
     [Dependency] private TagSystem _tag = default!;
@@ -77,6 +81,63 @@ public sealed class WGNarcoticGoodsSystem : EntitySystem
         }
 
         return false;
+    }
+
+    /// <summary>The street value of the drugs in a solution, each at its grade.</summary>
+    public double StreetValue(Solution solution)
+    {
+        var value = 0.0;
+        foreach (var reagent in solution.Contents)
+        {
+            if (reagent.Quantity > FixedPoint2.Zero
+                && _prototype.TryIndex<ReagentPrototype>(reagent.Reagent.Prototype, out var proto)
+                && proto.Group == Group
+                && proto.PricePerUnit > 0f)
+                value += reagent.Quantity.Double() * proto.PricePerUnit * solution.GetPriceFactor(reagent.Reagent.Prototype);
+        }
+
+        return value;
+    }
+
+    /// <summary>
+    /// The street value of the narcotics a thing itself holds, leaving out what is inside its containers. A narcotic
+    /// with no drug in it, a written stick, counts its own price.
+    /// </summary>
+    public double StreetValue(EntityUid uid)
+    {
+        var value = 0.0;
+        // A solution is an entity inside its holder; it is counted there, not again on its own.
+        foreach (var (_, solution) in _solutions.EnumerateSolutions(uid, includeSelf: false))
+        {
+            value += StreetValue(solution.Comp.Solution);
+        }
+
+        if (value <= 0 && _tag.HasTag(uid, Tag) && TryComp<StaticPriceComponent>(uid, out var price))
+            value = price.Price;
+
+        return value;
+    }
+
+    /// <summary>
+    /// What a narcotic adds to a contraband hand-in: its flat reward, plus a point each time the street value handed
+    /// in so far, kept in <paramref name="pool"/>, fills another <c>wg.narcotics.turn_in_value</c>. It goes into
+    /// <paramref name="taken"/> whether or not it brought a point, so a pallet pays for all it is given, however it is
+    /// packed, and leaves nothing behind to be counted again.
+    /// </summary>
+    public int TurnIn(EntityUid uid, int reward, ref double pool, HashSet<EntityUid> taken)
+    {
+        var rate = _cfg.GetCVar(WGNarcoticsCVars.TurnInValue);
+        if (rate <= 0 || !_tag.HasTag(uid, Tag))
+            return reward;
+
+        var value = StreetValue(uid);
+        if (value <= 0)
+            return reward;
+
+        var before = (int) (pool / rate);
+        pool += value;
+        taken.Add(uid);
+        return reward + (int) (pool / rate) - before;
     }
 
     /// <summary>Marks a thing as a narcotic, or takes back a mark this system gave; ready-made products keep theirs.</summary>

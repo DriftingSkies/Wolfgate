@@ -2,6 +2,7 @@ using Content.Server.Administration;
 using Content.Server.Administration.Logs;
 using Content.Server.Chat.Managers;
 using Content.Server.Chat.Systems;
+using Content.Shared._WG.AdminObserver;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Chat;
 using Content.Shared.Database;
@@ -148,6 +149,8 @@ public sealed partial class SubtleSystem : EntitySystem
     /// <summary>Whether <paramref name="listener"/> is a body next to <paramref name="source"/> with nothing blocking its view.</summary>
     public bool InSubtleRange(EntityUid source, EntityUid listener)
     {
-        return !HasComp<GhostComponent>(listener) && _examine.InRangeUnOccluded(source, listener, Range);
+        // A manifested admin observer is a ghost that stands among the living, so it hears as they do.
+        return (!HasComp<GhostComponent>(listener) || HasComp<WGManifestedComponent>(listener))
+               && _examine.InRangeUnOccluded(source, listener, Range);
     }
 }

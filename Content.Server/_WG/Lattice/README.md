@@ -62,7 +62,7 @@ starting at the shield edge (`beamOffset`). A lost anchor breaks the two beams t
 
 **FTL.** Bands with `ftl: false` (Feedback and the Coda) kill FTL drives (`WGLatticeSystem.Ftl.cs`): a ship there
 can't jump (`ConsoleFTLAttemptEvent`, and the helm's drive status reads `Unmoored` off the ship's networked
-`WGDriftComponent.NoFtl`), and the helm refuses a jump whose destination is in one. Ships have to fly in and out.
+`WGDriftComponent.NoFtl`), and the helm refuses a jump whose destination is in one. Ships have to fly in and out, except an admin vessel whose unrestricted FTL ignores the Lattice (ShipCommand's `WGFtlUnrestricted.IgnoreLattice`, read through `IgnoresLattice`); the Scion rule still holds for it.
 
 **The Coda's hazards.** For crewed ships in `hazardBand` (`WGCodaHazardSystem`): after `hunterGrace` (90 s) a roll
 each minute, climbing over `hunterRamp` (8 min) to `hunterMaxChance`, puts a pack of 2-4 `hunterMobs` aboard on open floor at

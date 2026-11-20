@@ -1,0 +1,11 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+                      xmlns:spawning="clr-namespace:Content.Client._WG.Spawning"
+                      Title="{Loc 'wg-observer-preset-pick-prototype'}"
+                      MinSize="640 420"
+                      SetSize="900 620">
+    <BoxContainer Orientation="Vertical">
+        <spawning:WolfgateSpawnPanel Name="Panel" VerticalExpand="True" />
+        <Label Name="Note" Text="{Loc 'wg-observer-preset-prototype-static-note'}" Margin="8 4" StyleClasses="LabelSubText" />
+    </BoxContainer>
+</controls:FancyWindow>

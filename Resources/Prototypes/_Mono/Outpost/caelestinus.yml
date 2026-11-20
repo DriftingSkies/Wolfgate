@@ -3,7 +3,11 @@
   mapName: 'Caelestinus Central'
   mapPath: /Maps/_Mono/Outpost/caelestinus_central.yml # Mono
   minPlayers: 0
-  maxPlayers: 100
+  # WOLFGATE(MapPool) START: the only pool map takes any player count and is the fallback.
+  # Over 100 players the cap made it ineligible and round start fell back to the broken Saltern.
+  # maxPlayers: 100
+  fallback: true
+  # WOLFGATE END
   # WOLFGATE(BlackHole) START: align Caelestinus Central with world north for the sector backdrop.
   # randomRotation: true
   randomRotation: false

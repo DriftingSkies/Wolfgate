@@ -59,7 +59,8 @@ public readonly record struct WGCrewMemberDownEvent(
     EntityUid Mob,
     string Group,
     ProtoId<WGCrewRolePrototype>? Role,
-    bool Dead);
+    bool Dead,
+    EntityUid? Origin = null);
 
 /// <summary>Reports order changes, distinguishing automatic departure continuation from new commands.</summary>
 [ByRefEvent]
@@ -110,6 +111,10 @@ public readonly record struct WGShipCollisionEvent(EntityUid Grid, EntityUid Oth
 /// <summary>Broadcast when a ship weapon from another grid damages an anchored hull entity, or another grid rams it.</summary>
 [ByRefEvent]
 public readonly record struct WGCrewHullHitEvent(EntityUid Grid, EntityUid AttackerGrid);
+
+/// <summary>Broadcast when someone aboard an NPC ship damages, cuts into or unbolts a part of it, and its crew turns on them.</summary>
+[ByRefEvent]
+public readonly record struct WGCrewShipTamperedEvent(EntityUid Grid, EntityUid Culprit);
 
 /// <summary>
 /// Raised on a crew's home grid when the crew turn on someone: an attacker, a thief, a trespasser past his warning.

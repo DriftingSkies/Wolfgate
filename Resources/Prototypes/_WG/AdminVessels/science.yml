@@ -1,0 +1,12 @@
+# Where a ship's anomaly generator puts what it makes: the sealed test chamber, not a random tile of the ship.
+- type: entity
+  id: WGAnomalyChamberMarker
+  name: anomaly chamber marker
+  parent: MarkerBase
+  components:
+  - type: WGAnomalyChamber
+  - type: Sprite
+    layers:
+    - state: red
+    - sprite: Structures/Specific/anomaly.rsi
+      state: anom1

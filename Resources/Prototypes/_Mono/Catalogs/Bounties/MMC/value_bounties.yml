@@ -45,7 +45,7 @@
 
 - type: cargoBounty
   id: MMCBountyIridite
-  reward: 500
+  reward: 50 # WOLFGATE: the small iridite bounty pays 10 MIC a sheet, 500 -> 50
   rewardSuffix: MIC
   rewardProto: MMCIndustrialCredit
   description: mmc-bounty-desc-generic
@@ -73,7 +73,7 @@
 
 - type: cargoBounty
   id: MMCBountyIriditeBulk # For the atmos setups.
-  reward: 10000
+  reward: 1000 # WOLFGATE: iridite pays 5 MIC a sheet, 10000 -> 1000
   rewardSuffix: MIC
   rewardProto: MMCIndustrialCredit
   description: mmc-bounty-desc-generic

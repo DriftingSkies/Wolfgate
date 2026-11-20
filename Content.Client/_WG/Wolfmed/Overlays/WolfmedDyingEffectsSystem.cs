@@ -34,6 +34,9 @@ public sealed partial class WolfmedDyingEffectsSystem : EntitySystem
     /// <summary>Level reached at the moment of going critical; the rest is covered by the way to death.</summary>
     public const float CritLevel = 0.55f;
 
+    /// <summary>Level the view starts at when the heart stops, fading to <see cref="CritLevel"/> over the collapse.</summary>
+    private const float CollapseStartLevel = 0.15f;
+
     private const float SwayTiles = 0.14f;
     private const float BlackoutLevel = 0.72f;
     private const float BlackoutLength = 1.8f;
@@ -199,9 +202,16 @@ public sealed partial class WolfmedDyingEffectsSystem : EntitySystem
                 return 0f;
 
             // BRAIN: in arrest the screen keeps fading toward black as the brain runs out of oxygen.
-            if (HasComp<WolfmedCardiacArrestComponent>(player))
+            if (TryComp(player, out WolfmedCardiacArrestComponent? arrest))
+            {
+                // Still on their feet: the view narrows over the collapse instead of dropping straight to crit.
+                var share = arrest.CollapseFraction();
+                if (share < 1f)
+                    return MathF.Max(consciousness.Depth, CollapseStartLevel + (CritLevel - CollapseStartLevel) * share);
+
                 return MathF.Max(consciousness.Depth,
                     CritLevel + (1f - CritLevel) * (1f - Math.Clamp(consciousness.Oxygenation, 0f, 1f)));
+            }
 
             return consciousness.Depth;
         }

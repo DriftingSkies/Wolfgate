@@ -128,7 +128,7 @@ public sealed partial class WolfmedDyingActionsSystem : EntitySystem
     /// </summary>
     public bool IsDying(EntityUid body) =>
         !TerminatingOrDeleted(body) && _life.OwnsDeath(body) &&
-        (_life.InArrest(body) || _overheat.InThermalShutdown(body) || _shutdown.IsShutDown(body)) &&
+        (_life.ArrestCollapsed(body) || _overheat.InThermalShutdown(body) || _shutdown.IsShutDown(body)) &&
         !_mobState.IsDead(body);
 
     /// <summary>Wolfmed, not upstream's kill-crit branch, decides how this body is left.</summary>

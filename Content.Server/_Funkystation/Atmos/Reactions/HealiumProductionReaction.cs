@@ -17,7 +17,7 @@ public sealed partial class HealiumProductionReaction : IGasReactionEffect
         var initFrezon = mixture.GetMoles(Gas.Frezon);
 
         var rate = mixture.Temperature / Atmospherics.T20C;
-        var efficiency = 23.15f / mixture.Temperature;
+        var efficiency = Math.Min(1f, 23.15f / mixture.Temperature); // WOLFGATE: below 23 K it made more healium than the gas it took
 
         var bZRemoved = 1f * rate;
         var frezonRemoved = 11f * rate;

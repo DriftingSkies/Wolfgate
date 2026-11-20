@@ -119,6 +119,12 @@ public sealed partial class CMUCargoVehicleSystem
             return;
         }
 
+        if (HasCabDriver(vehicleUid, vehicleBase))
+        {
+            Popup(user, "cmu-cargo-vehicle-control-driver");
+            return;
+        }
+
         if (!_mobState.IsAlive(user) ||
             !_mind.TryGetMind(user, out var mindId, out var mind) ||
             mind.OwnedEntity != user ||

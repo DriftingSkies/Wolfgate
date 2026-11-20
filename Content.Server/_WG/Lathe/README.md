@@ -63,6 +63,7 @@ use, editing queued totals), `FabricationSiloMenu` and `LatheMenu.Wolfgate`.
 
 - [`Resources/Prototypes/_WG/Lathe/Entities/Objects/Devices/flatpack.yml`](../../../Resources/Prototypes/_WG/Lathe/Entities/Objects/Devices/flatpack.yml)
 - [`Resources/Prototypes/_WG/Lathe/Entities/Structures/Machines/fabrication_silo.yml`](../../../Resources/Prototypes/_WG/Lathe/Entities/Structures/Machines/fabrication_silo.yml)
+- [`Resources/Prototypes/_WG/Lathe/Recipes/Lathes/economy.yml`](../../../Resources/Prototypes/_WG/Lathe/Recipes/Lathes/economy.yml)
 - [`Resources/Prototypes/_WG/Lathe/Recipes/Lathes/electronics.yml`](../../../Resources/Prototypes/_WG/Lathe/Recipes/Lathes/electronics.yml)
 - [`Resources/Prototypes/_WG/Lathe/Recipes/Lathes/jetpacks.yml`](../../../Resources/Prototypes/_WG/Lathe/Recipes/Lathes/jetpacks.yml)
 
@@ -118,6 +119,7 @@ use, editing queued totals), `FabricationSiloMenu` and `LatheMenu.Wolfgate`.
   - skip no longer drops blocked jobs
   - name the ore silo now that lathes link several silos
 - [`Resources/Prototypes/_Mono/Entities/Structures/Machines/lathe.yml`](../../../Resources/Prototypes/_Mono/Entities/Structures/Machines/lathe.yml): parts go in by use
+- [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Economy/economy.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Economy/economy.yml): super components had no recipe
 - [`Resources/Prototypes/_NF/Entities/Objects/Specific/chemical-containers.yml`](../../../Resources/Prototypes/_NF/Entities/Objects/Specific/chemical-containers.yml): key matches the tank solution the other components use
 - [`Resources/Prototypes/Entities/Structures/Machines/lathe.yml`](../../../Resources/Prototypes/Entities/Structures/Machines/lathe.yml): lathes link fabrication silos
 - [`Resources/Prototypes/Recipes/Lathes/Packs/cargo.yml`](../../../Resources/Prototypes/Recipes/Lathes/Packs/cargo.yml): fabrication silos

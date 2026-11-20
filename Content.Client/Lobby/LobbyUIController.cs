@@ -183,6 +183,15 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
     {
         PreviewPanel?.SetLoaded(true);
 
+        // WOLFGATE(InRoundCreator) START: the creator open over a round shows what the server changed
+        // One holding unsaved edits is left alone; its next save brings the server's copy back.
+        if (_stateManager.CurrentState is GameplayState && _inRoundWindow is { IsOpen: true } && _profileEditor is { IsDirty: false })
+        {
+            ReloadCharacterSetup();
+            return;
+        }
+        // WOLFGATE END
+
         if (_stateManager.CurrentState is not LobbyState)
             return;
 

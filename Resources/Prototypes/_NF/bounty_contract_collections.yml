@@ -6,9 +6,11 @@
   writeAccess:
   - Command #Monolith start change: Changges access
   - GrandVizier
+  - CaelestinusCommand # WOLFGATE: Caelestinus command, such as the Overseer, posts command bounties
   deleteAccess:
   - Command
   - GrandVizier #Monolith end change
+  - CaelestinusCommand # WOLFGATE: and removes them
   categories:
   - Criminal
   - Vacancy

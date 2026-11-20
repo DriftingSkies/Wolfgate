@@ -125,7 +125,7 @@ public sealed partial class WGCrewMedicSystem
         if (_interaction.InRangeUnobstructed(medic.Owner, table, Reach))
             return Arrive(medic, patient, table);
 
-        _pulling.TryStartPull(medic, patient);
+        TakeHold(medic, patient);
         return true;
     }
 
@@ -359,7 +359,7 @@ public sealed partial class WGCrewMedicSystem
         if (_interaction.InRangeUnobstructed(medic.Owner, bed, Reach) && _interaction.InRangeUnobstructed(medic.Owner, patient, Reach))
             Arrive(medic, patient, bed);
         else
-            _pulling.TryStartPull(medic, patient);
+            TakeHold(medic, patient);
     }
 
     /// <summary>Stops work at the table: the patient wakes, and his instruments are cleared for the next one.</summary>

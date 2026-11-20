@@ -42,6 +42,10 @@ public sealed partial class WGAdsCampaignComponent : Component
     [ViewVariables]
     public Dictionary<EntityUid, TimeSpan> InsideSince = new();
 
+    /// <summary>Hulls boarders took from the ADS, and when sweeps are next sent after each.</summary>
+    [ViewVariables]
+    public Dictionary<EntityUid, TimeSpan> Stolen = new();
+
     /// <summary>When each player ship may next be interdicted.</summary>
     [ViewVariables]
     public Dictionary<EntityUid, TimeSpan> InterdictCooldowns = new();

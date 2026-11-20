@@ -12,8 +12,8 @@ using Robust.Shared.Prototypes;
 namespace Content.IntegrationTests.Tests._WG.Genitals;
 
 /// <summary>
-/// One undergarment top and one bottom per character on every species: a marking set built from a points prototype
-/// caps both categories at one marking, and saved profiles holding more keep the first of each.
+/// One marking per undergarment category on every species: a marking set built from a points prototype caps each
+/// category at one marking, and saved profiles holding more keep the first of each.
 /// </summary>
 [TestFixture]
 [TestOf(typeof(MarkingSet))]
@@ -145,6 +145,70 @@ public sealed class UndergarmentLimitTest
                     Assert.That(set.Remove(category, first), Is.True, $"{category}: remove.");
                     Assert.That(set.PointsLeft(category), Is.EqualTo(1), $"{category}: removed again.");
                 }
+            });
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task SocksPointLimitTest()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var protoMan = server.ResolveDependency<IPrototypeManager>();
+        var markings = server.ResolveDependency<MarkingManager>();
+
+        await server.WaitAssertion(() =>
+        {
+            var pointsId = protoMan.Index<SpeciesPrototype>(Species).MarkingPoints;
+            var prototype = protoMan.Index<MarkingPointsPrototype>(pointsId);
+            var set = new MarkingSet(pointsId, markings, protoMan);
+            var socks = Mark(markings, "WGUndergarmentStripedStockings");
+            var socksPrototype = markings.Markings["WGUndergarmentStripedStockings"];
+            var includedSpecies = new[]
+            {
+                "Oni", "Felinid", "Human", "Diona", "Gingerbread", "Arachnid", "Dwarf", "Skeleton", "Moth",
+                "SlimePerson", "IPC", "Skrell", "Shadekin", "Rodentia", "Feroxi", "Chitinid", "Avali", "Thaven",
+                "Yowie", "Tajaran", "Hydrakin", "Kobold", "Goblin", "Protogen", "Asakim",
+            };
+            var excludedSpecies = new[]
+            {
+                "WGCanine", "Felionoid", "Harpy", "Reptilian", "Resomi", "Synth", "Vox", "Vulpkanin", "Monkey", "Cyborg",
+            };
+
+            Assert.Multiple(() =>
+            {
+                foreach (var species in includedSpecies)
+                {
+                    var available = markings.MarkingsByCategoryAndSpecies(MarkingCategories.UndergarmentSocks, species);
+                    Assert.That(available.ContainsKey("WGUndergarmentStripedStockings"), Is.True, species);
+
+                    var speciesPrototype = protoMan.Index<SpeciesPrototype>(species);
+                    var baseSprites = protoMan.Index<HumanoidSpeciesBaseSpritesPrototype>(speciesPrototype.SpriteSet);
+                    Assert.That(baseSprites.Sprites.ContainsKey(HumanoidVisualLayers.UndergarmentSocks), Is.True,
+                        $"{species} is missing the socks sprite layer.");
+                }
+
+                foreach (var species in excludedSpecies)
+                {
+                    var available = markings.MarkingsByCategoryAndSpecies(MarkingCategories.UndergarmentSocks, species);
+                    Assert.That(available.ContainsKey("WGUndergarmentStripedStockings"), Is.False, species);
+                }
+
+                Assert.That(socksPrototype.BodyPart, Is.EqualTo(HumanoidVisualLayers.UndergarmentSocks));
+                Assert.That(socksPrototype.MarkingCategory, Is.EqualTo(MarkingCategories.UndergarmentSocks));
+                Assert.That(MarkingCategoriesConversion.FromHumanoidVisualLayers(HumanoidVisualLayers.UndergarmentSocks),
+                    Is.EqualTo(MarkingCategories.UndergarmentSocks));
+                Assert.That(prototype.Points.ContainsKey(MarkingCategories.UndergarmentSocks), Is.False);
+                Assert.That(set.PointsLeft(MarkingCategories.UndergarmentSocks), Is.EqualTo(1));
+
+                set.AddBack(MarkingCategories.UndergarmentSocks, socks);
+                set.AddBack(MarkingCategories.UndergarmentSocks, socks);
+
+                Assert.That(Ids(set, MarkingCategories.UndergarmentSocks), Is.EqualTo(new[] { "WGUndergarmentStripedStockings" }));
+                Assert.That(set.PointsLeft(MarkingCategories.UndergarmentSocks), Is.EqualTo(0));
+                Assert.That(prototype.Points.ContainsKey(MarkingCategories.UndergarmentSocks), Is.False);
             });
         });
 

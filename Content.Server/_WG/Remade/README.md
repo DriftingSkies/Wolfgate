@@ -250,6 +250,7 @@ does on its own. `wg_remade outbreak [uid]` forces an outbreak.
 - [`Content.Server/_WG/Remade/Conversion/WGRemadeConversionSystem.Conditions.cs`](Conversion/WGRemadeConversionSystem.Conditions.cs)
 - [`Content.Server/_WG/Remade/Conversion/WGRemadeConversionSystem.cs`](Conversion/WGRemadeConversionSystem.cs)
 - [`Content.Server/_WG/Remade/Conversion/WGRemadeGibSystem.cs`](Conversion/WGRemadeGibSystem.cs)
+- [`Content.Server/_WG/Remade/Conversion/WGRemadeNoDevicesSystem.cs`](Conversion/WGRemadeNoDevicesSystem.cs)
 - [`Content.Server/_WG/Remade/Conversion/WGRemadeVoiceComponent.cs`](Conversion/WGRemadeVoiceComponent.cs)
 - [`Content.Server/_WG/Remade/Conversion/WGRemadeVoiceSystem.cs`](Conversion/WGRemadeVoiceSystem.cs)
 - [`Content.Server/_WG/Remade/Conversion/WGTakesBodyComponent.cs`](Conversion/WGTakesBodyComponent.cs)
@@ -412,6 +413,7 @@ does on its own. `wg_remade outbreak [uid]` forces an outbreak.
 - [`Content.Shared/_WG/Remade/WGRemadeAppearsDeadComponent.cs`](../../../Content.Shared/_WG/Remade/WGRemadeAppearsDeadComponent.cs)
 - [`Content.Shared/_WG/Remade/WGRemadeAppearsDeadSystem.cs`](../../../Content.Shared/_WG/Remade/WGRemadeAppearsDeadSystem.cs)
 - [`Content.Shared/_WG/Remade/WGRemadeMobPrototype.cs`](../../../Content.Shared/_WG/Remade/WGRemadeMobPrototype.cs)
+- [`Content.Shared/_WG/Remade/WGRemadeNoDevicesComponent.cs`](../../../Content.Shared/_WG/Remade/WGRemadeNoDevicesComponent.cs)
 - [`Content.Shared/_WG/Remade/WGRemadeShellVisuals.cs`](../../../Content.Shared/_WG/Remade/WGRemadeShellVisuals.cs)
 
 ### Client
@@ -507,6 +509,7 @@ does on its own. `wg_remade outbreak [uid]` forces an outbreak.
 - [`Resources/Locale/en-US/_WG/Remade/betrayal.ftl`](../../../Resources/Locale/en-US/_WG/Remade/betrayal.ftl)
 - [`Resources/Locale/en-US/_WG/Remade/corruption.ftl`](../../../Resources/Locale/en-US/_WG/Remade/corruption.ftl)
 - [`Resources/Locale/en-US/_WG/Remade/counterplay.ftl`](../../../Resources/Locale/en-US/_WG/Remade/counterplay.ftl)
+- [`Resources/Locale/en-US/_WG/Remade/devices.ftl`](../../../Resources/Locale/en-US/_WG/Remade/devices.ftl)
 - [`Resources/Locale/en-US/_WG/Remade/director.ftl`](../../../Resources/Locale/en-US/_WG/Remade/director.ftl)
 - [`Resources/Locale/en-US/_WG/Remade/dread.ftl`](../../../Resources/Locale/en-US/_WG/Remade/dread.ftl)
 - [`Resources/Locale/en-US/_WG/Remade/echoes.ftl`](../../../Resources/Locale/en-US/_WG/Remade/echoes.ftl)

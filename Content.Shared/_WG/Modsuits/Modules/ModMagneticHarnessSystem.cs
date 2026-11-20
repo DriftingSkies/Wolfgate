@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Shared.Hands;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
@@ -26,21 +27,43 @@ public sealed partial class ModMagneticHarnessSystem : VirtualController
 
     private readonly List<EntityUid> _forget = new();
 
-    [SubscribeLocalEvent]
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        SubscribeLocalEvent<ModMagneticHarnessComponent, DidEquipEvent>(OnDidEquip);
+        SubscribeLocalEvent<ModMagneticHarnessComponent, DidEquipHandEvent>(OnDidEquipHand);
+    }
+
     private void OnDidEquip(Entity<ModMagneticHarnessComponent> ent, ref DidEquipEvent args)
     {
-        if (_timing.ApplyingState
-            || !ent.Comp.Slots.Contains(args.Slot)
-            || !HasComp<GunComponent>(args.Equipment))
+        if (_timing.ApplyingState || !ent.Comp.Slots.Contains(args.Slot))
             return;
 
-        var magnetized = EnsureComp<ModMagnetizedGunComponent>(args.Equipment);
-        magnetized.Wearer = ent;
-        magnetized.Slot = args.Slot;
+        Magnetize(args.Equipment, ent, args.Slot);
+    }
+
+    private void OnDidEquipHand(Entity<ModMagneticHarnessComponent> ent, ref DidEquipHandEvent args)
+    {
+        if (_timing.ApplyingState)
+            return;
+
+        // A gun drawn from a slot or picked up from the floor should come back to suit storage.
+        Magnetize(args.Equipped, ent, "suitstorage");
+    }
+
+    private void Magnetize(EntityUid gun, Entity<ModMagneticHarnessComponent> harness, string slot)
+    {
+        if (!HasComp<GunComponent>(gun))
+            return;
+
+        var magnetized = EnsureComp<ModMagnetizedGunComponent>(gun);
+        magnetized.Wearer = harness;
+        magnetized.Slot = slot;
         magnetized.LooseSince = null;
         magnetized.Launched = false;
-        Dirty(args.Equipment, magnetized);
-        PhysicsSystem.UpdateIsPredicted(args.Equipment);
+        Dirty(gun, magnetized);
+        PhysicsSystem.UpdateIsPredicted(gun);
     }
 
     public override void UpdateBeforeSolve(bool prediction, float frameTime)

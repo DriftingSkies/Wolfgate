@@ -48,6 +48,10 @@ public sealed partial class WGReaverPatrolComponent : Component
     [ViewVariables]
     public TimeSpan? TargetFarSince;
 
+    /// <summary>Whether it hunts a hull boarders took from the campaign: followed anywhere, never leashed back.</summary>
+    [ViewVariables]
+    public bool Recovering;
+
     /// <summary>Whether it was sent out from a stronghold under attack, to hunt the ship that hit it and fly home.</summary>
     [ViewVariables]
     public bool Sortie;
