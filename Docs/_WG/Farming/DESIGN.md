@@ -1,7 +1,7 @@
 # Farming, cooking and the homestead economy: design
 
-Status, 2026-11-18: this is its own pull request (branch `Cooking-Farming`, cut from upstream `main`), separate from
-Outposts, so the two big reworks can be tested first. Farming is a **rework of botany**: its rules (light, water,
+Status, 2026-11-21: on branch `Farming-Fishing-Cooking-Hunting`, separate from Outposts, so the two big reworks can be
+tested apart. Rounds 1 to 6 are built (below); "More ideas" is the backlog. Farming is a **rework of botany**: its rules (light, water,
 climate, quality, fertilizer, sprinklers) apply to every plant holder, on stations as on worlds. Cooking **replaces the
 microwave**: station microwaves and ranges are hearths. Fishing and foraging ride along. Outposts will hook into these
 modules once both are in (outpost producer cap, blueprint shelves, the outpost range as a hearth).
@@ -309,12 +309,117 @@ Round 5 (2026-11-18):
 - **Foraging** (module Foraging): forage spots grow near players on planets by climate and wither if unpicked; some
   give seeds you can't buy, worm casts give bait.
 
+Round 6 (2026-11-21), from playtest feedback that the work didn't pay:
+
+- **Machines**: times roughly halved (ore washing a minute, geode cracking half a minute); a busy machine queues up to
+  ten more of the same, a whole stack at once, and runs them in turn. Queued items are kept as they are and come back
+  on *Empty it out* or if the machine is taken apart.
+- **Order board**: pay set well above a chute or a packed trade crate (a luxuries crate is about 333 an item), fewer
+  items asked, bigger fill bonuses. Fine dishes take whole pies and cakes, home cooking takes bread; `excludeTags`
+  keeps slices off. New caviar-or-pearls order.
+- **Buffs**: meal healing and bleed easing doubled; Brawny, Steady and Energising caps up about half.
+- **Brewing** (Cooking): kettle teas, coffee and cocoa with a cup buff beside the meal's; finer leaves brew a bigger pot.
+- **Fishing extras**: night and rain fish per climate, one legendary fish per water, junk, a 1% sunken chest beside the
+  catch, fiberglass and iridium rods, the crab cage, pearls from oysters and clams, roe into caviar, and sushi.
+- **Kit**: cookware is built from the construction menu; the vendor and cookware crate ship flatpacks.
+
+## More ideas (brainstorm, 2026-11-21)
+
+Not built. Each ties to a system that exists. Levels stay out (owner's decision). Ideas marked *(outposts)* wait for
+the Outposts rework.
+
+### Making every harvest worth it
+
+- **Base prices for raw crops.** Upstream produce sells for 0, so quality multiplies nothing. Small prices scaled to
+  grow time make every basket worth something and let processing be the 2 to 3 times the design assumes.
+- **Crop of the week.** The order board names one good that sells at a premium for a while; rewards varied fields.
+- **Price memory.** A good sold over and over at one chute drops, then recovers; mixed farms beat one-crop farms.
+- **Bumper harvests.** A small chance for a well-tended, fertilized plant to give extra, with a popup.
+- **Iridium shows.** Top-quality goods get a shimmer or a distinct examine line.
+
+### Seasons and weather
+
+- **Seasonal crops** that grow only in their season on worlds with seasons, so greenhouses earn their keep.
+- **Rain days** water outdoor crops for free and bring out rain fish and mushrooms.
+- **Storms** flatten unguarded tall crops (windbreaks or fences protect them); storm-only fish make it worth going out.
+- **First frost** warning on cooling worlds: a last-harvest rush.
+- **Seasonal forage**: spring flowers, autumn mushrooms and nuts, winter roots.
+
+### Animals
+
+- **Feeders tied to fields**: hay from the mill fills feeders; fed animals stay happy.
+- **Animal products with quality**: bottled milk and wool bales instead of bare reagents.
+- **Breeding**: two happy animals produce young; rare coats sell for more.
+- **Truffle pigs** dig up truffles on worlds; with an **oil press**, truffle oil.
+- **Bee varieties**: the nearest flower sets the honey's kind and price.
+- **Daily petting** of each animal gives a small comfort bonus, rewarding morning rounds.
+
+### Fishing
+
+- **Fish ponds that breed**: stock a pond with a caught fish; it fills with that kind and yields its roe. Passive income
+  from fishing.
+- **Tackle**: spinners (quicker bites), treasure hooks (chest chance), barbed hooks (wider window); each wears out.
+- **Aquarium**: a tank showing fish you caught, legendaries included; raises comfort nearby.
+- **Bait maker**: fish scraps into bait, closing the loop.
+- **Ice fishing** on frozen worlds: a hole in the ice with its own table.
+
+### Cooking and brewing
+
+- **Signature dishes**: each world or station has a regional dish its orders pay extra for; recipes found foraging or in
+  sunken chests.
+- **Recipe cards**: rare dishes unlock from a found card (treasure, orders, forage) and the prep board learns them.
+  Progression without levels.
+- **Banquets**: a table set with several different dishes gives everyone who eats there a group buff.
+- **Pantry and spice rack**: storage that slows spoilage; spices stretch a meal's buff.
+- **Bar tap** *(outposts)*: brewed drinks served to visitors raise their comfort and earn tips.
+- **Vintage aging**: wine and cheese left in a cask past iridium become vintage, a long-term price goal.
+- **Tea blends**: two leaves in one kettle for a longer cup buff.
+
+### Foraging and hunting
+
+- **Rare forage spots**: a glowing rare herb now and then, holding seeds you can't buy.
+- **Tree tapping**: sap from world trees; a keg makes syrup for baking and sweets.
+- **Trophies**: mount a legendary fish or a big game head; comfort and bragging rights.
+- **Hunting orders**: the board asks for particular pelts or game in season.
+
+### Community
+
+- **Collections log**: a guidebook or PDA page of fish caught, dishes cooked and gold crops grown, with small rewards
+  for finished sets. Progression without levels.
+- **Community bundles**: a station posts a themed set ("spring crops", "five fish of the cold"); finishing it unlocks
+  something for everyone, such as a vendor item or a seed.
+- **Co-op orders**: a board order too big for one farm; anyone delivers toward it, paid per item plus a share of the
+  bonus.
+- **Harvest fair**: once a round, best goods to Central; a ribbon and a purse.
+- **Gifting NPCs**: station NPCs who like certain goods give better prices or rare seeds.
+- **Farmers' market stall** *(outposts)*: visitors buy what the owner priced while they're away.
+
+### Ships and outposts
+
+- **Homestead ship**: a small farming and kitchen vessel (playtester request).
+- **Compact machines**: smaller, slower machines that fit on a ship.
+- **Flatpacks on deconstruction**: a machine taken apart gives back its flatpack (playtester request).
+- **Chores line** *(outposts)*: "3 kegs ready, 2 plants dry, 1 animal unpetted" on the outpost console.
+- **Hired hands** *(outposts)*: an NPC waters and harvests while you're away, for a wage and a cut.
+- **Auto-harvester** *(outposts)*: late, expensive, capped.
+
+### Long-term goals
+
+Every legendary fish logged; vintage wine; a self-sustaining homestead (water, compost, bait and seeds made on site); a
+giant crop; fruit trees and trellises.
+
 ## Next build order
 
-1. Chores line on the outpost console.
-2. Player-posted orders and the farmers' market.
-3. Real sprites for the machines (they are tinted stand-ins), and a proper pond sprite.
-4. Farming skill (deferred by the owner).
+Outpost-tied work waits for the Outposts rework.
+
+1. Base prices for raw crops.
+2. Fish ponds that breed (roe by kind).
+3. Collections log and recipe cards.
+4. Banquets and tea blends.
+5. Co-op orders, community bundles and crop of the week.
+6. Real sprites for the machines (they are tinted stand-ins).
+7. Seasonal crops, rain days and storms.
+8. Farming skill (deferred by the owner).
 
 ## Decisions (owner, 2026-11-18)
 
