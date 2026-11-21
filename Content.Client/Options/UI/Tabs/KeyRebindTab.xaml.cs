@@ -112,8 +112,16 @@ namespace Content.Client.Options.UI.Tabs
             _cfg.SaveToFile();
         }
 
-        public KeyRebindTab()
+        // WOLFGATE(Options) START: the Wolfgate options tabs hold a second instance that lists only the fork's keybinds
+        public KeyRebindTab() : this(false)
         {
+        }
+
+        /// <summary>Builds the stock keybind list, or with <paramref name="wgForkOnly"/> only the binds stock SS14 lacks.</summary>
+        public KeyRebindTab(bool wgForkOnly)
+        {
+            _wgForkOnly = wgForkOnly;
+        // WOLFGATE END
             IoCManager.InjectDependencies(this);
             RobustXamlLoader.Load(this);
 
@@ -135,6 +143,7 @@ namespace Content.Client.Options.UI.Tabs
                     _inputManager.SaveToUserData();
                 });
             };
+            WgSetUpButtons();
             // WOLFGATE END
 
             var first = true;
@@ -157,6 +166,9 @@ namespace Content.Client.Options.UI.Tabs
 
             void AddButton(BoundKeyFunction function)
             {
+                if (!WgShows(function)) // WOLFGATE(Options): stock and fork binds sit on different tabs
+                    return; // WOLFGATE(Options)
+
                 var control = new KeyControl(this, function);
                 KeybindsContainer.AddChild(control);
                 _keyControls.Add(function, control);
@@ -164,6 +176,9 @@ namespace Content.Client.Options.UI.Tabs
 
             void AddCheckBox(string checkBoxName, bool currentState, Action<BaseButton.ButtonToggledEventArgs>? callBackOnClick)
             {
+                if (!WgShows(checkBoxName)) // WOLFGATE(Options): stock and fork binds sit on different tabs
+                    return; // WOLFGATE(Options)
+
                 CheckBox newCheckBox = new CheckBox() { Text = Loc.GetString(checkBoxName) };
                 newCheckBox.Pressed = currentState;
                 newCheckBox.OnToggled += callBackOnClick;
@@ -356,6 +371,8 @@ namespace Content.Client.Options.UI.Tabs
             AddButton(EngineKeyFunctions.ShowDebugMonitors);
             AddButton(EngineKeyFunctions.HideUI);
             AddButton(ContentKeyFunctions.InspectEntity);
+
+            WgDropEmptySections(); // WOLFGATE(Options): headers whose binds all sit on the other tab
 
             foreach (var control in _keyControls.Values)
             {

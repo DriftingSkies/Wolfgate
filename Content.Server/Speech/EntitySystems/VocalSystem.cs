@@ -41,7 +41,12 @@ public sealed partial class VocalSystem : EntitySystem
     private void OnShutdown(EntityUid uid, VocalComponent component, ComponentShutdown args)
     {
         // remove scream action when component removed
-        if (component.ScreamActionEntity != null)
+        // WOLFGATE START: only while it is still ours; a detached skull's action has already gone, which logged an error
+        // if (component.ScreamActionEntity != null)
+        if (component.ScreamActionEntity != null &&
+            _actions.TryGetActionData(component.ScreamActionEntity, out var scream, logError: false) &&
+            scream.AttachedEntity == uid)
+        // WOLFGATE END
         {
             _actions.RemoveAction(uid, component.ScreamActionEntity);
         }

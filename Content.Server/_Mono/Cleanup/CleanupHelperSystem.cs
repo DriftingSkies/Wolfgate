@@ -40,6 +40,9 @@ public sealed partial class CleanupHelperSystem : EntitySystem
             return true;
         // WOLFGATE END
 
+        // WOLFGATE(Cleanup) START: distance check against a player snapshot rebuilt each second, not a spatial lookup per call
+        return WGNearestPlayerDistance(coord) <= radius;
+        /*
         var minds = _lookup.GetEntitiesInRange<MindContainerComponent>(coord, radius);
 
         foreach (var (uid, comp) in minds)
@@ -58,6 +61,8 @@ public sealed partial class CleanupHelperSystem : EntitySystem
                 return true;
         }
         return false;
+        */
+        // WOLFGATE END
     }
 
     /// <summary>

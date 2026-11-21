@@ -1,6 +1,6 @@
 # WornStorage
 
-An SS13-style option for worn storage, off by default: Game Options > Controls > General > "Clicking worn or stored
+An SS13-style option for worn storage, off by default: Game Options > Wolfgate > Controls > General > "Clicking worn or stored
 storage opens it". With it on, left-clicking a worn backpack, belt or other storage in an inventory slot opens it when
 the active hand is empty, and a click with an item in hand still puts the item inside. Taking the storage off is a drag from its slot
 onto an empty hand; the item goes into that hand, which becomes the active one.

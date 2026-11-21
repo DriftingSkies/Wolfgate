@@ -42,6 +42,20 @@ public sealed partial class WGCrewWeaponSystem
     /// <summary>Faction members found by one lookup, reused so a threat check allocates no set.</summary>
     private readonly HashSet<Entity<NpcFactionMemberComponent>> _nearbyMembers = new();
 
+    /// <summary>
+    /// Everything not carried: static bodies stay in, since an anchored turret is a faction member too. What is in
+    /// a container is skipped, which is most of what a ship holds.
+    /// </summary>
+    private const LookupFlags NearbyFlags = LookupFlags.Dynamic | LookupFlags.Static | LookupFlags.Sundries | LookupFlags.Sensors;
+
+    /// <summary>How long one crewman's lookup of the faction members around him serves all his target checks.</summary>
+    public static readonly TimeSpan NearbyCacheTime = TimeSpan.FromSeconds(0.25);
+
+    /// <summary>Each crewman's last lookup: when it lapses and who it found. Hostility is judged afresh on each use.</summary>
+    private readonly Dictionary<EntityUid, (TimeSpan Until, List<EntityUid> Members)> _nearby = new();
+
+    private readonly Stack<List<EntityUid>> _nearbyLists = new();
+
     /// <summary>Spare candidate lists; a target check may run another crewman's, so each check rents its own.</summary>
     private readonly Stack<List<EntityUid>> _candidateLists = new();
     private float _reloadTimer;
@@ -62,6 +76,14 @@ public sealed partial class WGCrewWeaponSystem
             {
                 if (_timing.CurTime >= cached.Until)
                     _braces.Remove(mob);
+            }
+            foreach (var (mob, cached) in _nearby)
+            {
+                if (_timing.CurTime < cached.Until)
+                    continue;
+                cached.Members.Clear();
+                _nearbyLists.Push(cached.Members);
+                _nearby.Remove(mob);
             }
             PruneAdvance();
         }
@@ -132,18 +154,50 @@ public sealed partial class WGCrewWeaponSystem
     /// </summary>
     private void NearbyHostiles(EntityUid uid, NpcFactionMemberComponent member, List<EntityUid> candidates)
     {
+        var hostileFactions = member.HostileFactions;
+        foreach (var near in NearbyMembers(uid))
+        {
+            if (TerminatingOrDeleted(near) || !TryComp<NpcFactionMemberComponent>(near, out var other))
+                continue;
+            if (hostileFactions.Overlaps(other.Factions)
+                && !_factions.IsEntityFriendly((uid, member), (near, other)) && !_factions.IsIgnored(uid, near))
+                candidates.Add(near);
+        }
+    }
+
+    /// <summary>
+    /// The faction members within the crewman's normal vision, from a lookup shared by all his checks for
+    /// <see cref="NearbyCacheTime"/>. A fight replans on every hit; without this each replan would look round again.
+    /// </summary>
+    private List<EntityUid> NearbyMembers(EntityUid uid)
+    {
+        var now = _timing.CurTime;
+        List<EntityUid> members;
+        if (_nearby.TryGetValue(uid, out var cached))
+        {
+            if (now < cached.Until)
+                return cached.Members;
+            members = cached.Members;
+        }
+        else
+            members = _nearbyLists.TryPop(out var spare) ? spare : new List<EntityUid>();
+
+        members.Clear();
+        _nearby[uid] = (now + NearbyCacheTime, members);
+
         var range = TryComp<HTNComponent>(uid, out var htn)
             && htn.Blackboard.TryGetValue<float>("VisionRadius", out var vision, EntityManager) ? vision : LookupRange;
         // Alert-widened vision would turn the faction lookup into a scan of every faction member on the map.
-        var hostileFactions = member.HostileFactions;
         _nearbyMembers.Clear();
-        _lookup.GetEntitiesInRange(_xformSystem.GetMapCoordinates(uid), Math.Min(range, LookupRange), _nearbyMembers);
+        _lookup.GetEntitiesInRange(_xformSystem.GetMapCoordinates(uid), Math.Min(range, LookupRange), _nearbyMembers, NearbyFlags);
         foreach (var near in _nearbyMembers)
         {
-            if (near.Owner != uid && hostileFactions.Overlaps(near.Comp.Factions)
-                && !_factions.IsEntityFriendly((uid, member), (near.Owner, near.Comp)) && !_factions.IsIgnored(uid, near.Owner))
-                candidates.Add(near.Owner);
+            if (near.Owner != uid)
+                members.Add(near.Owner);
         }
+
+        _nearbyMembers.Clear();
+        return members;
     }
 
     /// <summary>The faction lookup's hostility rule for one known mob.</summary>

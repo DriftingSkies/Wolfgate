@@ -113,6 +113,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Content.Packaging/ClientPackaging.cs`](../../Content.Packaging/ClientPackaging.cs): ship the licence texts and legal notes in the client zip
 - [`Content.Server/_Crescent/ShipShields/ShipShieldsSystem.Commands.cs`](../../Content.Server/_Crescent/ShipShields/ShipShieldsSystem.Commands.cs): restore the licence header removed by Kill Spdx
 - [`Content.Server/_Crescent/ShipShields/ShipShieldsSystem.Emitter.cs`](../../Content.Server/_Crescent/ShipShields/ShipShieldsSystem.Emitter.cs): restore the licence header removed by Kill Spdx
+- [`Content.Server/_DV/Mail/EntitySystems/DelayedItemSystem.cs`](../../Content.Server/_DV/Mail/EntitySystems/DelayedItemSystem.cs): a placeholder leaves its container as it is deleted; spawning onto it then logged an error
 - [`Content.Server/_ES/TileFires/ESTileFireSystem.cs`](../../Content.Server/_ES/TileFires/ESTileFireSystem.cs): a grid deleted mid-explosion has no transform left to fire
 - [`Content.Server/_FarHorizons/Power/Generation/FissionGenerator/NuclearCentrifugeComponent.cs`](../../Content.Server/_FarHorizons/Power/Generation/FissionGenerator/NuclearCentrifugeComponent.cs): relabelled MIT as in HardLight b602e8d485
 - [`Content.Server/_FarHorizons/Power/Generation/FissionGenerator/NuclearCentrifugeSystem.cs`](../../Content.Server/_FarHorizons/Power/Generation/FissionGenerator/NuclearCentrifugeSystem.cs): relabelled MIT as in HardLight b602e8d485
@@ -177,6 +178,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Content.Server/Atmos/EntitySystems/AtmosphereSystem.HighPressureDelta.cs`](../../Content.Server/Atmos/EntitySystems/AtmosphereSystem.HighPressureDelta.cs)
   - Vector2 for the space-wind NaN guard
   - a zero vector here normalises to NaN, which the impulse writes into the mob's position
+- [`Content.Server/Atmos/EntitySystems/FlammableSystem.cs`](../../Content.Server/Atmos/EntitySystems/FlammableSystem.cs): a flammable without appearance (an envelope, a xeno wall) has no fire visuals to set, not an error
 - [`Content.Server/Atmos/EntitySystems/HeatExchangerSystem.cs`](../../Content.Server/Atmos/EntitySystems/HeatExchangerSystem.cs): restore the licence header removed by Kill Spdx
 - [`Content.Server/Body/Systems/RespiratorSystem.cs`](../../Content.Server/Body/Systems/RespiratorSystem.cs): entities without a respirator cannot metabolize inhaled gases; absence is valid.
 - [`Content.Server/Cargo/Systems/CargoSystem.Shuttle.cs`](../../Content.Server/Cargo/Systems/CargoSystem.Shuttle.cs)
@@ -196,6 +198,10 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
   - Active defaults to true, so every server built broadcast its list before it was ever chosen
   - one active server per server type, since a second map's broadcast overwrote every console's list
   - one active server per server type, from the asking map first
+- [`Content.Server/Emp/EmpSystem.cs`](../../Content.Server/Emp/EmpSystem.cs)
+  - EMP trigger guard
+  - the tick and entities of the EMP trigger guard in HandleEmpTrigger
+  - one pulse per entity per tick; a trigger-on-collide round fired once per body it overlapped
 - [`Content.Server/Explosion/EntitySystems/ExplosionGridTileFlood.cs`](../../Content.Server/Explosion/EntitySystems/ExplosionGridTileFlood.cs)
   - a freed tile is never scheduled earlier than the current iteration.
   - a blocker never clears earlier than the current iteration.
@@ -210,6 +216,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Content.Server/Lightning/LightningSystem.cs`](../../Content.Server/Lightning/LightningSystem.cs)
   - restore the licence header removed by Kill Spdx
   - call the private overload; the public one recursed forever
+- [`Content.Server/Medical/VomitSystem.cs`](../../Content.Server/Medical/VomitSystem.cs): no body, no stomach; a hairball hitting a bodiless mob logged a resolve error
 - [`Content.Server/Mind/MindSystem.cs`](../../Content.Server/Mind/MindSystem.cs): a session whose data is already gone (a client torn down mid-delete) failed the asserts with a KeyNotFoundException
 - [`Content.Server/Mining/MiningSystem.cs`](../../Content.Server/Mining/MiningSystem.cs): restore the licence header removed by Kill Spdx
 - [`Content.Server/Movement/Systems/LagCompensationSystem.cs`](../../Content.Server/Movement/Systems/LagCompensationSystem.cs): restore the licence header removed by Kill Spdx
@@ -261,6 +268,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
   - fallback ordering
   - prefer spawners that aren't another job's, e.g. not the godfather's office for a fugitive
   - other jobs' spawners only when nothing else is left
+- [`Content.Server/Speech/EntitySystems/VocalSystem.cs`](../../Content.Server/Speech/EntitySystems/VocalSystem.cs): only while it is still ours; a detached skull's action has already gone, which logged an error
 - [`Content.Server/VendingMachines/VendingMachineSystem.cs`](../../Content.Server/VendingMachines/VendingMachineSystem.cs)
   - restore the licence header removed by Kill Spdx
   - a free vend skips the cash payment, which logs a zero amount as invalid
@@ -362,6 +370,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
   - the do-afters to update this tick, taken before any runs
   - drifting isn't moving, so it doesn't interrupt work on yourself or something you carry
   - skipped while drifting
+- [`Content.Shared/Ensnaring/SharedEnsnareableSystem.cs`](../../Content.Shared/Ensnaring/SharedEnsnareableSystem.cs): no container moves while either side is being deleted; removing it then threw
 - [`Content.Shared/Gibbing/Systems/GibbingSystem.cs`](../../Content.Shared/Gibbing/Systems/GibbingSystem.cs)
   - bodiless giblets are skipped when flung.
   - bodiless dropped contents are skipped instead of flung.
@@ -465,7 +474,15 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Resources/Prototypes/_DV/Catalog/Jukebox/Standard.yml`](../../Resources/Prototypes/_DV/Catalog/Jukebox/Standard.yml): licence does not cover this fork, track removed
 - [`Resources/Prototypes/_DV/Entities/Objects/Weapons/Guns/Projectiles/muzzleflashes.yml`](../../Resources/Prototypes/_DV/Entities/Objects/Weapons/Guns/Projectiles/muzzleflashes.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/_Funkystation/Atmospherics/gases.yml`](../../Resources/Prototypes/_Funkystation/Atmospherics/gases.yml): healium is a small premium on the frezon it takes, 18 -> 6 (Mono 3\<18)
+- [`Resources/Prototypes/_Goobstation/Body/Parts/tajaran.yml`](../../Resources/Prototypes/_Goobstation/Body/Parts/tajaran.yml): 5% faster sprint than the base leg
+- [`Resources/Prototypes/_Goobstation/Damage/modifier_sets.yml`](../../Resources/Prototypes/_Goobstation/Damage/modifier_sets.yml): no extra brute damage (was 1.15), unlike felinids; heat and cold unchanged
 - [`Resources/Prototypes/_Goobstation/Entities/Clothing/Eyes/glasses.yml`](../../Resources/Prototypes/_Goobstation/Entities/Clothing/Eyes/glasses.yml): an invalid default leaves the chameleon menu empty
+- [`Resources/Prototypes/_Goobstation/Entities/Mobs/Species/tajaran.yml`](../../Resources/Prototypes/_Goobstation/Entities/Mobs/Species/tajaran.yml)
+  - full-size sprite, matching the human-size hitbox
+  - claws deal only Slash, unlike felinids
+  - no duffel bag; the species base's bag shape is too big for one
+  - no hairball or eat-mouse actions
+  - no scream when wet
 - [`Resources/Prototypes/_Goobstation/Entities/Objects/Devices/Circuitboards/machine.yml`](../../Resources/Prototypes/_Goobstation/Entities/Objects/Devices/Circuitboards/machine.yml)
   - restore the licence header removed by Kill Spdx
   - a machine part under stackRequirements can't be inserted; the frame reads parts from requirements
@@ -692,6 +709,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Resources/ServerInfo/Guidebook/Engineering/Power.xml`](../../Resources/ServerInfo/Guidebook/Engineering/Power.xml): the engine is the IRE everywhere else in game
 - [`Resources/ServerInfo/Guidebook/Engineering/SolarPanels.xml`](../../Resources/ServerInfo/Guidebook/Engineering/SolarPanels.xml): the engine is the IRE everywhere else in game
 - [`Resources/ServerInfo/Guidebook/Mobs/Diona.xml`](../../Resources/ServerInfo/Guidebook/Mobs/Diona.xml): Monolith gave Diona a shoe slot, and FTL knockdown immunity is back
+- [`Resources/ServerInfo/Guidebook/Mobs/Tajaran.xml`](../../Resources/ServerInfo/Guidebook/Mobs/Tajaran.xml): Tajarans split further from felinids
 - [`Resources/ServerInfo/Guidebook/ServerRules/CoreRules/RuleC0.xml`](../../Resources/ServerInfo/Guidebook/ServerRules/CoreRules/RuleC0.xml)
   - ERP is allowed, rule 4 only covers shock content
   - was 16

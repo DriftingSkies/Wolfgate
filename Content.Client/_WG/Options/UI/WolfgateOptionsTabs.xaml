@@ -1,0 +1,12 @@
+<wgui:WolfgateOptionsTabs xmlns="https://spacestation14.io"
+                          xmlns:wgui="clr-namespace:Content.Client._WG.Options.UI"
+                          xmlns:tabs="clr-namespace:Content.Client._WG.Options.UI.Tabs"
+                          VerticalExpand="True">
+    <tabs:WGInterfaceTab Name="InterfaceTab" />
+    <tabs:WGChatTab Name="ChatTab" />
+    <tabs:WGGraphicsTab Name="GraphicsTab" />
+    <tabs:WGAudioTab Name="AudioTab" />
+    <tabs:WGAccessibilityTab Name="AccessibilityTab" />
+    <!-- The Controls tab is a KeyRebindTab built in code, which goes in here. -->
+    <tabs:WolfgateConsentTab Name="ConsentTab" />
+</wgui:WolfgateOptionsTabs>

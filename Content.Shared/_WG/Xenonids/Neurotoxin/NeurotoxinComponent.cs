@@ -118,7 +118,7 @@ public sealed partial class NeurotoxinComponent : Component
         new SoundCollectionSpecifier("XenoRoar"),
         new SoundPathSpecifier("/Audio/_WG/Xenonids/Announcements/Marine/notice2.ogg"),
         new SoundPathSpecifier("/Audio/_WG/Xenonids/Weapons/alien_knockdown.ogg"), //TODO RMC14 Bonebreak sound
-        new SoundCollectionSpecifier("CMM54CShoot"),
+        new SoundPathSpecifier("/Audio/_WG/Xenonids/Effects/rocketpod_fire.ogg"), // RMC14's CMM54CShoot was never ported
         new SoundCollectionSpecifier("MetalThud"),
         new SoundPathSpecifier("/Audio/Items/crowbar.ogg"),
         new SoundCollectionSpecifier("WindowShatter")

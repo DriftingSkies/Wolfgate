@@ -1,6 +1,6 @@
 # ChatTextSize
 
-The chat log's text size and line spacing: Game Options > Misc > Speech > "Chat text size" (`wg.chat_text_size`, 0 for
+The chat log's text size and line spacing: Game Options > Wolfgate > Chat > Chat > "Chat text size" (`wg.chat_text_size`, 0 for
 the theme's font, at least 8 pt otherwise) and "Chat line spacing" (`wg.chat_line_spacing`, extra pixels). This is the
 reader's size for the whole log. The `ChatFont` module's per-character speech fonts are a separate thing.
 
@@ -21,7 +21,6 @@ the setting or the UI theme changes, and removed at the defaults, so a default s
 ### Client
 
 - [`Content.Client/_WG/ChatTextSize/ChatBox.ChatTextSize.cs`](../../../Content.Client/_WG/ChatTextSize/ChatBox.ChatTextSize.cs)
-- [`Content.Client/_WG/ChatTextSize/MiscTab.ChatTextSize.cs`](../../../Content.Client/_WG/ChatTextSize/MiscTab.ChatTextSize.cs)
 - [`Content.Client/_WG/ChatTextSize/WGSpacedFont.cs`](../../../Content.Client/_WG/ChatTextSize/WGSpacedFont.cs)
 
 ### Integration tests
@@ -34,7 +33,6 @@ the setting or the UI theme changes, and removed at the defaults, so a default s
 
 ## Non-modular edits
 
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml): chat text size and line spacing
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml.cs): chat text size and line spacing
+None.
 
 <!-- WOLFGATE-GENERATED END -->

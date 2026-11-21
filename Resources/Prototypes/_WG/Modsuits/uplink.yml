@@ -41,14 +41,6 @@
   - UplinkWearables
 
 - type: listing
-  id: UplinkModsuitModuleEmpShieldAdvanced
-  productEntity: ModsuitModuleEmpShieldAdvanced
-  cost:
-    Telecrystal: 15
-  categories:
-  - UplinkWearables
-
-- type: listing
   id: UplinkModsuitModuleHolster
   productEntity: ModsuitModuleHolster
   cost:

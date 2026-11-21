@@ -36,6 +36,7 @@ entry ids from 100000).
   - split the integration tests over six runners; each builds and runs one shard
   - unit tests run once, on the core shard
   - exclude Shipyard tests in NUnit itself; the --filter form still ran them and only hid the results
+  - a test running past 25 minutes is killed and named, before a stalled runner is shut down with no name
   - one artifact per shard
   - report failure instead of skipping when a shard fails; a skipped required check counts as passed
 - [`.github/workflows/changelog.yml`](../../../.github/workflows/changelog.yml)
@@ -97,6 +98,9 @@ entry ids from 100000).
   - Wolfgate copy that also posts Wolfgate.yml
 - [`.github/workflows/wg-modules.yml`](../../../.github/workflows/wg-modules.yml): checks the module docs and non-modular edits with Tools/_WG/Ci/modules.py (see AGENTS.md)
 - [`.gitignore`](../../../.gitignore): written by Tools/_WG/Ci/test_merge.py in a test merge build; never committed
+- [`Content.IntegrationTests/Tests/EntityTest.cs`](../../../Content.IntegrationTests/Tests/EntityTest.cs)
+  - in slices, as the different-maps test; all at once ran the 16 GB runner out of memory
+  - timed progress of the spawn-all slices, so a slow core shard shows where the time goes
 - [`Tools/changelog/changelog.js`](../../../Tools/changelog/changelog.js)
   - was getHighestCLNumber() + 1
   - new entry ids never go below CHANGELOG_START_ID

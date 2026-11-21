@@ -145,6 +145,10 @@ public sealed partial class RMCProjectileSystem : EntitySystem
             if (projectile.Comp.ForceHit || projectile.Comp.ShotFrom == null)
                 return;
 
+            // The grid the shot left from can be gone by now; with no origin there is no falloff to work out.
+            if (!projectile.Comp.ShotFrom.Value.IsValid(EntityManager))
+                return;
+
             if (!TryComp(projectile.Owner, out ProjectileComponent? projectileComponent))
                 return;
 

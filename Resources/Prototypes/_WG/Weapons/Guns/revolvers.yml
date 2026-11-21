@@ -1,0 +1,21 @@
+- type: entity
+  name: Strix (.357 magnum)
+  parent: BaseWeaponRevolver
+  id: WGWeaponRevolverStrix
+  description: A recently widespread and custom-built revolver that has become popular among enthusiasts. Twist your elbow to absorb the recoil. Uses .357 magnum ammo.
+  components:
+  - type: Sprite
+    sprite: _WG/Weapons/Guns/Revolvers/strix.rsi
+  - type: Clothing
+    sprite: _WG/Weapons/Guns/Revolvers/strix.rsi
+  - type: RevolverAmmoProvider
+    capacity: 6
+    chambers: [ True, True, True, True, True, True ]
+    ammoSlots: [ null, null, null, null, null, null ]
+  - type: Gun
+    fireRate: 0.75
+    soundGunshot:
+      path: /Audio/_Mono/Weapons/Guns/SmallArms/Gunshots/python_fire.ogg
+      params:
+        volume: 2.25
+    damageModifier: 1.5

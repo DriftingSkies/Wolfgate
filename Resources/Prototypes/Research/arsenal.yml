@@ -119,6 +119,7 @@
   - WeaponLaserCannon
   - WeaponMechCombatSolarisLaser # Goobstation
   - WeaponXrayCannon # Mono
+  - WGWeaponEnergyGun #WOLFGATE(Weapons): Make energy gun craftable
   technologyPrerequisites:
   - WeaponizedLaserManipulation
   position: 3, 3

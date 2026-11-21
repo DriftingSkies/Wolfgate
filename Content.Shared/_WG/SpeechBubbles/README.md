@@ -1,6 +1,6 @@
 # SpeechBubbles
 
-The player's own speech bubble settings, under Game Options > Misc > Speech. All are on by default, matching the old
+The player's own speech bubble settings, under Game Options > Wolfgate > Chat > Speech bubbles. All are on by default, matching the old
 behaviour:
 
 - show speech bubbles at all (`wg.speech_bubbles`);
@@ -27,7 +27,6 @@ any tags left open, so the markup stays valid.
 ### Client
 
 - [`Content.Client/_WG/SpeechBubbles/ChatUIController.SpeechBubbles.cs`](../../../Content.Client/_WG/SpeechBubbles/ChatUIController.SpeechBubbles.cs)
-- [`Content.Client/_WG/SpeechBubbles/MiscTab.SpeechBubbles.cs`](../../../Content.Client/_WG/SpeechBubbles/MiscTab.SpeechBubbles.cs)
 - [`Content.Client/_WG/SpeechBubbles/WGBubbleLength.cs`](../../../Content.Client/_WG/SpeechBubbles/WGBubbleLength.cs)
 
 ### Integration tests
@@ -45,8 +44,6 @@ any tags left open, so the markup stays valid.
 ## Non-modular edits
 
 - [`Content.Client/Chat/UI/SpeechBubble.cs`](../../../Content.Client/Chat/UI/SpeechBubble.cs): the player's maximum bubble length
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml): speech bubble toggles and length
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml.cs): speech bubble toggles and length
 - [`Content.Client/UserInterface/Systems/Chat/ChatUIController.cs`](../../../Content.Client/UserInterface/Systems/Chat/ChatUIController.cs): the player's speech bubble toggles
 
 <!-- WOLFGATE-GENERATED END -->

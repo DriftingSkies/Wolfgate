@@ -23,6 +23,7 @@ public sealed partial class InteractionOutlineSystem : EntitySystem
     [Dependency] private IStateManager _stateManager = default!;
     [Dependency] private IUserInterfaceManager _uiManager = default!;
     [Dependency] private SharedInteractionSystem _interactionSystem = default!;
+    [Dependency] private Content.Client._WG.Screentips.WGHoverDarknessSystem _wgDarkness = default!; // WOLFGATE(Screentips): no outline on mobs in the dark
 
     /// <summary>
     ///     Whether to currently draw the outline. The outline may be temporarily disabled by other systems
@@ -120,6 +121,10 @@ public sealed partial class InteractionOutlineSystem : EntitySystem
             {
                 entityToClick = screen.GetClickedEntity(mousePosWorld);
             }
+
+            // WOLFGATE(Screentips): a player or mob hidden in the dark gets no hover outline
+            if (entityToClick != null && _wgDarkness.HiddenInDark(entityToClick.Value, vp))
+                entityToClick = null;
         }
         else if (_uiManager.CurrentlyHovered is EntityMenuElement element)
         {
@@ -129,6 +134,10 @@ public sealed partial class InteractionOutlineSystem : EntitySystem
             // above is fixed, the viewport should probably be the one that was clicked on to open the entity menu
             // in the first place.
             renderScale = _eyeManager.MainViewport.GetRenderScale();
+
+            // WOLFGATE(Screentips): a dark mob picked from the right-click list gets no outline either
+            if (entityToClick != null && _wgDarkness.HiddenInDark(entityToClick.Value, _eyeManager.MainViewport))
+                entityToClick = null;
         }
 
         var inRange = false;

@@ -219,6 +219,27 @@ public abstract partial class SharedEnsnareableSystem : EntitySystem
         if (!TryComp<EnsnareableComponent>(component.Ensnared, out var ensnared))
             return;
 
+        // WOLFGATE START: no container moves while either side is being deleted; removing it then threw
+        // A target being deleted takes its snares with it. A snare being deleted leaves the container on its own, so
+        // only the target's state is brought up to date.
+        var target = component.Ensnared.Value;
+        if (TerminatingOrDeleted(target))
+        {
+            component.Ensnared = null;
+            return;
+        }
+
+        if (TerminatingOrDeleted(uid))
+        {
+            component.Ensnared = null;
+            ensnared.IsEnsnared = ensnared.Container.ContainedEntities.Any(other => other != uid);
+            Dirty(target, ensnared);
+            UpdateAlert(target, ensnared);
+            RaiseLocalEvent(target, new EnsnareRemoveEvent(component.WalkSpeed, component.SprintSpeed));
+            return;
+        }
+        // WOLFGATE END
+
         if (ensnared.IsEnsnared)
             ForceFree(uid, component);
     }

@@ -71,6 +71,20 @@ public sealed class NpcBoardingTest
         return (vehicle, player, mugger);
     }
 
+    /// <summary>What the mugger was doing when he didn't get in, for a failure message.</summary>
+    private static string Why(TestPair pair, EntityUid vehicle, EntityUid mugger)
+    {
+        var entMan = pair.Server.EntMan;
+        var transforms = pair.Server.System<SharedTransformSystem>();
+        var boarder = entMan.GetComponent<WGVehicleBoarderComponent>(mugger);
+        var distance = (transforms.GetWorldPosition(mugger) - transforms.GetWorldPosition(vehicle)).Length();
+        entMan.TryGetComponent<Content.Server.NPC.Components.NPCSteeringComponent>(mugger, out var steering);
+        return $"Making for {boarder.Vehicle}, {distance:0.0} tiles off, alive {pair.Server.System<Content.Shared.Mobs.Systems.MobStateSystem>().IsAlive(mugger)}, "
+               + $"awake {entMan.HasComponent<ActiveNPCComponent>(mugger)}, brain {entMan.GetComponent<Content.Server.NPC.HTN.HTNComponent>(mugger).Enabled}, "
+               + $"steering {steering?.Status.ToString() ?? "none"}, hostile {entMan.GetComponent<WGStrangerComponent>(mugger).Hostile}, "
+               + $"stranger target {entMan.GetComponent<WGStrangerComponent>(mugger).Target}.";
+    }
+
     [Test]
     public async Task HeClimbsIntoAnUnlockedVehicle()
     {
@@ -85,7 +99,7 @@ public sealed class NpcBoardingTest
             Assert.That(hostiles, Does.Contain(player), "Hit from the cab, he should go for the player.");
             Assert.That(hostiles, Does.Contain(vehicle), "...and the vehicle he's sat in.");
             Assert.That(entMan.TryGetComponent<VehicleInteriorOccupantComponent>(mugger, out var occupant) && occupant.Vehicle == vehicle,
-                Is.True, "He should have climbed in after the player.");
+                Is.True, "He should have climbed in after the player. " + Why(pair, vehicle, mugger));
         });
         await pair.CleanReturnAsync();
     }
@@ -100,7 +114,8 @@ public sealed class NpcBoardingTest
         var (vehicle, player, mugger) = await Rig(pair, locked: false);
         await Strangers.StrangerTest.RunUntil(pair, () => entMan.HasComponent<VehicleInteriorOccupantComponent>(mugger), 60, 100);
         await server.WaitAssertion(() =>
-            Assert.That(entMan.HasComponent<VehicleInteriorOccupantComponent>(mugger), Is.True, "He should have climbed in after the player."));
+            Assert.That(entMan.HasComponent<VehicleInteriorOccupantComponent>(mugger), Is.True,
+                "He should have climbed in after the player. " + Why(pair, vehicle, mugger)));
 
         // Long enough for the NPC pause check, which runs every two seconds, to have looked at him in there.
         await pair.RunSeconds(5);

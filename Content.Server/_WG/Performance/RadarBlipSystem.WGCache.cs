@@ -20,31 +20,49 @@ public sealed partial class RadarBlipSystem
     /// <summary>An enabled blip and where it is this tick.</summary>
     public readonly record struct WGBlip(EntityUid Uid, RadarBlipComponent Blip, TransformComponent Xform, PhysicsComponent Physics, Vector2 Position);
 
+    /// <summary>A blip in a square, with its world position as of tick At.</summary>
+    private record struct WGEntry(EntityUid Uid, RadarBlipComponent Blip, TransformComponent Xform, PhysicsComponent Physics, Vector2 Position, GameTick At);
+
     /// <summary>Side of a square, in metres. Most blips are seen from several of these away.</summary>
     private const float WGCellSize = 1024f;
 
-    /// <summary>The blips in one square of a map, and the furthest away any of them is seen from.</summary>
+    /// <summary>
+    /// Fastest a blip is assumed to move, in metres a second (the fastest shell is 1100, plus the ship firing it).
+    /// Squares are reached this much further per second since the sort, so a blip that left its square isn't missed.
+    /// </summary>
+    private const float WGMaxBlipSpeed = 2500f;
+
+    /// <summary>The blips in one square of a map at the last sort, and the furthest away any of them is seen from.</summary>
     private sealed class WGCell
     {
         public MapId Map;
         public Box2 Bounds;
         public float MaxRange;
-        public readonly List<WGBlip> Blips = new();
+        public readonly List<WGEntry> Blips = new();
     }
 
     private readonly Dictionary<(MapId, Vector2i), WGCell> _wgCellIndex = new();
     private readonly List<WGCell> _wgCells = new();
     private int _wgCellsUsed;
     private readonly List<WGBlip> _wgInReach = new();
+    private readonly List<WGBlip> _wgOnMap = new();
+    private readonly List<Entity<RadarBlipComponent>> _wgNew = new();
     private readonly List<Vector2> _wgSourcePositions = new();
     private GameTick _wgBlipsTick = GameTick.Zero;
 
-    /// <summary>Sorts the enabled blips into squares, once a tick however many radars ask.</summary>
+    /// <summary>
+    /// Sorts every blip into squares every <see cref="WGRadarCVars.RebuildTicks"/> ticks. The squares only say roughly
+    /// where to look: readers re-check each blip and take its position live (<see cref="WGTryLive"/>).
+    /// </summary>
     private void WGRefreshBlips()
     {
-        if (_wgBlipsTick == _wgTiming.CurTick)
+        if (WGIndexFresh())
+        {
+            WGFileNew();
             return;
+        }
 
+        _wgNew.Clear();
         _wgBlipsTick = _wgTiming.CurTick;
         _wgCellIndex.Clear();
         for (var i = 0; i < _wgCellsUsed; i++)
@@ -54,44 +72,115 @@ public sealed partial class RadarBlipSystem
 
         _wgCellsUsed = 0;
 
+        // Disabled blips are kept, so one switched on shows up without waiting for the next sort. One not yet started
+        // is left to WGOnBlipStartup, so it isn't filed twice.
         var query = EntityQueryEnumerator<RadarBlipComponent, TransformComponent, PhysicsComponent>();
         while (query.MoveNext(out var uid, out var blip, out var xform, out var physics))
         {
-            if (!blip.Enabled)
-                continue;
-
-            var position = _xform.GetWorldPosition(xform);
-            var square = new Vector2i((int) MathF.Floor(position.X / WGCellSize), (int) MathF.Floor(position.Y / WGCellSize));
-            if (!_wgCellIndex.TryGetValue((xform.MapID, square), out var cell))
-            {
-                if (_wgCellsUsed == _wgCells.Count)
-                    _wgCells.Add(new WGCell());
-
-                cell = _wgCells[_wgCellsUsed++];
-                cell.Map = xform.MapID;
-                var corner = new Vector2(square.X, square.Y) * WGCellSize;
-                cell.Bounds = new Box2(corner, corner + new Vector2(WGCellSize, WGCellSize));
-                cell.MaxRange = 0f;
-                _wgCellIndex[(xform.MapID, square)] = cell;
-            }
-
-            cell.MaxRange = MathF.Max(cell.MaxRange, blip.MaxDistance);
-            cell.Blips.Add(new WGBlip(uid, blip, xform, physics, position));
+            if (blip.LifeStage >= ComponentLifeStage.Starting)
+                WGFile(uid, blip, xform, physics);
         }
     }
 
-    /// <summary>The enabled blips on a map this tick.</summary>
+    private int WGRebuildTicks()
+    {
+        return Math.Clamp(_wgCfg.GetCVar(WGRadarCVars.RebuildTicks), 1, 30);
+    }
+
+    /// <summary>Puts a blip in the square it is in now.</summary>
+    private void WGFile(EntityUid uid, RadarBlipComponent blip, TransformComponent xform, PhysicsComponent physics)
+    {
+        var position = _xform.GetWorldPosition(xform);
+        var square = new Vector2i((int) MathF.Floor(position.X / WGCellSize), (int) MathF.Floor(position.Y / WGCellSize));
+        if (!_wgCellIndex.TryGetValue((xform.MapID, square), out var cell))
+        {
+            if (_wgCellsUsed == _wgCells.Count)
+                _wgCells.Add(new WGCell());
+
+            cell = _wgCells[_wgCellsUsed++];
+            cell.Map = xform.MapID;
+            var corner = new Vector2(square.X, square.Y) * WGCellSize;
+            cell.Bounds = new Box2(corner, corner + new Vector2(WGCellSize, WGCellSize));
+            cell.MaxRange = 0f;
+            _wgCellIndex[(xform.MapID, square)] = cell;
+        }
+
+        cell.MaxRange = MathF.Max(cell.MaxRange, blip.MaxDistance);
+        cell.Blips.Add(new WGEntry(uid, blip, xform, physics, position, _wgTiming.CurTick));
+    }
+
+    /// <summary>
+    /// Queues a new blip to be filed by the next reader, so a fresh shell isn't left off radar until the next sort.
+    /// Filing waits for the reader because whoever added the blip may still be setting its range.
+    /// </summary>
+    private void WGOnBlipStartup(Entity<RadarBlipComponent> ent, ref ComponentStartup args)
+    {
+        // A stale index is rebuilt by the next reader anyway; queueing for it would only pile up entries.
+        if (WGIndexFresh())
+            _wgNew.Add(ent);
+    }
+
+    /// <summary>Files the blips started since the last read, unless removed again.</summary>
+    private void WGFileNew()
+    {
+        foreach (var (uid, blip) in _wgNew)
+        {
+            if (!blip.Deleted && TryComp(uid, out PhysicsComponent? physics))
+                WGFile(uid, blip, Transform(uid), physics);
+        }
+
+        _wgNew.Clear();
+    }
+
+    private bool WGIndexFresh()
+    {
+        var now = _wgTiming.CurTick;
+        return _wgBlipsTick != GameTick.Zero && now >= _wgBlipsTick && now.Value - _wgBlipsTick.Value < WGRebuildTicks();
+    }
+
+    /// <summary>
+    /// The blip's current state, or false if it is gone, switched off or on another map since the sort. Its position is
+    /// taken once a tick, however many readers ask.
+    /// </summary>
+    private bool WGTryLive(List<WGEntry> entries, int index, MapId map, out WGBlip live)
+    {
+        var entry = entries[index];
+        live = default;
+        if (entry.Blip.LifeStage >= ComponentLifeStage.Stopping || entry.Physics.Deleted || !entry.Blip.Enabled
+            || entry.Xform.MapID != map)
+            return false;
+
+        var now = _wgTiming.CurTick;
+        if (entry.At != now)
+        {
+            entry.Position = _xform.GetWorldPosition(entry.Xform);
+            entry.At = now;
+            entries[index] = entry;
+        }
+
+        live = new WGBlip(entry.Uid, entry.Blip, entry.Xform, entry.Physics, entry.Position);
+        return true;
+    }
+
+    /// <summary>The enabled blips on a map now. The list is reused by the next call.</summary>
     public List<WGBlip> WGBlipsOnMap(MapId map)
     {
         WGRefreshBlips();
-        var blips = new List<WGBlip>();
+        _wgOnMap.Clear();
         for (var i = 0; i < _wgCellsUsed; i++)
         {
-            if (_wgCells[i].Map == map)
-                blips.AddRange(_wgCells[i].Blips);
+            var cell = _wgCells[i];
+            if (cell.Map != map)
+                continue;
+
+            for (var j = 0; j < cell.Blips.Count; j++)
+            {
+                if (WGTryLive(cell.Blips, j, map, out var blip))
+                    _wgOnMap.Add(blip);
+            }
         }
 
-        return blips;
+        return _wgOnMap;
     }
 
     /// <summary>
@@ -103,15 +192,18 @@ public sealed partial class RadarBlipSystem
         WGRefreshBlips();
         WGNoteSources(sources);
         _wgInReach.Clear();
+        // How far a blip may have left its square since the sort.
+        var drift = WGMaxBlipSpeed * (float) ((_wgTiming.CurTick.Value - _wgBlipsTick.Value) * _wgTiming.TickPeriod.TotalSeconds);
         for (var i = 0; i < _wgCellsUsed; i++)
         {
             var cell = _wgCells[i];
-            if (cell.Map != map || !WGCellInReach(cell))
+            if (cell.Map != map || !WGCellInReach(cell, drift))
                 continue;
 
-            foreach (var blip in cell.Blips)
+            for (var j = 0; j < cell.Blips.Count; j++)
             {
-                if (WGNearAnySource(blip.Position, blip.Blip.MaxDistance))
+                if (WGTryLive(cell.Blips, j, map, out var blip)
+                    && WGNearAnySource(blip.Position, blip.Blip.MaxDistance))
                     _wgInReach.Add(blip);
             }
         }
@@ -119,10 +211,11 @@ public sealed partial class RadarBlipSystem
         return _wgInReach;
     }
 
-    /// <summary>Whether any source is close enough to the square to see its furthest-seen blip.</summary>
-    private bool WGCellInReach(WGCell cell)
+    /// <summary>Whether any source is close enough to the square, grown by drift, to see its furthest-seen blip.</summary>
+    private bool WGCellInReach(WGCell cell, float drift)
     {
-        var squared = cell.MaxRange * cell.MaxRange;
+        var reach = cell.MaxRange + drift;
+        var squared = reach * reach;
         foreach (var source in _wgSourcePositions)
         {
             var nearest = Vector2.Clamp(source, cell.Bounds.BottomLeft, cell.Bounds.TopRight);

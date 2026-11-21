@@ -86,7 +86,6 @@
   - ModsuitModuleMagbootsAdvanced
   - ModsuitModuleVoidBoots
   - ModsuitModuleJumpJet
-  - ModsuitModuleEmpShieldAdvanced
   position: -3,-5
   technologyPrerequisites:
   - ModsuitEngineeringTech

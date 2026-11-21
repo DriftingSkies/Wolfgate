@@ -1,6 +1,6 @@
 # Notifications
 
-Which events flash the game window and play an alert sound, under Game Options > Misc > Notifications. The two flashes
+Which events flash the game window and play an alert sound, under Game Options > Wolfgate > Chat > Notifications. The two flashes
 that already existed stay on by default; the new alerts start off:
 
 | Setting | Default | Event |
@@ -29,7 +29,6 @@ which listens to `GhostSystem.GhostRoleCountUpdated`.
 ### Client
 
 - [`Content.Client/_WG/Notifications/ChatUIController.Notifications.cs`](../../../Content.Client/_WG/Notifications/ChatUIController.Notifications.cs)
-- [`Content.Client/_WG/Notifications/MiscTab.Notifications.cs`](../../../Content.Client/_WG/Notifications/MiscTab.Notifications.cs)
 - [`Content.Client/_WG/Notifications/WGGhostRoleAlertSystem.cs`](../../../Content.Client/_WG/Notifications/WGGhostRoleAlertSystem.cs)
 - [`Content.Client/_WG/Notifications/WGWindowFlash.cs`](../../../Content.Client/_WG/Notifications/WGWindowFlash.cs)
 
@@ -44,8 +43,6 @@ which listens to `GhostSystem.GhostRoleCountUpdated`.
 ## Non-modular edits
 
 - [`Content.Client/GameTicking/Managers/ClientGameTicker.cs`](../../../Content.Client/GameTicking/Managers/ClientGameTicker.cs): the player can turn this window flash off
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml): window flash and alert sound settings
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml.cs): window flash and alert sound settings
 - [`Content.Client/UserInterface/Systems/Bwoink/AHelpUIController.cs`](../../../Content.Client/UserInterface/Systems/Bwoink/AHelpUIController.cs): the player can turn this window flash off
 - [`Content.Client/UserInterface/Systems/Chat/ChatUIController.cs`](../../../Content.Client/UserInterface/Systems/Chat/ChatUIController.cs)
   - tells whether a highlight matched

@@ -8,29 +8,18 @@
                 <Label Text="{Loc 'ui-options-display-label'}" StyleClasses="LabelKeyText"/>
                 <CheckBox Name="VSyncCheckBox" Text="{Loc 'ui-options-vsync'}" />
                 <CheckBox Name="FullscreenCheckBox" Text="{Loc 'ui-options-fullscreen'}" />
-                <!-- WOLFGATE(DisplayOptions): frame rate cap -->
-                <ui:OptionDropDown Name="DropDownMaxFps" Title="{Loc 'ui-options-wg-max-fps'}" />
 
                 <!-- Quality -->
                 <Label Text="{Loc 'ui-options-quality-label'}" StyleClasses="LabelKeyText"/>
                 <ui:OptionDropDown Name="DropDownLightingQuality" Title="{Loc 'ui-options-lighting-label'}" />
-                <!-- WOLFGATE(InteractionParticles): interaction particle visibility -->
-                <ui:OptionDropDown Name="DropDownInteractionParticles" Title="{Loc 'ui-options-interaction-particles'}" ToolTip="{Loc 'ui-options-interaction-particles-tooltip'}" />
                 <CheckBox Name="ViewportLowResCheckBox" Text="{Loc 'ui-options-vp-low-res'}" />
-                <!-- WOLFGATE(DisplayOptions): space background toggle -->
-                <CheckBox Name="ParallaxEnabledCheckBox" Text="{Loc 'ui-options-wg-parallax-enabled'}" />
                 <CheckBox Name="ParallaxLowQualityCheckBox" Text="{Loc 'ui-options-parallax-low-quality'}" />
                 <CheckBox Name="AmbientOcclusionCheckBox" Text="{Loc 'ui-options-ambient-occlusion'}" />
-                <!-- WOLFGATE(DisplayOptions) START: light bloom and film grain -->
-                <CheckBox Name="BloomCheckBox" Text="{Loc 'ui-options-wg-bloom'}" />
-                <ui:OptionSlider Name="BloomStrengthSlider" Title="{Loc 'ui-options-wg-bloom-strength'}" />
-                <CheckBox Name="GrainCheckBox" Text="{Loc 'ui-options-wg-grain'}" />
-                <!-- WOLFGATE END -->
                 <!-- Far Horizons start -->
-                <CheckBox Name="RenderStarSystemCheckBox" Text="{Loc 'ui-options-render-star-system'}" />
+                <!-- WOLFGATE(Options) START: fork setting moved to the Wolfgate tabs -->
+                <!-- <CheckBox Name="RenderStarSystemCheckBox" Text="{Loc 'ui-options-render-star-system'}" /> -->
+                <!-- WOLFGATE END -->
                 <!-- Far Horizons end -->
-                <!-- WOLFGATE(WolfWeather): weather detail option -->
-                <ui:OptionDropDown Name="DropDownWeatherQuality" Title="{Loc 'ui-options-wolf-weather-quality'}" />
 
                 <!-- Interface -->
                 <Label Text="{Loc 'ui-options-interface-label'}" StyleClasses="LabelKeyText"/>

@@ -153,7 +153,13 @@ public sealed partial class FaunaWormSystem : EntitySystem
 
     private void OnHeadTerminating(Entity<FaunaWormComponent> ent, ref EntityTerminatingEvent args)
     {
-        if (ent.Comp.Stomach != null)
+        // When the grid or map goes with it, what it swallowed goes too; dropping it there spawns onto a dying map.
+        var xform = Transform(ent);
+        var surroundingsGo = TerminatingOrDeleted(xform.ParentUid)
+            || xform.GridUid is { } grid && TerminatingOrDeleted(grid)
+            || xform.MapUid is { } map && TerminatingOrDeleted(map);
+
+        if (ent.Comp.Stomach != null && !surroundingsGo)
             _container.EmptyContainer(ent.Comp.Stomach);
 
         Sever(ent, 0);

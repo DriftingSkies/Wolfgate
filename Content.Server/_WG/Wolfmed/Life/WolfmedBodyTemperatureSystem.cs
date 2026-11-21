@@ -158,7 +158,8 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
 
     /// <summary>The next core temperature: it lags the surface away from normal and hurries back toward it.</summary>
     // Above normal it closes on a hotter surface over wolfmed.core_heating_seconds, so heat stroke takes time, and
-    // falls back over wolfmed.core_recovery_seconds; warming from below normal is instant. Below normal it closes on
+    // falls back over wolfmed.core_recovery_seconds, and in air colder than normal at least as fast as it would cool
+    // from normal; warming from below normal is instant. Below normal it closes on
     // a colder surface over wolfmed.core_cooling_seconds. Held still in a container that protects from cold damage.
     private float NextCore(float core, float surface, float normal, float seconds, bool held)
     {
@@ -174,15 +175,20 @@ public sealed partial class WolfmedBodyTemperatureSystem : EntitySystem
         if (surface > core)
             return core + (surface - core) * Fraction(seconds, _coreHeatingSeconds);
 
-        // Over normal and the air is cooler: back toward normal quickly, never below it on this branch.
+        // Over normal and the air is cooler: back toward normal quickly.
         if (core > normal)
         {
             var target = MathF.Max(surface, normal);
             var next = core - (core - target) * Fraction(seconds, _coreRecoverySeconds);
 
+            // In air colder than normal it also cools at least as fast as a core at normal would. The recovery alone
+            // only creeps up on normal: a core spawned 0.2 K over took three minutes to get there, untouched by the cold.
+            if (surface < normal)
+                next = MathF.Min(next, core - (core - surface) * Fraction(seconds, _coreCoolingSeconds));
+
             // A gap this small is under a float step of the shrinking, so it would never close and the core would
             // stay just above normal, where the cooling below can't start.
-            return next - target < CoreSnap ? target : next;
+            return next - target < CoreSnap ? MathF.Min(next, target) : next;
         }
 
         if (held || surface >= core)

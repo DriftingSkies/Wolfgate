@@ -77,6 +77,7 @@ public sealed partial class SpaceCleanupSystem : BaseCleanupSystem<PhysicsCompon
                 _testOverlapArgs = Array.ConvertAll(_testOverlap.GetParameters(), p => p.HasDefaultValue ? p.DefaultValue : null);
             // WOLFGATE END
         }
+        WGCompileTestOverlap(); // WOLFGATE(Cleanup): typed delegate for the per-contact wall-stuck overlap test
     }
 
     protected override bool ShouldEntityCleanup(EntityUid uid)
@@ -86,6 +87,11 @@ public sealed partial class SpaceCleanupSystem : BaseCleanupSystem<PhysicsCompon
 
     private bool ShouldEntityCleanup(EntityUid uid, float aggression)
     {
+        // WOLFGATE(Cleanup) START: same decision with cheap rejections before pricing; unusual cvars fall through to the check below
+        if (WGTryShouldEntityCleanup(uid, aggression, out var wgCleanup))
+            return wgCleanup;
+        // WOLFGATE END
+
         var xform = Transform(uid);
 
         var isStuck = false;
@@ -147,6 +153,15 @@ public sealed partial class SpaceCleanupSystem : BaseCleanupSystem<PhysicsCompon
 
             var xf = _physics.GetLocalPhysicsTransform(anch, xform);
             var shape = fix.Shape;
+
+            // WOLFGATE(Cleanup) START: compiled call instead of a boxing reflection Invoke per contact
+            if (_wgTestOverlap != null)
+            {
+                if (_wgTestOverlap(shape, shapeB, xf, xfB))
+                    return true;
+                continue;
+            }
+            // WOLFGATE END
 
             // WOLFGATE(EngineCompat) START: v291 added an optional seventh parameter, which Invoke won't default
             _testOverlapArgs[0] = shape;

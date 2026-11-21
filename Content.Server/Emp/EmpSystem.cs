@@ -17,6 +17,7 @@ using Robust.Shared; // Frontier: EMP Blast PVS
 using Content.Shared.Verbs; // Frontier: examine verb
 using Robust.Shared.Utility; // Frontier: examine verb
 using Content.Server.Examine; // Frontier: examine verb
+using Robust.Shared.Timing; // WOLFGATE: EMP trigger guard
 
 namespace Content.Server.Emp;
 
@@ -29,6 +30,11 @@ public sealed partial class EmpSystem : SharedEmpSystem
     [Dependency] private ExamineSystem _examine = default!; // Frontier: examine verb
 
     public const string EmpPulseEffectPrototype = "EffectEmpBlast"; // Frontier: EffectEmpPulse
+
+    // WOLFGATE START: the tick and entities of the EMP trigger guard in HandleEmpTrigger
+    private GameTick _wgPulsedTick;
+    private readonly HashSet<EntityUid> _wgPulsedThisTick = new();
+    // WOLFGATE END
 
     public override void Initialize()
     {
@@ -84,6 +90,29 @@ public sealed partial class EmpSystem : SharedEmpSystem
 
     private void HandleEmpTrigger(EntityUid uid, EmpOnTriggerComponent comp, TriggerEvent args)
     {
+        // WOLFGATE START: one pulse per entity per tick; a trigger-on-collide round fired once per body it overlapped
+        // A projectile spawned inside a crowd pulsed once for every overlap, each pulse over all of them: about 400
+        // pulses in one tick in the spawn-all test, five minutes of server time.
+        if (_wgPulsedTick != Timing.CurTick)
+        {
+            _wgPulsedTick = Timing.CurTick;
+            _wgPulsedThisTick.Clear();
+        }
+
+        if (!_wgPulsedThisTick.Add(uid))
+        {
+            args.Handled = true;
+            return;
+        }
+
+        // Nothing to pulse in nullspace, and its sound has no coordinates to play at.
+        if (_transform.GetMapCoordinates(uid).MapId == MapId.Nullspace)
+        {
+            args.Handled = true;
+            return;
+        }
+        // WOLFGATE END
+
         EmpPulse(_transform.GetMapCoordinates(uid), comp.Range, comp.EnergyConsumption, TimeSpan.FromSeconds(comp.DisableDuration));
         args.Handled = true;
     }

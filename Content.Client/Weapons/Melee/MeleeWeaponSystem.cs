@@ -79,6 +79,10 @@ public sealed partial class MeleeWeaponSystem : SharedMeleeWeaponSystem
         var useDown = _inputSystem.CmdStates.GetState(EngineKeyFunctions.Use);
         var altDown = _inputSystem.CmdStates.GetState(EngineKeyFunctions.UseSecondary);
 
+        // WOLFGATE(Weapons): a weapon whose own gun fires on the secondary key leaves that key to the gun
+        if (WGGunOwnsSecondaryKey(weaponUid))
+            altDown = BoundKeyState.Up;
+
         if (weapon.AutoAttack || useDown != BoundKeyState.Down && altDown != BoundKeyState.Down)
         {
             if (weapon.Attacking)

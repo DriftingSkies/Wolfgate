@@ -240,7 +240,7 @@
       map: ["enum.WiresVisualLayers.MaintenancePanel"]
       visible: false
   - type: Charger
-    chargeRate: 75 # Frontier: 30 Mono
+    chargeRate: 1000 # Frontier: 30 Mono # WOLFGATE(Modsuits): TG-scaled MOD cells need a high fixed rate, and this charger has no upgrades
     slotId: entity_storage
     whitelist:
       components:

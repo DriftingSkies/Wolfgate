@@ -19,4 +19,11 @@ public sealed class WGRadarCVars
     /// </summary>
     public static readonly CVarDef<float> MaxRequestHz =
         CVarDef.Create("wg.radar.max_request_hz", 10f, CVar.SERVERONLY);
+
+    /// <summary>
+    /// Ticks between re-sorting every blip into squares, clamped to 1-30. Between sorts a blip's position is still taken
+    /// live; a blip that appears or comes into reach may show up this many ticks late. 1 sorts every tick.
+    /// </summary>
+    public static readonly CVarDef<int> RebuildTicks =
+        CVarDef.Create("wg.radar.rebuild_ticks", 4, CVar.SERVERONLY);
 }

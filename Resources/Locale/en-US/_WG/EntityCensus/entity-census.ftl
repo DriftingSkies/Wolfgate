@@ -1,0 +1,9 @@
+cmd-wg_entcensus-desc = Shows what the server's entities are: where they are, the most numerous prototypes and grids, and what spawned since the last count.
+cmd-wg_entcensus-help = Usage: wg_entcensus [now] [rows]. Without "now" it shows the last count, taken every wg.census.interval seconds. "now" counts everything this tick, which stalls a busy server for a moment.
+cmd-wg_entcensus-hint = now, or a number of rows
+cmd-wg_entcensus-none = No census has finished yet. Use "wg_entcensus now" to take one.
+cmd-wg_entcensus-total = {$total} entities, {$contained} in containers, counted at {$time}.
+cmd-wg_entcensus-kinds = By place:
+cmd-wg_entcensus-prototypes = Most numerous prototypes:
+cmd-wg_entcensus-grids = Largest grids:
+cmd-wg_entcensus-spawned = Spawned and deleted over the last {$seconds} s:

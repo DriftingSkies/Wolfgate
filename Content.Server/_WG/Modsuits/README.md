@@ -268,6 +268,7 @@ module that grips the void like magboots grip a hull.
 - [`Resources/Prototypes/Entities/Structures/Machines/lathe.yml`](../../../Resources/Prototypes/Entities/Structures/Machines/lathe.yml)
   - module recipes
   - plating recipes
+- [`Resources/Prototypes/Entities/Structures/Power/chargers.yml`](../../../Resources/Prototypes/Entities/Structures/Power/chargers.yml): TG-scaled MOD cells need a high fixed rate, and this charger has no upgrades
 - [`Resources/Textures/_EinsteinEngines/Clothing/NanoTrasen/Modsuits/`](../../../Resources/Textures/_EinsteinEngines/Clothing/NanoTrasen/Modsuits/): Einstein Engines emergency-response MODsuit sprites, ported from GoobStation along with their meta.json files.
 - [`Resources/Textures/_Goobstation/Clothing/Back/Modsuits/brigmed.rsi/`](../../../Resources/Textures/_Goobstation/Clothing/Back/Modsuits/brigmed.rsi/): MODsuit sprites ported from GoobStation.
 - [`Resources/Textures/_Goobstation/Clothing/Hands/Modsuits/brigmed.rsi/`](../../../Resources/Textures/_Goobstation/Clothing/Hands/Modsuits/brigmed.rsi/): MODsuit sprites ported from GoobStation.

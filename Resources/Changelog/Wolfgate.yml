@@ -8335,3 +8335,127 @@ Entries:
   id: 100530
   time: '2026-11-20T16:46:55.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/739
+- author: Happyowl93
+  changes:
+    - type: Remove
+      message: >-
+        The MOD advanced EMP shield module can no longer be researched, printed
+        or bought from the uplink.
+  id: 100531
+  time: '2026-11-20T22:57:27.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/762
+- author: Balls2zawall
+  changes:
+    - type: Tweak
+      message: >-
+        The Dread has lost its interior layers of plastititanium except around
+        the AME, which actually has more protection now.
+  id: 100532
+  time: '2026-11-21T04:33:53.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/769
+- author: Sushiburger
+  changes:
+    - type: Add
+      message: >-
+        New Strix revolver. In Vagrant loadouts and behind Advanced Mercenary
+        Weaponry Production.
+    - type: Tweak
+      message: >-
+        Changed Vagrant loadouts to be more in line with what's in the
+        LiberationVend.
+    - type: Tweak
+      message: >-
+        Changed Mercenary techfab recipes to be more in line with what's in the
+        LiberationVend. Lee Enfield, Keyboard, Energy Gun, Viper and MK32 now
+        craftable in the fab. Energy Gun is behind energy weapons research.
+  id: 100533
+  time: '2026-11-21T07:57:25.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/751
+- author: Erol509
+  changes:
+    - type: Tweak
+      message: Cyborg recharger was buffed to make charging modsuits less of a chore
+  id: 100534
+  time: '2026-11-21T07:59:16.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/757
+- author: ImogenOC
+  changes:
+    - type: Fix
+      message: >-
+        An EMP round that hits a crowd now pulses once instead of once for every
+        person it touches.
+  id: 100535
+  time: '2026-11-21T08:01:27.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/765
+- author: Happyowl93
+  changes:
+    - type: Fix
+      message: >-
+        Ranged mobs such as the Monolithic Gestalt fire on right-click again
+        instead of attempting a disarm.
+  id: 100536
+  time: '2026-11-21T08:02:49.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/759
+- author: ImogenOC
+  changes:
+    - type: Fix
+      message: >-
+        Stepping away from a fire or a heater no longer holds off the cold for
+        minutes.
+  id: 100537
+  time: '2026-11-21T09:12:27.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/771
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: Fixed four tests that failed at random.
+  id: 100538
+  time: '2026-11-21T09:27:55.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/774
+- author: ImogenOC
+  changes:
+    - type: Add
+      message: >-
+        Added an "Unstick me" button to the game menu that frees you if you get
+        stuck inside a wall, or puts you back outside a vehicle such as an APC,
+        even when dead.
+  id: 100539
+  time: '2026-11-21T10:29:20.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/767
+- author: Balls2zawall
+  changes:
+    - type: Tweak
+      message: ADS Strongholds are be a more difficult to destroy.
+  id: 100540
+  time: '2026-11-21T10:35:06.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/773
+- author: ImogenOC
+  changes:
+    - type: Tweak
+      message: >-
+        The name of what's under your cursor now shows at the top of the screen
+        by default. You can still move it next to the cursor in Game Options >
+        Wolfgate > Interface.
+    - type: Tweak
+      message: >-
+        Hovering no longer names or outlines players or mobs standing in the
+        dark.
+    - type: Fix
+      message: >-
+        The name under your cursor no longer shows things behind walls or out of
+        sight.
+    - type: Tweak
+      message: >-
+        Game Options now has SS14 and Wolfgate master tabs. Every Wolfgate and
+        fork setting, including fork keybinds, moved to the Wolfgate side, and
+        the search bar finds settings on either side.
+  id: 100541
+  time: '2026-11-21T11:00:41.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/760
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: The server runs faster at high population.
+  id: 100542
+  time: '2026-11-21T11:29:54.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/775

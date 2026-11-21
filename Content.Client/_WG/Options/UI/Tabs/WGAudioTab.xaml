@@ -1,0 +1,27 @@
+<tabs:WGAudioTab xmlns="https://spacestation14.io"
+                 xmlns:tabs="clr-namespace:Content.Client._WG.Options.UI.Tabs"
+                 xmlns:ui="clr-namespace:Content.Client.Options.UI">
+    <BoxContainer Orientation="Vertical">
+        <ScrollContainer VerticalExpand="True" HorizontalExpand="True" HScrollEnabled="False">
+            <BoxContainer Orientation="Vertical" Margin="8 8 8 8" VerticalExpand="True">
+                <Label Text="{Loc 'ui-options-volume-label'}" StyleClasses="LabelKeyText"/>
+                <ui:OptionSlider Name="SliderVolumeVoices" Title="{Loc 'ui-options-speech-voices-volume'}" />
+                <ui:OptionSlider Name="SliderVolumeShipPa" Title="{Loc 'ui-options-ship-pa-volume'}" />
+                <ui:OptionSlider Name="InternetSoundVolumeSlider" Title="{Loc 'ui-options-wg-internet-sound-volume'}" />
+                <ui:OptionSlider Name="JukeboxVolumeSlider" Title="{Loc 'ui-options-wg-jukebox-volume'}" />
+                <CheckBox Name="SpeechVoicesCheckBox" Text="{Loc 'ui-options-speech-voices'}" />
+                <CheckBox Name="SoundtrackMuteCheckBox" Text="{Loc 'ui-options-wg-soundtrack-mute'}" />
+                <CheckBox Name="RadioNoiseCheckBox" Text="{Loc 'ui-options-radio-noise'}" />
+                <Label Text="{Loc 'ui-options-combat-music'}" StyleClasses="LabelKeyText"/>
+                <CheckBox Name="CombatMusicCheckBox" Text="{Loc 'ui-options-combat-music'}" />
+                <ui:OptionSlider Name="SliderVolumeCombatMusic" Title="{Loc 'ui-options-combat-music-volume'}" />
+                <ui:OptionSlider Name="SliderWindUpCombatMusic" Title="{Loc 'ui-options-combat-music-windup'}" />
+                <ui:OptionSlider Name="SliderWindDownCombatMusic" Title="{Loc 'ui-options-combat-music-winddown'}" />
+                <Label Text="{Loc 'ui-options-general-area-echo'}" StyleClasses="LabelKeyText"/>
+                <CheckBox Name="AreaEchoCheckBox" Text="{Loc 'ui-options-area-echo-enabled'}" />
+                <CheckBox Name="AreaEchoHighResolutionCheckBox" Text="{Loc 'ui-options-area-echo-highres'}" />
+            </BoxContainer>
+        </ScrollContainer>
+        <ui:OptionsTabControlRow Name="Control" Access="Public" />
+    </BoxContainer>
+</tabs:WGAudioTab>
