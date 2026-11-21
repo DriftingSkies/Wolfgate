@@ -28,6 +28,7 @@ public sealed partial class RadarBlipSystem : EntitySystem
         base.Initialize();
         SubscribeNetworkEvent<RequestBlipsEvent>(OnBlipsRequested);
         SubscribeLocalEvent<RadarBlipComponent, ComponentShutdown>(OnBlipShutdown);
+        SubscribeLocalEvent<RadarBlipComponent, ComponentStartup>(WGOnBlipStartup); // WOLFGATE(Performance): new blips join the cached squares before the next sort
     }
 
     private void OnBlipsRequested(RequestBlipsEvent ev, EntitySessionEventArgs args)
@@ -193,14 +194,18 @@ public sealed partial class RadarBlipSystem : EntitySystem
         var radarXform = Transform(uid);
 
         var hitscanQuery = EntityQueryEnumerator<HitscanRadarComponent>();
+        WGNoteSources(sources); // WOLFGATE(Performance): source positions are taken once, not twice per hitscan
 
         while (hitscanQuery.MoveNext(out var hitscanUid, out var hitscan))
         {
             if (!hitscan.Enabled)
                 continue;
 
-            if (!NearAnySources(hitscan.StartPosition, sources, component.MaxRange) && NearAnySources(hitscan.EndPosition, sources, component.MaxRange))
+            // WOLFGATE(Performance) START: source positions are taken once, not twice per hitscan
+            // if (!NearAnySources(hitscan.StartPosition, sources, component.MaxRange) && NearAnySources(hitscan.EndPosition, sources, component.MaxRange))
+            if (!WGNearAnySource(hitscan.StartPosition, component.MaxRange) && WGNearAnySource(hitscan.EndPosition, component.MaxRange))
                 continue;
+            // WOLFGATE END
 
             _tempHitscansCache.Add(new(hitscan.StartPosition, hitscan.EndPosition, hitscan.LineThickness, hitscan.RadarColor));
         }

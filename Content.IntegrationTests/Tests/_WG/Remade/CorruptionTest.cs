@@ -179,7 +179,8 @@ public sealed class CorruptionTest
             LayDeck(pair, map, 6);
             east = entMan.SpawnEntity("WallSolid", At(map, 3, 0));
             west = entMan.SpawnEntity("WallSolid", At(map, -3, 0));
-            scion = SpawnScion(entMan, At(map, 0, 0), 40f);
+            // Harvest, which may cover the whole deck: Growth stops at 64 random tiles, which can miss a wall's side.
+            scion = SpawnScion(entMan, At(map, 0, 0), 60f);
         });
 
         List<EntityUid> Growths() => WallGrowths(entMan);

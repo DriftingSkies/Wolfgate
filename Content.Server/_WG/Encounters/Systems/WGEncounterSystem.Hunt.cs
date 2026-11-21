@@ -499,13 +499,21 @@ public sealed partial class WGEncounterSystem
             if (xform.GridUid != grid || dock.DockedWith is not { } other || Transform(other).GridUid is not { } alongside)
                 continue;
 
-            var station = IsStationGrid(alongside);
-            var flag = WGCompanyFamily.Of(CompOrNull<CompanyComponent>(alongside)?.CompanyName.Id);
-            if (station && flag.Length > 0 && neutral.Any(company => WGCompanyFamily.Of(company) == flag))
+            if (IsNeutralStation(alongside, neutral))
                 return true;
         }
 
         return false;
+    }
+
+    /// <summary>Whether a grid is a station that flies one of the neutral companies' flags.</summary>
+    public bool IsNeutralStation(EntityUid grid, List<string> neutral)
+    {
+        if (!IsStationGrid(grid))
+            return false;
+
+        var flag = WGCompanyFamily.Of(CompOrNull<CompanyComponent>(grid)?.CompanyName.Id);
+        return flag.Length > 0 && neutral.Any(company => WGCompanyFamily.Of(company) == flag);
     }
 
     /// <summary>A hunter's record, made on first use; records of hunters that are gone are dropped then.</summary>

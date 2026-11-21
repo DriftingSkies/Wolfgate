@@ -1,8 +1,8 @@
 #nullable enable
 using Content.Client._Scp.Shaders.Bloom;
 using Content.Client._WG.DisplayOptions;
+using Content.Client._WG.Options.UI.Tabs;
 using Content.Client.Options.UI;
-using Content.Client.Options.UI.Tabs;
 using Content.IntegrationTests.Tests._WG.EngineCompat;
 using Content.IntegrationTests.Tests._WG.Options;
 using Content.Shared._Scp.ScpCCVars;
@@ -18,10 +18,10 @@ using Robust.Shared.Configuration;
 namespace Content.IntegrationTests.Tests._WG.DisplayOptions;
 
 /// <summary>
-/// The new Graphics, Misc and Accessibility controls are bound to their cvars, and Apply writes them.
+/// The Wolfgate Graphics, Interface, Chat and Accessibility controls are bound to their cvars, and Apply writes them.
 /// </summary>
 [TestFixture]
-[TestOf(typeof(GraphicsTab))]
+[TestOf(typeof(WGGraphicsTab))]
 public sealed class DisplayOptionsTabTest
 {
     [Test]
@@ -33,13 +33,15 @@ public sealed class DisplayOptionsTabTest
 
         await client.WaitAssertion(() =>
         {
-            OptionsTabTestHelper.AssertCheckBoxesApply<GraphicsTab>(config, "GraphicsTab",
+            OptionsTabTestHelper.AssertCheckBoxesApply<WGGraphicsTab>(config,
                 ("ParallaxEnabledCheckBox", CCVars.ParallaxEnabled),
                 ("BloomCheckBox", ScpCCVars.LightBloomEnable),
                 ("GrainCheckBox", ScpCCVars.GrainToggleOverlay));
 
-            OptionsTabTestHelper.AssertCheckBoxesApply<MiscTab>(config, "MiscTab",
-                ("OutlineCheckBox", CCVars.OutlineEnabled),
+            OptionsTabTestHelper.AssertCheckBoxesApply<WGInterfaceTab>(config,
+                ("OutlineCheckBox", CCVars.OutlineEnabled));
+
+            OptionsTabTestHelper.AssertCheckBoxesApply<WGChatTab>(config,
                 ("ShowMyTypingCheckBox", HideTypingCVars.ShowMyTyping),
                 ("SpeechBubblesCheckBox", SpeechBubbleCVars.Enabled),
                 ("SpeechBubblesNonMobsCheckBox", SpeechBubbleCVars.NonMobs),
@@ -52,18 +54,18 @@ public sealed class DisplayOptionsTabTest
                 ("FlashGhostRoleCheckBox", NotificationCVars.FlashGhostRole),
                 ("SoundGhostRoleCheckBox", NotificationCVars.SoundGhostRole));
 
-            OptionsTabTestHelper.AssertCheckBoxesApply<AccessibilityTab>(config, "AccessibilityTab",
+            OptionsTabTestHelper.AssertCheckBoxesApply<WGAccessibilityTab>(config,
                 ("DarkFlashCheckBox", DarkFlashCVars.Enabled));
 
             // The sliders and the FPS drop-down exist and show the current values.
             var menu = new OptionsMenu();
             try
             {
-                var graphics = menu.FindControl<GraphicsTab>("GraphicsTab");
+                var graphics = OptionsTabTestHelper.Find<WGGraphicsTab>(menu);
                 var fps = graphics.FindControl<OptionDropDown>("DropDownMaxFps");
                 Assert.That(fps.Button.ItemCount, Is.EqualTo(9), "Unlimited plus eight caps.");
 
-                var misc = menu.FindControl<MiscTab>("MiscTab");
+                var misc = OptionsTabTestHelper.Find<WGChatTab>(menu);
                 foreach (var (name, cvar) in new[]
                          {
                              ("SpeechBubbleMaxLengthSlider", SpeechBubbleCVars.MaxLength),

@@ -90,7 +90,11 @@ jobs:
         # Each shard's filter comes from the matrix; together they cover every test but the Shipyard ones.
         # dotnet test --no-build --configuration DebugOpt Content.IntegrationTests/Content.IntegrationTests.csproj -- "NUnit.Where=${{ matrix.where }}" NUnit.ConsoleOut=0 NUnit.MapWarningTo=Failed NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
         # Above AssemblySelectLimit (default 2000) the adapter runs the whole assembly and only hides the extra results.
-        dotnet test --no-build --configuration DebugOpt Content.IntegrationTests/Content.IntegrationTests.csproj -- "NUnit.Where=${{ matrix.where }}" NUnit.AssemblySelectLimit=100000 NUnit.ConsoleOut=0 NUnit.MapWarningTo=Failed NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
+        # dotnet test --no-build --configuration DebugOpt Content.IntegrationTests/Content.IntegrationTests.csproj -- "NUnit.Where=${{ matrix.where }}" NUnit.AssemblySelectLimit=100000 NUnit.ConsoleOut=0 NUnit.MapWarningTo=Failed NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
+        # WOLFGATE(Ci): a test running past 25 minutes is killed and named, before a stalled runner is shut down with no name
+        # Without it a stuck shard printed nothing until GitHub shut the runner down, the earliest about 27 minutes into
+        # the stuck test. The slowest test, the same-spot spawn-all, takes about 18 minutes.
+        dotnet test --no-build --configuration DebugOpt Content.IntegrationTests/Content.IntegrationTests.csproj --blame-hang-timeout 25m --blame-hang-dump-type none --results-directory "$(pwd)/test_results/blame" -- "NUnit.Where=${{ matrix.where }}" NUnit.AssemblySelectLimit=100000 NUnit.ConsoleOut=0 NUnit.MapWarningTo=Failed NUnit.TestOutputXml="logs" NUnit.WorkDirectory="$(pwd)/test_results"
         # WOLFGATE END
 
     - name: Archive NUnit3 test results.

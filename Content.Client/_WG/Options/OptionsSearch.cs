@@ -7,12 +7,15 @@ using Robust.Client.UserInterface.Controls;
 
 namespace Content.Client._WG.Options;
 
-/// <summary>Filters every tab of the options window by setting name, hiding tabs with nothing left.</summary>
+/// <summary>
+/// Filters every tab of the options window by setting name, hiding tabs with nothing left. Tabs that are tab
+/// containers themselves (the SS14 and Wolfgate master pages) are searched the same way, one level down.
+/// </summary>
 public sealed class OptionsSearch
 {
     private readonly TabContainer _tabs;
     private readonly HashSet<Control> _hidden = new();
-    private readonly HashSet<int> _hiddenTabs = new();
+    private readonly HashSet<Control> _hiddenTabs = new();
 
     public OptionsSearch(TabContainer tabs)
     {
@@ -21,66 +24,80 @@ public sealed class OptionsSearch
 
     /// <summary>
     /// Shows the settings whose text contains <paramref name="query"/> and the headers above them; a matching header
-    /// or tab title keeps its whole section or tab. Switches to the first tab with a match if the current one has none.
-    /// Returns whether anything matched. An empty query restores everything.
+    /// or tab title keeps its whole section or tab. In each container whose current tab has no match, switches to the
+    /// first tab with one. Returns whether anything matched. An empty query restores everything.
     /// </summary>
     public bool Filter(string query)
     {
         query = query.Trim();
         Restore();
 
-        // TabContainer only rebuilds its tab strip on a measure, and changing a tab's visibility doesn't trigger one.
-        _tabs.InvalidateMeasure();
-
         var all = query.Length == 0;
-        var firstMatch = -1;
-
-        for (var i = 0; i < _tabs.ChildCount; i++)
-        {
-            var tab = _tabs.GetChild(i);
-
-            if (tab is KeyRebindTab keys)
-            {
-                if (keys.FindControl<BoxContainer>("KeybindsContainer") is not { } binds)
-                    continue;
-
-                var titleHit = all || Contains(_tabs.GetActualTabTitle(i), query);
-                if (!KeybindSearch.Filter(binds, titleHit ? string.Empty : query) && !titleHit)
-                    HideTab(i);
-                else if (firstMatch < 0 && _tabs.GetTabVisible(i))
-                    firstMatch = i;
-
-                continue;
-            }
-
-            if (all || !_tabs.GetTabVisible(i))
-                continue;
-
-            if (Contains(_tabs.GetActualTabTitle(i), query) || FilterChildren(tab, query))
-            {
-                if (firstMatch < 0)
-                    firstMatch = i;
-            }
-            else
-            {
-                HideTab(i);
-            }
-        }
+        var any = FilterTabs(_tabs, query, all);
 
         if (all)
             return true;
 
-        if (firstMatch < 0)
+        if (!any)
         {
-            // Nothing matched: keep the tab strip so the window isn't left without one.
+            // Nothing matched: keep the tab strips so the window isn't left without one.
             RestoreTabs();
             return false;
         }
 
-        if (_hiddenTabs.Contains(_tabs.CurrentTab))
-            _tabs.CurrentTab = firstMatch;
-
         return true;
+    }
+
+    /// <summary>
+    /// Filters the tabs of <paramref name="tabs"/>, hiding those with no match, and returns whether any matched.
+    /// With <paramref name="all"/> it only resets what isn't tracked, such as the keybind rows.
+    /// </summary>
+    private bool FilterTabs(TabContainer tabs, string query, bool all)
+    {
+        // TabContainer only rebuilds its tab strip on a measure, and changing a tab's visibility doesn't trigger one.
+        tabs.InvalidateMeasure();
+
+        var firstMatch = -1;
+
+        for (var i = 0; i < tabs.ChildCount; i++)
+        {
+            var tab = tabs.GetChild(i);
+
+            // Hidden by its owner, such as the admin tab for players.
+            if (!tabs.GetTabVisible(i))
+                continue;
+
+            var titleHit = all || Contains(tabs.GetActualTabTitle(i), query);
+            bool hit;
+
+            switch (tab)
+            {
+                case KeyRebindTab keys:
+                    hit = keys.FindControl<BoxContainer>("KeybindsContainer") is { } binds
+                          && KeybindSearch.Filter(binds, titleHit ? string.Empty : query) || titleHit;
+                    break;
+                case TabContainer inner when titleHit:
+                    FilterTabs(inner, string.Empty, true);
+                    hit = true;
+                    break;
+                case TabContainer inner:
+                    hit = FilterTabs(inner, query, false);
+                    break;
+                default:
+                    hit = titleHit || FilterChildren(tab, query);
+                    break;
+            }
+
+            if (!hit)
+                HideTab(tab);
+            else if (firstMatch < 0)
+                firstMatch = i;
+        }
+
+        if (firstMatch >= 0 && _hiddenTabs.Contains(tabs.GetChild(tabs.CurrentTab)))
+            tabs.CurrentTab = firstMatch;
+
+        return firstMatch >= 0;
     }
 
     private void Restore()
@@ -98,18 +115,16 @@ public sealed class OptionsSearch
     {
         foreach (var tab in _hiddenTabs)
         {
-            _tabs.SetTabVisible(tab, true);
+            TabContainer.SetTabVisible(tab, true);
+            tab.Parent?.InvalidateMeasure();
         }
 
         _hiddenTabs.Clear();
     }
 
-    private void HideTab(int tab)
+    private void HideTab(Control tab)
     {
-        if (!_tabs.GetTabVisible(tab))
-            return;
-
-        _tabs.SetTabVisible(tab, false);
+        TabContainer.SetTabVisible(tab, false);
         _hiddenTabs.Add(tab);
     }
 

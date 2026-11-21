@@ -679,16 +679,6 @@
 
 - type: latheRecipe
   parent: BaseModsuitModuleRecipe
-  id: ModsuitModuleEmpShieldAdvanced
-  result: ModsuitModuleEmpShieldAdvanced
-  materials:
-    Steel: 800
-    Glass: 300
-    Gold: 200
-    Uranium: 100
-
-- type: latheRecipe
-  parent: BaseModsuitModuleRecipe
   id: ModsuitModuleJointTorsion
   result: ModsuitModuleJointTorsion
   materials:
@@ -812,7 +802,6 @@
   - ModsuitModuleJetpackAdvanced
   - ModsuitModuleMagbootsAdvanced
   - ModsuitModuleJumpJet
-  - ModsuitModuleEmpShieldAdvanced
   - ModsuitModuleHealthAnalyzer
   - ModsuitModuleVisorMedical
   - ModsuitModuleQuickCarry

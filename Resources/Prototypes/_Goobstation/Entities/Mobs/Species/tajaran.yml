@@ -8,7 +8,9 @@
     baseDecayRate: 0.02083333332 # 25% more than default #Mono its not actually 25% but about 15.74%, 0.0225 would be 25% more than base
   - type: Thirst
   - type: Sprite
-    scale: 0.8, 0.8
+    # WOLFGATE START: full-size sprite, matching the human-size hitbox
+    # scale: 0.8, 0.8
+    # WOLFGATE END
   - type: HumanoidAppearance
     species: Tajaran
   - type: Fixtures
@@ -54,8 +56,11 @@
     animation: WeaponArcClaw
     damage:
       types:
-        Slash: 4
-        Piercing: 1
+        # WOLFGATE START: claws deal only Slash, unlike felinids
+        # Slash: 4
+        # Piercing: 1
+        Slash: 5
+        # WOLFGATE END
   - type: Speech
     speechVerb: Felinid
     speechSounds: Alto
@@ -74,19 +79,23 @@
     decay: 2.55 # 3 base decay multiplied by 0.85 = 2.55
   - type: TypingIndicator
     proto: felinid
-  - type: PseudoItem
-    storedOffset: 0,17
-    shape:
-      - 0,0,1,4
-      - 0,2,3,4
-      - 4,0,5,4
+  # WOLFGATE START: no duffel bag; the species base's bag shape is too big for one
+  # - type: PseudoItem
+  #   storedOffset: 0,17
+  #   shape:
+  #     - 0,0,1,4
+  #     - 0,2,3,4
+  #     - 4,0,5,4
+  # WOLFGATE END
   - type: Vocal
     wilhelm: "/Audio/Nyanotrasen/Voice/Felinid/cat_wilhelm.ogg"
     sounds:
       Male: MaleFelinid
       Female: FemaleFelinid
       Unsexed: MaleFelinid
-  - type: Felinid # real
+  # WOLFGATE START: no hairball or eat-mouse actions
+  # - type: Felinid # real
+  # WOLFGATE END
   - type: NoShoesSilentFootsteps
   - type: LanguageKnowledge
     speaks:
@@ -122,12 +131,14 @@
       effects:
       - !type:WashCreamPieReaction
       - !type:WashChemicalBurns # WOLFGATE(Wolfmed): rinses caustic residue off, as on the humanoid base
-    - reagents: [ Water ]
-      methods: [ Touch ]
-      effects:
-      - !type:Emote
-        emote: Scream
-        probability: 0.2
+    # WOLFGATE START: no scream when wet
+    # - reagents: [ Water ]
+    #   methods: [ Touch ]
+    #   effects:
+    #   - !type:Emote
+    #     emote: Scream
+    #     probability: 0.2
+    # WOLFGATE END
 
 - type: entity
   save: false

@@ -20,7 +20,7 @@ public sealed class ScreentipCVars
 {
     /// <summary>A <see cref="ScreentipMode"/>: off, at the top of the game view, or next to the cursor.</summary>
     public static readonly CVarDef<int> Mode =
-        CVarDef.Create("wg.screentips", (int) ScreentipMode.NextToCursor, CVar.ARCHIVE | CVar.CLIENTONLY);
+        CVarDef.Create("wg.screentips", (int) ScreentipMode.TopOfView, CVar.ARCHIVE | CVar.CLIENTONLY);
 
     /// <summary>The screentip's text colour, as hex.</summary>
     public static readonly CVarDef<string> Color =

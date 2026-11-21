@@ -1,4 +1,5 @@
 #nullable enable
+using System.Collections.Generic;
 using System.Linq;
 using Content.Server._WG.Remade.Conversion;
 using Content.Server._WG.Remade.Corruption;
@@ -156,9 +157,15 @@ public sealed class WGRemadeSliceTest
         var map = await pair.CreateTestMap();
         var entMan = server.EntMan;
         EntityUid limb = default;
+        // A pooled server may still hold organs and parts from earlier tests; only new ones count.
+        var before = new HashSet<EntityUid>();
 
         await server.WaitPost(() =>
         {
+            foreach (var organ in entMan.EntityQuery<Content.Shared.Body.Organ.OrganComponent>())
+                before.Add(organ.Owner);
+            foreach (var part in entMan.EntityQuery<Content.Shared.Body.Part.BodyPartComponent>())
+                before.Add(part.Owner);
             var remade = entMan.SpawnEntity("WGRemadeSlasher", map.GridCoords);
             limb = entMan.SpawnEntity("WGRemadeSeveredLimb", map.GridCoords);
             entMan.System<WGRemadeDirectorSystem>().Enlist(remade, null);
@@ -168,8 +175,8 @@ public sealed class WGRemadeSliceTest
         await pair.RunSeconds(1f);
         await server.WaitAssertion(() =>
         {
-            Assert.That(entMan.EntityQuery<Content.Shared.Body.Organ.OrganComponent>().Any(), Is.False, "a gibbed Remade spilled organs.");
-            Assert.That(entMan.EntityQuery<Content.Shared.Body.Part.BodyPartComponent>().Any(), Is.False, "a gibbed Remade spilled body parts.");
+            Assert.That(entMan.EntityQuery<Content.Shared.Body.Organ.OrganComponent>().Any(o => !before.Contains(o.Owner)), Is.False, "a gibbed Remade spilled organs.");
+            Assert.That(entMan.EntityQuery<Content.Shared.Body.Part.BodyPartComponent>().Any(p => !before.Contains(p.Owner)), Is.False, "a gibbed Remade spilled body parts.");
             Assert.That(entMan.Deleted(limb) || entMan.IsQueuedForDeletion(limb), Is.False, "a severed limb on the floor went with the gib.");
         });
         await pair.CleanReturnAsync();

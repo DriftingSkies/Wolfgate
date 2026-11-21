@@ -238,6 +238,7 @@ public sealed partial class WGVehicleCrewSystem
         crew.Face = null;
         crew.CanBear = true;
         if (crew.Target is not { } target ||
+            TerminatingOrDeleted(target) ||
             !crew.TargetVisible ||
             crew.Weapon is not { } weapon ||
             TerminatingOrDeleted(weapon) ||

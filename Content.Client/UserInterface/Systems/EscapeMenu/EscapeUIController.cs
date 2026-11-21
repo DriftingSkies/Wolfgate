@@ -7,6 +7,7 @@ using Content.Client.Lobby; // WOLFGATE(InRoundCreator)
 using Content.Client._WG.Roadmap; // WOLFGATE(Roadmap)
 using Content.Client._WG.SectorControl; // WOLFGATE(SectorControl)
 using Content.Client._WG.LoreBook; // WOLFGATE(LoreBook)
+using Content.Client._WG.Unstuck; // WOLFGATE(Unstuck)
 using Content.Client.UserInterface.Controls;
 using Content.Client.UserInterface.Systems.Guidebook;
 using Content.Client.UserInterface.Systems.Info;
@@ -150,6 +151,14 @@ public sealed partial class EscapeUIController : UIController, IOnStateEntered<G
             window.CharacterButton.Visible = !mapping.ModeEnabled;
             window.RoundSetupButton.Visible = !mapping.ModeEnabled;
             window.SectorMapButton.Visible = !mapping.ModeEnabled;
+        };
+        // WOLFGATE END
+
+        // WOLFGATE(Unstuck) START: asks the server to free a player stuck inside a wall
+        _escapeWindow.UnstuckButton.OnPressed += _ =>
+        {
+            CloseEscapeWindow();
+            EntityManager.System<WGUnstuckSystem>().RequestUnstuck();
         };
         // WOLFGATE END
 

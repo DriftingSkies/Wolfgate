@@ -26,8 +26,10 @@ Small fixes for hot spots found in live server profiles, kept as narrow hooks in
 - Roofs network as chunk deltas (`SharedRoofSystem.WGDelta`). Maps go to every player, and a cavern map's full roof
   is tens of kilobytes; each tile change on the surface above resent all of it, which emptied clients' state buffers.
   A delta carries only the chunks changed since the client's last ack.
-- Radar requests share one walk of the blips per tick (`RadarBlipSystem.WGCache`), which sorts them into squares so a
-  request skips the squares out of its reach, and console nav states share one walk of the docks for up to half a
+- Radar requests share one walk of the blips every `wg.radar.rebuild_ticks` ticks (4) (`RadarBlipSystem.WGCache`),
+  which sorts them into squares so a request skips the squares out of its reach. Between walks a request still
+  re-checks each nearby blip and takes its position live, so stale squares can only make a blip late, never wrong.
+  Console nav states share one walk of the docks for up to half a
   second, or until something docks or undocks (`ShuttleConsoleSystem.WGDocks`). The server answers one player's blip
   requests at most `wg.radar.max_request_hz` times a second (10); lower it under load.
 - Radar consoles ask for blips at `wg.radar.request_hz` (15 a second) instead of twice a second, so a turning missile
@@ -181,6 +183,7 @@ cvar or gauge so it can be checked on the test server.
 - [`Content.IntegrationTests/Tests/_WG/Performance/WGNavMapDeltaTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Performance/WGNavMapDeltaTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Performance/WGNavMapTrimTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Performance/WGNavMapTrimTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Performance/WGPreferencesRefreshTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Performance/WGPreferencesRefreshTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Performance/WGRadarRebuildTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Performance/WGRadarRebuildTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Performance/WGRadarRequestTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Performance/WGRadarRequestTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Performance/WGRadiusHeaterTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Performance/WGRadiusHeaterTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Performance/WGRoofDeltaTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Performance/WGRoofDeltaTest.cs)
@@ -287,10 +290,12 @@ cvar or gauge so it can be checked on the test server.
   - computed and range-tested above
   - see above
 - [`Content.Server/_Mono/Radar/RadarBlipSystem.cs`](../../_Mono/Radar/RadarBlipSystem.cs)
+  - new blips join the cached squares before the next sort
   - removals go only to sessions that asked recently
   - the server caps how often it answers one player; the client's throttle is not enforced
   - send removals only to recent radar users, none during round cleanup
   - radars share one walk of the blips per tick and skip the squares out of reach
+  - source positions are taken once, not twice per hitscan
 - [`Content.Server/_Mono/Ships/Systems/ShuttleRestrictionsSystem.cs`](../../_Mono/Ships/Systems/ShuttleRestrictionsSystem.cs): integer division made this 0 or 1, so the 0.5 threshold needed every console powered
 - [`Content.Server/_Mono/Temperature/Systems/EntityRadiusHeaterSystem.cs`](../../_Mono/Temperature/Systems/EntityRadiusHeaterSystem.cs)
   - each heater takes its own tick of the second, not all on one

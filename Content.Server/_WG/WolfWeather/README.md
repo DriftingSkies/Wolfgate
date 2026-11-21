@@ -62,7 +62,6 @@ Entry points: `SharedWolfWeatherSystem.SetWeather`, `WGPlanetWeatherSystem.Resol
 
 ### Client
 
-- [`Content.Client/_WG/WolfWeather/GraphicsTab.WolfWeather.cs`](../../../Content.Client/_WG/WolfWeather/GraphicsTab.WolfWeather.cs)
 - [`Content.Client/_WG/WolfWeather/WolfThunderboltSystem.cs`](../../../Content.Client/_WG/WolfWeather/WolfThunderboltSystem.cs)
 - [`Content.Client/_WG/WolfWeather/WolfWeatherOverlay.cs`](../../../Content.Client/_WG/WolfWeather/WolfWeatherOverlay.cs)
 - [`Content.Client/_WG/WolfWeather/WolfWeatherSoundSystem.cs`](../../../Content.Client/_WG/WolfWeather/WolfWeatherSoundSystem.cs)
@@ -152,8 +151,6 @@ Entry points: `SharedWolfWeatherSystem.SetWeather`, `WGPlanetWeatherSystem.Resol
 
 ## Non-modular edits
 
-- [`Content.Client/Options/UI/Tabs/GraphicsTab.xaml`](../../../Content.Client/Options/UI/Tabs/GraphicsTab.xaml): weather detail option
-- [`Content.Client/Options/UI/Tabs/GraphicsTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/GraphicsTab.xaml.cs)
 - [`Content.Client/Overlays/StencilOverlay.cs`](../../../Content.Client/Overlays/StencilOverlay.cs): a map with WolfWeather state is drawn by WolfWeatherOverlay instead, never both.
 - [`Content.Client/Weather/WeatherSystem.cs`](../../../Content.Client/Weather/WeatherSystem.cs): a map with WolfWeather state plays WolfWeather's loops instead, never both.
 - [`Content.Shared/_CE/ZLevels/Weather/CEWeatherSystem.cs`](../../../Content.Shared/_CE/ZLevels/Weather/CEWeatherSystem.cs): weather falls on a surface only, never on a level below or above one.

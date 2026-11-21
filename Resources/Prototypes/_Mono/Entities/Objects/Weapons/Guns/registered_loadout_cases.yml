@@ -193,3 +193,125 @@
       amount: 1
     - id: Magazine9x19mmSubMachineGunFMJ
       amount: 4
+
+#WOLFGATE(Weapons) START: Extra guns for Vagrants, from libertyvend.
+- type: entity
+  parent: WeaponCaseLong
+  id: WGWeaponCaseLongLeeEnfieldRegistered
+  suffix: Loadout, Lee Enfield
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponRifleLeeEnfield
+      amount: 1
+    - id: Magazine762x51mmFMJ
+      amount: 2
+
+- type: entity
+  parent: WeaponCaseLong
+  id: WGWeaponCaseLongVulcanFCMCRegistered
+  suffix: Loadout, Vulcan
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponRifleVulcanFCMC
+      amount: 1
+    - id: Magazine762x51mmFMJ
+      amount: 2
+
+- type: entity
+  parent: WeaponCaseLong
+  id: WGWeaponCaseLongPrometheusRegistered
+  suffix: Loadout, Prometheus
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponRiflePrometheus
+      amount: 1
+    - id: Magazine556x45mmFMJ
+      amount: 3
+
+- type: entity
+  parent: WeaponCaseLong
+  id: WGWeaponCaseLongNovaliteRegistered
+  suffix: Loadout, Novalite
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponRifleNovaliteC1
+      amount: 1
+    - id: MagazineNovaliteC1
+      amount: 3
+
+- type: entity
+  parent: WeaponCaseLong
+  id: WGWeaponCaseLongGestioRegistered
+  suffix: Loadout, Gestio
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponRifleGestio
+      amount: 1
+    - id: Magazine762x39mmLowCapacityFMJ
+      amount: 3
+
+- type: entity
+  parent: WeaponCaseLong
+  id: WGWeaponCaseLongKnallstockRegistered
+  suffix: Loadout, Knallstock
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponSubMachineGunKnallstock
+      amount: 1
+    - id: Magazine45_ACPPistolFMJ
+      amount: 3
+
+- type: entity
+  parent: WeaponCaseLong
+  id: WGWeaponCaseLongKeyboardRegistered
+  suffix: Loadout, Keyboard
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponSubMachineGunTypewriterPMC
+      amount: 1
+    - id: Magazine45_ACPSubMachineGunFMJ
+      amount: 3
+
+- type: entity
+  parent: WeaponCaseLong
+  id: WGWeaponCaseLongAK220Registered
+  suffix: Loadout, AK-220
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponSubMachineGunAK220
+      amount: 1
+    - id: Magazine9x19mmSubMachineGunFMJ
+      amount: 3
+
+- type: entity
+  parent: WeaponCaseLong
+  id: WGWeaponCaseLongKammererRegistered
+  suffix: Loadout, Kammerer
+  components:
+  - type: StorageFill
+    contents:
+    - id: WeaponShotgunKammererPMC
+      amount: 1
+    - id: AmmoBox12_gaugeBuckshot
+      amount: 1
+
+- type: entity
+  parent: WeaponCaseShort
+  id: WGWeaponCaseShortStrix
+  suffix: Loadout, Strix
+  components:
+  - type: StorageFill
+    contents:
+    - id: WGWeaponRevolverStrix
+      amount: 1
+    - id: SpeedLoader357_magnumFMJ
+      amount: 2
+#WOLFGATE END

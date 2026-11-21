@@ -72,12 +72,20 @@ public sealed partial class PickFleePointOperator : HTNOperator
             ? keyed
             : Distance;
 
+        // Each path is awaited; by then the owner can be gone, or on another map, where the flee point means nothing.
+        var mapId = xform.MapID;
         foreach (var angle in Angles)
         {
+            if (_entManager.Deleted(owner) || mapId == MapId.Nullspace || xform.MapID != mapId)
+                return (false, null);
+
             var dir = new Angle(MathHelper.DegreesToRadians(angle)).RotateVec(away);
-            var end = _transform.ToCoordinates(new MapCoordinates(ownerPos + dir * distance, xform.MapID));
+            var end = _transform.ToCoordinates(new MapCoordinates(ownerPos + dir * distance, mapId));
             var path = await _pathfinding.GetPath(owner, xform.Coordinates, end, 1.5f, cancelToken,
                 _pathfinding.GetFlags(blackboard));
+
+            if (_entManager.Deleted(owner) || xform.MapID != mapId)
+                return (false, null);
 
             if (path.Result != PathResult.Path)
                 continue;

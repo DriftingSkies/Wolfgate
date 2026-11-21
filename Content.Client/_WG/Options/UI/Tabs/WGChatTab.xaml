@@ -1,0 +1,30 @@
+<tabs:WGChatTab xmlns="https://spacestation14.io"
+                xmlns:tabs="clr-namespace:Content.Client._WG.Options.UI.Tabs"
+                xmlns:ui="clr-namespace:Content.Client.Options.UI">
+    <BoxContainer Orientation="Vertical">
+        <ScrollContainer VerticalExpand="True" HorizontalExpand="True" HScrollEnabled="False">
+            <BoxContainer Orientation="Vertical" Margin="8 8 8 8" VerticalExpand="True">
+                <Label Text="{Loc 'wg-options-section-chat'}" StyleClasses="LabelKeyText"/>
+                <CheckBox Name="LogInChatCheckBox" Text="{Loc 'ui-options-log-in-chat'}" />
+                <CheckBox Name="CoalesceIdenticalMessagesCheckBox" Text="{Loc 'ui-options-coalesce-identical-messages'}" />
+                <CheckBox Name="ShowMyTypingCheckBox" Text="{Loc 'ui-options-wg-show-my-typing'}" />
+                <ui:OptionSlider Name="ChatTextSizeSlider" Title="{Loc 'ui-options-wg-chat-text-size'}" />
+                <ui:OptionSlider Name="ChatLineSpacingSlider" Title="{Loc 'ui-options-wg-chat-line-spacing'}" />
+                <Label Text="{Loc 'wg-options-section-speech-bubbles'}" StyleClasses="LabelKeyText"/>
+                <CheckBox Name="SpeechBubblesCheckBox" Text="{Loc 'ui-options-wg-speech-bubbles'}" />
+                <CheckBox Name="SpeechBubblesNonMobsCheckBox" Text="{Loc 'ui-options-wg-speech-bubbles-non-mobs'}" />
+                <CheckBox Name="SpeechBubblesGhostsCheckBox" Text="{Loc 'ui-options-wg-speech-bubbles-ghosts'}" />
+                <CheckBox Name="SpeechBubblesEmotesCheckBox" Text="{Loc 'ui-options-wg-speech-bubbles-emotes'}" />
+                <ui:OptionSlider Name="SpeechBubbleMaxLengthSlider" Title="{Loc 'ui-options-wg-speech-bubble-max-length'}" />
+                <Label Text="{Loc 'ui-options-wg-notifications'}" StyleClasses="LabelKeyText"/>
+                <CheckBox Name="FlashRoundStartCheckBox" Text="{Loc 'ui-options-wg-flash-round-start'}" />
+                <CheckBox Name="FlashAHelpCheckBox" Text="{Loc 'ui-options-wg-flash-ahelp'}" />
+                <CheckBox Name="FlashHighlightCheckBox" Text="{Loc 'ui-options-wg-flash-highlight'}" />
+                <CheckBox Name="SoundHighlightCheckBox" Text="{Loc 'ui-options-wg-sound-highlight'}" />
+                <CheckBox Name="FlashGhostRoleCheckBox" Text="{Loc 'ui-options-wg-flash-ghost-role'}" />
+                <CheckBox Name="SoundGhostRoleCheckBox" Text="{Loc 'ui-options-wg-sound-ghost-role'}" />
+            </BoxContainer>
+        </ScrollContainer>
+        <ui:OptionsTabControlRow Name="Control" Access="Public" />
+    </BoxContainer>
+</tabs:WGChatTab>

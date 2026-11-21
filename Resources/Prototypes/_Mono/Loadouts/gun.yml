@@ -56,6 +56,71 @@
     back:
     - SurvivalKnife
 
+#WOLFGATE(Weapons) START: Extra guns for Vagrants, from libertyvend. Provided in cases.
+- type: loadout
+  id: WGWeaponCaseLongLeeEnfieldRegisteredLoadout
+  name: lee enfield gun case
+  price: 12500
+  inhand:
+  - WGWeaponCaseLongLeeEnfieldRegistered
+
+- type: loadout
+  id: WGWeaponCaseLongVulcanFCMCRegisteredLoadout
+  name: vulcan fcmc gun case
+  price: 30000
+  inhand:
+  - WGWeaponCaseLongVulcanFCMCRegistered
+
+- type: loadout
+  id: WGWeaponCaseLongPrometheusRegisteredLoadout
+  name: prometheus gun case
+  price: 15000
+  inhand:
+  - WGWeaponCaseLongPrometheusRegistered
+
+- type: loadout
+  id: WGWeaponCaseLongNovaliteRegisteredLoadout
+  name: novalite gun case
+  price: 5000
+  inhand:
+  - WGWeaponCaseLongNovaliteRegistered
+
+- type: loadout
+  id: WGWeaponCaseLongGestioRegisteredLoadout
+  name: gestio gun case
+  price: 5000
+  inhand:
+  - WGWeaponCaseLongGestioRegistered
+
+- type: loadout
+  id: WGWeaponCaseLongKnallstockRegisteredLoadout
+  name: knallstock gun case
+  price: 5000
+  inhand:
+  - WGWeaponCaseLongKnallstockRegistered
+
+- type: loadout
+  id: WGWeaponCaseLongKeyboardRegisteredLoadout
+  name: keyboard gun case
+  price: 5000
+  inhand:
+  - WGWeaponCaseLongKeyboardRegistered
+
+- type: loadout
+  id: WGWeaponCaseLongAK220RegisteredLoadout
+  name: ak-220 gun case
+  price: 5000
+  inhand:
+  - WGWeaponCaseLongAK220Registered
+
+- type: loadout
+  id: WGWeaponCaseLongKammererRegisteredLoadout
+  name: kammerer gun case
+  price: 5000
+  inhand:
+  - WGWeaponCaseLongKammererRegistered
+#WOLFGATE END
+
 # Shotguns
 
 - type: loadout #Double Barrel Beanbag

@@ -1,9 +1,10 @@
+using Content.Client.Options.UI;
 using Content.Shared._WG.Notifications;
 
-namespace Content.Client.Options.UI.Tabs;
+namespace Content.Client._WG.Options.UI.Tabs;
 
-/// <summary>The Notifications section of the Misc tab.</summary>
-public sealed partial class MiscTab
+/// <summary>The Notifications section of the Wolfgate Chat tab.</summary>
+public sealed partial class WGChatTab
 {
     private void WgAddNotificationOptions()
     {

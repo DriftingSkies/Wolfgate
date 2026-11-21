@@ -1,10 +1,11 @@
+using Content.Client.Options.UI;
 using Content.Client._WG.SpeechBubbles;
 using Content.Shared._WG.SpeechBubbles;
 
-namespace Content.Client.Options.UI.Tabs;
+namespace Content.Client._WG.Options.UI.Tabs;
 
-/// <summary>The speech bubble toggles and length slider on the Misc tab.</summary>
-public sealed partial class MiscTab
+/// <summary>The speech bubble toggles and length slider on the Wolfgate Chat tab.</summary>
+public sealed partial class WGChatTab
 {
     private void WgAddSpeechBubbleOptions()
     {

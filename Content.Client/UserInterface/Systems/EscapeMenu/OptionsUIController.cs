@@ -30,7 +30,10 @@ public sealed partial class OptionsUIController : UIController
             return;
         }
 
-        _optionsWindow.Tabs.CurrentTab = tab;
+        // WOLFGATE(Options) START: the stock tabs now sit on the SS14 master tab
+        // _optionsWindow.Tabs.CurrentTab = tab;
+        _optionsWindow.WgShowStockTab(tab);
+        // WOLFGATE END
     }
 
     private OptionsMenu _optionsWindow = default!;
@@ -53,12 +56,12 @@ public sealed partial class OptionsUIController : UIController
         _optionsWindow.MoveToFront();
     }
 
-    // WOLFGATE(Options) START: open the options window with a given tab selected
-    /// <summary>Opens the options window with a given tab selected.</summary>
+    // WOLFGATE(Options) START: open the options window with a given Wolfgate tab selected
+    /// <summary>Opens the options window on one of the Wolfgate tabs, such as <see cref="OptionsMenu.ConsentTabIndex"/>.</summary>
     public void OpenWindow(int tab)
     {
         OpenWindow();
-        _optionsWindow.Tabs.CurrentTab = tab;
+        _optionsWindow.WgShowWolfgateTab(tab);
     }
     // WOLFGATE END
 

@@ -61,6 +61,10 @@ public sealed partial class WGCrewShipStatusSystem : EntitySystem
     private readonly HashSet<EntityUid> _served = new();
     private readonly HashSet<EntityUid> _gunned = new();
 
+    /// <summary>Grids with an unpowered ship weapon or gunnery server, and with an unpowered thruster, from the last survey.</summary>
+    private readonly HashSet<EntityUid> _gunsDark = new();
+    private readonly HashSet<EntityUid> _thrustDark = new();
+
     private enum Condition : byte { Abandoned, Disarmed, Crippled, Wrecked }
 
     /// <summary>One reading of a ship, with the power evidence taken at the same moment as the conditions it explains.</summary>
@@ -217,14 +221,14 @@ public sealed partial class WGCrewShipStatusSystem : EntitySystem
             return cached.Reading;
 
         var reading = !TerminatingOrDeleted(grid) && TryComp<ShuttleComponent>(grid, out var shuttle)
-            ? Measure(grid, shuttle, CanShoot(grid), IsCrewed(grid), now)
+            ? Measure(grid, shuttle, CanShoot(grid), IsCrewed(grid), GunsUnpowered(grid), ThrustUnpowered(grid), now)
             : default;
         _cache[grid] = (now + CacheTime, reading);
         return reading;
     }
 
     /// <summary>Takes a fresh reading of a ship from whether it can shoot and has anyone aboard right now.</summary>
-    private Reading Measure(EntityUid grid, ShuttleComponent shuttle, bool armed, bool crewed, TimeSpan now)
+    private Reading Measure(EntityUid grid, ShuttleComponent shuttle, bool armed, bool crewed, bool gunsDark, bool thrustDark, TimeSpan now)
     {
         var thrust = 0f;
         foreach (var direction in shuttle.LinearThrust)
@@ -252,8 +256,8 @@ public sealed partial class WGCrewShipStatusSystem : EntitySystem
             Sustained(grid, Condition.Disarmed, !armed && _armed.Contains(grid), now),
             Sustained(grid, Condition.Crippled, !armed && peak > 0f && thrust < peak * CrippledThrust, now),
             Sustained(grid, Condition.Wrecked, peakTiles > 0 && tiles < peakTiles * WreckedHull, now),
-            GunsUnpowered(grid),
-            ThrustUnpowered(grid));
+            gunsDark,
+            thrustDark);
     }
 
     /// <summary>Whether a condition has held, watched without a gap, for the whole delay.</summary>
@@ -382,7 +386,8 @@ public sealed partial class WGCrewShipStatusSystem : EntitySystem
             }
 
             if (TryComp<ShuttleComponent>(grid, out var shuttle))
-                _cache[grid] = (now + CacheTime, Measure(grid, shuttle, _armedNow.Contains(grid), _crewedNow.Contains(grid), now));
+                _cache[grid] = (now + CacheTime, Measure(grid, shuttle, _armedNow.Contains(grid), _crewedNow.Contains(grid),
+                    _gunsDark.Contains(grid), _thrustDark.Contains(grid), now));
         }
 
         foreach (var grid in _cache.Keys)
@@ -397,15 +402,31 @@ public sealed partial class WGCrewShipStatusSystem : EntitySystem
         }
     }
 
-    /// <summary>Which grids can shoot and which have anyone alive aboard, in one pass over each kind.</summary>
+    /// <summary>
+    /// Which grids can shoot, have anyone alive aboard or have unpowered guns or thrusters, in one pass over each
+    /// kind instead of one per watched grid.
+    /// </summary>
     private void Survey()
     {
         _served.Clear();
+        _gunsDark.Clear();
+        _thrustDark.Clear();
+        var receivers = GetEntityQuery<ApcPowerReceiverComponent>();
         var servers = EntityQueryEnumerator<FireControlServerComponent, TransformComponent>();
-        while (servers.MoveNext(out _, out _, out var xform))
+        while (servers.MoveNext(out var uid, out _, out var xform))
         {
-            if (xform.GridUid is { } grid)
-                _served.Add(grid);
+            if (xform.GridUid is not { } grid)
+                continue;
+            _served.Add(grid);
+            if (receivers.TryGetComponent(uid, out var receiver) && !receiver.Powered)
+                _gunsDark.Add(grid);
+        }
+
+        var thrusters = EntityQueryEnumerator<ThrusterComponent, ApcPowerReceiverComponent, TransformComponent>();
+        while (thrusters.MoveNext(out _, out _, out var receiver, out var xform))
+        {
+            if (xform.GridUid is { } grid && !receiver.Powered)
+                _thrustDark.Add(grid);
         }
 
         _gunned.Clear();
@@ -420,6 +441,9 @@ public sealed partial class WGCrewShipStatusSystem : EntitySystem
         var weapons = EntityQueryEnumerator<FireControllableComponent, TransformComponent>();
         while (weapons.MoveNext(out var uid, out var weapon, out var xform))
         {
+            if (xform.GridUid is { } dark && receivers.TryGetComponent(uid, out var receiver) && !receiver.Powered)
+                _gunsDark.Add(dark);
+
             if (xform.GridUid is { } grid && !_armedNow.Contains(grid) && _power.IsPowered(uid)
                 && (weapon.ControllingServer != null || !_served.Contains(grid) || _gunned.Contains(grid)))
                 _armedNow.Add(grid);

@@ -320,7 +320,10 @@ namespace Content.Server.Atmos.EntitySystems
 
         public void UpdateAppearance(EntityUid uid, FlammableComponent? flammable = null, AppearanceComponent? appearance = null)
         {
-            if (!Resolve(uid, ref flammable, ref appearance))
+            // WOLFGATE START: a flammable without appearance (an envelope, a xeno wall) has no fire visuals to set, not an error
+            // if (!Resolve(uid, ref flammable, ref appearance))
+            if (!Resolve(uid, ref flammable) || !Resolve(uid, ref appearance, false))
+            // WOLFGATE END
                 return;
 
             _appearance.SetData(uid, FireVisuals.OnFire, flammable.OnFire, appearance);

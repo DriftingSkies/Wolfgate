@@ -1,10 +1,11 @@
+using Content.Client.Options.UI;
 using Content.Client.UserInterface.Systems.Chat.Widgets;
 using Content.Shared._WG.ChatTextSize;
 
-namespace Content.Client.Options.UI.Tabs;
+namespace Content.Client._WG.Options.UI.Tabs;
 
-/// <summary>The chat text size and line spacing sliders on the Misc tab.</summary>
-public sealed partial class MiscTab
+/// <summary>The chat text size and line spacing sliders on the Wolfgate Chat tab.</summary>
+public sealed partial class WGChatTab
 {
     private void WgAddChatTextSizeOptions()
     {

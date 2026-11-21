@@ -1,6 +1,6 @@
 # DarkFlash
 
-A photosensitivity option: Game Options > Accessibility > "Darken bright flashes" (`wg.dark_flash`, off by default).
+A photosensitivity option: Game Options > Wolfgate > Accessibility > "Darken bright flashes" (`wg.dark_flash`, off by default).
 SS14's flash already fades in from black, so the option covers what is still bright or moving:
 
 - the warhead flash (`WGNuclearFlashOverlay`) goes black instead of white;
@@ -41,7 +41,5 @@ shader, and the colour choice in `WGNuclearFlashOverlay`.
 ## Non-modular edits
 
 - [`Content.Client/Flash/FlashOverlay.cs`](../../../Content.Client/Flash/FlashOverlay.cs): a still fade for players who turn on dark flash
-- [`Content.Client/Options/UI/Tabs/AccessibilityTab.xaml`](../../../Content.Client/Options/UI/Tabs/AccessibilityTab.xaml): photosensitivity option
-- [`Content.Client/Options/UI/Tabs/AccessibilityTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/AccessibilityTab.xaml.cs): photosensitivity option
 
 <!-- WOLFGATE-GENERATED END -->
