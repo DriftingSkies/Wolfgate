@@ -1,0 +1,438 @@
+# Brewing: tea, coffee and the like steep in a kettle of boiling water on a hob (wgBrewRecipe), and only in a kettle.
+# Each drink's buff takes the cup slot, beside any meal's, and every warm sip gives a little comfort. Mono's tea
+# pouches brew here too; the reactions that made tea out of powder and hot water are commented out in their files.
+
+# Prepared on the hearth before the kettle: coffee cherries roast in the pan, tea leaves dry in the oven.
+
+- type: entity
+  parent: FoodBase
+  id: WGRoastedCoffee
+  name: roasted coffee beans
+  description: Coffee cherries roasted dark in the pan. Drop them in a boiling kettle for a pot of fresh coffee.
+  components:
+  - type: Sprite
+    sprite: _WG/Cooking/brewing.rsi
+    state: coffee_roasted
+  - type: Item
+    size: Tiny
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 4
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 1
+  - type: StaticPrice
+    price: 15
+
+- type: entity
+  parent: FoodBase
+  id: WGDriedTeaLeaves
+  name: dried tea leaves
+  description: Tea leaves dried in the oven. In a boiling kettle they brew black tea; fresh leaves brew green.
+  components:
+  - type: Sprite
+    sprite: _WG/Cooking/brewing.rsi
+    state: tea_dried
+  - type: Item
+    size: Tiny
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 4
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 1
+  - type: StaticPrice
+    price: 10
+
+- type: wgCookRecipe
+  id: WGCookRoastCoffee
+  method: Fry
+  inputs: [ WGFoodCoffee ]
+  result: WGRoastedCoffee
+  seconds: 20
+
+- type: wgCookRecipe
+  id: WGCookDryTea
+  method: Bake
+  inputs: [ LeavesTea ]
+  result: WGDriedTeaLeaves
+  seconds: 20
+
+# The drinks. Gentler and shorter than a meal's buff; hot cocoa gives the most comfort.
+
+- type: reagent
+  parent: BaseDrink
+  id: WGTeaBlack
+  name: reagent-name-wg-tea-black
+  desc: reagent-desc-wg-tea-black
+  physicalDesc: reagent-physical-desc-wg-soup
+  flavor: tea
+  color: "#6B3A1F"
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 3
+      - !type:WGMealBuff
+        cup: true
+        traits: [ Steady ]
+        strength: 0.8
+        minutes: 6
+        comfort: 0.4
+  pricePerUnit: 4
+
+- type: reagent
+  parent: BaseDrink
+  id: WGTeaGreen
+  name: reagent-name-wg-tea-green
+  desc: reagent-desc-wg-tea-green
+  physicalDesc: reagent-physical-desc-wg-soup
+  flavor: tea
+  color: "#8DAA4F"
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 3
+      - !type:WGMealBuff
+        cup: true
+        traits: [ ClearHeaded ]
+        strength: 0.8
+        minutes: 6
+        comfort: 0.4
+  pricePerUnit: 4
+
+- type: reagent
+  parent: BaseDrink
+  id: WGTeaChamomile
+  name: reagent-name-wg-tea-chamomile
+  desc: reagent-desc-wg-tea-chamomile
+  physicalDesc: reagent-physical-desc-wg-soup
+  flavor: teaChamomile
+  color: "#EEDC82"
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 3
+      - !type:WGMealBuff
+        cup: true
+        traits: [ Soothed ]
+        strength: 0.8
+        minutes: 6
+        comfort: 0.6
+  pricePerUnit: 4
+
+- type: reagent
+  parent: BaseDrink
+  id: WGTeaBerry
+  name: reagent-name-wg-tea-berry
+  desc: reagent-desc-wg-tea-berry
+  physicalDesc: reagent-physical-desc-wg-soup
+  flavor: teaBerry
+  color: "#A23E48"
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 3
+      - !type:WGMealBuff
+        cup: true
+        traits: [ Energising ]
+        strength: 0.8
+        minutes: 6
+        comfort: 0.4
+  pricePerUnit: 4
+
+- type: reagent
+  parent: BaseDrink
+  id: WGTeaFruit
+  name: reagent-name-wg-tea-fruit
+  desc: reagent-desc-wg-tea-fruit
+  physicalDesc: reagent-physical-desc-wg-soup
+  flavor: teaFruit
+  color: "#E8833A"
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 3
+      - !type:WGMealBuff
+        cup: true
+        traits: [ Energising ]
+        strength: 0.8
+        minutes: 6
+        comfort: 0.4
+  pricePerUnit: 4
+
+- type: reagent
+  parent: BaseDrink
+  id: WGCoffeeFresh
+  name: reagent-name-wg-coffee-fresh
+  desc: reagent-desc-wg-coffee-fresh
+  physicalDesc: reagent-physical-desc-aromatic
+  flavor: coffee
+  color: "#4A2C17"
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 2
+      - !type:WGMealBuff
+        cup: true
+        traits: [ Energising, WideAwake ]
+        strength: 0.8
+        minutes: 6
+        comfort: 0.3
+  pricePerUnit: 4
+
+- type: reagent
+  parent: BaseDrink
+  id: WGCocoaHomemade
+  name: reagent-name-wg-cocoa-homemade
+  desc: reagent-desc-wg-cocoa-homemade
+  physicalDesc: reagent-physical-desc-wg-soup
+  flavor: chocolate
+  color: "#6B4226"
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 2
+      - !type:WGMealBuff
+        cup: true
+        traits: [ Warming ]
+        strength: 0.8
+        minutes: 6
+        comfort: 1.0
+  pricePerUnit: 4
+
+- type: reagent
+  parent: BaseDrink
+  id: WGTeaPoppy
+  name: reagent-name-wg-tea-poppy
+  desc: reagent-desc-wg-tea-poppy
+  physicalDesc: reagent-physical-desc-wg-soup
+  flavor: bitter
+  color: "#E8D8C8"
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 3
+      - !type:WGMealBuff
+        cup: true
+        traits: [ Numbed ]
+        strength: 0.8
+        minutes: 6
+        comfort: 0.4
+      # One cup is plenty; more than that and it makes you drowsy.
+      - !type:GenericStatusEffect
+        conditions:
+        - !type:ReagentThreshold
+          reagent: WGTeaPoppy
+          min: 35
+        key: Drowsiness
+        component: Drowsiness
+        time: 4
+        type: Add
+        refresh: true
+  pricePerUnit: 4
+
+- type: reagent
+  parent: BaseDrink
+  id: WGTeaAloe
+  name: reagent-name-wg-tea-aloe
+  desc: reagent-desc-wg-tea-aloe
+  physicalDesc: reagent-physical-desc-wg-soup
+  flavor: leafy
+  color: "#C8E6A0"
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 3
+      - !type:WGMealBuff
+        cup: true
+        traits: [ Fresh ]
+        strength: 0.8
+        minutes: 6
+        comfort: 0.4
+  pricePerUnit: 4
+
+- type: reagent
+  parent: BaseDrink
+  id: WGTeaLingzhi
+  name: reagent-name-wg-tea-lingzhi
+  desc: reagent-desc-wg-tea-lingzhi
+  physicalDesc: reagent-physical-desc-wg-soup
+  flavor: mushroom
+  color: "#8B4A2B"
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 3
+      - !type:WGMealBuff
+        cup: true
+        traits: [ Steeled ]
+        strength: 0.8
+        minutes: 6
+        comfort: 0.4
+  pricePerUnit: 4
+
+- type: reagent
+  parent: BaseDrink
+  id: WGTeaShoreSage
+  name: reagent-name-wg-tea-shore-sage
+  desc: reagent-desc-wg-tea-shore-sage
+  physicalDesc: reagent-physical-desc-wg-soup
+  flavor: minty
+  color: "#9DB89A"
+  metabolisms:
+    Drink:
+      effects:
+      - !type:SatiateThirst
+        factor: 3
+      - !type:WGMealBuff
+        cup: true
+        traits: [ BreatheEasy ]
+        strength: 0.8
+        minutes: 6
+        comfort: 0.4
+  pricePerUnit: 4
+
+# What brews them. Items steep a while; powders steep a little each second, a unit of powder to five of drink.
+
+- type: wgBrewRecipe
+  id: WGBrewBlackTea
+  inputs: [ WGDriedTeaLeaves ]
+  powder: TeaPowder
+  drink: WGTeaBlack
+
+- type: wgBrewRecipe
+  id: WGBrewGreenTea
+  inputs: [ LeavesTea ]
+  powder: GreenTeaPowder
+  drink: WGTeaGreen
+
+- type: wgBrewRecipe
+  id: WGBrewChamomileTea
+  powder: ChamomileTeaPowder
+  drink: WGTeaChamomile
+
+- type: wgBrewRecipe
+  id: WGBrewBerryTea
+  inputs: [ FoodBerries, WGFoodRaspberry, WGFoodBlackberry, WGFoodStrawberry, WGVerdaDuskberries ]
+  powder: BerryTeaPowder
+  drink: WGTeaBerry
+  priority: 10
+
+- type: wgBrewRecipe
+  id: WGBrewFruitTea
+  inputs: [ FoodApple, WGFoodAppleSliced, FoodOrange, FoodLemon, WGFoodLemonWedge, FoodLime, WGFoodLimeWedge, WGFoodPear, WGFoodPlum, WGFoodTangerine ]
+  powder: FruitTeaPowder
+  drink: WGTeaFruit
+
+- type: wgBrewRecipe
+  id: WGBrewCoffee
+  inputs: [ WGRoastedCoffee ]
+  powder: CoffeeGrounds
+  powderYield: 4
+  drink: WGCoffeeFresh
+
+- type: wgBrewRecipe
+  id: WGBrewCocoa
+  inputs: [ FoodCocoaBeans ]
+  drink: WGCocoaHomemade
+
+- type: wgBrewRecipe
+  id: WGBrewPoppyTea
+  inputs: [ FoodPoppy ]
+  drink: WGTeaPoppy
+  seconds: 20
+
+- type: wgBrewRecipe
+  id: WGBrewAloeTea
+  inputs: [ FoodAloe ]
+  drink: WGTeaAloe
+
+- type: wgBrewRecipe
+  id: WGBrewLingzhiTea
+  inputs: [ FoodLingzhi ]
+  drink: WGTeaLingzhi
+  seconds: 20
+
+- type: wgBrewRecipe
+  id: WGBrewShoreSageTea
+  inputs: [ WGVerdaShoreSage ]
+  drink: WGTeaShoreSage
+
+# Mono's novelty pouches brew their own drinks in the kettle, with no cup buff.
+
+- type: wgBrewRecipe
+  id: WGBrewDecafBlackTea
+  powder: DecafBlackTeaPowder
+  drink: DecafBlackTea
+
+- type: wgBrewRecipe
+  id: WGBrewDecafCoffee
+  powder: DecafCoffeePowder
+  drink: DecafCoffee
+
+- type: wgBrewRecipe
+  id: WGBrewYorkshireTea
+  powder: YorkshireTeaPowder
+  drink: YorkshireTea
+
+- type: wgBrewRecipe
+  id: WGBrewSyndicateTea
+  powder: SyndicateTeaPowder
+  drink: SyndicateTea
+
+# The barista vendor's leaflet, now telling the kettle way.
+
+- type: entity
+  parent: Paper
+  id: WGPaperBrewingGuide
+  name: brewing leaflet
+  description: A folded leaflet on brewing a proper pot.
+  components:
+  - type: Paper
+    content: wg-brew-leaflet
+
+# Cargo: tea pouches and coffee grounds, for a galley without a garden.
+
+- type: entity
+  parent: CrateGenericSteel
+  id: WGCrateTea
+  name: tea crate
+  description: Pouches of black, green, chamomile, berry and fruit tea, and coffee grounds, for brewing in a kettle.
+  components:
+  - type: StorageFill
+    contents:
+    - id: ReagentContainerBlackTeaPouch
+      amount: 2
+    - id: ReagentContainerGreenTeaPouch
+      amount: 2
+    - id: ReagentContainerChamomileTeaPouch
+      amount: 2
+    - id: ReagentContainerBerryTeaPouch
+      amount: 2
+    - id: ReagentContainerFruitTeaPouch
+      amount: 2
+    - id: ReagentContainerCoffeePouch
+      amount: 2
+    - id: WGPaperBrewingGuide
+
+- type: cargoProduct
+  id: WGTea
+  icon:
+    sprite: _WG/Cooking/brewing.rsi
+    state: tea_dried
+  product: WGCrateTea
+  cost: 700
+  category: cargoproduct-category-name-service
+  group: market

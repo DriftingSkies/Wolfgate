@@ -1,0 +1,590 @@
+# Fishing's extras, written by hand (art from Tools/_WG/Fishing/port_fishing_loot.py): night, rain and legendary fish,
+# junk, the rare treasure chest, better rods, the crab cage, pearls, roe and caviar, and sushi. Fishing is for the fish;
+# everything here is a treat on top.
+
+- type: wgFishLoot
+  id: WGFishLoot
+  junkChance: 0.06
+  junk:
+  - id: WGJunkAlgae
+    weight: 3
+  - id: MaterialWoodPlank1
+    weight: 2
+  - id: ClothingShoesBootsWork
+    weight: 1
+  - id: PaperScrap
+    weight: 1
+  treasureChance: 0.01
+  treasure: WGFishingTreasure
+  legendaryChance: 0.005
+  cageFallback:
+  - id: WGFishCrab
+    weight: 3
+  - id: WGFishShrimp
+    weight: 3
+  - id: WGFishClam
+    weight: 2
+  - id: WGFishOyster
+    weight: 2
+  - id: WGFishLobster
+    weight: 1
+
+- type: wgFishExtras
+  id: WGFishExtrasFrozen
+  table: WGFishTable1Frozen
+  night:
+  - id: WGFishMoonfish
+    weight: 1.5
+  rain:
+  - id: WGFishNeedlefish
+    weight: 1.5
+  legendary: WGFishLegendGlacierCrab
+
+- type: wgFishExtras
+  id: WGFishExtrasCool
+  table: WGFishTable2Cool
+  night:
+  - id: WGFishCardinalfish
+    weight: 1.5
+  rain:
+  - id: WGFishSockeye
+    weight: 2
+  legendary: WGFishLegendElderEel
+
+- type: wgFishExtras
+  id: WGFishExtrasWarm
+  table: WGFishTable3Warm
+  night:
+  - id: WGFishSoulfish
+    weight: 1
+  rain:
+  - id: WGFishSockeye
+    weight: 2
+  legendary: WGFishLegendGoldenCarp
+
+- type: wgFishExtras
+  id: WGFishExtrasHot
+  table: WGFishTable4Hot
+  night:
+  - id: WGFishFirefish
+    weight: 1.5
+  rain:
+  - id: WGFishZipzap
+    weight: 1.5
+  legendary: WGFishLegendAbyssalAngler
+
+- type: wgFishExtras
+  id: WGFishExtrasPond
+  table: WGFishTablePond
+  legendary: WGFishLegendPondAngel
+
+# Night and rain fish
+
+- type: entity
+  abstract: true
+  parent: FoodBase
+  id: WGFishLootBase
+  components:
+  - type: Sprite
+    sprite: _WG/Fishing/loot.rsi
+  - type: Item
+    size: Small
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 10
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Protein
+          Quantity: 3
+  - type: Tag
+    tags: [ WGFish, WGFarmGood ]
+  - type: GuideHelp
+    guides:
+    - WGFishing
+
+- type: entity
+  parent: WGFishLootBase
+  id: WGFishMoonfish
+  name: moonfish
+  description: A pale fish that rises under cold night skies. Chop it on a prep board to fillet it.
+  components:
+  - type: Sprite
+    state: moonfish
+  - type: StaticPrice
+    price: 160
+
+- type: entity
+  parent: WGFishLootBase
+  id: WGFishCardinalfish
+  name: cardinalfish
+  description: A bright little fish that feeds after dark. Chop it on a prep board to fillet it.
+  components:
+  - type: Sprite
+    state: cardinalfish
+  - type: StaticPrice
+    price: 140
+
+- type: entity
+  parent: WGFishLootBase
+  id: WGFishSoulfish
+  name: soulfish
+  description: A strange, glimmering fish only seen at night. Chop it on a prep board to fillet it.
+  components:
+  - type: Sprite
+    state: soulfish
+  - type: StaticPrice
+    price: 190
+
+- type: entity
+  parent: WGFishLootBase
+  id: WGFishFirefish
+  name: firefish
+  description: A fish that glows like an ember in warm night water. Chop it on a prep board to fillet it.
+  components:
+  - type: Sprite
+    state: firefish
+  - type: StaticPrice
+    price: 190
+
+- type: entity
+  parent: WGFishLootBase
+  id: WGFishNeedlefish
+  name: needlefish
+  description: A thin, quick fish that comes up when rain stirs the water. Chop it on a prep board to fillet it.
+  components:
+  - type: Sprite
+    state: needlefish
+  - type: StaticPrice
+    price: 150
+
+- type: entity
+  parent: WGFishLootBase
+  id: WGFishSockeye
+  name: sockeye
+  description: A red salmon that runs in the rain. Chop it on a prep board to fillet it.
+  components:
+  - type: Sprite
+    state: sockeye
+  - type: StaticPrice
+    price: 150
+
+- type: entity
+  parent: WGFishLootBase
+  id: WGFishZipzap
+  name: zipzap
+  description: A crackling fish that only bites in a storm. It tingles to hold. Chop it on a prep board to fillet it.
+  components:
+  - type: Sprite
+    state: zipzap
+  - type: StaticPrice
+    price: 210
+
+# Legendary fish: one to each water, and the catch of a lifetime.
+
+- type: entity
+  abstract: true
+  parent: WGFishLootBase
+  id: WGFishLegendBase
+  components:
+  - type: Item
+    size: Normal
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 30
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 15
+        - ReagentId: Protein
+          Quantity: 10
+  - type: Tag
+    tags: [ WGFish, WGFarmGood, WGFishLegendary ]
+
+- type: entity
+  parent: WGFishLegendBase
+  id: WGFishLegendGlacierCrab
+  name: glacier king crab
+  description: A huge, frost-rimed crab, old as the ice. Anglers on cold worlds tell stories about this one.
+  components:
+  - type: Sprite
+    state: legend_frozen
+  - type: Tag
+    tags: [ WGShellfish, WGFarmGood, WGFishLegendary ]
+  - type: StaticPrice
+    price: 1800
+
+- type: entity
+  parent: WGFishLegendBase
+  id: WGFishLegendElderEel
+  name: elder eel
+  description: An eel as long as your arm and twice as thick. It has slipped a hundred hooks before yours.
+  components:
+  - type: Sprite
+    state: legend_cool
+  - type: StaticPrice
+    price: 1800
+
+- type: entity
+  parent: WGFishLegendBase
+  id: WGFishLegendGoldenCarp
+  name: golden carp
+  description: A carp with scales like beaten gold. Said to bring luck to whoever lands it.
+  components:
+  - type: Sprite
+    state: legend_warm
+  - type: StaticPrice
+    price: 2000
+
+- type: entity
+  parent: WGFishLegendBase
+  id: WGFishLegendAbyssalAngler
+  name: abyssal angler
+  description: A monstrous anglerfish from the deep, hot water. Its lure still glows.
+  components:
+  - type: Sprite
+    state: legend_hot
+  - type: StaticPrice
+    price: 2500
+
+- type: entity
+  parent: WGFishLegendBase
+  id: WGFishLegendPondAngel
+  name: pond angel
+  description: An elegant, ancient angelfish. How it came to live in a pond, nobody knows.
+  components:
+  - type: Sprite
+    state: legend_pond
+  - type: StaticPrice
+    price: 1500
+
+- type: Tag
+  id: WGFishLegendary
+
+# Junk
+
+- type: entity
+  parent: FoodBase
+  id: WGJunkAlgae
+  name: seaweed
+  description: A tangle of seaweed off the hook. Not much on its own, but it rolls a fine futomaki.
+  components:
+  - type: Sprite
+    sprite: _WG/Fishing/loot.rsi
+    state: algae
+  - type: Item
+    size: Tiny
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 3
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 1
+  - type: StaticPrice
+    price: 5
+
+# Treasure: rarely comes up beside a catch. Open it in hand.
+
+- type: entity
+  parent: BaseItem
+  id: WGFishingTreasure
+  name: sunken chest
+  description: A small chest, crusted with silt, hauled up on your line. Use it in hand to prise it open.
+  components:
+  - type: Sprite
+    sprite: _WG/Fishing/loot.rsi
+    state: treasure
+  - type: Item
+    size: Normal
+  - type: SpawnItemsOnUse
+    items:
+    - id: WGBaitWorm
+      amount: 4
+    - id: WGGeode
+      amount: 3
+      orGroup: treasure
+      prob: 0.3
+    - id: GoldOre1
+      amount: 5
+      orGroup: treasure
+      prob: 0.2
+    - id: SpaceCash500
+      orGroup: treasure
+      prob: 0.2
+    - id: WGPearl
+      orGroup: treasure
+      prob: 0.15
+    - id: WGLuckyCoin
+      orGroup: treasure
+      prob: 0.1
+    - id: MaterialDiamond1
+      orGroup: treasure
+      prob: 0.05
+    sound:
+      path: /Audio/Effects/unwrap.ogg
+  - type: StaticPrice
+    price: 50
+
+- type: entity
+  parent: BaseItem
+  id: WGLuckyCoin
+  name: lucky coin
+  description: An old coin, worn smooth by the water. Collectors pay well for these.
+  components:
+  - type: Sprite
+    sprite: _WG/Fishing/loot.rsi
+    state: lucky_coin
+  - type: Item
+    size: Tiny
+  - type: StaticPrice
+    price: 800
+
+# Pearls, roe and caviar
+
+- type: entity
+  parent: BaseItem
+  id: WGPearl
+  name: pearl
+  description: A lustrous pearl from an oyster or a clam. Worth a good deal to the right buyer.
+  components:
+  - type: Sprite
+    sprite: _WG/Fishing/loot.rsi
+    state: pearl
+  - type: Item
+    size: Tiny
+  - type: Tag
+    tags: [ WGFarmGood ]
+  - type: StaticPrice
+    price: 400
+
+- type: entity
+  parent: FoodBase
+  id: WGFishRoe
+  name: fish roe
+  description: A cluster of fish eggs, found when filleting. Cure it in a preserves jar for caviar.
+  components:
+  - type: Sprite
+    sprite: _WG/Fishing/loot.rsi
+    state: roe
+  - type: Item
+    size: Tiny
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 4
+        reagents:
+        - ReagentId: Protein
+          Quantity: 2
+  - type: StaticPrice
+    price: 40
+
+- type: entity
+  parent: FoodBase
+  id: WGCaviar
+  name: caviar
+  description: Cured roe, salty and rich. A real luxury.
+  components:
+  - type: Sprite
+    sprite: _WG/Fishing/loot.rsi
+    state: caviar
+  - type: Item
+    size: Tiny
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 8
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 3
+        - ReagentId: Protein
+          Quantity: 3
+  - type: Tag
+    tags: [ WGFarmGood, WGFineFood ]
+  - type: WGMeal
+    traits: [ Fresh, Steady ]
+    strength: 1.2
+    minutes: 15
+  - type: StaticPrice
+    price: 380
+
+- type: wgChopRecipe
+  id: WGChopAOyster
+  inputs: [ WGFishOyster, WGFishClam ]
+  result: WGFoodShellfishMeat
+  count: 1
+  bonus: WGPearl
+  bonusChance: 0.1
+
+- type: wgProcessRecipe
+  id: WGJarCaviar
+  machine: Jar
+  inputs: [ WGFishRoe ]
+  minutes: 15
+  outputs:
+  - id: WGCaviar
+
+# Sushi, put together raw on a prep board
+
+- type: entity
+  parent: FoodBase
+  id: WGFoodSashimi
+  name: sashimi
+  description: Thin slices of raw fish, laid out neatly.
+  components:
+  - type: Sprite
+    sprite: _WG/Fishing/loot.rsi
+    state: sashimi
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 12
+        reagents:
+        - ReagentId: Protein
+          Quantity: 8
+  - type: Tag
+    tags: [ WGFarmGood, WGFineFood ]
+  - type: WGMeal
+    traits: [ Fresh, Cooling ]
+    strength: 1.2
+    minutes: 14
+  - type: StaticPrice
+    price: 130
+
+- type: entity
+  parent: FoodBase
+  id: WGFoodNigiri
+  name: nigiri
+  description: Raw fish pressed onto a pad of rice.
+  components:
+  - type: Sprite
+    sprite: _WG/Fishing/loot.rsi
+    state: nigiri
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 14
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 5
+        - ReagentId: Protein
+          Quantity: 4
+  - type: Tag
+    tags: [ WGFarmGood, WGFineFood ]
+  - type: WGMeal
+    traits: [ Fresh, Hearty ]
+    strength: 1.2
+    minutes: 15
+  - type: StaticPrice
+    price: 150
+
+- type: entity
+  parent: FoodBase
+  id: WGFoodFutomaki
+  name: futomaki roll
+  description: A fat roll of rice, fish and cucumber, wrapped in seaweed.
+  components:
+  - type: Sprite
+    sprite: _WG/Fishing/loot.rsi
+    state: futomaki
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 8
+        - ReagentId: Protein
+          Quantity: 5
+  - type: Tag
+    tags: [ WGFarmGood, WGFineFood ]
+  - type: WGMeal
+    traits: [ Fresh, Hearty, Steady ]
+    strength: 1.35
+    minutes: 18
+  - type: StaticPrice
+    price: 220
+
+- type: wgPrepRecipe
+  id: WGPrepSashimi
+  result: WGFoodSashimi
+  ingredients:
+  - ids: [ WGFoodFishFillet ]
+    count: 2
+
+- type: wgPrepRecipe
+  id: WGPrepNigiri
+  result: WGFoodNigiri
+  ingredients:
+  - ids: [ WGFoodFishFillet, WGFoodShellfishMeat ]
+    count: 1
+  - ids: [ RiceBushel ]
+    count: 1
+
+- type: wgPrepRecipe
+  id: WGPrepFutomaki
+  result: WGFoodFutomaki
+  ingredients:
+  - ids: [ WGFoodFishFillet, WGFoodShellfishMeat ]
+    count: 1
+  - ids: [ RiceBushel ]
+    count: 1
+  - ids: [ WGFoodCucumberSliced ]
+    count: 1
+  - ids: [ WGJunkAlgae ]
+    count: 1
+
+# Better rods and the crab cage
+
+- type: entity
+  parent: WGFishingRod
+  id: WGFishingRodFiberglass
+  name: fiberglass rod
+  description: A light, springy rod. Fish bite sooner, hold the hook a little longer and come up in better shape. Use bait on it to load the hook.
+  components:
+  - type: Sprite
+    sprite: _WG/Fishing/loot.rsi
+    state: rod_fiberglass
+  - type: WGFishingRod
+    windowBonus: 0.75
+    biteSpeed: 0.85
+    qualityBonus: 1
+    luck: 1.5
+  - type: StaticPrice
+    price: 600
+
+- type: entity
+  parent: WGFishingRod
+  id: WGFishingRodIridium
+  name: iridium rod
+  description: A master angler's rod. Fish bite quickly, hold the hook a long while and come up at their best, and luck seems to follow it. Use bait on it to load the hook.
+  components:
+  - type: Sprite
+    sprite: _WG/Fishing/loot.rsi
+    state: rod_iridium
+  - type: WGFishingRod
+    windowBonus: 1.5
+    biteSpeed: 0.7
+    qualityBonus: 2
+    luck: 2
+  - type: StaticPrice
+    price: 2000
+
+- type: entity
+  parent: BaseItem
+  id: WGCrabCage
+  name: crab cage
+  description: Load it with bait and use it on water next to you to set it. Every so often it catches a shellfish; use it with an empty hand to empty it. Pick it up to bring it in.
+  components:
+  - type: Sprite
+    sprite: _WG/Fishing/loot.rsi
+    state: cage
+  - type: Item
+    size: Large
+  - type: WGCrabCage
+  - type: StaticPrice
+    price: 120
+  - type: GuideHelp
+    guides:
+    - WGFishing

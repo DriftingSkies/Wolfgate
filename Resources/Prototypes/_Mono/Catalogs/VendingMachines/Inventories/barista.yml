@@ -12,14 +12,23 @@
     PaperCup: 10
     Teaspoon: 5
     DrinkMug: 6
-    Kettle: 3
-    DrinkTeapotEmpty: 4
+    # WOLFGATE(Cooking) START: our kettle, teapot and cups, and a camp stove to heat the kettle; only a kettle brews
+    # Kettle: 3
+    WGCookKettle: 3
+    # DrinkTeapotEmpty: 4
+    WGCookTeapot: 4
+    WGCookCup: 6
     DrinkTeaGlassEmpty: 8
-    MachineThermobathFlatpack: 5
+    # MachineThermobathFlatpack: 5
+    WGCampStove: 3
+    # WOLFGATE END
     FoodBoxBiscuitSimple: 2
     FoodBoxBiscuitOatmeal: 2
     FoodBoxBiscuitSugar: 2
-    PaperWrittenTeaGuide: 4294967295 # Infinite
+    # WOLFGATE(Cooking) START: the leaflet tells the kettle way
+    # PaperWrittenTeaGuide: 4294967295 # Infinite
+    WGPaperBrewingGuide: 4294967295 # Infinite
+    # WOLFGATE END
   contrabandInventory:
     DrinkMugRainbow: 1
     ReagentContainerYorkshireTeaPouch: 4

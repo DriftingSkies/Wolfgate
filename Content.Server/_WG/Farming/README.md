@@ -24,10 +24,10 @@ within six tiles.
 **Processing** (`WGProcessorSystem`): one data-driven machine for every artisan machine (`recipes.yml`): keg (loaded
 with bottles), preserves jar, cheese press, mayonnaise machine, loom, mill, composter, fertilizer barrel, nutrient mixer,
 oak cask, glass kiln, seed maker, bee hive, mushroom log, compute rack, digester, ore washer, geode cracker and packing
-table. A batch runs in real minutes while the machine is anchored and powered; goods keep the input's quality.
+table. A batch runs in real minutes while the machine is anchored and powered; goods keep the input's quality. A busy machine queues more of the same (`Queue`, up to `QueueCap`), taking the rest of a stack in one go, and runs them in turn.
 
 **Market**: the packing table seals goods into TradeGoods crates (Luxuries, Supplies, Fabric, Fertilizer) that sell on
-the live market. The order board (`WGOrderBoardSystem`) posts NPC orders from `orders.yml` and pays per item and on fill.
+the live market. The order board (`WGOrderBoardSystem`) posts NPC orders from `orders.yml` and pays per item and on fill, set well above a chute or a packed trade crate; `excludeTags` keeps slices off whole-pie and cake orders.
 
 **Animals** (`WGAnimalMoodSystem`): any animal that lays, gives milk or grows wool has a mood, raised by petting and a
 fed belly, lowered by hunger; happy animals produce sooner and lay better eggs (a marked hook in `EggLayerSystem`).
@@ -66,6 +66,7 @@ project (art CC BY-SA 3.0). Everything here is sold at the Homestead Supply vend
 - [`Content.IntegrationTests/Tests/_WG/Farming/FarmingDataTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Farming/FarmingDataTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Farming/GreenhouseRoofTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Farming/GreenhouseRoofTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Farming/HomesteadTestCommandTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Farming/HomesteadTestCommandTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Farming/ProcessorQueueTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Farming/ProcessorQueueTest.cs)
 
 ### Prototypes
 

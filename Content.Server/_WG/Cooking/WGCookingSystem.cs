@@ -29,15 +29,17 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Random;
 using Robust.Shared.Timing;
 
 namespace Content.Server._WG.Cooking;
 
 /// <summary>Hands-on cooking for every kitchen recipe: hearths, pans, pots and the prep board.</summary>
-public sealed class WGCookingSystem : EntitySystem
+public sealed partial class WGCookingSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPrototypeManager _proto = default!;
+    [Dependency] private IRobustRandom _random = default!;
     [Dependency] private AppearanceSystem _appearance = default!;
     [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private UserInterfaceSystem _ui = default!;
@@ -94,6 +96,7 @@ public sealed class WGCookingSystem : EntitySystem
         SubscribeLocalEvent<WGPanComponent, ExaminedEvent>(OnPanExamined);
         SubscribeLocalEvent<WGPotComponent, InteractUsingEvent>(OnPotUsing);
         SubscribeLocalEvent<WGPotComponent, ExaminedEvent>(OnPotExamined);
+        SubscribeLocalEvent<WGPotComponent, SolutionTransferAttemptEvent>(OnKettlePourAttempt);
         SubscribeLocalEvent<WGHearthComponent, GetVerbsEvent<AlternativeVerb>>(OnHearthVerbs);
         SubscribeLocalEvent<WGHearthComponent, WGStirMessage>(OnHearthStirMessage);
         SubscribeLocalEvent<WGPrepBoardComponent, ComponentInit>(OnBoardInit);
@@ -137,6 +140,7 @@ public sealed class WGCookingSystem : EntitySystem
         _chopRecipes = null;
         _comboTags = null;
         _singleRecipes = null;
+        _brewRecipes = null;
         _kitchenRecipes.Clear();
     }
 
@@ -295,7 +299,7 @@ public sealed class WGCookingSystem : EntitySystem
             return;
         }
 
-        if (onHob is { } pot && TryComp<WGPotComponent>(pot, out var potComp) && StewRecipe(used) != null)
+        if (onHob is { } pot && TryComp<WGPotComponent>(pot, out var potComp) && Takes((pot, potComp), used))
         {
             args.Handled = true;
             AddToPot((pot, potComp), used, args.User);
@@ -336,7 +340,8 @@ public sealed class WGCookingSystem : EntitySystem
             if (container.Comp.CanSend
                 && _transfer.Transfer(user, container, fromSoln.Value, pot, potSoln.Value, container.Comp.TransferAmount) is var poured
                 && poured > FixedPoint2.Zero)
-                _popup.PopupEntity(Loc.GetString("wg-cook-pot-poured", ("amount", poured), ("item", container.Owner)), Shown(pot), user);
+                _popup.PopupEntity(Loc.GetString(Comp<WGPotComponent>(pot).Kettle ? "wg-brew-poured-in" : "wg-cook-pot-poured",
+                    ("amount", poured), ("item", container.Owner)), Shown(pot), user);
             return;
         }
 
@@ -347,12 +352,22 @@ public sealed class WGCookingSystem : EntitySystem
         if (amount <= FixedPoint2.Zero || potSolution.Volume <= FixedPoint2.Zero)
             return;
 
-        var soup = _solutions.SplitSolutionWithout(potSoln.Value, amount, Water);
+        // A kettle pours what has brewed, topped up with water; powder still steeping stays in.
+        var powders = Comp<WGPotComponent>(pot).Kettle
+            ? BrewRecipes().Where(r => r.Powder != null).Select(r => r.Powder!.Value.Id).ToArray()
+            : Array.Empty<string>();
+        var soup = _solutions.SplitSolutionWithout(potSoln.Value, amount, powders.Append(Water).ToArray());
         if (soup.Volume < amount)
-            soup.AddSolution(_solutions.SplitSolution(potSoln.Value, amount - soup.Volume), _proto);
+            soup.AddSolution(_solutions.SplitSolutionWithout(potSoln.Value, amount - soup.Volume, powders), _proto);
+        if (soup.Volume <= FixedPoint2.Zero)
+        {
+            _popup.PopupEntity(Loc.GetString("wg-brew-not-ready"), Shown(pot), user);
+            return;
+        }
         _solutions.TryAddSolution(intoSoln.Value, soup);
         _audio.PlayPvs(Bubbles, Shown(pot), AudioParams.Default.WithVolume(-6f));
-        _popup.PopupEntity(Loc.GetString("wg-cook-pot-ladled", ("amount", soup.Volume), ("item", container.Owner)), Shown(pot), user);
+        _popup.PopupEntity(Loc.GetString(Comp<WGPotComponent>(pot).Kettle ? "wg-brew-poured-out" : "wg-cook-pot-ladled",
+            ("amount", soup.Volume), ("item", container.Owner)), Shown(pot), user);
     }
 
     private void OnHearthHand(Entity<WGHearthComponent> ent, ref InteractHandEvent args)
@@ -418,7 +433,7 @@ public sealed class WGCookingSystem : EntitySystem
 
     private void OnPotUsing(Entity<WGPotComponent> ent, ref InteractUsingEvent args)
     {
-        if (args.Handled || StewRecipe(args.Used) == null)
+        if (args.Handled || !Takes(ent, args.Used))
             return;
 
         args.Handled = true;
@@ -427,7 +442,10 @@ public sealed class WGCookingSystem : EntitySystem
 
     private void AddToPot(Entity<WGPotComponent> pot, EntityUid food, EntityUid user)
     {
-        if (StewRecipe(food) is not { } recipe || !_solutions.TryGetSolution(pot.Owner, pot.Comp.Solution, out _, out var solution))
+        var (recipeId, seconds) = pot.Comp.Kettle
+            ? BrewRecipe(food) is { } brew ? (brew.ID, brew.Seconds) : (null, 0f)
+            : StewRecipe(food) is { } stew ? (stew.ID, stew.Seconds) : (null, 0f);
+        if (recipeId == null || !_solutions.TryGetSolution(pot.Owner, pot.Comp.Solution, out _, out var solution))
             return;
 
         if (pot.Comp.Boil < pot.Comp.BoilAt)
@@ -436,7 +454,10 @@ public sealed class WGCookingSystem : EntitySystem
             return;
         }
 
-        var needed = pot.Comp.Portion * (pot.Comp.Jobs.Sum(j => j.Portions) + 1);
+        var quality = (int) (CompOrNull<WGProduceQualityComponent>(food)?.Quality ?? WGCropQuality.Normal);
+        var needed = pot.Comp.Kettle
+            ? pot.Comp.Portion * (pot.Comp.Jobs.Sum(j => 1f + 0.25f * j.Quality) + 1f + 0.25f * quality)
+            : pot.Comp.Portion * (pot.Comp.Jobs.Sum(j => j.Portions) + 1);
         if (solution.GetTotalPrototypeQuantity(Water) < FixedPoint2.New(needed))
         {
             _popup.PopupEntity(Loc.GetString("wg-cook-pot-no-water"), Shown(pot), user);
@@ -445,15 +466,17 @@ public sealed class WGCookingSystem : EntitySystem
 
         pot.Comp.Jobs.Add(new WGStewJob
         {
-            Recipe = recipe.ID,
-            Left = recipe.Seconds,
+            Recipe = recipeId,
+            Left = seconds,
             Ingredient = MetaData(food).EntityPrototype?.ID ?? string.Empty,
             Tags = ComboTags().Where(t => _tags.HasTag(food, t)).ToHashSet(),
+            Quality = quality,
         });
-        _popup.PopupEntity(Loc.GetString("wg-cook-pot-in", ("item", food)), Shown(pot), user);
+        _popup.PopupEntity(Loc.GetString(pot.Comp.Kettle ? "wg-brew-in" : "wg-cook-pot-in", ("item", food)), Shown(pot), user);
         _audio.PlayPvs(Bubbles, Shown(pot));
         QueueDel(food);
-        Combine(pot, user);
+        if (!pot.Comp.Kettle)
+            Combine(pot, user);
     }
 
     /// <summary>Combines stewing ingredients into the biggest multi-ingredient stew they make.</summary>
@@ -515,11 +538,11 @@ public sealed class WGCookingSystem : EntitySystem
 
     private void OnHearthVerbs(Entity<WGHearthComponent> ent, ref GetVerbsEvent<AlternativeVerb> args)
     {
-        if (!args.CanAccess || !args.CanInteract || HobItem(ent) is not { } pot || !HasComp<WGPotComponent>(pot))
+        if (!args.CanAccess || !args.CanInteract || HobItem(ent) is not { } pot
+            || !TryComp<WGPotComponent>(pot, out var potComp) || potComp.Kettle)
             return;
 
         var user = args.User;
-        var potComp = Comp<WGPotComponent>(pot);
         args.Verbs.Add(new AlternativeVerb
         {
             Text = Loc.GetString("wg-stir-verb"),
@@ -585,6 +608,12 @@ public sealed class WGCookingSystem : EntitySystem
     private void OnPotExamined(Entity<WGPotComponent> ent, ref ExaminedEvent args)
     {
         args.PushMarkup(Loc.GetString(ent.Comp.Boil >= ent.Comp.BoilAt ? "wg-cook-pot-boiling" : "wg-cook-pot-still"));
+        if (ent.Comp.Kettle)
+        {
+            ExamineKettle(ent, args);
+            return;
+        }
+
         if (ent.Comp.Jobs.Count > 0)
         {
             args.PushMarkup(Loc.GetString("wg-cook-pot-stewing", ("count", ent.Comp.Jobs.Count)));
@@ -1038,6 +1067,12 @@ public sealed class WGCookingSystem : EntitySystem
         if (pot.Comp.Boil < pot.Comp.BoilAt)
             return;
 
+        if (pot.Comp.Kettle)
+        {
+            Brew(pot, soln.Value, heat);
+            return;
+        }
+
         foreach (var job in pot.Comp.Jobs.ToList())
         {
             job.Left -= heat;
@@ -1156,6 +1191,7 @@ public sealed class WGCookingSystem : EntitySystem
         var count = score >= 0.5f ? pieces : Math.Max(1, pieces - 1);
         var name = Name(item);
         var quality = CompOrNull<WGProduceQualityComponent>(item)?.Quality;
+        var bonus = option == 0 ? ChopRecipe(item) : null;
         // The pieces share what is left in the item, as slicing does: a half-eaten or poisoned item gives the same.
         Solution? left = null;
         var trash = new List<EntProtoId>();
@@ -1179,6 +1215,14 @@ public sealed class WGCookingSystem : EntitySystem
 
         foreach (var junk in trash)
             Spawn(junk, Transform(board).Coordinates);
+
+        if (bonus?.Bonus is { } lucky && _random.Prob(bonus.BonusChance))
+        {
+            var found = _containers.GetContainer(board, WGPrepBoardComponent.Contents).ContainedEntities.Count >= board.Comp.Capacity
+                ? Spawn(lucky, Transform(board).Coordinates)
+                : SpawnInContainerOrDrop(lucky, board, WGPrepBoardComponent.Contents);
+            _popup.PopupEntity(Loc.GetString("wg-cook-board-bonus", ("item", found)), board, user, PopupType.Medium);
+        }
 
         _audio.PlayPvs(ChopSound, board);
         var key = score >= 0.85f ? "wg-cook-board-chopped-clean" : score >= 0.5f ? "wg-cook-board-chopped" : "wg-cook-board-chopped-sloppy";

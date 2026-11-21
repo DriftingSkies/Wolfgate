@@ -1,0 +1,250 @@
+# Cookware made by hand from the construction menu, so a kitchen can be kitted out anywhere.
+
+- type: constructionGraph
+  id: WGCookBowlGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: WoodPlank
+        amount: 1
+        doAfter: 1
+  - node: built
+    entity: WGCookBowl
+
+- type: construction
+  name: wooden bowl
+  id: WGCookBowlRecipe
+  graph: WGCookBowlGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-tools
+  description: "A wooden bowl for soup and stew."
+  icon:
+    sprite: _WG/Cooking/cookware.rsi
+    state: wgcookbowl
+  objectType: Item
+
+- type: constructionGraph
+  id: WGCookCupGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: Steel
+        amount: 1
+        doAfter: 1
+  - node: built
+    entity: WGCookCup
+
+- type: construction
+  name: steel cup
+  id: WGCookCupRecipe
+  graph: WGCookCupGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-tools
+  description: "A cup for tea, coffee and cocoa."
+  icon:
+    sprite: _WG/Cooking/cookware.rsi
+    state: wgcookcup
+  objectType: Item
+
+- type: constructionGraph
+  id: WGCookPlatterGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: WoodPlank
+        amount: 2
+        doAfter: 1
+  - node: built
+    entity: WGCookPlatter
+
+- type: construction
+  name: serving platter
+  id: WGCookPlatterRecipe
+  graph: WGCookPlatterGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-tools
+  description: "A wide platter for serving a dish."
+  icon:
+    sprite: _WG/Cooking/cookware.rsi
+    state: wgcookplatter
+  objectType: Item
+
+- type: constructionGraph
+  id: WGCookRollingPinGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: WoodPlank
+        amount: 1
+        doAfter: 1
+  - node: built
+    entity: WGCookRollingPin
+
+- type: construction
+  name: rolling pin
+  id: WGCookRollingPinRecipe
+  graph: WGCookRollingPinGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-tools
+  description: "For rolling out dough."
+  icon:
+    sprite: _WG/Cooking/cookware.rsi
+    state: wgcookrollingpin
+  objectType: Item
+
+- type: constructionGraph
+  id: WGCookPeppermillGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: WoodPlank
+        amount: 1
+        doAfter: 1
+      - material: Steel
+        amount: 1
+        doAfter: 1
+  - node: built
+    entity: WGCookPeppermill
+
+- type: construction
+  name: pepper mill
+  id: WGCookPeppermillRecipe
+  graph: WGCookPeppermillGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-tools
+  description: "Grinds pepper over a dish."
+  icon:
+    sprite: _WG/Cooking/cookware.rsi
+    state: wgcookpeppermill
+  objectType: Item
+
+- type: constructionGraph
+  id: WGCookPanGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+  - node: built
+    entity: WGCookPan
+
+- type: construction
+  name: frying pan
+  id: WGCookPanRecipe
+  graph: WGCookPanGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-tools
+  description: "A pan for frying on the hob."
+  icon:
+    sprite: _WG/Cooking/cookware.rsi
+    state: wgcookpan
+  objectType: Item
+
+- type: constructionGraph
+  id: WGCookPotGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: Steel
+        amount: 3
+        doAfter: 1
+  - node: built
+    entity: WGCookPot
+
+- type: construction
+  name: cooking pot
+  id: WGCookPotRecipe
+  graph: WGCookPotGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-tools
+  description: "A pot for boiling water and stewing soup on the hob."
+  icon:
+    sprite: _WG/Cooking/cookware.rsi
+    state: wgcookpot
+  objectType: Item
+
+- type: constructionGraph
+  id: WGCookKettleGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: Steel
+        amount: 2
+        doAfter: 1
+  - node: built
+    entity: WGCookKettle
+
+- type: construction
+  name: kettle
+  id: WGCookKettleRecipe
+  graph: WGCookKettleGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-tools
+  description: "A kettle for brewing tea and coffee on the hob."
+  icon:
+    sprite: _WG/Cooking/cookware.rsi
+    state: wgcookkettle
+  objectType: Item
+
+- type: constructionGraph
+  id: WGCookTeapotGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: Steel
+        amount: 1
+        doAfter: 1
+      - material: Glass
+        amount: 1
+        doAfter: 1
+  - node: built
+    entity: WGCookTeapot
+
+- type: construction
+  name: porcelain teapot
+  id: WGCookTeapotRecipe
+  graph: WGCookTeapotGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-tools
+  description: "Holds a few cups of tea poured from the kettle."
+  icon:
+    sprite: _WG/Cooking/cookware.rsi
+    state: wgcookteapot
+  objectType: Item

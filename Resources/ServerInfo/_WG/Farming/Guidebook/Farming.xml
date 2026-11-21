@@ -62,11 +62,11 @@ You can make all of these yourself. A [bold]composter[/bold] rots spare produce,
 <GuideEntityEmbed Entity="WGFarmBeeHive"/>
 <GuideEntityEmbed Entity="WGFarmCask"/>
 </Box>
-A basket of fresh produce is worth a little, but what you make from it is worth a good deal more. Use produce on a machine to start a batch, and the goods turn up beside it when it's done. Examine a machine to see how it's coming along. Machines must be anchored to work, and some need power too. Whatever comes out keeps the quality of what went in.
+A basket of fresh produce is worth a little, but what you make from it is worth a good deal more. Use produce on a machine to start a batch, and the goods turn up beside it when it's done. Examine a machine to see how it's coming along. Machines must be anchored to work, and some need power too. Whatever comes out keeps the quality of what went in. A busy machine will take more of the same while it works and get to each in turn, so you can hand it a whole stack and come back later. Use [bold]Empty it out[/bold] to take back anything still waiting.
 
 - [bold]Brewing keg[/bold]: ferments fruit into wine and wheat into beer. Load it with glass bottles first.
 - [bold]Glass kiln[/bold]: blows sheets of glass into bottles for the keg.
-- [bold]Preserves jar[/bold]: turns fruit into preserves and vegetables into pickles.
+- [bold]Preserves jar[/bold]: turns fruit into preserves, vegetables into pickles and fish roe into caviar.
 - [bold]Cheese press[/bold]: presses a carton of milk into a wheel of cheese.
 - [bold]Mayonnaise machine[/bold]: whips eggs into mayonnaise.
 - [bold]Mill[/bold]: grinds wheat into flour.
@@ -90,6 +90,6 @@ A happy animal lays, fills with milk or grows its wool sooner, and a miserable o
 <GuideEntityEmbed Entity="WGFarmOrderBoard"/>
 <GuideEntityEmbed Entity="WGFarmPackingTable"/>
 </Box>
-- The [bold]outpost order board[/bold] is where buyers across the sector post what they're after: fruit, eggs, wine, cheese, honey, cloth, fertilizer, home cooking, fresh fish, pelts, jerky and more. Examine it to read the orders, then use the goods on it to deliver. You're paid into your bank account for each item, with a little extra when an order is filled. Finer goods fetch more. Orders don't stand forever, but new ones keep coming.
+- The [bold]outpost order board[/bold] is where buyers across the sector post what they're after: fruit, eggs, wine, cheese, honey, cloth, fertilizer, home cooking and bread, whole pies and cakes, fresh fish, caviar, pelts, jerky and more. Examine it to read the orders, then use the goods on it to deliver. You're paid into your bank account for each item, with a handsome bonus when an order is filled. Orders pay better than selling the same goods anywhere else, packed crates included. Finer goods fetch more. Orders don't stand forever, but new ones keep coming.
 - The [bold]packing table[/bold] seals goods into trade crates for the market. Produce, home cooking and fish fill a supplies crate. Wine, cheese, preserves, pickles, honey and fine dishes fill a luxury goods crate. Cloth and leather fill a fabric crate, and bags of fertilizer fill a fertilizer crate. Keep loading it, and it seals the crate once it's full.
 </Document>

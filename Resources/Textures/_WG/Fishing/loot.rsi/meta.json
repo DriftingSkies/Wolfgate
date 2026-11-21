@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Fish, gear and food from Meridian (icons/obj/fishing.dmi, aquarium/fish.dmi, food/*.dmi); pearl, ultra fish, chest and cage from Paragon Moon (modular/Neu_Food/icons/raw/raw_fish.dmi, icons/roguetown/misc/structure.dmi, icons/roguetown/rav/obj/structures/cage.dmi); adapted for Wolfgate.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "treasure"
+    },
+    {
+      "name": "treasure_open"
+    },
+    {
+      "name": "lucky_coin"
+    },
+    {
+      "name": "algae"
+    },
+    {
+      "name": "rod_fiberglass"
+    },
+    {
+      "name": "rod_iridium"
+    },
+    {
+      "name": "pearl"
+    },
+    {
+      "name": "cage"
+    },
+    {
+      "name": "roe"
+    },
+    {
+      "name": "caviar"
+    },
+    {
+      "name": "sashimi"
+    },
+    {
+      "name": "nigiri"
+    },
+    {
+      "name": "futomaki"
+    },
+    {
+      "name": "moonfish"
+    },
+    {
+      "name": "soulfish"
+    },
+    {
+      "name": "cardinalfish"
+    },
+    {
+      "name": "firefish"
+    },
+    {
+      "name": "sockeye"
+    },
+    {
+      "name": "needlefish"
+    },
+    {
+      "name": "zipzap"
+    },
+    {
+      "name": "legend_frozen"
+    },
+    {
+      "name": "legend_cool"
+    },
+    {
+      "name": "legend_warm"
+    },
+    {
+      "name": "legend_hot"
+    },
+    {
+      "name": "legend_pond"
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+using Content.Shared._WG.Cooking;
 using Content.Shared.Examine;
 using Content.Shared.Mobs.Components;
 using Robust.Shared.Player;
@@ -16,6 +17,10 @@ public sealed partial class WGComfortComponent : Component
     [ViewVariables]
     public TimeSpan? LastMeal;
 
+    /// <summary>When they last shared a cup with someone; a pot shared again soon after adds nothing more.</summary>
+    [ViewVariables]
+    public TimeSpan? LastShared;
+
     /// <summary>0 for nothing to show, 1 content, 2 cozy.</summary>
     [ViewVariables]
     public int Tier;
@@ -27,7 +32,6 @@ public sealed partial class WGMealSystem
     [Dependency] private WGCookingSystem _cooking = default!;
 
     private const float MealComfort = 15f;
-    private const float SoupComfort = 0.3f;
     private const float SharedMealComfort = 10f;
     private const float TendedComfort = 8f;
 
@@ -67,6 +71,8 @@ public sealed partial class WGMealSystem
         var comfort = EnsureComp<WGComfortComponent>(uid);
         if (comfort.Comfort >= cap)
             return;
+        if (TraitStrength(uid, WGMealTrait.Soothed) > 0f)
+            amount *= SoothedGain;
         comfort.Comfort = Math.Min(cap, comfort.Comfort + amount);
         UpdateTier((uid, comfort));
     }
@@ -82,16 +88,18 @@ public sealed partial class WGMealSystem
         var shared = false;
         foreach (var other in _lookup.GetEntitiesInRange<WGComfortComponent>(Transform(eater).Coordinates, ShareReach))
         {
-            if (other.Owner == eater || !AteLately(other.Comp, now))
+            if (other.Owner == eater || !AteLately(other.Comp, now) || SharedLately(other.Comp, now))
                 continue;
             shared = true;
+            other.Comp.LastShared = now;
             AddComfort(other, SharedMealComfort);
             _popup.PopupEntity(Loc.GetString("wg-comfort-shared"), other, other);
         }
 
         comfort.LastMeal = now;
-        if (!shared)
+        if (!shared || SharedLately(comfort, now))
             return;
+        comfort.LastShared = now;
         AddComfort(eater, SharedMealComfort);
         _popup.PopupEntity(Loc.GetString("wg-comfort-shared"), eater, eater);
     }
@@ -120,7 +128,8 @@ public sealed partial class WGMealSystem
         var query = EntityQueryEnumerator<WGComfortComponent>();
         while (query.MoveNext(out var uid, out var comfort))
         {
-            comfort.Comfort = Math.Max(0f, comfort.Comfort - ComfortFade * seconds / 5f);
+            var fade = TraitStrength(uid, WGMealTrait.Soothed) > 0f ? ComfortFade * SoothedFade : ComfortFade;
+            comfort.Comfort = Math.Max(0f, comfort.Comfort - fade * seconds / 5f);
             if (comfort.Comfort <= 0f && !AteLately(comfort, _timing.CurTime))
                 _faded.Add(uid);
             else

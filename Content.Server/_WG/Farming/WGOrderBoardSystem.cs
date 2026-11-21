@@ -103,6 +103,8 @@ public sealed class WGOrderBoardSystem : EntitySystem
     private bool Takes(WGFarmOrderPrototype order, EntityUid item)
     {
         var id = MetaData(item).EntityPrototype?.ID;
+        if (order.ExcludeTags.Count > 0 && _tags.HasAnyTag(item, order.ExcludeTags))
+            return false;
         return id != null && order.Items.Any(i => i.Id == id) || order.Tags.Count > 0 && _tags.HasAnyTag(item, order.Tags);
     }
 

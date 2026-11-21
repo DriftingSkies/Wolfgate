@@ -55,6 +55,10 @@ public sealed partial class WGPotComponent : Component
     [DataField]
     public string Solution = "pot";
 
+    /// <summary>A kettle: it brews drinks (<c>wgBrewRecipe</c>) and makes no soup; a pot makes soup and brews nothing.</summary>
+    [DataField]
+    public bool Kettle;
+
     /// <summary>Seconds of heat the water has had; it boils at <see cref="BoilAt"/> and cools off the hob.</summary>
     [DataField]
     public float Boil;
@@ -99,6 +103,10 @@ public sealed partial class WGStewJob
     /// <summary>Portions of water it turns into soup.</summary>
     [DataField]
     public int Portions = 1;
+
+    /// <summary>Quality steps of what went in; a kettle brews a quarter more for each.</summary>
+    [DataField]
+    public int Quality;
 }
 
 /// <summary>A prep board: ingredients laid on it come together into a raw dish when they make one.</summary>

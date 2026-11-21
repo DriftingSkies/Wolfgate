@@ -14,6 +14,7 @@ There's nothing like a hot meal after a long shift. Cooking here is done by hand
 ## Around the kitchen
 - The [bold]hearth stove[/bold] is the heart of any kitchen: a hob on top for a pan or pot, and an oven below. It burns wood, just like a fireplace: feed it planks or logs, then light it with a lighter, a match or a welder. When the fire burns low, put on more wood. You can build one from the construction menu with some steel.
 - The old [bold]microwave[/bold] now works as an oven with no hob, and the [bold]electric range[/bold] works as a hearth with both. These two still run on power rather than wood.
+- The [bold]kettle[/bold] brews tea, coffee and cocoa on the hob. See [textlink="Brewing" link="WGBrewing"].
 - The [bold]prep board[/bold] is where ingredients are chopped and dishes come together. You can build one from a few wood planks.
 - If the cupboards are bare, order a [bold]cookware crate[/bold] from cargo. It comes with pots, pans, bowls, a prep board and a few nice extras.
 - The [bold]Homestead Supply[/bold] vendor sells the hearth stove and the prep board flatpacked. Set the flatpack down where it should stand and use a wrench on it to unpack it. A wrench also fastens the stove down, or frees it to be moved.
@@ -56,7 +57,7 @@ Anything you cook will fill you up, but only proper home cooking stays with you 
 The old station recipes, like burgers, pizzas and pasta, still cook by hand and still fill you up, but they won't do anything more for you.
 
 ## What a good meal does
-A home-cooked dish stays with you for several minutes after you finish it. You only feel the benefits of your latest meal, so eating something different replaces them. Soup does you good a little with every sip, and every soup and stew also gently mends your heart, lungs, liver, kidneys and stomach.
+A home-cooked dish stays with you for several minutes after you finish it. You only feel the benefits of your latest meal, so eating something different replaces them. A hot drink from the kettle gives its own benefits on top of your meal's; see [textlink="Brewing" link="WGBrewing"]. Soup does you good a little with every sip, and every soup and stew also gently mends your heart, lungs, liver, kidneys and stomach.
 
 - [bold]Energised[/bold]: makes you a little quicker on your feet.
 - [bold]Full for longer[/bold]: keeps hunger away for longer.

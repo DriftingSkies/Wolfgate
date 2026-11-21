@@ -24,6 +24,15 @@ wg-farm-fertilizer-examine = Its soil is fertilized{$quality ->
 }.
 
 wg-process-busy = It is already working on something. Wait until it is done.
+wg-process-queue-full = Its queue is full. Wait until it works through some of it.
+wg-process-queued = You set it aside to go next. {$count} {$count ->
+    [one] item waits
+   *[other] items wait
+} their turn.
+wg-process-queue = {$count} more {$count ->
+    [one] item waits
+   *[other] items wait
+} their turn.
 wg-process-no-seeds = There are no seeds to be had from that.
 wg-process-started = You put {$item} in.
 wg-process-done = {CAPITALIZE(THE($machine))} finishes its batch.
@@ -70,7 +79,8 @@ wg-process-unload-verb = Empty it out
 wg-process-unloaded = You take back what was loaded into it.
 wg-process-batch-started = That fills it. It gets to work.
 wg-order-name-fine-dishes = cakes, pies or quiches
-wg-order-name-home-cooking = home-cooked dishes
+wg-order-name-home-cooking = home-cooked dishes or bread
+wg-order-name-caviar = caviar or pearls
 wg-water-collector-running = It is gathering water at {$percent}% of its best.
 wg-water-collector-idle-rain = It is dry. It only fills while it rains on it.
 wg-water-collector-idle-vapour = It isn't gathering anything. It needs power and air above freezing.

@@ -1,0 +1,118 @@
+# Fishing gear made by hand from the construction menu.
+
+- type: constructionGraph
+  id: WGFishingRodGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: WoodPlank
+        amount: 3
+        doAfter: 1
+      - material: Cloth
+        amount: 1
+        doAfter: 1
+  - node: built
+    entity: WGFishingRod
+
+- type: construction
+  name: fishing rod
+  id: WGFishingRodRecipe
+  graph: WGFishingRodGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-tools
+  description: "Cast it at open water or a pond and reel in when a fish bites."
+  icon:
+    sprite: _WG/Fishing/fishing.rsi
+    state: rod
+  objectType: Item
+
+- type: constructionGraph
+  id: WGFishingRodFiberglassGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: Plastic
+        amount: 3
+        doAfter: 1
+      - material: Steel
+        amount: 1
+        doAfter: 1
+  - node: built
+    entity: WGFishingRodFiberglass
+
+- type: construction
+  name: fiberglass rod
+  id: WGFishingRodFiberglassRecipe
+  graph: WGFishingRodFiberglassGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-tools
+  description: "Fish bite sooner, hold the hook longer and come up in better shape."
+  icon:
+    sprite: _WG/Fishing/loot.rsi
+    state: rod_fiberglass
+  objectType: Item
+
+- type: constructionGraph
+  id: WGFishingRodIridiumGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: Plasteel
+        amount: 3
+        doAfter: 1
+      - material: Gold
+        amount: 2
+        doAfter: 1
+  - node: built
+    entity: WGFishingRodIridium
+
+- type: construction
+  name: iridium rod
+  id: WGFishingRodIridiumRecipe
+  graph: WGFishingRodIridiumGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-tools
+  description: "A master angler's rod: quick bites, a long hold, the best catches and a little luck."
+  icon:
+    sprite: _WG/Fishing/loot.rsi
+    state: rod_iridium
+  objectType: Item
+
+- type: constructionGraph
+  id: WGCrabCageGraph
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: built
+      steps:
+      - material: Steel
+        amount: 3
+        doAfter: 1
+  - node: built
+    entity: WGCrabCage
+
+- type: construction
+  name: crab cage
+  id: WGCrabCageRecipe
+  graph: WGCrabCageGraph
+  startNode: start
+  targetNode: built
+  category: construction-category-tools
+  description: "Baited and set in water, it catches a shellfish every so often."
+  icon:
+    sprite: _WG/Fishing/loot.rsi
+    state: cage
+  objectType: Item

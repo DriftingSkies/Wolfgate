@@ -1,3 +1,4 @@
+using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Tag;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
@@ -66,6 +67,41 @@ public sealed partial class WGStewRecipePrototype : IPrototype
     public int Order;
 }
 
+/// <summary>A drink an ingredient or a powder brews in a boiling kettle; only a kettle brews.</summary>
+[Prototype("wgBrewRecipe")]
+public sealed partial class WGBrewRecipePrototype : IPrototype
+{
+    [IdDataField]
+    public string ID { get; private set; } = default!;
+
+    /// <summary>Items that brew it, dropped in whole.</summary>
+    [DataField]
+    public List<EntProtoId> Inputs = new();
+
+    [DataField]
+    public List<ProtoId<TagPrototype>> Tags = new();
+
+    /// <summary>A powder that brews it, poured or spooned in.</summary>
+    [DataField]
+    public ProtoId<ReagentPrototype>? Powder;
+
+    /// <summary>Units of drink each unit of powder makes from the water.</summary>
+    [DataField]
+    public float PowderYield = 5f;
+
+    /// <summary>The reagent the water becomes.</summary>
+    [DataField(required: true)]
+    public ProtoId<ReagentPrototype> Drink;
+
+    /// <summary>Seconds an item steeps.</summary>
+    [DataField]
+    public float Seconds = 15f;
+
+    /// <summary>Higher is tried first, so berries brew berry tea before the fruit tea any fruit makes.</summary>
+    [DataField]
+    public int Priority;
+}
+
 /// <summary>What chopping an item on a prep board with a knife makes, as a potato into slices or a fish into fillets.</summary>
 [Prototype("wgChopRecipe")]
 public sealed partial class WGChopRecipePrototype : IPrototype
@@ -84,6 +120,13 @@ public sealed partial class WGChopRecipePrototype : IPrototype
 
     [DataField]
     public int Count = 1;
+
+    /// <summary>A lucky extra the cut now and then turns up, such as a pearl in an oyster.</summary>
+    [DataField]
+    public EntProtoId? Bonus;
+
+    [DataField]
+    public float BonusChance;
 }
 
 /// <summary>A raw dish put together on a prep board from its ingredients, ready for the oven or the pan.</summary>

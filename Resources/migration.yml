@@ -5264,3 +5264,8 @@ WFXenoParasiteHunterInfector: WGXenoParasiteHunterInfector
 WFXenoWeedsWild: WGXenoWeedsWild
 WFXenobiologyBountyConsoleFlatpack: WGXenobiologyBountyConsoleFlatpack
 # WOLFGATE END
+
+# WOLFGATE(Cooking) START: Mono's kettle gives way to ours, the only one that brews
+# 2026-11-20
+Kettle: WGCookKettle
+# WOLFGATE END

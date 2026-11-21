@@ -104,6 +104,7 @@ public sealed partial class WGMealSystem : EntitySystem
         InitializeComfort();
         InitializeTending();
         InitializeCombat();
+        InitializeCup();
     }
 
     /// <summary>A dish's strength now: its own, by quality, by freshness.</summary>
@@ -143,8 +144,19 @@ public sealed partial class WGMealSystem : EntitySystem
 
     private void OnBuffEvent(ref WGMealBuffEvent args)
     {
+        if (_mobs.IsDead(args.Target))
+            return;
+
+        if (args.Cup)
+        {
+            GiveCup(args.Target, args.Traits, args.Strength, args.Minutes);
+            AddComfort(args.Target, args.Comfort);
+            ShareCup(args.Target);
+            return;
+        }
+
         Give(args.Target, args.Traits, args.Strength, args.Minutes, popup: false);
-        AddComfort(args.Target, SoupComfort);
+        AddComfort(args.Target, args.Comfort);
     }
 
     /// <summary>Gives the one meal buff, replacing any other; the same buff again is just kept up.</summary>
@@ -156,17 +168,16 @@ public sealed partial class WGMealSystem : EntitySystem
         if (_mobs.IsDead(target))
             return;
 
+        var wasFast = TraitStrength(target, WGMealTrait.Energising);
         var fed = EnsureComp<WGWellFedComponent>(target);
         var trimmed = traits.Take(3).ToList();
         var same = fed.Traits.SequenceEqual(trimmed);
-        var wasFast = fed.Traits.Contains(WGMealTrait.Energising) ? fed.Strength : -1f;
         fed.Traits = trimmed;
         fed.Strength = same ? Math.Max(fed.Strength, strength) : strength;
         var until = _timing.CurTime + TimeSpan.FromMinutes(minutes);
         fed.Until = same && fed.Until > until ? fed.Until : until;
         // A soup gives its buff again on every sip; only a change in the speed bonus needs the speed worked out again.
-        var nowFast = fed.Traits.Contains(WGMealTrait.Energising) ? fed.Strength : -1f;
-        if (!MathHelper.CloseTo(wasFast, nowFast))
+        if (!MathHelper.CloseTo(wasFast, TraitStrength(target, WGMealTrait.Energising)))
             _speed.RefreshMovementSpeedModifiers(target);
         if (popup)
             _popup.PopupEntity(Loc.GetString("wg-meal-fed", ("traits", Describe(fed.Traits))), target, target);
@@ -193,21 +204,25 @@ public sealed partial class WGMealSystem : EntitySystem
         }
 
         _expired.Clear();
+        _expiredCups.Clear();
+        _buffed.Clear();
         var fed = EntityQueryEnumerator<WGWellFedComponent>();
         while (fed.MoveNext(out var uid, out var buff))
         {
             if (_timing.CurTime >= buff.Until)
-            {
                 _expired.Add(uid);
-                continue;
-            }
-
-            // The dead get nothing from it.
-            if (!_mobs.IsDead(uid))
-                Apply(uid, buff, seconds);
+            else
+                _buffed.Add(uid);
         }
 
-        UpdateComfort(seconds);
+        var cups = EntityQueryEnumerator<WGWarmCupComponent>();
+        while (cups.MoveNext(out var uid, out var cup))
+        {
+            if (_timing.CurTime >= cup.Until)
+                _expiredCups.Add(uid);
+            else
+                _buffed.Add(uid);
+        }
 
         // Removed before the speed refresh, or the refresh still sees the buff and keeps its speed bonus.
         foreach (var uid in _expired)
@@ -216,16 +231,54 @@ public sealed partial class WGMealSystem : EntitySystem
             _speed.RefreshMovementSpeedModifiers(uid);
             _popup.PopupEntity(Loc.GetString("wg-meal-worn-off"), uid, uid);
         }
+
+        foreach (var uid in _expiredCups)
+        {
+            RemComp<WGWarmCupComponent>(uid);
+            _speed.RefreshMovementSpeedModifiers(uid);
+            _popup.PopupEntity(Loc.GetString("wg-cup-worn-off"), uid, uid);
+        }
+
+        // The dead get nothing from it.
+        foreach (var uid in _buffed)
+        {
+            if (!TerminatingOrDeleted(uid) && !_mobs.IsDead(uid))
+                Apply(uid, seconds);
+        }
+
+        UpdateComfort(seconds);
     }
 
     private readonly List<EntityUid> _expired = new();
+    private readonly List<EntityUid> _expiredCups = new();
+    private readonly HashSet<EntityUid> _buffed = new();
+    private readonly HashSet<WGMealTrait> _traits = new();
 
-    private void Apply(EntityUid uid, WGWellFedComponent buff, float seconds)
+    /// <summary>A trait's strength from the meal or the cup, whichever is stronger; 0 if neither has it.</summary>
+    public float TraitStrength(EntityUid uid, WGMealTrait trait)
     {
+        var best = 0f;
+        if (TryComp<WGWellFedComponent>(uid, out var fed) && fed.Traits.Contains(trait))
+            best = fed.Strength;
+        if (TryComp<WGWarmCupComponent>(uid, out var cup) && cup.Traits.Contains(trait))
+            best = Math.Max(best, cup.Strength);
+        return best;
+    }
+
+    /// <summary>Applies the meal's and the cup's traits; a trait both give works once, at the stronger.</summary>
+    private void Apply(EntityUid uid, float seconds)
+    {
+        _traits.Clear();
+        if (TryComp<WGWellFedComponent>(uid, out var fed))
+            _traits.UnionWith(fed.Traits);
+        if (TryComp<WGWarmCupComponent>(uid, out var cup))
+            _traits.UnionWith(cup.Traits);
+
         // Comfort makes a good meal go further.
-        var s = buff.Strength * ComfortFactor(uid);
-        foreach (var trait in buff.Traits)
+        var comfort = ComfortFactor(uid);
+        foreach (var trait in _traits)
         {
+            var s = TraitStrength(uid, trait) * comfort;
             switch (trait)
             {
                 case WGMealTrait.Hearty:
@@ -233,13 +286,13 @@ public sealed partial class WGMealSystem : EntitySystem
                     break;
                 case WGMealTrait.Fresh:
                     var heal = new DamageSpecifier();
-                    heal.DamageDict["Blunt"] = -0.15f * s;
-                    heal.DamageDict["Slash"] = -0.1f * s;
-                    heal.DamageDict["Heat"] = -0.1f * s;
+                    heal.DamageDict["Blunt"] = -0.3f * s;
+                    heal.DamageDict["Slash"] = -0.2f * s;
+                    heal.DamageDict["Heat"] = -0.2f * s;
                     _damage.TryChangeDamage(uid, heal, true, false);
                     break;
                 case WGMealTrait.Fortifying:
-                    _blood.TryModifyBleedAmount(uid, -0.15f * s);
+                    _blood.TryModifyBleedAmount(uid, -0.3f * s);
                     break;
                 case WGMealTrait.Warming:
                 case WGMealTrait.Cooling:
@@ -254,16 +307,25 @@ public sealed partial class WGMealSystem : EntitySystem
                             _temperature.ForceChangeTemperature(uid, temp.CurrentTemperature - 0.6f * s, temp);
                     }
                     break;
+                default:
+                    ApplyCupTrait(uid, trait, s);
+                    break;
             }
         }
     }
 
     private void OnRefreshSpeed(Entity<WGWellFedComponent> ent, ref RefreshMovementSpeedModifiersEvent args)
     {
-        if (!ent.Comp.Traits.Contains(WGMealTrait.Energising))
+        ApplyEnergising(ent, args);
+    }
+
+    /// <summary>Energising from the meal or the cup, once: about 6% for an ordinary dish, at most 12%, gentler than stimulants.</summary>
+    private void ApplyEnergising(EntityUid uid, RefreshMovementSpeedModifiersEvent args)
+    {
+        var strength = TraitStrength(uid, WGMealTrait.Energising);
+        if (strength <= 0f)
             return;
-        // Gentler than stimulants: about 5% for an ordinary dish, at most 10%.
-        var bonus = 1f + Math.Min(0.1f, 0.05f * ent.Comp.Strength);
+        var bonus = 1f + Math.Min(0.12f, 0.06f * strength);
         args.ModifySpeed(bonus, bonus);
     }
 

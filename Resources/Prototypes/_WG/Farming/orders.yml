@@ -1,78 +1,78 @@
 # Orders an outpost order board posts (wgFarmOrder): so many items for a price each and a bonus when filled. Pay is
-# set a little above what the goods fetch at a chute, so filling orders is worth the walk.
+# set well above a chute or a packed trade crate, so filling orders is the best way to sell.
 
 - type: wgFarmOrder
   id: WGOrderFruit
   name: wg-order-name-fruit
   tags: [ Fruit ]
-  minCount: 10
-  maxCount: 25
-  price: 30
-  bonus: 400
+  minCount: 6
+  maxCount: 15
+  price: 45
+  bonus: 500
 
 - type: wgFarmOrder
   id: WGOrderVegetables
   name: wg-order-name-vegetables
   tags: [ Vegetable ]
-  minCount: 10
-  maxCount: 25
-  price: 25
-  bonus: 350
+  minCount: 6
+  maxCount: 15
+  price: 40
+  bonus: 450
 
 - type: wgFarmOrder
   id: WGOrderWheat
   name: wg-order-name-wheat
   tags: [ Wheat ]
-  minCount: 15
-  maxCount: 30
-  price: 20
-  bonus: 300
+  minCount: 8
+  maxCount: 20
+  price: 30
+  bonus: 400
 
 - type: wgFarmOrder
   id: WGOrderEggs
   name: wg-order-name-eggs
   tags: [ Egg ]
-  minCount: 6
-  maxCount: 12
-  price: 40
-  bonus: 300
+  minCount: 4
+  maxCount: 8
+  price: 60
+  bonus: 400
 
 - type: wgFarmOrder
   id: WGOrderWine
   name: wg-order-name-wine
   items: [ DrinkWineBottleFull ]
-  minCount: 3
-  maxCount: 8
-  price: 260
-  bonus: 900
+  minCount: 2
+  maxCount: 5
+  price: 480
+  bonus: 1200
   weight: 0.7
 
 - type: wgFarmOrder
   id: WGOrderBeer
   name: wg-order-name-beer
   items: [ DrinkBeerBottleFull ]
-  minCount: 4
-  maxCount: 10
-  price: 140
-  bonus: 600
+  minCount: 3
+  maxCount: 6
+  price: 260
+  bonus: 800
 
 - type: wgFarmOrder
   id: WGOrderPreserves
   name: wg-order-name-preserves
   items: [ WGFruitPreserves, WGPickles ]
-  minCount: 3
-  maxCount: 8
-  price: 240
-  bonus: 700
+  minCount: 2
+  maxCount: 5
+  price: 450
+  bonus: 1000
 
 - type: wgFarmOrder
   id: WGOrderCheese
   name: wg-order-name-cheese
   items: [ FoodCheese ]
   minCount: 2
-  maxCount: 6
-  price: 300
-  bonus: 800
+  maxCount: 4
+  price: 480
+  bonus: 1000
   weight: 0.6
 
 - type: wgFarmOrder
@@ -80,82 +80,95 @@
   name: wg-order-name-honey
   items: [ WGHoney ]
   minCount: 2
-  maxCount: 5
-  price: 290
-  bonus: 600
+  maxCount: 4
+  price: 480
+  bonus: 900
   weight: 0.6
 
 - type: wgFarmOrder
   id: WGOrderCloth
   name: wg-order-name-cloth
   items: [ MaterialCloth1 ]
-  minCount: 10
-  maxCount: 30
-  price: 35
-  bonus: 500
+  minCount: 8
+  maxCount: 20
+  price: 60
+  bonus: 600
 
 - type: wgFarmOrder
   id: WGOrderFertilizer
   name: wg-order-name-fertilizer
   items: [ WGFertilizerBasic, WGFertilizerQuality ]
-  minCount: 5
-  maxCount: 15
-  price: 60
-  bonus: 400
+  minCount: 4
+  maxCount: 10
+  price: 80
+  bonus: 500
 
 - type: wgFarmOrder
   id: WGOrderLedgers
   name: wg-order-name-ledgers
   items: [ WGEncryptedLedger ]
   minCount: 1
-  maxCount: 3
-  price: 1000
-  bonus: 1000
+  maxCount: 2
+  price: 1200
+  bonus: 1200
   weight: 0.4
 
 - type: wgFarmOrder
   id: WGOrderMushrooms
   name: wg-order-name-mushrooms
   items: [ FoodMushroom ]
-  minCount: 6
-  maxCount: 15
-  price: 35
-  bonus: 300
+  minCount: 4
+  maxCount: 10
+  price: 50
+  bonus: 400
 
 - type: wgFarmOrder
   id: WGOrderFineDishes
   name: wg-order-name-fine-dishes
-  tags: [ WGFineFood ]
+  tags: [ WGFineFood, Pie, Cake ]
+  excludeTags: [ Slice ]
   minCount: 2
-  maxCount: 5
-  price: 380
-  bonus: 900
+  maxCount: 4
+  price: 550
+  bonus: 1200
   weight: 0.6
 
 - type: wgFarmOrder
   id: WGOrderHomeCooking
   name: wg-order-name-home-cooking
-  tags: [ WGHomeCooking ]
-  minCount: 4
-  maxCount: 10
-  price: 140
-  bonus: 500
+  tags: [ WGHomeCooking, Bread ]
+  excludeTags: [ Slice ]
+  minCount: 3
+  maxCount: 6
+  price: 180
+  bonus: 700
 
 - type: wgFarmOrder
   id: WGOrderFish
   name: wg-order-name-fish
   tags: [ WGFish ]
-  minCount: 3
-  maxCount: 8
-  price: 80
-  bonus: 500
+  excludeTags: [ WGFishLegendary ]
+  minCount: 2
+  maxCount: 5
+  price: 120
+  bonus: 600
 
 - type: wgFarmOrder
   id: WGOrderShellfish
   name: wg-order-name-shellfish
   tags: [ WGShellfish ]
   minCount: 2
-  maxCount: 5
-  price: 110
-  bonus: 500
+  maxCount: 4
+  price: 160
+  bonus: 600
   weight: 0.6
+
+- type: wgFarmOrder
+  id: WGOrderCaviar
+  name: wg-order-name-caviar
+  items: [ WGCaviar, WGPearl ]
+  minCount: 1
+  maxCount: 3
+  price: 650
+  bonus: 1000
+  weight: 0.4

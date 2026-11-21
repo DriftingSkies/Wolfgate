@@ -149,3 +149,5 @@ wg-comfort-examine-cozy = { $self ->
 loadout-group-wg-mess-kit = Mess kit
 
 guide-entry-wg-cooking = Cooking
+
+wg-cook-board-bonus = Something glints inside: you find {$item}!

@@ -22,7 +22,7 @@
     - id: WGCookPlatter
     - id: WGCookPeppermill
     - id: WGCookRollingPin
-    - id: WGPrepBoard
+    - id: WGPrepBoardFlatpack
     - id: WGCuttingBoard
 
 - type: cargoProduct

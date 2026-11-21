@@ -1,0 +1,45 @@
+<Document>
+# Brewing
+There's no better way to start a shift, or to end one, than with a hot cup in your hands. Tea, coffee and cocoa are brewed in a kettle on the hob, and a cup brewed with care does you good.
+
+<Box>
+<GuideEntityEmbed Entity="WGCookKettle"/>
+<GuideEntityEmbed Entity="WGCookTeapot"/>
+<GuideEntityEmbed Entity="WGCookCup"/>
+<GuideEntityEmbed Entity="WGDriedTeaLeaves"/>
+<GuideEntityEmbed Entity="WGRoastedCoffee"/>
+</Box>
+
+## Putting the kettle on
+- Only a [bold]kettle[/bold] brews. Fill it with water, set it on a lit hob, and wait for it to boil. A hearth stove, an electric range or a folding camp stove all do nicely.
+- Drop in leaves, beans, berries or herbs, and they steep in a little while. Or pour in some tea powder from a pouch, or measure it out with a teaspoon. Powder steeps as soon as the water is boiling.
+- When it's ready, use a [bold]cup[/bold] or a [bold]teapot[/bold] on the hearth to pour some out, or take the kettle off the hob and pour from it. A teapot holds enough for a few cups.
+- A brew never spoils on the heat, so there's no rush.
+
+## Getting your brew ready
+- Coffee cherries need roasting first. Fry them in a pan until they're dark, and like anything in a pan, don't leave them too long.
+- Fresh tea leaves brew green tea. Dry them in the oven first for black tea.
+- Tea pouches and coffee grounds come from the Barista Vendor, and cargo sells a crate of them too.
+
+## What to brew
+- [bold]Fresh black tea[/bold], from dried tea leaves or a black tea pouch: [bold]steady at the helm[/bold], a proper cuppa before a long haul.
+- [bold]Fresh green tea[/bold], from fresh tea leaves or a green tea pouch: [bold]clear-headed[/bold], as poison slowly eases.
+- [bold]Fresh chamomile tea[/bold], from a chamomile tea pouch: [bold]soothed[/bold], so you grow comfortable faster and stay that way longer.
+- [bold]Fresh berry tea[/bold], from any berries or a berry tea pouch: [bold]energised[/bold].
+- [bold]Fresh fruit tea[/bold], from apples, pears, plums, oranges, tangerines, lemons or limes, or a fruit tea pouch: [bold]energised[/bold].
+- [bold]Fresh coffee[/bold], from roasted coffee beans or a coffee pouch: [bold]energised[/bold] and [bold]wide awake[/bold]. Drowsiness lifts, and you get your wind back sooner after a knock.
+- [bold]Homemade cocoa[/bold], from cocoa beans: [bold]warm through[/bold], and the most comforting cup of all.
+- [bold]Poppy tea[/bold], from poppies: [bold]numbed to aches[/bold], so injuries slow you less. One cup is plenty; any more makes you drowsy.
+- [bold]Aloe tea[/bold], from aloe: [bold]mending[/bold], as bruises, cuts and burns slowly heal.
+- [bold]Lingzhi tea[/bold], from lingzhi mushrooms: [bold]steeled[/bold], so blows take less out of you.
+- [bold]Shore sage tea[/bold], from shore sage gathered on the worlds: [bold]breathing easy[/bold], as breathlessness eases and the lungs mend.
+
+Decaf, Yorkshire and other novelty pouches brew their own drinks, which taste lovely but do nothing more. Tea and coffee from a dispenser or a vending machine will do for a quick drink, but only a kettle brew does you good.
+
+## A warm cup
+- A hot drink's benefits sit alongside your meal's, so you can enjoy both at once. You only feel your latest drink, though, and a different cup takes its place.
+- Every warm sip is a little comforting. Sharing a pot is like sharing a meal: drink near someone who has just eaten or had a cup, and you'll both feel the better for it.
+- Examine yourself to see what your drink is doing for you.
+
+See [textlink="Cooking" link="WGCooking"] for the hearth, comfort and meals.
+</Document>

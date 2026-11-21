@@ -177,10 +177,10 @@ COOKWARE = {
     "WGCookPan": ("cookware/pan", "pan", "frying pan", "A well-seasoned frying pan. Set it on a lit hearth's hob and put food in to fry.", 40, "pan"),
     "WGCookPot": ("cookware/pot", "pote", "cooking pot", "A heavy iron pot. Fill it with water, set it on a lit hob to boil, then add ingredients for soup.", 40, "pot"),
     "WGCookPotCopper": ("cookware/pot", "pote_copper", "copper pot", "A polished copper pot for soups and stews.", 60, "pot"),
-    "WGCookKettle": ("cookware/pot", "kettle", "kettle", "A small pot for the hob.", 40, "kettle"),
+    "WGCookKettle": ("cookware/pot", "kettle", "kettle", "A kettle for the hob. Fill it with water, bring it to the boil, then drop in tea leaves or coffee beans, or spoon in tea powder, to brew.", 40, "kettle"),
     "WGCookBowl": ("cookware/bowl", "bowl", "wooden bowl", "A wooden bowl. Use it on a pot to ladle out soup.", 10, "bowl"),
-    "WGCookTeapot": ("cookware/pot", "teapot_porcelain", "porcelain teapot", "A fine porcelain teapot.", 80, "decor"),
-    "WGCookCup": ("cookware/cup", "steel", "steel cup", "A steel drinking cup.", 15, "decor"),
+    "WGCookTeapot": ("cookware/pot", "teapot_porcelain", "porcelain teapot", "A fine porcelain teapot. Fill it from the kettle to serve, then pour out the cups.", 80, "teapot"),
+    "WGCookCup": ("cookware/cup", "steel", "steel cup", "A steel drinking cup. Fill it from the kettle or a teapot.", 15, "cup"),
     "WGCookPlatter": ("cookware/platter", "platter", "serving platter", "A wide platter for serving.", 25, "decor"),
     "WGCookPeppermill": ("cookware/peppermill", "peppermill", "pepper mill", "A wooden pepper mill.", 20, "decor"),
     "WGCookRollingPin": ("cookware/misc", "rolling_pin", "rolling pin", "A rolling pin for pastry.", 15, "decor"),
@@ -356,6 +356,39 @@ def main():
 """
             if kind == "kettle":
                 extra = extra.replace("  - type: Appearance\n  - type: SolutionContainerVisuals\n    maxFillLevels: 2\n    fillBaseName: pot-fill\n    solutionName: pot\n", "")
+                # Only a kettle brews.
+                extra = extra.replace("  - type: WGPot\n", "  - type: WGPot\n    kettle: true\n")
+        elif kind == "teapot":
+            extra = """  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 120
+  - type: RefillableSolution
+    solution: drink
+  - type: DrainableSolution
+    solution: drink
+  - type: ExaminableSolution
+    solution: drink
+  - type: SolutionTransfer
+    transferAmount: 30
+    canChangeTransferAmount: true
+"""
+        elif kind == "cup":
+            extra = """  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 30
+  - type: RefillableSolution
+    solution: drink
+  - type: DrainableSolution
+    solution: drink
+  - type: ExaminableSolution
+    solution: drink
+  - type: SolutionTransfer
+    transferAmount: 30
+  - type: Drink
+    solution: drink
+"""
         elif kind == "bowl":
             extra = """  - type: SolutionContainerManager
     solutions:
@@ -378,6 +411,8 @@ def main():
     fillBaseName: bowl-fill
     solutionName: drink
 """
+        if kind in ("kettle", "teapot", "cup"):
+            extra += "  - type: GuideHelp\n    guides:\n    - WGBrewing\n"
         size = "Normal" if kind in ("pan", "pot") else "Small"
         fill = {"pot": "pot-fill", "bowl": "bowl-fill"}.get(kind)
         sprite = f"""    layers:

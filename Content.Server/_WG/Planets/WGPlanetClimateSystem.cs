@@ -103,6 +103,15 @@ public sealed partial class WGPlanetClimateSystem : EntitySystem
         return GetTarget(state, profile, time, _weather.GetWeatherAt(state, time));
     }
 
+    /// <summary>Whether it is night, 20:00 to 06:00, on the world a map belongs to; false off a world.</summary>
+    public bool IsNight(EntityUid map)
+    {
+        if (!TryGetState(map, out var state, out var profile))
+            return false;
+        var hour = _weather.GetMinuteOfDay(state, profile, _timing.CurTime) / 60;
+        return hour < 6 || hour >= 20;
+    }
+
     /// <summary>The season of the world a map belongs to, now or at a later time; null without seasons.</summary>
     public WGPlanetSeason? GetSeason(EntityUid map, TimeSpan? at = null)
     {

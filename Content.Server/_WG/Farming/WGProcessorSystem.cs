@@ -11,6 +11,7 @@ using Content.Shared.Interaction;
 using Content.Shared.Stacks;
 using Content.Shared.Tag;
 using Content.Shared.Verbs;
+using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
@@ -68,6 +69,35 @@ public sealed partial class WGProcessorComponent : Component
     /// <summary>The seed of the produce put in, for a seed maker.</summary>
     [ViewVariables]
     public SeedData? Seed;
+
+    /// <summary>Items waiting their turn while it works, run one after another.</summary>
+    [DataField]
+    public List<WGProcessQueued> Queue = new();
+
+    /// <summary>The most items that can wait in the queue.</summary>
+    [DataField]
+    public int QueueCap = 10;
+}
+
+/// <summary>One item waiting in a processing machine's queue.</summary>
+[DataDefinition]
+public sealed partial class WGProcessQueued
+{
+    [DataField]
+    public string Recipe = string.Empty;
+
+    [DataField]
+    public EntProtoId Item;
+
+    [DataField]
+    public WGCropQuality Quality;
+
+    [DataField]
+    public string? Holding;
+
+    /// <summary>The item itself, kept in the machine so it comes back as it went in; null for one from a stack.</summary>
+    [DataField]
+    public EntityUid? Held;
 }
 
 /// <summary>Runs processing machines: an item used on one starts a batch of the first recipe that takes it.</summary>
@@ -83,6 +113,10 @@ public sealed class WGProcessorSystem : EntitySystem
     [Dependency] private PowerReceiverSystem _power = default!;
     [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private BotanySystem _botany = default!;
+    [Dependency] private SharedContainerSystem _containers = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+
+    private const string QueueContainer = "wg-process-queue";
 
     private static readonly TimeSpan Tick = TimeSpan.FromSeconds(1);
     private TimeSpan _next;
@@ -93,6 +127,7 @@ public sealed class WGProcessorSystem : EntitySystem
         SubscribeLocalEvent<WGProcessorComponent, InteractUsingEvent>(OnInteractUsing);
         SubscribeLocalEvent<WGProcessorComponent, ExaminedEvent>(OnExamined);
         SubscribeLocalEvent<WGProcessorComponent, GetVerbsEvent<AlternativeVerb>>(OnVerbs);
+        SubscribeLocalEvent<WGProcessorComponent, EntityTerminatingEvent>(OnTerminating);
         SubscribeLocalEvent<PrototypesReloadedEventArgs>(_ => _recipes.Clear());
     }
 
@@ -127,7 +162,14 @@ public sealed class WGProcessorSystem : EntitySystem
         args.Handled = true;
         if (ent.Comp.Recipe != null)
         {
-            _popup.PopupEntity(Loc.GetString("wg-process-busy"), ent, args.User);
+            if (!Enqueue(ent, recipe, args.Used, args.User))
+            {
+                var why = ent.Comp.Queue.Count >= ent.Comp.QueueCap ? Loc.GetString("wg-process-queue-full")
+                    : recipe.Needs is { } missing && ent.Comp.Stock.GetValueOrDefault(missing.Id) <= 0
+                        ? Loc.GetString("wg-process-needs", ("item", NameOf(missing)))
+                        : Loc.GetString("wg-process-busy");
+                _popup.PopupEntity(why, ent, args.User);
+            }
             return;
         }
 
@@ -157,13 +199,67 @@ public sealed class WGProcessorSystem : EntitySystem
         ent.Comp.Seed = seed;
         ent.Comp.Quality = CompOrNull<WGProduceQualityComponent>(args.Used)?.Quality ?? WGCropQuality.Normal;
         ent.Comp.Holding = Name(args.Used);
+        var rest = false;
         if (TryComp<StackComponent>(args.Used, out var stack) && stack.Count > 1)
+        {
             _stack.SetCount(args.Used, stack.Count - 1, stack);
+            rest = true;
+        }
         else
             QueueDel(args.Used);
 
         Start(ent, recipe);
         _popup.PopupEntity(Loc.GetString("wg-process-started", ("item", ent.Comp.Holding)), ent, args.User);
+
+        // The rest of a stack waits its turn.
+        if (rest)
+            Enqueue(ent, recipe, args.Used, args.User);
+    }
+
+    /// <summary>Queues an item, or as much of a stack as fits, behind the current run; false if none fit.</summary>
+    private bool Enqueue(Entity<WGProcessorComponent> ent, WGProcessRecipePrototype recipe, EntityUid item, EntityUid user)
+    {
+        // Seeds and batches keep per-run state the queue can't hold.
+        if (recipe.Seeds || recipe.Batch > 1 || recipe.Auto)
+            return false;
+
+        var room = ent.Comp.QueueCap - ent.Comp.Queue.Count;
+        var stack = CompOrNull<StackComponent>(item);
+        var count = Math.Min(room, stack?.Count ?? 1);
+        if (recipe.Needs is { } needs)
+            count = Math.Min(count, ent.Comp.Stock.GetValueOrDefault(needs.Id));
+        if (count <= 0)
+            return false;
+
+        var single = stack != null && _proto.TryIndex<StackPrototype>(stack.StackTypeId, out var stackProto) ? stackProto.Spawn.Id
+            : MetaData(item).EntityPrototype?.ID;
+        if (single == null)
+            return false;
+
+        var quality = CompOrNull<WGProduceQualityComponent>(item)?.Quality ?? WGCropQuality.Normal;
+        var name = Name(item);
+
+        // A single item waits inside as it is, so a half-eaten or drained one doesn't come back whole.
+        if (stack == null)
+        {
+            var queue = _containers.EnsureContainer<Container>(ent, QueueContainer);
+            if (!_containers.Insert(item, queue))
+                return false;
+            ent.Comp.Queue.Add(new WGProcessQueued { Recipe = recipe.ID, Item = single, Quality = quality, Holding = name, Held = item });
+        }
+        else
+        {
+            for (var i = 0; i < count; i++)
+                ent.Comp.Queue.Add(new WGProcessQueued { Recipe = recipe.ID, Item = single, Quality = quality, Holding = name });
+            if (stack.Count > count)
+                _stack.SetCount(item, stack.Count - count, stack);
+            else
+                QueueDel(item);
+        }
+        if (recipe.Needs is { } used)
+            ent.Comp.Stock[used.Id] -= count;
+        _popup.PopupEntity(Loc.GetString("wg-process-queued", ("count", ent.Comp.Queue.Count)), ent, user);
+        return true;
     }
 
     /// <summary>Adds items toward a batch recipe; the batch starts once it holds enough.</summary>
@@ -213,7 +309,7 @@ public sealed class WGProcessorSystem : EntitySystem
     /// <summary>Offers to empty a batch that is part loaded, so a machine is never stuck waiting on one recipe.</summary>
     private void OnVerbs(Entity<WGProcessorComponent> ent, ref GetVerbsEvent<AlternativeVerb> args)
     {
-        if (!args.CanAccess || !args.CanInteract || ent.Comp.Loading == null)
+        if (!args.CanAccess || !args.CanInteract || ent.Comp.Loading == null && ent.Comp.Queue.Count == 0)
             return;
 
         var user = args.User;
@@ -224,15 +320,47 @@ public sealed class WGProcessorSystem : EntitySystem
         });
     }
 
+    /// <summary>A machine taken apart or destroyed drops its queue and the supplies set aside for it.</summary>
+    private void OnTerminating(Entity<WGProcessorComponent> ent, ref EntityTerminatingEvent args)
+    {
+        var at = _transform.GetMapCoordinates(ent);
+        foreach (var queued in ent.Comp.Queue)
+        {
+            if (queued.Held is { } held && !TerminatingOrDeleted(held))
+                _containers.TryRemoveFromContainer(held, true);
+            else
+            {
+                var back = Spawn(queued.Item, at);
+                if (queued.Quality != WGCropQuality.Normal)
+                    EnsureComp<WGProduceQualityComponent>(back).Quality = queued.Quality;
+            }
+            if (_proto.TryIndex<WGProcessRecipePrototype>(queued.Recipe, out var recipe) && recipe.Needs is { } needs)
+                Spawn(needs, at);
+        }
+        ent.Comp.Queue.Clear();
+    }
+
     /// <summary>Hands back what was loaded toward an unfinished batch and clears it.</summary>
     public void Unload(Entity<WGProcessorComponent> ent, EntityUid user)
     {
-        if (ent.Comp.Loading == null)
+        if (ent.Comp.Loading == null && ent.Comp.Queue.Count == 0)
             return;
 
         var at = Transform(ent).Coordinates;
         foreach (var id in ent.Comp.LoadedIds)
             Spawn(id, at);
+        foreach (var queued in ent.Comp.Queue)
+        {
+            GiveBack(ent, queued);
+            if (!_proto.TryIndex<WGProcessRecipePrototype>(queued.Recipe, out var queuedRecipe) || queuedRecipe.Needs is not { } needs)
+                continue;
+            // The supply goes back into stock while there's room, and out beside the machine past that.
+            if (ent.Comp.Stock.GetValueOrDefault(needs.Id) < ent.Comp.StockCap)
+                ent.Comp.Stock[needs.Id] = ent.Comp.Stock.GetValueOrDefault(needs.Id) + 1;
+            else
+                Spawn(needs, at);
+        }
+        ent.Comp.Queue.Clear();
         ent.Comp.Loading = null;
         ent.Comp.Loaded = 0;
         ent.Comp.LoadedIds.Clear();
@@ -390,6 +518,38 @@ public sealed class WGProcessorSystem : EntitySystem
         ent.Comp.Progress = 0;
         ent.Comp.Holding = null;
         ent.Comp.Seed = null;
+
+        while (ent.Comp.Queue.Count > 0)
+        {
+            var next = ent.Comp.Queue[0];
+            ent.Comp.Queue.RemoveAt(0);
+            if (_proto.TryIndex<WGProcessRecipePrototype>(next.Recipe, out var nextRecipe))
+            {
+                if (next.Held is { } held)
+                    QueueDel(held);
+                ent.Comp.Quality = next.Quality;
+                ent.Comp.Holding = next.Holding;
+                Start(ent, nextRecipe);
+                return;
+            }
+
+            // Its recipe is gone: hand the item back rather than lose it.
+            GiveBack(ent, next);
+        }
+    }
+
+    /// <summary>Puts a queued item back beside the machine: the item itself if it was kept, else a fresh one.</summary>
+    private void GiveBack(Entity<WGProcessorComponent> ent, WGProcessQueued queued)
+    {
+        if (queued.Held is { } held && !TerminatingOrDeleted(held))
+        {
+            _containers.TryRemoveFromContainer(held, true);
+            return;
+        }
+
+        var back = Spawn(queued.Item, Transform(ent).Coordinates);
+        if (queued.Quality != WGCropQuality.Normal)
+            EnsureComp<WGProduceQualityComponent>(back).Quality = queued.Quality;
     }
 
     private WGProcessOutput Pick(List<WGProcessOutput> outputs)
@@ -419,6 +579,9 @@ public sealed class WGProcessorSystem : EntitySystem
             if (count > 0)
                 args.PushMarkup(Loc.GetString("wg-process-stock", ("count", count), ("item", NameOf(id))));
         }
+
+        if (ent.Comp.Queue.Count > 0)
+            args.PushMarkup(Loc.GetString("wg-process-queue", ("count", ent.Comp.Queue.Count)));
 
         if (ent.Comp.Recipe == null)
         {

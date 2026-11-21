@@ -294,6 +294,8 @@ def main():
   tags: [ WGFish ]
   result: WGFoodFishFillet
   count: 2
+  bonus: WGFishRoe
+  bonusChance: 0.15
 
 - type: wgChopRecipe
   id: WGChopShellfish

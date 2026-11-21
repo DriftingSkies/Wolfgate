@@ -495,7 +495,7 @@ def main():
   machine: SmokingRack
   tags: [ WGGameMeat ]
   inputs: [ FoodMeat, FoodMeatBear ]
-  minutes: 20
+  minutes: 8
   keepQuality: false
   outputs:
   - id: WGFoodJerky
@@ -505,7 +505,7 @@ def main():
   id: WGSmokeFish
   machine: SmokingRack
   inputs: [ WGFoodFishFillet ]
-  minutes: 15
+  minutes: 6
   keepQuality: false
   outputs:
   - id: WGFoodDriedFish
@@ -514,7 +514,7 @@ def main():
   id: WGTanLeather
   machine: TanningRack
   tags: [ WGPelt ]
-  minutes: 30
+  minutes: 12
   keepQuality: false
   outputs:
   - id: WGLeather
@@ -524,7 +524,7 @@ def main():
   id: WGMixBoneMeal
   machine: NutrientMixer
   inputs: [ WGBone ]
-  minutes: 10
+  minutes: 5
   keepQuality: false
   outputs:
   - id: WGFertilizerQuality
@@ -612,18 +612,18 @@ def main():
   name: wg-order-name-pelts
   tags: [ WGPelt ]
   minCount: 2
-  maxCount: 6
-  price: 100
-  bonus: 600
+  maxCount: 4
+  price: 160
+  bonus: 800
 
 - type: wgFarmOrder
   id: WGOrderJerky
   name: wg-order-name-jerky
   items: [ WGFoodJerky ]
-  minCount: 4
-  maxCount: 10
-  price: 60
-  bonus: 400
+  minCount: 3
+  maxCount: 6
+  price: 110
+  bonus: 600
 """)
     out = ROOT / "Resources/Prototypes/_WG/Hunting"
     out.mkdir(parents=True, exist_ok=True)

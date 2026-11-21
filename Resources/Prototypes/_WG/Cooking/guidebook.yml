@@ -2,3 +2,10 @@
   id: WGCooking
   name: guide-entry-wg-cooking
   text: "/ServerInfo/_WG/Cooking/Guidebook/Cooking.xml"
+  children:
+  - WGBrewing
+
+- type: guideEntry
+  id: WGBrewing
+  name: guide-entry-wg-brewing
+  text: "/ServerInfo/_WG/Cooking/Guidebook/Brewing.xml"

@@ -5,7 +5,7 @@
   id: WGKegWine
   machine: Keg
   tags: [ Fruit ]
-  minutes: 90
+  minutes: 40
   outputs:
   - id: DrinkWineBottleFull
 
@@ -13,7 +13,7 @@
   id: WGKegBeer
   machine: Keg
   tags: [ Wheat ]
-  minutes: 45
+  minutes: 20
   outputs:
   - id: DrinkBeerBottleFull
 
@@ -21,7 +21,7 @@
   id: WGJarPreserves
   machine: Jar
   tags: [ Fruit ]
-  minutes: 60
+  minutes: 25
   outputs:
   - id: WGFruitPreserves
 
@@ -29,7 +29,7 @@
   id: WGJarPickles
   machine: Jar
   tags: [ Vegetable ]
-  minutes: 60
+  minutes: 25
   outputs:
   - id: WGPickles
 
@@ -37,7 +37,7 @@
   id: WGPressCheese
   machine: CheesePress
   inputs: [ DrinkMilkCarton ]
-  minutes: 30
+  minutes: 15
   outputs:
   - id: FoodCheese
 
@@ -45,7 +45,7 @@
   id: WGMayo
   machine: Mayo
   tags: [ Egg ]
-  minutes: 8
+  minutes: 5
   outputs:
   - id: WGMayonnaise
 
@@ -53,7 +53,7 @@
   id: WGLoomCloth
   machine: Loom
   inputs: [ MaterialCotton1 ]
-  minutes: 15
+  minutes: 8
   outputs:
   - id: MaterialCloth1
     count: 2
@@ -62,7 +62,7 @@
   id: WGMillFlour
   machine: Mill
   tags: [ Wheat ]
-  minutes: 3
+  minutes: 2
   keepQuality: false
   outputs:
   - id: ReagentContainerFlour
@@ -72,7 +72,7 @@
   machine: Composter
   produce: true
   tags: [ Meat, Egg ]
-  minutes: 30
+  minutes: 15
   keepQuality: false
   outputs:
   - id: WGCompost
@@ -82,7 +82,7 @@
   machine: Digester
   produce: true
   tags: [ Meat, Egg ]
-  minutes: 15
+  minutes: 8
   keepQuality: false
   outputs:
   - id: WGCompost
@@ -92,7 +92,7 @@
   id: WGAgeBasicFertilizer
   machine: FertilizerBarrel
   inputs: [ WGCompost ]
-  minutes: 30
+  minutes: 15
   outputs:
   - id: WGFertilizerBasic
 
@@ -100,7 +100,7 @@
   id: WGAgeQualityFertilizer
   machine: FertilizerBarrel
   inputs: [ WGFertilizerBasic ]
-  minutes: 60
+  minutes: 30
   outputs:
   - id: WGFertilizerQuality
 
@@ -108,7 +108,7 @@
   id: WGMixSpeedGro
   machine: NutrientMixer
   inputs: [ WGCompost ]
-  minutes: 15
+  minutes: 8
   outputs:
   - id: WGSpeedGro
 
@@ -116,7 +116,7 @@
   id: WGMixRetainingSoil
   machine: NutrientMixer
   tags: [ Ore ]
-  minutes: 15
+  minutes: 8
   outputs:
   - id: WGRetainingSoil
     count: 2
@@ -125,7 +125,7 @@
   id: WGCaskWine
   machine: Cask
   inputs: [ DrinkWineBottleFull ]
-  minutes: 120
+  minutes: 60
   qualityUp: true
   outputs:
   - id: DrinkWineBottleFull
@@ -134,7 +134,7 @@
   id: WGCaskCheese
   machine: Cask
   inputs: [ FoodCheese ]
-  minutes: 120
+  minutes: 60
   qualityUp: true
   outputs:
   - id: FoodCheese
@@ -144,7 +144,7 @@
   machine: BeeHive
   auto: true
   needsPlants: 2
-  minutes: 60
+  minutes: 30
   outputs:
   - id: WGHoney
 
@@ -152,7 +152,7 @@
   id: WGLogMushrooms
   machine: MushroomLog
   auto: true
-  minutes: 30
+  minutes: 15
   outputs:
   - id: FoodMushroom
     count: 2
@@ -169,7 +169,7 @@
   id: WGWashOre
   machine: OreWasher
   tags: [ Ore ]
-  minutes: 3
+  minutes: 1
   outputs:
   - id: WGGeode
     weight: 1
@@ -180,7 +180,7 @@
   id: WGCrackGeode
   machine: GeodeCracker
   inputs: [ WGGeode ]
-  minutes: 2
+  minutes: 0.5
   keepQuality: false
   outputs:
   - id: SteelOre1
@@ -196,7 +196,7 @@
   id: WGKilnBottles
   machine: GlassKiln
   inputs: [ SheetGlass1 ]
-  minutes: 5
+  minutes: 3
   keepQuality: false
   outputs:
   - id: WGGlassBottle
@@ -207,7 +207,7 @@
   machine: SeedMaker
   produce: true
   seeds: true
-  minutes: 10
+  minutes: 5
   keepQuality: false
   outputs:
   - id: WGGlassBottle # unused for seed recipes; the count is what matters
@@ -227,7 +227,7 @@
   id: WGPackALuxuries
   machine: PackingTable
   tags: [ WGFineFood ]
-  inputs: [ DrinkWineBottleFull, FoodCheese, WGFruitPreserves, WGPickles, WGHoney ]
+  inputs: [ DrinkWineBottleFull, FoodCheese, WGFruitPreserves, WGPickles, WGHoney, WGCaviar, WGPearl ]
   batch: 15
   uncapped: true
   minutes: 2

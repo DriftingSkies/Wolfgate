@@ -2196,7 +2196,7 @@
   parent: BaseItem
   id: WGCookKettle
   name: kettle
-  description: A small pot for the hob.
+  description: A kettle for the hob. Fill it with water, bring it to the boil, then drop in tea leaves or coffee beans, or spoon in tea powder, to brew.
   components:
   - type: Sprite
     sprite: _WG/Cooking/cookware.rsi
@@ -2206,6 +2206,7 @@
   - type: StaticPrice
     price: 40
   - type: WGPot
+    kettle: true
   - type: SolutionContainerManager
     solutions:
       pot:
@@ -2218,6 +2219,9 @@
     solution: pot
   - type: SolutionTransfer
     canChangeTransferAmount: true
+  - type: GuideHelp
+    guides:
+    - WGBrewing
 
 - type: entity
   parent: BaseItem
@@ -2261,7 +2265,7 @@
   parent: BaseItem
   id: WGCookTeapot
   name: porcelain teapot
-  description: A fine porcelain teapot.
+  description: A fine porcelain teapot. Fill it from the kettle to serve, then pour out the cups.
   components:
   - type: Sprite
     sprite: _WG/Cooking/cookware.rsi
@@ -2270,12 +2274,28 @@
     size: Small
   - type: StaticPrice
     price: 80
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 120
+  - type: RefillableSolution
+    solution: drink
+  - type: DrainableSolution
+    solution: drink
+  - type: ExaminableSolution
+    solution: drink
+  - type: SolutionTransfer
+    transferAmount: 30
+    canChangeTransferAmount: true
+  - type: GuideHelp
+    guides:
+    - WGBrewing
 
 - type: entity
   parent: BaseItem
   id: WGCookCup
   name: steel cup
-  description: A steel drinking cup.
+  description: A steel drinking cup. Fill it from the kettle or a teapot.
   components:
   - type: Sprite
     sprite: _WG/Cooking/cookware.rsi
@@ -2284,6 +2304,23 @@
     size: Small
   - type: StaticPrice
     price: 15
+  - type: SolutionContainerManager
+    solutions:
+      drink:
+        maxVol: 30
+  - type: RefillableSolution
+    solution: drink
+  - type: DrainableSolution
+    solution: drink
+  - type: ExaminableSolution
+    solution: drink
+  - type: SolutionTransfer
+    transferAmount: 30
+  - type: Drink
+    solution: drink
+  - type: GuideHelp
+    guides:
+    - WGBrewing
 
 - type: entity
   parent: BaseItem

@@ -7,6 +7,7 @@ Few things are as peaceful as an afternoon by the water with a rod in your hand.
 <GuideEntityEmbed Entity="WGBaitWorm"/>
 <GuideEntityEmbed Entity="WGBaitDoughball"/>
 <GuideEntityEmbed Entity="WGFishPond"/>
+<GuideEntityEmbed Entity="WGCrabCage"/>
 </Box>
 
 ## Getting started
@@ -26,6 +27,21 @@ Bait the hook by using bait on the rod. It holds a good few at once, and each ca
 
 A baited hook brings the fish in sooner, and it lands finer ones: [color=#C0C0C0]silver[/color], [color=#FFD700]gold[/color], or now and then even [color=#B57EDC]iridium[/color]. Worms do better than dough balls.
 
+## Better rods
+As you get the hang of it, a better rod makes every trip by the water a little sweeter. You can buy one from the Homestead Supply or build one from the construction menu.
+- The [bold]fiberglass rod[/bold] gets bites sooner, gives you longer to reel in, and lands finer fish.
+- The [bold]iridium rod[/bold] does all of that even better, and luck seems to follow it.
+
+<Box>
+<GuideEntityEmbed Entity="WGFishingRodFiberglass"/>
+<GuideEntityEmbed Entity="WGFishingRodIridium"/>
+</Box>
+
+## Crab cages
+A [bold]crab cage[/bold] does the fishing while you get on with your day. Load it with bait, then use it on the water right beside you to set it. Every so often something wanders in; when you see movement inside, use it with an empty hand to take out the catch. Each catch uses up one bait, so keep it stocked. Pick the cage up to bring it home.
+
+Cages catch the shellfish of the water they sit in: crabs, shrimp, clams, oysters and lobsters. You can buy them from the Homestead Supply or build them from a little steel.
+
 ## What's biting
 Fish follow the weather, so each kind of world has its own catch:
 - [bold]Frozen worlds[/bold]: arctic char, cod, salmon, plaice, crab, lanternfish and monkfish.
@@ -34,10 +50,35 @@ Fish follow the weather, so each kind of world has its own catch:
 - [bold]Hot worlds[/bold]: clownfish, anglerfish, lobster, octopus, squid, stingray, mudskippers, pufferfish, sand surfers and swordfish.
 - [bold]A fish pond[/bold]: carp, catfish, perch, shrimp and goldfish.
 
+Some fish only come out at certain times, so it's worth trying the same water again later:
+- [bold]After dark[/bold]: moonfish on frozen worlds, cardinalfish on cool worlds, soulfish on warm worlds and firefish on hot worlds.
+- [bold]In the rain[/bold]: needlefish on frozen worlds, sockeye on cool and warm worlds, and zipzaps on hot worlds.
+
+## Something special
+Every so often the water gives up more than a fish.
+- Each kind of water hides one [bold]legendary fish[/bold]: the glacier king crab, the elder eel, the golden carp, the abyssal angler, and in a fish pond, the pond angel. You might fish for a long time before you meet one. Good bait and a good rod help, and when one does bite, you'll know. They fetch a fortune, but plenty of anglers keep theirs to show off.
+- Now and then you'll reel in [bold]junk[/bold]: seaweed, driftwood, an old boot or a scrap of soggy paper. Good bait keeps it off the hook, and seaweed has its uses in the kitchen.
+- Very rarely, a [bold]sunken chest[/bold] comes up along with your catch. Use it in your hand to prise it open. Inside there are always a few worms, and maybe geodes, gold, money, a pearl, a lucky coin, or even a diamond.
+
+<Box>
+<GuideEntityEmbed Entity="WGFishLegendGoldenCarp"/>
+<GuideEntityEmbed Entity="WGFishingTreasure"/>
+<GuideEntityEmbed Entity="WGPearl"/>
+</Box>
+
 ## From the water to the table
 - Chop a fish on a prep board to fillet it, or a shellfish to pick out its meat. See [textlink="Cooking" link="WGCooking"].
 - Fry or bake a fillet, or fry the shellfish meat. In the pot, fillets make fish broth, or fish chowder with potato and onion, and shellfish meat makes a rich seafood bisque.
 - Cooked fish and shellfish count as home cooking, so a good fish supper does you good.
+- Raw fish makes fine sushi, put together on a prep board: [bold]sashimi[/bold] from two fillets, [bold]nigiri[/bold] from a fillet or some shellfish meat with rice, and a [bold]futomaki roll[/bold] from a fillet or some shellfish meat with rice, sliced cucumber and seaweed. Sushi counts as a fine dish.
+- Filleting a fish sometimes turns up [bold]fish roe[/bold]. Cure it in a preserves jar to make [bold]caviar[/bold], a real luxury.
+- Shucking an oyster or a clam on a prep board now and then finds a [bold]pearl[/bold] inside.
 - A smoking rack turns fillets into dried fish that never goes stale. See [textlink="Hunting" link="WGHunting"].
-- The outpost order board often wants fresh fish and shellfish, and the packing table packs fish into supplies crates.
+- The outpost order board often wants fresh fish and shellfish, and now and then caviar or pearls. The packing table packs fish into supplies crates, and caviar and pearls into luxuries crates.
+
+<Box>
+<GuideEntityEmbed Entity="WGFoodFutomaki"/>
+<GuideEntityEmbed Entity="WGFishRoe"/>
+<GuideEntityEmbed Entity="WGCaviar"/>
+</Box>
 </Document>

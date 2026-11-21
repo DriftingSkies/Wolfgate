@@ -97,6 +97,10 @@ public sealed partial class WGFarmOrderPrototype : IPrototype
     [DataField]
     public List<ProtoId<TagPrototype>> Tags = new();
 
+    /// <summary>Tags that keep an item off the order, such as a slice of a pie it wants whole.</summary>
+    [DataField]
+    public List<ProtoId<TagPrototype>> ExcludeTags = new();
+
     [DataField]
     public int MinCount = 5;
 

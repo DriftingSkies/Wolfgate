@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server._WG.Farming;
+using Content.Server._WG.GroundCover;
 using Content.Server._WG.Planets;
 using Content.Server.Parallax;
 using Content.Server.Popups;
@@ -56,6 +57,21 @@ public sealed partial class WGFishingRodComponent : Component
     [ViewVariables]
     public bool Biting;
 
+    /// <summary>Seconds added to the window a fish holds the hook.</summary>
+    [DataField]
+    public float WindowBonus;
+
+    /// <summary>Scales the wait for a bite; lower is quicker.</summary>
+    [DataField]
+    public float BiteSpeed = 1f;
+
+    /// <summary>Steps of bait quality the rod adds to every catch.</summary>
+    [DataField]
+    public int QualityBonus;
+
+    /// <summary>Scales the chance of a legendary fish or a treasure chest.</summary>
+    [DataField]
+    public float Luck = 1f;
 }
 
 /// <summary>Bait for a fishing rod: used on a rod it loads the hook; better bait means quicker bites and better fish.</summary>
@@ -83,12 +99,15 @@ public sealed class WGFishingSystem : EntitySystem
     [Dependency] private SharedMapSystem _maps = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private WGPlanetClimateSystem _climate = default!;
+    [Dependency] private WGGroundCoverSystem _groundCover = default!;
 
     private static readonly SoundSpecifier Splash = new SoundPathSpecifier("/Audio/Effects/Fluids/splash.ogg");
     private static readonly SoundSpecifier BigSplash = new SoundPathSpecifier("/Audio/Effects/Fluids/watersplash.ogg");
 
     /// <summary>Seconds a fish holds the hook before it slips off.</summary>
     private const float Window = 2.5f;
+
+    private static readonly ProtoId<WGFishLootPrototype> LootId = "WGFishLoot";
 
     public override void Initialize()
     {
@@ -140,14 +159,14 @@ public sealed class WGFishingSystem : EntitySystem
             rod.Comp.CastBait = rod.Comp.Bait[^1];
             rod.Comp.Bait.RemoveAt(rod.Comp.Bait.Count - 1);
         }
-        var wait = _random.NextFloat(8f, 22f) * (rod.Comp.CastBait != null ? 0.6f : 1f);
+        var wait = _random.NextFloat(8f, 22f) * (rod.Comp.CastBait != null ? 0.6f : 1f) * rod.Comp.BiteSpeed;
         rod.Comp.BiteAt = _timing.CurTime + TimeSpan.FromSeconds(wait);
         _audio.PlayPvs(Splash, args.ClickLocation);
         _popup.PopupEntity(Loc.GetString("wg-fish-cast"), args.User, args.User);
     }
 
     /// <summary>Whether the spot is a planet's standing water by its biome.</summary>
-    private bool IsOpenWater(EntityCoordinates where)
+    public bool IsOpenWater(EntityCoordinates where)
     {
         var map = _transform.GetMap(where);
         if (map == null || !TryComp<BiomeComponent>(map, out var biome) || !TryComp<MapGridComponent>(map, out var grid))
@@ -157,7 +176,7 @@ public sealed class WGFishingSystem : EntitySystem
         return _biomes.WgIsWater((map.Value, biome), indices);
     }
 
-    private string? PickTable(EntityUid user, bool pond)
+    public string? PickTable(EntityUid user, bool pond)
     {
         var celsius = Transform(user).MapUid is { } map && _climate.GetOutsideTemperature(map) is { } kelvin ? kelvin - 273.15f : 18f;
         return _proto.EnumeratePrototypes<WGFishTablePrototype>()
@@ -185,20 +204,70 @@ public sealed class WGFishingSystem : EntitySystem
         }
 
         if (rod.Comp.Table is { } tableId && _proto.TryIndex<WGFishTablePrototype>(tableId, out var table) && table.Fish.Count > 0)
-        {
-            var fish = Spawn(Pick(table.Fish), Transform(user).Coordinates);
-            var quality = Roll(rod.Comp.CastBait ?? 0);
-            if (quality != WGCropQuality.Normal)
-                EnsureComp<WGProduceQualityComponent>(fish).Quality = quality;
-            _hands.PickupOrDrop(user, fish);
-            _audio.PlayPvs(BigSplash, user);
-            _popup.PopupEntity(Loc.GetString("wg-fish-caught", ("fish", fish)), user, user, PopupType.Medium);
-        }
+            Land(rod, user, table);
 
         Reset(rod);
     }
 
-    private EntProtoId Pick(List<WGFishEntry> fish)
+    /// <summary>Lands the catch: mostly a fish of the water, now and then junk or its legendary fish, rarely a chest besides.</summary>
+    private void Land(Entity<WGFishingRodComponent> rod, EntityUid user, WGFishTablePrototype table)
+    {
+        var bait = rod.Comp.CastBait ?? 0;
+        var at = Transform(user).Coordinates;
+        _proto.TryIndex(LootId, out var loot);
+        var extras = Extras(table.ID);
+
+        EntityUid caught;
+        var legendary = false;
+        if (loot != null && loot.Junk.Count > 0 && _random.Prob(loot.JunkChance / (1f + bait)))
+        {
+            caught = Spawn(Pick(loot.Junk), at);
+            _popup.PopupEntity(Loc.GetString("wg-fish-caught-junk", ("item", caught)), user, user);
+        }
+        else
+        {
+            legendary = loot != null && extras?.Legendary != null
+                && _random.Prob(loot.LegendaryChance * (1f + 0.5f * bait) * rod.Comp.Luck);
+            caught = Spawn(legendary ? extras!.Legendary!.Value : Pick(FishFor(user, table, extras)), at);
+            var quality = legendary ? WGCropQuality.Normal : Roll(bait + rod.Comp.QualityBonus);
+            if (quality != WGCropQuality.Normal)
+                EnsureComp<WGProduceQualityComponent>(caught).Quality = quality;
+            _popup.PopupEntity(Loc.GetString(legendary ? "wg-fish-caught-legendary" : "wg-fish-caught", ("fish", caught)),
+                user, user, legendary ? PopupType.LargeCaution : PopupType.Medium);
+        }
+
+        _hands.PickupOrDrop(user, caught);
+        _audio.PlayPvs(BigSplash, user);
+
+        if (loot?.Treasure is { } treasure && _random.Prob(loot.TreasureChance * rod.Comp.Luck))
+        {
+            var chest = Spawn(treasure, at);
+            _hands.PickupOrDrop(user, chest);
+            _popup.PopupEntity(Loc.GetString("wg-fish-caught-treasure"), user, user, PopupType.Large);
+        }
+    }
+
+    /// <summary>The extras prototype for a fish table, if any.</summary>
+    public WGFishExtrasPrototype? Extras(string table)
+    {
+        return _proto.EnumeratePrototypes<WGFishExtrasPrototype>().FirstOrDefault(e => e.Table == table);
+    }
+
+    /// <summary>A table's fish, with its night fish after dark and its rain fish in the rain.</summary>
+    public List<WGFishEntry> FishFor(EntityUid user, WGFishTablePrototype table, WGFishExtrasPrototype? extras)
+    {
+        if (extras == null || table.Pond || Transform(user).MapUid is not { } map)
+            return table.Fish;
+
+        var fish = new List<WGFishEntry>(table.Fish);
+        if (extras.Night.Count > 0 && _climate.IsNight(map))
+            fish.AddRange(extras.Night);
+        if (extras.Rain.Count > 0 && _groundCover.GetPrecipitation(map).Rain > 0.1f)
+            fish.AddRange(extras.Rain);
+        return fish;
+    }
+
+    public EntProtoId Pick(List<WGFishEntry> fish)
     {
         var roll = _random.NextFloat() * fish.Sum(f => f.Weight);
         foreach (var entry in fish)
@@ -212,7 +281,7 @@ public sealed class WGFishingSystem : EntitySystem
     }
 
     /// <summary>A catch's quality: mostly normal; bait gives each step a better chance.</summary>
-    private WGCropQuality Roll(int bait)
+    public WGCropQuality Roll(int bait)
     {
         var quality = WGCropQuality.Normal;
         var chance = 0.25f + 0.15f * bait;
@@ -254,7 +323,7 @@ public sealed class WGFishingSystem : EntitySystem
             if (!rod.Biting && now >= rod.BiteAt)
             {
                 rod.Biting = true;
-                rod.EscapeAt = now + TimeSpan.FromSeconds(Window);
+                rod.EscapeAt = now + TimeSpan.FromSeconds(Window + rod.WindowBonus);
                 _audio.PlayPvs(Splash, angler);
                 _popup.PopupEntity(Loc.GetString("wg-fish-bite"), angler, angler, PopupType.LargeCaution);
             }
