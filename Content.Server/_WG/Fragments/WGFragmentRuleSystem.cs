@@ -1,15 +1,21 @@
 using System.Linq;
 using System.Numerics;
 using Content.Server._Mono.Store;
+using Content.Server._WG.AdminVessels;
 using Content.Server._NF.Bank;
 using Content.Server._WG.Companies;
 using Content.Server._WG.Operations;
 using Content.Server._WG.Remade.Conversion;
+using Content.Server.Atmos.Components;
+using Content.Server.Explosion.EntitySystems;
 using Content.Server.Preferences.Managers;
 using Content.Server.StationEvents.Components;
 using Content.Server.StationEvents.Events;
 using Content.Shared._Mono.Company;
+using Content.Shared.Damage;
 using Content.Shared.Destructible;
+using Content.Shared.Doors.Components;
+using Content.Shared.Explosion;
 using Content.Shared.FixedPoint;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.Maps;
@@ -38,6 +44,7 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
     [Dependency] private BankSystem _bank = default!;
     [Dependency] private WGCompanySystem _companies = default!;
     [Dependency] private CurrencyInjectionSystem _currency = default!;
+    [Dependency] private ExplosionSystem _explosion = default!;
     [Dependency] private ISharedPlayerManager _players = default!;
     [Dependency] private IServerPreferencesManager _prefs = default!;
     [Dependency] private LinkedLifecycleGridSystem _lifecycle = default!;
@@ -70,7 +77,72 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
     {
         base.Initialize();
         SubscribeLocalEvent<WGFragmentHeartComponent, DestructionEventArgs>(OnHeartBroken);
+        SubscribeLocalEvent<WGFragmentHeartComponent, BeforeDamageChangedEvent>(OnHeartDamage);
+        SubscribeLocalEvent<WGFragmentHullComponent, BeforeDamageChangedEvent>(OnHullDamage);
+        SubscribeLocalEvent<WGFragmentHullComponent, GetExplosionResistanceEvent>(OnHullBlast);
         InitializeAnnouncements();
+    }
+
+    /// <summary>
+    /// Makes the fragment's floors blast-proof and every wall, door and window on it indestructible, so it has to be
+    /// boarded. Blasts then stop at the hull instead of reaching what's inside.
+    /// </summary>
+    public void SealHull(EntityUid grid)
+    {
+        EnsureComp<WGBlastproofFloorsComponent>(grid);
+        if (!TryComp<MapGridComponent>(grid, out var mapGrid))
+            return;
+
+        foreach (var child in _siteGrid.Children(grid))
+        {
+            if (!HasComp<AirtightComponent>(child) && !HasComp<DoorComponent>(child))
+                continue;
+
+            EnsureComp<WGFragmentHullComponent>(child);
+            var xform = Transform(child);
+            if (xform.Anchored)
+                _explosion.UpdateAirtightMap(grid, mapGrid, MapSystem.LocalToTile(grid, mapGrid, xform.Coordinates));
+        }
+    }
+
+    private void OnHullDamage(Entity<WGFragmentHullComponent> ent, ref BeforeDamageChangedEvent args)
+    {
+        if (args.Damage.AnyPositive())
+            args.Cancelled = true;
+    }
+
+    private void OnHullBlast(Entity<WGFragmentHullComponent> ent, ref GetExplosionResistanceEvent args)
+    {
+        args.DamageCoefficient = 0;
+    }
+
+    /// <summary>
+    /// Cancels harm to the heart unless it comes from someone aboard the fragment within reach: no ship guns, no bombs
+    /// set off in space beside it, no ramming.
+    /// </summary>
+    private void OnHeartDamage(Entity<WGFragmentHeartComponent> ent, ref BeforeDamageChangedEvent args)
+    {
+        if (args.Cancelled || !args.Damage.AnyPositive())
+            return;
+
+        if (!CanHurtHeart(ent, args.Origin))
+            args.Cancelled = true;
+    }
+
+    /// <summary>Whether <paramref name="origin"/> stands on the heart's grid within its reach.</summary>
+    public bool CanHurtHeart(Entity<WGFragmentHeartComponent> heart, EntityUid? origin)
+    {
+        if (origin is not { } attacker || TerminatingOrDeleted(attacker))
+            return false;
+
+        var heartXform = Transform(heart);
+        var attackerXform = Transform(attacker);
+        if (heartXform.GridUid is not { } grid || attackerXform.GridUid != grid)
+            return false;
+
+        var heartPos = _transform.GetWorldPosition(heartXform);
+        var attackerPos = _transform.GetWorldPosition(attackerXform);
+        return (heartPos - attackerPos).LengthSquared() <= heart.Comp.Reach * heart.Comp.Reach;
     }
 
     /// <summary>
@@ -134,6 +206,8 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
         comp.Grid = grid.Value;
         comp.Site = new MapCoordinates(site, mapId);
         _metaData.SetEntityName(grid.Value, Loc.GetString("wg-fragment-grid-name"));
+
+        SealHull(grid.Value);
 
         foreach (var child in _siteGrid.Children(grid.Value))
         {

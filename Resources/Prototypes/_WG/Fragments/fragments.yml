@@ -180,6 +180,11 @@
   - type: Damageable
     damageContainer: StructuralInorganic
     damageModifierSet: Metallic
+  # Only crews aboard can break it: blasts never touch it, and WGFragmentHeart drops any other harm from off the
+  # fragment or out of reach, so ship guns and bombs set off outside do nothing.
+  - type: ExplosionResistance
+    damageCoefficient: 0
+    worn: false
   - type: Destructible
     thresholds:
     - trigger:

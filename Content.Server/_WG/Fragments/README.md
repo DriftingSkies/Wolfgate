@@ -20,7 +20,10 @@ every 120 seconds at the living players within 60 m, on the fragment or a ship a
 an elite every other wave, at most 30 alive. Four in ten of a wave board a ship alongside: any grid a living player
 near the heart is aboard, within 60 m of it, on tiles at least 6 m from every player. The rest land on the fragment, out
 of sight where they can. When the fragment leaves, living Remade that boarded a ship leave with it; corpses stay. Nobody near, no wave. Breaking the heart
-(3000 damage) stops the waves and pays 500 to each faction's uplink, half again if members of both factions were aboard
+(3000 damage) stops the waves. Only someone standing on the fragment within 20 m of the heart can hurt it: blasts
+never do, and harm from ship guns, ramming or anyone off the fragment is dropped, so a crew has to board. The hull
+is sealed as the fragment lands (`SealHull`): its floors are blast-proof and every wall, door and window takes no
+damage and stops blasts, so nothing fired from outside reaches in. Crews get in by prying its doors. Breaking it pays 500 to each faction's uplink, half again if members of both factions were aboard
 at some point before it broke. Every player who was aboard or within 60 m of the heart while it stood, whatever their
 faction, also gets 250,000 thalers, untaxed, in the bank of the character they took part as, so outside crews have a
 reason to help.
@@ -39,6 +42,7 @@ Tuning is in `Resources/Prototypes/_WG/Fragments/fragments.yml`; the logic is `W
 ### Server
 
 - [`Content.Server/_WG/Fragments/WGFragmentHeartComponent.cs`](WGFragmentHeartComponent.cs)
+- [`Content.Server/_WG/Fragments/WGFragmentHullComponent.cs`](WGFragmentHullComponent.cs)
 - [`Content.Server/_WG/Fragments/WGFragmentLine.cs`](WGFragmentLine.cs)
 - [`Content.Server/_WG/Fragments/WGFragmentRuleComponent.cs`](WGFragmentRuleComponent.cs)
 - [`Content.Server/_WG/Fragments/WGFragmentRuleSystem.Announcements.cs`](WGFragmentRuleSystem.Announcements.cs)
