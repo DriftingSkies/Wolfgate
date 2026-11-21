@@ -1,6 +1,6 @@
 using System.Linq;
 using Content.Shared._Mono.ArmorPlate;
-using Content.Shared._RMC14.Vendors;
+using Content.Shared.Storage.Components;
 using Content.Shared._WG.SpecialistKits;
 using Content.Shared.Prototypes;
 using Content.Shared.Storage.EntitySystems;
@@ -32,14 +32,15 @@ public sealed class WGKitPlateTest
             foreach (var kit in protos.EnumeratePrototypes<EntityPrototype>())
             {
                 if (!kit.HasComponent<WGSpecialistKitComponent>(factory)
-                    || !kit.TryComp<CMVendorBundleComponent>(out var bundle, factory))
+                    || !kit.TryComp<StorageFillComponent>(out var fill, factory))
                     continue;
 
-                var plates = bundle.Bundle.Where(id => protos.Index(id).HasComponent<ArmorPlateItemComponent>(factory)).ToList();
+                var items = fill.Contents.Where(e => e.PrototypeId != null).Select(e => e.PrototypeId!.Value).ToList();
+                var plates = items.Where(id => protos.Index(id).HasComponent<ArmorPlateItemComponent>(factory)).ToList();
                 if (plates.Count == 0)
                     continue;
 
-                var holder = bundle.Bundle.FirstOrDefault(id => protos.Index(id).HasComponent<ArmorPlateHolderComponent>(factory));
+                var holder = items.FirstOrDefault(id => protos.Index(id).HasComponent<ArmorPlateHolderComponent>(factory));
                 Assert.That(holder.Id, Is.Not.Null, $"{kit.ID} hands out a plate but no armor that holds one.");
 
                 foreach (var plateId in plates)
@@ -54,8 +55,8 @@ public sealed class WGKitPlateTest
                 plated++;
             }
 
-            // The four front-line pairs: Breacher/Boarder, Combat Engineer/Artificer, Heavy Gunner/Heavy, Pyrotechnician/Burner.
-            Assert.That(plated, Is.EqualTo(8));
+            // The three plate-ready pairs: Assaultman/Lağımcı, Machine Gunner/Yeniçeri, Combat Engineer/Cebeci.
+            Assert.That(plated, Is.EqualTo(6));
         });
 
         await pair.CleanReturnAsync();

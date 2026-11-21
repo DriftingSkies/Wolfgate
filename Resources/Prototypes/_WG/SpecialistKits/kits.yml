@@ -1,305 +1,563 @@
-# Specialist kits: one free per player per round from the faction's specialist vendor (vendors.yml).
-# Open kits are limited per faction by members online; job-locked kits are held to their job.
+# Specialist kits: one free per player per round from the faction's specialist rack (vendors.yml). Each kit is a case
+# that hands out its gear but takes nothing back, and is deleted once empty. TSF kits are Marine and Navy jobs; PDV
+# kits are the same roles under Ottoman names. Limits per faction per round: elite 1, plus 1 at 20 members online, up
+# to 2; cavalry 1; line 1, plus 1 per 10 online, up to 3; job kits are held to their job; support kits are open.
 
 - type: entity
-  id: WGKitTsfBreacher
-  categories: [ HideSpawnMenu ]
+  parent: BaseStorageItem
+  id: WGKitCaseBase
+  abstract: true
+  components:
+  - type: Item
+    size: Ginormous
+  - type: Storage
+    maxItemSize: Ginormous
+    grid:
+    - 0,0,15,11
+  - type: WGTakeOnlyStorage
+
+# Infantry
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitTsfAssaultman
   components:
   - type: Sprite
     sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
     state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGKitArmorM3G4
-    - ArmorPlatePierce
-    - WeaponShotgunEnforcer
-    - AmmoBox12_gaugeBuckshot
-    - AmmoBox12_gaugeSlug
-    - BreachingCharge
-    - BreachingCharge
-    - TelescopicShield
-    - GrenadeFlashBang
-    - GrenadeFlashBang
+  - type: StorageFill
+    contents:
+    - id: WGKitArmorM3G4
+    - id: ArmorPlatePierce
+    - id: WeaponShotgunEnforcer
+    - id: AmmoBox12_gaugeBuckshot
+    - id: AmmoBox12_gaugeSlug
+    - id: BreachingCharge
+      amount: 2
+    - id: C4
+      amount: 2
+    - id: GrenadeFlashBang
+      amount: 2
+    - id: WGAutosurgeonHaloBurst
+  - type: WGSpecialistKit
+    membersPerSlot: 20
+    maxSlots: 2
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitPdvLagimci
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: WGKitArmorUM5CU
+    - id: ArmorPlatePierce
+    - id: WeaponSubMachineGunMla73
+    - id: Magazine635x40mmCaseless
+      amount: 2
+    - id: EnergyCutlass
+    - id: SyndicateJawsOfLife
+    - id: BreachingCharge
+      amount: 2
+    - id: C4
+      amount: 2
+    - id: GrenadeFlashBang
+      amount: 2
+    - id: WGAutosurgeonHaloBurst
+  - type: WGSpecialistKit
+    membersPerSlot: 20
+    maxSlots: 2
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitTsfAntitank
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorM3L
+    - id: WeaponLauncherRocketEmp
+    - id: CartridgeRocketEmp
+      amount: 2
+    - id: WeaponPistolMk58
+    - id: Magazine45_ACPPistolFMJ
+    - id: WGAutosurgeonShoulderCannon
+  - type: WGSpecialistKit
+    membersPerSlot: 20
+    maxSlots: 2
+    warning: wg-kit-warning-cyber-arm
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitPdvDarbzenci
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorUL6
+    - id: WeaponLauncherPanzero
+      amount: 2
+    - id: WeaponPistolViper
+    - id: Magazine9x19mmPistolFMJ
+    - id: WGAutosurgeonShoulderCannon
+  - type: WGSpecialistKit
+    membersPerSlot: 20
+    maxSlots: 2
+    warning: wg-kit-warning-cyber-arm
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitTsfMachineGunner
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: WGKitArmorML66A
+    - id: ArmorPlatePierce
+    - id: WeaponLMGGrizzly
+    - id: AmmoBox68x52mmCaseless
+      amount: 2
+    - id: TelescopicShield
+    - id: WGAutosurgeonPainEditor
+  - type: WGSpecialistKit
+    warning: wg-kit-warning-organic
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitPdvYeniceri
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: WGKitArmorUH7
+    - id: ArmorPlatePierce
+    - id: ClothingBackpackDuffelPDVFilledLMG
+    - id: TelescopicShield
+    - id: WGAutosurgeonPainEditor
+  - type: WGSpecialistKit
+    warning: wg-kit-warning-organic
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitTsfMortarman
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorM3L
+    - id: WeaponLauncherChinaLake
+    - id: 40mmGrenadeFragmentation
+      amount: 4
+    - id: SmokeGrenade
+      amount: 2
+    - id: Binoculars
+    - id: WeaponPistolMk58
+    - id: Magazine45_ACPPistolFMJ
   - type: WGSpecialistKit
 
 - type: entity
-  id: WGKitTsfCombatEngineer
-  categories: [ HideSpawnMenu ]
+  parent: WGKitCaseBase
+  id: WGKitPdvHumbaraci
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorUL6
+    - id: WeaponLauncherChinaLake
+    - id: 40mmGrenadeFragmentation
+      amount: 4
+    - id: SmokeGrenade
+      amount: 2
+    - id: Binoculars
+    - id: WeaponPistolViper
+    - id: Magazine9x19mmPistolFMJ
+  - type: WGSpecialistKit
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitTsfScoutSniper
   components:
   - type: Sprite
     sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
     state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGKitArmorM3T
-    - WeaponSubMachineGunDrozd
-    - Magazine45_ACPSubMachineGunFMJ
-    - Magazine45_ACPSubMachineGunFMJ
-    - WeaponTurretMk290Packed
-    - WelderIndustrial
-    - SheetPlasteel
-    - SheetSteel
-    - ArmorPlateBlunt_Slash
+  - type: StorageFill
+    contents:
+    - id: WGRMCGhillie
+    - id: WeaponRifleRiversong
+    - id: Magazine68x52mmCaseless
+      amount: 2
+    - id: Binoculars
+    - id: SmokeGrenade
+    - id: WGAutosurgeonOpticalCamo
+  - type: WGSpecialistKit
+    membersPerSlot: 20
+    maxSlots: 2
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitPdvTufekci
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: WGRMCGhillieUDEP
+    - id: BriefcaseSyndieSniperBundleFilled
+    - id: Binoculars
+    - id: SmokeGrenade
+    - id: WGAutosurgeonOpticalCamo
+  - type: WGSpecialistKit
+    membersPerSlot: 20
+    maxSlots: 2
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitTsfRecon
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorXM4
+    - id: WeaponSubMachineGunDrozd
+    - id: Magazine45_ACPSubMachineGunFMJ
+      amount: 2
+    - id: JetpackBlackFilled
+    - id: ClothingShoesBootsMag
+    - id: ClothingNeckWearableCameraTSF
+    - id: ClothingEyesNightVisionGoggles
+    - id: AutosurgeonMuscleFibersMieyo
+  - type: WGSpecialistKit
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitPdvAkinci
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorCCC5
+    - id: WeaponRifleVympel
+    - id: Magazine556x45mmFMJ
+      amount: 2
+    - id: JetpackBlackFilled
+    - id: ClothingShoesBootsMag
+    - id: ClothingNeckWearableCameraPDV
+    - id: ClothingEyesNightVisionGogglesSyndie
+    - id: RadioJammer
+    - id: AutosurgeonMuscleFibersMieyo
+  - type: WGSpecialistKit
+
+# Combat support
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitTsfCombatEngineer
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: WGKitArmorM3T
+    - id: ArmorPlateBlunt_Slash
+    - id: WeaponSubMachineGunDrozd
+    - id: Magazine45_ACPSubMachineGunFMJ
+      amount: 2
+    - id: WeaponTurretMk290Packed
+    - id: WelderIndustrial
+    - id: Wirecutter
+    - id: SheetPlasteel
+    - id: SheetSteel
+    - id: WGLandMineExplosive
+      amount: 2
+    - id: ClothingOuterSuitBomb
+    - id: ClothingHeadHelmetBombSuit
+    - id: WGAutosurgeonLeftThreatSole
   - type: WGSpecialistKit
     limited: false
     jobs:
     - TsfEngineer
 
 - type: entity
-  id: WGKitTsfCorpsman
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
-    state: icon
-  - type: CMVendorBundle
-    bundle:
-    - ClothingOuterHardsuitM82b
-    - WeaponPistolMk58
-    - Magazine45_ACPPistolFMJ
-    - ClothingBackpackDuffelSurgeryAdvancedFilled
-    - MedkitCombatFilled
-    - Bloodpack
-    - Bloodpack
-  - type: WGSpecialistKit
-    limited: false
-    jobs:
-    - Brigmedic
-
-- type: entity
-  id: WGKitTsfMarksman
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
-    state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGRMCGhillie
-    - WeaponRifleRiversong
-    - Magazine68x52mmCaseless
-    - Magazine68x52mmCaseless
-    - Binoculars
-    - SmokeGrenade
-  - type: WGSpecialistKit
-
-- type: entity
-  id: WGKitTsfPyrotechnician
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
-    state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGKitArmorM35
-    - ArmorPlateHeat
-    - WeaponShotgunEnforcer
-    - AmmoBox12_gaugeIncendiary
-    - AmmoBox12_gaugeIncendiary
-    - GrenadeIncendiaryNfsd
-    - GrenadeIncendiaryNfsd
-    - GrenadeIncendiaryNfsd
-  - type: WGSpecialistKit
-
-- type: entity
-  id: WGKitTsfRecon
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
-    state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGRMCArmorXM4
-    - WeaponSubMachineGunDrozd
-    - Magazine45_ACPSubMachineGunFMJ
-    - Magazine45_ACPSubMachineGunFMJ
-    - ClothingNeckWearableCameraTSF
-    - JetpackBlackFilled
-    - Binoculars
-  - type: WGSpecialistKit
-
-- type: entity
-  id: WGKitTsfHeavyGunner
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
-    state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGKitArmorML66A
-    - ArmorPlatePierce
-    - WeaponLMGGrizzly
-    - AmmoBox68x52mmCaseless
-    - AmmoBox68x52mmCaseless
-    - TelescopicShield
-  - type: WGSpecialistKit
-    limited: false
-    jobs:
-    - SeniorOfficer
-
-- type: entity
-  id: WGKitTsfShipGunner
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
-    state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGRMCArmorM3L
-    - WeaponPistolMk58
-    - Magazine45_ACPPistolFMJ
-    - WGGunneryChipMilitary
-    - ClothingShoesBootsMag
-  - type: WGSpecialistKit
-
-- type: entity
-  id: WGKitPdvBoarder
-  categories: [ HideSpawnMenu ]
+  parent: WGKitCaseBase
+  id: WGKitPdvCebeci
   components:
   - type: Sprite
     sprite: _Mono/Structures/Storage/Crates/pdv.rsi
     state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGKitArmorUM5CU
-    - ArmorPlatePierce
-    - WeaponSubMachineGunMla73
-    - EnergyCutlass
-    - SyndicateJawsOfLife
-    - AccessBreaker
-    - SmokeGrenade
-    - SmokeGrenade
-  - type: WGSpecialistKit
-
-- type: entity
-  id: WGKitPdvArtificer
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Sprite
-    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
-    state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGKitArmorUL6
-    - ArmorPlateBlunt_Slash
-    - WeaponRifleAk
-    - Magazine762x39mmFMJ
-    - Magazine762x39mmFMJ
-    - ClothingBackpackDuffelPDVC4tBundle
-    - WGLandMineExplosive
-    - WGLandMineExplosive
-    - WelderIndustrial
-    - SheetPlasteel
+  - type: StorageFill
+    contents:
+    - id: WGKitArmorUL6
+    - id: ArmorPlateBlunt_Slash
+    - id: WeaponRifleAk
+    - id: Magazine762x39mmFMJ
+      amount: 2
+    - id: ClothingBackpackDuffelPDVC4tBundle
+    - id: WGLandMineExplosive
+      amount: 2
+    - id: WelderIndustrial
+    - id: Wirecutter
+    - id: SheetPlasteel
+    - id: ClothingOuterSuitBomb
+    - id: ClothingHeadHelmetBombSuit
+    - id: WGAutosurgeonLeftThreatSole
   - type: WGSpecialistKit
     limited: false
     jobs:
     - WGPdvArtificer
 
 - type: entity
-  id: WGKitPdvFieldMedic
-  categories: [ HideSpawnMenu ]
+  parent: WGKitCaseBase
+  id: WGKitTsfCorpsman
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: ClothingOuterHardsuitM82b
+    - id: WeaponPistolMk58
+    - id: Magazine45_ACPPistolFMJ
+    - id: ClothingBackpackDuffelSurgeryAdvancedFilled
+    - id: MedkitCombatFilled
+    - id: DefibrillatorCompact
+    - id: Bloodpack
+      amount: 2
+  - type: WGSpecialistKit
+    limited: false
+    jobs:
+    - Brigmedic
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitPdvCerrah
   components:
   - type: Sprite
     sprite: _Mono/Structures/Storage/Crates/pdv.rsi
     state: icon
-  - type: CMVendorBundle
-    bundle:
-    - ClothingOuterHardsuitPDVMedic
-    - WeaponPistolViper
-    - Magazine9x19mmPistolFMJ
-    - HypopenBox
-    - NaniteApplicatorSyndicate
-    - Bloodpack
-    - Bloodpack
+  - type: StorageFill
+    contents:
+    - id: ClothingOuterHardsuitPirateScaf
+    - id: WeaponPistolViper
+    - id: Magazine9x19mmPistolFMJ
+    - id: HypopenBox
+    - id: NaniteApplicatorSyndicate
+    - id: MedkitCombatFilled
+    - id: DefibrillatorCompact
+    - id: Bloodpack
+      amount: 2
   - type: WGSpecialistKit
     limited: false
     jobs:
     - WGPdvJarrah
 
 - type: entity
-  id: WGKitPdvSharpshooter
-  categories: [ HideSpawnMenu ]
+  parent: WGKitCaseBase
+  id: WGKitTsfMasterAtArms
   components:
   - type: Sprite
-    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
     state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGRMCGhillieUDEP
-    - BriefcaseSyndieSniperBundleFilled
-    - Binoculars
-    - SmokeGrenade
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorM3L
+    - id: WeaponDisabler
+    - id: Stunbaton
+    - id: Handcuffs
+      amount: 2
+    - id: GrenadeFlashBang
+      amount: 2
+    - id: EnergyShieldNfsd
+    - id: WGAutosurgeonHaloStun
   - type: WGSpecialistKit
+    membersPerSlot: 20
+    maxSlots: 2
 
 - type: entity
-  id: WGKitPdvHeavy
-  categories: [ HideSpawnMenu ]
+  parent: WGKitCaseBase
+  id: WGKitPdvBostanci
   components:
   - type: Sprite
     sprite: _Mono/Structures/Storage/Crates/pdv.rsi
     state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGKitArmorUH7
-    - ArmorPlatePierce
-    - ClothingBackpackDuffelPDVFilledLMG
-    - TelescopicShield
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorUL6
+    - id: WeaponDisabler
+    - id: Stunbaton
+    - id: Handcuffs
+      amount: 2
+    - id: GrenadeFlashBang
+      amount: 2
+    - id: TelescopicShield
+    - id: WGAutosurgeonHaloStun
+  - type: WGSpecialistKit
+    membersPerSlot: 20
+    maxSlots: 2
+
+# Mounted
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitTsfLavCrewman
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorM3L
+    - id: WGMechVoucherGygaxTSF
+    - id: WeaponPistolMk58
+    - id: Magazine45_ACPPistolFMJ
+    - id: ClothingShoesBootsMag
+    - id: AutosurgeonDermalArmorPDV
+  - type: WGSpecialistKit
+    maxSlots: 1
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitPdvSipahi
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/pdv.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: WGRMCArmorUL6
+    - id: WGMechVoucherGygaxPDV
+    - id: WeaponPistolViper
+    - id: Magazine9x19mmPistolFMJ
+    - id: ClothingShoesBootsMag
+    - id: AutosurgeonDermalArmorPDV
+  - type: WGSpecialistKit
+    maxSlots: 1
+
+# Support
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitTsfCulinary
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: BoxMRE
+      amount: 2
+    - id: KitchenElectricGrillFlatpack
+    - id: KitchenMicrowaveFlatpack
+    - id: WeaponPistolMk58
+    - id: Magazine45_ACPPistolFMJ
   - type: WGSpecialistKit
     limited: false
-    jobs:
-    - PDVDenasvar
 
 - type: entity
-  id: WGKitPdvBurner
-  categories: [ HideSpawnMenu ]
+  parent: WGKitCaseBase
+  id: WGKitPdvAsci
   components:
   - type: Sprite
     sprite: _Mono/Structures/Storage/Crates/pdv.rsi
     state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGKitArmorMilitiaHauberk
-    - ArmorPlateHeat
-    - ClothingBackpackDuffelPDVBurner
-    - GrenadeIncendiaryNfsd
-    - GrenadeIncendiaryNfsd
-    - GrenadeIncendiaryNfsd
+  - type: StorageFill
+    contents:
+    - id: BoxMRE
+      amount: 2
+    - id: KitchenElectricGrillFlatpack
+    - id: KitchenMicrowaveFlatpack
+    - id: WeaponPistolViper
+    - id: Magazine9x19mmPistolFMJ
   - type: WGSpecialistKit
+    limited: false
 
 - type: entity
-  id: WGKitPdvAkinciRaider
-  categories: [ HideSpawnMenu ]
+  parent: WGKitCaseBase
+  id: WGKitTsfMachinistMate
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: ToolboxMechanicalFilled
+    - id: PowerDrill
+    - id: WelderIndustrial
+    - id: JugWeldingFuel
+    - id: PowerCageMedium
+  - type: WGSpecialistKit
+    limited: false
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitPdvArabaci
   components:
   - type: Sprite
     sprite: _Mono/Structures/Storage/Crates/pdv.rsi
     state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGRMCArmorCCC5
-    - WeaponRifleVympel
-    - Magazine556x45mmFMJ
-    - Magazine556x45mmFMJ
-    - ChameleonPDA
-    - ClothingBackpackChameleon
-    - RadioJammer
+  - type: StorageFill
+    contents:
+    - id: ToolboxMechanicalFilled
+    - id: PowerDrill
+    - id: WelderIndustrial
+    - id: JugWeldingFuel
+    - id: PowerCageMedium
   - type: WGSpecialistKit
+    limited: false
 
 - type: entity
-  id: WGKitPdvTopcu
-  categories: [ HideSpawnMenu ]
+  parent: WGKitCaseBase
+  id: WGKitTsfLandingSupport
+  components:
+  - type: Sprite
+    sprite: _Mono/Structures/Storage/Crates/milequipment.rsi
+    state: icon
+  - type: StorageFill
+    contents:
+    - id: PortableGeneratorJrPacmanFlatpack
+    - id: Holoprojector
+    - id: AmmoBox68x52mmCaselessBig
+      amount: 2
+    - id: PortableRecharger
+    - id: Flare
+      amount: 4
+  - type: WGSpecialistKit
+    limited: false
+
+- type: entity
+  parent: WGKitCaseBase
+  id: WGKitPdvMenzilci
   components:
   - type: Sprite
     sprite: _Mono/Structures/Storage/Crates/pdv.rsi
     state: icon
-  - type: CMVendorBundle
-    bundle:
-    - WGRMCArmorUL6
-    - WeaponPistolViper
-    - Magazine9x19mmPistolFMJ
-    - WGGunneryChipMilitary
-    - ClothingShoesBootsMag
+  - type: StorageFill
+    contents:
+    - id: PortableGeneratorJrPacmanFlatpack
+    - id: Holoprojector
+    - id: AmmoBox556x45mmBigFMJ
+      amount: 2
+    - id: PortableRecharger
+    - id: Flare
+      amount: 4
   - type: WGSpecialistKit
+    limited: false

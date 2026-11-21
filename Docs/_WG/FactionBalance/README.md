@@ -9,9 +9,10 @@ Balance Rework doc.
   FMC or doubloons. T2 and up are printed at the faction lathe only, from identical recipes: the PDV's T2, T3, Saturn
   and Foxtrot-II recipes take the parts and metals of the TSF's T2, Polaris, Luda and Flyssa instead of composite, and
   their uplink listings are gone. T1 to T4 vouchers are single-use with no cooldown, so each ship costs a card.
-- **Uplinks.** `uplink.yml` adds the M86 and M92-X hardsuits, the TSF lathe weapons, ammo, medkits, Mono's armor
-  plates, gunnery chips and mines to the TSF uplink, and plates, chips and mines to the PDV's. The M82b and M82c
-  were already 10 FMC.
+- **Uplinks.** `uplink.yml` adds the TSF lathe weapons, ammo, medkits, Mono's armor plates, gunnery chips and mines
+  to the TSF uplink, and plates, chips, mines, tools, field medicine, a holoprojector, a portable recharger and a gas
+  mask to the PDV's. Hardsuits stop at the entry tier, one bullet-leaning and one heat-leaning per side at 10 (TSF
+  M82c and M82b, PDV CV-32 and SCAF); the M86, M92-X, CV-53 and CV-82 are lathe-only. Neither uplink sells cash.
 - **Jobs.** On the standard Halcyon and Helios: TSF Captain 2, Fireteam Leader 6, Corpsman 5, Engineer 4, Borg 3; PDV
   Asvaran 2, Denasvar 6, Jarrah 5, Artificer 4, Borg 3. MARSOC and the Tarkhan stay event roles.
 - **Vests.** The light and medium bulletproof vests, and every RMC armor built on them, take more armor for having no
@@ -44,18 +45,23 @@ Balance Rework doc.
 
 - [`Resources/Prototypes/_Mono/Catalogs/pdv_uplink_catalog.yml`](../../../Resources/Prototypes/_Mono/Catalogs/pdv_uplink_catalog.yml)
   - niche chemistry trimmed to the uplink cap; medkits and the medical bundle stay
+  - same price as the TSF combat medkit
   - joke, outdated or bare item; trimmed to the uplink cap
   - also made on the PDV lathe; trimmed to the uplink cap
   - folded into the infiltration kit (_WG/FactionBalance/supplies.yml)
+  - same price as the TSF hoverbike
   - duplicate 7.62x39mm ammo; the FMJ magazine box stays
   - unchanged; marked because the diff pairs it with the trimmed listings above
   - a whole specialist kit, sold past the kit limit; drawn from the specialist vendor instead
+  - entry hardsuit, same price as the TSF M82b and M82c
+  - past entry tier; made at the PDV lathe only
   - T0 is free and T1 a token cost for both factions (was 25)
   - a free T0 has a per-player cooldown so it can't be printed endlessly
   - T0 is free and T1 a token cost for both factions (was 60)
   - T2 and up are printed at the faction lathe from the same materials for both factions
   - currency exchange, not faction gear; trimmed to the uplink cap
 - [`Resources/Prototypes/_Mono/Catalogs/tsfmc_uplink_catalog.yml`](../../../Resources/Prototypes/_Mono/Catalogs/tsfmc_uplink_catalog.yml)
+  - currency exchange, not faction gear; the PDV uplink has none
   - T0 is free and T1 a token cost for both factions (was 25)
   - a free T0 has a per-player cooldown so it can't be printed endlessly
   - T0 is free and T1 a token cost for both factions (was 90)
@@ -82,6 +88,11 @@ Balance Rework doc.
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/tsfmc.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/tsfmc.yml): generic T3 voucher
 - [`Resources/Prototypes/_Mono/Research/Rogue/rogue_misc.yml`](../../../Resources/Prototypes/_Mono/Research/Rogue/rogue_misc.yml): generic T3 voucher
 - [`Resources/Prototypes/_Mono/Research/TSF/tsf_misc.yml`](../../../Resources/Prototypes/_Mono/Research/TSF/tsf_misc.yml): generic T3 voucher
+- [`Resources/Prototypes/_NF/Catalog/security_uplink_catalog.yml`](../../../Resources/Prototypes/_NF/Catalog/security_uplink_catalog.yml)
+  - same price as the PDV thruster kit
+  - same price as the PDV combat medkit
+  - currency exchange, not faction gear; the PDV uplink has none
+  - same price as the PDV hoverbike
 - [`Resources/Prototypes/_NF/Store/presets.yml`](../../../Resources/Prototypes/_NF/Store/presets.yml): rations, survival gear, tools and field medicine
 
 <!-- WOLFGATE-GENERATED END -->

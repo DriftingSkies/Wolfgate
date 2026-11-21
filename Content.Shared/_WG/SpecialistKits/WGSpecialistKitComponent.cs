@@ -23,6 +23,10 @@ public sealed partial class WGSpecialistKitComponent : Component
     /// <summary>The jobs that may take it; empty for anyone.</summary>
     [DataField]
     public List<ProtoId<JobPrototype>> Jobs = new();
+
+    /// <summary>Shown in the kit's drop-down, e.g. that its implant needs a cybernetic arm. The kit can still be taken.</summary>
+    [DataField]
+    public LocId? Warning;
 }
 
 /// <summary>Raised (broadcast) when a vendor is about to hand out an entry; cancel to refuse it.</summary>

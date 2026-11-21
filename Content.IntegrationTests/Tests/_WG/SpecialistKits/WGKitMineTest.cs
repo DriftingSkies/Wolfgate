@@ -1,5 +1,4 @@
 using Content.Server.LandMines;
-using Content.Shared._RMC14.Vendors;
 using Content.Shared._WG.SpecialistKits;
 using Content.Shared.Item;
 using Content.Shared.Prototypes;
@@ -29,11 +28,14 @@ public sealed class WGKitMineTest
             foreach (var kit in protos.EnumeratePrototypes<EntityPrototype>())
             {
                 if (!kit.HasComponent<WGSpecialistKitComponent>(factory)
-                    || !kit.TryComp<CMVendorBundleComponent>(out var bundle, factory))
+                    || !kit.TryComp<StorageFillComponent>(out var kitFill, factory))
                     continue;
 
-                foreach (var id in bundle.Bundle)
+                foreach (var entry in kitFill.Contents)
                 {
+                    if (entry.PrototypeId is not { } id)
+                        continue;
+
                     Assert.That(protos.Index(id).HasComponent<ItemComponent>(factory), Is.True,
                         $"{kit.ID} hands out {id}, which can't be picked up.");
                 }

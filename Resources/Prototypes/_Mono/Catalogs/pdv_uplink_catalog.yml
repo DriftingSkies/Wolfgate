@@ -71,7 +71,7 @@
   productEntity: MedkitCombatFilled
   icon: { sprite: Objects/Specific/Medical/firstaidkits.rsi, state: blackkit }
   cost:
-    Doubloon: 30
+    Doubloon: 25 # WOLFGATE(FactionBalance): same price as the TSF combat medkit
   categories:
   - UplinkPirateMedical
   conditions:
@@ -434,7 +434,7 @@
   productEntity: HoverbikePirateFlatpack
   icon: { sprite: _NF/Objects/Vehicles/hoverbike.rsi, state: vehicle }
   cost:
-    Doubloon: 25
+    Doubloon: 20 # WOLFGATE(FactionBalance): same price as the TSF hoverbike
   categories:
     - UplinkPirateUtility
   conditions:
@@ -1365,7 +1365,7 @@
   productEntity: ClothingOuterHardsuitPirateScaf
   icon: { sprite: _Mono/Clothing/OuterClothing/Hardsuits/scaf_pirate.rsi, state: icon }
   cost:
-    Doubloon: 15
+    Doubloon: 10 # WOLFGATE(FactionBalance): entry hardsuit, same price as the TSF M82b and M82c
   categories:
   - UplinkPirateEquipment
   conditions:
@@ -1431,7 +1431,7 @@
   description: uplink-pirate-cv32-hardsuit-desc # DO NOT REMOVE THESE, YOU WILL BREAK THE SEARCH FEATURE
   productEntity: ClothingOuterHardsuitAshen
   cost:
-    Doubloon: 45 # WOLFGATE(ArmorBalance): Monolith's price; PDV suits are printable again.
+    Doubloon: 10 # WOLFGATE(FactionBalance): entry hardsuit, same price as the TSF M82b and M82c
   categories:
   - UplinkPirateEquipment
   conditions:
@@ -1440,36 +1440,39 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateCv53
-  name: uplink-pirate-cv53-tacsuit-name # WOLFGATE(ArmorBalance): reverts Monolith#4845.
-  description: uplink-pirate-cv53-tacsuit-desc # DO NOT REMOVE THESE, YOU WILL BREAK THE SEARCH FEATURE
-  productEntity: ClothingOuterHardsuitAshenElite
-  cost:
-    Doubloon: 45 # WOLFGATE(ArmorBalance): Monolith's price; PDV suits are printable again.
-  categories:
-  - UplinkPirateEquipment
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: past entry tier; made at the PDV lathe only
+# - type: listing
+#   id: UplinkPirateCv53
+#   name: uplink-pirate-cv53-tacsuit-name # WOLFGATE(ArmorBalance): reverts Monolith#4845.
+#   description: uplink-pirate-cv53-tacsuit-desc # DO NOT REMOVE THESE, YOU WILL BREAK THE SEARCH FEATURE
+#   productEntity: ClothingOuterHardsuitAshenElite
+#   cost:
+#     Doubloon: 45 # WOLFGATE(ArmorBalance): Monolith's price; PDV suits are printable again.
+#   categories:
+#   - UplinkPirateEquipment
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
-# WOLFGATE(ArmorBalance): reverts Monolith#4845.
-- type: listing
-  id: UplinkPirateCv82
-  name: uplink-pirate-cv82-tacsuit-name
-  description: uplink-pirate-cv82-tacsuit-desc
-  productEntity: ClothingOuterHardsuitPDVMedic
-  cost:
-    Doubloon: 90
-  categories:
-  - UplinkPirateEquipment
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: past entry tier; made at the PDV lathe only
+# - type: listing
+#   id: UplinkPirateCv82
+#   name: uplink-pirate-cv82-tacsuit-name
+#   description: uplink-pirate-cv82-tacsuit-desc
+#   productEntity: ClothingOuterHardsuitPDVMedic
+#   cost:
+#     Doubloon: 90
+#   categories:
+#   - UplinkPirateEquipment
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 # WOLFGATE(ArmorBalance): reverts Monolith#4845.
 # WOLFGATE(FactionBalance) START: also made on the PDV lathe; trimmed to the uplink cap

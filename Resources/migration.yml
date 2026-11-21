@@ -5264,3 +5264,35 @@ WFXenoParasiteHunterInfector: WGXenoParasiteHunterInfector
 WFXenoWeedsWild: WGXenoWeedsWild
 WFXenobiologyBountyConsoleFlatpack: WGXenobiologyBountyConsoleFlatpack
 # WOLFGATE END
+
+# WOLFGATE(SpecialistKits) START: the specialist kits became Marine, Navy and Ottoman jobs, each a case the uplink also sells
+WGKitTsfBreacher: WGKitTsfAssaultman
+WGKitCrateTsfBreacher: WGKitTsfAssaultman
+WGKitCrateTsfCombatEngineer: WGKitTsfCombatEngineer
+WGKitCrateTsfCorpsman: WGKitTsfCorpsman
+WGKitTsfMarksman: WGKitTsfScoutSniper
+WGKitCrateTsfMarksman: WGKitTsfScoutSniper
+WGKitTsfPyrotechnician: null
+WGKitCrateTsfPyrotechnician: null
+WGKitCrateTsfRecon: WGKitTsfRecon
+WGKitTsfHeavyGunner: WGKitTsfMachineGunner
+WGKitCrateTsfHeavyGunner: WGKitTsfMachineGunner
+WGKitTsfShipGunner: null
+WGKitCrateTsfShipGunner: null
+WGKitPdvBoarder: WGKitPdvLagimci
+WGKitCratePdvBoarder: WGKitPdvLagimci
+WGKitPdvArtificer: WGKitPdvCebeci
+WGKitCratePdvArtificer: WGKitPdvCebeci
+WGKitPdvFieldMedic: WGKitPdvCerrah
+WGKitCratePdvFieldMedic: WGKitPdvCerrah
+WGKitPdvSharpshooter: WGKitPdvTufekci
+WGKitCratePdvSharpshooter: WGKitPdvTufekci
+WGKitPdvHeavy: WGKitPdvYeniceri
+WGKitCratePdvHeavy: WGKitPdvYeniceri
+WGKitPdvBurner: null
+WGKitCratePdvBurner: null
+WGKitPdvAkinciRaider: WGKitPdvAkinci
+WGKitCratePdvAkinciRaider: WGKitPdvAkinci
+WGKitPdvTopcu: null
+WGKitCratePdvTopcu: null
+# WOLFGATE END

@@ -143,21 +143,23 @@
       tags:
       - SecurityUplink
 
-- type: listing
-  id: UplinkSecurityCash100000
-  name: uplink-security-cash100000-name
-  description: uplink-security-cash100000-desc
-  productEntity: SpaceCash100000
-  icon: { sprite: _NF/Objects/Economy/cash.rsi, state: cash_100000 }
-  cost:
-    FederationMilitaryCredit: 50
-  categories:
-    - UplinkSecurityUtility
-  conditions:
-    - !type:StoreWhitelistCondition
-      whitelist:
-        tags:
-          - SecurityUplink
+# WOLFGATE(FactionBalance) START: currency exchange, not faction gear; the PDV uplink has none
+# - type: listing
+#   id: UplinkSecurityCash100000
+#   name: uplink-security-cash100000-name
+#   description: uplink-security-cash100000-desc
+#   productEntity: SpaceCash100000
+#   icon: { sprite: _NF/Objects/Economy/cash.rsi, state: cash_100000 }
+#   cost:
+#     FederationMilitaryCredit: 50
+#   categories:
+#     - UplinkSecurityUtility
+#   conditions:
+#     - !type:StoreWhitelistCondition
+#       whitelist:
+#         tags:
+#           - SecurityUplink
+# WOLFGATE END
 
 #- type: listing
 #  id: UplinkSecurityMagazineSubsonic

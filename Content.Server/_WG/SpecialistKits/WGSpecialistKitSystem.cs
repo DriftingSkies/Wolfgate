@@ -1,4 +1,5 @@
 using Content.Server._WG.ShipTiers;
+using Content.Shared._RMC14.Vendors;
 using Content.Shared._Mono.Company;
 using Content.Shared._WG.SpecialistKits;
 using Content.Shared.GameTicking;
@@ -9,6 +10,7 @@ using Robust.Shared.Enums;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
 namespace Content.Server._WG.SpecialistKits;
@@ -24,9 +26,13 @@ public sealed class WGSpecialistKitSystem : EntitySystem
     [Dependency] private SharedJobSystem _jobs = default!;
     [Dependency] private SharedMindSystem _mind = default!;
     [Dependency] private WGShipTierSystem _shipTiers = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     /// <summary>Players who drew each kit this round, by faction and kit.</summary>
     private readonly Dictionary<(string Company, string Kit), HashSet<NetUserId>> _holders = new();
+
+    private static readonly TimeSpan RefreshInterval = TimeSpan.FromSeconds(2);
+    private TimeSpan _nextRefresh;
 
     public override void Initialize()
     {
@@ -93,6 +99,51 @@ public sealed class WGSpecialistKitSystem : EntitySystem
             return;
 
         _holders.GetOrNew((company.CompanyName.Id, args.Entry.Id)).Add(actor.PlayerSession.UserId);
+        _nextRefresh = TimeSpan.Zero;
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+        if (_timing.CurTime < _nextRefresh)
+            return;
+
+        _nextRefresh = _timing.CurTime + RefreshInterval;
+        var query = EntityQueryEnumerator<WGSpecialistVendorComponent, CMAutomatedVendorComponent>();
+        while (query.MoveNext(out var uid, out var rack, out var vendor))
+        {
+            RefreshLeft((uid, rack), vendor);
+        }
+    }
+
+    /// <summary>Recounts the slots left for each limited kit on a rack, so its window can show them.</summary>
+    private void RefreshLeft(Entity<WGSpecialistVendorComponent> rack, CMAutomatedVendorComponent vendor)
+    {
+        var members = _shipTiers.MembersOnline(rack.Comp.Company);
+        var changed = false;
+        foreach (var section in vendor.Sections)
+        {
+            foreach (var entry in section.Entries)
+            {
+                if (!_protos.TryIndex(entry.Id, out var proto)
+                    || !proto.TryGetComponent(out WGSpecialistKitComponent? kit, _factory)
+                    || !kit.Limited)
+                    continue;
+
+                var taken = _holders.TryGetValue((rack.Comp.Company.Id, entry.Id.Id), out var holders)
+                    ? Active(holders, rack.Comp.Company)
+                    : 0;
+                var left = Math.Max(0, Limit(kit, members) - taken);
+                if (rack.Comp.Left.TryGetValue(entry.Id, out var old) && old == left)
+                    continue;
+
+                rack.Comp.Left[entry.Id] = left;
+                changed = true;
+            }
+        }
+
+        if (changed)
+            Dirty(rack);
     }
 
     /// <summary>Whether this player drew the kit this round, for buying a replacement.</summary>

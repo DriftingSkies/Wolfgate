@@ -1,4 +1,5 @@
-# Specialist vendors at the Halcyon and Helios: one kit per player, from RMC's automated vendor.
+# Specialist racks at the Halcyon and Helios: one kit per player, from RMC's automated vendor. The sections share one
+# pick, so a player takes one kit from any of them.
 
 - type: entity
   parent: ColMarTechBase
@@ -10,19 +11,32 @@
     - state: off
     - state: normal-unshaded
       shader: unshaded
+  - type: WGSpecialistVendor
+    company: TSF
   - type: CMAutomatedVendor
     sections:
-    - name: wg-specialist-vendor-section
+    - name: wg-specialist-vendor-section-infantry
       choices: { WGSpecialistKit: 1 }
       entries:
-      - id: WGKitTsfBreacher
+      - id: WGKitTsfAssaultman
+      - id: WGKitTsfAntitank
+      - id: WGKitTsfMachineGunner
+      - id: WGKitTsfMortarman
+      - id: WGKitTsfScoutSniper
+      - id: WGKitTsfRecon
+    - name: wg-specialist-vendor-section-combat-support
+      choices: { WGSpecialistKit: 1 }
+      entries:
       - id: WGKitTsfCombatEngineer
       - id: WGKitTsfCorpsman
-      - id: WGKitTsfMarksman
-      - id: WGKitTsfPyrotechnician
-      - id: WGKitTsfRecon
-      - id: WGKitTsfHeavyGunner
-      - id: WGKitTsfShipGunner
+      - id: WGKitTsfMasterAtArms
+      - id: WGKitTsfLavCrewman
+    - name: wg-specialist-vendor-section-support
+      choices: { WGSpecialistKit: 1 }
+      entries:
+      - id: WGKitTsfCulinary
+      - id: WGKitTsfMachinistMate
+      - id: WGKitTsfLandingSupport
 
 - type: entity
   parent: ColMarTechBase
@@ -34,16 +48,29 @@
     - state: off
     - state: normal-unshaded
       shader: unshaded
+  - type: WGSpecialistVendor
+    company: PDV
   - type: CMAutomatedVendor
     sections:
-    - name: wg-specialist-vendor-section
+    - name: wg-specialist-vendor-section-infantry
       choices: { WGSpecialistKit: 1 }
       entries:
-      - id: WGKitPdvBoarder
-      - id: WGKitPdvArtificer
-      - id: WGKitPdvFieldMedic
-      - id: WGKitPdvSharpshooter
-      - id: WGKitPdvHeavy
-      - id: WGKitPdvBurner
-      - id: WGKitPdvAkinciRaider
-      - id: WGKitPdvTopcu
+      - id: WGKitPdvLagimci
+      - id: WGKitPdvDarbzenci
+      - id: WGKitPdvYeniceri
+      - id: WGKitPdvHumbaraci
+      - id: WGKitPdvTufekci
+      - id: WGKitPdvAkinci
+    - name: wg-specialist-vendor-section-combat-support
+      choices: { WGSpecialistKit: 1 }
+      entries:
+      - id: WGKitPdvCebeci
+      - id: WGKitPdvCerrah
+      - id: WGKitPdvBostanci
+      - id: WGKitPdvSipahi
+    - name: wg-specialist-vendor-section-support
+      choices: { WGSpecialistKit: 1 }
+      entries:
+      - id: WGKitPdvAsci
+      - id: WGKitPdvArabaci
+      - id: WGKitPdvMenzilci

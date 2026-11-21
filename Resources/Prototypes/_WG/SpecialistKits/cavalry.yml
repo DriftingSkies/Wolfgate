@@ -1,0 +1,74 @@
+# The cavalry kits' mech: a voucher that, used in hand, sets down the faction's Gygax with a charged power cage.
+
+- type: entity
+  parent: MechGygaxTSF
+  id: WGMechGygaxTSFBattery
+  suffix: Battery
+  components:
+  - type: ContainerFill
+    containers:
+      mech-battery-slot:
+      - PowerCageMedium
+
+- type: entity
+  parent: MechGygaxPDV
+  id: WGMechGygaxPDVBattery
+  suffix: Battery
+  components:
+  - type: ContainerFill
+    containers:
+      mech-battery-slot:
+      - PowerCageMedium
+
+- type: entity
+  parent: BaseItem
+  id: WGMechVoucherGygaxBase
+  abstract: true
+  components:
+  - type: Item
+    size: Small
+  - type: Sprite
+    sprite: _Mono/Objects/Misc/lpcnew.rsi
+    layers:
+    - state: icon_fighter
+    - state: screen
+      map: [ "screen" ]
+    - state: screen5
+      map: [ "screen5" ]
+      shader: unshaded
+
+- type: entity
+  parent: WGMechVoucherGygaxBase
+  id: WGMechVoucherGygaxTSF
+  components:
+  - type: Sprite
+    layers:
+    - state: icon_fighter
+    - state: screen
+      color: "#05ffff"
+    - state: screen5
+      color: "#05ffff"
+      shader: unshaded
+  - type: SpawnItemsOnUse
+    items:
+    - id: WGMechGygaxTSFBattery
+    sound:
+      path: /Audio/Effects/unwrap.ogg
+
+- type: entity
+  parent: WGMechVoucherGygaxBase
+  id: WGMechVoucherGygaxPDV
+  components:
+  - type: Sprite
+    layers:
+    - state: icon_fighter
+    - state: screen
+      color: "#ffde21"
+    - state: screen5
+      color: "#ffde21"
+      shader: unshaded
+  - type: SpawnItemsOnUse
+    items:
+    - id: WGMechGygaxPDVBattery
+    sound:
+      path: /Audio/Effects/unwrap.ogg

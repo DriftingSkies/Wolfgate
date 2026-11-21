@@ -1,32 +1,7 @@
-# Uplink additions so both factions can buy what the other can: the TSF's top hardsuits and its lathe weapons, plus
+# Uplink additions so both factions can buy what the other can: the TSF's lathe weapons, plus
 # plates, medkits and gunnery chips, and the PDV's material crates. Names and descriptions come from the product
 # entity. The M82b, M82c, Lecter, Enforcer and Mateba are already in _NF/Catalog/security_uplink_catalog.yml.
-
-- type: listing
-  id: WGUplinkTsfHardsuitM86
-  productEntity: ClothingOuterHardsuitM86
-  cost:
-    FederationMilitaryCredit: 45
-  categories:
-  - UplinkSecurityHardsuits
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - SecurityUplink
-
-- type: listing
-  id: WGUplinkTsfHardsuitM92X
-  productEntity: ClothingOuterHardsuitNfsdExperimental
-  cost:
-    FederationMilitaryCredit: 90
-  categories:
-  - UplinkSecurityHardsuits
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - SecurityUplink
+# Hardsuits past the entry tier (M86, M92-X, CV-53, CV-82) are made at the faction lathe only.
 
 - type: listing
   id: WGUplinkTsfSmgDrozd
@@ -514,6 +489,177 @@
     Doubloon: 130
   categories:
   - UplinkPdvMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+# The TSF's tools, field medicine, holoprojector, portable recharger and gas mask, at the TSF's prices.
+
+- type: listing
+  id: WGUplinkPdvWelderIndustrial
+  productEntity: WelderIndustrial
+  cost:
+    Doubloon: 4
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMultitool
+  productEntity: Multitool
+  cost:
+    Doubloon: 2
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvHoloprojector
+  productEntity: Holoprojector
+  cost:
+    Doubloon: 5
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvPortableRecharger
+  productEntity: PortableRecharger
+  cost:
+    Doubloon: 35
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvGasMask
+  productEntity: ClothingMaskGasSyndicate
+  cost:
+    Doubloon: 5
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvBruteInjector
+  productEntity: BruteAutoInjector
+  cost:
+    Doubloon: 3
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvBurnInjector
+  productEntity: BurnAutoInjector
+  cost:
+    Doubloon: 3
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvBloodpack
+  productEntity: Bloodpack
+  cost:
+    Doubloon: 2
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMedkitFilled
+  productEntity: MedkitFilled
+  cost:
+    Doubloon: 5
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMedkitBrute
+  productEntity: MedkitBruteFilled
+  cost:
+    Doubloon: 8
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMedkitBurn
+  productEntity: MedkitBurnFilled
+  cost:
+    Doubloon: 8
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMedkitAdvanced
+  productEntity: MedkitAdvancedFilled
+  cost:
+    Doubloon: 15
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvDefibrillatorCompact
+  productEntity: DefibrillatorCompact
+  cost:
+    Doubloon: 15
+  categories:
+  - UplinkPirateMedical
   conditions:
   - !type:StoreWhitelistCondition
     whitelist:
