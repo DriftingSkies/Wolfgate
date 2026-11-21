@@ -1,4 +1,4 @@
-# Game Options Extra tab
+# Settings on the Wolfgate tabs of the options window
 ui-options-wg-interface = Interface
 ui-options-wg-window-popout = Show the pop-out button on windows
 ui-options-wg-effects = Effects

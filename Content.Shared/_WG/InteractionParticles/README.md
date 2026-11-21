@@ -65,8 +65,6 @@ come from the ES spark system already under `Content.Shared/_ES/Sparks`; `ESSpar
   - settle on the final sprite once the open/close animation finishes
   - only stop animations that belong to another state
   - a door that reverses mid-animation must not run both animations at once
-- [`Content.Client/Options/UI/Tabs/GraphicsTab.xaml`](../../../Content.Client/Options/UI/Tabs/GraphicsTab.xaml): interaction particle visibility
-- [`Content.Client/Options/UI/Tabs/GraphicsTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/GraphicsTab.xaml.cs)
 - [`Content.Server/_ES/Sparks/ESSparksTriggerSystem.cs`](../../../Content.Server/_ES/Sparks/ESSparksTriggerSystem.cs): sparks when triggered, ported from Starlight's Visual Overdose
 - [`Content.Server/Anomaly/Components/BluespaceAnomalyComponent.cs`](../../../Content.Server/Anomaly/Components/BluespaceAnomalyComponent.cs): the sound is replaced by the bluespace effect, which sparks
 - [`Content.Server/Anomaly/Effects/BluespaceAnomalySystem.cs`](../../../Content.Server/Anomaly/Effects/BluespaceAnomalySystem.cs)

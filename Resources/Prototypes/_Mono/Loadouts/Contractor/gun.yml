@@ -7,10 +7,20 @@
   #- ContractorLaserLoadout
   - ContractorSurvivalKnifeLoadout
   - ContractorDisablerLoadout
-  #- ContractorArgentiLoadout
+  - ContractorArgentiLoadout #WOLFGATE(Weapons): Argenti available
   - ContractorSvalinnLoadout
-  - ContractorDoubleBarreledLoadout
-  - WGContractorMosinLoadout # WOLFGATE(Weapons)
+  #WOLFGATE(Weapons) START: Vagrant loadouts match what is in the LibertyVend
+  #- ContractorDoubleBarreledLoadout # moved to CivGunCaseSpecial
+  - MercenaryViperLoadout
+  - MercenaryMk58Loadout
+  - MercenaryPollockLoadout
+  - MercenarySawedOffLoadout
+  - MercenaryHelepolisLoadout
+  - MercenaryLaserPistolLoadout
+  - MercenaryCombatKnifeLoadout
+  - MercenaryKukriKnifeLoadout
+  - MercenaryMacheteLoadout
+  #WOLFGATE END
   fallbacks:
   - ContractorMk32Loadout
 
@@ -20,5 +30,11 @@
   minLimit: 0
   loadouts:
   - Contractor9x19mmPistolAmmoLoadout #MK32 Universal
-  #- Contractor556x45mmAmmoLoadout #Argenti
+  - Contractor556x45mmAmmoLoadout #Argenti #WOLFGATE(Weapons): Argenti available
   - ContractorBeanbagAmmoLoadout #Shotgun Beanbag
+  #WOLFGATE(Weapons) START: Loadouts equitable to what's in LibertyVend.
+  - MercenaryAcpPistolAmmoLoadout #MK-58
+  - MercenarySlugAmmoLoadout #Shotgun slugs
+  - MercenaryBuckshotAmmoLoadout #Shotgun Buckshot
+  - MercenaryRechargerLoadout #Recharger
+  #WOLFGATE END

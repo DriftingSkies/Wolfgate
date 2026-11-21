@@ -1,6 +1,6 @@
 # CombatFacing
 
-A Misc tab option, **Face the cursor in combat mode** (`wg.combat_face_cursor`, on by default). On, combat mode turns
+A Wolfgate > Interface options tab setting, under Cursor, **Face the cursor in combat mode** (`wg.combat_face_cursor`, on by default). On, combat mode turns
 you toward the mouse as before. Off, combat mode leaves facing alone and you turn by moving.
 
 The cvar is a replicated client cvar, so the server reads each player's choice when they enter combat mode, through
@@ -31,8 +31,6 @@ it was (an NPC's combat mode adds none) until they toggle combat mode.
 
 ## Non-modular edits
 
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml): face the cursor in combat mode
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml.cs): face the cursor in combat mode
 - [`Content.Shared/CombatMode/SharedCombatModeSystem.cs`](../../CombatMode/SharedCombatModeSystem.cs): the player turned facing the cursor off
 
 <!-- WOLFGATE-GENERATED END -->

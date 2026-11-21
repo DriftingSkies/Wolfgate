@@ -69,10 +69,6 @@ the voice for that line; WolfChem uses it to speed up or slow down a high speake
 
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml): voice tab, filled in by HumanoidProfileEditor.SpeechVoice.cs
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs)
-- [`Content.Client/Options/UI/Tabs/AudioTab.xaml`](../../../Content.Client/Options/UI/Tabs/AudioTab.xaml)
-  - volume for character voices
-  - toggle for character voices
-- [`Content.Client/Options/UI/Tabs/AudioTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/AudioTab.xaml.cs)
 - [`Content.Server.Database/Model.cs`](../../../Content.Server.Database/Model.cs): the voice settings as JSON, null in rows saved before voices existed.
 - [`Content.Server/Database/ServerDbBase.cs`](../../Database/ServerDbBase.cs)
 - [`Content.Server/Speech/SpeechNoiseSystem.cs`](../../Speech/SpeechNoiseSystem.cs): the voice plays instead, unless the character chose the message sound

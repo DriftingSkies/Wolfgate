@@ -1,11 +1,12 @@
+using Content.Client.Options.UI;
 using Content.Shared._Scp.ScpCCVars;
 using Content.Shared.CCVar;
 using Robust.Shared;
 
-namespace Content.Client.Options.UI.Tabs;
+namespace Content.Client._WG.Options.UI.Tabs;
 
 /// <summary>Graphics settings that existed as cvars without a control: FPS cap, space background, bloom, grain.</summary>
-public sealed partial class GraphicsTab
+public sealed partial class WGGraphicsTab
 {
     private static readonly int[] WgFpsCaps = { 30, 60, 75, 90, 120, 144, 165, 240 };
 

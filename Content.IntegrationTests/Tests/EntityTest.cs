@@ -1,5 +1,7 @@
 using System; // WOLFGATE(Wolfmed)
 using System.Collections.Generic;
+using System.Diagnostics; // WOLFGATE(Ci)
+using System.IO; // WOLFGATE(Ci)
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -12,6 +14,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager.Attributes;
+using Robust.UnitTesting; // WOLFGATE(Ci)
 
 namespace Content.IntegrationTests.Tests
 {
@@ -71,8 +74,10 @@ namespace Content.IntegrationTests.Tests
                     }
                 });
 
-                await server.WaitRunTicks(450); // 15 seconds, enough to trigger most update loops
+                // await server.WaitRunTicks(450); // 15 seconds, enough to trigger most update loops
+                await RunSpawnAllTicks(server, entityMan, "different-maps", first, protoIds.Count, slice);
                 await server.WaitPost(() => DeleteEverything(entityMan, mapSystem));
+                LogSpawnAllProgress($"different-maps {first}: deleted");
             }
             // WOLFGATE END
 
@@ -87,15 +92,18 @@ namespace Content.IntegrationTests.Tests
             var settings = new PoolSettings { Dirty = true };
             await using var pair = await PoolManager.GetServerClient(settings);
             var server = pair.Server;
-            var map = await pair.CreateTestMap();
-
+            // WOLFGATE(Ci) START: in slices, as the different-maps test; all at once ran the 16 GB runner out of memory
+            // In one spot, every prototype at once took the test host from 6.5 to about 13 GB, ran 23 minutes on a good
+            // day and got the core shard's runner shut down on a bad one. Each slice spawns in one spot on a fresh test
+            // map, runs the same 450 ticks and is deleted before the next.
             var entityMan = server.ResolveDependency<IEntityManager>();
             var prototypeMan = server.ResolveDependency<IPrototypeManager>();
+            var mapSystem = entityMan.System<SharedMapSystem>();
 
+            var protoIds = new List<string>();
             await server.WaitPost(() =>
             {
-
-                var protoIds = prototypeMan
+                protoIds = prototypeMan
                     .EnumeratePrototypes<EntityPrototype>()
                     .Where(p => !p.Abstract)
                     .Where(p => !pair.IsTestPrototype(p))
@@ -106,50 +114,54 @@ namespace Content.IntegrationTests.Tests
                     .Where(p => p.Categories.All(x => x.ID != SpawnerCategory)) // mono
                     .Select(p => p.ID)
                     .ToList();
-                foreach (var protoId in protoIds)
-                {
-                    SpawnEntity(entityMan, protoId, map.GridCoords); // Monolith
-                }
             });
-            await server.WaitRunTicks(450); // 15 seconds, enough to trigger most update loops
-            await server.WaitPost(() =>
+
+            for (var first = 0; first < protoIds.Count; first += SameSpotSlice)
             {
-                static IEnumerable<(EntityUid, TComp)> Query<TComp>(IEntityManager entityMan)
-                    where TComp : Component
+                var slice = protoIds.Skip(first).Take(SameSpotSlice).ToList();
+                var map = await pair.CreateTestMap();
+                await server.WaitPost(() =>
                 {
-                    var query = entityMan.AllEntityQueryEnumerator<TComp>();
-                    while (query.MoveNext(out var uid, out var meta))
+                    foreach (var protoId in slice)
                     {
-                        yield return (uid, meta);
+                        SpawnEntity(entityMan, protoId, map.GridCoords); // Monolith
                     }
-                }
+                });
 
-                // WOLFGATE(Wolfmed) START: maps first, so everything on them goes parent-first, as it does when a round
-                // ends. Deleting in enumeration order could delete a held item out of a live xenoborg's hand before its
-                // module, which DroppableBorgModuleSystem logs as an error; the order follows prototype file order,
-                // which differs between Windows and Linux, so it failed on CI only.
-                var mapSystem = entityMan.System<SharedMapSystem>();
-                foreach (var mapId in mapSystem.GetAllMapIds().ToList())
-                {
-                    mapSystem.DeleteMap(mapId);
-                }
-                // WOLFGATE END
+                await RunSpawnAllTicks(server, entityMan, "same-spot", first, protoIds.Count, slice);
+                await server.WaitPost(() => DeleteEverything(entityMan, mapSystem));
+                LogSpawnAllProgress($"same-spot {first}: deleted");
+            }
 
-                var entityMetas = Query<MetaDataComponent>(entityMan).ToList();
-                foreach (var (uid, meta) in entityMetas)
-                {
-                    if (!meta.EntityDeleted)
-                        entityMan.DeleteEntity(uid);
-                }
-
-                Assert.That(entityMan.EntityCount, Is.Zero);
-            });
+            // var map = await pair.CreateTestMap();
+            //
+            // var entityMan = server.ResolveDependency<IEntityManager>();
+            // var prototypeMan = server.ResolveDependency<IPrototypeManager>();
+            //
+            // await server.WaitPost(() =>
+            // {
+            //
+            //     var protoIds = prototypeMan
+            //         ...the same filters as above...
+            //         .ToList();
+            //     foreach (var protoId in protoIds)
+            //     {
+            //         SpawnEntity(entityMan, protoId, map.GridCoords); // Monolith
+            //     }
+            // });
+            // await server.WaitRunTicks(450); // 15 seconds, enough to trigger most update loops
+            // await server.WaitPost(() =>
+            // {
+            //     ...delete every map, then every entity left (now DeleteEverything)...
+            //     Assert.That(entityMan.EntityCount, Is.Zero);
+            // });
+            // WOLFGATE END
 
             await pair.CleanReturnAsync();
         }
 
         // WOLFGATE(Wolfmed) START: the slice size and the delete of the sliced spawn-all test.
-        /// <summary>Prototypes spawned per slice of the different-maps spawn-all test: about a seventh of them.</summary>
+        /// <summary>Prototypes spawned per slice of the spawn-all tests: about a seventh of them.</summary>
         private const int SpawnAllSlice = 2500;
 
         /// <summary>
@@ -183,6 +195,46 @@ namespace Content.IntegrationTests.Tests
             // The slice's garbage goes now, not when the next slice has already been spawned on top of it.
             GC.Collect();
             GC.WaitForPendingFinalizers();
+        }
+
+        // WOLFGATE END
+
+        // WOLFGATE(Ci) START: timed progress of the spawn-all slices, so a slow core shard shows where the time goes
+        /// <summary>
+        /// Prototypes per slice of the same-spot test. Smaller than <see cref="SpawnAllSlice"/>: in one spot, portals,
+        /// EMPs and the like act on everything piled with them, so a slice's cost grows with its square.
+        /// </summary>
+        private const int SameSpotSlice = 1000;
+
+        /// <summary>
+        /// Runs a slice's 450 ticks in thirds, logging after each. A slice whose first third is over 30 seconds has its
+        /// prototypes written out, to bisect what made it slow.
+        /// </summary>
+        private static async Task RunSpawnAllTicks(RobustIntegrationTest.ServerIntegrationInstance server,
+            IEntityManager entityMan, string test, int first, int total, List<string> slice)
+        {
+            LogSpawnAllProgress($"{test} {first}/{total}: spawned, {entityMan.EntityCount} entities");
+            var watch = Stopwatch.StartNew();
+            for (var third = 1; third <= 3; third++)
+            {
+                await server.WaitRunTicks(150); // 450 in all: 15 seconds, enough to trigger most update loops
+                LogSpawnAllProgress($"{test} {first}/{total}: {third * 150} ticks, {entityMan.EntityCount} entities");
+                if (third != 1 || watch.Elapsed.TotalSeconds <= 30)
+                    continue;
+
+                File.AppendAllText(Path.Combine(TestContext.CurrentContext.WorkDirectory, "spawn-all-slow-slices.txt"),
+                    $"{test} {first} ({watch.Elapsed.TotalSeconds:F0} s): {string.Join(' ', slice)}\n");
+            }
+        }
+
+        /// <summary>Writes a timed line with the heap and working set to the test log and to a file the CI artifact keeps.</summary>
+        private static void LogSpawnAllProgress(string message)
+        {
+            var line = $"{DateTime.UtcNow:HH:mm:ss} {message}; heap {GC.GetTotalMemory(false) >> 20} MB, "
+                + $"working set {Environment.WorkingSet >> 20} MB, gen2 GCs {GC.CollectionCount(2)}";
+            TestContext.Progress.WriteLine(line);
+            File.AppendAllText(Path.Combine(TestContext.CurrentContext.WorkDirectory, "spawn-all-progress.txt"),
+                line + "\n");
         }
 
         // WOLFGATE END

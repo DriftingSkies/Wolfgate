@@ -37,7 +37,7 @@ public sealed partial class NeurotoxinLingeringHallucinationComponent : Componen
     public SoundSpecifier GauHit = new SoundPathSpecifier("/Audio/_WG/Xenonids/Dropship/gauimpact.ogg", AudioParams.Default.WithVolume(-5));
 
     [DataField]
-    public SoundSpecifier Explosion = new SoundCollectionSpecifier("CMExplosion");
+    public SoundSpecifier Explosion = new SoundCollectionSpecifier("Explosion"); // RMC14's CMExplosion was never ported
 
     [DataField]
     public SoundSpecifier BigExplosion = new SoundCollectionSpecifier("RMCExplosionBig");

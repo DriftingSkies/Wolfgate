@@ -1,6 +1,6 @@
 # HideTyping
 
-Lets a player stop others seeing their typing indicator: Game Options > Misc > Speech > "Show others when I'm typing"
+Lets a player stop others seeing their typing indicator: Game Options > Wolfgate > Chat > Chat > "Show others when I'm typing"
 (`wg.chat_show_my_typing`, on by default). With it off, the client sends the server "not typing" whatever the chat box
 is doing, and turning it off clears an indicator already showing. The server-wide `chat.show_typing_indicator` still
 turns indicators off for everyone.
@@ -30,7 +30,5 @@ in `Initialize`.
 - [`Content.Client/Chat/TypingIndicator/TypingIndicatorSystem.cs`](../../../Content.Client/Chat/TypingIndicator/TypingIndicatorSystem.cs)
   - clear the indicator when turned off
   - the player chose not to show it
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml): typing indicator opt-out
-- [`Content.Client/Options/UI/Tabs/MiscTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/MiscTab.xaml.cs): typing indicator opt-out
 
 <!-- WOLFGATE-GENERATED END -->

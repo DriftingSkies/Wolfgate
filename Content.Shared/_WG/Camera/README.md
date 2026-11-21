@@ -7,7 +7,7 @@ full tile. Whatever a kick has past that becomes a short shake in place, faster 
 (10 to 30 swings a second, up to 0.8 s). The Accessibility tab's screen shake slider still scales it all. Entry point:
 `CameraRecoilSystem.WGKickCamera` on the client, called from a marked edit in `CameraRecoilSystem.KickCamera`.
 
-Default to North: an Extra tab option (`wg.eye_default_north`). With it on, stepping onto a grid turns the view to that
+Default to North: a Wolfgate > Interface options tab setting (`wg.eye_default_north`). With it on, stepping onto a grid turns the view to that
 grid's north rather than the nearest cardinal to the old view. The cvar is replicated so the server predicts the same
 rotation; `WGDefaultNorthSystem.WantsNorth` is read from a marked edit in `SharedMoverController.TryUpdateRelative`.
 

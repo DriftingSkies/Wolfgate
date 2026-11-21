@@ -614,8 +614,8 @@ public sealed class ModsuitModuleTest
             var suitComp = entMan.GetComponent<ModSuitComponent>(suit);
             var battery = modSuit.GetBattery((suit, suitComp));
             Assert.That(battery, Is.Not.Null);
-            Assert.That(battery!.Value.Comp.CurrentCharge, Is.GreaterThan(0f),
-                "the suit core was not charged by the cyborg recharger");
+            Assert.That(battery!.Value.Comp.CurrentCharge, Is.GreaterThan(1500f),
+                "the suit core charged far too slowly in the cyborg recharger");
         });
 
         await pair.CleanReturnAsync();

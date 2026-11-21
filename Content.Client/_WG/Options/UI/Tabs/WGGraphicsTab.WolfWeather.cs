@@ -1,9 +1,10 @@
+using Content.Client.Options.UI;
 using Content.Shared._WG.WolfWeather;
 
-namespace Content.Client.Options.UI.Tabs;
+namespace Content.Client._WG.Options.UI.Tabs;
 
-/// <summary>The weather detail option on the graphics tab.</summary>
-public sealed partial class GraphicsTab
+/// <summary>The weather detail option on the Wolfgate Graphics tab.</summary>
+public sealed partial class WGGraphicsTab
 {
     private void WgAddWeatherQuality()
     {

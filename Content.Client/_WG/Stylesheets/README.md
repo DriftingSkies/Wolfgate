@@ -26,6 +26,7 @@ who never picked a style does not get the Retro skin with the Futurist HUD; a HU
 - [`Content.Client/_WG/Stylesheets/StyleWolfgate.cs`](StyleWolfgate.cs)
 - [`Content.Client/_WG/Stylesheets/StyleWolfgate.Loadouts.cs`](StyleWolfgate.Loadouts.cs)
 - [`Content.Client/_WG/Stylesheets/StyleWolfgate.Lobby.cs`](StyleWolfgate.Lobby.cs)
+- [`Content.Client/_WG/Stylesheets/StyleWolfgate.Options.cs`](StyleWolfgate.Options.cs)
 - [`Content.Client/_WG/Stylesheets/StyleWolfgate.RoundSetup.cs`](StyleWolfgate.RoundSetup.cs)
 - [`Content.Client/_WG/Stylesheets/StyleWolfgate.Rules.cs`](StyleWolfgate.Rules.cs)
 - [`Content.Client/_WG/Stylesheets/WolfgateSkin.cs`](WolfgateSkin.cs)

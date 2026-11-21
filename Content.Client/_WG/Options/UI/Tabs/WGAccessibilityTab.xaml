@@ -1,0 +1,13 @@
+<tabs:WGAccessibilityTab xmlns="https://spacestation14.io"
+                         xmlns:tabs="clr-namespace:Content.Client._WG.Options.UI.Tabs"
+                         xmlns:ui="clr-namespace:Content.Client.Options.UI">
+    <BoxContainer Orientation="Vertical">
+        <ScrollContainer VerticalExpand="True" HorizontalExpand="True" HScrollEnabled="False">
+            <BoxContainer Orientation="Vertical" Margin="8 8 8 8" VerticalExpand="True">
+                <CheckBox Name="DarkFlashCheckBox" Text="{Loc 'ui-options-wg-dark-flash'}" ToolTip="{Loc 'ui-options-wg-dark-flash-tooltip'}" />
+                <CheckBox Name="DisableFiltersCheckBox" Text="{Loc 'ui-options-no-filters'}" />
+            </BoxContainer>
+        </ScrollContainer>
+        <ui:OptionsTabControlRow Name="Control" Access="Public" />
+    </BoxContainer>
+</tabs:WGAccessibilityTab>

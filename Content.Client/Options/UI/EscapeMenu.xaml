@@ -24,6 +24,8 @@
         <Button Access="Public" Name="RoundSetupButton" Text="{Loc 'wg-round-setup-title'}" />
         <!-- WOLFGATE(MappingMode): session, save and library window while mapping -->
         <Button Access="Public" Name="MappingButton" Text="{Loc 'wg-mapping-mode-escape-button'}" Visible="False" />
+        <!-- WOLFGATE(Unstuck): frees a player stuck inside a wall -->
+        <Button Access="Public" Name="UnstuckButton" Text="{Loc 'wg-unstuck-button'}" ToolTip="{Loc 'wg-unstuck-button-tooltip'}" />
         <Button Access="Public" Name="OptionsButton" Text="{Loc 'ui-escape-options'}" />
         <Button Access="Public" Name="RulesButton" Text="{Loc 'ui-escape-rules'}" />
         <Button Access="Public" Name="GuidebookButton" Text="{Loc 'ui-escape-guidebook'}" />

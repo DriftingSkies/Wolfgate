@@ -1,9 +1,10 @@
+using Content.Client.Options.UI;
 using Content.Shared._WG.Screentips;
 
-namespace Content.Client.Options.UI.Tabs;
+namespace Content.Client._WG.Options.UI.Tabs;
 
-/// <summary>The screentip settings in the Cursor section of the Misc tab.</summary>
-public sealed partial class MiscTab
+/// <summary>The screentip settings in the Cursor section of the Wolfgate Interface tab.</summary>
+public sealed partial class WGInterfaceTab
 {
     private void WgAddScreentipOptions()
     {

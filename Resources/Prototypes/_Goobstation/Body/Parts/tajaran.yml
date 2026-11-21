@@ -47,11 +47,17 @@
   id: LeftLegTajaran
   name: left tajaran leg
   parent: [PartTajaran, BaseLeftLeg]
+  components: # WOLFGATE: 5% faster sprint than the base leg
+    - type: MovementBodyPart
+      sprintSpeed : 4.725
 
 - type: entity
   id: RightLegTajaran
   name: right tajaran leg
   parent: [PartTajaran, BaseRightLeg]
+  components: # WOLFGATE: 5% faster sprint than the base leg
+    - type: MovementBodyPart
+      sprintSpeed : 4.725
 
 - type: entity
   id: LeftFootTajaran

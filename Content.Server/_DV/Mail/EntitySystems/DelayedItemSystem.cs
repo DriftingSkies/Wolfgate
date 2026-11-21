@@ -26,6 +26,10 @@ namespace Content.Server._DV.Mail.EntitySystems
         /// </summary>
         private void OnRemovedFromContainer(EntityUid uid, DelayedItemComponent component, ContainerModifiedMessage args)
         {
+            // WOLFGATE: a placeholder leaves its container as it is deleted; spawning onto it then logged an error
+            if (TerminatingOrDeleted(uid))
+                return;
+
             Spawn(component.Item, Transform(uid).Coordinates);
         }
 

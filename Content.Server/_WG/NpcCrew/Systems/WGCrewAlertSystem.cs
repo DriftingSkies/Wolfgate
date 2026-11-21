@@ -427,6 +427,12 @@ public sealed partial class WGCrewAlertSystem : EntitySystem
         _warningShots.Remove((grid, intruder));
     }
 
+    /// <summary>Whether a warning-shot order on a vessel is still on record, lapsed or not.</summary>
+    public bool HasZoneWarning(EntityUid grid, EntityUid intruder)
+    {
+        return _warningShots.ContainsKey((grid, intruder));
+    }
+
     /// <summary>Whether a ship's guns are only to fire wide of a vessel.</summary>
     public bool IsWarningShot(EntityUid grid, EntityUid target)
     {

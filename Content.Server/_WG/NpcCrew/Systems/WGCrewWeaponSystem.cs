@@ -34,6 +34,7 @@ public sealed partial class WGCrewWeaponSystem : EntitySystem
         {
             _advancing.Clear();
             _threats.Clear();
+            _nearby.Clear();
             _blastHolds.Clear();
             _braces.Clear();
         });

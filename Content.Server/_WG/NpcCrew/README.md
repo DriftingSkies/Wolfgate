@@ -562,6 +562,7 @@ crew never turns on what it carries, such as the Remade aboard a flesh ship.
 - [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Stations.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Stations.cs)
 - [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Tactics.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Tactics.cs)
 - [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.TargetLifetime.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.TargetLifetime.cs)
+- [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.ThreatLookup.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.ThreatLookup.cs)
 - [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Titles.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Titles.cs)
 - [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Work.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Work.cs)
 - [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Wreck.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Wreck.cs)

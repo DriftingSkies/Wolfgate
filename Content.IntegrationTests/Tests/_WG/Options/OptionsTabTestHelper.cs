@@ -1,4 +1,5 @@
 #nullable enable
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Content.IntegrationTests.Tests._WG.EngineCompat;
@@ -13,12 +14,12 @@ namespace Content.IntegrationTests.Tests._WG.Options;
 public static class OptionsTabTestHelper
 {
     /// <summary>
-    /// For each checkbox on the named tab: it starts at its cvar's value, and flipping it then pressing Apply writes the
-    /// flipped value. Runs on the client thread; every cvar is put back afterwards.
+    /// For each checkbox on the window's one tab of type <typeparamref name="TTab"/>: it starts at its cvar's value,
+    /// and flipping it then pressing Apply writes the flipped value. Runs on the client thread; every cvar is put back
+    /// afterwards.
     /// </summary>
     public static void AssertCheckBoxesApply<TTab>(
         IConfigurationManager config,
-        string tabName,
         params (string CheckBox, CVarDef<bool> CVar)[] boxes)
         where TTab : Control
     {
@@ -26,7 +27,7 @@ public static class OptionsTabTestHelper
         var menu = new OptionsMenu();
         try
         {
-            var tab = menu.FindControl<TTab>(tabName);
+            var tab = Find<TTab>(menu);
             var row = tab.FindControl<OptionsTabControlRow>("Control");
 
             for (var i = 0; i < boxes.Length; i++)
@@ -37,9 +38,7 @@ public static class OptionsTabTestHelper
             }
 
             row.ValueChanged();
-            // Buttons only raise OnPressed from input, so call the row's own handler.
-            typeof(OptionsTabControlRow).GetMethod("ApplyButtonPressed", BindingFlags.Instance | BindingFlags.NonPublic)!
-                .Invoke(row, new object?[] { null });
+            Apply(row);
 
             for (var i = 0; i < boxes.Length; i++)
             {
@@ -54,6 +53,29 @@ public static class OptionsTabTestHelper
             }
 
             menu.Teardown();
+        }
+    }
+
+    /// <summary>The one control of type <typeparamref name="T"/> under <paramref name="root"/>, at any depth.</summary>
+    public static T Find<T>(Control root) where T : Control
+    {
+        return Descendants(root).OfType<T>().Single();
+    }
+
+    /// <summary>Presses a row's Apply button. Buttons only raise OnPressed from input, so this calls its handler.</summary>
+    public static void Apply(OptionsTabControlRow row)
+    {
+        typeof(OptionsTabControlRow).GetMethod("ApplyButtonPressed", BindingFlags.Instance | BindingFlags.NonPublic)!
+            .Invoke(row, new object?[] { null });
+    }
+
+    public static IEnumerable<Control> Descendants(Control control)
+    {
+        yield return control;
+        foreach (var child in control.Children)
+        {
+            foreach (var descendant in Descendants(child))
+                yield return descendant;
         }
     }
 }
