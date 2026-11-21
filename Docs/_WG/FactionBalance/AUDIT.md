@@ -6,7 +6,7 @@ The specialist kits are in `Resources/Prototypes/_WG/SpecialistKits/kits.yml`.
 Counts are what a player sees in the uplink's tabs, against the 80-100 cap. Operations (their own tab, one per
 operation) and the kit replacement crates (shown only to a player who drew that kit) are listed apart.
 
-## TSF uplink (152 listings; 8 kit replacements)
+## TSF uplink (148 listings; 13 kit replacements)
 
 | Category | Item | Cost |
 |---|---|---|
@@ -36,7 +36,7 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | SecurityAmmo | big ammunition box (6.8x52mm STANAG Caseless) (`AmmoBox68x52mmCaselessBig`) | 8 |
 | SecurityAmmo | shotgun shell box (12 gauge incendiary) (`AmmoBox12_gaugeIncendiary`) | 10 |
 | SecurityAmmo | ammunition box (8x65mm SKR FMJ) (`AmmoBox8x65mmSKR`) | 12 |
-| SecurityBundles | Thruster upgrade kit (`BoxT3SuperCapacitor`) | 20 |
+| SecurityBundles | Thruster upgrade kit (`BoxT3SuperCapacitor`) | 15 |
 | SecurityBundles | tracking bundle (`ClothingBackpackDuffelNfsdTrackingBundle`) | 20 |
 | SecurityBundles | TSFMC Lake EMP bundle (`ClothingBackpackDuffelNfsdEmpBundle`) | 20 |
 | SecurityExplosives | smoke grenade (`SmokeGrenade`) | 2 |
@@ -54,8 +54,6 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | SecurityExplosives | TSF 'Hiroshima' bunker buster (`TSFBomb`) | 75 |
 | SecurityHardsuits | M82c hardsuit (`ClothingOuterHardsuitM82c`) | 10 |
 | SecurityHardsuits | M82b hardsuit (`ClothingOuterHardsuitM82b`) | 10 |
-| SecurityHardsuits | M86 Mk.3(R) hardsuit (`ClothingOuterHardsuitM86`) | 45 |
-| SecurityHardsuits | TSFMC M92-X tacsuit (`ClothingOuterHardsuitNfsdExperimental`) | 90 |
 | SecurityMaterials | WGSheetPlastitanium5 (`WGSheetPlastitanium5`) | 25 |
 | SecurityMaterials | basic materials crate (`CrateMaterialsBasicFilledTsf`) | 50 |
 | SecurityMaterials | SheetPlastitanium10 (`SheetPlastitanium10`) | 50 |
@@ -76,7 +74,6 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | SecurityUtility | NFSD encryption key box (`BoxEncryptionKeyNfsd`) | 5 |
 | SecurityUtility | NTCS-102 hypospray (`HypoBrigmedic`) | 5 |
 | SecurityUtility | TSFMC colonel gas mask (`ClothingMaskGasSheriff`) | 5 |
-| SecurityUtility | SpaceCash10000 (`SpaceCash10000`) | 5 |
 | SecurityUtility | SpaceBladeSec (`SpaceBladeSec`) | 5 |
 | SecurityUtility | security jetpack (`JetpackSecurityFilled`) | 5 |
 | SecurityUtility | MedkitFilled (`MedkitFilled`) | 5 |
@@ -88,20 +85,19 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | SecurityUtility | trauma armor plate (`ArmorPlateBlunt_Slash`) | 10 |
 | SecurityUtility | compact defibrillator (`DefibrillatorCompact`) | 15 |
 | SecurityUtility | SyringeAmbuzol (`SyringeAmbuzol`) | 15 |
-| SecurityUtility | TSFMC hoverbike flatpack (`HoverbikeNfsdFlatpack`) | 15 |
 | SecurityUtility | MedkitAdvancedFilled (`MedkitAdvancedFilled`) | 15 |
 | SecurityUtility | ballistic armor plate (`ArmorPlatePierce`) | 15 |
 | SecurityUtility | diffusion armor plate (`ArmorPlateHeat`) | 15 |
 | SecurityUtility | speed armor plate (`ArmorPlateSpeed`) | 15 |
 | SecurityUtility | advanced surgical duffel bag (`ClothingBackpackDuffelSurgeryAdvancedFilled`) | 20 |
-| SecurityUtility | MedkitCombatFilled (`MedkitCombatFilled`) | 20 |
+| SecurityUtility | TSFMC hoverbike flatpack (`HoverbikeNfsdFlatpack`) | 20 |
 | SecurityUtility | contraband forensics module (`ContrabandForensicsModule`) | 20 |
 | SecurityUtility | military gunnery co-processor chip (`WGGunneryChipMilitary`) | 20 |
 | SecurityUtility | TSFMC techfab machine board (`NfsdTechFabCircuitboard`) | 25 |
+| SecurityUtility | MedkitCombatFilled (`MedkitCombatFilled`) | 25 |
 | SecurityUtility | portable recharger (`PortableRecharger`) | 35 |
 | SecurityUtility | TSFMC energy shield (`EnergyShieldNfsd`) | 40 |
 | SecurityUtility | Defibrillator (`Defibrillator`) | 40 |
-| SecurityUtility | SpaceCash100000 (`SpaceCash100000`) | 50 |
 | SecurityUtility | military multipurpose assembler flatpack (`FactionLatheFlatpack`) | 50 |
 | SecurityUtility | SyringeCaseAltFilled (`SyringeCaseAltFilled`) | 50 |
 | SecurityUtility | security cyborg module (`BorgModuleSecurity`) | 50 |
@@ -163,7 +159,7 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | SecuritySupplies | hyper-capacity power cell (`PowerCellHyper`) | 8 |
 | SecuritySupplies | bulk ration crate (`WGCrateFoodRations`) | 15 |
 
-## PDV uplink (112 listings; 8 kit replacements)
+## PDV uplink (123 listings; 13 kit replacements)
 
 | Category | Item | Cost |
 |---|---|---|
@@ -195,15 +191,13 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | PirateAmmo | 40mm Fragmentation grenade (`40mmGrenadeFragmentation`) | 16 |
 | PirateAmmo | ammunition box (12.7x99mm high-explosive) (`AmmoBox127x99mmExplosive`) | 30 |
 | PirateAmmo | 40mm thermobaric grenade (`40mmGrenadeThermobaric`) | 32 |
+| PirateEquipment | PDV SCAF hardsuit (`ClothingOuterHardsuitPirateScaf`) | 10 |
+| PirateEquipment | PDV CV-32 combat hardsuit (`ClothingOuterHardsuitAshen`) | 10 |
 | PirateEquipment | trauma armor plate (`ArmorPlateBlunt_Slash`) | 10 |
-| PirateEquipment | PDV SCAF hardsuit (`ClothingOuterHardsuitPirateScaf`) | 15 |
 | PirateEquipment | elite web vest (`ClothingOuterVestWebElite`) | 15 |
 | PirateEquipment | ballistic armor plate (`ArmorPlatePierce`) | 15 |
 | PirateEquipment | diffusion armor plate (`ArmorPlateHeat`) | 15 |
 | PirateEquipment | speed armor plate (`ArmorPlateSpeed`) | 15 |
-| PirateEquipment | PDV CV-32 combat hardsuit (`ClothingOuterHardsuitAshen`) | 45 |
-| PirateEquipment | PDV CV-53 combat tacsuit (`ClothingOuterHardsuitAshenElite`) | 45 |
-| PirateEquipment | PDV CV-82 combat tacsuit (`ClothingOuterHardsuitPDVMedic`) | 90 |
 | PirateExplosives | flashbang (`GrenadeFlashBang`) | 2 |
 | PirateExplosives | smoke grenade (`SmokeGrenade`) | 2 |
 | PirateExplosives | EmpGrenadeNfsd (`EmpGrenadeNfsd`) | 3 |
@@ -215,27 +209,40 @@ operation) and the kit replacement crates (shown only to a player who drew that 
 | PirateExplosives | ImperiRoach reinforcement radio (`ReinforcementRadioPDVImperiroach`) | 30 |
 | PirateExplosives | C-4 bundle (`ClothingBackpackDuffelPDVC4tBundle`) | 60 |
 | PirateExplosives | PDV 'Adam' bunker buster (`PDVBomb`) | 75 |
+| PirateMedical | blood pack (`Bloodpack`) | 2 |
+| PirateMedical | brute auto-injector (`BruteAutoInjector`) | 3 |
+| PirateMedical | burn auto-injector (`BurnAutoInjector`) | 3 |
+| PirateMedical | MedkitFilled (`MedkitFilled`) | 5 |
 | PirateMedical | medical assembler flatpack (`MedicalAssemblerFlatpack`) | 6 |
+| PirateMedical | MedkitBruteFilled (`MedkitBruteFilled`) | 8 |
+| PirateMedical | MedkitBurnFilled (`MedkitBurnFilled`) | 8 |
 | PirateMedical | chemical synthesis kit (`ChemicalSynthesisKit`) | 15 |
+| PirateMedical | MedkitAdvancedFilled (`MedkitAdvancedFilled`) | 15 |
+| PirateMedical | compact defibrillator (`DefibrillatorCompact`) | 15 |
 | PirateMedical | advanced surgical duffel bag (`ClothingBackpackDuffelSyndicateFilledMedical`) | 24 |
-| PirateMedical | MedkitCombatFilled (`MedkitCombatFilled`) | 30 |
+| PirateMedical | MedkitCombatFilled (`MedkitCombatFilled`) | 25 |
 | PirateMedical | advanced defibrillator (`DefibrillatorSyndicate`) | 50 |
 | PirateMedical | medical bundle (`ClothingBackpackDuffelPDVMedicalBundleFilled`) | 150 |
 | PirateUtility | PDV wireless camera (`ClothingNeckWearableCameraPDV`) | 1 |
 | PirateUtility | overwatch jammer (`OverwatchJammer`) | 1 |
 | PirateUtility | binoculars (`Binoculars`) | 2 |
+| PirateUtility | multitool (`Multitool`) | 2 |
+| PirateUtility | industrial welding tool (`WelderIndustrial`) | 4 |
 | PirateUtility | jetpack (`JetpackBlackFilled`) | 5 |
+| PirateUtility | holographic sign projector (`Holoprojector`) | 5 |
+| PirateUtility | advanced gas mask (`ClothingMaskGasSyndicate`) | 5 |
 | PirateUtility | telescopic shield (`TelescopicShield`) | 10 |
 | PirateUtility | radio jammer (`RadioJammer`) | 10 |
 | PirateUtility | RadioImplanterFreelance (`RadioImplanterFreelance`) | 10 |
 | PirateUtility | Thruster upgrade kit (`BoxT3SuperCapacitor`) | 15 |
 | PirateUtility | advanced jaws of life (`SyndicateJawsOfLife`) | 15 |
 | PirateUtility | imperial vanguard communications computer board (`RogueCommsComputerCircuitboard`) | 20 |
+| PirateUtility | pirate hoverbike flatpack (`HoverbikePirateFlatpack`) | 20 |
 | PirateUtility | military gunnery co-processor chip (`WGGunneryChipMilitary`) | 20 |
-| PirateUtility | pirate hoverbike flatpack (`HoverbikePirateFlatpack`) | 25 |
 | PirateUtility | Emag (`Emag`) | 30 |
 | PirateUtility | advanced nanite applicator (`NaniteApplicatorSyndicate`) | 35 |
 | PirateUtility | WGPdvInfiltrationKit (`WGPdvInfiltrationKit`) | 35 |
+| PirateUtility | portable recharger (`PortableRecharger`) | 35 |
 | PirateUtility | security cyborg module (`BorgModuleSecurity`) | 50 |
 | PirateUtility | military multipurpose assembler flatpack (`FactionLatheFlatpack`) | 50 |
 | PirateUtility | DnaScramblerImplanter (`DnaScramblerImplanter`) | 60 |
@@ -290,7 +297,7 @@ AccessBreaker, PDV autosurgeon (VV/KE prosthetic heart) flatpack, PDV autosurgeo
 
 ## Gaps
 
-- The TSF has no flamethrower on its uplink or lathes; the Pyrotechnician kit uses incendiary shells and grenades instead.
-- Most TSF guns are lathe-built; the uplink now sells the main lathe guns and all four TSF hardsuits (M82c, M82b, M86, M92-X).
+- The TSF has no flamethrower on its uplink or lathes, and no specialist kit carries one.
+- Most TSF guns are lathe-built; the uplink now sells the main lathe guns. Both uplinks stop at the entry hardsuits (TSF M82c and M82b, PDV CV-32 and SCAF); the rest are lathe-only.
 - The PDV buys finished gear and its composite on the uplink; the TSF now buys plastitanium there at the same rate.
 - Both uplinks sell the same Supplies tab at the same prices.

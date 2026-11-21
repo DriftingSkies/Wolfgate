@@ -90,8 +90,8 @@ for fac,keys in (('TSF',('tsf',)),('PDV',('pdv','pirate','rogue'))):
     items=sorted({recipes.get(r,r) for p in ps for r in packs[p]})
     out+=[f'## {fac} lathe packs ({len(items)} recipes)','',', '.join(f'{names.get(x,x)}' for x in items),'']
 out+=['## Gaps','',
-'- The TSF has no flamethrower on its uplink or lathes; the Pyrotechnician kit uses incendiary shells and grenades instead.',
-'- Most TSF guns are lathe-built; the uplink now sells the main lathe guns and all four TSF hardsuits (M82c, M82b, M86, M92-X).',
+'- The TSF has no flamethrower on its uplink or lathes, and no specialist kit carries one.',
+'- Most TSF guns are lathe-built; the uplink now sells the main lathe guns. Both uplinks stop at the entry hardsuits (TSF M82c and M82b, PDV CV-32 and SCAF); the rest are lathe-only.',
 '- The PDV buys finished gear and its composite on the uplink; the TSF now buys plastitanium there at the same rate.',
 '- Both uplinks sell the same Supplies tab at the same prices.','']
 open(sys.argv[2],'w',encoding='utf-8',newline='\n').write('\n'.join(out))

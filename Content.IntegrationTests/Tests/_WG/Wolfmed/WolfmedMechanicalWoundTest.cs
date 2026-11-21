@@ -201,8 +201,18 @@ public sealed class WolfmedMechanicalWoundTest : WolfmedGameTest
             var shot = entities.SpawnEntity("MobIPC", map.GridCoords);
             var shotChassis = Part(entities, shot, BodyPartType.Torso);
             var round = entities.SpawnEntity("BulletMinigun", map.GridCoords);
-            entities.System<DamageableSystem>().TryChangeDamage(shot, Spec("Piercing", 20),
-                origin: null, targetPart: TargetBodyPart.Torso, tool: round);
+            // A chassis round lodges on the flesh odds, so force the roll to test what a lodged one does.
+            var rules = entities.System<WolfmedWoundRuleSystem>();
+            rules.ForcedRoll = 0f;
+            try
+            {
+                entities.System<DamageableSystem>().TryChangeDamage(shot, Spec("Piercing", 20),
+                    origin: null, targetPart: TargetBodyPart.Torso, tool: round);
+            }
+            finally
+            {
+                rules.ForcedRoll = null;
+            }
 
             var pierced = FindWound(entities, wounds, shotChassis, "WGWolfmedBreachWound");
             Assert.Multiple(() =>
