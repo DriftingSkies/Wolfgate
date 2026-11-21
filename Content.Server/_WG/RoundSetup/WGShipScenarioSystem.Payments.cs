@@ -59,6 +59,12 @@ public sealed partial class WGShipScenarioSystem
             reason = attempt.CancelReason;
             return false;
         }
+        // The lobby host has no body yet, so the attempt can't see their faction; the capital cap is asked directly.
+        if (!_shipTiers.TryApproveCapital(scenario.Hull, vessel.ID, scenario.Faction.ToString(), true, out var capReason))
+        {
+            reason = capReason;
+            return false;
+        }
         foreach (var part in contributions)
         {
             var preferences = _preferences.GetPreferences(part.Player.UserId);
@@ -90,5 +96,6 @@ public sealed partial class WGShipScenarioSystem
         scenario.Receipts.Clear();
         scenario.Paid = 0;
         scenario.Buyer = null;
+        _shipTiers.ReleaseCapital(scenario.Hull);
     }
 }

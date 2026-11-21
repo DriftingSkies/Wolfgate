@@ -4,6 +4,8 @@ using Content.Server._NF.Bank;
 using Content.Server._NF.Shipyard.Systems;
 using Content.Server._Mono.Shipyard;
 using Content.Server._WG.Shipyard;
+using Content.Server._WG.ShipTiers;
+using Content.Shared._Mono.Company;
 using Content.Shared._Mono.Traits.Physical;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared.Access.Components;
@@ -35,6 +37,7 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
     [Dependency] private TraderSystem _trader = default!;
     [Dependency] private UserInterfaceSystem _ui = default!;
     [Dependency] private UsedShipMarketSystem _market = default!;
+    [Dependency] private WGShipTierSystem _shipTiers = default!;
 
     private float _refreshAccumulator;
 
@@ -299,6 +302,16 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
         if (!_market.TryLoadListing(listing, station, out var shuttle))
         {
             _trader.SayAndShow(traderEnt, Loc.GetString("trader-used-load-failed"));
+            return;
+        }
+
+        // A used capital still takes one of its faction's capital slots, or selling and buying back would dodge the cap.
+        if (listing.DesignId is { } design
+            && !_shipTiers.TryApproveCapital(shuttle.Value, design.Id, CompOrNull<CompanyComponent>(args.Actor)?.CompanyName.Id,
+                true, out var capReason))
+        {
+            QueueDel(shuttle.Value);
+            _trader.SayAndShow(traderEnt, Loc.GetString(capReason));
             return;
         }
 

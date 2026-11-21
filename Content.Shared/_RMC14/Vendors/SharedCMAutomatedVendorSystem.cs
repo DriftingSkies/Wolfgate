@@ -279,6 +279,9 @@ public abstract class SharedCMAutomatedVendorSystem : EntitySystem
         if (wgKitAttempt.Cancelled)
         {
             ResetChoices();
+            // ResetChoices doesn't undo a take-all, which would leave the kit marked as drawn.
+            if (section.TakeAll is { } wgTakeAll && user != null)
+                user.TakeAll.Remove((wgTakeAll, entry.Id));
             // ResetChoices leaves the count undirtied, so the client would still show the choice spent.
             if (user != null)
                 Dirty(actor, user);

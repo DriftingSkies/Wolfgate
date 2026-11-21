@@ -9,6 +9,7 @@ wg-operation-arrived = The {$site} has arrived {$location}. It leaves in {$minut
 wg-operation-arrived-pve = The {$site} has arrived {$location}. It leaves in {$minutes} minutes. It is a ceasefire zone for {$faction}'s operation: other crews stay clear.
 wg-operation-cleared = {$faction} has cleared the {$site} {$location}.
 wg-operation-failed = {$faction} failed to clear the {$site} {$location} in time. It is gone, with whatever was left on it.
+wg-operation-scrubbed = The {$site} {$location} found nowhere to set down and was called off. {$faction} has its stake back.
 wg-operation-ended = The {$site} {$location} is gone, with whatever was left on it.
 
 wg-operation-site-left = Abandoned operation site

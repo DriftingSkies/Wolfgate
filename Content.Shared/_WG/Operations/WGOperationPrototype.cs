@@ -74,6 +74,13 @@ public sealed partial class WGOperationPrototype : IPrototype, IInheritingProtot
     [DataField]
     public float FailRefund = 0.5f;
 
+    /// <summary>
+    /// Share of the NPCs a site's map spawned that must be down to clear it, beside every NPC the operation brings, so a
+    /// mob hiding somewhere doesn't hold the site up.
+    /// </summary>
+    [DataField]
+    public float ClearShare = 0.8f;
+
     /// <summary>Paid to the caller, on top of the stake, when every NPC is down; an operation with a reward is PvE.</summary>
     [DataField]
     public int Reward;

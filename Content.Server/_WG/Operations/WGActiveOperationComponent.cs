@@ -29,9 +29,17 @@ public sealed partial class WGActiveOperationComponent : Component
     [DataField]
     public EntityUid? Grid;
 
+    /// <summary>The uplink that paid for the operation; its refund or reward goes back there.</summary>
+    [DataField]
+    public EntityUid? Store;
+
     /// <summary>The NPCs the site spawned; a PvE operation succeeds when all are down.</summary>
     [DataField]
     public List<EntityUid> Npcs = new();
+
+    /// <summary>The guards the operation spawned itself rather than its map; every one must go down to clear it.</summary>
+    [DataField]
+    public HashSet<EntityUid> Brought = new();
 
     /// <summary>When the site arrived, for picking up guards its map spawns a little later.</summary>
     [DataField, AutoPausedField]

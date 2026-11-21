@@ -7,6 +7,11 @@ built (`PreventPilot`), and the sector is told when construction starts and ends
 slot for 45 minutes. It counts as lost when it is deleted while undocked, or when Mono's activity check finds it
 adrift with no powered consoles. A sale deletes a docked ship, so it frees the slot at once.
 
+Every way a faction gets a capital goes through the cap (`TryApproveCapital`): the shipyard console, a crew's
+round-start ship bought in the lobby, and a used capital from the trader's lot, so selling one and buying it back
+can't dodge it. A hull admitted but not yet deeded holds its slot. Used and round-start capitals arrive built and fly
+at once.
+
 Entry points: `WGShipTierSystem` (the cap on `AttemptShipyardShuttlePurchaseEvent`, construction on
 `ShipyardShuttlePurchaseEvent`, losses and lockouts), `WGCapitalShipComponent` on each capital, and
 `WGShipTiersPrototype`. The tier prices and voucher rules are in `FactionBalance`.
@@ -30,6 +35,7 @@ Entry points: `WGShipTierSystem` (the cap on `AttemptShipyardShuttlePurchaseEven
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WG/ShipTiers/WGCapitalApprovalTest.cs`](../../../Content.IntegrationTests/Tests/_WG/ShipTiers/WGCapitalApprovalTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/ShipTiers/WGListingBuyerTest.cs`](../../../Content.IntegrationTests/Tests/_WG/ShipTiers/WGListingBuyerTest.cs)
 
 ### Unit tests

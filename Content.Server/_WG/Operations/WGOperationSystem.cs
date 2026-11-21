@@ -23,6 +23,7 @@ using Content.Shared.Mobs.Systems;
 using Content.Shared.NPC.Components;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Roles.Jobs;
+using Content.Server.Store.Systems;
 using Content.Shared.Physics;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
@@ -69,6 +70,12 @@ public sealed class WGOperationSystem : EntitySystem
 
     private TimeSpan _nextCheck;
 
+    /// <summary>
+    /// The operation the uplink purchase being handled started, if any. The store raises the call, then
+    /// <see cref="StoreBuyFinishedEvent"/> with the store, so the second tells which uplink paid for the first.
+    /// </summary>
+    private EntityUid? _justCalled;
+
     /// <summary>How long after arrival a PvE site keeps picking up guards its map spawns late.</summary>
     private static readonly TimeSpan GuardScanWindow = TimeSpan.FromSeconds(30);
 
@@ -79,6 +86,7 @@ public sealed class WGOperationSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<CompanyComponent, WGCallOperationEvent>(OnCall);
+        SubscribeLocalEvent<StoreBuyFinishedEvent>(OnBuyFinished);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(_ => _readyAt.Clear());
         SubscribeLocalEvent<RoundStartedEvent>(_ => MeasurePlanetGrids());
         SubscribeLocalEvent<MobStateChangedEvent>(OnMobStateChanged);
@@ -133,9 +141,17 @@ public sealed class WGOperationSystem : EntitySystem
 
     private void OnCall(EntityUid uid, CompanyComponent company, WGCallOperationEvent args)
     {
+        _justCalled = null;
+        // A call that can't go ahead is refunded to the uplink that took the stake, in OnBuyFinished.
         if (!_protos.TryIndex(args.Operation, out var op) || !CanCall(uid, args.Operation))
             return;
 
+        _justCalled = Start(op);
+    }
+
+    /// <summary>Starts an operation without a buyer: picks its site and warns the sector. Null when no site was found.</summary>
+    public EntityUid? Start(WGOperationPrototype op)
+    {
         var manager = Spawn(null, MapCoordinates.Nullspace);
         var active = AddComp<WGActiveOperationComponent>(manager);
         active.Operation = op.ID;
@@ -147,9 +163,8 @@ public sealed class WGOperationSystem : EntitySystem
         else if (op.PlanetChance >= 1f || !TryPickSite(op, out active.Target))
         {
             Log.Warning($"No site for operation {op.ID}");
-            Refund(op, 1f);
             QueueDel(manager);
-            return;
+            return null;
         }
 
         var inbound = op.Inbound + extra;
@@ -157,6 +172,31 @@ public sealed class WGOperationSystem : EntitySystem
         active.EndsAt = _timing.CurTime + inbound + op.Duration + extra;
 
         Announce("wg-operation-inbound", op, active, ("minutes", (int) inbound.TotalMinutes));
+        return manager;
+    }
+
+    /// <summary>
+    /// Ties an operation just called to the uplink that paid for it, so its payouts go back there alone; a call that
+    /// didn't start gets its whole price back at that uplink.
+    /// </summary>
+    private void OnBuyFinished(ref StoreBuyFinishedEvent args)
+    {
+        if (args.PurchasedItem.ProductEvent is not WGCallOperationEvent call)
+            return;
+
+        var called = _justCalled;
+        _justCalled = null;
+        if (called is { } manager && TryComp<WGActiveOperationComponent>(manager, out var active)
+            && !TerminatingOrDeleted(manager) && active.Operation == call.Operation)
+        {
+            active.Store = args.StoreUid;
+            return;
+        }
+
+        if (!_protos.TryIndex(call.Operation, out var op))
+            return;
+        Log.Warning($"Operation {op.ID} was paid for but didn't start; refunding {ToPrettyString(args.StoreUid)}.");
+        _currency.InjectCurrencyOnce(op.Company, args.PurchasedItem.Cost.ToDictionary(c => c.Key.Id, c => c.Value), args.StoreUid);
     }
 
     /// <summary>Claims fresh ground on a random built world for a planetside site, sized for the grid it will load.</summary>
@@ -261,11 +301,10 @@ public sealed class WGOperationSystem : EntitySystem
             active.Npcs.RemoveAll(npc => !Exists(npc) && !active.Downed.Contains(npc));
 
             // A cleared PvE site pays at once and stays until its time is up, for the loot; a clear seen after the deadline fails.
-            if (_timing.CurTime < active.EndsAt && !active.Paid && active.Npcs.Count > 0
-                && active.Npcs.All(npc => active.Downed.Contains(npc) || Exists(npc) && _mobState.IsIncapacitated(npc)))
+            if (_timing.CurTime < active.EndsAt && !active.Paid && IsCleared(active, op))
             {
                 active.Paid = true;
-                Pay(op, op.Stake + op.Reward);
+                Pay(op, active, op.Stake + op.Reward);
                 SpawnSpoils(active, op);
                 Announce("wg-operation-cleared", op, active);
             }
@@ -275,13 +314,13 @@ public sealed class WGOperationSystem : EntitySystem
 
             if (active.Npcs.Count > 0 && !active.Paid)
             {
-                Refund(op, op.FailRefund);
+                Refund(op, active, op.FailRefund);
                 Announce("wg-operation-failed", op, active);
             }
             else if (op.Reward > 0 && !active.Paid)
             {
                 // A PvE site that never had a guard to clear: the caller gets its whole stake back.
-                Refund(op, 1f);
+                Refund(op, active, 1f);
                 Announce("wg-operation-ended", op, active);
             }
             else
@@ -305,16 +344,24 @@ public sealed class WGOperationSystem : EntitySystem
         ent.Comp.ArrivesAt = null;
         ent.Comp.ArrivedTick = _timing.CurTick;
 
-        Entity<MapGridComponent>? grid = null;
-        var path = ent.Comp.Path ?? _random.Pick(op.Grids);
-        var loaded = ent.Comp.Ground is { } ground
-            ? _bounds.TryGetValue(path, out var bounds)
-              && _pois.TryLoadOperationSite(ground, path, ent.Comp.Target.Position, bounds.Center, bounds.Size.Length() / 2f, out grid)
-            : _loader.TryLoadGrid(ent.Comp.Target.MapId, path, out grid, offset: ent.Comp.Target.Position);
+        var loaded = TryLoadSite(ent.Comp, op, out var grid, out var path);
+
+        // A ship that landed on the claimed ground while the site was inbound blocks it; it sets down elsewhere instead.
+        if (!loaded && ent.Comp.Ground is { } blocked)
+        {
+            _pois.ReleaseOperationSite(blocked, ent.Comp.SiteIndex);
+            ent.Comp.Ground = null;
+            ent.Comp.SiteIndex = -1;
+            ent.Comp.Path = null;
+            if (TryClaimPlanetSite(op, ent.Comp) || op.PlanetChance < 1f && TryPickSite(op, out ent.Comp.Target))
+                loaded = TryLoadSite(ent.Comp, op, out grid, out path);
+        }
+
         if (!loaded || grid == null)
         {
             Log.Error($"Operation {op.ID} failed to load {path}");
-            Refund(op, 1f);
+            Refund(op, ent.Comp, 1f);
+            Announce("wg-operation-scrubbed", op, ent.Comp);
             if (ent.Comp.Ground is { } claimed)
                 _pois.ReleaseOperationSite(claimed, ent.Comp.SiteIndex);
             QueueDel(ent);
@@ -377,6 +424,7 @@ public sealed class WGOperationSystem : EntitySystem
                 if (_faction.IsMember(npc, "WGRemade"))
                     EnsureComp<WGRemadeComponent>(npc);
                 ent.Comp.Npcs.Add(npc);
+                ent.Comp.Brought.Add(npc);
             }
         }
 
@@ -394,6 +442,52 @@ public sealed class WGOperationSystem : EntitySystem
         Announce(op.Reward > 0 ? "wg-operation-arrived-pve" : "wg-operation-arrived", op, ent.Comp, ("minutes", (int) Math.Round(stay.TotalMinutes)));
     }
 
+    /// <summary>Loads the site's grid at its target, on the world it claimed or in space.</summary>
+    private bool TryLoadSite(WGActiveOperationComponent active, WGOperationPrototype op,
+        out Entity<MapGridComponent>? grid, out ResPath path)
+    {
+        grid = null;
+        path = active.Path ?? _random.Pick(op.Grids);
+        return active.Ground is { } ground
+            ? _bounds.TryGetValue(path, out var bounds)
+              && _pois.TryLoadOperationSite(ground, path, active.Target.Position, bounds.Center, bounds.Size.Length() / 2f, out grid)
+            : _loader.TryLoadGrid(active.Target.MapId, path, out grid, offset: active.Target.Position);
+    }
+
+    /// <summary>
+    /// Whether a PvE site is cleared: every guard the operation brought is down, and at least
+    /// <see cref="WGOperationPrototype.ClearShare"/> of those its map spawned, so a mob hiding somewhere or a harmless
+    /// one nobody thinks to kill doesn't hold the site up.
+    /// </summary>
+    public static bool IsCleared(WGActiveOperationComponent active, WGOperationPrototype op, Func<EntityUid, bool> down)
+    {
+        if (active.Npcs.Count == 0)
+            return false;
+
+        var mapped = 0;
+        var mappedDown = 0;
+        foreach (var npc in active.Npcs)
+        {
+            var isDown = down(npc);
+            if (active.Brought.Contains(npc))
+            {
+                if (!isDown)
+                    return false;
+                continue;
+            }
+            mapped++;
+            if (isDown)
+                mappedDown++;
+        }
+
+        return mapped == 0 || mappedDown >= (int) MathF.Ceiling(mapped * Math.Clamp(op.ClearShare, 0f, 1f));
+    }
+
+    private bool IsCleared(WGActiveOperationComponent active, WGOperationPrototype op)
+    {
+        return IsCleared(active, op, npc => active.Downed.Contains(npc) || Exists(npc) && _mobState.IsIncapacitated(npc));
+    }
+
     /// <summary>
     /// Counts the NPCs on the site's grid that came with it among its guards; wildlife that wanders on, made before the
     /// site, doesn't count. After arrival, with <paramref name="atSpawners"/>, only mobs that appear where one of the
@@ -406,9 +500,11 @@ public sealed class WGOperationSystem : EntitySystem
 
         foreach (var npc in _siteGrid.Children(grid))
         {
+            // Turrets are anchored, and aren't guards.
             if (!HasComp<HTNComponent>(npc)
                 || !HasComp<MobStateComponent>(npc)
                 || HasComp<ActorComponent>(npc)
+                || Transform(npc).Anchored
                 || MetaData(npc).CreationTick < active.ArrivedTick
                 || active.Npcs.Contains(npc))
                 continue;
@@ -490,19 +586,20 @@ public sealed class WGOperationSystem : EntitySystem
         return false;
     }
 
-    private void Pay(WGOperationPrototype op, int amount)
+    /// <summary>Pays the caller once, at the uplink that bought the operation if it still stands.</summary>
+    private void Pay(WGOperationPrototype op, WGActiveOperationComponent active, int amount)
     {
         if (amount <= 0
             || !_protos.TryIndex(op.Company, out var company)
             || company.CompanyUplinkCurrency is not { } currency)
             return;
 
-        _currency.InjectCurrency(op.Company, new Dictionary<string, FixedPoint2> { [currency] = amount });
+        _currency.InjectCurrencyOnce(op.Company, new Dictionary<string, FixedPoint2> { [currency] = amount }, active.Store);
     }
 
-    private void Refund(WGOperationPrototype op, float share)
+    private void Refund(WGOperationPrototype op, WGActiveOperationComponent active, float share)
     {
-        Pay(op, (int) MathF.Round(op.Stake * share));
+        Pay(op, active, (int) MathF.Round(op.Stake * share));
     }
 
     /// <summary>

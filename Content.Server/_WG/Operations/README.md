@@ -13,7 +13,9 @@ Each faction runs one operation at a time, and each operation has its own cooldo
   (Quarantine Breach), set out at the top of `operations.yml`. NPCs guard the site: those the map spawns and those the
   operation adds, one more for every `npcPerMembers` members of the caller's faction online.
   `guardFaction` puts every NPC and turret the site brings into one faction, so a map mapped with PDV guards (the
-  Dug-in Garrison's vault) still fights a PDV caller. When all are down the
+  Dug-in Garrison's vault) still fights a PDV caller. Turrets fight but aren't guards. The site is
+  cleared once every NPC the operation brought is down and `clearShare` (80%) of those its map spawned, so a mob
+  hiding somewhere doesn't hold it up. Then the
   caller gets its stake back plus the reward, and a spoils crate locked to its faction drops on the site; if the site
   leaves first, `failRefund` of the stake comes back. Higher rungs return more per credit staked, refund less and are
   announced to the whole sector more precisely; a test holds the first two in order.
@@ -31,6 +33,12 @@ Which jobs may call an operation is set on the operation (`jobs`); the uplink on
 now. The stock `BuyerJobCondition` doesn't work on static uplinks (it looks for a mind on the buyer), so the check is
 `WGOperationReadyCondition`.
 
+Payouts and refunds go back to the uplink that paid for the operation alone (`InjectCurrencyOnce`, a partial of
+Mono's `CurrencyInjectionSystem`), not to every uplink of the faction, which the Chengdu's second TSF uplink would
+double. A call the uplink took money for but that can't start is refunded there at once. A planetside site whose ground
+a ship has landed on by the time it arrives sets down on fresh ground instead; if none is found it is called off with
+an announcement and a full refund.
+
 Entry points: `WGOperationSystem` (calls, placement, arrival, payouts), `WGOperationPrototype` (`wgOperation`),
 `WGActiveOperationComponent`, `WGOperationReadyCondition`, the planet-site partial `WGPlanetPoiSystem.Operations`, and `Resources/Prototypes/_WG/Operations` (operations,
 listings, payloads). Listings are written from the operations by `python Tools/_WG/Operations/listings.py`, so each
@@ -43,6 +51,7 @@ costs its operation's stake.
 
 ### Server
 
+- [`Content.Server/_WG/Operations/CurrencyInjectionSystem.Single.cs`](CurrencyInjectionSystem.Single.cs)
 - [`Content.Server/_WG/Operations/WGActiveOperationComponent.cs`](WGActiveOperationComponent.cs)
 - [`Content.Server/_WG/Operations/WGOperationReadyCondition.cs`](WGOperationReadyCondition.cs)
 - [`Content.Server/_WG/Operations/WGOperationSystem.cs`](WGOperationSystem.cs)
@@ -54,10 +63,16 @@ costs its operation's stake.
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WG/Operations/WGInjectCurrencyOnceTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGInjectCurrencyOnceTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Operations/WGOperationClearTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGOperationClearTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Operations/WGOperationGuardFactionTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGOperationGuardFactionTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Operations/WGOperationPlanetSiteTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGOperationPlanetSiteTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Operations/WGOperationPrototypeTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGOperationPrototypeTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Operations/WGStoreProductEventNetTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGStoreProductEventNetTest.cs)
+
+### Unit tests
+
+- [`Content.Tests/_WG/Operations/WGOperationClearRuleTest.cs`](../../../Content.Tests/_WG/Operations/WGOperationClearRuleTest.cs)
 
 ### Prototypes
 

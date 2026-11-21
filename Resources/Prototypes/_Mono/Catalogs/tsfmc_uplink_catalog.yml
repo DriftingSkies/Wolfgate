@@ -283,9 +283,9 @@
       - FactionStaticUplinkTsf
   # WOLFGATE(FactionBalance) START: a free T0 has a per-player cooldown so it can't be printed endlessly
   - !type:WGListingCooldownCondition
-    key: T0Voucher
+    key: T0VoucherTsf
   productEvent: !type:WGListingCooldownEvent
-    key: T0Voucher
+    key: T0VoucherTsf
   raiseProductEventOnUser: true
   # WOLFGATE END
 

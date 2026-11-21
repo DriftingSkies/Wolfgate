@@ -411,7 +411,7 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
             if (!PrototypeManager.TryIndex(id, out var company) || company.CompanyUplinkCurrency is not { } currency)
                 continue;
             var amount = Payout(reward, joint, comp.JointBonus);
-            _currency.InjectCurrency(id, new Dictionary<string, FixedPoint2> { [currency] = amount });
+            _currency.InjectCurrencyOnce(id, new Dictionary<string, FixedPoint2> { [currency] = amount });
         }
 
         PayParticipants(comp);

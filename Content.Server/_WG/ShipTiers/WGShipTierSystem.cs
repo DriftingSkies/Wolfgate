@@ -33,10 +33,11 @@ public sealed class WGShipTierSystem : EntitySystem
     private readonly Dictionary<string, List<TimeSpan>> _lockouts = new();
 
     /// <summary>
-    /// Capital purchases admitted under the cap, with the buyer's faction. Only these become capitals: an admin spawn
-    /// or a used hull from a trader raises the purchase event without the check, and takes no slot.
+    /// Capital hulls admitted under the cap and not yet deeded, with the faction whose slot they hold and whether they
+    /// arrive already built. Only these become capitals: an admin spawn raises the purchase event without the check,
+    /// and takes no slot.
     /// </summary>
-    private readonly Dictionary<EntityUid, ProtoId<CompanyPrototype>> _approved = new();
+    private readonly Dictionary<EntityUid, (ProtoId<CompanyPrototype> Company, bool Built)> _approved = new();
 
     private TimeSpan _nextCheck;
 
@@ -100,44 +101,78 @@ public sealed class WGShipTierSystem : EntitySystem
             locks.RemoveAll(end => end <= _timing.CurTime);
             used += locks.Count;
         }
+
+        // A hull admitted but not yet deeded, such as a crew's round-start ship waiting in the lobby, holds its slot.
+        foreach (var (hull, approval) in _approved)
+        {
+            if (approval.Company == company && Exists(hull) && !HasComp<WGCapitalShipComponent>(hull))
+                used++;
+        }
         return used;
+    }
+
+    /// <summary>
+    /// Admits a hull under its faction's capital cap and holds the slot until it is deeded or deleted. True for a hull
+    /// that isn't a capital or a faction outside the cap; false, with a reason, when the faction has no slot free.
+    /// </summary>
+    /// <param name="built">The hull arrives ready to fly, such as a used hull or a crew's round-start ship.</param>
+    public bool TryApproveCapital(EntityUid hull, string vessel, string? company, bool built, out string reason)
+    {
+        reason = string.Empty;
+        if (string.IsNullOrEmpty(company)
+            || _approved.ContainsKey(hull)
+            || !_protos.TryIndex(Rules, out var rules)
+            || !rules.Capitals.Contains(vessel)
+            || !rules.Companies.Contains(company))
+            return true;
+
+        if (SlotsUsed(company) >= SlotsFor(rules, MembersOnline(company)))
+        {
+            reason = "wg-ship-tiers-capital-cap";
+            return false;
+        }
+
+        _approved[hull] = (company, built);
+        return true;
+    }
+
+    /// <summary>Frees the slot a hull was admitted under, for a purchase called off before its deed.</summary>
+    public void ReleaseCapital(EntityUid hull)
+    {
+        _approved.Remove(hull);
     }
 
     private void OnAttemptPurchase(ref AttemptShipyardShuttlePurchaseEvent ev)
     {
-        if (ev.Cancelled
-            || !_protos.TryIndex(Rules, out var rules)
-            || !rules.Capitals.Contains(ev.Vessel.ID)
-            || !TryComp<CompanyComponent>(ev.Purchaser, out var buyer)
-            || !rules.Companies.Contains(buyer.CompanyName))
+        if (ev.Cancelled || !TryComp<CompanyComponent>(ev.Purchaser, out var buyer))
             return;
 
-        var company = buyer.CompanyName.Id;
-        if (SlotsUsed(company) < SlotsFor(rules, MembersOnline(company)))
-        {
-            _approved[ev.Shuttle] = buyer.CompanyName;
+        if (TryApproveCapital(ev.Shuttle, ev.Vessel.ID, buyer.CompanyName.Id, false, out var reason))
             return;
-        }
 
-        ev.CancelReason = "wg-ship-tiers-capital-cap";
+        ev.CancelReason = reason;
         ev.Cancel();
     }
 
     private void OnPurchased(ShipyardShuttlePurchaseEvent ev)
     {
-        if (!_approved.Remove(ev.Shuttle, out var company)
+        if (!_approved.Remove(ev.Shuttle, out var approval)
             || !_protos.TryIndex(Rules, out var rules)
             || !TryComp<VesselComponent>(ev.Shuttle, out var vessel)
             || !rules.Capitals.Contains(vessel.VesselId))
             return;
 
         var capital = EnsureComp<WGCapitalShipComponent>(ev.Shuttle);
-        capital.Company = company;
+        capital.Company = approval.Company;
+        // A used hull or a crew's round-start ship is already built; it holds the slot but flies at once.
+        if (approval.Built)
+            return;
+
         capital.ReadyAt = _timing.CurTime + rules.BuildTime;
         EnsureComp<PreventPilotComponent>(ev.Shuttle);
 
         _chat.DispatchGlobalAnnouncement(Loc.GetString("wg-ship-tiers-construction-started",
-                ("faction", FactionName(company)),
+                ("faction", FactionName(approval.Company)),
                 ("ship", Name(ev.Shuttle)),
                 ("minutes", (int) rules.BuildTime.TotalMinutes)),
             Loc.GetString("wg-ship-tiers-announcer"), colorOverride: Color.Orange);
