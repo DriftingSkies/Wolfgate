@@ -5268,6 +5268,8 @@ WFXenobiologyBountyConsoleFlatpack: WGXenobiologyBountyConsoleFlatpack
 # WOLFGATE(Cooking) START: Mono's kettle gives way to ours, the only one that brews
 # 2026-11-20
 Kettle: WGCookKettle
+# WOLFGATE END
+
 # WOLFGATE(SpecialistKits) START: the specialist kits became Marine, Navy and Ottoman jobs, each a case the uplink also sells
 WGKitTsfBreacher: WGKitTsfAssaultman
 WGKitCrateTsfBreacher: WGKitTsfAssaultman
