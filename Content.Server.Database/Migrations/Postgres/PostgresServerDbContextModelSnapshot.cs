@@ -1073,6 +1073,11 @@ namespace Content.Server.Database.Migrations.Postgres
                         .HasColumnType("integer")
                         .HasColumnName("leg_stance");
 
+                    b.Property<string>("MarkingGlow")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("marking_glow");
+
                     b.Property<JsonDocument>("Markings")
                         .HasColumnType("jsonb")
                         .HasColumnName("markings");
@@ -2378,6 +2383,10 @@ namespace Content.Server.Database.Migrations.Postgres
                         .HasColumnType("uuid")
                         .HasColumnName("player_user_id");
 
+                    b.Property<int?>("Slot")
+                        .HasColumnType("integer")
+                        .HasColumnName("slot");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
@@ -2410,6 +2419,10 @@ namespace Content.Server.Database.Migrations.Postgres
                     b.Property<byte[]>("FrameTimes")
                         .HasColumnType("bytea")
                         .HasColumnName("frame_times");
+
+                    b.Property<byte[]>("Glow")
+                        .HasColumnType("bytea")
+                        .HasColumnName("glow");
 
                     b.Property<byte[]>("Png")
                         .IsRequired()

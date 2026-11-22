@@ -108,7 +108,11 @@ public sealed class DamagedSiliconAccentSystem : EntitySystem
     {
         var outMsg = new StringBuilder();
         // Linear interpolation of character damage probability
-        var damagePercent = Math.Clamp((float)totalDamage / (float)comp.DamageAtMaxCorruption, 0, 1);
+        // WOLFGATE(Synthetics) START: the chance ramps up from DamageAtStartCorruption, not from the first point of damage.
+        // var damagePercent = Math.Clamp((float)totalDamage / (float)comp.DamageAtMaxCorruption, 0, 1);
+        var damagePercent = Math.Clamp(((float)totalDamage - (float)comp.DamageAtStartCorruption) /
+            MathF.Max(1f, (float)comp.DamageAtMaxCorruption - (float)comp.DamageAtStartCorruption), 0, 1);
+        // WOLFGATE END
         var chanceToCorruptLetter = damagePercent * comp.MaxDamageCorruption;
         foreach (var letter in message)
         {

@@ -21,7 +21,7 @@ namespace Content.IntegrationTests.Tests._WG.Biotype;
 [TestOf(typeof(WGBiotypeRequirement))]
 public sealed class BiotypeGatesTest
 {
-    private static readonly ProtoId<TraitPrototype> HemophiliaProto = "Hemophilia";
+    private static readonly ProtoId<TraitPrototype> GlassJawProto = "GlassJaw";
     private static readonly ProtoId<TraitPrototype> VoraciousProto = "Voracious";
 
     private static HumanoidCharacterProfile Profile(string species, WGBiotype biotype) =>
@@ -73,7 +73,8 @@ public sealed class BiotypeGatesTest
                 }
 
                 var listed = proto.EnumeratePrototypes<TraitPrototype>().Where(t => t.BiotypeBlacklist.Count > 0).ToList();
-                Assert.That(listed, Has.Count.GreaterThanOrEqualTo(14), "the machine-only traits lost their biotypeBlacklist");
+                // 11 since Osteogenesis Imperfecta, Hemophilia, Will to Live, Will to Die and Redshirt were removed.
+                Assert.That(listed, Has.Count.GreaterThanOrEqualTo(11), "the machine-only traits lost their biotypeBlacklist");
             });
         });
 
@@ -89,22 +90,22 @@ public sealed class BiotypeGatesTest
 
         await server.WaitAssertion(() =>
         {
-            var hemophilia = proto.Index<TraitPrototype>(HemophiliaProto);
+            var glassJaw = proto.Index<TraitPrototype>(GlassJawProto);
             var voracious = proto.Index<TraitPrototype>(VoraciousProto);
 
             Assert.Multiple(() =>
             {
-                Assert.That(WGBiotypeGates.TraitBlocked(hemophilia, Profile("Human", WGBiotype.Synthetic), proto), Is.True,
+                Assert.That(WGBiotypeGates.TraitBlocked(glassJaw, Profile("Human", WGBiotype.Synthetic), proto), Is.True,
                     "a synthetic Human is blocked");
-                Assert.That(WGBiotypeGates.TraitBlocked(hemophilia, Profile("IPC", WGBiotype.Default), proto), Is.True,
+                Assert.That(WGBiotypeGates.TraitBlocked(glassJaw, Profile("IPC", WGBiotype.Default), proto), Is.True,
                     "a native IPC is blocked");
-                Assert.That(WGBiotypeGates.TraitBlocked(hemophilia, Profile("IPC", WGBiotype.Organic), proto), Is.False,
+                Assert.That(WGBiotypeGates.TraitBlocked(glassJaw, Profile("IPC", WGBiotype.Organic), proto), Is.False,
                     "an organic IPC is allowed");
-                Assert.That(WGBiotypeGates.TraitBlocked(hemophilia, Profile("Human", WGBiotype.Default), proto), Is.False);
+                Assert.That(WGBiotypeGates.TraitBlocked(glassJaw, Profile("Human", WGBiotype.Default), proto), Is.False);
                 Assert.That(WGBiotypeGates.TraitBlocked(voracious, Profile("Human", WGBiotype.Synthetic), proto), Is.True);
 
                 // The server drops a blocked trait when it validates a profile's list.
-                var traits = new List<ProtoId<TraitPrototype>> { hemophilia.ID, voracious.ID };
+                var traits = new List<ProtoId<TraitPrototype>> { glassJaw.ID, voracious.ID };
                 Assert.That(Profile("Human", WGBiotype.Synthetic).GetValidTraits(traits, proto), Is.Empty);
                 Assert.That(Profile("IPC", WGBiotype.Organic).GetValidTraits(traits, proto), Has.Count.EqualTo(2));
             });

@@ -135,7 +135,7 @@ public sealed partial class WGPlanetPoiSystem
             var count = _random.Next(tunnels.MinLurkers, tunnels.MaxLurkers + 1);
             for (var i = 0; i < count; i++)
             {
-                foreach (var id in _entityTables.GetSpawns(lurkers))
+                foreach (var id in _entityTables.GetSpawns(lurkers, _random))
                 {
                     await _preload.Breathe();
                     if (TerminatingOrDeleted(ground))

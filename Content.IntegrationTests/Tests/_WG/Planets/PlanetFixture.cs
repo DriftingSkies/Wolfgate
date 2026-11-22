@@ -25,6 +25,19 @@ namespace Content.IntegrationTests.Tests._WG.Planets;
 /// <summary>Shared planet test scaffolding, pulled in with <c>using static</c>.</summary>
 public static class PlanetFixture
 {
+    /// <summary>
+    /// Runs some seconds of game time, with the client alongside on a connected pair. A client left more than PVS's
+    /// 20-tick dirty buffer behind gets full-world states, which log an error for any mob whose only change was an
+    /// owner-only component such as its alerts.
+    /// </summary>
+    public static async Task RunWorldSeconds(TestPair pair, float seconds)
+    {
+        if (pair.Settings.Connected)
+            await pair.RunSeconds(seconds);
+        else
+            await pair.Server.WaitRunTicks(pair.SecondsToTicks(seconds));
+    }
+
     /// <summary>A mini gravity generator that starts cold and is rated like a capital ship's: 3000 mass of lift.</summary>
     public const string GravgenProto = "WGPlanetTestGravgen";
 
@@ -245,7 +258,7 @@ public static class PlanetFixture
             grid = hull;
         });
 
-        await pair.Server.WaitRunTicks(pair.SecondsToTicks(1f));
+        await RunWorldSeconds(pair, 1f);
         return grid;
     }
 
@@ -274,7 +287,7 @@ public static class PlanetFixture
             grid = hull;
         });
 
-        await pair.Server.WaitRunTicks(pair.SecondsToTicks(1f));
+        await RunWorldSeconds(pair, 1f);
         return grid;
     }
 
@@ -353,7 +366,7 @@ public static class PlanetFixture
             grid = built.Owner;
         });
 
-        await server.WaitRunTicks(pair.SecondsToTicks(1f));
+        await RunWorldSeconds(pair, 1f);
         return grid;
     }
 
@@ -382,7 +395,7 @@ public static class PlanetFixture
             }
         });
 
-        await server.WaitRunTicks(pair.SecondsToTicks(2f));
+        await RunWorldSeconds(pair, 2f);
     }
 
     /// <summary>The shuttle console resting on a hull, or Invalid.</summary>
@@ -446,7 +459,7 @@ public static class PlanetFixture
         });
 
         if (settle > 0f)
-            await server.WaitRunTicks(pair.SecondsToTicks(settle));
+            await RunWorldSeconds(pair, settle);
 
         return reason;
     }
@@ -473,7 +486,7 @@ public static class PlanetFixture
             }
         });
 
-        await server.WaitRunTicks(pair.SecondsToTicks(1f));
+        await RunWorldSeconds(pair, 1f);
 
         return thrusters;
     }

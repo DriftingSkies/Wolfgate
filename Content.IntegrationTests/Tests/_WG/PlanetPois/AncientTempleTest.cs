@@ -237,7 +237,8 @@ public sealed class AncientTempleTest
             for (var x = -4; x <= 4; x++)
             for (var y = -4; y <= 4; y++)
                 maps.SetTile(map.Grid.Owner, map.Grid.Comp, new Vector2i(x, y), new Tile(plating));
-            victim = entMan.SpawnEntity("MobHuman", new EntityCoordinates(map.Grid.Owner, 1.5f, 0.5f));
+            // Inside the 1-tile melee range rather than on its edge, so a juke away doesn't leave it out of reach.
+            victim = entMan.SpawnEntity("MobHuman", new EntityCoordinates(map.Grid.Owner, 1.3f, 0.5f));
             // Held in place, so the guardian swings rather than shoving it about.
             server.System<SharedPhysicsSystem>().SetBodyType(victim, BodyType.Static);
             guardian = entMan.SpawnEntity("WGTempleSkeleton", new EntityCoordinates(map.Grid.Owner, 0.5f, 0.5f));

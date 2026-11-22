@@ -1,0 +1,15 @@
+# Unshaded twins of the displacement shaders, for a glowing marking that a displacement map reshapes
+# (HumanoidAppearanceSystem.ApplyMarkingGlow).
+- type: shader
+  id: WGMarkingGlowDisplaced
+  kind: source
+  path: "/Textures/_WG/MarkingGlow/Shaders/displaced_unshaded.swsl"
+  params:
+    displacementSize: 127
+
+- type: shader
+  id: WGMarkingGlowLegDisplaced
+  kind: source
+  path: "/Textures/_WG/MarkingGlow/Shaders/leg_marking_displaced_unshaded.swsl"
+  params:
+    displacementSize: 127

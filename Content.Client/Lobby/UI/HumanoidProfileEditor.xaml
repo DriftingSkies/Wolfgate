@@ -336,6 +336,13 @@
                                     <wgh:WolfgateSlotMarkingPicker Name="HairStylePicker" Category="Hair" HorizontalExpand="True" />
                                     <wgh:WolfgateSlotMarkingPicker Name="FacialHairPicker" Category="FacialHair" HorizontalExpand="True" />
                                 </wgh:WolfgateEvenRow>
+                                <!-- WOLFGATE(MarkingGlow): glow switches, each under its hair picker -->
+                                <wgh:WolfgateEvenRow Name="HairGlowRow" Separation="16" HorizontalExpand="True">
+                                    <CheckBox Name="HairGlowCheckBox" Text="{Loc 'wg-marking-glow-hair'}"
+                                              ToolTip="{Loc 'wg-marking-glow-hair-tooltip'}" HorizontalExpand="True" />
+                                    <CheckBox Name="FacialHairGlowCheckBox" Text="{Loc 'wg-marking-glow-facial-hair'}"
+                                              ToolTip="{Loc 'wg-marking-glow-hair-tooltip'}" HorizontalExpand="True" />
+                                </wgh:WolfgateEvenRow>
                             </BoxContainer>
                         </PanelContainer>
                         <!-- Eyes -->
@@ -343,6 +350,8 @@
                             <BoxContainer Orientation="Vertical" SeparationOverride="6">
                                 <Label Text="{Loc 'humanoid-profile-editor-eyes-label'}" StyleClasses="CreatorHeading" />
                                 <humanoid:EyeColorPicker Name="EyeColorPicker" />
+                                <!-- WOLFGATE(MarkingGlow): glowing eyes switch -->
+                                <CheckBox Name="EyeGlowCheckBox" Text="{Loc 'wg-marking-glow-eyes'}" ToolTip="{Loc 'wg-marking-glow-eyes-tooltip'}" />
                             </BoxContainer>
                         </PanelContainer>
                         <!-- WOLFGATE(EmoteVoices): Voice card, filled in by HumanoidProfileEditor.EmoteVoices.cs -->

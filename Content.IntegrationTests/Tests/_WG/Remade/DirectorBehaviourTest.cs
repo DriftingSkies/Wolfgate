@@ -317,6 +317,9 @@ public sealed class DirectorBehaviourTest
             entMan.GetComponent<WGRemadeDirectorComponent>(scion).BuildUp = false;
             Quiesce(entMan, scion, server.ResolveDependency<IGameTiming>());
             remade = SpawnRemade(entMan, scion, At(map, -21, 0));
+            // Blind, so an idle wander into sight can't start a fight that kills the crewman.
+            entMan.System<Content.Server.NPC.Systems.NPCSystem>().SetBlackboard(remade, "VisionRadius", 1f);
+            entMan.System<Content.Server.NPC.Systems.NPCSystem>().SetBlackboard(remade, "AggroVisionRadius", 1f);
         });
 
         await pair.RunSeconds(20f);

@@ -2485,6 +2485,12 @@ unmarked:
   - path: Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml
     module: AsteroidMining
     reason: Its Apollo mining laser is swapped for the M40 Prospector, the heavy asteroid mining laser.
+  - path: Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml
+    module: null
+    reason: Its air mixer ran at the 50/50 default; set to 21% oxygen, 79% nitrogen.
+  - path: Resources/SharedMaps/_Mono/Shuttles/VG/wolfsnake.yml
+    module: null
+    reason: The plasma windoor by the shield generator faced the corridor; turned to shut the generator in.
   - path: Resources/SharedMaps/_Mono/Shuttles/MMC/akasono.yml
     module: AsteroidMining
     reason: Its M25 mining pulsar is swapped for the M12 Prospector, the light asteroid mining laser.

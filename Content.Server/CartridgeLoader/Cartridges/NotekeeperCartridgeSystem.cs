@@ -38,7 +38,10 @@ public sealed partial class NotekeeperCartridgeSystem : EntitySystem
 
         if (message.Action == NotekeeperUiAction.Add)
         {
-            component.Notes.Add(message.Note);
+            // WOLFGATE(Lattice) START: the Coda can't be written down either
+            // component.Notes.Add(message.Note);
+            component.Notes.Add(Content.Shared._WG.Lattice.WGWrittenTextEvent.Apply(EntityManager, args.Actor, message.Note));
+            // WOLFGATE END
             _adminLogger.Add(LogType.PdaInteract, LogImpact.Low,
                 $"{ToPrettyString(args.Actor)} added a note to PDA: '{message.Note}' contained on: {ToPrettyString(uid)}");
         }

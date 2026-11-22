@@ -717,6 +717,9 @@ namespace Content.Server.Database
         // WOLFGATE(CustomMarkings): the custom markings worn, as hash:placement pairs; empty for none.
         [Column("custom_markings")] public string CustomMarkings { get; set; } = "";
 
+        // WOLFGATE(MarkingGlow): the markings, eyes and hair made to glow, ;-separated; empty for none.
+        [Column("marking_glow")] public string MarkingGlow { get; set; } = "";
+
         // WOLFGATE(LegStyle): the legs picked in the creator, 0 for the species' own.
         [Column("leg_stance")] public int LegStance { get; set; }
 
@@ -1876,6 +1879,9 @@ namespace Content.Server.Database
         /// <summary>The pixels of the body the marking erases, a bit for each pixel of each facing. Null for none.</summary>
         public byte[]? Erase { get; set; }
 
+        /// <summary>The pixels that glow, a bit for each pixel of each facing of each frame. Null for none.</summary>
+        public byte[]? Glow { get; set; }
+
         /// <summary>The player who first saved this art.</summary>
         public Guid UploaderUserId { get; set; }
 
@@ -1909,6 +1915,12 @@ namespace Content.Server.Database
 
         /// <summary>Where the marking is drawn on a body (CustomMarkingPlacement).</summary>
         public int Placement { get; set; }
+
+        /// <summary>
+        /// The character slot the marking is offered to, or null for every character. Deleting the character makes
+        /// it null.
+        /// </summary>
+        public int? Slot { get; set; }
 
         public DateTime UpdatedAt { get; set; }
     }

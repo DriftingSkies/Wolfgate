@@ -714,7 +714,6 @@
   - type: AutoSurgeon
     targetBodyPart: Torso
     componentsToUser:
-    - type: Vigor
     - type: WGAdrenalBooster
 
 - type: entity

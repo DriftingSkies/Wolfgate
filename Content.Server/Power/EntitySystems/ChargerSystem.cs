@@ -351,6 +351,10 @@ public sealed partial class ChargerSystem : SharedChargerSystem
         if (_powerCell.TryGetBatteryFromSlot(uid, out batteryUid, out component))
             return true;
 
+        // WOLFGATE(Silicons): a synth's own cell, in its battery organ slot, before a worn suit's
+        if (WgTryGetSynthBattery(uid, out batteryUid, out component))
+            return true;
+
         if (TryComp<InventoryComponent>(uid, out var inventory))
         {
             var relayEv = new FindInventoryBatteryEvent();

@@ -68,7 +68,7 @@ public sealed partial class WGPlanetPoiSystem
                 var near = Enumerable.Range(0, 12)
                     .Select(_ => centre + new Vector2i(_random.Next(-3, 4), _random.Next(-3, 4)))
                     .FirstOrDefault(tile => tile != centre && pool.Set.Contains(tile), centre);
-                foreach (var id in _entityTables.GetSpawns(spawns))
+                foreach (var id in _entityTables.GetSpawns(spawns, _random))
                 {
                     // A person is a body, organs and kit: one at a time, within the generation budget.
                     await _preload.Breathe();

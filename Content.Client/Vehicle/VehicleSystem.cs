@@ -13,8 +13,11 @@ public sealed partial class VehicleSystem : SharedVehicleSystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<RiderComponent, ComponentStartup>(OnRiderStartup);
-        SubscribeLocalEvent<RiderComponent, ComponentShutdown>(OnRiderShutdown);
+        // WOLFGATE(Vehicles) START: the shared buckle handlers set the rider's view; client-only changes leaked into the
+        // implicit server state of a body spawned riding, so the view snapped back to the vehicle after leaving it
+        // SubscribeLocalEvent<RiderComponent, ComponentStartup>(OnRiderStartup);
+        // SubscribeLocalEvent<RiderComponent, ComponentShutdown>(OnRiderShutdown);
+        // WOLFGATE END
         SubscribeLocalEvent<RiderComponent, ComponentHandleState>(OnRiderHandleState);
         SubscribeLocalEvent<VehicleComponent, AppearanceChangeEvent>(OnVehicleAppearanceChange);
     }
@@ -44,10 +47,12 @@ public sealed partial class VehicleSystem : SharedVehicleSystem
 
         var entity = EnsureEntity<RiderComponent>(state.Entity, uid);
 
-        if (TryComp(uid, out EyeComponent? eyeComp) && eyeComp.Target == component.Vehicle)
-        {
-            _eye.SetTarget(uid, entity, eyeComp);
-        }
+        // WOLFGATE(Vehicles) START: the shared buckle handlers set the rider's view
+        // if (TryComp(uid, out EyeComponent? eyeComp) && eyeComp.Target == component.Vehicle)
+        // {
+        //     _eye.SetTarget(uid, entity, eyeComp);
+        // }
+        // WOLFGATE END
 
         component.Vehicle = entity;
     }

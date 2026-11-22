@@ -18,6 +18,7 @@ public partial interface IServerDbManager
     /// Most art rows the player may add in a day; storing art past it fails. Art the server already holds adds no
     /// row. 0 for no limit.
     /// </param>
+    /// <param name="slot">The character slot a new entry is offered to, or null for every character.</param>
     Task<CustomMarkingSaveResult> SaveCustomMarkingAsync(
         Guid userId,
         int id,
@@ -27,7 +28,11 @@ public partial interface IServerDbManager
         CustomMarkingStoredArt? art,
         int limit,
         int dailyArtLimit = 0,
+        int? slot = null,
         CancellationToken cancel = default);
+
+    /// <summary>Offers a player's entry to one character slot, or to every character for null. False when it isn't theirs.</summary>
+    Task<bool> SetCustomMarkingSlotAsync(Guid userId, int id, int? slot, CancellationToken cancel = default);
 
     /// <summary>Removes an entry from a player's library. Its art stays, as saved characters may wear it.</summary>
     Task<bool> DeleteCustomMarkingAsync(Guid userId, int id, CancellationToken cancel = default);
@@ -65,10 +70,17 @@ public sealed partial class ServerDbManager
         CustomMarkingStoredArt? art,
         int limit,
         int dailyArtLimit = 0,
+        int? slot = null,
         CancellationToken cancel = default)
     {
         DbWriteOpsMetric.Inc();
-        return RunDbCommand(() => _db.SaveCustomMarkingAsync(userId, id, name, placement, hash, art, limit, dailyArtLimit, cancel));
+        return RunDbCommand(() => _db.SaveCustomMarkingAsync(userId, id, name, placement, hash, art, limit, dailyArtLimit, slot, cancel));
+    }
+
+    public Task<bool> SetCustomMarkingSlotAsync(Guid userId, int id, int? slot, CancellationToken cancel = default)
+    {
+        DbWriteOpsMetric.Inc();
+        return RunDbCommand(() => _db.SetCustomMarkingSlotAsync(userId, id, slot, cancel));
     }
 
     public Task<bool> DeleteCustomMarkingAsync(Guid userId, int id, CancellationToken cancel = default)

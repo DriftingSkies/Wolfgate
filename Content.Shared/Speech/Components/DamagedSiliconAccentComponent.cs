@@ -32,6 +32,12 @@ public sealed partial class DamagedSiliconAccentComponent : Component
     [DataField]
     public FixedPoint2 DamageAtMaxCorruption = 300;
 
+    // WOLFGATE(Synthetics) START: a dead zone, so a scratched chassis still speaks clearly.
+    /// <summary>Total damage below which damage corrupts nothing; the chance ramps from here to <see cref="DamageAtMaxCorruption" />.</summary>
+    [DataField]
+    public FixedPoint2 DamageAtStartCorruption = 0;
+    // WOLFGATE END
+
     /// <summary>
     ///     Enable charge level corruption effects
     /// </summary>

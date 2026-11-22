@@ -73,6 +73,7 @@ the character's profile. Nothing keys on a species or a mob prototype.
 - [`Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisPanelTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisPanelTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisPanelWindowTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisPanelWindowTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisPowerTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisPowerTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisSpeechTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisSpeechTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisVacuumTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisVacuumTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Synthetics/WGCoolantStarvationTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGCoolantStarvationTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Synthetics/WGRadCollectorTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGRadCollectorTest.cs)
@@ -109,8 +110,10 @@ the character's profile. Nothing keys on a species or a mob prototype.
 
 ## Non-modular edits
 
+- [`Content.Server/Speech/EntitySystems/DamagedSiliconAccentSystem.cs`](../../Speech/EntitySystems/DamagedSiliconAccentSystem.cs): the chance ramps up from DamageAtStartCorruption, not from the first point of damage.
 - [`Content.Shared/_Onyx/Wounds/BodyPartFunctionalitySystem.cs`](../../../Content.Shared/_Onyx/Wounds/BodyPartFunctionalitySystem.cs): a chassis part isolated from the panel has no servos.
 - [`Content.Shared/_Onyx/Wounds/PainSystem.cs`](../../../Content.Shared/_Onyx/Wounds/PainSystem.cs): a chassis part isolated from the panel has its damage sensors off.
+- [`Content.Shared/Speech/Components/DamagedSiliconAccentComponent.cs`](../../../Content.Shared/Speech/Components/DamagedSiliconAccentComponent.cs): a dead zone, so a scratched chassis still speaks clearly.
 - [`Resources/Prototypes/_EinsteinEngines/Body/Organs/ipc.yml`](../../../Resources/Prototypes/_EinsteinEngines/Body/Organs/ipc.yml): the pump processes contaminants such as Letoferol; the chassis filter flushes all else
 - [`Resources/Prototypes/_EinsteinEngines/Body/Parts/ipc.yml`](../../../Resources/Prototypes/_EinsteinEngines/Body/Parts/ipc.yml)
   - the radiation collector's slot
@@ -122,9 +125,11 @@ the character's profile. Nothing keys on a species or a mob prototype.
 - [`Resources/Prototypes/_EinsteinEngines/Damage/modifier_sets.yml`](../../../Resources/Prototypes/_EinsteinEngines/Damage/modifier_sets.yml): the chassis is plated. Heat and shock still hurt it more than flesh, not half again;
 - [`Resources/Prototypes/_EinsteinEngines/Entities/Mobs/Player/ipc.yml`](../../../Resources/Prototypes/_EinsteinEngines/Entities/Mobs/Player/ipc.yml)
   - slow hydraulic regeneration, as the synthetic biotype overlay
+  - low-fluid stutter and dizziness from the Downed line, not at 90%
   - room for contaminants; WGChassisFilter flushes everything the pump can't process
   - synths and IPCs understand each other
   - only contaminants stay in the chemical stream
+  - clear speech under 40 damage and a lower ceiling; any scratch garbled it.
 - [`Resources/Prototypes/_HL/Body/Organs/synth.yml`](../../../Resources/Prototypes/_HL/Body/Organs/synth.yml): synths and IPCs understand each other
 - [`Resources/Prototypes/_HL/Body/Parts/synth.yml`](../../../Resources/Prototypes/_HL/Body/Parts/synth.yml)
   - lego limbs, chassis amputation thresholds; WGWolfmedPartIpcArm must stay FIRST

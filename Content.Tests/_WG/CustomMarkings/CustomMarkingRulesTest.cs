@@ -30,6 +30,22 @@ public sealed class CustomMarkingRulesTest
         });
     }
 
+    /// <summary>A shared entry is offered to every character, a kept one only to its own.</summary>
+    [Test]
+    public void OfferedToTest()
+    {
+        var shared = new CustomMarkingEntry(1, "Shared", HashA, CustomMarkingPlacement.Skin);
+        var kept = shared with { Slot = 2 };
+        Assert.Multiple(() =>
+        {
+            Assert.That(shared.OfferedTo(null), Is.True, "a character not saved yet sees shared markings");
+            Assert.That(shared.OfferedTo(5), Is.True);
+            Assert.That(kept.OfferedTo(2), Is.True);
+            Assert.That(kept.OfferedTo(3), Is.False, "another character doesn't");
+            Assert.That(kept.OfferedTo(null), Is.False, "nor does one not saved yet");
+        });
+    }
+
     [Test]
     public void CleanNameTest()
     {

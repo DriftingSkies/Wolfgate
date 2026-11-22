@@ -112,7 +112,7 @@ public sealed class DormancyTest
                 mob = entMan.SpawnEntity("MobHuman", new EntityCoordinates(ground, new Vector2(1.5f, 0.5f)));
             });
 
-            await server.WaitRunTicks(pair.SecondsToTicks(3f));
+            await RunWorldSeconds(pair, 3f);
             await server.WaitAssertion(() =>
             {
                 Assert.That(entMan.GetComponent<WGReactiveFloraComponent>(plant).State, Is.EqualTo(WGReactiveFloraState.Idle),
@@ -121,7 +121,7 @@ public sealed class DormancyTest
             });
 
             await AttachViewer(pair, ground, new Vector2(0.5f, 6.5f));
-            await server.WaitRunTicks(pair.SecondsToTicks(3f));
+            await RunWorldSeconds(pair, 3f);
             await server.WaitAssertion(() =>
             {
                 Assert.That(Slash(entMan, mob), Is.GreaterThan(0f), "The bramble never lashed the mob beside it once a player was near.");

@@ -17,7 +17,7 @@ Each specialization is one small, reusable component on the suit. Most hook a po
 | **Wound ward** | Refuses named wound rules outright (a "concussion ward" helmet never concusses) | a cancellable event before a rule matches, relayed to worn items, the same way the bleed gate works |
 | **Bone plating** | Fractures, crush injuries and dislocations need more damage to happen | scales a rule's `minDamage` for covered parts |
 | **Limb lock** | Covered limbs resist dismemberment: a higher threshold, or immune below a damage size | dismemberment threshold on the routed part |
-| **Spall liner** | Rounds that would lodge or leave shrapnel make a bruise instead; no embedded objects to dig out | wound ward on the lodged-round and shrapnel rules, adds Blunt |
+| **Spall liner** | Rounds that would lodge or leave shrapnel make a bruise instead, four times in five; rarely anything to dig out | wound ward on the lodged-round and shrapnel rules (20% `leaks`), adds Blunt |
 | **Trauma gel** | An arterial cut becomes an ordinary cut; bleed rate on covered parts is reduced | swaps the rule's wound, or a bleed-rate multiplier |
 | **Auto-tourniquet** | The first arterial bleed on a limb is clamped automatically, once per charge | Wolfmed tourniquet treatment |
 | **Pain dampener** | Pain from wounds is reduced, so the wearer stays up and functional longer | `WoundPainBehavior` multiplier |

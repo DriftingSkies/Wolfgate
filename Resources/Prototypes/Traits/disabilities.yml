@@ -72,3 +72,5 @@
   category: Disabilities
   components:
   - type: PainNumbness
+# WOLFGATE(Wolfmed): pain the body can't feel still Downs and faints it.
+  - type: WolfmedNumbTrait

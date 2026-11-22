@@ -233,6 +233,7 @@ namespace Content.Server.Communications
         {
             var maxLength = _cfg.GetCVar(CCVars.ChatMaxAnnouncementLength);
             var msg = SharedChatSystem.SanitizeAnnouncement(message.Message, maxLength);
+            msg = Content.Shared._WG.Lattice.WGWrittenTextEvent.Apply(EntityManager, message.Actor, msg); // WOLFGATE(Lattice): the Coda can't be written down either
             var author = Loc.GetString("comms-console-announcement-unknown-sender");
             if (message.Actor is { Valid: true } mob)
             {

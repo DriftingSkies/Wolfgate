@@ -91,7 +91,7 @@ of character combat mode. HUD controls, chat, modifiers, lost focus and an unarm
 cursors and mouse interactions. The cockpit holds gun control while GUNS is open or any weapon is selected,
 so weapons selected on GUNS stay armed when the pilot returns to FLIGHT to fly and shoot; the click is
 consumed by firing there. With nothing selected, FLIGHT releases gun control and keeps the normal pointer
-and clicks. A lost link clears the selection and releases control at once; a changed link does the same unless GUNS is open.
+and clicks. A lost link clears the selection and releases control at once; a changed link does the same unless GUNS is open. The client remembers the weapons selected on each gunnery console for the round (`WGCockpitGunneryMemorySystem`), so a bank rebuilt after the helm closes and reopens, or after the link comes back, has them selected again.
 Exiting or losing pilot eligibility releases the link and all input hooks. Reach follows normal body-fixture distance and obstruction checks,
 independent of the camera. Nearby unopened consoles discover their gun server when acquired. Temporary
 gunnery power or access loss clears the weapon link; restoring it reconnects without leaving cockpit mode.
@@ -164,6 +164,7 @@ NAV plot (`WGCockpitAimLines`) and the ship cam (`WGCockpitAimOverlay`, added wh
 - [`Content.Client/_WG/Cockpit/WGCockpitFireInput.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitFireInput.cs)
 - [`Content.Client/_WG/Cockpit/WGCockpitFuelBank.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitFuelBank.cs)
 - [`Content.Client/_WG/Cockpit/WGCockpitFuelLamp.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitFuelLamp.cs)
+- [`Content.Client/_WG/Cockpit/WGCockpitGunneryMemorySystem.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitGunneryMemorySystem.cs)
 - [`Content.Client/_WG/Cockpit/WGCockpitGunneryPanel.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitGunneryPanel.cs)
 - [`Content.Client/_WG/Cockpit/WGCockpitInstrumentSizing.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitInstrumentSizing.cs)
 - [`Content.Client/_WG/Cockpit/WGCockpitLease.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitLease.cs)

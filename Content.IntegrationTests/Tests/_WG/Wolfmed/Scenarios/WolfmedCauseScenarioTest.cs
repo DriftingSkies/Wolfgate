@@ -125,7 +125,7 @@ public sealed class WolfmedCauseScenarioTest : WolfmedGameTest
     /// The pain loop (plan §3.1, OD4, OD5, OD9): a faint of fixed length that nothing extends, breathing all
     /// the while; no second faint on a steady injury; a fresh rise faints again but never inside the cooldown,
     /// and pain added during a faint never counts toward the rise; an opiate ends a faint and stands the
-    /// patient up; the pain shock no longer does; a machine is Downed by pain and never knocked out.
+    /// patient up; the pain shock no longer does; a machine reboots for a shorter faint, then stays Downed.
     /// </summary>
     [Test]
     public async Task PainScenarioTest()
@@ -288,7 +288,7 @@ public sealed class WolfmedCauseScenarioTest : WolfmedGameTest
                 "adrenaline did not lift exactly the Downed do-after penalty.");
         });
 
-        // --- A machine: heavy chassis damage Downs it and never knocks it out (OD9). ---
+        // --- A machine: pain past the faint line reboots it for wolfmed.reboot_faint_seconds, then Downs it (OD9 b). ---
         EntityUid ipc = default;
         await Server.WaitPost(() => ipc = SEntMan.SpawnEntity("MobIPC", map.GridCoords));
         await RunSeconds(2);
@@ -307,14 +307,25 @@ public sealed class WolfmedCauseScenarioTest : WolfmedGameTest
                 "the chassis never reached the faint line, so the test proves nothing.");
         });
 
-        for (var second = 0; second < 30; second += 2)
+        var reboot = WolfmedCVars.RebootFaintSeconds.DefaultValue;
+        Assert.That(reboot, Is.LessThan(FaintSeconds), "a reboot is meant to be shorter than a flesh faint.");
+        await RunSeconds(2);
+        await Server.WaitAssertion(() =>
         {
-            await RunSeconds(2);
+            Assert.That(Consc(ipc).State, Is.EqualTo(WolfmedConsciousness.Unconscious), "pain past the faint line did not reboot the machine.");
+            Assert.That(Consc(ipc).Cause, Is.EqualTo(WolfmedCause.PainFaint));
+        });
+
+        // Back up after the reboot, and a steady injury never reboots it twice.
+        await RunSeconds(reboot);
+        for (var second = 0; second < 20; second += 2)
+        {
             await Server.WaitAssertion(() =>
             {
-                Assert.That(Consc(ipc).State, Is.EqualTo(WolfmedConsciousness.Downed), "a machine was knocked out by pain.");
+                Assert.That(Consc(ipc).State, Is.EqualTo(WolfmedConsciousness.Downed), "the machine stayed out past its reboot.");
                 Assert.That(Consc(ipc).Cause, Is.EqualTo(WolfmedCause.Pain));
             });
+            await RunSeconds(2);
         }
 
         await Server.WaitAssertion(() =>

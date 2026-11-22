@@ -221,6 +221,9 @@ public sealed class NanoChatCartridgeSystem : EntitySystem
         }
 
         content = Clean(_typing.Impair(msg.Actor, content), NanoChatMessage.MaxContentLength) ?? content;
+        // The Coda can't be typed out either.
+        content = Clean(Content.Shared._WG.Lattice.WGWrittenTextEvent.Apply(EntityManager, msg.Actor, content),
+            NanoChatMessage.MaxContentLength) ?? content;
 
         if (SharedNanoChatSystem.IsGroup(number))
         {

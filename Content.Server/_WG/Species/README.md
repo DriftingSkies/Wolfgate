@@ -634,7 +634,6 @@ it back up to Okay after any drain, a Kelotane overdose included, before their d
   - was false, so the base species is selectable in the creator
   - tails are optional so players can go without one
   - was 8, more marking slots
-- [`Resources/Prototypes/_Mono/Traits/physical.yml`](../../../Resources/Prototypes/_Mono/Traits/physical.yml): Canine is a Vulpkanin copy
 - [`Resources/Prototypes/_NF/Body/Organs/avali.yml`](../../../Resources/Prototypes/_NF/Body/Organs/avali.yml): ported from HardLight
 - [`Resources/Prototypes/_NF/Entities/Mobs/Customization/Markings/human_hair.yml`](../../../Resources/Prototypes/_NF/Entities/Mobs/Customization/Markings/human_hair.yml): ported from HardLight
 - [`Resources/Prototypes/_NF/Loadouts/loadout_effects.yml`](../../../Resources/Prototypes/_NF/Loadouts/loadout_effects.yml): the six species the earlier port missed

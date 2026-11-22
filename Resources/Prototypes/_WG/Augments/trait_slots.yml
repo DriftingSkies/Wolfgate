@@ -5,10 +5,6 @@
   id: PrybarProsthetics
   slots: [ LeftArm, RightArm ]
 
-- type: wgAugmentTraitSlots
-  id: BionicLegs
-  slots: [ LeftLeg, RightLeg ]
-
 # The tumor replaces the heart.
 - type: wgAugmentTraitSlots
   id: WGHemophagia

@@ -40,7 +40,7 @@ public sealed partial class WGCrewTest
             if (slots.TryEject(gun, "gun_magazine", null, out var magazine))
                 SEntMan.DeleteEntity(magazine.Value);
             var inventory = Server.System<InventorySystem>();
-            foreach (var name in new[] { "pocket1", "pocket2" })
+            foreach (var name in new[] { "belt", "pocket1", "pocket2" })
             {
                 if (inventory.TryGetSlotEntity(crew, name, out var ammo))
                     SEntMan.DeleteEntity(ammo.Value);

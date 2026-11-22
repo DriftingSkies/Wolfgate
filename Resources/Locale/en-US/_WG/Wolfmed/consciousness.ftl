@@ -158,7 +158,7 @@ wolfmed-cause-shutdown-title = Shutdown: { $source }
 wolfmed-cause-shutdown-source-power = no power
 wolfmed-cause-shutdown-source-pump = coolant pump offline
 wolfmed-cause-shutdown-source-fluid = hydraulic pressure lost
-wolfmed-cause-shutdown-symptom = Systems down. Nothing is getting worse.
+wolfmed-cause-shutdown-symptom = Systems down. Without a pump or fluid the core is slowly burning out; a flat cell alone does no harm.
 wolfmed-cause-shutdown-help-out = A charged cell, a working pump or hydraulic fluid brings you back, unless something else holds you. You may let go.
 wolfmed-cause-shutdown-out = Power lost. Shutting down.
 wolfmed-cause-shutdown-wake = Systems online.
@@ -238,5 +238,6 @@ alerts-wolfmed-pain-mechanical-desc = { $severity ->
         [5] Heavy fault signals.
         [6] Sensors near overload. A little more and they drop you.
         [7] Sensors overloaded, at or past the point they drop you.
-       *[other] Sensors overloaded: dropped. Repairs clear it.
+        [8] Sensors overloaded: dropped. Repairs clear it.
+       *[other] Sensor overload forced a reboot. Back online in seconds.
     }

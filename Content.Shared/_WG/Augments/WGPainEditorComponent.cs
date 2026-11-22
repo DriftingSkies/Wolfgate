@@ -8,5 +8,5 @@ public sealed partial class WGPainEditorComponent : Component
 {
     /// <summary>What every pain gain is multiplied by.</summary>
     [DataField]
-    public float PainMultiplier = 0.6f;
+    public float PainMultiplier = 0.75f;
 }

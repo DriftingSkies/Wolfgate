@@ -56,6 +56,8 @@
     # Synthetics playtest: HYDRAULIC PRESSURE LOW with no way out. Half a human's blood regeneration, so a sealed
     # chassis tops itself up in about half an hour; a pack or the autodoc is still the quick fix.
     bloodRefreshAmount: 0.5
+    # Low-fluid stutter and dizziness start at the Downed line, as on an IPC, not at 90%.
+    bloodlossThreshold: 0.5
     # Room for contaminants such as Letoferol; WGChassisFilter flushes everything else.
     chemicalMaxVolume: 30
     bloodlossDamage:

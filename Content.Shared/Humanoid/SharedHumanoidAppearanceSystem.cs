@@ -171,6 +171,7 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
         targetHumanoid.MarkingSet = new(sourceHumanoid.MarkingSet);
         targetHumanoid.MismatchedParts = sourceHumanoid.MismatchedParts; // WOLFGATE(Species): copies keep drawing mismatched hair
         targetHumanoid.CustomMarkings = new(sourceHumanoid.CustomMarkings); // WOLFGATE(CustomMarkings): copies wear the same custom markings
+        targetHumanoid.MarkingGlow = new(sourceHumanoid.MarkingGlow); // WOLFGATE(MarkingGlow): copies glow alike
         targetHumanoid.LegStyle = sourceHumanoid.LegStyle; // WOLFGATE(LegStyle): copies keep the clothing fit of the copied legs
 
         targetHumanoid.Gender = sourceHumanoid.Gender;
@@ -474,6 +475,7 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
 
         EnsureDefaultMarkings(uid, humanoid);
         humanoid.CustomMarkings = ProfileCustomMarkings(profile); // WOLFGATE(CustomMarkings): the profile's custom markings
+        humanoid.MarkingGlow = ProfileMarkingGlow(profile); // WOLFGATE(MarkingGlow): what the profile makes glow
         humanoid.HiddenCustomMarkings.Clear(); // WOLFGATE(MarkingToggles): a loaded character shows all its markings
 
         humanoid.Gender = profile.Gender;

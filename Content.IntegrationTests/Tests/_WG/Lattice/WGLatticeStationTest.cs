@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Content.IntegrationTests.Tests._WG.Ci;
 using Content.Server._WG.Lattice;
 using Content.Server.Power.Components;
 using Content.Shared._Crescent.ShipShields;
@@ -363,7 +364,8 @@ public sealed class WGLatticeStationTest
         });
 
         // Nobody left alive aboard: the lances go quiet, and their bolts burn out.
-        await pair.RunSeconds(8f);
+        // The client's bounds assert has stopped this run in CI, as the player's mob goes; the guard names the sprite.
+        await WGStaleSpriteBounds.Guard(pair, () => pair.RunSeconds(8f));
         await server.WaitAssertion(() =>
         {
             Assert.That(Bolts(entities), Is.Zero, "the lances kept firing at a dead ship.");

@@ -1,3 +1,4 @@
+using Content.Shared._WG.CustomMarkings;
 using Content.Shared._WG.Genitals.Components;
 using Content.Shared.Foldable;
 using Content.Shared.Humanoid;
@@ -128,16 +129,29 @@ public sealed partial class GenitalCoverageSystem : EntitySystem
         return covered;
     }
 
-    /// <summary>The humanoid wears a visible marking of the slot's undergarment category.</summary>
+    /// <summary>The humanoid wears a visible marking of the slot's undergarment category, or a custom marking on that layer.</summary>
     public static bool HasVisibleUndergarment(HumanoidAppearanceComponent? humanoid, UndergarmentSlot slot)
     {
-        if (humanoid == null || !humanoid.MarkingSet.TryGetCategory(UndergarmentSlots.CategoryOf(slot), out var markings))
-            return false;
-
-        foreach (var marking in markings)
+        if (humanoid != null)
         {
-            if (marking.Visible)
-                return true;
+            // Regular marking prototypes in the underwear category.
+            if (humanoid.MarkingSet.TryGetCategory(UndergarmentSlots.CategoryOf(slot), out var markings))
+            {
+                foreach (var marking in markings)
+                {
+                    if (marking.Visible)
+                        return true;
+                }
+            }
+
+            // Custom markings placed on the corresponding underwear layer, not hidden by the wearer.
+            var placement = slot == UndergarmentSlot.Top ? CustomMarkingPlacement.UndergarmentTop
+                : CustomMarkingPlacement.UndergarmentBottom;
+            foreach (var custom in humanoid.CustomMarkings)
+            {
+                if (custom.Placement == placement && !humanoid.HiddenCustomMarkings.Contains(custom))
+                    return true;
+            }
         }
 
         return false;

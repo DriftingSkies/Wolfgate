@@ -12,12 +12,14 @@ Module containing ships made by the Wolfgate community
 - [`Resources/Prototypes/_WG/Community/bonita.yml`](../../../Resources/Prototypes/_WG/Community/bonita.yml)
 - [`Resources/Prototypes/_WG/Community/commuter.yml`](../../../Resources/Prototypes/_WG/Community/commuter.yml)
 - [`Resources/Prototypes/_WG/Community/executive.yml`](../../../Resources/Prototypes/_WG/Community/executive.yml)
+- [`Resources/Prototypes/_WG/Community/snake_eater.yml`](../../../Resources/Prototypes/_WG/Community/snake_eater.yml)
 
 ### Shared maps
 
 - [`Resources/SharedMaps/_WG/Community/bonita.yml`](../../../Resources/SharedMaps/_WG/Community/bonita.yml)
 - [`Resources/SharedMaps/_WG/Community/commuter.yml`](../../../Resources/SharedMaps/_WG/Community/commuter.yml)
 - [`Resources/SharedMaps/_WG/Community/executive.yml`](../../../Resources/SharedMaps/_WG/Community/executive.yml)
+- [`Resources/SharedMaps/_WG/Community/snake_eater.yml`](../../../Resources/SharedMaps/_WG/Community/snake_eater.yml)
 
 ## Non-modular edits
 

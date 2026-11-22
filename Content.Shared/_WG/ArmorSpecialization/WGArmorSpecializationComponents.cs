@@ -29,6 +29,14 @@ public sealed partial class WGWoundWardComponent : Component
     [DataField]
     public HashSet<ProtoId<WoundPrototype>> Anywhere = new() { "WGWolfmedLodgedRoundWound", "WGWolfmedShrapnelWound" };
 
+    /// <summary>Chance a hit still makes a wound in <see cref="Blocks"/>: a spall liner misses one round or fragment in five.</summary>
+    [DataField]
+    public Dictionary<ProtoId<WoundPrototype>, float> Leaks = new()
+    {
+        ["WGWolfmedLodgedRoundWound"] = 0.2f,
+        ["WGWolfmedShrapnelWound"] = 0.2f,
+    };
+
     /// <summary>Individual wound rules refused, for a ward narrower than a whole wound type (thrown dislocations only).</summary>
     [DataField]
     public HashSet<string> BlockRules = new();

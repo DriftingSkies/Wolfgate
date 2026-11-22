@@ -229,7 +229,9 @@ braced against for a second and shoved onto a free tile beside it, never ahead o
 doorway (`NPCSteeringSystem.Shove.cs`). The pathfinder marks points held only by unanchored pullables as `Movable`.
 Encounter cargo and raiders' stashes go on `CargoTiles`: open deck all round first, else a tile that keeps the deck
 joined and blocks no door or machine.
-Reloading uses real compatible magazines from equipment slots through normal item interaction. Spent guns are
+Reloading uses real compatible magazines from equipment slots, then from webbing or a pack worn in one, through
+normal item interaction. Fighting crews carry a magazine in a pocket and three to six more in webbing on the belt,
+with the sidearm in the other pocket; a freighter's crew keeps its one or two magazines. Spent guns are
 holstered in favor of a loaded sidearm, melee weapon, or empty hands; no ammunition is created, unless the crewman has
 `InfiniteAmmo` (a commanded ship's roster sets it), when his magazine refills in place. Two-handed guns are wielded
 when drawn and after a reload, for their wielded spread.
@@ -246,13 +248,30 @@ the crewman's cached threat check and replans him on the spot (`WGCrewSystem.OnB
 a hostile aboard but may not hunt it braces: weapon drawn and loaded, facing its way, for up to 90 s without sight of
 it (`WGCrewWeaponSystem.Brace.cs`). Regulars and up also throw a grenade they carry (any slot item with a use timer;
 reaver riflemen carry one `ExGrenade`) at a known hostile out of sight for three seconds within nine tiles: shouted
-first, cooked by skill but always with 1.5 s of fuse left on landing, never with a crewmate or bystander in the
-blast, once per crew every 20 s, and nobody hunts into it until it has gone off (`WGCrewGrenadeSystem`). The cooldown
+first, cooked by skill but always with 1.5 s of fuse left on landing, never with a crewmate on his feet or a bystander
+in the blast (a crewman already down, conscious or not, holds no throw back), once per crew every 20 s, and nobody hunts into it until it has gone off (`WGCrewGrenadeSystem`). The cooldown
 is checked again as he arms it, and the blast and flight path (anything a thrown item hits, loose crates included)
 again as it leaves his hand: with someone or something now in the way he picks
 another spot, or holds on while the fuse allows. Veterans and
 elites hunt in pairs, sidestep between shots (upstream `NPCJukeComponent`) and, once a minute, fall back out of the
 hostile's sight past 50 damage to patch up for up to eight seconds (`WGCrewFallBackSystem`).
+
+A crew that is losing a boarding fight musters (`WGCrewMusterSystem`). With two of its own down inside two minutes
+(critical, dead, or on the floor conscious under Wolfmed while the mob state still says alive), three fighters still on
+their feet and a regular or better aboard to lead (an officer a tier above a green crew counts; so does a captain at
+his station), the leader calls it aloud and the fighters stop hunting: they pull back to the crew post nearest to them
+that no hostile is within five tiles of or has a line of sight to and that has a place for each of them (failing that,
+the nearest with room for two, and the rest cover from where they stand), take places up to two tiles round it, the
+back of the room first, and hold with weapons up, whatever each man's own skill (`Assess` gives `Brace` to every
+follower, and the muster branch of the HTN root walks him to his place). They still shoot what they see and throw
+grenades round the corner. The pilot, gunners, captain and radio operator stay out of the muster and, while it stands,
+go after nobody they cannot see unless he has just struck them. Once most are in place and nobody has seen a hostile
+for ten seconds, or after 45 s regardless, the leader calls the push and every follower goes after the hostile at
+once, hunt party or not, for 30 s and for as long as they keep seeing him; then they fall back to a fresh rally point.
+The muster keeps the followers' attack memory alive while it stands. It ends when its leader is down with nobody to
+take over, fewer than two fighters stand, no hostile has been aboard for 20 s or none has been seen for 90 s; a new one
+takes two fresh losses, and a crewman already counted is not counted again for going down further. Green crews without
+an officer never muster.
 
 Since the Lupercal's first playtest: a crewman who sees a trespasser on a Warn ship names him and the zone aloud,
 points him out (`PointingSystem.TryNpcPoint`) and gives him his time, gives a last warning ten seconds before it runs
@@ -392,6 +411,7 @@ crew never turns on what it carries, such as the Remade aboard a flesh ship.
 - [`Content.Server/_WG/NpcCrew/HTN/WGCrewLoadedGunPrecondition.cs`](HTN/WGCrewLoadedGunPrecondition.cs)
 - [`Content.Server/_WG/NpcCrew/HTN/WGCrewMayFightPrecondition.cs`](HTN/WGCrewMayFightPrecondition.cs)
 - [`Content.Server/_WG/NpcCrew/HTN/WGCrewMedicOperator.cs`](HTN/WGCrewMedicOperator.cs)
+- [`Content.Server/_WG/NpcCrew/HTN/WGCrewMusterOperator.cs`](HTN/WGCrewMusterOperator.cs)
 - [`Content.Server/_WG/NpcCrew/HTN/WGCrewReturnOperator.cs`](HTN/WGCrewReturnOperator.cs)
 - [`Content.Server/_WG/NpcCrew/HTN/WGCrewSidestepOperator.cs`](HTN/WGCrewSidestepOperator.cs)
 - [`Content.Server/_WG/NpcCrew/HTN/WGCrewTargetOperator.cs`](HTN/WGCrewTargetOperator.cs)
@@ -439,6 +459,7 @@ crew never turns on what it carries, such as the Remade aboard a flesh ship.
 - [`Content.Server/_WG/NpcCrew/Systems/WGCrewMedicSystem.SelfCare.cs`](Systems/WGCrewMedicSystem.SelfCare.cs)
 - [`Content.Server/_WG/NpcCrew/Systems/WGCrewMedicSystem.Surgery.cs`](Systems/WGCrewMedicSystem.Surgery.cs)
 - [`Content.Server/_WG/NpcCrew/Systems/WGCrewMedicSystem.Table.cs`](Systems/WGCrewMedicSystem.Table.cs)
+- [`Content.Server/_WG/NpcCrew/Systems/WGCrewMusterSystem.cs`](Systems/WGCrewMusterSystem.cs)
 - [`Content.Server/_WG/NpcCrew/Systems/WGCrewObjectiveSystem.cs`](Systems/WGCrewObjectiveSystem.cs)
 - [`Content.Server/_WG/NpcCrew/Systems/WGCrewObjectiveSystem.Virtual.cs`](Systems/WGCrewObjectiveSystem.Virtual.cs)
 - [`Content.Server/_WG/NpcCrew/Systems/WGCrewPlannerSystem.cs`](Systems/WGCrewPlannerSystem.cs)
@@ -533,6 +554,7 @@ crew never turns on what it carries, such as the Remade aboard a flesh ship.
 - [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.HullSwaps.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.HullSwaps.cs)
 - [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.HunterSpeed.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.HunterSpeed.cs)
 - [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.LineOfFire.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.LineOfFire.cs)
+- [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Muster.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Muster.cs)
 - [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Navigation.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Navigation.cs)
 - [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.NavigationSettings.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.NavigationSettings.cs)
 - [`Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Objectives.cs`](../../../Content.IntegrationTests/Tests/_WG/NpcCrew/WGCrewTest.Objectives.cs)

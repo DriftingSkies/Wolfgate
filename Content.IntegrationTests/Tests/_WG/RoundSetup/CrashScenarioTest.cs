@@ -16,6 +16,7 @@ using Content.Shared.Physics;
 using Content.Shared.UserInterface;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Log;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
@@ -173,6 +174,20 @@ public sealed class CrashScenarioTest
             crash.DescendAt = server.ResolveDependency<IGameTiming>().CurTime;
         });
 
+        // Twice in CI an unnamed entity failed to anchor to an overlapping fragment ("Tried to anchor entity  to a grid"),
+        // and it never did locally. This names its prototype, parent and spawner should it come back.
+        var sawmill = server.ResolveDependency<ILogManager>().GetSawmill("test.crash");
+        void NameUnanchored(Entity<MetaDataComponent> ent)
+        {
+            var xform = em.GetComponent<TransformComponent>(ent);
+            if (xform.Anchored || xform.GridUid == null || xform.GridUid == xform.ParentUid
+                || ent.Comp.EntityPrototype is not { } proto
+                || !proto.Components.TryGetValue("Transform", out var entry) || !((TransformComponent) entry.Component).Anchored)
+                return;
+            sawmill.Warning($"{proto.ID} spawned unanchored under {em.ToPrettyString(xform.ParentUid)} on grid {xform.GridUid}:\n{Environment.StackTrace}");
+        }
+        em.EntityInitialized += NameUnanchored;
+
         // Poll the whole scenario, since a breakup moves the impact onto fragments.
         var crashed = EntityUid.Invalid;
         var seconds = 0;
@@ -233,6 +248,7 @@ public sealed class CrashScenarioTest
             em.DeleteEntity(station);
         });
 
+        em.EntityInitialized -= NameUnanchored;
         await Teardown(pair, layers);
         await pair.CleanReturnAsync();
     }

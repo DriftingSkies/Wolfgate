@@ -9,8 +9,8 @@ using Robust.Shared.Timing;
 namespace Content.Server._WG.Lattice;
 
 /// <summary>
-/// The Coda won't be named. A living speaker who says the word stumbles on it, and feels it catch. The Choir, who are at
-/// home in it, say it plainly.
+/// The Coda won't be named. A living speaker who says the word stumbles on it, and feels it catch; a hand writing it
+/// breaks off the same way. The Choir, who are at home in it, say and write it plainly.
 /// </summary>
 public sealed class WGCodaTabooSystem : EntitySystem
 {
@@ -27,23 +27,45 @@ public sealed class WGCodaTabooSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<TransformSpeechEvent>(OnTransformSpeech);
+        SubscribeLocalEvent<WGWrittenTextEvent>(OnWritten);
     }
 
     private void OnTransformSpeech(TransformSpeechEvent args)
     {
-        if (!Word.IsMatch(args.Message)
-            || HasComp<GhostComponent>(args.Sender)
-            || HasComp<WGChoirMemberComponent>(args.Sender))
+        if (!Word.IsMatch(args.Message) || Spared(args.Sender))
             return;
 
         args.Message = Word.Replace(args.Message, match => Stumble(match.Value));
+        Warn(args.Sender, "wg-coda-taboo-popup");
+    }
 
-        var now = _timing.CurTime;
-        if (_nextPopup.TryGetValue(args.Sender, out var next) && now < next)
+    private void OnWritten(ref WGWrittenTextEvent args)
+    {
+        if (!Word.IsMatch(args.Text) || Spared(args.Writer))
             return;
 
-        _nextPopup[args.Sender] = now + PopupGap;
-        _popup.PopupEntity(Loc.GetString("wg-coda-taboo-popup"), args.Sender, args.Sender, PopupType.SmallCaution);
+        args.Text = Word.Replace(args.Text, match => Stumble(match.Value));
+        Warn(args.Writer, "wg-coda-taboo-popup-written");
+    }
+
+    /// <summary>Ghosts and the Choir name it freely.</summary>
+    private bool Spared(EntityUid uid)
+    {
+        return HasComp<GhostComponent>(uid) || HasComp<WGChoirMemberComponent>(uid);
+    }
+
+    /// <summary>Tells someone the word caught, at most once every few seconds.</summary>
+    private void Warn(EntityUid uid, LocId message)
+    {
+        if (!Exists(uid))
+            return;
+
+        var now = _timing.CurTime;
+        if (_nextPopup.TryGetValue(uid, out var next) && now < next)
+            return;
+
+        _nextPopup[uid] = now + PopupGap;
+        _popup.PopupEntity(Loc.GetString(message), uid, uid, PopupType.SmallCaution);
     }
 
     /// <summary>The word as a tongue trips on it: the first sound caught on, and the rest lost.</summary>

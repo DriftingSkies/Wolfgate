@@ -60,34 +60,37 @@ public static class WGCrewSkills
 
         /// <summary>How many crewmen go looking together for a hostile nobody can see.</summary>
         public int HuntParty { get; init; }
+
+        /// <summary>Whether he calls a crew that is losing a boarding fight back to hold and push together.</summary>
+        public bool Musters { get; init; }
     }
 
     private static readonly Profile Green = new()
     {
         AimError = 18f, ShootDelay = 0f, ReacquireDelay = 0f, GunneryError = 30f, Leading = 0.3f, Handling = 0.7f,
         Evasion = 0.4f, DodgesFire = false, DamageTaken = 1.3f, DamageDealt = 0.35f,
-        Braces = false, Throws = false, CookTime = 0f, Sidesteps = false, FallsBack = false, HuntParty = 1,
+        Braces = false, Throws = false, CookTime = 0f, Sidesteps = false, FallsBack = false, HuntParty = 1, Musters = false,
     };
 
     private static readonly Profile Regular = new()
     {
         AimError = 9f, ShootDelay = 0f, ReacquireDelay = 0f, GunneryError = 14f, Leading = 0.7f, Handling = 0.9f,
         Evasion = 0.75f, DodgesFire = true, DamageTaken = 1.15f, DamageDealt = 0.46f,
-        Braces = true, Throws = true, CookTime = 0f, Sidesteps = false, FallsBack = false, HuntParty = 1,
+        Braces = true, Throws = true, CookTime = 0f, Sidesteps = false, FallsBack = false, HuntParty = 1, Musters = true,
     };
 
     private static readonly Profile Veteran = new()
     {
         AimError = 4f, ShootDelay = 0f, ReacquireDelay = 0f, GunneryError = 5f, Leading = 1f, Handling = 1f,
         Evasion = 1f, DodgesFire = true, DamageTaken = 1f, DamageDealt = 0.63f,
-        Braces = true, Throws = true, CookTime = 1f, Sidesteps = true, FallsBack = true, HuntParty = 2,
+        Braces = true, Throws = true, CookTime = 1f, Sidesteps = true, FallsBack = true, HuntParty = 2, Musters = true,
     };
 
     private static readonly Profile Elite = new()
     {
         AimError = 0f, ShootDelay = 0f, ReacquireDelay = 0f, GunneryError = 0f, Leading = 1f, Handling = 1.1f,
         Evasion = 1.25f, DodgesFire = true, DamageTaken = 1f, DamageDealt = 0.86f,
-        Braces = true, Throws = true, CookTime = 1.3f, Sidesteps = true, FallsBack = true, HuntParty = 2,
+        Braces = true, Throws = true, CookTime = 1.3f, Sidesteps = true, FallsBack = true, HuntParty = 2, Musters = true,
     };
 
     public static Profile Of(WGCrewSkill skill)

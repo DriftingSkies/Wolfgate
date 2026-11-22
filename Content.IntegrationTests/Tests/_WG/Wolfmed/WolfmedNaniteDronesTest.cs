@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server._Mono.Traits.Physical;
+using Content.Server.Atmos.EntitySystems;
 using Content.Shared._Onyx.Wounds;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
@@ -28,14 +29,17 @@ public sealed class WolfmedNaniteDronesTest
 
         await server.WaitAssertion(() =>
         {
+            // Vacuum damage outpaces the drones' 0.3 a second and reopens the breach.
+            em.System<AtmosphereSystem>().SetMapAtmosphere(map.MapUid, false, WolfmedIvDripTest.StationAir());
             var body = em.SpawnEntity("MobIPC", map.GridCoords);
             torso = em.System<SharedBodySystem>().GetBodyChildren(body)
                 .Single(part => part.Component.PartType == BodyPartType.Torso).Id;
-            breach = em.System<WoundSystem>().CreateOrMergeWound(torso, "WGWolfmedBreachWound", 10)!.Value;
+            breach = em.System<WoundSystem>().CreateOrMergeWound(torso, "WGWolfmedBreachWound", 5)!.Value;
             em.AddComponents(body, server.ProtoMan.Index<TraitPrototype>(NaniteRepairDronesProto).Components, false);
         });
 
-        await server.WaitRunTicks(server.Timing.TickRate * 12);
+        // The drones mend 0.3 severity a second: a severity-5 breach closes in under 20 s.
+        await server.WaitRunTicks(server.Timing.TickRate * 30);
 
         await server.WaitAssertion(() =>
             Assert.That(em.System<WoundSystem>().GetWounds(torso).Any(open => open.Owner == breach), Is.False,

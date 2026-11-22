@@ -1019,6 +1019,11 @@ namespace Content.Server.Database.Migrations.Sqlite
                         .HasColumnType("INTEGER")
                         .HasColumnName("leg_stance");
 
+                    b.Property<string>("MarkingGlow")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("marking_glow");
+
                     b.Property<byte[]>("Markings")
                         .HasColumnType("jsonb")
                         .HasColumnName("markings");
@@ -2268,6 +2273,10 @@ namespace Content.Server.Database.Migrations.Sqlite
                         .HasColumnType("TEXT")
                         .HasColumnName("player_user_id");
 
+                    b.Property<int?>("Slot")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("slot");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT")
                         .HasColumnName("updated_at");
@@ -2300,6 +2309,10 @@ namespace Content.Server.Database.Migrations.Sqlite
                     b.Property<byte[]>("FrameTimes")
                         .HasColumnType("BLOB")
                         .HasColumnName("frame_times");
+
+                    b.Property<byte[]>("Glow")
+                        .HasColumnType("BLOB")
+                        .HasColumnName("glow");
 
                     b.Property<byte[]>("Png")
                         .IsRequired()

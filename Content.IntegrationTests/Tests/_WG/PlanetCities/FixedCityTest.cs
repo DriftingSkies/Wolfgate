@@ -242,16 +242,30 @@ public sealed class FixedCityTest
 
         // Zombies, all of them indoors and upstairs too, whatever the round would have rolled. Nobody walks off their tile.
         const string zombie = "WGWreckZombieVerda";
-        var (layers, _, holds) = await BuildCrocus(pair, false, () =>
+        // The prototype is shared by every later test on this pooled server, so it is put back however this one ends.
+        var crocus = prototypes.Index<WGFixedCityPrototype>("WGCityCrocus");
+        var originalFates = crocus.Fates;
+        var zombieFate = originalFates.Single(fate => fate.Name == "zombies");
+        var original = (zombieFate.IndoorShare, zombieFate.UpperLevels, zombieFate.MinGroups, zombieFate.MaxGroups);
+        List<EntityUid> layers;
+        List<Task> holds;
+        try
         {
-            server.CfgMan.SetCVar(CCVars.NPCEnabled, false);
-            var city = prototypes.Index<WGFixedCityPrototype>("WGCityCrocus");
-            var fate = city.Fates.Single(fate => fate.Name == "zombies");
-            fate.IndoorShare = 1f;
-            fate.UpperLevels = true;
-            fate.MinGroups = fate.MaxGroups = 12;
-            city.Fates = new List<WGCityFate> { fate };
-        });
+            (layers, _, holds) = await BuildCrocus(pair, false, () =>
+            {
+                server.CfgMan.SetCVar(CCVars.NPCEnabled, false);
+                zombieFate.IndoorShare = 1f;
+                zombieFate.UpperLevels = true;
+                zombieFate.MinGroups = zombieFate.MaxGroups = 12;
+                crocus.Fates = new List<WGCityFate> { zombieFate };
+            });
+        }
+        finally
+        {
+            // Fates are only read while the city generates, which BuildCrocus waits out.
+            (zombieFate.IndoorShare, zombieFate.UpperLevels, zombieFate.MinGroups, zombieFate.MaxGroups) = original;
+            crocus.Fates = originalFates;
+        }
 
         await server.WaitAssertion(() =>
         {

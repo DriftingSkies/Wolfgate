@@ -9,7 +9,7 @@ namespace Content.Shared._WG.CustomMarkings;
 /// <summary>
 /// A custom marking as it is drawn. Its pixels: one frame, or several for an animated marking, each four facings on
 /// a sheet laid out the way an RSI state is, south and north on the top row and east and west below. How long each
-/// frame shows. And which pixels of the body under it are erased.
+/// frame shows. Which pixels of the body under it are erased. And which of its own pixels glow.
 /// </summary>
 public sealed class CustomMarkingArt
 {
@@ -37,6 +37,13 @@ public sealed class CustomMarkingArt
     public readonly byte[] Erase = new byte[EraseBytes];
 
     /// <summary>
+    /// The pixels that glow, drawn unshaded so they stay bright in the dark: a <see cref="CustomMarkingErase"/> mask
+    /// for each frame, one after another. Only a drawn pixel glows, and it keeps glowing when recoloured.
+    /// </summary>
+    // A frame's mask is sliced where it is used: the client sandbox rejects a content method returning a span.
+    public byte[] Glow { get; private set; }
+
+    /// <summary>
     /// Whether the animation plays back down to the first frame at the end instead of starting over. Only means
     /// anything with three frames or more; see <see cref="PingPongs"/>.
     /// </summary>
@@ -46,12 +53,14 @@ public sealed class CustomMarkingArt
     {
         Pixels = new byte[PixelBytes];
         _frameTimes = new[] { DefaultFrameTime };
+        Glow = new byte[EraseBytes];
     }
 
-    private CustomMarkingArt(byte[] pixels, int[] frameTimes)
+    private CustomMarkingArt(byte[] pixels, int[] frameTimes, byte[]? glow = null)
     {
         Pixels = pixels;
         _frameTimes = frameTimes;
+        Glow = glow ?? new byte[frameTimes.Length * EraseBytes];
     }
 
     public int Frames => _frameTimes.Length;
@@ -61,8 +70,8 @@ public sealed class CustomMarkingArt
 
     /// <summary>
     /// Art from what a client uploads, or null when it isn't well formed: raw sheet bytes for a whole number of
-    /// frames, a time for each frame, and an erase mask of the right size. Null times and a null mask are a still
-    /// marking's and no mask. Everything is copied.
+    /// frames, a time for each frame, an erase mask of the right size and a glow mask for each frame. Null times
+    /// and null masks are a still marking's and no mask. Everything is copied; glow on an undrawn pixel is dropped.
     /// </summary>
     /// <param name="maxFrames">Most frames to accept.</param>
     public static CustomMarkingArt? FromPixels(
@@ -70,7 +79,8 @@ public sealed class CustomMarkingArt
         int[]? frameTimes = null,
         byte[]? erase = null,
         int maxFrames = MaxFrames,
-        bool pingPong = false)
+        bool pingPong = false,
+        byte[]? glow = null)
     {
         if (rgba == null || rgba.Length == 0 || rgba.Length % PixelBytes != 0)
             return null;
@@ -78,7 +88,8 @@ public sealed class CustomMarkingArt
         var frames = rgba.Length / PixelBytes;
         if (frames > Math.Min(maxFrames, MaxFrames)
             || frameTimes != null && frameTimes.Length != frames
-            || erase != null && erase.Length != EraseBytes)
+            || erase != null && erase.Length != EraseBytes
+            || glow != null && glow.Length != frames * EraseBytes)
             return null;
 
         var pixels = new byte[rgba.Length];
@@ -101,21 +112,28 @@ public sealed class CustomMarkingArt
 
         var art = new CustomMarkingArt(pixels, times) { PingPong = pingPong && frames > 2 };
         erase?.CopyTo(art.Erase, 0);
+        if (glow != null)
+            art.SetGlowMask(glow);
+
         return art;
     }
 
     public CustomMarkingArt Clone()
     {
-        var copy = new CustomMarkingArt(Pixels.AsSpan().ToArray(), _frameTimes.AsSpan().ToArray()) { PingPong = PingPong };
+        var copy = new CustomMarkingArt(Pixels.AsSpan().ToArray(), _frameTimes.AsSpan().ToArray(), Glow.AsSpan().ToArray())
+        {
+            PingPong = PingPong,
+        };
         Erase.CopyTo(copy.Erase, 0);
         return copy;
     }
 
-    /// <summary>Becomes a copy of other art: its frames, their times and its erase mask.</summary>
+    /// <summary>Becomes a copy of other art: its frames, their times, its erase mask and what glows.</summary>
     public void Restore(CustomMarkingArt other)
     {
         Pixels = other.Pixels.AsSpan().ToArray();
         _frameTimes = other._frameTimes.AsSpan().ToArray();
+        Glow = other.Glow.AsSpan().ToArray();
         other.Erase.CopyTo(Erase, 0);
         PingPong = other.PingPong;
     }
@@ -132,13 +150,14 @@ public sealed class CustomMarkingArt
         return true;
     }
 
-    /// <summary>Whether this is the same art: frames, times and erase mask.</summary>
+    /// <summary>Whether this is the same art: frames, times, erase mask and glow.</summary>
     public bool Same(CustomMarkingArt other)
     {
         return SamePixels(other)
                && _frameTimes.AsSpan().SequenceEqual(other._frameTimes)
                && PingPongs == other.PingPongs
-               && Erase.AsSpan().SequenceEqual(other.Erase);
+               && Erase.AsSpan().SequenceEqual(other.Erase)
+               && Glow.AsSpan().SequenceEqual(other.Glow);
     }
 
     public bool SamePixels(CustomMarkingArt other)
@@ -178,11 +197,14 @@ public sealed class CustomMarkingArt
         return new Rgba32(Pixels[i], Pixels[i + 1], Pixels[i + 2], Pixels[i + 3]);
     }
 
-    /// <summary>Sets one pixel. Returns whether it changed.</summary>
+    /// <summary>Sets one pixel. A pixel that is still drawn keeps its glow; one cleared loses it. Returns whether it changed.</summary>
     public bool SetPixel(int frame, int facing, int x, int y, Rgba32 pixel)
     {
         if (pixel.A == 0)
+        {
             pixel = default;
+            CustomMarkingErase.Set(Glow.AsSpan(frame * EraseBytes, EraseBytes), facing, x, y, false);
+        }
 
         var i = Offset(frame, facing, x, y);
         if (Pixels[i] == pixel.R && Pixels[i + 1] == pixel.G && Pixels[i + 2] == pixel.B && Pixels[i + 3] == pixel.A)
@@ -201,20 +223,24 @@ public sealed class CustomMarkingArt
         {
             Pixels.AsSpan(Offset(frame, facing, 0, y), FrameSize * 4).Clear();
         }
+
+        CustomMarkingErase.Clear(Glow.AsSpan(frame * EraseBytes, EraseBytes), facing);
     }
 
     /// <summary>
-    /// Redraws a facing from one as it was: each pixel takes the one <paramref name="from"/> names for it, or
-    /// nothing where that lies off the facing.
+    /// Redraws a facing from one as it was: each pixel takes the one <paramref name="from"/> names for it, glow
+    /// and all, or nothing where that lies off the facing.
     /// </summary>
     private void Redraw(int frame, int source, int target, Func<int, int, (int X, int Y)> from)
     {
         var before = new Rgba32[FrameSize * FrameSize];
+        var glowed = new bool[FrameSize * FrameSize];
         for (var y = 0; y < FrameSize; y++)
         {
             for (var x = 0; x < FrameSize; x++)
             {
                 before[y * FrameSize + x] = GetPixel(frame, source, x, y);
+                glowed[y * FrameSize + x] = IsGlowing(frame, source, x, y);
             }
         }
 
@@ -223,7 +249,9 @@ public sealed class CustomMarkingArt
             for (var x = 0; x < FrameSize; x++)
             {
                 var (fromX, fromY) = from(x, y);
-                SetPixel(frame, target, x, y, InFrame(fromX, fromY) ? before[fromY * FrameSize + fromX] : default);
+                var inFrame = InFrame(fromX, fromY);
+                SetPixel(frame, target, x, y, inFrame ? before[fromY * FrameSize + fromX] : default);
+                CustomMarkingErase.Set(Glow.AsSpan(frame * EraseBytes, EraseBytes), target, x, y, inFrame && glowed[fromY * FrameSize + fromX]);
             }
         }
     }
@@ -278,6 +306,38 @@ public sealed class CustomMarkingArt
                 && GetPixel(frame, facing, nextX, nextY) == target
                 && SetPixel(frame, facing, nextX, nextY, pixel))
                 open.Push((nextX, nextY));
+        }
+    }
+
+    /// <summary>
+    /// Makes the drawn pixel at a point, and every pixel of the same colour joined to it by an edge, glow or stop
+    /// glowing.
+    /// </summary>
+    public void FillGlow(int frame, int facing, int x, int y, bool glowing)
+    {
+        if (!InFrame(x, y) || GetPixel(frame, facing, x, y) is not { A: > 0 } target)
+            return;
+
+        var seen = new bool[FrameSize * FrameSize];
+        seen[y * FrameSize + x] = true;
+        var open = new Stack<(int X, int Y)>();
+        open.Push((x, y));
+        while (open.TryPop(out var at))
+        {
+            SetGlow(frame, facing, at.X, at.Y, glowing);
+            Spread(at.X + 1, at.Y);
+            Spread(at.X - 1, at.Y);
+            Spread(at.X, at.Y + 1);
+            Spread(at.X, at.Y - 1);
+        }
+
+        void Spread(int nextX, int nextY)
+        {
+            if (!InFrame(nextX, nextY) || seen[nextY * FrameSize + nextX] || GetPixel(frame, facing, nextX, nextY) != target)
+                return;
+
+            seen[nextY * FrameSize + nextX] = true;
+            open.Push((nextX, nextY));
         }
     }
 
@@ -348,18 +408,14 @@ public sealed class CustomMarkingArt
             return -1;
 
         var at = after + 1;
-        var pixels = new byte[(frames + 1) * PixelBytes];
-        Pixels.AsSpan(0, at * PixelBytes).CopyTo(pixels);
-        Pixels.AsSpan(after * PixelBytes, PixelBytes).CopyTo(pixels.AsSpan(at * PixelBytes));
-        Pixels.AsSpan(at * PixelBytes).CopyTo(pixels.AsSpan((at + 1) * PixelBytes));
-
         var times = new int[frames + 1];
         for (var i = 0; i <= frames; i++)
         {
             times[i] = _frameTimes[i < at ? i : i - 1];
         }
 
-        Pixels = pixels;
+        Pixels = CopyChunk(Pixels, PixelBytes, after);
+        Glow = CopyChunk(Glow, EraseBytes, after);
         _frameTimes = times;
         return at;
     }
@@ -371,17 +427,14 @@ public sealed class CustomMarkingArt
         if (frames <= 1)
             return false;
 
-        var pixels = new byte[(frames - 1) * PixelBytes];
-        Pixels.AsSpan(0, frame * PixelBytes).CopyTo(pixels);
-        Pixels.AsSpan((frame + 1) * PixelBytes).CopyTo(pixels.AsSpan(frame * PixelBytes));
-
         var times = new int[frames - 1];
         for (var i = 0; i < frames - 1; i++)
         {
             times[i] = _frameTimes[i < frame ? i : i + 1];
         }
 
-        Pixels = pixels;
+        Pixels = RemoveChunk(Pixels, PixelBytes, frame);
+        Glow = RemoveChunk(Glow, EraseBytes, frame);
         _frameTimes = times;
         return true;
     }
@@ -393,17 +446,16 @@ public sealed class CustomMarkingArt
         if (frame == to || frame < 0 || to < 0 || frame >= frames || to >= frames)
             return false;
 
-        var moved = Pixels.AsSpan(frame * PixelBytes, PixelBytes).ToArray();
         var time = _frameTimes[frame];
         var step = to > frame ? 1 : -1;
         for (var i = frame; i != to; i += step)
         {
-            Pixels.AsSpan((i + step) * PixelBytes, PixelBytes).CopyTo(Pixels.AsSpan(i * PixelBytes));
             _frameTimes[i] = _frameTimes[i + step];
         }
 
-        moved.CopyTo(Pixels.AsSpan(to * PixelBytes));
         _frameTimes[to] = time;
+        MoveChunk(Pixels, PixelBytes, frame, to);
+        MoveChunk(Glow, EraseBytes, frame, to);
         return true;
     }
 
@@ -417,13 +469,52 @@ public sealed class CustomMarkingArt
         for (var i = 0; i < frames / 2; i++)
         {
             var j = frames - 1 - i;
-            var first = Pixels.AsSpan(i * PixelBytes, PixelBytes).ToArray();
-            Pixels.AsSpan(j * PixelBytes, PixelBytes).CopyTo(Pixels.AsSpan(i * PixelBytes));
-            first.CopyTo(Pixels.AsSpan(j * PixelBytes));
+            SwapChunks(Pixels, PixelBytes, i, j);
+            SwapChunks(Glow, EraseBytes, i, j);
             (_frameTimes[i], _frameTimes[j]) = (_frameTimes[j], _frameTimes[i]);
         }
 
         return true;
+    }
+
+    /// <summary>Per-frame data with a copy of one frame's chunk put in after it.</summary>
+    private static byte[] CopyChunk(byte[] data, int size, int after)
+    {
+        var at = after + 1;
+        var result = new byte[data.Length + size];
+        data.AsSpan(0, at * size).CopyTo(result);
+        data.AsSpan(after * size, size).CopyTo(result.AsSpan(at * size));
+        data.AsSpan(at * size).CopyTo(result.AsSpan((at + 1) * size));
+        return result;
+    }
+
+    /// <summary>Per-frame data without one frame's chunk.</summary>
+    private static byte[] RemoveChunk(byte[] data, int size, int frame)
+    {
+        var result = new byte[data.Length - size];
+        data.AsSpan(0, frame * size).CopyTo(result);
+        data.AsSpan((frame + 1) * size).CopyTo(result.AsSpan(frame * size));
+        return result;
+    }
+
+    /// <summary>Moves one frame's chunk of per-frame data to another place, shifting those between.</summary>
+    private static void MoveChunk(byte[] data, int size, int frame, int to)
+    {
+        var moved = data.AsSpan(frame * size, size).ToArray();
+        var step = to > frame ? 1 : -1;
+        for (var i = frame; i != to; i += step)
+        {
+            data.AsSpan((i + step) * size, size).CopyTo(data.AsSpan(i * size));
+        }
+
+        moved.CopyTo(data.AsSpan(to * size));
+    }
+
+    private static void SwapChunks(byte[] data, int size, int i, int j)
+    {
+        var first = data.AsSpan(i * size, size).ToArray();
+        data.AsSpan(j * size, size).CopyTo(data.AsSpan(i * size));
+        first.CopyTo(data.AsSpan(j * size));
     }
 
     /// <summary>Gives every frame the same time, kept within the rules. Returns whether any changed.</summary>
@@ -465,14 +556,16 @@ public sealed class CustomMarkingArt
 
         var order = PlayOrder();
         var pixels = new byte[order.Length * PixelBytes];
+        var glow = new byte[order.Length * EraseBytes];
         var times = new int[order.Length];
         for (var i = 0; i < order.Length; i++)
         {
             Pixels.AsSpan(order[i] * PixelBytes, PixelBytes).CopyTo(pixels.AsSpan(i * PixelBytes));
+            Glow.AsSpan(order[i] * EraseBytes, EraseBytes).CopyTo(glow.AsSpan(i * EraseBytes));
             times[i] = _frameTimes[order[i]];
         }
 
-        var played = new CustomMarkingArt(pixels, times);
+        var played = new CustomMarkingArt(pixels, times, glow);
         Erase.CopyTo(played.Erase, 0);
         return played;
     }
@@ -539,6 +632,94 @@ public sealed class CustomMarkingArt
         }
     }
 
+    /// <summary>Whether the pixel at a point of a frame glows.</summary>
+    public bool IsGlowing(int frame, int facing, int x, int y)
+    {
+        return CustomMarkingErase.Get(Glow.AsSpan(frame * EraseBytes, EraseBytes), facing, x, y);
+    }
+
+    /// <summary>
+    /// Makes a drawn pixel glow, or stop glowing. An undrawn pixel can't glow. Returns whether that changed anything.
+    /// </summary>
+    public bool SetGlow(int frame, int facing, int x, int y, bool glowing)
+    {
+        if (glowing && Pixels[Offset(frame, facing, x, y) + 3] == 0)
+            return false;
+
+        return CustomMarkingErase.Set(Glow.AsSpan(frame * EraseBytes, EraseBytes), facing, x, y, glowing);
+    }
+
+    public bool HasGlow()
+    {
+        return CustomMarkingErase.Any(Glow);
+    }
+
+    /// <summary>Stops every pixel of one facing of a frame glowing.</summary>
+    public void ClearGlow(int frame, int facing)
+    {
+        CustomMarkingErase.Clear(Glow.AsSpan(frame * EraseBytes, EraseBytes), facing);
+    }
+
+    /// <summary>
+    /// Takes what glows from a mask for every frame, laid out as <see cref="Glow"/> is. Bits on undrawn pixels are
+    /// dropped. False, changing nothing, when the mask doesn't fit the frames.
+    /// </summary>
+    public bool SetGlowMask(ReadOnlySpan<byte> glow)
+    {
+        if (glow.Length != Glow.Length)
+            return false;
+
+        Glow.AsSpan().Clear();
+        for (var frame = 0; frame < Frames; frame++)
+        {
+            var mask = glow.Slice(frame * EraseBytes, EraseBytes);
+            for (var facing = 0; facing < Facings; facing++)
+            {
+                for (var y = 0; y < FrameSize; y++)
+                {
+                    for (var x = 0; x < FrameSize; x++)
+                    {
+                        if (CustomMarkingErase.Get(mask, facing, x, y))
+                            SetGlow(frame, facing, x, y, true);
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// The art in two: the pixels that are lit like anything else, and those that glow. Both keep the frames, their
+    /// times and how they play.
+    /// </summary>
+    public (CustomMarkingArt Lit, CustomMarkingArt Glowing) SplitGlow()
+    {
+        var lit = Clone();
+        var glowing = Clone();
+        for (var frame = 0; frame < Frames; frame++)
+        {
+            for (var facing = 0; facing < Facings; facing++)
+            {
+                for (var y = 0; y < FrameSize; y++)
+                {
+                    for (var x = 0; x < FrameSize; x++)
+                    {
+                        if (Pixels[Offset(frame, facing, x, y) + 3] == 0)
+                            continue;
+
+                        if (IsGlowing(frame, facing, x, y))
+                            lit.SetPixel(frame, facing, x, y, default);
+                        else
+                            glowing.SetPixel(frame, facing, x, y, default);
+                    }
+                }
+            }
+        }
+
+        return (lit, glowing);
+    }
+
     /// <summary>
     /// The pixels this art hides what is under: those it draws solidly in every frame, as a
     /// <see cref="CustomMarkingErase"/> mask.
@@ -592,6 +773,14 @@ public sealed class CustomMarkingArt
 
         if (PingPongs)
             hash = unchecked((hash ^ 1) * 1099511628211UL);
+
+        if (HasGlow())
+        {
+            foreach (var value in Glow)
+            {
+                hash = unchecked((hash ^ value) * 1099511628211UL);
+            }
+        }
 
         return hash.ToString("x16");
     }

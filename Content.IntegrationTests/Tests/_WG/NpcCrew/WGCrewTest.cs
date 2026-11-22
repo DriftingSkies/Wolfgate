@@ -124,7 +124,7 @@ public sealed partial class WGCrewTest : InteractionTest
             Assert.That(SEntMan.HasComponent<WGCrewComponent>(crew), "The crew component should be on the mob.");
             Assert.That(SEntMan.GetComponent<MetaDataComponent>(crew).EntityName, Does.StartWith("Deckhand "),
                 "The role title should go in front of the name.");
-            Assert.That(Holstered(crew), "A deckhand should spawn with a sidearm in the belt.");
+            Assert.That(Holstered(crew), "A deckhand should spawn with a sidearm in a pocket.");
             Assert.That(hands.TryGetActiveItem(crew, out _), Is.False, "Hands should be empty off duty.");
         });
 
@@ -145,7 +145,7 @@ public sealed partial class WGCrewTest : InteractionTest
 
         bool Holstered(EntityUid uid)
         {
-            return inventory.TryGetSlotEntity(uid, "belt", out var belt) && SEntMan.HasComponent<GunComponent>(belt.Value);
+            return inventory.TryGetSlotEntity(uid, "pocket1", out var pocket) && SEntMan.HasComponent<GunComponent>(pocket.Value);
         }
     }
 

@@ -229,7 +229,7 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
 
 			if (_timing.CurTime >= voucher.NextBuyAt)
 			{
-				voucher.NextBuyAt = _timing.CurTime + voucher.Cooldown;
+				// voucher.NextBuyAt = _timing.CurTime + voucher.Cooldown; // WOLFGATE(Shipyard): set below, so a refused redemption starts no cooldown
 			}
 			else
 			{
@@ -252,6 +252,7 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
                 return;
             }
             voucher.RedemptionsLeft--;
+            voucher.NextBuyAt = _timing.CurTime + voucher.Cooldown; // WOLFGATE(Shipyard): the cooldown starts only with a redemption that goes through
             voucherUsed = true;
         }
         else

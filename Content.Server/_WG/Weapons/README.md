@@ -96,6 +96,7 @@ shot (`MeleeWeaponSystem.SecondaryKey.cs`, `SecondaryKeyGunTest`).
 - [`Content.IntegrationTests/Tests/_WG/Weapons/EventGridHardpointTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/EventGridHardpointTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Weapons/GunshotAudioThrottleTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/GunshotAudioThrottleTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Weapons/HitscanJumpShooterTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/HitscanJumpShooterTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Weapons/HitscanPointBlankTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/HitscanPointBlankTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Weapons/NpcHitscanTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/NpcHitscanTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Weapons/ProjectileSweepTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/ProjectileSweepTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Weapons/SecondaryKeyGunTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/SecondaryKeyGunTest.cs)
@@ -271,7 +272,9 @@ shot (`MeleeWeaponSystem.SecondaryKey.cs`, `SecondaryKeyGunTest`).
 - [`Content.Shared/Weapons/Hitscan/Systems/HitscanReflectSystem.cs`](../../../Content.Shared/Weapons/Hitscan/Systems/HitscanReflectSystem.cs): a predicted beam is drawn client-side only; reflections are rolled on the server
 - [`Content.Shared/Weapons/Ranged/Components/GunComponent.cs`](../../../Content.Shared/Weapons/Ranged/Components/GunComponent.cs): predicted recoil
 - [`Content.Shared/Weapons/Ranged/Events/RequestShootEvent.cs`](../../../Content.Shared/Weapons/Ranged/Events/RequestShootEvent.cs): predicted shot effects
-- [`Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs`](../../../Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs): one path for both sides that links predicted projectiles
+- [`Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs`](../../../Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs)
+  - one path for both sides that links predicted projectiles
+  - a shot at a target on the shooter's own spot has no direction to trace
 - [`Content.Shared/Wieldable/SharedWieldableSystem.cs`](../../../Content.Shared/Wieldable/SharedWieldableSystem.cs)
   - a gun loaded from a save skipped map init and had no wield bonus
   - attachable pistols have no wield bonus, which is not an error
@@ -294,6 +297,7 @@ shot (`MeleeWeaponSystem.SecondaryKey.cs`, `SecondaryKeyGunTest`).
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/merc_weapons.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/merc_weapons.yml): Strix is craftable through research. Lee Enfield, Keyboard, Energy Gun, Viper and MK32 are craftable.
 - [`Resources/Prototypes/_Mono/Research/arsenal.yml`](../../../Resources/Prototypes/_Mono/Research/arsenal.yml): Make Strix craftable through research
 - [`Resources/Prototypes/_Mono/Research/Organizations/mieyo.yml`](../../../Resources/Prototypes/_Mono/Research/Organizations/mieyo.yml): the Sakura needs its .160 smart magazine
+- [`Resources/Prototypes/_Mono/Research/Universal/prerequisites.yml`](../../../Resources/Prototypes/_Mono/Research/Universal/prerequisites.yml): the SKR FMJ box sat in the dynamic pack with no tech to unlock it
 - [`Resources/Prototypes/_NF/Recipes/Lathes/Packs/Deprecated/mercenary_techfab.yml`](../../../Resources/Prototypes/_NF/Recipes/Lathes/Packs/Deprecated/mercenary_techfab.yml)
   - LiberationVend weapons made craftable.
   - Make Strix and energy gun craftable through research.

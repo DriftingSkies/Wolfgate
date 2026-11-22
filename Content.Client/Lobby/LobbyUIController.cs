@@ -551,6 +551,7 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
         _characterSetup.DeleteCharacter += args =>
         {
             _preferencesManager.DeleteCharacter(args);
+            EntityManager.System<Content.Client._WG.CustomMarkings.CustomMarkingSystem>().ReleaseSlot(args); // WOLFGATE(CustomMarkings): its own markings go to every character
 
             // Reload everything
             if (EditedSlot == args)

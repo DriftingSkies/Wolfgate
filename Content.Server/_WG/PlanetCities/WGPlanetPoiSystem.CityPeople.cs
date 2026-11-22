@@ -69,7 +69,7 @@ public sealed partial class WGPlanetPoiSystem
             // The city has carried on since the pools were drawn up: a door may have shut on the tile.
             if (CityTileBlocked(pool.Floor.Grid, tile))
                 continue;
-            foreach (var id in _entityTables.GetSpawns(residents.Spawns))
+            foreach (var id in _entityTables.GetSpawns(residents.Spawns, _random))
             {
                 created.Add(Spawn(id, new EntityCoordinates(pool.Floor.Grid.Owner, (Vector2) tile + new Vector2(0.5f))));
                 placed++;

@@ -1,7 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
+using Content.Client._WG.Genitals;
 using Content.Shared._WG.CustomMarkings;
 using Content.Shared._WG.Genitals.Events;
 using Content.Shared.Humanoid;
+using Content.Shared.Humanoid.Markings;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
@@ -17,6 +19,7 @@ public sealed partial class CustomMarkingSystem : EntitySystem
 {
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private IResourceCache _resCache = default!;
+    [Dependency] private GenitalsVisualizerSystem _genitalsVisuals = default!;
     [Dependency] private SpriteSystem _sprite = default!;
 
     /// <summary>Layer keys are numbered, so this is also the most markings one body can show.</summary>
@@ -71,9 +74,17 @@ public sealed partial class CustomMarkingSystem : EntitySystem
             _cut.Clear();
             RefreshAll();
         });
+        Subs.CVar(_cfg, CustomMarkingCVars.Glow, _ =>
+        {
+            _cut.Clear();
+            RefreshAll();
+        });
 
         InitializeLibrary();
     }
+
+    /// <summary>Whether the server lets marking pixels glow; off, every marking is drawn lit.</summary>
+    public bool GlowEnabled => _cfg.GetCVar(CustomMarkingCVars.Glow);
 
     /// <summary>The art for a hash if it is here already. Otherwise asks the server for it, once.</summary>
     public bool TryGetArt(string hash, [NotNullWhen(true)] out RSI? rsi)
@@ -103,7 +114,7 @@ public sealed partial class CustomMarkingSystem : EntitySystem
             return;
 
         _unavailable.Remove(hash);
-        Store(hash, art.ToPng(), art.GetFrameTimes(), art.Erase, art.PingPongs);
+        Store(hash, art.ToPng(), art.GetFrameTimes(), art.Erase, art.PingPongs, art.HasGlow() ? art.Glow : null);
         if (Load(hash, out _))
             ArtLoaded?.Invoke(hash);
     }
@@ -116,7 +127,7 @@ public sealed partial class CustomMarkingSystem : EntitySystem
 
     /// <summary>
     /// The art for a hash that <see cref="TryGetArt"/> has returned, read back whole for the editor: its frames,
-    /// how long each shows and its erase mask.
+    /// how long each shows, its erase mask and what glows.
     /// </summary>
     public bool TryReadArt(string hash, [NotNullWhen(true)] out CustomMarkingArt? art)
     {
@@ -136,6 +147,8 @@ public sealed partial class CustomMarkingSystem : EntitySystem
             erase.CopyTo(read.Erase, 0);
 
         read.PingPong = _resources.GetPingPong(hash);
+        if (_resources.TryGetGlow(hash, out var glow))
+            read.SetGlowMask(glow);
 
         art = read;
         return true;
@@ -175,7 +188,7 @@ public sealed partial class CustomMarkingSystem : EntitySystem
         if (!asked)
             return;
 
-        Store(ev.Hash, ev.Png, ev.FrameTimes, ev.Erase, ev.PingPong);
+        Store(ev.Hash, ev.Png, ev.FrameTimes, ev.Erase, ev.PingPong, ev.Glow);
         if (!Load(ev.Hash, out _))
             return;
 
@@ -183,10 +196,10 @@ public sealed partial class CustomMarkingSystem : EntitySystem
         ArtLoaded?.Invoke(ev.Hash);
     }
 
-    private void Store(string hash, byte[] png, int[]? frameTimes, byte[]? erase, bool pingPong)
+    private void Store(string hash, byte[] png, int[]? frameTimes, byte[]? erase, bool pingPong, byte[]? glow)
     {
         _eraseMasks.Remove(hash);
-        _resources.Store(hash, png, frameTimes, erase, pingPong: pingPong);
+        _resources.Store(hash, png, frameTimes, erase, pingPong: pingPong, glow: glow);
     }
 
     private void RefreshWearers(string hash)
@@ -249,6 +262,7 @@ public sealed partial class CustomMarkingSystem : EntitySystem
         for (var i = 0; i < MaxLayers; i++)
         {
             _sprite.RemoveLayer(sprite, LayerKey(i), false);
+            _sprite.RemoveLayer(sprite, GlowKey(i), false);
         }
 
         var erase = new byte[CustomMarkingRules.EraseBytes];
@@ -261,6 +275,16 @@ public sealed partial class CustomMarkingSystem : EntitySystem
             if (ent.Comp.HiddenCustomMarkings.Contains(marking) || !TryGetArt(marking.Hash, out var rsi))
                 continue;
 
+            // Hidden from other viewers: the undergarment was removed and the viewer can't see anatomy.
+            if (marking.Placement is CustomMarkingPlacement.UndergarmentTop or CustomMarkingPlacement.UndergarmentBottom)
+            {
+                var category = marking.Placement == CustomMarkingPlacement.UndergarmentTop
+                    ? MarkingCategories.UndergarmentTop
+                    : MarkingCategories.UndergarmentBottom;
+                if (_genitalsVisuals.IsUndergarmentHidden(ent.Owner, category))
+                    continue;
+            }
+
             // Art on the body goes without the pixels that lay on a hidden body part.
             var depth = GetLayerIndex(sprite, marking.Placement);
             if (ArtFor(sprite, marking, rsi, depth) is not { } shown)
@@ -269,19 +293,33 @@ public sealed partial class CustomMarkingSystem : EntitySystem
             if (TryGetErase(marking.Hash, out var mask))
                 CustomMarkingErase.Add(erase, mask);
 
-            if (shown.Rsi == null)
+            if (shown.Rsi == null && shown.Glow == null)
                 continue;
 
             // Clothing that hides part of the body hides the art on that part, which ArtFor has cut out already;
             // the rest of the marking stays, under or over the clothing as its placement has it. Art on the hair
             // is the exception: it is there to change the hair, so all of it goes whenever the hair is hidden.
-            var layer = _sprite.AddRsiLayer(sprite, CustomMarkingResources.State, shown.Rsi, depth);
-            _sprite.LayerMapSet(sprite, LayerKey(i), layer);
-
             var visible = marking.Placement != CustomMarkingPlacement.Hair
                           || !ent.Comp.HiddenLayers.ContainsKey(HumanoidVisualLayers.Hair)
                           && !ent.Comp.PermanentlyHidden.Contains(HumanoidVisualLayers.Hair);
-            _sprite.LayerSetVisible(sprite, layer, visible);
+
+            if (shown.Rsi != null)
+            {
+                var layer = _sprite.AddRsiLayer(sprite, CustomMarkingResources.State, shown.Rsi, depth);
+                _sprite.LayerMapSet(sprite, LayerKey(i), layer);
+                _sprite.LayerSetVisible(sprite, layer, visible);
+                depth = layer + 1;
+            }
+
+            // The glowing pixels go just over the lit ones, drawn unshaded.
+            if (shown.Glow != null)
+            {
+                var layer = _sprite.AddRsiLayer(sprite, CustomMarkingResources.State, shown.Glow, depth);
+                _sprite.LayerMapSet(sprite, GlowKey(i), layer);
+                spriteComp.LayerSetShader(layer, SpriteSystem.UnshadedId.Id);
+                _sprite.LayerSetVisible(sprite, layer, visible);
+            }
+
             if (visible)
                 CustomMarkingErase.Add(covered, shown.Solid);
         }
@@ -293,6 +331,12 @@ public sealed partial class CustomMarkingSystem : EntitySystem
     public static string LayerKey(int index)
     {
         return $"wg-custom-marking-{index}";
+    }
+
+    /// <summary>The key of the layer drawing the glowing pixels of a body's custom marking at this position in its list.</summary>
+    public static string GlowKey(int index)
+    {
+        return $"wg-custom-marking-glow-{index}";
     }
 
     /// <summary>
@@ -322,6 +366,16 @@ public sealed partial class CustomMarkingSystem : EntitySystem
                 return GetIndexOverHead(sprite);
             case CustomMarkingPlacement.Front:
                 if (_sprite.LayerMapTryGet(sprite, "helmetcover", out index, false))
+                    return index;
+
+                break;
+            case CustomMarkingPlacement.UndergarmentTop:
+                if (_sprite.LayerMapTryGet(sprite, HumanoidVisualLayers.UndergarmentTop, out index, false))
+                    return index;
+
+                break;
+            case CustomMarkingPlacement.UndergarmentBottom:
+                if (_sprite.LayerMapTryGet(sprite, HumanoidVisualLayers.UndergarmentBottom, out index, false))
                     return index;
 
                 break;

@@ -206,6 +206,8 @@
 - type: entity
   id: TurbineGasPipe
   categories: [ HideSpawnMenu ]
+  # WOLFGATE(Shipyard): turbines respawn these every tick, so a saved ship must not keep duplicates that unanchor the turbine on reload
+  save: false
   components:
   - type: Transform
     anchored: true

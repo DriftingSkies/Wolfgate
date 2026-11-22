@@ -275,6 +275,12 @@ wg-crew-grenade-frag-2 = Grenade out!
 wg-crew-grenade-frag-3 = Fire in the hole!
 wg-crew-grenade-1 = Grenade out!
 wg-crew-grenade-2 = Throwing!
+wg-crew-muster-1 = Fall back! Hold together!
+wg-crew-muster-2 = Stop chasing! Group up and hold!
+wg-crew-muster-3 = Pull back! Guns on the door!
+wg-crew-push-1 = Together now! Move up!
+wg-crew-push-2 = All of you, go! Take them together!
+wg-crew-push-3 = Push! Everyone at once!
 wg-crew-coward-cry-5 = Somebody, anybody, help us!
 
 wg-crew-shove = {CAPITALIZE(THE($user))} shoves {THE($crate)} aside.

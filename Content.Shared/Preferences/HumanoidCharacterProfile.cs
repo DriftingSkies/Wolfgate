@@ -306,6 +306,7 @@ namespace Content.Shared.Preferences
             HeadshotUrl = other.HeadshotUrl; // WOLFGATE(Headshot)
             MismatchedParts = other.MismatchedParts; // WOLFGATE(Species)
             CustomMarkings = new(other.CustomMarkings); // WOLFGATE(CustomMarkings)
+            MarkingGlow = new(other.MarkingGlow); // WOLFGATE(MarkingGlow)
             LegStance = other.LegStance; // WOLFGATE(LegStyle)
             Biotype = other.Biotype; // WOLFGATE(Biotype)
             Augments = new(other.Augments); // WOLFGATE(Augments)
@@ -351,6 +352,7 @@ namespace Content.Shared.Preferences
             HeadshotUrl = other.HeadshotUrl; // WOLFGATE(Headshot)
             MismatchedParts = other.MismatchedParts; // WOLFGATE(Species)
             CustomMarkings = new(other.CustomMarkings); // WOLFGATE(CustomMarkings)
+            MarkingGlow = new(other.MarkingGlow); // WOLFGATE(MarkingGlow)
             LegStance = other.LegStance; // WOLFGATE(LegStyle)
             Biotype = other.Biotype; // WOLFGATE(Biotype)
             Augments = new(other.Augments); // WOLFGATE(Augments)
@@ -703,6 +705,7 @@ namespace Content.Shared.Preferences
             if (HeadshotUrl != other.HeadshotUrl) return false; // WOLFGATE(Headshot)
             if (MismatchedParts != other.MismatchedParts) return false; // WOLFGATE(Species)
             if (!CustomMarkingsEqual(other)) return false; // WOLFGATE(CustomMarkings)
+            if (!MarkingGlowEqual(other)) return false; // WOLFGATE(MarkingGlow)
             if (LegStance != other.LegStance) return false; // WOLFGATE(LegStyle)
             if (Biotype != other.Biotype) return false; // WOLFGATE(Biotype)
             if (!AugmentsEqual(other)) return false; // WOLFGATE(Augments)
@@ -919,6 +922,7 @@ namespace Content.Shared.Preferences
 
             EnsureHeadshotValid(); // WOLFGATE(Headshot)
             EnsureCustomMarkingsValid(configManager); // WOLFGATE(CustomMarkings)
+            EnsureMarkingGlowValid(); // WOLFGATE(MarkingGlow)
             EnsureValidEmoteVoices(prototypeManager); // WOLFGATE(EmoteVoices)
             MessageSound = MessageSoundRules.Sanitize(MessageSound, prototypeManager); // WOLFGATE(EmoteVoices): an unknown message sound becomes the species' own
             SpeechVoice = (SpeechVoice ?? new SpeechVoice()).Clamped(); // WOLFGATE(Voice): out-of-range sliders come back inside their range; crafted network data can deliver null
@@ -1089,6 +1093,7 @@ namespace Content.Shared.Preferences
             hashCode.Add(HeadshotUrl); // WOLFGATE(Headshot)
             hashCode.Add(MismatchedParts); // WOLFGATE(Species)
             hashCode.Add(CustomMarkings.Count); // WOLFGATE(CustomMarkings)
+            hashCode.Add(MarkingGlow.Count); // WOLFGATE(MarkingGlow)
             hashCode.Add((int) LegStance); // WOLFGATE(LegStyle)
             hashCode.Add((int) Biotype); // WOLFGATE(Biotype)
             hashCode.Add(Augments.Count); // WOLFGATE(Augments)

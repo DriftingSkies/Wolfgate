@@ -7,7 +7,8 @@ namespace Content.Shared._WG.CustomMarkings;
 
 /// <summary>
 /// Masks over a body: a bit for each pixel of each facing, <see cref="EraseBytes"/> bytes in all. A marking's
-/// <see cref="CustomMarkingArt.Erase"/> is one, holding the pixels of the body it hides.
+/// <see cref="CustomMarkingArt.Erase"/> is one, holding the pixels of the body it hides, and each frame of its
+/// <see cref="CustomMarkingArt.Glow"/> is another.
 /// </summary>
 public static class CustomMarkingErase
 {
@@ -57,6 +58,12 @@ public static class CustomMarkingErase
     public static bool Any(ReadOnlySpan<byte> mask, int facing)
     {
         return Any(mask.Slice(facing * FacingBytes, FacingBytes));
+    }
+
+    /// <summary>Clears every pixel of one facing.</summary>
+    public static void Clear(Span<byte> mask, int facing)
+    {
+        mask.Slice(facing * FacingBytes, FacingBytes).Clear();
     }
 
     /// <summary>Adds every pixel of one mask to another.</summary>

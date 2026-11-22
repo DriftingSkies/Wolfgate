@@ -63,4 +63,30 @@ public sealed class LegStyleMarkingTest : InteractionTest
             Assert.That(sprites.LayerMapTryGet((spriteUid, sprite), $"{Leg}-legmask", out _, false), Is.False, "Plantigrade legs kept the outline.");
         });
     }
+
+    /// <summary>A leg marking made to glow keeps its digitigrade shape: it is drawn with the cutting shader's unshaded twin.</summary>
+    [Test]
+    public async Task GlowingDigitigradeMarkingTest()
+    {
+        var humanoids = SEntMan.System<SharedHumanoidAppearanceSystem>();
+        var profile = HumanoidCharacterProfile.DefaultWithSpecies("Human");
+        profile = profile.WithCharacterAppearance(profile.Appearance.WithMarkings(new List<Marking>
+        {
+            new("GauzeUpperLegLeft", 1),
+        }));
+
+        await Server.WaitPost(() => humanoids.LoadProfile(SPlayer,
+            profile.WithLegStance(LegStance.Digitigrade).WithMarkingGlow("GauzeUpperLegLeft", true)));
+        await RunTicks(5);
+
+        await Client.WaitAssertion(() =>
+        {
+            var spriteUid = CPlayer;
+            var sprites = CEntMan.System<SpriteSystem>();
+            var sprite = CEntMan.GetComponent<SpriteComponent>(spriteUid);
+            Assert.That(sprites.LayerMapTryGet((spriteUid, sprite), $"{Leg}-displacement", out _, false), Is.True, "The glowing leg marking wasn't reshaped.");
+            Assert.That(sprites.LayerMapTryGet((spriteUid, sprite), Leg, out var leg, false) && sprite[leg] is SpriteComponent.Layer { ShaderPrototype: var shader }
+                && shader == "WGMarkingGlowLegDisplaced", Is.True, "The glowing leg marking lost the cutting shader.");
+        });
+    }
 }

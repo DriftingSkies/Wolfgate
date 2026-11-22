@@ -1,7 +1,6 @@
 using System.Linq;
 using Content.Server._WG.Augments;
 using Content.Server.Atmos.Components;
-using Content.Shared._Mono.Traits.Physical;
 using Content.Shared._Onyx.Wounds;
 using Content.Shared._WG.Augments;
 using Content.Shared._WG.Wolfmed.CCVar;
@@ -61,7 +60,7 @@ public sealed class AugmentAdrenalBoosterTest
             slipper = Spawn(6f, true);
             shocked = Spawn(9f, true);
             Assert.That(entities.HasComponent<WGAdrenalBoosterComponent>(wearer), "The booster wasn't fitted.");
-            Assert.That(entities.HasComponent<VigorComponent>(wearer), "The booster lost its stamina bonus.");
+            Assert.That(entities.GetComponent<WGAdrenalBoosterComponent>(wearer).StaminaApplied, "The booster lost its stamina bonus.");
 
             stamina.TakeStaminaDamage(wearer, 200f);
             stamina.TakeStaminaDamage(control, 200f);

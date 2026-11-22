@@ -8459,3 +8459,161 @@ Entries:
   id: 100542
   time: '2026-11-21T11:29:54.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/775
+- author: ImogenOC
+  changes:
+    - type: Fix
+      message: >-
+        Ships repaired after crashing on a planet can be flown again once they
+        leave orbit.
+  id: 100543
+  time: '2026-11-21T13:59:34.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/768
+- author: Happyowl93
+  changes:
+    - type: Fix
+      message: Roads to points of interest no longer run through water.
+    - type: Fix
+      message: CI fixes, nothing player-facing
+  id: 100544
+  time: '2026-11-21T14:34:52.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/776
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Fixed a rare server physics error when many objects pile onto a
+        structure.
+  id: 100545
+  time: '2026-11-21T15:08:34.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/777
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        Custom markings can glow. Paint on the new Glow layer in the marking
+        editor.
+    - type: Add
+      message: >-
+        Regular markings, hair, facial hair and eyes can be set to glow in the
+        character creator.
+    - type: Add
+      message: >-
+        Side mirroring in the marking editor: drawing on one side view draws on
+        the other too.
+    - type: Add
+      message: >-
+        Custom markings now belong to the character they were drawn for. Press
+        "All characters" in the library to share one.
+    - type: Tweak
+      message: >-
+        Reworked the custom marking editor, with icon tools and a draggable
+        frame strip.
+  id: 100546
+  time: '2026-11-21T15:53:12.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/758
+- author: Gandalf2k15
+  changes:
+    - type: Fix
+      message: >-
+        Crates bought from a vendor are no longer deleted when they pile up
+        against a wall.
+    - type: Fix
+      message: >-
+        Filling a bottle or beaker a little at a time no longer flashes it to
+        full.
+    - type: Fix
+      message: The camera returns to your character after you leave a wheelchair.
+    - type: Fix
+      message: >-
+        Flying off a ship in the air keeps you at the ship's height instead of
+        dropping you to the ground.
+    - type: Fix
+      message: >-
+        A refused ship voucher no longer starts its cooldown, and vouchers show
+        how many uses they have left.
+    - type: Fix
+      message: Synths recharge in cyborg recharging stations.
+    - type: Tweak
+      message: Nanite Repair Drones now go with any synthetic body and no organic one.
+    - type: Fix
+      message: >-
+        A cuffed synthetic can no longer isolate its arms or hands to slip the
+        cuffs.
+    - type: Fix
+      message: Dead birds fit in crates.
+    - type: Fix
+      message: The TSFMC door remote opens Halcyon doors again.
+    - type: Fix
+      message: The Caracara's air mixer makes normal air.
+    - type: Fix
+      message: The Wolf Snake's plasma door closes off its shield generator.
+    - type: Fix
+      message: The 8x65 SKR ammo box can be researched.
+    - type: Fix
+      message: Avali blood triggers the artefact Blood node.
+    - type: Fix
+      message: Turbines on resold ships should no longer arrive unanchored.
+    - type: Tweak
+      message: The Lattice beam is drawn underneath ships and stations.
+    - type: Tweak
+      message: >-
+        The Coda can no longer be written down: paper, labels, PDA notes,
+        NanoChat, announcements and news.
+    - type: Tweak
+      message: The cockpit remembers your selected weapons when the helm reopens.
+  id: 100547
+  time: '2026-11-21T16:25:26.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/778
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        regular+ NPC crews that are losing a boarding fight now fall back, hold
+        a room together and push as a group. 
+    - type: Tweak
+      message: NPC crews carry spare magazines in webbing and reload from it.
+    - type: Fix
+      message: >-
+        NPC crews no longer hold back grenades because a downed crewmate is near
+        the target.
+  id: 100548
+  time: '2026-11-21T21:18:38.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/787
+- author: Balls2zawall
+  changes:
+    - type: Fix
+      message: Removed the Despot, a Reaver refit ship, from the civilian shipyard.
+  id: 100549
+  time: '2026-11-21T21:28:40.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/784
+- author: Happyowl93
+  changes:
+    - type: Remove
+      message: >-
+        Removed the High Pain Threshold, Will to Live, Will to Die, Redshirt,
+        Bionic Legs, Osteogenesis Imperfecta, Hemophilia and Feeble traits.
+    - type: Tweak
+      message: Pain inhibitors reduce pain by at most 25% (20% for the trait).
+    - type: Tweak
+      message: The Numb trait hides pain but no longer stops you going down from it.
+    - type: Tweak
+      message: The adrenal booster no longer cancels out Lethargy.
+    - type: Tweak
+      message: >-
+        Spall liners stop lodged rounds and shrapnel 80% of the time instead of
+        always.
+    - type: Tweak
+      message: >-
+        Platelet Factories and Nanite Repair Drones heal far slower, and slower
+        still while you're down.
+    - type: Tweak
+      message: IPCs overloaded by pain now reboot for a few seconds.
+    - type: Tweak
+      message: >-
+        An IPC shut down without a pump or fluid now burns out its core and dies
+        after about 7.5 minutes.
+    - type: Tweak
+      message: IPCs stay understandable when lightly damaged or slightly low on fluid.
+  id: 100550
+  time: '2026-11-21T22:31:38.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/788

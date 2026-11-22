@@ -10,6 +10,8 @@ using Content.Shared._WG.NpcCrew;
 using Content.Shared.Explosion.Components;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Wieldable.Components;
 using Robust.Shared.GameObjects;
@@ -41,6 +43,8 @@ public sealed partial class WGCrewTest
             var veteran = WGCrewSkills.Of(WGCrewSkill.Veteran);
             Assert.That(veteran.Sidesteps && veteran.FallsBack, Is.True);
             Assert.That(veteran.HuntParty, Is.EqualTo(2));
+            Assert.That(green.Musters, Is.False);
+            Assert.That(regular.Musters && veteran.Musters && WGCrewSkills.Of(WGCrewSkill.Elite).Musters, Is.True);
             Assert.That(WGCrewSkills.Of(WGCrewSkill.Elite).CookTime, Is.GreaterThan(veteran.CookTime));
 
             var crew = new WGCrewComponent { Skill = WGCrewSkill.Green, SkillOffset = -1 };
@@ -201,8 +205,15 @@ public sealed partial class WGCrewTest
             var mate = ConvoyCrew(deck, "WGCrewDeckhand", "frag", new Vector2(6.5f, 6.5f));
             Assert.That(grenades.TryPlan(careful, hostile, GrenadeRules, out _, out _, out _), Is.False,
                 "Never with a crewmate in the blast.");
-            SEntMan.DeleteEntity(mate);
             SEntMan.DeleteEntity(careful);
+
+            // Once that crewmate is down beside the hostile he holds no throw back. A fresh thrower: a refused plan waits to retry.
+            Server.System<MobStateSystem>().ChangeMobState(mate, MobState.Critical);
+            var steady = Thrower(WGCrewSkill.Regular);
+            Assert.That(grenades.TryPlan(steady, hostile, GrenadeRules, out _, out _, out _), Is.True,
+                $"A fallen crewmate must not shield the hostile from grenades. {Describe(steady)}");
+            SEntMan.DeleteEntity(mate);
+            SEntMan.DeleteEntity(steady);
 
             var elite = Thrower(WGCrewSkill.Elite);
             Assert.That(grenades.TryPlan(elite, hostile, GrenadeRules, out var grenade, out var target, out var at), Is.True,
@@ -346,8 +357,8 @@ public sealed partial class WGCrewTest
             Assert.That(Effective(spawned[0]), Is.EqualTo(WGCrewSkill.Green));
             Assert.That(Effective(spawned[1]), Is.EqualTo(WGCrewSkill.Veteran));
             Assert.That(Effective(spawned[2]), Is.EqualTo(WGCrewSkill.Regular));
-            Assert.That(Server.System<InventorySystem>().TryGetSlotEntity(spawned[2], "belt", out var belt)
-                && SEntMan.HasComponent<OnUseTimerTriggerComponent>(belt.Value), Is.True, "Reaver riflemen carry a grenade.");
+            Assert.That(Server.System<InventorySystem>().TryGetSlotEntity(spawned[2], "pocket2", out var pocket)
+                && SEntMan.HasComponent<OnUseTimerTriggerComponent>(pocket.Value), Is.True, "Reaver riflemen carry a grenade.");
 
             // Crew Setup reads back the crew's own skill and applies it again.
             var reread = new WGCrewMission
@@ -380,7 +391,7 @@ public sealed partial class WGCrewTest
             Assert.That(weapons.TryDraw(rifleman), Is.True);
             var rifle = SEntMan.GetComponent<WGCrewWeaponComponent>(rifleman).Drawn!.Value;
             Assert.That(SEntMan.GetComponent<WieldableComponent>(rifle).Wielded, Is.True, "Precondition: the rifle is wielded.");
-            Assert.That(Server.System<InventorySystem>().TryGetSlotEntity(rifleman, "belt", out var grenade), Is.True);
+            Assert.That(Server.System<InventorySystem>().TryGetSlotEntity(rifleman, "pocket2", out var grenade), Is.True);
 
             var hostile = SEntMan.SpawnAtPosition(Hostile, new EntityCoordinates(deck, new Vector2(8.5f, 1.5f)));
             var at = new EntityCoordinates(deck, new Vector2(8.5f, 1.5f));

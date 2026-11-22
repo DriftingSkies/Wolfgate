@@ -20,7 +20,7 @@ public sealed partial class LegStyleSystem : EntitySystem
     [Dependency] private SpriteSystem _sprite = default!;
 
     /// <summary>The shader that reshapes a leg marking and cuts it to its own leg.</summary>
-    private const string MarkingShader = "WGLegMarkingDisplaced";
+    public const string MarkingShader = "WGLegMarkingDisplaced";
 
     /// <summary>
     /// The displacement map a clothing slot uses on this wearer, given the one its species would use.
