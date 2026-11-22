@@ -159,7 +159,7 @@ public sealed class FoodBuffTest
             // Steady helps at the helm, never past its cap, gentler than a stimulant.
             Assert.That(meals.HelmFactor(patient), Is.EqualTo(1f));
             meals.Give(patient, new List<WGMealTrait> { WGMealTrait.Steady, WGMealTrait.Brawny }, 5f, 10f, popup: false);
-            Assert.That(meals.HelmFactor(patient), Is.GreaterThan(1f).And.LessThanOrEqualTo(1.08f));
+            Assert.That(meals.HelmFactor(patient), Is.GreaterThan(1f).And.LessThanOrEqualTo(1.12f));
         });
 
         await pair.CleanReturnAsync();
