@@ -69,8 +69,6 @@ public sealed partial class WolfmedInfectionSystem : EntitySystem
     [Dependency] private Consciousness.WolfmedConsciousnessSystem _consciousness = default!; // Playtest 5
     [Dependency] private InventorySystem _inventory = default!; // Playtest 5
 
-    private float _accumulator;
-
     /// <inheritdoc/>
     public override void Initialize()
     {
@@ -190,49 +188,44 @@ public sealed partial class WolfmedInfectionSystem : EntitySystem
     }
 
     /// <inheritdoc/>
+    /// <remarks>
+    /// A step of <see cref="TickSeconds"/> or more, which only a test hands it, advances every infection at once. Ticks
+    /// run each body on its own tick of the <see cref="TickSeconds"/> window instead (<see cref="SpreadTick"/>): the whole
+    /// server in one tick took over 17 ms late in a round.
+    /// </remarks>
     public override void Update(float frameTime)
     {
-        _accumulator += frameTime;
-        if (_accumulator < TickSeconds)
+        if (frameTime >= TickSeconds)
+        {
+            AdvanceAll(frameTime);
             return;
+        }
 
-        var elapsed = _accumulator;
-        _accumulator = 0f;
+        SpreadTick();
+    }
 
-        if (!_config.GetCVar(WolfmedCVars.InfectionEnabled))
-            return;
+    /// <summary>
+    /// One group's turn: its wounds, then its parts, then sepsis, then the fever, in the order the whole-server pass ran
+    /// them. Nothing in one body feeds another, so a body taken alone comes out the same.
+    /// </summary>
+    private void TickGroup(WGInfectionGroup group, WolfmedInfectionProfilePrototype profile, float minutes, bool sepsisEnabled)
+    {
+        // Every body running a fever this turn, so each gets one rise however many sources it has.
+        var fevered = _fevered;
+        fevered.Clear();
 
-        var minutes = elapsed / 60f * _config.GetCVar(WolfmedCVars.InfectionRate);
-        var profile = Profile;
-
-        // Every body running a fever this tick, so each gets one rise however many sources it has.
-        var fevered = new HashSet<EntityUid>();
-
-        // Buffered: a tick removes the component, and its damage can create wounds that gain one.
-        var dueWounds = new List<Entity<WolfmedInfectionComponent, WoundComponent>>();
-        var wounds = EntityQueryEnumerator<WolfmedInfectionComponent, WoundComponent>();
-        while (wounds.MoveNext(out var uid, out var infection, out var wound))
-            dueWounds.Add((uid, infection, wound));
-
-        foreach (var due in dueWounds)
+        foreach (var due in group.Wounds)
         {
             if (!TerminatingOrDeleted(due) && HasComp<WolfmedInfectionComponent>(due))
                 TickWound(due, profile, minutes, fevered);
         }
 
-        TickParts(profile, minutes, fevered);
-        SeedSepsis();
+        TickParts(group, profile, minutes, fevered);
+        if (sepsisEnabled)
+            SeedSepsis();
 
-        var dueSepsis = new List<Entity<WolfmedSepsisComponent>>();
-        var sepsis = EntityQueryEnumerator<WolfmedSepsisComponent>();
-        while (sepsis.MoveNext(out var uid, out var component))
-            dueSepsis.Add((uid, component));
-
-        foreach (var due in dueSepsis)
-        {
-            if (!TerminatingOrDeleted(due) && HasComp<WolfmedSepsisComponent>(due))
-                TickSepsis(due, profile, minutes, fevered);
-        }
+        if (!TerminatingOrDeleted(group.Key) && TryComp(group.Key, out WolfmedSepsisComponent? sepsis))
+            TickSepsis((group.Key, sepsis), profile, minutes, fevered);
 
         foreach (var body in fevered)
         {
@@ -365,16 +358,22 @@ public sealed partial class WolfmedInfectionSystem : EntitySystem
     /// each child part that is spreading or septic; a necrotic part is pinned at the top; an unfed part recovers.
     /// The stages are read as the pass starts, so an infection moves one part a tick whatever order they come in.
     /// </summary>
-    private void TickParts(WolfmedInfectionProfilePrototype profile, float minutes, HashSet<EntityUid> fevered)
+    private void TickParts(WGInfectionGroup group, WolfmedInfectionProfilePrototype profile, float minutes, HashSet<EntityUid> fevered)
     {
-        // Per minute per part; an infected part with nothing feeding it is in here at 0 and recovers.
-        var feed = new Dictionary<EntityUid, float>();
-        var pinned = new HashSet<EntityUid>();
+        // Per minute per part; an infected part with nothing feeding it is in here at 0 and recovers. Kept for
+        // SeedSepsis, which looks at every part this turn touched.
+        var feed = _feed;
+        var pinned = _pinned;
+        var spreading = _spreading;
+        feed.Clear();
+        pinned.Clear();
+        spreading.Clear();
 
-        var spreading = new List<EntityUid>();
-        var infected = EntityQueryEnumerator<WolfmedPartInfectionComponent>();
-        while (infected.MoveNext(out var uid, out var infection))
+        foreach (var uid in group.InfectedParts)
         {
+            if (TerminatingOrDeleted(uid) || !TryComp(uid, out WolfmedPartInfectionComponent? infection))
+                continue;
+
             feed.TryAdd(uid, 0f);
             if (infection.Stage >= profile.PartTransferStage) // Playtest 5: septic, not merely spreading
                 spreading.Add(uid);
@@ -387,10 +386,11 @@ public sealed partial class WolfmedInfectionSystem : EntitySystem
                 feed[parent] = feed.GetValueOrDefault(parent) + profile.PartSpreadPerMinute;
         }
 
-        var wounds = EntityQueryEnumerator<WolfmedInfectionComponent, WoundComponent>();
-        while (wounds.MoveNext(out _, out var infection, out var wound))
+        foreach (var entry in group.Wounds)
         {
-            if (infection.Stage < WolfmedInfectionStage.Spreading ||
+            var (infection, wound) = (entry.Comp1, entry.Comp2);
+            if (TerminatingOrDeleted(entry) || !HasComp<WolfmedInfectionComponent>(entry) ||
+                infection.Stage < WolfmedInfectionStage.Spreading ||
                 wound.State is WoundState.Healed or WoundState.Scarred ||
                 TerminatingOrDeleted(wound.HoldingPart) || !CanCarry(wound.HoldingPart))
                 continue;
@@ -399,10 +399,10 @@ public sealed partial class WolfmedInfectionSystem : EntitySystem
             feed[wound.HoldingPart] = feed.GetValueOrDefault(wound.HoldingPart) + rate;
         }
 
-        var necrotic = EntityQueryEnumerator<WolfmedNecrosisComponent>();
-        while (necrotic.MoveNext(out var uid, out var necrosis))
+        foreach (var uid in group.NecroticParts)
         {
-            if (!necrosis.Necrotic || TerminatingOrDeleted(uid) || !CanCarry(uid))
+            if (TerminatingOrDeleted(uid) || !TryComp(uid, out WolfmedNecrosisComponent? necrosis) ||
+                !necrosis.Necrotic || !CanCarry(uid))
                 continue;
 
             pinned.Add(uid);
@@ -433,18 +433,19 @@ public sealed partial class WolfmedInfectionSystem : EntitySystem
         }
     }
 
-    /// <summary>INFECTION: a living body whose torso or head is spreading or septic goes septic.</summary>
+    /// <summary>
+    /// INFECTION: a living body whose torso or head is spreading or septic goes septic. Looks at the parts the turn's
+    /// <see cref="TickParts"/> touched, which are every infected part of the group, the newly infected included.
+    /// </summary>
     private void SeedSepsis()
     {
-        if (!_config.GetCVar(WolfmedCVars.SepsisEnabled))
-            return;
-
-        // Buffered, so nothing is added while the query is walked.
-        var septic = new List<EntityUid>();
-        var parts = EntityQueryEnumerator<WolfmedPartInfectionComponent, BodyPartComponent>();
-        while (parts.MoveNext(out _, out var infection, out var part))
+        // Buffered, so nothing is added while the parts are walked.
+        var septic = _septic;
+        septic.Clear();
+        foreach (var uid in _feed.Keys)
         {
-            if (infection.Stage >= WolfmedInfectionStage.Spreading && IsCore(part) && part.Body is { } body)
+            if (TryComp(uid, out WolfmedPartInfectionComponent? infection) && TryComp(uid, out BodyPartComponent? part) &&
+                infection.Stage >= WolfmedInfectionStage.Spreading && IsCore(part) && part.Body is { } body)
                 septic.Add(body);
         }
 

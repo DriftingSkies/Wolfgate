@@ -17,10 +17,15 @@
     coverage: [Torso, Arm, Leg] # WOLFGATE(Wolfmed): WP11-3, P3-D6: locational armour coverage
     modifiers:
       coefficients:
-        Blunt: 0.85
-        Slash: 0.85
+        # WOLFGATE(ArmorBalance) START: vests take more armor for having no spaceproofing
+        # Blunt: 0.85
+        # Slash: 0.85
+        # Heat: 0.85
+        Blunt: 0.75
+        Slash: 0.75
         Piercing: 0.45
-        Heat: 0.85
+        Heat: 0.75
+        # WOLFGATE END
         Caustic: 0.9 # Frontier
   - type: Tag  # Mono
     tags:
@@ -52,10 +57,15 @@
     coverage: [Torso, Arm, Leg] # WOLFGATE(Wolfmed): WP11-3, P3-D6: locational armour coverage
     modifiers:
       coefficients:
-        Blunt: 0.8
-        Slash: 0.7
+        # WOLFGATE(ArmorBalance) START: vests take more armor for having no spaceproofing
+        # Blunt: 0.8
+        # Slash: 0.7
+        # Heat: 0.75
+        Blunt: 0.65
+        Slash: 0.6
         Piercing: 0.35
-        Heat: 0.75
+        Heat: 0.65
+        # WOLFGATE END
         Caustic: 0.9 # Frontier
   - type: Tag  # Mono
     tags:
@@ -92,7 +102,7 @@
         Blunt: 0.3
         Slash: 0.3
         Piercing: 0.25
-        Heat: 0.9
+        Heat: 0.75 # WOLFGATE(ArmorBalance): 0.9 -> 0.75, vests take more armor for having no spaceproofing
         Caustic: 0.3 # Frontier
   - type: Tag  # Mono
     tags:

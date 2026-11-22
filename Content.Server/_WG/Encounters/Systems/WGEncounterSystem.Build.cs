@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Content.Server._Mono.ShipRepair;
+using Content.Server._WG.Performance;
 using Content.Server._WG.HullBond;
 using Content.Server._WG.Encounters.Components;
 using Content.Server._WG.NpcCrew;
@@ -9,9 +11,11 @@ using Content.Server._WG.NpcCrew.Systems;
 using Content.Shared._NF.Shipyard.Prototypes;
 using Content.Shared._WG.Encounters;
 using Content.Shared._WG.NpcCrew;
+using Robust.Shared.ContentPack;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
+using Robust.Shared.Serialization.Markdown.Mapping;
 
 namespace Content.Server._WG.Encounters.Systems;
 
@@ -23,6 +27,7 @@ namespace Content.Server._WG.Encounters.Systems;
 public sealed partial class WGEncounterSystem
 {
     [Dependency] private MapLoaderSystem _mapLoader = default!;
+    [Dependency] private IResourceManager _resources = default!;
     [Dependency] private ShipRepairSystem _shipRepair = default!;
     [Dependency] private WGHullBondSystem _hullBond = default!;
 
@@ -68,6 +73,9 @@ public sealed partial class WGEncounterSystem
 
         /// <summary>Entities of a staged hull still to map-initialise, parents first.</summary>
         public readonly Stack<EntityUid> Uninitialised = new();
+
+        /// <summary>A staged hull's file being read and parsed off the main thread.</summary>
+        public Task<MappingDataNode?>? Parsing;
 
         /// <summary>The simulated stand-in it replaces, if it is spawned from simulation; staged builds have one.</summary>
         public EntityUid? Proxy;
@@ -170,8 +178,8 @@ public sealed partial class WGEncounterSystem
     }
 
     /// <summary>
-    /// Loads the hull. A ship built in one go is loaded where it stands; a staged one onto the paused staging map, its
-    /// map-initialisation queued for the ticks that follow.
+    /// Loads the hull. A ship built in one go is loaded where it stands; a staged one has its file parsed off the main
+    /// thread over the ticks that follow, is then loaded onto the paused staging map, and its map-initialisation is queued.
     /// </summary>
     private bool BuildLoad(ShipBuild build)
     {
@@ -191,8 +199,21 @@ public sealed partial class WGEncounterSystem
             return true;
         }
 
-        if (!_mapLoader.TryLoadGrid(StagingMap(), vessel.ShuttlePath, out var grid))
+        // Parsing a big hull's YAML took most of the load's tick; it waits on a worker instead, and the spawn queue with it.
+        build.Parsing ??= WGGridFileReader.ReadAsync(_resources, vessel.ShuttlePath);
+        if (!build.Parsing.IsCompleted)
+            return true;
+
+        // Completed by now, so reading it doesn't wait.
+        if (!build.Parsing.IsCompletedSuccessfully || build.Parsing.GetAwaiter().GetResult() is not { } data
+            || !WGGridFileReader.TryLoad(_mapLoader, data, vessel.ShuttlePath, StagingMap(), out var grid))
+        {
+            if (build.Parsing.Exception is { } failed)
+                Log.Error($"Reading {vessel.ShuttlePath} for encounter ship '{build.Ship.Key}' failed: {failed.InnerException ?? failed}");
             return false;
+        }
+
+        build.Parsing = null;
 
         build.Grid = grid.Value.Owner;
         EntityManager.AddComponents(build.Grid, vessel.AddComponents);

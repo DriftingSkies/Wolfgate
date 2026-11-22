@@ -87,6 +87,7 @@ public sealed partial class RadarBlipSystem : EntitySystem
         var radarXform = Transform(uid);
         var radarGrid = radarXform.GridUid;
         var radarMapId = radarXform.MapID;
+        _wgReported.Clear(); // WOLFGATE(Performance): missile arcs go only with blips this radar is sent
 
         // WOLFGATE(Performance) START: radars share one walk of the blips per tick and skip the squares out of reach
         // var blipQuery = EntityQueryEnumerator<RadarBlipComponent, TransformComponent, PhysicsComponent>();
@@ -139,11 +140,15 @@ public sealed partial class RadarBlipSystem : EntitySystem
                             rotation,
                             configIdx,
                             gridConfigIdx));
+            _wgReported.Add(blipUid); // WOLFGATE(Performance): missile arcs go only with blips this radar is sent
         }
 
         var missileQuery = EntityQueryEnumerator<TargetSeekingComponent, RadarBlipComponent, TransformComponent>();
         while (missileQuery.MoveNext(out var missile, out var seeker, out var missileBlip, out var missileBlipXform))
         {
+            if (!_wgReported.Contains(missile)) // WOLFGATE(Performance): missile arcs go only with blips this radar is sent
+                continue; // WOLFGATE(Performance)
+
             var netMissileUid = GetNetEntity(missile);
             var missileArc = MathHelper.DegreesToRadians(seeker.ScanArc);
             if (seeker.ArcLines)
@@ -155,6 +160,9 @@ public sealed partial class RadarBlipSystem : EntitySystem
         var saclosQuery = EntityQueryEnumerator<TargetGuidedComponent, RadarBlipComponent, TransformComponent>();
         while (saclosQuery.MoveNext(out var missile, out var seeker, out var missileBlip, out var missileBlipXform))
         {
+            if (!_wgReported.Contains(missile)) // WOLFGATE(Performance): missile arcs go only with blips this radar is sent
+                continue; // WOLFGATE(Performance)
+
             var netMissileUid = GetNetEntity(missile);
             if (seeker.RadarLines)
                 _tempMissileCache.Add(new(netMissileUid,
@@ -201,9 +209,10 @@ public sealed partial class RadarBlipSystem : EntitySystem
             if (!hitscan.Enabled)
                 continue;
 
-            // WOLFGATE(Performance) START: source positions are taken once, not twice per hitscan
+            // WOLFGATE(Performance) START: source positions are taken once, and only lines passing within range are sent
+            // The upstream test skipped only lines ending in range and sent every far one.
             // if (!NearAnySources(hitscan.StartPosition, sources, component.MaxRange) && NearAnySources(hitscan.EndPosition, sources, component.MaxRange))
-            if (!WGNearAnySource(hitscan.StartPosition, component.MaxRange) && WGNearAnySource(hitscan.EndPosition, component.MaxRange))
+            if (!WGLineInReach(hitscan.StartPosition, hitscan.EndPosition, _wgSourcePositions, component.MaxRange))
                 continue;
             // WOLFGATE END
 

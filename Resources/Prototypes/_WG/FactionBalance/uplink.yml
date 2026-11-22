@@ -1,0 +1,667 @@
+# Uplink additions so both factions can buy what the other can: the TSF's lathe weapons, plus
+# plates, medkits and gunnery chips, and the PDV's material crates. Names and descriptions come from the product
+# entity. The M82b, M82c, Lecter, Enforcer and Mateba are already in _NF/Catalog/security_uplink_catalog.yml.
+# Hardsuits past the entry tier (M86, M92-X, CV-53, CV-82) are made at the faction lathe only.
+
+- type: listing
+  id: WGUplinkTsfSmgDrozd
+  productEntity: WeaponSubMachineGunDrozd
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfShotgunKammerer
+  productEntity: WeaponShotgunKammerer
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfRifleRiversong
+  productEntity: WeaponRifleRiversong
+  cost:
+    FederationMilitaryCredit: 45
+  categories:
+  - UplinkSecurityWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfLmgGrizzly
+  productEntity: WeaponLMGGrizzly
+  cost:
+    FederationMilitaryCredit: 90
+  categories:
+  - UplinkSecurityWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfAmrShenzhen
+  productEntity: WeaponAMRShenzhen
+  cost:
+    FederationMilitaryCredit: 90
+  categories:
+  - UplinkSecurityWeapons
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfAmmoBox45
+  productEntity: AmmoBox45_ACPFMJ
+  cost:
+    FederationMilitaryCredit: 4
+  categories:
+  - UplinkSecurityAmmo
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfAmmoBox762
+  productEntity: AmmoBox762x39mmFMJ
+  cost:
+    FederationMilitaryCredit: 4
+  categories:
+  - UplinkSecurityAmmo
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfMagazineDrozd
+  productEntity: Magazine45_ACPSubMachineGunFMJ
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - UplinkSecurityAmmo
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfMagazineAnnie
+  productEntity: Magazine762x39mmFMJ
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - UplinkSecurityAmmo
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfMedkitFilled
+  productEntity: MedkitFilled
+  cost:
+    FederationMilitaryCredit: 5
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfMedkitBrute
+  productEntity: MedkitBruteFilled
+  cost:
+    FederationMilitaryCredit: 8
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfMedkitBurn
+  productEntity: MedkitBurnFilled
+  cost:
+    FederationMilitaryCredit: 8
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfMedkitAdvanced
+  productEntity: MedkitAdvancedFilled
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfBloodpack
+  productEntity: Bloodpack
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfBinoculars
+  productEntity: Binoculars
+  cost:
+    FederationMilitaryCredit: 2
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfPlateTrauma
+  productEntity: ArmorPlateBlunt_Slash
+  cost:
+    FederationMilitaryCredit: 10
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfPlateBallistic
+  productEntity: ArmorPlatePierce
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfPlateHeat
+  productEntity: ArmorPlateHeat
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfPlateSpeed
+  productEntity: ArmorPlateSpeed
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfGunneryChip
+  productEntity: WGGunneryChipMilitary
+  cost:
+    FederationMilitaryCredit: 20
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfLandMine
+  productEntity: WGLandMineExplosive
+  cost:
+    FederationMilitaryCredit: 5
+  categories:
+  - UplinkSecurityExplosives
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkPdvPlateTrauma
+  productEntity: ArmorPlateBlunt_Slash
+  cost:
+    Doubloon: 10
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvPlateBallistic
+  productEntity: ArmorPlatePierce
+  cost:
+    Doubloon: 15
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvPlateHeat
+  productEntity: ArmorPlateHeat
+  cost:
+    Doubloon: 15
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvPlateSpeed
+  productEntity: ArmorPlateSpeed
+  cost:
+    Doubloon: 15
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvGunneryChip
+  productEntity: WGGunneryChipMilitary
+  cost:
+    Doubloon: 20
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvBinoculars
+  productEntity: Binoculars
+  cost:
+    Doubloon: 2
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvLandMine
+  productEntity: WGLandMineExplosive
+  cost:
+    Doubloon: 5
+  categories:
+  - UplinkPirateExplosives
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+# Plastitanium at the PDV composite rate (5 a sheet), so the TSF can buy its T2 material as the PDV does.
+- type: listing
+  id: WGUplinkTsfPlastitanium5
+  productEntity: WGSheetPlastitanium5
+  cost:
+    FederationMilitaryCredit: 25
+  categories:
+  - UplinkSecurityMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfPlastitanium10
+  productEntity: SheetPlastitanium10
+  cost:
+    FederationMilitaryCredit: 50
+  categories:
+  - UplinkSecurityMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+- type: listing
+  id: WGUplinkTsfPlastitanium15
+  productEntity: SheetPlastitanium
+  cost:
+    FederationMilitaryCredit: 75
+  categories:
+  - UplinkSecurityMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+
+# The PDV's material crates, at the TSF's prices. The exotic crate holds composite where the TSF's holds plastitanium.
+- type: entity
+  parent: [ CratePDVEquippment, StorageFillMaterialsBasicTsf ]
+  id: WGCrateMaterialsBasicFilledPdv
+  suffix: Filled, Basic Materials (full)
+
+- type: entity
+  parent: [ CratePDVEquippment, StorageFillMaterialsIndustrial ]
+  id: WGCrateMaterialsIndustrialFilledPdv
+  suffix: Filled, Industrial Materials (full)
+
+- type: entity
+  parent: [ CratePDVEquippment, StorageFillMaterialsAdvanced ]
+  id: WGCrateMaterialsAdvancedFilledPdv
+  suffix: Filled, Advanced Materials (full)
+
+- type: entity
+  parent: CratePDVEquippment
+  id: WGCrateMaterialsExoticFilledPdv
+  suffix: Filled, Exotic Materials (full)
+  components:
+  - type: StorageFill
+    contents:
+    - id: SheetPdvComposite10
+    - id: SheetUraniumDepleted
+    - id: SheetUraniumFissile1
+      amount: 2
+
+- type: listing
+  id: WGUplinkPdvMaterialsBasic
+  name: uplink-faction-materials-basic-name
+  description: uplink-faction-materials-basic-desc
+  productEntity: WGCrateMaterialsBasicFilledPdv
+  cost:
+    Doubloon: 50
+  categories:
+  - UplinkPdvMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMaterialsIndustrial
+  name: uplink-faction-materials-industrial-name
+  description: uplink-faction-materials-industrial-desc
+  productEntity: WGCrateMaterialsIndustrialFilledPdv
+  cost:
+    Doubloon: 75
+  categories:
+  - UplinkPdvMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMaterialsAdvanced
+  name: uplink-faction-materials-advanced-name
+  description: uplink-faction-materials-advanced-desc
+  productEntity: WGCrateMaterialsAdvancedFilledPdv
+  cost:
+    Doubloon: 100
+  categories:
+  - UplinkPdvMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMaterialsExotic
+  name: uplink-faction-materials-exotic-name
+  description: wg-uplink-pdv-materials-exotic-desc
+  productEntity: WGCrateMaterialsExoticFilledPdv
+  cost:
+    Doubloon: 130
+  categories:
+  - UplinkPdvMaterials
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+# The TSF's tools, field medicine, holoprojector, portable recharger and gas mask, at the TSF's prices.
+
+- type: listing
+  id: WGUplinkPdvWelderIndustrial
+  productEntity: WelderIndustrial
+  cost:
+    Doubloon: 4
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMultitool
+  productEntity: Multitool
+  cost:
+    Doubloon: 2
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvHoloprojector
+  productEntity: Holoprojector
+  cost:
+    Doubloon: 5
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvPortableRecharger
+  productEntity: PortableRecharger
+  cost:
+    Doubloon: 35
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvGasMask
+  productEntity: ClothingMaskGasSyndicate
+  cost:
+    Doubloon: 5
+  categories:
+  - UplinkPirateUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvBruteInjector
+  productEntity: BruteAutoInjector
+  cost:
+    Doubloon: 3
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvBurnInjector
+  productEntity: BurnAutoInjector
+  cost:
+    Doubloon: 3
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvBloodpack
+  productEntity: Bloodpack
+  cost:
+    Doubloon: 2
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMedkitFilled
+  productEntity: MedkitFilled
+  cost:
+    Doubloon: 5
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMedkitBrute
+  productEntity: MedkitBruteFilled
+  cost:
+    Doubloon: 8
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMedkitBurn
+  productEntity: MedkitBurnFilled
+  cost:
+    Doubloon: 8
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvMedkitAdvanced
+  productEntity: MedkitAdvancedFilled
+  cost:
+    Doubloon: 15
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+
+- type: listing
+  id: WGUplinkPdvDefibrillatorCompact
+  productEntity: DefibrillatorCompact
+  cost:
+    Doubloon: 15
+  categories:
+  - UplinkPirateMedical
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink

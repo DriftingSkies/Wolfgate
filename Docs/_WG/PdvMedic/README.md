@@ -5,7 +5,7 @@ The PDV Jarrah, the Vanguard's field surgeon and the counterpart of the TSF brig
 encryption key, and its own loadout groups for medical gloves, a medical HUD and a medical chest rig. Its chat ranks
 are the Ottoman medical ladder in `PdvRanks`.
 
-Helios Fortress has 2 slots, its hyperwar version 4 and the hyperwar Jupiter 2. Each has `WGSpawnPointPdvJarrah`
+Helios Fortress has 5 slots, its hyperwar version 4 and the hyperwar Jupiter 2. Each has `WGSpawnPointPdvJarrah`
 markers beside the other PDV spawns (Helios's spawn hall, Jupiter's barracks). The ID card and PDA reuse the
 Rakhshan art.
 
@@ -37,7 +37,9 @@ Rakhshan art.
 - [`Resources/Maps/_Mono/POI/pdvhelios.yml`](../../../Resources/Maps/_Mono/POI/pdvhelios.yml): Mapped Jarrah spawn markers by the other PDV spawns.
 - [`Resources/Maps/_Mono/POI/pdvhelios_hw.yml`](../../../Resources/Maps/_Mono/POI/pdvhelios_hw.yml): Mapped Jarrah spawn markers by the other PDV spawns.
 - [`Resources/Maps/_Mono/Supercapitals/jupiter_hw.yml`](../../../Resources/Maps/_Mono/Supercapitals/jupiter_hw.yml): Mapped Jarrah spawn markers by the other PDV spawns.
-- [`Resources/Prototypes/_Mono/PointsOfInterest/pdvhelios.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/pdvhelios.yml): PDV field medic slots
+- [`Resources/Prototypes/_Mono/PointsOfInterest/pdvhelios.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/pdvhelios.yml)
+  - PDV field medic slots, 2 -> 5 for a 130-player population
+  - PDV field medic slots
 - [`Resources/Prototypes/_Mono/PointsOfInterest/Supercapitals/jupiter_hw.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/Supercapitals/jupiter_hw.yml): PDV field medic slots
 - [`Resources/Prototypes/_NF/Roles/Jobs/departments.yml`](../../../Resources/Prototypes/_NF/Roles/Jobs/departments.yml): PDV field medic
 

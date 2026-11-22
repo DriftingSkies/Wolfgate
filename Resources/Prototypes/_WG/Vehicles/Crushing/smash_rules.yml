@@ -126,6 +126,7 @@
   - MachineAnomalyGenerator
   - MachineHeavyFTLDriveConsole
   - ReagentGrinderIndustrial
+  - WGOperationVaultServer # the objective of the vault transfer operation
   - Recycler
   blacklist:
     components:

@@ -31,6 +31,12 @@ public sealed partial class MagnetPickupSystem : EntitySystem
     private static readonly TimeSpan ScanDelay = TimeSpan.FromSeconds(1);
     private const int MaxEntitiesToInsert = 15; // Frontier
 
+    // WOLFGATE(Performance) START: a magnet over a pile it can take nothing from looked at the whole pile every second
+    private const int WGPileSize = 64;
+    private static readonly TimeSpan WGPileBackoff = TimeSpan.FromSeconds(5);
+    private readonly HashSet<EntityUid> _wgNear = new();
+    // WOLFGATE END
+
     private EntityQuery<PhysicsComponent> _physicsQuery;
 
     public override void Initialize()
@@ -151,7 +157,15 @@ public sealed partial class MagnetPickupSystem : EntitySystem
             var moverCoords = _transform.GetMoverCoordinates(uid, xform);
             var count = 0; // Frontier
 
-            foreach (var near in _lookup.GetEntitiesInRange(uid, comp.Range, LookupFlags.Dynamic | LookupFlags.Sundries))
+            // WOLFGATE(Performance) START: one set reused for every magnet, and a big pile it can take none of waits 5 s
+            // foreach (var near in _lookup.GetEntitiesInRange(uid, comp.Range, LookupFlags.Dynamic | LookupFlags.Sundries))
+            _wgNear.Clear();
+            _lookup.GetEntitiesInRange(uid, comp.Range, _wgNear, LookupFlags.Dynamic | LookupFlags.Sundries);
+            if (_wgNear.Count >= WGPileSize)
+                comp.NextScan = currentTime + WGPileBackoff; // put back below if anything is taken
+            var wgInserted = false;
+            foreach (var near in _wgNear)
+            // WOLFGATE END
             {
                 // Frontier: stop spamming bags
                 if (count >= MaxEntitiesToInsert)
@@ -197,7 +211,14 @@ public sealed partial class MagnetPickupSystem : EntitySystem
                     _storage.PlayPickupAnimation(near, nearCoords, finalCoords, nearXform.LocalRotation);
 
                 playedSound = true;
+                wgInserted = true; // WOLFGATE(Performance)
             }
+
+            // WOLFGATE(Performance) START: a magnet that took something from a big pile keeps its one-second scan
+            if (wgInserted)
+                comp.NextScan = currentTime + ScanDelay;
+            _wgNear.Clear();
+            // WOLFGATE END
         }
     }
 }

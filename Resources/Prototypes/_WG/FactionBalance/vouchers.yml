@@ -1,0 +1,52 @@
+# Generic T3 vouchers: one card for any of the faction's T3 ships, at the same cost as the ship-specific ones.
+
+- type: entity
+  parent: ShipVoucherTsfT2
+  id: WGShipVoucherTsfT3
+  name: TSF T3 ship voucher
+  description: Allows for one large TSF ship purchase. Destroyed on sale.
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Misc/lpcnew.rsi
+    layers:
+    - state: icon
+    - state: screen
+      color: "#05ffff"
+    - state: screen7
+      color: "#05ffff"
+      shader: unshaded
+  - type: ShipyardVoucher
+    destroyOnEmpty: true
+    redemptionsLeft: 1
+    cooldown: 0
+    companyName: TSF
+    vessels:
+    - TSFNPolaris
+    - Altair
+    - Andromeda
+
+- type: latheRecipe
+  parent: BaseVoucherRecipe
+  id: WGShipVoucherTsfT3Recipe
+  result: WGShipVoucherTsfT3
+  completetime: 100
+  materialDiscountScale: 0.2
+  materials:
+    WGShipParts: 50000
+    Plastitanium: 20000
+    Steel: 50000
+    Plasteel: 25000
+    UraniumFissile: 500
+
+- type: latheRecipe
+  parent: BaseVoucherRecipe
+  id: WGShipVoucherPdvT3Recipe
+  result: ShipVoucherPdvT3
+  completetime: 100
+  materialDiscountScale: 0.2
+  materials:
+    WGShipParts: 50000
+    PdvComposite: 20000
+    Steel: 50000
+    Plasteel: 25000
+    UraniumFissile: 500

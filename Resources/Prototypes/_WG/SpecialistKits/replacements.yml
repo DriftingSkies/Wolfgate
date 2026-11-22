@@ -1,0 +1,392 @@
+# Replacement kits, bought on the faction uplink by a player who already drew that kit this round. The listing sells
+# the same case the rack hands out.
+
+- type: listing
+  id: WGUplinkKitReplacementTsfAssaultman
+  productEntity: WGKitTsfAssaultman
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfAssaultman
+
+- type: listing
+  id: WGUplinkKitReplacementPdvLagimci
+  productEntity: WGKitPdvLagimci
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvLagimci
+
+- type: listing
+  id: WGUplinkKitReplacementTsfAntitank
+  productEntity: WGKitTsfAntitank
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfAntitank
+
+- type: listing
+  id: WGUplinkKitReplacementPdvDarbzenci
+  productEntity: WGKitPdvDarbzenci
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvDarbzenci
+
+- type: listing
+  id: WGUplinkKitReplacementTsfMachineGunner
+  productEntity: WGKitTsfMachineGunner
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfMachineGunner
+
+- type: listing
+  id: WGUplinkKitReplacementPdvYeniceri
+  productEntity: WGKitPdvYeniceri
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvYeniceri
+
+- type: listing
+  id: WGUplinkKitReplacementTsfMortarman
+  productEntity: WGKitTsfMortarman
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfMortarman
+
+- type: listing
+  id: WGUplinkKitReplacementPdvHumbaraci
+  productEntity: WGKitPdvHumbaraci
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvHumbaraci
+
+- type: listing
+  id: WGUplinkKitReplacementTsfScoutSniper
+  productEntity: WGKitTsfScoutSniper
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfScoutSniper
+
+- type: listing
+  id: WGUplinkKitReplacementPdvTufekci
+  productEntity: WGKitPdvTufekci
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvTufekci
+
+- type: listing
+  id: WGUplinkKitReplacementTsfRecon
+  productEntity: WGKitTsfRecon
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfRecon
+
+- type: listing
+  id: WGUplinkKitReplacementPdvAkinci
+  productEntity: WGKitPdvAkinci
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvAkinci
+
+- type: listing
+  id: WGUplinkKitReplacementTsfCombatEngineer
+  productEntity: WGKitTsfCombatEngineer
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfCombatEngineer
+
+- type: listing
+  id: WGUplinkKitReplacementPdvCebeci
+  productEntity: WGKitPdvCebeci
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvCebeci
+
+- type: listing
+  id: WGUplinkKitReplacementTsfCorpsman
+  productEntity: WGKitTsfCorpsman
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfCorpsman
+
+- type: listing
+  id: WGUplinkKitReplacementPdvCerrah
+  productEntity: WGKitPdvCerrah
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvCerrah
+
+- type: listing
+  id: WGUplinkKitReplacementTsfMasterAtArms
+  productEntity: WGKitTsfMasterAtArms
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfMasterAtArms
+
+- type: listing
+  id: WGUplinkKitReplacementPdvBostanci
+  productEntity: WGKitPdvBostanci
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvBostanci
+
+- type: listing
+  id: WGUplinkKitReplacementTsfLavCrewman
+  productEntity: WGKitTsfLavCrewman
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfLavCrewman
+
+- type: listing
+  id: WGUplinkKitReplacementPdvSipahi
+  productEntity: WGKitPdvSipahi
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvSipahi
+
+- type: listing
+  id: WGUplinkKitReplacementTsfCulinary
+  productEntity: WGKitTsfCulinary
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfCulinary
+
+- type: listing
+  id: WGUplinkKitReplacementPdvAsci
+  productEntity: WGKitPdvAsci
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvAsci
+
+- type: listing
+  id: WGUplinkKitReplacementTsfMachinistMate
+  productEntity: WGKitTsfMachinistMate
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfMachinistMate
+
+- type: listing
+  id: WGUplinkKitReplacementPdvArabaci
+  productEntity: WGKitPdvArabaci
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvArabaci
+
+- type: listing
+  id: WGUplinkKitReplacementTsfLandingSupport
+  productEntity: WGKitTsfLandingSupport
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - UplinkSecurityUtility
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - SecurityUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitTsfLandingSupport
+
+- type: listing
+  id: WGUplinkKitReplacementPdvMenzilci
+  productEntity: WGKitPdvMenzilci
+  cost:
+    Doubloon: 30
+  categories:
+  - UplinkPirateEquipment
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - PirateUplink
+  - !type:WGKitHolderCondition
+    kit: WGKitPdvMenzilci

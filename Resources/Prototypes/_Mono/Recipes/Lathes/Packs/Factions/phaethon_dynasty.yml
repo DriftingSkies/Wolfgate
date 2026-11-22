@@ -65,6 +65,7 @@
   - ShipVoucherPdvT2Recipe
   - ShipVoucherKortikT3Recipe
   - ShipVoucherEuropaT3Recipe
+  - WGShipVoucherPdvT3Recipe # WOLFGATE(FactionBalance): generic T3 voucher
   - ShipVoucherSaturnRecipe
   - WGShipVoucherFoxtrotIIRecipe # WOLFGATE(Shipyard): Foxtrot-II voucher
   - SnakeletVoucherRogue

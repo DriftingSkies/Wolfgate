@@ -68,19 +68,39 @@ public sealed partial class LaserPointerSystem : SharedLaserPointerSystem
 
         Vector2? dir = mousePos == null ? null : mousePos.Value.Position - _transform.GetWorldPosition(xform);
 
+        // WOLFGATE(Performance) START: a wielded pointer's aim is sent when it changes, at most 10 times a second
+        // Every held pointer sent one each tick, wielded or not, and each dirtied a component every player is sent.
+        // Unwielding already drops the line on the server, so an unwielded pointer sends nothing.
+        var from = _transform.GetWorldPosition(xform);
         foreach (var held in _hands.EnumerateHeld(player, hands))
         {
             if (!HasComp<LaserPointerComponent>(held))
                 continue;
 
-            if (hovered == null || !TryComp(held, out WieldableComponent? wieldable) || !wieldable.Wielded)
+            if (!TryComp(held, out WieldableComponent? wieldable) || !wieldable.Wielded)
             {
-                RaisePredictiveEvent(new LaserPointerEntityHoveredEvent(null, dir, GetNetEntity(held)));
+                _wgSent.Remove(held);
                 continue;
             }
 
-            RaisePredictiveEvent(
-                new LaserPointerEntityHoveredEvent(GetNetEntity(hovered.Value), dir, GetNetEntity(held)));
+            if (WGTakeAim(held, hovered, dir, from))
+                RaisePredictiveEvent(new LaserPointerEntityHoveredEvent(GetNetEntity(hovered), dir, GetNetEntity(held)));
         }
+
+        // foreach (var held in _hands.EnumerateHeld(player, hands))
+        // {
+        //     if (!HasComp<LaserPointerComponent>(held))
+        //         continue;
+        //
+        //     if (hovered == null || !TryComp(held, out WieldableComponent? wieldable) || !wieldable.Wielded)
+        //     {
+        //         RaisePredictiveEvent(new LaserPointerEntityHoveredEvent(null, dir, GetNetEntity(held)));
+        //         continue;
+        //     }
+        //
+        //     RaisePredictiveEvent(
+        //         new LaserPointerEntityHoveredEvent(GetNetEntity(hovered.Value), dir, GetNetEntity(held)));
+        // }
+        // WOLFGATE END
     }
 }

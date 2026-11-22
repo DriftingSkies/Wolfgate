@@ -22,6 +22,11 @@ public sealed partial class WGFragmentCleanupSystem : EntitySystem
     /// <summary>How far past a fragment's edge a mob still counts as about to step onto it.</summary>
     private const float MobMargin = 0.5f;
 
+    /// <summary>Time a tick may spend judging fragments.</summary>
+    private static readonly TimeSpan Budget = TimeSpan.FromMilliseconds(4);
+
+    private readonly System.Diagnostics.Stopwatch _timer = new();
+
     public override void Initialize()
     {
         base.Initialize();
@@ -44,8 +49,13 @@ public sealed partial class WGFragmentCleanupSystem : EntitySystem
         if (_pending.Count == 0)
             return;
 
-        foreach (var uid in _pending)
+        // A hull breaking up sheds hundreds of pieces at once; each is judged with a tile count and an area lookup, so
+        // the rest wait for the next tick once the budget is spent.
+        _timer.Restart();
+        var judged = 0;
+        while (judged < _pending.Count && (judged == 0 || _timer.Elapsed < Budget))
         {
+            var uid = _pending[judged++];
             if (TerminatingOrDeleted(uid) || !TryComp<MapGridComponent>(uid, out var grid))
                 continue;
 
@@ -55,7 +65,7 @@ public sealed partial class WGFragmentCleanupSystem : EntitySystem
             QueueDel(uid);
         }
 
-        _pending.Clear();
+        _pending.RemoveRange(0, judged);
     }
 
     /// <summary>Whether a grid has at most the configured number of tiles.</summary>

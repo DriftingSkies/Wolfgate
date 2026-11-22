@@ -472,6 +472,37 @@ public sealed partial class ShipyardSystem
     }
 
     /// <summary>
+    /// Loads a saved ship already parsed off the main thread onto the shipyard's staging map, as
+    /// <see cref="TryAddSavedShip(string, out EntityUid?)"/> loads its text.
+    /// </summary>
+    public bool TryAddSavedShip(Robust.Shared.Serialization.Markdown.Mapping.MappingDataNode data, [NotNullWhen(true)] out EntityUid? shuttleGrid)
+    {
+        shuttleGrid = null;
+
+        SetupShipyardIfNeeded();
+        if (ShipyardMap == null)
+            return false;
+
+        try
+        {
+            if (!Content.Server._WG.Performance.WGGridFileReader.TryLoad(_mapLoader, data, "used ship", ShipyardMap.Value,
+                    out var grid, new Vector2(500f + _shuttleIndex, 1f)))
+            {
+                return false;
+            }
+
+            _shuttleIndex += grid.Value.Comp.LocalAABB.Width + ShuttleSpawnBuffer;
+            shuttleGrid = grid.Value.Owner;
+            return true;
+        }
+        catch (Exception e)
+        {
+            Log.Error($"Failed to load a used ship: {e}");
+            return false;
+        }
+    }
+
+    /// <summary>
     /// FTL-docks an already loaded grid to a station, the tail half of a shipyard purchase.
     /// </summary>
     public bool TryDockLoadedShuttle(EntityUid stationUid, EntityUid shuttleGrid)

@@ -65,12 +65,21 @@
           availableJobs:
             #TsfCivilian: [ -1, -1 ]
             Sheriff: [ 1, 1 ]
-            Bailiff: [1, 1 ]
-            SeniorOfficer: [ 3, 3 ] # Mono
-            Brigmedic: [ 2, 2 ] # Mono
+            # WOLFGATE(FactionBalance) START: more leader and specialist slots for a 130-player population
+            # Bailiff: [1, 1 ]
+            # SeniorOfficer: [ 3, 3 ] # Mono
+            # Brigmedic: [ 2, 2 ] # Mono
+            Bailiff: [ 2, 2 ]
+            SeniorOfficer: [ 6, 6 ]
+            Brigmedic: [ 5, 5 ]
+            # WOLFGATE END
             Deputy: [ -1, -1 ] # Mono
-            TsfEngineer: [ 2, 2 ]
-            TsfBorg: [ 2, 2 ]
+            # WOLFGATE(FactionBalance) START: more leader and specialist slots for a 130-player population
+            # TsfEngineer: [ 2, 2 ]
+            # TsfBorg: [ 2, 2 ]
+            TsfEngineer: [ 4, 4 ]
+            TsfBorg: [ 3, 3 ]
+            # WOLFGATE END
           tags:
           - TsfmcColonel
         - type: StationDeadDropReporting

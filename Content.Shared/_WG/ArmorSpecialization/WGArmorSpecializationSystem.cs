@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Shared._Onyx.Wounds;
 using Content.Shared._WG.Wolfmed.Armor;
 using Content.Shared._WG.Wolfmed.Wounds;
@@ -49,7 +50,8 @@ public sealed partial class WGArmorSpecializationSystem : EntitySystem
 
     private void OnWoundRuleAttempt(Entity<WGWoundWardComponent> ent, ref InventoryRelayedEvent<WolfmedWoundRuleAttemptEvent> args)
     {
-        if (!WolfmedArmorCoverage.Covers(EntityManager, ent.Owner, args.Args.Part))
+        // A spall liner catches what would stay in anywhere on the body, not just under the plates.
+        if (!ent.Comp.Anywhere.Contains(args.Args.Wound) && !WolfmedArmorCoverage.Covers(EntityManager, ent.Owner, args.Args.Part))
             return;
 
         if (ent.Comp.Blocks.Contains(args.Args.Wound) &&
@@ -148,7 +150,7 @@ public sealed partial class WGArmorSpecializationSystem : EntitySystem
         var query = EntityQueryEnumerator<WGAblativeCoatComponent>();
         while (query.MoveNext(out var uid, out var coat))
         {
-            if (coat.Charge >= coat.MaxCharge || now < coat.LastHit + coat.RecoveryDelay)
+            if (coat.RegenRate <= 0f || coat.Charge >= coat.MaxCharge || now < coat.LastHit + coat.RecoveryDelay)
                 continue;
 
             coat.Charge = MathF.Min(coat.Charge + coat.RegenRate * (float) CoatRecoveryInterval.TotalSeconds, coat.MaxCharge);

@@ -225,7 +225,8 @@ public sealed partial class WolfmedWoundRuleSystem : EntitySystem
         severity = FixedPoint2.Max(severity, rule.MinSeverity);
         if (_wounds.CreateOrMergeWound(part.AsNullable(), rule.Wound, severity) is not { } wound ||
             rule.Embedded is not { } embedded ||
-            embedded.WardedAs is { } warded && ArmorRefuses(part, warded, severity, FixedPoint2.Zero, rule.ID))
+            embedded.WardedAs is { } warded && ArmorRefuses(part, warded, severity, FixedPoint2.Zero, rule.ID) ||
+            embedded.Chance < 1f && !Roll(Math.Clamp(embedded.Chance, 0f, 1f)))
             return;
 
         var count = embedded.MaxCount > embedded.MinCount

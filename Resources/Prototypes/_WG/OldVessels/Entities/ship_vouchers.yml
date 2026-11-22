@@ -92,9 +92,9 @@
       color: "#05ffff"
       shader: unshaded
   - type: ShipyardVoucher
-    destroyOnEmpty: false # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
-    redemptionsLeft: 12 # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
-    cooldown: 5100 # hour and 25 minutes
+    destroyOnEmpty: true # single-use, each ship costs a card (was false)
+    redemptionsLeft: 1 # single-use (was 12)
+    cooldown: 0 # no cooldown, the card is single-use (was 5100)
     companyName: TSF
     vessels:
     - Altair
@@ -117,9 +117,9 @@
       color: "#05ffff"
       shader: unshaded
   - type: ShipyardVoucher
-    destroyOnEmpty: false # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
-    redemptionsLeft: 12 # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
-    cooldown: 5100 # hour and 25 minutes
+    destroyOnEmpty: true # single-use, each ship costs a card (was false)
+    redemptionsLeft: 1 # single-use (was 12)
+    cooldown: 0 # no cooldown, the card is single-use (was 5100)
     companyName: TSF
     vessels:
     - Andromeda
@@ -142,9 +142,9 @@
       color: "#05ffff"
       shader: unshaded
   - type: ShipyardVoucher
-    destroyOnEmpty: false # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
-    redemptionsLeft: 12 # WOLFGATE: TSF Balance Pack, giving the TSF its renewable vouchers back
-    cooldown: 7200 # 2 hours
+    destroyOnEmpty: true # single-use, each ship costs a card (was false)
+    redemptionsLeft: 1 # single-use (was 12)
+    cooldown: 0 # no cooldown, the card is single-use (was 7200)
     companyName: TSF
     vessels:
     - Flyssa

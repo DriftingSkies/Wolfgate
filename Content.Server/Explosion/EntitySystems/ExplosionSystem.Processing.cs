@@ -88,13 +88,18 @@ public sealed partial class ExplosionSystem
     /// </summary>
     public override void Update(float frameTime)
     {
+        Stopwatch.Restart(); // WOLFGATE(Performance): the bullet-sized blasts count against the same per-tick budget
         WGProcessMicroExplosions(); // WOLFGATE(BattleLoad): bullet-sized blasts queued last tick
 
         if (_activeExplosion == null && _explosionQueue.Count == 0)
             // nothing to do
             return;
 
-        Stopwatch.Restart();
+        // Stopwatch.Restart(); // WOLFGATE(Performance): restarted above, before the bullet-sized blasts
+        // WOLFGATE(Performance) START: a heavy volley of small blasts still leaves full explosions half the budget
+        if (Stopwatch.Elapsed.TotalMilliseconds > MaxProcessingTime / 2)
+            Stopwatch.Restart();
+        // WOLFGATE END
         var x = Stopwatch.Elapsed.TotalMilliseconds;
 
         var tilesRemaining = TilesPerTick;

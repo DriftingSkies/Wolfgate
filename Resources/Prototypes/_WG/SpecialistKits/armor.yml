@@ -1,0 +1,67 @@
+# Plate-ready armor for the front-line kits: Breacher/Boarder, Combat Engineer/Artificer, Heavy Gunner/Heavy and
+# Pyrotechnician/Burner. Each kit brings a plate for its role (kits.yml). Scouts, marksmen, medics and ship crew keep
+# plain armor. Armor with no pockets takes Mono's 2x2 plate pocket; armor with pockets has them widened to fit a plate.
+
+- type: entity
+  parent: [ WGRMCArmorM3G4, ClothingArmorPlate ]
+  id: WGKitArmorM3G4
+  suffix: Plate-ready
+
+- type: entity
+  parent: [ WGRMCArmorM3T, ClothingArmorPlate ]
+  id: WGKitArmorM3T
+  suffix: Plate-ready
+
+- type: entity
+  parent: [ WGRMCArmorUH7, ClothingArmorPlate ]
+  id: WGKitArmorUH7
+  suffix: Plate-ready
+
+- type: entity
+  parent: [ WGRMCArmorM35, ClothingArmorPlate ]
+  id: WGKitArmorM35
+  suffix: Plate-ready
+
+- type: entity
+  parent: WGRMCArmorUM5CU
+  id: WGKitArmorUM5CU
+  suffix: Plate-ready
+  components:
+  - type: ArmorPlateHolder
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+    - 0,0,3,1
+
+- type: entity
+  parent: WGRMCArmorUL6
+  id: WGKitArmorUL6
+  suffix: Plate-ready
+  components:
+  - type: ArmorPlateHolder
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+    - 0,0,3,1
+
+- type: entity
+  parent: WGRMCArmorML66A
+  id: WGKitArmorML66A
+  suffix: Plate-ready
+  components:
+  - type: ArmorPlateHolder
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+    - 0,0,3,1
+
+- type: entity
+  parent: WGRMCArmorMilitiaHauberk
+  id: WGKitArmorMilitiaHauberk
+  suffix: Plate-ready
+  components:
+  - type: ArmorPlateHolder
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+    - 0,0,3,1

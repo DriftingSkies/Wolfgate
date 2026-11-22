@@ -67,6 +67,7 @@
   recipeUnlocks:
 # - ShipVoucherLudaRecipe # WOLFGATE(Mining): Luda moves to WGTsfCapitalVouchers
   - ShipVoucherPolarisRecipe
+  - WGShipVoucherTsfT3Recipe # WOLFGATE(FactionBalance): generic T3 voucher
   # WOLFGATE(OldVessels) START: classic ship LPCs
   - AltairVoucherTSF
   - WGAndromedaVoucherTSF

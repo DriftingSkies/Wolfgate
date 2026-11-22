@@ -1,7 +1,7 @@
-using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Content.Server._WG.Performance;
 using Robust.Shared.ContentPack;
 using Robust.Shared.EntitySerialization;
 using Robust.Shared.Map;
@@ -23,23 +23,7 @@ public sealed partial class WGPlanetPoiSystem
     /// <summary>Reads and parses a map file on the thread pool; null if it is missing or isn't one document.</summary>
     private Task<MappingDataNode?> ReadMapAsync(ResPath path)
     {
-        var rooted = path.ToRootedPath();
-        return Task.Run(() =>
-        {
-            TextReader reader;
-            if (_resources.UserData.Exists(rooted))
-                reader = _resources.UserData.OpenText(rooted);
-            else if (_resources.TryContentFileRead(rooted, out var stream))
-                reader = new StreamReader(stream);
-            else
-                return null;
-
-            using (reader)
-            {
-                var documents = DataNodeParser.ParseYamlStream(reader).ToArray();
-                return documents.Length == 1 ? (MappingDataNode?) documents[0].Root : null;
-            }
-        });
+        return WGGridFileReader.ReadAsync(_resources, path);
     }
 
     /// <summary>

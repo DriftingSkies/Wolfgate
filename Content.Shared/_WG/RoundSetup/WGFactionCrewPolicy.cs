@@ -17,7 +17,7 @@ public static class WGFactionCrewPolicy
     public static readonly string[] TsfJobs = { "Cadet", "Deputy", "Brigmedic", "TsfEngineer", "NFDetective",
         "PublicAffairsLiaison", "TsfBorg", "SeniorOfficer", "Bailiff", "Sheriff" };
     /// <summary>Regular PDV ranks and specialist postings.</summary>
-    public static readonly string[] PdvJobs = { "Pirate", "PDVInfiltrator", "WGPdvJarrah", "PdvBorg", "PDVDenasvar", "PirateFirstMate", "PirateCaptain" };
+    public static readonly string[] PdvJobs = { "Pirate", "PDVInfiltrator", "WGPdvJarrah", "WGPdvArtificer", "PdvBorg", "PDVDenasvar", "PirateFirstMate", "PirateCaptain" };
     /// <summary>Viper Group ranks.</summary>
     public static readonly string[] VgJobs = { "VGInfanteer", "VGLieutenant", "VGCommander" };
     /// <summary>USSP ranks.</summary>
@@ -33,7 +33,7 @@ public static class WGFactionCrewPolicy
         (WGCrewFaction.TSF, "SeniorOfficer") => 2,
         (WGCrewFaction.TSF, "Bailiff") => 3,
         (WGCrewFaction.TSF, "Sheriff") => 4,
-        (WGCrewFaction.PDV, "Pirate" or "PDVInfiltrator" or "WGPdvJarrah" or "PdvBorg") => 1,
+        (WGCrewFaction.PDV, "Pirate" or "PDVInfiltrator" or "WGPdvJarrah" or "WGPdvArtificer" or "PdvBorg") => 1,
         (WGCrewFaction.PDV, "PDVDenasvar") => 2,
         (WGCrewFaction.PDV, "PirateFirstMate") => 3,
         (WGCrewFaction.PDV, "PirateCaptain") => 4,

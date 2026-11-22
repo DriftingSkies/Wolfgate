@@ -210,6 +210,7 @@ public sealed partial class FireControlSystem
 
         // Clean up any console positions for consoles that no longer exist or have no active missiles
         CleanupConsolePositions();
+        WGFlushFireUi(); // WOLFGATE(Performance): send console states the fire-message throttle held back
     }
 
     /// <summary>

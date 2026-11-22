@@ -24,6 +24,9 @@ offered, answered or turning someone Remade, a corpse offered at a Scion's Tap, 
 launched at an anchor, a drop beacon planted, a warhead armed or counting down, and a primary anchor falling. The same
 notice about the same source is held back for 20 s. Other systems call `GhostNoticeSystem.Notify`.
 
+The server builds the target list once per `wg.ghost.orbit_share_seconds` (2) for ordinary ghosts and once for admins,
+and gives each ghost that list without themselves, since a build walks every mob in the world.
+
 Entry points: `GhostOrbitWindow` and the client `GhostOrbitSystem` (the menu and the chat links), the server
 `GhostOrbitSystem` (target list and orbit requests) with `GhostOrbitSystem.Grouping.cs` (faction, place and which events
 are live), `GhostOrbitSystem.GameMode.cs` (the game loop's events), `GhostInterestComponent`, and the server and client
@@ -62,6 +65,7 @@ are live), `GhostOrbitSystem.GameMode.cs` (the game loop's events), `GhostIntere
 - [`Content.IntegrationTests/Tests/_WG/Ghost/GhostNoticeTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Ghost/GhostNoticeTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Ghost/GhostOrbitGroupingTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Ghost/GhostOrbitGroupingTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Ghost/GhostOrbitNullspaceTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Ghost/GhostOrbitNullspaceTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Ghost/GhostOrbitShareTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Ghost/GhostOrbitShareTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Ghost/GhostOrbitWindowTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Ghost/GhostOrbitWindowTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Ghost/GhostPlanetPoiTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Ghost/GhostPlanetPoiTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Ghost/PdaActivationTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Ghost/PdaActivationTest.cs)
@@ -80,6 +84,7 @@ are live), `GhostOrbitSystem.GameMode.cs` (the game loop's events), `GhostIntere
   - orbit window has no WarpClicked; also unsubscribe the ghostnado button
   - the orbit window requests its targets when it opens
 - [`Content.Client/UserInterface/Systems/Ghost/Widgets/GhostGui.xaml.cs`](../../../Content.Client/UserInterface/Systems/Ghost/Widgets/GhostGui.xaml.cs): orbit menu replaces GhostTargetWindow
+- [`Content.IntegrationTests/PoolManager.Cvars.cs`](../../../Content.IntegrationTests/PoolManager.Cvars.cs): tests read the orbit list right after changing the world
 - [`Content.Server/Ghost/Roles/GhostRoleSystem.cs`](../../Ghost/Roles/GhostRoleSystem.cs): a dead or critical body stays off the list until OnMobStateChanged revives it
 - [`Content.Server/Radio/EntitySystems/RadioSystem.cs`](../../Radio/EntitySystems/RadioSystem.cs): ghost orbit link
 

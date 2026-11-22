@@ -1,0 +1,472 @@
+# Operation call-ins on the faction static uplinks, one per operation at its stake. Written by
+# Tools/_WG/Operations/listings.py from operations.yml; edit the operation and rerun it.
+
+- type: storeCategory
+  id: WGUplinkSecurityOperations
+  name: wg-store-category-operations
+  priority: 10
+
+- type: storeCategory
+  id: WGUplinkPdvOperations
+  name: wg-store-category-operations
+  priority: 10
+
+- type: listing
+  id: WGUplinkOperationDeadDropTsf
+  name: wg-operation-name-dead-drop
+  description: wg-operation-desc-dead-drop
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    FederationMilitaryCredit: 15
+  categories:
+  - WGUplinkSecurityOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationDeadDropTsf
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkTsf
+  - !type:WGOperationReadyCondition
+    operation: WGOperationDeadDropTsf
+
+- type: listing
+  id: WGUplinkOperationSalvageTsf
+  name: wg-operation-name-salvage
+  description: wg-operation-desc-salvage
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    FederationMilitaryCredit: 20
+  categories:
+  - WGUplinkSecurityOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationSalvageTsf
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkTsf
+  - !type:WGOperationReadyCondition
+    operation: WGOperationSalvageTsf
+
+- type: listing
+  id: WGUplinkOperationBanditDenTsf
+  name: wg-operation-name-bandit-den
+  description: wg-operation-desc-bandit-den
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - WGUplinkSecurityOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationBanditDenTsf
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkTsf
+  - !type:WGOperationReadyCondition
+    operation: WGOperationBanditDenTsf
+
+- type: listing
+  id: WGUplinkOperationSupplyDrop
+  name: wg-operation-name-supply-drop
+  description: wg-operation-desc-supply-drop
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    FederationMilitaryCredit: 30
+  categories:
+  - WGUplinkSecurityOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationSupplyDrop
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkTsf
+  - !type:WGOperationReadyCondition
+    operation: WGOperationSupplyDrop
+
+- type: listing
+  id: WGUplinkOperationForwardBase
+  name: wg-operation-name-forward-base
+  description: wg-operation-desc-forward-base
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    FederationMilitaryCredit: 50
+  categories:
+  - WGUplinkSecurityOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationForwardBase
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkTsf
+  - !type:WGOperationReadyCondition
+    operation: WGOperationForwardBase
+
+- type: listing
+  id: WGUplinkOperationGarrisonTsf
+  name: wg-operation-name-garrison
+  description: wg-operation-desc-garrison
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    FederationMilitaryCredit: 60
+  categories:
+  - WGUplinkSecurityOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationGarrisonTsf
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkTsf
+  - !type:WGOperationReadyCondition
+    operation: WGOperationGarrisonTsf
+
+- type: listing
+  id: WGUplinkOperationProbeTsf
+  name: wg-operation-name-probe
+  description: wg-operation-desc-probe
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    FederationMilitaryCredit: 60
+  categories:
+  - WGUplinkSecurityOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationProbeTsf
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkTsf
+  - !type:WGOperationReadyCondition
+    operation: WGOperationProbeTsf
+
+- type: listing
+  id: WGUplinkOperationBlackSite
+  name: wg-operation-name-black-site
+  description: wg-operation-desc-black-site
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    FederationMilitaryCredit: 80
+  categories:
+  - WGUplinkSecurityOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationBlackSite
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkTsf
+  - !type:WGOperationReadyCondition
+    operation: WGOperationBlackSite
+
+- type: listing
+  id: WGUplinkOperationQuarantineTsf
+  name: wg-operation-name-quarantine
+  description: wg-operation-desc-quarantine
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    FederationMilitaryCredit: 100
+  categories:
+  - WGUplinkSecurityOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationQuarantineTsf
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkTsf
+  - !type:WGOperationReadyCondition
+    operation: WGOperationQuarantineTsf
+
+- type: listing
+  id: WGUplinkOperationVaultTransfer
+  name: wg-operation-name-vault-transfer
+  description: wg-operation-desc-vault-transfer
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    FederationMilitaryCredit: 100
+  categories:
+  - WGUplinkSecurityOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationVaultTransfer
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkTsf
+  - !type:WGOperationReadyCondition
+    operation: WGOperationVaultTransfer
+
+- type: listing
+  id: WGUplinkOperationDeadDropPdv
+  name: wg-operation-name-dead-drop
+  description: wg-operation-desc-dead-drop
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    Doubloon: 15
+  categories:
+  - WGUplinkPdvOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationDeadDropPdv
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkPdv
+  - !type:WGOperationReadyCondition
+    operation: WGOperationDeadDropPdv
+
+- type: listing
+  id: WGUplinkOperationSalvagePdv
+  name: wg-operation-name-salvage
+  description: wg-operation-desc-salvage
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    Doubloon: 20
+  categories:
+  - WGUplinkPdvOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationSalvagePdv
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkPdv
+  - !type:WGOperationReadyCondition
+    operation: WGOperationSalvagePdv
+
+- type: listing
+  id: WGUplinkOperationBanditDenPdv
+  name: wg-operation-name-bandit-den
+  description: wg-operation-desc-bandit-den
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    Doubloon: 30
+  categories:
+  - WGUplinkPdvOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationBanditDenPdv
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkPdv
+  - !type:WGOperationReadyCondition
+    operation: WGOperationBanditDenPdv
+
+- type: listing
+  id: WGUplinkOperationConvoyRaid
+  name: wg-operation-name-convoy-raid
+  description: wg-operation-desc-convoy-raid
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    Doubloon: 30
+  categories:
+  - WGUplinkPdvOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationConvoyRaid
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkPdv
+  - !type:WGOperationReadyCondition
+    operation: WGOperationConvoyRaid
+
+- type: listing
+  id: WGUplinkOperationSmugglerRendezvous
+  name: wg-operation-name-smuggler-rendezvous
+  description: wg-operation-desc-smuggler-rendezvous
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    Doubloon: 50
+  categories:
+  - WGUplinkPdvOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationSmugglerRendezvous
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkPdv
+  - !type:WGOperationReadyCondition
+    operation: WGOperationSmugglerRendezvous
+
+- type: listing
+  id: WGUplinkOperationGarrisonPdv
+  name: wg-operation-name-garrison
+  description: wg-operation-desc-garrison
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    Doubloon: 60
+  categories:
+  - WGUplinkPdvOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationGarrisonPdv
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkPdv
+  - !type:WGOperationReadyCondition
+    operation: WGOperationGarrisonPdv
+
+- type: listing
+  id: WGUplinkOperationProbePdv
+  name: wg-operation-name-probe
+  description: wg-operation-desc-probe
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    Doubloon: 60
+  categories:
+  - WGUplinkPdvOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationProbePdv
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkPdv
+  - !type:WGOperationReadyCondition
+    operation: WGOperationProbePdv
+
+- type: listing
+  id: WGUplinkOperationBloodMoon
+  name: wg-operation-name-blood-moon
+  description: wg-operation-desc-blood-moon
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    Doubloon: 80
+  categories:
+  - WGUplinkPdvOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationBloodMoon
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkPdv
+  - !type:WGOperationReadyCondition
+    operation: WGOperationBloodMoon
+
+- type: listing
+  id: WGUplinkOperationArmsDrop
+  name: wg-operation-name-arms-drop
+  description: wg-operation-desc-arms-drop
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    Doubloon: 100
+  categories:
+  - WGUplinkPdvOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationArmsDrop
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkPdv
+  - !type:WGOperationReadyCondition
+    operation: WGOperationArmsDrop
+
+- type: listing
+  id: WGUplinkOperationQuarantinePdv
+  name: wg-operation-name-quarantine
+  description: wg-operation-desc-quarantine
+  icon:
+    sprite: Objects/Devices/communication.rsi
+    state: beacon
+  cost:
+    Doubloon: 100
+  categories:
+  - WGUplinkPdvOperations
+  productEvent: !type:WGCallOperationEvent
+    operation: WGOperationQuarantinePdv
+  raiseProductEventOnUser: true
+  disableRefund: true
+  conditions:
+  - !type:StoreWhitelistCondition
+    whitelist:
+      tags:
+      - FactionStaticUplinkPdv
+  - !type:WGOperationReadyCondition
+    operation: WGOperationQuarantinePdv

@@ -38,8 +38,9 @@
   - type: Item
     heldPrefix: pdv
   - type: ShipyardVoucher
-    destroyOnEmpty: false
+    destroyOnEmpty: true # single-use, each ship costs a card (was false)
+    redemptionsLeft: 1 # single-use
     companyName: PDV
-    cooldown: 14400 # four hours, same as the Saturn
+    cooldown: 0 # no cooldown, the card is single-use (was 14400)
     vessels:
     - WGFoxtrotII

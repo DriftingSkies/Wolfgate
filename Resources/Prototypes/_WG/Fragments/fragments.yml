@@ -1,0 +1,208 @@
+# A Monolith fragment: a rare random event that drifts in between the TSF and PDV bases. Its heart sends Remade at
+# whoever comes near, harder the more come, and breaking it pays both factions, half again if both were aboard.
+# Read by WGFragmentRuleSystem. It never holds a Scion or anything else of a living Monolith.
+
+- type: entity
+  parent: BaseStationEventShortDelay
+  id: WGFragmentEvent
+  components:
+  - type: StationEvent
+    # Times the event and its end warning; every announcement is the rule's own.
+    earliestStart: 30
+    weight: 3
+    # Twenty minutes, so crews go for the heart early; the warning still comes with five left.
+    duration: 1200
+    maxDuration: 1200
+    # Two hours apart and three a round at most, so a fragment stays an occasion.
+    reoccurrenceDelay: 120
+    maxOccurrences: 3
+  - type: WGFragmentRule
+    # The sender speaks in the Monolith's violet while the heart beats; the text goes corpse white, flesh, then
+    # arterial red as the fragment escalates, and both fade to ash once the heart breaks. The worst lines come
+    # through corrupted: noise that sometimes spells a hidden word, bursts that flicker live, and a whisper after.
+    sighted:
+      text: wg-fragment-start-announcement
+      sound:
+        path: /Audio/_WG/Fragments/seeing.ogg
+      textColor: "#D9D0C1"
+    arrived:
+      text: wg-fragment-arrived
+      sound:
+        path: /Audio/_WG/Lattice/drift_pulse.ogg
+      textColor: "#C9667E"
+      corruption: 0.12
+      senderCorruption: 0.15
+      hiddenWords: 1
+      flickers: 3
+      voice:
+      - wg-fragment-voice-land-1
+      - wg-fragment-voice-land-2
+      - wg-fragment-voice-land-3
+      - wg-fragment-voice-land-4
+      - wg-fragment-voice-land-5
+    warning:
+      text: wg-fragment-warning-announcement
+      sound:
+        path: /Audio/_Mono/Effects/Ambience/creak2.ogg
+        params:
+          volume: -3
+      corruption: 0.08
+      senderCorruption: 0.15
+      flickers: 1
+    broken:
+      text: wg-fragment-cleared
+      jointText: wg-fragment-cleared-joint
+      sound:
+        path: /Audio/_WG/Remade/betrayal/stinger_2.ogg
+      senderColor: "#6F6380"
+      textColor: "#8E7FA3"
+    lost:
+      text: wg-fragment-lost
+      sound:
+        path: /Audio/_WG/Remade/betrayal/stinger_1.ogg
+      corruption: 0.25
+      senderCorruption: 0.3
+      hiddenWords: 2
+      flickers: 4
+      voice:
+      - wg-fragment-voice-lost-1
+      - wg-fragment-voice-lost-2
+      - wg-fragment-voice-lost-3
+      - wg-fragment-voice-lost-4
+      voiceDelay: 4
+    # Empty and cold, but something is still written in it.
+    departed:
+      text: wg-fragment-departed
+      sound:
+        path: /Audio/Effects/Weather/wind_2_1.ogg
+      senderColor: "#6F6380"
+      textColor: "#8E7FA3"
+      corruption: 0.06
+      hiddenWords: 1
+    grids:
+    - /Maps/_Mono/Monolithic/monolithicasteroidsmallarena.yml
+    - /Maps/_Mono/Monolithic/monolithicasteroidsmallspindle.yml
+    - /Maps/_Mono/Monolithic/monolithicasteroidsmallship.yml
+    bases:
+    - FactionStaticUplinkTsf
+    - FactionStaticUplinkPdv
+    # No stake, and rare: well past an Extreme operation's reward to each faction, half again for working together,
+    # and every player who took part is paid too, whatever their faction, so outside crews come to help.
+    rewards:
+      TSF: 500
+      PDV: 500
+    participantReward: 250000
+    # Harder than a High-value operation: a garrison waiting on landing, a wave every two minutes that grows fast with
+    # the players near, an elite every other wave, and Remade boarding a crewed ship within 60 m of the heart. The gap
+    # leaves crews time to push for the heart between waves.
+    garrison: 8
+    garrisonElites: 2
+    waveInterval: 120
+    waveBase: 4
+    playersPerExtra: 2
+    eliteEvery: 2
+    maxAlive: 30
+    wakeRadius: 60
+    spawnRadius: 60
+    nearbyShare: 0.4
+    replace:
+      MobMonolithicGestalt: [ WGRemadeSlasher, WGRemadeHopper ]
+      MobMonolithicGolom: [ WGRemadeSlasher, WGRemadeLeaper ]
+      MobMonolithicHellLocust: [ WGRemadeHopper, WGRemadeLeaper ]
+      MobMonolithicGolomRanged: [ WGRemadeSpitter, WGRemadeLurker ]
+    common:
+    - WGRemadeSlasher
+    - WGRemadeSlasher
+    - WGRemadeHopper
+    - WGRemadeLeaper
+    - WGRemadeSpitter
+    - WGRemadePuker
+    - WGRemadeExploder
+    elites:
+    - WGRemadeBrute
+    - WGRemadeTwitcher
+    - WGRemadeHunter
+    - WGRemadeDivider
+    decor:
+    - WGEnvSacBig
+    - WGEnvSacBeating
+    - WGEnvOrgans
+    - WGEnvSpur
+    - WGEnvSpurTall
+    - WGEnvTendril
+    - WGEnvGore
+    - WGEnvGoreSmear
+
+# The fragment's heart: a crystal grown through with flesh. Breaking it clears the fragment and stops its waves.
+- type: entity
+  id: WGFragmentHeart
+  name: fragment heart
+  description: A great shard of Monolith crystal, veined with something that beats. The Remade aboard come from it, and both the Federation and the Dynasty pay to see it broken.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: WGFragmentHeart
+  - type: Transform
+    noRot: true
+    anchored: true
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 200
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    noRot: true
+    sprite: _Mono/Objects/Materials/monolith_crystal.rsi
+    scale: 2,2
+    color: "#E07070"
+    layers:
+    - state: crystal_large
+      shader: unshaded
+  - type: PointLight
+    radius: 5
+    energy: 2
+    color: "#C03050"
+  - type: AmbientSound
+    range: 10
+    volume: -4
+    sound:
+      path: /Audio/_WG/Remade/monolith/throb.ogg
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: Metallic
+  # Only crews aboard can break it: blasts never touch it, and WGFragmentHeart drops any other harm from off the
+  # fragment or out of reach, so ship guns and bombs set off outside do nothing.
+  - type: ExplosionResistance
+    damageCoefficient: 0
+    worn: false
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 3000
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          MonolithicCrystalLarge:
+            min: 1
+            max: 1
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: RadarBlip
+    radarColor: "#A20FE1"
+    scale: 3
+    shape: hexagon
+    visibleFromOtherGrids: true

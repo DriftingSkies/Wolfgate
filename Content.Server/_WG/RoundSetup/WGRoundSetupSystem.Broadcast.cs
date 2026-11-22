@@ -14,8 +14,16 @@ public sealed partial class WGRoundSetupSystem
     /// <summary>Catches slow drift the change checks miss, such as job slots and playtime unlocks.</summary>
     private static readonly TimeSpan SafetyBroadcast = TimeSpan.FromSeconds(30);
 
+    /// <summary>
+    /// Most viewers sent their snapshot in one tick. Each snapshot walks every lobby, its jobs and its members for that
+    /// viewer, so a flush to a full server held the tick past 17 ms; the rest go on the ticks after.
+    /// </summary>
+    private const int StatesPerTick = 12;
+
     private readonly Dictionary<NetUserId, TimeSpan> _watchUntil = new();
     private readonly Dictionary<NetUserId, ICharacterProfile?> _portraitSources = new();
+    private readonly Queue<NetUserId> _stateQueue = new();
+    private readonly HashSet<NetUserId> _stateQueued = new();
     private TimeSpan _nextSafetyBroadcast;
 
     private void InitializeBroadcast()
@@ -92,14 +100,29 @@ public sealed partial class WGRoundSetupSystem
         {
             if (_players.TryGetSessionById(user, out var session))
             {
-                if (WantsBroadcast(session))
-                    SendState(session, refreshPortraits: false);
+                // Already waiting from the last flush: its snapshot is built when it is sent, so it will be current.
+                if (WantsBroadcast(session) && _stateQueued.Add(user))
+                    _stateQueue.Enqueue(user);
                 continue;
             }
             _watchers.Remove(user);
             _watchUntil.Remove(user);
             _nextRequest.Remove(user);
             _nextCodeAttempt.Remove(user);
+        }
+    }
+
+    /// <summary>Sends up to <see cref="StatesPerTick"/> of the snapshots a flush queued, oldest first; once a tick.</summary>
+    private void SendQueuedStates()
+    {
+        for (var sent = 0; sent < StatesPerTick && _stateQueue.TryDequeue(out var user);)
+        {
+            _stateQueued.Remove(user);
+            if (!_players.TryGetSessionById(user, out var session))
+                continue;
+
+            SendState(session, refreshPortraits: false);
+            sent++;
         }
     }
 }

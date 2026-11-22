@@ -113,6 +113,10 @@
   - type: WGRemadeNoDevices
   - type: Speech
     enabled: false
+  # An empty body, not the animal one: a Remade's limbs are its own (WGRemadeLimbs), and the animal's parts, organs and
+  # their solutions were 34 unseen entities on every Remade for each client near it to load.
+  - type: Body
+    prototype: null
 
 - type: entity
   parent: BaseItem

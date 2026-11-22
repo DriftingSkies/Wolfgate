@@ -1,3 +1,4 @@
+using Content.Server._WG.ShipTiers;
 using System.Linq;
 using System.Numerics;
 using Content.Server._Mono.ShipRepair;
@@ -56,6 +57,7 @@ public sealed partial class WGShipScenarioSystem : EntitySystem
     [Dependency] private WGShipAccessServerSystem _access = default!;
     [Dependency] private WGShipAccessSystem _credentials = default!;
     [Dependency] private WGSafeSpawnSystem _safeSpawn = default!;
+    [Dependency] private WGShipTierSystem _shipTiers = default!;
 
     private readonly Dictionary<int, Scenario> _scenarios = new();
 
@@ -162,7 +164,7 @@ public sealed partial class WGShipScenarioSystem : EntitySystem
         }
         var vessel = _prototypes.Index<VesselPrototype>(vesselId!);
         reason = "wg-round-setup-ship-load-failed";
-        if (!_loader.TryLoadGrid(mapId, vessel.ShuttlePath, out var loaded, offset: _random.NextVector2(1500f, 6000f)))
+        if (!LoadHull(mapId, vessel.ShuttlePath, _random.NextVector2(1500f, 6000f), out var loaded))
             return false;
         var hull = loaded.Value.Owner;
         EntityManager.AddComponents(hull, vessel.AddComponents);

@@ -1,0 +1,77 @@
+- type: roleLoadout
+  id: JobWGPdvArtificer
+  groups:
+  - PDVHead
+  - PDVNeck
+  - PDVJumpsuit
+  - PDVGloves
+  - PDVOuterClothing
+  - WGPdvArtificerGlasses
+  - PDVBackpack
+  - PDVShoes
+  - PirateFace
+  - ContractorBoxSurvival
+  - WGPdvArtificerPDA
+  - ContractorCartridge
+  - ContractorWallet
+  - NFSpeciesSpecific
+  - PirateTrinkets
+  - WGPdvArtificerBelt
+  - ContractorEncryptionKey
+  - RogueFirearm
+  - RogueSidearm
+  - RogueMag
+  - RoguePistolMag
+  - WGPdvRanksRakhshan
+  canCustomizeName: true
+
+- type: loadout
+  id: WGPdvArtificerPDA
+  price: 0
+  equipment:
+    id: WGPdvArtificerPDA
+
+- type: loadoutGroup
+  id: WGPdvArtificerPDA
+  name: loadout-group-contractor-id
+  hidden: true
+  loadouts:
+  - WGPdvArtificerPDA
+  fallbacks:
+  - WGPdvArtificerPDA
+
+- type: loadout
+  id: WGPdvArtificerMesons
+  equipment:
+    eyes: ClothingEyesGlassesMeson
+
+- type: loadout
+  id: WGPdvArtificerDiagnostic
+  equipment:
+    eyes: ClothingEyesHudDiagnostic
+
+- type: loadoutGroup
+  id: WGPdvArtificerGlasses
+  name: loadout-group-contractor-glasses
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - WGPdvArtificerMesons
+  - WGPdvArtificerDiagnostic
+  fallbacks:
+  - WGPdvArtificerMesons
+
+- type: loadout
+  id: WGPdvArtificerToolbelt
+  equipment:
+    belt: ClothingBeltUtilityEngineering
+
+- type: loadoutGroup
+  id: WGPdvArtificerBelt
+  name: loadout-group-contractor-belt
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - WGPdvArtificerToolbelt
+  fallbacks:
+  - WGPdvArtificerToolbelt

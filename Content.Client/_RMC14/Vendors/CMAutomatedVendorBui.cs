@@ -1,4 +1,6 @@
 using System.Linq;
+using Content.Client._WG.SpecialistKits; // WOLFGATE(SpecialistKits)
+using Content.Shared._WG.SpecialistKits; // WOLFGATE(SpecialistKits)
 using Content.Shared._RMC14.Vendors;
 using Content.Shared.Mind;
 using Content.Shared.Roles.Jobs;
@@ -118,6 +120,10 @@ public sealed class CMAutomatedVendorBui : BoundUserInterface
                             }
                         }
 
+                        // WOLFGATE(SpecialistKits) START: a specialist kit's row opens its gear list and its Take button vends it
+                        if (!WGKitContents.Attach(uiEntry, entity, _prototype, EntMan.ComponentFactory,
+                                () => OnButtonPressed(sectionI, entryI, linkedEntryIndexes)))
+                        // WOLFGATE END
                         uiEntry.Panel.Button.OnPressed += _ => OnButtonPressed(sectionI, entryI, linkedEntryIndexes);
                     }
 
@@ -128,6 +134,8 @@ public sealed class CMAutomatedVendorBui : BoundUserInterface
             }
         }
 
+        // WOLFGATE(SpecialistKits): a specialist rack has no reagents
+        _window.ReagentsContainer.Visible = !EntMan.HasComponent<WGSpecialistVendorComponent>(Owner);
         _window.Search.OnTextChanged += OnSearchChanged;
         Refresh();
     }
@@ -175,6 +183,7 @@ public sealed class CMAutomatedVendorBui : BoundUserInterface
 
         var anyEntryWithPoints = false;
         var user = EntMan.GetComponentOrNull<CMVendorUserComponent>(_player.LocalEntity);
+        var wgRack = EntMan.GetComponentOrNull<WGSpecialistVendorComponent>(Owner); // WOLFGATE(SpecialistKits)
         var userPoints = vendor.PointsType == null
             ? user?.Points ?? 0
             : user?.ExtraPoints?.GetValueOrDefault(vendor.PointsType) ?? 0;
@@ -183,6 +192,8 @@ public sealed class CMAutomatedVendorBui : BoundUserInterface
             var section = vendor.Sections[sectionIndex];
             var uiSection = (CMAutomatedVendorSection) _window.Sections.GetChild(sectionIndex);
             uiSection.Label.SetMessage(GetSectionName(user, section));
+            // WOLFGATE(SpecialistKits): a specialist rack's header shows the picks used, e.g. 0/1 taken
+            if (wgRack != null) uiSection.Label.SetMessage(WGKitContents.SectionName(section, user));
 
             var sectionDisabled = false;
             if (section.Choices is { } choices)
@@ -230,6 +241,8 @@ public sealed class CMAutomatedVendorBui : BoundUserInterface
 
                 uiEntry.Amount.Modulate = disabled ? Color.Red : Color.White;
                 uiEntry.Panel.Button.Disabled = disabled;
+                // WOLFGATE(SpecialistKits): a kit row stays open-able; only its Take button greys out
+                WGKitContents.Refresh(uiEntry, entry.Id, disabled, sectionDisabled, wgRack);
 
                 if (!string.IsNullOrWhiteSpace(uiEntry.Amount.Text))
                     anyAmount = true;
@@ -258,8 +271,11 @@ public sealed class CMAutomatedVendorBui : BoundUserInterface
     private FormattedMessage GetSectionName(CMVendorUserComponent? user, CMVendorSection section)
     {
         var name = new FormattedMessage();
-        name.PushTag(new MarkupNode("bold", new MarkupParameter(section.Name.ToUpperInvariant()), null));
-        name.AddText(section.Name.ToUpperInvariant());
+        // WOLFGATE(SpecialistKits) START: a section name may be a Fluent message, shown in the player's language
+        var sectionName = Loc.TryGetString(section.Name, out var localized) ? localized : section.Name;
+        name.PushTag(new MarkupNode("bold", new MarkupParameter(sectionName.ToUpperInvariant()), null));
+        name.AddText(sectionName.ToUpperInvariant());
+        // WOLFGATE END
 
         if (section.TakeAll != null)
         {

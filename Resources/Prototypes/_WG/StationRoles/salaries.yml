@@ -103,6 +103,11 @@
   account: BlackMarket
 
 - type: wgStationSalary
+  id: WGPdvArtificer
+  wage: 6000
+  account: BlackMarket
+
+- type: wgStationSalary
   id: Pirate
   wage: 5000
   account: BlackMarket

@@ -528,7 +528,7 @@
   productEntity: BoxT3SuperCapacitor
   icon: { sprite: Objects/Storage/boxes.rsi, state: box}
   cost:
-    FederationMilitaryCredit: 20
+    FederationMilitaryCredit: 15 # WOLFGATE(FactionBalance): same price as the PDV thruster kit
   categories:
     - UplinkSecurityBundles
   conditions:
@@ -724,7 +724,7 @@
   productEntity: MedkitCombatFilled
   icon: { sprite: _NF/Objects/Specific/Medical/firstaidkits.rsi, state: blackkit } # Frontier: _NF prefix
   cost:
-    FederationMilitaryCredit: 20
+    FederationMilitaryCredit: 25 # WOLFGATE(FactionBalance): same price as the PDV combat medkit
   categories:
     - UplinkSecurityUtility
   conditions:
@@ -1046,21 +1046,23 @@
         tags:
           - SecurityUplink
 
-- type: listing
-  id: UplinkSecurityCash10000
-  name: uplink-security-cash10000-name
-  description: uplink-security-cash10000-desc
-  productEntity: SpaceCash10000 # Mono: Changed the exchange rate from 1000 to 5000 to 7500 to 10000
-  icon: { sprite: Objects/Economy/cash.rsi, state: cash_1000000 }
-  cost:
-    FederationMilitaryCredit: 5
-  categories:
-    - UplinkSecurityUtility
-  conditions:
-    - !type:StoreWhitelistCondition
-      whitelist:
-        tags:
-          - SecurityUplink
+# WOLFGATE(FactionBalance) START: currency exchange, not faction gear; the PDV uplink has none
+# - type: listing
+#   id: UplinkSecurityCash10000
+#   name: uplink-security-cash10000-name
+#   description: uplink-security-cash10000-desc
+#   productEntity: SpaceCash10000 # Mono: Changed the exchange rate from 1000 to 5000 to 7500 to 10000
+#   icon: { sprite: Objects/Economy/cash.rsi, state: cash_1000000 }
+#   cost:
+#     FederationMilitaryCredit: 5
+#   categories:
+#     - UplinkSecurityUtility
+#   conditions:
+#     - !type:StoreWhitelistCondition
+#       whitelist:
+#         tags:
+#           - SecurityUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkSecuritySmokeGrenadeBox
@@ -1229,7 +1231,7 @@
   productEntity: HoverbikeNfsdFlatpack
   icon: { sprite: _NF/Objects/Vehicles/hoverbike.rsi, state: vehicle }
   cost:
-    FederationMilitaryCredit: 15
+    FederationMilitaryCredit: 20 # WOLFGATE(FactionBalance): same price as the PDV hoverbike
   categories:
     - UplinkSecurityUtility
   conditions:

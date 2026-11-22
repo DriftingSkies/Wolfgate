@@ -78,6 +78,7 @@ public sealed partial class FireControlSystem : EntitySystem
     private void OnComponentShutdown(EntityUid uid, FireControlConsoleComponent component, ComponentShutdown args)
     {
         UnregisterConsole(uid, component);
+        WGForgetConsole(uid); // WOLFGATE(Performance): drop the console's fire-message throttle
     }
 
     private void DoRefreshServer(EntityUid uid, FireControlConsoleComponent component)
@@ -123,6 +124,9 @@ public sealed partial class FireControlSystem : EntitySystem
 
     private void OnRefreshServer(EntityUid uid, FireControlConsoleComponent component, FireControlConsoleRefreshServerMessage args)
     {
+        if (!WGTakeRefresh(uid)) // WOLFGATE(Performance): a console's refresh walks every weapon in the world; once a second
+            return; // WOLFGATE(Performance)
+
         DoRefreshServer(uid, component);
     }
 
@@ -164,7 +168,10 @@ public sealed partial class FireControlSystem : EntitySystem
             component.NextLog = _timing.CurTime + component.LogSpacing;
         }
 
-        UpdateUi(uid, component);
+        // WOLFGATE(Performance) START: the cursor sends this 10 times a second; the state is rebuilt at most 4
+        // UpdateUi(uid, component);
+        WGFireUi(uid, component);
+        // WOLFGATE END
 
         // Raise an event to track the cursor position even when not firing
         var fireEvent = new FireControlConsoleFireEvent(args.Coordinates, args.Selected);

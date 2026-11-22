@@ -5268,4 +5268,34 @@ WFXenobiologyBountyConsoleFlatpack: WGXenobiologyBountyConsoleFlatpack
 # WOLFGATE(Cooking) START: Mono's kettle gives way to ours, the only one that brews
 # 2026-11-20
 Kettle: WGCookKettle
+# WOLFGATE(SpecialistKits) START: the specialist kits became Marine, Navy and Ottoman jobs, each a case the uplink also sells
+WGKitTsfBreacher: WGKitTsfAssaultman
+WGKitCrateTsfBreacher: WGKitTsfAssaultman
+WGKitCrateTsfCombatEngineer: WGKitTsfCombatEngineer
+WGKitCrateTsfCorpsman: WGKitTsfCorpsman
+WGKitTsfMarksman: WGKitTsfScoutSniper
+WGKitCrateTsfMarksman: WGKitTsfScoutSniper
+WGKitTsfPyrotechnician: null
+WGKitCrateTsfPyrotechnician: null
+WGKitCrateTsfRecon: WGKitTsfRecon
+WGKitTsfHeavyGunner: WGKitTsfMachineGunner
+WGKitCrateTsfHeavyGunner: WGKitTsfMachineGunner
+WGKitTsfShipGunner: null
+WGKitCrateTsfShipGunner: null
+WGKitPdvBoarder: WGKitPdvLagimci
+WGKitCratePdvBoarder: WGKitPdvLagimci
+WGKitPdvArtificer: WGKitPdvCebeci
+WGKitCratePdvArtificer: WGKitPdvCebeci
+WGKitPdvFieldMedic: WGKitPdvCerrah
+WGKitCratePdvFieldMedic: WGKitPdvCerrah
+WGKitPdvSharpshooter: WGKitPdvTufekci
+WGKitCratePdvSharpshooter: WGKitPdvTufekci
+WGKitPdvHeavy: WGKitPdvYeniceri
+WGKitCratePdvHeavy: WGKitPdvYeniceri
+WGKitPdvBurner: null
+WGKitCratePdvBurner: null
+WGKitPdvAkinciRaider: WGKitPdvAkinci
+WGKitCratePdvAkinciRaider: WGKitPdvAkinci
+WGKitPdvTopcu: null
+WGKitCratePdvTopcu: null
 # WOLFGATE END

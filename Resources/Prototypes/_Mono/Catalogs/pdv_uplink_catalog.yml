@@ -45,22 +45,24 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPDVVestineChemistryVial
-  name: uplink-pirate-vestine-vial-name
-  description: uplink-pirate-vestine-vial-desc
-  icon: { sprite: /Textures/Objects/Specific/Chemistry/vial.rsi, state: vial-1 }
-  productEntity: VestineChemistryVial
-  cost:
-    Doubloon: 5
-  categories:
-  - UplinkPirateMedical
-  - UplinkPdvMaterials
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: niche chemistry trimmed to the uplink cap; medkits and the medical bundle stay
+# - type: listing
+#   id: UplinkPDVVestineChemistryVial
+#   name: uplink-pirate-vestine-vial-name
+#   description: uplink-pirate-vestine-vial-desc
+#   icon: { sprite: /Textures/Objects/Specific/Chemistry/vial.rsi, state: vial-1 }
+#   productEntity: VestineChemistryVial
+#   cost:
+#     Doubloon: 5
+#   categories:
+#   - UplinkPirateMedical
+#   - UplinkPdvMaterials
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkPirateCombatMedkit
@@ -69,7 +71,7 @@
   productEntity: MedkitCombatFilled
   icon: { sprite: Objects/Specific/Medical/firstaidkits.rsi, state: blackkit }
   cost:
-    Doubloon: 30
+    Doubloon: 25 # WOLFGATE(FactionBalance): same price as the TSF combat medkit
   categories:
   - UplinkPirateMedical
   conditions:
@@ -78,35 +80,39 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateSyringeCaseFilled
-  name: uplink-pirate-syringe-case-name
-  description: uplink-pirate-syringe-case-desc
-  productEntity: SyringeCaseAltFilled
-  cost:
-    Doubloon: 50
-  categories:
-  - UplinkPirateMedical
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: niche chemistry trimmed to the uplink cap; medkits and the medical bundle stay
+# - type: listing
+#   id: UplinkPirateSyringeCaseFilled
+#   name: uplink-pirate-syringe-case-name
+#   description: uplink-pirate-syringe-case-desc
+#   productEntity: SyringeCaseAltFilled
+#   cost:
+#     Doubloon: 50
+#   categories:
+#   - UplinkPirateMedical
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
-- type: listing
-  id: UplinkPirateOmnizineJug
-  name: uplink-pirate-omnizine-jug-name
-  description: uplink-pirate-omnizine-jug-desc
-  productEntity: JugOmnizine
-  cost:
-    Doubloon: 65
-  categories:
-  - UplinkPirateMedical
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: niche chemistry trimmed to the uplink cap; medkits and the medical bundle stay
+# - type: listing
+#   id: UplinkPirateOmnizineJug
+#   name: uplink-pirate-omnizine-jug-name
+#   description: uplink-pirate-omnizine-jug-desc
+#   productEntity: JugOmnizine
+#   cost:
+#     Doubloon: 65
+#   categories:
+#   - UplinkPirateMedical
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkPirateMedicalAssembler
@@ -252,20 +258,22 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateImplanterEmpty
-  name: uplink-pirate-empty-implanter-name
-  description: uplink-pirate-empty-implanter-desc
-  productEntity: Implanter
-  cost:
-    Doubloon: 1
-  categories:
-  - UplinkPirateUtility
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: joke, outdated or bare item; trimmed to the uplink cap
+# - type: listing
+#   id: UplinkPirateImplanterEmpty
+#   name: uplink-pirate-empty-implanter-name
+#   description: uplink-pirate-empty-implanter-desc
+#   productEntity: Implanter
+#   cost:
+#     Doubloon: 1
+#   categories:
+#   - UplinkPirateUtility
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkPirateRogueCommsComputerCircuitboard
@@ -286,20 +294,22 @@
     whitelist:
       - PirateCaptain
 
-- type: listing
-  id: UplinkPirateSyndicateMagboots
-  name: uplink-pirate-syndicate-magboots-name
-  description: uplink-pirate-syndicate-magboots-desc
-  productEntity: ClothingShoesBootsMagAshen
-  cost:
-    Doubloon: 5
-  categories:
-  - UplinkPirateUtility
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: also made on the PDV lathe; trimmed to the uplink cap
+# - type: listing
+#   id: UplinkPirateSyndicateMagboots
+#   name: uplink-pirate-syndicate-magboots-name
+#   description: uplink-pirate-syndicate-magboots-desc
+#   productEntity: ClothingShoesBootsMagAshen
+#   cost:
+#     Doubloon: 5
+#   categories:
+#   - UplinkPirateUtility
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkPirateSyndicateJetpack
@@ -316,80 +326,90 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateBlankId
-  name: uplink-pirate-blank-id-name
-  description: uplink-pirate-blank-id-desc
-  productEntity: ContractorIDCard
-  cost:
-    Doubloon: 5
-  categories:
-  - UplinkPirateUtility
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WG/FactionBalance/supplies.yml)
+# - type: listing
+#   id: UplinkPirateBlankId
+#   name: uplink-pirate-blank-id-name
+#   description: uplink-pirate-blank-id-desc
+#   productEntity: ContractorIDCard
+#   cost:
+#     Doubloon: 5
+#   categories:
+#   - UplinkPirateUtility
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
-- type: listing
-  id: UplinkPiratePdaChameleon
-  name: uplink-pirate-chameleon-pda-name
-  description: uplink-pirate-chameleon-pda-desc
-  productEntity: ChameleonPDA
-  cost:
-    Doubloon: 5
-  categories:
-  - UplinkPirateUtility
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WG/FactionBalance/supplies.yml)
+# - type: listing
+#   id: UplinkPiratePdaChameleon
+#   name: uplink-pirate-chameleon-pda-name
+#   description: uplink-pirate-chameleon-pda-desc
+#   productEntity: ChameleonPDA
+#   cost:
+#     Doubloon: 5
+#   categories:
+#   - UplinkPirateUtility
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
-- type: listing
-  id: UplinkPirateHeadsetChameleon
-  name: uplink-pirate-chameleon-headset-name
-  description: uplink-pirate-chameleon-headset-desc
-  productEntity: ClothingHeadsetChameleon
-  cost:
-    Doubloon: 5
-  categories:
-  - UplinkPirateUtility
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WG/FactionBalance/supplies.yml)
+# - type: listing
+#   id: UplinkPirateHeadsetChameleon
+#   name: uplink-pirate-chameleon-headset-name
+#   description: uplink-pirate-chameleon-headset-desc
+#   productEntity: ClothingHeadsetChameleon
+#   cost:
+#     Doubloon: 5
+#   categories:
+#   - UplinkPirateUtility
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
-- type: listing
-  id: UplinkPirateBackpackChameleon
-  name: uplink-pirate-chameleon-backpack-name
-  description: uplink-pirate-chameleon-backpack-desc
-  productEntity: ClothingBackpackChameleon
-  cost:
-    Doubloon: 5
-  categories:
-  - UplinkPirateUtility
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WG/FactionBalance/supplies.yml)
+# - type: listing
+#   id: UplinkPirateBackpackChameleon
+#   name: uplink-pirate-chameleon-backpack-name
+#   description: uplink-pirate-chameleon-backpack-desc
+#   productEntity: ClothingBackpackChameleon
+#   cost:
+#     Doubloon: 5
+#   categories:
+#   - UplinkPirateUtility
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
-- type: listing
-  id: UplinkPirateVoicemask
-  name: uplink-pirate-voicemask-name
-  description: uplink-pirate-voicemask-desc
-  productEntity: ClothingMaskGasVoiceChameleon
-  cost:
-    Doubloon: 20
-  categories:
-  - UplinkPirateUtility
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: folded into the infiltration kit (_WG/FactionBalance/supplies.yml)
+# - type: listing
+#   id: UplinkPirateVoicemask
+#   name: uplink-pirate-voicemask-name
+#   description: uplink-pirate-voicemask-desc
+#   productEntity: ClothingMaskGasVoiceChameleon
+#   cost:
+#     Doubloon: 20
+#   categories:
+#   - UplinkPirateUtility
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkPirateDnaScrambler
@@ -414,7 +434,7 @@
   productEntity: HoverbikePirateFlatpack
   icon: { sprite: _NF/Objects/Vehicles/hoverbike.rsi, state: vehicle }
   cost:
-    Doubloon: 25
+    Doubloon: 20 # WOLFGATE(FactionBalance): same price as the TSF hoverbike
   categories:
     - UplinkPirateUtility
   conditions:
@@ -485,21 +505,23 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateHypopen
-  name: uplink-pirate-hypopen-name
-  description: uplink-pirate-hypopen-desc
-  productEntity: HypopenBox
-  icon: { sprite: Objects/Misc/pens.rsi, state: pen }
-  cost:
-    Doubloon: 20
-  categories:
-  - UplinkPirateUtility
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: niche chemistry trimmed to the uplink cap; medkits and the medical bundle stay
+# - type: listing
+#   id: UplinkPirateHypopen
+#   name: uplink-pirate-hypopen-name
+#   description: uplink-pirate-hypopen-desc
+#   productEntity: HypopenBox
+#   icon: { sprite: Objects/Misc/pens.rsi, state: pen }
+#   cost:
+#     Doubloon: 20
+#   categories:
+#   - UplinkPirateUtility
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkPirateEmag
@@ -517,21 +539,23 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateAccessBreaker
-  name: uplink-pirate-access-breaker-name
-  description: uplink-pirate-access-breaker-desc
-  productEntity: AccessBreaker
-  icon: { sprite: Objects/Tools/access_breaker.rsi, state: icon }
-  cost:
-    Doubloon: 20
-  categories:
-  - UplinkPirateUtility
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: also made on the PDV lathe; trimmed to the uplink cap
+# - type: listing
+#   id: UplinkPirateAccessBreaker
+#   name: uplink-pirate-access-breaker-name
+#   description: uplink-pirate-access-breaker-desc
+#   productEntity: AccessBreaker
+#   icon: { sprite: Objects/Tools/access_breaker.rsi, state: icon }
+#   cost:
+#     Doubloon: 20
+#   categories:
+#   - UplinkPirateUtility
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkPirateJaws
@@ -751,20 +775,22 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirate762x39mmAmmoBoxBig
-  name: uplink-pirate-light-rifle-magazine-box-big-name
-  description: uplink-pirate-light-rifle-magazine-box-big-desc
-  productEntity: AmmoBox762x39mmBigFMJ
-  cost:
-    Doubloon: 10
-  categories:
-  - UplinkPirateAmmo
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: duplicate 7.62x39mm ammo; the FMJ magazine box stays
+# - type: listing
+#   id: UplinkPirate762x39mmAmmoBoxBig
+#   name: uplink-pirate-light-rifle-magazine-box-big-name
+#   description: uplink-pirate-light-rifle-magazine-box-big-desc
+#   productEntity: AmmoBox762x39mmBigFMJ
+#   cost:
+#     Doubloon: 10
+#   categories:
+#   - UplinkPirateAmmo
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkPirateAmmoBox357_magnum
@@ -796,36 +822,39 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateMagazineSubsonic
-  name: uplink-subsonic-mag-name
-  description: uplink-subsonic-mag-desc
-  productEntity: Magazine762x39mmSubsonic
-  cost:
-    Doubloon: 4
-  categories:
-  - UplinkPirateAmmo
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: duplicate 7.62x39mm ammo; the FMJ magazine box stays
+# - type: listing
+#   id: UplinkPirateMagazineSubsonic
+#   name: uplink-subsonic-mag-name
+#   description: uplink-subsonic-mag-desc
+#   productEntity: Magazine762x39mmSubsonic
+#   cost:
+#     Doubloon: 4
+#   categories:
+#   - UplinkPirateAmmo
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+#
+# - type: listing
+#   id: UplinkPirateBoxSubsonic
+#   name: uplink-subsonic-box-name
+#   description: uplink-subsonic-box-desc
+#   productEntity: AmmoBox762x39mmSubsonic
+#   cost:
+#     Doubloon: 7
+#   categories:
+#   - UplinkPirateAmmo
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
-- type: listing
-  id: UplinkPirateBoxSubsonic
-  name: uplink-subsonic-box-name
-  description: uplink-subsonic-box-desc
-  productEntity: AmmoBox762x39mmSubsonic
-  cost:
-    Doubloon: 7
-  categories:
-  - UplinkPirateAmmo
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
-
+# WOLFGATE(FactionBalance): unchanged; marked because the diff pairs it with the trimmed listings above
 - type: listing
   id: UplinkPirateBoxMagazine9x19mmFMJ
   name: uplink-pirate-box-magazine-pistol-name
@@ -1119,20 +1148,22 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateKanabou
-  name: uplink-pirate-kanabou-name
-  description: uplink-pirate-kanabou-desc
-  productEntity: Kanabou
-  cost:
-    Doubloon: 10
-  categories:
-  - UplinkPirateWeapons
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: joke, outdated or bare item; trimmed to the uplink cap
+# - type: listing
+#   id: UplinkPirateKanabou
+#   name: uplink-pirate-kanabou-name
+#   description: uplink-pirate-kanabou-desc
+#   productEntity: Kanabou
+#   cost:
+#     Doubloon: 10
+#   categories:
+#   - UplinkPirateWeapons
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkPirateAk
@@ -1150,21 +1181,23 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateBurner
-  name: uplink-pirate-burner-name
-  description: uplink-pirate-burner-desc
-  productEntity: ClothingBackpackDuffelPDVBurner
-  icon: { sprite: _Goobstation/Objects/Weapons/Guns/Rifles/burner.rsi, state: icon }
-  cost:
-    Doubloon: 90
-  categories:
-  - UplinkPirateWeapons
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: a whole specialist kit, sold past the kit limit; drawn from the specialist vendor instead
+# - type: listing
+#   id: UplinkPirateBurner
+#   name: uplink-pirate-burner-name
+#   description: uplink-pirate-burner-desc
+#   productEntity: ClothingBackpackDuffelPDVBurner
+#   icon: { sprite: _Goobstation/Objects/Weapons/Guns/Rifles/burner.rsi, state: icon }
+#   cost:
+#     Doubloon: 90
+#   categories:
+#   - UplinkPirateWeapons
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkPirateAnaconda
@@ -1198,21 +1231,23 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateLaserGun
-  name: uplink-pirate-laser-gun-name
-  description: uplink-pirate-laser-gun-desc
-  productEntity: WeaponLaserGun
-  icon: { sprite: Objects/Weapons/Guns/Battery/laser_retro.rsi, state: icon }
-  cost:
-    Doubloon: 10
-  categories:
-  - UplinkPirateWeapons
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: joke, outdated or bare item; trimmed to the uplink cap
+# - type: listing
+#   id: UplinkPirateLaserGun
+#   name: uplink-pirate-laser-gun-name
+#   description: uplink-pirate-laser-gun-desc
+#   productEntity: WeaponLaserGun
+#   icon: { sprite: Objects/Weapons/Guns/Battery/laser_retro.rsi, state: icon }
+#   cost:
+#     Doubloon: 10
+#   categories:
+#   - UplinkPirateWeapons
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 #- type: listing
 #  id: UplinkPirateBlueprintLauncherRocket
@@ -1245,38 +1280,42 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateL6SawBundle
-  name: uplink-l6-saw-bundle-name
-  description: uplink-l6-saw-bundle-desc
-  icon: { sprite: /Textures/Objects/Weapons/Guns/LMGs/l6.rsi, state: icon }
-  productEntity: ClothingBackpackDuffelPDVFilledLMG
-  cost:
-    Doubloon: 90
-  categories:
-  - UplinkPirateWeapons
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: a whole specialist kit, sold past the kit limit; drawn from the specialist vendor instead
+# - type: listing
+#   id: UplinkPirateL6SawBundle
+#   name: uplink-l6-saw-bundle-name
+#   description: uplink-l6-saw-bundle-desc
+#   icon: { sprite: /Textures/Objects/Weapons/Guns/LMGs/l6.rsi, state: icon }
+#   productEntity: ClothingBackpackDuffelPDVFilledLMG
+#   cost:
+#     Doubloon: 90
+#   categories:
+#   - UplinkPirateWeapons
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 # WOLFGATE(ArmorBalance): reverts Monolith#4845.
-- type: listing
-  id: UplinkPirateHristovBundle
-  name: uplink-pirate-hristov-name
-  description: uplink-pirate-hristov-desc
-  icon: { sprite: /Textures/Objects/Weapons/Guns/Snipers/hristov.rsi, state: base }
-  productEntity: BriefcaseSyndieSniperBundleFilled
-  cost:
-    Doubloon: 90
-  categories:
-  - UplinkPirateWeapons
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: a whole specialist kit, sold past the kit limit; drawn from the specialist vendor instead
+# - type: listing
+#   id: UplinkPirateHristovBundle
+#   name: uplink-pirate-hristov-name
+#   description: uplink-pirate-hristov-desc
+#   icon: { sprite: /Textures/Objects/Weapons/Guns/Snipers/hristov.rsi, state: base }
+#   productEntity: BriefcaseSyndieSniperBundleFilled
+#   cost:
+#     Doubloon: 90
+#   categories:
+#   - UplinkPirateWeapons
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkPirateBasilisk
@@ -1293,26 +1332,28 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateDesword
-  name: uplink-pirate-desword-name
-  description: uplink-pirate-desword-desc
-  productEntity: EnergySwordDouble
-  icon: { sprite: Objects/Weapons/Melee/e_sword_double.rsi, state: icon }
-  cost:
-    Doubloon: 75
-  categories:
-  - UplinkPirateWeapons
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
-  - !type:BuyerJobCondition
-    whitelist:
-      - PDVDenasvar
-      - PirateFirstMate
-      - PirateCaptain
+# WOLFGATE(FactionBalance) START: joke, outdated or bare item; trimmed to the uplink cap
+# - type: listing
+#   id: UplinkPirateDesword
+#   name: uplink-pirate-desword-name
+#   description: uplink-pirate-desword-desc
+#   productEntity: EnergySwordDouble
+#   icon: { sprite: Objects/Weapons/Melee/e_sword_double.rsi, state: icon }
+#   cost:
+#     Doubloon: 75
+#   categories:
+#   - UplinkPirateWeapons
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+#   - !type:BuyerJobCondition
+#     whitelist:
+#       - PDVDenasvar
+#       - PirateFirstMate
+#       - PirateCaptain
+# WOLFGATE END
 
 #MARK: Equipment
 
@@ -1324,7 +1365,7 @@
   productEntity: ClothingOuterHardsuitPirateScaf
   icon: { sprite: _Mono/Clothing/OuterClothing/Hardsuits/scaf_pirate.rsi, state: icon }
   cost:
-    Doubloon: 15
+    Doubloon: 10 # WOLFGATE(FactionBalance): entry hardsuit, same price as the TSF M82b and M82c
   categories:
   - UplinkPirateEquipment
   conditions:
@@ -1333,21 +1374,23 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateWebVest
-  name: uplink-pirate-webvest-name
-  description: uplink-pirate-webvest-desc
-  productEntity: ClothingOuterVestWeb
-  icon: { sprite: Clothing/OuterClothing/Vests/webvest.rsi, state: icon }
-  cost:
-    Doubloon: 15
-  categories:
-  - UplinkPirateEquipment
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: also made on the PDV lathe; trimmed to the uplink cap
+# - type: listing
+#   id: UplinkPirateWebVest
+#   name: uplink-pirate-webvest-name
+#   description: uplink-pirate-webvest-desc
+#   productEntity: ClothingOuterVestWeb
+#   icon: { sprite: Clothing/OuterClothing/Vests/webvest.rsi, state: icon }
+#   cost:
+#     Doubloon: 15
+#   categories:
+#   - UplinkPirateEquipment
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkPirateWebVestElite
@@ -1364,21 +1407,23 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateSyndieMask
-  name: uplink-pirate-syndie-mask-name
-  description: uplink-pirate-syndie-mask-desc
-  productEntity: ClothingMaskGasSyndicate
-  icon: { sprite: Clothing/Mask/gassyndicate.rsi, state: icon }
-  cost:
-    Doubloon: 15
-  categories:
-  - UplinkPirateEquipment
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: also made on the PDV lathe; trimmed to the uplink cap
+# - type: listing
+#   id: UplinkPirateSyndieMask
+#   name: uplink-pirate-syndie-mask-name
+#   description: uplink-pirate-syndie-mask-desc
+#   productEntity: ClothingMaskGasSyndicate
+#   icon: { sprite: Clothing/Mask/gassyndicate.rsi, state: icon }
+#   cost:
+#     Doubloon: 15
+#   categories:
+#   - UplinkPirateEquipment
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 - type: listing
   id: UplinkPirateCv32
@@ -1386,7 +1431,7 @@
   description: uplink-pirate-cv32-hardsuit-desc # DO NOT REMOVE THESE, YOU WILL BREAK THE SEARCH FEATURE
   productEntity: ClothingOuterHardsuitAshen
   cost:
-    Doubloon: 45 # WOLFGATE(ArmorBalance): Monolith's price; PDV suits are printable again.
+    Doubloon: 10 # WOLFGATE(FactionBalance): entry hardsuit, same price as the TSF M82b and M82c
   categories:
   - UplinkPirateEquipment
   conditions:
@@ -1395,67 +1440,74 @@
       tags:
       - PirateUplink
 
-- type: listing
-  id: UplinkPirateCv53
-  name: uplink-pirate-cv53-tacsuit-name # WOLFGATE(ArmorBalance): reverts Monolith#4845.
-  description: uplink-pirate-cv53-tacsuit-desc # DO NOT REMOVE THESE, YOU WILL BREAK THE SEARCH FEATURE
-  productEntity: ClothingOuterHardsuitAshenElite
-  cost:
-    Doubloon: 45 # WOLFGATE(ArmorBalance): Monolith's price; PDV suits are printable again.
-  categories:
-  - UplinkPirateEquipment
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: past entry tier; made at the PDV lathe only
+# - type: listing
+#   id: UplinkPirateCv53
+#   name: uplink-pirate-cv53-tacsuit-name # WOLFGATE(ArmorBalance): reverts Monolith#4845.
+#   description: uplink-pirate-cv53-tacsuit-desc # DO NOT REMOVE THESE, YOU WILL BREAK THE SEARCH FEATURE
+#   productEntity: ClothingOuterHardsuitAshenElite
+#   cost:
+#     Doubloon: 45 # WOLFGATE(ArmorBalance): Monolith's price; PDV suits are printable again.
+#   categories:
+#   - UplinkPirateEquipment
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
+
+# WOLFGATE(FactionBalance) START: past entry tier; made at the PDV lathe only
+# - type: listing
+#   id: UplinkPirateCv82
+#   name: uplink-pirate-cv82-tacsuit-name
+#   description: uplink-pirate-cv82-tacsuit-desc
+#   productEntity: ClothingOuterHardsuitPDVMedic
+#   cost:
+#     Doubloon: 90
+#   categories:
+#   - UplinkPirateEquipment
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 # WOLFGATE(ArmorBalance): reverts Monolith#4845.
-- type: listing
-  id: UplinkPirateCv82
-  name: uplink-pirate-cv82-tacsuit-name
-  description: uplink-pirate-cv82-tacsuit-desc
-  productEntity: ClothingOuterHardsuitPDVMedic
-  cost:
-    Doubloon: 90
-  categories:
-  - UplinkPirateEquipment
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: also made on the PDV lathe; trimmed to the uplink cap
+# - type: listing
+#   id: UplinkPirateJuggernaut
+#   name: uplink-pirate-juggernaut-hardsuit-name
+#   description: uplink-pirate-juggernaut-hardsuit-desc
+#   productEntity: ClothingOuterHardsuitJuggernaut
+#   cost:
+#     Doubloon: 90
+#   categories:
+#   - UplinkPirateEquipment
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
-# WOLFGATE(ArmorBalance): reverts Monolith#4845.
-- type: listing
-  id: UplinkPirateJuggernaut
-  name: uplink-pirate-juggernaut-hardsuit-name
-  description: uplink-pirate-juggernaut-hardsuit-desc
-  productEntity: ClothingOuterHardsuitJuggernaut
-  cost:
-    Doubloon: 90
-  categories:
-  - UplinkPirateEquipment
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
-
-- type: listing
-  id: UplinkPirateStealthSuit
-  name: uplink-pirate-stealth-hardsuit-name # WOLFGATE(ArmorBalance): reverts Monolith#4845.
-  description: uplink-pirate-stealth-hardsuit-desc # DO NOT REMOVE THESE, YOU WILL BREAK THE SEARCH FEATURE
-  productEntity: ClothingOuterHardsuitCybersunStealth
-  cost:
-    Doubloon: 90
-  categories:
-  - UplinkPirateEquipment
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: also made on the PDV lathe; trimmed to the uplink cap
+# - type: listing
+#   id: UplinkPirateStealthSuit
+#   name: uplink-pirate-stealth-hardsuit-name # WOLFGATE(ArmorBalance): reverts Monolith#4845.
+#   description: uplink-pirate-stealth-hardsuit-desc # DO NOT REMOVE THESE, YOU WILL BREAK THE SEARCH FEATURE
+#   productEntity: ClothingOuterHardsuitCybersunStealth
+#   cost:
+#     Doubloon: 90
+#   categories:
+#   - UplinkPirateEquipment
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 # - type: listing
 #   id: UplinkPirateModsuit
@@ -1696,7 +1748,7 @@
   description: uplink-pdv-t0-voucher-desc
   productEntity: ShipVoucherPdvT0
   cost:
-    Doubloon: 25
+    Doubloon: 0 # WOLFGATE(FactionBalance): T0 is free and T1 a token cost for both factions (was 25)
   categories:
   - UplinkPdvVouchers
   conditions:
@@ -1704,6 +1756,13 @@
     whitelist:
       tags:
       - FactionStaticUplinkPdv
+  # WOLFGATE(FactionBalance) START: a free T0 has a per-player cooldown so it can't be printed endlessly
+  - !type:WGListingCooldownCondition
+    key: T0VoucherPdv
+  productEvent: !type:WGListingCooldownEvent
+    key: T0VoucherPdv
+  raiseProductEventOnUser: true
+  # WOLFGATE END
 
 - type: listing
   id: UplinkPDVT1Voucher
@@ -1711,7 +1770,7 @@
   description: uplink-pdv-t1-voucher-desc
   productEntity: ShipVoucherPdvT1
   cost:
-    Doubloon: 60 # +10 tax from mat cost since no research cost
+    Doubloon: 10 # WOLFGATE(FactionBalance): T0 is free and T1 a token cost for both factions (was 60)
   categories:
   - UplinkPdvVouchers
   conditions:
@@ -1720,50 +1779,56 @@
       tags:
       - FactionStaticUplinkPdv
 
-- type: listing
-  id: UplinkPDVT2Voucher
-  name:  uplink-pdv-t2-voucher-name
-  description: uplink-pdv-t2-voucher-desc
-  productEntity: ShipVoucherPdvT2
-  cost:
-    Doubloon: 175 # +25 tax from mat cost since no research cost
-  categories:
-  - UplinkPdvVouchers
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - FactionStaticUplinkPdv
+# WOLFGATE(FactionBalance) START: T2 and up are printed at the faction lathe from the same materials for both factions
+# - type: listing
+#   id: UplinkPDVT2Voucher
+#   name:  uplink-pdv-t2-voucher-name
+#   description: uplink-pdv-t2-voucher-desc
+#   productEntity: ShipVoucherPdvT2
+#   cost:
+#     Doubloon: 175 # +25 tax from mat cost since no research cost
+#   categories:
+#   - UplinkPdvVouchers
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - FactionStaticUplinkPdv
+# WOLFGATE END
 
-- type: listing
-  id: UplinkPDVT3Voucher
-  name:  uplink-pdv-t3-voucher-name
-  description: uplink-pdv-t3-voucher-desc
-  productEntity: ShipVoucherPdvT3
-  cost:
-    Doubloon: 550 # WOLFGATE: TSF Balance Pass; +100 tax from mat cost since no research cost
-  categories:
-  - UplinkPdvVouchers
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - FactionStaticUplinkPdv
+# WOLFGATE(FactionBalance) START: T2 and up are printed at the faction lathe from the same materials for both factions
+# - type: listing
+#   id: UplinkPDVT3Voucher
+#   name:  uplink-pdv-t3-voucher-name
+#   description: uplink-pdv-t3-voucher-desc
+#   productEntity: ShipVoucherPdvT3
+#   cost:
+#     Doubloon: 550 # WOLFGATE: TSF Balance Pass; +100 tax from mat cost since no research cost
+#   categories:
+#   - UplinkPdvVouchers
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - FactionStaticUplinkPdv
+# WOLFGATE END
 
-- type: listing
-  id: UplinkPirateT4VoucherSaturn
-  name:  uplink-pdv-t4-saturn-voucher-name
-  description: uplink-pdv-t4-saturn-voucher-desc
-  productEntity: ShipVoucherSaturn
-  cost:
-    Doubloon: 1050 # WOLFGATE: TSF Balance Pass; +150 tax from mat cost since no research cost
-  categories:
-  - UplinkPdvVouchers
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - FactionStaticUplinkPdv
+# WOLFGATE(FactionBalance) START: T2 and up are printed at the faction lathe from the same materials for both factions
+# - type: listing
+#   id: UplinkPirateT4VoucherSaturn
+#   name:  uplink-pdv-t4-saturn-voucher-name
+#   description: uplink-pdv-t4-saturn-voucher-desc
+#   productEntity: ShipVoucherSaturn
+#   cost:
+#     Doubloon: 1050 # WOLFGATE: TSF Balance Pass; +150 tax from mat cost since no research cost
+#   categories:
+#   - UplinkPdvVouchers
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - FactionStaticUplinkPdv
+# WOLFGATE END
 
 - type: listing
   id: UplinkHardBombPDV
@@ -1783,37 +1848,41 @@
 
 # MARK: Materials
 
-- type: listing
-  id: UplinkPirateCash10000
-  name: uplink-pirate-cash10000-name
-  description: uplink-pirate-cash10000-desc
-  productEntity: SpaceCash10000
-  icon: { sprite: Objects/Economy/cash.rsi, state: cash_1000000 }
-  cost:
-    Doubloon: 5
-  categories:
-  - UplinkPdvMaterials
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: currency exchange, not faction gear; trimmed to the uplink cap
+# - type: listing
+#   id: UplinkPirateCash10000
+#   name: uplink-pirate-cash10000-name
+#   description: uplink-pirate-cash10000-desc
+#   productEntity: SpaceCash10000
+#   icon: { sprite: Objects/Economy/cash.rsi, state: cash_1000000 }
+#   cost:
+#     Doubloon: 5
+#   categories:
+#   - UplinkPdvMaterials
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
-- type: listing
-  id: UplinkPirateCash100000
-  name: uplink-pirate-cash100000-name
-  description: uplink-pirate-cash100000-desc
-  productEntity: SpaceCash100000
-  icon: { sprite: _NF/Objects/Economy/cash.rsi, state: cash_100000 }
-  cost:
-    Doubloon: 50
-  categories:
-  - UplinkPdvMaterials
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+# WOLFGATE(FactionBalance) START: currency exchange, not faction gear; trimmed to the uplink cap
+# - type: listing
+#   id: UplinkPirateCash100000
+#   name: uplink-pirate-cash100000-name
+#   description: uplink-pirate-cash100000-desc
+#   productEntity: SpaceCash100000
+#   icon: { sprite: _NF/Objects/Economy/cash.rsi, state: cash_100000 }
+#   cost:
+#     Doubloon: 50
+#   categories:
+#   - UplinkPdvMaterials
+#   conditions:
+#   - !type:StoreWhitelistCondition
+#     whitelist:
+#       tags:
+#       - PirateUplink
+# WOLFGATE END
 
 # Removed as the Underground Black Market is no longer reliant on the PDV. Please do not re-add without a good reason.
 #- type: listing

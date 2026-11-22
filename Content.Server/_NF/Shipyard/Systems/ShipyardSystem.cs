@@ -169,7 +169,10 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
         if (ShipyardMap == null)
             return false;
 
-        if (!_mapLoader.TryLoadGrid(ShipyardMap.Value, shuttlePath, out var grid, offset: new Vector2(500f + _shuttleIndex, 1f)))
+        // WOLFGATE(Performance) START: a purchase that waited for its hull's parse loads the parsed data
+        // if (!_mapLoader.TryLoadGrid(ShipyardMap.Value, shuttlePath, out var grid, offset: new Vector2(500f + _shuttleIndex, 1f)))
+        if (!WGLoadHull(shuttlePath, new Vector2(500f + _shuttleIndex, 1f), out var grid))
+        // WOLFGATE END
         {
             _sawmill.Error($"Unable to spawn shuttle {shuttlePath}");
             return false;

@@ -372,9 +372,7 @@ bought at a bargain less its discount, as a shipyard does.
 - [`Content.Server/_Crescent/Hardpoint/HardpointSystem.cs`](../../_Crescent/Hardpoint/HardpointSystem.cs): a queued grid with no fire control (a station, debris) returned instead of skipping,
 - [`Content.Shared/_Crescent/Hardpoints/SharedHardpointSystem.cs`](../../../Content.Shared/_Crescent/Hardpoints/SharedHardpointSystem.cs): a destroyed gun leaves a dead entry behind, which blocked rebuilt guns
 - [`Content.Shared/Construction/SharedFlatpackSystem.cs`](../../../Content.Shared/Construction/SharedFlatpackSystem.cs): salvaged hardware unpacks damaged
-- [`Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml)
-  - single use, so a drydock repair undercuts printing another card
-  - single use; the renewable parent would give 12
+- [`Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml): single use, so a drydock repair undercuts printing another card
 - [`Resources/Prototypes/_Mono/Entities/Structures/Power/apc.yml`](../../../Resources/Prototypes/_Mono/Entities/Structures/Power/apc.yml): a drydock or repair tool rebuilds a destroyed LAPC like any APC
 - [`Resources/Prototypes/_Mono/Entities/Structures/Power/Generators/generators.yml`](../../../Resources/Prototypes/_Mono/Entities/Structures/Power/Generators/generators.yml): build cost the drydock prices the reactor's rebuild and salvage from
 - [`Resources/Prototypes/Catalog/Cargo/cargo_engines.yml`](../../../Resources/Prototypes/Catalog/Cargo/cargo_engines.yml): above the ~10k a drydock break pays for the controller, mostly its fissile; was 6000

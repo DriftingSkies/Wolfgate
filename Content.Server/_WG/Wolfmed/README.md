@@ -24,6 +24,11 @@ passes through), `WoundDamageRoutingSystem` (`Content.Shared/_Onyx/Wounds`), `Sh
 and `WolfmedLifeSystem` (the clock from wounded to dead), `AutodocSystem` (`Content.Server/_WG/Wolfmed/Autodoc`)
 and the analyzer partials in `Content.Server/_WG/Wolfmed/Medical`.
 
+Infection and condition emotes run each body on its own tick of their window (`WGTickSpread`) instead of the whole
+server on one. Infection files its work by body every 5 s (`WolfmedInfectionSystem.Spread.cs`) and advances each body
+by the time since its own last turn; a corpse or a limb off any body takes a turn every `wolfmed.infection_slow_seconds`
+(30; tests use 5). A step of 5 s or more handed to `Update`, as tests do, advances everything at once as before.
+
 Design record, in `Docs/_WG/Wolfmed`: `DECISIONS.md` (every decision by milestone and playtest; append to it),
 the death plan (`WOLFMED_DEATH_PLAN.md`) and `WOLFMED_MANIFEST.md`, the port-time file manifest. The generated list below is the list of record for the
 files the module edits outside `_WG`.
@@ -142,6 +147,7 @@ Skipped ("dirty-disposed").
 - [`Content.Server/_WG/Wolfmed/Wounds/WolfmedEviscerationSystem.cs`](Wounds/WolfmedEviscerationSystem.cs)
 - [`Content.Server/_WG/Wolfmed/Wounds/WolfmedFluidLossSystem.cs`](Wounds/WolfmedFluidLossSystem.cs)
 - [`Content.Server/_WG/Wolfmed/Wounds/WolfmedInfectionSystem.cs`](Wounds/WolfmedInfectionSystem.cs)
+- [`Content.Server/_WG/Wolfmed/Wounds/WolfmedInfectionSystem.Spread.cs`](Wounds/WolfmedInfectionSystem.Spread.cs)
 - [`Content.Server/_WG/Wolfmed/Wounds/WolfmedNecrosisSystem.cs`](Wounds/WolfmedNecrosisSystem.cs)
 - [`Content.Server/_WG/Wolfmed/Wounds/WolfmedOrganContusionSystem.cs`](Wounds/WolfmedOrganContusionSystem.cs)
 - [`Content.Server/_WG/Wolfmed/Wounds/WolfmedPartHitSystem.cs`](Wounds/WolfmedPartHitSystem.cs)
@@ -437,6 +443,7 @@ Skipped ("dirty-disposed").
 - [`Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedHealingTargetTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedHealingTargetTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedInfectionSpreadTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedInfectionSpreadTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedInfectionTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedInfectionTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedInfectionTickSpreadTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedInfectionTickSpreadTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedIvDripTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedIvDripTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedLocaleCoverageTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedLocaleCoverageTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedLostHandVisualsTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Wolfmed/WolfmedLostHandVisualsTest.cs)
@@ -934,7 +941,9 @@ Skipped ("dirty-disposed").
 - [`Content.Client/UserInterface/Systems/Hands/Controls/HandsContainer.cs`](../../../Content.Client/UserInterface/Systems/Hands/Controls/HandsContainer.cs)
   - a hand reattached after the other keeps its side; right, middle, then left
   - the hand bar's order, as the server sorts hands
-- [`Content.IntegrationTests/PoolManager.Cvars.cs`](../../../Content.IntegrationTests/PoolManager.Cvars.cs): arrest tests expect the collapse at once; the collapse test turns it on
+- [`Content.IntegrationTests/PoolManager.Cvars.cs`](../../../Content.IntegrationTests/PoolManager.Cvars.cs)
+  - arrest tests expect the collapse at once; the collapse test turns it on
+  - tests watch a corpse's infection over a few seconds of ticks
 - [`Content.IntegrationTests/Tests/_Onyx/Body/BodyConsequencesTest.cs`](../../../Content.IntegrationTests/Tests/_Onyx/Body/BodyConsequencesTest.cs)
   - §2.7, Onyx's SharedBodySystem.TryDetachPart lives here.
   - Onyx's version asserts Nubody behaviour Wolfgate does not have. Its `Groin` part does not exist

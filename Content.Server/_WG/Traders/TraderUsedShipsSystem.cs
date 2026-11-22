@@ -4,6 +4,8 @@ using Content.Server._NF.Bank;
 using Content.Server._NF.Shipyard.Systems;
 using Content.Server._Mono.Shipyard;
 using Content.Server._WG.Shipyard;
+using Content.Server._WG.ShipTiers;
+using Content.Shared._Mono.Company;
 using Content.Shared._Mono.Traits.Physical;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared.Access.Components;
@@ -12,9 +14,12 @@ using Content.Server.GameTicking;
 using Content.Server.Radio.EntitySystems;
 using Content.Shared._NF.Bank;
 using Content.Shared._WG.Traders;
+using System.Threading.Tasks;
 using Robust.Server.GameObjects;
+using Robust.Shared.Configuration;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization.Markdown.Mapping;
 
 namespace Content.Server._WG.Traders;
 
@@ -26,6 +31,7 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
 {
     [Dependency] private SharedAccessSystem _access = default!;
     [Dependency] private BankSystem _bank = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private ShipyardDirectionSystem _direction = default!;
     [Dependency] private SharedIdCardSystem _idCard = default!;
     [Dependency] private IPrototypeManager _proto = default!;
@@ -35,6 +41,7 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
     [Dependency] private TraderSystem _trader = default!;
     [Dependency] private UserInterfaceSystem _ui = default!;
     [Dependency] private UsedShipMarketSystem _market = default!;
+    [Dependency] private WGShipTierSystem _shipTiers = default!;
 
     private float _refreshAccumulator;
 
@@ -246,6 +253,8 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
         ent.Comp.AwaitingConfirmation = false;
         ent.Comp.QuotedShip = null;
         _shipyard.ClearHostedConsole(ent.Owner);
+        // A purchase still being prepared was the ended conversation's; it must not go through for the next customer.
+        _wgPendingBuys.Remove(ent);
     }
 
     private void OnBuy(Entity<TraderUsedShipsComponent> ent, ref TraderUsedShipBuyMessage args)
@@ -294,11 +303,27 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
             return;
         }
 
+        // The hull's YAML is parsed off the main thread first, and the purchase runs again from the top once it is.
+        if (WGDeferBuy(ent, traderEnt, args, listing))
+            return;
+
         // Fetched before it is paid for: a hull that will not come out of the yard costs nothing,
         // and nobody's cash has to be handed back as change it did not arrive as.
-        if (!_market.TryLoadListing(listing, station, out var shuttle))
+        var parsed = _wgParsedListing is { } ready && ready.Id == listing.Id ? ready.Data : null;
+        _wgParsedListing = null;
+        if (!_market.TryLoadListing(listing, station, out var shuttle, parsed))
         {
             _trader.SayAndShow(traderEnt, Loc.GetString("trader-used-load-failed"));
+            return;
+        }
+
+        // A used capital still takes one of its faction's capital slots, or selling and buying back would dodge the cap.
+        if (listing.DesignId is { } design
+            && !_shipTiers.TryApproveCapital(shuttle.Value, design.Id, CompOrNull<CompanyComponent>(args.Actor)?.CompanyName.Id,
+                true, out var capReason))
+        {
+            QueueDel(shuttle.Value);
+            _trader.SayAndShow(traderEnt, Loc.GetString(capReason));
             return;
         }
 
@@ -395,9 +420,80 @@ public sealed partial class TraderUsedShipsSystem : EntitySystem
 
     #endregion
 
+    /// <summary>A purchase waiting for its listing's YAML to be parsed, to run again as it came in once it is.</summary>
+    private sealed record WGPendingBuy(TraderUsedShipBuyMessage Message, int ListingId, Task<MappingDataNode?> Parsing);
+
+    private readonly Dictionary<EntityUid, WGPendingBuy> _wgPendingBuys = new();
+    private readonly List<EntityUid> _wgParsedTraders = new();
+
+    /// <summary>The parsed listing a purchase running again loads in place of reading its text.</summary>
+    private (int Id, MappingDataNode Data)? _wgParsedListing;
+
+    /// <summary>
+    /// Whether a purchase waits for its listing to be parsed. If so it has returned; it runs again from the top once the
+    /// parse is done, so the listing, the card and the money are all checked again then.
+    /// </summary>
+    private bool WGDeferBuy(Entity<TraderUsedShipsComponent> ent, Entity<TraderComponent> trader,
+        TraderUsedShipBuyMessage args, UsedShipListing listing)
+    {
+        if (!_cfg.GetCVar(WGShipyardCVars.AsyncPurchase) || _wgParsedListing is { } ready && ready.Id == listing.Id)
+            return false;
+
+        if (_wgPendingBuys.ContainsKey(ent))
+        {
+            _trader.SayAndShow(trader, Loc.GetString("wg-trader-used-preparing-busy"));
+            return true;
+        }
+
+        _wgPendingBuys[ent] = new WGPendingBuy(args, listing.Id, listing.ParseAsync());
+        _trader.SayAndShow(trader, Loc.GetString("wg-trader-used-preparing"));
+        return true;
+    }
+
+    /// <summary>Runs again each purchase whose listing is parsed, with the parsed listing at hand.</summary>
+    private void WGFinishBuys()
+    {
+        if (_wgPendingBuys.Count == 0)
+            return;
+
+        _wgParsedTraders.Clear();
+        foreach (var (uid, pending) in _wgPendingBuys)
+        {
+            if (pending.Parsing.IsCompleted)
+                _wgParsedTraders.Add(uid);
+        }
+
+        foreach (var uid in _wgParsedTraders)
+        {
+            if (!_wgPendingBuys.Remove(uid, out var pending) || !TryComp<TraderUsedShipsComponent>(uid, out var used))
+                continue;
+
+            // Completed by now, so reading it doesn't wait.
+            if (!pending.Parsing.IsCompletedSuccessfully || pending.Parsing.GetAwaiter().GetResult() is not { } data)
+            {
+                Log.Error($"Could not read used ship listing {pending.ListingId} at {ToPrettyString(uid)}: {pending.Parsing.Exception?.InnerException}");
+                if (TryComp<TraderComponent>(uid, out var trader))
+                    _trader.SayAndShow((uid, trader), Loc.GetString("trader-used-load-failed"));
+                continue;
+            }
+
+            _wgParsedListing = (pending.ListingId, data);
+            try
+            {
+                var message = pending.Message;
+                OnBuy((uid, used), ref message);
+            }
+            finally
+            {
+                _wgParsedListing = null;
+            }
+        }
+    }
+
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+        WGFinishBuys();
 
         _refreshAccumulator += frameTime;
         if (_refreshAccumulator < 1f)

@@ -4,6 +4,7 @@ using Content.Server.Body.Components;
 using Content.Server.Chat.Systems;
 using Content.Server.Medical;
 using Content.Shared._Onyx.Wounds;
+using Content.Shared._WG.Performance;
 using Content.Shared._WG.Wolfmed.Autodoc;
 using Content.Shared._WG.Wolfmed.Body;
 using Content.Shared._WG.Wolfmed.CCVar;
@@ -26,8 +27,8 @@ using Robust.Shared.Timing;
 namespace Content.Server._WG.Wolfmed.Life;
 
 /// <summary>
-/// Playtest 4 (SEPSIS): a sick body shows it. Every wolfmed.condition_emote_interval each organic wound host is checked
-/// for what is wrong with it, and one condition emote goes to chat: choking, coughing, wheezing, retching, shivering.
+/// Playtest 4 (SEPSIS): a sick body shows it. Once every wolfmed.condition_emote_interval each organic wound host is
+/// checked for what is wrong with it, and one condition emote goes to chat: choking, coughing, wheezing, retching, shivering.
 /// </summary>
 // The conditions are walked in priority order and each one that holds rolls wolfmed.condition_emote_chance; the first
 // success plays, so at most one emote a check and a lower condition still shows up now and then. The emote played
@@ -62,24 +63,29 @@ public sealed partial class WolfmedConditionEmoteSystem : EntitySystem
 
     private readonly List<EntityUid> _due = new();
     private readonly List<ProtoId<EmotePrototype>> _holding = new();
-    private TimeSpan _nextCheck;
 
+    /// <summary>
+    /// Each body is checked once every wolfmed.condition_emote_interval, on its own tick of it (<see cref="WGTickSpread"/>).
+    /// Every wound host on the server in one tick held it past 17 ms with a full server.
+    /// </summary>
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-        if (_timing.CurTime < _nextCheck)
-            return;
-
-        _nextCheck = _timing.CurTime + TimeSpan.FromSeconds(MathF.Max(1f, _cfg.GetCVar(WolfmedCVars.ConditionEmoteInterval)));
         var chance = Math.Clamp(_cfg.GetCVar(WolfmedCVars.ConditionEmoteChance), 0f, 1f);
         if (chance <= 0f)
             return;
+
+        var period = WGTickSpread.Period(_timing, MathF.Max(1f, _cfg.GetCVar(WolfmedCVars.ConditionEmoteInterval)));
+        var tick = _timing.CurTick;
 
         // Buffered: a vomit spills a puddle, and an emote runs other systems' handlers.
         _due.Clear();
         var query = EntityQueryEnumerator<WoundHostComponent>();
         while (query.MoveNext(out var uid, out _))
-            _due.Add(uid);
+        {
+            if (WGTickSpread.Due(uid, tick, period))
+                _due.Add(uid);
+        }
 
         foreach (var body in _due)
         {

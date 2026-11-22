@@ -273,6 +273,23 @@ public abstract class SharedCMAutomatedVendorSystem : EntitySystem
                 user.TakeOne.Remove(takeOne);
         }
 
+        // WOLFGATE(SpecialistKits) START: specialist kit limits that scale with faction members online
+        var wgKitAttempt = new Content.Shared._WG.SpecialistKits.WGSpecialistKitVendAttemptEvent(actor, entry.Id);
+        RaiseLocalEvent(ref wgKitAttempt);
+        if (wgKitAttempt.Cancelled)
+        {
+            ResetChoices();
+            // ResetChoices doesn't undo a take-all, which would leave the kit marked as drawn.
+            if (section.TakeAll is { } wgTakeAll && user != null)
+                user.TakeAll.Remove((wgTakeAll, entry.Id));
+            // ResetChoices leaves the count undirtied, so the client would still show the choice spent.
+            if (user != null)
+                Dirty(actor, user);
+            _popup.PopupEntity(Loc.GetString(wgKitAttempt.Reason), vendor, actor);
+            return;
+        }
+        // WOLFGATE END
+
         if (section.SharedSpecLimit is { } globalLimit && !HasComp<IgnoreSpecLimitsComponent>(actor))
         {
             if (TryComp<RMCVendorSpecialistComponent>(vendor, out var thisSpecVendor))
@@ -402,6 +419,11 @@ public abstract class SharedCMAutomatedVendorSystem : EntitySystem
         {
             EntityManager.AddComponents(actor, change.AddComponents);
         }
+
+        // WOLFGATE(SpecialistKits) START: a kit is counted against its faction's limit only once it is handed out
+        var wgKitVended = new Content.Shared._WG.SpecialistKits.WGSpecialistKitVendedEvent(actor, entry.Id);
+        RaiseLocalEvent(ref wgKitVended);
+        // WOLFGATE END
     }
 
     private void Vend(EntityUid vendor, EntityUid player, EntProtoId toVend, Vector2 offset, SlotFlags? replaceSlot = null)

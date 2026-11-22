@@ -36,14 +36,31 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Content.Shared.GameTicking;
+using Robust.Shared.Configuration;
+using Robust.Shared.Timing;
 
 namespace Content.Server._WG.Ghost;
+
+/// <summary>Server cvars for <see cref="GhostOrbitSystem"/>.</summary>
+[CVarDefs]
+public sealed class WGGhostOrbitCVars
+{
+    /// <summary>
+    /// Seconds one built orbit list serves every ghost who asks, admins and others apart; 0 builds one per request.
+    /// Each build walks every mob in the world, and every open menu asks every 5 s.
+    /// </summary>
+    public static readonly CVarDef<float> ShareSeconds =
+        CVarDef.Create("wg.ghost.orbit_share_seconds", 2f, CVar.SERVERONLY);
+}
 
 /// <summary>
 /// Builds the categorised target list for the ghost orbit menu and handles orbit requests.
 /// </summary>
 public sealed partial class GhostOrbitSystem : EntitySystem
 {
+    [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IAdminLogManager _adminLog = default!;
     [Dependency] private IAdminManager _admin = default!;
     [Dependency] private Content.Shared.Access.Systems.SharedIdCardSystem _idCards = default!;
@@ -60,6 +77,12 @@ public sealed partial class GhostOrbitSystem : EntitySystem
 
     private EntityQuery<GhostComponent> _ghostQuery;
 
+    private float _shareSeconds;
+
+    /// <summary>The last list built for ordinary ghosts [0] and admins [1], with no viewer left out, and when.</summary>
+    private readonly List<GhostOrbitTarget>?[] _shared = new List<GhostOrbitTarget>?[2];
+    private readonly TimeSpan[] _sharedAt = new TimeSpan[2];
+
     public override void Initialize()
     {
         base.Initialize();
@@ -68,6 +91,8 @@ public sealed partial class GhostOrbitSystem : EntitySystem
 
         SubscribeNetworkEvent<GhostOrbitRequestEvent>(OnRequest);
         SubscribeNetworkEvent<GhostOrbitWarpEvent>(OnWarp);
+        SubscribeLocalEvent<RoundRestartCleanupEvent>(_ => Array.Clear(_shared));
+        Subs.CVar(_cfg, WGGhostOrbitCVars.ShareSeconds, value => _shareSeconds = value, true);
     }
 
     private void OnRequest(GhostOrbitRequestEvent msg, EntitySessionEventArgs args)
@@ -76,10 +101,39 @@ public sealed partial class GhostOrbitSystem : EntitySystem
             return;
 
         var isAdmin = _admin.IsAdmin(viewer);
-        var targets = BuildTargets(viewer, isAdmin);
+        var targets = SharedTargets(viewer, isAdmin);
 
         EntityManager.System<Content.Server._WG.NpcCrew.Systems.WGCrewUiDiagnosticsSystem>().Reply("ghost", args.SenderSession, targets.Count);
         RaiseNetworkEvent(new GhostOrbitTargetsEvent(targets, burrowedLarva: _hives.GetBurrowedLarva()), args.SenderSession.Channel);
+    }
+
+    /// <summary>
+    /// What <see cref="BuildTargets"/> gives the viewer, from one list shared by every ghost of the same kind for
+    /// <see cref="WGGhostOrbitCVars.ShareSeconds"/>. A shared list leaves out only the viewer, as a fresh one would.
+    /// </summary>
+    public List<GhostOrbitTarget> SharedTargets(EntityUid viewer, bool isAdmin)
+    {
+        if (_shareSeconds <= 0f)
+            return BuildTargets(viewer, isAdmin);
+
+        var slot = isAdmin ? 1 : 0;
+        var now = _timing.CurTime;
+        if (_shared[slot] is not { } list || now - _sharedAt[slot] >= TimeSpan.FromSeconds(_shareSeconds) || now < _sharedAt[slot])
+        {
+            list = BuildTargets(EntityUid.Invalid, isAdmin);
+            _shared[slot] = list;
+            _sharedAt[slot] = now;
+        }
+
+        var self = GetNetEntity(viewer);
+        var copy = new List<GhostOrbitTarget>(list.Count);
+        foreach (var target in list)
+        {
+            if (target.Entity != self)
+                copy.Add(target);
+        }
+
+        return copy;
     }
 
     /// <summary>

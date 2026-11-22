@@ -57,6 +57,9 @@ prototypes in `_Mono` with `WOLFGATE(ArmorBalance)` markers.
 - [`Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/tsfmc.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/Head/Hardsuits/tsfmc.yml)
   - helmet tier rule, T2 0.9 and T3 0.85.
   - grammar pass.
+- [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Armor/bulletproof_vests.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Armor/bulletproof_vests.yml)
+  - vests take more armor for having no spaceproofing
+  - 0.9 -> 0.75, vests take more armor for having no spaceproofing
 - [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/asakim.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/asakim.yml): grammar pass.
 - [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/mercenaries.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/mercenaries.yml): grammar pass.
 - [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/mmc.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/Hardsuits/mmc.yml): grammar pass.

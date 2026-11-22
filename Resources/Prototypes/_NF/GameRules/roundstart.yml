@@ -21,10 +21,14 @@
   id: MajorBluespaceEventsTable
   table: !type:AllSelector # we need to pass a list of rules, since rules have further restrictions to consider via StationEventComp
     children:
-    - id: BluespaceCacheError
+    # WOLFGATE(Operations) START: the weapons cache is now PDV's Dynasty Arms Drop operation
+    # - id: BluespaceCacheError
+    # WOLFGATE END
 #    - id: BluespaceCave # Mono edit
-    - id: BluespaceVaultError
-    - id: BluespaceVaultSmallError
+    # WOLFGATE(Operations) START: the vault is now TSF's Vault Transfer operation
+    # - id: BluespaceVaultError
+    # - id: BluespaceVaultSmallError
+    # WOLFGATE END
     - id: BluespaceSyndicateFTLInterception
 # Mono edit start
 #    - id: BluespaceWizardFederationScout

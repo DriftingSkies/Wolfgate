@@ -345,14 +345,21 @@ public sealed partial class WGCompanySystem : EntitySystem
         return CurrentCharacter(session);
     }
 
-    private Character? CurrentCharacter(ICommonSession session)
+    /// <summary>The character slot the session plays: the one it spawned as while it has a living body, else its selected one.</summary>
+    public int? PlayedSlot(ICommonSession session)
     {
         if (_preferences.GetPreferencesOrNull(session.UserId) is not { } prefs)
             return null;
-        var slot = prefs.SelectedCharacterIndex;
         if (_spawnedSlots.TryGetValue(session.UserId, out var spawned) && session.AttachedEntity is { } body &&
             !HasComp<GhostComponent>(body) && (!TryComp<MobStateComponent>(body, out var state) || state.CurrentState != MobState.Dead))
-            slot = spawned;
+            return spawned;
+        return prefs.SelectedCharacterIndex;
+    }
+
+    private Character? CurrentCharacter(ICommonSession session)
+    {
+        if (_preferences.GetPreferencesOrNull(session.UserId) is not { } prefs || PlayedSlot(session) is not { } slot)
+            return null;
         if (!prefs.Characters.TryGetValue(slot, out var profile) || profile is not HumanoidCharacterProfile humanoid ||
             !_profileIds.TryGetValue(session.UserId, out var ids) || !ids.TryGetValue(slot, out var id))
             return null;

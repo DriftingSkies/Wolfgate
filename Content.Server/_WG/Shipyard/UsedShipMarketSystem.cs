@@ -5,6 +5,8 @@ using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using Content.Server._NF.Shipyard.Systems;
+using Content.Server._WG.Performance;
+using Robust.Shared.Serialization.Markdown.Mapping;
 using Content.Server.Shuttles.Systems;
 using Content.Server.Station.Systems;
 using Content.Shared._Mono.Ships.Components;
@@ -105,6 +107,24 @@ public sealed class UsedShipListing
         _data = null;
         Writing = null;
         return true;
+    }
+
+    /// <summary>
+    /// Reads the grid's YAML into data off the main thread, unpacking it there too; null if writing it failed. What it
+    /// reads is taken now, so packing the listing meanwhile changes nothing.
+    /// </summary>
+    public Task<MappingDataNode?> ParseAsync()
+    {
+        if (_packed is { } packed)
+        {
+            return WGGridFileReader.ParseAsync(() =>
+                new StreamReader(new GZipStream(new MemoryStream(packed), CompressionMode.Decompress), Encoding.UTF8));
+        }
+
+        var text = _data ?? (Writing is { IsCompletedSuccessfully: true } writing ? writing.GetAwaiter().GetResult() : null);
+        return text == null
+            ? Task.FromResult<MappingDataNode?>(null)
+            : WGGridFileReader.ParseAsync(() => new StringReader(text));
     }
 
     private static string Unpack(byte[] packed)
@@ -348,13 +368,19 @@ public sealed partial class UsedShipMarketSystem : EntitySystem
 
     /// <summary>
     /// Loads a listing's grid and docks it to a station, exactly as a shipyard purchase would.
-    /// Leaves the deed to the caller, which needs the buyer's session.
+    /// Leaves the deed to the caller, which needs the buyer's session. <paramref name="parsed"/> is the listing's YAML
+    /// already parsed (<see cref="UsedShipListing.ParseAsync"/>); without it the text is read here.
     /// </summary>
-    public bool TryLoadListing(UsedShipListing listing, EntityUid station, [NotNullWhen(true)] out EntityUid? shuttle)
+    public bool TryLoadListing(UsedShipListing listing, EntityUid station, [NotNullWhen(true)] out EntityUid? shuttle,
+        MappingDataNode? parsed = null)
     {
         shuttle = null;
 
-        if (!_shipyard.TryAddSavedShip(listing.Data, out var grid))
+        EntityUid? grid;
+        var loaded = parsed != null
+            ? _shipyard.TryAddSavedShip(parsed, out grid)
+            : _shipyard.TryAddSavedShip(listing.Data, out grid);
+        if (!loaded || grid == null)
             return false;
 
         _shipyard.StripForResale(grid.Value);

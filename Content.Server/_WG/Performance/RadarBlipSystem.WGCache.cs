@@ -50,6 +50,25 @@ public sealed partial class RadarBlipSystem
     private readonly List<Vector2> _wgSourcePositions = new();
     private GameTick _wgBlipsTick = GameTick.Zero;
 
+    /// <summary>Blips put in the report being built, so missile arcs go only with missiles the radar is sent.</summary>
+    private readonly HashSet<EntityUid> _wgReported = new();
+
+    /// <summary>Whether any part of a hitscan line passes within <paramref name="range"/> of a source.</summary>
+    public static bool WGLineInReach(Vector2 start, Vector2 end, IReadOnlyList<Vector2> sources, float range)
+    {
+        var squared = range * range;
+        var line = end - start;
+        var length = line.LengthSquared();
+        foreach (var source in sources)
+        {
+            var along = length > 0f ? Math.Clamp(Vector2.Dot(source - start, line) / length, 0f, 1f) : 0f;
+            if ((start + line * along - source).LengthSquared() < squared)
+                return true;
+        }
+
+        return false;
+    }
+
     /// <summary>
     /// Sorts every blip into squares every <see cref="WGRadarCVars.RebuildTicks"/> ticks. The squares only say roughly
     /// where to look: readers re-check each blip and take its position live (<see cref="WGTryLive"/>).

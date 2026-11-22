@@ -947,15 +947,62 @@ public sealed partial class WGEncounterSystem : EntitySystem
         if (_running.Count == 0)
             return;
 
-        // Judged once every encounter has been tended, against the crews as this poll left them.
+        // Judged once every encounter has been tended, against the crews as this poll left them. Judging asks after a
+        // ship's living crew several times over, so the crew is indexed once for it, and again after anything resolves.
         var crews = _objectives.Snapshot();
+        IndexCrew();
         foreach (var (uid, encounter) in _running)
         {
-            if (encounter.Resolution == null && !TerminatingOrDeleted(uid) && Judge(uid, encounter, crews) is { } resolution)
-                Resolve((uid, encounter), resolution);
+            if (encounter.Resolution != null || TerminatingOrDeleted(uid))
+                continue;
+
+            WGEncounterResolution? resolution;
+            _crewIndexed = true;
+            try
+            {
+                resolution = Judge(uid, encounter, crews);
+            }
+            finally
+            {
+                _crewIndexed = false;
+            }
+
+            if (resolution is not { } resolved)
+                continue;
+
+            Resolve((uid, encounter), resolved);
+            IndexCrew();
         }
 
         _running.Clear();
+    }
+
+    /// <summary>The groups with anyone alive, where they are, and the groups with a living engineer, for a judging pass.</summary>
+    private readonly HashSet<string> _livingGroups = new();
+    private readonly HashSet<(string Group, EntityUid Grid)> _livingAboard = new();
+    private readonly HashSet<string> _livingEngineers = new();
+
+    /// <summary>Whether <see cref="HasLivingCrew"/> and <see cref="HasLivingEngineer"/> read the index; only while judging.</summary>
+    private bool _crewIndexed;
+
+    /// <summary>Walks the crew once, for the judging that follows.</summary>
+    private void IndexCrew()
+    {
+        _livingGroups.Clear();
+        _livingAboard.Clear();
+        _livingEngineers.Clear();
+        var crew = EntityQueryEnumerator<WGCrewComponent, TransformComponent>();
+        while (crew.MoveNext(out var uid, out var member, out var xform))
+        {
+            if (!_mobs.IsAlive(uid))
+                continue;
+
+            _livingGroups.Add(member.Group);
+            if (xform.GridUid is { } grid)
+                _livingAboard.Add((member.Group, grid));
+            if (HasComp<WGCrewEngineerComponent>(uid))
+                _livingEngineers.Add(member.Group);
+        }
     }
 
     /// <summary>How long a ship waits off a stop it could not dock at before it flies on.</summary>
@@ -1139,6 +1186,9 @@ public sealed partial class WGEncounterSystem : EntitySystem
     /// <summary>Whether any of a ship's engineers is alive, wherever he is.</summary>
     public bool HasLivingEngineer(WGEncounterShipState ship)
     {
+        if (_crewIndexed)
+            return _livingEngineers.Contains(ship.Group);
+
         var engineers = EntityQueryEnumerator<WGCrewEngineerComponent, WGCrewComponent>();
         while (engineers.MoveNext(out var uid, out _, out var member))
         {
@@ -1154,6 +1204,9 @@ public sealed partial class WGEncounterSystem : EntitySystem
     {
         if (ship.Virtual || ship.Building)
             return !TerminatingOrDeleted(ship.Grid);
+
+        if (_crewIndexed)
+            return anywhere ? _livingGroups.Contains(ship.Group) : _livingAboard.Contains((ship.Group, ship.Grid));
 
         var crew = EntityQueryEnumerator<WGCrewComponent, TransformComponent>();
         while (crew.MoveNext(out var uid, out var member, out var xform))

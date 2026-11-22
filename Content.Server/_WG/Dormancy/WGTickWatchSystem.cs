@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Reflection;
+using Content.Server._WG.Performance;
 using Prometheus;
 using Robust.Shared.Configuration;
 using Robust.Shared.Timing;
@@ -24,6 +25,7 @@ public sealed class WGTickWatchSystem : EntitySystem
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private IEntitySystemManager _systems = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private WGNetDispatchWatchSystem _net = default!;
 
     private static readonly Histogram? SystemUsage = typeof(EntitySystemManager)
         .GetField("_tickUsageHistogram", BindingFlags.NonPublic | BindingFlags.Static)?.GetValue(null) as Histogram;
@@ -99,7 +101,10 @@ public sealed class WGTickWatchSystem : EntitySystem
                 .OrderByDescending(p => p.Ms)
                 .Take(6)
                 .Select(p => $"{p.Key} {p.Ms:F0}");
-            Log.Warning($"Slow tick {_timing.CurTick.Value}: {total * 1000:F0} ms ({string.Join(", ", top)}).");
+            var slowest = _net.Slowest.Tick == _timing.CurTick && _net.Slowest.Ms >= 1
+                ? $"; slowest client message {_net.Slowest.Label} {_net.Slowest.Ms:F0}"
+                : string.Empty;
+            Log.Warning($"Slow tick {_timing.CurTick.Value}: {total * 1000:F0} ms ({string.Join(", ", top)}){slowest}.");
         }
 
         (_last, _now) = (_now, _last);

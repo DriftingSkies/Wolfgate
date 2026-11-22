@@ -109,6 +109,7 @@ namespace Content.Server.NPC.Pathfinding
                 MaxDegreeOfParallelism = _parallel.ParallelProcessCount,
             };
 
+            WgEvictIdleChunks(); // WOLFGATE(Planets): free planet navmesh nobody has been near, before anything walks it
             UpdateGrid(options);
             _stopwatch.Restart();
             var amount = Math.Min(PathTickLimit, _pathRequests.Count);

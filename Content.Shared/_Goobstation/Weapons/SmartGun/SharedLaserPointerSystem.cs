@@ -39,6 +39,11 @@ public abstract partial class SharedLaserPointerSystem : EntitySystem
         if (!TryComp(pointer, out LaserPointerComponent? laser))
             return;
 
+        // WOLFGATE(Performance) START: one pointer's aim is taken at most 20 times a second, however often a client sends it
+        if (Timing.CurTime - laser.LastNetworkEventTime < Content.Shared._WG.Performance.WGAimThrottle.ServerMinInterval)
+            return;
+        // WOLFGATE END
+
         laser.LastNetworkEventTime = Timing.CurTime;
 
         if (!TryComp(pointer, out WieldableComponent? wieldable))
@@ -81,6 +86,11 @@ public abstract partial class SharedLaserPointerSystem : EntitySystem
         }
         else
         {
+            // WOLFGATE(Performance) START: a line that hasn't moved isn't sent to every client again
+            if (value.Color == color && !Content.Shared._WG.Performance.WGAimThrottle.LineMoved(value.Start, value.End, start, end))
+                return;
+            // WOLFGATE END
+
             value.Color = color;
             value.Start = start;
             value.End = end;

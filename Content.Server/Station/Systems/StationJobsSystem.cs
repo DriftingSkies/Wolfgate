@@ -36,6 +36,8 @@ public sealed partial class StationJobsSystem : EntitySystem
     /// </summary>
     private const int MaxJobSlots = 10;
 
+    private float _wgJobsCooldown; // WOLFGATE(Performance): seconds until the job list may go out again
+
     /// <inheritdoc/>
     public override void Initialize()
     {
@@ -62,8 +64,13 @@ public sealed partial class StationJobsSystem : EntitySystem
 
     public override void Update(float _)
     {
-        if (_availableJobsDirty)
+        // WOLFGATE(Performance) START: the job list goes to every player at most once a second
+        // Each crew ship bought or set up mid-round dirtied it, and each rebuild walks every station.
+        _wgJobsCooldown -= _;
+        if (_availableJobsDirty && _wgJobsCooldown <= 0f)
         {
+            _wgJobsCooldown = 1f;
+        // WOLFGATE END
             _cachedAvailableJobs = GenerateJobsAvailableEvent();
             RaiseNetworkEvent(_cachedAvailableJobs, Filter.Empty().AddPlayers(_player.Sessions));
             _availableJobsDirty = false;

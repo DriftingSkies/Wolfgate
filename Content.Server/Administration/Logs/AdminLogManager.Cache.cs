@@ -46,6 +46,7 @@ public sealed partial class AdminLogManager
 
         _roundsLogCache.Add(_currentRoundId, list);
         CacheRoundCount.Set(_roundsLogCache.Count);
+        WGForgetUncachedRounds(); // WOLFGATE(Performance): forget dropped rounds that left the cache queue
     }
 
     private void CacheLog(AdminLog log)
@@ -59,20 +60,36 @@ public sealed partial class AdminLogManager
     private void CacheLog(SharedAdminLog log)
     {
         // TODO ADMIN LOGS remove redundant data and don't do a dictionary lookup per log
+        if (WGCacheDropped()) // WOLFGATE(Performance): a round past the cache cap is searched in the database
+            return; // WOLFGATE(Performance)
+
         var cache = _roundsLogCache[_currentRoundId];
         cache.Add(log);
         CacheLogCount.Set(cache.Count);
+        WGCheckCacheCap(cache); // WOLFGATE(Performance): drop the round's cache past wg.admin_logs.cache_max
     }
 
     private void CacheLogs(IEnumerable<SharedAdminLog> logs)
     {
+        if (WGCacheDropped()) // WOLFGATE(Performance): a round past the cache cap is searched in the database
+            return; // WOLFGATE(Performance)
+
         var cache = _roundsLogCache[_currentRoundId];
         cache.AddRange(logs);
         CacheLogCount.Set(cache.Count);
+        WGCheckCacheCap(cache); // WOLFGATE(Performance): drop the round's cache past wg.admin_logs.cache_max
     }
 
     private bool TryGetCache(int roundId, [NotNullWhen(true)] out List<SharedAdminLog>? cache)
     {
+        // WOLFGATE(Performance) START: a round whose cache was dropped at the cap is read from the database
+        if (_wgUncachedRounds.Contains(roundId))
+        {
+            cache = null;
+            return false;
+        }
+        // WOLFGATE END
+
         return _roundsLogCache.TryGetValue(roundId, out cache);
     }
 

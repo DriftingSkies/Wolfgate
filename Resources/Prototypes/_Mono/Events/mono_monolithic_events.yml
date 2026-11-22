@@ -4,5 +4,8 @@
   id: MonoMonolithicEventsTable
   table: !type:AllSelector # we need to pass a list of rules, since rules have further restrictions to consider via StationEventComp
     children:
-    - id: MonolithFragmentSmallAppearance
+    # WOLFGATE(Fragments) START: the Remade fragment between the faction bases replaces the plain one
+    # - id: MonolithFragmentSmallAppearance
+    - id: WGFragmentEvent
+    # WOLFGATE END
 # Mono edit end

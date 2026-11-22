@@ -24,7 +24,7 @@ public sealed partial class WGCrewShipStatusSystem : EntitySystem
     [Dependency] private SharedMapSystem _maps = default!;
     [Dependency] private Content.Server.Shuttles.Systems.DockingSystem _docking = default!;
 
-    private readonly List<EntityUid> _boarded = new();
+    private readonly HashSet<EntityUid> _boarded = new();
 
     /// <summary>How long a condition must hold without a break before it counts.</summary>
     public static readonly TimeSpan DisabledDelay = TimeSpan.FromSeconds(10);
@@ -134,39 +134,6 @@ public sealed partial class WGCrewShipStatusSystem : EntitySystem
                && (!reading.Disarmed || reading.GunsUnpowered) && (!reading.Crippled || reading.ThrustUnpowered);
     }
 
-    /// <summary>Whether a ship weapon or gunnery server aboard takes power and has none.</summary>
-    private bool GunsUnpowered(EntityUid grid)
-    {
-        var weapons = EntityQueryEnumerator<FireControllableComponent, ApcPowerReceiverComponent, TransformComponent>();
-        while (weapons.MoveNext(out _, out _, out var receiver, out var xform))
-        {
-            if (xform.GridUid == grid && !receiver.Powered)
-                return true;
-        }
-
-        var servers = EntityQueryEnumerator<FireControlServerComponent, ApcPowerReceiverComponent, TransformComponent>();
-        while (servers.MoveNext(out _, out _, out var receiver, out var xform))
-        {
-            if (xform.GridUid == grid && !receiver.Powered)
-                return true;
-        }
-
-        return false;
-    }
-
-    /// <summary>Whether a thruster aboard takes power and has none.</summary>
-    private bool ThrustUnpowered(EntityUid grid)
-    {
-        var thrusters = EntityQueryEnumerator<ThrusterComponent, ApcPowerReceiverComponent, TransformComponent>();
-        while (thrusters.MoveNext(out _, out _, out var receiver, out var xform))
-        {
-            if (xform.GridUid == grid && !receiver.Powered)
-                return true;
-        }
-
-        return false;
-    }
-
     /// <summary>The share of the most tiles a hull was seen with that it still has; 1 for one never seen whole.</summary>
     public float HullShare(EntityUid grid)
     {
@@ -220,11 +187,30 @@ public sealed partial class WGCrewShipStatusSystem : EntitySystem
         if (_cache.TryGetValue(grid, out var cached) && now < cached.Until)
             return cached.Reading;
 
-        var reading = !TerminatingOrDeleted(grid) && TryComp<ShuttleComponent>(grid, out var shuttle)
-            ? Measure(grid, shuttle, CanShoot(grid), IsCrewed(grid), GunsUnpowered(grid), ThrustUnpowered(grid), now)
-            : default;
+        // A ship asked about for the first time is read from one survey this tick: a fleet arriving had every one of its
+        // hulls walk every weapon, thruster and crewman on the server four times over.
+        Reading reading = default;
+        if (!TerminatingOrDeleted(grid) && TryComp<ShuttleComponent>(grid, out var shuttle))
+        {
+            SurveyThisTick();
+            reading = Measure(grid, shuttle, _armedNow.Contains(grid), _crewedNow.Contains(grid),
+                _gunsDark.Contains(grid), _thrustDark.Contains(grid), now);
+        }
+
         _cache[grid] = (now + CacheTime, reading);
         return reading;
+    }
+
+    private GameTick _surveyTick = GameTick.Zero;
+
+    /// <summary>Takes the survey unless it was already taken this tick.</summary>
+    private void SurveyThisTick()
+    {
+        if (_surveyTick == _timing.CurTick && _surveyTick != GameTick.Zero)
+            return;
+
+        Survey();
+        _surveyTick = _timing.CurTick;
     }
 
     /// <summary>Takes a fresh reading of a ship from whether it can shoot and has anyone aboard right now.</summary>
@@ -329,28 +315,6 @@ public sealed partial class WGCrewShipStatusSystem : EntitySystem
         return crew.Duty == WGCrewDuties.Gunnery && _mobs.IsAlive(uid) && !HasComp<ActorComponent>(uid);
     }
 
-    /// <summary>Whether a living player body or crew NPC is aboard.</summary>
-    private bool IsCrewed(EntityUid grid)
-    {
-        var crew = EntityQueryEnumerator<WGCrewComponent, TransformComponent>();
-        while (crew.MoveNext(out var uid, out _, out var xform))
-        {
-            if (xform.GridUid == grid && _mobs.IsAlive(uid))
-                return true;
-        }
-
-        var players = EntityQueryEnumerator<ActorComponent, TransformComponent>();
-        while (players.MoveNext(out var uid, out _, out var xform))
-        {
-            if (!_mobs.IsAlive(uid) || xform.GridUid is not { } aboard)
-                continue;
-            if (aboard == grid || _docking.AreGridsDocked(aboard, grid))
-                return true;
-        }
-
-        return false;
-    }
-
     /// <summary>A ship whose people have stepped across a port to the ship alongside is not abandoned.</summary>
     private void AddDocked(EntityUid grid, HashSet<EntityUid> crewed)
     {
@@ -376,7 +340,7 @@ public sealed partial class WGCrewShipStatusSystem : EntitySystem
         _watch.UnionWith(_armed);
         _watch.UnionWith(_crewed);
         if (_watch.Count > 0)
-            Survey();
+            SurveyThisTick();
         foreach (var grid in _watch)
         {
             if (TerminatingOrDeleted(grid))
@@ -460,8 +424,12 @@ public sealed partial class WGCrewShipStatusSystem : EntitySystem
         var players = EntityQueryEnumerator<ActorComponent, TransformComponent>();
         while (players.MoveNext(out var uid, out _, out var xform))
         {
-            if (xform.GridUid is { } grid && _mobs.IsAlive(uid) && _crewedNow.Add(grid))
+            // A player's grid lends its crew to the ships docked to it even when an NPC already crews it.
+            if (xform.GridUid is { } grid && _mobs.IsAlive(uid))
+            {
+                _crewedNow.Add(grid);
                 _boarded.Add(grid);
+            }
         }
 
         foreach (var grid in _boarded)

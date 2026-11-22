@@ -8617,3 +8617,80 @@ Entries:
   id: 100550
   time: '2026-11-21T22:31:38.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/788
+- author: DriftingSkies
+  changes:
+    - type: Add
+      message: >-
+        Factions can call in operations from their static uplink: a ladder from
+        Routine to Extreme that pays more for more risk, with spoils crates for
+        the caller. Some land on a planet.
+    - type: Add
+      message: >-
+        Monolith fragments are a rare event both factions are paid to clear
+        together. They never hold a Scion.
+    - type: Add
+      message: >-
+        Specialist kits: each player draws one kit per round from their
+        faction's specialist rack. There are 13 per faction, based on Marine and
+        Navy jobs for the TSF and Ottoman units for the PDV, including cooks,
+        mechanics and a cavalry kit with its own Gygax.
+    - type: Add
+      message: >-
+        Specialist kits come in a single case you take gear out of. It deletes
+        itself once empty, and some kits carry an implant for the round.
+    - type: Add
+      message: 'New PDV job: Artificer.'
+    - type: Add
+      message: >-
+        Both faction uplinks have a Supplies tab with rations, survival gear,
+        tools and field medicine.
+    - type: Tweak
+      message: >-
+        The strongest specialist kits are limited to one or two per faction, so
+        build your squad around them.
+    - type: Tweak
+      message: >-
+        Specialist rack: clicking a kit shows what's in it; press Take to draw
+        it. Each kit shows how many are left.
+    - type: Tweak
+      message: >-
+        Ship vouchers cost only your faction's material up to T2, and the same
+        for both factions at every tier. Capitals are limited by faction
+        population, build time and a lockout after losing one.
+    - type: Tweak
+      message: >-
+        Vests are tougher and each takes one specialty; RMC armor gets
+        specialties too.
+    - type: Tweak
+      message: >-
+        Faction uplinks sell only entry hardsuits; stronger suits are made at
+        the faction lathe.
+    - type: Tweak
+      message: >-
+        The TSF and PDV uplinks now carry the same basics at the same prices.
+        The PDV uplink drops duplicate and lathe-made listings.
+    - type: Remove
+      message: Faction uplinks no longer exchange credits for cash.
+    - type: Remove
+      message: >-
+        The random Solarian vault and Phaethon weapons cache events; call them
+        in as operations instead.
+  id: 100551
+  time: '2026-11-22T07:50:33.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/700
+- author: ImogenOC
+  changes:
+    - type: Tweak
+      message: >-
+        A ship bought at a shipyard console or a used-ship lot now arrives a
+        moment after the order, while the shipyard prepares it, instead of
+        freezing the server while it loads.
+    - type: Tweak
+      message: Laser pointer lines on guns update ten times a second.
+    - type: Fix
+      message: >-
+        Radar now shows hitscan shots that end within range and stops showing
+        ones far outside it.
+  id: 100552
+  time: '2026-11-22T07:52:20.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/791
