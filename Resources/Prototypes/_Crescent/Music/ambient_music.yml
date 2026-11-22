@@ -121,7 +121,14 @@
 - type: soundCollection #I don't know why reusing the far reaches iii soundcollection breaks so here we are
   id: BiomeFarReachesIV
   files:
-   - /Audio/_Crescent/Ambient/FarReaches/far_reaches_iii.ogg
+  # WOLFGATE(Ambience) START: Outer Cloud rings share the new Wolfgate pool
+  #  - /Audio/_Crescent/Ambient/FarReaches/far_reaches_iii.ogg
+   - /Audio/_WG/Ambience/harvested_moon.ogg
+   - /Audio/_WG/Ambience/paen_to_the_past.ogg
+   - /Audio/_WG/Ambience/clarion.ogg
+   - /Audio/_WG/Ambience/the_last_color_of_land.ogg
+   - /Audio/_WG/Ambience/possible_futures.ogg
+  # WOLFGATE END
 
 # far reaches III
 - type: ambientMusic
@@ -132,7 +139,14 @@
 - type: soundCollection
   id: BiomeFarReachesIII
   files:
-   - /Audio/_Crescent/Ambient/FarReaches/far_reaches_iii.ogg
+  # WOLFGATE(Ambience) START: Outer Cloud rings share the new Wolfgate pool
+  #  - /Audio/_Crescent/Ambient/FarReaches/far_reaches_iii.ogg
+   - /Audio/_WG/Ambience/harvested_moon.ogg
+   - /Audio/_WG/Ambience/paen_to_the_past.ogg
+   - /Audio/_WG/Ambience/clarion.ogg
+   - /Audio/_WG/Ambience/the_last_color_of_land.ogg
+   - /Audio/_WG/Ambience/possible_futures.ogg
+  # WOLFGATE END
 
 # far reaches II
 - type: ambientMusic
@@ -143,7 +157,14 @@
 - type: soundCollection
   id: BiomeFarReachesII
   files:
-   - /Audio/_Crescent/Ambient/FarReaches/far_reaches_ii.ogg
+  # WOLFGATE(Ambience) START: Outer Cloud rings share the new Wolfgate pool
+  #  - /Audio/_Crescent/Ambient/FarReaches/far_reaches_ii.ogg
+   - /Audio/_WG/Ambience/harvested_moon.ogg
+   - /Audio/_WG/Ambience/paen_to_the_past.ogg
+   - /Audio/_WG/Ambience/clarion.ogg
+   - /Audio/_WG/Ambience/the_last_color_of_land.ogg
+   - /Audio/_WG/Ambience/possible_futures.ogg
+  # WOLFGATE END
 
 # far reaches I
 - type: ambientMusic
@@ -154,7 +175,14 @@
 - type: soundCollection
   id: BiomeFarReachesI
   files:
-   - /Audio/_Crescent/Ambient/FarReaches/far_reaches_i.ogg
+  # WOLFGATE(Ambience) START: Outer Cloud rings share the new Wolfgate pool
+  #  - /Audio/_Crescent/Ambient/FarReaches/far_reaches_i.ogg
+   - /Audio/_WG/Ambience/harvested_moon.ogg
+   - /Audio/_WG/Ambience/paen_to_the_past.ogg
+   - /Audio/_WG/Ambience/clarion.ogg
+   - /Audio/_WG/Ambience/the_last_color_of_land.ogg
+   - /Audio/_WG/Ambience/possible_futures.ogg
+  # WOLFGATE END
 
 # outer ring
 
@@ -166,10 +194,17 @@
 - type: soundCollection
   id: BiomeOuterRing
   files:
-   - /Audio/_Crescent/Ambient/OuterRing/outer_ring_1.ogg
-   - /Audio/_Crescent/Ambient/OuterRing/outer_ring_2.ogg
-   - /Audio/_Crescent/Ambient/OuterRing/outer_ring_3.ogg
-   - /Audio/_Crescent/Ambient/OuterRing/outer_ring_4.ogg
+  # WOLFGATE(Ambience) START: Wolfgate tracks replace the Crescent pool
+  # - /Audio/_Crescent/Ambient/OuterRing/outer_ring_1.ogg
+  # - /Audio/_Crescent/Ambient/OuterRing/outer_ring_2.ogg
+  # - /Audio/_Crescent/Ambient/OuterRing/outer_ring_3.ogg
+  # - /Audio/_Crescent/Ambient/OuterRing/outer_ring_4.ogg
+   - /Audio/_WG/Ambience/synthetic_warmth.ogg
+   - /Audio/_WG/Ambience/the_last_color_of_land.ogg
+   - /Audio/_WG/Ambience/a_tired_ghost.ogg
+   - /Audio/_WG/Ambience/beneath_fog.ogg
+   - /Audio/_WG/Ambience/clarion.ogg
+  # WOLFGATE END
 
 # middle ring
 
@@ -181,13 +216,23 @@
 - type: soundCollection
   id: BiomeMiddleRing
   files:
-   - /Audio/_Crescent/Ambient/MiddleRing/monolith_01.ogg
-   - /Audio/_Crescent/Ambient/MiddleRing/middle_ring_1.ogg
-   - /Audio/_Crescent/Ambient/MiddleRing/middle_ring_2.ogg
-   - /Audio/_Crescent/Ambient/MiddleRing/middle_ring_3.ogg
-   - /Audio/_Crescent/Ambient/MiddleRing/middle_ring_4.ogg
-   - /Audio/_Crescent/Ambient/MiddleRing/middle_ring_5.ogg
-   - /Audio/_Crescent/Ambient/MiddleRing/middle_ring_6.ogg
+  # WOLFGATE(Ambience) START: Wolfgate tracks replace the Crescent pool
+  # - /Audio/_Crescent/Ambient/MiddleRing/monolith_01.ogg
+  # - /Audio/_Crescent/Ambient/MiddleRing/middle_ring_1.ogg
+  # - /Audio/_Crescent/Ambient/MiddleRing/middle_ring_2.ogg
+  # - /Audio/_Crescent/Ambient/MiddleRing/middle_ring_3.ogg
+  # - /Audio/_Crescent/Ambient/MiddleRing/middle_ring_4.ogg
+  # - /Audio/_Crescent/Ambient/MiddleRing/middle_ring_5.ogg
+  # - /Audio/_Crescent/Ambient/MiddleRing/middle_ring_6.ogg
+   - /Audio/_WG/Ambience/density.ogg
+   - /Audio/_WG/Ambience/little_sister.ogg
+   - /Audio/_WG/Ambience/beneath_fog.ogg
+   - /Audio/_WG/Ambience/equinox.ogg
+   - /Audio/_WG/Ambience/the_gray_orchard.ogg
+   - /Audio/_WG/Ambience/memory_cloud.ogg
+   - /Audio/_WG/Ambience/sennas_rest.ogg
+   - /Audio/_WG/Ambience/a_tired_ghost.ogg
+  # WOLFGATE END
 
 # inner ring
 
@@ -199,12 +244,19 @@
 - type: soundCollection
   id: BiomeInnerRing
   files:
-   - /Audio/_Crescent/Ambient/InnerRing/inner_ring_1.ogg
-   - /Audio/_Crescent/Ambient/InnerRing/inner_ring_2.ogg
-   - /Audio/_Crescent/Ambient/InnerRing/inner_ring_3.ogg
-   - /Audio/_Crescent/Ambient/InnerRing/inner_ring_4.ogg
-   - /Audio/_Crescent/Ambient/InnerRing/inner_ring_5.ogg
-   - /Audio/_Crescent/Ambient/InnerRing/inner_ring_6.ogg
+  # WOLFGATE(Ambience) START: Wolfgate tracks replace the Crescent pool
+  # - /Audio/_Crescent/Ambient/InnerRing/inner_ring_1.ogg
+  # - /Audio/_Crescent/Ambient/InnerRing/inner_ring_2.ogg
+  # - /Audio/_Crescent/Ambient/InnerRing/inner_ring_3.ogg
+  # - /Audio/_Crescent/Ambient/InnerRing/inner_ring_4.ogg
+  # - /Audio/_Crescent/Ambient/InnerRing/inner_ring_5.ogg
+  # - /Audio/_Crescent/Ambient/InnerRing/inner_ring_6.ogg
+   - /Audio/_WG/Ambience/melody_for_morys.ogg
+   - /Audio/_WG/Ambience/sun_chalice.ogg
+   - /Audio/_WG/Ambience/imagined_futures_piano.ogg
+   - /Audio/_WG/Ambience/sennas_rest.ogg
+   - /Audio/_WG/Ambience/equinox.ogg
+  # WOLFGATE END
 
 # crocus
 
@@ -313,16 +365,20 @@
 - type: soundCollection
   id: BiomeClusterA
   files:
-  - /Audio/_Crescent/Ambient/Wilds/wilds_1.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_2.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_3.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_4.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_5.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_6.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_7.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_8.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_9.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_10.ogg
+  # WOLFGATE(Ambience) START: Wolfgate tracks replace the Crescent pool
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_1.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_2.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_3.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_4.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_5.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_6.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_7.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_8.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_9.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_10.ogg
+  - /Audio/_WG/Ambience/the_hermit.ogg
+  - /Audio/_WG/Ambience/possible_futures.ogg
+  # WOLFGATE END
 
 - type: ambientMusic
   id: BiomeWilds
@@ -332,16 +388,21 @@
 - type: soundCollection
   id: BiomeWilds
   files:
-  - /Audio/_Crescent/Ambient/Wilds/wilds_1.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_2.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_3.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_4.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_5.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_6.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_7.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_8.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_9.ogg
-  - /Audio/_Crescent/Ambient/Wilds/wilds_10.ogg
+  # WOLFGATE(Ambience) START: Wolfgate tracks replace the Crescent pool
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_1.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_2.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_3.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_4.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_5.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_6.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_7.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_8.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_9.ogg
+  # - /Audio/_Crescent/Ambient/Wilds/wilds_10.ogg
+  - /Audio/_WG/Ambience/basilisk.ogg
+  - /Audio/_WG/Ambience/matsutake.ogg
+  - /Audio/_WG/Ambience/disentangle.ogg
+  # WOLFGATE END
 
 
 
