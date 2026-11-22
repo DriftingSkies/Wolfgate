@@ -52,7 +52,10 @@ public sealed partial class WGArmorSpecializationSystem : EntitySystem
         if (!WolfmedArmorCoverage.Covers(EntityManager, ent.Owner, args.Args.Part))
             return;
 
-        if (ent.Comp.Blocks.Contains(args.Args.Wound) ||
+        if (ent.Comp.Blocks.Contains(args.Args.Wound) &&
+            ent.Comp.Leaks.TryGetValue(args.Args.Wound, out var leak) && leak > 0f)
+            args.Args.StopChance = MathF.Max(args.Args.StopChance, 1f - leak);
+        else if (ent.Comp.Blocks.Contains(args.Args.Wound) ||
             args.Args.Rule is { } rule && ent.Comp.BlockRules.Contains(rule))
             args.Args.Cancelled = true;
         else if (ent.Comp.Hardens.TryGetValue(args.Args.Wound, out var multiplier))

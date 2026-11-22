@@ -325,6 +325,7 @@ wg-lattice-status-flesh-count = {$count}
 wg-lattice-status-band = HERE
 
 wg-coda-taboo-popup = The word catches in your throat.
+wg-coda-taboo-popup-written = Your hand won't finish the word.
 wg-coda-taboo-stumble-1 = {$first}-{$lower}-{$lower}o...
 wg-coda-taboo-stumble-2 = {$first}o... {$lower}od-
 wg-coda-taboo-stumble-3 = {$first}-{$lower}... the end

@@ -55,7 +55,7 @@ public sealed partial class WGPlanetPoiSystem
             if (FindParking(ground, grid, record, byRoad ? roadside : null) is not { } spot)
                 continue;
 
-            foreach (var id in _entityTables.GetSpawns(vehicles.Spawns))
+            foreach (var id in _entityTables.GetSpawns(vehicles.Spawns, _random))
             {
                 var vehicle = Spawn(id, new EntityCoordinates(ground, (Vector2) spot + new Vector2(0.5f)));
                 // Left with whatever was in the tank.

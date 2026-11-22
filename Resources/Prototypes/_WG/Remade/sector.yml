@@ -71,11 +71,16 @@
     head: ClothingHeadHatHoodCulthood
     shoes: ClothingShoesColorBlack
     gloves: ClothingHandsGlovesColorBlack
-    belt: WeaponPistolMk58
-    pocket1: Magazine45_ACPPistolFMJ
+    belt: ClothingBeltCultWebbing
+    pocket1: WeaponPistolMk58
     pocket2: Magazine45_ACPPistolFMJ
     ears: WGCrewHeadset
     id: PassengerIDCard
+  storage:
+    belt:
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
 
 - type: startingGear
   id: WGCrewChoirLeader
@@ -84,11 +89,16 @@
     outerClothing: ClothingOuterRobesCult
     shoes: ClothingShoesColorBlack
     gloves: ClothingHandsGlovesColorBlack
-    belt: WeaponPistolMk58
-    pocket1: Magazine45_ACPPistolFMJ
+    belt: ClothingBeltCultWebbing
+    pocket1: WeaponPistolMk58
     pocket2: Magazine45_ACPPistolFMJ
     ears: WGCrewHeadset
     id: PassengerIDCard
+  storage:
+    belt:
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
 
 - type: wgCrewProfile
   id: WGCrewProfileChoir

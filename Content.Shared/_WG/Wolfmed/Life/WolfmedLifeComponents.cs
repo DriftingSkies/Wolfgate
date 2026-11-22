@@ -117,8 +117,8 @@ public sealed partial class WolfmedCprComponent : Component
 }
 
 /// <summary>
-/// A mechanical body with no power or no pump: the machine analogue of cardiac arrest. Unconscious through
-/// an external pressure, with no oxygenation clock behind it and nothing that runs out.
+/// A mechanical body with no power, no pump or no fluid: the machine analogue of cardiac arrest. Unconscious through
+/// an external pressure, with no oxygenation clock behind it. Without a pump or fluid its core burns slowly down.
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class WolfmedShutdownComponent : Component
@@ -127,4 +127,8 @@ public sealed partial class WolfmedShutdownComponent : Component
     [AutoNetworkedField]
     public Content.Shared._WG.Wolfmed.Consciousness.WolfmedCauseSource Reason =
         Content.Shared._WG.Wolfmed.Consciousness.WolfmedCauseSource.Power;
+
+    /// <summary>Core health lost to the shutdown drain but not yet taken, under the organ's 0.01 step. Server only.</summary>
+    [ViewVariables]
+    public float CoreDrainCarry;
 }

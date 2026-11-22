@@ -186,21 +186,32 @@
     jumpsuit: ClothingUniformTSFMCEngi
     shoes: ClothingShoesBootsCombat
     head: ClothingHeadHatUtilityTsfmc
-    belt: WeaponPistolMk58
-    pocket1: Magazine45_ACPPistolFMJ
+    belt: ClothingBeltSecurityWebbing
+    pocket1: WeaponPistolMk58
+    pocket2: Magazine45_ACPPistolFMJ
     ears: WGCrewHeadsetTsf
     id: TsfEngiIDCard
+  storage:
+    belt:
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
 
 - type: startingGear
   id: WGCrewTsfOfficer
   equipment:
     jumpsuit: ClothingUniformTSFMCDress
     shoes: ClothingShoesBootsCombat
-    belt: WeaponPistolMk58
-    pocket1: Magazine45_ACPPistolFMJ
+    belt: ClothingBeltSecurityWebbing
+    pocket1: WeaponPistolMk58
     pocket2: Magazine45_ACPPistolFMJ
     ears: WGCrewHeadsetTsf
     id: SergeantIDCard
+  storage:
+    belt:
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
 
 - type: startingGear
   id: WGCrewTsfGuard
@@ -211,11 +222,19 @@
     shoes: ClothingShoesBootsCombat
     gloves: ClothingHandsGlovesColorBlack
     back: WeaponRifleLecter
-    belt: WeaponPistolMk58
+    belt: ClothingBeltSecurityWebbing
     pocket1: Magazine68x52mmCaseless
-    pocket2: Magazine45_ACPPistolFMJ
+    pocket2: WeaponPistolMk58
     ears: WGCrewHeadsetTsf
     id: DeputyIDCard
+  storage:
+    belt:
+    - Magazine68x52mmCaseless
+    - Magazine68x52mmCaseless
+    - Magazine68x52mmCaseless
+    - Magazine68x52mmCaseless
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
 
 - type: wgCrewProfile
   id: WGCrewProfileTsf
@@ -248,10 +267,16 @@
     jumpsuit: ClothingUniformPDVInfantry
     shoes: ClothingShoesBootsCombat
     head: ClothingHeadHatNfsdBeretBrown
-    belt: WeaponPistolViper
-    pocket1: Magazine9x19mmPistolFMJ
+    belt: ClothingBeltPDVInfantry
+    pocket1: WeaponPistolViper
+    pocket2: Magazine9x19mmPistolFMJ
     ears: WGCrewHeadsetPdv
     id: PDVRakhshanIDCard
+  storage:
+    belt:
+    - Magazine9x19mmPistolFMJ
+    - Magazine9x19mmPistolFMJ
+    - Magazine9x19mmPistolFMJ
 
 - type: startingGear
   id: WGCrewPdvOfficer
@@ -259,11 +284,16 @@
     jumpsuit: ClothingUniformJumpsuitNfsdTacCream
     shoes: ClothingShoesBootsCombat
     head: ClothingHeadHatNfsdBeretCream
-    belt: WeaponPistolViper
-    pocket1: Magazine9x19mmPistolFMJ
+    belt: ClothingBeltPDVInfantry
+    pocket1: WeaponPistolViper
     pocket2: Magazine9x19mmPistolFMJ
     ears: WGCrewHeadsetPdv
     id: PDVDenasvarIDCard
+  storage:
+    belt:
+    - Magazine9x19mmPistolFMJ
+    - Magazine9x19mmPistolFMJ
+    - Magazine9x19mmPistolFMJ
 
 - type: startingGear
   id: WGCrewPdvGuard
@@ -274,11 +304,19 @@
     shoes: ClothingShoesBootsCombat
     gloves: ClothingHandsGlovesColorBlack
     back: WeaponRifleVympel
-    belt: WeaponPistolViper
+    belt: ClothingBeltPDVInfantry
     pocket1: Magazine556x45mmFMJ
-    pocket2: Magazine9x19mmPistolFMJ
+    pocket2: WeaponPistolViper
     ears: WGCrewHeadsetPdv
     id: PDVAsvaranIDCard
+  storage:
+    belt:
+    - Magazine556x45mmFMJ
+    - Magazine556x45mmFMJ
+    - Magazine556x45mmFMJ
+    - Magazine556x45mmFMJ
+    - Magazine9x19mmPistolFMJ
+    - Magazine9x19mmPistolFMJ
 
 - type: wgCrewProfile
   id: WGCrewProfilePdv
@@ -312,11 +350,16 @@
     shoes: ClothingShoesBootsPirate
     head: ClothingHeadBandRed
     gloves: ClothingHandsGlovesFingerless
-    belt: WeaponPistolMk58
-    pocket1: Magazine45_ACPPistolFMJ
+    belt: WGClothingBeltReaverChestRig
+    pocket1: WeaponPistolMk58
     pocket2: Magazine45_ACPPistolFMJ
     ears: WGCrewHeadset
     id: PirateIDCard
+  storage:
+    belt:
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
 
 - type: startingGear
   id: WGCrewPirateBruiser
@@ -326,11 +369,16 @@
     head: WGClothingHeadHelmetHardsuitReaverCombat
     eyes: ClothingEyesEyepatch
     shoes: ClothingShoesBootsPirate
-    belt: WeaponPistolMk58
-    pocket1: Magazine45_ACPPistolFMJ
+    belt: WGClothingBeltReaverChestRig
+    pocket1: WeaponPistolMk58
     pocket2: Crowbar
     ears: WGCrewHeadset
     id: PirateIDCard
+  storage:
+    belt:
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
 
 - type: startingGear
   id: WGCrewPirateRifle
@@ -341,11 +389,17 @@
     shoes: ClothingShoesBootsPirate
     gloves: ClothingHandsGlovesColorBlack
     back: WeaponRifleLecter
-    belt: ExGrenade
+    belt: WGClothingBeltReaverChestRig
     pocket1: Magazine68x52mmCaseless
-    pocket2: Magazine68x52mmCaseless
+    pocket2: ExGrenade
     ears: WGCrewHeadset
     id: PirateIDCard
+  storage:
+    belt:
+    - Magazine68x52mmCaseless
+    - Magazine68x52mmCaseless
+    - Magazine68x52mmCaseless
+    - Magazine68x52mmCaseless
 
 - type: startingGear
   id: WGCrewPirateOfficer
@@ -355,11 +409,16 @@
     head: ClothingHeadHatPirateTricord
     neck: WGClothingNeckReaverCaptainCloak
     shoes: ClothingShoesBootsPirate
-    belt: WeaponPistolMk58
-    pocket1: Magazine45_ACPPistolFMJ
+    belt: WGClothingBeltReaverChestRig
+    pocket1: WeaponPistolMk58
     pocket2: Magazine45_ACPPistolFMJ
     ears: WGCrewHeadset
     id: PirateIDCard
+  storage:
+    belt:
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
 
 - type: wgCrewProfile
   id: WGCrewProfilePirate
@@ -412,10 +471,16 @@
     jumpsuit: ClothingUniformUSSP
     shoes: ClothingShoesBootsCombat
     head: ClothingHeadHelmetCombatUSSP
-    belt: WeaponPistolMk32
-    pocket1: Magazine9x19mmPistolFMJ
+    belt: ClothingBeltMercenaryWebbing
+    pocket1: WeaponPistolMk32
+    pocket2: Magazine9x19mmPistolFMJ
     ears: WGCrewHeadsetUssp
     id: USSPRiflemanIDCard
+  storage:
+    belt:
+    - Magazine9x19mmPistolFMJ
+    - Magazine9x19mmPistolFMJ
+    - Magazine9x19mmPistolFMJ
 
 - type: startingGear
   id: WGCrewUsspOfficer
@@ -424,11 +489,16 @@
     outerClothing: ClothingOuterCoatUSSP
     shoes: ClothingShoesBootsCombat
     head: ClothingHeadHatUSSPOfficerCap
-    belt: WeaponPistolMk32
-    pocket1: Magazine9x19mmPistolFMJ
+    belt: ClothingBeltMercenaryWebbing
+    pocket1: WeaponPistolMk32
     pocket2: Magazine9x19mmPistolFMJ
     ears: WGCrewHeadsetUssp
     id: USSPSergeantIDCard
+  storage:
+    belt:
+    - Magazine9x19mmPistolFMJ
+    - Magazine9x19mmPistolFMJ
+    - Magazine9x19mmPistolFMJ
 
 - type: startingGear
   id: WGCrewUsspGuard
@@ -439,11 +509,19 @@
     shoes: ClothingShoesBootsCombat
     gloves: ClothingHandsGlovesColorBlack
     back: WeaponRifleAk
-    belt: WeaponPistolMk32
+    belt: ClothingBeltMercenaryWebbing
     pocket1: Magazine762x39mmFMJ
-    pocket2: Magazine9x19mmPistolFMJ
+    pocket2: WeaponPistolMk32
     ears: WGCrewHeadsetUssp
     id: USSPRiflemanIDCard
+  storage:
+    belt:
+    - Magazine762x39mmFMJ
+    - Magazine762x39mmFMJ
+    - Magazine762x39mmFMJ
+    - Magazine762x39mmFMJ
+    - Magazine9x19mmPistolFMJ
+    - Magazine9x19mmPistolFMJ
 
 - type: wgCrewProfile
   id: WGCrewProfileUssp
@@ -475,10 +553,16 @@
     jumpsuit: ClothingUniformJumpsuitMilitaryContractor
     shoes: ClothingShoesBootsCombat
     gloves: ClothingHandsGlovesCombat
-    belt: WeaponPistolMk58
-    pocket1: Magazine45_ACPPistolFMJ
+    belt: ClothingBeltMercenaryWebbing
+    pocket1: WeaponPistolMk58
+    pocket2: Magazine45_ACPPistolFMJ
     ears: WGCrewHeadset
     id: MercenaryIDCard
+  storage:
+    belt:
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
 
 - type: startingGear
   id: WGCrewMercOfficer
@@ -488,10 +572,16 @@
     shoes: ClothingShoesBootsCombat
     gloves: ClothingHandsGlovesCombat
     eyes: ClothingEyesGlassesSunglasses
-    belt: WeaponPistolMk58
-    pocket1: Magazine45_ACPPistolFMJ
+    belt: ClothingBeltMercenaryWebbing
+    pocket1: WeaponPistolMk58
+    pocket2: Magazine45_ACPPistolFMJ
     ears: WGCrewHeadset
     id: MercenaryIDCard
+  storage:
+    belt:
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
 
 - type: startingGear
   id: WGCrewMercGuard
@@ -502,11 +592,19 @@
     shoes: ClothingShoesBootsCombat
     gloves: ClothingHandsGlovesCombat
     back: WeaponRifleLecter
-    belt: WeaponPistolMk58
+    belt: ClothingBeltMercenaryWebbing
     pocket1: Magazine68x52mmCaseless
-    pocket2: Magazine45_ACPPistolFMJ
+    pocket2: WeaponPistolMk58
     ears: WGCrewHeadset
     id: MercenaryIDCard
+  storage:
+    belt:
+    - Magazine68x52mmCaseless
+    - Magazine68x52mmCaseless
+    - Magazine68x52mmCaseless
+    - Magazine68x52mmCaseless
+    - Magazine45_ACPPistolFMJ
+    - Magazine45_ACPPistolFMJ
 
 - type: wgCrewProfile
   id: WGCrewProfileMercenary

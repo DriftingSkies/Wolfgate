@@ -128,6 +128,10 @@ public sealed class WGStationSalaryTest
         await server.WaitAssertion(() =>
         {
             start = Balance();
+            // The system's own once-a-minute sample may have run during the ticks above; count from nothing.
+#pragma warning disable RA0002 // The test resets the duty count directly.
+            em.GetComponent<WGStationRoleComponent>(body).UnpaidSeconds = 0;
+#pragma warning restore RA0002
             salaries.SampleDuty(WGStationSalarySystem.PaySeconds - 60);
             Assert.That(Paid(), Is.EqualTo(0), "No salary before a full pay period.");
             salaries.SampleDuty(60);

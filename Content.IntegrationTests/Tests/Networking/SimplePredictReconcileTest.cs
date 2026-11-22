@@ -55,6 +55,8 @@ namespace Content.IntegrationTests.Tests.Networking
 
             await server.WaitPost(() =>
             {
+                // WOLFGATE(Ci): send states on the tick thread so none reaches the client a tick late and short its buffer
+                server.CfgMan.SetCVar(CVars.NetPvsAsync, false);
                 // Spawn dummy component entity.
                 sMapSys.CreateMap(out var map);
                 serverEnt = sEntityManager.SpawnEntity(null, new MapCoordinates(new Vector2(0, 0), map));
@@ -386,6 +388,7 @@ namespace Content.IntegrationTests.Tests.Networking
             }
 
             cfg.SetCVar(CVars.NetLogging, log);
+            await server.WaitPost(() => server.CfgMan.SetCVar(CVars.NetPvsAsync, CVars.NetPvsAsync.DefaultValue)); // WOLFGATE(Ci): restore for the next test on this pair
             await pair.CleanReturnAsync();
         }
 

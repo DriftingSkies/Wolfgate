@@ -139,7 +139,7 @@ public sealed partial class WGPlanetPoiSystem
 
                 if (camp.Loot is { } loot)
                 {
-                    foreach (var id in _entityTables.GetSpawns(loot))
+                    foreach (var id in _entityTables.GetSpawns(loot, _random))
                         created.Add(Spawn(id, new EntityCoordinates(ship.Owner, (Vector2) _random.Pick(deck) + new Vector2(0.5f))));
                 }
             }
@@ -354,7 +354,7 @@ public sealed partial class WGPlanetPoiSystem
                 var count = _random.Next(camp.MinResidents, camp.MaxResidents + 1);
                 for (var i = 0; i < count; i++)
                 {
-                    foreach (var id in _entityTables.GetSpawns(residents))
+                    foreach (var id in _entityTables.GetSpawns(residents, _random))
                     {
                         if (RingTile(pending.Reach + _random.NextFloat(1.5f, 3f)) is { } tile)
                             Spawn(id, new EntityCoordinates(ground, (Vector2) tile + new Vector2(0.5f)));

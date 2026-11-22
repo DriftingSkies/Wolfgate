@@ -301,6 +301,7 @@ cargo weight into lift and gravgen support. The flight panel shows a cargo row w
 - [`Content.Server/_WG/Planets/Flight/WGOrbitalMobFallSystem.cs`](Flight/WGOrbitalMobFallSystem.cs)
 - [`Content.Server/_WG/Planets/Flight/WGPlanetDragComponent.cs`](Flight/WGPlanetDragComponent.cs)
 - [`Content.Server/_WG/Planets/Flight/WGPlanetDragSystem.cs`](Flight/WGPlanetDragSystem.cs)
+- [`Content.Server/_WG/Planets/Flight/WGShipFlightHoldSystem.cs`](Flight/WGShipFlightHoldSystem.cs)
 - [`Content.Server/_WG/Planets/Flight/WGSkidComponent.cs`](Flight/WGSkidComponent.cs)
 - [`Content.Server/_WG/Planets/Flight/WGThrustAmbienceSystem.cs`](Flight/WGThrustAmbienceSystem.cs)
 - [`Content.Server/_WG/Planets/Flight/WGThrusterIndexSystem.cs`](Flight/WGThrusterIndexSystem.cs)

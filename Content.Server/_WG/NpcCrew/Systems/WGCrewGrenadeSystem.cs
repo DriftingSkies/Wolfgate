@@ -17,6 +17,7 @@ using Content.Shared.Mobs.Systems;
 using Content.Shared.Physics;
 using Content.Shared.Throwing;
 using Content.Shared.Wieldable.Components;
+using Content.Shared._WG.Wolfmed.Consciousness;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
@@ -39,7 +40,7 @@ public readonly record struct WGCrewGrenadeRules(
 /// Crew grenades: the answer to a hostile holding a corner. A crewman who knows where a hostile is but cannot see it
 /// throws a grenade he carries to a spot he can see that has a clear line to the hostile, shouting first so the
 /// player can react. He cooks it by his skill but never so long that less than a set fuse is left when it lands, never
-/// throws with a crewmate or a bystander in its blast, and nobody goes after the hostile until it has gone off.
+/// throws with a crewmate on his feet or a bystander in its blast, and nobody goes after the hostile until it has gone off.
 /// </summary>
 public sealed partial class WGCrewGrenadeSystem : EntitySystem
 {
@@ -213,7 +214,10 @@ public sealed partial class WGCrewGrenadeSystem : EntitySystem
             CollisionGroup.Impassable, blocker => blocker == uid || !Transform(blocker).Anchored);
     }
 
-    /// <summary>Collects where everyone stands that a throw from here must not hurt: anyone not dead who is not the crewman's enemy.</summary>
+    /// <summary>
+    /// Collects where everyone stands that a throw from here must not hurt: anyone not dead who is not the crewman's
+    /// enemy, fallen crewmen left out.
+    /// </summary>
     private void Spared(EntityUid uid, EntityUid hostile, MapCoordinates from, WGCrewGrenadeRules rules)
     {
         _spared.Clear();
@@ -221,10 +225,24 @@ public sealed partial class WGCrewGrenadeSystem : EntitySystem
         _lookup.GetEntitiesInRange(from, rules.ThrowRange + rules.BlastRadius, _mobsNear);
         foreach (var mob in _mobsNear)
         {
-            if (mob.Owner == uid || mob.Owner == hostile || _mobs.IsDead(mob.Owner, mob.Comp) || _weapons.IsEnemy(uid, mob.Owner))
+            if (mob.Owner == uid || mob.Owner == hostile || _mobs.IsDead(mob.Owner, mob.Comp) || _weapons.IsEnemy(uid, mob.Owner)
+                || Fallen(mob))
                 continue;
             _spared.Add(_xform.GetWorldPosition(mob.Owner));
         }
+    }
+
+    /// <summary>
+    /// Whether a mob is a crewman already down. He holds no throw back, or a boarder standing over the fallen would be
+    /// safe from every grenade. A player's body is always spared.
+    /// </summary>
+    private bool Fallen(Entity<MobStateComponent> mob)
+    {
+        if (!HasComp<WGCrewComponent>(mob) || HasComp<ActorComponent>(mob))
+            return false;
+
+        return !_mobs.IsAlive(mob.Owner, mob.Comp)
+               || CompOrNull<WolfmedConsciousnessComponent>(mob)?.State is WolfmedConsciousness.Downed or WolfmedConsciousness.Unconscious;
     }
 
     /// <summary>Whether nobody in <see cref="_spared"/> is in the blast or in the grenade's way.</summary>

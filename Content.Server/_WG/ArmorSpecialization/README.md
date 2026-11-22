@@ -7,7 +7,8 @@ in a fight and not only on paper. Each is one component on the suit, and each re
 `Docs/_WG/ArmorSpecialization/GUIDE.md`.
 
 - `WGWoundWard`: refuses wounds outright (`blocks`), refuses single wound rules (`blockRules`, such as thrown
-  dislocations for impact dampers) or makes a rule need a multiple of its usual damage (`hardens`). It answers
+  dislocations for impact dampers) or makes a rule need a multiple of its usual damage (`hardens`). A blocked wound
+  listed in `leaks` gets through on that chance instead; lodged rounds and shrapnel default to 20%. It answers
   Wolfmed's `WolfmedWoundRuleAttemptEvent`. The spall liner, sealed layer, insulation, tendon guards, concussion ward,
   bone plating, shock absorbers, trauma gel, cave-in rating, impact dampers, cold seal and comedic padding are all this
   component with different wound lists, and `examine` names which one it is.

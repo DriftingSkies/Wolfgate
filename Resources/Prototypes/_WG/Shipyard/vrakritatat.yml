@@ -1,0 +1,37 @@
+# Author Info
+# Armyguy0 (Discord) Armyguy (Github)
+
+- type: vessel
+  id: WFVrakritatat
+  parent: BaseVessel
+  name: 'VOX-Vrakritatat'
+  description: 'A large Vox scrapper and mining hauler. Has a docking bay for small craft'
+  price: 402373 # appraised at 321899, 25% markup
+  category: Large # 1327 tiles
+  group: Scrap
+  shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/vrakritatat.yml
+  guidebookPage: null
+  class:
+  - Capital
+  - Scrapyard
+  - Salvage
+  engine:
+  - AME
+
+- type: gameMap
+  id: WFVrakritatat
+  mapName: 'VOX-Vrakritatat'
+  mapPath: /SharedMaps/_WG/Shipyard/Shuttles/vrakritatat.yml
+  minPlayers: 0
+  stations:
+    WFVrakritatat:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Vrakritatat MIL-SRP{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

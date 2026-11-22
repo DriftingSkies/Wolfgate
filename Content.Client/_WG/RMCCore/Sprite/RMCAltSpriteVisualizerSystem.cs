@@ -65,6 +65,12 @@ public sealed partial class RMCAltSpriteVisualizerSystem : VisualizerSystem<RMCA
         if (sprite.BaseRSI != res.RSI)
         {
             SpriteSystem.SetBaseRsi((ent, sprite), res.RSI);
+            // SetBaseRsi leaves the bounds of layers drawn from it stale.
+            foreach (var layer in sprite.AllLayers)
+            {
+                if (layer is SpriteComponent.Layer { RSI: null } own && own.State.IsValid)
+                    SpriteSystem.LayerSetRsiState(own, own.State, refresh: true);
+            }
 
             //Reset frames
             for (var i = 0; i < sprite.AllLayers.Count(); i++)

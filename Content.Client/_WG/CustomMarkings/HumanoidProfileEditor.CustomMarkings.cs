@@ -4,8 +4,8 @@ using Content.Shared._WG.CustomMarkings;
 namespace Content.Client.Lobby.UI;
 
 /// <summary>
-/// The Custom markings card on the Markings tab: the player's markings as tiles to put on and take off, and the
-/// button that opens their library.
+/// The Custom markings card on the Markings tab: the player's markings as tiles to put on, take off and edit, and
+/// the button that opens their library.
 /// </summary>
 public sealed partial class HumanoidProfileEditor
 {
@@ -15,13 +15,13 @@ public sealed partial class HumanoidProfileEditor
     private void InitializeCustomMarkings()
     {
         CustomMarkingsButton.OnPressed += _ => OpenCustomMarkings();
-        _customMarkingList = new CustomMarkingQuickList();
+        _customMarkingList = new CustomMarkingQuickList { Profile = () => Profile, Slot = () => CharacterSlot };
         _customMarkingList.OnWornChanged += SetCustomMarkings;
         CustomMarkingsBody.AddChild(_customMarkingList);
         UpdateCustomMarkings();
     }
 
-    /// <summary>Syncs the button with the loaded profile and closes a library opened for the previous one.</summary>
+    /// <summary>Syncs the button with the loaded profile and closes a library or editor opened for the previous one.</summary>
     private void UpdateCustomMarkings()
     {
         CloseCustomMarkings();
@@ -47,7 +47,7 @@ public sealed partial class HumanoidProfileEditor
         if (Profile == null)
             return;
 
-        _customMarkingWindow = new CustomMarkingLibraryWindow(() => Profile);
+        _customMarkingWindow = new CustomMarkingLibraryWindow(() => Profile, () => CharacterSlot);
         _customMarkingWindow.SetWorn(Profile.CustomMarkings);
         _customMarkingWindow.OnWornChanged += SetCustomMarkings;
         _customMarkingWindow.OnClose += () => _customMarkingWindow = null;
@@ -69,6 +69,7 @@ public sealed partial class HumanoidProfileEditor
 
     private void CloseCustomMarkings()
     {
+        UserInterfaceManager.GetUIController<CustomMarkingUIController>().CloseEditor();
         _customMarkingWindow?.Close();
         _customMarkingWindow = null;
     }

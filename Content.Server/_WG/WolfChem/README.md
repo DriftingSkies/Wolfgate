@@ -329,7 +329,9 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
 - [`Content.Server/Medical/HealthAnalyzerSystem.cs`](../../Medical/HealthAnalyzerSystem.cs): drug levels, held effects and dependence
 - [`Content.Shared/_Onyx/Medical/HealthAnalyzerChemicalInfo.cs`](../../../Content.Shared/_Onyx/Medical/HealthAnalyzerChemicalInfo.cs): the reagent's grade
 - [`Content.Shared/Chemistry/Components/Solution.cs`](../../../Content.Shared/Chemistry/Components/Solution.cs)
+  - a handled state gets a copy, so prediction can't write into the cached server state
   - copy the grades
+  - a state's copy keeps the solution's name and reaction flag
   - a standard-grade addition dilutes a graded reagent
   - drop grades of reagents scaled away
   - drop grades of removed reagents

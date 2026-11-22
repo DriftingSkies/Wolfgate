@@ -4,7 +4,6 @@
   groups:
   - name: wg-trait-group-toughness
     traits:
-    - WillToLive
     - Steadfast
   - name: wg-trait-group-healing
     traits:
@@ -23,7 +22,6 @@
   - name: wg-trait-group-augments
     traits:
     - PrybarProsthetics
-    - BionicLegs
     - BionicSpinarette
     - StrikingCalluses
   - name: wg-trait-group-skills
@@ -40,12 +38,7 @@
     traits:
     - Lethargy
     - GlassJaw
-    - WillToDie
-    - Feeble
-    - OsteogenesisImperfecta
-    - Hemophilia
     - WGFragility
-    - Redshirt
     - Uncloneable
   - name: wg-trait-group-habits
     traits:
@@ -100,7 +93,6 @@
     - WGPhotographer
   - name: wg-trait-group-body
     traits:
-    - HighPainThreshold
     - LightweightDrunk
     - WGIlluminated
     - WGHemophagia

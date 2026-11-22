@@ -1,34 +1,48 @@
 # CustomMarkings
 
-Markings players draw themselves. The Custom markings card on the creator's Markings tab opens the player's
-library: draw a new marking in the pixel editor or import a PNG, then wear up to four on a character. A marking is
+Markings players draw themselves. The Custom markings card on the creator's Markings tab shows the player's
+markings as tiles: click one to wear it or take it off, right click it to edit it, or press Draw new. Its button
+opens the library, which also imports and exports PNGs. A character wears up to four. A marking is
 four 32x32 facings and a placement, which sets its depth: behind the body, on the skin, on the hands and feet, over
 the hair and ears or over everything. It draws anywhere in its frame, unless `wg.custom_markings.body_reach` holds it
 to the wearer's body and other markings, such as a tail or ears, and two pixels around them.
 
 A marking can be animated: up to 32 frames, each shown for a time of its own, played round or back and forth
-(ping-pong). The editor can move frames, reverse them, give them all one time, play them and show the frame before
-faintly over the one being drawn (onion skin). And a marking can erase parts of the body under it, so that what is drawn
-takes the body's place instead of lying on top of it.
+(ping-pong). The editor's frame strip picks a frame by clicking and moves it by dragging; the editor can also
+reverse frames, give them all one time, play them and show the frame before faintly over the one being drawn
+(onion skin). And a marking can erase parts of the body under it, so that what is drawn
+takes the body's place instead of lying on top of it. And its pixels can glow: they are drawn unshaded, so they
+stay bright in the dark while the rest of the marking is lit like the body.
 
 The library shows each marking on the character from all four sides, as it will look, with its name, placement and
-icon actions. The editor keeps the drawing tools beside the canvas, the operations on the shown facing under them,
-the facing tiles, the frame controls and the view options to its right and the colours below. Its colour picker
-reads a drawn pixel or, where there is none, the body under it, which `CustomMarkingBodySampler` renders to a small
-target and copies back. The body eraser is a tool of its own: left click erases the body, right click brings it
-back, and while it is picked the facing operations work on what is erased. Both windows sit on a solid backdrop, as
-the skin's glass panel is unreadable over the creator. The icons are drawn by
-`Tools/_WG/CustomMarkings/gen_editor_icons.py`.
+icon actions. The editor (one at a time, opened through `CustomMarkingUIController`) switches over the canvas
+between three layers: Drawing, Erase body and Glow. The tools (pencil, eraser, fill, pick colour), mirror
+drawing, side mirroring (a stroke on one side view is drawn flipped on the other) and the facing operations (move, flip, copy to the other side, clear) act on the layer picked; in the
+Glow layer the canvas is darkened as in the dark so only what glows shows, outlined. A line under the canvas says
+what the tool does. Shortcuts: Ctrl+Z, Ctrl+Y (or Ctrl+Shift+Z), B, E, F and I for the tools, 1 to 3 for the
+layers, M for mirror drawing, S for side mirroring, [ and ] for frames, Space to play; Shift+click draws a line from the last stroke and
+Alt+click picks a colour with any tool. The facing tiles, the frame strip and the view options sit to the right;
+the colours, with the ones already used in the marking, below. A disabled button says why in its tooltip. The
+colour picker reads a drawn pixel or, where there is none, the body under it, which `CustomMarkingBodySampler`
+renders to a small target and copies back. Both windows sit on a solid backdrop, as the skin's glass panel is
+unreadable over the creator. The icons are drawn by `Tools/_WG/CustomMarkings/gen_editor_icons.py`.
 
-Art is stored once per drawing, under a hash of its pixels, and of its frame times and erase mask when it has them,
+Art is stored once per drawing, under a hash of its pixels, and of its frame times, erase mask and glow when it has them,
 and sent to a client the first time it sees that hash. A character's profile lists what it wears as hash and
 placement pairs, so a saved character keeps its markings when the library entry is changed or deleted; changing an
 entry updates the character open in the creator.
 
+A library entry belongs to one character (its profile slot, `WolfgateCustomMarking.Slot`) or to all of them (null).
+A new marking belongs to the character it was drawn for; the library's All characters toggle shares it or takes it
+back (`CustomMarkingScopeEvent`). The creator offers a character only its own and the shared entries
+(`CustomMarkingEntry.OfferedTo`); one not saved yet sees only the shared ones. Deleting a character shares its
+entries, so no drawing is lost. Both kinds count towards the one library limit.
+
 Entry points: the server `CustomMarkingSystem` (library, saving, art requests, admin controls), the client
 `CustomMarkingSystem` (fetches art, draws the layers), `CustomMarkingResources` (fetched art as in-memory RSIs),
-`CustomMarkingLibraryWindow` and `CustomMarkingEditorWindow` (creator UI), `CustomMarkingArt`,
-`CustomMarkingErase` and `CustomMarkingRules` (the art, its erase mask and the limits, shared).
+`CustomMarkingQuickList`, `CustomMarkingLibraryWindow`, `CustomMarkingUIController` and
+`CustomMarkingEditorWindow` (creator UI), `CustomMarkingArt`,
+`CustomMarkingErase` and `CustomMarkingRules` (the art, its erase and glow masks and the limits, shared).
 
 Admin: saving new art is logged under the Identity log type with its hash. The Remove custom markings verb takes
 them off a live character. The Block custom markings verb, or `custommarkingblock <hash> [true/false]`, blocks the
@@ -37,7 +51,8 @@ art is blocked only asks for it again after reconnecting, so a lifted block show
 `wg.custom_markings.enabled`, `wg.custom_markings.max_worn`, `wg.custom_markings.library_limit`,
 `wg.custom_markings.max_frames` (1 allows only still markings), `wg.custom_markings.body_reach` (off by default;
 on, markings are cut to the wearer's outline), `wg.custom_markings.erase_body` (off, masks are
-dropped from what is saved and those already saved are not applied), `wg.custom_markings.daily_art_limit` (most
+dropped from what is saved and those already saved are not applied), `wg.custom_markings.glow` (off, glow is
+dropped from what is saved and art already saved is drawn lit), `wg.custom_markings.daily_art_limit` (most
 new drawings a player may store in a day, 0 for no limit) and `wg.custom_markings.unused_art_days` (how long art
 nothing uses is kept, 0 to keep it forever).
 
@@ -92,6 +107,13 @@ nothing uses is kept, 0 to keep it forever).
   `wg.custom_markings.unused_art_days` have passed and it is still unused. Blocked art is never deleted, so a block
   holds. Until its time is out, art that has left every library can still be looked up and blocked by its hash. A
   character exported to a file and imported after that keeps its other markings but not the deleted art.
+- Glow is a mask beside the art, a bit for each pixel of each facing of each frame, so an animation can glow in
+  some frames and not others. It belongs to the pixel it is on: recolouring keeps it, clearing a pixel drops it,
+  and moving, flipping and copying a facing or reordering frames take it along. Each client splits the art as it
+  cuts it to the body: the lit pixels are one layer and the glowing ones another, just over it, drawn with the
+  `unshaded` shader. Unshaded only ignores the darkness; it casts no light. An exported PNG loses the glow, as it
+  loses the erase mask. Art that doesn't glow keeps the hash it had before glow existed; glowing art hashes that
+  hash again with its mask.
 - Round replays don't record the art: a replay shows the bodies without their custom markings.
 
 <!-- WOLFGATE-GENERATED START -->
@@ -137,10 +159,12 @@ nothing uses is kept, 0 to keep it forever).
 - [`Content.Client/_WG/CustomMarkings/UI/CustomMarkingCloseWindow.cs`](../../../Content.Client/_WG/CustomMarkings/UI/CustomMarkingCloseWindow.cs)
 - [`Content.Client/_WG/CustomMarkings/UI/CustomMarkingEditorWindow.cs`](../../../Content.Client/_WG/CustomMarkings/UI/CustomMarkingEditorWindow.cs)
 - [`Content.Client/_WG/CustomMarkings/UI/CustomMarkingEraseBrush.cs`](../../../Content.Client/_WG/CustomMarkings/UI/CustomMarkingEraseBrush.cs)
+- [`Content.Client/_WG/CustomMarkings/UI/CustomMarkingFrameStrip.cs`](../../../Content.Client/_WG/CustomMarkings/UI/CustomMarkingFrameStrip.cs)
 - [`Content.Client/_WG/CustomMarkings/UI/CustomMarkingIconButton.cs`](../../../Content.Client/_WG/CustomMarkings/UI/CustomMarkingIconButton.cs)
 - [`Content.Client/_WG/CustomMarkings/UI/CustomMarkingLibraryWindow.cs`](../../../Content.Client/_WG/CustomMarkings/UI/CustomMarkingLibraryWindow.cs)
 - [`Content.Client/_WG/CustomMarkings/UI/CustomMarkingQuickList.cs`](../../../Content.Client/_WG/CustomMarkings/UI/CustomMarkingQuickList.cs)
 - [`Content.Client/_WG/CustomMarkings/UI/CustomMarkingSampling.cs`](../../../Content.Client/_WG/CustomMarkings/UI/CustomMarkingSampling.cs)
+- [`Content.Client/_WG/CustomMarkings/UI/CustomMarkingUIController.cs`](../../../Content.Client/_WG/CustomMarkings/UI/CustomMarkingUIController.cs)
 - [`Content.Client/_WG/CustomMarkings/UI/CustomMarkingWindow.cs`](../../../Content.Client/_WG/CustomMarkings/UI/CustomMarkingWindow.cs)
 
 ### Integration tests
@@ -160,6 +184,7 @@ nothing uses is kept, 0 to keep it forever).
 - [`Content.Tests/_WG/CustomMarkings/CustomMarkingArtTest.cs`](../../../Content.Tests/_WG/CustomMarkings/CustomMarkingArtTest.cs)
 - [`Content.Tests/_WG/CustomMarkings/CustomMarkingColorSpaceTest.cs`](../../../Content.Tests/_WG/CustomMarkings/CustomMarkingColorSpaceTest.cs)
 - [`Content.Tests/_WG/CustomMarkings/CustomMarkingEraseTest.cs`](../../../Content.Tests/_WG/CustomMarkings/CustomMarkingEraseTest.cs)
+- [`Content.Tests/_WG/CustomMarkings/CustomMarkingGlowTest.cs`](../../../Content.Tests/_WG/CustomMarkings/CustomMarkingGlowTest.cs)
 - [`Content.Tests/_WG/CustomMarkings/CustomMarkingRulesTest.cs`](../../../Content.Tests/_WG/CustomMarkings/CustomMarkingRulesTest.cs)
 - [`Content.Tests/_WG/CustomMarkings/CustomMarkingSamplingTest.cs`](../../../Content.Tests/_WG/CustomMarkings/CustomMarkingSamplingTest.cs)
 - [`Content.Tests/_WG/CustomMarkings/CustomMarkingSectionsTest.cs`](../../../Content.Tests/_WG/CustomMarkings/CustomMarkingSectionsTest.cs)
@@ -189,13 +214,16 @@ nothing uses is kept, 0 to keep it forever).
   - exact opacity of one pixel, to split a marking along limb outlines
   - see ClickMapManager.IsOpaque.
 - [`Content.Client/Humanoid/HumanoidAppearanceSystem.cs`](../../../Content.Client/Humanoid/HumanoidAppearanceSystem.cs): the doll wears the profile's custom markings
+- [`Content.Client/Lobby/LobbyUIController.cs`](../../../Content.Client/Lobby/LobbyUIController.cs): its own markings go to every character
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml): integrates the drawing library with the creator's marking cards
 - [`Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs`](../../../Content.Client/Lobby/UI/HumanoidProfileEditor.xaml.cs): its tiles face that way too
 - [`Content.Server.Database/Model.cs`](../../../Content.Server.Database/Model.cs)
   - player-drawn marking art and each player's library of it
   - a library entry points at its art, which outlives it
   - the custom markings worn, as hash:placement pairs; empty for none.
-- [`Content.Server/Database/ServerDbBase.cs`](../../Database/ServerDbBase.cs): partial, so the module's queries sit in its own folder
+- [`Content.Server/Database/ServerDbBase.cs`](../../Database/ServerDbBase.cs)
+  - partial, so the module's queries sit in its own folder
+  - its own markings go to every character
 - [`Content.Server/Database/ServerDbManager.cs`](../../Database/ServerDbManager.cs): partial, so the module's queries sit in its own folder
 - [`Content.Shared/Content.Shared.csproj`](../../../Content.Shared/Content.Shared.csproj): encodes marking art as PNG on the server and in the editor
 - [`Content.Shared/Humanoid/SharedHumanoidAppearanceSystem.cs`](../../../Content.Shared/Humanoid/SharedHumanoidAppearanceSystem.cs)

@@ -1,0 +1,36 @@
+# Author Info
+# Macaronicritter (Github,Discord)
+- type: vessel
+  id: WGSnakeEater
+  parent: BaseVessel
+  name: 'VG Snake Eater'
+  description: 'A salvage vessel doubling as a broadsiding corvette. Comes with a salvage dock and clinic. Armed with two Dravon 57x460mm and 2 AK57s autocannons. Rear towing harpoon included.'
+  price: 250838 # appraised at 209032, 20% markup
+  category: Medium # 676 tiles
+  group: Viper
+  access: Viper
+  shuttlePath: /SharedMaps/_WG/Community/snake_eater.yml
+  guidebookPage: null
+  class:
+  - Salvage
+  - Corvette
+  engine:
+  - AME
+
+- type: gameMap
+  id: WGSnakeEater
+  mapName: 'VG Snake Eater'
+  mapPath: /SharedMaps/_WG/Community/snake_eater.yml
+  minPlayers: 0
+  stations:
+    WGSnakeEater:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Snake Eater VG{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          Contractor: [ 0, 0 ]

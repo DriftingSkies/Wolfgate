@@ -586,6 +586,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Resources/Prototypes/_NF/Catalog/Fills/Lockers/heads.yml`](../../Resources/Prototypes/_NF/Catalog/Fills/Lockers/heads.yml): Caelestinus Expansion I (#675) reverted
 - [`Resources/Prototypes/_NF/Catalog/VendingMachines/Inventories/engivend.yml`](../../Resources/Prototypes/_NF/Catalog/VendingMachines/Inventories/engivend.yml): radiation suits buyable from the EngiVend
 - [`Resources/Prototypes/_NF/Entities/Objects/Consumable/Food/meals.yml`](../../Resources/Prototypes/_NF/Entities/Objects/Consumable/Food/meals.yml): OwO accent removed
+- [`Resources/Prototypes/_NF/Entities/Objects/Devices/door_remote.yml`](../../Resources/Prototypes/_NF/Entities/Objects/Devices/door_remote.yml): Halcyon doors read the Tsfmc tag since the access refactor, which Security no longer holds
 - [`Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/Ammunition/Projectiles/misc.yml`](../../Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/Ammunition/Projectiles/misc.yml): a flare that lands inside a wall still lights the room
 - [`Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/expedition_guns.yml`](../../Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/expedition_guns.yml): was WeaponSubMachineGunTypewriter, class-3 contraband since Monolith#4816
 - [`Resources/Prototypes/_NF/Entities/Structures/atm.yml`](../../Resources/Prototypes/_NF/Entities/Structures/atm.yml): the access refactor took the payroll console from Fireteam Leaders
@@ -727,7 +728,9 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
   - was 16
 - [`Resources/ServerInfo/Rules.txt`](../../Resources/ServerInfo/Rules.txt): Monolith renamed to Wolfgate in the intro and section headings (#19); the file is unused (server.rules_file is MonolithRuleset).
 - [`Resources/SharedMaps/_Mono/Shuttles/Civilian/autumn.yml`](../../Resources/SharedMaps/_Mono/Shuttles/Civilian/autumn.yml): Mapped directional fans on the two outer side airlocks, which vented the bridge to space.
-- [`Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml`](../../Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml): PDV pack, top-left thruster was mapped disabled.
+- [`Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml`](../../Resources/SharedMaps/_Mono/Shuttles/Civilian/caracara.yml)
+  - PDV pack, top-left thruster was mapped disabled.
+  - Its air mixer ran at the 50/50 default; set to 21% oxygen, 79% nitrogen.
 - [`Resources/SharedMaps/_Mono/Shuttles/PDV/bazalt.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/bazalt.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
 - [`Resources/SharedMaps/_Mono/Shuttles/PDV/europa.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/europa.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
 - [`Resources/SharedMaps/_Mono/Shuttles/PDV/gadfly.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/gadfly.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
@@ -743,6 +746,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Resources/SharedMaps/_Mono/Shuttles/PDV/osa.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/osa.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
 - [`Resources/SharedMaps/_Mono/Shuttles/PDV/scorpion.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/scorpion.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
 - [`Resources/SharedMaps/_Mono/Shuttles/PDV/tethys.yml`](../../Resources/SharedMaps/_Mono/Shuttles/PDV/tethys.yml): PDV pack hull, back to Monolith's plastitanium walls after the adamantite refit was reverted.
+- [`Resources/SharedMaps/_Mono/Shuttles/VG/wolfsnake.yml`](../../Resources/SharedMaps/_Mono/Shuttles/VG/wolfsnake.yml): The plasma windoor by the shield generator faced the corridor; turned to shut the generator in.
 - [`Resources/Textures/_FarHorizons/Structures/Power/Generation/FissionGenerator/nuclear_reactor.rsi/`](../../Resources/Textures/_FarHorizons/Structures/Power/Generation/FissionGenerator/nuclear_reactor.rsi/): Licence corrected to CC-BY-NC-SA-3.0, as the sprite is taken from Goonstation, whose assets are BY-NC-SA.
 - [`Resources/Textures/_FarHorizons/Structures/Power/Generation/FissionGenerator/reactor_component_cap.rsi/`](../../Resources/Textures/_FarHorizons/Structures/Power/Generation/FissionGenerator/reactor_component_cap.rsi/): Licence corrected to CC-BY-NC-SA-3.0, as the sprite is taken from Goonstation, whose assets are BY-NC-SA.
 - [`Resources/Textures/_FarHorizons/Structures/Power/Generation/FissionGenerator/reactor_parts.rsi/`](../../Resources/Textures/_FarHorizons/Structures/Power/Generation/FissionGenerator/reactor_parts.rsi/): Licence corrected to CC-BY-NC-SA-3.0, as the sprite is taken from Goonstation, whose assets are BY-NC-SA.

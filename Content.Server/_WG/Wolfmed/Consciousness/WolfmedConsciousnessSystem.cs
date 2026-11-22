@@ -74,6 +74,7 @@ public sealed partial class WolfmedConsciousnessSystem : SharedWolfmedConsciousn
     private float _bloodOut;
     private float _hysteresis;
     private float _faintSeconds;
+    private float _rebootSeconds;
     private float _faintRise;
     private float _faintCooldown;
 
@@ -89,11 +90,13 @@ public sealed partial class WolfmedConsciousnessSystem : SharedWolfmedConsciousn
         Subs.CVar(_configuration, WolfmedCVars.ConsciousnessBloodOut, value => _bloodOut = value, true);
         Subs.CVar(_configuration, WolfmedCVars.ConsciousnessHysteresis, value => _hysteresis = value, true);
         Subs.CVar(_configuration, WolfmedCVars.PainFaintSeconds, value => _faintSeconds = value, true);
+        Subs.CVar(_configuration, WolfmedCVars.RebootFaintSeconds, value => _rebootSeconds = value, true);
         Subs.CVar(_configuration, WolfmedCVars.PainFaintRise, value => _faintRise = value, true);
         Subs.CVar(_configuration, WolfmedCVars.PainFaintCooldown, value => _faintCooldown = value, true);
 
         SubscribeLocalEvent<WoundHostComponent, ComponentStartup>(OnWoundHostStartup);
         SubscribeLocalEvent<WolfmedConsciousnessComponent, PainChangedEvent>(OnPainChanged);
+        SubscribeLocalEvent<WolfmedConsciousnessComponent, WolfmedNumbPainChangedEvent>(OnNumbPainChanged);
         SubscribeLocalEvent<WolfmedConsciousnessComponent, DamageChangedEvent>(OnDamageChanged);
         SubscribeLocalEvent<WolfmedConsciousnessComponent, MobStateChangedEvent>(OnMobStateChanged);
         SubscribeLocalEvent<WolfmedConsciousnessComponent, RejuvenateEvent>(OnRejuvenate);
@@ -467,22 +470,22 @@ public sealed partial class WolfmedConsciousnessSystem : SharedWolfmedConsciousn
 
         if (!_relief.LiftsDowned(body.Owner) && _painDown > 0f)
         {
-            var effective = _pain.GetPain((body.Owner, pain)).Float() - _relief.GetRelief(body.Owner);
+            var effective = ReadPain(body.Owner, (body.Owner, pain)).Float() - _relief.GetRelief(body.Owner);
             down = MathF.Max(0f, effective) / (cap * _painDown);
         }
 
-        var faint = mechanical || _painOut <= 0f ? 0f : GetUncappedPain(body) / (cap * _painOut);
+        var faint = _painOut <= 0f ? 0f : GetUncappedPain(body) / (cap * _painOut);
         return (down, faint);
     }
 
     /// <summary>Runs the pain faint and returns whether one is running now.</summary>
     // A faint lasts a fixed time that nothing extends. It re-arms only when summed pain falls under the leave line or
     // rises by wolfmed.pain_faint_rise over the pain at waking, never inside the cooldown after waking. A strong or
-    // emergency painkiller ends it and blocks the next; a mechanical body never faints.
+    // emergency painkiller ends it and blocks the next. A mechanical body reboots instead, on the same rules but shorter.
     private bool UpdatePainFaint(Entity<WolfmedConsciousnessComponent> body, bool mechanical)
     {
         var comp = body.Comp;
-        if (mechanical || _painOut <= 0f || !TryComp(body, out PainComponent? pain) ||
+        if (_painOut <= 0f || !TryComp(body, out PainComponent? pain) ||
             pain.SoftPainCap <= FixedPoint2.Zero)
         {
             comp.PainFaintUntil = null;
@@ -519,14 +522,14 @@ public sealed partial class WolfmedConsciousnessSystem : SharedWolfmedConsciousn
             return false;
 
         comp.PainFaintStart = now;
-        comp.PainFaintUntil = now + TimeSpan.FromSeconds(MathF.Max(0f, _faintSeconds));
+        comp.PainFaintUntil = now + TimeSpan.FromSeconds(MathF.Max(0f, mechanical ? _rebootSeconds : _faintSeconds));
         comp.PainFaintArmed = false;
         return true;
     }
 
     /// <summary>
     /// M3: knocks the patient out for <c>wolfmed.head_knockout_seconds</c> after a heavy blow to the head (plan
-    /// §3.6). A blow during the knockout never lengthens it. Machines never faint (OD9), and nor does a body
+    /// §3.6). A blow during the knockout never lengthens it. Machines take no head blow (OD9), and nor does a body
     /// consciousness does not run. Called by <c>WolfmedOrganThresholdSystem</c> on the hit.
     /// </summary>
     public bool StartHeadBlow(EntityUid body)
@@ -631,10 +634,18 @@ public sealed partial class WolfmedConsciousnessSystem : SharedWolfmedConsciousn
             // Synthetics: an isolated chassis part has its sensors off.
             if (TryComp(part, out PainComponent? pain) &&
                 !HasComp<Content.Shared._WG.Synthetics.WGIsolatedPartComponent>(part))
-                total += _pain.GetPain((part, pain)).Float();
+                total += ReadPain(body, (part, pain)).Float();
         }
 
         return total;
+    }
+
+    /// <summary>The pain consciousness reads: a Numb trait body is not felt, but still counted.</summary>
+    private FixedPoint2 ReadPain(EntityUid body, Entity<PainComponent> source)
+    {
+        return HasComp<WolfmedNumbTraitComponent>(body)
+            ? _pain.GetPainThroughNumbness(source.AsNullable())
+            : _pain.GetPain(source.AsNullable());
     }
 
     /// <summary>Blood volume, as how far past each threshold the body is. No bloodstream, no input.</summary>
@@ -673,6 +684,11 @@ public sealed partial class WolfmedConsciousnessSystem : SharedWolfmedConsciousn
     }
 
     private void OnPainChanged(Entity<WolfmedConsciousnessComponent> body, ref PainChangedEvent args)
+    {
+        Evaluate(body);
+    }
+
+    private void OnNumbPainChanged(Entity<WolfmedConsciousnessComponent> body, ref WolfmedNumbPainChangedEvent args)
     {
         Evaluate(body);
     }

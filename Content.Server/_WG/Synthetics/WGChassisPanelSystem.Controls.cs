@@ -6,6 +6,7 @@ using Content.Shared._Onyx.Wounds;
 using Content.Shared._WG.Synthetics;
 using Content.Shared._WG.Wolfmed.Compat;
 using Content.Shared.Body.Part;
+using Content.Shared.Cuffs.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.FixedPoint;
@@ -148,8 +149,17 @@ public sealed partial class WGChassisPanelSystem
     /// <summary>Isolates or restores one of this body's limbs from the panel.</summary>
     public bool SetIsolated(EntityUid body, EntityUid part, bool isolate, EntityUid user)
     {
-        if (CompOrNull<BodyPartComponent>(part)?.Body != body)
+        if (CompOrNull<BodyPartComponent>(part) is not { } bodyPart || bodyPart.Body != body)
             return false;
+
+        // A cut arm or hand drops its hand, and the cuffs with it.
+        if (isolate
+            && bodyPart.PartType is BodyPartType.Arm or BodyPartType.Hand
+            && CompOrNull<CuffableComponent>(body)?.CuffedHandCount > 0)
+        {
+            _popup.PopupEntity(Loc.GetString("wg-chassis-isolate-refuse-cuffed"), body, user);
+            return false;
+        }
 
         if (!_isolation.TrySetUserIsolated(part, isolate, out var deferred))
         {

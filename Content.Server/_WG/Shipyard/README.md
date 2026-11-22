@@ -84,6 +84,7 @@ share from its slot, or from the counter of a trader hosting it (`ShipyardHostCa
 - [`Resources/Prototypes/_WG/Shipyard/ubm_lurker.yml`](../../../Resources/Prototypes/_WG/Shipyard/ubm_lurker.yml)
 - [`Resources/Prototypes/_WG/Shipyard/viscount.yml`](../../../Resources/Prototypes/_WG/Shipyard/viscount.yml)
 - [`Resources/Prototypes/_WG/Shipyard/vox_vrakritatat.yml`](../../../Resources/Prototypes/_WG/Shipyard/vox_vrakritatat.yml)
+- [`Resources/Prototypes/_WG/Shipyard/vrakritatat.yml`](../../../Resources/Prototypes/_WG/Shipyard/vrakritatat.yml)
 
 ### Localization
 
@@ -123,10 +124,15 @@ share from its slot, or from the counter of a trader hosting it (`ShipyardHostCa
 - [`Resources/SharedMaps/_WG/Shipyard/Shuttles/ubm_lurker.yml`](../../../Resources/SharedMaps/_WG/Shipyard/Shuttles/ubm_lurker.yml)
 - [`Resources/SharedMaps/_WG/Shipyard/Shuttles/viscount.yml`](../../../Resources/SharedMaps/_WG/Shipyard/Shuttles/viscount.yml)
 - [`Resources/SharedMaps/_WG/Shipyard/Shuttles/vox_vrakritatat.yml`](../../../Resources/SharedMaps/_WG/Shipyard/Shuttles/vox_vrakritatat.yml)
+- [`Resources/SharedMaps/_WG/Shipyard/Shuttles/vrakritatat.yml`](../../../Resources/SharedMaps/_WG/Shipyard/Shuttles/vrakritatat.yml)
 
 ## Non-modular edits
 
-- [`Content.Server/_NF/Shipyard/Systems/ShipyardSystem.Consoles.cs`](../../_NF/Shipyard/Systems/ShipyardSystem.Consoles.cs): refuse the sale when the bank share can't be taken; an Ironman's frozen balance bought ships for free
+- [`Content.Server/_Mono/Shipyard/ShipyardVoucherSystem.cs`](../../_Mono/Shipyard/ShipyardVoucherSystem.cs): every voucher runs out, so a kept card showed "infinite" with one use left
+- [`Content.Server/_NF/Shipyard/Systems/ShipyardSystem.Consoles.cs`](../../_NF/Shipyard/Systems/ShipyardSystem.Consoles.cs)
+  - set below, so a refused redemption starts no cooldown
+  - the cooldown starts only with a redemption that goes through
+  - refuse the sale when the bank share can't be taken; an Ironman's frozen balance bought ships for free
 - [`Content.Server/_NF/Shipyard/Systems/ShipyardSystem.cs`](../../_NF/Shipyard/Systems/ShipyardSystem.cs)
   - last look at the grid, with its deed, before it goes. See _WG/Shipyard.
   - the hull is parked and taken apart over many ticks; this stalled the server
@@ -139,6 +145,7 @@ share from its slot, or from the counter of a trader hosting it (`ShipyardHostCa
   - zero entries do not count
 - [`Content.Shared/Damage/DamageSpecifierDictionarySerializer.cs`](../../../Content.Shared/Damage/DamageSpecifierDictionarySerializer.cs): adds writing support so DamageSpecifier can round-trip through DamageDict
 - [`Content.Shared/VendingMachines/VendingMachineComponent.cs`](../../../Content.Shared/VendingMachines/VendingMachineComponent.cs): a data definition, so a live machine's stock can be written out with its grid
+- [`Resources/Prototypes/_FarHorizons/Entities/Structures/Power/Generation/FissionGenerator/turbine.yml`](../../../Resources/Prototypes/_FarHorizons/Entities/Structures/Power/Generation/FissionGenerator/turbine.yml): turbines respawn these every tick, so a saved ship must not keep duplicates that unanchor the turbine on reload
 - [`Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Devices/ship_vouchers.yml): New WG T0 Ships
 - [`Resources/Prototypes/_Mono/Outpost/caelestinus.yml`](../../../Resources/Prototypes/_Mono/Outpost/caelestinus.yml): ships sold anywhere on this station end up on the used ship lot
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/phaethon_dynasty.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/Factions/phaethon_dynasty.yml): Foxtrot-II voucher

@@ -29,6 +29,9 @@ public sealed partial class WGCockpitView
     private bool _showGunnery;
     private bool _gunneryControlling;
 
+    /// <summary>Set on a fresh gun bank until its remembered selection has been put back.</summary>
+    private bool _gunneryRecall;
+
     private void InitializeGunnery(MainViewport viewport)
     {
         var modes = new ButtonGroup();
@@ -82,7 +85,10 @@ public sealed partial class WGCockpitView
         });
     }
 
-    /// <summary>Updates the reachable gun bank, clears selection when its console changes and re-evaluates gun control.</summary>
+    /// <summary>
+    /// Updates the reachable gun bank and re-evaluates gun control. A fresh bank takes back the selection the pilot
+    /// last had on that console.
+    /// </summary>
     public void UpdateGunnery(WGCockpitGunneryStateMessage message)
     {
         if (_restored)
@@ -104,9 +110,17 @@ public sealed partial class WGCockpitView
             {
                 _gunneryPanel = new WGCockpitGunneryPanel();
                 _gunneryPanel.Command += SendGunnery;
+                _gunneryPanel.SelectionChanged += RememberGunnery;
                 _gunneryContents.AddChild(_gunneryPanel);
+                _gunneryRecall = true;
             }
             _gunneryPanel.UpdateState(message.State);
+            // Once the bank lists its weapons, so there are keys to press.
+            if (_gunneryRecall && message.State!.FireControllables.Length > 0)
+            {
+                _gunneryRecall = false;
+                _gunneryPanel.Select(GunneryMemory().Recall(console!.Value));
+            }
         }
         _aimPreview.UpdateWeapons(available ? message.State!.FireControllables : null);
         var visibilityChanged = _gunneryModes.Visible != available;
@@ -147,6 +161,18 @@ public sealed partial class WGCockpitView
         _gunneryControlling = controlling;
         _gunneryInput.Cancel();
         _console.WgSendCockpitGunnery(new WGCockpitGunnerySessionMessage(true, controlling));
+    }
+
+    private static WGCockpitGunneryMemorySystem GunneryMemory()
+    {
+        return IoCManager.Resolve<IEntityManager>().System<WGCockpitGunneryMemorySystem>();
+    }
+
+    /// <summary>Keeps the pilot's selection for this console, to put back when the bank is next built.</summary>
+    private void RememberGunnery()
+    {
+        if (_gunneryConsole is { } console && _gunneryPanel is { } panel)
+            GunneryMemory().Remember(console, panel.PressedWeapons);
     }
 
     private void SendGunnery(BoundUserInterfaceMessage command)

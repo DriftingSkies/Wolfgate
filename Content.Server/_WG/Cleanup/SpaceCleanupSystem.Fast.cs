@@ -95,10 +95,10 @@ public sealed partial class SpaceCleanupSystem
         if (_htnQuery.HasComp(uid) || _immuneQuery.HasComp(uid) || _mindQuery.HasComp(uid))
             return true;
 
-        // wall-stuck entities skip the radius checks and go on price alone
+        // wall-stuck entities skip the radius checks and go on price alone; a bought item or trade crate is kept
         if (!inSpace)
         {
-            cleanup = GetWallStuck((uid, xform)) && (float) _pricing.GetPrice(uid) <= _maxPrice;
+            cleanup = !WgPaidFor(uid) && GetWallStuck((uid, xform)) && (float) _pricing.GetPrice(uid) <= _maxPrice;
             return true;
         }
 

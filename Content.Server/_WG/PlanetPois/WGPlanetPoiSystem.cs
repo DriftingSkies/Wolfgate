@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 using Content.Server._WG.Caverns;
 using Content.Server._WG.Planets;
@@ -30,7 +31,7 @@ public sealed partial class WGPlanetPoiSystem : EntitySystem
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private IPlayerManager _players = default!;
     [Dependency] private IPrototypeManager _proto = default!;
-    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private IRobustRandom _sharedRandom = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private BiomeSystem _biome = default!;
     [Dependency] private DungeonSystem _dungeon = default!;
@@ -46,6 +47,16 @@ public sealed partial class WGPlanetPoiSystem : EntitySystem
 
     private static readonly TimeSpan RevealInterval = TimeSpan.FromSeconds(1);
     private TimeSpan _nextReveal;
+
+    /// <summary>
+    /// The running placement's own generator, seeded once from the shared one when it starts. Placement spreads over
+    /// ticks by a wall-clock budget, and other systems draw from the shared generator in between, so drawing from it
+    /// directly gave a different world for the same seed on a slower machine.
+    /// </summary>
+    private readonly AsyncLocal<IRobustRandom?> _placementRandom = new();
+
+    /// <summary>The placement's generator inside a placement, the shared one elsewhere.</summary>
+    private IRobustRandom _random => _placementRandom.Value ?? _sharedRandom;
 
     public override void Initialize()
     {

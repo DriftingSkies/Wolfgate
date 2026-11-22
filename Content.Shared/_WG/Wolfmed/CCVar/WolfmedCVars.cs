@@ -468,6 +468,20 @@ public sealed class WolfmedCVars
         CVarDef.Create("wolfmed.pain_faint_seconds", 20f, CVar.SERVERONLY);
 
     /// <summary>
+    /// Seconds a mechanical body's pain faint lasts: a sensor-overload reboot (OD9 b). Shorter than the organic faint
+    /// because no painkiller reaches a chassis to end it early.
+    /// </summary>
+    public static readonly CVarDef<float> RebootFaintSeconds =
+        CVarDef.Create("wolfmed.reboot_faint_seconds", 10f, CVar.SERVERONLY);
+
+    /// <summary>
+    /// Seconds a chassis shut down without a pump or hydraulic fluid takes to burn out a full positronic core, as an
+    /// arrest runs a brain down. A flat cell drains nothing. Zero turns the drain off.
+    /// </summary>
+    public static readonly CVarDef<float> ShutdownCoreSeconds =
+        CVarDef.Create("wolfmed.shutdown_core_seconds", 450f, CVar.SERVERONLY);
+
+    /// <summary>
     /// Summed pain over the pain at waking that re-arms the faint. Pain added during a faint does not count,
     /// so a steady injury never faints twice; a fresh wound can.
     /// </summary>

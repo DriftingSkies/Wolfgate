@@ -20,10 +20,10 @@
       "name": "picker"
     },
     {
-      "name": "bodyeraser"
+      "name": "symmetry"
     },
     {
-      "name": "symmetry"
+      "name": "sides"
     },
     {
       "name": "undo"
@@ -56,12 +56,6 @@
       "name": "export"
     },
     {
-      "name": "previous"
-    },
-    {
-      "name": "next"
-    },
-    {
       "name": "add"
     },
     {
@@ -69,12 +63,6 @@
     },
     {
       "name": "play"
-    },
-    {
-      "name": "frameleft"
-    },
-    {
-      "name": "frameright"
     },
     {
       "name": "reverse"

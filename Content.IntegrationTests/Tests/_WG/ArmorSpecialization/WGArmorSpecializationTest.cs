@@ -85,6 +85,54 @@ public sealed class WGArmorSpecializationTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>A spall liner stops most fragments, not all: a high enough roll lets a pellet's shrapnel through.</summary>
+    [Test]
+    public async Task SpallLinerLetsSomeFragmentsThrough()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entities = server.ResolveDependency<IEntityManager>();
+        var rules = entities.System<WolfmedWoundRuleSystem>();
+
+        await server.WaitAssertion(() =>
+        {
+            entities.System<SharedMapSystem>().CreateMap(out var mapId);
+            var coords = new MapCoordinates(0, 0, mapId);
+
+            var probe = Wear(entities, coords, "ClothingOuterHardsuitAshen");
+            var attempt = new WolfmedWoundRuleAttemptEvent(Part(entities, probe, BodyPartType.Torso),
+                "WGWolfmedShrapnelWound", FixedPoint2.New(11));
+            entities.EventBus.RaiseLocalEvent(probe, ref attempt);
+            Assert.That(attempt.Cancelled, Is.False, "The liner still refuses shrapnel outright.");
+            Assert.That(attempt.StopChance, Is.GreaterThan(0.5f).And.LessThan(1f), "The liner's stop chance isn't high but short of certain.");
+
+            bool Shot(float roll)
+            {
+                var body = Wear(entities, coords, "ClothingOuterHardsuitAshen");
+                var pellet = entities.SpawnEntity("Pellet12_gauge", coords);
+                var hit = new DamageSpecifier();
+                hit.DamageDict["Piercing"] = FixedPoint2.New(11);
+                rules.ForcedRoll = roll;
+                try
+                {
+                    entities.System<DamageableSystem>().TryChangeDamage(body, hit, origin: probe, tool: pellet,
+                        targetPart: TargetBodyPart.Torso);
+                }
+                finally
+                {
+                    rules.ForcedRoll = null;
+                }
+
+                return HasWound(entities, body, "WGWolfmedShrapnelWound");
+            }
+
+            Assert.That(Shot(0f), Is.False, "The liner let shrapnel through on a low roll.");
+            Assert.That(Shot((attempt.StopChance + 1f) / 2f), Is.True, "Shrapnel never gets past the liner.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     [Test]
     public async Task WardsAnswerThroughTheRelay()
     {

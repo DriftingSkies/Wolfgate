@@ -6,6 +6,7 @@ using Content.Server.Administration.Managers;
 using Content.Server.Database;
 using Content.Shared._WG.CustomMarkings;
 using Content.Shared.Administration;
+using Content.Shared.CCVar;
 using Content.Shared.Database;
 using Content.Shared.GameTicking;
 using Content.Shared.Humanoid;
@@ -61,6 +62,7 @@ public sealed partial class CustomMarkingSystem : EntitySystem
         SubscribeNetworkEvent<CustomMarkingLibraryRequestEvent>(OnLibraryRequest);
         SubscribeNetworkEvent<CustomMarkingSaveEvent>(OnSave);
         SubscribeNetworkEvent<CustomMarkingDeleteEvent>(OnDelete);
+        SubscribeNetworkEvent<CustomMarkingScopeEvent>(OnScope);
         SubscribeNetworkEvent<CustomMarkingArtRequestEvent>(OnArtRequest);
         SubscribeLocalEvent<GetVerbsEvent<Verb>>(OnGetVerbs);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestart);
@@ -99,10 +101,14 @@ public sealed partial class CustomMarkingSystem : EntitySystem
         _player.PlayerStatusChanged -= OnPlayerStatusChanged;
     }
 
+    /// <summary>Put between the hash of glowing art's other parts and its glow mask.</summary>
+    private static readonly byte[] GlowTag = "glow"u8.ToArray();
+
     /// <summary>
     /// The id art is stored under: a hash of its pixels, so the same drawing is only ever stored once. Frame times
     /// and an erase mask go into it only when the art has them, which leaves a plain still marking's hash that of
-    /// its pixels alone. The three parts differ in length, so no two kinds of art hash the same bytes.
+    /// its pixels alone. The three parts differ in length, so no two kinds of art hash the same bytes. Glowing art
+    /// hashes that hash again with its glow mask, which leaves the hash of art that doesn't glow as it was.
     /// </summary>
     public static string Hash(CustomMarkingArt art)
     {
@@ -114,7 +120,16 @@ public sealed partial class CustomMarkingSystem : EntitySystem
         if (art.HasErase())
             hash.AppendData(art.Erase);
 
-        return Convert.ToHexString(hash.GetHashAndReset()).ToLowerInvariant();
+        var digest = hash.GetHashAndReset();
+        if (art.HasGlow())
+        {
+            hash.AppendData(digest);
+            hash.AppendData(GlowTag);
+            hash.AppendData(art.Glow);
+            digest = hash.GetHashAndReset();
+        }
+
+        return Convert.ToHexString(digest).ToLowerInvariant();
     }
 
     private bool Enabled => _cfg.GetCVar(CustomMarkingCVars.Enabled);
@@ -154,7 +169,7 @@ public sealed partial class CustomMarkingSystem : EntitySystem
     private static CustomMarkingEntry ToEntry(WolfgateCustomMarking row)
     {
         var placement = (CustomMarkingPlacement) row.Placement;
-        return new CustomMarkingEntry(row.Id, row.Name, row.ArtHash, Enum.IsDefined(placement) ? placement : CustomMarkingPlacement.Skin);
+        return new CustomMarkingEntry(row.Id, row.Name, row.ArtHash, Enum.IsDefined(placement) ? placement : CustomMarkingPlacement.Skin, row.Slot);
     }
 
     private async void OnSave(CustomMarkingSaveEvent msg, EntitySessionEventArgs args)
@@ -180,17 +195,18 @@ public sealed partial class CustomMarkingSystem : EntitySystem
         if (_nextSave.TryGetValue(session, out var next) && now < next)
             return CustomMarkingSaveResult.Fail("wg-custom-marking-error-cooldown");
 
-        if (!Enum.IsDefined(msg.Placement))
+        if (!Enum.IsDefined(msg.Placement) || !ValidSlot(msg.Slot))
             return CustomMarkingSaveResult.Fail("wg-custom-marking-error-invalid");
 
         string? hash = null;
         CustomMarkingStoredArt? stored = null;
         if (msg.Pixels != null)
         {
-            // With erasing turned off, a mask is dropped rather than refused: the drawing is still good.
+            // With erasing or glow turned off, a mask is dropped rather than refused: the drawing is still good.
             var erase = _cfg.GetCVar(CustomMarkingCVars.EraseBody) ? msg.Erase : null;
+            var glow = _cfg.GetCVar(CustomMarkingCVars.Glow) ? msg.Glow : null;
             var maxFrames = Math.Max(1, _cfg.GetCVar(CustomMarkingCVars.MaxFrames));
-            if (CustomMarkingArt.FromPixels(msg.Pixels, msg.FrameTimes, erase, maxFrames, msg.PingPong) is not { } art)
+            if (CustomMarkingArt.FromPixels(msg.Pixels, msg.FrameTimes, erase, maxFrames, msg.PingPong, glow) is not { } art)
                 return CustomMarkingSaveResult.Fail("wg-custom-marking-error-invalid");
 
             if (art.IsBlank() && !art.HasErase())
@@ -200,7 +216,8 @@ public sealed partial class CustomMarkingSystem : EntitySystem
             stored = new CustomMarkingStoredArt(
                 art.ToPng(),
                 CustomMarkingRules.PackFrameTimes(art.GetFrameTimes(), art.PingPongs),
-                art.HasErase() ? art.Erase : null);
+                art.HasErase() ? art.Erase : null,
+                art.HasGlow() ? art.Glow : null);
         }
 
         var name = CustomMarkingRules.CleanName(msg.Name);
@@ -214,7 +231,7 @@ public sealed partial class CustomMarkingSystem : EntitySystem
         try
         {
             result = await _db.SaveCustomMarkingAsync(session.UserId, msg.Id, name, (int) msg.Placement, hash, stored,
-                _cfg.GetCVar(CustomMarkingCVars.LibraryLimit), _cfg.GetCVar(CustomMarkingCVars.DailyArtLimit));
+                _cfg.GetCVar(CustomMarkingCVars.LibraryLimit), _cfg.GetCVar(CustomMarkingCVars.DailyArtLimit), msg.Slot);
         }
         catch (Exception e)
         {
@@ -251,6 +268,30 @@ public sealed partial class CustomMarkingSystem : EntitySystem
         await SendLibrary(session);
     }
 
+    private async void OnScope(CustomMarkingScopeEvent msg, EntitySessionEventArgs args)
+    {
+        var session = args.SenderSession;
+        if (!ValidSlot(msg.Slot) || !Spend(_libraryBudgetFull, session, LibraryRefill, LibraryBudget))
+            return;
+
+        try
+        {
+            await _db.SetCustomMarkingSlotAsync(session.UserId, msg.Id, msg.Slot);
+        }
+        catch (Exception e)
+        {
+            Log.Error($"Moving a custom marking of {session.Name} threw: {e}");
+        }
+
+        await SendLibrary(session);
+    }
+
+    /// <summary>Whether a slot could hold a character: null, for every character, or one of the server's slots.</summary>
+    private bool ValidSlot(int? slot)
+    {
+        return slot is not { } index || index >= 0 && index < _cfg.GetCVar(CCVars.GameMaxCharacterSlots);
+    }
+
     private async void OnArtRequest(CustomMarkingArtRequestEvent msg, EntitySessionEventArgs args)
     {
         var session = args.SenderSession;
@@ -271,7 +312,8 @@ public sealed partial class CustomMarkingSystem : EntitySystem
                     art?.Png,
                     CustomMarkingRules.UnpackFrameTimes(art?.FrameTimes),
                     art?.Erase,
-                    CustomMarkingRules.UnpackPingPong(art?.FrameTimes)),
+                    CustomMarkingRules.UnpackPingPong(art?.FrameTimes),
+                    art?.Glow),
                 session);
         }
     }

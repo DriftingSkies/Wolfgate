@@ -112,11 +112,13 @@ public sealed class CustomMarkingLibraryTest
         var pngB = new byte[] { 4, 5 };
         var artA = new StoredArt(pngA, null, null);
 
-        // Animated art that erases some of the body: its frame times and its mask are stored with the sheet.
+        // Animated art that erases some of the body and glows: its frame times and masks are stored with the sheet.
         var timesB = new byte[] { 200, 0, 44, 1 };
         var eraseB = new byte[CustomMarkingRules.EraseBytes];
         eraseB[7] = 0x10;
-        var artB = new StoredArt(pngB, timesB, eraseB);
+        var glowB = new byte[2 * CustomMarkingRules.EraseBytes];
+        glowB[600] = 0x04;
+        var artB = new StoredArt(pngB, timesB, eraseB, glowB);
         const int limit = 2;
 
         var added = await db.SaveCustomMarkingAsync(user, 0, "One", (int) CustomMarkingPlacement.Skin, HashA, artA, limit);
@@ -155,9 +157,11 @@ public sealed class CustomMarkingLibraryTest
         {
             Assert.That(storedA!.FrameTimes, Is.Null, "a still marking has no frame times");
             Assert.That(storedA.Erase, Is.Null);
+            Assert.That(storedA.Glow, Is.Null);
             Assert.That(storedB!.Png, Is.EqualTo(pngB));
             Assert.That(storedB.FrameTimes, Is.EqualTo(timesB));
             Assert.That(storedB.Erase, Is.EqualTo(eraseB));
+            Assert.That(storedB.Glow, Is.EqualTo(glowB));
         });
 
         // Art another player already saved is shared, not stored twice or overwritten.
@@ -365,6 +369,59 @@ public sealed class CustomMarkingLibraryTest
         // Each player has a count of their own, and no limit means none.
         Assert.That((await db.SaveCustomMarkingAsync(other, 0, "Theirs", 0, FakeHash('3'), art, library, daily)).Error, Is.Null);
         Assert.That((await db.SaveCustomMarkingAsync(user, id, "Mark", 0, FakeHash('4'), art, library)).Error, Is.Null);
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// A marking is kept for the character it was drawn for until it is shared, and deleting that character shares
+    /// it rather than losing it.
+    /// </summary>
+    [Test]
+    public async Task LibraryScopeTest()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var db = GetDb(pair.Server);
+        var user = new NetUserId(Guid.NewGuid());
+        var art = new StoredArt(new byte[] { 1 }, null, null);
+        const int limit = 24;
+
+        HumanoidCharacterProfile profile = default!;
+        await pair.Server.WaitPost(() => profile = HumanoidCharacterProfile.DefaultWithSpecies());
+        await db.InitPrefsAsync(user, profile);
+        await db.SaveCharacterSlotAsync(user, profile, 1);
+
+        var kept = (await db.SaveCustomMarkingAsync(user, 0, "Kept", 0, FakeHash('1'), art, limit, slot: 1)).Entry!;
+        var shared = (await db.SaveCustomMarkingAsync(user, 0, "Shared", 0, FakeHash('2'), art, limit)).Entry!;
+        var first = (await db.SaveCustomMarkingAsync(user, 0, "First", 0, FakeHash('3'), art, limit, slot: 0)).Entry!;
+        Assert.Multiple(() =>
+        {
+            Assert.That(kept.Slot, Is.EqualTo(1), "a new marking keeps the slot it was saved for");
+            Assert.That(shared.Slot, Is.Null);
+        });
+
+        var renamed = (await db.SaveCustomMarkingAsync(user, kept.Id, "Renamed", 0, null, null, limit)).Entry!;
+        Assert.That(renamed.Slot, Is.EqualTo(1), "editing a marking leaves who it's for alone");
+
+        Assert.That(await db.SetCustomMarkingSlotAsync(user, shared.Id, 0), Is.True);
+        Assert.That(await db.SetCustomMarkingSlotAsync(user, first.Id, null), Is.True);
+        Assert.That(await db.SetCustomMarkingSlotAsync(Guid.NewGuid(), kept.Id, null), Is.False, "nobody else can move it");
+
+        await db.SaveCharacterSlotAsync(user, null, 1);
+        var slots = (await db.GetCustomMarkingsAsync(user)).ToDictionary(m => m.Id, m => m.Slot);
+        Assert.Multiple(() =>
+        {
+            Assert.That(slots[kept.Id], Is.Null, "a deleted character's markings go to every character");
+            Assert.That(slots[shared.Id], Is.EqualTo(0), "another character's stay its own");
+            Assert.That(slots[first.Id], Is.Null);
+        });
+
+        // A save that lands after its character was deleted, or names a slot no character holds, is shared.
+        var stale = (await db.SaveCustomMarkingAsync(user, 0, "Stale", 0, FakeHash('4'), art, limit, slot: 1)).Entry!;
+        Assert.That(stale.Slot, Is.Null, "a deleted character's slot isn't kept");
+        Assert.That(await db.SetCustomMarkingSlotAsync(user, shared.Id, 7), Is.True);
+        Assert.That((await db.GetCustomMarkingsAsync(user)).Single(m => m.Id == shared.Id).Slot, Is.Null,
+            "nor is one no character holds");
 
         await pair.CleanReturnAsync();
     }

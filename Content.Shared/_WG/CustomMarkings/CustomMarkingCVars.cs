@@ -43,6 +43,14 @@ public sealed class CustomMarkingCVars
         CVarDef.Create("wg.custom_markings.erase_body", true, CVar.SERVER | CVar.REPLICATED);
 
     /// <summary>
+    /// Whether a marking's pixels may glow, drawn unshaded so they stay bright in the dark. Off, glow is dropped
+    /// from what is saved and art already saved is drawn lit. Replicated so the editor can hide its tool and
+    /// clients draw markings lit.
+    /// </summary>
+    public static readonly CVarDef<bool> Glow =
+        CVarDef.Create("wg.custom_markings.glow", true, CVar.SERVER | CVar.REPLICATED);
+
+    /// <summary>
     /// Most new drawings one player may store in a day. Saving a drawing the server already holds doesn't count,
     /// and neither does changing an entry's name or placement. 0 for no limit.
     /// </summary>

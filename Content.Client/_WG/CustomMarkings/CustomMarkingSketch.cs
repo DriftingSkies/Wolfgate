@@ -41,6 +41,11 @@ public sealed class CustomMarkingSketch
     public int MirrorAxis = DefaultMirrorAxis;
 
     /// <summary>
+    /// Whether drawing on one side view draws on the other too, flipped, as the two see the body from either side.
+    /// </summary>
+    public bool SideMirror;
+
+    /// <summary>
     /// Where drawing may add to the art, by facing, x and y: the body shown and the margin around it. Null allows
     /// the whole facing. Erasing reaches everywhere, as art drawn for another body can lie out of reach of this one.
     /// </summary>
@@ -96,10 +101,10 @@ public sealed class CustomMarkingSketch
     /// </summary>
     public void Line(int frame, int facing, Vector2i from, Vector2i to, Rgba32 ink)
     {
-        Mirrored(from, to, (x, y) =>
+        Mirrored(facing, from, to, (at, x, y) =>
         {
-            if (ink.A == 0 || Allowed == null || Allowed(facing, x, y))
-                Art.SetPixel(frame, facing, x, y, ink);
+            if (ink.A == 0 || Allowed == null || Allowed(at, x, y))
+                Art.SetPixel(frame, at, x, y, ink);
         });
     }
 
@@ -109,30 +114,97 @@ public sealed class CustomMarkingSketch
     /// </summary>
     public void EraseLine(int facing, Vector2i from, Vector2i to, bool erased)
     {
-        Mirrored(from, to, (x, y) =>
+        Mirrored(facing, from, to, (at, x, y) =>
         {
-            if (!erased || Allowed == null || Allowed(facing, x, y))
-                Art.SetErased(facing, x, y, erased);
+            if (!erased || Allowed == null || Allowed(at, x, y))
+                Art.SetErased(at, x, y, erased);
         });
     }
 
-    /// <summary>Fills from a pixel of a frame, and while mirroring from the pixel across the middle too.</summary>
-    public void Fill(int frame, int facing, int x, int y, Rgba32 ink)
+    /// <summary>
+    /// Makes the drawn pixels along a straight run of a frame glow, or stop glowing, mirrored like <see cref="Line"/>.
+    /// Undrawn pixels are passed over.
+    /// </summary>
+    public void GlowLine(int frame, int facing, Vector2i from, Vector2i to, bool glowing)
     {
-        Func<int, int, bool>? reach = null;
-        if (Allowed is { } allowed && ink.A != 0)
-            reach = (atX, atY) => allowed(facing, atX, atY);
-
-        Art.Fill(frame, facing, x, y, ink, reach);
-        if (Mirror)
-            Art.Fill(frame, facing, MirrorX(x), y, ink, reach);
+        Mirrored(facing, from, to, (at, x, y) => Art.SetGlow(frame, at, x, y, glowing));
     }
 
-    private void Mirrored(Vector2i from, Vector2i to, Action<int, int> plot)
+    /// <summary>
+    /// Fills from a pixel of a frame, while mirroring from the pixel across the middle too, and while side mirroring
+    /// from the same pixels on the other side view.
+    /// </summary>
+    public void Fill(int frame, int facing, int x, int y, Rgba32 ink)
     {
-        Run(from, to, plot);
+        MirroredAt(facing, x, y, (at, atX, atY) =>
+        {
+            Func<int, int, bool>? reach = null;
+            if (Allowed is { } allowed && ink.A != 0)
+                reach = (reachX, reachY) => allowed(at, reachX, reachY);
+
+            Art.Fill(frame, at, atX, atY, ink, reach);
+        });
+    }
+
+    /// <summary>Makes a same-coloured patch of a frame glow or stop glowing, mirrored like <see cref="Fill"/>.</summary>
+    public void GlowFill(int frame, int facing, int x, int y, bool glowing)
+    {
+        MirroredAt(facing, x, y, (at, atX, atY) => Art.FillGlow(frame, at, atX, atY, glowing));
+    }
+
+    /// <summary>The other side view of a side view, or null for the front and back.</summary>
+    public static int? OtherSide(int facing)
+    {
+        return facing switch
+        {
+            CustomMarkingArt.East => CustomMarkingArt.West,
+            CustomMarkingArt.West => CustomMarkingArt.East,
+            _ => null,
+        };
+    }
+
+    /// <summary>The column a column of a side view shows up in on the other side view.</summary>
+    public static int SideX(int x)
+    {
+        return CustomMarkingRules.FrameSize - 1 - x;
+    }
+
+    /// <summary>The side view a stroke on a facing is copied to, or null when side mirroring doesn't reach it.</summary>
+    private int? SideOf(int facing)
+    {
+        return SideMirror ? OtherSide(facing) : null;
+    }
+
+    /// <summary>Runs a line through <paramref name="plot"/>, with the facing, for every copy the mirrors make of it.</summary>
+    private void Mirrored(int facing, Vector2i from, Vector2i to, Action<int, int, int> plot)
+    {
+        var side = SideOf(facing);
+        Action<int, int> both = (x, y) =>
+        {
+            plot(facing, x, y);
+            if (side is { } other)
+                plot(other, SideX(x), y);
+        };
+
+        Run(from, to, both);
         if (Mirror)
-            Run(new Vector2i(MirrorX(from.X), from.Y), new Vector2i(MirrorX(to.X), to.Y), plot);
+            Run(new Vector2i(MirrorX(from.X), from.Y), new Vector2i(MirrorX(to.X), to.Y), both);
+    }
+
+    /// <summary>Calls <paramref name="act"/> with the facing for a pixel and every copy the mirrors make of it.</summary>
+    private void MirroredAt(int facing, int x, int y, Action<int, int, int> act)
+    {
+        var side = SideOf(facing);
+        act(facing, x, y);
+        if (side is { } other)
+            act(other, SideX(x), y);
+
+        if (!Mirror)
+            return;
+
+        act(facing, MirrorX(x), y);
+        if (side is { } across)
+            act(across, SideX(MirrorX(x)), y);
     }
 
     /// <summary>Calls <paramref name="plot"/> for each pixel of a facing on the straight run between two points.</summary>

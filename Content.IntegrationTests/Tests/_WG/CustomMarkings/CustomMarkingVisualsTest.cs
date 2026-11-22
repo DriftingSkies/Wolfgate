@@ -25,6 +25,9 @@ public sealed class CustomMarkingVisualsTest
 {
     private static readonly string Hash = new('a', CustomMarkingRules.HashLength);
     private static readonly string OtherHash = new('b', CustomMarkingRules.HashLength);
+    // Hashes no other fixture stores art under: a pooled client keeps what it cut from a hash.
+    private static readonly string MixedHash = new('6', CustomMarkingRules.HashLength);
+    private static readonly string GlowHash = new('8', CustomMarkingRules.HashLength);
 
     [Test]
     public async Task ArtLoadsFromMemoryTest()
@@ -128,6 +131,82 @@ public sealed class CustomMarkingVisualsTest
             }
         });
 
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// Glowing pixels draw as an unshaded layer just over the lit ones; art that only glows has no lit layer, and
+    /// with glow turned off everything is drawn lit.
+    /// </summary>
+    [Test]
+    public async Task GlowingPixelsDrawUnshadedTest()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        var client = pair.Client;
+        var profile = HumanoidCharacterProfile.DefaultWithSpecies().WithCustomMarkings(new List<CustomMarking>
+        {
+            new(MixedHash, CustomMarkingPlacement.Skin),
+            new(GlowHash, CustomMarkingPlacement.Skin),
+        });
+        EntityUid doll = default;
+
+        await client.WaitAssertion(() =>
+        {
+            var entMan = client.EntMan;
+            var sprites = entMan.System<SpriteSystem>();
+            var resources = CustomMarkingResources.For(client.ResolveDependency<IResourceCache>());
+
+            var mixed = new CustomMarkingArt();
+            mixed.SetPixel(0, CustomMarkingArt.South, 15, 15, new Rgba32(200, 30, 30, 255));
+            mixed.SetPixel(0, CustomMarkingArt.South, 16, 15, new Rgba32(30, 200, 30, 255));
+            mixed.SetGlow(0, CustomMarkingArt.South, 16, 15, true);
+            resources.Store(MixedHash, mixed.ToPng(), glow: mixed.Glow);
+
+            var glowing = new CustomMarkingArt();
+            glowing.SetPixel(0, CustomMarkingArt.South, 15, 16, new Rgba32(30, 30, 200, 255));
+            glowing.SetGlow(0, CustomMarkingArt.South, 15, 16, true);
+            resources.Store(GlowHash, glowing.ToPng(), glow: glowing.Glow);
+
+            var species = client.ResolveDependency<IPrototypeManager>().Index<SpeciesPrototype>(profile.Species);
+            doll = entMan.SpawnEntity(species.DollPrototype, MapCoordinates.Nullspace);
+            entMan.System<HumanoidAppearanceSystem>().LoadProfile(doll, profile);
+
+            var sprite = new Entity<SpriteComponent>(doll, entMan.GetComponent<SpriteComponent>(doll));
+            Assert.That(sprites.LayerMapTryGet(sprite, CustomMarkingSystem.LayerKey(0), out var lit, false), Is.True);
+            Assert.That(sprites.LayerMapTryGet(sprite, CustomMarkingSystem.GlowKey(0), out var glow, false), Is.True);
+            Assert.That(sprites.LayerMapTryGet(sprite, CustomMarkingSystem.GlowKey(1), out var onlyGlow, false), Is.True);
+            Assert.Multiple(() =>
+            {
+                Assert.That(glow, Is.EqualTo(lit + 1), "the glowing pixels draw just over the lit ones");
+                Assert.That(((SpriteComponent.Layer) sprite.Comp[lit]).ShaderPrototype, Is.Null);
+                Assert.That(((SpriteComponent.Layer) sprite.Comp[glow]).ShaderPrototype, Is.EqualTo(SpriteSystem.UnshadedId));
+                Assert.That(sprites.LayerMapTryGet(sprite, CustomMarkingSystem.LayerKey(1), out _, false), Is.False,
+                    "art that only glows has nothing to draw lit");
+                Assert.That(onlyGlow, Is.GreaterThan(glow), "a later marking still draws over an earlier one");
+            });
+        });
+
+        await pair.Server.WaitPost(() => pair.Server.CfgMan.SetCVar(CustomMarkingCVars.Glow, false));
+        await pair.RunTicksSync(5);
+
+        await client.WaitAssertion(() =>
+        {
+            var entMan = client.EntMan;
+            var sprites = entMan.System<SpriteSystem>();
+            var sprite = new Entity<SpriteComponent>(doll, entMan.GetComponent<SpriteComponent>(doll));
+            Assert.Multiple(() =>
+            {
+                Assert.That(sprites.LayerMapTryGet(sprite, CustomMarkingSystem.GlowKey(0), out _, false), Is.False);
+                Assert.That(sprites.LayerMapTryGet(sprite, CustomMarkingSystem.GlowKey(1), out _, false), Is.False);
+                Assert.That(sprites.LayerMapTryGet(sprite, CustomMarkingSystem.LayerKey(1), out var index, false), Is.True,
+                    "with glow off, glowing art is drawn lit");
+                Assert.That(((SpriteComponent.Layer) sprite.Comp[index]).ShaderPrototype, Is.Null);
+            });
+            entMan.DeleteEntity(doll);
+        });
+
+        await pair.Server.WaitPost(() => pair.Server.CfgMan.SetCVar(CustomMarkingCVars.Glow, true));
+        await pair.RunTicksSync(5);
         await pair.CleanReturnAsync();
     }
 

@@ -16,7 +16,7 @@ namespace Content.Shared.Chemistry.Components
     /// </summary>
     [Serializable, NetSerializable]
     [DataDefinition]
-    public sealed partial class Solution : IEnumerable<ReagentQuantity>, ISerializationHooks
+    public sealed partial class Solution : IEnumerable<ReagentQuantity>, ISerializationHooks, IRobustCloneable<Solution> // WOLFGATE(WolfChem): a handled state gets a copy, so prediction can't write into the cached server state
     {
         // This is a list because it is actually faster to add and remove reagents from
         // a list than a dictionary, though contains-reagent checks are slightly slower,
@@ -184,7 +184,10 @@ namespace Content.Shared.Chemistry.Components
 
         public Solution Clone()
         {
-            return new Solution(this);
+            // WOLFGATE(WolfChem) START: a state's copy keeps the solution's name and reaction flag
+            // return new Solution(this);
+            return new Solution(this) { Name = Name, CanReact = CanReact };
+            // WOLFGATE END
         }
 
         [AssertionMethod]

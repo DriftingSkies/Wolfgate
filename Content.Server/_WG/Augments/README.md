@@ -89,8 +89,10 @@ two bursts as charges and a spent one comes back every three minutes; the button
 the wait for the next charge when it is empty. `Tools/_WG/Augments/build_halo_sprites.py` draws the shield and orb.
 
 Three implants bring back the combat traits Monolith removed (#5023), paid for and losable: the adrenal booster
-adds Monolith's `Vigor`, the threat-sense sole its `TrapAvoider`, and the pain editor (`WGPainEditorSystem`) scales pain
-gain down in place of Tenacity, whose crit threshold Wolfmed doesn't read. The booster also gives a second wind
+gives Monolith's `Vigor` stamina bonus, the threat-sense sole its `TrapAvoider`, and the pain editor
+(`WGPainEditorSystem`) scales pain gain down in place of Tenacity, whose crit threshold Wolfmed doesn't read. The
+booster doesn't stack with the trait it overlaps: it holds its stamina bonus off a body with Lethargy, as Vigor was
+exclusive with it. The booster also gives a second wind
 (`WGAdrenalBoosterSystem`): a knockdown that lands while stamina is at or over its threshold ends after 1.5 s with
 stamina restored, then the booster rests two minutes; slips and pain shocks don't spend it. A pain shock's Wolfmed
 adrenaline lasts twice as long on its body, so the pain inhibitor keeps you up and the booster gets you back up.
@@ -179,7 +181,7 @@ it stays as picked between rounds. The one shipped is the Kiras chest chassis (`
 third chest implant; implants that need flesh, like the adrenal booster, no longer fit. Head plating and missing
 limbs have no content yet; the integration tests use test-only prototypes for them.
 
-Traits that fit their own limbs at spawn (Prybar Prosthetics, Bionic Legs) claim those slots in `trait_slots.yml`.
+Traits that fit their own limbs at spawn (Prybar Prosthetics) claim those slots in `trait_slots.yml`.
 A character with one can't take augments there: validation drops them and the tab names the trait instead. A new
 limb trait needs an entry there. The trait systems swap their limbs the way augments are swapped, then call
 `WGAugmentSystem.StyleTraitLimbs`, which draws them in the EE Bishop style fitted to the species, so an Avali's
@@ -327,6 +329,7 @@ scratch, so an unpicked augment comes off it.
 - [`Content.IntegrationTests/Tests/_WG/Augments/AugmentSpeciesTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Augments/AugmentSpeciesTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Augments/AugmentThermalEyesTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Augments/AugmentThermalEyesTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Augments/AugmentTraitLimbsTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Augments/AugmentTraitLimbsTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Augments/AugmentTraitOverlapTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Augments/AugmentTraitOverlapTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Augments/AugmentVitalImplantsTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Augments/AugmentVitalImplantsTest.cs)
 
 ### Prototypes

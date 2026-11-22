@@ -230,5 +230,12 @@ public sealed partial class DoorSystem : SharedDoorSystem
         }
 
         _sprite.SetBaseRsi(sprite.AsNullable(), res.RSI);
+        // WOLFGATE(Ci) START: SetBaseRsi leaves layer bounds stale, tripping the client's bounds assert
+        foreach (var layer in sprite.Comp.AllLayers)
+        {
+            if (layer is SpriteComponent.Layer { RSI: null } own && own.State.IsValid)
+                _sprite.LayerSetRsiState(own, own.State, refresh: true);
+        }
+        // WOLFGATE END
     }
 }

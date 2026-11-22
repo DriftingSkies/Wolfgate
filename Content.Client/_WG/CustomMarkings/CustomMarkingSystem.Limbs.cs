@@ -53,10 +53,10 @@ public sealed partial class CustomMarkingSystem
     };
 
     /// <summary>
-    /// What a body shows of a marking's art: the sprite to draw, null when nothing of the drawing is left, and the
-    /// pixels it draws solidly, as a <see cref="CustomMarkingErase"/> mask.
+    /// What a body shows of a marking's art: the sprite to draw lit, the sprite to draw glowing, either null when it
+    /// has nothing left to draw, and the pixels it draws solidly, as a <see cref="CustomMarkingErase"/> mask.
     /// </summary>
-    private sealed record Shown(RSI? Rsi, byte[] Solid);
+    private sealed record Shown(RSI? Rsi, RSI? Glow, byte[] Solid);
 
     /// <summary>What is shown of art, by what it was cut from and for which body; null for art that can't be read.</summary>
     private readonly Dictionary<string, Shown?> _cut = new();
@@ -353,24 +353,34 @@ public sealed partial class CustomMarkingSystem
         });
 
         if (cut.IsBlank())
-            return new Shown(null, NothingSolid);
+            return new Shown(null, null, NothingSolid);
 
-        if (cut.SamePixels(art))
-            return new Shown(whole, cut.Solid());
+        // What glows is drawn as a sprite of its own, unshaded, over the rest.
+        if (GlowEnabled && cut.HasGlow())
+        {
+            var (lit, glowing) = cut.SplitGlow();
+            return new Shown(lit.IsBlank() ? null : Derived(hash, lit), Derived(hash, glowing), cut.Solid());
+        }
 
-        // Named after itself, so the same cut is one RSI however it was reached, on this connection or the last.
-        var name = $"{hash}-{cut.Fingerprint()}";
+        return new Shown(cut.SamePixels(art) ? whole : Derived(hash, cut), null, cut.Solid());
+    }
+
+    /// <summary>The sprite of art made from fetched art, stored the first time it is needed. Null when it doesn't load.</summary>
+    private RSI? Derived(string hash, CustomMarkingArt art)
+    {
+        // Named after itself, so the same art is one RSI however it was reached, on this connection or the last.
+        var name = $"{hash}-{art.Fingerprint()}";
         if (!_resources.Has(name))
-            _resources.Store(name, cut.ToPng(), cut.GetFrameTimes(), pingPong: cut.PingPongs);
+            _resources.Store(name, art.ToPng(), art.GetFrameTimes(), pingPong: art.PingPongs);
 
         try
         {
-            return new Shown(_resCache.GetResource<RSIResource>(CustomMarkingResources.PathFor(name), false).RSI, cut.Solid());
+            return _resCache.GetResource<RSIResource>(CustomMarkingResources.PathFor(name), false).RSI;
         }
         catch (Exception e)
         {
             Log.Error($"Custom marking art {name} didn't load: {e.Message}");
-            return new Shown(null, NothingSolid);
+            return null;
         }
     }
 

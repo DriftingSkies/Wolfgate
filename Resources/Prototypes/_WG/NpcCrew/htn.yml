@@ -2,7 +2,7 @@
 # second and swaps to an earlier branch as soon as it is valid. Station operators only fight their own attackers
 # and resume their job afterwards. Every duty starts by holstering; the fight starts by drawing. Skilled crew also
 # fall back to patch wounds, throw grenades round a held corner and brace for a hostile they may not hunt
-# (WGCrewSkills).
+# (WGCrewSkills), and a crew losing a boarding fight musters to hold and push together (WGCrewMusterSystem).
 - type: htnCompound
   id: WGCrewCompound
   branches:
@@ -42,6 +42,16 @@
       operator: !type:WGReloadOperator
     - !type:HTNCompoundTask
       task: WGCrewFightCompound
+  # Mustered: to his place at the rally point, then weapon up with the rest of the crew (WGCrewMusterSystem).
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewMusterOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewMuster
+        rangeKey: WGCrewMusterRange
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewBraceOperator
   # A hostile known aboard that he may not go after: weapon up, covering its approach.
   - tasks:
     - !type:HTNPrimitiveTask

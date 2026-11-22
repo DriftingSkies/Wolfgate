@@ -10,7 +10,7 @@ namespace Content.Client._WG.CustomMarkings;
 
 /// <summary>
 /// A content root holding fetched custom marking art as one RSI per hash, so a sprite layer can draw it, facings,
-/// frames and all, like any shipped marking. What an RSI can't hold, the art's erase mask, is kept beside it.
+/// frames and all, like any shipped marking. What an RSI can't hold, the art's erase and glow masks, is kept beside it.
 /// </summary>
 /// <remarks>
 /// Roots can only ever be added to <see cref="IResourceManager"/>, never removed, so this mounts once per resource
@@ -27,6 +27,7 @@ public sealed class CustomMarkingResources : IContentRoot, IDisposable
 
     private const string TimesFile = "times.bin";
     private const string EraseFile = "erase.bin";
+    private const string GlowFile = "glow.bin";
 
     /// <summary>The sheet as drawn, kept beside the sprite's own when that is laid out to play back and forth.</summary>
     private const string DrawnFile = "drawn.png";
@@ -86,14 +87,21 @@ public sealed class CustomMarkingResources : IContentRoot, IDisposable
 
     /// <summary>
     /// Puts art under a name: a PNG sheet of its frames, as <see cref="CustomMarkingArt.ToPng"/> lays them out, how
-    /// long each frame shows and its erase mask.
+    /// long each frame shows, its erase mask and what glows.
     /// </summary>
     /// <param name="size">The size of one facing, for a sheet that isn't a body sprite's.</param>
     /// <param name="pingPong">
     /// Whether the animation plays back to the first frame. An RSI can only run through its frames and start over,
     /// so the sprite gets a sheet with the way back drawn out.
     /// </param>
-    public void Store(string name, byte[] png, int[]? frameTimes = null, byte[]? erase = null, Vector2i? size = null, bool pingPong = false)
+    public void Store(
+        string name,
+        byte[] png,
+        int[]? frameTimes = null,
+        byte[]? erase = null,
+        Vector2i? size = null,
+        bool pingPong = false,
+        byte[]? glow = null)
     {
         var rsi = Relative(name);
         var shownTimes = frameTimes;
@@ -119,6 +127,11 @@ public sealed class CustomMarkingResources : IContentRoot, IDisposable
             _root.AddOrUpdateFile(rsi / EraseFile, erase.AsSpan().ToArray());
         else
             _root.RemoveFile(rsi / EraseFile);
+
+        if (glow != null && CustomMarkingErase.Any(glow))
+            _root.AddOrUpdateFile(rsi / GlowFile, glow.AsSpan().ToArray());
+        else
+            _root.RemoveFile(rsi / GlowFile);
 
         // The manifest goes in last: it is what makes the RSI loadable.
         var frame = size ?? new Vector2i(CustomMarkingRules.FrameSize, CustomMarkingRules.FrameSize);
@@ -185,6 +198,7 @@ public sealed class CustomMarkingResources : IContentRoot, IDisposable
         _root.RemoveFile(rsi / $"{State}.png");
         _root.RemoveFile(rsi / TimesFile);
         _root.RemoveFile(rsi / EraseFile);
+        _root.RemoveFile(rsi / GlowFile);
         _root.RemoveFile(rsi / DrawnFile);
     }
 
@@ -215,6 +229,12 @@ public sealed class CustomMarkingResources : IContentRoot, IDisposable
     public bool TryGetErase(string name, [NotNullWhen(true)] out byte[]? erase)
     {
         return TryRead(Relative(name) / EraseFile, out erase) && erase.Length == CustomMarkingRules.EraseBytes;
+    }
+
+    /// <summary>The glow mask of stored art, for every frame as drawn. False when nothing glows.</summary>
+    public bool TryGetGlow(string name, [NotNullWhen(true)] out byte[]? glow)
+    {
+        return TryRead(Relative(name) / GlowFile, out glow);
     }
 
     private bool TryRead(ResPath path, [NotNullWhen(true)] out byte[]? bytes)

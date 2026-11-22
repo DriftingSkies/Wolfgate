@@ -23,6 +23,7 @@ using Content.Shared._WG.EmoteVoices; // WOLFGATE(EmoteVoices)
 using Content.Server._WG.Voice; // WOLFGATE(Voice)
 using Content.Shared._WG.Gags; // WOLFGATE(Gags)
 using Content.Shared._WG.CustomMarkings; // WOLFGATE(CustomMarkings)
+using Content.Shared._WG.MarkingGlow; // WOLFGATE(MarkingGlow)
 using Content.Shared._WG.Genitals; // WOLFGATE(Genitals)
 using Content.Shared._WG.Genitals.Profile; // WOLFGATE(Genitals)
 using Content.Shared._WG.LegStyle; // WOLFGATE(LegStyle)
@@ -180,6 +181,7 @@ namespace Content.Server.Database
             }
 
             db.Profile.Remove(profile);
+            await ReleaseCustomMarkingSlot(db, userId.UserId, slot); // WOLFGATE(CustomMarkings): its own markings go to every character
         }
 
         public async Task<PlayerPreferences> InitPrefsAsync(NetUserId userId, ICharacterProfile defaultProfile)
@@ -352,6 +354,7 @@ namespace Content.Server.Database
                 HeadshotUrl = profile.HeadshotUrl ?? string.Empty, // WOLFGATE(Headshot)
                 MismatchedParts = profile.MismatchedParts, // WOLFGATE(Species)
                 CustomMarkings = CustomMarkingRules.FromStored(profile.CustomMarkings), // WOLFGATE(CustomMarkings)
+                MarkingGlow = MarkingGlowRules.FromStored(profile.MarkingGlow), // WOLFGATE(MarkingGlow)
                 LegStance = (LegStance) profile.LegStance, // WOLFGATE(LegStyle)
                 Biotype = (WGBiotype) profile.Biotype, // WOLFGATE(Biotype)
                 Augments = WGAugmentRules.FromStored(profile.Augments), // WOLFGATE(Augments)
@@ -403,6 +406,7 @@ namespace Content.Server.Database
             profile.HeadshotUrl = humanoid.HeadshotUrl; // WOLFGATE(Headshot)
             profile.MismatchedParts = humanoid.MismatchedParts; // WOLFGATE(Species)
             profile.CustomMarkings = CustomMarkingRules.ToStored(humanoid.CustomMarkings); // WOLFGATE(CustomMarkings)
+            profile.MarkingGlow = MarkingGlowRules.ToStored(humanoid.MarkingGlow); // WOLFGATE(MarkingGlow)
             profile.LegStance = (int) humanoid.LegStance; // WOLFGATE(LegStyle)
             profile.Biotype = (int) humanoid.Biotype; // WOLFGATE(Biotype)
             profile.Augments = WGAugmentRules.ToStored(humanoid.Augments, humanoid.AugmentImplants); // WOLFGATE(Augments)

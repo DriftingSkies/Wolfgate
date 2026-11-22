@@ -246,6 +246,56 @@ public sealed class CustomMarkingSketchTest
         Assert.That(loaded.Art.GetPixel(0, South, 26, 5).A, Is.Zero);
     }
 
+    /// <summary>Side mirroring draws a stroke on one side view onto the other, flipped, and leaves the front alone.</summary>
+    [Test]
+    public void SideMirrorTest()
+    {
+        const int east = CustomMarkingArt.East;
+        const int west = CustomMarkingArt.West;
+        var sketch = new CustomMarkingSketch(new CustomMarkingArt()) { SideMirror = true, Allowed = (facing, x, _) => facing != west || x > 12 };
+
+        sketch.Begin();
+        sketch.Line(0, east, new Vector2i(12, 5), new Vector2i(14, 5), Red);
+        sketch.End();
+        Assert.Multiple(() =>
+        {
+            Assert.That(sketch.Art.GetPixel(0, east, 12, 5), Is.EqualTo(Red));
+            Assert.That(sketch.Art.GetPixel(0, west, 19, 5), Is.EqualTo(Red), "column 12 shows up as 19 on the other side");
+            Assert.That(sketch.Art.GetPixel(0, west, 17, 5), Is.EqualTo(Red));
+            Assert.That(sketch.Art.GetPixel(0, South, 12, 5).A, Is.Zero, "the front is not a side view");
+        });
+
+        sketch.Undo();
+        Assert.That(sketch.Art.IsBlank(), Is.True, "both sides are one step");
+
+        // Each side is held to its own reach.
+        sketch.Change(_ => sketch.Line(0, west, new Vector2i(10, 8), new Vector2i(10, 8), Blue));
+        Assert.Multiple(() =>
+        {
+            Assert.That(sketch.Art.GetPixel(0, west, 10, 8).A, Is.Zero);
+            Assert.That(sketch.Art.GetPixel(0, east, 21, 8), Is.EqualTo(Blue));
+        });
+
+        // Fills, glow and the body eraser follow too, and so does the mirror across the middle.
+        sketch.Allowed = null;
+        sketch.Mirror = true;
+        sketch.Change(_ => sketch.GlowLine(0, east, new Vector2i(21, 8), new Vector2i(21, 8), true));
+        sketch.Change(_ => sketch.EraseLine(east, new Vector2i(3, 2), new Vector2i(3, 2), true));
+        Assert.Multiple(() =>
+        {
+            Assert.That(sketch.Art.IsGlowing(0, west, 10, 8), Is.False, "nothing is drawn there to glow");
+            Assert.That(sketch.Art.IsGlowing(0, east, 21, 8), Is.True);
+            Assert.That(sketch.Art.IsErased(west, 28, 2), Is.True);
+            Assert.That(sketch.Art.IsErased(west, 4, 2), Is.True, "the middle mirror's copy crosses over as well");
+            Assert.That(sketch.Art.IsErased(east, 27, 2), Is.True);
+        });
+
+        sketch.Mirror = false;
+        sketch.Change(_ => sketch.Fill(0, east, 0, 31, Red));
+        Assert.That(sketch.Art.GetPixel(0, west, 31, 31), Is.EqualTo(Red));
+        Assert.That(sketch.Art.GetPixel(0, South, 0, 31).A, Is.Zero);
+    }
+
     /// <summary>The body eraser draws on the erase mask the way the pencil draws on the art.</summary>
     [Test]
     public void EraseLineTest()

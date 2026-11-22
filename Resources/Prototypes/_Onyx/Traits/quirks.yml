@@ -6,12 +6,14 @@
 
 # WOLFGATE(Wolfmed): WP10-3: only HighPainThreshold is ported; AlcoholTolerance/Parkour/Voracious/ColdBlooded/etc. are unrelated features already covered by Wolfgate's own Resources/Prototypes/Traits/quirks.yml.
 # WOLFGATE(Wolfmed): P2-D15: conflicts -> mutuallyExclusiveTraits (Wolfgate's field name); cost: 3 dropped (Quirks declares no maxTraitPoints, so cost is inert here, matching WG's own quirks.yml entries).
-- type: trait
-  id: HighPainThreshold
-  name: trait-high-pain-threshold-name
-  description: trait-high-pain-threshold-desc
-  category: Quirks
-  mutuallyExclusiveTraits:
-  - PainNumbness
-  components:
-  - type: HighPainThreshold
+# WOLFGATE(Traits) START: removed; it stacked with the pain inhibitor augment for too much pain resistance.
+# - type: trait
+#   id: HighPainThreshold
+#   name: trait-high-pain-threshold-name
+#   description: trait-high-pain-threshold-desc
+#   category: Quirks
+#   mutuallyExclusiveTraits:
+#   - PainNumbness
+#   components:
+#   - type: HighPainThreshold
+# WOLFGATE END

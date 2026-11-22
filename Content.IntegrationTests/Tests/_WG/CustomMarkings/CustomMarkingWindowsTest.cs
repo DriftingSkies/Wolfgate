@@ -51,9 +51,13 @@ public sealed class CustomMarkingWindowsTest
 
             var labels = Descendants(library).OfType<Label>().Select(label => label.Text).ToList();
             Assert.That(labels, Does.Contain("Leaf"), "the library lists the saved marking");
-            Assert.That(labels, Does.Contain(Loc.GetString("wg-custom-marking-placement-hair")));
-            Assert.That(Descendants(editor).OfType<CustomMarkingCanvas>().Count(), Is.EqualTo(1 + CustomMarkingRules.Facings),
-                "the editor shows the drawing and each facing");
+            Assert.That(labels, Does.Contain(Loc.GetString("wg-custom-marking-library-subtitle-all",
+                ("placement", Loc.GetString("wg-custom-marking-placement-hair")))));
+            var shared = Descendants(library).OfType<Button>()
+                .Single(button => button.Text == Loc.GetString("wg-custom-marking-library-all-characters"));
+            Assert.That(shared.Pressed, Is.True, "saved with no character, the marking is offered to all of them");
+            Assert.That(Descendants(editor).OfType<CustomMarkingCanvas>().Count(), Is.EqualTo(2 + CustomMarkingRules.Facings),
+                "the editor shows the drawing, each facing and its one frame");
 
             // A window opens at its own size, whatever the screen's: the text above the library's list wraps
             // instead of stretching the window, and every button fits in what the window asks for.
@@ -77,26 +81,46 @@ public sealed class CustomMarkingWindowsTest
 
             // Tools and actions are icons, so each must say what it does.
             var icons = Descendants(editor).OfType<CustomMarkingIconButton>().ToList();
-            Assert.That(icons, Has.Count.GreaterThanOrEqualTo(13), "the tools, undo and redo and the facing operations are icon buttons");
+            Assert.That(icons, Has.Count.GreaterThanOrEqualTo(14), "the tools, undo and redo and the facing operations are icon buttons");
             Assert.That(icons.All(icon => !string.IsNullOrEmpty(icon.ToolTip)), Is.True, "every icon button has a tooltip");
             Assert.That(icons.Single(icon => icon.ToolTip == Loc.GetString("wg-custom-marking-editor-symmetry")).ToggleMode,
                 Is.True, "mirror drawing is switched on and off");
+            Assert.That(icons.Single(icon => icon.ToolTip == Loc.GetString("wg-custom-marking-editor-side-mirror")).ToggleMode,
+                Is.True, "side mirroring is switched on and off");
 
-            // The body eraser is a tool of its own, and an animated marking's frames have their controls.
-            foreach (var loc in FrameControls.Append("wg-custom-marking-tool-bodyeraser"))
+            // An animated marking's frames have their controls, and the tools say what they do on the drawing.
+            foreach (var loc in FrameControls)
             {
-                Assert.That(icons.Count(icon => icon.ToolTip == Loc.GetString(loc)), Is.EqualTo(1), loc);
+                Assert.That(icons.Count(icon => IsFor(icon, Loc.GetString(loc))), Is.EqualTo(1), loc);
             }
 
-            // A still marking has one frame: nothing to step through, play or take out, and no time to set.
+            Assert.That(icons.Count(icon => icon.ToolTip == Loc.GetString("wg-custom-marking-tool-pencil", ("layer", "drawing"))), Is.EqualTo(1));
+
+            // What the canvas changes is picked by name: the drawing, the erased body and the glow.
+            var layers = Descendants(editor).OfType<Button>()
+                .Where(button => button.Text == Loc.GetString("wg-custom-marking-layer-erase") || button.Text == Loc.GetString("wg-custom-marking-layer-glow"))
+                .ToList();
+            Assert.That(layers, Has.Count.EqualTo(2), "erase and glow are layers of their own");
+
+            // A still marking has one frame: nothing to play or take out, and no time to set; disabled buttons say why.
+            var needsTwo = Loc.GetString("wg-custom-marking-editor-frame-needs-two");
             Assert.Multiple(() =>
             {
                 Assert.That(Icon(editor, "wg-custom-marking-editor-frame-add").Disabled, Is.False);
                 Assert.That(Icon(editor, "wg-custom-marking-editor-frame-remove").Disabled, Is.True);
-                Assert.That(Icon(editor, "wg-custom-marking-editor-frame-previous").Disabled, Is.True);
+                Assert.That(Icon(editor, "wg-custom-marking-editor-frame-remove").ToolTip, Does.EndWith(needsTwo));
                 Assert.That(Icon(editor, "wg-custom-marking-editor-frame-play").Disabled, Is.True);
                 Assert.That(Descendants(editor).OfType<FloatSpinBox>().Single(box => box.Name != "OpacityValue").Parent!.Visible, Is.False);
+
+                // The front has no other side to be copied to.
+                var copy = icons.Single(icon => IsFor(icon, Loc.GetString("wg-custom-marking-editor-mirror", ("layer", "drawing"))));
+                Assert.That(copy.Disabled, Is.True);
+                Assert.That(copy.ToolTip, Does.EndWith(Loc.GetString("wg-custom-marking-editor-mirror-sides")));
             });
+
+            // The colour drawn with is offered to pick again.
+            var used = Loc.GetString("wg-custom-marking-editor-used-colour", ("hex", CustomMarkingArt.ToColor(new Rgba32(10, 200, 10, 255)).WithAlpha(1f).ToHex()), ("opacity", 100f));
+            Assert.That(Descendants(editor).OfType<ContainerButton>().Count(button => button.ToolTip == used), Is.EqualTo(1), used);
 
             // Opacity can be typed as well as dragged, and the two follow each other.
             var opacityBox = Descendants(editor).OfType<FloatSpinBox>().Single(box => box.Name == "OpacityValue");
@@ -114,7 +138,8 @@ public sealed class CustomMarkingWindowsTest
 
             // A facing tile is picked by clicking anywhere on it, so its preview must not take the click itself.
             var canvases = Descendants(editor).OfType<CustomMarkingCanvas>().ToList();
-            Assert.That(canvases.Count(canvas => canvas.MouseFilter == Control.MouseFilterMode.Ignore), Is.EqualTo(CustomMarkingRules.Facings));
+            Assert.That(canvases.Count(canvas => canvas.MouseFilter == Control.MouseFilterMode.Ignore), Is.EqualTo(CustomMarkingRules.Facings + 1),
+                "the facings and the frame strip are picked by their tiles");
             Assert.That(canvases.Count(canvas => canvas.MouseFilter == Control.MouseFilterMode.Stop), Is.EqualTo(1), "only the canvas is drawn on");
             Assert.That(Descendants(library).OfType<CustomMarkingIconButton>().All(icon => !string.IsNullOrEmpty(icon.ToolTip)), Is.True);
             Assert.That(Descendants(library).OfType<CustomMarkingIconButton>().Count(), Is.EqualTo(3), "a library row offers edit, export and delete");
@@ -156,6 +181,9 @@ public sealed class CustomMarkingWindowsTest
                     Assert.That(Icon(animated, loc).Disabled, Is.False, loc);
                 }
 
+                Assert.That(Descendants(animated).OfType<CustomMarkingFrameStrip>().Single().Previews.Count(), Is.EqualTo(2),
+                    "the strip shows each frame");
+
                 var time = Descendants(animated).OfType<FloatSpinBox>().Single(box => box.Name != "OpacityValue");
                 Assert.That(time.Parent!.Visible, Is.True, "each frame of an animated marking has its time");
                 Assert.That(time.Value, Is.EqualTo(CustomMarkingRules.DefaultFrameTime / 1000f).Within(0.001f), "the first frame's");
@@ -184,16 +212,22 @@ public sealed class CustomMarkingWindowsTest
 
     private static readonly string[] FrameControls =
     {
-        "wg-custom-marking-editor-frame-previous",
-        "wg-custom-marking-editor-frame-next",
         "wg-custom-marking-editor-frame-add",
         "wg-custom-marking-editor-frame-remove",
         "wg-custom-marking-editor-frame-play",
+        "wg-custom-marking-editor-frame-reverse",
+        "wg-custom-marking-editor-frame-time-all",
     };
 
     private static CustomMarkingIconButton Icon(Control window, string loc)
     {
-        return Descendants(window).OfType<CustomMarkingIconButton>().Single(icon => icon.ToolTip == Loc.GetString(loc));
+        return Descendants(window).OfType<CustomMarkingIconButton>().Single(icon => IsFor(icon, Loc.GetString(loc)));
+    }
+
+    /// <summary>Whether a button's tooltip is the given text, with or without a reason it is disabled under it.</summary>
+    private static bool IsFor(Control button, string tooltip)
+    {
+        return button.ToolTip == tooltip || button.ToolTip?.StartsWith(tooltip + "\n") == true;
     }
 
     /// <summary>The creator's tiles list the library, show what is worn and keep a tile for a worn marking it doesn't hold.</summary>
@@ -210,7 +244,7 @@ public sealed class CustomMarkingWindowsTest
         CustomMarkingQuickList list = null;
         await client.WaitPost(() =>
         {
-            list = new CustomMarkingQuickList();
+            list = new CustomMarkingQuickList { Profile = () => HumanoidCharacterProfile.DefaultWithSpecies("Human") };
             client.ResolveDependency<IUserInterfaceManager>().RootControl.AddChild(list);
             system.Save(0, "Leaf", CustomMarkingPlacement.Hair, art);
         });
@@ -226,6 +260,19 @@ public sealed class CustomMarkingWindowsTest
             Assert.That(tiles, Has.Count.EqualTo(1), "a tile for the saved marking");
             Assert.That(tiles[0].Pressed, Is.False);
             Assert.That(tiles[0].ToolTip, Does.Contain("Leaf"));
+            Assert.That(tiles[0].ToolTip, Does.Contain(Loc.GetString("wg-custom-marking-tile-edit")), "a tile says it can be edited");
+
+            // The first tile draws a new marking.
+            var draw = Descendants(list).OfType<ContainerButton>()
+                .Single(button => button.ToolTip == Loc.GetString("wg-custom-marking-tile-new-tooltip"));
+            Assert.That(draw.Disabled, Is.False);
+
+            // The creator's tiles and the library share one editor: opening another closes the first.
+            var controller = client.ResolveDependency<IUserInterfaceManager>().GetUIController<CustomMarkingUIController>();
+            Assert.That(controller.OpenEditor(entry, art, "Leaf", list.Profile!, _ => { }), Is.True);
+            Assert.That(controller.OpenEditor(null, new CustomMarkingArt(), string.Empty, list.Profile!, _ => { }), Is.True,
+                "an editor with nothing changed closes without asking");
+            controller.CloseEditor();
 
             // Worn: its tile is pressed, and a worn marking the library doesn't hold gets a tile too.
             var stray = new CustomMarking(new string('d', CustomMarkingRules.HashLength), CustomMarkingPlacement.Skin);
@@ -242,7 +289,9 @@ public sealed class CustomMarkingWindowsTest
             list.SetWorn(full);
             tiles = Descendants(list).OfType<Content.Client._WG.Humanoid.WolfgateMarkingTile>().ToList();
             Assert.That(tiles, Has.Count.EqualTo(max + 1));
-            Assert.That(tiles.Single(tile => !tile.Pressed).Disabled, Is.True);
+            var left = tiles.Single(tile => !tile.Pressed);
+            Assert.That(left.Disabled, Is.True);
+            Assert.That(left.ToolTip, Does.Contain(Loc.GetString("wg-custom-marking-reason-worn-full", ("max", max))), "and say why");
 
             list.Orphan();
         });

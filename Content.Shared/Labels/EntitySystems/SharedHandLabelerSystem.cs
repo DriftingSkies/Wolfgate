@@ -136,7 +136,10 @@ public abstract partial class SharedHandLabelerSystem : EntitySystem
 
     private void OnHandLabelerLabelChanged(EntityUid uid, HandLabelerComponent handLabeler, HandLabelerLabelChangedMessage args)
     {
-        var label = args.Label.Trim();
+        // WOLFGATE(Lattice) START: the Coda can't be written down either
+        // var label = args.Label.Trim();
+        var label = Content.Shared._WG.Lattice.WGWrittenTextEvent.Apply(EntityManager, args.Actor, args.Label.Trim());
+        // WOLFGATE END
         handLabeler.AssignedLabel = label[..Math.Min(handLabeler.MaxLabelChars, label.Length)];
         UpdateUI((uid, handLabeler));
         Dirty(uid, handLabeler);

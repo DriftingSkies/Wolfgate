@@ -1018,6 +1018,9 @@ The seat HUD also hosts hull and component health, vehicle switches, weapon sele
 - [`Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleNavControl.xaml.cs): a vehicle scanner marks the vehicle and its position.
 - [`Content.Client/Sprite/SpriteFadeSystem.cs`](../../../Content.Client/Sprite/SpriteFadeSystem.cs): roofs the player stands under still fade
 - [`Content.Client/UserInterface/Systems/Actions/ActionUIController.cs`](../../../Content.Client/UserInterface/Systems/Actions/ActionUIController.cs): Keep panel-only vehicle controls out of the action hotbar.
+- [`Content.Client/Vehicle/VehicleSystem.cs`](../../../Content.Client/Vehicle/VehicleSystem.cs)
+  - the shared buckle handlers set the rider's view; client-only changes leaked into the
+  - the shared buckle handlers set the rider's view
 - [`Content.Client/Weapons/Ranged/Systems/GunSystem.cs`](../../../Content.Client/Weapons/Ranged/Systems/GunSystem.cs)
   - an operator on another map aims relative to the grid under the gun, which is on the map the cursor is over
   - a mounted gun's flash follows the gun at its muzzle, not an operator on another map
@@ -1043,8 +1046,11 @@ The seat HUD also hosts hull and component health, vehicle switches, weapon sele
 - [`Content.Server/Shuttles/Systems/ShuttleSystem.Impact.cs`](../../Shuttles/Systems/ShuttleSystem.Impact.cs): a hull hitting a vehicle hurts it more
 - [`Content.Shared/Physics/CollisionGroup.cs`](../../../Content.Shared/Physics/CollisionGroup.cs): ground vehicle fixtures and vehicle blockers
 - [`Content.Shared/Vehicle/SharedVehicleSystem.cs`](../../../Content.Shared/Vehicle/SharedVehicleSystem.cs)
+  - the rider's view is set here, not by the client
+  - the rider's view leaves the vehicle with them
   - only check for a free hand; a later attempt handler (folded) can still cancel
   - take the hand once the buckle has gone through
+  - center the rider's view on the vehicle in networked state, not client-side only
 - [`Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs`](../../../Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs)
   - the origin is settled before the event so handlers can move it and the target
   - a refused vehicle shot leaves no cooldown

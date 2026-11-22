@@ -45,6 +45,7 @@ public abstract partial class SharedVehicleSystem : EntitySystem
     [Dependency] private SharedBuckleSystem _buckle = default!;
     [Dependency] private SharedMoverController _mover = default!;
     [Dependency] private SharedHandsSystem _hands = default!; // WOLFGATE(Vehicles)
+    [Dependency] private SharedEyeSystem _wgEye = default!; // WOLFGATE(Vehicles): the rider's view is set here, not by the client
 
     private const string KeySlot = "key_slot";
 
@@ -126,6 +127,11 @@ public abstract partial class SharedVehicleSystem : EntitySystem
         RemComp<RelayInputMoverComponent>(riderUid);
         _tagSystem.RemoveTag(uid, "DoorBumpOpener");
 
+        // WOLFGATE(Vehicles) START: the rider's view leaves the vehicle with them
+        if (TryComp<EyeComponent>(riderUid, out var wgEye) && wgEye.Target == uid)
+            _wgEye.SetTarget(riderUid, null, wgEye);
+        // WOLFGATE END
+
         Appearance.SetData(uid, VehicleVisuals.HideRider, false);
         // Reset component
         component.Rider = null;
@@ -181,6 +187,11 @@ public abstract partial class SharedVehicleSystem : EntitySystem
 
         _mover.SetRelay(riderUid, uid);
         rider.Vehicle = uid;
+
+        // WOLFGATE(Vehicles) START: center the rider's view on the vehicle in networked state, not client-side only
+        if (TryComp<EyeComponent>(riderUid, out var wgEye) && wgEye.Target == null)
+            _wgEye.SetTarget(riderUid, uid, wgEye);
+        // WOLFGATE END
 
         // Update appearance stuff, add actions
         UpdateBuckleOffset(uid, Transform(uid), component);

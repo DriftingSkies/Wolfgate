@@ -15,7 +15,7 @@ on:
 jobs:
   build:
     if: github.event.pull_request.draft == false
-    # WOLFGATE(Ci) START: split the integration tests over six runners; each builds and runs one shard
+    # WOLFGATE(Ci) START: split the integration tests over seven runners; each builds and runs one shard
     # strategy:
     #   matrix:
     #     os: [ubuntu-latest]
@@ -25,7 +25,7 @@ jobs:
       matrix:
         # Pinned: on ubuntu-26.04 the cockpit and console label-width tests fail with the same code.
         os: [ubuntu-24.04]
-        shard: [ wg-heavy, wg-npc, wg-planets, wg-rest-a, wg-rest-b, core ]
+        shard: [ wg-heavy, wg-npc, wg-planets, wg-rest-a, wg-rest-b, wg-rest-c, core ]
         # Balanced on per-module times from the NUnit XML, about 8 minutes of tests each.
         include:
         - shard: wg-heavy
@@ -36,9 +36,12 @@ jobs:
         - shard: wg-planets
           where: "test =~ 'Tests[.]_WG[.](Planet[A-Za-z]*|Caverns|LivingWorld|SandMaw|ReaverCampaign|Administration)[.]'"
         # The rest of _WG, split by module name: as one shard (about 2,300 tests) it ran its runner out of memory.
+        # A to L as one shard still grew past the runner's 16 GB and was lost about 50 minutes in, so it is two.
         - shard: wg-rest-a
-          where: "test =~ 'Tests[.]_WG[.][A-L]' && test !~ 'Tests[.]_WG[.](Wolfmed|Vehicles|Remade|AdsIncursion|Encounters|NpcCrew|RoundSetup|Planet[A-Za-z]*|Caverns|LivingWorld|SandMaw|ReaverCampaign|Administration)[.]' && test !~ ShipyardTest"
+          where: "test =~ 'Tests[.]_WG[.][A-C]' && test !~ 'Tests[.]_WG[.](Wolfmed|Vehicles|Remade|AdsIncursion|Encounters|NpcCrew|RoundSetup|Planet[A-Za-z]*|Caverns|LivingWorld|SandMaw|ReaverCampaign|Administration)[.]' && test !~ ShipyardTest"
         - shard: wg-rest-b
+          where: "test =~ 'Tests[.]_WG[.][D-L]' && test !~ 'Tests[.]_WG[.](Wolfmed|Vehicles|Remade|AdsIncursion|Encounters|NpcCrew|RoundSetup|Planet[A-Za-z]*|Caverns|LivingWorld|SandMaw|ReaverCampaign|Administration)[.]' && test !~ ShipyardTest"
+        - shard: wg-rest-c
           where: "test =~ 'Tests[.]_WG[.]' && test !~ 'Tests[.]_WG[.][A-L]' && test !~ 'Tests[.]_WG[.](Wolfmed|Vehicles|Remade|AdsIncursion|Encounters|NpcCrew|RoundSetup|Planet[A-Za-z]*|Caverns|LivingWorld|SandMaw|ReaverCampaign|Administration)[.]' && test !~ ShipyardTest"
         # Upstream and other forks; Content.Tests runs here too.
         - shard: core

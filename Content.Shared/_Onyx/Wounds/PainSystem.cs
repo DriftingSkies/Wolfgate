@@ -171,10 +171,14 @@ public sealed partial class PainSystem : EntitySystem
         return GetPainBeforeAdrenaline((entity.Owner, entity.Comp));
     }
 
-    private FixedPoint2 GetPainBeforeAdrenaline(Entity<PainComponent> entity)
+    // WOLFGATE(Wolfmed) START: a reading that counts pain through numbness, for the Numb trait's consciousness.
+    // private FixedPoint2 GetPainBeforeAdrenaline(Entity<PainComponent> entity)
+    private FixedPoint2 GetPainBeforeAdrenaline(Entity<PainComponent> entity, bool wgThroughNumbness = false)
     {
-        if (IsPainNumb(entity.Owner))
+        // if (IsPainNumb(entity.Owner))
+        if (!wgThroughNumbness && IsPainNumb(entity.Owner))
             return FixedPoint2.Zero;
+    // WOLFGATE END
 
         var suppression = entity.Comp.Suppression;
         if (TryComp(entity, out BodyPartComponent? part) && part.Body is { } body &&
@@ -454,8 +458,15 @@ public sealed partial class PainSystem : EntitySystem
     private void RaisePainChanged(EntityUid uid, PainComponent component, FixedPoint2 oldPain)
     {
         var pain = GetPain((uid, component));
+        // WOLFGATE(Wolfmed) START: a Numb trait body feels no change, but its consciousness still reads the pain.
+        // if (pain == oldPain)
+        //     return;
         if (pain == oldPain)
+        {
+            WgRaiseNumbPainChanged(uid);
             return;
+        }
+        // WOLFGATE END
 
         var changed = new PainChangedEvent(uid, oldPain, pain);
         RaiseLocalEvent(uid, ref changed);

@@ -37,6 +37,12 @@ public sealed partial class WolfgateMarkingPicker : BoxContainer
     public Marking? FacialHairMarking;
     public bool Forced { get; set; }
 
+    /// <summary>Whether a marking glows, by ID. Null hides the glow switch on the applied markings.</summary>
+    public Func<string, bool>? IsGlowing;
+
+    /// <summary>Raised with a marking's ID when its glow switch is flipped.</summary>
+    public Action<string, bool>? OnGlowChanged;
+
     /// <summary>Body parts in the order they are offered, head to tail; anything else follows in enum order.</summary>
     private static readonly HumanoidVisualLayers[] PartOrder =
     {
@@ -689,13 +695,35 @@ public sealed partial class WolfgateMarkingPicker : BoxContainer
         down.OnPressed += _ => Shift(proto, false);
         remove.OnPressed += _ => Remove(proto);
 
-        var card = new BoxContainer { Orientation = LayoutOrientation.Vertical, SeparationOverride = 4 };
-        card.AddChild(new BoxContainer
+        var row = new BoxContainer
         {
             Orientation = LayoutOrientation.Horizontal,
             SeparationOverride = 8,
-            Children = { icon, name, up, down, remove },
-        });
+            Children = { icon, name },
+        };
+
+        // A marking with a shader of its own already draws the way it was made to.
+        if (IsGlowing != null && proto.Shader == null)
+        {
+            var glow = new Button
+            {
+                Text = Loc.GetString("wg-marking-glow-toggle"),
+                ToolTip = Loc.GetString("wg-marking-glow-tooltip"),
+                ToggleMode = true,
+                Pressed = IsGlowing(proto.ID),
+                VerticalAlignment = VAlignment.Center,
+                StyleClasses = { StyleWolfgate.StyleClassCreatorToggle },
+            };
+            glow.OnToggled += args => OnGlowChanged?.Invoke(proto.ID, args.Pressed);
+            row.AddChild(glow);
+        }
+
+        row.AddChild(up);
+        row.AddChild(down);
+        row.AddChild(remove);
+
+        var card = new BoxContainer { Orientation = LayoutOrientation.Vertical, SeparationOverride = 4 };
+        card.AddChild(row);
 
         if (!proto.ForcedColoring)
         {

@@ -164,6 +164,10 @@ public sealed partial class NewsSystem : SharedNewsSystem
 
         var title = msg.Title.Trim();
         var content = msg.Content.Trim();
+        // WOLFGATE(Lattice) START: the Coda can't be written down either
+        title = Content.Shared._WG.Lattice.WGWrittenTextEvent.Apply(EntityManager, msg.Actor, title);
+        content = Content.Shared._WG.Lattice.WGWrittenTextEvent.Apply(EntityManager, msg.Actor, content);
+        // WOLFGATE END
 
         var article = new NewsArticle
         {

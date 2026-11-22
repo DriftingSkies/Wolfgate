@@ -64,7 +64,10 @@ trait-spanish-name = Spanish accent
 trait-spanish-desc = Hola señor, donde esta la biblioteca.
 
 trait-painnumbness-name = Numb
-trait-painnumbness-desc = You lack any sense of feeling pain, being unaware of how hurt you may be.
+# WOLFGATE(Wolfmed) START: a numb body still goes down from pain it can't feel.
+# trait-painnumbness-desc = You lack any sense of feeling pain, being unaware of how hurt you may be.
+trait-painnumbness-desc = You lack any sense of feeling pain, being unaware of how hurt you may be until your body gives out under you.
+# WOLFGATE END
 
 # Mono
 trait-russian-name = Russian accent

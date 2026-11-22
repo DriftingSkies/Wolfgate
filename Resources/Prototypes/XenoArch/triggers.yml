@@ -319,10 +319,11 @@
     - AmmoniaBlood
     - ZombieBlood
     - Sap
-    # WOLFGATE(Xenoarch) START: Frontier's goblin blood; no sulfur blood here, Shadekin Blood (DarkBlood) added
+    # WOLFGATE(Xenoarch) START: Frontier's goblin blood; no sulfur blood here, Shadekin Blood (DarkBlood) and Avali Blood added
     # - SulfurBlood
     - GoblinBlood
     - DarkBlood
+    - AvaliBlood
     # WOLFGATE END
 
 - type: entity

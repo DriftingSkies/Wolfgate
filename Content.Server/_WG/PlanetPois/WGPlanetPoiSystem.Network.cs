@@ -16,6 +16,7 @@ using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
+using Robust.Shared.Random;
 using Robust.Shared.Utility;
 
 namespace Content.Server._WG.PlanetPois;
@@ -35,6 +36,10 @@ public sealed partial class WGPlanetPoiSystem
     private async Task PlaceAsync(EntityUid ground, WGPlanetNetworkComponent network, Vector2 centre, float radius, WGPlanetPoiTablePrototype table,
         List<Task> claims)
     {
+        // Flows through this placement's awaits only; each layer placed alongside gets its own.
+        var random = new RobustRandom();
+        random.SetSeed(_sharedRandom.Next());
+        _placementRandom.Value = random;
         var record = EnsureComp<WGPlanetPoiComponent>(ground);
         var created = new HashSet<EntityUid>();
         var createdDecals = new List<uint>();
@@ -941,7 +946,8 @@ public sealed partial class WGPlanetPoiSystem
                         var next = current + direction;
                         if (Contains(site.Bounds, next))
                         {
-                            if (totalVisited >= 250000 || reached.Contains(next) || initialPins.Contains(next) || !Unblocked(ground, grid, next)) continue;
+                            // Water too: the access path becomes road, and a road never runs through water.
+                            if (totalVisited >= 250000 || reached.Contains(next) || initialPins.Contains(next) || !Unblocked(ground, grid, next) || Water(next)) continue;
                             reached.Add(next);
                             totalVisited++;
                             previous[next] = current;

@@ -15,8 +15,18 @@ public sealed class WGCockpitGunneryPanel : Control
     private readonly WGThreatAnnunciator _annunciator = new();
     private bool _released;
 
+    /// <summary>Set while the panel changes the selection itself, which is not the pilot choosing.</summary>
+    private bool _quiet;
+
     /// <summary>Forwards the existing fire-control commands through the active helm session.</summary>
     public event Action<BoundUserInterfaceMessage>? Command;
+
+    /// <summary>Raised when the pilot changes which weapons are selected.</summary>
+    public event Action? SelectionChanged;
+
+    /// <summary>Every weapon whose key is pressed, available or not: what the pilot chose.</summary>
+    public List<NetEntity> PressedWeapons => _window.WeaponsList
+        .Where(pair => pair.Value.Pressed).Select(pair => pair.Key).ToList();
 
     /// <summary>Returns the offensive selection across the whole list, excluding countermeasure launchers.</summary>
     public List<NetEntity> SelectedWeapons => _window.WeaponsList
@@ -45,6 +55,7 @@ public sealed class WGCockpitGunneryPanel : Control
         HorizontalExpand = VerticalExpand = true;
         _window.CombatMessage += Forward;
         _window.OnServerRefresh += Refresh;
+        _window.OnWeaponSelectionChanged += OnSelectionChanged;
         AddChild(_window.WgBuildCockpitGunnery(_lease));
         WGInstrumentTheme.Install(this);
     }
@@ -73,9 +84,39 @@ public sealed class WGCockpitGunneryPanel : Control
     /// <summary>Drops the previous console's targeting selection when the accessible console changes.</summary>
     public void ClearSelection()
     {
+        _quiet = true;
         foreach (var button in _window.WeaponsList.Values)
             button.Pressed = false;
         _window.OnWeaponSelectionChanged?.Invoke();
+        _quiet = false;
+    }
+
+    /// <summary>Selects the listed weapons that this console has, as the pilot had them before.</summary>
+    public void Select(IReadOnlyCollection<NetEntity> weapons)
+    {
+        if (weapons.Count == 0)
+            return;
+
+        _quiet = true;
+        var any = false;
+        foreach (var weapon in weapons)
+        {
+            if (!_window.WeaponsList.TryGetValue(weapon, out var button) || button.Pressed)
+                continue;
+
+            button.Pressed = true;
+            any = true;
+        }
+
+        if (any)
+            _window.OnWeaponSelectionChanged?.Invoke();
+        _quiet = false;
+    }
+
+    private void OnSelectionChanged()
+    {
+        if (!_quiet)
+            SelectionChanged?.Invoke();
     }
 
     private void Forward(BoundUserInterfaceMessage message) => Command?.Invoke(message);
@@ -89,6 +130,7 @@ public sealed class WGCockpitGunneryPanel : Control
             _released = true;
             _window.CombatMessage -= Forward;
             _window.OnServerRefresh -= Refresh;
+            _window.OnWeaponSelectionChanged -= OnSelectionChanged;
             _lease.Restore();
             _window.Dispose();
         }

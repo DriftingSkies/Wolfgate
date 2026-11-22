@@ -167,16 +167,16 @@ public sealed class TraitsUiTest
                 "A blocking species restriction should be shown inline.");
 
             // Traits sit in their layout subgroup, and sorting by points orders each subgroup by cost.
-            var vigor = entries.First(entry => entry.Trait.ID == "WillToLive");
-            var tenacity = entries.First(entry => entry.Trait.ID == "Steadfast");
-            Assert.That(vigor.Parent, Is.SameAs(tenacity.Parent), "Toughness traits should share a subgroup.");
-            Assert.That(vigor.Parent, Is.Not.SameAs(clown.Parent), "Different subgroups should be separate.");
+            var lethargy = entries.First(entry => entry.Trait.ID == "Lethargy");
+            var glassJaw = entries.First(entry => entry.Trait.ID == "GlassJaw");
+            Assert.That(lethargy.Parent, Is.SameAs(glassJaw.Parent), "Frailty traits should share a subgroup.");
+            Assert.That(lethargy.Parent, Is.Not.SameAs(clown.Parent), "Different subgroups should be separate.");
 
             traitsTab.SetSort(TraitSortMode.CostHigh);
-            var costs = vigor.Parent!.Children.OfType<TraitEntry>().Select(e => e.Trait.Cost).ToList();
+            var costs = lethargy.Parent!.Children.OfType<TraitEntry>().Select(e => e.Trait.Cost).ToList();
             Assert.That(costs, Is.Ordered.Descending, "Most points first should order a subgroup by cost.");
             traitsTab.SetSort(TraitSortMode.CostLow);
-            costs = vigor.Parent!.Children.OfType<TraitEntry>().Select(e => e.Trait.Cost).ToList();
+            costs = lethargy.Parent!.Children.OfType<TraitEntry>().Select(e => e.Trait.Cost).ToList();
             Assert.That(costs, Is.Ordered.Ascending, "Fewest points first should order a subgroup by cost.");
             traitsTab.SetSort(TraitSortMode.Name);
 

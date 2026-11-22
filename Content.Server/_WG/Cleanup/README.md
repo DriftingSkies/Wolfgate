@@ -35,7 +35,9 @@ Keeps Mono's cleanup systems (`Content.Server/_Mono/Cleanup`) safe and cheap at 
 - [`Content.Server/_Mono/Cleanup/SpaceCleanupSystem.cs`](../../_Mono/Cleanup/SpaceCleanupSystem.cs)
   - typed delegate for the per-contact wall-stuck overlap test
   - same decision with cheap rejections before pricing; unusual cvars fall through to the check below
+  - a bought item or trade crate caught in a wall is kept, its static price undersells it
   - floor the lookup radius, since a zero-price entity's zero radius asserted the server down.
+  - vended crates spawn inside their vendor and can pile into walls; their worth is the price paid
   - compiled call instead of a boxing reflection Invoke per contact
 
 <!-- WOLFGATE-GENERATED END -->

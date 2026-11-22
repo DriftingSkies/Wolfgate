@@ -93,6 +93,7 @@ examiners `CanExamine` allows. `MarkingSet` caps top, bottom and socks markings 
 - [`Content.IntegrationTests/Tests/_WG/Genitals/ArousalTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Genitals/ArousalTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Genitals/ConsentMindReentryTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Genitals/ConsentMindReentryTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Genitals/ConsentToggleReopenTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Genitals/ConsentToggleReopenTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Genitals/CustomUndergarmentStripTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Genitals/CustomUndergarmentStripTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Genitals/GenitalAnchorLayerTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Genitals/GenitalAnchorLayerTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Genitals/GenitalAutosurgeonTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Genitals/GenitalAutosurgeonTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Genitals/GenitalCloningPolymorphTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Genitals/GenitalCloningPolymorphTest.cs)

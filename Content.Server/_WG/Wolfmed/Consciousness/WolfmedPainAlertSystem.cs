@@ -18,7 +18,7 @@ namespace Content.Server._WG.Wolfmed.Consciousness;
 /// <remarks>
 /// Refreshed by <see cref="WolfmedConsciousnessSystem"/> every time it applies a body's state, which already follows
 /// every pain change, relief and faint, so this takes no subscription. A machine shows the same icons under its own
-/// alert, whose text reads as sensor overload; it never faints. The Downed alerts keep their meaning.
+/// alert, whose text reads as sensor overload; its faint is a short reboot. The Downed alerts keep their meaning.
 /// </remarks>
 public sealed partial class WolfmedPainAlertSystem : EntitySystem
 {

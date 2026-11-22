@@ -17,7 +17,8 @@ public sealed class WGLatticeBeamOverlay : Overlay
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPrototypeManager _proto = default!;
 
-    public override OverlaySpace Space => OverlaySpace.WorldSpace;
+    /// <summary>Below the world, so a hull lying across a beam hides it instead of being painted over.</summary>
+    public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowWorld;
 
     /// <summary>How close an anchor must sit to its corner of the polygon to count as that corner's, in metres.</summary>
     private const float CornerMatch = 1200f;

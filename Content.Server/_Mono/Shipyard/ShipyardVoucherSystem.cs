@@ -22,10 +22,13 @@ public sealed partial class ShipyardVoucherSystem : EntitySystem
 
         var remainingTime = ent.Comp.NextBuyAt - _timing.CurTime;
 
-        if (ent.Comp.DestroyOnEmpty == true)
-            args.PushMarkup(Loc.GetString("voucher-current-redemptions", ("count", ent.Comp.RedemptionsLeft)));
-        else
-            args.PushMarkup(Loc.GetString("voucher-infinite-redemptions"));
+        // WOLFGATE(Shipyard) START: every voucher runs out, so a kept card showed "infinite" with one use left
+        // if (ent.Comp.DestroyOnEmpty == true)
+        //     args.PushMarkup(Loc.GetString("voucher-current-redemptions", ("count", ent.Comp.RedemptionsLeft)));
+        // else
+        //     args.PushMarkup(Loc.GetString("voucher-infinite-redemptions"));
+        args.PushMarkup(Loc.GetString("voucher-current-redemptions", ("count", ent.Comp.RedemptionsLeft)));
+        // WOLFGATE END
 
         if (remainingTime >= TimeSpan.FromSeconds(60))
             args.PushMarkup(Loc.GetString("voucher-current-cooldown-minutes", ("cooldown", remainingTime.TotalMinutes)));

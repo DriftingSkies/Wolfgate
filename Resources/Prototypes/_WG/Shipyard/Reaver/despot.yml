@@ -8,7 +8,8 @@
   description: 'Formerly an artifact research vessel, the Despot has been stripped down and turned to piracy.'
   price: 60793 # appraised at 50661, 20% markup
   category: Medium # 217 tiles
-  group: Shipyard
+  purchasable: false
+  group: Custom
   shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/Reaver/despot.yml
   guidebookPage: null
   class:

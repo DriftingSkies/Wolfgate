@@ -10,6 +10,7 @@ wg-chassis-link-done-target = { CAPITALIZE(THE($user)) } is linked into your cha
 wg-chassis-isolate-done = Servos and sensors in { THE($part) } cut.
 wg-chassis-restore-done = { CAPITALIZE(THE($part)) } is back online.
 wg-chassis-isolate-refuse = That part can't be isolated.
+wg-chassis-isolate-refuse-cuffed = The cuffs hold that limb. It can't be isolated.
 wg-chassis-restore-low-power = { CAPITALIZE(THE($part)) } stays dark until power returns.
 
 wg-chassis-detach-done = { CAPITALIZE(THE($part)) } comes off { THE($target) } in one piece.

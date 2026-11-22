@@ -10,7 +10,8 @@ namespace Content.Shared._WG.Wolfmed.Wounds;
 
 /// <summary>
 /// Raised on a body, and relayed to its worn items, before a wound rule makes <see cref="Wound"/> on a part. Cancel
-/// it to refuse the wound; raise <see cref="MinDamageMultiplier"/> to make the rule need a bigger hit.
+/// it to refuse the wound, raise <see cref="StopChance"/> to refuse it on a roll, or raise
+/// <see cref="MinDamageMultiplier"/> to make the rule need a bigger hit.
 /// </summary>
 [ByRefEvent]
 public record struct WolfmedWoundRuleAttemptEvent(
@@ -23,6 +24,8 @@ public record struct WolfmedWoundRuleAttemptEvent(
     /// <summary>What dealt the hit, so armour can answer explosions alone.</summary>
     public WolfmedWoundCause Cause;
     public bool Cancelled;
+    /// <summary>Chance the wound is refused anyway; the highest any worn item gives is rolled once.</summary>
+    public float StopChance;
     public float MinDamageMultiplier = 1f;
     public SlotFlags TargetSlots => SlotFlags.WITHOUT_POCKET;
 }

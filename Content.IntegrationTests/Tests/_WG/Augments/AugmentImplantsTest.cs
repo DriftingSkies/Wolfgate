@@ -271,9 +271,9 @@ public sealed class AugmentImplantsTest
             Assert.That(augments.ReadImplants(mob), Is.EquivalentTo(Revived), "The implants put in don't read back.");
 
             // More stamina.
-            var vigor = entities.GetComponent<VigorComponent>(mob);
+            var booster = entities.GetComponent<WGAdrenalBoosterComponent>(mob);
             Assert.That(entities.GetComponent<StaminaComponent>(mob).CritThreshold,
-                Is.EqualTo(entities.GetComponent<StaminaComponent>(plain).CritThreshold + vigor.StaminaBonus).Within(1e-4));
+                Is.EqualTo(entities.GetComponent<StaminaComponent>(plain).CritThreshold + booster.StaminaBonus).Within(1e-4));
 
             // Less pain from the same wound.
             float PainGain(EntityUid body)

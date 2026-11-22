@@ -5,6 +5,7 @@ using Content.Server._WG.Wolfmed.Consciousness;
 using Content.Server.Body.Components;
 using Content.Shared._EinsteinEngines.Silicon.Components;
 using Content.Shared._HL.Silicons.Synths.Battery;
+using Content.Shared._Onyx.Body.Systems;
 using Content.Shared._Shitmed.Body.Organ;
 using Content.Shared._WG.Wolfmed.Body;
 using Content.Shared._WG.Wolfmed.CCVar;
@@ -14,6 +15,7 @@ using Content.Shared._WG.Wolfmed.Wounds;
 using Content.Shared.Body.Systems;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.FixedPoint;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.PowerCell.Components;
 using Robust.Shared.Configuration;
 using Robust.Shared.Containers;
@@ -25,8 +27,9 @@ namespace Content.Server._WG.Wolfmed.Life;
 /// A mechanical body's cardiac arrest: without its pump it shuts down until repaired. Without power a synthetic
 /// chassis goes on low power instead (Synthetics); only a mechanical body that is not synthetic shuts down for it.
 /// </summary>
-// No blood and no breathing means no oxygenation clock, so a shut-down machine stays unconscious indefinitely with
-// nothing running out. Death is still the brain, the positronic one for a chassis, through the ordinary organ path.
+// No blood and no breathing means no oxygenation clock. A flat cell leaves a machine out indefinitely with nothing
+// running out; without its pump or its fluid the positronic core burns down over wolfmed.shutdown_core_seconds, and
+// death is the core reaching zero through the ordinary organ path, as an arrest's brain.
 public sealed partial class WolfmedShutdownSystem : EntitySystem
 {
     /// <summary>Pressure key for a machine with nothing running.</summary>
@@ -47,8 +50,12 @@ public sealed partial class WolfmedShutdownSystem : EntitySystem
     [Dependency] private SiliconChargeSystem _siliconCharge = default!;
     [Dependency] private WolfmedDyingActionsSystem _dyingActions = default!; // Playtest 5
     [Dependency] private WGLowPowerSystem _lowPower = default!; // Synthetics
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private OrganHealthSystem _organs = default!;
+    [Dependency] private WolfmedLifeSystem _life = default!;
 
     private TimeSpan _nextReconcile;
+    private float _coreSeconds;
 
     public override void Initialize()
     {
@@ -59,6 +66,8 @@ public sealed partial class WolfmedShutdownSystem : EntitySystem
         SubscribeLocalEvent<SiliconDownOnDeadComponent, SiliconChargeDeathEvent>(OnChargeDeath);
         SubscribeLocalEvent<SiliconDownOnDeadComponent, SiliconChargeAliveEvent>(OnChargeAlive);
         SubscribeLocalEvent<WolfmedRejuvenateEvent>(OnRejuvenate);
+
+        Subs.CVar(_configuration, WolfmedCVars.ShutdownCoreSeconds, value => _coreSeconds = value, true);
     }
 
     /// <summary>Whether the body is a machine wound host that runs no oxygenation clock.</summary>
@@ -107,6 +116,7 @@ public sealed partial class WolfmedShutdownSystem : EntitySystem
             if (!TerminatingOrDeleted(body) && IsMechanical(body))
             {
                 Refresh(body);
+                DrainCore(body, (float) ReconcileInterval.TotalSeconds);
                 continue;
             }
 
@@ -114,6 +124,27 @@ public sealed partial class WolfmedShutdownSystem : EntitySystem
             RemComp<WolfmedShutdownComponent>(body);
             _consciousness.SetExternalPressure(body, ShutdownPressure, 0f);
         }
+    }
+
+    /// <summary>
+    /// Burns down the core of a chassis shut down without its pump or its fluid, a full core over
+    /// wolfmed.shutdown_core_seconds. A flat cell alone drains nothing, and pulling the cell doesn't stop the burn.
+    /// </summary>
+    private void DrainCore(EntityUid body, float seconds)
+    {
+        // The pump and fluid are read, not the reason: a flat cell outranks them there.
+        if (_coreSeconds <= 0f || !TryComp(body, out WolfmedShutdownComponent? shutdown) ||
+            HasPump(body) && !IsDry(body) || _mobState.IsDead(body) ||
+            _life.GetBrainOrgan(body) is not { } core || core.Comp.Health <= FixedPoint2.Zero)
+            return;
+
+        shutdown.CoreDrainCarry += core.Comp.MaxHealth.Float() * seconds / _coreSeconds;
+        var loss = FixedPoint2.New(shutdown.CoreDrainCarry);
+        if (loss <= FixedPoint2.Zero)
+            return;
+
+        shutdown.CoreDrainCarry -= loss.Float();
+        _organs.ChangeHealth(core, -loss);
     }
 
     private void OnChargeDeath(EntityUid uid, SiliconDownOnDeadComponent comp, SiliconChargeDeathEvent args) =>

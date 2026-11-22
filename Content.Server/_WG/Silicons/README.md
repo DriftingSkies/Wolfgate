@@ -16,6 +16,7 @@ refills the cell in its battery organ slot (`SynthBatteryPowerSystem`, `Rejuvena
 
 ### Server
 
+- [`Content.Server/_WG/Silicons/Battery/ChargerSystem.Synth.cs`](Battery/ChargerSystem.Synth.cs)
 - [`Content.Server/_WG/Silicons/Battery/SynthBatteryDrinkerSystem.cs`](Battery/SynthBatteryDrinkerSystem.cs)
 
 ### Shared
@@ -51,6 +52,7 @@ refills the cell in its battery organ slot (`SynthBatteryPowerSystem`, `Rejuvena
   - rejuvenating also fills the cell in the synth's battery organ slot
 - [`Content.Server/_HL/Silicons/Synths/Battery/SynthBatterySystem.cs`](../../_HL/Silicons/Synths/Battery/SynthBatterySystem.cs): battery moved to shared here
 - [`Content.Server/Body/Systems/MetabolizerSystem.cs`](../../Body/Systems/MetabolizerSystem.cs): ported from HardLight, Synths turn metabolised Nutriment into charge
+- [`Content.Server/Power/EntitySystems/ChargerSystem.cs`](../../Power/EntitySystems/ChargerSystem.cs): a synth's own cell, in its battery organ slot, before a worn suit's
 - [`Content.Shared/_HL/Railroading/Events/RailroadingReagentMetabolizedEvent.cs`](../../../Content.Shared/_HL/Railroading/Events/RailroadingReagentMetabolizedEvent.cs): synth nutriment-to-charge event, ported from HardLight
 - [`Content.Shared/_HL/Silicons/Synths/Battery/SharedSynthBatteryAlertSystem.cs`](../../../Content.Shared/_HL/Silicons/Synths/Battery/SharedSynthBatteryAlertSystem.cs): synth battery, ported from HardLight
 - [`Content.Shared/_HL/Silicons/Synths/Battery/SynthBatteryComponent.cs`](../../../Content.Shared/_HL/Silicons/Synths/Battery/SynthBatteryComponent.cs): synth battery, ported from HardLight

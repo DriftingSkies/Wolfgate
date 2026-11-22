@@ -270,7 +270,7 @@ doesn't occur.
   - Goob's proper invisibility, as the old effect had
   - stays examinable, or a Close inspection node can never trigger
 - [`Resources/Prototypes/XenoArch/triggers.yml`](../../../Resources/Prototypes/XenoArch/triggers.yml)
-  - Frontier's goblin blood; no sulfur blood here, Shadekin Blood (DarkBlood) added
+  - Frontier's goblin blood; no sulfur blood here, Shadekin Blood (DarkBlood) and Avali Blood added
   - no Mushroom tag here
   - every hitscan beam counts, since ours aren't reparented onto a laser base
 - [`Resources/ServerInfo/_NF/Guidebook/Science/Xenoarchaeology.xml`](../../../Resources/ServerInfo/_NF/Guidebook/Science/Xenoarchaeology.xml): wizden's rework page with the sector intro from the old Frontier page

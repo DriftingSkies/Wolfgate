@@ -250,7 +250,10 @@ public sealed partial class PaperSystem : EntitySystem
 
         if (args.Text.Length <= entity.Comp.ContentSize)
         {
-            SetContent(entity, args.Text);
+            // WOLFGATE(Lattice) START: the Coda can't be written down either
+            // SetContent(entity, args.Text);
+            SetContent(entity, Content.Shared._WG.Lattice.WGWrittenTextEvent.Apply(EntityManager, args.Actor, args.Text));
+            // WOLFGATE END
 
             if (TryComp<AppearanceComponent>(entity, out var appearance))
                 _appearance.SetData(entity, PaperVisuals.Status, PaperStatus.Written, appearance);

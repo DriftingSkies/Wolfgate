@@ -1,6 +1,7 @@
 #nullable enable
 using System.Numerics;
 using System.Collections.Generic;
+using System.Linq;
 using Content.Shared.Weapons.Ranged.Events;
 using Content.Shared.Weapons.Ranged;
 using Content.Shared.Weapons.Ranged.Components;
@@ -10,6 +11,7 @@ using Content.Server.NPC.HTN;
 using Content.Shared._WG.NpcCrew;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Inventory;
+using Content.Shared.Storage;
 using Content.Shared.Wieldable.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -68,9 +70,10 @@ public sealed partial class WGCrewTest
             Assert.That(weapons.AmmoCount(original), Is.Zero);
             if (!spare)
             {
-                foreach (var name in new[] { "pocket1", "pocket2" })
+                // Every spare goes, the webbing's with it; a marine keeps his sidearm.
+                foreach (var name in new[] { "belt", "pocket1", "pocket2" })
                 {
-                    if (inventory.TryGetSlotEntity(crew, name, out var item))
+                    if (inventory.TryGetSlotEntity(crew, name, out var item) && !SEntMan.HasComponent<GunComponent>(item))
                         SEntMan.DeleteEntity(item.Value);
                 }
             }
@@ -81,7 +84,8 @@ public sealed partial class WGCrewTest
                 Assert.That(loaded, Is.True);
                 Assert.That(drawn, Is.EqualTo(original));
                 Assert.That(weapons.AmmoCount(original), Is.GreaterThan(0));
-                Assert.That(inventory.TryGetSlotEntity(crew, "pocket1", out _), Is.False);
+                Assert.That(inventory.TryGetSlotEntity(crew, marine ? "pocket1" : "pocket2", out _), Is.False,
+                    "The pocket's magazine goes before the webbing's.");
             }
             else if (marine)
             {
@@ -129,6 +133,48 @@ public sealed partial class WGCrewTest
             Assert.That(SEntMan.GetComponent<WieldableComponent>(rifle).Wielded, Is.True, "The rifle stays wielded.");
             Assert.That(inventory.TryGetSlotEntity(crew, "pocket1", out var pocket) && pocket == spent, Is.True,
                 "The spent magazine takes the spare's pocket.");
+        });
+    }
+
+    /// <summary>With his pocket empty a marine reloads from the webbing on his belt, and the spent magazine goes back into it.</summary>
+    [Test]
+    public async Task CrewReloadFromWebbing()
+    {
+        var deck = await CreateDeck(new Vector2(6, 0), 5, gravity: true);
+        await Server.WaitAssertion(() =>
+        {
+            var crew = Server.System<WGCrewSystem>().SpawnCrewman(WGCrewRoles.Marine,
+                new EntityCoordinates(deck, new Vector2(2.5f)), "webbing")!.Value;
+            SEntMan.GetComponent<HTNComponent>(crew).Enabled = false;
+            var weapons = Server.System<WGCrewWeaponSystem>();
+            var slots = Server.System<ItemSlotsSystem>();
+            var inventory = Server.System<InventorySystem>();
+
+            Assert.That(inventory.TryGetSlotEntity(crew, "belt", out var rig), Is.True, "Precondition: he wears webbing.");
+            var stowed = SEntMan.GetComponent<StorageComponent>(rig!.Value).Container;
+
+            Assert.That(weapons.TryDraw(crew), Is.True);
+            var rifle = SEntMan.GetComponent<WGCrewWeaponComponent>(crew).Drawn!.Value;
+            Assert.That(SEntMan.GetComponent<WieldableComponent>(rifle).Wielded, Is.True, "Precondition: the rifle is wielded.");
+            Assert.That(slots.TryGetSlot(rifle, "gun_magazine", out var slot) && slot.Item is { }, Is.True);
+            SEntMan.DeleteEntity(slot!.Item!.Value);
+            var spent = SEntMan.SpawnAtPosition("Magazine68x52mmCaselessEmpty", new EntityCoordinates(deck, new Vector2(2.5f)));
+            Assert.That(slots.TryInsert(rifle, slot, spent, null), Is.True);
+            if (slots.TryEject(rifle, "gun_chamber", null, out var round))
+                SEntMan.DeleteEntity(round.Value);
+            Assert.That(inventory.TryGetSlotEntity(crew, "pocket1", out var pocketed), Is.True);
+            SEntMan.DeleteEntity(pocketed!.Value);
+            Assert.That(weapons.AmmoCount(rifle), Is.Zero);
+            int Loaded() => stowed.ContainedEntities.Count(item => weapons.AmmoCount(item) > 0 && slots.CanInsert(rifle, item, crew, slot, swap: true));
+            var before = Loaded();
+            Assert.That(before, Is.GreaterThan(1), "Precondition: rifle magazines in the webbing.");
+
+            Assert.That(weapons.TryReloadOrSwitch(crew), Is.True);
+            Assert.That(weapons.AmmoCount(rifle), Is.GreaterThan(0));
+            Assert.That(SEntMan.GetComponent<WGCrewWeaponComponent>(crew).Drawn, Is.EqualTo(rifle));
+            Assert.That(SEntMan.GetComponent<WieldableComponent>(rifle).Wielded, Is.True, "The rifle stays wielded.");
+            Assert.That(Loaded(), Is.EqualTo(before - 1), "One magazine left the webbing.");
+            Assert.That(stowed.Contains(spent), Is.True, "The spent magazine goes back into the webbing.");
         });
     }
 }

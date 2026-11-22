@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Client._WG.Encounters;
 using Content.IntegrationTests.Pair;
+using Content.IntegrationTests.Tests._WG.Ci;
 using Content.Server._WG.Encounters;
 using Content.Server._WG.Encounters.Components;
 using Content.Server._WG.Encounters.Systems;
@@ -449,7 +450,8 @@ public sealed class SectorTest
 
         // Crew near the Monolith wake the Director.
         await server.WaitPost(() => transforms.SetCoordinates(crewman, entMan.GetComponent<TransformComponent>(scion).Coordinates));
-        await WGRemadeDirectorTest.RunUntil(pair, () => director.Seeded, 15);
+        // The client's bounds assert has stopped this and the return below in CI; the guard names the sprite.
+        await WGStaleSpriteBounds.Guard(pair, () => WGRemadeDirectorTest.RunUntil(pair, () => director.Seeded, 15));
         await server.WaitAssertion(() =>
         {
             Assert.That(director.Seeded, Is.True, $"the Director never woke for the crew: crewman {entMan.GetComponent<Content.Shared.Mobs.Components.MobStateComponent>(crewman).CurrentState}, "
@@ -458,7 +460,7 @@ public sealed class SectorTest
             entMan.System<WGEncounterSystem>().End(encounter);
             server.PlayerMan.SetAttachedEntity(pair.Player!, null);
         });
-        await pair.CleanReturnAsync();
+        await WGStaleSpriteBounds.Guard(pair, () => pair.CleanReturnAsync().AsTask());
     }
 
     [Test]

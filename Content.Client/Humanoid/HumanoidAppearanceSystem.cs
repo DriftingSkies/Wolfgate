@@ -39,6 +39,7 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
         ApplyMarkingSet(uid, component, sprite); // WOLFGATE(Genitals)
 
         sprite[sprite.LayerMapReserveBlank(HumanoidVisualLayers.Eyes)].Color = component.EyeColor;
+        ApplyEyeGlow(component, sprite); // WOLFGATE(MarkingGlow): before the event, so erasing the eyes keeps their glow
 
         // WOLFGATE(Genitals): anatomy visuals follow marking rebuilds (GenitalsVisualizerSystem)
         RaiseLocalEvent(uid, new HumanoidMarkingsAppliedEvent());
@@ -216,6 +217,7 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
 
         humanoid.MarkingSet = markings;
         humanoid.CustomMarkings = ProfileCustomMarkings(profile); // WOLFGATE(CustomMarkings): the doll wears the profile's custom markings
+        humanoid.MarkingGlow = ProfileMarkingGlow(profile); // WOLFGATE(MarkingGlow): the doll glows as the profile says
         humanoid.PermanentlyHidden = new HashSet<HumanoidVisualLayers>();
         humanoid.HiddenLayers = new Dictionary<HumanoidVisualLayers, SlotFlags>();
         humanoid.CustomBaseLayers = customBaseLayers;
@@ -398,6 +400,9 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
 				sprite.LayerSetShader(layerId, markingPrototype.Shader);
 			}
 			// impstation edit end
+            // WOLFGATE(MarkingGlow): a marking the player made glow
+            if (MarkingGlows(humanoid, markingPrototype))
+                ApplyMarkingGlow(sprite, layerId);
             sprite.LayerSetVisible(layerId, visible);
 
             // WOLFGATE(Species) START: mismatched parts are coloured without a species layer

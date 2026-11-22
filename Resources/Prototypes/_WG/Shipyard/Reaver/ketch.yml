@@ -7,6 +7,7 @@
   description: 'A traveling pharmacy now giving out doses of high explosives.'
   price: 92906 # appraised at 77422, 20% markup
   category: Medium # 352 tiles
+  purchasable: false
   group: Custom
   shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/Reaver/ketch.yml
   guidebookPage: null

@@ -39,6 +39,7 @@ public sealed class WGBirdSystem : EntitySystem
     [Dependency] private TurfSystem _turf = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
+    [Dependency] private FixtureSystem _fixtures = default!;
     [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private MobStateSystem _mobState = default!;
@@ -48,6 +49,7 @@ public sealed class WGBirdSystem : EntitySystem
     [Dependency] private RoofSystem _roof = default!;
     [Dependency] private WGDormancySystem _dormancy = default!;
 
+    private const string FlightFixture = "flight";
     private static readonly TimeSpan ThinkInterval = TimeSpan.FromSeconds(0.25);
     private static readonly TimeSpan IdleThinkInterval = TimeSpan.FromSeconds(2);
     private static readonly TimeSpan RetireDelay = TimeSpan.FromSeconds(120);
@@ -126,6 +128,8 @@ public sealed class WGBirdSystem : EntitySystem
         {
             ent.Comp.Protected = true;
             Land(ent, ent.Comp);
+            // A dead bird keeps no flight hitbox: it stood too tall for a crate.
+            _fixtures.DestroyFixture(ent, FlightFixture);
             if (TryComp<AmbientSoundComponent>(ent, out var ambience))
                 _ambient.SetAmbience(ent, false, ambience);
         }

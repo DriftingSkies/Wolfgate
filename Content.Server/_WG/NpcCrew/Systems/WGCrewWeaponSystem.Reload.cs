@@ -12,6 +12,8 @@ using Content.Server.NPC.HTN;
 using Content.Shared.NPC.Components;
 using Content.Shared.NPC.Systems;
 using Content.Shared.NPC;
+using Content.Shared.Storage;
+using Content.Shared.Storage.EntitySystems;
 using Content.Shared._WG.NpcCrew;
 using System.Linq;
 
@@ -23,12 +25,14 @@ public sealed partial class WGCrewWeaponSystem
     [Dependency] private ItemSlotsSystem _slots = default!;
     [Dependency] private SharedInteractionSystem _interaction = default!;
     [Dependency] private SharedGunSystem _guns = default!;
+    [Dependency] private SharedStorageSystem _storage = default!;
     [Dependency] private MobStateSystem _mobs = default!;
     [Dependency] private NpcFactionSystem _factions = default!;
     [Dependency] private Content.Server.Atmos.EntitySystems.AtmosphereSystem _atmos = default!;
     [Dependency] private SharedMapSystem _maps = default!;
     [Dependency] private WGCrewEvaSystem _eva = default!;
     [Dependency] private WGCrewStealthSystem _stealth = default!;
+    [Dependency] private WGCrewMusterSystem _muster = default!;
     [Dependency] private Robust.Shared.Timing.IGameTiming _timing = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private SharedTransformSystem _xformSystem = default!;
@@ -131,10 +135,11 @@ public sealed partial class WGCrewWeaponSystem
     }
 
     /// <summary>Only living hostile targets in the crewman's current vision justify drawing or reloading.</summary>
-    /// <summary>Drops a crewman's cached threat check, so the next one looks afresh.</summary>
+    /// <summary>Drops a crewman's cached threat and brace checks, so the next ones look afresh.</summary>
     public void ForgetThreat(EntityUid uid)
     {
         _threats.Remove(uid);
+        _braces.Remove(uid);
     }
 
     public bool HasLiveThreat(EntityUid uid)
@@ -253,8 +258,17 @@ public sealed partial class WGCrewWeaponSystem
         if (!attacked && !EntityManager.System<WGCrewCommsSystem>().Knows(uid, target))
             return WGCrewEngage.No;
         var hold = crew != null && MayBrace(uid, crew, target) ? WGCrewEngage.Brace : WGCrewEngage.No;
+        // A mustered crew holds as one whatever each man's skill, and goes after the hostile only on the push.
+        var muster = _muster.Posture(uid);
+        if (muster != WGCrewMusterPosture.None)
+            hold = WGCrewEngage.Brace;
         if (crew is { Pursues: false } || HasAir(uid) && !HasAir(target) || BlastHeld(target))
             return hold;
+        if (muster != WGCrewMusterPosture.None)
+            return muster == WGCrewMusterPosture.Push ? WGCrewEngage.Engage : hold;
+        // While his crew is mustered, a crewman outside the muster, at the helm or a gun, leaves the hunting to it.
+        if (crew != null && _muster.Stands(grid, crew.Group))
+            return RecentlyAttackedBy(uid, target) ? WGCrewEngage.Engage : hold;
 
         // Only a fresh attack sends him straight after someone he cannot see; an old grudge waits its turn in the hunt.
         return RecentlyAttackedBy(uid, target) || AdvanceFree(uid, target) ? WGCrewEngage.Engage : hold;
@@ -575,13 +589,18 @@ public sealed partial class WGCrewWeaponSystem
     private bool FindMagazineForOwner(EntityUid gun)
     {
         return Transform(gun).ParentUid is var owner && TryComp<WGCrewComponent>(owner, out var crew)
-            && (crew.InfiniteAmmo && RefillHolder(gun) != null || FindMagazine(owner, gun, out _, out _));
+            && (crew.InfiniteAmmo && RefillHolder(gun) != null || FindMagazine(owner, gun, out _, out _, out _));
     }
 
-    private bool FindMagazine(EntityUid owner, EntityUid gun, out EntityUid magazine, out string equipmentSlot)
+    /// <summary>
+    /// A loaded magazine for the gun: one in an equipment slot first, then one stowed in webbing or a pack worn in
+    /// one, when <paramref name="rig"/> is what holds it.
+    /// </summary>
+    private bool FindMagazine(EntityUid owner, EntityUid gun, out EntityUid magazine, out string equipmentSlot, out EntityUid? rig)
     {
         magazine = default;
         equipmentSlot = string.Empty;
+        rig = null;
         if (!_slots.TryGetSlot(gun, MagazineSlot, out var slot))
             return false;
         foreach (var name in WeaponSlots)
@@ -593,6 +612,22 @@ public sealed partial class WGCrewWeaponSystem
             equipmentSlot = name;
             return true;
         }
+
+        foreach (var name in WeaponSlots)
+        {
+            if (!_inventory.TryGetSlotEntity(owner, name, out var worn) || !TryComp<StorageComponent>(worn, out var storage))
+                continue;
+            foreach (var stowed in storage.Container.ContainedEntities)
+            {
+                if (AmmoCount(stowed) <= 0 || !_slots.CanInsert(gun, stowed, owner, slot, swap: true))
+                    continue;
+                magazine = stowed;
+                equipmentSlot = name;
+                rig = worn;
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -615,8 +650,8 @@ public sealed partial class WGCrewWeaponSystem
             return AmmoCount(gun) > 0;
         }
 
-        if (FindMagazine(uid, gun, out var magazine, out var equipmentSlot)
-            && SwapMagazine(uid, gun, magazine, equipmentSlot))
+        if (FindMagazine(uid, gun, out var magazine, out var equipmentSlot, out var rig)
+            && SwapMagazine(uid, gun, magazine, equipmentSlot, rig))
         {
             EntityManager.System<WGCrewSpeechSystem>().Say(uid, "reload");
             ReadyChamber(uid, gun);
@@ -657,26 +692,33 @@ public sealed partial class WGCrewWeaponSystem
     }
 
     /// <summary>
-    /// Loads a spare magazine straight from its equipment slot into the gun, without hands, so a wielded gun stays
-    /// wielded. The spent magazine takes the spare's slot, or falls at his feet if it doesn't fit.
+    /// Loads a spare magazine straight from its equipment slot, or from the rig worn in it, into the gun, without
+    /// hands, so a wielded gun stays wielded. The spent magazine takes the spare's place, or falls at his feet if it
+    /// doesn't fit.
     /// </summary>
-    private bool SwapMagazine(EntityUid uid, EntityUid gun, EntityUid magazine, string equipmentSlot)
+    private bool SwapMagazine(EntityUid uid, EntityUid gun, EntityUid magazine, string equipmentSlot, EntityUid? rig)
     {
         if (!_slots.TryGetSlot(gun, MagazineSlot, out var slot)
-            || !_inventory.TryUnequip(uid, equipmentSlot, silent: true, force: true))
+            || rig == null && !_inventory.TryUnequip(uid, equipmentSlot, silent: true, force: true))
             return false;
 
+        // A magazine in a rig stays there until the gun takes it.
         EntityUid? spent = null;
         if (slot.HasItem && !_slots.TryEject(gun, slot, uid, out spent)
-            || !_slots.TryInsert(gun, slot, magazine, uid))
+            || !_slots.TryInsert(gun, slot, magazine, uid) || slot.Item != magazine)
         {
             if (spent != null)
                 _slots.TryInsert(gun, slot, spent.Value, null);
-            _inventory.TryEquip(uid, magazine, equipmentSlot, silent: true, force: true);
+            if (rig == null)
+                _inventory.TryEquip(uid, magazine, equipmentSlot, silent: true, force: true);
             return false;
         }
 
-        if (spent != null)
+        if (spent == null)
+            return true;
+        if (rig is { } worn)
+            _storage.Insert(worn, spent.Value, out _, playSound: false);
+        else
             _inventory.TryEquip(uid, spent.Value, equipmentSlot, silent: true);
         return true;
     }

@@ -32,6 +32,7 @@
     bloodReagent: WGWolfmedHydraulicFluid # WOLFGATE(Wolfmed): playtest 3 IPC 2: was Oil, lamp oil a lit welder set alight in its own puddle
     bloodMaxVolume: 250
     bloodRefreshAmount: 0.5 # WOLFGATE(Synthetics): slow hydraulic regeneration, as the synthetic biotype overlay
+    bloodlossThreshold: 0.5 # WOLFGATE(Synthetics): low-fluid stutter and dizziness from the Downed line, not at 90%
     # WOLFGATE(Synthetics) START: room for contaminants; WGChassisFilter flushes everything the pump can't process
     # chemicalMaxVolume: 0
     chemicalMaxVolume: 30
@@ -198,7 +199,11 @@
   - type: WeldingHealable
   - type: WGChassisFilter # WOLFGATE(Synthetics): only contaminants stay in the chemical stream
   - type: RetroMonitorView # Mono
+  # WOLFGATE(Synthetics) START: clear speech under 40 damage and a lower ceiling; any scratch garbled it.
   - type: DamagedSiliconAccent
+    damageAtStartCorruption: 40
+    maxDamageCorruption: 0.35
+  # WOLFGATE END
 
 - type: entity
   save: false

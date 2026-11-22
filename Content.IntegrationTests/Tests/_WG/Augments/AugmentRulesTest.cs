@@ -72,7 +72,7 @@ public sealed class AugmentRulesTest
             Assert.That(valid.Keys, Is.EquivalentTo(new[] { WGAugmentSlot.LeftArm }));
             Assert.That(valid[WGAugmentSlot.LeftArm].Style?.Id, Is.Not.EqualTo("WGAugmentStyleZhenkov").And.Not.Null);
 
-            // Prybar Prosthetics and Bionic Legs fit their own limbs at spawn, so augments there are dropped.
+            // Prybar Prosthetics fit their own arms at spawn, so augments there are dropped.
             var all = new Dictionary<WGAugmentSlot, WGAugmentChoice>
             {
                 [WGAugmentSlot.LeftArm] = new("WGAugmentCyberLeftArm", "WGAugmentStyleCyborg"),
@@ -80,8 +80,6 @@ public sealed class AugmentRulesTest
             };
             Assert.That(WGAugmentRules.Validate("Human", all, new ProtoId<TraitPrototype>[] { "PrybarProsthetics" }, proto, factory).Keys,
                 Is.EquivalentTo(new[] { WGAugmentSlot.RightLeg }));
-            Assert.That(WGAugmentRules.Validate("Human", all, new ProtoId<TraitPrototype>[] { "BionicLegs" }, proto, factory).Keys,
-                Is.EquivalentTo(new[] { WGAugmentSlot.LeftArm }));
 
             // A mantis blade needs a synthetic arm: a cybernetic one, a trait's, or an IPC's own.
             var none = new ProtoId<TraitPrototype>[0];

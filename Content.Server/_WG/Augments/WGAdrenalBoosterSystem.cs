@@ -1,3 +1,4 @@
+using Content.Shared._Mono.Traits.Physical;
 using Content.Shared._Onyx.Wounds;
 using Content.Shared._WG.Augments;
 using Content.Shared._WG.Wolfmed.Consciousness;
@@ -14,7 +15,8 @@ using Robust.Shared.Timing;
 namespace Content.Server._WG.Augments;
 
 /// <summary>
-/// Stands a body with an adrenal booster back up soon after a stamina stun, and stretches a pain shock's adrenaline.
+/// Raises the stamina of a body with an adrenal booster, stands it back up soon after a stamina stun, and stretches a
+/// pain shock's adrenaline.
 /// </summary>
 public sealed partial class WGAdrenalBoosterSystem : EntitySystem
 {
@@ -28,8 +30,50 @@ public sealed partial class WGAdrenalBoosterSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
+        SubscribeLocalEvent<WGAdrenalBoosterComponent, ComponentStartup>(OnStartup);
+        SubscribeLocalEvent<WGAdrenalBoosterComponent, ComponentShutdown>(OnShutdown);
         SubscribeLocalEvent<WGAdrenalBoosterComponent, KnockedDownEvent>(OnKnockedDown);
+        SubscribeLocalEvent<LethargyComponent, ComponentInit>(OnLethargyInit);
+        SubscribeLocalEvent<LethargyComponent, ComponentRemove>(OnLethargyRemove);
         SubscribeLocalEvent<WolfmedPainShockEvent>(OnPainShock);
+    }
+
+    private void OnStartup(Entity<WGAdrenalBoosterComponent> ent, ref ComponentStartup args)
+    {
+        SetStaminaBonus(ent, !HasComp<LethargyComponent>(ent));
+    }
+
+    private void OnShutdown(Entity<WGAdrenalBoosterComponent> ent, ref ComponentShutdown args)
+    {
+        SetStaminaBonus(ent, false);
+    }
+
+    // Lethargy is a flaw taken for points; the booster doesn't buy it back. Traits land after the augments at spawn.
+    private void OnLethargyInit(Entity<LethargyComponent> ent, ref ComponentInit args)
+    {
+        if (TryComp<WGAdrenalBoosterComponent>(ent, out var booster))
+            SetStaminaBonus((ent, booster), false);
+    }
+
+    private void OnLethargyRemove(Entity<LethargyComponent> ent, ref ComponentRemove args)
+    {
+        if (TryComp<WGAdrenalBoosterComponent>(ent, out var booster) && !TerminatingOrDeleted(ent))
+            SetStaminaBonus((ent, booster), true);
+    }
+
+    /// <summary>Puts the booster's stamina bonus on the body or takes it off.</summary>
+    private void SetStaminaBonus(Entity<WGAdrenalBoosterComponent> ent, bool on)
+    {
+        if (ent.Comp.StaminaApplied == on || !TryComp<StaminaComponent>(ent, out var stamina))
+            return;
+
+        var sign = on ? 1f : -1f;
+        stamina.CritThreshold += sign * ent.Comp.StaminaBonus;
+        stamina.Decay += sign * ent.Comp.RegenerationBonus;
+        stamina.Cooldown = on ? stamina.Cooldown * ent.Comp.CooldownMultiplier : stamina.Cooldown / ent.Comp.CooldownMultiplier;
+        stamina.NextUpdate = _timing.CurTime;
+        ent.Comp.StaminaApplied = on;
+        Dirty(ent, stamina);
     }
 
     private void OnKnockedDown(Entity<WGAdrenalBoosterComponent> ent, ref KnockedDownEvent args)

@@ -37,6 +37,12 @@ public sealed partial class XenoEggVisualizerSystem : EntitySystem
         if (sprite.BaseRSI != res.RSI)
         {
             _sprite.SetBaseRsi((ent, sprite), res.RSI);
+            // SetBaseRsi leaves the bounds of layers drawn from it stale.
+            foreach (var eggLayer in sprite.AllLayers)
+            {
+                if (eggLayer is SpriteComponent.Layer { RSI: null } own && own.State.IsValid)
+                    _sprite.LayerSetRsiState(own, own.State, refresh: true);
+            }
         }
 
         var state = ent.Comp.State switch
