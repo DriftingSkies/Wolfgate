@@ -8694,3 +8694,12 @@ Entries:
   id: 100552
   time: '2026-11-22T07:52:20.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/791
+- author: Happyowl93
+  changes:
+    - type: Fix
+      message: >-
+        Taking the helm or guns of an NPC ship without now counts as stealing
+        it.
+  id: 100553
+  time: '2026-11-22T10:26:58.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/790

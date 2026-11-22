@@ -8,6 +8,10 @@ using Content.Server._WG.NpcCrew.Components;
 using Content.Server._WG.NpcCrew.Systems;
 using Content.Server._WG.ReaverCampaign.Components;
 using Content.Server._WG.ReaverCampaign.Systems;
+using Content.Server.Power.Components;
+using Content.Server.Shuttles.Components;
+using Content.Shared._Mono.FireControl;
+using Content.Shared.Access.Components;
 using Robust.Shared.GameObjects;
 
 namespace Content.IntegrationTests.Tests._WG.ReaverCampaign;
@@ -106,6 +110,52 @@ public sealed class WGReaverSeizedTest : WGReaverTestBase
             SEntMan.EventBus.RaiseEvent(EventSource.Local, ref ev);
             Assert.That(patrol.Recalled, Is.True, "The patrol is called home.");
             Assert.That(SEntMan.GetComponent<WGReaverStrongholdComponent>(stronghold).Recalled, Is.True);
+        });
+    }
+
+    /// <summary>
+    /// A player who opens a gunnery console of a campaign hull, its crew alive and never turned on him, seizes it: the
+    /// patrol out is turned on it, its fire is an attack on the hub and it has no leave to dock.
+    /// </summary>
+    [Test]
+    public async Task StrangerAtTheGunsSeizesTheHull()
+    {
+        await StartCampaign();
+        await Server.WaitAssertion(() =>
+        {
+            var campaign = Server.System<WGReaverCampaignSystem>();
+            var alerts = Server.System<WGCrewAlertSystem>();
+            var seizure = Server.System<WGEncounterSeizureSystem>();
+            var stronghold = FoundAt(Home);
+            campaign.SetTier(1);
+            Assert.That(campaign.TryReinforce(stronghold), Is.True);
+            Assert.That(campaign.TryLaunchPatrol(stronghold), Is.True);
+            var patrol = campaign.Patrols().Single().Owner;
+            var inbound = SEntMan.GetComponent<WGReaverStrongholdComponent>(stronghold).Inbound!.Value;
+            var lead = SEntMan.GetComponent<WGEncounterComponent>(stronghold).Ships["lead"];
+            var hub = lead.Grid;
+            var hubCrew = SEntMan.EntityQuery<WGCrewComponent>().First(crew => crew.Group == lead.Group).Owner;
+            var taken = SEntMan.GetComponent<WGEncounterComponent>(inbound).Ships["lead"].Grid;
+            SEntMan.EnsureComponent<WGCrewShipProfileComponent>(hub).Profile = "WGCrewProfilePirate";
+            SEntMan.EnsureComponent<WGCrewShipProfileComponent>(taken).Profile = "WGCrewProfilePirate";
+            Assert.That(alerts.ReportIncomingFire(hub, lead.Group, taken), Is.False, "Precondition: in its crew's hands its fire is let pass.");
+
+            // The helm stands on deck: the player and a gunnery console go there.
+            var deck = SEntMan.GetComponent<TransformComponent>(SEntMan.EntityQuery<ShuttleConsoleComponent>()
+                .First(console => SEntMan.GetComponent<TransformComponent>(console.Owner).GridUid == taken).Owner).Coordinates;
+            var player = SEntMan.GetEntity(Player);
+            Server.System<SharedTransformSystem>().SetCoordinates(player, deck);
+            var guns = SEntMan.SpawnAtPosition("ComputerGunneryConsole", deck);
+            SEntMan.RemoveComponent<AccessReaderComponent>(guns);
+            SEntMan.GetComponent<ApcPowerReceiverComponent>(guns).Powered = true;
+            var ui = Server.System<SharedUserInterfaceSystem>();
+            ui.OpenUi(guns, FireControlConsoleUiKey.Key, player);
+            Assert.That(ui.IsUiOpen(guns, FireControlConsoleUiKey.Key, player), Is.True, "Precondition: he works the gunnery console.");
+            seizure.Check();
+            Assert.That(seizure.IsSeized(taken), Is.True, "At its guns without the crew's leave, he holds it.");
+            Assert.That(SEntMan.GetComponent<WGReaverPatrolComponent>(patrol).Intercepting, Is.EqualTo(taken), "The patrol out is turned on it.");
+            Assert.That(alerts.ReportIncomingFire(hub, lead.Group, taken), Is.True, "Its fire is an attack now.");
+            Assert.That(Server.System<WGCrewSecuritySystem>().IsAuthorized(hubCrew, taken), Is.False, "It has no leave to dock.");
         });
     }
 }
