@@ -543,6 +543,9 @@
   name: fiberglass rod
   description: A light, springy rod. Fish bite sooner, hold the hook a little longer and come up in better shape. Use bait on it to load the hook.
   components:
+  - type: Construction
+    graph: WGFishingRodFiberglassGraph
+    node: built
   - type: Sprite
     sprite: _WG/Fishing/loot.rsi
     state: rod_fiberglass
@@ -560,6 +563,9 @@
   name: iridium rod
   description: A master angler's rod. Fish bite quickly, hold the hook a long while and come up at their best, and luck seems to follow it. Use bait on it to load the hook.
   components:
+  - type: Construction
+    graph: WGFishingRodIridiumGraph
+    node: built
   - type: Sprite
     sprite: _WG/Fishing/loot.rsi
     state: rod_iridium
@@ -577,6 +583,9 @@
   name: crab cage
   description: Load it with bait and use it on water next to you to set it. Every so often it catches a shellfish; use it with an empty hand to empty it. Pick it up to bring it in.
   components:
+  - type: Construction
+    graph: WGCrabCageGraph
+    node: built
   - type: Sprite
     sprite: _WG/Fishing/loot.rsi
     state: cage

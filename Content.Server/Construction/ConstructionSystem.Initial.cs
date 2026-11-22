@@ -294,6 +294,7 @@ namespace Content.Server.Construction
             {
                 Log.Error($"Initial construction does not have a valid target entity! It is missing a ConstructionComponent.\nGraph: {graph.ID}, Initial Target: {edge.Target}, Ent. Prototype: {newEntityProto}\nCreated Entity {ToPrettyString(newEntity)} will be deleted.");
                 Del(newEntity); // Screw you, make proper construction graphs.
+                FailCleanup(); // WOLFGATE(Cooking): left the material container behind, blocking every later craft
                 return null;
             }
 

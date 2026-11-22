@@ -2108,6 +2108,9 @@
   name: frying pan
   description: A well-seasoned frying pan. Set it on a lit hearth's hob and put food in to fry.
   components:
+  - type: Construction
+    graph: WGCookPanGraph
+    node: built
   - type: Sprite
     sprite: _WG/Cooking/cookware.rsi
     state: wgcookpan
@@ -2126,6 +2129,9 @@
   name: cooking pot
   description: A heavy iron pot. Fill it with water, set it on a lit hob to boil, then add ingredients for soup.
   components:
+  - type: Construction
+    graph: WGCookPotGraph
+    node: built
   - type: Sprite
     sprite: _WG/Cooking/cookware.rsi
     layers:
@@ -2198,6 +2204,9 @@
   name: kettle
   description: A kettle for the hob. Fill it with water, bring it to the boil, then drop in tea leaves or coffee beans, or spoon in tea powder, to brew.
   components:
+  - type: Construction
+    graph: WGCookKettleGraph
+    node: built
   - type: Sprite
     sprite: _WG/Cooking/cookware.rsi
     state: wgcookkettle
@@ -2229,6 +2238,9 @@
   name: wooden bowl
   description: A wooden bowl. Use it on a pot to ladle out soup.
   components:
+  - type: Construction
+    graph: WGCookBowlGraph
+    node: built
   - type: Sprite
     sprite: _WG/Cooking/cookware.rsi
     layers:
@@ -2267,6 +2279,9 @@
   name: porcelain teapot
   description: A fine porcelain teapot. Fill it from the kettle to serve, then pour out the cups.
   components:
+  - type: Construction
+    graph: WGCookTeapotGraph
+    node: built
   - type: Sprite
     sprite: _WG/Cooking/cookware.rsi
     state: wgcookteapot
@@ -2297,6 +2312,9 @@
   name: steel cup
   description: A steel drinking cup. Fill it from the kettle or a teapot.
   components:
+  - type: Construction
+    graph: WGCookCupGraph
+    node: built
   - type: Sprite
     sprite: _WG/Cooking/cookware.rsi
     state: wgcookcup
@@ -2328,6 +2346,9 @@
   name: serving platter
   description: A wide platter for serving.
   components:
+  - type: Construction
+    graph: WGCookPlatterGraph
+    node: built
   - type: Sprite
     sprite: _WG/Cooking/cookware.rsi
     state: wgcookplatter
@@ -2342,6 +2363,9 @@
   name: pepper mill
   description: A wooden pepper mill.
   components:
+  - type: Construction
+    graph: WGCookPeppermillGraph
+    node: built
   - type: Sprite
     sprite: _WG/Cooking/cookware.rsi
     state: wgcookpeppermill
@@ -2356,6 +2380,9 @@
   name: rolling pin
   description: A rolling pin for pastry.
   components:
+  - type: Construction
+    graph: WGCookRollingPinGraph
+    node: built
   - type: Sprite
     sprite: _WG/Cooking/cookware.rsi
     state: wgcookrollingpin

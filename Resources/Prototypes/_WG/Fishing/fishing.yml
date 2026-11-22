@@ -983,6 +983,9 @@
   name: fishing rod
   description: Cast it at open water or a pond and wait for a bite. When the line jerks, use the rod to reel in, quickly. Use bait on it to load the hook.
   components:
+  - type: Construction
+    graph: WGFishingRodGraph
+    node: built
   - type: Sprite
     sprite: _WG/Fishing/fishing.rsi
     state: rod

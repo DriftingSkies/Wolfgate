@@ -130,6 +130,7 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 
 ## Non-modular edits
 
+- [`Content.Server/Construction/ConstructionSystem.Initial.cs`](../../Construction/ConstructionSystem.Initial.cs): left the material container behind, blocking every later craft
 - [`Resources/migration.yml`](../../../Resources/migration.yml): Mono's kettle gives way to ours, the only one that brews
 - [`Resources/Prototypes/_Mono/Catalogs/VendingMachines/Inventories/barista.yml`](../../../Resources/Prototypes/_Mono/Catalogs/VendingMachines/Inventories/barista.yml)
   - our kettle, teapot and cups, and a camp stove to heat the kettle; only a kettle brews
