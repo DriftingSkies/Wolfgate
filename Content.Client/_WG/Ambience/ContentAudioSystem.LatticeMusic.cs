@@ -21,10 +21,22 @@ public sealed partial class ContentAudioSystem
     private bool _wgStartingBandTrack;
     private EntityUid? _wgBandStream;
 
-    /// <summary>Whether a Lattice band is holding ordinary ambient music off.</summary>
+    /// <summary>
+    /// Whether a Lattice band is holding ordinary ambient music off. A combat track still playing when combat ends
+    /// fades out here, so the band's piece can take over.
+    /// </summary>
     private bool WgBandHoldsMusic()
     {
-        return _wgBandHolding && !_wgStartingBandTrack;
+        if (!_wgBandHolding || _wgStartingBandTrack)
+            return false;
+
+        if (_isCombatMusicPlaying)
+        {
+            DisableAmbientMusic();
+            _isCombatMusicPlaying = false;
+        }
+
+        return true;
     }
 
     private void WgUpdateLatticeMusic(float frameTime)
@@ -55,7 +67,8 @@ public sealed partial class ContentAudioSystem
         if (!_wgBandMusicPlayed.Contains(_wgBand) &&
             !WgOnPlanet() &&
             _proto.TryIndex(music, out var proto) &&
-            _proto.TryIndex<SoundCollectionPrototype>(proto.ID, out var collection) &&
+            proto.Sound is SoundCollectionSpecifier { Collection: { } collectionId } &&
+            _proto.TryIndex<SoundCollectionPrototype>(collectionId, out var collection) &&
             collection.PickFiles.Count > 0)
         {
             _wgBandMusicPlayed.Add(_wgBand);

@@ -63,6 +63,10 @@ public sealed partial class ContentAudioSystem
     {
         WgUpdateLatticeMusic(frameTime);
 
+        // Leaving gameplay drops a queued change, so it can't start ambient music in the lobby.
+        if (_wgSwitchPending && _state.CurrentState is not GameplayState)
+            _wgSwitchPending = false;
+
         if (_wgSwitchPending)
         {
             _wgSwitchTimer += frameTime;
