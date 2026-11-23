@@ -43,7 +43,14 @@
 - type: soundCollection
   id: BiomeDefault
   files:
-   - /Audio/_Crescent/Ambient/InnerRing/inner_ring_1.ogg
+  # WOLFGATE(Ambience) START: uncharted space plays the far-out Wolfgate pool, not the old inner-ring track
+  # - /Audio/_Crescent/Ambient/InnerRing/inner_ring_1.ogg
+   - /Audio/_WG/Ambience/harvested_moon.ogg
+   - /Audio/_WG/Ambience/paen_to_the_past.ogg
+   - /Audio/_WG/Ambience/clarion.ogg
+   - /Audio/_WG/Ambience/the_last_color_of_land.ogg
+   - /Audio/_WG/Ambience/possible_futures.ogg
+  # WOLFGATE END
 
 # HARDCODED - FTL
 - type: ambientMusic

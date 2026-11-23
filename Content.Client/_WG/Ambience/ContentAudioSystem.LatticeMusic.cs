@@ -1,4 +1,4 @@
-using Content.Client._WG.Lattice;
+using System.Numerics;
 using Content.Client.Gameplay;
 using Content.Shared._WG.Lattice;
 using Robust.Shared.Audio;
@@ -11,11 +11,15 @@ namespace Content.Client.Audio;
 /// </summary>
 public sealed partial class ContentAudioSystem
 {
-    [Dependency] private WGLatticeHallucinationSystem _wgLatticeHallucinations = default!;
+    [Dependency] private SharedTransformSystem _wgTransform = default!;
 
+    private readonly List<(Vector2 Position, float Strength)> _wgLatticeAnchors = new();
     private readonly HashSet<int> _wgBandMusicPlayed = new();
+    private int _wgBand = -1;
+    private float _wgBandInwardTimer;
     private bool _wgBandHolding;
     private bool _wgStartingBandTrack;
+    private EntityUid? _wgBandStream;
 
     /// <summary>Whether a Lattice band is holding ordinary ambient music off.</summary>
     private bool WgBandHoldsMusic()
@@ -23,12 +27,12 @@ public sealed partial class ContentAudioSystem
         return _wgBandHolding && !_wgStartingBandTrack;
     }
 
-    private void WgUpdateLatticeMusic()
+    private void WgUpdateLatticeMusic(float frameTime)
     {
-        var band = WgLocalBand(out var profile);
-        _wgBandMusicPlayed.RemoveWhere(played => played > band);
+        var profile = WgUpdateBand(frameTime);
+        _wgBandMusicPlayed.RemoveWhere(played => played > _wgBand);
 
-        if (profile == null || band < 0 || band >= profile.Bands.Count || profile.Bands[band].Music is not { } music)
+        if (profile == null || _wgBand < 0 || _wgBand >= profile.Bands.Count || profile.Bands[_wgBand].Music is not { } music)
         {
             if (!_wgBandHolding)
                 return;
@@ -45,36 +49,74 @@ public sealed partial class ContentAudioSystem
         }
 
         _wgBandHolding = true;
-        if (_wgBandMusicPlayed.Contains(band) ||
-            _isCombatMusicPlaying ||
-            _state.CurrentState is not GameplayState ||
-            WgOnPlanet() ||
-            !_proto.TryIndex(music, out var proto) ||
-            !_proto.TryIndex<SoundCollectionPrototype>(proto.ID, out var collection) ||
-            collection.PickFiles.Count == 0)
+        if (_isCombatMusicPlaying || _state.CurrentState is not GameplayState)
             return;
 
-        _wgBandMusicPlayed.Add(band);
-        _musicProto = proto;
-        _wgStartingBandTrack = true;
-        PlayMusicTrack(WgPickAmbientPath(collection), proto.Sound.Params.Volume, _ambientMusicFadeInTime, false);
-        _wgStartingBandTrack = false;
+        if (!_wgBandMusicPlayed.Contains(_wgBand) &&
+            !WgOnPlanet() &&
+            _proto.TryIndex(music, out var proto) &&
+            _proto.TryIndex<SoundCollectionPrototype>(proto.ID, out var collection) &&
+            collection.PickFiles.Count > 0)
+        {
+            _wgBandMusicPlayed.Add(_wgBand);
+            _musicProto = proto;
+            _wgStartingBandTrack = true;
+            PlayMusicTrack(WgPickAmbientPath(collection), proto.Sound.Params.Volume, _ambientMusicFadeInTime, false);
+            _wgStartingBandTrack = false;
+            _wgBandStream = _ambientMusicStream;
 
-        // Once only: no playlist follows it.
-        _wgAmbientStream = null;
+            // Once only: no playlist follows it.
+            _wgAmbientStream = null;
+            return;
+        }
+
+        // Anything ordinary that started before the hold took over fades out; the band's own piece plays on.
+        if (_ambientMusicStream is { } stream && stream != _wgBandStream)
+            DisableAmbientMusic();
     }
 
-    /// <summary>The local player's Lattice band and its profile, or -1 off any Lattice.</summary>
-    private int WgLocalBand(out WGLatticeProfilePrototype? profile)
+    /// <summary>
+    /// Works out the local player's band from the field, as the sky overlay does, so a ship change can't read a stale
+    /// one. Moving out takes effect at once; moving in waits out the switch delay. Returns the profile, or null off any Lattice.
+    /// </summary>
+    private WGLatticeProfilePrototype? WgUpdateBand(float frameTime)
     {
-        profile = null;
         if (_player.LocalEntity is not { } mob ||
             Transform(mob).MapUid is not { } map ||
             !TryComp<WGLatticeFieldComponent>(map, out var field) ||
-            !_proto.TryIndex(field.Profile, out profile) ||
-            _wgLatticeHallucinations.LocalDrift() is not { } drift)
-            return -1;
+            !_proto.TryIndex(field.Profile, out var profile) ||
+            field.Thresholds.Count == 0)
+        {
+            _wgBand = -1;
+            _wgBandInwardTimer = 0f;
+            return null;
+        }
 
-        return drift.Band;
+        _wgLatticeAnchors.Clear();
+        for (var i = 0; i < field.Anchors.Count && i < field.Strengths.Count; i++)
+        {
+            _wgLatticeAnchors.Add((field.Anchors[i], field.Strengths[i]));
+        }
+
+        var position = _wgTransform.GetWorldPosition(mob);
+        var strength = WGLatticeMath.Field(position, _wgLatticeAnchors, profile.Reach);
+        var band = Math.Min(WGLatticeMath.Band(strength, field.Thresholds), profile.Bands.Count - 1);
+
+        if (band >= _wgBand)
+        {
+            _wgBand = band;
+            _wgBandInwardTimer = 0f;
+        }
+        else
+        {
+            _wgBandInwardTimer += frameTime;
+            if (_wgBandInwardTimer >= WgAmbientSwitchDelay)
+            {
+                _wgBand = band;
+                _wgBandInwardTimer = 0f;
+            }
+        }
+
+        return profile;
     }
 }

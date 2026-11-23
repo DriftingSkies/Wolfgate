@@ -61,7 +61,7 @@ public sealed partial class ContentAudioSystem
     /// <summary>Applies a queued grid or biome change once it has held, and starts the next track when one finishes.</summary>
     private void WgUpdateAmbientPlaylist(float frameTime)
     {
-        WgUpdateLatticeMusic();
+        WgUpdateLatticeMusic(frameTime);
 
         if (_wgSwitchPending)
         {
