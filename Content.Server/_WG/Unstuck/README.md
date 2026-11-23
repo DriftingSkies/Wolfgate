@@ -1,10 +1,14 @@
 # Unstuck
 
 An **Unstick me** button in the game menu (Escape) for players wedged inside a wall, door, window or other solid
-structure. The server moves them to the nearest clear floor within three tiles, on the side they were mostly on, and
-stops any pull. A tile behind another wall doesn't count, and breathable air only breaks a tie. It only acts when the body really overlaps a static structure it collides with, so it can't be used
+structure. The server moves them to the nearest clear floor within five tiles (ten if nothing is that close), on the
+side they were mostly on, and
+stops any pull. A tile behind another wall doesn't count, nor does one where the body would still overlap something
+(armor bolted to a hull reaches over the next tile), and breathable air only breaks a tie. A body already out over
+space, such as one wedged against a hull's armor, searches the grid it is stuck to and, with no floor in reach on its
+side, comes out in open space beside it. It only acts when the body really overlaps a static structure it collides with, so it can't be used
 to walk out of a locked room or a cell; anyone trapped another way is told to ahelp. Ghosts, bodies in a container and
-buckled bodies are refused. Each player can use it once every 30 seconds, and every use goes to the admin log as a
+buckled bodies are refused. Each player can use it once every 30 seconds (active admins have no wait), and every use goes to the admin log as a
 `Teleport` entry.
 
 Inside a vehicle (an APC or any other with an interior map), it puts the occupant back outside instead, through

@@ -152,7 +152,7 @@ public sealed partial class BountyContractSystem
     {
         var loader = GetEntity(args.LoaderUid);
 
-        if (!cartridge.Comp.CreateEnabled)
+        if (!cartridge.Comp.CreateEnabled && !EntityManager.System<Content.Server._WG.AdminCooldowns.WGAdminCooldownSystem>().Skips(args.Actor)) // WOLFGATE(AdminCooldowns): admins skip the posting cooldown
             return;
 
         var c = args.Contract;

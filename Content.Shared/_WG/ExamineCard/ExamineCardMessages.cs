@@ -89,6 +89,9 @@ public sealed class ExamineCardEvent : EntityEventArgs
     /// <summary>The character's adult description; only sent to examiners who may read anatomy.</summary>
     public string? NsfwText;
 
+    /// <summary>Hash of the adult headshot, shown with the adult description; only sent to the same examiners.</summary>
+    public string? NsfwHeadshot;
+
     /// <summary>Age and build, such as "young woman".</summary>
     public string? Appearance;
 

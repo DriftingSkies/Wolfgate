@@ -167,18 +167,15 @@ public partial class ChatSystem
     /// </summary>
     /// <param name="uid"></param>
     /// <param name="textInput"></param>
+    // WOLFGATE(Cyborgs) START: resolve shared typed emotes against entity restrictions
     private void TryEmoteChatInput(EntityUid uid, string textInput)
     {
         var actionTrimmedLower = TrimPunctuation(textInput.ToLower());
-        if (!_wordEmoteDict.TryGetValue(actionTrimmedLower, out var emotes)) // DeltaV, renames to emotes
-            return;
+        var emotes = GetEligibleEmotesForTypedTrigger(uid, actionTrimmedLower);
 
         bool validEmote = false; // DeltaV - Multiple emotes for the same trigger
         foreach (var emote in emotes)
         {
-            if (!AllowedToUseEmote(uid, emote))
-                continue;
-
             InvokeEmoteEvent(uid, emote);
             validEmote = true; // DeltaV
         }
@@ -203,17 +200,45 @@ public partial class ChatSystem
             return textInput[trimStart..trimEnd];
         }
     }
+
+    /// <summary>Returns the emotes allowed for a normalized typed trigger.</summary>
+    internal IReadOnlyList<EmotePrototype> GetEligibleEmotesForTypedTrigger(EntityUid source, string trigger)
+    {
+        if (!_wordEmoteDict.TryGetValue(trigger, out var emotes))
+            return Array.Empty<EmotePrototype>();
+
+        var eligible = new List<EmotePrototype>();
+        foreach (var emote in emotes)
+        {
+            if (AllowedToUseEmote(source, emote, allowGrantOverride: false))
+                eligible.Add(emote);
+        }
+
+        if (eligible.Count > 0)
+            return eligible;
+
+        foreach (var emote in emotes)
+        {
+            if (AllowedToUseEmote(source, emote))
+                eligible.Add(emote);
+        }
+
+        return eligible;
+    }
+    // WOLFGATE END
+
     /// <summary>
     /// Checks if we can use this emote based on the emotes whitelist, blacklist, and availibility to the entity.
     /// </summary>
     /// <param name="source">The entity that is speaking</param>
     /// <param name="emote">The emote being used</param>
     /// <returns></returns>
-    private bool AllowedToUseEmote(EntityUid source, EmotePrototype emote)
+    // WOLFGATE(Cyborgs) START: grants on shared trigger words bypass availability, not entity restrictions
+    private bool AllowedToUseEmote(EntityUid source, EmotePrototype emote, bool allowGrantOverride = true)
     {
-        // If emote is in AllowedEmotes, it will bypass whitelist and blacklist
-        if (TryComp<SpeechComponent>(source, out var speech) &&
-            speech.AllowedEmotes.Contains(emote.ID))
+        var explicitlyAllowed = TryComp<SpeechComponent>(source, out var speech) &&
+                                speech.AllowedEmotes.Contains(emote.ID);
+        if (explicitlyAllowed && allowGrantOverride)
         {
             return true;
         }
@@ -226,13 +251,14 @@ public partial class ChatSystem
         }
 
         // Check if the emote is available for all
-        if (!emote.Available)
+        if (!emote.Available && !explicitlyAllowed)
         {
             return false;
         }
 
         return true;
     }
+    // WOLFGATE END
 
 
     private void InvokeEmoteEvent(EntityUid uid, EmotePrototype proto)

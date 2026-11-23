@@ -19,7 +19,8 @@ builds the snapshot), `FeedbackLogBuffer` (the server's latest warnings and erro
 `FeedbackWindow`, `FeedbackNoticeWindow`, `FeedbackSurveyChip` and `FeedbackSurveyWindow` (client), `FeedbackRules` (limits, categories, statuses) and
 `SymphonyFeedbackSystem` (the panel's endpoints, in the Symphony module).
 
-CVars: `wg.feedback.enabled`, `wg.feedback.screenshots`, `wg.feedback.cooldown` (seconds between reports, 60),
+CVars: `wg.feedback.enabled`, `wg.feedback.screenshots`, `wg.feedback.cooldown` (seconds between reports, 60; active
+admins have none),
 `wg.feedback.daily_limit` (20), `wg.feedback.surveys`, `wg.feedback.admin_notice` (tell online admins in chat).
 
 ## For the panel

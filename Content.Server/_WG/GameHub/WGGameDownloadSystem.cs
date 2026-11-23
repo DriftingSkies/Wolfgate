@@ -21,6 +21,8 @@ public sealed partial class WGGameDownloadSystem : EntitySystem
     private const int ChunkSize = 8192;
 
     [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private IPlayerManager _players = default!;
+    [Dependency] private IServerNetManager _net = default!;
     [Dependency] private IPrototypeManager _protos = default!;
     [Dependency] private IResourceManager _resources = default!;
     [Dependency] private ITaskManager _task = default!;
@@ -37,44 +39,67 @@ public sealed partial class WGGameDownloadSystem : EntitySystem
         _transfer.RegisterTransferMessage(WGGameHubProtocol.TransferKey);
         _slots = new SemaphoreSlim(Math.Max(1, _cfg.GetCVar(WGGameHubCVars.MaxDownloads)));
 
-        SubscribeNetworkEvent<WGGameManifestRequestEvent>(OnManifestRequest);
-        SubscribeNetworkEvent<WGGameDownloadRequestEvent>(OnDownloadRequest);
+        _net.RegisterNetMessage<MsgWGGameData>(OnMessage);
     }
 
-    private async void OnManifestRequest(WGGameManifestRequestEvent ev, EntitySessionEventArgs args)
+    private void OnMessage(MsgWGGameData message)
     {
-        if (!_protos.TryIndex<WGGamePrototype>(ev.Game, out var game))
+        if (!_players.TryGetSessionByChannel(message.MsgChannel, out var session))
             return;
 
-        var channel = args.SenderSession.Channel;
+        switch (message.Kind)
+        {
+            case WGGameDataMessage.ManifestRequest:
+                OnManifestRequest(message.Game, message.MsgChannel);
+                break;
+            case WGGameDataMessage.DownloadRequest:
+                OnDownloadRequest(message.Game, session);
+                break;
+        }
+    }
+
+    private async void OnManifestRequest(string id, INetChannel channel)
+    {
+        if (!_protos.TryIndex<WGGamePrototype>(id, out var game))
+            return;
+
         try
         {
             var (size, version) = await GetManifest(game);
-            SendIfConnected(new WGGameManifestEvent(game.ID, size, version), channel);
+            SendIfConnected(new MsgWGGameData { Kind = WGGameDataMessage.Manifest, Game = game.ID, Size = size, Version = version }, channel);
         }
         catch (Exception e)
         {
             Log.Error($"Can't read the data for game {game.ID}: {e}");
-            SendIfConnected(new WGGameDownloadFailedEvent(game.ID), channel);
+            SendIfConnected(Failed(game.ID), channel);
         }
     }
 
+    private static MsgWGGameData Failed(string game) => new() { Kind = WGGameDataMessage.DownloadFailed, Game = game };
+
     // The player may have left while the worker read the file.
-    private void SendIfConnected(EntityEventArgs message, INetChannel channel)
+    private void SendIfConnected(MsgWGGameData message, INetChannel channel)
     {
         _task.RunOnMainThread(() =>
         {
             if (channel.IsConnected)
-                RaiseNetworkEvent(message, channel);
+                _net.ServerSendMessage(message, channel);
         });
     }
 
-    private void OnDownloadRequest(WGGameDownloadRequestEvent ev, EntitySessionEventArgs args)
+    private void OnDownloadRequest(string id, ICommonSession session)
     {
-        if (!_protos.TryIndex<WGGamePrototype>(ev.Game, out var game) || !_active.Add(args.SenderSession.UserId))
+        if (!_protos.TryIndex<WGGamePrototype>(id, out var game))
             return;
 
-        Send(args.SenderSession, game);
+        // One download per player at a time. Refuse the other out loud, or the client waits on it for good.
+        if (!_active.Add(session.UserId))
+        {
+            _net.ServerSendMessage(Failed(game.ID), session.Channel);
+            return;
+        }
+
+        Send(session, game);
     }
 
     private Task<(long Size, string Version)> GetManifest(WGGamePrototype game)
@@ -141,7 +166,7 @@ public sealed partial class WGGameDownloadSystem : EntitySystem
             _task.RunOnMainThread(() =>
             {
                 if (channel.IsConnected)
-                    RaiseNetworkEvent(new WGGameDownloadFailedEvent(game.ID), channel);
+                    _net.ServerSendMessage(Failed(game.ID), channel);
             });
         }
         finally

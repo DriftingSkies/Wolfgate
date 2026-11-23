@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Seraph PDV medical cyborg, made for Wolfgate, resking by @brooke_shelf",
+  "size": {
+    "x": 32,
+    "y": 64
+  },
+  "states": [
+    {
+      "name": "medical",
+      "directions": 4
+    },
+    {
+      "name": "medical_e",
+      "directions": 4
+    },
+    {
+      "name": "medical_l",
+      "directions": 4
+    },
+    {
+      "name": "rest",
+      "directions": 4
+    },
+    {
+      "name": "wreck",
+      "delays": [
+        [
+          3.0,
+          0.1,
+          0.1,
+          0.1,
+          0.15,
+          0.2,
+          0.2,
+          0.2
+        ]
+      ]
+    },
+    {
+      "name": "tipped",
+      "delays": [
+        [
+          5.0,
+          0.1,
+          0.5,
+          0.1
+        ]
+      ]
+    }
+  ]
+}

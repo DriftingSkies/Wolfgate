@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Server.Administration.Logs;
+using Content.Server.Administration.Managers;
 using Content.Server.Chat.Managers;
 using Content.Server.Power.EntitySystems;
 using Content.Server._WG.ShipPa;
@@ -34,6 +35,7 @@ public sealed partial class HailingSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private IAdminLogManager _adminLogger = default!;
+    [Dependency] private IAdminManager _admins = default!;
     [Dependency] private IChatManager _chat = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
@@ -407,7 +409,8 @@ public sealed partial class HailingSystem : EntitySystem
 
         var now = _timing.CurTime;
 
-        if (_nextHail.TryGetValue(console, out var next) && now < next)
+        var admin = !automated && TryComp<ActorComponent>(user, out var actor) && _admins.IsAdmin(actor.PlayerSession);
+        if (!admin && _nextHail.TryGetValue(console, out var next) && now < next)
         {
             refused = HailEndReason.Cooldown;
             return Refuse(console, HailEndReason.Cooldown);

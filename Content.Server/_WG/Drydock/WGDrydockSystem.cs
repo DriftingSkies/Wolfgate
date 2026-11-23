@@ -98,6 +98,7 @@ public sealed partial class WGDrydockSystem : EntitySystem
         InitializeLinking();
         InitializeUpgrades();
         InitializeTerminal();
+        InitializeModules();
     }
 
     /// <summary>
@@ -527,6 +528,9 @@ public sealed partial class WGDrydockSystem : EntitySystem
 
     private void ApplyUpgrade(WGDrydockWorkItem item)
     {
+        if (TryApplyModule(item))
+            return;
+
         if (item.Upgrade == null ||
             !_prototype.TryIndex<WGShipRefitPrototype>(item.Upgrade, out var proto) ||
             TerminatingOrDeleted(item.Target))
@@ -583,13 +587,16 @@ public sealed partial class WGDrydockSystem : EntitySystem
         foreach (var upgrade in state.Upgrades)
             quote.RefitPrices[upgrade.Id] = _shipServices.Quote(console, viewer, WGShipServiceKind.Drydock, upgrade.NextPrice);
 
+        foreach (var module in state.Modules)
+            quote.ModulePrices[module.Id] = _shipServices.Quote(console, viewer, WGShipServiceKind.Drydock, module.Price);
+
         return quote;
     }
 
     /// <summary>Flattens a quote into a string, so unchanged quotes compare equal.</summary>
     private static string QuoteKey(WGDrydockQuote quote)
     {
-        return $"{quote.RepairPrice}/{quote.CleanDriftPrice}/{DictKey(quote.RefitPrices)}";
+        return $"{quote.RepairPrice}/{quote.CleanDriftPrice}/{DictKey(quote.RefitPrices)}/{DictKey(quote.ModulePrices)}";
     }
 
     /// <summary>
@@ -630,6 +637,12 @@ public sealed partial class WGDrydockSystem : EntitySystem
         foreach (var u in s.Upgrades)
         {
             parts.Add($"{u.Id}:{u.Name}:{u.Units}:{u.Tier}:{u.MaxTier}:{u.NextTier}:{u.NextPrice}:{DictKey(u.NextMaterials)}:{DictKey(u.NextParts)}");
+        }
+
+        parts.Add($"{s.ShipModules}:{string.Join(",", s.FittedModules.Select(m => m ?? "-"))}");
+        foreach (var m in s.Modules)
+        {
+            parts.Add($"{m.Id}:{m.Price}:{DictKey(m.Materials)}");
         }
 
         return string.Join("|", parts);
@@ -738,6 +751,9 @@ public sealed partial class WGDrydockSystem : EntitySystem
             if (_prototype.TryIndex(id, out var proto))
                 state.Upgrades.Add(BuildRefitEntry(console, proto, ship, comp, pay, working, scan: job == null));
         }
+
+        if (chop == null)
+            AddModuleState(console, state, ship, comp, pay);
 
         return state;
     }
@@ -915,7 +931,7 @@ public sealed partial class WGDrydockSystem : EntitySystem
             return false;
 
         StartJob(console, comp, ship, actor, items, price, refundScale: basePrice > 0 ? price / (float) basePrice : 1f);
-        _shipServices.Record(console, actor, WGShipServiceKind.Drydock, upgrade ?? Loc.GetString("wg-ship-service-repair"), basePrice, price, rule);
+        _shipServices.Record(console, actor, WGShipServiceKind.Drydock, ServiceName(upgrade), basePrice, price, rule);
         return true;
     }
 

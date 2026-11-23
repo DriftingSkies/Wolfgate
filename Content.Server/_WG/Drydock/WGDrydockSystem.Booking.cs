@@ -8,6 +8,7 @@ using Content.Shared._NF.Bank.Components;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared._WG.Drydock;
+using Content.Shared._WG.ShipModules;
 using Content.Shared._WG.TradeGoods;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
@@ -535,7 +536,7 @@ public sealed partial class WGDrydockSystem
         }
     }
 
-    /// <summary>Lists the work for a repair (null upgrade) or one refit tier, or the reason it can't be sold.</summary>
+    /// <summary>Lists the work for a repair (null upgrade), one refit tier or a module fitting, or the reason it can't be sold.</summary>
     private string? BuildWork(EntityUid ship, WGDrydockConsoleComponent comp, string? upgrade, out List<WGDrydockWorkItem> items)
     {
         if (upgrade == null)
@@ -543,6 +544,9 @@ public sealed partial class WGDrydockSystem
             items = BuildRepairItems(ship, comp);
             return items.Count == 0 ? Loc.GetString("drydock-console-nothing-to-repair") : null;
         }
+
+        if (WGShipModuleFitting.TryParse(upgrade, out var slot, out var module))
+            return BuildModuleWork(ship, comp, slot, module, out items);
 
         return BuildRefitWork(ship, comp, upgrade, out items);
     }

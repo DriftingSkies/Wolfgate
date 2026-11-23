@@ -1,17 +1,14 @@
 using System.Globalization;
 using Content.Client.UserInterface.Controls;
-using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WG.ShipAdmin;
 using Content.Shared.Administration;
 using Robust.Client.UserInterface.Controls;
 
 namespace Content.Client._WG.ShipAdmin.Tabs;
 
-/// <summary>A ship's name, radar signature, shields, power and the protections staff can switch on it.</summary>
+/// <summary>A ship's radar signature, shields, power and the protections staff can switch on it.</summary>
 public sealed class WGShipAdminSystemsTab : WGShipAdminTab
 {
-    private readonly LineEdit _name;
-    private readonly Button _rename;
     private readonly LineEdit _colour;
     private readonly Button _setColour;
     private readonly CheckBox _hidden;
@@ -37,13 +34,6 @@ public sealed class WGShipAdminSystemsTab : WGShipAdminTab
 
     public WGShipAdminSystemsTab()
     {
-        Body.AddChild(Heading(Loc.GetString("wg-ship-admin-systems-name")));
-        _name = new LineEdit { MinWidth = 260 };
-        _name.IsValid = text => text.Trim().Length > 0 && text.Trim().Length <= ShuttleDeedComponent.MaxNameLength;
-        _rename = new Button { Text = Loc.GetString("wg-ship-admin-systems-rename"), StyleClasses = { "ButtonSquare" } };
-        _rename.OnPressed += _ => Send(new WGShipAdminRenameMessage(Grid, _name.Text));
-        Body.AddChild(Row(_name, _rename));
-
         Body.AddChild(Heading(Loc.GetString("wg-ship-admin-systems-radar")));
         _colour = new LineEdit { MinWidth = 110, PlaceHolder = Loc.GetString("wg-ship-admin-systems-colour-hint") };
         _setColour = new Button { Text = Loc.GetString("wg-ship-admin-systems-set-colour"), StyleClasses = { "ButtonSquare" } };
@@ -115,11 +105,10 @@ public sealed class WGShipAdminSystemsTab : WGShipAdminTab
 
     protected override void Show(WGShipAdminDetail detail, AdminFlags flags)
     {
-        // The name and colour boxes are only refilled for another ship, so typing isn't wiped by a refresh.
+        // The colour box is only refilled for another ship, so typing isn't wiped by a refresh.
         if (_shown != detail.Grid)
         {
             _shown = detail.Grid;
-            _name.Text = detail.Name;
             _colour.Text = detail.IffColor;
         }
 
@@ -131,7 +120,6 @@ public sealed class WGShipAdminSystemsTab : WGShipAdminTab
             Gate(box, WGShipAdminAction.Protect, flags);
         }
 
-        Gate(_rename, WGShipAdminAction.Rename, flags);
         Gate(_setColour, WGShipAdminAction.Iff, flags);
         Gate(_hidden, WGShipAdminAction.Iff, flags);
         Gate(_labelHidden, WGShipAdminAction.Iff, flags);

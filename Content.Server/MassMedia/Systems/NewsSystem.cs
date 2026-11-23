@@ -143,7 +143,7 @@ public sealed partial class NewsSystem : SharedNewsSystem
 
     private void OnWriteUiPublishMessage(Entity<NewsWriterComponent> ent, ref NewsWriterPublishMessage msg)
     {
-        if (!ent.Comp.PublishEnabled)
+        if (!ent.Comp.PublishEnabled && !EntityManager.System<Content.Server._WG.AdminCooldowns.WGAdminCooldownSystem>().Skips(msg.Actor)) // WOLFGATE(AdminCooldowns): admins skip the publish cooldown
             return;
 
         if (!TryGetArticles(ent, out var articles))

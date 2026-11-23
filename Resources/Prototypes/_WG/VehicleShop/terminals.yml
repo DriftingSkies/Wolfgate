@@ -91,6 +91,16 @@
     sprite: Structures/cargo_telepad.rsi
     state: display
     drawdepth: FloorObjects
+  # A soft fixture: flatpacks only unpack what has fixtures, and vehicles still drive over it.
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        hard: false
   - type: Clickable
   - type: InteractionOutline
   - type: WGVehicleDeliveryPad

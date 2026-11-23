@@ -1,4 +1,5 @@
 #nullable enable
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -8,10 +9,14 @@ using Content.Server._WG.Encounters.Systems;
 using Content.Server._WG.NpcCrew.Components;
 using Content.Server._WG.NpcCrew.Systems;
 using Content.Server.Shuttles.Components;
+using Content.Server.Shuttles.Systems;
+using Content.Shared.Shuttles.Components;
 using Content.Shared._WG.NpcCrew;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.NPC.Components;
+using Content.Shared.NPC.Systems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 
@@ -68,6 +73,101 @@ public sealed class WGAdsHijackTest : WGAdsTestBase
             Assert.That(comp.Interdicting, Is.EqualTo(hull), "A hunt is not called back to held space.");
             Assert.That(AdsState().Stolen.ContainsKey(hull), Is.True, "The ADS remembers the stolen hull until it is broken or retaken.");
         });
+    }
+
+    /// <summary>
+    /// A player who takes the helm of an ADS hull, its crew alive and never turned on him, seizes it: a sweep is turned to
+    /// destroy it, its fire is no longer the ADS's own and it has no leave to dock with ADS ships.
+    /// </summary>
+    [Test]
+    public async Task StrangerAtTheHelmSeizesTheHull()
+    {
+        await StartAds();
+        await Server.WaitAssertion(() =>
+        {
+            var ads = Server.System<WGAdsCampaignSystem>();
+            var alerts = Server.System<WGCrewAlertSystem>();
+            var seizure = Server.System<WGEncounterSeizureSystem>();
+            var node = FoundNode(AdsHome);
+            ads.SetTier(1);
+            Assert.That(ads.TryLaunchSweep(node), Is.True);
+            var (sweep, comp, _) = ads.Sweeps().Single();
+            var hull = LeadOf(node);
+            var hunter = LeadOf(sweep);
+            Place(hunter, CentreOf(AdsHome) + new Vector2(800f, 0f));
+            SEntMan.EnsureComponent<WGCrewShipProfileComponent>(hull).Profile = AdsProfile;
+            SEntMan.EnsureComponent<WGCrewShipProfileComponent>(hunter).Profile = AdsProfile;
+            var hunterCrew = SEntMan.EntityQuery<WGCrewComponent>()
+                .First(member => Server.System<WGCrewSystem>().HomeGrid(member.Owner, member) == hunter).Owner;
+            Assert.That(alerts.OwnKind(hunter, hull), Is.True, "Precondition: ADS fire on ADS is forgiven.");
+
+            var helm = SEntMan.EntityQuery<ShuttleConsoleComponent>()
+                .First(console => SEntMan.GetComponent<TransformComponent>(console.Owner).GridUid == hull);
+            var player = SEntMan.GetEntity(Player);
+            Server.System<SharedTransformSystem>().SetCoordinates(player, SEntMan.GetComponent<TransformComponent>(helm.Owner).Coordinates);
+            seizure.Check();
+            Assert.That(seizure.IsSeized(hull), Is.False, "A visitor aboard a crewed ship, away from its controls, has not taken it.");
+
+            // The test body is no mob; a player's is, and only a mob is fought.
+            SEntMan.EnsureComponent<MobStateComponent>(player);
+            // This hull's crew is a pilot and a gunner, who take shelter; one stands guard to show who fights.
+            var guard = CrewOf(hull).First();
+#pragma warning disable RA0002 // The test gives a crewman a fighting duty.
+            SEntMan.GetComponent<WGCrewComponent>(guard).Duty = WGCrewDuties.Guard;
+#pragma warning restore RA0002
+
+            SEntMan.EnsureComponent<PilotComponent>(player);
+            Server.System<ShuttleConsoleSystem>().AddPilot(helm.Owner, player, helm);
+            seizure.Check();
+            Assert.That(seizure.IsSeized(hull), Is.True, "At its helm without the crew's leave, he holds it.");
+            Assert.That(comp.Interdicting == hull && comp.Hunting && comp.Attacking, Is.True, "The sweep is turned to destroy it.");
+            Assert.That(alerts.IsAttacker(hunter, hull), Is.True, "The sweep takes it for an attacker before it fires.");
+            Assert.That(alerts.OwnKind(hunter, hull), Is.False, "Its fire is no longer the ADS's own.");
+            Assert.That(Server.System<WGCrewSecuritySystem>().IsAuthorized(hunterCrew, hull), Is.False, "It has no leave to dock.");
+#pragma warning disable RA0002 // Only reads who the crew holds hostile.
+            Assert.That(SEntMan.TryGetComponent<FactionExceptionComponent>(guard, out var hostile) && hostile.Hostiles.Contains(player),
+                Is.True, "Its crew turns on the man at its helm.");
+#pragma warning restore RA0002
+        });
+    }
+
+    /// <summary>Someone its crew gives leave, at the helm of an ADS hull, is a friend handed the controls: no seizure.</summary>
+    [Test]
+    public async Task FriendAtTheHelmDoesNotSeizeTheHull()
+    {
+        await StartAds();
+        await Server.WaitAssertion(() =>
+        {
+            var ads = Server.System<WGAdsCampaignSystem>();
+            var seizure = Server.System<WGEncounterSeizureSystem>();
+            var node = FoundNode(AdsHome);
+            ads.SetTier(1);
+            var hull = LeadOf(node);
+            var crewman = CrewOf(hull).First();
+            var player = SEntMan.GetEntity(Player);
+            Server.System<NpcFactionSystem>().AddFactions(player,
+                SEntMan.GetComponent<NpcFactionMemberComponent>(crewman).Factions);
+            Assert.That(Server.System<WGCrewSecuritySystem>().IsAuthorized(crewman, player), Is.True,
+                "Precondition: the crew gives him leave.");
+
+            var helm = SEntMan.EntityQuery<ShuttleConsoleComponent>()
+                .First(console => SEntMan.GetComponent<TransformComponent>(console.Owner).GridUid == hull);
+            Server.System<SharedTransformSystem>().SetCoordinates(player, SEntMan.GetComponent<TransformComponent>(helm.Owner).Coordinates);
+            SEntMan.EnsureComponent<PilotComponent>(player);
+            Server.System<ShuttleConsoleSystem>().AddPilot(helm.Owner, player, helm);
+            seizure.Check();
+            Assert.That(seizure.IsSeized(hull), Is.False, "A friend at the helm has not taken it.");
+        });
+    }
+
+    /// <summary>The living crew whose home is this ship.</summary>
+    private List<EntityUid> CrewOf(EntityUid hull)
+    {
+        var crews = Server.System<WGCrewSystem>();
+        return SEntMan.EntityQuery<WGCrewComponent>()
+            .Where(member => crews.HomeGrid(member.Owner, member) == hull)
+            .Select(member => member.Owner)
+            .ToList();
     }
 
     /// <summary>A boarder unbolting a fitting aboard an ADS sweep has its crew turn on him and another sweep sent after the ship he came in.</summary>

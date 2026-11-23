@@ -295,6 +295,11 @@ public sealed class WGAiCoreTest
             var target = entMan.SpawnEntity(null, map.GridCoords);
             entMan.System<SharedEyeSystem>().SetTarget(brain, target);
             entMan.AddComponent<RatOverwatchWatchingComponent>(brain).Watching = target;
+            var ownZoom = entMan.GetComponent<ContentEyeComponent>(brain).MaxZoom;
+            Assert.That(ownZoom.X, Is.GreaterThan(1f), "The AI's own zoom limit should be wider than a player's.");
+            entMan.System<WGAiOverwatchSystem>().LimitZoom(brain);
+            Assert.That(entMan.GetComponent<ContentEyeComponent>(brain).MaxZoom, Is.EqualTo(SharedContentEyeSystem.DefaultZoom),
+                "An AI watching a feed kept its wide zoom.");
 
             var mover = entMan.GetComponent<InputMoverComponent>(eye);
             mover.HeldMoveButtons = MoveButtons.Up;
@@ -306,9 +311,58 @@ public sealed class WGAiCoreTest
                 "Moving the AI's eye didn't stop the feed.");
             Assert.That(entMan.GetComponent<EyeComponent>(brain).Target, Is.EqualTo(eye),
                 "The AI's view didn't return to its remote eye.");
+            Assert.That(entMan.GetComponent<ContentEyeComponent>(brain).MaxZoom, Is.EqualTo(ownZoom),
+                "The AI's zoom limit wasn't restored after the feed.");
         });
         await pair.RunTicksSync(5);
         await server.WaitAssertion(() => Assert.That(entMan.HasComponent<WGAiOverwatchEyeComponent>(eye), Is.False));
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// Stopping a feed from the console tells the client it ended, so the AI's static comes back; it used to keep the
+    /// old target there and the static stayed off.
+    /// </summary>
+    [Test]
+    public async Task AiOverwatchStopReachesClientTest()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var map = await pair.CreateTestMap();
+
+        EntityUid brain = default;
+        EntityUid console = default;
+        await server.WaitAssertion(() =>
+        {
+            var core = entMan.SpawnEntity("PlayerStationAiTSFMC", map.GridCoords);
+            Assert.That(entMan.System<SharedStationAiSystem>().TryGetHeld(new Entity<StationAiCoreComponent?>(core, null), out brain));
+            console = entMan.SpawnEntity("TSFOverwatchComputer", map.GridCoords);
+
+            // Stand-in for OverwatchSystem.OnViewCamera, which needs a worn camera on a faction member.
+            var target = entMan.SpawnEntity(null, map.GridCoords);
+            var watching = entMan.AddComponent<RatOverwatchWatchingComponent>(brain);
+            watching.Watching = target;
+            watching.Console = console;
+            entMan.Dirty(brain, watching);
+        });
+        await pair.RunTicksSync(5);
+
+        var clientBrain = pair.ToClientUid(brain);
+        await pair.Client.WaitAssertion(() =>
+            Assert.That(pair.Client.EntMan.GetComponent<RatOverwatchWatchingComponent>(clientBrain).Watching, Is.Not.Null,
+                "The client never saw the feed start."));
+
+        await server.WaitPost(() => entMan.EventBus.RaiseLocalEvent(console,
+            new OverwatchStopWatchingMessage { Actor = brain, UiKey = OverwatchUiKey.Key }));
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+            Assert.That(entMan.GetComponent<RatOverwatchWatchingComponent>(brain).Watching, Is.Null));
+        await pair.Client.WaitAssertion(() =>
+            Assert.That(pair.Client.EntMan.GetComponent<RatOverwatchWatchingComponent>(clientBrain).Watching, Is.Null,
+                "The client still thinks the AI is watching, so its static stays off."));
 
         await pair.CleanReturnAsync();
     }

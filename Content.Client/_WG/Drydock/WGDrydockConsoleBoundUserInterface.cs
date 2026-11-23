@@ -26,6 +26,7 @@ public sealed class WGDrydockConsoleBoundUserInterface : BoundUserInterface
         _window.OnUpgradePressed += OnUpgradePressed;
         _window.OnCancelBookingPressed += OnCancelBookingPressed;
         _window.OnBerthLightsPressed += OnBerthLightsPressed;
+        _window.OnModuleRemovePressed += slot => SendMessage(new WGDrydockRemoveModuleMessage(slot));
         SendMessage(new WGDrydockQuoteRequestMessage());
     }
 

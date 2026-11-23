@@ -118,7 +118,8 @@ Variants (`variants.yml`, `Variants/`). Most DS13 variants are another skin on o
 entity parented to its base with its own sprite sheet. The desiccated and carrion slashers, flayed puker and hound lurker follow DS13's
 shares, with the base weights cut to match. The flesh brute only has finished torso art, so its limbs don't come off. The fennec is a
 tougher, faster hopper from Growth. A Remade steering for a target that hasn't moved 0.5 m in 3 s breaks the anchored thing in its way
-with its normal melee (`WGStuckBreakerSystem`); the pathfinder can't see railings, so without this a Remade presses against one forever.
+with its normal melee (`WGStuckBreakerSystem`); steering only climbs or smashes what the navmesh shows, so without this a Remade presses
+forever against anything the navmesh missed or hasn't rebuilt for yet.
 Only a brute or the Undying breaks a wall, and only after 6 s stuck with nothing else in the way.
 
 Corruption coverage (`Corruption/`). A Monolith may cover a share of the floor it can walk to on its hull: a quarter at Growth, over

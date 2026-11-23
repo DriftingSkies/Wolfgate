@@ -1,3 +1,7 @@
+using Content.Shared._NF.Shipyard.Components;
+using Content.Shared.Mind;
+using Content.Shared.Station.Components;
+using System.Linq;
 using System.Collections.Generic;
 using Content.Server._WG.EntityCensus;
 using Robust.Shared.GameObjects;
@@ -75,6 +79,76 @@ public sealed class EntityCensusTest
             });
 
             entMan.DeleteEntity(grid);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+    /// <summary>
+    /// A bought ship, which is also its own station, is counted as a player ship, and an entity made without a
+    /// prototype is named by its components.
+    /// </summary>
+    [Test]
+    public async Task OwnedShipsAndPrototypelessEntitiesAreNamed()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var maps = server.System<SharedMapSystem>();
+        var census = server.System<WGEntityCensusSystem>();
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var before = census.TakeNow();
+
+            var ship = maps.CreateGridEntity(map.MapId);
+            maps.SetTile(ship.Owner, ship.Comp, Vector2i.Zero, map.Tile.Tile);
+            entMan.AddComponent<ShuttleDeedComponent>(ship.Owner);
+            entMan.AddComponent<StationMemberComponent>(ship.Owner);
+            entMan.SpawnEntity(Prototype, new EntityCoordinates(ship.Owner, 0.5f, 0.5f));
+
+            var station = maps.CreateGridEntity(map.MapId);
+            maps.SetTile(station.Owner, station.Comp, Vector2i.Zero, map.Tile.Tile);
+            entMan.AddComponent<StationMemberComponent>(station.Owner);
+            entMan.SpawnEntity(Prototype, new EntityCoordinates(station.Owner, 0.5f, 0.5f));
+
+            var after = census.TakeNow();
+            Assert.Multiple(() =>
+            {
+                Assert.That(after.Kinds[(int) WGCensusKind.PlayerShip] - before.Kinds[(int) WGCensusKind.PlayerShip],
+                    Is.EqualTo(2), "The bought ship and what is on it.");
+                Assert.That(after.Kinds[(int) WGCensusKind.Station] - before.Kinds[(int) WGCensusKind.Station],
+                    Is.EqualTo(2), "The station and what is on it.");
+                Assert.That(after.Prototypes.Keys.Any(k => k.StartsWith("(none: ") && k.Contains("MapGrid")), Is.True,
+                    $"A grid has no prototype and should be named for what it is: {string.Join(", ", after.Prototypes.Keys.Where(k => k.StartsWith("(none")))}");
+                Assert.That(after.Spawned.Keys.Any(k => k.StartsWith("(none: ") && k.Contains("MapGrid")), Is.True,
+                    $"A grid made since the last count is not named in what spawned: {string.Join(", ", after.Spawned.Keys)}");
+            });
+
+            entMan.DeleteEntity(ship.Owner);
+            entMan.DeleteEntity(station.Owner);
+            var gone = census.TakeNow();
+            Assert.That(gone.Deleted.Keys.Any(k => k.StartsWith("(none: ") && k.Contains("MapGrid")), Is.True,
+                "A deleted grid was counted under a bare (none).");
+
+            // One that becomes what it is after it is made is named the same way in both tables of one count.
+            var mind = entMan.SpawnEntity(null, MapCoordinates.Nullspace);
+            entMan.AddComponent<MindComponent>(mind);
+            var named = census.TakeNow();
+            Assert.Multiple(() =>
+            {
+                Assert.That(named.Prototypes.GetValueOrDefault("(none: Mind)") - gone.Prototypes.GetValueOrDefault("(none: Mind)"),
+                    Is.EqualTo(1), "The live table does not name it for what it became.");
+                Assert.That(named.Spawned.GetValueOrDefault("(none: Mind)"), Is.EqualTo(1), "The spawn table names it otherwise.");
+            });
+
+            // Made and deleted between counts: counted once each way, under one name.
+            var brief = entMan.SpawnEntity(null, MapCoordinates.Nullspace);
+            entMan.AddComponent<MindComponent>(brief);
+            entMan.DeleteEntity(brief);
+            var flow = census.TakeNow();
+            Assert.That(flow.Spawned.Where(p => p.Key.StartsWith("(none")).Sum(p => p.Value), Is.EqualTo(1));
+            Assert.That(flow.Deleted.Where(p => p.Key.StartsWith("(none")).Sum(p => p.Value), Is.EqualTo(1));
         });
 
         await pair.CleanReturnAsync();

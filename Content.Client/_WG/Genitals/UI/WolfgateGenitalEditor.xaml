@@ -159,7 +159,7 @@
                 </BoxContainer>
             </BoxContainer>
         </PanelContainer>
-        <!-- Adult description, read from the heart on the examine card by examiners who may read anatomy -->
+        <!-- Adult description and adult headshot, read from the heart on the examine card by examiners who may read anatomy -->
         <PanelContainer StyleClasses="CreatorCard" HorizontalExpand="True">
             <BoxContainer Orientation="Vertical" SeparationOverride="6">
                 <Label Text="{Loc 'wg-genitals-nsfw-text'}" StyleClasses="CreatorHeading" />
@@ -169,7 +169,11 @@
                         <TextEdit Name="NsfwTextEdit" HorizontalExpand="True" />
                     </ScrollContainer>
                 </PanelContainer>
-                <Label Name="NsfwTextCounter" StyleClasses="CreatorFieldLabel" HorizontalAlignment="Right" />
+                <BoxContainer Orientation="Horizontal">
+                    <Button Name="NsfwHeadshotButton" StyleClasses="LinkButton" />
+                    <Control HorizontalExpand="True" />
+                    <Label Name="NsfwTextCounter" StyleClasses="CreatorFieldLabel" VAlign="Center" />
+                </BoxContainer>
             </BoxContainer>
         </PanelContainer>
     </BoxContainer>

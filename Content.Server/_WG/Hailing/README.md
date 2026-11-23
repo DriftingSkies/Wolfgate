@@ -8,7 +8,7 @@ can close the channel, and it drops if a pilot leaves the console, a console los
 
 A ship can be hailed if it has a powered shuttle console and this console's radar would show it: same map, inside
 `wg.hailing.range`, not cloaked. A ship hiding its label is listed, and announced to the ship it hails, as an unknown
-vessel. Tuning is in `HailingCVars`.
+vessel. Tuning is in `HailingCVars`. An active admin can hail again without waiting out the console's cooldown.
 
 Entry points: the server `HailingSystem`, which keeps the hail as a `HailConsoleComponent` on each console involved
 (only while it is hailing, ringing or connected) and sends each operator the other one past PVS range for the

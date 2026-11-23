@@ -2,16 +2,22 @@ using System.Collections.Generic;
 using System.Linq;
 using Content.IntegrationTests.Tests._WG.Wolfmed;
 using Content.Server._WG.Augments;
+using Content.Server._WG.MeridianTraits.Hemophage;
 using Content.Server._WG.Wolfmed.Life;
 using Content.Server._WG.Wolfmed.Stasis;
+using Content.Server.Body.Components;
 using Content.Server.Body.Systems;
 using Content.Server.Medical.Components;
 using Content.Shared._Onyx.Body.Systems;
 using Content.Shared._Shitmed.Body.Organ;
 using Content.Shared._WG.Augments;
+using Content.Shared._WG.MeridianTraits.Hemophage;
 using Content.Shared._WG.Wolfmed.Body;
 using Content.Shared.Actions;
 using Content.Shared.Body.Systems;
+using Content.Shared.Damage;
+using Content.Shared.Damage.Prototypes;
+using Content.Shared.Damage.Systems;
 using Content.Shared.Emp;
 using Content.Shared.FixedPoint;
 using Content.Shared.Humanoid;
@@ -172,6 +178,14 @@ public sealed class AugmentVitalImplantsTest
             Assert.That(revival.GetRefusal(mob), Is.Null);
             Assert.That(reviver.Infused, Is.LessThanOrEqualTo(reviver.Reserve));
 
+            // It doesn't stop at the paddles' line: the whole reserve goes in, which is what wakes a restarted body.
+            for (var i = 0; i < 20; i++)
+            {
+                revivers.Tick((mob, reviver));
+            }
+
+            Assert.That(reviver.Infused, Is.EqualTo(reviver.Reserve).Within(0.01f), "The reviver kept blood back from a body short of it.");
+
             // That shock and two more don't take, and it has to recharge.
             for (var i = 1; i < reviver.Shocks; i++)
             {
@@ -207,6 +221,63 @@ public sealed class AugmentVitalImplantsTest
             reviver.ReadyAt = System.TimeSpan.Zero;
             revivers.Tick((mob, reviver));
             Assert.That(reviver.NextShock, Is.Null, "The reviver charged for a destroyed heart.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A hemophage gets the reviver's blood for a wound, and none for what its tumor drank.</summary>
+    [Test]
+    public async Task ReviverHemophageTest()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entities = server.EntMan;
+        var proto = server.ResolveDependency<IPrototypeManager>();
+        var revivers = server.System<WGReviverSystem>();
+        var hemophages = server.System<WGHemophageSystem>();
+        var life = server.System<WolfmedLifeSystem>();
+        var revival = server.System<WolfmedRevivalSystem>();
+        var damageable = server.System<DamageableSystem>();
+        var map = await WolfmedGameTest.CreateTestMap(pair);
+
+        var mob = EntityUid.Invalid;
+        await server.WaitPost(() =>
+        {
+            mob = entities.SpawnEntity("MobHuman", map.GridCoords);
+            entities.AddComponents(mob, proto.Index<TraitPrototype>("WGHemophagia").Components, false);
+        });
+
+        await pair.RunSeconds(2);
+
+        WGReviverComponent reviver = default!;
+        await server.WaitAssertion(() =>
+        {
+            var hemophage = entities.GetComponent<WGHemophageComponent>(mob);
+            var blood = entities.GetComponent<BloodstreamComponent>(mob);
+            reviver = entities.AddComponent<WGReviverComponent>(mob);
+
+            // Starved under the paddles' line, with no wound: the tumor drank it, and the reviver has nothing for it.
+            FixedPoint2 normal = blood.BloodMaxVolume;
+            var full = (mob, hemophage, blood);
+            hemophages.RemoveBlood(full, hemophages.TotalBlood(full) - normal * 0.22f);
+            life.StartArrest(mob, "test");
+            Assert.That(revival.GetRefusal(mob), Is.EqualTo(WolfmedRevivalSystem.NoBlood));
+            revivers.Tick((mob, reviver));
+            Assert.That(reviver.NextShock, Is.Null, "The reviver charged for a hemophage its tumor starved.");
+            Assert.That(reviver.Infused, Is.Zero, "The reviver fed a tumor.");
+
+            damageable.TryChangeDamage(mob, new DamageSpecifier(proto.Index<DamageTypePrototype>("Slash"), 25));
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            // With a cut that bleeds, the blood is a wound's to replace.
+            revivers.Tick((mob, reviver));
+            Assert.That(reviver.NextShock, Is.Not.Null, "The reviver gave up on a hemophage that is bleeding.");
+            Assert.That(reviver.Infused, Is.GreaterThan(0f), "The reviver kept its blood from a bleeding hemophage.");
         });
 
         await pair.CleanReturnAsync();

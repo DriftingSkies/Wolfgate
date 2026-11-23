@@ -76,6 +76,7 @@ public static class GenitalProfileJson
                 }
                 : null,
             Nsfw = string.IsNullOrEmpty(profile.NsfwText) ? null : profile.NsfwText,
+            Headshot = string.IsNullOrEmpty(profile.NsfwHeadshotUrl) ? null : profile.NsfwHeadshotUrl,
             Legacy = profile.LegacyMarkings,
         };
 
@@ -157,6 +158,15 @@ public static class GenitalProfileJson
                 failures.Add("nsfw");
         }
 
+        var headshot = string.Empty;
+        if (root.TryGetProperty("headshot", out var headshotElement) && headshotElement.ValueKind != JsonValueKind.Null)
+        {
+            if (headshotElement.ValueKind == JsonValueKind.String)
+                headshot = headshotElement.GetString() ?? string.Empty;
+            else
+                failures.Add("headshot");
+        }
+
         List<string>? legacy = null;
         if (root.TryGetProperty("legacy", out var legacyElement) && legacyElement.ValueKind != JsonValueKind.Null)
         {
@@ -178,7 +188,8 @@ public static class GenitalProfileJson
             .WithVagina(vagina)
             .WithWomb(womb)
             .WithBreasts(breasts)
-            .WithNsfwText(nsfw);
+            .WithNsfwText(nsfw)
+            .WithNsfwHeadshotUrl(headshot);
 
         if (legacy != null && version != 0)
             profile = profile.AsMigrated(legacy);
@@ -284,7 +295,8 @@ public static class GenitalProfileJson
     private static bool IsUntouched(GenitalProfile profile)
     {
         return profile.IsEmpty && profile.RevealMode == GenitalRevealMode.UndergarmentRemoval
-               && string.IsNullOrEmpty(profile.NsfwText);
+               && string.IsNullOrEmpty(profile.NsfwText)
+               && string.IsNullOrEmpty(profile.NsfwHeadshotUrl);
     }
 
     /// <summary>A defined enum name; null gives the fallback. Unknown names and numbers fail.</summary>
@@ -343,6 +355,7 @@ public static class GenitalProfileJson
         [JsonPropertyName("womb")] public bool Womb { get; init; }
         [JsonPropertyName("breasts")] public BreastsDto? Breasts { get; init; }
         [JsonPropertyName("nsfw")] public string? Nsfw { get; init; }
+        [JsonPropertyName("headshot")] public string? Headshot { get; init; }
         [JsonPropertyName("legacy")] public List<string>? Legacy { get; init; }
     }
 

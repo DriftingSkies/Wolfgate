@@ -627,6 +627,7 @@ take half burn damage in place of RMC's tile fire immunity.
 - [`Content.Shared/_WG/Xenonids/MeleeSlow/XenoMeleeSlowSystem.cs`](../../../Content.Shared/_WG/Xenonids/MeleeSlow/XenoMeleeSlowSystem.cs)
 - [`Content.Shared/_WG/Xenonids/Mobs/CMGhostXenoHud.cs`](../../../Content.Shared/_WG/Xenonids/Mobs/CMGhostXenoHud.cs)
 - [`Content.Shared/_WG/Xenonids/Movement/XenoAnimateMovementComponent.cs`](../../../Content.Shared/_WG/Xenonids/Movement/XenoAnimateMovementComponent.cs)
+- [`Content.Shared/_WG/Xenonids/Movement/XenoWeightlessThrowSystem.cs`](../../../Content.Shared/_WG/Xenonids/Movement/XenoWeightlessThrowSystem.cs)
 - [`Content.Shared/_WG/Xenonids/Name/AssignXenoNameComponent.cs`](../../../Content.Shared/_WG/Xenonids/Name/AssignXenoNameComponent.cs)
 - [`Content.Shared/_WG/Xenonids/Name/SharedXenoNameSystem.cs`](../../../Content.Shared/_WG/Xenonids/Name/SharedXenoNameSystem.cs)
 - [`Content.Shared/_WG/Xenonids/Name/XenoNameComponent.cs`](../../../Content.Shared/_WG/Xenonids/Name/XenoNameComponent.cs)
@@ -1063,6 +1064,7 @@ take half burn damage in place of RMC's tile fire immunity.
 - [`Content.IntegrationTests/Tests/_WG/Xenonids/XenoSpriteHideTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Xenonids/XenoSpriteHideTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Xenonids/XenoTunnelTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Xenonids/XenoTunnelTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Xenonids/XenoWeedsTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Xenonids/XenoWeedsTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Xenonids/XenoWeightlessThrowTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Xenonids/XenoWeightlessThrowTest.cs)
 
 ### Prototypes
 
@@ -1586,6 +1588,7 @@ take half burn damage in place of RMC's tile fire immunity.
 - [`Content.Client/Weapons/Melee/MeleeWeaponSystem.cs`](../../../Content.Client/Weapons/Melee/MeleeWeaponSystem.cs): xeno wide swing calls it
 - [`Content.Server/Chat/Systems/ChatSystem.cs`](../../Chat/Systems/ChatSystem.cs): a xeno's radio prefix sends the message to its hive instead
 - [`Content.Server/NPC/Systems/NPCUtilitySystem.cs`](../../NPC/Systems/NPCUtilitySystem.cs): AI facehuggers pick hosts they can still infect
+- [`Content.Server/Weapons/Melee/MeleeWeaponSystem.cs`](../../Weapons/Melee/MeleeWeaponSystem.cs): a xeno's own fail chance and the held item's malus don't stack
 - [`Content.Shared/Doors/Systems/SharedDoorSystem.Bolts.cs`](../../../Content.Shared/Doors/Systems/SharedDoorSystem.Bolts.cs): resin doors are airlocks without bolts; no error spam
 - [`Content.Shared/Eye/VisibilityFlags.cs`](../../../Content.Shared/Eye/VisibilityFlags.cs): things only xenos see
 - [`Content.Shared/Interaction/SharedInteractionSystem.cs`](../../../Content.Shared/Interaction/SharedInteractionSystem.cs): devoured mobs and devouring xenos override combat-mode interaction
@@ -1653,5 +1656,6 @@ take half burn damage in place of RMC's tile fire immunity.
 - [`Resources/Prototypes/Entities/Tiles/water.yml`](../../../Resources/Prototypes/Entities/Tiles/water.yml)
   - xeno weeds do not grow on liquid or chasm tiles
   - resin, nodes and tunnels do not go on liquid or chasm tiles
+- [`Resources/Prototypes/Voice/speech_emotes.yml`](../../../Resources/Prototypes/Voice/speech_emotes.yml): xenos can't weh
 
 <!-- WOLFGATE-GENERATED END -->

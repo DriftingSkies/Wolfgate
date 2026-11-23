@@ -3,6 +3,8 @@ using Content.Server._WG.Wolfmed.Stasis;
 using Content.Server.Body.Systems;
 using Content.Shared._Onyx.Wounds;
 using Content.Shared._WG.Augments;
+using Content.Shared._WG.MeridianTraits.Hemophage;
+using Content.Shared.Body.Systems;
 using Content.Shared.Emp;
 using Content.Shared.FixedPoint;
 using Content.Shared.IdentityManagement;
@@ -16,7 +18,7 @@ namespace Content.Server._WG.Augments;
 /// <summary>
 /// Shocks a body with a reviver when its heart has stopped. Every shock is one of Wolfmed's: it is refused for what
 /// the paddles are refused for, and restarts the heart on the paddles' odds. While it charges it holds the body's
-/// bleeding and runs its reserve of blood in, so the heart it restarts has something to pump.
+/// bleeding and runs its reserve of blood in, so the heart it restarts has something to pump and its owner wakes.
 /// </summary>
 public sealed class WGReviverSystem : EntitySystem
 {
@@ -24,10 +26,12 @@ public sealed class WGReviverSystem : EntitySystem
     [Dependency] private BloodstreamSystem _bloodstream = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedBodySystem _body = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private WolfmedLifeSystem _life = default!;
     [Dependency] private WolfmedRevivalSystem _revival = default!;
     [Dependency] private WolfmedStasisSystem _stasis = default!;
+    [Dependency] private WoundSystem _wounds = default!;
 
     private static readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
 
@@ -136,7 +140,35 @@ public sealed class WGReviverSystem : EntitySystem
             return false;
 
         var refusal = _revival.GetRefusal(ent);
-        return refusal == null || refusal == WolfmedRevivalSystem.NoBlood && ent.Comp.Infused < ent.Comp.Reserve;
+        return refusal == null || refusal == WolfmedRevivalSystem.NoBlood && CanInfuse(ent);
+    }
+
+    /// <summary>
+    /// Whether it has blood left that this body can take. A hemophage's blood only comes back by feeding, so there it
+    /// replaces what a wound took and never what the tumor drank.
+    /// </summary>
+    private bool CanInfuse(Entity<WGReviverComponent> ent)
+    {
+        return ent.Comp.Infused < ent.Comp.Reserve && (!HasComp<WGHemophageComponent>(ent) || HasBleed(ent));
+    }
+
+    /// <summary>Whether a wound on the body bleeds, or would with nothing holding or dressing it.</summary>
+    private bool HasBleed(EntityUid body)
+    {
+        foreach (var (part, _) in _body.GetBodyChildren(body))
+        {
+            foreach (var wound in _wounds.GetWounds(part))
+            {
+                if (wound.Comp.State != WoundState.Open)
+                    continue;
+
+                if (TryComp(wound, out WoundBleedingComponent? bleeding) && bleeding.BaseRate > bleeding.NaturalClotting ||
+                    TryComp(wound, out WoundInternalBleedingComponent? inside) && inside.Severity > FixedPoint2.Zero)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>Holds every bleed on the body until then, as a stasis weave does; the weave's pass lifts it.</summary>
@@ -158,12 +190,15 @@ public sealed class WGReviverSystem : EntitySystem
         _stasis.RefreshBleeding(body);
     }
 
-    /// <summary>A second of the reserve, up to the blood Wolfmed wants in a body after a shock.</summary>
+    /// <summary>A second of the reserve, up to the blood at which the brain stops starving and its owner can wake.</summary>
     private void Infuse(Entity<WGReviverComponent> ent)
     {
+        if (!CanInfuse(ent))
+            return;
+
         var reviver = ent.Comp;
         var amount = MathF.Min(reviver.InfuseRate * (float) Interval.TotalSeconds, reviver.Reserve - reviver.Infused);
-        amount = MathF.Min(amount, _life.GetTransfusionGuidance(ent).ToTarget);
+        amount = MathF.Min(amount, _life.GetTransfusionGuidance(ent).ToBrainSafe);
         if (amount > 0f && _bloodstream.TryModifyBloodLevel(ent, amount))
             reviver.Infused += amount;
     }

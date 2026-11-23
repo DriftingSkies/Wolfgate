@@ -100,3 +100,5 @@ wg-genitals-nsfw-text = Adult description
 wg-genitals-nsfw-text-hint = Shown from the heart on your examine card, only to adult characters whose players have adult content on, and only while you have it on too.
 wg-genitals-nsfw-text-placeholder = What others notice that the normal description leaves out.
 wg-genitals-nsfw-text-counter = {$count} / {$max}
+wg-genitals-nsfw-headshot-add = Add adult headshot
+wg-genitals-nsfw-headshot-edit = Edit adult headshot

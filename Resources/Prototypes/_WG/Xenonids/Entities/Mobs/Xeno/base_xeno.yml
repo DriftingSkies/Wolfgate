@@ -41,6 +41,7 @@
     whitelist:
       components:
       - EntityStorage
+  - type: GravityAffected
   - type: Damageable
     damageContainer: Xeno
   - type: Destructible
@@ -94,6 +95,7 @@
   - type: MovementSpeedModifier
     baseWalkSpeed: 2.2
     baseSprintSpeed: 4
+    weightlessAcceleration: 1.5 # Slightly more maneuverable in space.
   - type: Climbing
   - type: Insulated
   - type: Input
@@ -291,7 +293,7 @@
   - type: AffectableByWeeds
   - type: ComplexInteraction
   - type: UserLimitHits
-  - type: MovementIgnoreGravity
+  - type: MovementAlwaysTouching
   # WOLFGATE: cut DisableConstruction
   - type: XenoAnnounceDeath
     message: cm-xeno-death
@@ -383,7 +385,7 @@
   components:
   - type: CombatMode
     canDisarm: true
-    disarmFailChance: 0
+    disarmFailChance: 0.35 # one shove no longer always lands
   - type: MeleeWeapon
     autoAttack: true
     widePrimary: true

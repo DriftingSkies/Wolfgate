@@ -172,6 +172,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Content.Server/Administration/Systems/BwoinkSystem.cs`](../../Content.Server/Administration/Systems/BwoinkSystem.cs)
   - a mention in an embed never pings; it goes in the content below
   - only message content pings, and the payload suppresses every mention unless roles are allowed
+  - admins aren't rate limited in ahelps
 - [`Content.Server/Anomaly/AnomalySynchronizerSystem.cs`](../../Content.Server/Anomaly/AnomalySynchronizerSystem.cs): a deleted anomaly threw here every tick and stopped every other synchronizer
 - [`Content.Server/Anomaly/AnomalySystem.Scanner.cs`](../../Content.Server/Anomaly/AnomalySystem.Scanner.cs): points earned ran onto the point output line
 - [`Content.Server/Anomaly/Effects/ProjectileAnomalySystem.cs`](../../Content.Server/Anomaly/Effects/ProjectileAnomalySystem.cs): with nothing in range Pick threw, so a supercritical never ended and retried every tick
@@ -184,6 +185,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Content.Server/Cargo/Systems/CargoSystem.Shuttle.cs`](../../Content.Server/Cargo/Systems/CargoSystem.Shuttle.cs)
   - sums the bounty hand-in value
   - items handed in to a bounty are paid by its reward, not sold
+- [`Content.Server/Chat/Managers/ChatManager.RateLimit.cs`](../../Content.Server/Chat/Managers/ChatManager.RateLimit.cs): admins aren't chat rate limited
 - [`Content.Server/Chat/Systems/ChatSystem.cs`](../../Content.Server/Chat/Systems/ChatSystem.cs)
   - a voice mask's speech style
   - a voice mask's speech style, for the wraps below

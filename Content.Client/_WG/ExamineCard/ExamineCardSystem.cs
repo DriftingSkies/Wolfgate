@@ -25,6 +25,7 @@ public sealed partial class ExamineCardSystem : SharedExamineCardSystem
     [Dependency] private ExamineSystem _examine = default!;
     [Dependency] private IPlayerManager _player = default!;
     [Dependency] private SpriteSystem _sprites = default!;
+    [Dependency] private HeadshotSystem _headshot = default!;
 
     /// <summary>Widest the tooltip may grow with the detailed look open beside the card.</summary>
     private const float MaxTooltipWidth = 980f;
@@ -182,8 +183,9 @@ public sealed partial class ExamineCardSystem : SharedExamineCardSystem
             },
             Visible = _detailsOpen,
         };
+        var hasNsfw = data.NsfwText != null || data.NsfwHeadshot != null;
         var description = SidePanel(_descriptionOpen && data.Description != null);
-        var nsfw = SidePanel(_nsfwOpen && data.NsfwText != null, ExamineCardHeartToggle.Rose);
+        var nsfw = SidePanel(_nsfwOpen && hasNsfw, ExamineCardHeartToggle.Rose);
         side.AddChild(description);
         side.AddChild(nsfw);
         side.AddChild(detail);
@@ -212,17 +214,21 @@ public sealed partial class ExamineCardSystem : SharedExamineCardSystem
 
         if (data.Description != null)
             FillDescription(description, FormattedMessage.FromMarkupPermissive(data.Description), "wg-examine-card-description-title");
-        if (data.NsfwText != null)
-            FillDescription(nsfw, FormattedMessage.FromUnformatted(data.NsfwText), "wg-examine-card-nsfw-title");
+        if (hasNsfw)
+        {
+            FillDescription(nsfw, data.NsfwText == null ? null : FormattedMessage.FromUnformatted(data.NsfwText),
+                "wg-examine-card-nsfw-title",
+                data.NsfwHeadshot is { } hash ? _headshot.CreatePortrait(hash) : null);
+        }
 
-        if (data.Description != null || data.NsfwText != null)
+        if (data.Description != null || hasNsfw)
         {
             card.SetDescription(data.Description, _descriptionOpen, open =>
                 {
                     _descriptionOpen = open;
                     description.Visible = open;
                 },
-                data.NsfwText != null, _nsfwOpen, open =>
+                hasNsfw, _nsfwOpen, open =>
                 {
                     _nsfwOpen = open;
                     nsfw.Visible = open;
@@ -250,12 +256,10 @@ public sealed partial class ExamineCardSystem : SharedExamineCardSystem
         };
     }
 
-    /// <summary>The whole description, scrolling if it runs long.</summary>
-    private void FillDescription(PanelContainer panel, FormattedMessage text, string title)
+    /// <summary>The whole description, scrolling if it runs long, under an optional portrait.</summary>
+    private void FillDescription(PanelContainer panel, FormattedMessage? text, string title, Control? portrait = null)
     {
-        var label = new RichTextLabel { MaxWidth = 380 };
-        label.SetMessage(text);
-        panel.AddChild(new BoxContainer
+        var column = new BoxContainer
         {
             Orientation = BoxContainer.LayoutOrientation.Vertical,
             Children =
@@ -266,15 +270,28 @@ public sealed partial class ExamineCardSystem : SharedExamineCardSystem
                     FontColorOverride = ExamineCardControl.InsetText,
                     Margin = new Thickness(0, 0, 0, 4),
                 },
-                new ScrollContainer
-                {
-                    MaxHeight = 260,
-                    MaxWidth = 390,
-                    HScrollEnabled = false,
-                    ReturnMeasure = true,
-                    Children = { label },
-                },
             },
+        };
+        panel.AddChild(column);
+
+        if (portrait != null)
+        {
+            portrait.Margin = new Thickness(0, 0, 0, 4);
+            column.AddChild(portrait);
+        }
+
+        if (text == null)
+            return;
+
+        var label = new RichTextLabel { MaxWidth = 380 };
+        label.SetMessage(text);
+        column.AddChild(new ScrollContainer
+        {
+            MaxHeight = 260,
+            MaxWidth = 390,
+            HScrollEnabled = false,
+            ReturnMeasure = true,
+            Children = { label },
         });
     }
 

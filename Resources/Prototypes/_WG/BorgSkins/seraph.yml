@@ -1,0 +1,18 @@
+- type: borgSubtype
+  id: WGBorgSkinPdvMedicalSeraph
+  parentBorgType: pdvmedical
+  spritePath: _WG/BorgSkins/Tall/PDV/Medical/seraph.rsi
+  dummyPrototype: WGBorgChassisPdvMedicalSeraph
+
+- type: wgBorgSkin
+  id: WGBorgSkinPdvMedicalSeraph
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: entity
+  id: WGBorgChassisPdvMedicalSeraph
+  parent: PDVBorgChassisMedical
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGBorgSkinPdvMedicalSeraph

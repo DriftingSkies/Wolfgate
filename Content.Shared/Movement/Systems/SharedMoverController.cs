@@ -371,11 +371,13 @@ public abstract partial class SharedMoverController : VirtualController
                 // If we're a relay target then predict the sound for all relays.
                 if (relaySource != null)
                 {
-                    _audio.PlayPredicted(sound, uid, relaySource.Value, audioParams);
+                    // _audio.PlayPredicted(sound, uid, relaySource.Value, audioParams);
+                    _wgLightSound.PlayPredicted(sound, uid, relaySource.Value, audioParams); // WOLFGATE(Performance): footsteps make no sound entity
                 }
                 else
                 {
-                    _audio.PlayPredicted(sound, uid, uid, audioParams);
+                    // _audio.PlayPredicted(sound, uid, uid, audioParams);
+                    _wgLightSound.PlayPredicted(sound, uid, uid, audioParams); // WOLFGATE(Performance): footsteps make no sound entity
                 }
             }
         }

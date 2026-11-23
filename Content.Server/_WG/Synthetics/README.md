@@ -14,6 +14,7 @@ the character's profile. Nothing keys on a species or a mob prototype.
   components exposed. The owner sees it on their HUD.
 - **Loose limbs** (`WGSyntheticLimbSystem`): chassis limbs come off more readily than flesh and go back on by
   clicking the limb on the body. A limb put back by hand works, badly, until a cable coil repairs its coupling.
+  Each pass tells the one holding the coil how many are left; repair nanites close it too, silently.
 - **Radiation collector** (`WGRadCollectorSystem`, `rad_collector.yml`): a chassis organ that takes the radiation a
   synthetic would otherwise pile up on its body for ever. Full, the overflow strains it and leaks into the core at half
   rate; missing or burnt out (zero integrity, then deleted), it all corrupts the core. Pulled, it vents; a welder
@@ -76,6 +77,7 @@ the character's profile. Nothing keys on a species or a mob prototype.
 - [`Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisSpeechTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisSpeechTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisVacuumTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGChassisVacuumTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Synthetics/WGCoolantStarvationTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGCoolantStarvationTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Synthetics/WGLooseCouplingPopupTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGLooseCouplingPopupTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Synthetics/WGRadCollectorTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGRadCollectorTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Synthetics/WGSyntheticChimeraTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGSyntheticChimeraTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Synthetics/WGSyntheticLimbTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Synthetics/WGSyntheticLimbTest.cs)

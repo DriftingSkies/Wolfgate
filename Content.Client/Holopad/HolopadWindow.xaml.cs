@@ -222,7 +222,8 @@ public sealed partial class HolopadWindow : FancyWindow
         if (_owner == null || !_entManager.TryGetComponent<HolopadComponent>(_owner.Value, out var holopad))
             return;
 
-        var hasBroadcastAccess = !_holopadSystem.IsHolopadBroadcastOnCoolDown((_owner.Value, holopad));
+        var hasBroadcastAccess = !_holopadSystem.IsHolopadBroadcastOnCoolDown((_owner.Value, holopad))
+            || IoCManager.Resolve<Content.Client.Administration.Managers.IClientAdminManager>().IsActive(); // WOLFGATE(AdminCooldowns): admins skip the broadcast cooldown
         var localPlayer = _playerManager.LocalSession?.AttachedEntity;
 
         ControlsLockOutContainer.Visible = _holopadSystem.IsHolopadControlLocked((_owner.Value, holopad), localPlayer);

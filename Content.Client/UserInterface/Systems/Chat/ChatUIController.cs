@@ -883,6 +883,8 @@ public sealed partial class ChatUIController : UIController
     {
         if (_ent.EntitySysManager.TryGetEntitySystem<Content.Client._WG.Ghost.GhostOrbitSystem>(out var ghostOrbit)) // WOLFGATE(Ghost)
             ghostOrbit.AddChatLink(msg); // WOLFGATE(Ghost): orbit link for ghosts
+        if (_ent.EntitySysManager.TryGetEntitySystem<Content.Client._WG.Administration.AdminFollow.AdminFollowLinkSystem>(out var adminFollow)) // WOLFGATE(Administration)
+            adminFollow.AddChatLink(msg); // WOLFGATE(Administration): follow link on admin alerts about an entity
 
         // color the name unless it's something like "the old man"
         if ((msg.Channel == ChatChannel.Local || msg.Channel == ChatChannel.Whisper) && _chatNameColorsEnabled)

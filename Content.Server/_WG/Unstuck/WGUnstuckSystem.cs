@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Server.Administration.Logs;
+using Content.Server.Administration.Managers;
 using Content.Server.Atmos.EntitySystems;
 using Content.Shared._WG.Unstuck;
 using Content.Shared._WG.Vehicles.Core;
@@ -33,6 +34,7 @@ public sealed class WGUnstuckSystem : EntitySystem
 {
     [Dependency] private ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private IAdminLogManager _adminLog = default!;
+    [Dependency] private IAdminManager _admin = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private AtmosphereSystem _atmosphere = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
@@ -47,11 +49,17 @@ public sealed class WGUnstuckSystem : EntitySystem
     [Dependency] private TurfSystem _turf = default!;
     [Dependency] private VehicleInteriorSystem _vehicleInterior = default!;
 
-    /// <summary>How far, in tiles, the search for clear floor reaches.</summary>
-    private const int SearchRadius = 3;
+    /// <summary>How far, in tiles, the first search for clear floor reaches.</summary>
+    private const int SearchRadius = 5;
+
+    /// <summary>How far, in tiles, the second search reaches when the first finds nothing.</summary>
+    private const int WideSearchRadius = 10;
 
     /// <summary>How deep the body must sit inside a structure to count as stuck, so standing against a wall doesn't.</summary>
     private const float EmbedDepth = 0.1f;
+
+    /// <summary>How far a body may touch a structure at its destination: a resting contact, not a wedge.</summary>
+    private const float ContactSlop = 0.01f;
 
     /// <summary>Tiles within this much of the same distance count as a tie, which breathable air breaks.</summary>
     private const float TieDistance = 0.05f;
@@ -59,9 +67,14 @@ public sealed class WGUnstuckSystem : EntitySystem
     /// <summary>How close, as a share of the line, two grid crossings must be to count as passing through a corner.</summary>
     private const float CornerEpsilon = 1e-5f;
 
+    /// <summary>How far past its outermost tiles something anchored to a grid may reach, such as hull armor.</summary>
+    private const float GridOverhang = 1f;
+
     private static readonly TimeSpan Cooldown = TimeSpan.FromSeconds(30);
 
     private readonly Dictionary<NetUserId, TimeSpan> _nextUse = new();
+    private readonly HashSet<EntityUid> _intersecting = new();
+    private List<Entity<MapGridComponent>> _nearGrids = new();
 
     private EntityQuery<MapGridComponent> _gridQuery;
     private EntityQuery<PhysicsComponent> _physicsQuery;
@@ -83,7 +96,7 @@ public sealed class WGUnstuckSystem : EntitySystem
         if (session.AttachedEntity is not { } user)
             return;
 
-        if (_nextUse.TryGetValue(session.UserId, out var next) && _timing.CurTime < next)
+        if (!_admin.IsAdmin(session) && _nextUse.TryGetValue(session.UserId, out var next) && _timing.CurTime < next)
         {
             var seconds = (int) Math.Ceiling((next - _timing.CurTime).TotalSeconds);
             _popup.PopupEntity(Loc.GetString("wg-unstuck-cooldown", ("seconds", seconds)), user, user, PopupType.SmallCaution);
@@ -102,7 +115,8 @@ public sealed class WGUnstuckSystem : EntitySystem
 
     /// <summary>
     /// Puts the entity outside if it is inside a vehicle; otherwise moves it to the nearest clear floor if it is
-    /// embedded in a structure it collides with, on the side it was mostly on, within <see cref="SearchRadius"/> tiles.
+    /// embedded in a structure it collides with, on the side it was mostly on, within <see cref="SearchRadius"/> tiles,
+    /// or <see cref="WideSearchRadius"/> when nothing is that close. With no floor in reach it goes to open space.
     /// </summary>
     /// <param name="message">The player-facing result.</param>
     public bool TryUnstuck(EntityUid user, out string message)
@@ -129,15 +143,16 @@ public sealed class WGUnstuckSystem : EntitySystem
         }
 
         var xform = Transform(user);
-        if (!IsEmbedded(user, body.CollisionMask, xform))
+        if (!IsEmbedded(user, body.CollisionMask, xform, out var blocker))
         {
             message = Loc.GetString("wg-unstuck-not-stuck");
             return false;
         }
 
-        if (xform.GridUid is not { } gridUid
+        // A body out in space has no grid of its own, so it searches the grid of whatever it is stuck in.
+        if ((xform.GridUid ?? Transform(blocker).GridUid) is not { } gridUid
             || !_gridQuery.TryComp(gridUid, out var grid)
-            || !TryFindClearFloor((gridUid, grid), xform, body.CollisionMask, out var target))
+            || !TryFindClearSpot((gridUid, grid), user, xform, body.CollisionMask, out var target))
         {
             message = Loc.GetString("wg-unstuck-no-room");
             return false;
@@ -152,7 +167,7 @@ public sealed class WGUnstuckSystem : EntitySystem
             _pulling.TryStopPull(pulled, pulledComp);
 
         var from = xform.Coordinates;
-        _transform.SetCoordinates(user, xform, target);
+        _transform.SetMapCoordinates((user, xform), _transform.ToMapCoordinates(target));
         _physics.SetLinearVelocity(user, Vector2.Zero, body: body);
 
         _adminLog.Add(LogType.Teleport, LogImpact.Low,
@@ -212,45 +227,79 @@ public sealed class WGUnstuckSystem : EntitySystem
         return true;
     }
 
-    /// <summary>Whether the body sits inside a static structure it would collide with.</summary>
-    private bool IsEmbedded(EntityUid user, int mask, TransformComponent xform)
+    /// <summary>Whether the body sits inside a static structure it would collide with, and the first one found.</summary>
+    private bool IsEmbedded(EntityUid user, int mask, TransformComponent xform, out EntityUid blocker)
     {
         var aabb = _lookup.GetWorldAABB(user, xform);
         var size = Vector2.Max(aabb.Size - new Vector2(EmbedDepth * 2), new Vector2(0.01f));
         var core = Box2.CenteredAround(aabb.Center, size);
 
-        foreach (var other in _lookup.GetEntitiesIntersecting(xform.MapID, core, LookupFlags.Static))
+        foreach (var other in StaticIntersecting(xform.MapID, new Box2Rotated(core)))
         {
-            if (other != user && Blocks(other, mask))
-                return true;
+            if (other == user || !Blocks(other, mask))
+                continue;
+
+            blocker = other;
+            return true;
         }
 
+        blocker = default;
         return false;
     }
 
     /// <summary>
-    /// Picks the clear floor tile nearest the entity's exact position, so it comes out on the side it was mostly on.
-    /// A tile behind another solid tile doesn't count, and breathable air only breaks a tie.
+    /// Searches for clear floor within <see cref="SearchRadius"/>, then <see cref="WideSearchRadius"/>. A body already
+    /// out over space, such as one wedged against a hull's armor, may come out in open space when no floor is in reach.
     /// </summary>
-    private bool TryFindClearFloor(Entity<MapGridComponent> grid, TransformComponent xform, int mask, out EntityCoordinates target)
+    private bool TryFindClearSpot(Entity<MapGridComponent> grid, EntityUid user, TransformComponent xform, int mask, out EntityCoordinates target)
+    {
+        var local = _transform.WithEntityId(xform.Coordinates, grid).Position;
+        var origin = new Vector2i((int) MathF.Floor(local.X / grid.Comp.TileSize), (int) MathF.Floor(local.Y / grid.Comp.TileSize));
+        // The whole body must fit at the destination; only a contact's worth is allowed, so a body exactly a corridor
+        // wide still fits.
+        var body = _lookup.GetWorldAABB(user, xform).Size - new Vector2(ContactSlop * 2);
+        var footprint = Vector2.Max(body, new Vector2(0.01f));
+        var map = xform.MapUid ?? grid.Owner;
+
+        if (TryFindNearest(grid, local, origin, footprint, map, mask, SearchRadius, false, out target)
+            || TryFindNearest(grid, local, origin, footprint, map, mask, WideSearchRadius, false, out target))
+            return true;
+
+        if (!IsSpaceTile(grid, origin))
+            return false;
+
+        return TryFindNearest(grid, local, origin, footprint, map, mask, SearchRadius, true, out target)
+            || TryFindNearest(grid, local, origin, footprint, map, mask, WideSearchRadius, true, out target);
+    }
+
+    /// <summary>
+    /// Picks the clear floor tile, or with <paramref name="space"/> the clear space tile, nearest the entity's exact
+    /// position, so it comes out on the side it was mostly on. A tile behind another solid tile doesn't count, a tile
+    /// where the body would overlap a structure doesn't either, and breathable air only breaks a tie.
+    /// </summary>
+    private bool TryFindNearest(
+        Entity<MapGridComponent> grid,
+        Vector2 local,
+        Vector2i origin,
+        Vector2 footprint,
+        EntityUid map,
+        int mask,
+        int radius,
+        bool space,
+        out EntityCoordinates target)
     {
         target = default;
-        var local = _transform.WithEntityId(xform.Coordinates, grid).Position;
-        var origin = _map.TileIndicesFor(grid, xform.Coordinates);
-        var map = xform.MapUid ?? grid.Owner;
         var tileSize = grid.Comp.TileSize;
 
         var found = false;
         var bestSafe = false;
         var bestDistance = float.MaxValue;
 
-        for (var dx = -SearchRadius; dx <= SearchRadius; dx++)
-        for (var dy = -SearchRadius; dy <= SearchRadius; dy++)
+        for (var dx = -radius; dx <= radius; dx++)
+        for (var dy = -radius; dy <= radius; dy++)
         {
             var indices = origin + new Vector2i(dx, dy);
-            if (!_map.TryGetTileRef(grid, grid.Comp, indices, out var tile)
-                || _turf.IsSpace(tile)
-                || IsObstructed(grid, indices, mask))
+            if (IsSpaceTile(grid, indices) != space)
                 continue;
 
             var center = new Vector2((indices.X + 0.5f) * tileSize, (indices.Y + 0.5f) * tileSize);
@@ -258,11 +307,13 @@ public sealed class WGUnstuckSystem : EntitySystem
             if (found && distance > bestDistance + TieDistance)
                 continue;
 
-            if (BehindSolid(grid, local, center, origin, indices, mask))
+            if (IsObstructed(grid, indices, mask)
+                || Overlaps(grid, center, footprint, mask)
+                || BehindSolid(grid, local, center, origin, indices, mask))
                 continue;
 
             // The nearer tile wins; within a tie, breathable air wins, then the nearer.
-            var safe = _atmosphere.IsTileMixtureProbablySafe(grid.Owner, map, indices);
+            var safe = !space && _atmosphere.IsTileMixtureProbablySafe(grid.Owner, map, indices);
             var better = !found
                 || distance < bestDistance - TieDistance
                 || safe && !bestSafe
@@ -336,6 +387,51 @@ public sealed class WGUnstuckSystem : EntitySystem
             var indices = new Vector2i(tileX, tileY);
             return indices != origin && indices != target && IsObstructed(grid, indices, mask);
         }
+    }
+
+    /// <summary>Whether the grid has no floor at the tile.</summary>
+    private bool IsSpaceTile(Entity<MapGridComponent> grid, Vector2i indices)
+    {
+        return !_map.TryGetTileRef(grid, grid.Comp, indices, out var tile) || _turf.IsSpace(tile);
+    }
+
+    /// <summary>
+    /// Whether a body with the given world-axis size, centred on a grid-local point, would sit inside a structure it
+    /// collides with, including one anchored on a neighbouring tile or another grid that reaches over.
+    /// </summary>
+    private bool Overlaps(Entity<MapGridComponent> grid, Vector2 center, Vector2 footprint, int mask)
+    {
+        var worldCenter = Vector2.Transform(center, _transform.GetWorldMatrix(grid));
+        var bounds = new Box2Rotated(Box2.CenteredAround(worldCenter, footprint));
+        var mapId = Transform(grid).MapID;
+
+        foreach (var other in StaticIntersecting(mapId, bounds))
+        {
+            if (Blocks(other, mask))
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// The static entities intersecting a world box. The map-wide lookup only searches grids whose tiles the box
+    /// touches, so this also searches grids near enough for something anchored at their edge to reach into it.
+    /// </summary>
+    private HashSet<EntityUid> StaticIntersecting(MapId mapId, Box2Rotated bounds)
+    {
+        _intersecting.Clear();
+        _lookup.GetEntitiesIntersecting(_map.GetMapOrInvalid(mapId), bounds, _intersecting, LookupFlags.Static);
+
+        _nearGrids.Clear();
+        _map.FindGridsIntersecting(mapId, bounds.CalcBoundingBox().Enlarged(GridOverhang), ref _nearGrids,
+            approx: true, includeMap: false);
+        foreach (var grid in _nearGrids)
+        {
+            _lookup.GetEntitiesIntersecting(grid.Owner, bounds, _intersecting, LookupFlags.Static);
+        }
+
+        return _intersecting;
     }
 
     /// <summary>Whether something anchored on the tile would block the entity.</summary>

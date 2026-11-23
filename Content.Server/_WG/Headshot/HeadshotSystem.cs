@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
+using Content.Shared._WG.Genitals.Systems;
 using Content.Shared._WG.Headshot;
 using Content.Shared.Administration;
 using Content.Shared.Database;
@@ -19,8 +20,9 @@ using Robust.Shared.Utility;
 namespace Content.Server._WG.Headshot;
 
 /// <summary>
-/// Gives spawned characters their profile headshot and shows it to examiners who can see their face. Images are
-/// fetched once per URL and handed to a client only for hashes it was shown.
+/// Gives spawned characters their profile headshots and shows them to examiners who can see their face; the adult
+/// one goes out with the examine card's adult description. Images are fetched once per URL and handed to a client
+/// only for hashes it was shown.
 /// </summary>
 public sealed partial class HeadshotSystem : EntitySystem
 {
@@ -29,6 +31,7 @@ public sealed partial class HeadshotSystem : EntitySystem
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private IPlayerManager _player = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedGenitalsSystem _genitals = default!;
 
     private const int MaxCachedUrls = 256;
     private static readonly TimeSpan PreviewCooldown = TimeSpan.FromSeconds(3);
@@ -82,23 +85,62 @@ public sealed partial class HeadshotSystem : EntitySystem
 
     private void OnPlayerSpawnComplete(PlayerSpawnCompleteEvent ev)
     {
-        if (!_cfg.GetCVar(HeadshotCVars.Enabled) || ev.Profile.HeadshotUrl is not { Length: > 0 } url)
+        if (!_cfg.GetCVar(HeadshotCVars.Enabled))
+            return;
+
+        var url = ev.Profile.HeadshotUrl ?? string.Empty;
+        // Like the adult description, only a body that may carry anatomy keeps it.
+        var nsfwUrl = ev.Profile.Genitals?.NsfwHeadshotUrl is { Length: > 0 } adult
+                      && _genitals.IsEligible(ev.Profile.Age, ev.Profile.Species.Id)
+            ? adult
+            : string.Empty;
+        if (url.Length == 0 && nsfwUrl.Length == 0)
             return;
 
         var headshot = EnsureComp<HeadshotComponent>(ev.Mob);
         headshot.Url = url;
         headshot.Hash = null;
-        _adminLog.Add(LogType.Identity, LogImpact.Low, $"{ToPrettyString(ev.Mob):player} spawned with headshot {url}");
-        Load(ev.Mob, url);
+        headshot.NsfwUrl = nsfwUrl;
+        headshot.NsfwHash = null;
+
+        if (url.Length > 0)
+        {
+            _adminLog.Add(LogType.Identity, LogImpact.Low, $"{ToPrettyString(ev.Mob):player} spawned with headshot {url}");
+            Load(ev.Mob, url, nsfw: false);
+        }
+
+        if (nsfwUrl.Length > 0)
+        {
+            _adminLog.Add(LogType.Identity, LogImpact.Low, $"{ToPrettyString(ev.Mob):player} spawned with adult headshot {nsfwUrl}");
+            Load(ev.Mob, nsfwUrl, nsfw: true);
+        }
     }
 
-    private async void Load(EntityUid uid, string url)
+    private async void Load(EntityUid uid, string url, bool nsfw)
     {
         var result = await GetOrFetch(url);
-        if (result.Hash == null || !TryComp<HeadshotComponent>(uid, out var headshot) || headshot.Url != url)
+        if (result.Hash == null || !TryComp<HeadshotComponent>(uid, out var headshot))
             return;
 
-        headshot.Hash = result.Hash;
+        if (nsfw && headshot.NsfwUrl == url)
+            headshot.NsfwHash = result.Hash;
+        else if (!nsfw && headshot.Url == url)
+            headshot.Hash = result.Hash;
+    }
+
+    /// <summary>
+    /// The adult headshot's hash, which the examiner's client may then download. The caller has checked the
+    /// examiner may read the character's anatomy and can see their face. Null when there is none.
+    /// </summary>
+    public string? ShowNsfw(EntityUid target, ICommonSession examiner)
+    {
+        if (!_cfg.GetCVar(HeadshotCVars.Enabled)
+            || !TryComp<HeadshotComponent>(target, out var headshot)
+            || headshot.NsfwHash is not { } hash)
+            return null;
+
+        _shown.GetOrNew(examiner).Add(hash);
+        return hash;
     }
 
     private void OnExamined(Entity<HeadshotComponent> ent, ref ExaminedEvent args)
@@ -204,6 +246,7 @@ public sealed partial class HeadshotSystem : EntitySystem
         while (query.MoveNext(out var headshot))
         {
             used.Add(headshot.Url);
+            used.Add(headshot.NsfwUrl);
         }
 
         foreach (var (url, task) in _fetches.ToArray())
@@ -239,7 +282,7 @@ public sealed partial class HeadshotSystem : EntitySystem
             Act = () =>
             {
                 _adminLog.Add(LogType.Identity, LogImpact.Medium,
-                    $"{ToPrettyString(user):actor} removed the headshot {ent.Comp.Url} from {ToPrettyString(ent):target}");
+                    $"{ToPrettyString(user):actor} removed the headshots {ent.Comp.Url} and {ent.Comp.NsfwUrl} (adult) from {ToPrettyString(ent):target}");
                 RemComp<HeadshotComponent>(ent);
             },
         });

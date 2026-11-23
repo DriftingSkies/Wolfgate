@@ -1,5 +1,6 @@
 using Content.Server._Corvax.Respawn;
 using Content.Server._WG.Augments; // WOLFGATE(Augments)
+using Content.Server.Administration.Managers; // WOLFGATE(Respawn)
 using Content.Server.GameTicking;
 using Content.Server.Mind;
 using Content.Shared.Administration;
@@ -23,6 +24,7 @@ public sealed partial class GhostRespawnCommand : IConsoleCommand
     [Dependency] private IEntityManager _entityManager = default!;
     [Dependency] private IConfigurationManager _configurationManager = default!;
     [Dependency] private IEntitySystemManager _entity = default!;
+    [Dependency] private IAdminManager _admin = default!; // WOLFGATE(Respawn)
 
     public string Command => "ghostrespawn";
     public string Description => "Allows the player to return to the lobby if they've been dead long enough, allowing re-entering the round AS ANOTHER CHARACTER.";
@@ -56,7 +58,7 @@ public sealed partial class GhostRespawnCommand : IConsoleCommand
 
         var respawnResetTime = _entity.GetEntitySystem<RespawnSystem>().GetRespawnTime(shell.Player.UserId);
 
-        if (respawnResetTime is not null)
+        if (respawnResetTime is not null && !_admin.IsAdmin(shell.Player)) // WOLFGATE(Respawn): admins skip the respawn timer
         {
             if (_gameTiming.CurTime < respawnResetTime.Value)
             {

@@ -30,6 +30,7 @@ them free under Quirks.
 
 ### Server
 
+- [`Content.Server/_WG/Traits/PlateletFactoriesSystem.Groups.cs`](PlateletFactoriesSystem.Groups.cs)
 - [`Content.Server/_WG/Traits/TraitSystem.WG.cs`](TraitSystem.WG.cs)
 
 ### Shared
@@ -86,6 +87,7 @@ them free under Quirks.
   - keep the card-based editor in step with the profile
   - the flat list is hidden behind the card-based editor, so don't build it
   - a saved trait the character's conditions no longer allow is dropped
+- [`Content.Server/_Mono/Traits/Physical/PlateletFactoriesSystem.cs`](../../_Mono/Traits/Physical/PlateletFactoriesSystem.cs): each group's heal goes to the damage present; split over every type it truncated to 0.
 - [`Content.Server/Traits/TraitSystem.cs`](../../Traits/TraitSystem.cs)
   - a condition-gated trait is only applied when its conditions hold for this spawn
   - run the trait's data-driven effects

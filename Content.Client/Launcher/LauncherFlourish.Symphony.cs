@@ -1,11 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Content.Shared.CCVar;
+using Robust.Client.Audio;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.ResourceManagement;
+using Robust.Shared.Audio.Sources;
+using Robust.Shared.Configuration;
 using Robust.Shared.Graphics.RSI;
+using Robust.Shared.Input;
 using Robust.Shared.IoC;
 using Robust.Shared.Maths;
 using Robust.Shared.Timing;
@@ -43,17 +48,24 @@ public sealed class SymphonyPulseButton : Button
 }
 
 /// <summary>
-/// A moproach on the connect screen, mopping up the spills that turn up around the window and wandering about once
-/// the floor is clean. Drawn straight from the sprites, since the connect screen has no world to put entities in.
-/// Never takes a click.
+/// A moproach on the connect and join queue screens. It wanders about asking for something to mop; a click on the
+/// background spills a mess there, and it squeaks and rushes over to clean it. Drawn straight from the sprites, since
+/// these screens have no world to put entities in.
 /// </summary>
 public sealed class SymphonyMoproach : Control
 {
     private const float Scale = 3f;
     private const float Speed = 70f;
+    private const float RushSpeed = 160f;
     private const float MopSeconds = 2.6f;
     private const float WetSeconds = 1.8f;
-    private const int MaxSpills = 4;
+    private const float ExcitedSeconds = 2.5f;
+    private const float SaySeconds = 3.5f;
+    private const float SoundCooldown = 0.35f;
+    private const int MaxSpills = 12;
+    private const int MaxSounds = 4;
+    private const int AskLines = 5;
+    private const int ExcitedLines = 4;
     // A loading hitch would otherwise throw it across the screen in one frame.
     private const float MaxFrame = 0.1f;
     // Water, blood, slime, coffee and space lube, see-through like a real puddle.
@@ -61,12 +73,20 @@ public sealed class SymphonyMoproach : Control
     [
         Color.FromHex("#5BC0FFB0"), Color.FromHex("#B3242AB0"), Color.FromHex("#6CDC4AB0"), Color.FromHex("#6B4024B0"), Color.FromHex("#E080E0B0"),
     ];
+    private static readonly string[] Sounds =
+    [
+        "/Audio/Voice/Moth/moth_chitter.ogg", "/Audio/Voice/Moth/moth_squeak.ogg", "/Audio/Voice/Moth/moth_laugh.ogg",
+    ];
 
+    private readonly IAudioManager _audio;
+    private readonly IConfigurationManager _cfg;
     private readonly IRsiStateLike _state;
     private readonly IRsiStateLike _sparkles;
+    private readonly Font _font;
+    private readonly List<AudioStream> _sounds = new();
+    private readonly List<IAudioSource> _playing = new();
     private readonly List<(Texture Texture, bool Tinted)> _splats = new();
     private readonly List<Spill> _spills = new();
-    private readonly Control[] _avoid;
     private readonly System.Random _random = new();
     private Vector2 _pos = new(120, 160);
     private Vector2 _vel;
@@ -77,7 +97,11 @@ public sealed class SymphonyMoproach : Control
     private float _frameTime;
     private int _frame;
     private float _turnIn = 4f;
-    private float _spillIn = 1.5f;
+    private float _askIn = 2f;
+    private float _excited;
+    private float _soundIn;
+    private string? _say;
+    private float _sayLeft;
 
     private sealed class Spill
     {
@@ -89,15 +113,19 @@ public sealed class SymphonyMoproach : Control
         public float Age;
     }
 
-    /// <param name="avoid">Windows a spill should not land under, where nobody would see it mopped.</param>
-    public SymphonyMoproach(params Control[] avoid)
+    public SymphonyMoproach()
     {
-        MouseFilter = MouseFilterMode.Ignore;
-        _avoid = avoid;
+        // Takes the clicks that land on the background; the windows above it still get theirs first.
+        MouseFilter = MouseFilterMode.Stop;
+        _audio = IoCManager.Resolve<IAudioManager>();
+        _cfg = IoCManager.Resolve<IConfigurationManager>();
         var cache = IoCManager.Resolve<IResourceCache>();
         var rsi = cache.GetResource<RSIResource>("/Textures/Mobs/Animals/mothroach/moproach.rsi").RSI;
         _state = rsi.TryGetState("mothroach-moving", out var moving) ? moving : rsi["icon"];
         _sparkles = cache.GetResource<RSIResource>("/Textures/Fluids/wet_floor_sparkles.rsi").RSI["sparkles"];
+        _font = new VectorFont(cache.GetResource<FontResource>("/Fonts/NotoSans/NotoSans-Bold.ttf"), 11);
+        foreach (var sound in Sounds)
+            _sounds.Add(cache.GetResource<AudioResource>(sound).AudioStream);
         // Only the free-standing decals: puddle.rsi's splat1 to splat15 are tile pieces and look like squares alone.
         void Add(string path, bool tinted, params string[] states)
         {
@@ -117,9 +145,81 @@ public sealed class SymphonyMoproach : Control
 
     private float Size => 32 * Scale * UIScale;
 
+    protected override void KeyBindDown(GUIBoundKeyEventArgs args)
+    {
+        base.KeyBindDown(args);
+        if (args.Function != EngineKeyFunctions.UIClick)
+            return;
+
+        args.Handle();
+        SpillAt(args.RelativePixelPosition);
+    }
+
+    /// <summary>Spills a mess centred on a point, and the moproach drops everything for it.</summary>
+    private void SpillAt(Vector2 at)
+    {
+        var size = Size;
+        if (_spills.Count(s => s.Left > 0) < MaxSpills)
+        {
+            var (texture, tinted) = _splats[_random.Next(_splats.Count)];
+            // A spill is drawn a quarter of the moproach's height below its position, under its feet.
+            var spill = new Spill
+            {
+                Pos = at - new Vector2(size / 2f, size * 0.75f),
+                Texture = texture,
+                Color = tinted ? SpillColors[_random.Next(SpillColors.Length)] : Color.White.WithAlpha(0.85f),
+            };
+            _spills.Add(spill);
+            if (!_scrubbing)
+                _target = spill;
+        }
+
+        _excited = ExcitedSeconds;
+        Say(Loc.GetString($"symphony-moproach-excited-{_random.Next(ExcitedLines) + 1}"));
+        Squeak();
+    }
+
+    private void Say(string line)
+    {
+        _say = line;
+        _sayLeft = SaySeconds;
+    }
+
+    private void Squeak()
+    {
+        if (_soundIn > 0 || _playing.Count >= MaxSounds)
+            return;
+
+        _soundIn = SoundCooldown;
+        if (_audio.CreateAudioSource(_sounds[_random.Next(_sounds.Count)]) is not { } source)
+            return;
+
+        source.Global = true;
+        source.Gain = _cfg.GetCVar(CCVars.InterfaceVolume);
+        source.Pitch = 0.9f + _random.NextSingle() * 0.3f;
+        source.StartPlaying();
+        _playing.Add(source);
+    }
+
+    protected override void ExitedTree()
+    {
+        base.ExitedTree();
+        foreach (var source in _playing)
+            source.Dispose();
+        _playing.Clear();
+    }
+
     protected override void FrameUpdate(FrameEventArgs args)
     {
         base.FrameUpdate(args);
+        for (var i = _playing.Count - 1; i >= 0; i--)
+        {
+            if (_playing[i].Playing)
+                continue;
+            _playing[i].Dispose();
+            _playing.RemoveAt(i);
+        }
+
         if (!VisibleInTree)
             return;
         // Until the screen has room for it there is nowhere to go; bouncing in a zero-sized box made it twitch.
@@ -127,15 +227,9 @@ public sealed class SymphonyMoproach : Control
             return;
         var dt = MathF.Min(args.DeltaSeconds, MaxFrame);
         _time += dt;
-
-        // Somebody keeps spilling things, a few at a time.
-        _spillIn -= dt;
-        if (_spillIn <= 0)
-        {
-            if (_spills.Count(s => s.Left > 0) < MaxSpills)
-                TrySpill();
-            _spillIn = 4f + _random.NextSingle() * 6f;
-        }
+        _excited = MathF.Max(0, _excited - dt);
+        _soundIn -= dt;
+        _sayLeft -= dt;
 
         // A mopped spot stays wet and sparkly for a moment before it dries.
         foreach (var spill in _spills)
@@ -153,7 +247,7 @@ public sealed class SymphonyMoproach : Control
         else
             Wander(dt);
 
-        _frameTime += dt;
+        _frameTime += dt * (_excited > 0 ? 2f : 1f);
         var delay = _state.GetDelay(_frame);
         if (_state.IsAnimated && _frameTime >= delay)
         {
@@ -180,11 +274,12 @@ public sealed class SymphonyMoproach : Control
     /// <summary>Heads for the spill, then scrubs side to side over it until it is gone.</summary>
     private void Chase(Spill spill, float dt)
     {
+        var speed = _excited > 0 ? RushSpeed : Speed * 1.3f;
         var to = spill.Pos - _pos;
-        var step = Speed * 1.3f * dt * UIScale;
+        var step = speed * dt * UIScale;
         if (to.Length() > step)
         {
-            _vel = to / to.Length() * Speed * 1.3f;
+            _vel = to / to.Length() * speed;
             _pos += to / to.Length() * step;
             _facing = Facing(_vel);
             return;
@@ -197,15 +292,24 @@ public sealed class SymphonyMoproach : Control
         if (spill.Left > 0)
             return;
 
-        // Done: a little break before the next one.
+        // Done: a little break before the next one, and a while before it asks again.
         spill.Wet = WetSeconds;
         _target = null;
         _vel = Heading(_random.NextSingle() * MathF.Tau);
         _turnIn = 1f + _random.NextSingle() * 2f;
+        _askIn = MathF.Max(_askIn, 5f);
     }
 
     private void Wander(float dt)
     {
+        // With nothing to mop, it keeps asking for something.
+        _askIn -= dt;
+        if (_askIn <= 0)
+        {
+            Say(Loc.GetString($"symphony-moproach-ask-{_random.Next(AskLines) + 1}"));
+            _askIn = 8f + _random.NextSingle() * 8f;
+        }
+
         // Now and then it changes its mind about where it is going.
         _turnIn -= dt;
         if (_turnIn <= 0)
@@ -231,37 +335,6 @@ public sealed class SymphonyMoproach : Control
         ? (vel.X > 0 ? RsiDirection.East : RsiDirection.West)
         : (vel.Y > 0 ? RsiDirection.South : RsiDirection.North);
 
-    /// <summary>A spill somewhere no window covers; gives up quietly when it finds no room.</summary>
-    private void TrySpill()
-    {
-        var size = Size;
-        var bounds = PixelSize;
-        if (bounds.X < size * 2 || bounds.Y < size * 2)
-            return;
-        for (var attempt = 0; attempt < 12; attempt++)
-        {
-            var pos = new Vector2(_random.NextSingle() * (bounds.X - size), _random.NextSingle() * (bounds.Y - size));
-            var box = UIBox2.FromDimensions(pos, new Vector2(size, size));
-            if (_avoid.Any(c => c.VisibleInTree && Covers(c, box)) || _spills.Any(s => (s.Pos - pos).Length() < size))
-                continue;
-            var (texture, tinted) = _splats[_random.Next(_splats.Count)];
-            _spills.Add(new Spill
-            {
-                Pos = pos,
-                Texture = texture,
-                Color = tinted ? SpillColors[_random.Next(SpillColors.Length)] : Color.White.WithAlpha(0.85f),
-            });
-            return;
-        }
-    }
-
-    private bool Covers(Control control, UIBox2 box)
-    {
-        var rect = control.GlobalPixelRect;
-        var at = GlobalPixelPosition;
-        return new UIBox2(rect.Left - at.X, rect.Top - at.Y, rect.Right - at.X, rect.Bottom - at.Y).Intersects(box);
-    }
-
     protected override void Draw(DrawingHandleScreen handle)
     {
         base.Draw(handle);
@@ -286,10 +359,37 @@ public sealed class SymphonyMoproach : Control
             }
         }
 
-        // A gentle bob makes it float; while scrubbing it shuffles side to side instead.
+        // A gentle bob makes it float; scrubbing shuffles it side to side, and excitement makes it hop.
         var bob = _scrubbing
             ? new Vector2(MathF.Sin(_time * MathF.Tau * 2.5f) * 5f * UIScale, 0)
-            : new Vector2(0, MathF.Sin(_time * 3f) * 4f * UIScale);
-        handle.DrawTextureRect(_state.GetFrame(_facing, _frame), UIBox2.FromDimensions(_pos + bob, new Vector2(size)));
+            : _excited > 0
+                ? new Vector2(0, -MathF.Abs(MathF.Sin(_time * MathF.Tau * 3f)) * 12f * UIScale)
+                : new Vector2(0, MathF.Sin(_time * 3f) * 4f * UIScale);
+        var drawn = _pos + bob;
+        handle.DrawTextureRect(_state.GetFrame(_facing, _frame), UIBox2.FromDimensions(drawn, new Vector2(size)));
+
+        if (_say != null && _sayLeft > 0)
+            DrawBubble(handle, _say, drawn + new Vector2(size / 2f, 0), Math.Clamp(_sayLeft / 0.5f, 0f, 1f));
+    }
+
+    /// <summary>A speech bubble centred above a point, kept on the screen.</summary>
+    private void DrawBubble(DrawingHandleScreen handle, string text, Vector2 above, float alpha)
+    {
+        var scale = UIScale;
+        var width = handle.GetDimensions(_font, text, scale).X;
+        var height = _font.GetLineHeight(scale);
+        var pad = 6f * scale;
+        var box = UIBox2.FromDimensions(
+            new Vector2(above.X - width / 2f - pad, above.Y - height - pad * 2f),
+            new Vector2(width + pad * 2f, height + pad * 2f));
+        // Slide it back inside the edges rather than cut it off.
+        var shift = new Vector2(
+            MathF.Max(0, -box.Left) - MathF.Max(0, box.Right - PixelSize.X),
+            MathF.Max(0, -box.Top));
+        box = box.Translated(shift);
+
+        handle.DrawRect(box, Color.FromHex("#101418").WithAlpha(0.85f * alpha));
+        handle.DrawRect(box, Color.FromHex("#9FD8FF").WithAlpha(alpha), filled: false);
+        handle.DrawString(_font, box.TopLeft + new Vector2(pad, pad), text, scale, Color.White.WithAlpha(alpha));
     }
 }

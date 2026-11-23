@@ -5,7 +5,10 @@ burns out. Upstream tile fires spread to every flammable tile with enough air an
 and a planet's air never runs out. A fire there may start at most `WGGroundFireSystem.MaxFires` fires between it and
 everything it starts (the budget is split between parent and child on each spread), puts itself out after `Lifetime`
 instead of smouldering on, and when it goes `AtmosphereSystem.WgRestoreBurntAir` takes the smoke, missing oxygen and
-heat out of the tracked tiles around it. Fires on other grids are untouched, except on a grid with
+heat out of the tracked tiles around it. A fire lit within `JoinRange` tiles of a ground fire that already has a budget
+(a spark, or the rest of a blast's fires) joins that fire's line with no budget of its own, so new ignitions can't keep
+renewing it. A planet ground also has at most `MaxFiresPerGround` tile fires at once: past that, `TryDoTileFire`
+refuses new ones and burning ones stop spreading. Fires on other grids are untouched, except on a grid with
 `WGNoFireSpreadComponent` (the Lupercal), where a fire never spreads past its own tile. The hooks are in
 `ESTileFireSystem`.
 
@@ -31,5 +34,6 @@ heat out of the tracked tiles around it. Fires on other grids are untouched, exc
   - the budget runs out mid-spread
   - was a bare Spawn
   - the child takes a share of the budget
+  - planet ground holds only so many fires at once
 
 <!-- WOLFGATE-GENERATED END -->

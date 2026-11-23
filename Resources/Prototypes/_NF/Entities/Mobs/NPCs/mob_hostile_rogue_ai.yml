@@ -873,9 +873,14 @@
     availableModes:
     - FullAuto
     soundGunshot: /Audio/Weapons/Guns/Gunshots/rpgfire.ogg
-  - type: ProjectileBatteryAmmoProvider
-    proto: SpawnMobViscerator
-    fireCost: 100
+  # WOLFGATE(Weapons) START: the catcher keeps one ammo provider, its bolas.
+  # The viscerator launcher stacked on the BasicEntityAmmoProvider above and fed two rounds per shot.
+  # SharedGunSystem.AttemptShoot asserts Ammo.Count <= shots, so every debug test a catcher fired in failed; a
+  # prefracture site rolls one at random, which is why WGOperationClearTest failed now and then.
+  # - type: ProjectileBatteryAmmoProvider
+  #   proto: SpawnMobViscerator
+  #   fireCost: 100
+  # WOLFGATE END
   - type: Battery
     maxCharge: 100
     startingCharge: 100

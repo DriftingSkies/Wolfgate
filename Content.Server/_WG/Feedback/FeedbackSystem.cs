@@ -230,8 +230,9 @@ public sealed partial class FeedbackSystem : EntitySystem
             return;
         }
 
-        // A survey comes when the player is leaving, so the cooldown between reports doesn't hold it up.
-        var wait = !survey && _lastSent.TryGetValue(user, out var last)
+        // A survey comes when the player is leaving, so the cooldown between reports doesn't hold it up; nor does it hold
+        // up an admin.
+        var wait = !survey && !_admins.IsAdmin(session) && _lastSent.TryGetValue(user, out var last)
             ? last + TimeSpan.FromSeconds(_cfg.GetCVar(FeedbackCVars.Cooldown)) - _timing.RealTime
             : TimeSpan.Zero;
         if (wait > TimeSpan.Zero || !_sending.Add(user))

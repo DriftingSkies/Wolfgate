@@ -25,16 +25,18 @@ public sealed partial class HeadshotWindow : DefaultWindow
     /// <summary>Raised on every edit with the cleaned URL, empty for none or when invalid.</summary>
     public Action<string>? OnUrlChanged;
 
-    public HeadshotWindow(string url)
+    /// <param name="title">Loc id of the window title.</param>
+    /// <param name="hintText">Loc id of the hint above the link, given the image size as <c>size</c>.</param>
+    public HeadshotWindow(string url, string title = "wg-headshot-window-title", string hintText = "wg-headshot-window-hint")
     {
         IoCManager.InjectDependencies(this);
         _headshot = _entMan.System<HeadshotSystem>();
 
-        Title = Loc.GetString("wg-headshot-window-title");
+        Title = Loc.GetString(title);
         MinSize = new Vector2(460, 0);
 
         var hint = new RichTextLabel { HorizontalExpand = true };
-        hint.SetMessage(Loc.GetString("wg-headshot-window-hint", ("size", HeadshotRules.ImageSize)));
+        hint.SetMessage(Loc.GetString(hintText, ("size", HeadshotRules.ImageSize)));
 
         var hostList = _cfg.GetCVar(HeadshotCVars.AllowedHosts)
             .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);

@@ -8,6 +8,12 @@ cmd-shipmaster-desc = Opens Shipmaster, the admin ship panel, on a ship when one
 cmd-shipmaster-help = Usage: { $command } [grid entity | here | spawn]
 cmd-shipmaster-not-grid = "{ $grid }" isn't a grid.
 cmd-shipmaster-hint-grid = [grid entity | here | spawn]
+
+cmd-shiprefit-desc = Brings a refit line of any ship up to a tier, free, as Shipmaster's refit does.
+cmd-shiprefit-help = Usage: { $command } <grid entity | here> <refit id> <tier>
+cmd-shiprefit-hint-grid = <grid entity | here>
+cmd-shiprefit-hint-refit = <refit id>
+cmd-shiprefit-hint-tier = <tier>
 ent-WGActionShipmaster = Shipmaster
     .desc = Open Shipmaster on the ship you are over.
 
@@ -140,6 +146,8 @@ wg-ship-admin-ownership-add = Add as co-owner
 wg-ship-admin-ownership-add-tooltip = Registers the ship to their account as well. Nobody loses it.
 wg-ship-admin-ownership-remove = Remove
 wg-ship-admin-ownership-remove-last = The last owner can't be removed. Release the ship instead.
+wg-ship-admin-ownership-name = Name
+wg-ship-admin-ownership-rename = Rename
 wg-ship-admin-ownership-affiliation = Faction and company
 wg-ship-admin-ownership-affiliation-note = Changes who the ship flies for without changing its owner.
 wg-ship-admin-ownership-set-faction = Set hull faction
@@ -260,8 +268,6 @@ wg-ship-admin-move-ftl-lock-off = Travel with docked ships: turn off
 wg-ship-admin-move-ftl-lock-tooltip = While on, the ship is carried along when a ship it is docked to jumps.
 
 ## Systems tab
-wg-ship-admin-systems-name = Name
-wg-ship-admin-systems-rename = Rename
 wg-ship-admin-systems-radar = Radar signature
 wg-ship-admin-systems-colour-hint = #RRGGBB
 wg-ship-admin-systems-set-colour = Set colour

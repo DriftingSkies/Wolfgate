@@ -133,14 +133,17 @@ public sealed partial class ShipPaPlaylistSystem : EntitySystem
         return true;
     }
 
-    /// <summary>Ends the playing track and starts the next waiting link, if any. Wait is how long until skipping is allowed again.</summary>
-    public ShipPaSkipResult Skip(EntityUid grid, out TimeSpan wait)
+    /// <summary>
+    /// Ends the playing track and starts the next waiting link, if any. Wait is how long until skipping is allowed
+    /// again; <paramref name="ignoreCooldown"/> skips regardless, for admins.
+    /// </summary>
+    public ShipPaSkipResult Skip(EntityUid grid, out TimeSpan wait, bool ignoreCooldown = false)
     {
         wait = TimeSpan.Zero;
 
         var playlist = CompOrNull<ShipPaPlaylistComponent>(grid);
 
-        if (playlist != null && _timing.CurTime < playlist.NextSkip)
+        if (playlist != null && !ignoreCooldown && _timing.CurTime < playlist.NextSkip)
         {
             wait = playlist.NextSkip - _timing.CurTime;
             return ShipPaSkipResult.TooSoon;

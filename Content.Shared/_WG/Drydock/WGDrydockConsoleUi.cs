@@ -58,6 +58,15 @@ public sealed class WGDrydockConsoleState : BoundUserInterfaceState
     /// <summary>Refit lines offered by the console.</summary>
     public List<WGDrydockUpgradeEntry> Upgrades = new();
 
+    /// <summary>Whether the console fits ship modules.</summary>
+    public bool ShipModules;
+
+    /// <summary>The module prototype in each of the ship's slots, null where a slot is empty.</summary>
+    public List<string?> FittedModules = new();
+
+    /// <summary>Modules the console fits, in display order.</summary>
+    public List<WGDrydockModuleEntry> Modules = new();
+
     /// <summary>Whether this console books work for a berth instead of starting it.</summary>
     public bool Booking;
 
@@ -161,6 +170,9 @@ public sealed class WGDrydockQuote
 
     /// <summary>The viewer's price for each refit line's next tier, by refit id.</summary>
     public Dictionary<string, int> RefitPrices = new();
+
+    /// <summary>The viewer's price to fit each module, by module id.</summary>
+    public Dictionary<string, int> ModulePrices = new();
 }
 
 /// <summary>Sent to one viewer of a drydock console with their own prices, which its shared state can't carry.</summary>
@@ -233,6 +245,20 @@ public sealed class WGDrydockUpgradeEntry
     public Dictionary<string, int> NextParts = new();
 }
 
+/// <summary>One ship module the console fits; its name, description and icon come from its prototype.</summary>
+[Serializable, NetSerializable]
+public sealed class WGDrydockModuleEntry
+{
+    /// <summary>Module prototype id.</summary>
+    public string Id = string.Empty;
+
+    /// <summary>Price of fitting it, before any price rule.</summary>
+    public int Price;
+
+    /// <summary>Bill of fitting it when paying with materials.</summary>
+    public Dictionary<string, int> Materials = new();
+}
+
 /// <summary>
 /// A berth console's work message. A drydock terminal names the berth it sends it for; the console itself leaves it
 /// null.
@@ -282,4 +308,14 @@ public sealed class WGDrydockUpgradeMessage(string upgrade) : WGDrydockBerthMess
 {
     /// <summary>Refit prototype id.</summary>
     public string Upgrade = upgrade;
+}
+
+/// <summary>
+/// Empties one of the berthed ship's module slots, free and at once.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class WGDrydockRemoveModuleMessage(int slot) : WGDrydockBerthMessage
+{
+    /// <summary>Slot index, from 0.</summary>
+    public int Slot = slot;
 }

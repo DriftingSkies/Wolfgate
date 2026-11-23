@@ -370,6 +370,8 @@
   blacklist:
     components:
       - BorgChassis
+      # WOLFGATE(Xenonids): xenos can't weh
+      - Xeno
   # WOLFGATE(EmoteVoices): *weh triggers, ported from Meridian
   chatTriggers:
     - weh

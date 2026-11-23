@@ -55,12 +55,3 @@
     shuttles:
     - Rac-Man
     - Bow-Man
-
-- type: entity
-  id: WGVrakritatatCarrierComputer
-  parent: BaseCarrierComputer
-  name: Vrakritatat shipyard console
-  components:
-  - type: ShipyardListing
-    shuttles:
-    - WGVoxSkipjack

@@ -7,6 +7,12 @@ who examines the character within details range while their face is visible, by 
 name instead of "Unknown", sees it inline in the examine tooltip as a
 128px thumbnail that smoothly grows to full size while hovered (`HeadshotPortrait`).
 
+A second, adult headshot is set from the Add adult headshot button under the adult description on the Anatomy tab.
+It is stored with the anatomy (`GenitalProfile.NsfwHeadshotUrl`, the `headshot` key of the anatomy JSON) and kept
+only on a body eligible for anatomy. It shows nowhere but the adult panel the heart opens on the examine card, so
+it reaches exactly the examiners who may read the adult description (ExamineCard's `MayReadNsfw`): the server's
+card carries its hash (`ShowNsfw`) and the client fetches the image the same way as the first one.
+
 Clients never contact the image host: the server downloads it and relays the PNG. Downloads only connect to public
 addresses (checked at connect time, so redirects and DNS rebinding can't reach the server's own network), are
 capped in size and time, and must be https. The image hash stays server-side until a face is visible, so a client
@@ -16,7 +22,7 @@ Entry points: `HeadshotSystem` (server: spawn, examine, image and preview reques
 verb), `HeadshotFetcher` (download, address filter, re-encode), `HeadshotRules` (URL checks shared by client and
 server), the client `HeadshotSystem` (tooltip portrait and texture cache) and `HeadshotWindow` (editor).
 
-Admin: the Remove headshot verb clears a live character's headshot; spawns are logged with the URL under the
+Admin: the Remove headshot verb clears both of a live character's headshots; spawns are logged with the URL under the
 Identity log type. CVars: `wg.headshot.enabled`, `wg.headshot.allowed_hosts` (comma-separated, subdomains
 included; empty allows any public host) and `wg.headshot.max_download_kb`.
 

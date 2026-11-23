@@ -49,7 +49,10 @@ namespace Content.Server.GameTicking
                 return string.Empty;
             }
 
-            var playerCount = $"{_playerManager.PlayerCount}";
+            // WOLFGATE(JoinQueue) START: players waiting in the queue aren't in the lobby
+            // var playerCount = $"{_playerManager.PlayerCount}";
+            var playerCount = $"{_playerManager.PlayerCount - _joinQueue.WaitingCount}";
+            // WOLFGATE END
             var readyCount = _playerGameStatuses.Values.Count(x => x == PlayerGameStatus.ReadyToPlay);
 
             var stationNames = new StringBuilder();

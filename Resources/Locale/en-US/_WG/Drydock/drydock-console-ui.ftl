@@ -109,3 +109,18 @@ drydock-console-part-amount = { $name } ×{ $count }
 drydock-ui-clean-drift = Clean Drift ({$price} thlr)
 drydock-console-no-drift = No Drift has soaked into this hull.
 drydock-console-drift-cleaned = Hull scrubbed clean of Drift for {$price} thlr.
+
+## Ship modules
+drydock-ui-modules = Ship modules
+drydock-ui-modules-empty = EMPTY
+drydock-ui-modules-slot = SLOT { $slot }
+    { $module }
+drydock-ui-modules-drawer = Module bay
+drydock-ui-modules-drawer-slot = FIT SLOT { $slot }
+drydock-ui-modules-close = Close
+drydock-ui-modules-remove = Empty slot (free)
+drydock-ui-modules-fit = Fit to slot { $slot }
+drydock-ui-modules-book = Book fitting to slot { $slot }
+drydock-ui-modules-fitted = Fitted
+drydock-ui-modules-fitted-elsewhere = Fitted in slot { $slot }
+drydock-ui-modules-slot-taken = Empty slot { $slot } first

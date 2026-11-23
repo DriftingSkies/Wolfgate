@@ -5,6 +5,7 @@ using Content.IntegrationTests.Pair;
 using Content.Server._WG.Remade.Conversion;
 using Content.Server._WG.Remade.Limbs;
 using Content.Server.Damage.Systems;
+using Content.Server.NPC.Pathfinding;
 using Content.Shared._WG.Remade;
 using Content.Shared._WG.Remade.Limbs;
 using Content.Shared.CCVar;
@@ -204,6 +205,25 @@ public sealed class VariantsTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>
+    /// Builds the deck's navmesh, then stops it updating, so whatever is spawned next is something the navmesh missed.
+    /// A Remade climbs or smashes a railing the navmesh shows on its own; the stuck breaker is for what the navmesh doesn't show.
+    /// </summary>
+    private static async Task FreezeNavmesh(TestPair pair, TestMapData map)
+    {
+        var entMan = pair.Server.EntMan;
+        var built = false;
+        for (var i = 0; i < 40 && !built; i++)
+        {
+            await pair.RunTicksSync(15);
+            await pair.Server.WaitPost(() =>
+                built = entMan.TryGetComponent<GridPathfindingComponent>(map.Grid.Owner, out var navmesh) && navmesh.DirtyChunks.Count == 0 && navmesh.Chunks.Count > 0);
+        }
+
+        Assert.That(built, Is.True, "the deck's navmesh never built.");
+        await pair.Server.WaitPost(() => entMan.System<PathfindingSystem>().PauseUpdating = true);
+    }
+
     /// <summary>A line of railings across the deck at y = 5, with the crewman south of it and a Remade north of it.</summary>
     private static async Task<List<EntityUid>> RailingLine(TestPair pair, TestMapData map, int from, int to, bool asWall)
     {
@@ -241,7 +261,8 @@ public sealed class VariantsTest
             crewman = WGRemadeDirectorTest.SpawnCrewman(pair, WGRemadeDirectorTest.At(map, 0, 0));
         });
 
-        // From wall to wall, so there is no way round and the pathfinder, which can't see a railing, sends it straight at one.
+        // From wall to wall, so there is no way round, and missed by the navmesh, so steering walks it straight into one.
+        await FreezeNavmesh(pair, map);
         var rails = await RailingLine(pair, map, -22, 22, false);
         await server.WaitPost(() => remade = entMan.SpawnEntity("WGRemadeSlasher", WGRemadeDirectorTest.At(map, 0, 9)));
 
@@ -249,6 +270,7 @@ public sealed class VariantsTest
 
         await server.WaitAssertion(() =>
         {
+            entMan.System<PathfindingSystem>().PauseUpdating = false;
             Assert.That(rails.Count(rail => entMan.Deleted(rail)), Is.GreaterThan(0), $"it never broke a railing: {WGRemadeDirectorTest.Describe(pair, remade)}");
             Assert.That(LimbsTest.Total(pair, crewman), Is.GreaterThan(1f), $"it broke through but never reached the crewman: {WGRemadeDirectorTest.Describe(pair, remade)}");
             server.PlayerMan.SetAttachedEntity(pair.Player!, null);
@@ -276,7 +298,8 @@ public sealed class VariantsTest
             entMan.System<GodmodeSystem>().EnableGodmode(crewman);
         });
 
-        // Railings the pathfinder can't see, tagged as walls: what a wall the navmesh missed would be.
+        // Railings the navmesh missed, tagged as walls: what a wall the navmesh missed would be.
+        await FreezeNavmesh(pair, map);
         var rails = await RailingLine(pair, map, -22, 22, true);
         var left = rails.Take(21).ToList();
         var right = rails.Skip(24).ToList();
@@ -291,6 +314,7 @@ public sealed class VariantsTest
 
         await server.WaitAssertion(() =>
         {
+            entMan.System<PathfindingSystem>().PauseUpdating = false;
             Assert.That(right.Any(rail => entMan.Deleted(rail)), Is.True, $"the brute never went through the wall: {WGRemadeDirectorTest.Describe(pair, brute)}");
             Assert.That(left.Any(rail => entMan.Deleted(rail)), Is.False, "a slasher broke a wall.");
             server.PlayerMan.SetAttachedEntity(pair.Player!, null);

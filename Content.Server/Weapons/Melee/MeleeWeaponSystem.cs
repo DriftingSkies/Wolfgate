@@ -24,6 +24,7 @@ using Robust.Shared.Random;
 using System.Linq;
 using System.Numerics;
 using Content.Shared._WG.RMCCore.Tackle; // WOLFGATE(RMCCore)
+using Content.Shared._WG.Xenonids; // WOLFGATE(Xenonids)
 
 namespace Content.Server.Weapons.Melee;
 
@@ -222,6 +223,11 @@ public sealed partial class MeleeWeaponSystem : SharedMeleeWeaponSystem
             return 0.0f;
 
         var chance = disarmerComp.BaseDisarmFailChance;
+
+        // WOLFGATE(Xenonids) START: a xeno's own fail chance and the held item's malus don't stack
+        if (inTargetHand != null && HasComp<XenoComponent>(disarmer) && TryComp<DisarmMalusComponent>(inTargetHand, out var xenoMalus))
+            return Math.Clamp(Math.Max(chance, xenoMalus.Malus), 0f, 1f);
+        // WOLFGATE END
 
         if (inTargetHand != null && TryComp<DisarmMalusComponent>(inTargetHand, out var malus))
         {

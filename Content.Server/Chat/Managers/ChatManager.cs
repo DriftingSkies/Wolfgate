@@ -178,7 +178,7 @@ internal sealed partial class ChatManager : IChatManager
         var mindSystem = _entityManager.System<SharedMindSystem>();
         if (!mindSystem.TryGetMind(player, out var mindId, out var mind))
         {
-            SendAdminAlert(message);
+            WgSendAdminAlert(message, player); // WOLFGATE(Administration): the alert carries its entity for the follow link
             return;
         }
 
@@ -190,7 +190,7 @@ internal sealed partial class ChatManager : IChatManager
             ? session.Name
             : "Unknown";
 
-        SendAdminAlert($"{playerName}{(antag ? " (ANTAG)" : "")} {message}");
+        WgSendAdminAlert($"{playerName}{(antag ? " (ANTAG)" : "")} {message}", player); // WOLFGATE(Administration): the alert carries its entity for the follow link
     }
 
     public void SendHookOOC(string sender, string message)

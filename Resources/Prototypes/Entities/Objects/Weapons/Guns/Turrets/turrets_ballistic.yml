@@ -8,11 +8,25 @@
     - Syndicate
 
 - type: entity
-  parent: BaseWeaponBallisticTurret
+  # WOLFGATE(Weapons) START: parented to BaseWeaponTurret so its 50 rounds of 9mm are its one ammo provider.
+  # BaseWeaponBallisticTurret carries a ProjectileBatteryAmmoProvider, which stacked with the BallisticAmmoProvider
+  # below and fed two rounds per shot (SharedGunSystem.AttemptShoot asserts Ammo.Count <= shots and fails every debug
+  # test the turret fires in). The battery also kept it firing after its 50 rounds, so it only blew up once that ran
+  # flat too. The description, container and gun tuning it used to inherit are copied in below; the battery and its
+  # recharger fed nothing else and are left out.
+  # parent: BaseWeaponBallisticTurret
+  parent: BaseWeaponTurret
+  # WOLFGATE END
   id: WeaponTurretSyndicateDisposable
   name: disposable ballistic turret
+  description: A ballistic machine gun auto-turret. # WOLFGATE(Weapons): description copied from BaseWeaponBallisticTurret
   suffix: Syndicate, Disposable
   components:
+  # WOLFGATE(Weapons) START: ammo container copied from BaseWeaponBallisticTurret.
+  - type: ContainerContainer
+    containers:
+      ballistic-ammo: !type:Container
+  # WOLFGATE END
   - type: NpcFactionMember
     factions:
     - Syndicate
@@ -33,6 +47,13 @@
       - !type:TriggerBehavior
   - type: Gun
     fireRate: 2
+    # WOLFGATE(Weapons) START: gun tuning copied from BaseWeaponBallisticTurret (the angles are Mono's).
+    projectileSpeed: 55
+    maxAngle: 15
+    minAngle: 4
+    angleIncrease: -1.2
+    angleDecay: -4
+    # WOLFGATE END
     selectedMode: FullAuto
     availableModes:
     - FullAuto

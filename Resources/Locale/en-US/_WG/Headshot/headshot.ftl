@@ -9,6 +9,9 @@ wg-headshot-window-placeholder = https://example.com/headshot.png
 wg-headshot-window-preview = Preview
 wg-headshot-window-clear = Clear
 
+wg-headshot-nsfw-window-title = Adult headshot
+wg-headshot-nsfw-window-hint = Link a second image, shown beside your adult description when someone opens it from the heart on your examine card. Only adult characters whose players have adult content on see it, only while you have it on too, and only while your face is uncovered. The link must point straight at the image file (right-click the image and copy its address), not a page or a redirecting short link. Use https and a PNG, JPG, GIF or WebP; it is shrunk to {$size}x{$size} pixels.
+
 wg-headshot-status-none = No headshot.
 wg-headshot-status-unchecked = Press Preview to check the image loads.
 wg-headshot-status-loading = Loading...

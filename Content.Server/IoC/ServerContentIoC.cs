@@ -61,6 +61,7 @@ namespace Content.Server.IoC
             IoCManager.Register<IBanManager, BanManager>();
             IoCManager.Register<ContentNetworkResourceManager>();
             IoCManager.Register<_WG.JoinProgress.JoinProgressManager>(); // WOLFGATE(JoinProgress): tells joining clients their download size
+            IoCManager.Register<_WG.JoinQueue.JoinQueueManager>(); // WOLFGATE(JoinQueue): holds players a full server has no slot for
             IoCManager.Register<IAdminNotesManager, AdminNotesManager>();
             IoCManager.Register<GhostKickManager>();
             IoCManager.Register<ISharedAdminLogManager, AdminLogManager>();

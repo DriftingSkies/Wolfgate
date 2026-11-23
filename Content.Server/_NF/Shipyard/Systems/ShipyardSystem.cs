@@ -138,7 +138,7 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
             return false;
         }
 
-        var price = _pricing.AppraiseGrid(shuttleGrid.Value, null);
+        // var price = _pricing.AppraiseGrid(shuttleGrid.Value, null); // WOLFGATE(Performance): only logged, and it priced every entity aboard on the purchase tick
         var targetGrid = _station.GetLargestGrid((stationUid, stationData));
 
         if (targetGrid == null) //how are we even here with no station grid
@@ -148,7 +148,10 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
             return false;
         }
 
-        _sawmill.Info($"Shuttle {shuttlePath} was purchased at {ToPrettyString(stationUid)} for {price:f2}");
+        // WOLFGATE(Performance) START: logged without the appraisal; the console's admin log records the price paid
+        // _sawmill.Info($"Shuttle {shuttlePath} was purchased at {ToPrettyString(stationUid)} for {price:f2}");
+        _sawmill.Info($"Shuttle {shuttlePath} was purchased at {ToPrettyString(stationUid)}");
+        // WOLFGATE END
         var ev = new ShipBoughtEvent();
         RaiseLocalEvent(shuttleGrid.Value, ev);
         //can do TryFTLDock later instead if we need to keep the shipyard map paused
@@ -169,7 +172,7 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
         if (ShipyardMap == null)
             return false;
 
-        // WOLFGATE(Performance) START: a purchase that waited for its hull's parse loads the parsed data
+        // WOLFGATE(Performance) START: a purchase that waited for its hull takes the one loaded for it the tick before
         // if (!_mapLoader.TryLoadGrid(ShipyardMap.Value, shuttlePath, out var grid, offset: new Vector2(500f + _shuttleIndex, 1f)))
         if (!WGLoadHull(shuttlePath, new Vector2(500f + _shuttleIndex, 1f), out var grid))
         // WOLFGATE END

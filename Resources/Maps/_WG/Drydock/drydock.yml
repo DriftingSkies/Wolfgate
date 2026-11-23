@@ -3,8 +3,8 @@ meta:
   category: Grid
   engineVersion: 291.0.4
   forkId: wolfgate-mapping
-  forkVersion: 20261112-103730-dc9573c-239153a5
-  time: 11/14/2026 16:31:49
+  forkVersion: 20261121-095513-04adf0d-tm740-tm700-63d88de8
+  time: 11/22/2026 22:07:52
   entityCount: 2740
 maps: []
 grids:
@@ -53,7 +53,7 @@ entities:
       name: Anvilhold
     - type: Transform
       parent: invalid
-      pos: -1,-1
+      pos: -5,-16
     - type: MapGrid
       chunks:
         0,0:
@@ -9467,9 +9467,6 @@ entities:
     - type: Transform
       parent: 2
       pos: -2.5,13.5
-      anchored: False
-    - type: Physics
-      bodyType: Dynamic
     - type: AtmosPipeColor
       color: '#0055CCFF'
   - uid: 1946
@@ -18278,17 +18275,21 @@ entities:
             required: False
             points: 1
             defaultMarkings: []
+          UndergarmentSocks:
+            required: False
+            points: 1
+            defaultMarkings: []
         markings:
-          FacialHair:
-          - markingColor:
-            - '#8A3B1CFF'
-            visible: True
-            markingId: HumanFacialHairDwarf
           Hair:
           - markingColor:
             - '#8A3B1CFF'
             visible: True
             markingId: HumanHairBalding
+          FacialHair:
+          - markingColor:
+            - '#8A3B1CFF'
+            visible: True
+            markingId: HumanFacialHairDwarf
       gender: Male
       eyeColor: '#4A5D7AFF'
       biotype: Organic
@@ -18327,12 +18328,14 @@ entities:
       solutions:
         chemicals:
           temperature: 293.15
+          purity: null
           name: chemicals
           maxVol: 250
           reagents: []
           canReact: True
         bloodstream:
           temperature: 293.15
+          purity: null
           name: bloodstream
           maxVol: 300
           reagents:
@@ -18344,6 +18347,7 @@ entities:
           canReact: True
         bloodstreamTemporary:
           temperature: 293.15
+          purity: null
           name: bloodstreamTemporary
           maxVol: 4
           reagents: []

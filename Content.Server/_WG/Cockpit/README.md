@@ -95,6 +95,10 @@ and clicks. A lost link clears the selection and releases control at once; a cha
 Exiting or losing pilot eligibility releases the link and all input hooks. Reach follows normal body-fixture distance and obstruction checks,
 independent of the camera. Nearby unopened consoles discover their gun server when acquired. Temporary
 gunnery power or access loss clears the weapon link; restoring it reconnects without leaving cockpit mode.
+The server ends a pilot's gunnery session only when the helm window closes or the player leaves the body. A brief loss
+of the seat or of piloting only withholds the guns, and the pilot's last FLIGHT/GUNS request still applies when it
+comes back. The client sends that request only when it changes, so a session that was dropped or ignored at such a
+moment used to leave the pilot holding guns that would not fire until they relogged.
 Loss of helm power ends piloting and exits the cockpit.
 
 Commands travel through the existing helm BUI, with seat, reach, power, access and weapon ownership

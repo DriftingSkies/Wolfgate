@@ -52,6 +52,8 @@ public sealed partial class WGDrydockSystem
             Forward(uid, args, (console, comp) => OnBreak(console, comp, args)));
         SubscribeLocalEvent<WGDrydockTerminalComponent, WGDrydockToggleBerthLightsMessage>((uid, _, args) =>
             Forward(uid, args, (console, comp) => OnToggleBerthLights(console, comp, args)));
+        SubscribeLocalEvent<WGDrydockTerminalComponent, WGDrydockRemoveModuleMessage>((uid, _, args) =>
+            Forward(uid, args, (console, comp) => OnRemoveModule(console, comp, args)));
     }
 
     #region Berths and standing

@@ -721,7 +721,7 @@ namespace Content.Server.Administration.Systems
                 return;
             }
 
-            if (_rateLimit.CountAction(eventArgs.SenderSession, RateLimitKey) != RateLimitStatus.Allowed)
+            if (senderAdmin == null && _rateLimit.CountAction(eventArgs.SenderSession, RateLimitKey) != RateLimitStatus.Allowed) // WOLFGATE: admins aren't rate limited in ahelps
                 return;
 
             // WOLFGATE(EventStaff) START: the player's latest message sets the category

@@ -1,0 +1,30 @@
+# Ship modules: systems a drydock fits into a ship's three module slots; the pilot fires them from the helm's module
+# strip or its hotkeys.
+
+# Maneuvering jets: a sideways kick for hulls that fly with their shield generators off.
+- type: wgShipModule
+  id: WGShipModuleManeuveringJets
+  name: wg-ship-module-jets-name
+  description: wg-ship-module-jets-description
+  label: wg-ship-module-jets-label
+  icon:
+    sprite: Structures/Shuttles/thruster.rsi
+    state: base
+  price: 20000
+  materials:
+    Steel: 5000
+    Plastic: 2500
+    Plasma: 5000
+    Gold: 1000
+  maxCharges: 3
+  rechargeTime: 8
+  cooldown: 0.75
+  blockedByShields: true
+  shieldLockout: 5
+  activateSound:
+    path: /Audio/_WG/ShipModules/jets_burn.ogg
+    params:
+      volume: -3
+  effect: !type:WGManeuveringJetsEffect
+    deltaV: 20
+    burnTime: 0.4

@@ -77,7 +77,7 @@ namespace Content.Client.Communications.UI
 
             if (_menu != null)
             {
-                _menu.CanAnnounce = commsState.CanAnnounce;
+                _menu.CanAnnounce = commsState.CanAnnounce || IoCManager.Resolve<Content.Client.Administration.Managers.IClientAdminManager>().IsActive(); // WOLFGATE(AdminCooldowns): admins skip the announcement cooldown
                 _menu.CanBroadcast = commsState.CanBroadcast;
                 _menu.CanCall = commsState.CanCall;
                 _menu.CountdownStarted = commsState.CountdownStarted;

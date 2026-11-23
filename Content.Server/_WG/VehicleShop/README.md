@@ -65,6 +65,7 @@ every fitted part whole, once.
 
 - [`Content.IntegrationTests/Tests/_WG/VehicleShop/VehicleBeaconTest.cs`](../../../Content.IntegrationTests/Tests/_WG/VehicleShop/VehicleBeaconTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/VehicleShop/VehicleShopTest.cs`](../../../Content.IntegrationTests/Tests/_WG/VehicleShop/VehicleShopTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/VehicleShop/WGFlatpackTargetTest.cs`](../../../Content.IntegrationTests/Tests/_WG/VehicleShop/WGFlatpackTargetTest.cs)
 
 ### Prototypes
 

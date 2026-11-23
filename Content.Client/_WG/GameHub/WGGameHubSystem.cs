@@ -67,8 +67,6 @@ public sealed partial class WGGameHubSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeNetworkEvent<WGGameManifestEvent>(ev => _data.SetManifest(ev.Game, ev.Size, ev.Version));
-        SubscribeNetworkEvent<WGGameDownloadFailedEvent>(ev => _data.SetFailed(ev.Game));
         SubscribeNetworkEvent<WGGameNoiseHeardEvent>(OnNoiseHeard);
         SubscribeNetworkEvent<WGGameLeaderboardEvent>(ev => LeaderboardReceived?.Invoke(ev));
     }
@@ -110,13 +108,9 @@ public sealed partial class WGGameHubSystem : EntitySystem
         UpdateNearbyTrack();
     }
 
-    public void RequestManifest(string game) => RaiseNetworkEvent(new WGGameManifestRequestEvent(game));
+    public void RequestManifest(string game) => _data.RequestManifest(game);
 
-    public void StartDownload(string game)
-    {
-        _data.BeginDownload(game);
-        RaiseNetworkEvent(new WGGameDownloadRequestEvent(game));
-    }
+    public void StartDownload(string game) => _data.RequestDownload(game);
 
     public void RequestLeaderboard(string game) => RaiseNetworkEvent(new WGGameLeaderboardRequestEvent(game));
 

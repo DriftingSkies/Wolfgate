@@ -141,9 +141,11 @@ Three more look after the body, each a component the autosurgeon puts on it. The
 still worth eating. The reviver (`WGReviverSystem`) is a defibrillator of its own: when the heart stops it charges
 for ten seconds and shocks through `WolfmedRevivalSystem`, so it is refused for what a medic's paddles are refused
 for and restarts the heart on their odds, and it heals no wound. While it charges it holds every bleed the way a
-stasis weave does (`WolfmedStasisHoldComponent`, until a minute after the shock) and runs up to 60u of blood in,
-towards Wolfmed's post-shock target, so a body that bled out is over the paddles' blood line when the charge is up
-and over the arrest line after it. It doesn't charge for a destroyed heart. It has three shocks, fifteen seconds
+stasis weave does (`WolfmedStasisHoldComponent`, until three minutes after the shock) and runs its 60u of blood in,
+towards Wolfmed's brain-safe line, so a body that bled out at the arrest line comes back at half its blood: awake,
+Downed, and with the hold's three minutes to dress its wounds before they bleed again. A hemophage gets that blood
+only with a wound that bleeds (dressed or held ones count), so the reviver never feeds a tumor that starved its host.
+It doesn't charge for a destroyed heart. It has three shocks, fifteen seconds
 apart, then recharges for ten minutes; an EMP knocks the charge out and locks it for two. The iatric monitor
 (`WGIatricMonitorSystem`) gives an action that opens the health analyzer's window on its own body; the action entity
 is the analyzer, and being held by the body is what keeps the window in range.

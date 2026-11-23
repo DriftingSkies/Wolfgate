@@ -33,6 +33,11 @@ internal sealed partial class ChatManager
 
     public RateLimitStatus HandleRateLimit(ICommonSession player)
     {
+        // WOLFGATE START: admins aren't chat rate limited
+        if (_adminManager.IsAdmin(player))
+            return RateLimitStatus.Allowed;
+        // WOLFGATE END
+
         return _rateLimitManager.CountAction(player, RateLimitKey);
     }
 }

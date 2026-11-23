@@ -93,6 +93,12 @@ public sealed class ExamineCardTest
                 Shared._WG.Genitals.Profile.GenitalProfile.Empty.WithNsfwText(new string('x', 5000)), server.ProtoMan);
             Assert.That(validated.NsfwText, Has.Length.EqualTo(Shared._WG.Genitals.Profile.GenitalProfile.MaxNsfwTextLength),
                 "validation caps the adult description");
+            var adultHeadshot = Shared._WG.Genitals.Profile.GenitalProfile.Empty.WithNsfwHeadshotUrl(" https://example.com/a.png ");
+            Assert.That(Shared._WG.Genitals.Profile.GenitalProfileValidator.ValidateOrgans(adultHeadshot, server.ProtoMan).NsfwHeadshotUrl,
+                Is.EqualTo("https://example.com/a.png"), "validation trims the adult headshot");
+            Assert.That(Shared._WG.Genitals.Profile.GenitalProfileValidator.ValidateOrgans(
+                    adultHeadshot.WithNsfwHeadshotUrl("http://127.0.0.1/a.png"), server.ProtoMan).NsfwHeadshotUrl,
+                Is.Empty, "validation drops an adult headshot that isn't https");
             Assert.That(card.Self, Is.True);
 
             var wrench = entMan.SpawnEntity("Wrench", map.GridCoords);
@@ -317,6 +323,48 @@ public sealed class ExamineCardTest
             Assert.That(Descendants(side).OfType<Robust.Client.UserInterface.Controls.ScrollContainer>(), Is.Not.Empty,
                 "the side panel carries the full wound rows");
             toggle.Toggle();
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>An adult headshot alone brings the heart, and its portrait opens in the panel beside the card.</summary>
+    [Test]
+    public async Task NsfwHeadshotPanelTest()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
+        var client = pair.Client;
+
+        await client.WaitAssertion(() =>
+        {
+            var data = new ExamineCardEvent { Name = "Someone", Stamp = ExamineCardStamp.NoId, NsfwHeadshot = "not-a-real-hash" };
+            var box = new Robust.Client.UserInterface.Controls.BoxContainer();
+            box.AddChild(new Control());
+            var cards = client.System<Client._WG.ExamineCard.ExamineCardSystem>();
+            cards.Build(box, EntityUid.Invalid, data, new Robust.Shared.Utility.FormattedMessage());
+
+            var all = Descendants(box).ToList();
+            var hearts = all.OfType<ExamineCardHeartToggle>().ToList();
+            var portraits = all.OfType<Client._WG.Headshot.HeadshotPortrait>().ToList();
+            Assert.That(hearts, Has.Count.EqualTo(1), "the adult headshot alone shows the heart");
+            Assert.That(portraits, Has.Count.EqualTo(1), "the adult headshot gets a portrait");
+
+            var portrait = portraits[0];
+            Control panel = portrait;
+            while (panel.Parent is { } parent && parent is not ExamineSideColumn)
+                panel = parent;
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(panel.Parent, Is.InstanceOf<ExamineSideColumn>(), "it sits beside the card, not in its photo frame");
+                Assert.That(portrait.Texture, Is.Null, "the image hasn't arrived");
+            });
+
+            // The open state is kept between examines, so compare with how it started.
+            var wasOpen = panel.Visible;
+            hearts[0].Toggle();
+            Assert.That(panel.Visible, Is.EqualTo(!wasOpen), "the heart opens and closes the adult panel");
+            hearts[0].Toggle();
         });
 
         await pair.CleanReturnAsync();

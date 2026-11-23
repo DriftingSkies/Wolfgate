@@ -37,8 +37,13 @@ public sealed partial class FaxWindow : FancyWindow
 
     public void UpdateState(FaxUiState state)
     {
-        CopyButton.Disabled = !state.CanCopy;
-        SendButton.Disabled = !state.CanSend;
+        // WOLFGATE(AdminCooldowns) START: admins skip the send timeout
+        var admin = IoCManager.Resolve<Content.Client.Administration.Managers.IClientAdminManager>().IsActive();
+        CopyButton.Disabled = !state.CanCopy && !(admin && state.IsPaperInserted);
+        SendButton.Disabled = !state.CanSend && !(admin && state.IsPaperInserted && state.DestinationAddress != null);
+        // CopyButton.Disabled = !state.CanCopy;
+        // SendButton.Disabled = !state.CanSend;
+        // WOLFGATE END
         FromLabel.Text = state.DeviceName;
 
         if (state.IsPaperInserted)

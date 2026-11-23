@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Content.Shared._WG.Headshot;
 using Content.Shared._WG.Genitals.Migration;
 using Content.Shared._WG.Genitals.Prototypes;
 using Content.Shared._WG.Prototypes;
@@ -134,7 +135,10 @@ public static class GenitalProfileValidator
             ? profile.NsfwText[..GenitalProfile.MaxNsfwTextLength]
             : profile.NsfwText;
 
-        return profile.Normalised(version, reveal, penis, testicles, vagina, womb, breasts, nsfwText, legacy);
+        // Crafted network data can deliver null; a bad URL is dropped.
+        var nsfwHeadshot = HeadshotRules.Clean(profile.NsfwHeadshotUrl);
+
+        return profile.Normalised(version, reveal, penis, testicles, vagina, womb, breasts, nsfwText, nsfwHeadshot, legacy);
     }
 
     /// <summary>Longest legacy "id@colours" string kept. Real ones are far shorter.</summary>

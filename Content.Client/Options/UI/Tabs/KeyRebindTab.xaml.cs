@@ -356,6 +356,10 @@ namespace Content.Client.Options.UI.Tabs
             AddButton(ContentKeyFunctions.ShuttleAscend); // Mono
             AddButton(ContentKeyFunctions.ShuttleDescend); // Mono
             AddButton(WGLandingGuideKeys.WGToggleLandingGuide); // WOLFGATE(LandingGuide): landing guide toggle
+            // WOLFGATE(ShipModules) START: ship module hotkeys
+            foreach (var key in Content.Shared._WG.ShipModules.WGShipModuleKeys.Slots)
+                AddButton(key);
+            // WOLFGATE END
 
             AddHeader("ui-options-header-map-editor");
             AddButton(EngineKeyFunctions.EditorPlaceObject);

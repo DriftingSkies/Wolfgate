@@ -290,6 +290,8 @@ public partial class RCDSystem : EntitySystem
         if (!IsRCDOperationStillValid(uid, component, mapGridData.Value, args.Target, args.User))
             return;
 
+        if (!WgApcFaceFree(uid, component, mapGridData.Value, args.Direction, args.User)) return; // WOLFGATE(Construction): checks the facing the build was started with
+
         // Finalize the operation
         FinalizeRCDOperation(uid, component, mapGridData.Value, args.Direction, args.Target, args.User);
 
@@ -421,6 +423,8 @@ public partial class RCDSystem : EntitySystem
         }
 
         // Entity specific rules
+
+        if (!WgApcFaceFree(uid, component, mapGridData, component.ConstructionDirection, user, popMsgs)) return false; // WOLFGATE(Construction): one APC per wall face
 
         // Check rule: The tile is unoccupied
         var isWindow = component.CachedPrototype.ConstructionRules.Contains(RcdConstructionRule.IsWindow);

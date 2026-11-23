@@ -4,6 +4,7 @@ using Content.Server._Mono.Projectiles.TargetSeeking;
 using Content.Shared._Goobstation.Wizard.Projectiles;
 using Content.Shared._Mono.SpaceArtillery;
 using Content.Shared._WG.NetTraffic;
+using Content.Shared._WG.Tether.Harpoon;
 using Robust.Server.GameObjects;
 using Robust.Shared.Configuration;
 using Robust.Shared.Map;
@@ -53,13 +54,17 @@ public sealed class WGNetShellSystem : EntitySystem
         SubscribeLocalEvent<WGNetShellComponent, ComponentShutdown>(OnShutdown);
     }
 
-    /// <summary>Hides an unguided shell from every client the moment it exists, before it is ever sent.</summary>
+    /// <summary>
+    /// Hides an unguided shell from every client the moment it exists, before it is ever sent. A harpoon is skipped:
+    /// it is an item before it is fired and stays on its cable after.
+    /// </summary>
     private void OnMapInit(Entity<ShipWeaponProjectileComponent> ent, ref MapInitEvent args)
     {
         if (!_enabled
             || HasComp<TargetGuidedComponent>(ent)
             || HasComp<TargetSeekingComponent>(ent)
-            || HasComp<HomingProjectileComponent>(ent))
+            || HasComp<HomingProjectileComponent>(ent)
+            || HasComp<ShipHarpoonComponent>(ent))
             return;
 
         var shell = AddComp<WGNetShellComponent>(ent);

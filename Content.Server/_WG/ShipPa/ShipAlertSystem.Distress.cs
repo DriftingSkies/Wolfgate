@@ -32,7 +32,7 @@ public sealed partial class ShipAlertSystem
             return;
 
         var alert = EnsureComp<ShipAlertComponent>(grid);
-        if (args.Active && !alert.Distress && _timing.CurTime < alert.NextDistress)
+        if (args.Active && !alert.Distress && _timing.CurTime < alert.NextDistress && !IsAdmin(args.Actor))
         {
             var seconds = (int) Math.Ceiling((alert.NextDistress - _timing.CurTime).TotalSeconds);
             _popup.PopupEntity(Loc.GetString("ship-distress-cooldown", ("seconds", seconds)), ent, args.Actor);

@@ -194,11 +194,19 @@ public sealed partial class WGDrydockSystem
         var changed = false;
         if (slot.Item is { } finished && curTime >= slot.Ends)
         {
-            if (finished.Kind == WGDrydockWorkKind.Break)
-                ApplyBreak(console, job, slot, finished);
+            if (ModuleRefused(finished))
+            {
+                ReturnItems(console, comp, job, new List<WGDrydockWorkItem> { finished });
+            }
             else
-                ApplyItem(job.Ship, finished);
-            job.Done++;
+            {
+                if (finished.Kind == WGDrydockWorkKind.Break)
+                    ApplyBreak(console, job, slot, finished);
+                else
+                    ApplyItem(job.Ship, finished);
+                job.Done++;
+            }
+
             slot.Item = null;
             changed = true;
         }
@@ -384,6 +392,12 @@ public sealed partial class WGDrydockSystem
             job.Pending.RemoveAt(i);
         }
 
+        ReturnItems(console, comp, job, returned);
+    }
+
+    /// <summary>Counts items as skipped and gives their price or materials back to the payer.</summary>
+    private void ReturnItems(EntityUid console, WGDrydockConsoleComponent comp, WGDrydockJobComponent job, List<WGDrydockWorkItem> returned)
+    {
         job.Done += returned.Count;
         job.Skipped += returned.Count;
         if (job.PaidInMaterials)

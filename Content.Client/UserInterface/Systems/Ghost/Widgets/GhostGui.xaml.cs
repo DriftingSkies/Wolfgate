@@ -7,6 +7,7 @@ using Robust.Shared.Timing;
 using Robust.Shared.Configuration;
 using Content.Client._NF.CryoSleep; // Frontier
 using Content.Client._WG.Ghost; // WOLFGATE(Ghost)
+using Content.Client.Administration.Managers; // WOLFGATE(Respawn)
 
 namespace Content.Client.UserInterface.Systems.Ghost.Widgets;
 
@@ -15,6 +16,7 @@ public sealed partial class GhostGui : UIWidget
 {
     [Dependency] private IGameTiming _gameTiming = default!;
     [Dependency] private IConfigurationManager _configurationManager = default!;
+    [Dependency] private IClientAdminManager _admin = default!; // WOLFGATE(Respawn)
 
     private TimeSpan? _respawnTime;
 
@@ -41,7 +43,16 @@ public sealed partial class GhostGui : UIWidget
         GhostWarpButton.OnPressed += _ => RequestWarpsPressed?.Invoke();
         ReturnToBodyButton.OnPressed += _ => ReturnToBodyPressed?.Invoke();
         GhostRolesButton.OnPressed += _ => GhostRolesPressed?.Invoke();
-        GhostRespawnButton.OnPressed += _ => RulesWindow.OpenCentered();
+        // WOLFGATE(Respawn) START: admins respawn at once, without the respawn rules window
+        GhostRespawnButton.OnPressed += _ =>
+        {
+            if (_admin.IsActive())
+                GhostRespawnPressed?.Invoke();
+            else
+                RulesWindow.OpenCentered();
+        };
+        // GhostRespawnButton.OnPressed += _ => RulesWindow.OpenCentered();
+        // WOLFGATE END
         CryosleepReturnButton.OnPressed += _ => CryosleepWakeupWindow.OpenCentered(); // Frontier
     }
 
@@ -80,7 +91,7 @@ public sealed partial class GhostGui : UIWidget
 
     protected override void FrameUpdate(FrameEventArgs args)
     {
-        if (_respawnTime is null || _gameTiming.CurTime > _respawnTime)
+        if (_respawnTime is null || _gameTiming.CurTime > _respawnTime || _admin.IsActive()) // WOLFGATE(Respawn): admins skip the respawn timer
         {
             GhostRespawnButton.Text = Loc.GetString("ghost-gui-respawn-button-allowed");
             GhostRespawnButton.Disabled = false;

@@ -28,6 +28,7 @@ public sealed class UnstuckTest
 {
     private const string MobProto = "MobHuman";
     private const string WallProto = "WallSolid";
+    private const string ArmorProto = "WallArmorAddonSolid";
 
     /// <summary>The interior test chassis from <c>VehicleInteriorTest</c>; its doorways are a metre to either side.</summary>
     private const string VehicleProto = "WGInteriorTestVehicle";
@@ -307,6 +308,45 @@ public sealed class UnstuckTest
                 .TileIndicesFor(grid, em.GetComponent<MapGridComponent>(grid), em.GetComponent<TransformComponent>(mob).Coordinates);
             Assert.That(tile, Is.Not.EqualTo(WallTile + new Vector2i(1, 1)), "The body slipped past the corner.");
             Assert.That(tile, Is.EqualTo(WallTile - new Vector2i(0, 1)), "The body didn't land on the nearest floor it could reach.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// A body out in space, wedged into the armor bolted to a hull, comes out in open space beside it: no floor is in
+    /// reach without passing through the hull, and the tile it is over is still overhung by the armor.
+    /// </summary>
+    [Test]
+    public async Task OutsideAHullComesOutInSpace()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var em = server.EntMan;
+        var map = await pair.CreateTestMap();
+        var grid = map.Grid.Owner;
+        const int hullRow = 4;
+
+        await server.WaitAssertion(() =>
+        {
+            var xforms = server.System<SharedTransformSystem>();
+            DrydockTest.SetFloor(pair, grid, 5);
+            for (var x = 0; x < 5; x++)
+                DrydockTest.SpawnAnchored(pair, grid, WallProto, new Vector2i(x, hullRow));
+
+            // The armor sits on the hull's wall and reaches 0.3 tiles out over the space beyond it.
+            DrydockTest.SpawnAnchored(pair, grid, ArmorProto, new Vector2i(2, hullRow));
+
+            var spot = xforms.ToMapCoordinates(new EntityCoordinates(grid, 2.5f, hullRow + 1.45f));
+            var mob = em.SpawnEntity(MobProto, spot);
+            Assert.That(em.GetComponent<TransformComponent>(mob).GridUid, Is.Null, "The body isn't out in space.");
+
+            var unstuck = server.System<WGUnstuckSystem>();
+            Assert.That(unstuck.TryUnstuck(mob, out var message), Is.True, message);
+
+            var local = Vector2.Transform(xforms.GetWorldPosition(mob), xforms.GetInvWorldMatrix(grid));
+            Assert.That(local.Y, Is.GreaterThan(hullRow + 1f), "The body was moved through the hull.");
+            Assert.That(unstuck.TryUnstuck(mob, out message), Is.False, $"The body is still stuck at {local}: {message}");
         });
 
         await pair.CleanReturnAsync();
