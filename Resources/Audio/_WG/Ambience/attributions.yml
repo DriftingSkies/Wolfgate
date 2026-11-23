@@ -102,3 +102,13 @@
   license: "Custom"
   copyright: "Disentangle by Amos Roddy. Used as LINEAR-21 beacon cluster ambient music."
   source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["the_sentients.ogg"]
+  license: "Custom"
+  copyright: "The Sentients by Disasterpiece. Played once on entering the Lattice's Feedback band."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["the_abyss.ogg"]
+  license: "Custom"
+  copyright: "The Abyss by Disasterpiece. Played once on entering the Lattice's Coda."
+  source: "https://github.com/VanguardControl/Wolfgate"

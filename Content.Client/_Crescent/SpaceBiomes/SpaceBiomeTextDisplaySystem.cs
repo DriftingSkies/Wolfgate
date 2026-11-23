@@ -26,7 +26,7 @@ public sealed partial class SpaceTextDisplaySystem : EntitySystem
 
     private void OnSwap(ref SpaceBiomeSwapMessage ev)
     {
-        _audioSys.DisableAmbientMusic();
+        // _audioSys.DisableAmbientMusic(); // WOLFGATE(Ambience): the music system crossfades on a biome change; stopping here cut tracks
         SpaceBiomePrototype biome = _protMan.Index<SpaceBiomePrototype>(ev.Id);
         _overlay.Reset();
         _overlay.ResetDescription();

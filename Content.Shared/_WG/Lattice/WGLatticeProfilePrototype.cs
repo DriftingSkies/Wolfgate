@@ -1,4 +1,5 @@
 using Content.Shared._WG.Announcements;
+using Content.Shared.Audio;
 using System.Numerics;
 using Robust.Shared.Prototypes;
 
@@ -331,6 +332,10 @@ public sealed partial class WGLatticeBand
     /// <summary>Whether the band's name and message come out garbled, worse with depth.</summary>
     [DataField]
     public bool Garbled;
+
+    /// <summary>Ambient music played once on entering the band, holding other ambient music off while there. Re-arms once back inside the band's edge.</summary>
+    [DataField]
+    public ProtoId<AmbientMusicPrototype>? Music;
 
     [DataField]
     public WGAnnounceChipLevel Chip = WGAnnounceChipLevel.Advisory;
