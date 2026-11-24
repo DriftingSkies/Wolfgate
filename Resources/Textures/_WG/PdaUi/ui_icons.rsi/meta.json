@@ -1,0 +1,54 @@
+{
+    "version":  1,
+    "license":  "CC-BY-4.0",
+    "copyright":  "Font Awesome Free 6.5.2 solid glyphs by Fonticons, Inc. (font: SIL OFL 1.1), rasterised for Wolfgate",
+    "size":  {
+                 "x":  32,
+                 "y":  32
+             },
+    "states":  [
+                   {
+                       "name":  "clock"
+                   },
+                   {
+                       "name":  "close"
+                   },
+                   {
+                       "name":  "disk"
+                   },
+                   {
+                       "name":  "eject"
+                   },
+                   {
+                       "name":  "home"
+                   },
+                   {
+                       "name":  "id"
+                   },
+                   {
+                       "name":  "info"
+                   },
+                   {
+                       "name":  "light"
+                   },
+                   {
+                       "name":  "pai"
+                   },
+                   {
+                       "name":  "paw"
+                   },
+                   {
+                       "name":  "pen"
+                   },
+                   {
+                       "name":  "power"
+                   },
+                   {
+                       "name":  "program"
+                   },
+                   {
+                       "name":  "settings"
+                   }
+               ]
+}
+

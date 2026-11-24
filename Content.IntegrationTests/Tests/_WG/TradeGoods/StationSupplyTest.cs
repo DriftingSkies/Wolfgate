@@ -63,21 +63,28 @@ public sealed class StationSupplyTest
         {
             var grid = map.Grid.Owner;
             var (_, entry) = StockedVendor(entMan, grid);
-            var full = market.Profile(grid).VendorStock;
-            Assert.That(entry.Amount, Is.EqualTo((uint) full), "A trade vendor's stock should be finite.");
+            var profile = market.Profile(grid);
+            var full = profile.VendorStock;
+            var kept = (int) MathF.Ceiling(profile.StockTarget * profile.ScarceLevel);
+            Assert.That(entry.Amount, Is.EqualTo((uint) (full - kept)), "A trade vendor should sell what its station holds over the scarce level.");
 
             market.SetVendorStock(grid, Luxuries, 0);
             Assert.That(entry.Amount, Is.Zero);
             Assert.That(market.StationBuyQuotes(grid).ContainsKey(Luxuries), Is.False, "A sold-out good should drop off the app.");
 
+            market.Row(grid, Luxuries).Inbound = kept;
+            Assert.That(market.Deliver(grid, Luxuries, full), Is.EqualTo((float) kept), "A delivery should stop at what's owed.");
+            Assert.That(entry.Amount, Is.Zero, "A station should keep what it holds up to the scarce level.");
+            Assert.That(market.StationBuyQuotes(grid).ContainsKey(Luxuries), Is.False);
+
             market.Row(grid, Luxuries).Inbound = 1f;
-            Assert.That(market.Deliver(grid, Luxuries, 5f), Is.EqualTo(1f), "A delivery should stop at what's owed.");
+            market.Deliver(grid, Luxuries, 5f);
             Assert.That(entry.Amount, Is.EqualTo(1u));
             Assert.That(market.StationBuyQuotes(grid).ContainsKey(Luxuries), Is.True);
 
             market.Row(grid, Luxuries).Inbound = full * 2f;
             market.Deliver(grid, Luxuries, full * 2f);
-            Assert.That(entry.Amount, Is.EqualTo((uint) full), "A delivery should stop at what the station can hold.");
+            Assert.That(entry.Amount, Is.EqualTo((uint) (full - kept)), "A delivery should stop at what the station can hold.");
 
             var fence = entMan.SpawnEntity(Fence, map.GridCoords);
             market.SetVendorStock(grid, Luxuries, full);
@@ -157,14 +164,15 @@ public sealed class StationSupplyTest
             var (_, first) = StockedVendor(entMan, grid);
             var (_, second) = StockedVendor(entMan, grid);
             var full = (uint) market.Profile(grid).VendorStock;
-            Assert.That(first.Amount, Is.EqualTo(full));
-            Assert.That(second.Amount, Is.EqualTo(full));
+            var sold = (uint) market.ForSale(grid, Luxuries);
+            Assert.That(first.Amount, Is.EqualTo(sold));
+            Assert.That(second.Amount, Is.EqualTo(sold));
 
             var crate = entMan.SpawnEntity(Luxuries, map.GridCoords);
             entMan.AddComponent<VendingMachinePurchaseComponent>(crate);
             Assert.That(market.VendorStock(grid, Luxuries), Is.EqualTo((int) full - 1), "A purchase should come off the station's stock.");
-            Assert.That(first.Amount, Is.EqualTo(full - 1), "Every vendor should show the shared stock.");
-            Assert.That(second.Amount, Is.EqualTo(full - 1), "Every vendor should show the shared stock.");
+            Assert.That(first.Amount, Is.EqualTo(sold - 1), "Every vendor should show the shared stock.");
+            Assert.That(second.Amount, Is.EqualTo(sold - 1), "Every vendor should show the shared stock.");
         });
 
         await pair.CleanReturnAsync();
@@ -186,17 +194,24 @@ public sealed class StationSupplyTest
             var chute = TradeTestWorld.MarketChute(entMan, map);
             var grid = map.Grid.Owner;
             var (far, payer) = TradeTestWorld.Station(entMan, map, new Vector2(0f, 60f), "WG test payer", "CargoChuteBaikal");
-            entMan.SpawnEntity(Vendor, map.GridCoords);
+            var vendor = entMan.SpawnEntity(Vendor, map.GridCoords);
+            var shelf = entMan.GetComponent<VendingMachineComponent>(vendor).Inventory[Luxuries];
             var profile = market.Profile(grid);
             var start = (int) MathF.Ceiling(profile.StockTarget * profile.ScarceLevel);
 
+            market.SetVendorStock(grid, Luxuries, start + 1);
+            Assert.That(shelf.Amount, Is.EqualTo(1u), "A vendor should sell what its station holds over the scarce level.");
+
             market.SetVendorStock(grid, Luxuries, start);
             Assert.That(market.Quote(chute, Luxuries), Is.Null, "A chute shouldn't take a good its shelves aren't scarce of.");
+            Assert.That(shelf.Amount, Is.Zero, "A vendor shouldn't sell its station into a shortage.");
 
             market.SetVendorStock(grid, Luxuries, start - 1);
             var quote = market.Quote(chute, Luxuries)!.Value;
             Assert.That(quote.Reason, Is.EqualTo((LocId) "wg-trade-reason-restock"));
             Assert.That(quote.Base, Is.EqualTo(market.Quote(payer, Luxuries)!.Value.Base), "A dry station should pay the best listed rate.");
+
+            Assert.That(shelf.Amount, Is.Zero, "A dry station should keep what it has, or a crate sold to it could be bought back for less.");
 
             var crate = TradeTestWorld.Hauled(entMan, far, map.GridCoords, Luxuries);
             Assert.That(market.TakesToRestock(chute, crate), Is.True);
@@ -206,7 +221,15 @@ public sealed class StationSupplyTest
 
             market.Sell(chute, crate, entMan.SpawnEntity(null, map.GridCoords), quote.Amount);
             Assert.That(market.VendorStock(grid, Luxuries), Is.EqualTo(start), "A delivery should go on the shelf.");
+            Assert.That(shelf.Amount, Is.Zero, "The crate that ends a shortage shouldn't be for sale.");
             Assert.That(market.Quote(chute, Luxuries), Is.Not.Null, "An open order keeps taking its goods once the shortage ends.");
+            Assert.That(market.Unlisted(grid, entMan.GetComponent<DispenserComponent>(chute)), Does.Contain(Luxuries),
+                "A good only an order takes should still be on the chute's price list.");
+
+            // Past the shortage the vendor sells again, so the order pays no more than the vendor charges.
+            market.SetVendorStock(grid, Luxuries, start + 1);
+            Assert.That(market.Quote(chute, Luxuries)!.Value.Amount, Is.LessThan(market.BuyQuote(vendor, Luxuries)!.Value.Amount),
+                "A station selling a good shouldn't pay more for it than its vendor charges.");
 
             rushes.Clear();
             Assert.That(market.Quote(chute, Luxuries), Is.Null, "A filled shelf should stop taking crates.");

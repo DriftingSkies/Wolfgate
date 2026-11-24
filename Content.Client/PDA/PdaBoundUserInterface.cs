@@ -1,4 +1,6 @@
 using Content.Client.CartridgeLoader;
+using Content.Client._WG.PdaUi; // WOLFGATE(PdaUi)
+using Content.Shared._WG.PdaUi; // WOLFGATE(PdaUi)
 using Content.Shared.CartridgeLoader;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.PDA;
@@ -13,7 +15,7 @@ namespace Content.Client.PDA
         private readonly PdaSystem _pdaSystem;
 
         [ViewVariables]
-        private PdaMenu? _menu;
+        private PdaOsMenu? _menu; // WOLFGATE(PdaUi): TGUI-style shell
 
         public PdaBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
         {
@@ -30,7 +32,7 @@ namespace Content.Client.PDA
 
         private void CreateMenu()
         {
-            _menu = this.CreateWindowCenteredLeft<PdaMenu>();
+            _menu = this.CreateWindowCenteredLeft<PdaOsMenu>(); // WOLFGATE(PdaUi): TGUI-style shell
 
             _menu.FlashLightToggleButton.OnToggled += _ =>
             {
@@ -50,6 +52,12 @@ namespace Content.Client.PDA
             _menu.EjectPaiButton.OnPressed += _ =>
             {
                 SendPredictedMessage(new ItemSlotButtonPressedEvent(PdaComponent.PdaPaiSlotId));
+            };
+
+            // WOLFGATE(PdaStorage): eject the inserted data disk
+            _menu.EjectDiskButton.OnPressed += _ =>
+            {
+                SendPredictedMessage(new ItemSlotButtonPressedEvent(PdaComponent.PdaDiskSlotId));
             };
 
             _menu.ActivateMusicButton.OnPressed += _ =>
@@ -72,7 +80,27 @@ namespace Content.Client.PDA
                 SendMessage(new PdaLockUplinkMessage());
             };
 
-            _menu.OnProgramItemPressed += ActivateCartridge;
+            // WOLFGATE(PdaUi): program notification toggle
+            _menu.NotificationsButton.OnPressed += _ =>
+            {
+                SendMessage(new PdaToggleNotificationsMessage());
+            };
+
+            // WOLFGATE(PdaUi) START: reopen the running program instead of asking the server again
+            _menu.OnProgramItemPressed += uid =>
+            {
+                if (uid == ActiveProgram)
+                {
+                    var title = EntMan.GetComponentOrNull<CartridgeComponent>(uid)?.ProgramName;
+                    _menu.ToProgramView(title is null
+                        ? Loc.GetString("comp-pda-io-program-fallback-title")
+                        : Loc.GetString(title));
+                    return;
+                }
+
+                ActivateCartridge(uid);
+            };
+            // WOLFGATE END
             _menu.OnInstallButtonPressed += InstallCartridge;
             _menu.OnUninstallButtonPressed += UninstallCartridge;
             _menu.ProgramCloseButton.OnPressed += _ => DeactivateActiveCartridge();
@@ -105,7 +133,17 @@ namespace Content.Client.PDA
         protected override void AttachCartridgeUI(Control cartridgeUIFragment, string? title)
         {
             _menu?.ProgramView.AddChild(cartridgeUIFragment);
-            _menu?.ToProgramView(title ?? Loc.GetString("comp-pda-io-program-fallback-title"));
+            // WOLFGATE(PdaUi) START: restyle the fragment's stock controls and title it with its own icon
+            PdaAppTheme.Apply(cartridgeUIFragment);
+
+            var programName = ActiveProgram is { } active
+                ? RetrieveCartridgeComponent(active)?.ProgramName
+                : null;
+
+            _menu?.ToProgramView(
+                title ?? Loc.GetString("comp-pda-io-program-fallback-title"),
+                programName is null ? null : PdaProgramIcons.Get(programName));
+            // WOLFGATE END
         }
 
         protected override void DetachCartridgeUI(Control cartridgeUIFragment)

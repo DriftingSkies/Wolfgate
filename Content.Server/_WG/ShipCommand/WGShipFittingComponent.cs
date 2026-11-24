@@ -1,8 +1,12 @@
+using Content.Shared.VendingMachines;
+using Robust.Shared.Prototypes;
+
 namespace Content.Server._WG.ShipCommand;
 
 /// <summary>
-/// How a commanded ship comes fitted out when it spawns: every machine with parts gets the best tier, and every lathe
-/// that isn't bottomless is linked to the ship's ore silo, whose range is widened to cover the ship. Server only.
+/// How a commanded ship comes fitted out when it spawns: every machine with parts gets the best tier, every lathe
+/// that isn't bottomless is linked to the ship's ore silo, whose range is widened to cover the ship, and its vending
+/// machines can carry extra lines and never run out. Server only.
 /// </summary>
 [RegisterComponent]
 public sealed partial class WGShipFittingComponent : Component
@@ -38,6 +42,17 @@ public sealed partial class WGShipFittingComponent : Component
     /// <summary>Speed multiplier for drydock cranes that take no part upgrades; null leaves them as built.</summary>
     [DataField]
     public float? CraneSpeed;
+
+    /// <summary>Every vending machine aboard never runs out: each line of its regular stock is unlimited.</summary>
+    [DataField]
+    public bool UnlimitedVending;
+
+    /// <summary>
+    /// Extra lines for the vending machines aboard, keyed by the stock pack a machine carries: the regular stock of the
+    /// pack named is added to the machine's own, so the ship's machines can sell more than the same machine elsewhere.
+    /// </summary>
+    [DataField]
+    public Dictionary<ProtoId<VendingMachineInventoryPrototype>, ProtoId<VendingMachineInventoryPrototype>> VendingExtras = new();
 
     /// <summary>Set once the fitting pass has run, so a reload or a second start doesn't repeat it.</summary>
     [DataField]

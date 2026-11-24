@@ -1,7 +1,11 @@
 using Content.Server._WG.NpcCrew.Components;
 using Content.Server.Atmos.Components;
+using Content.Server.Atmos.EntitySystems;
+using Content.Shared._WG.NpcCrew;
 using Content.Shared.Atmos.Components;
 using Content.Shared.Atmos.EntitySystems;
+using Content.Shared.Atmos.Piping.Unary.Components;
+using Content.Shared.Body.Components;
 using Content.Shared._Shitmed.Body.Components;
 using Content.Shared.Body.Systems;
 using Content.Shared.Clothing.Components;
@@ -30,12 +34,30 @@ public sealed partial class WGCrewEvaSystem : EntitySystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedInteractionSystem _interaction = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private AtmosphereSystem _atmos = default!;
     private readonly Dictionary<EntityUid, TimeSpan> _prepared = new();
     private readonly Dictionary<EntityUid, EntityCoordinates> _safetyDestinations = new();
     private readonly Dictionary<EntityUid, (TimeSpan Until, EntityUid Grid, bool Safe)> _safetyChecked = new();
     private readonly Dictionary<EntityUid, TimeSpan> _nextTankSearch = new();
+    private readonly Dictionary<EntityUid, (EntityUid Canister, TimeSpan Until)> _refills = new();
+    private readonly Dictionary<EntityUid, TimeSpan> _nextRefillSearch = new();
     private readonly List<EntityUid> _stale = new();
     private const float ReservePressure = 300;
+
+    /// <summary>Below this an idle crewman in safe air goes to fill his tank.</summary>
+    private const float RefillBelow = 600;
+
+    /// <summary>What a tank is filled to at a canister: ten atmospheres, as a filled tank comes.</summary>
+    private const float RefillPressure = 10 * Content.Shared.Atmos.Atmospherics.OneAtmosphere;
+
+    /// <summary>Other gases, in kPa, a crewman on internals waits to fall below before he takes them off.</summary>
+    private const float CleanAir = 0.5f;
+
+    /// <summary>Other gases, in kPa, above which a crewman off internals puts them on.</summary>
+    private const float FoulAir = 1f;
+
+    private static readonly TimeSpan RefillTime = TimeSpan.FromSeconds(90);
+    private static readonly TimeSpan RefillSearchBackoff = TimeSpan.FromSeconds(30);
     private static readonly TimeSpan SafetyCacheTime = TimeSpan.FromSeconds(15);
     private static readonly TimeSpan TankSearchBackoff = TimeSpan.FromSeconds(10);
     private static readonly TimeSpan TankReachBackoff = TimeSpan.FromSeconds(1);
@@ -158,6 +180,9 @@ public sealed partial class WGCrewEvaSystem : EntitySystem
     /// <summary>Sends a crewman refused work for want of air to the nearest usable spare tank, if there is one.</summary>
     public void SeekSpare(EntityUid mob)
     {
+        // On his way to a canister already: that walk stands.
+        if (_refills.ContainsKey(mob))
+            return;
         if (TryComp<WGCrewComponent>(mob, out var crew))
             FindSafety(mob, crew, true);
     }
@@ -275,8 +300,12 @@ public sealed partial class WGCrewEvaSystem : EntitySystem
                 continue;
             if (TryComp<WGCrewVoidKitComponent>(uid, out var kit))
                 TopUp(uid, kit);
+            // The air where he stands, whatever he stands on (a chair, a door, a bed). Gases other than air must fall
+            // further before he takes internals off than it takes to put them on, so he doesn't flick them on and off.
+            var internals = CompOrNull<InternalsComponent>(uid);
+            var onInternals = internals?.GasTankEntity != null;
             var safe = xform.GridUid is { } grid && TryComp<MapGridComponent>(grid, out var map)
-                && _planner.IsSafePost(grid, _maps.TileIndicesFor(grid, map, xform.Coordinates), map);
+                && _planner.HasBreathableAir(grid, _maps.TileIndicesFor(grid, map, xform.Coordinates), onInternals ? CleanAir : FoulAir);
             // Crew who suit up when the air goes bad dress before anything else looks at their tank.
             if (!safe && HasComp<WGCrewSuitUpComponent>(uid) && !HasComp<WGCrewVoidKitComponent>(uid))
                 GiveVoidKit(uid);
@@ -287,7 +316,12 @@ public sealed partial class WGCrewEvaSystem : EntitySystem
             var seeking = _safetyDestinations.ContainsKey(uid);
             var attempted = false;
             // A pilot or gunner in breathable air keeps the post; only crew in bad air or about to work need a good tank.
-            if (low && (!safe || seeking || work.HasJob(uid)))
+            // A low tank in safe air with nothing to do goes to a canister below, not a spare-tank hunt here.
+            // Bad air ends a refill first, so the safety search below keeps the destination it stores.
+            if (!safe)
+                EndRefill(uid);
+            var refilling = _refills.ContainsKey(uid);
+            if (low && (!safe || seeking && !refilling || work.HasJob(uid)))
             {
                 attempted = true;
                 if (!Ready(uid))
@@ -304,21 +338,135 @@ public sealed partial class WGCrewEvaSystem : EntitySystem
                         _tanks.ConnectToInternals((wornTank.Value, connectable), uid);
                 }
             }
-            else if (!low && seeking)
+            else if (!low && seeking && !refilling)
                 _safetyDestinations.Remove(uid);
             if (!safe)
             {
-                if (!attempted)
-                    Ready(uid);
+                if (!attempted && !Ready(uid))
+                    ConnectAnyTank(uid, internals);
             }
-            else if ((!_prepared.TryGetValue(uid, out var until) || _timing.CurTime >= until)
-                && _inventory.TryGetSlotEntity(uid, "suitstorage", out var tank)
-                && TryComp<GasTankComponent>(tank, out var gas) && gas.IsConnected)
+            else
             {
-                _tanks.DisconnectFromInternals((tank.Value, gas), uid);
-                _prepared.Remove(uid);
+                // In breathable air internals come off, whichever tank feeds them, unless he is about to go out. Through
+                // the tank, so the tank and his internals agree: a tank still in its connect delay keeps him until the
+                // next pass.
+                if (internals is { GasTankEntity: { } feeding } && TryComp<GasTankComponent>(feeding, out var feedingGas)
+                    && (!_prepared.TryGetValue(uid, out var until) || _timing.CurTime >= until))
+                {
+                    _tanks.DisconnectFromInternals((feeding, feedingGas), uid);
+                    _prepared.Remove(uid);
+                }
+                if (!immune)
+                    UpdateRefill(uid, crew, xform, work.HasJob(uid));
             }
         }
+    }
+
+    /// <summary>
+    /// Puts a crewman in bad air on a tank he carries that holds breathable gas, when he has no full suit to be ready
+    /// in. A tank of anything else, or one still connected elsewhere, is passed over for the next.
+    /// </summary>
+    private void ConnectAnyTank(EntityUid mob, InternalsComponent? internals)
+    {
+        if (internals == null || internals.GasTankEntity != null || internals.BreathTools.Count == 0)
+            return;
+        foreach (var item in _inventory.GetHandOrInventoryEntities(mob))
+        {
+            if (!TryComp<GasTankComponent>(item, out var gas) || gas.IsConnected || gas.Air.Pressure <= 0f
+                || HasComp<Content.Shared.Movement.Components.JetpackComponent>(item)
+                || !WGCrewPlannerSystem.IsBreathable(gas.Air, gas.OutputPressure)
+                || !_tanks.CanConnectToInternals((item, gas)))
+                continue;
+            if (_tanks.ConnectToInternals((item, gas), mob))
+                return;
+        }
+    }
+
+    /// <summary>The tank a crewman breathes from: the connected one, else the one internals would pick.</summary>
+    private Entity<GasTankComponent>? BreathingTank(EntityUid mob)
+    {
+        if (TryComp<InternalsComponent>(mob, out var internals) && internals.GasTankEntity is { } connected
+            && TryComp<GasTankComponent>(connected, out var gas))
+            return (connected, gas);
+        return _internals.FindBestGasTank(mob);
+    }
+
+    /// <summary>
+    /// An idle crewman in safe air whose tank has run down walks to a canister of breathable gas on his ship and fills
+    /// it there from the canister's own air. Pilots and gunners keep their consoles; nothing is made from nothing.
+    /// </summary>
+    private void UpdateRefill(EntityUid mob, WGCrewComponent crew, TransformComponent xform, bool working)
+    {
+        var now = _timing.CurTime;
+        if (_refills.TryGetValue(mob, out var refill))
+        {
+            if (now >= refill.Until || TerminatingOrDeleted(refill.Canister)
+                || !TryComp<GasCanisterComponent>(refill.Canister, out var canister) || BreathingTank(mob) is not { } tank)
+            {
+                EndRefill(mob);
+                return;
+            }
+            if (!_interaction.InRangeUnobstructed(mob, refill.Canister))
+                return;
+            // Its air may have changed since he chose it (a pipe net merged in): only breathable gas goes in his tank.
+            if (IsRefillSource(canister.Air))
+                Fill(tank, canister.Air);
+            EndRefill(mob);
+            _nextRefillSearch[mob] = now + RefillSearchBackoff;
+            return;
+        }
+
+        if (working || crew.Duty is WGCrewDuties.Pilot or WGCrewDuties.Gunnery
+            || _nextRefillSearch.TryGetValue(mob, out var next) && now < next)
+            return;
+        _nextRefillSearch[mob] = now + RefillSearchBackoff;
+        if (BreathingTank(mob) is not { } low || low.Comp.Air.Pressure >= RefillBelow
+            || crew.Post?.EntityId is not { } home || xform.GridUid != home || !TryComp<MapGridComponent>(home, out var map))
+            return;
+
+        EntityUid? best = null;
+        var distance = float.MaxValue;
+        var here = _transform.GetWorldPosition(xform);
+        var canisters = EntityQueryEnumerator<GasCanisterComponent, TransformComponent>();
+        while (canisters.MoveNext(out var candidate, out var canister, out var canisterXform))
+        {
+            if (canisterXform.GridUid != home || !IsRefillSource(canister.Air)
+                || !_planner.HasBreathableAir(home, _maps.TileIndicesFor(home, map, canisterXform.Coordinates), FoulAir))
+                continue;
+            var squared = (_transform.GetWorldPosition(canisterXform) - here).LengthSquared();
+            if (squared < distance)
+            {
+                best = candidate;
+                distance = squared;
+            }
+        }
+        if (best is not { } source)
+            return;
+        _refills[mob] = (source, now + RefillTime);
+        _safetyDestinations[mob] = Transform(source).Coordinates;
+    }
+
+    /// <summary>A canister worth filling from: breathable at regulator pressure, with plenty left to spare.</summary>
+    private static bool IsRefillSource(Content.Shared.Atmos.GasMixture air)
+    {
+        return air.Pressure > RefillPressure * 1.5f
+            && WGCrewPlannerSystem.IsBreathable(air, Content.Shared.Atmos.Atmospherics.OneAtmosphere);
+    }
+
+    /// <summary>Moves gas from a canister into a tank until the tank reaches <see cref="RefillPressure"/>.</summary>
+    private void Fill(Entity<GasTankComponent> tank, Content.Shared.Atmos.GasMixture source)
+    {
+        var air = tank.Comp.Air;
+        if (air.Volume <= 0f || source.Temperature <= 0f || air.Pressure >= RefillPressure)
+            return;
+        var moles = (RefillPressure - air.Pressure) * air.Volume / (Content.Shared.Atmos.Atmospherics.R * source.Temperature);
+        _atmos.Merge(air, source.Remove(moles));
+    }
+
+    private void EndRefill(EntityUid mob)
+    {
+        if (_refills.Remove(mob))
+            _safetyDestinations.Remove(mob);
     }
 
     /// <summary>Drops bookkeeping for deleted crew and elapsed timers.</summary>
@@ -359,5 +507,23 @@ public sealed partial class WGCrewEvaSystem : EntitySystem
         }
         foreach (var uid in _stale)
             _nextTankSearch.Remove(uid);
+
+        _stale.Clear();
+        foreach (var (uid, next) in _nextRefillSearch)
+        {
+            if (now >= next || TerminatingOrDeleted(uid))
+                _stale.Add(uid);
+        }
+        foreach (var uid in _stale)
+            _nextRefillSearch.Remove(uid);
+
+        _stale.Clear();
+        foreach (var (uid, refill) in _refills)
+        {
+            if (TerminatingOrDeleted(uid) || TerminatingOrDeleted(refill.Canister))
+                _stale.Add(uid);
+        }
+        foreach (var uid in _stale)
+            EndRefill(uid);
     }
 }

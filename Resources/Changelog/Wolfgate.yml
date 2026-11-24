@@ -9097,3 +9097,103 @@ Entries:
   id: 100583
   time: '2026-11-24T11:39:24.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/828
+- author: ImogenOC
+  changes:
+    - type: Add
+      message: >-
+        The Lupercal has an NPC chef who keeps the kitchen pass stocked and an
+        NPC bartender who takes drink orders.
+    - type: Add
+      message: >-
+        NPC crew take breaks for a snack, a drink or a sit-down, and go to their
+        stations at general quarters.
+    - type: Add
+      message: >-
+        NPC paramedics use medipens; the Lupercal has a second paramedic and
+        surgeon.
+    - type: Add
+      message: Janitors chase mice and roaches.
+    - type: Tweak
+      message: Lupercal vending machines never run out and sell more.
+    - type: Fix
+      message: NPC crew turn their internals off in safe air and refill low tanks.
+    - type: Fix
+      message: >-
+        NPC crew no longer treat mice and roaches as intruders; cortical borers
+        are always hostile.
+    - type: Fix
+      message: Several janitors no longer go for the same mess.
+    - type: Fix
+      message: The NPC surgeon no longer destroys your clothes; they land on the floor.
+    - type: Fix
+      message: NPC paramedics no longer drag you back to bed.
+    - type: Fix
+      message: The Lupercal's core gates cycle, and its holodoors close behind you.
+    - type: Add
+      message: Pride flags of many kinds, flying across the Lupercal.
+    - type: Tweak
+      message: NPC crew dress with more variety.
+    - type: Fix
+      message: >-
+        Revived NPC crew get out of bed, put their own clothes back on and go
+        back to work.
+    - type: Fix
+      message: >-
+        Janitors clean up footprints, blood on walls and loose trash, spent
+        medipens included; Shipmaster's cleanup washes stains too.
+  id: 100584
+  time: '2026-11-24T12:50:34.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/827
+- author: Erol509
+  changes:
+    - type: Add
+      message: >-
+        Added a redesigned PDA interface with Home, Info, and Settings views,
+        program navigation, alerts, and device controls.
+    - type: Add
+      message: >-
+        Added an app store for browsing, searching, downloading, and installing
+        PDA programs, with download progress and access requirements.
+    - type: Add
+      message: >-
+        Added PDA storage management, including capacity indicators, removable
+        data disks, and options to install, uninstall, and transfer programs.
+    - type: Add
+      message: >-
+        Added notification controls and expanded cartridge installation and
+        storage limits.
+  id: 100585
+  time: '2026-11-24T13:59:43.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/786
+- author: DriftingSkies
+  changes:
+    - type: Add
+      message: C*%^ Ambience
+    - type: Fix
+      message: Fix cutoff and looping of ambience.
+  id: 100586
+  time: '2026-11-24T14:00:56.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/821
+- author: Happyowl93
+  changes:
+    - type: Fix
+      message: >-
+        Trade chutes no longer pay more for a crate than their own station's
+        vendors charge, so swapping crates between stations no longer makes
+        money.
+    - type: Tweak
+      message: >-
+        A station short of a trade good keeps its last crates. Its vendors show
+        the good as sold out until it is restocked, and its chutes pay the full
+        restock rate.
+    - type: Tweak
+      message: >-
+        A chute's examine text and price paper, and the Market app, now list
+        goods taken to restock or for an open order.
+    - type: Tweak
+      message: >-
+        Sector Exchange announcements moved from Broadband to the Supply
+        channel. Put a cargo encryption key in your headset to hear them.
+  id: 100587
+  time: '2026-11-24T14:01:58.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/830

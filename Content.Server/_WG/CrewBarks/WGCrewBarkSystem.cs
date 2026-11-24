@@ -128,6 +128,10 @@ public sealed partial class WGCrewBarkSystem : EntitySystem
             WGCrewBark.Fight => "fight",
             WGCrewBark.Jump => "jump",
             WGCrewBark.Arrived => "arrived",
+            WGCrewBark.Stations => "stations",
+            WGCrewBark.Alert => "alert",
+            WGCrewBark.StandDown => "stand-down",
+            WGCrewBark.Break => "break",
             _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, null),
         };
     }

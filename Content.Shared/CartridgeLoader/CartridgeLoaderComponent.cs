@@ -33,7 +33,13 @@ public sealed partial class CartridgeLoaderComponent : Component
     /// The maximum amount of programs that can be installed on the cartridge loader entity
     /// </summary>
     [DataField]
-    public int DiskSpace = 12; // Frontier 8<12
+    public int DiskSpace = 32; // Frontier 8<12 // WOLFGATE(PdaStorage): backstop above the 128 GQ capacity
+
+    /// <summary>
+    /// WOLFGATE(PdaStorage): installed program capacity in GQ. Sizes come from <see cref="CartridgeComponent.Size"/>.
+    /// </summary>
+    [DataField]
+    public int StorageCapacity = 128;
 
     /// <summary>
     /// Controls whether the cartridge loader will play notifications if it supports it at all

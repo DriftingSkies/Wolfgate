@@ -1,4 +1,4 @@
-- type: entity
+﻿- type: entity
   abstract: true
   parent: BaseSign
   id: WGBasePaintingFrame
@@ -346,8 +346,9 @@
     ui: !type:WGArtAppUi
   - type: Cartridge
     programName: wg-art-app-program-name
+    size: 8
     icon: { sprite: _WG/Paintings/palette.rsi, state: palette }
-    readonly: true
+    readonly: false
   - type: WGArtApp
   - type: StaticPrice
     price: 50

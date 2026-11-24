@@ -125,7 +125,8 @@ public sealed partial class WGCrewWeaponSystem
             if (HasLiveThreat(uid) || IsBracing((uid, weapon)))
                 TryReloadOrSwitch(uid);
             // A grabber's baton is out for someone who isn't a threat; holstering it here also restarts its cooldown for good.
-            else if (!HasComp<WGCrewGrabberComponent>(uid))
+            // At battle stations the crew's fighters keep theirs out.
+            else if (!HasComp<WGCrewGrabberComponent>(uid) && !EntityManager.System<WGCrewReadinessSystem>().StandsToArms(uid))
             {
                 RemCompDeferred<NPCRangedCombatComponent>(uid);
                 RemCompDeferred<NPCMeleeCombatComponent>(uid);

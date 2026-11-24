@@ -33,6 +33,8 @@ is a Fluent edit only (`Resources/Locale/en-US/_WG/CrewBarks`). Lines are said a
 | `reporting` | restaffed at the crew bay, he reaches his post |
 | `fight` | his crew raise an alert on a hostile he can see |
 | `jump` / `arrived` | the ship starts / ends an FTL jump; someone near each player says it |
+| `stations` / `alert` / `stand-down` | the ship goes to Battle / Alert / back down (NpcCrew's `WGCrewReadinessSystem`) |
+| `break` | he goes off for a snack, a drink or a sit-down (NpcCrew's `WGCrewDowntimeSystem`) |
 
 ## Limits
 

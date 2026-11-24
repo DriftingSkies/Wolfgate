@@ -104,7 +104,7 @@ level >= 1: factor = 1 - 1.2 x min(level - 1, 0.5)  level 1.25 = 0.7x, 1.5 = 0.4
 ```
 
 - A vendor charges its vendor price x factor at `Priced`, never below base. A purchase leaves the shelf at once and reaches the price
-  over a few minutes.
+  over a few minutes. It sells only what its station holds over level 0.3: a station short of a good keeps its last 36 crates.
 - A chute pays its table price x 0.9 x factor, stopping at the existing `floorPrices`, so a glutted market still covers a bought crate.
   Contraband keeps its street price and is outside all of this.
 - A chute pays by the higher of `Level` and `Priced`, so a sale cuts its pay at once and a big haul walks down the curve, while stock
@@ -115,6 +115,15 @@ level >= 1: factor = 1 - 1.2 x min(level - 1, 0.5)  level 1.25 = 0.7x, 1.5 = 0.4
 - Chutes keep refusing crates bought on their own station, so nothing can be bought and resold on the spot.
 - A chute takes a good off its table only below level 0.3, at the best rate any open chute lists. This keeps the approved rule that
   anyone can bring a dry station what it needs.
+- A station never buys a crate for more than it sells one. Below level 0.3 its chutes pay in full and its vendors sell none of the
+  good, so a crate brought to a dry station can't be bought back. From 0.3 up the vendors sell it, and a chute pays at most 0.9 of
+  the cheapest one's base price, times the events its vendors charge for. That limit is on the final price, so a rush, war or relief
+  rate that vendors don't share can't lift it. It has no scarcity in it: a vendor's price trails its stock, so a shelf bought down
+  at the old price could otherwise be sold back for more once the price caught up. It
+  falls on the goods a chute lists that its own vendors sell (seven at Caelestinus, Chemical Supplies at the alt depot) and on an
+  order still open after its shortage ended. Without the two halves a crate from elsewhere sold to a dry station and one bought back
+  off its shelf left the shelf where it was, and two stations could swap crates at a profit forever. Capping the dry station's price
+  instead closed the loop too, but left nobody a reason to refill a vendor's shelf.
 
 The squared curve keeps prices near normal for small dips and steep near empty, which keeps the spirit of the old rule that scarcity
 only bites when stock runs low, without a hard edge at 20%. The glut side is steeper than first drafted (1.2 against 0.6), so a sale

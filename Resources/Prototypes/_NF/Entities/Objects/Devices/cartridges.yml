@@ -1,4 +1,4 @@
-- type: entity
+﻿- type: entity
   parent: BaseItem
   id: NFBasePDACartridge
   abstract: true
@@ -23,6 +23,8 @@
       ui: !type:BountyContractUi
     - type: Cartridge
       programName: bounty-contracts-program-name
+      # WOLFGATE(PdaStorage): storage footprint in GQ
+      size: 16
       icon: Interface/Actions/shop.png
     - type: BountyContractsCartridge
 
@@ -42,6 +44,8 @@
       ui: !type:AppraisalUi
     - type: Cartridge
       programName: appraisal-program-name
+      # WOLFGATE(PdaStorage): storage footprint in GQ
+      size: 8
       icon: { sprite: Objects/Tools/appraisal-tool.rsi, state: icon }
     - type: AppraisalCartridge
 
@@ -62,8 +66,10 @@
       ui: !type:LedgerUi
     - type: Cartridge
       programName: ledger-program-name
+      # WOLFGATE(PdaStorage): storage footprint in GQ
+      size: 16
       icon: { sprite: _NF/Interface/icons.rsi, state: ledger }
-      readonly: true
+      readonly: false # WOLFGATE(PdaStorage): removable store app
     - type: NFLedgerCartridge
 
 # Not a PDA cartridge (then why is this here)

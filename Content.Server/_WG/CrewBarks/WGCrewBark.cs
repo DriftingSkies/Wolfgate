@@ -44,4 +44,16 @@ public enum WGCrewBark : byte
 
     /// <summary>The ship came out of a jump.</summary>
     Arrived,
+
+    /// <summary>General quarters or Code Red: to his battle station.</summary>
+    Stations,
+
+    /// <summary>Code Yellow: on his toes.</summary>
+    Alert,
+
+    /// <summary>Back down to Code Green, or general quarters secured.</summary>
+    StandDown,
+
+    /// <summary>Off for a snack, a drink or a sit-down.</summary>
+    Break,
 }

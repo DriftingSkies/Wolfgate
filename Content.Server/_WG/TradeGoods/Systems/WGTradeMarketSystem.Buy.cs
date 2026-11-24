@@ -78,8 +78,8 @@ public sealed partial class WGTradeMarketSystem
         return new WGTradeBuyQuote(basePrice, (int) MathF.Round(basePrice * factor), factor, reason);
     }
 
-    /// <summary>The share of base a station's vendors charge for a good now, never below 1.</summary>
-    private float BuyFactor(EntityUid grid, string good, out LocId reason)
+    /// <summary>The share of base a station's vendors charge for a good now, or with its shelf at a given level, never below 1.</summary>
+    private float BuyFactor(EntityUid grid, string good, out LocId reason, float? level = null)
     {
         var profile = Profile(grid);
 
@@ -90,7 +90,7 @@ public sealed partial class WGTradeMarketSystem
             return 1f;
         }
 
-        var stock = MathF.Max(1f, LevelFactor(profile, PricedLevel(grid, good)));
+        var stock = MathF.Max(1f, LevelFactor(profile, level ?? PricedLevel(grid, good)));
 
         var ev = new WGTradeBuyQuoteEvent(grid, good);
         RaiseLocalEvent(ev);
@@ -187,7 +187,7 @@ public sealed partial class WGTradeMarketSystem
                && !_proto.Index(DefaultProfile).ContrabandGoods.Contains(good);
     }
 
-    /// <summary>Shows a station's shared stock on one of its vendors, replacing the machine's infinite trade goods.</summary>
+    /// <summary>Shows what a station has for sale on one of its vendors, replacing the machine's infinite trade goods.</summary>
     private void SyncStock(EntityUid vendor, VendingMachineComponent machine, EntityUid? grid)
     {
         if (grid is not { } onGrid)
@@ -199,7 +199,7 @@ public sealed partial class WGTradeMarketSystem
             if (!HasLimitedStock(good))
                 continue;
 
-            var stock = (uint) VendorStock(onGrid, good);
+            var stock = (uint) ForSale(onGrid, good);
             if (entry.Amount == stock)
                 continue;
 
@@ -223,7 +223,8 @@ public sealed partial class WGTradeMarketSystem
 
     /// <summary>
     /// What a chute pays for a good its table doesn't list but its station is scarce of, or has an open order for: the
-    /// best any open table lists. An order keeps the chute taking the good after the first crates end the shortage.
+    /// best any open table lists. An order keeps the chute taking the good after the first crates end the shortage, by
+    /// when <see cref="VendorCeiling"/> applies.
     /// </summary>
     private int? RestockBase(EntityUid grid, string good)
     {
@@ -245,6 +246,37 @@ public sealed partial class WGTradeMarketSystem
         return best > 0 ? best : null;
     }
 
+    /// <summary>
+    /// The most a station's chutes pay for a good its own vendors have for sale: the cheapest vendor's base price, and
+    /// that with the events its vendors charge for, both at the chute rate. Scarcity adds nothing, since a vendor's price
+    /// trails its stock: a shelf bought down at the old price could be sold back once the price caught up. Null where no
+    /// vendor on the grid sells the good.
+    /// </summary>
+    private (int Base, int Amount)? VendorCeiling(EntityUid grid, string good)
+    {
+        if (!HasLimitedStock(good))
+            return null;
+
+        var proto = _proto.Index<EntityPrototype>(good);
+        int? lowest = null;
+        var query = EntityQueryEnumerator<WGTradeVendorComponent, VendingMachineComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out _, out var machine, out var xform))
+        {
+            if (xform.GridUid == grid
+                && machine.Inventory.ContainsKey(good)
+                && VendorBasePrice(uid, proto) is { } price
+                && (lowest == null || price < lowest))
+                lowest = price;
+        }
+
+        if (lowest is not { } charged)
+            return null;
+
+        var rate = Profile(grid).ChuteTableRate;
+        var factor = BuyFactor(grid, good, out _, 1f);
+        return ((int) MathF.Round(charged * rate), (int) MathF.Round(charged * factor * rate));
+    }
+
     /// <summary>Whether a chute would take a crate only because its station's vendors are scarce of it.</summary>
     public bool TakesToRestock(EntityUid chute, EntityUid crate)
     {
@@ -253,6 +285,12 @@ public sealed partial class WGTradeMarketSystem
                && MetaData(crate).EntityPrototype?.ID is { } good
                && BasePrice(dispenser, good) == null
                && RestockBase(grid, good) != null;
+    }
+
+    /// <summary>The goods a chute takes that its table doesn't list: those its station is scarce of or has an open order for.</summary>
+    public List<string> Unlisted(EntityUid grid, DispenserComponent chute)
+    {
+        return ScarceGoods(grid).Concat(_rush.Wanted(grid)).Distinct().Where(good => !chute.Inventory.ContainsKey(good)).ToList();
     }
 
     /// <summary>The trade goods with finite stock that a station's vendors sell.</summary>

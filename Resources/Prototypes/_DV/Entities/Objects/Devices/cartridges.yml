@@ -1,4 +1,4 @@
-# - type: entity # Frontier - Not Merged yet
+﻿# - type: entity # Frontier - Not Merged yet
 #   parent: NFBasePDACartridge
 #   id: CrimeAssistCartridge
 #   name: crime assist cartridge
@@ -35,7 +35,9 @@
   - type: MailMetricsCartridge
   - type: Cartridge
     programName: mail-metrics-program-name
+    # WOLFGATE(PdaStorage): storage footprint in GQ
+    size: 16
     icon:
       sprite: Nyanotrasen/Objects/Specific/Mail/mail.rsi
       state: icon
-    readonly: true # Frontier
+    readonly: false # WOLFGATE(PdaStorage): removable store app

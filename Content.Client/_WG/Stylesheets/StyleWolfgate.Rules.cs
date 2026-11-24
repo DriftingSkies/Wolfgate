@@ -582,6 +582,6 @@ public sealed partial class StyleWolfgate
                 .Prop(Control.StylePropertyModulateSelf, ContextPressed),
         };
 
-        return rules.Concat(RoundSetupRules()).Concat(LobbyRules()).Concat(CreatorRules()).Concat(LoadoutRules()).Concat(OptionsRules()).ToArray();
+        return rules.Concat(RoundSetupRules()).Concat(LobbyRules()).Concat(CreatorRules()).Concat(LoadoutRules()).Concat(OptionsRules()).Concat(PdaUiRules()).ToArray(); // WOLFGATE(PdaUi): program view rules
     }
 }

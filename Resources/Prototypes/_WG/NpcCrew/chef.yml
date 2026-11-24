@@ -1,0 +1,100 @@
+# The crew chef (WGCrewChefSystem): keeps a few dishes out on the serving counter, cooked in the galley's own
+# appliances from the ingredients aboard. Fights only when struck.
+
+- type: startingGear
+  id: WGCrewChefGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitChef
+    head: ClothingHeadHatChef
+    outerClothing: ClothingOuterApronChef
+    shoes: ClothingShoesChef
+    ears: WGCrewHeadset
+    pocket1: WeaponPistolMk58
+    pocket2: Magazine45_ACPPistolFMJ
+
+- type: entity
+  parent: WGMobCrewBase
+  id: WGMobCrewChef
+  components:
+  - type: Loadout
+    prototypes: [ WGCrewChefGear ]
+
+# The default menu is the Lupercal's: three dishes from the electric range's oven and one from the microwave, all from
+# ingredients the filled pantry carries. Solid-ingredient recipes only.
+- type: wgCrewRole
+  id: WGCrewChef
+  mob: WGMobCrewChef
+  duty: Chef
+  engagement: WhenAttacked
+  title: wg-crew-role-chef
+  order: 46
+  components:
+  - type: WGCrewChef
+    menu:
+    - recipe: RecipePlainBurger
+      stock: 2
+    - recipe: RecipeHotdog
+      stock: 2
+    - recipe: RecipeButteredToast
+      stock: 2
+    - recipe: RecipeLoadedBakedPotato
+      stock: 2
+
+# Chef: cook what has run short on the counter, else stand at the post (WGCrewGuardCompound).
+- type: htnCompound
+  id: WGCrewChefCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewChefOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewChefDestination
+        rangeKey: InteractRange
+        removeKeyOnFinish: false
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewChefOperator
+        perform: true
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WGCrewGuardCompound
+
+# A galley's pantry: a freezer the chef cooks from, slowly restocked with his menu's ingredients while he works.
+- type: entity
+  parent: CrateFreezer
+  id: WGCrewChefPantry
+  components:
+  - type: WGCrewChefPantry
+
+# Two of each of the default menu's dishes.
+- type: entity
+  parent: WGCrewChefPantry
+  id: WGCrewChefPantryFilled
+  components:
+  - type: StorageFill
+    contents:
+    - id: FoodBreadBun
+      amount: 4
+    - id: FoodMeat
+      amount: 2
+    - id: FoodSausageRaw
+      amount: 2
+    - id: FoodBreadPlainSlice
+      amount: 2
+    - id: FoodButterSlice
+      amount: 2
+    - id: FoodPotato
+      amount: 2
+    - id: FoodCheeseSlice
+      amount: 2
+
+# Where a chef puts his dishes out: mapped on the serving counter. Without one he uses the tables beside his post.
+- type: entity
+  parent: MarkerBase
+  id: WGCrewChefServeSpot
+  components:
+  - type: WGCrewChefServeSpot
+  - type: Sprite
+    sprite: Markers/jobs.rsi
+    layers:
+    - state: green

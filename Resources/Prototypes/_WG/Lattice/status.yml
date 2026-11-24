@@ -15,6 +15,7 @@
     ui: !type:WGLatticeStatusUi
   - type: Cartridge
     programName: wg-lattice-status-program-name
+    size: 32
     icon:
       sprite: Structures/Machines/Anomaly/adv_anomaly_vessel.rsi
       state: base
@@ -116,3 +117,4 @@
     Steel: 1500
     Glass: 800
     Gold: 100
+

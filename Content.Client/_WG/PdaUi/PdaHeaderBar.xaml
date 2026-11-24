@@ -1,0 +1,25 @@
+<ui:PdaHeaderBar xmlns="https://spacestation14.io"
+                xmlns:ui="clr-namespace:Content.Client._WG.PdaUi"
+                HorizontalExpand="True"
+                SetHeight="28">
+    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="6 0">
+        <BoxContainer Orientation="Horizontal" VerticalAlignment="Center">
+            <AnimatedTextureRect Name="ClockIcon" SetSize="12 12" VerticalAlignment="Center"/>
+            <Label Name="TimeLabel" VerticalAlignment="Center" Margin="4 0 10 0"/>
+            <Label Name="OsLabel" VerticalAlignment="Center"/>
+        </BoxContainer>
+        <Control HorizontalExpand="True"/>
+        <BoxContainer Orientation="Horizontal" VerticalAlignment="Center">
+            <PanelContainer Name="AlertChip" Access="Public" VerticalAlignment="Center" Margin="0 0 6 0" Visible="False">
+                <Label Name="AlertLabel" Access="Public" Margin="6 1"/>
+            </PanelContainer>
+            <ui:PdaIconButton Name="ProgramCloseButton" Access="Public" Visible="False" SetWidth="24"/>
+            <ui:PdaIconButton Name="FlashLightToggleButton" Access="Public" ToggleMode="True" SetWidth="24"/>
+            <ui:PdaIconButton Name="EjectPenButton" Access="Public" SetWidth="24"/>
+            <ui:PdaIconButton Name="EjectIdButton" Access="Public" SetWidth="24"/>
+            <ui:PdaIconButton Name="EjectPaiButton" Access="Public" SetWidth="24"/>
+            <ui:PdaIconButton Name="EjectDiskButton" Access="Public" SetWidth="24"/>
+            <ui:PdaIconButton Name="HomeButton" Access="Public" SetWidth="24"/>
+        </BoxContainer>
+    </BoxContainer>
+</ui:PdaHeaderBar>

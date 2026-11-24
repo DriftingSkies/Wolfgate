@@ -381,6 +381,41 @@ public sealed class EconomyLedgerTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>A shortage or order goes with its station, in a round or not: nothing that lists them can name a station that's gone.</summary>
+    [Test]
+    public async Task EventsEndWithTheirStation()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = false });
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entMan = server.EntMan;
+        var market = entMan.System<WGTradeMarketSystem>();
+        var shortages = entMan.System<WGTradeShortageSystem>();
+        var rushes = entMan.System<WGTradeRushSystem>();
+        var station = EntityUid.Invalid;
+
+        await server.WaitAssertion(() =>
+        {
+            TradeTestWorld.MarketChute(entMan, map);
+            station = TradeTestWorld.Station(entMan, map, new Vector2(0f, 60f), "WG test doomed").Grid;
+            market.SetVendorStock(station, Medical, 20);
+
+            shortages.StartLocal(station, new HashSet<string> { Medical }, 1.5f, System.TimeSpan.FromMinutes(5), "medical");
+            Assert.That(rushes.Start(new ProtoId<WGTradeRushPrototype>("WGTradeRushMedical"))?.Grid, Is.EqualTo(station));
+            entMan.DeleteEntity(station);
+        });
+
+        await pair.RunTicksSync(1);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(shortages.Active.Any(shortage => shortage.Grid == station), Is.False, "A shortage outlived its station.");
+            Assert.That(rushes.Active.Any(rush => rush.Grid == station), Is.False, "A rush order outlived its station.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     [Test]
     public async Task HiddenChutesStayOffAWorkingStationsBooks()
     {

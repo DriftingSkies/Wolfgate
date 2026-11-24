@@ -1,0 +1,7 @@
+<ui:PdaInfoRow xmlns="https://spacestation14.io"
+              xmlns:ui="clr-namespace:Content.Client._WG.PdaUi"
+              HorizontalExpand="True"
+              MinHeight="22">
+    <PanelContainer Name="Background"/>
+    <RichTextLabel Name="ValueLabel" StyleClasses="PdaInfoText" Margin="6 3" HorizontalExpand="True" VerticalAlignment="Center"/>
+</ui:PdaInfoRow>

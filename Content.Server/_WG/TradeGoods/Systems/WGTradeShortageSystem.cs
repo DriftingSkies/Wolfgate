@@ -153,11 +153,14 @@ public sealed partial class WGTradeShortageSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+
+        // In a round or not: nothing that lists shortages can name a station that's gone.
+        _active.RemoveAll(shortage => shortage.Grid is { } grid && TerminatingOrDeleted(grid));
         if (_ticker.RunLevel != GameRunLevel.InRound)
             return;
 
         var now = _timing.CurTime;
-        _active.RemoveAll(shortage => now >= shortage.Ends || shortage.Grid is { } grid && TerminatingOrDeleted(grid));
+        _active.RemoveAll(shortage => now >= shortage.Ends);
 
         var profile = _proto.Index(WGTradeMarketSystem.DefaultProfile);
         _next ??= now + Minutes(profile.ShortageMinutes);

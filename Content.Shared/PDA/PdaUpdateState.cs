@@ -18,6 +18,8 @@ namespace Content.Shared.PDA
         public string? Address;
         public int Balance; // Frontier
         public string? OwnedShipName; // Frontier
+        public bool NotificationsEnabled; // WOLFGATE(PdaUi): program notification setting
+        public bool HasDisk; // WOLFGATE(PdaStorage): data disk inserted
 
         public PdaUpdateState(
             List<NetEntity> programs,
@@ -31,7 +33,9 @@ namespace Content.Shared.PDA
             string? stationName,
             bool hasUplink = false,
             bool canPlayMusic = false,
-            string? address = null)
+            string? address = null,
+            bool notificationsEnabled = true, // WOLFGATE(PdaUi): program notification setting
+            bool hasDisk = false) // WOLFGATE(PdaStorage): data disk inserted
             : base(programs, activeUI)
         {
             FlashlightEnabled = flashlightEnabled;
@@ -44,6 +48,8 @@ namespace Content.Shared.PDA
             Address = address;
             Balance = balance; // Frontier
             OwnedShipName = ownedShipName; // Frontier
+            NotificationsEnabled = notificationsEnabled; // WOLFGATE(PdaUi)
+            HasDisk = hasDisk; // WOLFGATE(PdaStorage)
         }
     }
 

@@ -70,6 +70,21 @@
     - !type:HTNPrimitiveTask
       operator: !type:WGCrewMedicOperator
         perform: true
+  # Stripped of his own clothes or kit (surgery, a looter, a death): he fetches each piece back and puts it on
+  # (WGCrewOutfitSystem), before any work that may need the suit.
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewRedressOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:WGHolsterWeaponOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewRedressDestination
+        rangeKey: InteractRange
+        removeKeyOnFinish: false
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewRedressOperator
+        perform: true
   - tasks:
     - !type:HTNPrimitiveTask
       operator: !type:WGCrewWorkOperator
@@ -82,6 +97,27 @@
         removeKeyOnFinish: false
     - !type:HTNPrimitiveTask
       operator: !type:WGCrewWorkOperator
+        perform: true
+  # Battle stations (WGCrewReadinessSystem): general quarters, Code Red or Black. Chores and breaks wait; everyone
+  # stands at his post, the on-sight hands with weapons out. The helm and the guns keep their own duty.
+  - preconditions:
+    - !type:WGCrewAtStationsPrecondition
+    tasks:
+    - !type:HTNCompoundTask
+      task: WGCrewStationsCompound
+  # A break (WGCrewDowntimeSystem): a snack or a drink from a machine, a seat, and the rubbish in a bin.
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewDowntimeOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:WGHolsterWeaponOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewDowntimeDestination
+        rangeKey: InteractRange
+        removeKeyOnFinish: false
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewDowntimeOperator
         perform: true
   - tasks:
     - !type:HTNPrimitiveTask
@@ -117,6 +153,25 @@
       operator: !type:WGHolsterWeaponOperator
     - !type:HTNCompoundTask
       task: WGCrewJanitorCompound
+  # Bartender: serve the orders and collect the empties (bartender.yml).
+  - preconditions:
+    - !type:KeyEqualsPrecondition
+      key: WGCrewDuty
+      value: Bartender
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGHolsterWeaponOperator
+    - !type:HTNCompoundTask
+      task: WGCrewBartenderCompound
+  - preconditions:
+    - !type:KeyEqualsPrecondition
+      key: WGCrewDuty
+      value: Chef
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGHolsterWeaponOperator
+    - !type:HTNCompoundTask
+      task: WGCrewChefCompound
   - preconditions:
     - !type:KeyEqualsPrecondition
       key: WGCrewDuty
@@ -181,10 +236,28 @@
     - !type:HTNCompoundTask
       task: WGCrewIdleCompound
 
-# Janitor: mop the nearest puddles on its own ship (WGCrewShipPuddles), then wash dirt off the floor further out, then back to the post (WGCrewGuardCompound).
+# Janitor: now and then run down a mouse or roach loose aboard (WGCrewPestSystem), mop the nearest puddles on its own
+# ship that no other janitor has taken (WGCrewShipPuddles), bin loose rubbish, then wash footprints, dirt and blood off
+# the floors and walls further out, then back to the post (WGCrewGuardCompound).
 - type: htnCompound
   id: WGCrewJanitorCompound
   branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewPestOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        shutdownState: PlanFinished
+        removeKeyOnFinish: false
+        targetKey: WGCrewPestCoordinates
+        rangeKey: MeleeRange
+    - !type:HTNPrimitiveTask
+      operator: !type:MeleeOperator
+        targetKey: WGCrewPest
+      preconditions:
+      - !type:TargetInRangePrecondition
+        targetKey: WGCrewPest
+        rangeKey: MeleeRange
   - tasks:
     - !type:HTNPrimitiveTask
       operator: !type:UtilityOperator
@@ -208,10 +281,24 @@
         id: PuddleService
         proto: WGCrewShipPuddles
         key: Target
+  # Loose rubbish, spent medipens included, to a disposal unit (WGCrewTidySystem).
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewTidyOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        removeKeyOnFinish: false
+        targetKey: WGCrewTidyDestination
+        rangeKey: InteractRange
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewTidyOperator
+        perform: true
+  # Footprints, dirt and blood off the floor, and blood splats off the walls, across the ship.
   - tasks:
     - !type:HTNPrimitiveTask
       operator: !type:WGPickDirtyTileOperator
-        range: 30
+        range: 60
+        stains: true
     - !type:HTNPrimitiveTask
       operator: !type:MoveToOperator
         pathfindInPlanning: true
@@ -221,6 +308,7 @@
         rangeKey: MeleeRange
     - !type:HTNPrimitiveTask
       operator: !type:WGCleanTileOperator
+        stains: true
   - tasks:
     - !type:HTNCompoundTask
       task: WGCrewGuardCompound
@@ -255,6 +343,36 @@
   - tasks:
     - !type:HTNCompoundTask
       task: WGCrewIdleCompound
+
+# At battle stations: back to the post, weapon out or away as his rule says, and hold there.
+- type: htnCompound
+  id: WGCrewStationsCompound
+  branches:
+  - preconditions:
+    - !type:KeyExistsPrecondition
+      key: WGCrewPost
+    - !type:CoordinatesNotInRangePrecondition
+      targetKey: WGCrewPost
+      rangeKey: WGCrewPostLeaveRange
+    tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewStationsOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewPost
+        rangeKey: WGCrewPostRange
+        removeKeyOnFinish: false
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewStationsOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:RandomOperator
+        targetKey: IdleTime
+        minKey: MinimumIdleTime
+        maxKey: MaximumIdleTime
+    - !type:HTNPrimitiveTask
+      operator: !type:WaitOperator
+        key: IdleTime
 
 # Idle at the assigned station instead of wandering across connected docks.
 - type: htnCompound
@@ -338,6 +456,8 @@
   - !type:PuddleFilter
   considerations:
   - !type:WGTargetOnHomeGridCon
+    curve: !type:BoolCurve
+  - !type:WGTargetUnclaimedCon
     curve: !type:BoolCurve
   - !type:TargetDistanceCon
     curve: !type:PresetCurve

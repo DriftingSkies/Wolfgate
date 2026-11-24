@@ -92,6 +92,9 @@ public sealed partial class DoorSystem : SharedDoorSystem
             },
         };
 
+        // WOLFGATE(AdminVessels): only airlocks build a deny animation; a plain door with an access reader (a holodoor) had none and crashed the client on a refusal
+        comp.DenyingAnimation = new Animation { Length = comp.DenyDuration };
+
         comp.EmaggingAnimation = new Animation
         {
             Length = TimeSpan.FromSeconds(comp.EmaggingAnimationTime),

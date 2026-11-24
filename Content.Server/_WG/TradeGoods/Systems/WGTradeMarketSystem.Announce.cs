@@ -12,19 +12,19 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._WG.TradeGoods.Systems;
 
-/// <summary>Sector Exchange announcements on the common channel, and private messages to some players.</summary>
+/// <summary>Sector Exchange announcements on the cargo channel, and private messages to some players.</summary>
 public sealed partial class WGTradeMarketSystem
 {
     [Dependency] private RadioSystem _radio = default!;
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private MetaDataSystem _meta = default!;
 
-    private static readonly ProtoId<RadioChannelPrototype> ExchangeChannel = "Common";
+    private static readonly ProtoId<RadioChannelPrototype> ExchangeChannel = "Supply";
     private static readonly Color ExchangeColor = Color.FromHex("#d9a441");
 
     private EntityUid? _exchange;
 
-    /// <summary>Says a market line as the Sector Exchange, on the common channel unless another is given.</summary>
+    /// <summary>Says a market line as the Sector Exchange, on the cargo channel unless another is given.</summary>
     public void Radio(string message, ProtoId<RadioChannelPrototype>? channel = null)
     {
         if (Exchange() is { } exchange)
@@ -32,7 +32,7 @@ public sealed partial class WGTradeMarketSystem
     }
 
     /// <summary>
-    /// Says a market line about some stations: on the common channel, or only to the underground companies when any of
+    /// Says a market line about some stations: on the cargo channel, or only to the underground companies when any of
     /// them is an off-the-books market.
     /// </summary>
     public void Announce(string message, params EntityUid?[] stations)

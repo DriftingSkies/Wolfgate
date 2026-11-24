@@ -1,0 +1,15 @@
+<ui:PdaSettingsRow xmlns="https://spacestation14.io"
+                  xmlns:ui="clr-namespace:Content.Client._WG.PdaUi"
+                  HorizontalExpand="True"
+                  MinHeight="40"
+                  Margin="0 0 0 2">
+    <PanelContainer Name="Background"/>
+    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="8 3">
+        <AnimatedTextureRect Name="IconRect" SetSize="16 16" VerticalAlignment="Center" Visible="False"/>
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True" Margin="6 0">
+            <Label Name="TitleLabel"/>
+            <Label Name="DescriptionLabel"/>
+        </BoxContainer>
+        <Label Name="StateLabel" VerticalAlignment="Center" Margin="4 0" Visible="False"/>
+    </BoxContainer>
+</ui:PdaSettingsRow>

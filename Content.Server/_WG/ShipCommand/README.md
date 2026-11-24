@@ -102,7 +102,8 @@ with NpcCrew crewmen of one group and mission (boarding Warn, docking Ignore, pi
 the counter in front. A post marker spawns nothing on its own: the roster reads them on map init and staffs them
 where they stand (`StaffOnSpawn`). Each crewman is spawned alone (`WGCrewSystem.SpawnCrewman`, then
 `WGCrewSetupSystem.ApplyMission`), so restaffing one post never resets the rest of the crew or the grid's faction.
-A post is lost when its occupant dies or is deleted (`WGShipRosterMemberComponent`); bodies stay. Restaffing is by
+A post is lost when its occupant dies or is deleted (`WGShipRosterMemberComponent`); bodies stay, and one revived
+before the post is filled takes it back. Restaffing is by
 hand (the command console's Crew tab, or `wg_shipcrew staff`) unless `AutoRestaff` is switched on, when a lost post is filled after `RestaffDelay`, at
 most `RestaffsPerHour` an hour; with a crew bay marker (`WGShipCrewBay`) restaffed crew come aboard there and walk
 to their posts. A post can be stood down (`wg_shipcrew down|up`), which relieves its occupant and leaves it empty,
@@ -209,7 +210,11 @@ which sells for nothing. A print merged into a stack already lying there loses t
 print apart for its materials. The same pass optionally hardens the ship: `IndestructibleArms` puts godmode on every
 ship gun, hardpoint and sentry turret, `UnpryableDoors` clears `CanPry` on every door, `GunChargeScale` and
 `GunRechargeScale` multiply each gun's battery and recharge (filled at once), and `CraneSpeed` sets the speed of
-berth cranes that take no part upgrades.
+berth cranes that take no part upgrades. `VendingExtras` adds a pack's lines to every vending machine aboard that
+carries the pack it is keyed by, and `UnlimitedVending` sets every regular line to `uint.MaxValue`, Frontier's
+unlimited amount, which a vend leaves alone and a restock skips; prices are unchanged. Every five seconds the system
+stocks any vending machine aboard a fitted grid again (`StockVendor`), so a machine placed later is covered and a line
+a forced eject drew down is put back.
 
 ## Unrestricted FTL
 
@@ -314,6 +319,7 @@ sector, no mass penalty and short timings.
 
 ### Localization
 
+- [`Resources/Locale/en-US/_WG/ShipCommand/posts.ftl`](../../../Resources/Locale/en-US/_WG/ShipCommand/posts.ftl)
 - [`Resources/Locale/en-US/_WG/ShipCommand/recovery-pad.ftl`](../../../Resources/Locale/en-US/_WG/ShipCommand/recovery-pad.ftl)
 - [`Resources/Locale/en-US/_WG/ShipCommand/ship-command.ftl`](../../../Resources/Locale/en-US/_WG/ShipCommand/ship-command.ftl)
 - [`Resources/Locale/en-US/_WG/ShipCommand/ship-console.ftl`](../../../Resources/Locale/en-US/_WG/ShipCommand/ship-console.ftl)

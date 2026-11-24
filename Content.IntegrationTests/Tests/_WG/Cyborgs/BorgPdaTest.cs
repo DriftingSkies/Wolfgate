@@ -5,7 +5,12 @@ using Content.Server._WG.NanoChat;
 using Content.Server.CartridgeLoader;
 using Content.Server.Silicons.Borgs;
 using Content.Shared._WG.NanoChat;
+using Content.Shared.Access;
+using Content.Shared.Access.Components;
+using Content.Shared.Access.Systems;
 using Content.Shared.CartridgeLoader;
+using Content.Shared.Containers.ItemSlots;
+using Content.Shared.Interaction;
 using Content.Shared.Mind;
 using Content.Shared.PDA;
 using Content.Shared.Players;
@@ -31,6 +36,10 @@ public sealed class BorgPdaTest
     private const string Card = "WGBorgIdCard";
     private const string Pda = "ContractorPDA";
     private const string Server = "TelecomServerFilledCommon";
+    private const string User = "MobHuman";
+    private const string Stray = "Crowbar";
+    private const string PlainCard = "PassengerIDCard";
+    private const string Access = "Medical";
 
     [Test]
     public async Task BorgPdaHasVagrantAppsAndChatsTest()
@@ -150,6 +159,39 @@ public sealed class BorgPdaTest
         // A client still attached to a cyborg throws while the pair's cleanup deletes it.
         await server.WaitPost(() => minds.WipeMind(session.ContentData()?.Mind));
         await pair.RunTicksSync(5);
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>An item used on a cyborg reaches the chassis, not a slot of its built-in PDA.</summary>
+    [Test]
+    public async Task BorgPdaSlotsTakeNothingTest()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var itemSlots = entMan.System<ItemSlotsSystem>();
+            var borg = entMan.SpawnEntity(Borg, map.GridCoords);
+            var user = entMan.SpawnEntity(User, map.GridCoords);
+            var item = entMan.SpawnEntity(Stray, map.GridCoords);
+            var card = entMan.SpawnEntity(PlainCard, map.GridCoords);
+            entMan.System<SharedAccessSystem>().TrySetTags(card, new ProtoId<AccessLevelPrototype>[] { Access });
+
+            // The panel is shut, so the cell slot is closed too.
+            foreach (var (id, slot) in entMan.GetComponent<ItemSlotsComponent>(borg).Slots)
+            {
+                Assert.That(itemSlots.CanInsert(borg, item, user, slot, slot.Swap), Is.False, $"The cyborg's {id} slot takes any item.");
+            }
+
+            entMan.System<SharedInteractionSystem>().InteractUsing(user, card, borg, map.GridCoords, false, false);
+            Assert.That(entMan.System<SharedContainerSystem>().IsEntityInContainer(card), Is.False, "The cyborg swallowed the ID card.");
+            Assert.That(entMan.GetComponent<AccessComponent>(borg).Tags, Does.Contain(new ProtoId<AccessLevelPrototype>(Access)),
+                "Using an ID card on the cyborg granted no access.");
+        });
 
         await pair.CleanReturnAsync();
     }

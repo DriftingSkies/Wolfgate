@@ -1507,12 +1507,10 @@
   id: ContractorCartridge
   name: loadout-group-contractor-cartridge
   minLimit: 0
-  maxLimit: 5
+  # WOLFGATE(PdaStorage): one preloaded software disk instead of loose cartridges
+  maxLimit: 1
   loadouts:
-  - ContractorAppraisalCartridge
-  - ContractorMedTekCartridge
-  - ContractorNetProbeCartridge
-  - ContractorLogProbeCartridge
+  - ContractorSoftwareDisk
 
 - type: loadoutGroup
   id: ContractorImplanter

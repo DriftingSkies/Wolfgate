@@ -20,7 +20,7 @@ namespace Content.IntegrationTests.Tests._WG.TradeGoods;
 [TestOf(typeof(DispenserSystem))]
 public sealed class TradeChuteTest
 {
-    // Caelestinus Central maps this vendor next to this chute, and the chute pays far more than the vendor charges.
+    // Caelestinus Central maps this vendor next to this chute, which lists goods the vendor sells.
     private const string ChuteProto = "CargoChuteTradeMall";
     private const string VendorProto = "VendingMachineTraderDepot";
     private const string CrateProto = "TradeGoodFabric";

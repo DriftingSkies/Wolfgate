@@ -1,0 +1,146 @@
+# What a commanded ship's roster crew may wear in place of their loadout's pieces (WGCrewOutfitSystem.Dress), so a
+# ship's company doesn't look stamped out. Each slot changes by its chance, to one of its items at random; a suit's own
+# helmet never changes. Applied once, when the roster staffs a post; encounter crews keep their factions' kit.
+
+# Deck hands: their own colours under the suit, and the odd pair of gloves, shades or scarf.
+- type: wgCrewWardrobe
+  id: WGCrewWardrobeHands
+  roles: [ WGCrewDeckhand, WGCrewEngineer, WGCrewMarine ]
+  slots:
+    jumpsuit:
+      chance: 0.7
+      items:
+      - ClothingUniformJumpsuitColorGrey
+      - ClothingUniformJumpsuitColorBlack
+      - ClothingUniformJumpsuitColorDarkBlue
+      - ClothingUniformJumpsuitColorBrown
+      - ClothingUniformJumpsuitColorDarkGreen
+      - ClothingUniformJumpsuitColorTeal
+      - ClothingUniformJumpsuitColorMaroon
+      - ClothingUniformJumpsuitColorLightBrown
+      - ClothingUniformJumpskirtColorGrey
+      - ClothingUniformJumpskirtColorBlack
+      - ClothingUniformJumpskirtColorBrown
+      - ClothingUniformJumpskirtColorTeal
+    gloves:
+      chance: 0.3
+      items:
+      - ClothingHandsGlovesColorBlack
+      - ClothingHandsGlovesFingerless
+    eyes:
+      chance: 0.2
+      items:
+      - ClothingEyesGlassesSunglasses
+      - ClothingEyesGlassesCheapSunglasses
+      - ClothingEyesGlasses
+    neck:
+      chance: 0.15
+      items:
+      - ClothingNeckScarfStripedRed
+      - ClothingNeckScarfStripedBlue
+      - ClothingNeckScarfStripedGreen
+      - ClothingNeckScarfStripedBlack
+
+# The bridge: blues and blacks, a tie or a scarf now and then.
+- type: wgCrewWardrobe
+  id: WGCrewWardrobeBridge
+  roles: [ WGCrewPilot, WGCrewRadioOperator, WGCrewGunner, WGCrewCaptain ]
+  slots:
+    jumpsuit:
+      chance: 0.5
+      items:
+      - ClothingUniformJumpsuitColorBlue
+      - ClothingUniformJumpsuitColorDarkBlue
+      - ClothingUniformJumpsuitColorBlack
+      - ClothingUniformJumpskirtColorBlue
+      - ClothingUniformJumpskirtColorDarkBlue
+    eyes:
+      chance: 0.2
+      items:
+      - ClothingEyesGlassesSunglasses
+      - ClothingEyesGlasses
+    neck:
+      chance: 0.2
+      items:
+      - ClothingNeckTieRed
+      - ClothingNeckScarfStripedBlue
+      - ClothingNeckScarfStripedBlack
+
+- type: wgCrewWardrobe
+  id: WGCrewWardrobeJanitor
+  roles: [ WGCrewJanitor ]
+  slots:
+    jumpsuit:
+      chance: 0.4
+      items:
+      - ClothingUniformJumpskirtJanitor
+    head:
+      chance: 0.5
+      items:
+      - ClothingHeadHatPurplesoft
+      - ClothingHeadHatPurplesoftFlipped
+      - ClothingHeadBandBlack
+    eyes:
+      chance: 0.15
+      items:
+      - ClothingEyesGlasses
+      - ClothingEyesGlassesCheapSunglasses
+
+- type: wgCrewWardrobe
+  id: WGCrewWardrobeParamedic
+  roles: [ WGCrewParamedic ]
+  slots:
+    jumpsuit:
+      chance: 0.4
+      items:
+      - ClothingUniformJumpskirtParamedic
+    head:
+      chance: 0.5
+      items:
+      - ClothingHeadHatParamedicsoft
+      - ClothingHeadHatParamedicsoftFlipped
+    eyes:
+      chance: 0.15
+      items:
+      - ClothingEyesGlasses
+      - ClothingEyesGlassesSunglasses
+
+- type: wgCrewWardrobe
+  id: WGCrewWardrobeSurgeon
+  roles: [ WGCrewSurgeon ]
+  slots:
+    jumpsuit:
+      chance: 0.4
+      items:
+      - ClothingUniformJumpskirtMedicalDoctor
+    head:
+      chance: 0.6
+      items:
+      - ClothingHeadHatSurgcapBlue
+      - ClothingHeadHatSurgcapGreen
+      - ClothingHeadHatSurgcapPurple
+    eyes:
+      chance: 0.2
+      items:
+      - ClothingEyesGlasses
+      - ClothingEyesGlassesJamjar
+
+# Some wear their colours: a pride pin on the collar. (Not the surgeon, whose stethoscope hangs there.)
+- type: wgCrewWardrobe
+  id: WGCrewWardrobePins
+  roles: [ WGCrewDeckhand, WGCrewEngineer, WGCrewMarine, WGCrewPilot, WGCrewRadioOperator, WGCrewGunner, WGCrewCaptain,
+           WGCrewJanitor, WGCrewParamedic, WGCrewChef, WGCrewBartender ]
+  slots:
+    neck:
+      chance: 0.12
+      items:
+      - ClothingNeckLGBTPin
+      - ClothingNeckGayPin
+      - ClothingNeckLesbianPin
+      - ClothingNeckBisexualPin
+      - ClothingNeckTransPin
+      - ClothingNeckPansexualPin
+      - ClothingNeckAsexualPin
+      - ClothingNeckAromanticPin
+      - ClothingNeckNonBinaryPin
+      - ClothingNeckIntersexPin

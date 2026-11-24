@@ -1,4 +1,4 @@
-# The Judge Line app, installed on vagrants' PDAs at spawn: call a judge ship to an emergency.
+﻿# The Judge Line app, installed on vagrants' PDAs at spawn: call a judge ship to an emergency.
 - type: entity
   parent: NFBasePDACartridge
   id: WGJudgeLineCartridge
@@ -13,6 +13,7 @@
     ui: !type:JudgeLineUi
   - type: Cartridge
     programName: wg-judgeline-program-name
+    size: 16
     icon:
       sprite: Objects/Misc/books.rsi
       state: icon_law

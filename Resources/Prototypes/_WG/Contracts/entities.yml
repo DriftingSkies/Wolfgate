@@ -1,4 +1,4 @@
-# The contract board and everything its contracts put in the world.
+﻿# The contract board and everything its contracts put in the world.
 
 - type: entity
   parent: BaseStructure
@@ -200,8 +200,9 @@
     ui: !type:ContractsUi
   - type: Cartridge
     programName: wg-contract-program-name
+    size: 16
     icon: { sprite: Objects/Misc/clipboard.rsi, state: clipboard_paper }
-    readonly: true
+    readonly: false
   - type: WGContractCartridge
   - type: StaticPrice
     price: 50

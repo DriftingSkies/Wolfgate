@@ -1,0 +1,9 @@
+<ui:PdaIconButton xmlns="https://spacestation14.io"
+                  xmlns:ui="clr-namespace:Content.Client._WG.PdaUi"
+                  MinSize="24 22">
+    <PanelContainer Name="Background"/>
+    <BoxContainer Name="Content" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5 0">
+        <AnimatedTextureRect Name="IconRect" SetSize="16 16" VerticalAlignment="Center" Visible="False"/>
+        <Label Name="Label" VerticalAlignment="Center" Visible="False"/>
+    </BoxContainer>
+</ui:PdaIconButton>

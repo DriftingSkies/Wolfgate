@@ -91,7 +91,7 @@ public sealed partial class WGTradeSupplySystem : EntitySystem
         var reports = new List<WGSupplyReport>();
         foreach (var grid in grids)
         {
-            var stocks = _market.StockedGoods(grid).Select(good => _market.VendorStock(grid, good)).ToList();
+            var stocks = _market.StockedGoods(grid).Select(good => _market.ForSale(grid, good)).ToList();
             if (stocks.Count > 0)
             {
                 reports.Add(new WGSupplyReport(Name(grid), _sector.IsBlockaded(grid), _shortages.IsShort(grid), stocks.Count,

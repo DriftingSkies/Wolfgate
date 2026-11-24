@@ -81,6 +81,15 @@ public sealed partial class WGTradeRushSystem : EntitySystem
         return RushFor(grid, good) != null;
     }
 
+    /// <summary>The goods a station's open orders still want.</summary>
+    public IEnumerable<string> Wanted(EntityUid grid)
+    {
+        var profile = _proto.Index(WGTradeMarketSystem.DefaultProfile);
+        return _active.Where(rush => rush.Grid == grid && rush.Remaining > 0)
+            .SelectMany(rush => _market.Group(profile, rush.Group))
+            .Select(good => good.Id);
+    }
+
     private WGTradeRush? RushFor(EntityUid grid, string good)
     {
         return _active.FirstOrDefault(rush => rush.Grid == grid && rush.Remaining > 0 && _market.InGroup(good, rush.Group));
@@ -115,18 +124,15 @@ public sealed partial class WGTradeRushSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+
+        // In a round or not: nothing that lists orders can name a station that's gone.
+        _active.RemoveAll(rush => TerminatingOrDeleted(rush.Grid));
         if (_ticker.RunLevel != GameRunLevel.InRound)
             return;
 
         var now = _timing.CurTime;
         foreach (var rush in _active.ToList())
         {
-            if (TerminatingOrDeleted(rush.Grid))
-            {
-                _active.Remove(rush);
-                continue;
-            }
-
             if (now < rush.Ends)
                 continue;
 

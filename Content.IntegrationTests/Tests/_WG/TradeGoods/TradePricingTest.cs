@@ -19,6 +19,7 @@ using Robust.Shared.GameObjects;
 using Robust.Shared.Localization;
 using Robust.Shared.Map;
 using Robust.Shared.Maths;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.IntegrationTests.Tests._WG.TradeGoods;
@@ -183,6 +184,103 @@ public sealed class TradePricingTest
             // And the other way round: selling at the other station leaves this one where it was.
             market.Sell(elsewhere, Crate(entMan, far, new EntityCoordinates(otherStation, 0.5f, 0.5f)), user);
             Assert.That(market.Quote(first, CrateProto)!.Value.Amount, Is.EqualTo(atFirst.Amount));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// A station paying more for a crate than its own vendors charge pays out on every crate swapped with another station,
+    /// with neither shelf moving. Every chute beside every trade vendor, at any shelf level, listed or restocking, and
+    /// again under a rush order, which raises what chutes pay and not what vendors charge: the chute pays less than the
+    /// vendor charges and less than its base price, or the station is short and its vendors keep the crate.
+    /// </summary>
+    [Test]
+    public async Task ChutesNeverPayMoreThanTheirVendorsCharge()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = false });
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entMan = server.EntMan;
+        var market = entMan.System<WGTradeMarketSystem>();
+
+        await server.WaitAssertion(() =>
+        {
+            entMan.EnsureComponent<WGTradeMarketMapComponent>(map.MapUid);
+            entMan.System<WGTradeShortageSystem>().Clear();
+            var rushes = entMan.System<WGTradeRushSystem>();
+            rushes.Clear();
+            var grid = map.Grid.Owner;
+            var profile = market.Profile(grid);
+            var factory = entMan.ComponentFactory;
+
+            var chutes = new List<EntityUid>();
+            var vendors = new List<EntityUid>();
+            foreach (var proto in server.ProtoMan.EnumeratePrototypes<EntityPrototype>())
+            {
+                if (proto.Abstract)
+                    continue;
+
+                if (proto.TryGetComponent<DispenserComponent>(out var dispenser, factory) && dispenser.Inventory.Count > 0)
+                    chutes.Add(Chute(entMan, grid, proto.ID));
+                else if (proto.TryGetComponent<WGTradeVendorComponent>(out _, factory))
+                    vendors.Add(entMan.SpawnEntity(proto.ID, map.GridCoords));
+            }
+
+            Assert.That(chutes, Is.Not.Empty);
+            Assert.That(vendors, Is.Not.Empty);
+
+            var scarce = (int) (profile.StockTarget * profile.ScarceLevel);
+            var levels = new[] { 0, 1, scarce - 1, scarce, (int) profile.StockTarget / 2, (int) profile.StockTarget, profile.VendorStock };
+            var listed = 0;
+            var restocked = 0;
+            var rushed = 0;
+            void Check()
+            {
+                foreach (var good in market.StockedGoods(grid))
+                {
+                    foreach (var stock in levels)
+                    {
+                        market.SetVendorStock(grid, good, stock + 1);
+                        var kept = market.ForSale(grid, good) == 0;
+                        market.SetVendorStock(grid, good, stock);
+                        var charged = vendors.Min(vendor => market.BuyQuote(vendor, good)!.Value.Amount);
+                        var cheapest = vendors.Min(vendor => market.BuyQuote(vendor, good)!.Value.Base);
+                        foreach (var chute in chutes)
+                        {
+                            if (market.Quote(chute, good) is not { } quote)
+                                continue;
+
+                            if (quote.Reason == (LocId) "wg-trade-reason-rush")
+                                rushed++;
+                            else if (entMan.GetComponent<DispenserComponent>(chute).Inventory.ContainsKey(good))
+                                listed++;
+                            else
+                                restocked++;
+
+                            if (kept)
+                                continue;
+
+                            Assert.That(quote.Amount, Is.LessThan(charged),
+                                $"{entMan.ToPrettyString(chute)} pays {quote.Amount} ({quote.Reason}) for {good} at a shelf of {stock}, and the vendor beside it sells one for {charged}.");
+
+                            // A vendor's price trails its stock, so the crate may have been bought before the price rose.
+                            Assert.That(quote.Amount, Is.LessThan(cheapest),
+                                $"{entMan.ToPrettyString(chute)} pays {quote.Amount} ({quote.Reason}) for {good} at a shelf of {stock}, and the vendor beside it sold one for {cheapest} before its price caught up.");
+                        }
+                    }
+                }
+            }
+
+            Check();
+            Assert.That(listed, Is.GreaterThan(0), "No chute lists a good a trade vendor sells, so the listed price isn't tested.");
+            Assert.That(restocked, Is.GreaterThan(0), "No chute took a good to restock, so the restock price isn't tested.");
+
+            var rush = rushes.Start(new ProtoId<WGTradeRushPrototype>("WGTradeRushIndustrial"));
+            Assert.That(rush?.Grid, Is.EqualTo(grid), "No rush opened at the test's station.");
+            Check();
+            rushes.Clear();
+            Assert.That(rushed, Is.GreaterThan(0), "No chute quoted a rush price, so a raise only chutes get isn't tested.");
         });
 
         await pair.CleanReturnAsync();

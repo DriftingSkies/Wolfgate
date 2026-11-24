@@ -31,6 +31,12 @@ public sealed class WGCrewPatientCare
     /// <summary>When the next antitoxin dose may be given.</summary>
     public TimeSpan NextAntitoxin;
 
+    /// <summary>When the next brute auto-injector may be given.</summary>
+    public TimeSpan NextBrutePen;
+
+    /// <summary>When the next burn auto-injector may be given.</summary>
+    public TimeSpan NextBurnPen;
+
     /// <summary>Until when a paramedic leaves the patient where they lie, there being no free bed or drawer to take them to.</summary>
     public TimeSpan NoRoomUntil;
 
@@ -77,6 +83,12 @@ public enum WGCrewMedicAction : byte
 
     /// <summary>A surgeon operated by hand at a table, the pod being busy or missing.</summary>
     TableSurgery,
+
+    /// <summary>A brute auto-injector for heavy brute damage.</summary>
+    BrutePen,
+
+    /// <summary>A burn auto-injector for heavy burns.</summary>
+    BurnPen,
 }
 
 /// <summary>One step of a hand operation: the part, the surgery that owns the step, the step and its base seconds.</summary>
@@ -123,9 +135,29 @@ public sealed partial class WGCrewMedicComponent : Component
     [DataField]
     public string Antitoxin = "Dylovene";
 
-    /// <summary>Units of stimulant or antitoxin in one dose.</summary>
+    /// <summary>Units of stimulant or antitoxin in one dose, given straight when there is no pen for it.</summary>
     [DataField]
     public float Dose = 10f;
+
+    /// <summary>The medipen he gives the unconscious in place of a bare stimulant dose.</summary>
+    [DataField]
+    public EntProtoId? StimulantPen = "EmergencyMedipen";
+
+    /// <summary>The medipen he gives the poisoned in place of a bare antitoxin dose.</summary>
+    [DataField]
+    public EntProtoId? AntitoxinPen = "AntiPoisonMedipen";
+
+    /// <summary>The auto-injector he gives for brute damage of <see cref="PenDamage"/> or more.</summary>
+    [DataField]
+    public EntProtoId? BrutePen = "BruteAutoInjector";
+
+    /// <summary>The auto-injector he gives for burns of <see cref="PenDamage"/> or more.</summary>
+    [DataField]
+    public EntProtoId? BurnPen = "BurnAutoInjector";
+
+    /// <summary>The damage in one group past which he reaches for that group's auto-injector.</summary>
+    [DataField]
+    public float PenDamage = 40f;
 
     /// <summary>The toxin load above which he gives antitoxin.</summary>
     [DataField]

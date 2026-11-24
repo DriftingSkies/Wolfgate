@@ -6,6 +6,9 @@
   description: Personal Data Assistant.
   components:
   - type: WGGameHubInstaller # WOLFGATE(GameHub): every PDA gets the Gamehub program
+  # WOLFGATE(PdaStorage): every PDA gets the app store
+  - type: PdaAppStoreInstaller
+    program: PdaAppStoreCartridge
   - type: Appearance
     appearanceDataInit:
      enum.PdaVisuals.PdaType:
@@ -33,6 +36,14 @@
       whitelist:
         components:
         - PAI
+    # WOLFGATE(PdaStorage): dedicated data disk slot
+    diskSlot:
+      priority: -4
+      ejectSound: /Audio/Machines/id_swipe.ogg
+      insertSound: /Audio/Machines/id_insert.ogg
+      whitelist:
+        components:
+        - DataDisk
     penSlot:
       startingItem: Pen
       priority: -1
@@ -54,6 +65,8 @@
       PDA-id: !type:ContainerSlot {}
       PDA-pen: !type:ContainerSlot {}
       PDA-pai: !type:ContainerSlot {}
+      # WOLFGATE(PdaStorage): dedicated data disk slot
+      PDA-disk: !type:ContainerSlot {}
       Cartridge-Slot: !type:ContainerSlot {}
       program-container: !type:Container
   - type: ItemSlots

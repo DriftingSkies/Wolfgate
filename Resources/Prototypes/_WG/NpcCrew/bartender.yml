@@ -1,0 +1,144 @@
+# NPC bartender (WGCrewBartenderSystem): takes orders said at the bar or picked from his verbs, pours each from the
+# real bottles in the bar's dispensers into a glass and sets it on the counter in front of the customer. Drinks are
+# free; the bottles run dry. He fights only whoever strikes him.
+
+- type: entity
+  id: WGCrewKitBartender
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: NPCRetaliation
+    attackMemoryLength: 60
+
+- type: entity
+  parent: [ WGCrewKitBartender, WGMobCrewBase ]
+  id: WGMobCrewBartender
+  components:
+  - type: Loadout
+    prototypes: [ WGCrewBartenderGear ]
+
+- type: startingGear
+  id: WGCrewBartenderGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitBartender
+    outerClothing: ClothingOuterVest
+    shoes: ClothingShoesColorBlack
+    ears: WGCrewHeadset
+    belt: WeaponPistolMk58
+    pocket1: Magazine45_ACPPistolFMJ
+
+- type: wgCrewRole
+  id: WGCrewBartender
+  kit: WGCrewKitBartender
+  mob: WGMobCrewBartender
+  duty: Bartender
+  engagement: WhenAttacked
+  title: wg-crew-role-bartender
+  order: 46
+  components:
+  - type: WGCrewBartender
+    menu:
+    - WGDrinkBeer
+    - WGDrinkAle
+    - WGDrinkWine
+    - WGDrinkWhiskey
+    - WGDrinkGinTonic
+    - WGDrinkWhiskeyCola
+    - WGDrinkCubaLibre
+    - WGDrinkTequilaSunrise
+    - WGDrinkBlackRussian
+    - WGDrinkCola
+  # Hears orders said at the bar.
+  - type: ActiveListener
+    range: 6
+
+# Bartender: the order under way (a dispenser to pour at, then the counter), else an empty glass on the bar, else his
+# post (WGCrewGuardCompound).
+- type: htnCompound
+  id: WGCrewBartenderCompound
+  branches:
+  - tasks:
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewBartenderOperator
+    - !type:HTNPrimitiveTask
+      operator: !type:MoveToOperator
+        targetKey: WGCrewBartenderDestination
+        rangeKey: InteractRange
+        removeKeyOnFinish: false
+    - !type:HTNPrimitiveTask
+      operator: !type:WGCrewBartenderOperator
+        perform: true
+  - tasks:
+    - !type:HTNCompoundTask
+      task: WGCrewGuardCompound
+
+# The menu. A mix is poured as its ingredients and reacts in the glass; each comes from the booze and soda dispensers'
+# stock bottles (BoozeDispenserInventory, SodaDispenserInventory).
+- type: wgCrewDrink
+  id: WGDrinkBeer
+  name: wg-bartender-drink-beer
+  keywords: wg-bartender-drink-beer-keywords
+  pour: { Beer: 30 }
+  serves: Beer
+
+- type: wgCrewDrink
+  id: WGDrinkAle
+  name: wg-bartender-drink-ale
+  keywords: wg-bartender-drink-ale-keywords
+  pour: { Ale: 30 }
+  serves: Ale
+
+- type: wgCrewDrink
+  id: WGDrinkWine
+  name: wg-bartender-drink-wine
+  keywords: wg-bartender-drink-wine-keywords
+  pour: { Wine: 20 }
+  serves: Wine
+
+- type: wgCrewDrink
+  id: WGDrinkWhiskey
+  name: wg-bartender-drink-whiskey
+  keywords: wg-bartender-drink-whiskey-keywords
+  pour: { Whiskey: 15 }
+  serves: Whiskey
+
+- type: wgCrewDrink
+  id: WGDrinkGinTonic
+  name: wg-bartender-drink-gin-tonic
+  keywords: wg-bartender-drink-gin-tonic-keywords
+  pour: { Gin: 10, TonicWater: 20 }
+  serves: GinTonic
+
+- type: wgCrewDrink
+  id: WGDrinkWhiskeyCola
+  name: wg-bartender-drink-whiskey-cola
+  keywords: wg-bartender-drink-whiskey-cola-keywords
+  pour: { Whiskey: 10, Cola: 20 }
+  serves: WhiskeyCola
+
+- type: wgCrewDrink
+  id: WGDrinkCubaLibre
+  name: wg-bartender-drink-cuba-libre
+  keywords: wg-bartender-drink-cuba-libre-keywords
+  pour: { Rum: 10, Cola: 20 }
+  serves: CubaLibre
+
+- type: wgCrewDrink
+  id: WGDrinkTequilaSunrise
+  name: wg-bartender-drink-tequila-sunrise
+  keywords: wg-bartender-drink-tequila-sunrise-keywords
+  pour: { Tequila: 20, JuiceOrange: 10 }
+  serves: TequilaSunrise
+
+- type: wgCrewDrink
+  id: WGDrinkBlackRussian
+  name: wg-bartender-drink-black-russian
+  keywords: wg-bartender-drink-black-russian-keywords
+  pour: { Vodka: 20, CoffeeLiqueur: 10 }
+  serves: BlackRussian
+
+- type: wgCrewDrink
+  id: WGDrinkCola
+  name: wg-bartender-drink-cola
+  keywords: wg-bartender-drink-cola-keywords
+  pour: { Cola: 30 }
+  serves: Cola

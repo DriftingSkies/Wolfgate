@@ -1,0 +1,27 @@
+pda-store-category-utility = Utility
+pda-store-category-security = Security
+pda-store-category-engineering = Engineering
+pda-store-category-cargo = Cargo
+pda-store-category-medical = Medical
+pda-store-category-entertainment = Entertainment
+
+pda-store-app-notekeeper-desc = Keep and copy notes on the device.
+pda-store-app-news-desc = Read station news and articles.
+pda-store-app-crew-desc = List the crew and their assignments.
+pda-store-app-astronav-desc = Show the PDA's coordinates and heading.
+pda-store-app-nanochat-desc = Message other ID card numbers over the network.
+pda-store-app-art-desc = Browse the sector's scanned art catalogue.
+pda-store-app-gamehub-desc = Play and share arcade levels.
+pda-store-app-medtek-desc = Medical diagnostic readouts.
+pda-store-app-netprobe-desc = Inspect network devices' addresses and frequencies.
+pda-store-app-lattice-desc = Monitor the lattice and its drift status.
+pda-store-app-logprobe-desc = Read access logs from nearby devices.
+pda-store-app-wanted-desc = Look up wanted persons and warrants.
+pda-store-app-bench-desc = Issue, track and pardon bench tickets.
+pda-store-app-judgeline-desc = Judge Line casework and warrants.
+pda-store-app-bounty-desc = Take and track bounty contracts.
+pda-store-app-contracts-desc = Track contracts taken at a contract board.
+pda-store-app-appraisal-desc = Appraise items and stacks for their value.
+pda-store-app-ledger-desc = Track account balances and transactions.
+pda-store-app-mail-desc = Mail metrics and delivery figures.
+pda-store-app-market-desc = Browse and trade on the local market.

@@ -27,7 +27,8 @@ right side shows the selected ship in tabs:
   the hull faction or the player company it flies for without changing its owner.
 - **Access**: lock, mode (Public included, which only staff set), allow list, reset door rules and the ship code.
 - **Repair**: a fix of ticked parts, quick fixes that run one part at once (air, fires, trash, puddles, lights),
-  and the repair snapshot (re-take, restore).
+  and the repair snapshot (re-take, restore). Puddles takes the stains with them: footprints, blood and dirt decals
+  that cleaning would take (a mapper's paint stays) and Wolfmed's blood splats on the walls (`RemoveStains`).
 - **Move**: bring it to the admin, send it to a position or another grid, dock it at any free dock or one picked
   from the target's docks (those in use are shown and can't be picked), Stop Knotting, return to orbit, undock,
   halt, clear pilots, FTL lock and jump cooldown.

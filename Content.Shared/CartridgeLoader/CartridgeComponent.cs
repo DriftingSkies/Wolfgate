@@ -19,6 +19,18 @@ public sealed partial class CartridgeComponent : Component
     [DataField]
     public SpriteSpecifier? Icon;
 
+    /// <summary>
+    /// WOLFGATE(PdaStorage): storage footprint in GQ. Capacity is checked against this on install.
+    /// </summary>
+    [DataField]
+    public int Size = 8;
+
+    /// <summary>
+    /// WOLFGATE(PdaStorage): preinstalled/built-in program. Excluded from the user storage capacity.
+    /// </summary>
+    [DataField]
+    public bool SystemApp;
+
     [AutoNetworkedField]
     public InstallationStatus InstallationStatus = InstallationStatus.Cartridge;
 
