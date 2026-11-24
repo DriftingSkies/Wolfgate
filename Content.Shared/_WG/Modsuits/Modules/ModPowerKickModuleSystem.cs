@@ -49,7 +49,7 @@ public sealed partial class ModPowerKickModuleSystem : EntitySystem
         _audio.PlayPredicted(ent.Comp.ChargeSound, user, user);
         _popup.PopupPredicted(Loc.GetString(ent.Comp.ChargePopup), user, user);
 
-        var range = TryComp<BaseTargetActionComponent>(args.Action.Owner, out var targetAction)
+        var range = TryComp<EntityWorldTargetActionComponent>(args.Action.Owner, out var targetAction)
             ? targetAction.Range
             : (float?) null;
 

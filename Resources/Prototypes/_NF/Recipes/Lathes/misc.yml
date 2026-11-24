@@ -181,3 +181,9 @@
   completetime: 2
   materials:
     Steel: 600
+#WOLFGATE START: Add whistle to mercfab and vend
+- type: latheRecipe
+  id: Whistle
+  result: Whistle
+  parent: NFBaseGlowstickRecipe
+#WOLFGATE END

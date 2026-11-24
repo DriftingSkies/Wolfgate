@@ -9006,3 +9006,94 @@ Entries:
   id: 100576
   time: '2026-11-23T12:21:54.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/807
+- author: Erol509
+  changes:
+    - type: Add
+      message: >-
+        Added Springlock and Magnetic Deployment modules. Springlock suits can
+        snap shut and injure the wearer when triggered; Magnetic Deployment
+        halves activation time.
+    - type: Add
+      message: >-
+        MODsuit sphere impacts now build up stamina damage and can stun the
+        wearer.
+    - type: Add
+      message: >-
+        MODsuit injectors now function as hypopens, and two suits come with
+        built-in insulation.
+    - type: Tweak
+      message: >-
+        Worn MODsuit helmet lights can no longer be toggled; use the flashlight
+        module for light.
+    - type: Fix
+      message: >-
+        EMP shielding works whenever the suit has an EMP shield module
+        installed.
+    - type: Fix
+      message: Built-in modules no longer count toward removable module complexity.
+  id: 100577
+  time: '2026-11-23T14:55:59.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/819
+- author: Sushiburger
+  changes:
+    - type: Tweak
+      message: Novalite C1 mags now craftable in the Mercenary Techfab
+    - type: Tweak
+      message: >-
+        Whistles now buyable from clothesmate, as well as craftable in the
+        Mercenary Techfab
+  id: 100578
+  time: '2026-11-23T14:56:50.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/820
+- author: Happyowl93
+  changes:
+    - type: Fix
+      message: Shipyards no longer pay for narcotics aboard a ship you sell.
+  id: 100579
+  time: '2026-11-23T17:37:51.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/825
+- author: ImogenOC
+  changes:
+    - type: Add
+      message: 'Mapping mode: a live test shows the ship''s initialised value.'
+    - type: Add
+      message: >-
+        Mapping mode: a Mirror crane tool flips mobile drydock cranes without
+        tools.
+    - type: Add
+      message: Fuelled, running IRE controller variants for mappers, for 1 to 6 cores.
+    - type: Tweak
+      message: >-
+        Mapping mode's issue check now catches stacked walls of different types
+        and overlapping pipes.
+  id: 100580
+  time: '2026-11-23T23:17:15.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/823
+- author: ImogenOC
+  changes:
+    - type: Fix
+      message: >-
+        Mapping mode: walls and entities no longer disappear after a live test
+        or after switching levels.
+  id: 100581
+  time: '2026-11-23T23:18:17.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/822
+- author: Happyowl93
+  changes:
+    - type: Tweak
+      message: >-
+        Cybernetic eyes, autodoc program disks, ship repair ammo, the Remade
+        cutter, the Monolith tap flatpack and the Lattice status console now
+        sell for close to what they cost to print.
+  id: 100582
+  time: '2026-11-24T02:11:07.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/826
+- author: ImogenOC
+  changes:
+    - type: Fix
+      message: >-
+        The synthetic readout, death banner and explanation card now sit inside
+        the game view at a console's cockpit view instead of drifting off it.
+  id: 100583
+  time: '2026-11-24T11:39:24.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/828

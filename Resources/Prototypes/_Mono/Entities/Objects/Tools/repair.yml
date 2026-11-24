@@ -119,5 +119,5 @@
       Steel: 100
       Plastic: 100
   - type: StaticPrice
-    price: 2000
+    price: 820 # WOLFGATE: was 2000, about three times its print cost
     vendPrice: 8000

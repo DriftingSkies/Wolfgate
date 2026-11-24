@@ -6,6 +6,26 @@ namespace Content.Shared._WG.Modsuits.Systems;
 
 public sealed partial class ModSuitSystem
 {
+    /// <summary>Activation delay after a springlock or magnetic deployment module changes it.</summary>
+    public TimeSpan GetActivationStepTime(Entity<ModSuitComponent> ent)
+    {
+        return _proto.Index(ent.Comp.Theme).ActivationStepTime * ent.Comp.ActivationStepMultiplier;
+    }
+
+    /// <summary>Multiplies the suit's activation step delay, used by deployment-speed modules.</summary>
+    public void ScaleActivationStep(Entity<ModSuitComponent> ent, float factor)
+    {
+        ent.Comp.ActivationStepMultiplier *= factor;
+        Dirty(ent);
+    }
+
+    /// <summary>True when the wearer already has a hardsuit in the slot the chestplate would replace.</summary>
+    private bool WearsHardsuit(EntityUid wearer)
+    {
+        return _inventory.TryGetSlotEntity(wearer, OuterClothingSlot, out var outer)
+               && _tags.HasTag(outer.Value, "Hardsuit");
+    }
+
     public bool TryToggleActivation(Entity<ModSuitComponent> ent, EntityUid? user)
     {
         switch (ent.Comp.State)
@@ -31,6 +51,12 @@ public sealed partial class ModSuitSystem
         if (ent.Comp.State != ModSuitState.Inactive || ent.Comp.Wearer == null)
             return false;
 
+        if (WearsHardsuit(ent.Comp.Wearer.Value))
+        {
+            PopupFail(ent, user, "modsuit-hardsuit-too-thick");
+            return false;
+        }
+
         if (ent.Comp.DeployQueue.Count > 0)
         {
             PopupFail(ent, user, "modsuit-deploying");
@@ -49,7 +75,6 @@ public sealed partial class ModSuitSystem
             return false;
         }
 
-        var theme = _proto.Index(ent.Comp.Theme);
         ent.Comp.State = ModSuitState.Activating;
         ent.Comp.ActivationQueue = new List<string>();
         foreach (var slot in ent.Comp.PartEntities.Keys)
@@ -58,13 +83,13 @@ public sealed partial class ModSuitSystem
                 ent.Comp.ActivationQueue.Add(slot);
         }
 
-        ent.Comp.NextActivationStep = _timing.CurTime + theme.ActivationStepTime;
+        ent.Comp.NextActivationStep = _timing.CurTime + GetActivationStepTime(ent);
         Dirty(ent);
         RaiseUpdated(ent);
         _actions.SetToggled(ent.Comp.ActivateActionEntity, true);
 
-        if (user != null)
-            _popup.PopupClient(Loc.GetString("modsuit-activating"), ent, user.Value);
+        if (!_net.IsClient && user != null)
+            _popup.PopupEntity(Loc.GetString("modsuit-activating"), ent, user.Value);
 
         return true;
     }
@@ -76,12 +101,11 @@ public sealed partial class ModSuitSystem
 
         DeactivateAllModules(ent, false);
 
-        var theme = _proto.Index(ent.Comp.Theme);
         var queue = new List<string>(ent.Comp.PartEntities.Keys);
         queue.Reverse();
         ent.Comp.State = ModSuitState.Deactivating;
         ent.Comp.ActivationQueue = queue;
-        ent.Comp.NextActivationStep = _timing.CurTime + theme.ActivationStepTime;
+        ent.Comp.NextActivationStep = _timing.CurTime + GetActivationStepTime(ent);
         Dirty(ent);
         RaiseUpdated(ent);
         _actions.SetToggled(ent.Comp.ActivateActionEntity, false);
@@ -93,6 +117,9 @@ public sealed partial class ModSuitSystem
 
     private void UpdateActivation()
     {
+        if (_net.IsClient)
+            return;
+
         var now = _timing.CurTime;
         var query = EntityQueryEnumerator<ModSuitComponent>();
         while (query.MoveNext(out var uid, out var comp))
@@ -126,7 +153,7 @@ public sealed partial class ModSuitSystem
                     SetPartSealed((part, partComp), ent, sealing, false);
                 }
 
-                comp.NextActivationStep = now + _proto.Index(comp.Theme).ActivationStepTime;
+                comp.NextActivationStep = now + GetActivationStepTime(ent);
                 Dirty(uid, comp);
                 RaiseUpdated(uid);
                 continue;
@@ -152,8 +179,8 @@ public sealed partial class ModSuitSystem
 
         if (!silent && ent.Comp.Wearer is { } wearer)
         {
-            _audio.PlayPredicted(ent.Comp.ActivateSound, ent, wearer);
-            _popup.PopupClient(Loc.GetString("modsuit-activated"), wearer, wearer);
+            _audio.PlayPvs(ent.Comp.ActivateSound, ent);
+            _popup.PopupEntity(Loc.GetString("modsuit-activated"), wearer, wearer);
         }
 
         if (ent.Comp.Powered)
@@ -176,8 +203,8 @@ public sealed partial class ModSuitSystem
 
         if (!silent && ent.Comp.Wearer is { } wearer)
         {
-            _audio.PlayPredicted(ent.Comp.DeactivateSound, ent, wearer);
-            _popup.PopupClient(Loc.GetString("modsuit-deactivated"), wearer, wearer);
+            _audio.PlayPvs(ent.Comp.DeactivateSound, ent);
+            _popup.PopupEntity(Loc.GetString("modsuit-deactivated"), wearer, wearer);
         }
 
         RefreshDrain(ent);
@@ -225,8 +252,8 @@ public sealed partial class ModSuitSystem
         if (wearer == null)
             return;
 
-        _popup.PopupClient(Loc.GetString("modsuit-seal-broken"), wearer.Value, wearer.Value, PopupType.LargeCaution);
-        _audio.PlayPredicted(ent.Comp.SealBrokenSound, ent, wearer.Value);
+        _popup.PopupEntity(Loc.GetString("modsuit-seal-broken"), wearer.Value, wearer.Value, PopupType.LargeCaution);
+        _audio.PlayPvs(ent.Comp.SealBrokenSound, ent);
     }
 
     private void SetPartSealed(Entity<ModPartComponent> part, Entity<ModSuitComponent> suit, bool sealing, bool silent)
@@ -253,8 +280,8 @@ public sealed partial class ModSuitSystem
         if (silent || suit.Comp.Wearer is not { } wearer)
             return;
 
-        _audio.PlayPredicted(part.Comp.SealSound, wearer, wearer);
-        _popup.PopupClient(Loc.GetString(sealing ? part.Comp.SealUpPopup : part.Comp.SealDownPopup,
+        _audio.PlayPvs(part.Comp.SealSound, wearer);
+        _popup.PopupEntity(Loc.GetString(sealing ? part.Comp.SealUpPopup : part.Comp.SealDownPopup,
                 ("part", part.Owner)),
             wearer,
             wearer,

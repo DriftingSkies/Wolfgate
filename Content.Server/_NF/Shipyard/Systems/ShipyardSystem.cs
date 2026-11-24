@@ -341,6 +341,8 @@ public sealed partial class ShipyardSystem : SharedShipyardSystem
     // returns false if it has ShipyardPreserveOnSaleComponent, true otherwise
     private bool LacksPreserveOnSaleComp(EntityUid uid)
     {
+        if (WGHoldsNarcotics(uid)) // WOLFGATE(WolfChem): a hull sale pays nothing for narcotics, which sell at a pallet under heat
+            return false; // WOLFGATE(WolfChem)
         return !TryComp<ShipyardSellConditionComponent>(uid, out var comp) || comp.PreserveOnSale == false;
     }
     private void CleanupShipyard()

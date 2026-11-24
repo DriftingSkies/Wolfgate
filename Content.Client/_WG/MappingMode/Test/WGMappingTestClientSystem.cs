@@ -64,7 +64,8 @@ public sealed partial class WGMappingTestClientSystem : EntitySystem
         }
 
         var key = _input.GetKeyFunctionButtonString(WGMappingKeyFunctions.WGMappingTestReturn);
-        _banner.Update(tester.MapName, tester.Ends - _timing.CurTime, string.IsNullOrEmpty(key) ? null : key);
+        _banner.Update(tester.MapName, tester.Ends - _timing.CurTime, string.IsNullOrEmpty(key) ? null : key,
+            tester.Appraisal);
     }
 
     /// <summary>Asks the server to start the session's test, or to join the one running.</summary>

@@ -37,6 +37,9 @@ public enum MappingToggle : byte
 
     /// <summary>A door open or closed.</summary>
     Door,
+
+    /// <summary>A mobile drydock crane's arm on the body's other side, as its Cutting tool does.</summary>
+    Mirror,
 }
 
 /// <summary>Flips one <see cref="MappingToggle"/> state on an entity.</summary>

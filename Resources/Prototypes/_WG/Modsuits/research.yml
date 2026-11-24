@@ -41,6 +41,8 @@
   - ModsuitModuleVisorDiagnostic
   - ModsuitModuleReagentScanner
   - ModsuitModuleJointTorsion
+  - ModsuitModuleSpringlock
+  - ModsuitModuleMagneticDeployment
   - ModsuitModuleGloveTranslator
   - ModsuitModulePlasmaStabilizer
   - ModsuitModuleHatStabilizer

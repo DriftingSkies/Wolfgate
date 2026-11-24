@@ -106,6 +106,7 @@
     # ClothingHandsGlovesColorPurple: 2
     # ClothingEyesGlassesCheapSunglasses: 3
     # DO NOT ADD MORE, USE UNIFORM DYING
+    Whistle: 4294967295 # WOLFGATE: Add whistle to mercfab and vend
     # WOLFGATE(MeridianClothing) START: Meridian Rift clothing, written by Tools/_WG/MeridianClothing/port.py
     WGMeridianClothingAccessoryAntiSecPin: 2
     WGMeridianClothingAccessoryArmbandEngine: 2

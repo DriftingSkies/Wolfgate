@@ -21,6 +21,7 @@
       outerClothing: WGAsfClothingModsuitChestplateField
       shoes: WGAsfClothingModsuitBootsField
     inbuiltModules:
+    - ModsuitModuleBuiltinInsulation
     - ModsuitModuleVoidBoots
   - type: StaticPrice
     price: 5000
@@ -144,6 +145,7 @@
       outerClothing: WGAsfClothingModsuitChestplateAegis
       shoes: WGAsfClothingModsuitBootsAegis
     inbuiltModules:
+    - ModsuitModuleBuiltinInsulation
     - ModsuitModuleBuiltinAegisShield
     - ModsuitModuleVoidBoots
   - type: ExtendDescription

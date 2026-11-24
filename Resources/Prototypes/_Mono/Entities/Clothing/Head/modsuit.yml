@@ -35,38 +35,40 @@
         Slash: 0.95
         Piercing: 0.95
         Heat: 0.95
-  #THIS WILL BE REPLACED WITH MODULE ↓↓
-  - type: ToggleableVisuals
-    spriteLayer: light
-  - type: PointLight
-    enabled: false
-    radius: 5
-    energy: 3
-    lightMask: ConeSingle
-    autoRot: true
-    netsync: false
-  - type: HandheldLight
-    addPrefix: true
-    blinkingBehaviourId: blinking
-    radiatingBehaviourId: radiating
-  - type: ItemTogglePointLight
-  - type: LightBehaviour
-    behaviours:
-      - !type:FadeBehaviour
-        id: radiating
-        interpolate: Linear
-        maxDuration: 2.0
-        startValue: 3.0
-        endValue: 2.0
-        isLooped: true
-        reverseWhenFinished: true
-      - !type:PulseBehaviour
-        id: blinking
-        interpolate: Nearest
-        maxDuration: 1.0
-        minValue: 0.1
-        maxValue: 2.0
-        isLooped: true
+  # WOLFGATE(Modsuits) START: helmet lights cannot be toggled on a worn suit; the flashlight module provides light
+#   #THIS WILL BE REPLACED WITH MODULE ↓↓
+#   - type: ToggleableVisuals
+#     spriteLayer: light
+#   - type: PointLight
+#     enabled: false
+#     radius: 5
+#     energy: 3
+#     lightMask: ConeSingle
+#     autoRot: true
+#     netsync: false
+#   - type: HandheldLight
+#     addPrefix: true
+#     blinkingBehaviourId: blinking
+#     radiatingBehaviourId: radiating
+#   - type: ItemTogglePointLight
+#   - type: LightBehaviour
+#     behaviours:
+#       - !type:FadeBehaviour
+#         id: radiating
+#         interpolate: Linear
+#         maxDuration: 2.0
+#         startValue: 3.0
+#         endValue: 2.0
+#         isLooped: true
+#         reverseWhenFinished: true
+#       - !type:PulseBehaviour
+#         id: blinking
+#         interpolate: Nearest
+#         maxDuration: 1.0
+#         minValue: 0.1
+#         maxValue: 2.0
+#         isLooped: true
+  # WOLFGATE END
 
 - type: entity
   parent: [ClothingModsuitHelmetStandard, ShowMedicalIcons, ShowSecurityIcons]
@@ -106,37 +108,39 @@
         Piercing: 0.95
         Heat: 0.95
         Radiation: 0.8
-  - type: ToggleableVisuals
-    spriteLayer: light
-  - type: PointLight
-    enabled: false
-    radius: 5
-    energy: 3
-    lightMask: ConeSingle
-    autoRot: true
-    netsync: false
-  - type: HandheldLight
-    addPrefix: true
-    blinkingBehaviourId: blinking
-    radiatingBehaviourId: radiating
-  - type: ItemTogglePointLight
-  - type: LightBehaviour
-    behaviours:
-      - !type:FadeBehaviour
-        id: radiating
-        interpolate: Linear
-        maxDuration: 2.0
-        startValue: 3.0
-        endValue: 2.0
-        isLooped: true
-        reverseWhenFinished: true
-      - !type:PulseBehaviour
-        id: blinking
-        interpolate: Nearest
-        maxDuration: 1.0
-        minValue: 0.1
-        maxValue: 2.0
-        isLooped: true
+  # WOLFGATE(Modsuits) START: helmet lights cannot be toggled on a worn suit; the flashlight module provides light
+#   - type: ToggleableVisuals
+#     spriteLayer: light
+#   - type: PointLight
+#     enabled: false
+#     radius: 5
+#     energy: 3
+#     lightMask: ConeSingle
+#     autoRot: true
+#     netsync: false
+#   - type: HandheldLight
+#     addPrefix: true
+#     blinkingBehaviourId: blinking
+#     radiatingBehaviourId: radiating
+#   - type: ItemTogglePointLight
+#   - type: LightBehaviour
+#     behaviours:
+#       - !type:FadeBehaviour
+#         id: radiating
+#         interpolate: Linear
+#         maxDuration: 2.0
+#         startValue: 3.0
+#         endValue: 2.0
+#         isLooped: true
+#         reverseWhenFinished: true
+#       - !type:PulseBehaviour
+#         id: blinking
+#         interpolate: Nearest
+#         maxDuration: 1.0
+#         minValue: 0.1
+#         maxValue: 2.0
+#         isLooped: true
+  # WOLFGATE END
 
 - type: entity
   parent: [ClothingModsuitHelmetStandard, ShowMedicalIcons, ShowSecurityIcons]
@@ -190,37 +194,39 @@
     viewCircleSpacing: 260
     phosphorColor: "#41D7D9"
     lightingColor: "#FFFFFF32"
-  - type: ToggleableVisuals
-    spriteLayer: light
-  - type: PointLight
-    enabled: false
-    radius: 5
-    energy: 3
-    lightMask: ConeSingle
-    autoRot: true
-    netsync: false
-  - type: HandheldLight
-    addPrefix: true
-    blinkingBehaviourId: blinking
-    radiatingBehaviourId: radiating
-  - type: ItemTogglePointLight
-  - type: LightBehaviour
-    behaviours:
-      - !type:FadeBehaviour
-        id: radiating
-        interpolate: Linear
-        maxDuration: 2.0
-        startValue: 3.0
-        endValue: 2.0
-        isLooped: true
-        reverseWhenFinished: true
-      - !type:PulseBehaviour
-        id: blinking
-        interpolate: Nearest
-        maxDuration: 1.0
-        minValue: 0.1
-        maxValue: 2.0
-        isLooped: true
+  # WOLFGATE(Modsuits) START: helmet lights cannot be toggled on a worn suit; the flashlight module provides light
+#   - type: ToggleableVisuals
+#     spriteLayer: light
+#   - type: PointLight
+#     enabled: false
+#     radius: 5
+#     energy: 3
+#     lightMask: ConeSingle
+#     autoRot: true
+#     netsync: false
+#   - type: HandheldLight
+#     addPrefix: true
+#     blinkingBehaviourId: blinking
+#     radiatingBehaviourId: radiating
+#   - type: ItemTogglePointLight
+#   - type: LightBehaviour
+#     behaviours:
+#       - !type:FadeBehaviour
+#         id: radiating
+#         interpolate: Linear
+#         maxDuration: 2.0
+#         startValue: 3.0
+#         endValue: 2.0
+#         isLooped: true
+#         reverseWhenFinished: true
+#       - !type:PulseBehaviour
+#         id: blinking
+#         interpolate: Nearest
+#         maxDuration: 1.0
+#         minValue: 0.1
+#         maxValue: 2.0
+#         isLooped: true
+  # WOLFGATE END
 
 # Volta
 - type: entity
@@ -265,37 +271,39 @@
         Piercing: 0.90
         Heat: 0.90
         Radiation: 0.5
-  - type: ToggleableVisuals
-    spriteLayer: light
-  - type: PointLight
-    enabled: false
-    radius: 5
-    energy: 3
-    lightMask: ConeSingle
-    autoRot: true
-    netsync: false
-  - type: HandheldLight
-    addPrefix: true
-    blinkingBehaviourId: blinking
-    radiatingBehaviourId: radiating
-  - type: ItemTogglePointLight
-  - type: LightBehaviour
-    behaviours:
-      - !type:FadeBehaviour
-        id: radiating
-        interpolate: Linear
-        maxDuration: 2.0
-        startValue: 3.0
-        endValue: 2.0
-        isLooped: true
-        reverseWhenFinished: true
-      - !type:PulseBehaviour
-        id: blinking
-        interpolate: Nearest
-        maxDuration: 1.0
-        minValue: 0.1
-        maxValue: 2.0
-        isLooped: true
+  # WOLFGATE(Modsuits) START: helmet lights cannot be toggled on a worn suit; the flashlight module provides light
+#   - type: ToggleableVisuals
+#     spriteLayer: light
+#   - type: PointLight
+#     enabled: false
+#     radius: 5
+#     energy: 3
+#     lightMask: ConeSingle
+#     autoRot: true
+#     netsync: false
+#   - type: HandheldLight
+#     addPrefix: true
+#     blinkingBehaviourId: blinking
+#     radiatingBehaviourId: radiating
+#   - type: ItemTogglePointLight
+#   - type: LightBehaviour
+#     behaviours:
+#       - !type:FadeBehaviour
+#         id: radiating
+#         interpolate: Linear
+#         maxDuration: 2.0
+#         startValue: 3.0
+#         endValue: 2.0
+#         isLooped: true
+#         reverseWhenFinished: true
+#       - !type:PulseBehaviour
+#         id: blinking
+#         interpolate: Nearest
+#         maxDuration: 1.0
+#         minValue: 0.1
+#         maxValue: 2.0
+#         isLooped: true
+  # WOLFGATE END
 
 # Gallóglach
 - type: entity
@@ -349,35 +357,37 @@
         Piercing: 0.90
         Heat: 0.90
         Radiation: 0.5
-  #THIS WILL BE REPLACED WITH MODULE ↓↓
-  - type: ToggleableVisuals
-    spriteLayer: light
-  - type: PointLight
-    enabled: false
-    radius: 5
-    energy: 3
-    lightMask: ConeSingle
-    autoRot: true
-    netsync: false
-  - type: HandheldLight
-    addPrefix: true
-    blinkingBehaviourId: blinking
-    radiatingBehaviourId: radiating
-  - type: ItemTogglePointLight
-  - type: LightBehaviour
-    behaviours:
-      - !type:FadeBehaviour
-        id: radiating
-        interpolate: Linear
-        maxDuration: 2.0
-        startValue: 3.0
-        endValue: 2.0
-        isLooped: true
-        reverseWhenFinished: true
-      - !type:PulseBehaviour
-        id: blinking
-        interpolate: Nearest
-        maxDuration: 1.0
-        minValue: 0.1
-        maxValue: 2.0
-        isLooped: true
+  # WOLFGATE(Modsuits) START: helmet lights cannot be toggled on a worn suit; the flashlight module provides light
+#   #THIS WILL BE REPLACED WITH MODULE ↓↓
+#   - type: ToggleableVisuals
+#     spriteLayer: light
+#   - type: PointLight
+#     enabled: false
+#     radius: 5
+#     energy: 3
+#     lightMask: ConeSingle
+#     autoRot: true
+#     netsync: false
+#   - type: HandheldLight
+#     addPrefix: true
+#     blinkingBehaviourId: blinking
+#     radiatingBehaviourId: radiating
+#   - type: ItemTogglePointLight
+#   - type: LightBehaviour
+#     behaviours:
+#       - !type:FadeBehaviour
+#         id: radiating
+#         interpolate: Linear
+#         maxDuration: 2.0
+#         startValue: 3.0
+#         endValue: 2.0
+#         isLooped: true
+#         reverseWhenFinished: true
+#       - !type:PulseBehaviour
+#         id: blinking
+#         interpolate: Nearest
+#         maxDuration: 1.0
+#         minValue: 0.1
+#         maxValue: 2.0
+#         isLooped: true
+  # WOLFGATE END

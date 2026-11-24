@@ -84,7 +84,7 @@
       enum.WGLatticeStatusUiKey.Key:
         type: WGLatticeStatusBoundUserInterface
   - type: StaticPrice
-    price: 1500
+    price: 230 # prints for about 185
 
 - type: entity
   parent: BaseFlatpack
@@ -93,7 +93,7 @@
   - type: Flatpack
     entity: WGLatticeStatusConsole
   - type: StaticPrice
-    price: 1500
+    price: 230 # prints for about 185
 
 - type: latheRecipe
   id: WGLatticeStatusCartridge

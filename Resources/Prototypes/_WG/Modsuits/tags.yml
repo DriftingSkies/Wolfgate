@@ -22,6 +22,9 @@
   id: ModsuitModule
 
 - type: Tag
+  id: ModsuitModuleDeployment
+
+- type: Tag
   id: ModsuitModuleGravity
 
 - type: Tag

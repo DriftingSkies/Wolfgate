@@ -401,6 +401,54 @@ public sealed partial class ModDnaLockModuleComponent : Component
     public SoundSpecifier? Sound = new SoundPathSpecifier("/Audio/Machines/id_swipe.ogg");
 }
 
+/// <summary>A springlock or magnetic deployment module that changes how fast the suit seals.</summary>
+[RegisterComponent, NetworkedComponent]
+public sealed partial class ModSpringlockModuleComponent : Component
+{
+    [DataField]
+    public float ActivationStepMultiplier = 0.5f;
+
+    /// <summary>Whether water or touch reagents can make the mechanism snap shut.</summary>
+    [DataField]
+    public bool Deadly = true;
+
+    [DataField]
+    public float WaterVaporThreshold = 5f;
+
+    [DataField]
+    public TimeSpan MinSnapDelay = TimeSpan.FromSeconds(3);
+
+    [DataField]
+    public TimeSpan MaxSnapDelay = TimeSpan.FromSeconds(5);
+
+    [DataField]
+    public DamageSpecifier SnapDamage = new()
+    {
+        DamageDict =
+        {
+            ["Slash"] = 200,
+            ["Piercing"] = 100,
+        },
+    };
+
+    [ViewVariables]
+    public bool SetOff;
+
+    [ViewVariables]
+    public TimeSpan? SnapAt;
+}
+
+/// <summary>Marks a wearer whose active springlock module is waiting to snap or is armed.</summary>
+[RegisterComponent]
+public sealed partial class ModSpringlockWearerComponent : Component
+{
+    [DataField]
+    public EntityUid? Module;
+
+    [ViewVariables]
+    public TimeSpan NextGasCheck;
+}
+
 [RegisterComponent, NetworkedComponent]
 public sealed partial class ModPowerKickModuleComponent : Component
 {

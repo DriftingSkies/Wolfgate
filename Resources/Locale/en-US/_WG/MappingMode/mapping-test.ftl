@@ -16,6 +16,7 @@ wg-mapping-test-too-big = The session has {$count} entities; a test copies it, s
 wg-mapping-test-failed = The test couldn't be started.
 wg-mapping-test-end-not-owner = Only the owner ends the test for everyone.
 wg-mapping-test-no-ftl = No FTL in a test: fly the ship with its thrusters.
+wg-mapping-test-appraised = Initialised, the ship appraises at {$value}.
 
 # The mapping screen's menu bar button
 wg-mapping-screen-bar-test = Test map: walk a running copy of it as your character
@@ -26,6 +27,7 @@ wg-mapping-test-banner-title = Testing {$name}
 wg-mapping-test-banner-back = Back to mapping
 wg-mapping-test-banner-back-key = Back to mapping ({$key})
 wg-mapping-test-banner-time = Time left {$time}
+wg-mapping-test-banner-value = Value {$value}
 
 cmd-wg_mappingmode_list-testing = {"    "}testing for {$minutes} min: {$testers}
 wg-mapping-screen-bar-test-downloading = Test map waits until the download finishes

@@ -722,7 +722,7 @@
   parent: BaseModsuitModuleDevice
   id: ModsuitModuleInjector
   name: MOD injector module
-  description: A module installed into the wrist of the suit, this functions as a high-capacity syringe, with a tip fine enough to locate the emergency injection ports on any suit of armor.
+  description: A module installed into the wrist of the suit, this functions as a high-capacity hypospray, with a tip fine enough to locate the emergency injection ports on any suit of armor.
   components:
   - type: Sprite
     state: injector
@@ -1136,10 +1136,10 @@
     device: ModsuitDeviceJanitorMister
 
 - type: entity
-  parent: Syringe
+  parent: Hypospray
   id: ModsuitDeviceInjector
   name: MOD injector
-  description: A high-capacity syringe extending from the suit's wrist.
+  description: A high-capacity hypospray extending from the suit's wrist.
   categories: [ HideSpawnMenu ]
   components:
   - type: PhysicalComposition
@@ -2159,6 +2159,45 @@
     requiredParts:
     - outerClothing
   - type: ModJumpJetModule
+
+- type: entity
+  parent: BaseModsuitModule
+  id: ModsuitModuleSpringlock
+  name: MOD springlock module
+  description: A mechanical exoskeleton woven through the suit. It halves the time every part needs to seal, but water or a splash of reagent can make it snap shut with the wearer still inside.
+  components:
+  - type: Sprite
+    state: springlock
+  - type: ModModule
+    complexity: 3
+    incompatible:
+      tags:
+      - ModsuitModuleDeployment
+  - type: ModSpringlockModule
+  - type: Tag
+    tags:
+    - ModsuitModule
+    - ModsuitModuleDeployment
+
+- type: entity
+  parent: BaseModsuitModule
+  id: ModsuitModuleMagneticDeployment
+  name: MOD magnetic deployment module
+  description: A modern, safe take on the springlock mechanism. Magnets halve the time every part needs to seal, without the risk of snapping shut.
+  components:
+  - type: Sprite
+    state: magnet
+  - type: ModModule
+    complexity: 3
+    incompatible:
+      tags:
+      - ModsuitModuleDeployment
+  - type: ModSpringlockModule
+    deadly: false
+  - type: Tag
+    tags:
+    - ModsuitModule
+    - ModsuitModuleDeployment
 
 - type: entity
   parent: BaseModsuitModule

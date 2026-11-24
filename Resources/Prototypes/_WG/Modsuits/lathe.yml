@@ -679,6 +679,23 @@
 
 - type: latheRecipe
   parent: BaseModsuitModuleRecipe
+  id: ModsuitModuleSpringlock
+  result: ModsuitModuleSpringlock
+  materials:
+    Steel: 600
+    Glass: 300
+
+- type: latheRecipe
+  parent: BaseModsuitModuleRecipe
+  id: ModsuitModuleMagneticDeployment
+  result: ModsuitModuleMagneticDeployment
+  materials:
+    Steel: 600
+    Gold: 200
+    Glass: 200
+
+- type: latheRecipe
+  parent: BaseModsuitModuleRecipe
   id: ModsuitModuleJointTorsion
   result: ModsuitModuleJointTorsion
   materials:
@@ -777,6 +794,8 @@
   - ModsuitModuleStorageHolding
   - ModsuitModuleStorageCase
   - ModsuitModuleKinesis
+  - ModsuitModuleSpringlock
+  - ModsuitModuleMagneticDeployment
   - ModsuitModuleJointTorsion
   - ModsuitModuleGloveTranslator
   - ModsuitModulePlasmaStabilizer

@@ -74,7 +74,8 @@ a contraband pallet narcotics hand in for a point per `turn_in_value` of the str
 (`WGNarcoticGoodsSystem.TurnIn`), with no flat reward, and the pallet takes every one it counted: seizing a stockpile
 pays the same in a tank or in baggies, and splitting one into doses earns nothing more. A point cashes for 2,000,
 which at 15,000 a point is about 13% of the value: under the `heat_floor` a dump sells for, so handing in never beats
-selling.
+selling. A shipyard pays nothing for narcotics aboard a hull it buys, nor for what holds them, a tank, a crate's
+baggies or a spill (`ShipyardSystem.Narcotics.cs`), so a stockpile can't be sold past the heat inside a ship.
 
 Entry points: `WGDose` and `WGClearIntoxication` (entity effects), `SharedWGIntoxicationSystem` (levels, tiers,
 `IsNeurowareHost`), `WGIntoxicationSystem.Tick`, `WGDependenceSystem.Tick`, `WGDeliverySystem`,
@@ -132,6 +133,7 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
 - [`Content.Server/_WG/WolfChem/Narcotics/BotanySystem.Narcotics.cs`](Narcotics/BotanySystem.Narcotics.cs)
 - [`Content.Server/_WG/WolfChem/Narcotics/HealthAnalyzerSystem.Narcotics.cs`](Narcotics/HealthAnalyzerSystem.Narcotics.cs)
 - [`Content.Server/_WG/WolfChem/Narcotics/MetabolizerSystem.Granular.cs`](Narcotics/MetabolizerSystem.Granular.cs)
+- [`Content.Server/_WG/WolfChem/Narcotics/ShipyardSystem.Narcotics.cs`](Narcotics/ShipyardSystem.Narcotics.cs)
 - [`Content.Server/_WG/WolfChem/Narcotics/WGAlcoholSystem.cs`](Narcotics/WGAlcoholSystem.cs)
 - [`Content.Server/_WG/WolfChem/Narcotics/WGAnalyzerConditionsSystem.cs`](Narcotics/WGAnalyzerConditionsSystem.cs)
 - [`Content.Server/_WG/WolfChem/Narcotics/WGDeliverySystem.cs`](Narcotics/WGDeliverySystem.cs)
@@ -306,6 +308,7 @@ client partial of `WolfmedSyntheticHudOverlaySystem`. Sticks are in `Resources/P
 - [`Content.Server/_NF/Contraband/Systems/ContrabandTurnInSystem.cs`](../../_NF/Contraband/Systems/ContrabandTurnInSystem.cs)
   - the street value of the narcotics handed in, summed over the pallets
   - narcotics hand in for what they hold together
+- [`Content.Server/_NF/Shipyard/Systems/ShipyardSystem.cs`](../../_NF/Shipyard/Systems/ShipyardSystem.cs): a hull sale pays nothing for narcotics, which sell at a pallet under heat
 - [`Content.Server/Body/Systems/MetabolizerSystem.cs`](../../Body/Systems/MetabolizerSystem.cs)
   - impurity damage
   - a rate below 0.01 u a tick builds up instead of rounding to nothing

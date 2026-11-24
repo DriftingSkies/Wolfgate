@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Numerics;
 using Content.Shared._WG.Wolfmed.Hud;
+using Robust.Client.Graphics;
+using Robust.Client.UserInterface;
 
 namespace Content.Client._WG.Wolfmed.Overlays;
 
@@ -43,14 +45,17 @@ public static class WolfmedSyntheticHudLayout
 
     public const float MaxScale = 2.5f;
 
-    /// <summary>The viewport in the coordinates a screen-space overlay actually draws in.</summary>
-    // ViewportBounds is in global physical pixels but the draw handle is already translated to the viewport's
-    // top-left, so the global origin has to come back off or every block lands a viewport away from its corner.
-    public static UIBox2 Screen(UIBox2i bounds, Vector2 origin) => new(
-        bounds.Left - origin.X,
-        bounds.Top - origin.Y,
-        bounds.Right - origin.X,
-        bounds.Bottom - origin.Y);
+    /// <summary>The part of an overlay's viewport that shows on screen, in the coordinates the overlay draws in.</summary>
+    public static UIBox2 Screen(in OverlayDrawArgs args) =>
+        Screen(args.ViewportBounds, (args.ViewportControl as Control)?.GlobalPixelRect);
+
+    /// <summary>
+    /// The picture's bounds clipped to the control showing it. The engine resets a screen-space overlay's handle to
+    /// the window's origin before drawing it, so both are already in window pixels, wherever the view sits: full
+    /// screen or a console's cockpit panel. A picture stretched wider than its control is cropped by it.
+    /// </summary>
+    public static UIBox2 Screen(UIBox2i bounds, UIBox2i? shown) =>
+        shown is { } control ? bounds.Intersection(control) ?? bounds : bounds;
 
     /// <summary>
     /// The text scale as drawn: the player's setting times the control's UI scale, because the handle works

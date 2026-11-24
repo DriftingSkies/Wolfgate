@@ -1,6 +1,7 @@
 #nullable enable
 using Content.IntegrationTests.Pair;
 using Content.Server._WG.MappingMode;
+using Content.Shared._WG.Drydock;
 using Content.Shared._WG.MappingTools;
 using Content.Shared.Doors.Components;
 using Content.Shared.Lock;
@@ -131,6 +132,57 @@ public sealed class WGMappingToolToggleTest
 
             Use(locker, MappingToggle.Weld);
             Assert.That(Welded(locker), Is.True, "A closed locker welds.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Mirror flips an anchored mobile drydock crane with its panel shut, undoes, and leaves a station crane alone.</summary>
+    [Test]
+    public async Task MirrorFlipsMobileCrane()
+    {
+        await using var pair = await PoolManager.GetServerClient(Settings);
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var mapping = entMan.System<WGMappingModeSystem>();
+        var mapSys = entMan.System<MapSystem>();
+        var tileDefs = server.ResolveDependency<ITileDefinitionManager>();
+        await Enable(pair);
+        var mapper = (await AddMappers(pair, 1))[0];
+
+        EntityUid crane = default;
+        EntityUid station = default;
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(mapping.TryCreateSession(mapper, "Mirror Test", out var session), Is.True);
+            var mapId = entMan.GetComponent<TransformComponent>(session!.RootMap).MapID;
+            var grid = mapSys.CreateGridEntity(mapId);
+            var plating = new Tile(tileDefs["Plating"].TileId);
+            for (var x = 0; x < 6; x++)
+            {
+                for (var y = 0; y < 3; y++)
+                {
+                    mapSys.SetTile(grid, grid.Comp, new Vector2i(x, y), plating);
+                }
+            }
+
+            crane = entMan.SpawnEntity("WGMobileDrydockCrane", new EntityCoordinates(grid.Owner, 1f, 1f));
+            station = entMan.SpawnEntity("WGDrydockCrane", new EntityCoordinates(grid.Owner, 4f, 1f));
+        });
+
+        bool Mirrored(EntityUid uid) => entMan.GetComponent<WGDrydockCraneComponent>(uid).Mirrored;
+        void Use(EntityUid target) =>
+            RaiseAs(entMan, mapper, new MappingToolsToggleEvent(entMan.GetNetEntity(target), MappingToggle.Mirror));
+
+        await server.WaitAssertion(() =>
+        {
+            Use(crane);
+            Assert.That(Mirrored(crane), Is.True, "Mirror flips the crane without unbolting or opening it.");
+            RaiseAs(entMan, mapper, new MappingToolsHistoryEvent(false));
+            Assert.That(Mirrored(crane), Is.False, "Undo flips it back.");
+
+            Use(station);
+            Assert.That(Mirrored(station), Is.False, "A station crane doesn't mirror in place.");
         });
 
         await pair.CleanReturnAsync();

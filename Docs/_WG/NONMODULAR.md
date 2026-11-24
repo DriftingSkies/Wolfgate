@@ -525,6 +525,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Resources/Prototypes/_Mono/Entities/Objects/Electronics/mech.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Electronics/mech.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/_Mono/Entities/Objects/Specific/Mechs/mech_construction.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Specific/Mechs/mech_construction.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/_Mono/Entities/Objects/Specific/Robotics/borg_modules.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Specific/Robotics/borg_modules.yml): its own id; the shared Security id made every faction weapon module a duplicate of the rest
+- [`Resources/Prototypes/_Mono/Entities/Objects/Tools/repair.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Tools/repair.yml): was 2000, about three times its print cost
 - [`Resources/Prototypes/_Mono/Entities/Objects/Weapons/Guns/Launchers/mpssm.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Weapons/Guns/Launchers/mpssm.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/_Mono/Entities/Objects/Weapons/Guns/Snipers/snipers.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Weapons/Guns/Snipers/snipers.yml): low-cap 7.62x51 mags fit like every other 7.62x51 rifle
 - [`Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/base_launcher.yml`](../../Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/base_launcher.yml): restore the licence header removed by Kill Spdx
@@ -598,6 +599,8 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
   - gas leak event disabled
   - vent clog event disabled
 - [`Resources/Prototypes/_NF/Guidebook/rules.yml`](../../Resources/Prototypes/_NF/Guidebook/rules.yml): Frontier ruleset is unused, only MonolithRuleset is shown in-game and on Symphony
+- [`Resources/Prototypes/_NF/Recipes/Lathes/misc.yml`](../../Resources/Prototypes/_NF/Recipes/Lathes/misc.yml): Add whistle to mercfab and vend
+- [`Resources/Prototypes/_NF/Recipes/Lathes/Packs/Deprecated/mercenary_techfab.yml`](../../Resources/Prototypes/_NF/Recipes/Lathes/Packs/Deprecated/mercenary_techfab.yml): Add whistle to mercfab and vend
 - [`Resources/Prototypes/_NF/Roles/Jobs/Medical/doc.yml`](../../Resources/Prototypes/_NF/Roles/Jobs/Medical/doc.yml)
   - the Medical department has no roles since Monolith#4807, so count medic time instead
   - the Director of Care boards ships to rescue people like the responders
@@ -605,11 +608,13 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
   - PDV pack, TSF pod report 2 min later
   - PDV pack, tighter PDV pod coordinates
 - [`Resources/Prototypes/_Obelisk/Species/hydrakin.yml`](../../Resources/Prototypes/_Obelisk/Species/hydrakin.yml): hydrakin is not selectable in character creation
+- [`Resources/Prototypes/_Shitmed/Body/Organs/cybernetic.yml`](../../Resources/Prototypes/_Shitmed/Body/Organs/cybernetic.yml): priced as a printed part, not the 4500 harvested organ it inherits
 - [`Resources/Prototypes/_Shitmed/Entities/Objects/Devices/Circuitboards/Machine/production.yml`](../../Resources/Prototypes/_Shitmed/Entities/Objects/Devices/Circuitboards/Machine/production.yml): a machine part under stackRequirements can't be inserted; the frame reads parts from requirements
 - [`Resources/Prototypes/_StarLight/Entities/Mobs/Species/felionoid.yml`](../../Resources/Prototypes/_StarLight/Entities/Mobs/Species/felionoid.yml): OwO accent removed
 - [`Resources/Prototypes/Atmospherics/gases.yml`](../../Resources/Prototypes/Atmospherics/gases.yml): a tritium is worth the same as frezon or as nitrium, 10 -> 5 (Mono 1\<10)
 - [`Resources/Prototypes/Catalog/Cargo/cargo_atmospherics.yml`](../../Resources/Prototypes/Catalog/Cargo/cargo_atmospherics.yml): bought plasma costs what it is worth as tritium feedstock, 7000 -> 45000 (Mono - Gas sell prices)
 - [`Resources/Prototypes/Catalog/Fills/Crates/engines.yml`](../../Resources/Prototypes/Catalog/Fills/Crates/engines.yml): the IRE rebrand missed this crate
+- [`Resources/Prototypes/Catalog/VendingMachines/Inventories/clothesmate.yml`](../../Resources/Prototypes/Catalog/VendingMachines/Inventories/clothesmate.yml): Add whistle to mercfab and vend
 - [`Resources/Prototypes/Catalog/VendingMachines/Inventories/engivend.yml`](../../Resources/Prototypes/Catalog/VendingMachines/Inventories/engivend.yml): radiation suits buyable from the EngiVend
 - [`Resources/Prototypes/Damage/modifier_sets.yml`](../../Resources/Prototypes/Damage/modifier_sets.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/Entities/Clothing/Back/specific.yml`](../../Resources/Prototypes/Entities/Clothing/Back/specific.yml): Frontier hid ClothingBackpack, so it was never a valid chameleon pick and the menu got no state

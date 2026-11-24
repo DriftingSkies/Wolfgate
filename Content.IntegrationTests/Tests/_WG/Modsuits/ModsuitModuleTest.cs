@@ -1974,4 +1974,80 @@ public sealed class ModsuitModuleTest
 
         await pair.CleanReturnAsync();
     }
+
+    /// <summary>A chestplate cannot deploy over a hardsuit, and the suit refuses to seal while one is worn.</summary>
+    [Test]
+    public async Task HardsuitBlocksModsuitDeploymentAndActivation()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var inventory = entMan.System<InventorySystem>();
+        var modSuit = entMan.System<ModSuitSystem>();
+        var map = await pair.CreateTestMap();
+
+        EntityUid human = default;
+        EntityUid suit = default;
+        await server.WaitPost(() =>
+        {
+            human = entMan.SpawnEntity("MobHuman", map.GridCoords);
+            var hardsuit = entMan.SpawnEntity("ClothingOuterHardsuitSpatio", map.GridCoords);
+            suit = entMan.SpawnEntity("ClothingModsuitStandardPowerCell", map.GridCoords);
+            Assert.That(inventory.TryEquip(human, hardsuit, "outerClothing", silent: true, force: true), Is.True);
+            Assert.That(inventory.TryEquip(human, suit, "back", silent: true, force: true), Is.True);
+        });
+        await server.WaitRunTicks(1);
+
+        await server.WaitAssertion(() =>
+        {
+            var comp = entMan.GetComponent<ModSuitComponent>(suit);
+            Assert.That(modSuit.TryDeployPart((suit, comp), "outerClothing", human), Is.False,
+                "the chestplate should refuse to deploy over a hardsuit");
+            Assert.That(modSuit.TryStartActivation((suit, comp), human), Is.False,
+                "the suit should refuse to seal while a hardsuit is worn");
+            Assert.That(comp.State, Is.EqualTo(ModSuitState.Inactive));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>The magnetic deployment module halves the time between sealing each part.</summary>
+    [Test]
+    public async Task MagneticDeploymentHalvesActivationTime()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var modSuit = entMan.System<ModSuitSystem>();
+        var wires = entMan.System<SharedWiresSystem>();
+        var prototypes = server.ResolveDependency<IPrototypeManager>();
+        var map = await pair.CreateTestMap();
+
+        EntityUid suit = default;
+        await server.WaitPost(() =>
+        {
+            suit = entMan.SpawnEntity("ClothingModsuitStandardPowerCell", map.GridCoords);
+        });
+        await server.WaitRunTicks(1);
+
+        await server.WaitAssertion(() =>
+        {
+            var comp = entMan.GetComponent<ModSuitComponent>(suit);
+            var panel = entMan.GetComponent<WiresPanelComponent>(suit);
+            Assert.That(wires.TogglePanel(suit, panel, true), Is.True);
+
+            var module = entMan.SpawnEntity("ModsuitModuleMagneticDeployment", map.GridCoords);
+            Assert.That(modSuit.TryInstallModule((suit, comp), module, null), Is.True);
+
+            var springlock = entMan.SpawnEntity("ModsuitModuleSpringlock", map.GridCoords);
+            Assert.That(modSuit.TryInstallModule((suit, comp), springlock, null), Is.False,
+                "deployment speed modules should not stack");
+
+            var themeTime = prototypes.Index<ModThemePrototype>(comp.Theme).ActivationStepTime;
+            Assert.That(modSuit.GetActivationStepTime((suit, comp)).TotalSeconds,
+                Is.EqualTo(themeTime.TotalSeconds * 0.5).Within(0.001));
+        });
+
+        await pair.CleanReturnAsync();
+    }
 }

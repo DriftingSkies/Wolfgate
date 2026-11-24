@@ -304,7 +304,9 @@ keeps the bolas (`CatcherAmmoTest`).
   - Extra guns for Vagrants, from libertyvend.
   - New revolver for vagrants
 - [`Resources/Prototypes/_Mono/Loadouts/gun.yml`](../../../Resources/Prototypes/_Mono/Loadouts/gun.yml): Extra guns for Vagrants, from libertyvend. Provided in cases.
+- [`Resources/Prototypes/_Mono/Recipes/Lathes/Ammo/Intermediate_5.56x45mm.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/Ammo/Intermediate_5.56x45mm.yml): Adding Novalite mags to the mercfab.
 - [`Resources/Prototypes/_Mono/Recipes/Lathes/merc_weapons.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/merc_weapons.yml): Strix is craftable through research. Lee Enfield, Keyboard, Energy Gun, Viper and MK32 are craftable.
+- [`Resources/Prototypes/_Mono/Recipes/Lathes/Packs/ammo.yml`](../../../Resources/Prototypes/_Mono/Recipes/Lathes/Packs/ammo.yml): Adding Novalite mags to the mercfab.
 - [`Resources/Prototypes/_Mono/Research/arsenal.yml`](../../../Resources/Prototypes/_Mono/Research/arsenal.yml): Make Strix craftable through research
 - [`Resources/Prototypes/_Mono/Research/Organizations/mieyo.yml`](../../../Resources/Prototypes/_Mono/Research/Organizations/mieyo.yml): the Sakura needs its .160 smart magazine
 - [`Resources/Prototypes/_Mono/Research/Universal/prerequisites.yml`](../../../Resources/Prototypes/_Mono/Research/Universal/prerequisites.yml): the SKR FMJ box sat in the dynamic pack with no tech to unlock it

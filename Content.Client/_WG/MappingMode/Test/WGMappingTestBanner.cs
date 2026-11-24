@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Client.Stylesheets;
+using Content.Shared._NF.Bank;
 using Robust.Client.UserInterface.Controls;
 
 namespace Content.Client._WG.MappingMode.Test;
@@ -12,6 +13,7 @@ public sealed class WGMappingTestBanner : PanelContainer
 {
     private readonly Label _title;
     private readonly Label _time;
+    private readonly Label _value;
 
     /// <summary>The Back to mapping button.</summary>
     public readonly Button BackButton;
@@ -27,6 +29,7 @@ public sealed class WGMappingTestBanner : PanelContainer
 
         _title = new Label { VerticalAlignment = VAlignment.Center };
         _time = new Label { VerticalAlignment = VAlignment.Center, MinWidth = 110 };
+        _value = new Label { VerticalAlignment = VAlignment.Center, Visible = false };
         BackButton = new Button
         {
             Text = Loc.GetString("wg-mapping-test-banner-back"),
@@ -38,13 +41,17 @@ public sealed class WGMappingTestBanner : PanelContainer
             Orientation = BoxContainer.LayoutOrientation.Horizontal,
             Margin = new Thickness(8, 2),
             SeparationOverride = 12,
-            Children = { _title, BackButton, _time },
+            Children = { _title, BackButton, _time, _value },
         });
     }
 
-    /// <summary>Shows the map's name, the time left and the key that goes back, if one is bound.</summary>
-    public void Update(string mapName, TimeSpan remaining, string? key)
+    /// <summary>Shows the map's name, the time left, the key that goes back if one is bound, and the ship's value once taken.</summary>
+    public void Update(string mapName, TimeSpan remaining, string? key, int? appraisal)
     {
+        _value.Visible = appraisal != null;
+        if (appraisal is { } value)
+            _value.Text = Loc.GetString("wg-mapping-test-banner-value", ("value", BankSystemExtensions.ToSpesoString(value)));
+
         _title.Text = Loc.GetString("wg-mapping-test-banner-title", ("name", mapName));
         if (remaining < TimeSpan.Zero)
             remaining = TimeSpan.Zero;
