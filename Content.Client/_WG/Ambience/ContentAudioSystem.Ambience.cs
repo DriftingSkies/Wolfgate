@@ -115,11 +115,11 @@ public sealed partial class ContentAudioSystem
             foreach (var file in collection.PickFiles)
                 bag.Add(file.ToString());
             _random.Shuffle(bag);
-
-            // A fresh bag shouldn't open with the track that just played.
-            if (bag.Count > 1 && bag[^1] == _wgAmbientLast)
-                (bag[0], bag[^1]) = (bag[^1], bag[0]);
         }
+
+        // Never the track that just played, even from another pool that shares it.
+        if (bag.Count > 1 && bag[^1] == _wgAmbientLast)
+            (bag[0], bag[^1]) = (bag[^1], bag[0]);
 
         var path = bag[^1];
         bag.RemoveAt(bag.Count - 1);

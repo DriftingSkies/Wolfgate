@@ -451,8 +451,8 @@ public sealed partial class ContentAudioSystem
         // WOLFGATE(Ambience) START: slower crossfade between ambient tracks; a track that finished on its own is already gone
         if (TryComp<AudioComponent>(_ambientMusicStream, out var previousAudio))
             FadeOut(_ambientMusicStream, previousAudio, combatMode ? DefaultDuration : WgAmbientFadeOut);
-        // WOLFGATE END
         // FadeOut(_ambientMusicStream);
+        // WOLFGATE END
 
         if (combatMode)
         {
