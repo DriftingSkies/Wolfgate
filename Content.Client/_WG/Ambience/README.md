@@ -57,7 +57,7 @@ Wolfgate replacements for the Crescent biome and station music, swapped in a poo
   - shuffled bag, no repeats
   - wait for the change to hold before switching
   - a Lattice band's own music holds other ambient music off
-  - slower crossfade between ambient tracks
+  - slower crossfade between ambient tracks; a track that finished on its own is already gone
   - the playlist follows this track to its end
 - [`Resources/Prototypes/_Crescent/Music/ambient_music.yml`](../../../Resources/Prototypes/_Crescent/Music/ambient_music.yml)
   - uncharted space plays the far-out Wolfgate pool, not the old inner-ring track
