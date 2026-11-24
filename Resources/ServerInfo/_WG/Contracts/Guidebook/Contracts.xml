@@ -5,16 +5,16 @@
 
   <Box>
     <GuideEntityEmbed Entity="WGContractBoard"/>
-    <GuideEntityEmbed Entity="WGContractCrate"/>
+    <GuideEntityEmbed Entity="WGContractManifestParcel"/>
     <GuideEntityEmbed Entity="WGContractParcel"/>
     <GuideEntityEmbed Entity="WGContractFlightRecorder"/>
   </Box>
 
   ## Taking a contract
 
-  1. Open the board and pick an offer. Each one says who you are working for, on behalf of which faction or company, and shows the reward, any deposit, the time allowed and exactly what is asked: the stations, the counts, the goods.
-  2. Accept it. Any deposit comes out of your bank and is paid back with the reward. Cargo for the contract is left on the [color=#5fc3e4]pickup pad[/color] marked beside the board, or at the station named as the pickup. With no pad nearby, it goes on the nearest clear floor in front of the board.
-  3. Track it in the [color=#5fc3e4]Contracts[/color] app on your PDA: objectives, time left, where to go and coordinates for anything out in space. Type the coordinates into your helm's waypoint panel to fly there.
+  1. Open a board, or the [color=#5fc3e4]Contracts[/color] app on your PDA, and pick an offer. Each one says who you are working for, on behalf of which faction or company, and shows the reward, any deposit, the time allowed and exactly what is asked: the stations, the counts, the goods.
+  2. Accept it. Any deposit comes out of your bank and is paid back with the reward. A contract taken from the PDA hands its cargo out at the nearest board that posts it. Cargo for the contract is left on the [color=#5fc3e4]pickup pad[/color] marked beside the board, or at the station named as the pickup. With no pad nearby, it goes on the nearest clear floor in front of the board.
+  3. Track it in the Contracts app: objectives, time left, where to go and coordinates for anything out in space. Type the coordinates into your helm's waypoint panel to fly there.
   4. Finish before the clock runs out. The reward and deposit go straight to your bank.
 
   Abandoning a contract, losing its cargo or running out of time forfeits the deposit.
@@ -33,7 +33,7 @@
 
   - [bold]Delivery[/bold]: sealed parcels, carried by hand. They count as delivered the moment you walk them aboard the destination station.
   - [bold]Hauling[/bold]: contract crates that need a hold or a lot of dragging. Same rule: get them aboard the destination station.
-  - [bold]Supply[/bold] and [bold]Mining[/bold]: you get an empty manifest crate. Fill it with what the manifest asks for, bought, made, mined or found, and close it anywhere aboard the contractor's station. Examine the crate to see what is still missing.
+  - [bold]Supply[/bold] and [bold]Mining[/bold]: you are handed a manifest parcel. Use goods on it, or use it on goods, an ore bag or a crate, and it takes only what the manifest still needs, splitting stacks as it goes. Carry it aboard the contractor's station once it is full. Examine the parcel to see what is still missing.
   - [bold]Bounty Hunting[/bold]: a target ship appears out in space and shows on the sector radar. Destroy it. The hull it leaves is yours to claim if you can.
   - [bold]Salvage[/bold]: a wreck appears out in space with something worth recovering aboard. Find it and bring it to the station named.
   - [bold]Escort[/bold]: a freighter waits for you at a rendezvous near the contractor's station. Once you arrive it sets off for its destination. Raiders may be waiting. The contract is done when it gets there.
@@ -51,7 +51,7 @@
   - [bold]Tows[/bold] (Salvage): a dead hull appears out in space. Tether it to within range of the contractor's station. You need to be carrying a rope coil and a tether installer to take one. It fails if the hull is destroyed.
   - [bold]Planetside[/bold]: recoveries, rescues, den clearing, relay repairs, downloads, caches and anomaly surveys at a site on one of the sector's worlds. The board names the world; once you accept, the site's signal is marked in orbit. Land and find it. The site is held by the world's own wildlife, and the tougher the contract, the worse it gets. Carcinoma never takes contracts.
   - [bold]Construction[/bold]: collect prefab kits at the board and set each down on the ground at the site, where it unfolds by itself into what it is: a beacon, generator, solar panel, colony fab and more. What you build stays.
-  - [bold]Outpost build[/bold]: a six-part chain on one site for the Colonial Development Office at Central or the USSP. Stake the claim, clear the ground, raise power, set up fabrication, hold the outpost while the fab core works, then commission it with a crate of materials. About two hours and around 600,000 in all, paid at every stage.
+  - [bold]Outpost build[/bold]: a six-part chain on one site for the Colonial Development Office at Central or the USSP. Stake the claim, clear the ground, raise power, set up fabrication, hold the outpost while the fab core works, then commission it with a parcel of materials. About two hours and around 600,000 in all, paid at every stage.
 
   ## Risk tiers and standing
 

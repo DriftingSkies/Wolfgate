@@ -8,7 +8,7 @@
   tier: 1
   title: wg-contract-asf-anomaly-survey
   briefing: wg-contract-asf-anomaly-survey-brief
-  reward: 8000, 11000
+  reward: 11200, 15400
   minutes: 45
   crewBonus: 0.25
   weight: 1.5
@@ -16,7 +16,7 @@
   creditEntity: WGAsfRewardGrant1
   objective: !type:WGContractSurvey
     count: 1, 2
-    perAnomaly: 2500
+    perAnomaly: 3500
     minDistance: 2500
     maxDistance: 4000
     stationClearance: 2000
@@ -33,14 +33,14 @@
   tier: 1
   title: wg-contract-asf-gravimetry
   briefing: wg-contract-asf-gravimetry-brief
-  reward: 5500, 7500
+  reward: 7700, 10500
   minutes: 45
   weight: 1.5
   credits: 8
   creditEntity: WGAsfRewardGrant1
   objective: !type:WGContractSweep
     points: 3, 4
-    perPoint: 1500
+    perPoint: 2100
     minDistance: 2500
     maxDistance: 5500
 
@@ -51,7 +51,7 @@
   tier: 1
   title: wg-contract-asf-lenses
   briefing: wg-contract-asf-lenses-brief
-  reward: 12250, 16600
+  reward: 17150, 23250
   minutes: 50
   weight: 2.4
   credits: 6
@@ -76,7 +76,7 @@
   tier: 2
   title: wg-contract-asf-artifact
   briefing: wg-contract-asf-artifact-brief
-  reward: 15000, 20000
+  reward: 21000, 28000
   deposit: 1000
   minutes: 60
   crewBonus: 0.25
@@ -85,7 +85,7 @@
   creditEntity: WGAsfRewardGrant1
   objective: !type:WGContractRecovery
     item: ComplexXenoArtifactItem
-    perUnlockedNode: 2500
+    perUnlockedNode: 3500
     minDistance: 3500
     maxDistance: 5500
     infestation:
@@ -103,7 +103,7 @@
   tier: 2
   title: wg-contract-asf-infested-hulk
   briefing: wg-contract-asf-infested-hulk-brief
-  reward: 22000, 28000
+  reward: 30800, 39200
   deposit: 1500
   minutes: 60
   minCrew: 2
@@ -113,7 +113,7 @@
   creditEntity: WGAsfRewardGrant1
   objective: !type:WGContractSurvey
     count: 2, 3
-    perAnomaly: 4000
+    perAnomaly: 5600
     minDistance: 3500
     maxDistance: 5500
     anomalies: [ AnomalyFlesh, AnomalyLiquid, AnomalyShadow, AnomalyPyroclastic ]
@@ -134,7 +134,7 @@
   tier: 2
   title: wg-contract-asf-probe-data
   briefing: wg-contract-asf-probe-data-brief
-  reward: 20000, 26000
+  reward: 28000, 36400
   deposit: 1500
   minutes: 55
   crewBonus: 0.3
@@ -159,7 +159,7 @@
   tier: 2
   title: wg-contract-asf-research-beacon
   briefing: wg-contract-asf-research-beacon-brief
-  reward: 16000, 21000
+  reward: 22400, 29400
   deposit: 1000
   minutes: 55
   crewBonus: 0.25
@@ -208,7 +208,7 @@
   tier: 2
   title: wg-contract-asf-vessel-escort
   briefing: wg-contract-asf-vessel-escort-brief
-  reward: 18000, 23000
+  reward: 25200, 32200
   deposit: 1500
   minutes: 60
   crewBonus: 0.25
@@ -218,7 +218,7 @@
   objective: !type:WGContractEscort
     encounters: [ WGContractEscortLight ]
     destinations: [ WGContractorAnomalousLab, WGContractorSevastopol ]
-    perKilometre: 1250
+    perKilometre: 1750
 
 - type: wgContract
   id: WGContractAsfCores
@@ -227,7 +227,7 @@
   tier: 3
   title: wg-contract-asf-cores
   briefing: wg-contract-asf-cores-brief
-  reward: 39400, 52500
+  reward: 55150, 73500
   deposit: 2000
   minutes: 60
   weight: 1.6
@@ -248,7 +248,7 @@
   tier: 3
   title: wg-contract-asf-twin-survey
   briefing: wg-contract-asf-twin-survey-brief
-  reward: 35000, 45000
+  reward: 49000, 63000
   deposit: 2500
   minutes: 70
   minCrew: 2
@@ -259,7 +259,7 @@
   objective: !type:WGContractSurvey
     derelicts: 2
     count: 3, 4
-    perAnomaly: 4000
+    perAnomaly: 5600
     minDistance: 3500
     maxDistance: 5500
     anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyBluespace, AnomalyIce, AnomalyFlora ]
@@ -278,7 +278,7 @@
   tier: 3
   title: wg-contract-asf-field-station
   briefing: wg-contract-asf-field-station-brief
-  reward: 70000, 85000
+  reward: 98000, 119000
   deposit: 5000
   minutes: 100
   minCrew: 3
@@ -310,7 +310,7 @@
   tier: 4
   title: wg-contract-asf-xeno-study
   briefing: wg-contract-asf-xeno-study-brief
-  reward: 60000, 75000
+  reward: 84000, 105000
   deposit: 5000
   minutes: 75
   minCrew: 3
@@ -320,7 +320,7 @@
   creditEntity: WGAsfRewardGrant1
   objective: !type:WGContractSurvey
     count: 3, 4
-    perAnomaly: 6000
+    perAnomaly: 8400
     minDistance: 4000
     maxDistance: 6500
     stationClearance: 3000
@@ -344,7 +344,7 @@
   tier: 2
   title: wg-contract-asf-probe-line
   briefing: wg-contract-asf-probe-line-brief
-  reward: 9000, 12000
+  reward: 12600, 16800
   minutes: 55
   weight: 1.3
   credits: 10
@@ -352,7 +352,7 @@
   objective: !type:WGContractDeploy
     buoy: WGContractProbeBuoy
     points: 3, 4
-    perPoint: 2000
+    perPoint: 2800
     minDistance: 2500
     maxDistance: 5000
 
@@ -363,7 +363,7 @@
   tier: 2
   title: wg-contract-asf-planet-survey
   briefing: wg-contract-asf-planet-survey-brief
-  reward: 16000, 20000
+  reward: 22400, 28000
   deposit: 1000
   minutes: 75
   weight: 1.3
@@ -372,7 +372,7 @@
   objective: !type:WGContractSurvey
     wrecks: []
     count: 2, 3
-    perAnomaly: 2500
+    perAnomaly: 3500
     anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyIce, AnomalyFlora, AnomalyBluespace ]
     planet:
       hostiles: 2, 4
@@ -384,7 +384,7 @@
   tier: 2
   title: wg-contract-asf-planet-field-data
   briefing: wg-contract-asf-planet-field-data-brief
-  reward: 24000, 30000
+  reward: 33600, 42000
   deposit: 1500
   minutes: 75
   weight: 1.1
@@ -398,3 +398,64 @@
     planet:
       hostiles: 2, 4
       waveHostiles: 2, 3
+
+- type: wgContract
+  id: WGContractAsfFieldSweep
+  contractor: WGContractorAsfResearch
+  category: Science
+  tier: 1
+  title: wg-contract-asf-field-sweep
+  briefing: wg-contract-asf-field-sweep-brief
+  reward: 8400, 11200
+  minutes: 45
+  weight: 1.2
+  credits: 8
+  creditEntity: WGAsfRewardGrant1
+  objective: !type:WGContractSweep
+    points: 3, 5
+    perPoint: 2100
+    minDistance: 2000
+    maxDistance: 5000
+
+- type: wgContract
+  id: WGContractAsfRelayRepair
+  contractor: WGContractorAsfResearch
+  category: Salvage
+  tier: 2
+  title: wg-contract-asf-relay-repair
+  briefing: wg-contract-asf-relay-repair-brief
+  reward: 22400, 29400
+  minutes: 55
+  weight: 1
+  deposit: 1000
+  crewBonus: 0.25
+  credits: 10
+  creditEntity: WGAsfRewardGrant1
+  objective: !type:WGContractRepair
+    infestation:
+    - entity: MobCarpSalvage
+      count: 1, 2
+    wrecks:
+    - /Maps/Salvage/small-1.yml
+    - /Maps/Salvage/small-2.yml
+    - /Maps/Salvage/small-ai-survey-drone.yml
+
+- type: wgContract
+  id: WGContractAsfPlanetRecorder
+  contractor: WGContractorAsfResearch
+  category: Salvage
+  tier: 2
+  title: wg-contract-asf-planet-recorder
+  briefing: wg-contract-asf-planet-recorder-brief
+  reward: 28000, 36400
+  minutes: 70
+  weight: 1.1
+  deposit: 1000
+  credits: 12
+  creditEntity: WGAsfRewardGrant1
+  objective: !type:WGContractRecovery
+    wrecks: []
+    item: WGContractDataCore
+    count: 1, 1
+    planet:
+      hostiles: 2, 4

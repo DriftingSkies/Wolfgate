@@ -12,6 +12,7 @@ using Content.Shared.Mind;
 using Content.Shared.Stacks;
 using Content.Shared.Storage.Components;
 using Content.Shared.Storage.EntitySystems;
+using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -113,35 +114,40 @@ public sealed class ContractFlowTest
             Assert.That(contracts.Standing(holder, "WGContractorSevastopol"), Is.EqualTo(1));
         });
 
-        // Supply: an iron quota for Hokkaido is not taken short, and is taken full.
+        // Supply: an iron quota for Hokkaido. The parcel takes only what is still needed, is not taken short, and is
+        // taken the moment it is full on the station.
         WGContract supply = default!;
-        EntityUid crate = default, stowaway = default;
+        EntityUid parcel = default, surplus = default, stowaway = default;
         await server.WaitAssertion(() =>
         {
             supply = contracts.PostOffer("WGContractMMCIronQuota")!;
             Assert.That(contracts.TryAccept(mob, supply.Id, board), Is.Null);
-            crate = supply.Items.Single();
-            Fill(server, crate, "SteelOre1", supply.Goods.Single().Count - 1);
-            xforms.SetCoordinates(crate, new EntityCoordinates(Largest(server, hokkaido), 1.5f, 1.5f));
+            parcel = supply.Items.Single();
+            Assert.That(entMan.HasComponent<WGContractParcelComponent>(parcel), Is.True, "Supply work should hand out a parcel.");
+            entMan.System<SharedContainerSystem>().TryRemoveFromContainer(parcel);
+            Fill(server, contracts, mob, parcel, "SteelOre1", supply.Goods.Single().Count - 1);
+            stowaway = entMan.SpawnEntity(Mob, entMan.GetComponent<TransformComponent>(parcel).Coordinates);
+            contracts.FillParcel(parcel, stowaway, mob);
+            xforms.SetCoordinates(parcel, new EntityCoordinates(Largest(server, hokkaido), 1.5f, 1.5f));
         });
         await pair.RunTicksSync(90);
         await server.WaitAssertion(() =>
         {
-            Assert.That(contracts.ActiveFor(holder).Single().Id, Is.EqualTo(supply.Id), "A short crate was taken.");
-            Assert.That(contracts.Packed(supply, crate).Single(), Is.EqualTo(supply.Goods.Single().Count - 1));
-            Fill(server, crate, "SteelOre1", 1);
-            // Someone shut in with the goods, as when a crate is closed on a person standing over it.
-            stowaway = entMan.SpawnEntity(Mob, entMan.GetComponent<TransformComponent>(crate).Coordinates);
-            Assert.That(entMan.System<SharedEntityStorageSystem>().Insert(stowaway, crate), Is.True);
-        });
-        await pair.RunTicksSync(90);
-        await server.WaitAssertion(() =>
-        {
-            Assert.That(contracts.ActiveFor(holder), Is.Empty, "A full crate closed on its station was not taken.");
-            Assert.That(entMan.Deleted(crate) || entMan.IsQueuedForDeletion(crate), Is.True);
-            Assert.That(!entMan.Deleted(stowaway) && !entMan.IsQueuedForDeletion(stowaway), Is.True, "Someone inside a delivered crate was deleted with it.");
-            Assert.That(entMan.GetComponent<TransformComponent>(stowaway).ParentUid, Is.Not.EqualTo(crate));
+            Assert.That(contracts.ActiveFor(holder).Single().Id, Is.EqualTo(supply.Id), "A short parcel was taken.");
+            Assert.That(contracts.Packed(supply, parcel).Single(), Is.EqualTo(supply.Goods.Single().Count - 1));
+            Assert.That(entMan.GetComponent<TransformComponent>(stowaway).ParentUid, Is.Not.EqualTo(parcel), "A parcel took a mob.");
+            // A stack bigger than what is missing: one unit goes in, the rest stays.
+            surplus = entMan.SpawnEntity("SteelOre1", entMan.GetComponent<TransformComponent>(parcel).Coordinates);
+            entMan.System<SharedStackSystem>().SetCount(surplus, 6);
+            Assert.That(contracts.FillParcel(parcel, surplus, mob), Is.True);
+            Assert.That(entMan.GetComponent<StackComponent>(surplus).Count, Is.EqualTo(5), "The parcel took more than it needed.");
+            Assert.That(contracts.ActiveFor(holder), Is.Empty, "A full parcel on its station was not taken.");
             Assert.That(contracts.Standing(holder, "WGContractorMMC"), Is.EqualTo(1));
+        });
+        await pair.RunTicksSync(5);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entMan.Deleted(parcel) || entMan.IsQueuedForDeletion(parcel), Is.True, "The delivered parcel was left behind.");
         });
 
         // A faction station keeps what is delivered: the test colony has no silo, so the goods go to a receiving crate.
@@ -152,11 +158,12 @@ public sealed class ContractFlowTest
             greenhouse.Deposit = 0;
             Assert.That(contracts.ForceAccept(mob, greenhouse.Id, board), Is.True);
             var manifest = greenhouse.Items.Single();
+            entMan.System<SharedContainerSystem>().TryRemoveFromContainer(manifest);
             var supply = (WGContractSupply) server.ProtoMan.Index<WGContractPrototype>("WGContractColonyGreenhouse").Objective;
             var sheets = new Dictionary<string, string> { ["Glass"] = "SheetGlass1", ["Plastic"] = "SheetPlastic1", ["Steel"] = "SheetSteel1" };
             foreach (var (line, count) in greenhouse.Goods)
             {
-                Fill(server, manifest, sheets[supply.Goods[line].Stack!.Value.Id], count);
+                Fill(server, contracts, mob, manifest, sheets[supply.Goods[line].Stack!.Value.Id], count);
             }
 
             xforms.SetCoordinates(manifest, new EntityCoordinates(Largest(server, colony), 1.5f, 1.5f));
@@ -374,17 +381,17 @@ public sealed class ContractFlowTest
         return entMan.System<StationSystem>().InitializeNewStation(proto.Stations.Values.First(), new[] { grid.Owner }, proto.MapName);
     }
 
-    /// <summary>Puts a number of a stacked item into a closed crate, in stacks of thirty at most.</summary>
-    private static void Fill(RobustIntegrationTest.ServerIntegrationInstance server, EntityUid crate, string single, int count)
+    /// <summary>Feeds a number of a stacked item to a contract parcel, in stacks of thirty at most.</summary>
+    private static void Fill(RobustIntegrationTest.ServerIntegrationInstance server, WGContractSystem contracts, EntityUid user,
+        EntityUid parcel, string single, int count)
     {
         var entMan = server.EntMan;
-        var storage = entMan.System<SharedEntityStorageSystem>();
         while (count > 0)
         {
-            var stack = entMan.SpawnEntity(single, entMan.GetComponent<TransformComponent>(crate).Coordinates);
+            var stack = entMan.SpawnEntity(single, entMan.GetComponent<TransformComponent>(parcel).Coordinates);
             var size = System.Math.Min(30, count);
             entMan.System<SharedStackSystem>().SetCount(stack, size);
-            Assert.That(storage.Insert(stack, crate), Is.True);
+            Assert.That(contracts.FillParcel(parcel, stack, user), Is.True);
             count -= size;
         }
     }

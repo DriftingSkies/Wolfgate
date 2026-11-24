@@ -141,7 +141,7 @@ public sealed class WGContractAbandonMessage(int id) : BoundUserInterfaceMessage
     public readonly int Id = id;
 }
 
-/// <summary>The Contracts PDA app's state: the holder's accepted contracts, history and standing.</summary>
+/// <summary>The Contracts PDA app's state: every board's offers the holder may take, their contracts, history and standing.</summary>
 [Serializable, NetSerializable]
 public sealed class WGContractCartridgeUiState(WGContractBoardState state) : BoundUserInterfaceState
 {
@@ -150,6 +150,13 @@ public sealed class WGContractCartridgeUiState(WGContractBoardState state) : Bou
 
 [Serializable, NetSerializable]
 public sealed class WGContractCartridgeAbandonMessage(int id) : CartridgeMessageEvent
+{
+    public readonly int Id = id;
+}
+
+/// <summary>Takes an offer from the PDA; its cargo is left at the nearest board its contractor posts on.</summary>
+[Serializable, NetSerializable]
+public sealed class WGContractCartridgeAcceptMessage(int id) : CartridgeMessageEvent
 {
     public readonly int Id = id;
 }

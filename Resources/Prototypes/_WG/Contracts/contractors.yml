@@ -91,7 +91,7 @@
   stations: [ TSFMCHalcyon ]
   board: TSF
   companies: [ TSF, TSFCivilian, TSFHighComm ]
-  offers: 20
+  offers: 30
   order: 10
 
 - type: wgContractor
@@ -103,7 +103,7 @@
   stations: [ USSPCamelot ]
   board: USSP
   companies: [ USSP ]
-  offers: 18
+  offers: 26
   order: 11
 
 - type: wgContractor
@@ -115,7 +115,7 @@
   stations: [ HeliosFortress ]
   board: PDV
   companies: [ PDV, PDVCivilian, PDVHighComm ]
-  offers: 16
+  offers: 24
   order: 12
 
 - type: wgContractor
@@ -127,7 +127,7 @@
   stations: [ TSFMCIndustry ]
   board: Colony
   companies: [ TSFCivilian ]
-  offers: 16
+  offers: 20
   order: 13
 
 - type: wgContractor
@@ -139,7 +139,7 @@
   stations: [ WGAsfLantern ]
   board: ASF
   companies: [ WGAsf ]
-  offers: 16
+  offers: 18
   order: 14
 
 - type: wgContractor
@@ -161,5 +161,5 @@
   stations: [ USSPCamelot ]
   board: VG
   companies: [ TheViperGroup ]
-  offers: 8
+  offers: 14
   order: 16

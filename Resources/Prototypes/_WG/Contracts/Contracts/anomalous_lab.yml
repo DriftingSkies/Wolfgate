@@ -7,7 +7,7 @@
   tier: 1
   title: wg-contract-lab-samples
   briefing: wg-contract-lab-samples-brief
-  reward: 5500, 7500
+  reward: 7700, 10500
   minutes: 45
   weight: 2
   objective: !type:WGContractCourier
@@ -16,8 +16,8 @@
     from: Contractor
     to: Other
     destinations: [ WGContractorSevastopol, WGContractorHalcyon, WGContractorCaelPort, WGContractorMMC ]
-    perPackage: 750
-    perKilometre: 1250
+    perPackage: 1050
+    perKilometre: 1750
 
 - type: wgContract
   id: WGContractLabInstruments
@@ -26,7 +26,7 @@
   tier: 2
   title: wg-contract-lab-instruments
   briefing: wg-contract-lab-instruments-brief
-  reward: 12500, 16250
+  reward: 17500, 22750
   deposit: 1500
   minutes: 55
   weight: 3
@@ -35,8 +35,8 @@
     count: 2, 3
     from: Board
     to: Contractor
-    perPackage: 2250
-    perKilometre: 1625
+    perPackage: 3150
+    perKilometre: 2300
 
 - type: wgContract
   id: WGContractLabCores
@@ -45,7 +45,7 @@
   tier: 3
   title: wg-contract-lab-cores
   briefing: wg-contract-lab-cores-brief
-  reward: 39400, 52500
+  reward: 55150, 73500
   deposit: 2000
   minutes: 60
   weight: 2
@@ -64,7 +64,7 @@
   tier: 2
   title: wg-contract-lab-fragments
   briefing: wg-contract-lab-fragments-brief
-  reward: 21900, 30600
+  reward: 30650, 42850
   deposit: 1000
   minutes: 60
   weight: 2.4
@@ -81,7 +81,7 @@
   tier: 1
   title: wg-contract-lab-materials
   briefing: wg-contract-lab-materials-brief
-  reward: 13100, 17500
+  reward: 18350, 24500
   minutes: 50
   weight: 3
   objective: !type:WGContractSupply
@@ -126,7 +126,7 @@
   tier: 2
   title: wg-contract-lab-anomaly-sample
   briefing: wg-contract-lab-anomaly-sample-brief
-  reward: 20000, 25000
+  reward: 28000, 35000
   deposit: 1000
   minutes: 55
   crewBonus: 0.25
@@ -153,13 +153,13 @@
   tier: 1
   title: wg-contract-lab-survey
   briefing: wg-contract-lab-survey-brief
-  reward: 8000, 11000
+  reward: 11200, 15400
   minutes: 45
   crewBonus: 0.25
   weight: 2
   objective: !type:WGContractSurvey
     count: 1, 2
-    perAnomaly: 2500
+    perAnomaly: 3500
     minDistance: 2500
     maxDistance: 4000
     stationClearance: 2000
@@ -178,7 +178,7 @@
   tier: 2
   title: wg-contract-lab-infested-hulk
   briefing: wg-contract-lab-infested-hulk-brief
-  reward: 22000, 28000
+  reward: 30800, 39200
   deposit: 1500
   minutes: 60
   minCrew: 2
@@ -186,7 +186,7 @@
   weight: 1.5
   objective: !type:WGContractSurvey
     count: 2, 3
-    perAnomaly: 4000
+    perAnomaly: 5600
     minDistance: 3500
     maxDistance: 5500
     anomalies: [ AnomalyFlesh, AnomalyFlesh, AnomalyLiquid, AnomalyShadow, AnomalyPyroclastic ]
@@ -211,7 +211,7 @@
   tier: 4
   title: wg-contract-lab-xeno-nest
   briefing: wg-contract-lab-xeno-nest-brief
-  reward: 60000, 75000
+  reward: 84000, 105000
   deposit: 5000
   minutes: 75
   minCrew: 3
@@ -219,7 +219,7 @@
   weight: 0.8
   objective: !type:WGContractSurvey
     count: 3, 4
-    perAnomaly: 6000
+    perAnomaly: 8400
     minDistance: 4000
     maxDistance: 6500
     stationClearance: 3000
@@ -248,14 +248,14 @@
   tier: 2
   title: wg-contract-lab-artifact
   briefing: wg-contract-lab-artifact-brief
-  reward: 15000, 20000
+  reward: 21000, 28000
   deposit: 1000
   minutes: 60
   crewBonus: 0.25
   weight: 1.2
   objective: !type:WGContractRecovery
     item: ComplexXenoArtifactItem
-    perUnlockedNode: 2500
+    perUnlockedNode: 3500
     minDistance: 3500
     maxDistance: 5500
     infestation:
@@ -273,12 +273,12 @@
   tier: 1
   title: wg-contract-lab-gravity-readings
   briefing: wg-contract-lab-gravity-readings-brief
-  reward: 5500, 7500
+  reward: 7700, 10500
   minutes: 45
   weight: 1.2
   objective: !type:WGContractSweep
     points: 3, 4
-    perPoint: 1500
+    perPoint: 2100
     minDistance: 2500
     maxDistance: 5500
 
@@ -289,7 +289,7 @@
   tier: 3
   title: wg-contract-lab-twin-survey
   briefing: wg-contract-lab-twin-survey-brief
-  reward: 35000, 45000
+  reward: 49000, 63000
   deposit: 2500
   minutes: 70
   minCrew: 2
@@ -298,7 +298,7 @@
   objective: !type:WGContractSurvey
     derelicts: 2
     count: 3, 4
-    perAnomaly: 4000
+    perAnomaly: 5600
     minDistance: 3500
     maxDistance: 5500
     anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyBluespace, AnomalyFlesh, AnomalyIce ]
@@ -317,13 +317,13 @@
   tier: 1
   title: wg-contract-lab-probe-line
   briefing: wg-contract-lab-probe-line-brief
-  reward: 6000, 8000
+  reward: 8400, 11200
   minutes: 45
   weight: 1.3
   objective: !type:WGContractDeploy
     buoy: WGContractProbeBuoy
     points: 3, 4
-    perPoint: 1500
+    perPoint: 2100
     minDistance: 2000
     maxDistance: 4500
 
@@ -334,14 +334,14 @@
   tier: 2
   title: wg-contract-lab-planet-survey
   briefing: wg-contract-lab-planet-survey-brief
-  reward: 16000, 20000
+  reward: 22400, 28000
   deposit: 1000
   minutes: 75
   weight: 1.2
   objective: !type:WGContractSurvey
     wrecks: []
     count: 2, 3
-    perAnomaly: 2500
+    perAnomaly: 3500
     anomalies: [ AnomalyGravity, AnomalyElectricity, AnomalyIce, AnomalyFlora, AnomalyBluespace ]
     planet:
       hostiles: 2, 4
@@ -353,7 +353,7 @@
   tier: 1
   title: wg-contract-lab-planet-sample
   briefing: wg-contract-lab-planet-sample-brief
-  reward: 9000, 12000
+  reward: 12600, 16800
   minutes: 70
   weight: 1.2
   objective: !type:WGContractRecovery

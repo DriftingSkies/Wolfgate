@@ -60,6 +60,35 @@ public sealed partial class BiomeSystem
         return true;
     }
 
+    /// <summary>Loads and holds every chunk an area touches, so its terrain stands before anything is placed on it; returns them.</summary>
+    public List<Vector2i> WgHoldArea(Entity<BiomeComponent, MapGridComponent> biome, Box2i area)
+    {
+        var held = new List<Vector2i>();
+        var low = SharedMapSystem.GetChunkIndices(area.BottomLeft, ChunkSize);
+        var high = SharedMapSystem.GetChunkIndices(area.TopRight - Vector2i.One, ChunkSize);
+        for (var x = low.X; x <= high.X; x++)
+        for (var y = low.Y; y <= high.Y; y++)
+        {
+            var origin = new Vector2i(x, y) * ChunkSize;
+            WgLoadChunk(biome, origin);
+            held.Add(origin);
+        }
+
+        return held;
+    }
+
+    /// <summary>Lets the unloader have chunks held by <see cref="WgHoldArea"/> again, without unloading them now.</summary>
+    public void WgReleaseChunks(EntityUid layer, IEnumerable<Vector2i> chunks)
+    {
+        if (!_wgLayers.TryGetValue(layer, out var unload))
+            return;
+
+        foreach (var chunk in chunks)
+        {
+            unload.Held.Remove(chunk);
+        }
+    }
+
     /// <summary>
     /// Unloads one biome chunk by hand, emptying every unpinned tile and its decals, as the loader would: a planet
     /// layer's chunk goes by the planet unloader's rules.

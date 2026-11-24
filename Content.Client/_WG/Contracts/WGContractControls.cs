@@ -34,6 +34,13 @@ public static class WGContractStyle
     public static string Category(WGContractCategory category) =>
         Loc.GetString($"wg-contract-category-{category.ToString().ToLowerInvariant()}");
 
+    /// <summary>Whether an offer is listed under a category; planetside work is listed under Planetary as well as its own.</summary>
+    public static bool InCategory(WGContractView contract, WGContractCategory? category)
+    {
+        return category == null || contract.Category == category
+               || category == WGContractCategory.Planetary && contract.Site == WGContractSite.Planet;
+    }
+
     public static string Money(int amount) => Loc.GetString("wg-contract-thalers", ("amount", amount));
 
     /// <summary>A span as m:ss, or h:mm:ss over an hour.</summary>
@@ -115,6 +122,8 @@ public sealed class WGContractRow : ContainerButton
         var sub = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal };
         sub.AddChild(WGContractStyle.Label(contract.Contractor, contract.ContractorColor));
         sub.AddChild(WGContractStyle.Label("  ·  " + WGContractStyle.Category(contract.Category), WGContractStyle.Dim));
+        if (contract.Site == WGContractSite.Planet)
+            sub.AddChild(WGContractStyle.Label("  ·  " + Loc.GetString("wg-contract-row-planetside"), WGContractStyle.Good));
         if (contract.MinCrew > 1)
             sub.AddChild(WGContractStyle.Label("  ·  " + Loc.GetString("wg-contract-row-crew", ("crew", contract.MinCrew)), WGContractStyle.Warn));
         if (contract.Holder is { } holder)

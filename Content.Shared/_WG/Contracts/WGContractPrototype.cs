@@ -163,10 +163,10 @@ public enum WGContractCategory : byte
     /// <summary>Crates that need a ship's hold.</summary>
     Hauling,
 
-    /// <summary>Goods the contractor wants bought, made or found, packed in a contract crate.</summary>
+    /// <summary>Goods the contractor wants bought, made or found, packed in a contract parcel.</summary>
     Supply,
 
-    /// <summary>Raw ore packed in a contract crate.</summary>
+    /// <summary>Raw ore packed in a contract parcel.</summary>
     Mining,
 
     /// <summary>A ship to be destroyed.</summary>
@@ -245,7 +245,7 @@ public sealed partial class WGContractCourier : WGContractObjective
     public int PerKilometre;
 }
 
-/// <summary>Fill a contract crate with goods and leave it closed on the contractor's station.</summary>
+/// <summary>Fill a contract parcel with goods and bring it onto the contractor's station.</summary>
 public sealed partial class WGContractSupply : WGContractObjective
 {
     [DataField(required: true)]
@@ -256,7 +256,7 @@ public sealed partial class WGContractSupply : WGContractObjective
     public int Pick;
 
     [DataField]
-    public EntProtoId Crate = "WGContractCrate";
+    public EntProtoId Crate = "WGContractManifestParcel";
 
     /// <summary>Pay added as a multiple of the goods' market value, so the work beats selling them.</summary>
     [DataField]

@@ -14,6 +14,7 @@ namespace Content.Server._WG.Contracts;
 public sealed partial class WGContractSystem
 {
     [Dependency] private WGPlanetPoiSystem _pois = default!;
+    [Dependency] private Content.Server.Parallax.BiomeSystem _biome = default!;
 
     /// <summary>Worlds no contract is ever posted on. Carcinoma is a quarantined death world.</summary>
     public static readonly HashSet<string> ExcludedWorlds = new() { "WGSurfaceCarcinoma" };
@@ -101,6 +102,11 @@ public sealed partial class WGContractSystem
         var centre = (site.Bounds.BottomLeft + site.Bounds.TopRight) / 2;
         contract.Site = _transform.ToMapCoordinates(_map.GridTileToLocal(ground, grid, centre));
 
+        // The ground loads round players; with nobody there yet, the site's terrain may not stand, so a spawn would find
+        // no floor or end up inside rock laid later.
+        if (TryComp<Content.Shared.Parallax.Biomes.BiomeComponent>(ground, out var biome))
+            contract.HeldChunks = _biome.WgHoldArea((ground, biome, grid), site.Bounds);
+
         if (TryComp<WGPoiSignalComponent>(site.Signal, out var signal) && !signal.Revealed)
             _pois.Reveal((site.Signal, signal), null);
 
@@ -177,6 +183,9 @@ public sealed partial class WGContractSystem
     {
         if (contract.PlanetGround is not { } ground || contract.PlanetSite is not { } index)
             return;
+
+        _biome.WgReleaseChunks(ground, contract.HeldChunks);
+        contract.HeldChunks.Clear();
 
         if (TryComp<WGPlanetPoiComponent>(ground, out var record) && index < record.Sites.Count
             && record.Sites[index].ContractClaim == contract.Home)
