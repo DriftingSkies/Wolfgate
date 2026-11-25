@@ -1030,7 +1030,8 @@ public sealed partial class WGContractSystem
                 best = region;
         }
 
-        return bounds != null && open.Count > 0 ? open : best;
+        // A planet site with no floor open to its edge has nowhere reachable; a sealed interior is no fallback.
+        return bounds != null ? open : best;
     }
 
     /// <summary>Every tile of a wreck, or the ground tiles within a planet site's bounds.</summary>
