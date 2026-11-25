@@ -162,10 +162,7 @@ public sealed partial class WGContractSystem
         }
     }
 
-    /// <summary>
-    /// A viewer's board state: offers (one board's, or all), crew contracts, history and standing. The PDA leaves out
-    /// faction boards the viewer is no member of.
-    /// </summary>
+    /// <summary>A viewer's board state: offers (one board's, or all; the PDA skips other factions'), crew contracts, history, standing.</summary>
     public WGContractBoardState State(EntityUid viewer, string? board = null, Dictionary<string, EntityUid>? homes = null,
         bool pda = false)
     {

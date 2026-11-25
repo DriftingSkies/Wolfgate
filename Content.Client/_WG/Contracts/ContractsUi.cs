@@ -38,10 +38,7 @@ public sealed partial class ContractsUi : UIFragment
     }
 }
 
-/// <summary>
-/// Two layers to fit the PDA screen: a list page (tabs, a category picker for offers, the rows) and a detail page for
-/// the contract picked, with Back and its action.
-/// </summary>
+/// <summary>Two pages to fit the PDA: the list (tabs, category picker, rows) and the picked contract's details.</summary>
 public sealed partial class ContractsUiFragment : BoxContainer
 {
     [Dependency] private IGameTiming _timing = default!;
@@ -86,7 +83,11 @@ public sealed partial class ContractsUiFragment : BoxContainer
         foreach (var tab in Enum.GetValues<WGContractBoardWindow.Tab>())
         {
             var button = new Button { ToggleMode = true, HorizontalExpand = true, ClipText = true };
-            button.OnPressed += _ => SetTab(tab);
+            button.OnPressed += _ =>
+            {
+                _accepting = null;
+                SetTab(tab);
+            };
             _tabs[tab] = button;
             tabs.AddChild(button);
         }
@@ -150,7 +151,7 @@ public sealed partial class ContractsUiFragment : BoxContainer
         _standing.Update(state.Standing);
 
         // An offer just taken from its page follows the player to the Accepted tab.
-        if (_accepting is { } taken && state.Active.Any(c => c.Id == taken))
+        if (_accepting is { } taken && state.Active.Any(c => c.Id == taken && c.Mine))
         {
             _accepting = null;
             SetTab(WGContractBoardWindow.Tab.Accepted);
@@ -260,6 +261,8 @@ public sealed partial class ContractsUiFragment : BoxContainer
 
     private void Close()
     {
+        // A refused accept is not followed later, when a crewmate takes the same offer.
+        _accepting = null;
         _open = null;
         _confirm = null;
         ShowPage();

@@ -184,7 +184,10 @@ public sealed partial class WGContractSystem
         if (contract.PlanetGround is not { } ground || contract.PlanetSite is not { } index)
             return;
 
-        _biome.WgReleaseChunks(ground, contract.HeldChunks);
+        // Sites can share a chunk; one another contract still holds stays held.
+        var shared = _contracts.Values.Where(c => c != contract && c.PlanetGround == ground)
+            .SelectMany(c => c.HeldChunks).ToHashSet();
+        _biome.WgReleaseChunks(ground, contract.HeldChunks.Where(chunk => !shared.Contains(chunk)));
         contract.HeldChunks.Clear();
 
         if (TryComp<WGPlanetPoiComponent>(ground, out var record) && index < record.Sites.Count

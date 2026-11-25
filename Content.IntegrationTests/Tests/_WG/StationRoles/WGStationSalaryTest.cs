@@ -44,6 +44,11 @@ public sealed class WGStationSalaryTest
                 Assert.That(salary.Wage, Is.GreaterThan(0), salary.ID);
             }
             Assert.That(prototypes.HasIndex<WGStationSalaryPrototype>(ContractorProto), Is.False);
+            // Wages are paid without drawing on a sector account.
+            foreach (var salary in prototypes.EnumeratePrototypes<WGStationSalaryPrototype>())
+            {
+                Assert.That(salary.Account, Is.EqualTo(SectorBankAccount.Invalid), $"{salary.ID} draws on {salary.Account}.");
+            }
         });
         await pair.CleanReturnAsync();
     }
@@ -70,9 +75,9 @@ public sealed class WGStationSalaryTest
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>Paydays come from the job's account with nobody else online, share out a short account and skip the dead.</summary>
+    /// <summary>A full pay period of duty pays the whole wage without touching the faction's account; the dead aren't paid.</summary>
     [Test]
-    public async Task PaysDutyTimeFromTheAccount()
+    public async Task PaysDutyTimeInFull()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { InLobby = true });
         var server = pair.Server;
@@ -136,21 +141,20 @@ public sealed class WGStationSalaryTest
             Assert.That(Paid(), Is.EqualTo(0), "No salary before a full pay period.");
             salaries.SampleDuty(60);
             Assert.That(Paid(), Is.EqualTo(wage));
-            Assert.That(Balance(), Is.EqualTo(start - wage), "The salary comes out of the job's account.");
+            Assert.That(Balance(), Is.EqualTo(start), "The salary doesn't come out of the faction's account.");
         });
 
         await server.WaitAssertion(() =>
         {
-            Assert.That(bank.TrySectorWithdraw(SectorBankAccount.Nfsd, Balance() - wage / 2, LedgerEntryType.StationWithdrawalOther), Is.True);
+            // An empty faction account doesn't cut the wage.
+            Assert.That(bank.TrySectorWithdraw(SectorBankAccount.Nfsd, Balance(), LedgerEntryType.StationWithdrawalOther), Is.True);
             salaries.SampleDuty(WGStationSalarySystem.PaySeconds);
-            Assert.That(Paid(), Is.EqualTo(wage + wage / 2), "A short account pays out its share.");
-            Assert.That(Balance(), Is.EqualTo(0));
+            Assert.That(Paid(), Is.EqualTo(wage * 2), "An empty account cut the wage.");
 
             var mobs = server.System<MobStateSystem>();
             mobs.ChangeMobState(body, MobState.Dead);
-            bank.TrySectorDeposit(SectorBankAccount.Nfsd, wage * 2, LedgerEntryType.TickingIncome);
             salaries.SampleDuty(WGStationSalarySystem.PaySeconds);
-            Assert.That(Paid(), Is.EqualTo(wage + wage / 2), "The dead aren't on duty.");
+            Assert.That(Paid(), Is.EqualTo(wage * 2), "The dead aren't on duty.");
         });
 
         await server.WaitPost(() =>

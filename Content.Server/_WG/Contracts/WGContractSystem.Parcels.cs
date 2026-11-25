@@ -1,6 +1,7 @@
 using System.Linq;
 using Content.Shared._WG.Contracts;
 using Content.Shared.Interaction;
+using Content.Shared.Lock;
 using Content.Shared.Mind.Components;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Stacks;
@@ -25,7 +26,7 @@ public sealed partial class WGContractSystem
     /// <summary>Goods used on the parcel.</summary>
     private void OnParcelInteractUsing(Entity<WGContractParcelComponent> ent, ref InteractUsingEvent args)
     {
-        if (args.Handled)
+        if (args.Handled || !GoodsSource(ent, args.Used))
             return;
 
         args.Handled = FillParcel(ent, args.Used, args.User);
@@ -34,10 +35,21 @@ public sealed partial class WGContractSystem
     /// <summary>The parcel used on goods, a pile or a box of them.</summary>
     private void OnParcelAfterInteract(Entity<WGContractParcelComponent> ent, ref AfterInteractEvent args)
     {
-        if (args.Handled || !args.CanReach || args.Target is not { } target)
+        if (args.Handled || !args.CanReach || args.Target is not { } target || !GoodsSource(ent, target))
             return;
 
         args.Handled = FillParcel(ent, target, args.User);
+    }
+
+    /// <summary>Whether a parcel answers an entity: a stack, a storage or a manifest item. A table or labeler keeps its own interaction.</summary>
+    private bool GoodsSource(EntityUid parcel, EntityUid uid)
+    {
+        if (HasComp<StackComponent>(uid) || HasComp<StorageComponent>(uid) || HasComp<EntityStorageComponent>(uid))
+            return true;
+
+        return TryComp<WGContractItemComponent>(parcel, out var item) && _contracts.TryGetValue(item.Contract, out var contract)
+               && _proto.Index(contract.Prototype).Objective is WGContractSupply supply
+               && contract.Goods.Any(line => Matches(supply.Goods[line.Line], uid) > 0);
     }
 
     /// <summary>Fills a parcel from a source and says what it took, or what it still needs. False if it isn't a live parcel.</summary>
@@ -49,10 +61,14 @@ public sealed partial class WGContractSystem
 
         var container = _containers.EnsureContainer<Container>(parcel, ParcelContainer);
         var have = Packed(contract, parcel);
-        var taken = 0;
-        foreach (var uid in Sources(source))
+        // A medkit or box the manifest wants goes in whole; else what it holds is gone through.
+        var taken = Take(contract, supply, container, have, source);
+        if (taken == 0)
         {
-            taken += Take(contract, supply, container, have, uid);
+            foreach (var uid in Sources(source))
+            {
+                taken += Take(contract, supply, container, have, uid);
+            }
         }
 
         var missing = Missing(contract, supply, have);
@@ -70,16 +86,19 @@ public sealed partial class WGContractSystem
         return true;
     }
 
-    /// <summary>The source itself, and everything a bag, box or crate holds.</summary>
+    /// <summary>Everything an unlocked bag or box, or an open crate, holds.</summary>
     private IEnumerable<EntityUid> Sources(EntityUid source)
     {
+        if (TryComp<LockComponent>(source, out var lockComp) && lockComp.Locked)
+            return Array.Empty<EntityUid>();
+
         if (TryComp<StorageComponent>(source, out var storage))
             return storage.Container.ContainedEntities.ToList();
 
-        if (TryComp<EntityStorageComponent>(source, out var crate))
+        if (TryComp<EntityStorageComponent>(source, out var crate) && crate.Open)
             return crate.Contents.ContainedEntities.ToList();
 
-        return new[] { source };
+        return Array.Empty<EntityUid>();
     }
 
     /// <summary>Puts as much of one entity in the parcel as the manifest still needs, splitting a stack; returns the units taken.</summary>
@@ -91,9 +110,13 @@ public sealed partial class WGContractSystem
 
         for (var i = 0; i < contract.Goods.Count; i++)
         {
-            var need = contract.Goods[i].Count - have[i];
-            if (need <= 0 || Matches(supply.Goods[contract.Goods[i].Line], uid) is not (> 0 and var count))
+            if (Matches(supply.Goods[contract.Goods[i].Line], uid) is not (> 0 and var count))
                 continue;
+
+            // Counted for the first line it fits, as Packed counts it.
+            var need = contract.Goods[i].Count - have[i];
+            if (need <= 0)
+                return 0;
 
             var taken = uid;
             if (count > need && TryComp<StackComponent>(uid, out var stack))
@@ -106,7 +129,11 @@ public sealed partial class WGContractSystem
             }
 
             if (!_containers.Insert(taken, container))
+            {
+                if (taken != uid)
+                    _stacks.TryAdd(taken, uid);
                 return 0;
+            }
 
             have[i] += count;
             return count;
@@ -143,10 +170,10 @@ public sealed partial class WGContractSystem
         _hands.TryPickupAnyHand(mob, parcel, checkActionBlocker: false);
     }
 
-    /// <summary>A parcel whose contract fell through gives its goods back where it is.</summary>
+    /// <summary>A parcel whose contract fell through gives its goods back where it is: into the bag it sits in, else the floor.</summary>
     private void SpillParcel(EntityUid parcel)
     {
         if (_containers.TryGetContainer(parcel, ParcelContainer, out var container))
-            _containers.EmptyContainer(container, true, Transform(parcel).Coordinates);
+            _containers.EmptyContainer(container, true);
     }
 }

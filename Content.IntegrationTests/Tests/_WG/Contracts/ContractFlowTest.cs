@@ -392,6 +392,7 @@ public sealed class ContractFlowTest
             var size = System.Math.Min(30, count);
             entMan.System<SharedStackSystem>().SetCount(stack, size);
             Assert.That(contracts.FillParcel(parcel, stack, user), Is.True);
+            Assert.That(entMan.GetComponent<TransformComponent>(stack).ParentUid, Is.EqualTo(parcel), "The parcel refused goods it needed.");
             count -= size;
         }
     }

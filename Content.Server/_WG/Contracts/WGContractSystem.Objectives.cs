@@ -992,10 +992,9 @@ public sealed partial class WGContractSystem
         return false;
     }
 
-    /// <summary>
-    /// The floor a player can walk to, doors counted open: on a planet site, every pocket open to its edge; on a
-    /// wreck, its largest deck. Sealed rooms and rock pockets are left out.
-    /// </summary>
+    private static readonly Vector2i[] Steps = { Vector2i.Up, Vector2i.Down, Vector2i.Left, Vector2i.Right };
+
+    /// <summary>Walkable floor reachable through doors: a planet site's pockets open to its edge, or a wreck's largest deck.</summary>
     private List<Vector2i> Reachable(HashSet<Vector2i> walkable, HashSet<Vector2i> doors, Box2i? bounds)
     {
         var seen = new HashSet<Vector2i>();
@@ -1017,7 +1016,7 @@ public sealed partial class WGContractSystem
                 if (bounds is { } box && (at.X == box.Left || at.Y == box.Bottom || at.X == box.Right - 1 || at.Y == box.Top - 1))
                     edge = true;
 
-                foreach (var step in new[] { Vector2i.Up, Vector2i.Down, Vector2i.Left, Vector2i.Right })
+                foreach (var step in Steps)
                 {
                     var next = at + step;
                     if ((walkable.Contains(next) || doors.Contains(next)) && seen.Add(next))
