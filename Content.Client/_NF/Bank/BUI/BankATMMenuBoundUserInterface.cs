@@ -1,6 +1,7 @@
 using Content.Client._NF.Bank.UI;
 using Content.Shared._NF.Bank.BUI;
 using Content.Shared._NF.Bank.Events;
+using Content.Shared._WG.Savings; // WOLFGATE(Savings)
 
 namespace Content.Client.Cargo.BUI;
 
@@ -17,6 +18,7 @@ public sealed class BankATMMenuBoundUserInterface : BoundUserInterface
         _menu = new BankATMMenu();
         _menu.WithdrawRequest += OnWithdraw;
         _menu.DepositRequest += OnDeposit;
+        _menu.SavingsTransferRequest += (amount, toSavings) => SendMessage(new WGSavingsTransferMessage(amount, toSavings)); // WOLFGATE(Savings): bank and savings transfers
         _menu.OnClose += Close;
         _menu.OpenCentered();
     }

@@ -20,9 +20,10 @@ The [color=#44cc00]Safety Deposit Box System[/color] allows you to securely stor
     <GuideEntityEmbed Entity="SafetyDepositBoxLarge"/>
   </Box>
   Three box sizes are available, each with different storage capacity:
-  - [bold]Small (2x2)[/bold] - $2,000,000
-  - [bold]Medium (2x4)[/bold] - $3,500,000
-  - [bold]Large (2x6)[/bold] - $5,000,000
+<!-- WOLFGATE(SafetyDepositBox): boxes hold three times as much; medium and large take suits and armour -->
+  - [bold]Small (4x3)[/bold] - $2,000,000
+  - [bold]Medium (6x4)[/bold] - $3,500,000
+  - [bold]Large (9x4)[/bold] - $5,000,000
 
 The cost is deducted from your [color=#44cc00]bank account[/color] when you purchase a box.
 
@@ -86,10 +87,15 @@ The safety deposit system preserves:
 <!-- WOLFGATE(SafetyDepositBox) START: what a box refuses is read from the box prototype, not hand-listed -->
 ## What Can Be Stored
 
-A box takes ordinary items that fit its grid and its size limit: Small boxes hold Small items, Medium boxes hold up to Normal items and Large boxes hold up to Large items. Tools, clothing, ammunition, paperwork, food, parts and most other gear are fine.
+A box takes ordinary items that fit its grid and its size limit: Small boxes hold up to Normal items, while Medium and Large boxes hold up to Huge items, such as armour vests and hardsuits. Tools, clothing, ammunition, paperwork, food, parts and most other gear are fine.
 
-[color=#ff6600]The box refuses these outright:[/color]
+[color=#ff6600]The box refuses these:[/color]
   <SafetyDepositRefusedEmbed/>
+
+[color=#44cc00]It still takes these, though some fall under the list above:[/color]
+  <SafetyDepositRefusedEmbed List="Allowed"/>
+
+Allowed suits and vests go in empty. Anything in their pockets or storage slots is handed back when you deposit the box, but a hardsuit keeps its helmet.
 <!-- WOLFGATE END -->
   - [bold]Monolithic Crystals[/bold]
 </Document>

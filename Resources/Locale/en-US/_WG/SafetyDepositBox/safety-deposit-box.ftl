@@ -3,9 +3,9 @@ safety-deposit-console-title = Safety Deposit Box Console
 safety-deposit-console-header = Safety Deposit Box Management
 safety-deposit-console-purchase-section = Purchase New Box
 safety-deposit-console-bank-payment-note = Cost will be deducted from your bank and savings accounts.
-safety-deposit-console-purchase-small = Small (2x2) - ${$cost}
-safety-deposit-console-purchase-medium = Medium (2x4) - ${$cost}
-safety-deposit-console-purchase-large = Large (2x6) - ${$cost}
+safety-deposit-console-purchase-small = Small (4x3) - ${$cost}
+safety-deposit-console-purchase-medium = Medium (6x4) - ${$cost}
+safety-deposit-console-purchase-large = Large (9x4) - ${$cost}
 safety-deposit-console-deposit-section = Deposit Box
 safety-deposit-console-box-in-slot = Box {$id} in slot
 safety-deposit-console-no-box-in-slot = No box in slot
@@ -68,7 +68,7 @@ safety-deposit-box-examine-owner = [color=yellow]Owner:[/color] {$owner}
 
 # Guidebook list of refused items; anything missing here is listed under its raw name
 safety-deposit-refused-component-idcard = ID cards
-safety-deposit-refused-component-currency = Currency and LPCs
+safety-deposit-refused-component-currency = Currency (faction scrip, LPCs, telecrystals)
 safety-deposit-refused-component-store = Anything with a store
 safety-deposit-refused-component-encryptionkey = Encryption keys
 safety-deposit-refused-component-headset = Headsets
@@ -84,6 +84,7 @@ safety-deposit-refused-component-doorremote = Door remotes
 safety-deposit-refused-component-solutioncontainermanager = Anything holding reagents (beakers, bottles)
 safety-deposit-refused-component-nukedisk = Nuclear authentication disks
 safety-deposit-refused-component-contraband = Contraband (items that sell for FMC or DC, most faction gear)
+safety-deposit-refused-component-containercontainer = Anything holding other things (most guns, devices with slots)
 safety-deposit-refused-component-thiefundeterminedbackpack = Thief kits
 safety-deposit-refused-component-accessoverrider = Access overriders
 safety-deposit-refused-component-pda = PDAs

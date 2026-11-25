@@ -18,7 +18,7 @@ using Content.Server._NF.Bank;
 namespace Content.IntegrationTests.Tests._WG.SafetyDepositBox;
 
 /// <summary>
-/// A purchase charges savings first and then the bank, and the bank component shows the new balance straight away.
+/// A purchase charges the bank first and then savings, and the bank component shows the new balance straight away.
 /// </summary>
 [TestFixture]
 [TestOf(typeof(SafetyDepositBoxSystem))]
@@ -28,8 +28,9 @@ public sealed class SafetyDepositBoxPurchaseTest
     private const int Cost = 2000000;
 
     [TestCase(5000000, 0, 3000000, 0, TestName = "BankPaysWhenThereAreNoSavings")]
-    [TestCase(1000000, 1500000, 500000, 0, TestName = "SavingsPayFirstAndBankPaysTheRest")]
-    [TestCase(5000000, 3000000, 5000000, 1000000, TestName = "SavingsCoverItAndBankIsUntouched")]
+    [TestCase(1000000, 1500000, 0, 500000, TestName = "BankPaysFirstAndSavingsPayTheRest")]
+    [TestCase(5000000, 3000000, 3000000, 3000000, TestName = "BankCoversItAndSavingsAreUntouched")]
+    [TestCase(0, 3000000, 0, 1000000, TestName = "SavingsPayWhenTheBankIsEmpty")]
     [TestCase(5000000, 0, 4000000, 0, 0.5f, TestName = "ACommandedShipsPriceRuleSetsTheCharge")]
     public async Task PurchaseCharges(int bank, int savings, int bankAfter, int savingsAfter, float multiplier = 1f)
     {

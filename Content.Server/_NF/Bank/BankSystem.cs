@@ -224,13 +224,21 @@ public sealed partial class BankSystem : SharedBankSystem
         }
 
         int leftoverAmount = amount;
-        if (spendLongTerm)
+        // WOLFGATE(Savings) START: spend the bank before savings, which earn interest
+        // if (spendLongTerm)
+        // {
+        //     var longTermBalance = totalBalance - balance;
+        //     var toSpend = (int)Math.Min(longTermBalance, (long)leftoverAmount);
+        //     leftoverAmount -= toSpend;
+        //     _ = _coins.AddMonoCoinsAsync(session.UserId, -toSpend);
+        // }
+        if (spendLongTerm && leftoverAmount > balance)
         {
-            var longTermBalance = totalBalance - balance;
-            var toSpend = (int)Math.Min(longTermBalance, (long)leftoverAmount);
-            leftoverAmount -= toSpend;
+            var toSpend = leftoverAmount - balance;
+            leftoverAmount = balance;
             _ = _coins.AddMonoCoinsAsync(session.UserId, -toSpend);
         }
+        // WOLFGATE END
         balance -= leftoverAmount;
 
         var newProfile = profile.WithBankBalance(balance);

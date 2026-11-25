@@ -100,6 +100,31 @@
                         StyleClasses="ButtonSquare"
                         Margin="4 4 4 4"/>
                 </PanelContainer>
+                <!-- WOLFGATE(Savings) START: move money between the bank and savings -->
+                <PanelContainer VerticalExpand="False" HorizontalExpand="True" Margin="2 2">
+                    <PanelContainer.PanelOverride>
+                        <gfx:StyleBoxFlat BorderThickness="3" BorderColor="#3d3d3d" BackgroundColor="#111111" />
+                    </PanelContainer.PanelOverride>
+                    <BoxContainer Orientation="Vertical">
+                        <LineEdit Name="SavingsEdit"
+                                  PlaceHolder="{Loc 'wg-savings-atm-amount'}"
+                                  Margin="4 4 4 0"/>
+                        <BoxContainer Orientation="Horizontal">
+                            <Button Name="ToSavingsButton"
+                                    Text="{Loc 'wg-savings-atm-to-savings'}"
+                                    StyleClasses="ButtonSquare"
+                                    HorizontalExpand="True"
+                                    Margin="4 4 2 4"/>
+                            <Button Name="FromSavingsButton"
+                                    Text="{Loc 'wg-savings-atm-from-savings'}"
+                                    StyleClasses="ButtonSquare"
+                                    HorizontalExpand="True"
+                                    Margin="2 4 4 4"/>
+                        </BoxContainer>
+                        <RichTextLabel Name="InterestLabel" Margin="4 0 4 4"/>
+                    </BoxContainer>
+                </PanelContainer>
+                <!-- WOLFGATE END -->
             </BoxContainer>
         </PanelContainer>
     </BoxContainer>

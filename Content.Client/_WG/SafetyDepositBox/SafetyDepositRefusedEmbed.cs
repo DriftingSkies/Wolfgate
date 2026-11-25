@@ -1,7 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Client.Guidebook.Richtext;
+using Content.Shared._WG.SafetyDepositBox.Components;
+using Content.Shared.Stacks;
 using Content.Shared.Storage;
+using Content.Shared.Whitelist;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
@@ -9,10 +12,11 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Client._WG.SafetyDepositBox;
 
-/// <summary>Guidebook list of what a safety deposit box refuses, read from the box prototype's storage blacklist.</summary>
+/// <summary>Guidebook list of what a safety deposit box refuses, or with <c>List="Allowed"</c> what it lets in anyway.</summary>
 /// <remarks>
-/// A component or tag with no <c>safety-deposit-refused-component-*</c> or <c>safety-deposit-refused-tag-*</c> string
-/// is listed under its raw name, so a new blacklist entry shows up without touching the guide.
+/// Read from the box prototype's storage blacklist and allow list. A component or tag with no
+/// <c>safety-deposit-refused-component-*</c> or <c>safety-deposit-refused-tag-*</c> string is listed under its raw
+/// name, so a new entry shows up without touching the guide.
 /// </remarks>
 [UsedImplicitly]
 public sealed partial class SafetyDepositRefusedEmbed : BoxContainer, IDocumentTag
@@ -40,16 +44,11 @@ public sealed partial class SafetyDepositRefusedEmbed : BoxContainer, IDocumentT
             return false;
         }
 
-        var lines = new List<string>();
-        foreach (var name in blacklist.Components ?? Array.Empty<string>())
-        {
-            lines.Add(LocName("safety-deposit-refused-component-", name));
-        }
+        proto.TryComp<SafetyDepositAllowListComponent>(out var allowList, _factory);
 
-        foreach (var tag in blacklist.Tags ?? new List<ProtoId<Shared.Tag.TagPrototype>>())
-        {
-            lines.Add(LocName("safety-deposit-refused-tag-", tag.Id));
-        }
+        var lines = args.TryGetValue("List", out var list) && list == "Allowed"
+            ? AllowedLines(allowList)
+            : RefusedLines(blacklist, allowList?.Restricted);
 
         foreach (var line in lines.Where(l => !string.IsNullOrEmpty(l)).Distinct().Order())
         {
@@ -58,6 +57,49 @@ public sealed partial class SafetyDepositRefusedEmbed : BoxContainer, IDocumentT
 
         control = this;
         return true;
+    }
+
+    private static List<string> RefusedLines(EntityWhitelist blacklist, EntityWhitelist? restricted)
+    {
+        var lines = new List<string>();
+        foreach (var list in new[] { blacklist, restricted })
+        {
+            if (list == null)
+                continue;
+
+            foreach (var name in list.Components ?? Array.Empty<string>())
+            {
+                lines.Add(LocName("safety-deposit-refused-component-", name));
+            }
+
+            foreach (var tag in list.Tags ?? new List<ProtoId<Shared.Tag.TagPrototype>>())
+            {
+                lines.Add(LocName("safety-deposit-refused-tag-", tag.Id));
+            }
+        }
+
+        return lines;
+    }
+
+    private List<string> AllowedLines(SafetyDepositAllowListComponent? allowList)
+    {
+        var lines = new List<string>();
+        if (allowList == null)
+            return lines;
+
+        foreach (var stack in allowList.Stacks)
+        {
+            if (_prototype.TryIndex(stack, out var stackProto) && _prototype.TryIndex(stackProto.Spawn, out var cash))
+                lines.Add(cash.Name);
+        }
+
+        foreach (var id in allowList.Prototypes)
+        {
+            if (_prototype.TryIndex(id, out var entity))
+                lines.Add(entity.Name);
+        }
+
+        return lines;
     }
 
     private static string LocName(string prefix, string id)
