@@ -5,7 +5,7 @@
   parent: BaseVessel
   name: 'Bonita'
   description: 'The Bonita is a completely useless ship... if you lack any sense of whimsy! Inspired by the majestic maid cafes of old Earth, this vessel brings true novelty to the stars. Boasting a dining room, kitchen, garden, bar, and a fully stocked cleaning arsenal, it has everything a devoted maid needs to slay any foe. From the depths of dust and grime to the heights of customer service, nothing can stop the Bonita!'
-  price: 103323 # appraised at 86103
+  price: 109800 # appraised at 91504
   category: Medium # 322 tiles
   group: Shipyard
   shuttlePath: /SharedMaps/_WG/Community/bonita.yml

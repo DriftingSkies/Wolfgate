@@ -109,11 +109,13 @@ borg-bound AI, the overwatch view and the chassis company.
 - [`Content.Shared/_WG/Cyborgs/WGBorgPdaComponent.cs`](../../../Content.Shared/_WG/Cyborgs/WGBorgPdaComponent.cs)
 - [`Content.Shared/_WG/Cyborgs/WGBorgRadioKeysComponent.cs`](../../../Content.Shared/_WG/Cyborgs/WGBorgRadioKeysComponent.cs)
 - [`Content.Shared/_WG/Cyborgs/WGBorgRadioKeysSystem.cs`](../../../Content.Shared/_WG/Cyborgs/WGBorgRadioKeysSystem.cs)
+- [`Content.Shared/_WG/Cyborgs/WGBorgRescueSystem.cs`](../../../Content.Shared/_WG/Cyborgs/WGBorgRescueSystem.cs)
 - [`Content.Shared/_WG/Cyborgs/WGBorgStackRefillComponent.cs`](../../../Content.Shared/_WG/Cyborgs/WGBorgStackRefillComponent.cs)
 
 ### Client
 
 - [`Content.Client/_WG/Cyborgs/StationAiOverlay.Overwatch.cs`](../../../Content.Client/_WG/Cyborgs/StationAiOverlay.Overwatch.cs)
+- [`Content.Client/_WG/Cyborgs/WGBorgRescueClientSystem.cs`](../../../Content.Client/_WG/Cyborgs/WGBorgRescueClientSystem.cs)
 
 ### Integration tests
 
@@ -126,6 +128,7 @@ borg-bound AI, the overwatch view and the chassis company.
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/BorgStackRefillTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/BorgStackRefillTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/FactionBorgCardTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/FactionBorgCardTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/WGAiCoreTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/WGAiCoreTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Cyborgs/WGBorgRescueTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/WGBorgRescueTest.cs)
 
 ### Prototypes
 
@@ -182,7 +185,7 @@ borg-bound AI, the overwatch view and the chassis company.
   - encryption key slots behind the chassis lock and panel, adding to the built-in channels
   - the built-in PDA's installed apps
   - recharge from APCs and loose cells, and a bank account for ATMs and pay
-  - buckle into seats and climb onto tables
+  - buckle into seats, carry patients, and climb onto tables
   - a built-in PDA with a vagrant's apps, opened from an action
   - the headlight Monolith commented out, back as a toggle
   - Harpy noise emotes for cyborgs

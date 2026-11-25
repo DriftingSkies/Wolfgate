@@ -9197,3 +9197,26 @@ Entries:
   id: 100587
   time: '2026-11-24T14:01:58.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/830
+- author: MacaroniCritter
+  changes:
+    - type: Tweak
+      message: >-
+        The Bonita CIV has been outfitted with much more service themed
+        supplies.
+  id: 100588
+  time: '2026-11-24T17:04:56.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/829
+- author: MacaroniCritter
+  changes:
+    - type: Tweak
+      message: Polished the VG Snake Eater with additional equipment and organization.
+  id: 100589
+  time: '2026-11-24T17:05:19.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/815
+- author: Dimasw99
+  changes:
+    - type: Tweak
+      message: Major overhaul of ASF Guardian
+  id: 100590
+  time: '2026-11-24T23:59:50.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/803
