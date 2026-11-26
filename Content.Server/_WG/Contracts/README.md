@@ -89,8 +89,9 @@ escort encounters), `world_fauna.yml` (each world's hostiles for planetside work
   may still name a crate (`crate`), packed and closed by hand. Pay adds `premium` times the goods'
   market value. A crate from a failed contract is the holder's to keep. On a station a faction contractor calls home,
   the goods stay with the faction: into the station's material silo when it takes them, else into a receiving crate
-  left at its cargo pad. Goods a member of the receiving faction delivers are used up instead: the pay is new money,
-  and goods handed back to the deliverer could be delivered again for ever. Elsewhere the contractor keeps them and
+  left at its cargo pad. Goods a member of the receiving faction delivers, as on every faction board, go only into the
+  silo and the rest is used up: the pay is new money, and goods in a crate the deliverer can open could be delivered
+  again for ever. Elsewhere the contractor keeps them and
   they are gone. A line with `ammo: true` takes any
   loaded magazine, speed loader or ammunition box.
 - `WGContractBounty` (Bounty): accepting starts one of `encounters` (Encounters module, `start: Manual`, no warrant)

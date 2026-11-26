@@ -195,6 +195,44 @@ public sealed class ContractFlowTest
             Assert.That(pulled.Cancelled, Is.True, "An outsider could pull a faction's receiving crate.");
         });
 
+        // A member supplying their own faction, as on every faction board: the goods go into its silo, never a crate
+        // the member could open and deliver from again.
+        WGContract ownSupply = default!;
+        EntityUid silo = default;
+        var cratedBefore = 0;
+        await server.WaitAssertion(() =>
+        {
+            silo = entMan.SpawnEntity("MachineMaterialSilo", new EntityCoordinates(Largest(server, colony), 4.5f, 4.5f));
+            entMan.RemoveComponent<Content.Server.Power.Components.ApcPowerReceiverComponent>(silo);
+            cratedBefore = ReceivingCrated(server, colony);
+
+            ownSupply = contracts.PostOffer("WGContractColonyGreenhouse")!;
+            ownSupply.Deposit = 0;
+            Assert.That(contracts.ForceAccept(mob, ownSupply.Id, board), Is.True);
+            ownSupply.Company = "TSFCivilian";
+            var manifest = ownSupply.Items.Single();
+            entMan.System<SharedContainerSystem>().TryRemoveFromContainer(manifest);
+            var supply = (WGContractSupply) server.ProtoMan.Index<WGContractPrototype>("WGContractColonyGreenhouse").Objective;
+            var sheets = new Dictionary<string, string> { ["Glass"] = "SheetGlass1", ["Plastic"] = "SheetPlastic1", ["Steel"] = "SheetSteel1" };
+            foreach (var (line, count) in ownSupply.Goods)
+            {
+                Fill(server, contracts, mob, manifest, sheets[supply.Goods[line].Stack!.Value.Id], count);
+            }
+
+            xforms.SetCoordinates(manifest, new EntityCoordinates(Largest(server, colony), 1.5f, 1.5f));
+        });
+        await pair.RunTicksSync(150);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(ownSupply.Status, Is.EqualTo(WGContractStatus.Completed), "The member's delivery did not complete.");
+            var materials = entMan.System<Content.Shared.Materials.SharedMaterialStorageSystem>();
+            Assert.That(materials.GetTotalMaterialAmount(silo, localOnly: true), Is.GreaterThan(0),
+                "A member's delivery to their own faction never reached its silo.");
+            Assert.That(ReceivingCrated(server, colony), Is.EqualTo(cratedBefore),
+                "A member's delivery to their own faction went into a crate they can open.");
+            entMan.DeleteEntity(silo);
+        });
+
         // Recovery: a colony shuttle's recorder, out of a loaded wreck, back aboard the Stellar Blessing.
         await server.WaitAssertion(() =>
         {
@@ -395,6 +433,22 @@ public sealed class ContractFlowTest
             Assert.That(entMan.GetComponent<TransformComponent>(stack).ParentUid, Is.EqualTo(parcel), "The parcel refused goods it needed.");
             count -= size;
         }
+    }
+
+    /// <summary>Units held in a station's receiving crates.</summary>
+    private static int ReceivingCrated(RobustIntegrationTest.ServerIntegrationInstance server, EntityUid station)
+    {
+        var entMan = server.EntMan;
+        var stations = entMan.System<StationSystem>();
+        var total = 0;
+        var query = entMan.EntityQueryEnumerator<WGContractReceivingComponent, Content.Server.Storage.Components.EntityStorageComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out _, out var storage, out var xform))
+        {
+            if (stations.GetOwningStation(uid, xform) == station)
+                total += storage.Contents.ContainedEntities.Sum(e => entMan.TryGetComponent<StackComponent>(e, out var stack) ? stack.Count : 1);
+        }
+
+        return total;
     }
 
     internal static EntityUid Largest(RobustIntegrationTest.ServerIntegrationInstance server, EntityUid station)

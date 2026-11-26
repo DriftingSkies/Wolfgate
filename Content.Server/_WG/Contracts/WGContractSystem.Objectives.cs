@@ -711,11 +711,10 @@ public sealed partial class WGContractSystem
 
         var needed = contract.Goods.Select(g => g.Count).ToList();
         var faction = contract.Destination is { } station && HousesFaction(station) ? station : (EntityUid?) null;
-        // A member supplying their own faction would find the goods in its receiving crate and could deliver them
-        // again; the faction uses them up instead.
         var companies = faction is { } receiving ? ReceivingCompanies(receiving, contract) : null;
-        if (companies != null && contract.Company is { } own && companies.Any(c => c.Id == own))
-            faction = null;
+        // A member supplying their own faction could take goods back out of its receiving crate and deliver them again,
+        // so only what its silo takes reaches the faction; the rest is used up.
+        var ownFaction = companies != null && contract.Company is { } own && companies.Any(c => c.Id == own);
         EntityUid? received = null;
         foreach (var uid in Contents(crate).ToList())
         {
@@ -728,9 +727,9 @@ public sealed partial class WGContractSystem
                     continue;
 
                 needed[i] -= count;
-                if (faction is not { } home)
+                if (faction is not { } home || ownFaction && !Stock(home, uid))
                     Del(uid);
-                else
+                else if (!ownFaction)
                     Receive(home, uid, companies!, ref received);
                 break;
             }
