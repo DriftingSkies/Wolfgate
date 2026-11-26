@@ -43,6 +43,7 @@ public sealed partial class WGFragmentRuleSystem
     protected override void Added(EntityUid uid, WGFragmentRuleComponent comp, GameRuleComponent gameRule, GameRuleAddedEvent args)
     {
         base.Added(uid, comp, gameRule, args);
+        ChooseSize(comp);
         Announce(comp, comp.Sighted, null);
     }
 

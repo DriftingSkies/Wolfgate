@@ -1,0 +1,9 @@
+- files: ["ambience.ogg", "collapse.ogg", "laser_charge.ogg", "laser_fire.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "From Paragon-Moon's chrome pyramid (modular_paragon/sound_library, PR #33), converted to mono Ogg; original source to confirm"
+  source: "https://github.com/Endless-Seas/Paragon-Moon"
+
+- files: ["shatter_explosion1.ogg", "shatter_explosion2.ogg", "shatter_explosion3.ogg", "shatter_explosion_small1.ogg", "shatter_explosion_small2.ogg", "shatter_explosion_small3.ogg", "shatter_explosionfar.ogg", "shatter_explosionsmallfar.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "vgstation at c5edbfd7179288080f081e2b8ac2496b7e4455db, warped for Wolfgate (pitched down, vibrato, phaser, flanger, chorus)"
+  source: "https://github.com/vgstation-coders/vgstation13/tree/c5edbfd7179288080f081e2b8ac2496b7e4455db/sound/effects"

@@ -281,6 +281,7 @@ open a breach. A carrier's band and Drift are on its `WGDriftComponent` in VV.
 - [`Content.Server/_WG/Lattice/WGChoirSystem.cs`](WGChoirSystem.cs)
 - [`Content.Server/_WG/Lattice/WGCodaFleshSystem.cs`](WGCodaFleshSystem.cs)
 - [`Content.Server/_WG/Lattice/WGCodaFlutterComponent.cs`](WGCodaFlutterComponent.cs)
+- [`Content.Server/_WG/Lattice/WGCodaHazardImmuneComponent.cs`](WGCodaHazardImmuneComponent.cs)
 - [`Content.Server/_WG/Lattice/WGCodaHazardSystem.cs`](WGCodaHazardSystem.cs)
 - [`Content.Server/_WG/Lattice/WGCodaHazardSystem.Leviathan.cs`](WGCodaHazardSystem.Leviathan.cs)
 - [`Content.Server/_WG/Lattice/WGCodaMutationSystem.cs`](WGCodaMutationSystem.cs)

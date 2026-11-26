@@ -31,6 +31,20 @@ public sealed partial class ContentAudioSystem
         EnforceMusicPauseWolfgate();
     }
 
+    /// <summary>Whether combat music is playing now; the Coda's song blends with it rather than holding it off.</summary>
+    public bool WgCombatMusicPlaying => _isCombatMusicPlaying && _currentlyPlaying == MusicType.Combat;
+
+    /// <summary>The ordinary ambient track playing now, if any: not combat music, not a Lattice band's own piece.</summary>
+    public EntityUid? WgAmbientTrack => _ambientMusicStream is { } stream && !TerminatingOrDeleted(stream)
+        && _currentlyPlaying != MusicType.Combat && stream != _wgBandStream && _musicProto?.ID != "WGCodaSilence" ? stream : null;
+
+    /// <summary>Fades the ambient track playing now out over a few seconds and stops it, for a seamless handover.</summary>
+    public void FadeOutAmbientWolfgate(float seconds)
+    {
+        if (WgAmbientTrack is { } stream)
+            FadeOut(stream, duration: seconds);
+    }
+
     /// <summary>
     /// Pauses tracks the music loops started since the last call. Run every frame while paused.
     /// </summary>

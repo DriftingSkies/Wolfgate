@@ -1,0 +1,19 @@
+- type: shader
+  id: WGPyramidWave
+  kind: source
+  path: "/Textures/_WG/Pyramid/Shaders/pyramid_wave.swsl"
+
+- type: shader
+  id: WGPyramidWarp
+  kind: source
+  path: "/Textures/_WG/Pyramid/Shaders/pyramid_warp.swsl"
+
+- type: shader
+  id: WGPyramidField
+  kind: source
+  path: "/Textures/_WG/Pyramid/Shaders/pyramid_field.swsl"
+
+- type: shader
+  id: WGPyramidImpact
+  kind: source
+  path: "/Textures/_WG/Pyramid/Shaders/pyramid_impact.swsl"

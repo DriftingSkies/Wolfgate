@@ -143,6 +143,24 @@ public sealed partial class WGFragmentRuleComponent : Component
     [DataField]
     public int DecorCount = 14;
 
+    /// <summary>Scattered over the fragment besides the decor; set by a size.</summary>
+    [DataField]
+    public List<EntProtoId> Scatter = new();
+
+    [DataField]
+    public int ScatterCount;
+
+    /// <summary>Larger kinds of fragment, each with its own grids; a grid not in any of them is the default size.</summary>
+    [DataField]
+    public List<WGFragmentSize> Sizes = new();
+
+    /// <summary>The fragment's name on scanners.</summary>
+    [DataField]
+    public LocId GridName = "wg-fragment-grid-name";
+
+    /// <summary>The grid picked as the event was added, so every announcement knows its size.</summary>
+    public ResPath? Chosen;
+
     public EntityUid? Grid;
     public EntityUid? HeartUid;
     public MapCoordinates Site = MapCoordinates.Nullspace;

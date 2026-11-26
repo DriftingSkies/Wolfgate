@@ -1,0 +1,31 @@
+# Floors shared by the Coda's sites, ported from Paragon-Moon (its generator (port_art.py, kept outside the repo)).
+
+- type: tile
+  id: WGCodaFloorStone
+  name: tiles-wg-coda-stone
+  sprite: /Textures/_WG/CodaSites/Tiles/stone.png
+  baseTurf: Plating
+  isSubfloor: false
+  footstepSounds:
+    collection: FootstepFloor
+  heatCapacity: 10000
+
+- type: tile
+  id: WGCodaFloorRough
+  name: tiles-wg-coda-rough
+  sprite: /Textures/_WG/CodaSites/Tiles/rough.png
+  baseTurf: Plating
+  isSubfloor: false
+  footstepSounds:
+    collection: FootstepAsteroid
+  heatCapacity: 10000
+
+- type: tile
+  id: WGCodaFloorWood
+  name: tiles-wg-coda-wood
+  sprite: /Textures/_WG/CodaSites/Tiles/wood.png
+  baseTurf: Plating
+  isSubfloor: false
+  footstepSounds:
+    collection: FootstepWood
+  heatCapacity: 10000

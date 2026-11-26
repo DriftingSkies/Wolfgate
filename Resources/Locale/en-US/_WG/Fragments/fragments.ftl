@@ -30,3 +30,20 @@ wg-fragment-voice-lost-1 = we will remember the way
 wg-fragment-voice-lost-2 = it is not over. it is growing
 wg-fragment-voice-lost-3 = we are coming home
 wg-fragment-voice-lost-4 = you let us go
+
+# A greater fragment: a whole shard of the Monolith.
+wg-fragment-greater-grid-name = Greater Monolith Fragment
+wg-fragment-greater-start-announcement = Long-range sensors are tracking something enormous falling into the sector between the Federation and Dynasty lines: not a fragment but a whole shard of the Monolith. Its mass is bending our instruments. Whatever is aboard is awake, and there is a great deal of it.
+wg-fragment-greater-arrived = The greater Monolith fragment has come to rest near {$coords}. Its heart is beating hard enough to read from orbit, and the Remade are pouring out of it in numbers we have not seen before. Both factions are authorised to fight together; no single crew should board it alone.
+wg-fragment-greater-warning = The greater Monolith fragment is tearing itself apart. In five minutes it drifts out of the sector, and everything it has grown goes with it.
+wg-fragment-greater-cleared = The greater fragment's heart near {$coords} has stopped beating. The waves have ended, but the shard is still crawling with Remade; clear it carefully.
+wg-fragment-greater-cleared-joint = The greater fragment's heart near {$coords} has stopped beating, broken by TSF and PDV crews fighting side by side. Command on both sides is calling it the largest joint action of the war. Rewards have been released to both factions.
+wg-fragment-greater-departed = The broken greater fragment near {$coords} has drifted out of the sector. Its silence is louder than its heartbeat ever was.
+wg-fragment-greater-lost = The greater Monolith fragment near {$coords} has drifted out of the sector with its heart still beating. It was not dying. It was carrying something.
+wg-fragment-greater-voice-land-1 = all of us. all of us are here
+wg-fragment-greater-voice-land-2 = we are so many now
+wg-fragment-greater-voice-land-3 = come and sing with us
+wg-fragment-greater-voice-land-4 = the choir is waiting
+wg-fragment-greater-voice-lost-1 = we carried it home
+wg-fragment-greater-voice-lost-2 = the song goes on without you
+wg-fragment-greater-voice-lost-3 = next time we will be more

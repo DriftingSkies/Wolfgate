@@ -1,0 +1,147 @@
+# The song the Coda sings in a drifting mind, and that a fragment's heart sings to anyone near it. Each piece is
+# stems from its generator (make_hymn.py, kept outside the repo) --stems; WGCodaSongSystem mixes them live from the listener's Drift.
+
+# A lullaby in three; the first thing a drifting mind hears.
+- type: wgCodaSong
+  id: WGCodaSongNocturne
+  seconds: 75.0
+  minDrift: 8
+  maxDrift: 45
+  stems:
+    soprano: /Audio/_WG/CodaSong/nocturne/soprano.ogg
+    alto: /Audio/_WG/CodaSong/nocturne/alto.ogg
+    tenor: /Audio/_WG/CodaSong/nocturne/tenor.ogg
+    bass: /Audio/_WG/CodaSong/nocturne/bass.ogg
+    profondo: /Audio/_WG/CodaSong/nocturne/profondo.ogg
+  turned:
+    soprano: /Audio/_WG/CodaSong/nocturne/soprano_turned.ogg
+    alto: /Audio/_WG/CodaSong/nocturne/alto_turned.ogg
+    tenor: /Audio/_WG/CodaSong/nocturne/tenor_turned.ogg
+    bass: /Audio/_WG/CodaSong/nocturne/bass_turned.ogg
+    profondo: /Audio/_WG/CodaSong/nocturne/profondo_turned.ogg
+
+# The hymn's chords with a soprano line soaring over them.
+- type: wgCodaSong
+  id: WGCodaSongDescant
+  seconds: 56.5
+  minDrift: 8
+  maxDrift: 50
+  stems:
+    soprano: /Audio/_WG/CodaSong/descant/soprano.ogg
+    alto: /Audio/_WG/CodaSong/descant/alto.ogg
+    tenor: /Audio/_WG/CodaSong/descant/tenor.ogg
+    bass: /Audio/_WG/CodaSong/descant/bass.ogg
+    profondo: /Audio/_WG/CodaSong/descant/profondo.ogg
+  turned:
+    soprano: /Audio/_WG/CodaSong/descant/soprano_turned.ogg
+    alto: /Audio/_WG/CodaSong/descant/alto_turned.ogg
+    tenor: /Audio/_WG/CodaSong/descant/tenor_turned.ogg
+    bass: /Audio/_WG/CodaSong/descant/bass_turned.ogg
+    profondo: /Audio/_WG/CodaSong/descant/profondo_turned.ogg
+
+# One soprano over a drone; the choir joins her and leaves.
+- type: wgCodaSong
+  id: WGCodaSongLament
+  seconds: 97.0
+  minDrift: 20
+  maxDrift: 70
+  stems:
+    soprano: /Audio/_WG/CodaSong/lament/soprano.ogg
+    alto: /Audio/_WG/CodaSong/lament/alto.ogg
+    tenor: /Audio/_WG/CodaSong/lament/tenor.ogg
+    bass: /Audio/_WG/CodaSong/lament/bass.ogg
+    profondo: /Audio/_WG/CodaSong/lament/profondo.ogg
+  turned:
+    soprano: /Audio/_WG/CodaSong/lament/soprano_turned.ogg
+    alto: /Audio/_WG/CodaSong/lament/alto_turned.ogg
+    tenor: /Audio/_WG/CodaSong/lament/tenor_turned.ogg
+    bass: /Audio/_WG/CodaSong/lament/bass_turned.ogg
+    profondo: /Audio/_WG/CodaSong/lament/profondo_turned.ogg
+
+# Rising calls, men answered by women.
+- type: wgCodaSong
+  id: WGCodaSongKyrie
+  seconds: 69.54
+  minDrift: 30
+  maxDrift: 75
+  stems:
+    soprano: /Audio/_WG/CodaSong/kyrie/soprano.ogg
+    alto: /Audio/_WG/CodaSong/kyrie/alto.ogg
+    tenor: /Audio/_WG/CodaSong/kyrie/tenor.ogg
+    bass: /Audio/_WG/CodaSong/kyrie/bass.ogg
+    profondo: /Audio/_WG/CodaSong/kyrie/profondo.ogg
+  turned:
+    soprano: /Audio/_WG/CodaSong/kyrie/soprano_turned.ogg
+    alto: /Audio/_WG/CodaSong/kyrie/alto_turned.ogg
+    tenor: /Audio/_WG/CodaSong/kyrie/tenor_turned.ogg
+    bass: /Audio/_WG/CodaSong/kyrie/bass_turned.ogg
+    profondo: /Audio/_WG/CodaSong/kyrie/profondo_turned.ogg
+
+# The old chant, for the deep.
+- type: wgCodaSong
+  id: WGCodaSongDiesIrae
+  seconds: 78.82
+  minDrift: 45
+  maxDrift: 89
+  weight: 1.2
+  stems:
+    soprano: /Audio/_WG/CodaSong/dies-irae/soprano.ogg
+    alto: /Audio/_WG/CodaSong/dies-irae/alto.ogg
+    tenor: /Audio/_WG/CodaSong/dies-irae/tenor.ogg
+    bass: /Audio/_WG/CodaSong/dies-irae/bass.ogg
+    profondo: /Audio/_WG/CodaSong/dies-irae/profondo.ogg
+  turned:
+    soprano: /Audio/_WG/CodaSong/dies-irae/soprano_turned.ogg
+    alto: /Audio/_WG/CodaSong/dies-irae/alto_turned.ogg
+    tenor: /Audio/_WG/CodaSong/dies-irae/tenor_turned.ogg
+    bass: /Audio/_WG/CodaSong/dies-irae/bass_turned.ogg
+    profondo: /Audio/_WG/CodaSong/dies-irae/profondo_turned.ogg
+
+# The finality: a round, perfectly clear. It never turns.
+- type: wgCodaSong
+  id: WGCodaSongCanon
+  seconds: 75.0
+  minDrift: 85
+  maxDrift: 100
+  stems:
+    soprano: /Audio/_WG/CodaSong/canon/soprano.ogg
+    alto: /Audio/_WG/CodaSong/canon/alto.ogg
+    tenor: /Audio/_WG/CodaSong/canon/tenor.ogg
+    bass: /Audio/_WG/CodaSong/canon/bass.ogg
+    profondo: /Audio/_WG/CodaSong/canon/profondo.ogg
+
+# What a fragment's heart sings.
+- type: wgCodaSong
+  id: WGCodaSongFragmentDiesIrae
+  seconds: 78.82
+  source: fragment
+  stems:
+    soprano: /Audio/_WG/CodaSong/dies-irae/soprano.ogg
+    alto: /Audio/_WG/CodaSong/dies-irae/alto.ogg
+    tenor: /Audio/_WG/CodaSong/dies-irae/tenor.ogg
+    bass: /Audio/_WG/CodaSong/dies-irae/bass.ogg
+    profondo: /Audio/_WG/CodaSong/dies-irae/profondo.ogg
+  turned:
+    soprano: /Audio/_WG/CodaSong/dies-irae/soprano_turned.ogg
+    alto: /Audio/_WG/CodaSong/dies-irae/alto_turned.ogg
+    tenor: /Audio/_WG/CodaSong/dies-irae/tenor_turned.ogg
+    bass: /Audio/_WG/CodaSong/dies-irae/bass_turned.ogg
+    profondo: /Audio/_WG/CodaSong/dies-irae/profondo_turned.ogg
+
+# What a fragment's heart sings.
+- type: wgCodaSong
+  id: WGCodaSongFragmentLament
+  seconds: 97.0
+  source: fragment
+  stems:
+    soprano: /Audio/_WG/CodaSong/lament/soprano.ogg
+    alto: /Audio/_WG/CodaSong/lament/alto.ogg
+    tenor: /Audio/_WG/CodaSong/lament/tenor.ogg
+    bass: /Audio/_WG/CodaSong/lament/bass.ogg
+    profondo: /Audio/_WG/CodaSong/lament/profondo.ogg
+  turned:
+    soprano: /Audio/_WG/CodaSong/lament/soprano_turned.ogg
+    alto: /Audio/_WG/CodaSong/lament/alto_turned.ogg
+    tenor: /Audio/_WG/CodaSong/lament/tenor_turned.ogg
+    bass: /Audio/_WG/CodaSong/lament/bass_turned.ogg
+    profondo: /Audio/_WG/CodaSong/lament/profondo_turned.ogg

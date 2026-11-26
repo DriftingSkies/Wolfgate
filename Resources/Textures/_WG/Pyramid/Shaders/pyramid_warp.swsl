@@ -1,0 +1,31 @@
+light_mode unshaded;
+
+uniform sampler2D SCREEN_TEXTURE;
+// 0 to 1 (more for its last wave): how hard the world is bending right now.
+uniform highp float strength;
+// Reduced motion: no waving, only the colour split and tint.
+uniform bool still;
+
+void fragment() {
+    if (strength <= 0.001) {
+        discard;
+    }
+
+    highp vec2 uv = FRAGCOORD.xy * SCREEN_PIXEL_SIZE;
+    highp vec2 offset = vec2(0.0);
+    if (!still) {
+        // Rows and columns slide against each other, like the world off its hinges.
+        offset.x = sin(uv.y * 38.0 + TIME * 9.0) * 0.006 + sin(uv.y * 7.0 - TIME * 3.0) * 0.004;
+        offset.y = sin(uv.x * 31.0 - TIME * 7.0) * 0.004;
+        offset *= strength;
+    }
+
+    highp vec2 split = vec2(0.004, 0.0015) * strength;
+    highp vec2 safe = SCREEN_PIXEL_SIZE * 0.5;
+    highp float r = zTextureSpec(SCREEN_TEXTURE, clamp(uv + offset + split, safe, vec2(1.0) - safe)).r;
+    highp float g = zTextureSpec(SCREEN_TEXTURE, clamp(uv + offset, safe, vec2(1.0) - safe)).g;
+    highp float b = zTextureSpec(SCREEN_TEXTURE, clamp(uv + offset - split, safe, vec2(1.0) - safe)).b;
+    highp vec3 col = vec3(r, g, b);
+    col = mix(col, col * vec3(0.8, 1.05, 1.1), clamp(strength, 0.0, 1.0) * 0.35);
+    COLOR = vec4(col, 1.0);
+}

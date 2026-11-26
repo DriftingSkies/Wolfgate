@@ -1,0 +1,174 @@
+# Stone, glass, light and clutter shared by the Coda's sites. Art from Paragon-Moon (its generator (port_art.py, kept outside the repo))
+# and drawn (its generator (draw_art.py, kept outside the repo)). Names are in Locale/en-US/_WG/CodaSites/codasites.ftl.
+
+- type: entity
+  parent: BaseWallTierOne
+  id: WGCodaStoneWall
+  components:
+  - type: Tag
+    tags:
+    - Wall
+  - type: Sprite
+    sprite: _WG/CodaSites/Walls/stone_wall.rsi
+    state: full
+  - type: Icon
+    sprite: _WG/CodaSites/Walls/stone_wall.rsi
+    state: full
+  - type: IconSmooth
+    key: walls
+    base: wall
+    mode: CardinalFlags
+
+# Lights. None needs power: they burn.
+
+- type: entity
+  id: WGCodaWallTorch
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _WG/CodaSites/Lighting/wall_torch.rsi
+    state: lit
+    drawdepth: WallMountedItems
+  - type: PointLight
+    radius: 5
+    energy: 1.6
+    softness: 1
+    color: "#ff9a48"
+
+- type: entity
+  id: WGCodaCandle
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: Sprite
+    sprite: _WG/CodaSites/Lighting/candle.rsi
+    state: lit
+    drawdepth: FloorObjects
+    noRot: true
+  - type: PointLight
+    radius: 2.5
+    energy: 1
+    color: "#ffb060"
+
+- type: entity
+  parent: BaseStructure
+  id: WGCodaBrazier
+  components:
+  - type: Sprite
+    sprite: _WG/CodaSites/Lighting/brazier.rsi
+    state: lit
+    noRot: true
+  - type: PointLight
+    radius: 6
+    energy: 2
+    color: "#ff8a30"
+
+- type: entity
+  parent: BaseStructure
+  id: WGCodaCandleStand
+  components:
+  - type: Sprite
+    sprite: _WG/CodaSites/Lighting/candle_stand.rsi
+    state: lit
+    noRot: true
+  - type: PointLight
+    radius: 3.5
+    energy: 1.2
+    color: "#ffb060"
+
+- type: entity
+  parent: BaseStructure
+  id: WGCodaLanternPost
+  components:
+  - type: Sprite
+    sprite: _WG/CodaSites/Lighting/lantern_post.rsi
+    state: lit
+    offset: 0,0.5
+    noRot: true
+  - type: PointLight
+    radius: 5
+    energy: 1.4
+    color: "#ffa850"
+
+# Seats. The pews' art faces east, towards the altar; the stone benches face south at rotation 0.
+
+- type: entity
+  id: WGCodaBones
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: Sprite
+    sprite: _WG/CodaSites/Decor/bones.rsi
+    state: bones
+    drawdepth: FloorObjects
+
+- type: entity
+  parent: BaseStructure
+  id: WGCodaTombstone
+  components:
+  - type: Sprite
+    sprite: _WG/CodaSites/Decor/bones.rsi
+    state: tombstone
+    noRot: true
+
+- type: entity
+  parent: WGCodaTombstone
+  id: WGCodaTombstoneCracked
+  components:
+  - type: Sprite
+    state: tombstone_cracked
+
+- type: entity
+  parent: ReinforcedPlasmaWindow
+  id: WGCodaStainedGlass
+  components:
+  - type: Sprite
+    sprite: _WG/CodaSites/Structures/stained_glass.rsi
+    state: full
+  - type: Icon
+    sprite: _WG/CodaSites/Structures/stained_glass.rsi
+    state: full
+  - type: IconSmooth
+    key: windows
+    base: glass
+    mode: CardinalFlags
+
+# The great double doors (DS13-2.0, cut into leaves). Each leaf is a door; the pair opens together. Which side is
+# inside, and whether a door is the Toll's, is set per door in the map (WGOneWayDoor).
+
+- type: entity
+  id: WGCodaChains
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: Sprite
+    sprite: _WG/CodaSites/Decor/hanging.rsi
+    state: chains1
+    offset: 0,0.5
+    drawdepth: Overdoors
+    noRot: true
+
+# The Coda's sites have no music: their own grid music is silence, so nothing falls back to the biome's.
+- type: ambientMusic
+  id: WGCodaSilence
+  sound:
+    collection: WGCodaSilence
+
+- type: soundCollection
+  id: WGCodaSilence
+  files:
+  - /Audio/_WG/CodaSites/silence.ogg

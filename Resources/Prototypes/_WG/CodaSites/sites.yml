@@ -1,0 +1,45 @@
+# The Coda's sites, placed at round start by WGCodaSiteSystem.
+
+- type: wgCodaSite
+  id: WGCodaSiteLighthouse
+  map: /Maps/_WG/CodaSites/lighthouse.yml
+  minDistance: 92000
+  maxDistance: 100000
+
+- type: wgCodaSite
+  id: WGCodaSiteLastAnchor
+  map: /Maps/_WG/CodaSites/last_anchor.yml
+
+- type: wgCodaSite
+  id: WGCodaSiteHospice
+  # The planetside hospital, sealed against space and made a hospice as it is placed.
+  map: /Maps/_WG/PlanetPois/planetary_hospital.yml
+  kind: Hospice
+
+- type: wgCodaSite
+  id: WGCodaSiteOrchard
+  map: /Maps/_WG/CodaSites/orchard.yml
+  minDistance: 105000
+  maxDistance: 130000
+
+- type: wgCodaSite
+  id: WGCodaSiteGraveyard
+  map: /Maps/_WG/CodaSites/graveyard.yml
+
+- type: wgCodaSite
+  id: WGCodaSiteWaitingRoom
+  map: /Maps/_WG/CodaSites/waiting_room.yml
+
+- type: wgCodaSite
+  id: WGCodaSiteBroadcastTower
+  map: /Maps/_WG/CodaSites/broadcast_tower.yml
+
+# Caelestinus Central, loaded again in the Coda and decayed (WGCodaSiteSystem.Echo.cs).
+- type: wgCodaSite
+  id: WGCodaSiteEcho
+  map: /Maps/_Mono/Outpost/caelestinus_central.yml
+  wholeMap: true
+  kind: Echo
+  minDistance: 108000
+  maxDistance: 122000
+  clearance: 4000

@@ -1,0 +1,268 @@
+# The Coda sites' people and fittings. Names are in Locale/en-US/_WG/CodaSites/codasites.ftl; behaviour is
+# WGCodaSiteSystem's.
+
+# The Lighthouse's keeper: he stands his post, speaks, and can't be hurt.
+- type: entity
+  parent: MobHuman
+  id: WGLighthouseKeeper
+  components:
+  - type: WGLighthouseKeeper
+  - type: Loadout
+    prototypes: [ WGLighthouseKeeperGear ]
+  - type: Godmode
+  - type: NpcFactionMember
+    factions:
+    - Passive
+
+# The Hospice's attendants: Choir, and they never lift a hand.
+- type: entity
+  parent: WGMobChoirist
+  id: WGHospiceAttendant
+  components:
+  - type: WGHospiceAttendant
+  - type: Godmode
+  - type: NpcFactionMember
+    factions:
+    - Passive
+
+- type: entity
+  parent: MedicalBed
+  id: WGHospiceCot
+  components:
+  - type: WGHospiceCot
+
+# The Last Anchor: a station anchor that holds and fails on its own clock.
+- type: entity
+  parent: WGLatticeStationAnchor
+  id: WGLastAnchorCore
+  components:
+  - type: WGLastAnchor
+
+# The Orchard.
+- type: entity
+  parent: WallFlesh
+  id: WGOrchardVine
+  components:
+  - type: WGOrchardVine
+
+- type: entity
+  parent: WGOrchardVine
+  id: WGOrchardRoot
+  components:
+  - type: WGOrchardRoot
+
+- type: entity
+  id: WGOrchardHanged
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _WG/Remade/Mobs/slasher.rsi
+    state: dead
+    drawdepth: Overdoors
+    noRot: true
+  - type: WGOrchardHanged
+    rises: [ WGRemadeHopper, WGRemadeLeaper, WGRemadePuker ]
+
+# The Graveyard Field: rock with a name in it.
+- type: entity
+  parent: AsteroidRock
+  id: WGGraveRock
+  components:
+  - type: WGGraveRock
+
+# The Waiting Room.
+- type: entity
+  id: WGWaitingBoard
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _WG/CodaSites/waiting_board.rsi
+    state: board
+    drawdepth: WallMountedItems
+  - type: WGWaitingBoard
+  - type: PointLight
+    radius: 1.5
+    energy: 1
+    color: "#ff4030"
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 80
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+- type: entity
+  parent: BaseStructure
+  id: WGTicketDispenser
+  components:
+  - type: Sprite
+    sprite: _WG/CodaSites/ticket_dispenser.rsi
+    state: dispenser
+    noRot: true
+
+# The Broadcast Tower.
+- type: entity
+  parent: BaseStructure
+  id: WGBroadcastTransmitter
+  components:
+  # It listens to Common, and only Common: secure channels never reach the tower.
+  - type: ActiveRadio
+    channels:
+    - Common
+  - type: Sprite
+    sprite: _WG/CodaSites/transmitter.rsi
+    state: mast
+    offset: 0,0.5
+    noRot: true
+  - type: WGBroadcastTower
+  - type: PointLight
+    radius: 2
+    energy: 1.5
+    color: "#ff3020"
+  - type: Damageable
+    damageContainer: StructuralInorganic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 300
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+# The Echo Station.
+- type: entity
+  parent: MobHuman
+  id: WGEchoFigure
+  components:
+  - type: Loadout
+    prototypes: [ WGEchoGearGrey, WGEchoGearWinter, WGEchoGearOfficer, WGEchoGearBeret ]
+  - type: WGEchoFigure
+  - type: Godmode
+  - type: NpcFactionMember
+    factions:
+    - Passive
+  - type: Sprite
+    color: "#b8c4d8a0"
+
+- type: entity
+  parent: NoticeBoard
+  id: WGEchoNewsBoard
+  components:
+  - type: WGEchoNewsBoard
+
+- type: entity
+  id: WGEchoAnchor
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Sprite
+    sprite: _WG/DecorImport/Structures/Decoration/statuelarge_nova.rsi
+    state: twins
+    noRot: true
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 1000
+        mask:
+        - MachineMask
+        layer:
+        - MidImpassable
+        - LowImpassable
+  - type: WGEchoAnchor
+
+# What the site NPCs wear. The Echo's figures wear plain station clothes, no tools: it all crumbles if taken away.
+- type: startingGear
+  id: WGLighthouseKeeperGear
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBlack
+    outerClothing: ClothingOuterCoatTrench
+    shoes: ClothingShoesBootsJack
+    head: ClothingHeadHatCapcap
+
+- type: startingGear
+  id: WGEchoGearGrey
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorGrey
+    shoes: ClothingShoesColorBlack
+
+- type: startingGear
+  id: WGEchoGearWinter
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorGrey
+    outerClothing: ClothingOuterWinterCoat
+    shoes: ClothingShoesBootsWork
+
+- type: startingGear
+  id: WGEchoGearOfficer
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBlack
+    outerClothing: ClothingOuterCoatJensen
+    shoes: ClothingShoesColorBlack
+
+- type: startingGear
+  id: WGEchoGearBeret
+  equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBlack
+    head: ClothingHeadHatBeret
+    shoes: ClothingShoesBootsWork
+
+# The Lighthouse's lamp: a beam that sweeps round the tower, and a mark that blinks on radar from far off.
+- type: entity
+  id: WGLighthouseLamp
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Transform
+    anchored: true
+  - type: PointLight
+    color: "#FFD68A"
+    radius: 30
+    energy: 4
+    mask: /Textures/Effects/LightMasks/double_cone.png
+    autoRot: true
+  - type: RotatingLight
+    speed: 45
+  - type: RadarBlip
+    radarColor: "#FFD68A"
+    scale: 5
+    shape: Star
+    maxDistance: 40000
+    visibleFromOtherGrids: true
+
+# The figure the Waiting Room sends: it stands behind whoever was called, then is gone.
+- type: entity
+  parent: WGEchoFigure
+  id: WGWaitingFigure
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: TimedDespawn
+    lifetime: 25

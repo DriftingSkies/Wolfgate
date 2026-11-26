@@ -1,0 +1,190 @@
+# The Pyramid: the Coda's rarest enemy, a chrome war machine that flies and fights like a ship. Names are in
+# Locale/en-US/_WG/Pyramid/pyramid.ftl; behaviour, and how rarely it comes, are in its WGPyramid component.
+
+- type: entity
+  id: WGPyramid
+  components:
+  - type: WGPyramid
+    health: 12000
+    # Each laser hit lands like a heavy ship missile (Mono's heavy missiles: 130 to 150, slope 3).
+    explosionIntensity: 150
+    explosionSlope: 3
+    explosionMaxTile: 30
+    arrive:
+      path: /Audio/_WG/Fragments/seeing.ogg
+  - type: WGPyramidVisuals
+  # Every NPC and turret takes it for an enemy.
+  - type: NpcFactionMember
+    factions:
+    - AllHostile
+  - type: Transform
+    gridTraversal: false
+  - type: Sprite
+    sprite: _WG/Pyramid/pyramid.rsi
+    noRot: true
+    scale: 4, 4
+    drawdepth: Overdoors
+    layers:
+    - state: aura
+      shader: unshaded
+      map: [ "aura" ]
+    - state: body
+      shader: unshaded
+      map: [ "body" ]
+    - state: skin
+      shader: unshaded
+      map: [ "skin" ]
+    - state: eye
+      shader: unshaded
+    - state: lights
+      shader: unshaded
+      map: [ "lights" ]
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Dynamic
+    bodyStatus: InAir
+    fixedRotation: true
+    linearDamping: 0
+    angularDamping: 0
+  - type: Fixtures
+    fixtures:
+      # The pyramid's own outline, matching the 24 m sprite: apex, base corners and the front corner.
+      hull:
+        shape:
+          !type:PolygonShape
+          vertices:
+          - 0,10.5
+          - -10.5,-6.5
+          - 0,-9.5
+          - 10.5,-6.5
+        density: 60
+        hard: true
+        layer:
+        - LargeMobLayer
+        mask:
+        - LargeMobMask
+  - type: Damageable
+    damageModifierSet: WGPyramid
+  - type: SingularityDistortion
+    intensity: 3000
+    falloffPower: 2
+  - type: PointLight
+    color: "#9fd3ff"
+    radius: 14
+    energy: 2.5
+  - type: RadarBlip
+    radarColor: "#e8482a"
+    scale: 4
+    shape: Triangle
+
+# CoQ's pyramid shrugs off heat and cold and is weak to electricity; ship guns still hurt.
+- type: damageModifierSet
+  id: WGPyramid
+  coefficients:
+    Structural: 0.5
+    Blunt: 0.5
+    Piercing: 0.4
+    Slash: 0.2
+    Heat: 0.3
+    Cold: 0.05
+    Shock: 1.5
+    Caustic: 0.5
+    Radiation: 0
+    Poison: 0
+    Cellular: 0
+    Asphyxiation: 0
+    Bloodloss: 0
+
+# The reticle a barrage paints on a hull, three tiles across, before the lasers fire on it.
+- type: entity
+  id: WGPyramidMark
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: WGPyramidMark
+  - type: Sprite
+    sprite: _WG/Pyramid/mark.rsi
+    state: mark
+    shader: unshaded
+    scale: 3, 3
+    drawdepth: Effects
+  - type: PointLight
+    color: "#9fd3ff"
+    radius: 3
+    energy: 2
+  - type: TimedDespawn
+    lifetime: 9
+
+# What is left of it. The Coda wants it back: a ship carrying one draws its hunters.
+- type: entity
+  parent: BaseItem
+  id: WGChromeShard
+  components:
+  - type: Sprite
+    sprite: _WG/Pyramid/shard.rsi
+    state: icon
+  - type: Item
+    size: Small
+  - type: StaticPrice
+    price: 12000
+  - type: PointLight
+    color: "#84c4d6"
+    radius: 1.5
+    energy: 1
+  - type: WGCodaLure
+    hunterScale: 2
+
+# What a Pyramid laser leaves where it lands: shattered chrome and broken pixels instead of fire, and no burning.
+- type: explosion
+  id: WGPyramidShatter
+  # The same damage per intensity as a standard explosion, so a hit matches a ship weapon of the same strength.
+  damagePerIntensity:
+    types:
+      Heat: 5
+      Blunt: 5
+      Piercing: 5
+      Structural: 20
+  tileBreakChance: [0, 0.5, 1]
+  tileBreakIntensity: [0, 10, 30]
+  tileBreakRerollReduction: 20
+  lightColor: "#9fd3ff"
+  fireChance: 0
+  texturePath: /Textures/_WG/Pyramid/shatter.rsi
+  fireStates: 3
+  # Blasts heard through bent space.
+  sound:
+    collection: WGPyramidShatter
+  smallSound:
+    collection: WGPyramidShatterSmall
+  soundFar:
+    collection: WGPyramidShatterFar
+    params:
+      volume: 2
+  smallSoundFar:
+    collection: WGPyramidShatterSmallFar
+    params:
+      volume: 2
+
+- type: soundCollection
+  id: WGPyramidShatter
+  files:
+  - /Audio/_WG/Pyramid/shatter_explosion1.ogg
+  - /Audio/_WG/Pyramid/shatter_explosion2.ogg
+  - /Audio/_WG/Pyramid/shatter_explosion3.ogg
+
+- type: soundCollection
+  id: WGPyramidShatterSmall
+  files:
+  - /Audio/_WG/Pyramid/shatter_explosion_small1.ogg
+  - /Audio/_WG/Pyramid/shatter_explosion_small2.ogg
+  - /Audio/_WG/Pyramid/shatter_explosion_small3.ogg
+
+- type: soundCollection
+  id: WGPyramidShatterFar
+  files:
+  - /Audio/_WG/Pyramid/shatter_explosionfar.ogg
+
+- type: soundCollection
+  id: WGPyramidShatterSmallFar
+  files:
+  - /Audio/_WG/Pyramid/shatter_explosionsmallfar.ogg

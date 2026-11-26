@@ -1,0 +1,91 @@
+light_mode unshaded;
+
+uniform sampler2D SCREEN_TEXTURE;
+uniform highp vec2 viewportMin;
+uniform highp vec2 viewportSize;
+uniform highp vec2 worldToScreenX;
+uniform highp vec2 worldToScreenY;
+// Up to two Pyramids: where each is, and how hard reality is bending round it (0 for none; it spikes as a wave leaves
+// and climbs as it collapses).
+uniform highp vec2 centre0;
+uniform highp vec2 centre1;
+uniform highp vec2 strengths;
+uniform highp float radius;
+// Reduced motion: no swirl, ripple or tearing, only the colour split.
+uniform bool still;
+
+highp float hash1(highp vec2 p) {
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
+}
+
+highp float vnoise(highp vec2 p) {
+    highp vec2 i = floor(p);
+    highp vec2 f = fract(p);
+    highp vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash1(i), hash1(i + vec2(1.0, 0.0)), u.x),
+               mix(hash1(i + vec2(0.0, 1.0)), hash1(i + vec2(1.0, 1.0)), u.x), u.y);
+}
+
+// One Pyramid's pull on the world at this point: displacement in metres, then tearing, colour split and glow.
+highp vec4 field(highp vec2 world, highp vec2 centre, highp float strength, out highp vec2 displacement) {
+    displacement = vec2(0.0);
+    if (strength <= 0.0) {
+        return vec4(0.0);
+    }
+
+    highp vec2 off = world - centre;
+    highp float d = length(off);
+    if (d > radius) {
+        return vec4(0.0);
+    }
+
+    highp float f = 1.0 - d / radius;
+    f = f * f;
+    highp vec2 dir = off / max(d, 0.001);
+    highp vec2 tangent = vec2(-dir.y, dir.x);
+    // Space swirls round it, breathing, and rings ripple outward through it.
+    highp float swirl = sin(TIME * 0.6 + d * 0.12) * (0.6 + strength) + (vnoise(off * 0.08 + TIME * 0.3) - 0.5) * 1.4;
+    highp float ripple = sin(d * 0.85 - TIME * 3.2) * (0.4 + strength * 0.8);
+    displacement = (tangent * swirl + dir * ripple) * f * 0.45;
+    highp float tear = f * (0.05 + 0.55 * strength);
+    highp float split = f * (0.35 + 1.2 * strength);
+    highp float glow = f * strength * 0.22;
+    return vec4(tear, split, glow, f);
+}
+
+void fragment() {
+    highp vec2 world = viewportMin + UV * viewportSize;
+    highp vec2 d0;
+    highp vec2 d1;
+    highp vec4 a = field(world, centre0, strengths.x, d0);
+    highp vec4 b = field(world, centre1, strengths.y, d1);
+    highp float reach = max(a.w, b.w);
+    if (reach <= 0.0) {
+        discard;
+    }
+
+    highp vec2 displacement = still ? vec2(0.0) : d0 + d1;
+    highp float tear = still ? 0.0 : max(a.x, b.x);
+    highp float split = max(a.y, b.y);
+    highp float glow = a.z + b.z;
+
+    highp vec2 pixels = worldToScreenX * displacement.x + worldToScreenY * displacement.y;
+    // Tearing: thin horizontal bands of the picture jump sideways, a few at a time, many while it pulses.
+    highp float band = floor(FRAGCOORD.y / 4.0);
+    highp float tick = floor(TIME * 15.0);
+    if (hash1(vec2(band, tick)) < tear * 0.7) {
+        pixels.x += (hash1(vec2(band * 1.7, tick + 3.1)) - 0.5) * 70.0 * tear;
+    }
+
+    highp vec2 safe = SCREEN_PIXEL_SIZE * 0.5;
+    highp vec2 base = FRAGCOORD.xy - pixels;
+    highp vec2 shift = vec2(split * 5.0, split * 1.5);
+    highp float r = zTextureSpec(SCREEN_TEXTURE, clamp((base + shift) * SCREEN_PIXEL_SIZE, safe, vec2(1.0) - safe)).r;
+    highp float g = zTextureSpec(SCREEN_TEXTURE, clamp(base * SCREEN_PIXEL_SIZE, safe, vec2(1.0) - safe)).g;
+    highp float bl = zTextureSpec(SCREEN_TEXTURE, clamp((base - shift) * SCREEN_PIXEL_SIZE, safe, vec2(1.0) - safe)).b;
+    highp vec3 col = vec3(r, g, bl);
+    col += vec3(0.4, 0.85, 0.95) * glow;
+    COLOR = vec4(col, 1.0);
+}

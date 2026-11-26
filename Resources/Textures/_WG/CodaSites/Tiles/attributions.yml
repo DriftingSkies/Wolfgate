@@ -1,0 +1,4 @@
+- files: [ "stone.png", "rough.png", "wood.png" ]
+  license: "CC-BY-SA-3.0"
+  copyright: "From Paragon-Moon (https://github.com/Endless-Seas/Paragon-Moon): icons/turf/roguefloor.dmi."
+  source: "https://github.com/Endless-Seas/Paragon-Moon"

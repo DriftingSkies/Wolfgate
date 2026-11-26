@@ -1,0 +1,24 @@
+- files: ["canon/alto.ogg", "canon/bass.ogg", "canon/profondo.ogg", "canon/soprano.ogg", "canon/tenor.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Made for Wolfgate by Drift."
+  source: "https://github.com/VanguardControl/Wolfgate"
+- files: ["descant/alto.ogg", "descant/alto_turned.ogg", "descant/bass.ogg", "descant/bass_turned.ogg", "descant/profondo.ogg", "descant/profondo_turned.ogg", "descant/soprano.ogg", "descant/soprano_turned.ogg", "descant/tenor.ogg", "descant/tenor_turned.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Made for Wolfgate by Drift."
+  source: "https://github.com/VanguardControl/Wolfgate"
+- files: ["dies-irae/alto.ogg", "dies-irae/alto_turned.ogg", "dies-irae/bass.ogg", "dies-irae/bass_turned.ogg", "dies-irae/profondo.ogg", "dies-irae/profondo_turned.ogg", "dies-irae/soprano.ogg", "dies-irae/soprano_turned.ogg", "dies-irae/tenor.ogg", "dies-irae/tenor_turned.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Made for Wolfgate by Drift."
+  source: "https://github.com/VanguardControl/Wolfgate"
+- files: ["kyrie/alto.ogg", "kyrie/alto_turned.ogg", "kyrie/bass.ogg", "kyrie/bass_turned.ogg", "kyrie/profondo.ogg", "kyrie/profondo_turned.ogg", "kyrie/soprano.ogg", "kyrie/soprano_turned.ogg", "kyrie/tenor.ogg", "kyrie/tenor_turned.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Made for Wolfgate by Drift."
+  source: "https://github.com/VanguardControl/Wolfgate"
+- files: ["lament/alto.ogg", "lament/alto_turned.ogg", "lament/bass.ogg", "lament/bass_turned.ogg", "lament/profondo.ogg", "lament/profondo_turned.ogg", "lament/soprano.ogg", "lament/soprano_turned.ogg", "lament/tenor.ogg", "lament/tenor_turned.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Made for Wolfgate by Drift."
+  source: "https://github.com/VanguardControl/Wolfgate"
+- files: ["nocturne/alto.ogg", "nocturne/alto_turned.ogg", "nocturne/bass.ogg", "nocturne/bass_turned.ogg", "nocturne/profondo.ogg", "nocturne/profondo_turned.ogg", "nocturne/soprano.ogg", "nocturne/soprano_turned.ogg", "nocturne/tenor.ogg", "nocturne/tenor_turned.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Made for Wolfgate by Drift."
+  source: "https://github.com/VanguardControl/Wolfgate"

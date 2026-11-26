@@ -1,0 +1,77 @@
+light_mode unshaded;
+
+uniform sampler2D SCREEN_TEXTURE;
+uniform highp vec2 viewportMin;
+uniform highp vec2 viewportSize;
+uniform highp vec2 worldToScreenX;
+uniform highp vec2 worldToScreenY;
+// Up to four waves: where each left from, how far its front has run, and how strong it is (0 for none).
+uniform highp vec2 centre0;
+uniform highp vec2 centre1;
+uniform highp vec2 centre2;
+uniform highp vec2 centre3;
+uniform highp vec4 radii;
+uniform highp vec4 strengths;
+uniform highp float width;
+uniform highp float reach;
+
+highp float hash1(highp vec2 p) {
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
+}
+
+highp float vnoise(highp vec2 p) {
+    highp vec2 i = floor(p);
+    highp vec2 f = fract(p);
+    highp vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash1(i), hash1(i + vec2(1.0, 0.0)), u.x),
+               mix(hash1(i + vec2(0.0, 1.0)), hash1(i + vec2(1.0, 1.0)), u.x), u.y);
+}
+
+// One wave's push on space (x, along dir) and its glow (y), at a world point.
+highp vec3 wave(highp vec2 world, highp vec2 centre, highp float front, highp float strength) {
+    if (strength <= 0.0 || front <= 0.0 || front > reach) {
+        return vec3(0.0);
+    }
+
+    highp vec2 off = world - centre;
+    highp float d = length(off);
+    highp float angle = atan(off.y, off.x);
+    // The front ripples along its length, twice over, so it reads as a warp and not a ring.
+    highp float ripple = sin(angle * 9.0 + TIME * 2.0) * 0.25 + (vnoise(vec2(angle * 60.0, TIME)) - 0.5) * 0.6;
+    highp float x = (d - front - ripple * width) / width;
+    highp float band = exp(-x * x);
+    highp float edge = exp(-x * x * 20.0);
+    highp float fade = (1.0 - smoothstep(reach * 0.7, reach, front)) * strength;
+    return vec3(sin(x * 6.0) * band, edge, 0.0) * fade;
+}
+
+void fragment() {
+    highp vec2 world = viewportMin + UV * viewportSize;
+    highp vec3 w0 = wave(world, centre0, radii.x, strengths.x);
+    highp vec3 w1 = wave(world, centre1, radii.y, strengths.y);
+    highp vec3 w2 = wave(world, centre2, radii.z, strengths.z);
+    highp vec3 w3 = wave(world, centre3, radii.w, strengths.w);
+    highp float push = w0.x + w1.x + w2.x + w3.x;
+    highp float glow = w0.y + w1.y + w2.y + w3.y;
+    if (abs(push) < 0.002 && glow < 0.003) {
+        discard;
+    }
+
+    // Space shears sideways as well as outwards inside the front.
+    highp vec2 displacement = vec2(push, push * 0.6) * 22.0;
+    highp vec2 pixels = worldToScreenX * displacement.x + worldToScreenY * displacement.y;
+    highp vec2 safe = SCREEN_PIXEL_SIZE * 0.5;
+    highp vec2 base = FRAGCOORD.xy - pixels;
+    // The colours come apart where it is strongest.
+    highp vec2 split = vec2(abs(push) * 6.0, 0.0);
+    highp float r = zTextureSpec(SCREEN_TEXTURE, clamp((base + split) * SCREEN_PIXEL_SIZE, safe, vec2(1.0) - safe)).r;
+    highp vec2 gb = zTextureSpec(SCREEN_TEXTURE, clamp(base * SCREEN_PIXEL_SIZE, safe, vec2(1.0) - safe)).gb;
+    highp float b = zTextureSpec(SCREEN_TEXTURE, clamp((base - split) * SCREEN_PIXEL_SIZE, safe, vec2(1.0) - safe)).b;
+    highp vec3 col = vec3(r, gb.x, mix(b, gb.y, 0.5));
+
+    col += vec3(0.45, 0.85, 0.92) * glow * 0.55;
+    col += vec3(1.0, 0.35, 0.25) * pow(clamp(glow, 0.0, 1.0), 8.0) * 0.5;
+    COLOR = vec4(col, 1.0);
+}

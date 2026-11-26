@@ -90,6 +90,16 @@ public sealed partial class WGDriftMindSystem : EntitySystem
                && !_mobState.IsDead(mob);
     }
 
+    /// <summary>Takes some Drift out of a person's head: a moment of calm.</summary>
+    public void Calm(EntityUid mob, float amount)
+    {
+        if (amount <= 0f || !TryComp<WGDriftComponent>(mob, out var drift) || drift.Mind <= 0f)
+            return;
+
+        drift.Mind = Math.Max(0f, drift.Mind - amount);
+        Sync(mob, drift);
+    }
+
     /// <summary>Puts Drift into a person's head, up to <paramref name="cap"/>, and holds off its fading this second.</summary>
     public void Add(EntityUid mob, float amount, WGDriftFlavour flavour, float cap = 100f)
     {

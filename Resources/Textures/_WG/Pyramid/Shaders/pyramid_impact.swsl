@@ -1,0 +1,74 @@
+light_mode unshaded;
+
+uniform sampler2D SCREEN_TEXTURE;
+uniform highp vec2 viewportMin;
+uniform highp vec2 viewportSize;
+uniform highp vec2 worldToScreenX;
+uniform highp vec2 worldToScreenY;
+// Up to eight laser hits: where each landed and seconds since (negative for none).
+uniform highp vec2[8] centres;
+uniform highp float[8] ages;
+uniform highp float life;
+uniform bool still;
+
+highp float hash1(highp vec2 p) {
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
+}
+
+void fragment() {
+    highp vec2 world = viewportMin + UV * viewportSize;
+    highp vec2 displacement = vec2(0.0);
+    highp float flash = 0.0;
+    highp float split = 0.0;
+    highp float block = 0.0;
+    for (int i = 0; i < 8; i++) {
+        highp float age = ages[i];
+        if (age < 0.0 || age > life) {
+            continue;
+        }
+
+        highp vec2 off = world - centres[i];
+        highp float d = length(off);
+        highp float u = age / life;
+        // A shockwave ring racing out and thinning.
+        highp float front = age * 24.0;
+        highp float x = (d - front) / (2.0 + age * 3.0);
+        highp float ring = exp(-x * x) * (1.0 - u);
+        displacement += off / max(d, 0.001) * sin(x * 3.0) * ring * 1.4;
+        split = max(split, ring * 1.6);
+        // A flash at the heart, gone in a blink.
+        flash += exp(-d * d / 6.0) * max(0.0, 1.0 - age / 0.18);
+        // Reality breaks into blocks round the hit for the first half second.
+        highp float core = 1.0 - smoothstep(4.0, 9.0 + age * 6.0, d);
+        block = max(block, core * max(0.0, 1.0 - age / 0.6));
+    }
+
+    if (length(displacement) < 0.001 && flash < 0.002 && split < 0.002 && block < 0.002) {
+        discard;
+    }
+
+    if (still) {
+        displacement = vec2(0.0);
+        block = 0.0;
+    }
+
+    highp vec2 pixels = worldToScreenX * displacement.x + worldToScreenY * displacement.y;
+    highp vec2 coord = FRAGCOORD.xy - pixels;
+    if (block > 0.02) {
+        // Pixelate: snap to blocks that change size as they flicker.
+        highp float size = 4.0 + floor(hash1(floor(coord / 24.0) + floor(TIME * 20.0)) * 4.0) * 4.0 * block;
+        coord = floor(coord / size) * size + size * 0.5;
+    }
+
+    highp vec2 safe = SCREEN_PIXEL_SIZE * 0.5;
+    highp vec2 shift = vec2(split * 6.0, 0.0);
+    highp float r = zTextureSpec(SCREEN_TEXTURE, clamp((coord + shift) * SCREEN_PIXEL_SIZE, safe, vec2(1.0) - safe)).r;
+    highp float g = zTextureSpec(SCREEN_TEXTURE, clamp(coord * SCREEN_PIXEL_SIZE, safe, vec2(1.0) - safe)).g;
+    highp float b = zTextureSpec(SCREEN_TEXTURE, clamp((coord - shift) * SCREEN_PIXEL_SIZE, safe, vec2(1.0) - safe)).b;
+    highp vec3 col = vec3(r, g, b);
+    col = mix(col, vec3(0.85, 0.97, 1.0), clamp(flash, 0.0, 1.0) * 0.85);
+    col += vec3(0.3, 0.75, 0.9) * block * 0.15;
+    COLOR = vec4(col, 1.0);
+}

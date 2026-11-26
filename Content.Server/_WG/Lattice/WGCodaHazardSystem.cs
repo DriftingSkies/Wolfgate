@@ -124,6 +124,13 @@ public sealed partial class WGCodaHazardSystem : EntitySystem
 
         foreach (var (grid, crew) in _crew)
         {
+            // A grid marked so keeps its own dangers.
+            if (HasComp<WGCodaHazardImmuneComponent>(grid))
+            {
+                _ships.Remove(grid);
+                continue;
+            }
+
             var point = _transform.GetMapCoordinates(grid);
             if (_lattice.BandOf(point, out var profile) == null || profile == null
                 || !TryComp<MapGridComponent>(grid, out var gridComp))
@@ -256,6 +263,7 @@ public sealed partial class WGCodaHazardSystem : EntitySystem
             return;
 
         var chance = Math.Clamp((ship.Exposure - profile.HunterGrace) / profile.HunterRamp, 0f, 1f) * profile.HunterMaxChance;
+        chance = Math.Min(1f, chance * LureScale(grid));
         if (!_random.Prob(chance))
             return;
 
@@ -510,5 +518,19 @@ public sealed partial class WGCodaHazardSystem : EntitySystem
                     break;
             }
         }
+    }
+
+    /// <summary>How much likelier hunters are on a grid carrying something the Coda wants back.</summary>
+    private float LureScale(EntityUid grid)
+    {
+        var scale = 1f;
+        var lures = EntityQueryEnumerator<WGCodaLureComponent, TransformComponent>();
+        while (lures.MoveNext(out _, out var lure, out var xform))
+        {
+            if (xform.GridUid == grid)
+                scale = Math.Max(scale, lure.HunterScale);
+        }
+
+        return scale;
     }
 }

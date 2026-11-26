@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "From Paragon-Moon (https://github.com/Endless-Seas/Paragon-Moon): icons/roguetown/misc/tallstructure.dmi. Ported for Wolfgate by Tools/_WG/CodaSites/port_art.py.",
+  "size": {
+    "x": 32,
+    "y": 64
+  },
+  "states": [
+    {
+      "name": "chains1"
+    },
+    {
+      "name": "chains2"
+    },
+    {
+      "name": "chains3"
+    },
+    {
+      "name": "chains4"
+    },
+    {
+      "name": "meathook"
+    }
+  ]
+}

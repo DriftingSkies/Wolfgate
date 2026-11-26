@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Made for Wolfgate by Drift.",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "glass0"
+    },
+    {
+      "name": "glass1"
+    },
+    {
+      "name": "glass2"
+    },
+    {
+      "name": "glass3"
+    },
+    {
+      "name": "glass4"
+    },
+    {
+      "name": "glass5"
+    },
+    {
+      "name": "glass6"
+    },
+    {
+      "name": "glass7"
+    },
+    {
+      "name": "glass8"
+    },
+    {
+      "name": "glass9"
+    },
+    {
+      "name": "glass10"
+    },
+    {
+      "name": "glass11"
+    },
+    {
+      "name": "glass12"
+    },
+    {
+      "name": "glass13"
+    },
+    {
+      "name": "glass14"
+    },
+    {
+      "name": "glass15"
+    },
+    {
+      "name": "full"
+    }
+  ]
+}

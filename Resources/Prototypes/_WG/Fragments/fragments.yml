@@ -83,6 +83,107 @@
     - /Maps/_Mono/Monolithic/monolithicasteroidsmallarena.yml
     - /Maps/_Mono/Monolithic/monolithicasteroidsmallspindle.yml
     - /Maps/_Mono/Monolithic/monolithicasteroidsmallship.yml
+    - /Maps/_WG/Fragments/monolithfragment.yml
+    # A greater fragment: a whole shard of the Monolith. Twice the garrison, heavier and quicker waves, a heart twice as
+    # hard, its own announcements, and two and a half times the pay.
+    sizes:
+    - grids:
+      - /Maps/_WG/Fragments/monolithfragmentlarge.yml
+      gridName: wg-fragment-greater-grid-name
+      heart: WGFragmentHeartGreater
+      # Swarming from the moment it lands: ninety aboard.
+      garrison: 75
+      garrisonElites: 15
+      waveBase: 14
+      playersPerExtra: 1
+      waveInterval: 75
+      eliteEvery: 1
+      maxAlive: 150
+      decorCount: 50
+      # Monolith crystal growing through it, and the dead it took on its way in. No security or command dead: no free guns.
+      scatterCount: 38
+      scatter:
+      # Mostly grown crystal; now and then a small loose shard worth picking up.
+      - CrystalMonolithic
+      - CrystalMonolithic
+      - CrystalMonolithic
+      - CrystalMonolithic
+      - CrystalMonolithic
+      - CrystalMonolithic
+      - MonolithicCrystalSmall
+      - MobRandomServiceCorpse
+      - MobRandomEngineerCorpse
+      - MobRandomCargoCorpse
+      - MobRandomMedicCorpse
+      - MobRandomScienceCorpse
+      rewardScale: 2.5
+      participantReward: 650000
+      sighted:
+        text: wg-fragment-greater-start-announcement
+        sound:
+          path: /Audio/_WG/Fragments/seeing.ogg
+          params:
+            pitch: 0.8
+        textColor: "#E8D5C8"
+        corruption: 0.05
+      arrived:
+        text: wg-fragment-greater-arrived
+        sound:
+          path: /Audio/_WG/Lattice/drift_pulse.ogg
+          params:
+            pitch: 0.75
+        textColor: "#D14E6B"
+        corruption: 0.18
+        senderCorruption: 0.22
+        hiddenWords: 2
+        flickers: 5
+        voice:
+        - wg-fragment-greater-voice-land-1
+        - wg-fragment-greater-voice-land-2
+        - wg-fragment-greater-voice-land-3
+        - wg-fragment-greater-voice-land-4
+      warning:
+        text: wg-fragment-greater-warning
+        sound:
+          path: /Audio/_Mono/Effects/Ambience/creak2.ogg
+          params:
+            pitch: 0.7
+        corruption: 0.12
+        senderCorruption: 0.2
+        flickers: 2
+      broken:
+        text: wg-fragment-greater-cleared
+        jointText: wg-fragment-greater-cleared-joint
+        sound:
+          path: /Audio/_WG/Remade/betrayal/stinger_2.ogg
+          params:
+            pitch: 0.8
+        senderColor: "#6F6380"
+        textColor: "#8E7FA3"
+      lost:
+        text: wg-fragment-greater-lost
+        sound:
+          path: /Audio/_WG/Remade/betrayal/stinger_1.ogg
+          params:
+            pitch: 0.75
+        corruption: 0.32
+        senderCorruption: 0.35
+        hiddenWords: 3
+        flickers: 6
+        voice:
+        - wg-fragment-greater-voice-lost-1
+        - wg-fragment-greater-voice-lost-2
+        - wg-fragment-greater-voice-lost-3
+        voiceDelay: 4
+      departed:
+        text: wg-fragment-greater-departed
+        sound:
+          path: /Audio/Effects/Weather/wind_2_1.ogg
+          params:
+            pitch: 0.8
+        senderColor: "#6F6380"
+        textColor: "#8E7FA3"
+        corruption: 0.08
     bases:
     - FactionStaticUplinkTsf
     - FactionStaticUplinkPdv
@@ -142,6 +243,10 @@
     mode: SnapgridCenter
   components:
   - type: WGFragmentHeart
+  - type: WGSongSource
+    source: fragment
+    range: 60
+    turnedAt: 3000
   - type: Transform
     noRot: true
     anchored: true
@@ -206,3 +311,39 @@
     scale: 3
     shape: hexagon
     visibleFromOtherGrids: true
+
+# A greater fragment's heart: twice as hard to break, and its song turns as slowly.
+- type: entity
+  parent: WGFragmentHeart
+  id: WGFragmentHeartGreater
+  components:
+  - type: WGSongSource
+    source: fragment
+    range: 300
+    turnedAt: 6000
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 6000
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: GlassBreak
+      - !type:SpawnEntitiesBehavior
+        spawn:
+          MonolithicCrystalLarge:
+            min: 2
+            max: 3
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+
+# For admins: a greater fragment every time (addgamerule WGFragmentEventGreater). It never rolls on its own.
+- type: entity
+  parent: WGFragmentEvent
+  id: WGFragmentEventGreater
+  components:
+  - type: StationEvent
+    weight: 0
+  - type: WGFragmentRule
+    grids: []

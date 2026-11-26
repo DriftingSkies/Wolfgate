@@ -13,7 +13,8 @@ and the escape come through corrupted: Lattice noise, a garbled sender, hidden w
 that flicker live through the client's `[scramble]` tag; the landing and the escape are followed by a whisper. The
 coordinates are never corrupted, and a world with no mass transceiver up misses these lines like any announcement.
 
-Admins can force one with `addgamerule WGFragmentEvent`; it lands 10 to 20 seconds after the first announcement.
+Admins can force one with `addgamerule WGFragmentEvent` (any size), or a greater one with `addgamerule WGFragmentEventGreater`;
+it lands 10 to 20 seconds after the first announcement.
 
 It lands with a garrison of 8 Remade and 2 elites besides the mobs it swaps. While the heart stands, it sends a wave
 every 120 seconds at the living players within 60 m, on the fragment or a ship alongside: four, plus one per two players,
@@ -28,6 +29,12 @@ at some point before it broke. Every player who was aboard or within 60 m of the
 faction, also gets 250,000 thalers, untaxed, in the bank of the character they took part as, so outside crews have a
 reason to help.
 The fragment leaves after 20 minutes, with a warning 5 minutes before.
+
+**Greater fragments.** One grid, `monolithfragmentlarge`, is a greater fragment (`sizes` in the rule): a whole shard of the
+Monolith with its own announcements and name, a garrison of ninety waiting as it lands (75 and 15 elites), far heavier and quicker waves (14 a wave,
+one more per player, an elite every wave, every 75 seconds, up to 150 alive), a heart twice as hard (6000), more decor, monolith crystal growing through it and the crew it took on its way in,
+and two and a half times the faction reward with 650,000 to each participant. The grid is picked as the event is added,
+so its first announcement already knows its size. Every heart sings the Coda's song to players nearby (`CodaSong`).
 
 The Remade here belong to no Monolith, so nothing grows, climbs or turns corpses. A fragment never holds a Scion, a
 splinter or any other `WGMonolith`.
@@ -47,6 +54,7 @@ Tuning is in `Resources/Prototypes/_WG/Fragments/fragments.yml`; the logic is `W
 - [`Content.Server/_WG/Fragments/WGFragmentRuleComponent.cs`](WGFragmentRuleComponent.cs)
 - [`Content.Server/_WG/Fragments/WGFragmentRuleSystem.Announcements.cs`](WGFragmentRuleSystem.Announcements.cs)
 - [`Content.Server/_WG/Fragments/WGFragmentRuleSystem.cs`](WGFragmentRuleSystem.cs)
+- [`Content.Server/_WG/Fragments/WGFragmentSize.cs`](WGFragmentSize.cs)
 - [`Content.Server/_WG/Fragments/WGFragmentText.cs`](WGFragmentText.cs)
 
 ### Integration tests
@@ -69,6 +77,11 @@ Tuning is in `Resources/Prototypes/_WG/Fragments/fragments.yml`; the logic is `W
 
 - [`Resources/Audio/_WG/Fragments/attributions.yml`](../../../Resources/Audio/_WG/Fragments/attributions.yml)
 - [`Resources/Audio/_WG/Fragments/seeing.ogg`](../../../Resources/Audio/_WG/Fragments/seeing.ogg)
+
+### Maps
+
+- [`Resources/Maps/_WG/Fragments/monolithfragment.yml`](../../../Resources/Maps/_WG/Fragments/monolithfragment.yml)
+- [`Resources/Maps/_WG/Fragments/monolithfragmentlarge.yml`](../../../Resources/Maps/_WG/Fragments/monolithfragmentlarge.yml)
 
 ## Non-modular edits
 

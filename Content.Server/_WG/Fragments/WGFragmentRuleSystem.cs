@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Robust.Shared.Utility;
 using Content.Server._Mono.Store;
 using Content.Server._WG.AdminVessels;
 using Content.Server._NF.Bank;
@@ -182,12 +183,62 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
             comp.Participants[session.UserId] = slot;
     }
 
+    /// <summary>
+    /// Picks the fragment's grid from every size, and if it belongs to a larger size takes that size's waves, heart,
+    /// payouts and announcements over the defaults.
+    /// </summary>
+    private void ChooseSize(WGFragmentRuleComponent comp)
+    {
+        var pool = new List<(ResPath Path, WGFragmentSize? Size)>();
+        pool.AddRange(comp.Grids.Select(g => (g, (WGFragmentSize?) null)));
+        foreach (var size in comp.Sizes)
+        {
+            pool.AddRange(size.Grids.Select(g => (g, (WGFragmentSize?) size)));
+        }
+
+        if (pool.Count == 0)
+            return;
+
+        var (path, chosen) = RobustRandom.Pick(pool);
+        comp.Chosen = path;
+        if (chosen is not { } s)
+            return;
+
+        comp.GridName = s.GridName ?? comp.GridName;
+        comp.Heart = s.Heart ?? comp.Heart;
+        comp.Garrison = s.Garrison ?? comp.Garrison;
+        comp.GarrisonElites = s.GarrisonElites ?? comp.GarrisonElites;
+        comp.WaveBase = s.WaveBase ?? comp.WaveBase;
+        comp.PlayersPerExtra = s.PlayersPerExtra ?? comp.PlayersPerExtra;
+        comp.WaveInterval = s.WaveInterval ?? comp.WaveInterval;
+        comp.EliteEvery = s.EliteEvery ?? comp.EliteEvery;
+        comp.MaxAlive = s.MaxAlive ?? comp.MaxAlive;
+        comp.DecorCount = s.DecorCount ?? comp.DecorCount;
+        if (s.Scatter.Count > 0)
+        {
+            comp.Scatter = s.Scatter;
+            comp.ScatterCount = s.ScatterCount;
+        }
+        comp.ParticipantReward = s.ParticipantReward ?? comp.ParticipantReward;
+        foreach (var id in comp.Rewards.Keys.ToList())
+        {
+            comp.Rewards[id] = (int) MathF.Round(comp.Rewards[id] * s.RewardScale);
+        }
+
+        comp.Sighted = s.Sighted ?? comp.Sighted;
+        comp.Arrived = s.Arrived ?? comp.Arrived;
+        comp.Warning = s.Warning ?? comp.Warning;
+        comp.Broken = s.Broken ?? comp.Broken;
+        comp.Lost = s.Lost ?? comp.Lost;
+        comp.Departed = s.Departed ?? comp.Departed;
+    }
+
     protected override void Started(EntityUid uid, WGFragmentRuleComponent comp, GameRuleComponent gameRule, GameRuleStartedEvent args)
     {
         base.Started(uid, comp, gameRule, args);
 
         var mapId = GameTicker.DefaultMap;
-        if (!MapSystem.MapExists(mapId) || comp.Grids.Count == 0)
+        if (!MapSystem.MapExists(mapId) || comp.Chosen == null && comp.Grids.Count == 0)
             return;
 
         if (PickSite(comp, mapId) is not { } site)
@@ -196,7 +247,7 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
             return;
         }
 
-        var path = RobustRandom.Pick(comp.Grids);
+        var path = comp.Chosen ?? RobustRandom.Pick(comp.Grids);
         if (!_loader.TryLoadGrid(mapId, path, out var grid, offset: site))
         {
             Log.Error($"Fragment failed to load {path}");
@@ -205,7 +256,7 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
 
         comp.Grid = grid.Value;
         comp.Site = new MapCoordinates(site, mapId);
-        _metaData.SetEntityName(grid.Value, Loc.GetString("wg-fragment-grid-name"));
+        _metaData.SetEntityName(grid.Value, Loc.GetString(comp.GridName));
 
         SealHull(grid.Value);
 
@@ -232,6 +283,8 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
 
         for (var i = 0; i < comp.DecorCount && comp.Decor.Count > 0; i++)
             Spawn(RobustRandom.Pick(comp.Decor), RobustRandom.Pick(tiles));
+        for (var i = 0; i < comp.ScatterCount && comp.Scatter.Count > 0; i++)
+            Spawn(RobustRandom.Pick(comp.Scatter), RobustRandom.Pick(tiles));
 
         for (var i = 0; i < comp.Garrison && comp.Common.Count > 0; i++)
             comp.Remade.Add(SpawnRemade(RobustRandom.Pick(comp.Common), RobustRandom.Pick(tiles)));

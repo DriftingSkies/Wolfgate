@@ -21,6 +21,9 @@ public sealed partial class ContentAudioSystem
     private bool _wgStartingBandTrack;
     private EntityUid? _wgBandStream;
 
+    /// <summary>Whether a Lattice band's own piece is playing right now; the Coda's song waits for it to end.</summary>
+    public bool WgBandTrackPlaying => _wgBandStream is { } stream && _ambientMusicStream == stream && !TerminatingOrDeleted(stream);
+
     /// <summary>
     /// Whether a Lattice band is holding ordinary ambient music off. A combat track still playing when combat ends
     /// fades out here, so the band's piece can take over.
