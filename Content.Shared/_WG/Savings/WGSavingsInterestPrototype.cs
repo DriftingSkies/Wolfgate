@@ -26,12 +26,23 @@ public sealed partial class WGSavingsInterestPrototype : IPrototype
     [DataField]
     public TimeSpan MinimumTime = TimeSpan.FromMinutes(30);
 
-    /// <summary>What a balance earns in one round, rounded down.</summary>
+    /// <summary>The most savings can hold. Neither ATM deposits nor interest take them past it.</summary>
+    [DataField(required: true)]
+    public long MaxBalance;
+
+    /// <summary>What a balance earns in one round, rounded down and stopping at <see cref="MaxBalance"/>.</summary>
     public long InterestOn(long balance)
     {
         if (balance <= 0 || Rate <= 0)
             return 0;
 
-        return (long) Math.Floor(Math.Min(balance, BalanceCap) * Rate);
+        var earned = (long) Math.Floor(Math.Min(balance, BalanceCap) * Rate);
+        return Math.Clamp(earned, 0, Math.Max(0, MaxBalance - balance));
+    }
+
+    /// <summary>How much more savings can take before <see cref="MaxBalance"/>.</summary>
+    public long Room(long balance)
+    {
+        return Math.Max(0, MaxBalance - balance);
     }
 }

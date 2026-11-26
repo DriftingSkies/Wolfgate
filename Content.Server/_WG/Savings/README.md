@@ -6,12 +6,13 @@ and out of savings at an ATM, and pays interest on them each round.
 
 - **Transfers**: the ATM window has a savings row with an amount and *To savings* / *From savings* buttons
   (`WGSavingsTransferMessage`, handled by `WGSavingsSystem`). A move can't take more than the bank or savings hold,
-  can't overflow the bank, and money leaving savings is taxed like any bank deposit, with the taxed share going
+  can't overflow the bank or take savings past `maxBalance`, and money leaving savings is taxed like any bank deposit, with the taxed share going
   straight back to savings. Ironman characters can't use either button.
 - **Interest**: at round end, `WGSavingsSystem.PayRoundInterest` pays each account once, if it spent at least
   `minimumTime` in the round (from its first spawn) and ended it alive, either in a body with a bank account or gone
-  to cryo. It earns `rate` of its savings, on at most `balanceCap` of them. The numbers are in
-  `Resources/Prototypes/_WG/Savings/interest.yml` (2%, on up to $10,000,000, after 30 minutes).
+  to cryo. It earns `rate` of its savings, on at most `balanceCap` of them, and never past `maxBalance`. The numbers
+  are in `Resources/Prototypes/_WG/Savings/interest.yml` (2% on up to $10,000,000, at most $20,000,000 saved, after
+  30 minutes). Other ways into savings, such as the deposit tax and admin commands, aren't capped.
 - **Spending order**: purchases that may use savings (safety deposit boxes, priced loadouts) take from the bank
   first and savings only for the rest, so the money that earns interest is spent last. Upstream spent savings first.
 

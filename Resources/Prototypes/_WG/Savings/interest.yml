@@ -1,7 +1,9 @@
 # Savings interest, paid at round end to each account that played at least minimumTime and ended the round alive
-# (in its body or gone to cryo). One payout per account, on at most balanceCap of its savings.
+# (in its body or gone to cryo). One payout per account, on at most balanceCap of its savings. Savings never pass
+# maxBalance through ATM deposits or interest.
 - type: wgSavingsInterest
   id: Default
   rate: 0.02
   balanceCap: 10000000 # 200,000 a round at most
+  maxBalance: 20000000
   minimumTime: 30m

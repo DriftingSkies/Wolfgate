@@ -87,7 +87,7 @@ The safety deposit system preserves:
 <!-- WOLFGATE(SafetyDepositBox) START: what a box refuses is read from the box prototype, not hand-listed -->
 ## What Can Be Stored
 
-A box takes ordinary items that fit its grid and its size limit: Small boxes hold up to Normal items, while Medium and Large boxes hold up to Huge items, such as armour vests and hardsuits. Tools, clothing, ammunition, paperwork, food, parts and most other gear are fine.
+A box takes ordinary items that fit its grid and its size limit: Small boxes hold up to Normal items, while Medium and Large boxes hold up to Huge items, such as armour vests and hardsuits. Tools, weapons, clothing, ammunition, paperwork, food, drinks and most other gear are fine, and so are bags and boxes to keep it tidy. Faction weapons are fine up to tier 2; heavy and top-tier weapons, machine parts and anything built into a body or a machine are not.
 
 [color=#ff6600]The box refuses these:[/color]
   <SafetyDepositRefusedEmbed/>
@@ -95,7 +95,9 @@ A box takes ordinary items that fit its grid and its size limit: Small boxes hol
 [color=#44cc00]It still takes these, though some fall under the list above:[/color]
   <SafetyDepositRefusedEmbed List="Allowed"/>
 
-Allowed suits and vests go in empty. Anything in their pockets or storage slots is handed back when you deposit the box, but a hardsuit keeps its helmet.
+Whatever is inside a stored item, such as a bag's contents or a gun's magazine, is held to the same rules. Anything the box refuses is handed back when you deposit it; the rest stays where it was.
+
+Anything holding reagents may carry food and drink freely, but other reagents only as much as it came with. A beaker of medicine is refused; a pack of cigarettes is not.
 <!-- WOLFGATE END -->
   - [bold]Monolithic Crystals[/bold]
 </Document>

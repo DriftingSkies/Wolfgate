@@ -30,6 +30,8 @@ public sealed class WGSavingsTest
     [TestCase(0, 1_000_000, 250_000, false, 250_000, 750_000, TestName = "SavingsMoveIntoTheBank")]
     [TestCase(100, 0, 500, true, 100, 0, TestName = "TheBankCantMoveMoreThanItHolds")]
     [TestCase(0, 100, 500, false, 0, 100, TestName = "SavingsCantMoveMoreThanTheyHold")]
+    [TestCase(1_000_000, 19_500_000, 600_000, true, 1_000_000, 19_500_000, TestName = "SavingsCantPassTheirMax")]
+    [TestCase(1_000_000, 19_500_000, 500_000, true, 500_000, 20_000_000, TestName = "SavingsFillUpToTheirMax")]
     public async Task Transfer(int bank, long savings, int amount, bool toSavings, int bankAfter, long savingsAfter)
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });

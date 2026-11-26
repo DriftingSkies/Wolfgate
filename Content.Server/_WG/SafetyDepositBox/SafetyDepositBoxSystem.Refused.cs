@@ -2,7 +2,6 @@ using Content.Shared._WG.SafetyDepositBox;
 using Content.Shared._WG.SafetyDepositBox.Components;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Database;
-using Content.Shared.Item;
 using Content.Shared.Storage;
 using Content.Shared.Whitelist;
 using Robust.Shared.Containers;
@@ -20,8 +19,8 @@ public sealed partial class SafetyDepositBoxSystem
     [Dependency] private SafetyDepositAllowListSystem _allowList = default!;
 
     /// <summary>
-    /// Takes out anything the box refuses that is tucked inside a stored item, such as a cell in a device's slot,
-    /// and everything inside an item let in by the allow list, and hands it back. Returns how many came out.
+    /// Takes out anything the box refuses that is tucked inside a stored item, however deep, such as an ID in a bag or
+    /// a cell in a device's slot, and hands it back. Returns how many came out.
     /// </summary>
     private int EjectNestedRefused(EntityUid player, EntityUid boxEntity, StorageComponent storage)
     {
@@ -30,7 +29,7 @@ public sealed partial class SafetyDepositBoxSystem
 
         var refused = new List<EntityUid>();
         foreach (var item in storage.Container.ContainedEntities)
-            FindNestedRefused(item, box, refused, StoredBare(box, item));
+            FindNestedRefused(item, box, refused);
 
         foreach (var nested in refused)
         {
@@ -43,9 +42,8 @@ public sealed partial class SafetyDepositBoxSystem
         return refused.Count;
     }
 
-    /// <param name="bare">The parent came in through the allow list, so every item it holds but attached parts goes back.</param>
     private void FindNestedRefused(EntityUid parent, Entity<StorageComponent, SafetyDepositAllowListComponent?> box,
-        List<EntityUid> refused, bool bare)
+        List<EntityUid> refused)
     {
         if (!TryComp<ContainerManagerComponent>(parent, out var manager))
             return;
@@ -54,19 +52,12 @@ public sealed partial class SafetyDepositBoxSystem
         {
             foreach (var nested in container.ContainedEntities)
             {
-                // A hardsuit's helmet belongs to it and stays.
-                if (HasComp<AttachedClothingComponent>(nested))
-                {
-                    FindNestedRefused(nested, box, refused, false);
-                    continue;
-                }
-
-                // A refused item comes out whole, with whatever is inside it. Only items count as contents; an
-                // allowed suit keeps its actions.
-                if (bare && HasComp<ItemComponent>(nested) || Refuses(box, nested))
+                // A refused item comes out whole, with whatever is inside it. A hardsuit's helmet belongs to the suit
+                // and stays, even where the helmet alone would be refused.
+                if (!HasComp<AttachedClothingComponent>(nested) && Refuses(box, nested))
                     refused.Add(nested);
                 else
-                    FindNestedRefused(nested, box, refused, false);
+                    FindNestedRefused(nested, box, refused);
             }
         }
     }
@@ -76,17 +67,7 @@ public sealed partial class SafetyDepositBoxSystem
         if (_whitelist.IsBlacklistPass(box.Comp1.Blacklist, item))
             return true;
 
-        return box.Comp2 is { } allowList
-            && _allowList.IsRestricted((box.Owner, allowList), item)
-            && !_allowList.IsAllowed((box.Owner, allowList), item);
-    }
-
-    /// <summary>
-    /// Whether a stored item is only in the box through its allow list.
-    /// </summary>
-    private bool StoredBare(Entity<StorageComponent, SafetyDepositAllowListComponent?> box, EntityUid item)
-    {
-        return box.Comp2 is { } allowList && _allowList.IsRestricted((box.Owner, allowList), item);
+        return box.Comp2 is { } allowList && !_allowList.Accepts((box.Owner, allowList), item);
     }
 
     /// <summary>

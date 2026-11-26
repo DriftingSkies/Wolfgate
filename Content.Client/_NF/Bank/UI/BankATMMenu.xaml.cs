@@ -51,6 +51,7 @@ public sealed partial class BankATMMenu : FancyWindow
         {
             InterestLabel.SetMessage(Loc.GetString("wg-savings-atm-interest",
                 ("rate", interest.Rate * 100),
+                ("limit", BankSystemExtensions.ToSpesoString(interest.MaxBalance)),
                 ("max", BankSystemExtensions.ToSpesoString(interest.InterestOn(interest.BalanceCap)))));
         }
     }

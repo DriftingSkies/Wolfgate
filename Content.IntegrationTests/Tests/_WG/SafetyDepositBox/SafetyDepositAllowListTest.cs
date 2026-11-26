@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Content.IntegrationTests.Pair;
-using Content.Server._WG.SafetyDepositBox;
 using Content.Server.Database;
 using Content.Server.GameTicking;
 using Content.Server.Preferences.Managers;
 using Content.Shared._WG.SafetyDepositBox;
 using Content.Shared._WG.SafetyDepositBox.Components;
 using Content.Shared._WG.SafetyDepositBox.Events;
+using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Mind;
@@ -20,8 +20,8 @@ using Robust.Shared.GameObjects;
 namespace Content.IntegrationTests.Tests._WG.SafetyDepositBox;
 
 /// <summary>
-/// The allow list lets named suits and thalers past the restricted list, and an allowed suit is stored with its
-/// helmet but nothing in its pockets.
+/// A box takes everyday gear, bags included, but holds everything inside to the same rules: restricted items only
+/// through the allow list, reagents only of food and drink or as the item spawns with them, and the blacklist always.
 /// </summary>
 [TestFixture]
 [TestOf(typeof(SafetyDepositAllowListSystem))]
@@ -30,16 +30,51 @@ public sealed class SafetyDepositAllowListTest
     private const string BoxProto = "SafetyDepositBoxLarge";
     private const string SuitProto = "ClothingOuterHardsuitM82c";
     private const string TankProto = "EmergencyOxygenTankFilled";
+    private const string BagProto = "BoxCardboard";
+    private const string KeptProto = "Screwdriver";
+    private const string RefusedProto = "PassengerIDCard";
 
     [TestCase("ClothingOuterHardsuitM82c", true, TestName = "AnAllowedFactionSuitGoesIn")]
     [TestCase("ClothingOuterHardsuitUsspL10", true, TestName = "AnAllowedSuitWithAHelmetGoesIn")]
     [TestCase("ClothingOuterArmorBasic", true, TestName = "AHugeArmourVestGoesIn")]
     [TestCase("SpaceCash1000", true, TestName = "ThalersGoIn")]
     [TestCase("TreasureCoinGold", true, TestName = "CoinsGoIn")]
+    [TestCase("FoodDonkpocket", true, TestName = "FoodGoesIn")]
+    [TestCase("DrinkColaCan", true, TestName = "ADrinkGoesIn")]
+    [TestCase("CigPackGreen", true, TestName = "CigarettesGoIn")]
+    [TestCase("Welder", true, TestName = "AFuelledToolGoesIn")]
+    [TestCase("PowerDrill", true, TestName = "APoweredToolGoesIn")]
+    [TestCase("WeaponPistolMk58", true, TestName = "AGunGoesIn")]
+    [TestCase("WeaponLaserCarbine", true, TestName = "AnEnergyGunGoesIn")]
+    [TestCase("WeaponRifleLecter", true, TestName = "ATier1FactionGunGoesIn")]
+    [TestCase("WeaponRifleAnnie", true, TestName = "ATier2FactionGunGoesIn")]
+    [TestCase("EnergySword", true, TestName = "AFactionMeleeWeaponGoesIn")]
+    [TestCase("WeaponHFKatana", true, TestName = "AHighFrequencyBladeGoesIn")]
+    [TestCase("ClothingShoesBootsMagNfsd", true, TestName = "Tier1FactionGearGoesIn")]
+    [TestCase("PowerCellMedium", true, TestName = "APowerCellGoesIn")]
+    [TestCase("BoxCardboard", true, TestName = "ABoxGoesIn")]
+    [TestCase("MedkitFilled", true, TestName = "AFilledMedkitGoesIn")]
+    [TestCase("ClothingBeltUtilityFilled", true, TestName = "AToolBeltGoesIn")]
     [TestCase("ClothingOuterHardsuitM86", false, TestName = "AHigherTierFactionSuitStaysOut")]
+    [TestCase("WeaponPulseRifle", false, TestName = "ATier3FactionGunStaysOut")]
+    [TestCase("WeaponRifleXlr556", false, TestName = "ATier3ResearchGunStaysOut")]
+    [TestCase("WeaponLMGPKMS", false, TestName = "AMachineGunStaysOut")]
+    [TestCase("WeaponLauncherTSFAnubis", false, TestName = "AGrenadeLauncherStaysOut")]
+    [TestCase("WeaponSniperHristovEmpty", false, TestName = "AVariantOfARefusedGunStaysOut")]
+    [TestCase("WeaponMurasama", false, TestName = "ATopTierBladeStaysOut")]
+    [TestCase("WeaponWandFireball", false, TestName = "AWandStaysOut")]
+    [TestCase("CapacitorStockPart", false, TestName = "AMachinePartStaysOut")]
+    [TestCase("AlertsComputerCircuitboard", false, TestName = "AComputerBoardStaysOut")]
+    [TestCase("BorgModuleTool", false, TestName = "ACyborgModuleStaysOut")]
+    [TestCase("Emag", false, TestName = "AnEmagStaysOut")]
     [TestCase("FederationMilitaryCredit", false, TestName = "FactionScripStaysOut")]
-    [TestCase("ClothingBackpack", false, TestName = "ABagStaysOut")]
+    [TestCase("ClothingBackpack", false, TestName = "ABagAsBigAsTheBoxStaysOut")]
+    [TestCase("ClothingBackpackHolding", false, TestName = "ABagOfHoldingStaysOut")]
     [TestCase("PassengerIDCard", false, TestName = "TheBlacklistStillWins")]
+    [TestCase("Implanter", false, TestName = "ImplantersStayOut")]
+    [TestCase("PlantAnalyzer", false, TestName = "APlantAnalyzerStaysOut")]
+    [TestCase("TomatoSeeds", false, TestName = "SeedsStayOut")]
+    [TestCase("MobMouse", false, TestName = "AMouseStaysOut")]
     public async Task BoxTakes(string proto, bool takes)
     {
         await using var pair = await PoolManager.GetServerClient();
@@ -62,8 +97,45 @@ public sealed class SafetyDepositAllowListTest
         await pair.CleanReturnAsync();
     }
 
+    [TestCase(null, true, TestName = "AnEmptyBeakerGoesIn")]
+    [TestCase("Milk", true, TestName = "ABeakerOfMilkGoesIn")]
+    [TestCase("Letoferol", false, TestName = "ABeakerOfLetoferolStaysOut")]
+    [TestCase("Bicaridine", false, TestName = "ABeakerOfMedicineStaysOut")]
+    public async Task BoxTakesReagents(string? reagent, bool takes)
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var box = entMan.SpawnEntity(BoxProto, map.GridCoords);
+            var beaker = entMan.SpawnEntity("Beaker", map.GridCoords);
+
+            if (reagent != null)
+            {
+                var solutions = entMan.System<SharedSolutionContainerSystem>();
+                Assert.That(solutions.TryGetSolution(beaker, "beaker", out var solution), "The beaker has no solution.");
+                Assert.That(solutions.TryAddReagent(solution!.Value, reagent, 10, out _), $"Couldn't put {reagent} in the beaker.");
+            }
+
+            Assert.That(entMan.System<SharedStorageSystem>().CanInsert(box, beaker, out var reason), Is.EqualTo(takes),
+                $"{BoxProto} {(takes ? "refused" : "took")} a beaker of {reagent ?? "nothing"} ({reason}).");
+
+            entMan.DeleteEntity(beaker);
+            entMan.DeleteEntity(box);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// A suit keeps its helmet, toggle and what is in its pocket; a refused item inside a bag is handed back and the
+    /// rest of the bag is stored.
+    /// </summary>
     [Test]
-    public async Task AllowedSuitIsStoredWithItsHelmetOnly()
+    public async Task ContentsAreHeldToTheSameRules()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true, Dirty = true });
         var server = pair.Server;
@@ -75,7 +147,7 @@ public sealed class SafetyDepositAllowListTest
 
         var console = EntityUid.Invalid;
         var body = EntityUid.Invalid;
-        var tank = EntityUid.Invalid;
+        var card = EntityUid.Invalid;
         var character = 0;
         var round = 0;
 
@@ -104,10 +176,16 @@ public sealed class SafetyDepositAllowListTest
             var suit = entMan.SpawnEntity(SuitProto, map.GridCoords);
             Assert.That(entMan.GetComponent<ToggleableClothingComponent>(suit).ClothingUids, Is.Not.Empty,
                 "The suit spawned without its helmet.");
-
-            tank = entMan.SpawnEntity(TankProto, map.GridCoords);
+            var tank = entMan.SpawnEntity(TankProto, map.GridCoords);
             Assert.That(storage.Insert(suit, tank, out _, playSound: false), "The tank didn't go in the suit's storage.");
             Assert.That(storage.Insert(box, suit, out _, playSound: false), "The box didn't take the suit.");
+
+            var bag = entMan.SpawnEntity(BagProto, map.GridCoords);
+            card = entMan.SpawnEntity(RefusedProto, map.GridCoords);
+            Assert.That(storage.Insert(bag, entMan.SpawnEntity(KeptProto, map.GridCoords), out _, playSound: false),
+                $"{KeptProto} didn't go in the {BagProto}.");
+            Assert.That(storage.Insert(bag, card, out _, playSound: false), $"{RefusedProto} didn't go in the {BagProto}.");
+            Assert.That(storage.Insert(box, bag, out _, playSound: false), $"The box didn't take the {BagProto}.");
 
             var slot = entMan.GetComponent<SafetyDepositConsoleComponent>(console).BoxSlot;
             Assert.That(entMan.System<ItemSlotsSystem>().TryInsert(console, slot, box, null), "The console didn't take the box.");
@@ -116,42 +194,57 @@ public sealed class SafetyDepositAllowListTest
         await Send(pair, console, body, new SafetyDepositDepositMessage());
 
         var saved = await db.GetSafetyDepositBox(record.BoxId);
-        Assert.That(saved!.Items, Has.Count.EqualTo(1), "The deposit didn't save the suit.");
+        Assert.That(saved!.Items, Has.Count.EqualTo(2), "The deposit didn't save the suit and the bag.");
 
-        // The deposited box is deleted with all it holds, so a tank left in the suit would be gone.
+        // The deposited box is deleted with all it holds, so a card left in the bag would be gone.
         await server.WaitAssertion(() =>
         {
-            Assert.That(entMan.EntityExists(tank) && !entMan.IsQueuedForDeletion(tank),
-                "The tank in the suit's storage wasn't handed back.");
+            Assert.That(entMan.EntityExists(card) && !entMan.IsQueuedForDeletion(card),
+                "The ID card in the bag wasn't handed back.");
         });
 
         await Send(pair, console, body, new SafetyDepositWithdrawMessage(record.BoxId));
 
         await server.WaitAssertion(() =>
         {
-            var suits = new List<EntityUid>();
-            var query = entMan.AllEntityQueryEnumerator<SafetyDepositStoredComponent, MetaDataComponent>();
-            while (query.MoveNext(out var uid, out _, out var meta))
-            {
-                if (meta.EntityPrototype?.ID == SuitProto)
-                    suits.Add(uid);
-            }
+            var containers = entMan.System<SharedContainerSystem>();
 
+            var suits = Withdrawn(entMan, SuitProto);
             Assert.That(suits, Has.Count.EqualTo(1), "The suit didn't come back out exactly once.");
             var toggle = entMan.GetComponent<ToggleableClothingComponent>(suits[0]);
             Assert.That(toggle.ClothingUids, Is.Not.Empty, "The withdrawn suit lost track of its helmet.");
-            Assert.That(toggle.ActionEntity is { } action && entMan.EntityExists(action),
-                "The withdrawn suit has no helmet toggle action.");
-            var containers = entMan.System<SharedContainerSystem>();
             Assert.That(toggle.ClothingUids.Keys.All(part =>
                     containers.TryGetContainingContainer(part, out var held) && held.Owner == suits[0] && held.ID == toggle.ContainerId),
                 "The withdrawn suit's helmet isn't in it.");
-            Assert.That(entMan.GetComponent<StorageComponent>(suits[0]).Container.ContainedEntities, Is.Empty,
-                "Something came back in the suit's storage.");
+            Assert.That(toggle.ActionEntity is { } action && entMan.EntityExists(action),
+                "The withdrawn suit has no helmet toggle action.");
+            Assert.That(entMan.GetComponent<StorageComponent>(suits[0]).Container.ContainedEntities
+                    .Select(item => entMan.GetComponent<MetaDataComponent>(item).EntityPrototype?.ID),
+                Is.EqualTo(new[] { TankProto }), "The suit didn't keep the tank in its pocket.");
+
+            var bags = Withdrawn(entMan, BagProto);
+            Assert.That(bags, Has.Count.EqualTo(1), $"The {BagProto} didn't come back out exactly once.");
+            Assert.That(entMan.GetComponent<StorageComponent>(bags[0]).Container.ContainedEntities
+                    .Select(item => entMan.GetComponent<MetaDataComponent>(item).EntityPrototype?.ID),
+                Is.EqualTo(new[] { KeptProto }), $"The {BagProto} didn't come back holding just the {KeptProto}.");
         });
 
         await db.DeleteSafetyDepositBox(record.BoxId);
         await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Items of a prototype that came out of a box.</summary>
+    private static List<EntityUid> Withdrawn(IEntityManager entMan, string proto)
+    {
+        var found = new List<EntityUid>();
+        var query = entMan.AllEntityQueryEnumerator<SafetyDepositStoredComponent, MetaDataComponent>();
+        while (query.MoveNext(out var uid, out _, out var meta))
+        {
+            if (meta.EntityPrototype?.ID == proto)
+                found.Add(uid);
+        }
+
+        return found;
     }
 
     private static async Task Send<T>(TestPair pair, EntityUid console, EntityUid body, T message) where T : BoundUserInterfaceMessage

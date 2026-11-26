@@ -48,7 +48,7 @@ public sealed partial class SafetyDepositRefusedEmbed : BoxContainer, IDocumentT
 
         var lines = args.TryGetValue("List", out var list) && list == "Allowed"
             ? AllowedLines(allowList)
-            : RefusedLines(blacklist, allowList?.Restricted);
+            : RefusedLines(blacklist, allowList);
 
         foreach (var line in lines.Where(l => !string.IsNullOrEmpty(l)).Distinct().Order())
         {
@@ -59,10 +59,15 @@ public sealed partial class SafetyDepositRefusedEmbed : BoxContainer, IDocumentT
         return true;
     }
 
-    private static List<string> RefusedLines(EntityWhitelist blacklist, EntityWhitelist? restricted)
+    private static List<string> RefusedLines(EntityWhitelist blacklist, SafetyDepositAllowListComponent? allowList)
     {
         var lines = new List<string>();
-        foreach (var list in new[] { blacklist, restricted })
+        foreach (var refusal in allowList?.Refused ?? new List<SafetyDepositRefusal>())
+        {
+            lines.Add(Loc.GetString(refusal.Name));
+        }
+
+        foreach (var list in new[] { blacklist, allowList?.Restricted })
         {
             if (list == null)
                 continue;
@@ -97,6 +102,11 @@ public sealed partial class SafetyDepositRefusedEmbed : BoxContainer, IDocumentT
         {
             if (_prototype.TryIndex(id, out var entity))
                 lines.Add(entity.Name);
+        }
+
+        foreach (var allowance in allowList.Allowances)
+        {
+            lines.Add(Loc.GetString(allowance.Name));
         }
 
         return lines;

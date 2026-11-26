@@ -105,6 +105,16 @@ public sealed class WGSavingsSystem : EntitySystem
                 return;
             }
 
+            var limits = _prototype.Index(WGSavingsInterestPrototype.Default);
+            if (toSavings && amount > limits.Room(savings))
+            {
+                _popup.PopupEntity(Loc.GetString("wg-savings-error-full",
+                    ("max", BankSystemExtensions.ToSpesoString(limits.MaxBalance)),
+                    ("room", BankSystemExtensions.ToSpesoString(limits.Room(savings)))), player, player);
+                _audio.PlayPvs(component.ErrorSound, atm);
+                return;
+            }
+
             Task saved;
             if (toSavings)
             {

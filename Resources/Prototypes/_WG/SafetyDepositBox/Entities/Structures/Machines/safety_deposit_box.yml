@@ -34,19 +34,37 @@
       - Pill # Bypasses reagent storage
       - MachineBoard # lets you lockbox TSF servers and shit :face_holding_back_tears:
       - Flatpack # ditto
+      - MobState # anything alive; a mouse can be a player
+      - MindContainer # brains and other things that can hold a player
+      - PlantAnalyzer # its gene bank would carry plant genes between rounds
+      - Seed # so would mutated seeds
+      - ComputerBoard # machine parts in raw form: computer boards
+      - BaseElectronics # door, APC, firelock and law boards
+      - ReactorPart # fuel and control rods
+      - UpgradeKit # lathe upgrade kits
+      - MechEquipment # mech weapons and tools
+      - MechAssembly # mech harnesses
+      - HardpointItem # vehicle hardpoints
+      - BorgModule # cyborg modules
+      - BodyPart # limbs, augments and cybernetic limbs
+      - Organ # organs and cybernetic implants
+      - Emag # emags and access breakers
       tags:
       - Unstashable
       - SafetyDepositBlacklist
-  # Refused like the blacklist, unless named below. Allowed items are stored bare: their contents are handed back on
-  # deposit, all but a hardsuit's own helmet.
+  # Bags, boxes, guns and anything else with slots go in, but everything inside them, however deep, is held to the same
+  # rules: what the box refuses is handed back on deposit.
   - type: SafetyDepositAllowList
     restricted:
       components:
       - Currency # Balance; thalers are allowed below, faction scrip (FMC, doubloons, LPCs, TC) is not
-      - Storage # Prevent recursion
-      - Contraband # items exchangeable for FMC or DC. this also includes a large portion of faction gear which shouldn't be persistent for balance reasons
-      - ContainerContainer # WL bypass.
-      - SolutionContainerManager # Requested by staff + lets you do crazy crazy shit that shouldn't be allowed gameplay wise (such as storing 6ku of letoferol)
+      - Contraband # items exchangeable for FMC or DC; faction gear only comes in through the allowances below
+      - MachinePart # stock parts and economy capacitors; power cells are let back in below
+    # Food and drink go in freely; any other reagent only up to what the item spawns with, so nobody stores 6ku of
+    # letoferol in a bottle.
+    reagentGroups:
+    - Foods
+    - Drinks
     stacks:
     - Credit # thalers
     prototypes:
@@ -58,6 +76,136 @@
     - ClothingOuterHardsuitPirateScaf # PDV
     - ClothingOuterVestWeb # PDV
     - ClothingOuterVestWebElite # PDV
+    allowances:
+    # Faction guns, melee, shields and ammunition up to tier 2. Tier 3 (FactionGear3, OtherFactionGear3), loot and
+    # black market gear stays out, and so does what the refusals below name.
+    - name: safety-deposit-allowed-faction-weapons
+      whitelist:
+        components:
+        - Gun
+        - MeleeWeapon
+        - Blocking
+        - CartridgeAmmo
+        - BallisticAmmoProvider
+      blacklist:
+        components:
+        - Magboots # advanced tactical magboots have a melee attack
+      severities:
+      - FactionGear1
+      - FactionGear2
+      - OtherFactionGear1
+      - OtherFactionGear2
+      - Class1 # DEW cartridges
+      - Class2 # Basilisk and Calico; the Smilodon is refused below
+      - Class3Pirate # Sultan's Pulsar, PDV tier 1
+    # Tier 1 faction gear: magboots, gas masks, visors, jaws of life. Emags are blacklisted.
+    - name: safety-deposit-allowed-faction-gear
+      whitelist:
+        components:
+        - Item
+      severities:
+      - FactionGear0
+      - FactionGear1
+      - OtherFactionGear0
+      - OtherFactionGear1
+    - name: safety-deposit-allowed-power-cells
+      whitelist:
+        components:
+        - PowerCell
+    # High-tier weapons, refused even where nothing marks them contraband. Each entry covers its variants too.
+    refused:
+    - name: safety-deposit-refused-heavy-weapons
+      prototypes:
+      - BaseWeaponLightMachineGun
+      - BaseWeaponHeavyMachineGun
+      - BaseWeaponLauncher # rocket and grenade launchers, Anubis included
+      - WeaponLightMachineGunL6C
+      - WeaponLaserLMG
+      - WeaponLaserCellMG
+      - WeaponLauncherPanzero
+      - WeaponLauncherMyoko
+      - GunAttachmentQLG20 # under-barrel grenade launchers
+      - WeaponSniperHristov
+    - name: safety-deposit-refused-top-tier-weapons
+      prototypes:
+      - WeaponRifleXlr556 # TSF tier 3
+      - WeaponDEWSmilodon # TSF tier 3
+      - WeaponAdvancedLaser # Arsenal tier 3
+      - WeaponSubMachineSmart # Arsenal tier 3
+      - WeaponShotgunBigLeady # USSP tier 3
+      - UllmanWeaponPulsePistol
+      - UllmanWeaponPulseRifle
+      - UllmanWeaponPulseSniper
+      - WeaponRifleAsakimAutopulser
+      - WeaponEnergyShotgunOverseer
+      - WeaponTeslaGun
+      - WeaponLaserCellSniper
+      - WeaponStasisGun
+      - WeaponParticleDecelerator
+      - WeaponMurasama
+      - UllmanPlasmaBlade
+      - WeaponMieyoHFBlade
+      - WeaponPhaseBlade
+    - name: safety-deposit-refused-built-in-weapons
+      prototypes:
+      - WeaponCyborgEnergyGun
+      - WeaponRifleAsakimAutopulserADM
+      - WeaponBorgPulseRifle
+      - WeaponLaserCannonXenoborg
+      - WeaponGuidedMissileLauncherXenoborg
+      - WeaponRocketLauncherXenoborg
+      - WeaponRangeFinderXenoborg
+      - WeaponNaniteGun
+      - WeaponOilGun
+      - WeaponTileGun
+      - WGAugmentArmLaserGun
+      - WGMimeFingerGun
+      - ArmBlade
+      - MantisBlade
+      - ModsuitDeviceResinMister
+      - ModsuitDeviceTether
+      - VehicleAPCM56FPWPortGunBase
+    - name: safety-deposit-refused-mech-parts
+      prototypes:
+      - BaseMechPart # mech chassis, limbs and harnesses
+    - name: safety-deposit-refused-magic-and-admin
+      prototypes:
+      - WeaponWandBase
+      - WeaponStaffBase
+      - AnimationStaff
+      - Mjollnir
+      - SingularityHammer
+      - CrossbowBloodCult
+      - CrossbowBloodCultHand
+      - ClothingNeckAmuletBloodCult
+      - EldritchBlade
+      - UnholyHalberd
+      - RitualDagger
+      - EnergyKatana
+      - Throngler
+      - WeaponPistolDebug
+      - WeaponOmnigun
+      - WeaponImprovisedPneumaticCannonAdmeme
+      - explosivelasergun
+      - MeleeDebug100
+      - MeleeDebug200
+      - MeleeDebugBurner
+      - MeleeDebugBurner200
+      - MeleeDebugGib
+      - MeleeDebugSever
+      - MeleeDebugSever100
+      - MeleeDebugSever200
+      - ToolDebug
+      - ClothingBackpackDebug
+      - ClothingBackpackDebug2
+      - ClothingBackpackDebug3
+      - ClothingBackpackDebug4
+      - OmnizineChemistryBottle
+      - WGWolfmedDebugBottleIbuprofen
+      - WGWolfmedDebugBottleKetorolac
+      - WGWolfmedDebugBottleOsteogen
+      - WGWolfmedDebugBottleOxycodone
+      - WGWolfmedDebugBottleTramadol
   - type: SafetyDepositBox
   - type: Appearance
   - type: Tag
