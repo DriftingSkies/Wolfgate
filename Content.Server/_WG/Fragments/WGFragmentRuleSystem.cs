@@ -215,10 +215,8 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
         comp.MaxAlive = s.MaxAlive ?? comp.MaxAlive;
         comp.DecorCount = s.DecorCount ?? comp.DecorCount;
         if (s.Scatter.Count > 0)
-        {
             comp.Scatter = s.Scatter;
-            comp.ScatterCount = s.ScatterCount;
-        }
+        comp.ScatterCount = s.ScatterCount ?? comp.ScatterCount;
         comp.ParticipantReward = s.ParticipantReward ?? comp.ParticipantReward;
         foreach (var id in comp.Rewards.Keys.ToList())
         {
@@ -281,15 +279,15 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
         var heartAt = tiles.MinBy(t => (t.Position - centre).LengthSquared());
         comp.HeartUid = Spawn(comp.Heart, heartAt);
 
+        // The rest lands over the next few ticks rather than all in this one.
         for (var i = 0; i < comp.DecorCount && comp.Decor.Count > 0; i++)
-            Spawn(RobustRandom.Pick(comp.Decor), RobustRandom.Pick(tiles));
+            comp.Pending.Add((RobustRandom.Pick(comp.Decor), RobustRandom.Pick(tiles), false));
         for (var i = 0; i < comp.ScatterCount && comp.Scatter.Count > 0; i++)
-            Spawn(RobustRandom.Pick(comp.Scatter), RobustRandom.Pick(tiles));
-
+            comp.Pending.Add((RobustRandom.Pick(comp.Scatter), RobustRandom.Pick(tiles), false));
         for (var i = 0; i < comp.Garrison && comp.Common.Count > 0; i++)
-            comp.Remade.Add(SpawnRemade(RobustRandom.Pick(comp.Common), RobustRandom.Pick(tiles)));
+            comp.Pending.Add((RobustRandom.Pick(comp.Common), RobustRandom.Pick(tiles), true));
         for (var i = 0; i < comp.GarrisonElites && comp.Elites.Count > 0; i++)
-            comp.Remade.Add(SpawnRemade(RobustRandom.Pick(comp.Elites), RobustRandom.Pick(tiles)));
+            comp.Pending.Add((RobustRandom.Pick(comp.Elites), RobustRandom.Pick(tiles), true));
 
         comp.NextWave = Timing.CurTime + comp.WaveInterval;
         Announce(comp, comp.Arrived, comp.Site);
@@ -307,6 +305,7 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
             Announce(comp, comp.Warning, comp.Site, calm: comp.HeartBroken);
         }
 
+        SpawnPending(comp);
         if (comp.Cleared || comp.Grid is not { } grid || !Exists(grid) || Timing.CurTime < comp.NextCheck)
             return;
         comp.NextCheck = Timing.CurTime + TimeSpan.FromSeconds(1);
@@ -373,10 +372,10 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
             return;
 
         for (var i = 0; i < size; i++)
-            comp.Remade.Add(SpawnRemade(RobustRandom.Pick(comp.Common), WaveSpot(comp, own, nearby)));
+            comp.Pending.Add((RobustRandom.Pick(comp.Common), WaveSpot(comp, own, nearby), true));
 
         if (elite)
-            comp.Remade.Add(SpawnRemade(RobustRandom.Pick(comp.Elites), WaveSpot(comp, own, nearby)));
+            comp.Pending.Add((RobustRandom.Pick(comp.Elites), WaveSpot(comp, own, nearby), true));
     }
 
     /// <summary>A spot for one Remade: a nearby grid by <see cref="WGFragmentRuleComponent.NearbyShare"/>, else the fragment.</summary>
@@ -578,6 +577,34 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
 
         var furthest = mid + across * (minAcross + maxOffset);
         return Valid(furthest) ? furthest : null;
+    }
+
+    /// <summary>Spawns the next few of the landing's pending entities; drops them if the fragment is gone.</summary>
+    private void SpawnPending(WGFragmentRuleComponent comp)
+    {
+        if (comp.Pending.Count == 0)
+            return;
+
+        if (comp.Grid is not { } grid || TerminatingOrDeleted(grid))
+        {
+            comp.Pending.Clear();
+            return;
+        }
+
+        var count = Math.Min(WGFragmentRuleComponent.SpawnsPerTick, comp.Pending.Count);
+        for (var i = 0; i < count; i++)
+        {
+            var (proto, at, remade) = comp.Pending[i];
+            if (!at.IsValid(EntityManager))
+                continue;
+
+            if (remade)
+                comp.Remade.Add(SpawnRemade(proto, at));
+            else
+                Spawn(proto, at);
+        }
+
+        comp.Pending.RemoveRange(0, count);
     }
 
     /// <summary>A Remade answering to no Monolith: it never starves, and nothing it kills turns.</summary>

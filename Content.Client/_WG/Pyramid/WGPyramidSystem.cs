@@ -70,6 +70,7 @@ public sealed partial class WGPyramidSystem : EntitySystem
     public readonly List<Fragment> Fragments = new();
     public readonly Dictionary<EntityUid, State> States = new();
     public readonly Dictionary<EntityUid, TimeSpan> MarkBirths = new();
+    private readonly Dictionary<EntityUid, float> _charges = new();
     private readonly Dictionary<EntityUid, Vector2> _positions = new();
 
     private const int MaxFragments = 1400;
@@ -167,6 +168,9 @@ public sealed partial class WGPyramidSystem : EntitySystem
     /// <summary>How far through its charge a mark is, 0 to 1.</summary>
     public float Charge(EntityUid mark)
     {
+        if (TryComp<WGPyramidMarkComponent>(mark, out var comp) && comp.FireAt != TimeSpan.Zero && comp.ChargeSeconds > 0f)
+            return Math.Clamp(1f - (float) (comp.FireAt - _timing.CurTime).TotalSeconds / comp.ChargeSeconds, 0f, 1f);
+
         return MarkBirths.TryGetValue(mark, out var born)
             ? Math.Clamp((float) (_timing.CurTime - born).TotalSeconds / WGPyramidMath.ChargeSeconds, 0f, 1f)
             : 0f;
@@ -251,11 +255,13 @@ public sealed partial class WGPyramidSystem : EntitySystem
     /// <summary>Drives each Pyramid's sprite and keeps its fragments streaming.</summary>
     private void UpdatePyramids(float frameTime, TimeSpan now)
     {
-        var charge = 0f;
+        // Each Pyramid's lamps follow its own marks only.
+        _charges.Clear();
         var marks = EntityQueryEnumerator<WGPyramidMarkComponent>();
-        while (marks.MoveNext(out var mark, out _))
+        while (marks.MoveNext(out var mark, out var markComp))
         {
-            charge = MathF.Max(charge, Charge(mark));
+            if (markComp.Pyramid is { } owner)
+                _charges[owner] = MathF.Max(_charges.GetValueOrDefault(owner), Charge(mark));
         }
 
         var query = EntityQueryEnumerator<WGPyramidVisualsComponent, SpriteComponent, TransformComponent>();
@@ -269,7 +275,7 @@ public sealed partial class WGPyramidSystem : EntitySystem
 
             // The aura flares as each wave leaves; the lamps burn hotter while a barrage charges.
             _sprite.LayerSetColor(ent, "aura", Color.White.WithAlpha(Math.Clamp(0.3f + 0.6f * (strength - 0.25f), 0f, 1f)));
-            _sprite.LayerSetColor(ent, "lights", Color.White.WithAlpha(0.6f + 0.4f * charge));
+            _sprite.LayerSetColor(ent, "lights", Color.White.WithAlpha(0.6f + 0.4f * _charges.GetValueOrDefault(uid)));
 
             if (state.CollapseStart is { } start)
             {

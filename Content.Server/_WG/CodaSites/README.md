@@ -21,9 +21,9 @@ the design and the decisions taken.
 - **The Graveyard Field's rocks** carry the round's dead (`WGCodaSiteSystem.DeadThisRound`); breaking a named one
   gives the nearest player its Drift, while tending one calms 10 Drift, once per grave.
 - **The Waiting Room's board** calls a number every three minutes, spiking that player's Drift, until it's broken.
-- **The Broadcast Tower** replays the round's radio twenty minutes late, as if on common but heard only by players in
-  the Coda, with a speaker's name swapped and
-  the numbers changed, until its mast is broken. Words spoken aloud at the mast go into the replays too.
+- **The Broadcast Tower** records the Common channel (never secure channels) and words spoken aloud at its mast, and
+  replays them twenty minutes late as if on Common, with a speaker's name swapped and the numbers changed, until its
+  mast is broken. Only players in the Coda's hazard bands receive the replays.
 
 Every site's grid music is silence (`WGCodaSilence`), so no fallback music plays aboard. Shared stone, glass, light and clutter (`shared.yml`, `tiles.yml`) and what keeps a site standing (`WGCodaGridSystem`:
 self-power, air that never drains, a hull that heals) are here too. The maps are built by `its generator (sites.py, kept outside the repo)`, with art from `its generator (draw_art.py, kept outside the repo)`, and tested by

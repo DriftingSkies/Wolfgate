@@ -14,6 +14,8 @@ uniform highp vec4 radii;
 uniform highp vec4 strengths;
 uniform highp float width;
 uniform highp float reach;
+// Reduced motion: the front still glows, but space doesn't shift or split.
+uniform bool still;
 
 highp float hash1(highp vec2 p) {
     p = fract(p * vec2(123.34, 456.21));
@@ -60,12 +62,12 @@ void fragment() {
     }
 
     // Space shears sideways as well as outwards inside the front.
-    highp vec2 displacement = vec2(push, push * 0.6) * 22.0;
+    highp vec2 displacement = still ? vec2(0.0) : vec2(push, push * 0.6) * 22.0;
     highp vec2 pixels = worldToScreenX * displacement.x + worldToScreenY * displacement.y;
     highp vec2 safe = SCREEN_PIXEL_SIZE * 0.5;
     highp vec2 base = FRAGCOORD.xy - pixels;
     // The colours come apart where it is strongest.
-    highp vec2 split = vec2(abs(push) * 6.0, 0.0);
+    highp vec2 split = still ? vec2(0.0) : vec2(abs(push) * 6.0, 0.0);
     highp float r = zTextureSpec(SCREEN_TEXTURE, clamp((base + split) * SCREEN_PIXEL_SIZE, safe, vec2(1.0) - safe)).r;
     highp vec2 gb = zTextureSpec(SCREEN_TEXTURE, clamp(base * SCREEN_PIXEL_SIZE, safe, vec2(1.0) - safe)).gb;
     highp float b = zTextureSpec(SCREEN_TEXTURE, clamp((base - split) * SCREEN_PIXEL_SIZE, safe, vec2(1.0) - safe)).b;

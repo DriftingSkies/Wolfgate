@@ -150,6 +150,13 @@ public sealed partial class WGFragmentRuleComponent : Component
     [DataField]
     public int ScatterCount;
 
+    /// <summary>What the landing still has to spawn, a few a tick so a large fragment never lands in one hitch:
+    /// the prototype, where, and whether it is one of the Remade.</summary>
+    public readonly List<(EntProtoId Proto, EntityCoordinates At, bool Remade)> Pending = new();
+
+    /// <summary>How many of <see cref="Pending"/> spawn each tick.</summary>
+    public const int SpawnsPerTick = 12;
+
     /// <summary>Larger kinds of fragment, each with its own grids; a grid not in any of them is the default size.</summary>
     [DataField]
     public List<WGFragmentSize> Sizes = new();

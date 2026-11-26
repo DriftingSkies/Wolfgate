@@ -102,6 +102,7 @@ public sealed partial class WGPyramidWaveOverlay : Overlay
         _shader.SetParameter("strengths", _strengths);
         _shader.SetParameter("width", WGPyramidMath.WaveWidth);
         _shader.SetParameter("reach", _reach);
+        _shader.SetParameter("still", _system.Still);
 
         args.WorldHandle.UseShader(_shader);
         args.WorldHandle.DrawRect(args.WorldAABB, Color.White);
@@ -253,31 +254,16 @@ public sealed partial class WGPyramidBeamOverlay : Overlay
         var transforms = _entities.System<SharedTransformSystem>();
         var up = _system.ScreenUp;
         var marks = _entities.EntityQueryEnumerator<WGPyramidMarkComponent, TransformComponent>();
-        while (marks.MoveNext(out var mark, out _, out var markXform))
+        while (marks.MoveNext(out var mark, out var markComp, out var markXform))
         {
-            if (markXform.MapID != args.MapId)
+            // The tether runs from the Pyramid that placed the mark, once the client can see it.
+            if (markXform.MapID != args.MapId || markComp.Pyramid is not { } owner
+                || !_entities.TryGetComponent<TransformComponent>(owner, out var xform) || xform.MapID != args.MapId)
                 continue;
 
-            var to = transforms.GetWorldPosition(markXform);
-            Vector2? best = null;
-            var bestDistance = 700f;
-            var pyramids = _entities.EntityQueryEnumerator<WGPyramidVisualsComponent, TransformComponent>();
-            while (pyramids.MoveNext(out _, out _, out var xform))
-            {
-                if (xform.MapID != args.MapId)
-                    continue;
-
-                var at = transforms.GetWorldPosition(xform);
-                var distance = Vector2.Distance(at, to);
-                if (distance < bestDistance)
-                {
-                    best = at;
-                    bestDistance = distance;
-                }
-            }
-
-            if (best is { } from)
-                _tethers.Add((from + WGPyramidDraw.FromScreen(WGPyramidDraw.Eye, up), to, _system.Charge(mark)));
+            var from = transforms.GetWorldPosition(xform);
+            _tethers.Add((from + WGPyramidDraw.FromScreen(WGPyramidDraw.Eye, up), transforms.GetWorldPosition(markXform),
+                _system.Charge(mark)));
         }
 
         if (_tethers.Count > 0)
@@ -472,8 +458,10 @@ public sealed partial class WGPyramidImpactOverlay : Overlay
         var now = _timing.CurTime;
         var count = 0;
         var view = args.WorldAABB.Enlarged(30f);
-        foreach (var (map, at, hit) in _system.Impacts)
+        // The newest hits first: they are the ones still flaring.
+        for (var i = _system.Impacts.Count - 1; i >= 0; i--)
         {
+            var (map, at, hit) = _system.Impacts[i];
             if (count == Max)
                 break;
 

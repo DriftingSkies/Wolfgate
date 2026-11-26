@@ -57,6 +57,7 @@ public sealed class PyramidTest
             var xforms = server.System<SharedTransformSystem>();
             arrivedAt = Vector2.Distance(xforms.GetWorldPosition(pyramid), xforms.GetWorldPosition(grid));
         });
+        var tilesBefore = 0;
         await pair.RunTicksSync(ticks * 6);
 
         await server.WaitAssertion(() =>
@@ -72,10 +73,22 @@ public sealed class PyramidTest
             Assert.That(comp.Marks, Has.Count.EqualTo(comp.Patches), "Every patch should be marked.");
             Assert.That(comp.Marks.All(m => em.GetComponent<TransformComponent>(m).GridUid == grid), Is.True,
                 "The marks belong on the target's hull.");
+            // Close enough to fire on it.
+            xforms.SetWorldPosition(pyramid, xforms.GetWorldPosition(grid) + new Vector2(120f, 0f));
             pyramidSystem.FireBarrage((pyramid, comp), em.GetComponent<TransformComponent>(pyramid));
             Assert.That(comp.Marks, Is.Empty, "Firing should spend the marks.");
             Assert.That(comp.FireAt, Is.Null);
             Assert.That(comp.Volley, Has.Count.EqualTo(comp.Patches), "Every mark should get a laser in the volley.");
+            tilesBefore = server.System<SharedMapSystem>().GetAllTiles(grid, em.GetComponent<MapGridComponent>(grid)).Count();
+        });
+        await pair.RunTicksSync(ticks * 3);
+
+        await server.WaitAssertion(() =>
+        {
+            var comp = em.GetComponent<WGPyramidComponent>(pyramid);
+            Assert.That(comp.Volley, Is.Empty, "Every laser in the volley should have fired.");
+            var tilesAfter = server.System<SharedMapSystem>().GetAllTiles(grid, em.GetComponent<MapGridComponent>(grid)).Count();
+            Assert.That(tilesAfter, Is.LessThan(tilesBefore), "The volley's blasts should have torn up the hull.");
 
             // Bring it down.
             comp.CollapseTime = TimeSpan.FromSeconds(1);

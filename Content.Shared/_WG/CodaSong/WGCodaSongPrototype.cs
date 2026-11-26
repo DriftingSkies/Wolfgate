@@ -66,3 +66,25 @@ public sealed partial class WGSongSourceComponent : Component
     [DataField, AutoNetworkedField]
     public bool Silent;
 }
+
+/// <summary>
+/// On a player: the singing thing within reach of them, if any, worked out by the server so a heart is heard from its
+/// whole range and not only once the client can see it. Sent only to its owner.
+/// </summary>
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+public sealed partial class WGSongListenerComponent : Component
+{
+    public override bool SendOnlyToOwner => true;
+
+    /// <summary>Which pieces the nearest source sings; null when none is in reach.</summary>
+    [AutoNetworkedField]
+    public string? Source;
+
+    /// <summary>How near it is, 0.25 at the edge of its reach to 1 beside it.</summary>
+    [AutoNetworkedField]
+    public float Near;
+
+    /// <summary>How far its singers have turned, 0 to 1.</summary>
+    [AutoNetworkedField]
+    public float Turned;
+}

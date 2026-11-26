@@ -10,9 +10,11 @@ of a piece at once, clean and turned, and mixes them live from the listener's Dr
 - **A fragment's heart** sings to anyone within 60 m (300 m for a greater fragment), whatever their Drift, its singers turning as
   it is hurt (`WGSongSourceSystem`), until it breaks.
 - **A Pyramid wave** passing through the listener turns every singer for a few seconds.
-- **Ambient music** crosses over with it both ways: a piece starting fades the ambient track out as it fades in, and
-  an ambient track starting while a piece plays fades the song out; the song comes back once that track ends. A
-  Lattice band's own piece always plays first.
+- **Music** gives way to it: when the song takes hold, whatever is playing fades out over four seconds and new tracks
+  are held off for as long as the song has the listener, between its pieces too. When it lets go, the song fades out
+  first and the music fades back in. A Lattice band's own piece plays first, unless a heart is singing.
+- **A fragment's heart outranks all music**, combat music included. The server tells each player which heart has them
+  and how near (`WGSongListenerComponent`), so it is heard from its whole range, not only once the client can see it.
 - **In a fight** the song blends under the combat music instead of holding it off. The more hurt the listener, the
   further the choir sinks and the more its singers turn; once they are critical, every voice falls away but the
   soprano, who sings on, clear.

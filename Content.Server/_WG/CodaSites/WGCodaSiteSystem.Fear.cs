@@ -109,6 +109,10 @@ public sealed partial class WGCodaSiteSystem
     {
         foreach (var hanged in _lookup.GetEntitiesInRange<WGOrchardHangedComponent>(Transform(ent).Coordinates, 1.6f))
         {
+            // Two vines cut in one tick: a body already rising is not raised twice.
+            if (EntityManager.IsQueuedForDeletion(hanged))
+                continue;
+
             if (hanged.Comp.Rises.Count > 0)
                 Spawn(_random.Pick(hanged.Comp.Rises), Transform(hanged).Coordinates);
             QueueDel(hanged);
@@ -198,22 +202,49 @@ public sealed partial class WGCodaSiteSystem
         if (args.MessageSource == ent.Owner)
             return;
 
+        // Every tower hears the same message; it is logged once.
+        var now = _timing.CurTime;
+        var said = args.OriginalChatMsg.Message;
+        if (_heard.Count > 0 && _heard[^1].When == now && _heard[^1].Message == said)
+            return;
+
         NetUserId? user = TryComp<ActorComponent>(args.MessageSource, out var actor) ? actor.PlayerSession.UserId : null;
-        RecordHeard(new WGHeardMessage(Name(args.MessageSource), args.OriginalChatMsg.Message, _timing.CurTime, user));
+        RecordHeard(new WGHeardMessage(Name(args.MessageSource), said, now, user));
     }
 
-    /// <summary>Adds to the tower's log; once it is full, the oldest goes and every tower's place moves back with it.</summary>
+    /// <summary>How many messages the tower's log holds at most.</summary>
+    private const int HeardCap = 400;
+
+    /// <summary>
+    /// Adds to the tower's log, keeping it bounded without losing what is still to be replayed. Once full it first
+    /// lets go of the oldest message every tower has already replayed; if none has, it drops one waiting message at
+    /// random, so a busy sector thins the replay rather than starving it.
+    /// </summary>
     private void RecordHeard(WGHeardMessage message)
     {
         _heard.Add(message);
-        if (_heard.Count <= 400)
+        if (_heard.Count <= HeardCap)
             return;
 
-        _heard.RemoveAt(0);
+        var replayedByAll = int.MaxValue;
         var towers = EntityQueryEnumerator<WGBroadcastTowerComponent>();
         while (towers.MoveNext(out _, out var tower))
         {
-            tower.Replayed = Math.Max(0, tower.Replayed - 1);
+            replayedByAll = Math.Min(replayedByAll, tower.Replayed);
+        }
+
+        RemoveHeard(replayedByAll > 0 ? 0 : _random.Next(0, _heard.Count - 1));
+    }
+
+    /// <summary>Removes one logged message, moving back every tower's place that was past it.</summary>
+    private void RemoveHeard(int index)
+    {
+        _heard.RemoveAt(index);
+        var towers = EntityQueryEnumerator<WGBroadcastTowerComponent>();
+        while (towers.MoveNext(out _, out var tower))
+        {
+            if (tower.Replayed > index)
+                tower.Replayed--;
         }
     }
 

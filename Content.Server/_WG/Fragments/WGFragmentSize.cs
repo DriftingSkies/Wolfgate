@@ -50,7 +50,7 @@ public sealed partial class WGFragmentSize
     public List<EntProtoId> Scatter = new();
 
     [DataField]
-    public int ScatterCount;
+    public int? ScatterCount;
 
     /// <summary>Multiplies each faction's reward.</summary>
     [DataField]

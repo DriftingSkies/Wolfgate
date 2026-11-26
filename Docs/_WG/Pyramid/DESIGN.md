@@ -58,8 +58,9 @@ rolls 2.5 % a minute and players still rarely meet it.
   can be shot, shoved and tracked. The cost is that it has no interior to board, which suits it.
 - **Its own module**, `Pyramid`, built in the sites worktree. It touches no CodaSites code, so it can ship with the
   sites PR or on its own.
-- **Lasers are visual; the damage is small explosions** at each mark (intensity 22, slope 6, at most 7 per tile). They
-  breach hull but don't gut a ship in one volley.
+- **Lasers are visual; the damage is explosions** at each mark, on par with ship weapons (the prototype's
+  `WGPyramidShatter`: intensity 150, slope 3, at most 30 per tile). A full volley can wreck a ship. Shots fire one at a
+  time down the volley so each blast clears the explosion queue before the next.
 - **The waves don't touch ships**, only the people they pass through (warp, camera jolt, Drift), so a wave every 10 s
   is atmosphere rather than attrition.
 - **The protocol lines are our own**, in the Paragon style, with no religious content.

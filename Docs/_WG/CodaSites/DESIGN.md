@@ -66,8 +66,10 @@ A small derelict with a sealed back room of chairs, a ticket dispenser and a boa
 ### The Broadcast Tower (fear)
 
 A relay mast with a small control room.
-- **The replays:** it records the round's radio traffic and rebroadcasts each message about twenty minutes later on
-  the common channel, altered: a name swapped for another speaker's, the numbers changed.
+- **The replays:** its mast's receiver records what is said on the Common channel (secure channels never reach it),
+  plus words spoken aloud beside the mast, and replays each about twenty minutes later as if on Common, altered: a
+  name swapped for another speaker's, the numbers changed. Only players in the Coda's hazard bands receive the
+  replays.
 - **Stopping it:** while the transmitter stands it keeps leaking onto common. Breaking it stops it.
 
 ### The Echo Station (fear)
@@ -104,5 +106,5 @@ from the game's map renderer.
 - The Last Anchor's failure adds Drift directly, rather than scaling every Drift gain in range. That keeps it inside
   this module.
 - The Graveyard Field's Drift goes to the player nearest a rock when it breaks, since a rock doesn't know who broke it.
-- The Broadcast Tower's replays go on common for everyone. That is the design's "leak", and it is always on while the
-  transmitter stands.
+- The Broadcast Tower's replays reach only players in the Coda, never the rest of the sector, and keep coming while
+  the transmitter stands.

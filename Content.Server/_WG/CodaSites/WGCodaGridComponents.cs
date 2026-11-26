@@ -7,6 +7,14 @@ namespace Content.Server._WG.CodaSites;
 [RegisterComponent]
 public sealed partial class WGSelfPoweredGridComponent : Component;
 
+/// <summary>On a receiver a self-powered grid exempted: which grid, so it needs power again once it leaves.</summary>
+[RegisterComponent]
+public sealed partial class WGSelfPoweredReceiverComponent : Component
+{
+    [ViewVariables]
+    public EntityUid Grid;
+}
+
 /// <summary>Tops every tile of the grid back up to one mix, so a breach never drains it.</summary>
 [RegisterComponent]
 public sealed partial class WGFixedAtmosphereComponent : Component
@@ -70,6 +78,10 @@ public sealed partial class WGHullRegenComponent : Component
 
     [ViewVariables]
     public Dictionary<Vector2i, EntityUid> Growing = new();
+
+    /// <summary>When each growing flesh appeared; it hardens <see cref="FleshTime"/> after.</summary>
+    [ViewVariables]
+    public Dictionary<Vector2i, TimeSpan> FleshAt = new();
 
     /// <summary>Each piece's damage when last seen, and when it was last hit.</summary>
     [ViewVariables]

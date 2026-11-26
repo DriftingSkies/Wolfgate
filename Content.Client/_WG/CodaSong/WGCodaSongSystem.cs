@@ -67,8 +67,9 @@ public sealed partial class WGCodaSongSystem : EntitySystem
     private TimeSpan _next;
     private float _fade;
     private float _musicVolume = 1f;
-    private EntityUid? _fadedTrack;
-    private EntityUid? _yieldedTo;
+    private bool _holding;
+    private TimeSpan? _pauseAt;
+    private bool _cutShort;
 
     /// <summary>How long the song and an ambient track take to cross over, either way.</summary>
     private const float HandOver = 4f;
@@ -100,22 +101,15 @@ public sealed partial class WGCodaSongSystem : EntitySystem
         var now = _timing.CurTime;
         var (pull, turn, source, drift) = Listen();
 
-        // A Lattice band's own piece comes first; so does any new ambient track that begins while the song plays. The
-        // song fades away under it and waits for it to end. Combat music is blended with instead (see Mix).
-        var ambient = _music.WgAmbientTrack;
-        if (ambient is { } fresh && fresh != _fadedTrack && _song != null)
-            _yieldedTo = fresh;
-
-        var yielding = _music.WgBandTrackPlaying || _yieldedTo is { } track && ambient == track;
-        if (!yielding)
-            _yieldedTo = null;
-
-        if (yielding)
+        // A fragment's heart outranks every other music; otherwise a Lattice band's own piece comes first.
+        var heart = source != null;
+        if (!heart && _music.WgBandTrackPlaying)
         {
+            Release();
             if (_song != null)
             {
                 _fade = MathF.Max(0f, _fade - frameTime / HandOver);
-                Mix(0f, turn, drift, frameTime, 0f, false);
+                Mix(0f, turn, drift, frameTime, 0f, false, false);
                 if (_fade <= 0f)
                 {
                     StopSong();
@@ -126,10 +120,46 @@ public sealed partial class WGCodaSongSystem : EntitySystem
             return;
         }
 
+        // Reaching the top of the scale mid-piece: that piece ebbs away now, and the finality follows soon after.
+        if (_song is { Source: null } && !_cutShort && drift >= 90f && _song.MinDrift < 85f)
+        {
+            _cutShort = true;
+            var cut = now - TimeSpan.FromSeconds(_song.Seconds - PieceFade);
+            if (cut > _started)
+                _started = cut;
+        }
+
         if (_song != null && now >= _started + TimeSpan.FromSeconds(_song.Seconds))
         {
+            var quick = _cutShort;
             StopSong();
-            _next = now + TimeSpan.FromSeconds(_random.NextFloat(source != null ? 6f : 20f, source != null ? 15f : 60f));
+            _next = now + TimeSpan.FromSeconds(quick ? _random.NextFloat(1f, 3f)
+                : _random.NextFloat(heart ? 6f : 20f, heart ? 15f : 60f));
+        }
+
+        // While the song has the listener, between its pieces too, music is faded out and then held off. Combat music
+        // is blended with instead, unless a heart is singing. Once the song has faded away, the music fades back in.
+        var want = (pull >= Threshold || _song != null) && (heart || !_music.WgCombatMusicPlaying);
+        if (want && !_holding)
+        {
+            _holding = true;
+            _music.FadeOutMusicWolfgate(HandOver);
+            _pauseAt = now + TimeSpan.FromSeconds(HandOver - 0.1);
+        }
+        else if (!want && _holding)
+        {
+            Release();
+        }
+
+        if (_holding && _pauseAt is { } pauseAt && now >= pauseAt)
+        {
+            _pauseAt = null;
+            _music.PauseMusicWolfgate(WgMusicPauseReason.CodaSong);
+        }
+        else if (_holding && _pauseAt == null)
+        {
+            // The playlist starts its next track on its own; hold every new one paused too.
+            _music.EnforceMusicPauseWolfgate();
         }
 
         // Fade in while something pulls; fade out and stop once nothing does.
@@ -137,13 +167,7 @@ public sealed partial class WGCodaSongSystem : EntitySystem
         if (_song == null)
         {
             if (pull >= Threshold && now >= _next)
-            {
-                // Whatever ambient track is playing fades out as the song fades in.
-                _fadedTrack = ambient;
-                _music.FadeOutAmbientWolfgate(HandOver);
                 StartSong(source, drift);
-            }
-
             return;
         }
 
@@ -165,7 +189,18 @@ public sealed partial class WGCodaSongSystem : EntitySystem
         else
             turn = MathF.Max(turn, danger * 0.9f);
 
-        Mix(pull, turn, drift, frameTime, danger, crisis);
+        Mix(pull, turn, drift, frameTime, danger, crisis, heart);
+    }
+
+    /// <summary>Lets the music go: it fades back in where it was held, or starts again on its own.</summary>
+    private void Release()
+    {
+        if (!_holding)
+            return;
+
+        _holding = false;
+        _pauseAt = null;
+        _music.ResumeMusicFadingWolfgate(WgMusicPauseReason.CodaSong, HandOver);
     }
 
     /// <summary>How close the listener is to falling, 0 to 1, and whether they already have.</summary>
@@ -201,24 +236,12 @@ public sealed partial class WGCodaSongSystem : EntitySystem
         var turn = drift >= 90f ? 0f : Math.Clamp((drift - 55f) / 30f, 0f, 1f);
         string? source = null;
 
-        var here = _transform.GetMapCoordinates(me);
-        var sources = EntityQueryEnumerator<WGSongSourceComponent, TransformComponent>();
-        while (sources.MoveNext(out var uid, out var song, out var xform))
+        // A heart in reach, as the server reports it: it takes the listener over, near or far.
+        if (TryComp<WGSongListenerComponent>(me, out var listener) && listener.Source != null)
         {
-            if (song.Silent || xform.MapID != here.MapId)
-                continue;
-
-            var distance = Vector2.Distance(_transform.GetWorldPosition(xform), here.Position);
-            if (distance > song.Range)
-                continue;
-
-            var near = 0.25f + 0.75f * (1f - distance / song.Range);
-            if (near > pull)
-            {
-                pull = near;
-                source = song.Source;
-                turn = MathF.Max(turn, song.Turned);
-            }
+            pull = MathF.Max(pull, listener.Near);
+            source = listener.Source;
+            turn = MathF.Max(turn, listener.Turned);
         }
 
         return (pull, turn, source, drift);
@@ -289,13 +312,15 @@ public sealed partial class WGCodaSongSystem : EntitySystem
 
         _voices.Clear();
         _song = null;
+        _cutShort = false;
     }
 
     /// <summary>Sets every stem's volume from the pull, the turn and each part's place in the order.</summary>
-    private void Mix(float pull, float turn, float drift, float frameTime, float danger, bool crisis)
+    private void Mix(float pull, float turn, float drift, float frameTime, float danger, bool crisis, bool heart)
     {
-        // Under combat music the choir sits back, and sinks further the closer the listener is to death.
-        var combat = _music.WgCombatMusicPlaying;
+        // Under combat music the choir sits back, and sinks further the closer the listener is to death; a heart's
+        // song holds combat music off instead.
+        var combat = _music.WgCombatMusicPlaying && !heart;
         var duck = combat ? -4f - 14f * danger : -10f * danger;
         // Each piece swells in from nothing and ebbs away before it ends, so no piece starts or stops abruptly.
         var elapsed = (float) (_timing.CurTime - _started).TotalSeconds;
@@ -305,6 +330,10 @@ public sealed partial class WGCodaSongSystem : EntitySystem
         var master = (-20f + 18f * pull) + duck + 20f * MathF.Log10(MathF.Max(0.001f, _musicVolume * _fade * piece));
         if (crisis)
             master += combat ? 10f : 6f;
+        // Whatever else holds the music, an internet sound or the soundtrack mute, silences the choir too. The stems
+        // keep running muted so they stay together, and come back as soon as nothing holds them.
+        if (_music.WgMusicHeldElsewhere)
+            master = Silent;
         for (var i = 0; i < Order.Length; i++)
         {
             if (!_voices.TryGetValue(Order[i], out var voice))

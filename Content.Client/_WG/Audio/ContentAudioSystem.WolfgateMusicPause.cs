@@ -11,6 +11,7 @@ public enum WgMusicPauseReason : byte
     InternetSound = 1 << 0,
     SoundtrackMute = 1 << 1,
     CombatMusicPreview = 1 << 2,
+    CodaSong = 1 << 3,
 }
 
 /// <summary>
@@ -31,6 +32,10 @@ public sealed partial class ContentAudioSystem
         EnforceMusicPauseWolfgate();
     }
 
+    /// <summary>Whether something other than the Coda's song is holding music paused, such as an internet sound or the
+    /// soundtrack mute; the song falls silent with it.</summary>
+    public bool WgMusicHeldElsewhere => (_wgMusicPauseReasons & ~WgMusicPauseReason.CodaSong) != 0;
+
     /// <summary>Whether combat music is playing now; the Coda's song blends with it rather than holding it off.</summary>
     public bool WgCombatMusicPlaying => _isCombatMusicPlaying && _currentlyPlaying == MusicType.Combat;
 
@@ -41,8 +46,31 @@ public sealed partial class ContentAudioSystem
     /// <summary>Fades the ambient track playing now out over a few seconds and stops it, for a seamless handover.</summary>
     public void FadeOutAmbientWolfgate(float seconds)
     {
-        if (WgAmbientTrack is { } stream)
+        if (WgAmbientTrack is { } stream && !_fadingOut.ContainsKey(stream))
             FadeOut(stream, duration: seconds);
+    }
+
+    /// <summary>Fades out whatever music is playing now, combat included, and stops it.</summary>
+    public void FadeOutMusicWolfgate(float seconds)
+    {
+        if (_ambientMusicStream is { } stream && !TerminatingOrDeleted(stream) && !_fadingOut.ContainsKey(stream))
+            FadeOut(stream, duration: seconds);
+    }
+
+    /// <summary>Drops a pause reason like <see cref="ResumeMusicWolfgate"/>, fading the music back in rather than
+    /// starting it at full volume.</summary>
+    public void ResumeMusicFadingWolfgate(WgMusicPauseReason reason, float seconds)
+    {
+        var resuming = new List<EntityUid>(_wgPausedMusic);
+        ResumeMusicWolfgate(reason);
+        if (_wgMusicPauseReasons != WgMusicPauseReason.None)
+            return;
+
+        foreach (var uid in resuming)
+        {
+            if (TryComp<AudioComponent>(uid, out var audio) && audio.State == AudioState.Playing && !_fadingIn.ContainsKey(uid))
+                FadeIn(uid, audio, seconds);
+        }
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 using System.Numerics;
+using Robust.Shared.GameStates;
 using Robust.Shared.Map;
 using Robust.Shared.Serialization;
 
@@ -9,8 +10,21 @@ namespace Content.Shared._WG.Pyramid;
 public sealed partial class WGPyramidVisualsComponent : Component;
 
 /// <summary>A barrage mark on a hull; the lasers aim at it when they fire, and the client draws a tether to it.</summary>
-[RegisterComponent]
-public sealed partial class WGPyramidMarkComponent : Component;
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+public sealed partial class WGPyramidMarkComponent : Component
+{
+    /// <summary>The Pyramid that placed it.</summary>
+    [AutoNetworkedField]
+    public EntityUid? Pyramid;
+
+    /// <summary>When its barrage fires.</summary>
+    [AutoNetworkedField]
+    public TimeSpan FireAt;
+
+    /// <summary>How long its barrage charges, in seconds.</summary>
+    [AutoNetworkedField]
+    public float ChargeSeconds = WGPyramidMath.ChargeSeconds;
+}
 
 /// <summary>A wave of warped space leaving the Pyramid, for the screens of everyone on its map.</summary>
 [Serializable, NetSerializable]

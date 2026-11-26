@@ -98,14 +98,40 @@ public sealed partial class WGCodaSiteSystem
     /// <summary>Where the lamp burns: over the tower's brazier, or the middle of the grid without one.</summary>
     private EntityCoordinates LampSpot(EntityUid grid, MapGridComponent gridComp)
     {
-        var query = EntityQueryEnumerator<MetaDataComponent, TransformComponent>();
-        while (query.MoveNext(out _, out var meta, out var xform))
+        var children = Transform(grid).ChildEnumerator;
+        while (children.MoveNext(out var child))
         {
-            if (xform.GridUid == grid && meta.EntityPrototype?.ID == "WGCodaBrazier")
-                return xform.Coordinates;
+            if (MetaData(child).EntityPrototype?.ID == "WGCodaBrazier")
+                return Transform(child).Coordinates;
         }
 
         return new EntityCoordinates(grid, Vector2.Zero);
+    }
+
+    /// <summary>
+    /// Every entity on a grid, however deep in containers: a walk down its own transform tree, so the cost is the
+    /// grid's, never the whole server's.
+    /// </summary>
+    private List<EntityUid> GridEntities(EntityUid grid)
+    {
+        var found = new List<EntityUid>();
+        var stack = new Stack<EntityUid>();
+        stack.Push(grid);
+        while (stack.TryPop(out var parent))
+        {
+            var children = Transform(parent).ChildEnumerator;
+            while (children.MoveNext(out var child))
+            {
+                // A grid docked or parented onto this one is its own place.
+                if (HasComp<MapGridComponent>(child))
+                    continue;
+
+                found.Add(child);
+                stack.Push(child);
+            }
+        }
+
+        return found;
     }
 
     /// <summary>The keeper gives each visitor, once a round, a flare and a cup of something warm that calms the head.</summary>
@@ -138,7 +164,7 @@ public sealed partial class WGCodaSiteSystem
 
         var proto = MetaData(args.Used).EntityPrototype?.ID;
         var exotic = proto != null && ExoticMatter.Contains(proto);
-        var cell = HasComp<Content.Shared.PowerCell.Components.PowerCellComponent>(args.Used)
+        var cell = HasComp<Content.Shared.PowerCell.PowerCellComponent>(args.Used)
             && TryComp<BatteryComponent>(args.Used, out var battery) && battery.CurrentCharge > 0f;
         if (!exotic && !cell)
             return;
@@ -267,13 +293,12 @@ public sealed partial class WGCodaSiteSystem
 
         // Beds become cots; spawners that could bring anything hostile go.
         var cots = new List<EntityCoordinates>();
-        var query = EntityQueryEnumerator<MetaDataComponent, TransformComponent>();
         var swap = new List<(EntityUid Uid, EntityCoordinates At, Angle Rotation)>();
         var drop = new List<EntityUid>();
-        while (query.MoveNext(out var uid, out var meta, out var xform))
+        foreach (var uid in GridEntities(grid))
         {
-            if (xform.GridUid != grid)
-                continue;
+            var meta = MetaData(uid);
+            var xform = Transform(uid);
 
             var id = meta.EntityPrototype?.ID;
             if (id is "MedicalBed" or "ParaBedPsych" or "N14JunkBed1")

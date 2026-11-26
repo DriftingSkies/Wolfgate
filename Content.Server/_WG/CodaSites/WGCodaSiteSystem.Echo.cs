@@ -124,13 +124,7 @@ public sealed partial class WGCodaSiteSystem
         // It is not Central any more, whatever it remembers being.
         _meta.SetEntityName(uid, Loc.GetString($"wg-codasite-echo-grid-name-{_random.Next(1, EchoNames + 1)}"));
         var posts = new List<EntityCoordinates>();
-        var everything = new List<EntityUid>();
-        var query = EntityQueryEnumerator<TransformComponent>();
-        while (query.MoveNext(out var ent, out var xform))
-        {
-            if (xform.GridUid == uid && ent != uid)
-                everything.Add(ent);
-        }
+        var everything = GridEntities(uid);
 
         var blunt = _proto.Index<DamageTypePrototype>("Blunt");
         EntityCoordinates? beacon = null;

@@ -2,6 +2,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Server._WG.Lattice;
 using Content.Server.Explosion.EntitySystems;
+using Content.Server.GameTicking;
 using Content.Server.Shuttles.Components;
 using Content.Shared._WG.Lattice;
 using Content.Shared._WG.Pyramid;
@@ -24,6 +25,7 @@ using Robust.Shared.Physics.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Spawners;
 using Robust.Shared.Timing;
 
 namespace Content.Server._WG.Pyramid;
@@ -51,6 +53,7 @@ public sealed partial class WGPyramidSystem : EntitySystem
     [Dependency] private ExplosionSystem _explosion = default!;
     [Dependency] private WGLatticeSystem _lattice = default!;
     [Dependency] private WGDriftMindSystem _drift = default!;
+    [Dependency] private GameTicker _ticker = default!;
 
     public static readonly EntProtoId Proto = "WGPyramid";
     private static readonly EntProtoId MarkProto = "WGPyramidMark";
@@ -176,8 +179,8 @@ public sealed partial class WGPyramidSystem : EntitySystem
                 if (now >= fireAt)
                     FireBarrage(ent, xform);
             }
-            else if (pyramid.Target is { } target && now >= pyramid.NextBarrage
-                     && Vector2.Distance(_transform.GetWorldPosition(target), _transform.GetWorldPosition(xform)) <= pyramid.FireRange)
+            else if (pyramid.Target is { } target && now >= pyramid.NextBarrage && !TerminatingOrDeleted(target)
+                     && InRange(target, xform, pyramid.FireRange))
             {
                 MarkBarrage(ent, target, now);
             }
@@ -196,7 +199,7 @@ public sealed partial class WGPyramidSystem : EntitySystem
     private void RollArrival(TimeSpan now)
     {
         var tuning = Tuning();
-        if (_spawned >= tuning.PerRound || now < tuning.EarliestAt || EntityQuery<WGPyramidComponent>().Any())
+        if (_spawned >= tuning.PerRound || _ticker.RoundDuration() < tuning.EarliestAt || EntityQuery<WGPyramidComponent>().Any())
             return;
 
         foreach (var (grid, depth) in CodaShips())
@@ -296,6 +299,9 @@ public sealed partial class WGPyramidSystem : EntitySystem
                 continue;
 
             var distance = Vector2.Distance(_transform.GetWorldPosition(grid), here);
+            if (distance > ent.Comp.SearchRange)
+                continue;
+
             // It prefers to keep after the ship it already has.
             if (grid == ent.Comp.Target)
                 distance *= 0.6f;
@@ -354,6 +360,11 @@ public sealed partial class WGPyramidSystem : EntitySystem
             if (!TryComp<PhysicsComponent>(grid, out var body) || body.BodyType != BodyType.Dynamic)
                 continue;
 
+            // The square found it; push only if its hull actually reaches into the bubble.
+            var bounds = _transform.GetWorldMatrix(grid).TransformBox(grid.Comp.LocalAABB);
+            if (Vector2.Distance(bounds.ClosestPoint(here), here) > radius)
+                continue;
+
             var away = _transform.GetWorldPosition(grid) - here;
             var direction = away.LengthSquared() > 0.01f ? Vector2.Normalize(away) : Vector2.UnitY;
             _physics.ApplyLinearImpulse(grid, direction * ent.Comp.BubblePush * body.Mass * frameTime, body: body);
@@ -385,7 +396,7 @@ public sealed partial class WGPyramidSystem : EntitySystem
             centres.Add(_random.Pick(tiles));
 
         foreach (var centre in centres)
-            ent.Comp.Marks.Add(Spawn(MarkProto, _map.GridTileToLocal(target, grid, centre)));
+            SpawnMark(ent, _map.GridTileToLocal(target, grid, centre));
 
         // One brought in by hand attacks everything round it: every other grid in range takes patches too.
         if (ent.Comp.Anywhere)
@@ -408,7 +419,7 @@ public sealed partial class WGPyramidSystem : EntitySystem
         _map.FindGridsIntersecting(xform.MapID, new Box2(here - new Vector2(range), here + new Vector2(range)), ref grids);
         foreach (var other in grids)
         {
-            if (other.Owner == target || ent.Comp.Marks.Count >= 24)
+            if (other.Owner == target || ent.Comp.Marks.Count >= 24 || !InRange(other, xform, range))
                 continue;
 
             var tiles = _map.GetAllTiles(other, other.Comp).Select(t => t.GridIndices).ToList();
@@ -424,8 +435,29 @@ public sealed partial class WGPyramidSystem : EntitySystem
                 centres.Add(_random.Pick(tiles));
 
             foreach (var centre in centres)
-                ent.Comp.Marks.Add(Spawn(MarkProto, _map.GridTileToLocal(other, other.Comp, centre)));
+                SpawnMark(ent, _map.GridTileToLocal(other, other.Comp, centre));
         }
+    }
+
+    /// <summary>Places a mark for the coming barrage; it lasts until a moment after the barrage fires.</summary>
+    private void SpawnMark(Entity<WGPyramidComponent> ent, EntityCoordinates at)
+    {
+        var uid = Spawn(MarkProto, at);
+        var mark = EnsureComp<WGPyramidMarkComponent>(uid);
+        mark.Pyramid = ent;
+        mark.FireAt = ent.Comp.FireAt ?? _timing.CurTime + ent.Comp.BarrageDelay;
+        mark.ChargeSeconds = (float) ent.Comp.BarrageDelay.TotalSeconds;
+        Dirty(uid, mark);
+        EnsureComp<TimedDespawnComponent>(uid).Lifetime = mark.ChargeSeconds + 2f;
+        ent.Comp.Marks.Add(uid);
+    }
+
+    /// <summary>Whether a grid is on the Pyramid's map and within a range of it.</summary>
+    private bool InRange(EntityUid grid, TransformComponent xform, float range)
+    {
+        var gridXform = Transform(grid);
+        return gridXform.MapID == xform.MapID
+            && Vector2.Distance(_transform.GetWorldPosition(gridXform), _transform.GetWorldPosition(xform)) <= range;
     }
 
     /// <summary>
@@ -457,29 +489,28 @@ public sealed partial class WGPyramidSystem : EntitySystem
         if (ent.Comp.Volley.Count == 0)
             return;
 
+        // Shots are queued in order; the oldest due one fires, one a tick at most, so overdue shots keep their spacing.
+        var (at, when) = ent.Comp.Volley[0];
+        if (now < when)
+            return;
+
+        ent.Comp.Volley.RemoveAt(0);
+        if (!at.IsValid(EntityManager))
+            return;
+
+        // A grid that has since got out of range is spared.
+        if (Transform(at.EntityId).GridUid is { } struck && !InRange(struck, xform, ent.Comp.FireRange))
+            return;
+
         var from = _transform.GetMapCoordinates(xform);
-        var hits = new List<Vector2>();
-        for (var i = ent.Comp.Volley.Count - 1; i >= 0; i--)
-        {
-            var (at, when) = ent.Comp.Volley[i];
-            if (now < when)
-                continue;
+        var map = _transform.ToMapCoordinates(at);
+        if (map.MapId != from.MapId)
+            return;
 
-            ent.Comp.Volley.RemoveAt(i);
-            if (!at.IsValid(EntityManager))
-                continue;
-
-            var map = _transform.ToMapCoordinates(at);
-            if (map.MapId != from.MapId)
-                continue;
-
-            hits.Add(map.Position);
-            _explosion.QueueExplosion(map, ent.Comp.ExplosionType, ent.Comp.ExplosionIntensity, ent.Comp.ExplosionSlope,
-                ent.Comp.ExplosionMaxTile, ent);
-        }
-
-        if (hits.Count > 0)
-            RaiseNetworkEvent(new WGPyramidBeamEvent(from.MapId, from.Position, hits), Filter.BroadcastMap(from.MapId));
+        _explosion.QueueExplosion(map, ent.Comp.ExplosionType, ent.Comp.ExplosionIntensity, ent.Comp.ExplosionSlope,
+            ent.Comp.ExplosionMaxTile, ent);
+        RaiseNetworkEvent(new WGPyramidBeamEvent(from.MapId, from.Position, new List<Vector2> { map.Position }),
+            Filter.BroadcastMap(from.MapId));
     }
 
     private void ClearMarks(WGPyramidComponent pyramid)

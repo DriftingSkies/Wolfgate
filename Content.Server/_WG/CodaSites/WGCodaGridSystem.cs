@@ -69,14 +69,35 @@ public sealed class WGCodaGridSystem : EntitySystem
         }
     }
 
-    /// <summary>Marks every power receiver on a self-powered grid as needing no power.</summary>
+    /// <summary>
+    /// Marks every power receiver on a self-powered grid as needing no power, and gives power needs back to any that
+    /// have left one. Only the site grids' own entities are walked, never the whole server's receivers.
+    /// </summary>
     private void PowerGrids()
     {
-        var receivers = EntityQueryEnumerator<ApcPowerReceiverComponent, TransformComponent>();
-        while (receivers.MoveNext(out var uid, out var receiver, out var xform))
+        var exempt = EntityQueryEnumerator<WGSelfPoweredReceiverComponent, ApcPowerReceiverComponent, TransformComponent>();
+        while (exempt.MoveNext(out var uid, out var mark, out var receiver, out var xform))
         {
-            if (receiver.NeedsPower && xform.GridUid is { } grid && HasComp<WGSelfPoweredGridComponent>(grid))
-                _receiver.SetNeedsPower(uid, false, receiver);
+            if (xform.GridUid == mark.Grid && !TerminatingOrDeleted(mark.Grid))
+                continue;
+
+            _receiver.SetNeedsPower(uid, true, receiver);
+            RemCompDeferred<WGSelfPoweredReceiverComponent>(uid);
+        }
+
+        var grids = EntityQueryEnumerator<WGSelfPoweredGridComponent, TransformComponent>();
+        while (grids.MoveNext(out var grid, out _, out var gridXform))
+        {
+            var children = gridXform.ChildEnumerator;
+            while (children.MoveNext(out var child))
+            {
+                // A receiver that already needed no power is left alone, so it stays that way after it leaves.
+                if (!TryComp<ApcPowerReceiverComponent>(child, out var receiver) || !receiver.NeedsPower)
+                    continue;
+
+                _receiver.SetNeedsPower(child, false, receiver);
+                EnsureComp<WGSelfPoweredReceiverComponent>(child).Grid = grid;
+            }
         }
     }
 
@@ -88,8 +109,11 @@ public sealed class WGCodaGridSystem : EntitySystem
         var oxygen = air.OxygenPressure * TileVolume / (GasConstant * air.Temperature);
         foreach (var tile in _map.GetAllTiles(grid, gridComp))
         {
-            var mix = _atmos.GetTileMixture(grid.Owner, map, tile.GridIndices, true);
-            if (mix == null || mix.Immutable)
+            // Every tile gets the same mix, so nothing needs to flow: tiles aren't woken in atmos, and a tile already
+            // at the mix is left alone.
+            var mix = _atmos.GetTileMixture(grid.Owner, map, tile.GridIndices);
+            if (mix == null || mix.Immutable
+                || MathF.Abs(mix.TotalMoles - total) < total * 0.01f && MathF.Abs(mix.Temperature - air.Temperature) < 1f)
                 continue;
 
             mix.Clear();
@@ -166,11 +190,13 @@ public sealed class WGCodaGridSystem : EntitySystem
             var coords = _map.GridTileToLocal(uid, gridComp, index);
             if (hull.Growing.TryGetValue(index, out var flesh))
             {
-                if (now - gone < hull.RegrowDelay + hull.FleshTime)
+                // Flesh hardens a while after it appeared; if something has come to stand in it, it waits.
+                if (now - hull.FleshAt.GetValueOrDefault(index, now) < hull.FleshTime || Occupied(uid, gridComp, index, flesh))
                     continue;
 
                 QueueDel(flesh);
                 hull.Growing.Remove(index);
+                hull.FleshAt.Remove(index);
                 hull.Pieces[index] = Spawn(proto, coords);
                 hull.Gone.Remove(index);
                 continue;
@@ -180,14 +206,18 @@ public sealed class WGCodaGridSystem : EntitySystem
                 continue;
 
             hull.Growing[index] = Spawn(hull.Flesh, coords);
+            hull.FleshAt[index] = now;
         }
     }
 
     /// <summary>Whether anything anchored or alive stands on a tile, so nothing grows over it.</summary>
-    private bool Occupied(EntityUid grid, MapGridComponent gridComp, Vector2i index)
+    private bool Occupied(EntityUid grid, MapGridComponent gridComp, Vector2i index, EntityUid? ignore = null)
     {
-        foreach (var _ in _map.GetAnchoredEntities(grid, gridComp, index))
-            return true;
+        foreach (var anchored in _map.GetAnchoredEntities(grid, gridComp, index))
+        {
+            if (anchored != ignore)
+                return true;
+        }
 
         foreach (var ent in _lookup.GetLocalEntitiesIntersecting(grid, index))
         {

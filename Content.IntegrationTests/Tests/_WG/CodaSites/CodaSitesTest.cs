@@ -90,12 +90,29 @@ public sealed class CodaSitesTest
                 Is.GreaterThan(0), "The board never called a number.");
         });
 
-        // The Last Anchor switches between holding and failing, and its power goes with it.
+        // The Last Anchor switches between holding and failing, its power going with it, and comes back to holding.
+        EntityUid core = default;
+        await server.WaitPost(() =>
+        {
+            core = Find<WGLastAnchorComponent>(em, grids["last_anchor"]);
+            var anchor = em.GetComponent<WGLastAnchorComponent>(core);
+            // It has already cycled above on a one-second hold; start it from holding, due to fail now.
+            anchor.Holding = true;
+            anchor.FailTime = TimeSpan.FromSeconds(3);
+            anchor.HoldTime = TimeSpan.FromSeconds(30);
+            anchor.NextSwitch = server.ResolveDependency<IGameTiming>().CurTime;
+        });
+        await pair.RunSeconds(1.5f);
         await server.WaitAssertion(() =>
         {
-            var core = Find<WGLastAnchorComponent>(em, grids["last_anchor"]);
-            var anchor = em.GetComponent<WGLastAnchorComponent>(core);
-            Assert.That(em.GetComponent<ApcPowerReceiverComponent>(core).NeedsPower, Is.EqualTo(!anchor.Holding));
+            Assert.That(em.GetComponent<WGLastAnchorComponent>(core).Holding, Is.False, "The anchor should have failed.");
+            Assert.That(em.GetComponent<ApcPowerReceiverComponent>(core).NeedsPower, Is.True, "A failing anchor loses its power.");
+        });
+        await pair.RunSeconds(4f);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(em.GetComponent<WGLastAnchorComponent>(core).Holding, Is.True, "The anchor should hold again.");
+            Assert.That(em.GetComponent<ApcPowerReceiverComponent>(core).NeedsPower, Is.False, "Holding again, it needs no power.");
         });
 
         // A hurt visitor laid on a Hospice cot is healed; the player at the Orchard draws its vines.
