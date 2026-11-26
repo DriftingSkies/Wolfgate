@@ -57,7 +57,15 @@ public sealed class PyramidTest
             var xforms = server.System<SharedTransformSystem>();
             arrivedAt = Vector2.Distance(xforms.GetWorldPosition(pyramid), xforms.GetWorldPosition(grid));
         });
-        var tilesBefore = 0;
+        // A blast breaks plating to lattice, which is still a tile, so count the plating left rather than all tiles.
+        int PlatingLeft()
+        {
+            var plating = server.ResolveDependency<Robust.Shared.Map.ITileDefinitionManager>()["Plating"].TileId;
+            return server.System<SharedMapSystem>().GetAllTiles(grid, em.GetComponent<MapGridComponent>(grid))
+                .Count(t => t.Tile.TypeId == plating);
+        }
+
+        var platingBefore = 0;
         await pair.RunTicksSync(ticks * 6);
 
         await server.WaitAssertion(() =>
@@ -79,7 +87,10 @@ public sealed class PyramidTest
             Assert.That(comp.Marks, Is.Empty, "Firing should spend the marks.");
             Assert.That(comp.FireAt, Is.Null);
             Assert.That(comp.Volley, Has.Count.EqualTo(comp.Patches), "Every mark should get a laser in the volley.");
-            tilesBefore = server.System<SharedMapSystem>().GetAllTiles(grid, em.GetComponent<MapGridComponent>(grid)).Count();
+            // Strong enough that each blast surely breaks the plating it lands on; the default tile cap only sometimes does.
+            comp.ExplosionIntensity = 100f;
+            comp.ExplosionMaxTile = 30f;
+            platingBefore = PlatingLeft();
         });
         await pair.RunTicksSync(ticks * 3);
 
@@ -87,8 +98,7 @@ public sealed class PyramidTest
         {
             var comp = em.GetComponent<WGPyramidComponent>(pyramid);
             Assert.That(comp.Volley, Is.Empty, "Every laser in the volley should have fired.");
-            var tilesAfter = server.System<SharedMapSystem>().GetAllTiles(grid, em.GetComponent<MapGridComponent>(grid)).Count();
-            Assert.That(tilesAfter, Is.LessThan(tilesBefore), "The volley's blasts should have torn up the hull.");
+            Assert.That(PlatingLeft(), Is.LessThan(platingBefore), "The volley's blasts should have torn up the hull.");
 
             // Bring it down.
             comp.CollapseTime = TimeSpan.FromSeconds(1);
