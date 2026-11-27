@@ -7030,7 +7030,7 @@ entities:
       pos: -13.5,-15.5
     - type: Docking
       name: CIV-ARM1
-- proto: AltarConvertYellow
+- proto: WGAltarSultan
   entities:
   - uid: 238
     components:
@@ -43435,13 +43435,13 @@ entities:
 
         [bold][/bold]
 
-        What do you think about Dynasty?
+        What do you think of the Dynasty?
 
 
-        What would you do if you see heretic such as the TSF?
+        What would you do if you saw a heretic, such as one who answers the song?
 
 
-        [color=#7f7966]By signing this you are swearing the eternal service to the Sultan no matter the services he ask. Your flesh and your spirit is bound to fulfil the duty placed upon you. Its to server till the last breath. In return sultan shall protect you on your journey, pray and he will protect.
+        [color=#7f7966]By signing this, you swear eternal service to the Sultan, whatever service she asks of you. Your flesh and your spirit are bound to the duty placed upon you, to serve until your last breath. In return, the Sultan shall protect you on your journey. Pray, and she will protect you.
 
         [/color]
 
@@ -43727,13 +43727,13 @@ entities:
 
         [bold][/bold]
 
-        What do you think about Dynasty?
+        What do you think of the Dynasty?
 
 
-        What would you do if you see heretic such as the TSF?
+        What would you do if you saw a heretic, such as one who answers the song?
 
 
-        [color=#7f7966]By signing this you are swearing the eternal service to the Sultan no matter the services he ask. Your flesh and your spirit is bound to fulfil the duty placed upon you. Its to server till the last breath. In return sultan shall protect you on your journey, pray and he will protect.
+        [color=#7f7966]By signing this, you swear eternal service to the Sultan, whatever service she asks of you. Your flesh and your spirit are bound to the duty placed upon you, to serve until your last breath. In return, the Sultan shall protect you on your journey. Pray, and she will protect you.
 
         [/color]
 

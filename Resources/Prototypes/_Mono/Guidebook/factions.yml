@@ -28,6 +28,7 @@
   - TSFMC_SOP
   - TSFMC_org
   - TSFMC_Culture
+  - WGLoreReinforcements # WOLFGATE(LoreBook)
 
 - type: guideEntry
   id: PDV_Entry
@@ -38,6 +39,7 @@
   children:
   - WGPdvStandingOrders
   # WOLFGATE END
+  - WGLoreSultan # WOLFGATE(LoreBook)
 
 - type: guideEntry
   id: Smuggling
@@ -127,6 +129,7 @@
   - WGLoreJudges
   # WOLFGATE END
   - WGCommonWrit # WOLFGATE(Bench): the Common Writ
+  - WGLoreAccord # WOLFGATE(LoreBook)
 
 - type: guideEntry
   id: Underground

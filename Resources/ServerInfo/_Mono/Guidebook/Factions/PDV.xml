@@ -1,3 +1,5 @@
+<!-- WOLFGATE(LoreBook) START: the Vanguard as the sector's locals, under the Sultan's peace; the upstream text is kept in the comment below -->
+<!--
 # PDV
 
 The [color=tan]Phaethon Dynasty Imperial Vanguard[/color] is an isolated monarchy located in the Colossus sector and possibly adjacent bodies of space that are currently deemed undiscovered. Initially a group of feudal bodies lost to the history books, now a large Sultanate regime wielding old syndicate technologies scavenged after the Corporate War's conclusion. Known as the native inhabitants of the Perseus Arm, they are hell bent on evicting the [color=cyan]Trans-Solarian-Federation Marine Corps[/color] and obtaining complete control over the independent industries of Colossus.
@@ -8,13 +10,9 @@ The [color=tan]Phaethon Dynasty Imperial Vanguard[/color] is an isolated monarch
 
    They are capable of using their mobility and brutal tactics to separate their enemies in number and eliminate them one by one until they are victorious. No cost too great, every death repaid with interest, that is the way their Sultan's [color=purple]Grand Vizier[/color](s) operate.
 
-   <!-- WOLFGATE(ColdWar): the Vanguard under the ceasefire -->The [color=tan]Vanguard[/color] is currently under a ceasefire with the Federation, until the [color=purple]Grand Vizier[/color] declares war. See the [textlink="standing orders" link="WGPdvStandingOrders"].
-
-   The [color=tan]Phaethon Dynasty Imperial Vanguard[/color] has been given two simple directives by their commanding Sultanate:
+   The [color=tan]Phaethon Dynasty Imperial Vanguard[/color] has been given a simple directive by their commanding Sultanate:
 
   > [bold][color=red]Destabilize the region to prepare it for Dynasty occupation.[/bold][/color]
-
-  > [bold][color=red]Hunt down the heretics who besmirch or act against the glorious Sultan, His Dynasty and His Vanguard.[/bold][/color]
 
 
 # Hierarchy (I-V)
@@ -66,3 +64,94 @@ The [color=tan]Phaethon Dynasty Imperial Vanguard[/color] is an isolated monarch
 
   [color=red]Weaknesses:[/color]
   - Just like the weaponry, there is no objectively good armor, you have to prepare what is available with what is necessary.
+-->
+<Document>
+  # The Phaethon Dynasty Vanguard
+
+  The Phaethon Dynasty ruled the worlds of Colossus long before anyone outside them gave the sector that name. Its records go back further than any outsider can check, and it does not share them. To everyone who came later (Nanotrasen's surveyors, the Federation, the prospectors and the desperate), the Dynasty are the locals. To the Dynasty, everyone else is a guest. Some are better guests than others.
+
+  The [color=tan]Vanguard[/color] is the Dynasty's sword: its soldiers, pilots, surgeons and artificers. They answer to the [color=purple]Grand Vizier[/color], and through the Grand Vizier to [textlink="the Sultan" link="WGLoreSultan"].
+
+  ## Born here
+
+  Vanguard soldiers grew up under Kyphrus, on worlds the Federation's charts call hostile. Their grandmothers warned them away from the outer dark long before anyone had a name for the Unmooring. The Dynasty's oldest star charts mark it as forbidden, and nobody remembers who first wrote it there. They know which rocks hide Reavers, which wrecks still hum, and which worlds to leave alone.
+
+  What the Dynasty lacked in technology, it took from the wrecks of a Syndicate battle group that died in its space after the Corporate War. Nearly everything the Vanguard fields began as a Syndicate blueprint and was rebuilt, cruder and tougher, in Dynasty foundries. Outsiders call it theft. The Dynasty calls it salvage.
+
+  ## The Invasion
+
+  When the [color=cyan]Federation[/color] came three years ago, it came to stay. The Vanguard met it in the open and bled it for two years, by the old creed: no cost too great, every death repaid with interest. The Vanguard says it was winning. The Federation disagrees. Neither will ever find out.
+
+  Then Kyphrus fell, and the Unmooring swallowed the Federation's fleet in forty days.
+
+  ## The Sultan's peace
+
+  During the Long Night, the Sultan sent one word to the Vanguard: [italic]hold[/italic]. The Vanguard stopped fighting. Its artificers worked beside Federation engineers to wake the last of [textlink="the Lattice" link="WGLoreLattice"], and its ships stood guard over the very foundries they had spent two years trying to burn.
+
+  The war has not resumed. The Sultan has not said that it may. See the [textlink="standing orders" link="WGPdvStandingOrders"].
+
+  The Vanguard has not forgiven the Federation, and it does not need to. It needs the anchors to stand. A Rahkshan may hate the marine beside them, but they will still hold the line together. The Sultan has willed it, and the alternative is oblivion.
+
+  ## Directives
+
+  The Sultan has given her Vanguard three directives:
+
+  > [bold][color=red]Hold the Lattice. The Sultan held reality itself together once. She should not have to do it again.[/color][/bold]
+
+  > [bold][color=red]Protect the people of Colossus. They are her subjects, whether or not they know it.[/color][/bold]
+
+  > [bold][color=red]Hunt the heretics: those who answer the song, those who break the anchors, and those who raise a hand against the Sultan.[/color][/bold]
+
+  # Hierarchy (I-V)
+
+  (I) [color=purple]Grand Vizier[/color]. The highest rank in the Vanguard and the closest to the Sultan. The Grand Vizier has the final say in every operation, and refusing a Vizier is no different from treason. The Grand Vizier also speaks for the Dynasty at Caelestinus, and is the one officer who deals with the Colonel as an equal.
+
+  (II) [color=yellow]Asvaran[/color]. Second only to the Grand Vizier, and answerable to no one else. The Asvaran hand out the work of the Vanguard and guard its head of operations.
+
+  (III) [color=gold]Denasvar[/color]. Experienced soldiers trusted to lead. Denasvar command small detachments of Rahkshan and are the guiding hand on the front line.
+
+  (IV) [color=orange]Rahkshan[/color]. The backbone of the Vanguard: without foot soldiers there is no army. Act with purpose and follow the will of the Grand Vizier. To die holding the line is the highest honour. To live and share in the Sultan's victories is a privilege.
+
+  (IV-a) [color=orange]Jarrah[/color]. The Vanguard's field surgeons. They keep their brothers and sisters in arms on their feet, and they are not afraid to fight.
+
+  (IV-b) [color=orange]Artificers[/color]. The Vanguard's engineers. They keep its ships flying, fortify its holdings, and during the Long Night they helped wake the Lattice.
+
+  (IV-c) [color=red]Spasaka[/color]. You will not meet a Spasaka unless they allow it. They work in disguise, even among their own, using old Syndicate agent technology to change almost anything about themselves. Since the war ended, their work is listening: watching for heretics, Choir sympathisers and anyone who would see an anchor fall. Whatever they do, a Spasaka keeps their goals in line with their commanders'.
+
+  (V) [color=gray]Cyborgs[/color]. Automatons built by the finest minds of the Dynasty, ready to serve any order the Vanguard gives them.
+
+  Above them all are the [color=red]Tarkhan[/color], the Vanguard's elite, rarely sent into Colossus and never without reason.
+
+  # Gear
+
+  <Box>
+    <GuideEntityEmbed Entity="WeaponSubMachineGunC20r"/>
+    <GuideEntityEmbed Entity="WeaponSniperHristov"/>
+  </Box>
+
+  The Vanguard is supplied by its own industry and by the technology it salvaged. There is no shortage of surplus weaponry. Most of it is low-tech, reliable-enough ballistics: automatic rifles, heavy sidearms and explosives.
+
+  [color=green]Strengths:[/color]
+  - The armoury is broad enough to prepare for almost any fight. No single loadout is perfect, but there is nearly always a tool for the job.
+  - Older equipment has no single counter. An EMP will not disarm a Vanguard soldier: you have to outgun or outfight them.
+
+  [color=red]Weaknesses:[/color]
+  - Specialised gear can leave you stuck against the wrong enemy. Always have a fallback plan.
+  - Few weapons are good all-rounders. A Vanguard loadout is whatever you make of the current supplies.
+
+  <Box>
+    <GuideEntityEmbed Entity="ClothingOuterHardsuitPirateScaf"/>
+    <GuideEntityEmbed Entity="ClothingOuterHardsuitCybersunStealth"/>
+    <GuideEntityEmbed Entity="ClothingOuterHardsuitJuggernaut"/>
+  </Box>
+
+  Vanguard armour shares the story of its guns: reverse-engineered, mass-produced, low-tech and effective, for the most part. Some suits have very particular strengths, so choose carefully.
+
+  [color=green]Strengths:[/color]
+  - Simple armour is easy to judge. Pick whatever gives you the mobility or protection your weapon needs.
+  - The options are nearly unlimited. Stealth, juggernaut, you name it: the Dynasty has probably tried it.
+
+  [color=red]Weaknesses:[/color]
+  - As with the weapons, no suit is best at everything. Match what is available to what the job needs.
+<!-- WOLFGATE END -->
+</Document>

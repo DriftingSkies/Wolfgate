@@ -1,0 +1,17 @@
+# Faction lore pages: the Sultan, the Caelestinus Accord and the reinforcements. Their places in the book are set
+# by the faction entries that list them as children, in Resources/Prototypes/_Mono/Guidebook/factions.yml.
+
+- type: guideEntry
+  id: WGLoreSultan
+  name: wg-lore-entry-sultan
+  text: "/ServerInfo/_WG/LoreBook/Factions/Sultan.xml"
+
+- type: guideEntry
+  id: WGLoreReinforcements
+  name: wg-lore-entry-reinforcements
+  text: "/ServerInfo/_WG/LoreBook/Factions/Reinforcements.xml"
+
+- type: guideEntry
+  id: WGLoreAccord
+  name: wg-lore-entry-accord
+  text: "/ServerInfo/_WG/LoreBook/Factions/Accord.xml"

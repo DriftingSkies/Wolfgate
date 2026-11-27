@@ -1,8 +1,8 @@
 <Document>
 # Conflict Rule 5
-## Declaring war
+## Breaking the Accord
 
-[italic][color=#b8860b]Every round starts with a TSF/PDV ceasefire. Your PDA shows the war level.[/color][/italic]
+[italic][color=#b8860b]Every round starts with the Caelestinus Accord in force: the TSF and the PDV are at peace. Declaring war breaks the Accord. Your PDA shows the war level.[/color][/italic]
 
 - Only the [color=#1a9fb5]Colonel[/color] and the [color=#a4885c]Grand Vizier[/color] can declare war, using their [bold]war declarators[/bold].
 -- War starts when [bold]both[/bold] have declared. The war level is then [color=#d93c3c][bold]HOT[/bold][/color].

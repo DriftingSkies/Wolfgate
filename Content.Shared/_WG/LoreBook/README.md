@@ -52,6 +52,7 @@ in the upstream `_Mono` lore, factions and star system pages.
 
 ### Prototypes
 
+- [`Resources/Prototypes/_WG/LoreBook/factions.yml`](../../../Resources/Prototypes/_WG/LoreBook/factions.yml)
 - [`Resources/Prototypes/_WG/LoreBook/guidebook.yml`](../../../Resources/Prototypes/_WG/LoreBook/guidebook.yml)
 - [`Resources/Prototypes/_WG/LoreBook/links.yml`](../../../Resources/Prototypes/_WG/LoreBook/links.yml)
 - [`Resources/Prototypes/_WG/LoreBook/lore.yml`](../../../Resources/Prototypes/_WG/LoreBook/lore.yml)
@@ -78,9 +79,12 @@ in the upstream `_Mono` lore, factions and star system pages.
 
 ### Guidebook
 
+- [`Resources/ServerInfo/_WG/LoreBook/Factions/Accord.xml`](../../../Resources/ServerInfo/_WG/LoreBook/Factions/Accord.xml)
 - [`Resources/ServerInfo/_WG/LoreBook/Factions/Ads.xml`](../../../Resources/ServerInfo/_WG/LoreBook/Factions/Ads.xml)
 - [`Resources/ServerInfo/_WG/LoreBook/Factions/Judges.xml`](../../../Resources/ServerInfo/_WG/LoreBook/Factions/Judges.xml)
 - [`Resources/ServerInfo/_WG/LoreBook/Factions/Reavers.xml`](../../../Resources/ServerInfo/_WG/LoreBook/Factions/Reavers.xml)
+- [`Resources/ServerInfo/_WG/LoreBook/Factions/Reinforcements.xml`](../../../Resources/ServerInfo/_WG/LoreBook/Factions/Reinforcements.xml)
+- [`Resources/ServerInfo/_WG/LoreBook/Factions/Sultan.xml`](../../../Resources/ServerInfo/_WG/LoreBook/Factions/Sultan.xml)
 - [`Resources/ServerInfo/_WG/LoreBook/Forbidden.xml`](../../../Resources/ServerInfo/_WG/LoreBook/Forbidden.xml)
 - [`Resources/ServerInfo/_WG/LoreBook/Guidebook/Factions.xml`](../../../Resources/ServerInfo/_WG/LoreBook/Guidebook/Factions.xml)
 - [`Resources/ServerInfo/_WG/LoreBook/Guidebook/LoreBook.xml`](../../../Resources/ServerInfo/_WG/LoreBook/Guidebook/LoreBook.xml)
@@ -112,6 +116,21 @@ in the upstream `_Mono` lore, factions and star system pages.
 - [`Content.Client/UserInterface/Systems/MenuBar/GameTopMenuBarUIController.cs`](../../../Content.Client/UserInterface/Systems/MenuBar/GameTopMenuBarUIController.cs): lore book button
 - [`Content.Client/UserInterface/Systems/MenuBar/Widgets/GameTopMenuBar.xaml`](../../../Content.Client/UserInterface/Systems/MenuBar/Widgets/GameTopMenuBar.xaml): lore book button beside the guidebook
 - [`Content.IntegrationTests/PoolManager.Cvars.cs`](../../../Content.IntegrationTests/PoolManager.Cvars.cs): a new edition's lore book would open over other tests' windows
+- [`Resources/Locale/en-US/_Mono/gamerules/gamemodes.ftl`](../../../Resources/Locale/en-US/_Mono/gamerules/gamemodes.ftl)
+  - war rounds are the Accord breaking
+  - the war is over and both hold the Lattice
+- [`Resources/Locale/en-US/_Mono/job/job-description.ftl`](../../../Resources/Locale/en-US/_Mono/job/job-description.ftl)
+  - the sector's threats, not the opposition
+  - the Sultan is a woman, and her son alone sees her
+- [`Resources/Locale/en-US/_Mono/store/pdv-uplink-catalog.ftl`](../../../Resources/Locale/en-US/_Mono/store/pdv-uplink-catalog.ftl): the Sultan is a woman
+- [`Resources/Locale/en-US/_Mono/traits/traits.ftl`](../../../Resources/Locale/en-US/_Mono/traits/traits.ftl): heresy now means the Choir's song
+- [`Resources/Locale/en-US/_NF/adventure/adventure.ftl`](../../../Resources/Locale/en-US/_NF/adventure/adventure.ftl): war rounds are the Accord breaking
+- [`Resources/Locale/en-US/_NF/job/job-description.ftl`](../../../Resources/Locale/en-US/_NF/job/job-description.ftl): the Spasaka listen for heretics now the war is over
+- [`Resources/Locale/en-US/_NF/job/job-names.ftl`](../../../Resources/Locale/en-US/_NF/job/job-names.ftl): Rahkshan spelling
+- [`Resources/Locale/en-US/store/uplink-catalog.ftl`](../../../Resources/Locale/en-US/store/uplink-catalog.ftl): the red S is a Syndicate trophy, not the Sultan's mark
+- [`Resources/Maps/_Mono/POI/pdvhelios.yml`](../../../Resources/Maps/_Mono/POI/pdvhelios.yml): The Vanguard oath papers name the Sultan as a woman and the Choir as heresy.
+- [`Resources/Prototypes/_Mono/Entities/Objects/Devices/Misc/identification_cards.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Devices/Misc/identification_cards.yml): Rahkshan spelling
+- [`Resources/Prototypes/_Mono/Entities/Objects/Devices/pda.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Devices/pda.yml): Rahkshan spelling
 - [`Resources/Prototypes/_Mono/Guidebook/factions.yml`](../../../Resources/Prototypes/_Mono/Guidebook/factions.yml)
   - the faction pages moved to the lore book
   - the ADS guide stays in the guidebook under WGFactionsGuide; its lore page is here
@@ -126,12 +145,23 @@ in the upstream `_Mono` lore, factions and star system pages.
   - Verda's city
 - [`Resources/ServerInfo/_Mono/Guidebook/BeginnerGuide.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/BeginnerGuide.xml): point new players at the lore book
 - [`Resources/ServerInfo/_Mono/Guidebook/Factions/caelestinus.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/caelestinus.xml): one origin for Caelestinus, which now holds the Bench; the upstream text is kept in the comment below
-- [`Resources/ServerInfo/_Mono/Guidebook/Factions/USSP_Remnants.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/USSP_Remnants.xml): objectives in red like the other factions'
+- [`Resources/ServerInfo/_Mono/Guidebook/Factions/PDV.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/PDV.xml): the Vanguard as the sector's locals, under the Sultan's peace; the upstream text is kept in the comment below
+- [`Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC.xml): the marines as the last fleet of a vanished Federation; the upstream text is kept in the comment below
+- [`Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC_Brigade.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC_Brigade.xml): the 21st Brigade, the Halcyon and the last patrols; the upstream text is kept in the comment below
+- [`Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC_Culture.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC_Culture.xml)
+  - the Federation as its marines remember it
+  - Colossus was the Federation's last war; was "unable to receive reinforcements in a timely manner to support what the Federation considers a local war against the PDV"
+- [`Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC_SOP.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC_SOP.xml)
+  - Reavers and the sector's threats; was "from the PDV and rogue elements"
+  - Reavers, not the PDV; was "hiding from PDV and pirates than from TSF"
+- [`Resources/ServerInfo/_Mono/Guidebook/Factions/USSP_Remnants.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/USSP_Remnants.xml)
+  - both powers hold the Lattice; was "too burdened by their own conflict"
+  - objectives in red like the other factions'
 - [`Resources/ServerInfo/_Mono/Guidebook/Factions/viper_group.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/viper_group.xml)
   - the Vipers get standing orders like the other factions
   - Viper standing order
 - [`Resources/ServerInfo/_Mono/Guidebook/Lore/Primer.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Lore/Primer.xml): the opening page, rewritten for the Collapse, the Lattice and the Bench; the upstream text is kept in the comment below
-- [`Resources/ServerInfo/_Mono/Guidebook/Lore/Timeline.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Lore/Timeline.xml): the history, carried through the Collapse and the Caelestinus Accord; the upstream text is kept in the comment below
+- [`Resources/ServerInfo/_Mono/Guidebook/Lore/Timeline.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Lore/Timeline.xml): the history, through the Invasion, the Collapse, the Long Night and the Accord; the upstream text is kept in the comment below
 - [`Resources/ServerInfo/_Mono/Guidebook/Rules/MonolithRuleset.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Rules/MonolithRuleset.xml): the primer is in the lore book; was a textlink
 - [`Resources/ServerInfo/_Mono/Guidebook/StarSystem/Aerumna.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/StarSystem/Aerumna.xml): Aerumna is the xenonid homeworld since the biomass died back
 - [`Resources/ServerInfo/_Mono/Guidebook/StarSystem/Asclepiu.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/StarSystem/Asclepiu.xml): Verda's present-day wildlife and its city

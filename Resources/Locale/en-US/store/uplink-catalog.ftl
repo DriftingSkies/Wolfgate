@@ -459,7 +459,10 @@ uplink-combat-bakery-name = Combat Bakery Kit
 uplink-combat-bakery-desc = A kit of clandestine baked weapons. Contains a baguette sword, a pair of throwing croissants, and a special microwave board for making more. Once the job is done, eat the evidence.
 
 uplink-business-card-name = The Sultan's Business Card
-uplink-business-card-desc = A business card depicting a blood-red S. Any Dynasty rahkshan would tell you it symbolises the Sultan. You can buy no more than three of them.
+# WOLFGATE(LoreBook) START: the red S is a Syndicate trophy, not the Sultan's mark
+# uplink-business-card-desc = A business card depicting a blood-red S. Any Dynasty rahkshan would tell you it symbolises the Sultan. You can buy no more than three of them.
+uplink-business-card-desc = A business card depicting a blood-red S. Any Dynasty rahkshan would tell you it symbolises the Sultan. Any Dynasty elder would tell you it doesn't. You can buy no more than three of them.
+# WOLFGATE END
 
 uplink-fake-mindshield-name = Fake Mindshield
 uplink-fake-mindshield-desc = A togglable implant capable of mimicking the same transmissions a real mindshield puts out when on, tricking capable Heads-up displays into thinking you have a mindshield (Nanotrasen brand implanter not provided.)

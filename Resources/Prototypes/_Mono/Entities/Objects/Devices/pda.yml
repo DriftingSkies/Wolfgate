@@ -169,7 +169,7 @@
 - type: entity
   parent: BasePDVPDA
   id: PDVRakhshanPDA
-  name: PDV rakhshan PDA
+  name: PDV rahkshan PDA # WOLFGATE(LoreBook): Rahkshan spelling
   components:
   - type: Pda
     id: PDVRakhshanIDCard
