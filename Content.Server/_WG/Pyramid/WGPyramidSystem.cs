@@ -461,8 +461,8 @@ public sealed partial class WGPyramidSystem : EntitySystem
     }
 
     /// <summary>
-    /// Fires on every mark still standing: one laser after another, a moment apart, so the volley ripples across the
-    /// hull and each blast is through the explosion queue before the next lands.
+    /// Fires on every mark still standing: one laser after another, scheduled about 0.15 s apart, so the volley ripples
+    /// across the hull and the blasts overlap less. Overdue shots fire one a tick.
     /// </summary>
     public void FireBarrage(Entity<WGPyramidComponent> ent, TransformComponent xform)
     {

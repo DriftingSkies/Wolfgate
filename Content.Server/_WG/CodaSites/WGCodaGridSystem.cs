@@ -107,13 +107,17 @@ public sealed class WGCodaGridSystem : EntitySystem
         var (_, air, gridComp) = grid;
         var total = air.Pressure * TileVolume / (GasConstant * air.Temperature);
         var oxygen = air.OxygenPressure * TileVolume / (GasConstant * air.Temperature);
+        var tolerance = total * 0.01f;
         foreach (var tile in _map.GetAllTiles(grid, gridComp))
         {
             // Every tile gets the same mix, so nothing needs to flow: tiles aren't woken in atmos, and a tile already
             // at the mix is left alone.
             var mix = _atmos.GetTileMixture(grid.Owner, map, tile.GridIndices);
             if (mix == null || mix.Immutable
-                || MathF.Abs(mix.TotalMoles - total) < total * 0.01f && MathF.Abs(mix.Temperature - air.Temperature) < 1f)
+                || MathF.Abs(mix.TotalMoles - total) < tolerance
+                && MathF.Abs(mix.GetMoles(Gas.Oxygen) - oxygen) < tolerance
+                && MathF.Abs(mix.GetMoles(Gas.Nitrogen) - (total - oxygen)) < tolerance
+                && MathF.Abs(mix.Temperature - air.Temperature) < 1f)
                 continue;
 
             mix.Clear();

@@ -62,18 +62,16 @@ public sealed partial class WGSongSourceSystem : EntitySystem
             var here = _transform.GetWorldPosition(xform);
             WGSongSourceComponent? best = null;
             var near = 0f;
+            var nearest = float.MaxValue;
             foreach (var (song, map, at) in sources)
             {
                 var distance = Vector2.Distance(at, here);
-                if (map != xform.MapID || distance > song.Range)
+                if (map != xform.MapID || distance > song.Range || distance >= nearest)
                     continue;
 
-                var closeness = 0.25f + 0.75f * (1f - distance / song.Range);
-                if (closeness > near)
-                {
-                    near = closeness;
-                    best = song;
-                }
+                nearest = distance;
+                near = 0.25f + 0.75f * (1f - distance / song.Range);
+                best = song;
             }
 
             if (best == null && !HasComp<WGSongListenerComponent>(mob))

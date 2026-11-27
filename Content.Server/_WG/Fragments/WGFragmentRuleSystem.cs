@@ -356,7 +356,7 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
                 return true;
             return xform.MapID == heartPos.MapId
                    && (_transform.GetWorldPosition(xform) - heartPos.Position).Length() <= comp.SpawnRadius;
-        });
+        }) + comp.Pending.Count(p => p.Remade);
         var size = WaveSize(near.Count, alive, comp.WaveBase, comp.PlayersPerExtra, comp.MaxAlive);
         if (size == 0 || comp.Common.Count == 0)
             return;
@@ -579,7 +579,10 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
         return Valid(furthest) ? furthest : null;
     }
 
-    /// <summary>Spawns the next few of the landing's pending entities; drops them if the fragment is gone.</summary>
+    /// <summary>
+    /// Spawns the next few of the landing's pending entities; drops them if the fragment is gone, and drops pending Remade
+    /// once it is cleared.
+    /// </summary>
     private void SpawnPending(WGFragmentRuleComponent comp)
     {
         if (comp.Pending.Count == 0)
@@ -590,6 +593,10 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
             comp.Pending.Clear();
             return;
         }
+
+        // Once the heart breaks, Remade still queued never arrive; the landing's decor still does.
+        if (comp.Cleared)
+            comp.Pending.RemoveAll(p => p.Remade);
 
         var count = Math.Min(WGFragmentRuleComponent.SpawnsPerTick, comp.Pending.Count);
         for (var i = 0; i < count; i++)

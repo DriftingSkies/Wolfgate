@@ -43,6 +43,7 @@ public sealed class WGLatticeStationTest
         var damage = entities.System<DamageableSystem>();
 
         var stations = new List<EntityUid>();
+        var cores = new List<System.Numerics.Vector2>();
         EntityUid relay = default;
         await server.WaitAssertion(() =>
         {
@@ -77,6 +78,10 @@ public sealed class WGLatticeStationTest
                 Assert.That(entities.HasComponent<Content.Server.Destructible.DestructibleComponent>(generator), Is.True, "an anchor's shield generator can't be destroyed.");
             }
 
+            var transforms = entities.System<SharedTransformSystem>();
+            foreach (var station in stations)
+                cores.Add(transforms.GetWorldPosition(entities.GetComponent<WGLatticeAnchorStationComponent>(station).Core));
+
             var core = entities.GetComponent<WGLatticeAnchorStationComponent>(stations[0]).Core;
             var blunt = new DamageSpecifier(protos.Index<DamageTypePrototype>("Blunt"), FixedPoint2.New(30000));
             damage.TryChangeDamage(core, blunt, ignoreResistances: true);
@@ -99,7 +104,11 @@ public sealed class WGLatticeStationTest
             Assert.That(field.Integrity, Is.EqualTo(3f / 6f).Within(0.001f), "the three breaches didn't lower the Lattice's integrity.");
             Assert.That(entities.System<WGLatticeBreachObserver>().Breaches, Is.EqualTo(3), "a lost anchor wasn't announced as a breach.");
             Assert.That(entities.GetComponent<WGLatticeAnchorComponent>(relay).Active, Is.True, "the parked relay didn't take hold.");
-            Assert.That(field.Anchors, Has.Count.EqualTo(4), "three primaries and the relay should hold the field.");
+            // Coda sites placed on the map may add anchors of their own, so the field is checked by where its anchors are.
+            bool Holds(System.Numerics.Vector2 at) => field.Anchors.Any(a => System.Numerics.Vector2.DistanceSquared(a, at) < 1f);
+            var relayAt = entities.System<SharedTransformSystem>().GetWorldPosition(relay);
+            Assert.That(cores.Skip(3).Append(relayAt).All(Holds), Is.True, "three primaries and the relay should hold the field.");
+            Assert.That(cores.Take(3).Any(Holds), Is.False, "a lost anchor still holds the field.");
             var meta = entities.GetComponent<MetaDataComponent>(stations[2]).EntityName;
             Assert.That(meta, Does.StartWith("DEAD ANCHOR"), "a lost anchor's station still looks alive on radar.");
             Assert.That(entities.GetComponent<Content.Shared.Shuttles.Components.IFFComponent>(stations[2]).Color, Is.EqualTo(Color.FromHex("#6e6e6e")),
