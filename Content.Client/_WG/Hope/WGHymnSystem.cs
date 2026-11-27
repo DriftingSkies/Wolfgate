@@ -37,6 +37,7 @@ public sealed class WGHymnSystem : EntitySystem
     private const float Silent = -80f;
 
     private WGHymnPrototype? _hymn;
+    private string? _hymnSource;
     private EntityUid? _stream;
     private TimeSpan _started;
     private TimeSpan _next;
@@ -64,6 +65,8 @@ public sealed class WGHymnSystem : EntitySystem
         var now = _timing.CurTime;
         var (source, near, gap) = Listen();
         var want = source != null && !_music.WgHymnCombatPlaying;
+        // A hymn fades away once another source has the listener; the next one comes from that source's pool.
+        var keep = want && (_hymn == null || source == _hymnSource);
 
         if (_hymn != null && now >= _started + TimeSpan.FromSeconds(_hymn.Seconds))
         {
@@ -94,7 +97,7 @@ public sealed class WGHymnSystem : EntitySystem
             _music.WgHymnEnforceHold();
         }
 
-        _fade = Math.Clamp(_fade + (want ? frameTime / 3f : -frameTime / HandOver), 0f, 1f);
+        _fade = Math.Clamp(_fade + (keep ? frameTime / 3f : -frameTime / HandOver), 0f, 1f);
         if (_hymn == null)
         {
             if (want && now >= _next)
@@ -105,7 +108,8 @@ public sealed class WGHymnSystem : EntitySystem
         if (_fade <= 0f)
         {
             Stop();
-            Release();
+            if (!want)
+                Release();
             return;
         }
 
@@ -147,6 +151,7 @@ public sealed class WGHymnSystem : EntitySystem
             }
         }
 
+        _hymnSource = source;
         _started = _timing.CurTime;
         _stream = _audio.PlayGlobal(new SoundPathSpecifier(_hymn.Path), Filter.Local(), false,
             AudioParams.Default.WithVolume(Silent))?.Entity;
@@ -157,6 +162,7 @@ public sealed class WGHymnSystem : EntitySystem
         _audio.Stop(_stream);
         _stream = null;
         _hymn = null;
+        _hymnSource = null;
     }
 
     /// <summary>Lets the music go: it fades back in where it was held, or starts again on its own.</summary>

@@ -17,6 +17,9 @@ public sealed partial class ContentAudioSystem
     private bool _wgHymnHolding;
     private readonly HashSet<EntityUid> _wgHymnPaused = new();
 
+    /// <summary>The stream a hymn faded out, and its volume before the fade, so a release can undo an unfinished fade.</summary>
+    private (EntityUid Stream, float Volume)? _wgHymnFaded;
+
     /// <summary>Whether combat music is playing now; a hymn gives way to it.</summary>
     public bool WgHymnCombatPlaying => _isCombatMusicPlaying && _currentlyPlaying == MusicType.Combat;
 
@@ -26,8 +29,14 @@ public sealed partial class ContentAudioSystem
     /// <summary>Fades out whatever music is playing now, combat included, and stops it.</summary>
     public void WgHymnFadeOutMusic(float seconds)
     {
-        if (_ambientMusicStream is { } stream && !TerminatingOrDeleted(stream) && !_fadingOut.ContainsKey(stream))
-            FadeOut(stream, duration: seconds);
+        if (_ambientMusicStream is not { } stream || TerminatingOrDeleted(stream) || _fadingOut.ContainsKey(stream)
+            || !TryComp<AudioComponent>(stream, out var audio))
+            return;
+
+        // A fade-in still running would leave the volume short of the track's own.
+        var volume = _fadingIn.TryGetValue(stream, out var fadeIn) ? fadeIn.TargetVolume : audio.Volume;
+        _wgHymnFaded = (stream, volume);
+        FadeOut(stream, audio, seconds);
     }
 
     /// <summary>Holds the music paused for a hymn, and keeps any new track paused until it lets go.</summary>
@@ -43,7 +52,9 @@ public sealed partial class ContentAudioSystem
         if (!_wgHymnHolding)
             return;
 
-        WgHymnPause(_ambientMusicStream);
+        // A hymn gives way to combat music.
+        if (!WgHymnCombatPlaying)
+            WgHymnPause(_ambientMusicStream);
         WgHymnPause(_lobbySoundtrackInfo?.MusicStreamEntityUid);
     }
 
@@ -53,6 +64,7 @@ public sealed partial class ContentAudioSystem
     public void WgHymnReleaseMusic(float seconds)
     {
         _wgHymnHolding = false;
+        WgHymnUndoFade(seconds);
         foreach (var uid in _wgHymnPaused)
         {
             if (!TryComp<AudioComponent>(uid, out var audio) || audio.State != AudioState.Paused)
@@ -72,6 +84,25 @@ public sealed partial class ContentAudioSystem
         _wgHymnPaused.Clear();
     }
 
+    /// <summary>
+    /// Fades the stream a hymn was fading out back up, if the fade has not finished and no hold paused it, as when the
+    /// listener leaves before the hand-over ends.
+    /// </summary>
+    private void WgHymnUndoFade(float seconds)
+    {
+        if (_wgHymnFaded is not { } faded)
+            return;
+
+        _wgHymnFaded = null;
+        var (stream, target) = faded;
+        if (_wgHymnPaused.Contains(stream) || !_fadingOut.Remove(stream)
+            || !TryComp<AudioComponent>(stream, out var audio) || seconds <= 0f)
+            return;
+
+        // UpdateFades raises the volume by -change per second up to the target.
+        _fadingIn[stream] = ((audio.Volume - target) / seconds, target);
+    }
+
     private void WgHymnPause(EntityUid? uid)
     {
         if (uid == null || !TryComp<AudioComponent>(uid, out var audio))
@@ -81,7 +112,12 @@ public sealed partial class ContentAudioSystem
         // paused but audible; re-pause those too.
         var restarted = audio.State == AudioState.Paused && audio.Playing;
         if (audio.State != AudioState.Playing && !restarted)
+        {
+            // Claim a track another reason paused, so lifting that reason doesn't resume it while the hymn holds.
+            if (audio.State == AudioState.Paused && _wgPausedMusic.Remove(uid.Value))
+                _wgHymnPaused.Add(uid.Value);
             return;
+        }
 
         _audio.SetState(uid, AudioState.Paused, force: restarted, component: audio);
         _wgHymnPaused.Add(uid.Value);

@@ -59,12 +59,13 @@ public sealed class WGHymnSourceSystem : EntitySystem
 
         var listener = EnsureComp<WGHymnListenerComponent>(mob);
         var source = best?.Source;
-        if (listener.Source == source && MathF.Abs(listener.Near - near) < 0.03f)
+        var gap = best?.Gap ?? Vector2.Zero;
+        if (listener.Source == source && MathF.Abs(listener.Near - near) < 0.03f && listener.Gap == gap)
             return;
 
         listener.Source = source;
         listener.Near = near;
-        listener.Gap = best?.Gap ?? Vector2.Zero;
+        listener.Gap = gap;
         Dirty(mob, listener);
     }
 
