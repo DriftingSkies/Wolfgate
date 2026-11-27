@@ -11,6 +11,7 @@ using Content.Shared.Examine;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Shared.Maps;
+using Content.Shared.Physics;
 using Content.Shared.Popups;
 using Content.Shared.Stunnable;
 using Robust.Shared.Map;
@@ -36,6 +37,7 @@ public sealed partial class WGCodaSiteSystem
     [Dependency] private SharedHandsSystem _hands = default!;
     [Dependency] private ITileDefinitionManager _tiles = default!;
     [Dependency] private Content.Server.Chat.Managers.IChatManager _chatManager = default!;
+    [Dependency] private TurfSystem _turf = default!;
 
     private const string LampProto = "WGLighthouseLamp";
     private const string WaitingFigureProto = "WGWaitingFigure";
@@ -251,7 +253,8 @@ public sealed partial class WGCodaSiteSystem
     }
 
     /// <summary>
-    /// Makes a planetside hospital into the Hospice: sealed against space round its whole edge, its beds made into cots
+    /// Makes a planetside hospital into the Hospice: sealed against space round its whole edge with a docking airlock on
+    /// each side, its beds made into cots
     /// with attendants among them, and nothing hostile left to spawn. It is self-powered and its air never drains.
     /// </summary>
     public void PrepareHospice(EntityUid grid)
@@ -285,10 +288,20 @@ public sealed partial class WGCodaSiteSystem
             }
         }
 
+        var docks = HospiceDocks(grid, gridComp, tiles, edge);
         foreach (var tile in edge)
         {
             _map.SetTile(grid, gridComp, tile, new Tile(plating));
-            Spawn("WallReinforced", _map.GridTileToLocal(grid, gridComp, tile));
+            var at = _map.GridTileToLocal(grid, gridComp, tile);
+            if (docks.TryGetValue(tile, out var rotation))
+            {
+                var dock = Spawn("AirlockGlassShuttle", at);
+                Transform(dock).LocalRotation = rotation;
+            }
+            else
+            {
+                Spawn("WallReinforced", at);
+            }
         }
 
         // Beds become cots; spawners that could bring anything hostile go.
@@ -322,7 +335,55 @@ public sealed partial class WGCodaSiteSystem
         foreach (var at in cots.Take(2))
             Spawn("WGHospiceAttendant", at.Offset(new Vector2(1f, 0f)));
 
-        Log.Info($"The Hospice: sealed {edge.Count} edge tiles, made {cots.Count} cots.");
+        Log.Info($"The Hospice: sealed {edge.Count} edge tiles with {docks.Count} docks, made {cots.Count} cots.");
+    }
+
+    /// <summary>
+    /// Picks one docking airlock per side of the Hospice's seal: a straight stretch of wall with open space outside and
+    /// clear floor inside, on the side's outer face and nearest its middle. Returns each dock's tile and rotation.
+    /// </summary>
+    private Dictionary<Vector2i, Angle> HospiceDocks(EntityUid grid, MapGridComponent gridComp,
+        HashSet<Vector2i> tiles, HashSet<Vector2i> edge)
+    {
+        // Outward direction and the rotation that faces a docking airlock that way.
+        var sides = new (Vector2i Out, Angle Rotation)[]
+        {
+            (new Vector2i(0, -1), Angle.Zero),
+            (new Vector2i(1, 0), new Angle(Math.PI / 2)),
+            (new Vector2i(0, 1), new Angle(Math.PI)),
+            (new Vector2i(-1, 0), new Angle(3 * Math.PI / 2)),
+        };
+
+        var docks = new Dictionary<Vector2i, Angle>();
+        foreach (var (outward, rotation) in sides)
+        {
+            var across = new Vector2i(outward.Y, outward.X);
+            var candidates = new List<Vector2i>();
+            foreach (var tile in edge)
+            {
+                var inside = tile - outward;
+                var outside = tile + outward;
+                if (!tiles.Contains(inside) || tiles.Contains(outside) || edge.Contains(outside)
+                    || !tiles.Contains(inside + across) || !tiles.Contains(inside - across)
+                    || !edge.Contains(tile + across) || !edge.Contains(tile - across)
+                    || _turf.IsTileBlocked(grid, inside, CollisionGroup.Impassable, gridComp))
+                    continue;
+
+                candidates.Add(tile);
+            }
+
+            if (candidates.Count == 0)
+                continue;
+
+            var face = candidates.Max(t => Dot(t, outward));
+            var onFace = candidates.Where(t => Dot(t, outward) >= face - 2).ToList();
+            var middle = onFace.Average(t => Dot(t, across));
+            docks[onFace.MinBy(t => Math.Abs(Dot(t, across) - middle))] = rotation;
+        }
+
+        return docks;
+
+        static int Dot(Vector2i a, Vector2i b) => a.X * b.X + a.Y * b.Y;
     }
 
     // The Orchard.

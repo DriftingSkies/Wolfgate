@@ -13,7 +13,7 @@ the design and the decisions taken.
 - **The Last Anchor** can be fed power cells (a minute each) or exotic matter (three) to hold longer, or to catch
   again while failing. It holds for three minutes and fails for one by cutting its own power, and its lights go out with
   it. While it fails, players within 2 km take Drift.
-- **The Hospice** is the planetside hospital, sealed against space with reinforced walls round its edge, its beds made
+- **The Hospice** is the planetside hospital, sealed against space with reinforced walls round its edge and a docking airlock on each side, its beds made
   into cots. An attendant speaks to each healed patient, who is marked and followed by whispers for a while. Its cots heal whoever lies on one, fully, for 25 Drift, and the third visit brings the Choir's song.
 
 **Fear.**

@@ -122,6 +122,9 @@ public sealed class CodaSitesTest
             Assert.That(inventory.TryGetSlotEntity(figure, "jumpsuit", out _), Is.True, "An Echo figure should be dressed.");
             Assert.That(em.HasComponent<Content.Shared._WG.Lattice.WGLatticeShelterComponent>(grids["lighthouse"]), Is.True,
                 "The Lighthouse should shelter.");
+            var docks = em.EntityQuery<Content.Server.Shuttles.Components.DockingComponent, TransformComponent>()
+                .Count(d => d.Item2.GridUid == grids["hospice"]);
+            Assert.That(docks, Is.GreaterThanOrEqualTo(2), "The Hospice's seal needs docking airlocks to get in by.");
             Assert.That(Find<WGBroadcastTowerComponent>(em, grids["broadcast_tower"]), Is.Not.EqualTo(EntityUid.Invalid));
             var rocks = em.EntityQuery<WGGraveRockComponent, TransformComponent>().Where(e => e.Item2.GridUid == grids["graveyard"]).ToList();
             Assert.That(rocks, Has.Count.GreaterThan(20), "The Graveyard needs its rocks.");
