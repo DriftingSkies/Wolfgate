@@ -17,8 +17,13 @@
   - type: NpcFactionMember
     factions:
     - AllHostile
+  # AI ships hunt only what carries this; it flies loose, never on a grid.
+  - type: ShipNpcTarget
+    needGrid: NoGrid
   - type: Transform
     gridTraversal: false
+  # A priceless body loose in space, which space cleanup would sweep away mid-hunt; it removes itself when done.
+  - type: CleanupImmune
   - type: Sprite
     sprite: _WG/Pyramid/pyramid.rsi
     noRot: true

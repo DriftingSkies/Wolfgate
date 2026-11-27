@@ -170,4 +170,74 @@ public sealed class PyramidTest
 
         await pair.CleanReturnAsync();
     }
+
+    /// <summary>Loose in space with no price, nobody beside it and no grid under it, it is still never swept up.</summary>
+    [Test]
+    public async Task SpaceCleanupSparesIt()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var maps = server.System<SharedMapSystem>();
+            var grid = maps.CreateGridEntity(map.MapId);
+            maps.SetTile(grid.Owner, grid.Comp, Vector2i.Zero,
+                new Tile(server.ResolveDependency<Robust.Shared.Map.ITileDefinitionManager>()["Plating"].TileId));
+
+            var pyramid = server.System<WGPyramidSystem>().Summon(grid.Owner);
+            var space = server.System<Content.Server._Mono.Cleanup.SpaceCleanupSystem>();
+            Assert.That(space.WGShouldEntityCleanup(pyramid, 1f), Is.False, "space cleanup would delete the Pyramid mid-hunt.");
+            server.EntMan.DeleteEntity(pyramid);
+            server.EntMan.DeleteEntity(grid.Owner);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>NPCs take it for a target: a hostile mob's pick, and an AI ship's.</summary>
+    [Test]
+    public async Task NpcsTargetIt()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var em = server.EntMan;
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var utility = server.System<Content.Server.NPC.Systems.NPCUtilitySystem>();
+            var maps = server.System<SharedMapSystem>();
+            var grid = maps.CreateGridEntity(map.MapId);
+            maps.SetTile(grid.Owner, grid.Comp, Vector2i.Zero,
+                new Tile(server.ResolveDependency<Robust.Shared.Map.ITileDefinitionManager>()["Plating"].TileId));
+            em.GetComponent<TransformComponent>(grid.Owner).LocalPosition = new Vector2(3000f, 0f);
+
+            var pyramid = em.SpawnEntity("WGPyramid", new MapCoordinates(new Vector2(3015f, 0f), map.MapId));
+
+            // A mob in space beside it, in a faction hostile to everything AllHostile is in.
+            var mob = em.SpawnEntity("MobHuman", new MapCoordinates(new Vector2(3015f, -14f), map.MapId));
+            server.System<Content.Shared.NPC.Systems.NpcFactionSystem>().AddFaction(mob, "NanoTrasen");
+            var board = new Content.Server.NPC.NPCBlackboard();
+            board.SetValue(Content.Server.NPC.NPCBlackboard.Owner, mob);
+            board.SetValue("VisionRadius", 30f);
+            // The gun pick shares the alive check but also wants a gun in hand, so the melee pick stands for both.
+            Assert.That(utility.GetEntities(board, "NearbyMeleeTargets", false).Entities.ContainsKey(pyramid), Is.True,
+                "a hostile mob doesn't pick the Pyramid.");
+
+            // Someone aboard the grid stands in for an AI ship's helm.
+            var helm = em.SpawnEntity("MobHuman", new EntityCoordinates(grid.Owner, new Vector2(0.5f, 0.5f)));
+            var shipBoard = new Content.Server.NPC.NPCBlackboard();
+            shipBoard.SetValue(Content.Server.NPC.NPCBlackboard.Owner, helm);
+            Assert.That(utility.GetEntities(shipBoard, "NearbyShuttleTargets", false).Entities.ContainsKey(pyramid), Is.True,
+                "an AI ship doesn't pick the Pyramid.");
+
+            em.DeleteEntity(pyramid);
+            em.DeleteEntity(mob);
+            em.DeleteEntity(grid.Owner);
+        });
+
+        await pair.CleanReturnAsync();
+    }
 }

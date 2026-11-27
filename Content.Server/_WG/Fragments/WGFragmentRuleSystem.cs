@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using Robust.Shared.Utility;
+using Content.Server._Mono.Cleanup;
 using Content.Server._Mono.Store;
 using Content.Server._WG.AdminVessels;
 using Content.Server._NF.Bank;
@@ -255,6 +256,8 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
         comp.Grid = grid.Value;
         comp.Site = new MapCoordinates(site, mapId);
         _metaData.SetEntityName(grid.Value, Loc.GetString(comp.GridName));
+        // It waits out in the open with no IFF and no APCs, which grid cleanup would take; the rule removes it at the end.
+        EnsureComp<CleanupImmuneComponent>(grid.Value);
 
         SealHull(grid.Value);
 

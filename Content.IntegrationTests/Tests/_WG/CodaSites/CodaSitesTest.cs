@@ -29,6 +29,47 @@ public sealed class CodaSitesTest
     private static readonly string[] Sites =
         { "lighthouse", "last_anchor", "hospice", "orchard", "graveyard", "waiting_room", "broadcast_tower" };
 
+    /// <summary>A placed site, a single grid or a whole map of them, is never taken by grid cleanup while nobody is near.</summary>
+    [Test]
+    public async Task PlacedSitesAreSpared()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            entMan.System<Content.Server._WG.Lattice.WGLatticeSystem>().Setup(map.MapUid);
+            var sites = entMan.System<WGCodaSiteSystem>();
+            var protos = server.ResolveDependency<IPrototypeManager>();
+            foreach (var id in new[] { "WGCodaSiteLighthouse", "WGCodaSiteEcho" })
+            {
+                var before = Grids(entMan, map.MapUid);
+                Assert.That(sites.TryPlace(map.MapUid, protos.Index<Content.Shared._WG.CodaSites.WGCodaSitePrototype>(id), out _), Is.True, $"{id} wasn't placed.");
+                var added = Grids(entMan, map.MapUid).Except(before).ToList();
+                Assert.That(added, Is.Not.Empty, $"{id} added no grid.");
+                Assert.That(added.All(entMan.HasComponent<Content.Server._Mono.Cleanup.CleanupImmuneComponent>), Is.True,
+                    $"a grid of {id} can be taken by grid cleanup.");
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    private static HashSet<EntityUid> Grids(IEntityManager entMan, EntityUid map)
+    {
+        var grids = new HashSet<EntityUid>();
+        var query = entMan.EntityQueryEnumerator<Robust.Shared.Map.Components.MapGridComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out _, out var xform))
+        {
+            if (xform.MapUid == map)
+                grids.Add(uid);
+        }
+
+        return grids;
+    }
+
     [Test]
     public async Task SitesLoadAndRun()
     {

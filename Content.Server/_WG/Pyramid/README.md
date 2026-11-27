@@ -40,6 +40,7 @@ Paragon-Moon's chrome pyramid. `PyramidTest` covers hunting, barrages and the co
 
 ### Server
 
+- [`Content.Server/_WG/Pyramid/NPCUtilitySystem.Pyramid.cs`](NPCUtilitySystem.Pyramid.cs)
 - [`Content.Server/_WG/Pyramid/WGPyramidCommand.cs`](WGPyramidCommand.cs)
 - [`Content.Server/_WG/Pyramid/WGPyramidComponent.cs`](WGPyramidComponent.cs)
 - [`Content.Server/_WG/Pyramid/WGPyramidSystem.cs`](WGPyramidSystem.cs)
@@ -99,6 +100,6 @@ Paragon-Moon's chrome pyramid. `PyramidTest` covers hunting, barrages and the co
 
 ## Non-modular edits
 
-None.
+- [`Content.Server/NPC/Systems/NPCUtilitySystem.cs`](../../NPC/Systems/NPCUtilitySystem.cs): the Pyramid is a live target too
 
 <!-- WOLFGATE-GENERATED END -->

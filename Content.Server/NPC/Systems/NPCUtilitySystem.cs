@@ -398,7 +398,8 @@ public sealed partial class NPCUtilitySystem : EntitySystem
             }
             case TargetIsAliveCon:
             {
-                return _mobState.IsAlive(targetUid) || WgIsOccupiedVehicle(targetUid) ? 1f : 0f; // WOLFGATE(Vehicles): an occupied vehicle is a live target.
+                // WOLFGATE(Pyramid): the Pyramid is a live target too
+                return _mobState.IsAlive(targetUid) || WgIsOccupiedVehicle(targetUid) || WgIsLivePyramid(targetUid) ? 1f : 0f; // WOLFGATE(Vehicles): an occupied vehicle is a live target.
             }
             case TargetIsCritCon:
             {

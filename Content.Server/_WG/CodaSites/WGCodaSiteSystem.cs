@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Content.Server._Mono.Cleanup;
 using Content.Server._WG.Lattice;
 using Content.Server.Administration.Systems;
 using Content.Server.Chat.Systems;
@@ -191,6 +192,8 @@ public sealed partial class WGCodaSiteSystem : EntitySystem
             }
 
             EnsureComp<WGCodaSiteGridComponent>(grid).Site = site.ID;
+            // Sites stand far from anyone for most of the round, with no IFF and no APCs: grid cleanup would take them.
+            EnsureComp<CleanupImmuneComponent>(grid);
             // Silent: the site's own music is nothing, so ambient music doesn't fall back to the biome's.
             var music = EnsureComp<Content.Shared._Crescent.Vessel.VesselMusicComponent>(grid);
             music.AmbientMusicPrototype = SilenceMusic;
@@ -224,6 +227,7 @@ public sealed partial class WGCodaSiteSystem : EntitySystem
         {
             var offset = _transform.GetWorldPosition(loaded) - origin;
             _transform.SetCoordinates(loaded, new EntityCoordinates(map, position + offset));
+            EnsureComp<CleanupImmuneComponent>(loaded);
         }
 
         Del(scratch.Value.Owner);
