@@ -55,7 +55,7 @@ the same level through `declaredWar` in `wgStanding` and `requiresWar` on its en
 - [`Resources/Locale/en-US/_Mono/gamerules/gamemodes.ftl`](../../../Resources/Locale/en-US/_Mono/gamerules/gamemodes.ftl)
   - the default round opens under the Caelestinus Accord
   - both sides hold the Lattice together
-- [`Resources/Locale/en-US/_Mono/poi/stations.ftl`](../../../Resources/Locale/en-US/_Mono/poi/stations.ftl): the Accord covers the Jupiter while the war level is COLD
+- [`Resources/Locale/en-US/_Mono/poi/stations.ftl`](../../../Resources/Locale/en-US/_Mono/poi/stations.ftl): the Jupiter only spawns in Hyperwar, where the Accord has broken
 - [`Resources/Locale/en-US/_Mono/war-declarator/war-declarator.ftl`](../../../Resources/Locale/en-US/_Mono/war-declarator/war-declarator.ftl): one declaration is an ultimatum the other side has to answer
 - [`Resources/Locale/en-US/_NF/job/job-description.ftl`](../../../Resources/Locale/en-US/_NF/job/job-description.ftl)
   - the peace with the Vanguard, not executions
