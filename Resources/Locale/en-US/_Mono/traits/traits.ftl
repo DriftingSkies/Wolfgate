@@ -94,4 +94,7 @@ trait-helmsmanship-name = Helmsmanship
 trait-helmsmanship-desc = Engines and stabilizers rumble in harmony under your yoke. Ships under your control turn and accelerate 10% faster.
 
 trait-heretic-name = Heretic
-trait-heretic-desc = You've wronged the Phaethon Dynasty, or at the very least the Sultanate thinks you have. You are liable (50% chance) to be marked for death by the Sultanate and hunted down by the PDV as a result.
+# WOLFGATE(LoreBook) START: heresy now means the Choir's song
+# trait-heretic-desc = You've wronged the Phaethon Dynasty, or at the very least the Sultanate thinks you have. You are liable (50% chance) to be marked for death by the Sultanate and hunted down by the PDV as a result.
+trait-heretic-desc = You've wronged the Phaethon Dynasty, or at least the Sultanate thinks you have, perhaps by listening too long to a song you shouldn't have heard. You are liable (50% chance) to be marked for death by the Sultanate and hunted down by the PDV as a result.
+# WOLFGATE END

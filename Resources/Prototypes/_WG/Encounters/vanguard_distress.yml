@@ -1,0 +1,438 @@
+# Peacetime distress calls for the Dynasty, under the Caelestinus Accord. Each copies the TSF call of the same size,
+# with the Dynasty ship, crew and rewards of the wartime call, which keeps its Federation attackers for HOT rounds.
+
+# A Dynasty gunboat has been jumped by Reaver raiders and calls for backup. The peacetime twin of the wartime call,
+# where the attackers are Federation; it mirrors the TSF backup call.
+- type: wgEncounter
+  id: WGEncounterPdvBackupReavers
+  leash: 2500
+  name: wg-encounter-name-pdv-backup
+  announcement: wg-encounter-announce-pdv-backup-reavers
+  announceOnRadio: true
+  announcer: patrol
+  start: Scheduled
+  category: Distress
+  cost: 3
+  weight: 2
+  minPlayers: 3
+  cooldown: 2700
+  duration: 2700
+  startRadius: 800
+  minDistance: 2500
+  maxDistance: 4000
+  rewards:
+  - side: pdv
+    spesos: 48000
+    credits: 30
+    creditEntity: Doubloon1
+    creditCompanies: [ PDV, PDVCivilian ]
+    thanks: wg-encounter-reward-thanks-pdv
+  ships:
+  - key: patrol
+    navigation: WGCrewNavigationWarship
+    vessels: [ Kynda, Gadfly ]
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    side: pdv
+    faction: WGPdvNavy
+    company: PDV
+    profile: WGCrewProfilePdv
+    iffColor: "#ffae3d"
+    objectives:
+    - kind: Attack
+      target: raider
+  - key: raider
+    navigation: WGCrewNavigationRaider
+    vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+    offset: 0, 500
+    side: pirates
+    faction: PirateNF
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    deckhands: 3
+    objectives:
+    - kind: Attack
+      target: patrol
+  - key: wing
+    navigation: WGCrewNavigationRaider
+    vessels: [ Carrion, Horsefly, Tick, Hazel ]
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: 180, 520
+    side: pirates
+    faction: PirateNF
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    objectives:
+    - kind: Attack
+      target: patrol
+
+# A Dynasty frigate is swarmed by a Reaver pack. The peacetime twin of the wartime call; it mirrors the TSF frigate call.
+- type: wgEncounter
+  id: WGEncounterPdvFrigateReavers
+  leash: 3000
+  name: wg-encounter-name-pdv-frigate
+  announcement: wg-encounter-announce-pdv-frigate-reavers
+  announceOnRadio: true
+  announcer: frigate
+  start: Scheduled
+  category: Distress
+  icon: Swords
+  cost: 4
+  weight: 0.8
+  minPlayers: 6
+  cooldown: 3600
+  duration: 3000
+  startRadius: 1000
+  minDistance: 3000
+  maxDistance: 4500
+  stationClearance: 2500
+  rewards:
+  - side: pdv
+    spesos: 90000
+    credits: 52
+    creditEntity: Doubloon1
+    creditCompanies: [ PDV, PDVCivilian ]
+    thanks: wg-encounter-reward-thanks-pdv
+  ships:
+  - key: frigate
+    navigation: WGCrewNavigationWarship
+    vessels: [ Kortik, Europa, Saintie ]
+    side: pdv
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: WGPdvNavy
+    company: PDV
+    profile: WGCrewProfilePdv
+    iffColor: "#ffae3d"
+    deckhands: 3
+    guards: 2
+    objectives:
+    - kind: Attack
+      target: raider
+  - key: raider
+    navigation: WGCrewNavigationRaider
+    vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+    deckhands: 2
+    offset: 0, 750
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    objectives:
+    - kind: Attack
+      target: frigate
+  - key: second
+    navigation: WGCrewNavigationRaider
+    vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+    deckhands: 2
+    offset: 0, -750
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    objectives:
+    - kind: Attack
+      target: frigate
+  - key: wing
+    navigation: WGCrewNavigationRaider
+    vessels: [ Carrion, Horsefly, Tick, Hazel ]
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: 700, 250
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    objectives:
+    - kind: Attack
+      target: frigate
+  - key: wingtwo
+    navigation: WGCrewNavigationRaider
+    vessels: [ Carrion, Horsefly, Tick, Hazel ]
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: -700, 250
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    objectives:
+    - kind: Attack
+      target: frigate
+  - key: wingthree
+    navigation: WGCrewNavigationRaider
+    vessels: [ Carrion, Horsefly, Tick, Hazel ]
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: 650, -350
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    objectives:
+    - kind: Attack
+      target: frigate
+  - key: wingfour
+    navigation: WGCrewNavigationRaider
+    vessels: [ Carrion, Horsefly, Tick, Hazel ]
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: -650, -350
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    distress: false
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    objectives:
+    - kind: Attack
+      target: frigate
+
+# A Dynasty capital ship is fallen on by a Reaver war band. The peacetime twin of the wartime call; it mirrors the TSF
+# capital call.
+- type: wgEncounter
+  id: WGEncounterPdvCapitalReavers
+  leash: 3500
+  name: wg-encounter-name-pdv-capital
+  announcement: wg-encounter-announce-pdv-capital-reavers
+  announcementSender: wg-encounter-sender-traffic
+  announceOnRadio: true
+  announcer: capital
+  start: Scheduled
+  category: Distress
+  icon: Swords
+  cost: 6
+  weight: 0.4
+  minPlayers: 9
+  cooldown: 5400
+  duration: 3600
+  startRadius: 1000
+  minDistance: 3000
+  maxDistance: 5000
+  stationClearance: 3000
+  rewards:
+  - side: pdv
+    spesos: 150000
+    credits: 80
+    creditEntity: Doubloon1
+    creditCompanies: [ PDV, PDVCivilian ]
+    thanks: wg-encounter-reward-thanks-pdv
+  ships:
+  - key: capital
+    navigation: WGCrewNavigationWarship
+    vessel: Saturn
+    deckhands: 4
+    guards: 3
+    side: pdv
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: WGPdvNavy
+    company: PDV
+    profile: WGCrewProfilePdv
+    iffColor: "#ffae3d"
+    objectives:
+    - kind: Attack
+      target: raider
+  - key: raider
+    navigation: WGCrewNavigationRaider
+    vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+    deckhands: 2
+    offset: 0, 900
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    distress: false
+    objectives:
+    - kind: Attack
+      target: capital
+  - key: second
+    navigation: WGCrewNavigationRaider
+    vessels: [ Kalisto, Metis, Mudskipper, Scallywag ]
+    deckhands: 2
+    offset: 0, -900
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    distress: false
+    objectives:
+    - kind: Attack
+      target: capital
+  - key: third
+    navigation: WGCrewNavigationRaider
+    vessels: [ Fenrir, Garm, Ganymede ]
+    deckhands: 2
+    offset: 900, 0
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    distress: false
+    objectives:
+    - kind: Attack
+      target: capital
+  - key: wing
+    navigation: WGCrewNavigationRaider
+    vessels: [ Carrion, Horsefly, Tick, Hazel ]
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: 800, 400
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    distress: false
+    objectives:
+    - kind: Attack
+      target: capital
+  - key: wingtwo
+    navigation: WGCrewNavigationRaider
+    vessels: [ Carrion, Horsefly, Tick, Hazel ]
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: -800, 400
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    distress: false
+    objectives:
+    - kind: Attack
+      target: capital
+  - key: wingthree
+    navigation: WGCrewNavigationRaider
+    vessels: [ Carrion, Horsefly, Tick, Hazel ]
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: 800, -400
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    distress: false
+    objectives:
+    - kind: Attack
+      target: capital
+  - key: wingfour
+    navigation: WGCrewNavigationRaider
+    vessels: [ Carrion, Horsefly, Tick, Hazel ]
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: -800, -400
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    distress: false
+    objectives:
+    - kind: Attack
+      target: capital
+  - key: wingfive
+    navigation: WGCrewNavigationRaider
+    vessels: [ Fenrir, Ganymede, Vulture ]
+    deckhands: 0
+    captain: false
+    roles: [ WGCrewPilot, WGCrewGunner ]
+    offset: -900, 0
+    side: pirates
+    disengage: Deter
+    disengageRange: 2000
+    warnRange: 1500
+    attackRange: 1500
+    zoneTargets: AtWar
+    faction: PirateNF
+    company: WGAshfallReavers
+    profile: WGCrewProfilePirate
+    distress: false
+    objectives:
+    - kind: Attack
+      target: capital

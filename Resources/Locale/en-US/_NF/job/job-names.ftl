@@ -32,7 +32,10 @@ JobERTMailCarrier = ERT Mail Carrier
 JobMercenary = Mercenary
 JobPilot = Pilot
 JobPDVInfiltrator = PDV Spasaka
-JobPirate = PDV Rakhshan
+# WOLFGATE(LoreBook) START: Rahkshan spelling
+# JobPirate = PDV Rakhshan
+JobPirate = PDV Rahkshan
+# WOLFGATE END
 JobPirateCaptain = PDV Grand Vizier
 JobPirateFirstMate = PDV Asvaran
 JobPirateBoatswain = PDV Denasvar
