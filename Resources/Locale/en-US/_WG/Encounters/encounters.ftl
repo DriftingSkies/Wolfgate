@@ -286,7 +286,7 @@ wg-encounter-blackmarket-zone-attack = {$intruder}, that was your last chance. O
 # Phaethon Dynasty navy. Its zone lines name nobody, because the hostile skirmishes use them on every ship.
 wg-encounter-name-pdv-patrol = Dynasty patrol {$designation}
 wg-encounter-name-pdv-transport = Dynasty supply convoy {$designation}
-wg-encounter-announce-pdv-transport = All vessels, this is {$name}, a Phaethon Dynasty supply convoy under Vanguard escort, inbound to {$destination}. All vessels, stay outside one kilometre. You will not be warned twice.
+wg-encounter-announce-pdv-transport = All vessels, this is {$name}, a Phaethon Dynasty supply convoy under Vanguard escort, inbound to {$destination}. Federation vessels, stay outside one kilometre. You will not be warned twice.
 wg-encounter-pdv-zone-warn-1 = {$intruder}, you are {$distance} metres off a Vanguard vessel. Open the range now, in the Sultan's name.
 wg-encounter-pdv-zone-warn-2 = {$intruder}, you are inside the Vanguard's warning zone. Turn away at once or be fired upon.
 wg-encounter-pdv-zone-warn-3 = Vessel {$intruder}, this is the Vanguard. Alter course and stay clear of us. This is your last courtesy.
@@ -294,9 +294,6 @@ wg-encounter-pdv-zone-attack = {$intruder}, you were warned. The Sultan's guns a
 wg-encounter-name-pdv-backup = Dynasty patrol {$designation} under attack
 wg-encounter-announce-pdv-backup = Any vessel, any vessel, this is {$name}. Federation fighters have jumped us and we are outgunned. Requesting immediate backup. The Vanguard repays its debts, and with interest.
 wg-encounter-reward-thanks-pdv = All vessels that answered our call: the Vanguard thanks you, and the Sultan remembers. Payment has been made.
-wg-encounter-announce-pdv-backup-reavers = Any vessel, any vessel, this is {$name}. Reaver raiders have jumped us and we are outgunned. Requesting immediate backup. The Vanguard repays its debts, and with interest.
-wg-encounter-announce-pdv-frigate-reavers = All vessels, all vessels, this is {$name}. A Reaver pack is on us from every side and we are taking hits faster than we can answer them. Any armed vessel, engage the Reavers. The Vanguard repays its debts, and with interest.
-wg-encounter-announce-pdv-capital-reavers = All vessels, all vessels, this is {$name}. A Reaver war band has thrown itself at us and our screens are failing. Any armed vessel, engage the Reavers. The Sultan does not forget a debt.
 wg-encounter-name-skirmish-navies = Rival patrols {$designation}
 wg-encounter-announce-skirmish-navies = Traffic control to all vessels: {$name}. A TSF patrol and a Dynasty patrol have met in open space and are about to trade fire. Neither is taking calls. Keep clear, unless you mean to take a side.
 wg-encounter-name-skirmish-pdv-corsairs = Dynasty patrol engaging corsairs {$designation}
@@ -311,9 +308,9 @@ wg-encounter-announce-pdv-frigate = All vessels, all vessels, this is {$name}. A
 
 # Heavier and stranger patrols
 wg-encounter-name-patrol-heavy = TSF heavy patrol {$designation}
-wg-encounter-announce-patrol-heavy = Traffic control to all vessels: {$name}. A Federation gunboat and escort are holding station off {$destination} for the next while. All traffic is advised to keep its distance.
+wg-encounter-announce-patrol-heavy = Traffic control to all vessels: {$name}. A Federation gunboat and escort are holding station off {$destination} for the next while. Dynasty traffic is advised to keep its distance.
 wg-encounter-name-pdv-patrol-heavy = Dynasty heavy patrol {$designation}
-wg-encounter-announce-pdv-patrol-heavy = Traffic control to all vessels: {$name}. A Vanguard gunboat and escort are holding station off {$destination} for the next while. All traffic is advised to keep its distance.
+wg-encounter-announce-pdv-patrol-heavy = Traffic control to all vessels: {$name}. A Vanguard gunboat and escort are holding station off {$destination} for the next while. Federation traffic is advised to keep its distance.
 wg-encounter-name-ussp-patrol = Union remnant {$designation}
 wg-encounter-announce-ussp-patrol = Traffic control to all vessels: {$name}. Union warships are holding a position in open space and answering nobody's hails. All traffic is advised to give them a wide berth.
 wg-encounter-ussp-zone-warn-1 = {$intruder}, you are {$distance} metres inside Union space. There is no Union space on your charts. There is on ours. Turn around.
@@ -323,7 +320,7 @@ wg-encounter-ussp-zone-attack = {$intruder}, for the Union. Fire.
 
 # Capital fleet battle
 wg-encounter-name-fleet-battle = Capital fleet action {$designation}
-wg-encounter-announce-fleet-battle = GAMMA ALERT. Traffic control to all vessels: {$name}. The Caelestinus Accord has broken. A Federation capital ship and its frigate screen have met a Dynasty battle group in open space and are engaging. All civilian traffic is to stay well clear. Both navies are calling for any armed vessel that will fight for them.
+wg-encounter-announce-fleet-battle = GAMMA ALERT. Traffic control to all vessels: {$name}. A Federation capital ship and its frigate screen have met a Dynasty battle group in open space and are engaging. All civilian traffic is to stay well clear. Both navies are calling for any armed vessel that will fight for them.
 
 # Capitals under attack
 wg-encounter-name-capital = TSF capital ship {$designation} under attack
@@ -333,13 +330,13 @@ wg-encounter-announce-pdv-capital = All vessels, all vessels, this is {$name}. A
 
 # Supercapitals under attack
 wg-encounter-name-supercapital = TSF supercapital {$designation} under attack
-wg-encounter-announce-supercapital = Mayday, mayday, all vessels, this is {$name}. The whole pirate flotilla has fallen on the Chengdu: heavies, raiders and fighters from every quarter, and our screens are going. This is the Federation's last carrier. Every armed vessel in the sector, engage the pirates. The Federation will not forget who came.
+wg-encounter-announce-supercapital = Mayday, mayday, all vessels, this is {$name}. The whole pirate flotilla has fallen on the Chengdu: heavies, raiders and fighters from every quarter, and our screens are going. This is the Federation's flagship. Every armed vessel in the sector, engage the pirates. The Federation will not forget who came.
 wg-encounter-name-pdv-supercapital = Dynasty supercapital {$designation} under attack
-wg-encounter-announce-pdv-supercapital = All vessels, all vessels, this is {$name}. A Federation strike force has fallen on the Jupiter with everything it has and our screens are failing. This is the Vanguard's flagship. Every armed vessel in the sector, engage the Federation. The Sultan does not forget a debt, and she will not forget this.
+wg-encounter-announce-pdv-supercapital = All vessels, all vessels, this is {$name}. A Federation strike force has fallen on the Jupiter with everything it has and our screens are failing. This is the Vanguard's flagship. Every armed vessel in the sector, engage the Federation. The Sultan does not forget a debt, and he will not forget this.
 
 # Supercapital fleet battle
 wg-encounter-name-fleet-battle-large = Grand fleet action {$designation}
-wg-encounter-announce-fleet-battle-large = EPSILON ALERT. Traffic control to all vessels: {$name}. The Caelestinus Accord has broken. The Federation and the Dynasty have committed their supercapitals, with their capital ships and fighter wings. A full fleet action is under way in open space. All civilian traffic is to clear the sector lanes at once. Both navies are calling for every armed vessel that will fight for them.
+wg-encounter-announce-fleet-battle-large = EPSILON ALERT. Traffic control to all vessels: {$name}. The Federation and the Dynasty have committed their supercapitals, with their capital ships and fighter wings. A full fleet action is under way in open space. All civilian traffic is to clear the sector lanes at once. Both navies are calling for every armed vessel that will fight for them.
 wg-encounter-name-trader-exotic = Exotic dealers {$designation}
 wg-encounter-announce-trader-exotic = {$name} is in the sector under Blackhawk escort with ship guns, hardpoints and systems that don't reach any catalogue. Serious buyers may come alongside. Anyone else is advised that the escort is not for show.
 

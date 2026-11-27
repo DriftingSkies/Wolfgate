@@ -1,5 +1,4 @@
-<!-- WOLFGATE(LoreBook) START: the 21st Brigade, the Halcyon and the last patrols; the upstream text is kept in the comment below -->
-<!--
+<Document>
 # The 21st Brigade
 
 The 21st Mechanized Cavalry Brigade was deployed to the Colossus sector in the wake of the 404th division taking heavy losses from constant conflict between pirate fleets and PDV funded terrorist cells. With the loss of their commander and much of their command staff, the remnants of the 404th merged under the 21st, their members spread out between the various Squadrons.
@@ -12,42 +11,4 @@ The 9th Squadron, nicknamed the 'Eagle's Eyes', is the 21st's support Squadron. 
 
 Marines fresh from boot camp (also known as 'boots'), transferring from other units, or waking up from cryo for the first time, will find themselves assigned to a Troop (Company sized unit) under one of these Squadrons (Battalion sized unit).
 
--->
-<Document>
-# The 21st Brigade
-
-The 21st Mechanized Cavalry Brigade came to Colossus with the invasion fleet, sent to relieve the 404th Division, which years of fighting pirate fleets and Dynasty-funded insurgent cells had all but destroyed. With its commander and most of its staff dead, the remnants of the 404th were folded into the 21st and spread across its squadrons.
-
-The 21st was trained and outfitted to fight on the frontier with limited support. That has turned out to be the only kind of war it will ever get.
-
-## The Halcyon
-
-The [italic]Halcyon[/italic] was never meant to be a warship first. She is a battleship by hull and a foundry by design: refineries, fabrication decks and drydocks, built to carry a war to the far side of nowhere and keep it supplied there without help. Give her ore and she will give you a frigate. She was the invasion fleet's forge, and now she is the whole fleet.
-
-She survived the Collapse because she was at the sector's heart, holding station as the fleet's anchorage while the line ships pushed out towards Dynasty worlds. When the Unmooring came, they were out at the edge and she was not.
-
-Through the Long Night her foundries never stopped. A good share of the braces and relays that brought the last of the Lattice to life came off her decks. The Vanguard does not say this aloud, and it does not have to. The results speak for themselves.
-
-Today she is the Federation's flagship, forward operating base, shipyard, capital and home.
-
-## The patrols
-
-A handful of capital ships came through with her, mostly Luda and Fujian hulls, and one carrier: the TSFN [italic]Chengdu[/italic], whose hangar decks can build small craft of their own. The [italic]Chengdu[/italic] is the closest thing the [italic]Halcyon[/italic] has to a sister. The patrols fly the edge of moored space. They are the only Federation warships left that can stand in a line of battle, and every marine aboard the [italic]Halcyon[/italic] knows them by name.
-
-## The squadrons
-
-The 5th Squadron, nicknamed the 'Party Crashers', is the 21st's heavy infantry and mechanised squadron: the hammer that breaks the enemy's back. Its marines favour excessive demolitions and heavy weapons, and they are the first on the front line. When things are quiet, or the ship needs more security, elements of the 5th double as military police.
-
-The 9th Squadron, nicknamed the 'Eagle's Eyes', is the 21st's support squadron. It is mostly logistics and support personnel, with its own troops of light infantry. When the 5th runs into trouble, the 9th provides backup and a rear guard. The TSFMC combat engineers and TSFN medical detachments fall under its command.
-
-## New arrivals
-
-Marines fresh from boot camp (also known as 'boots'), transferring from other units or waking from cryo for the first time are assigned to a troop (a company-sized unit) under one of these squadrons (battalion-sized units). There are always new arrivals. See [textlink="The Reinforcements" link="WGLoreReinforcements"].
-
-## From the record
-
-[italic]Quartermaster's monthly return, the Halcyon. The same line appears in every return since the Long Night.[/italic]
-
-"Personnel: at strength. Source of replacements: per High Command."
-<!-- WOLFGATE END -->
 </Document>

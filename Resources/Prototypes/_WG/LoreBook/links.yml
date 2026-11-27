@@ -88,9 +88,3 @@
   entry: WGLoreChimera
   entities:
   - ChimeraFleshKudzu
-
-- type: wgLoreLink
-  id: WGLoreLinkSultan
-  entry: WGLoreSultan
-  entities:
-  - WGAltarSultan

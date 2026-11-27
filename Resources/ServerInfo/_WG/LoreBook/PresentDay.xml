@@ -1,13 +1,11 @@
 <Document>
   # The Sector Today
 
-  [textlink="A Short History" link="Timeline"] ends with a war that stopped. Nobody has started it again, because nobody would live long enough to win it.
+  The [textlink="Quick Timeline" link="Timeline"] ends with a ceasefire. It did not stay quiet for long.
 
-  ## After the war
+  ## The cold war
 
-  The [color=cyan]Federation[/color] and the [color=orange]Vanguard[/color] fought each other for two years. Then the sun fell, and the sky settled the argument for them.
-
-  Neither side has forgiven the other. Neither side can do without the other. The [italic]Halcyon[/italic]'s foundries build the parts that keep the relays standing. The Vanguard knows the sector, its people and its dangers better than anyone who came from outside. They share the docking ring at [textlink="Caelestinus Central" link="Caelestinus"], the patrol lanes and the casualty lists. The old soldiers on both sides still won't drink together. The young ones try.
+  The [color=cyan]TSF[/color] and the [color=orange]Vanguard[/color] still face each other across the sector, guns loaded and safeties on. War comes only when both the Colonel and the Grand Vizier declare it. Until then they fight by proxy: smuggling runs, contested drop pods, Monolithic Fragments, and long looks across the docking ring at [textlink="Caelestinus Central" link="Caelestinus"].
 
   ## The Collapse
 
@@ -17,24 +15,15 @@
 
   The black hole is not a quiet neighbour. Far from the sector's heart, reality comes loose: [textlink="the Unmooring" link="WGLoreUnmooring"]. Six ancient anchors around Caelestinus Central, [textlink="the Lattice" link="WGLoreLattice"], hold it back. Inside their reach the sector is merely dangerous. Outside it, ships come back with stories nobody believes, rich with [color=#d070ff]exotic matter[/color], or not at all.
 
-  Every anchor that falls lets the Unmooring a little closer. If they all fall, there is no side left to be on.
-
   ## The Bench
+  Neither navy would let the other hold the anchors, so both signed the Caelestinus Accord. It made the station's judges [textlink="the Bench" link="WGLoreJudges"], keepers of the anchors and of the [textlink="Common Writ" link="WGCommonWrit"]. They ticket, they fine, they outlaw, and they take anything you bring back from beyond the anchors, with no questions answered.
 
-  Nobody would trust a world that one navy could switch off, so both signed [textlink="the Caelestinus Accord" link="WGLoreAccord"]. It made the station's judges [textlink="the Bench" link="WGLoreJudges"], keepers of the anchors and of the [textlink="Common Writ" link="WGCommonWrit"]. They ticket, they fine, they outlaw, and they take anything you bring back from beyond the anchors, with no questions answered.
+  ## New powers, old machines
 
-  ## What hunts us
-
-  - The [textlink="Ashfall Reavers" link="WGLoreReavers"] grew out of the people the sector broke. They hold strongholds and raid anyone too weak to shoot back, and every relay they strip for parts is a hole in the line.
-  - The [textlink="Automated Defense System" link="WGLoreAds"] woke. Its derelict hulls hold ground in the dark and ask every passing ship whether it is a threat.
-  - The [textlink="Chimera" link="WGLoreChimera"] ride in on dead ships and sealed cargo. One clawed crewman is enough.
-  - The [textlink="Xenonids" link="WGLoreXenonids"] own Aerumna's surface again, and their eggs have a way of getting aboard.
-
-  ## Who else is here
-
-  - The [textlink="Astraeus Solar Federation" link="WGAsf"] keeps an envoy post on the sector's edge, watching and taking notes. It knows something about the Federation that the Federation's marines do not.
+  - The [textlink="Ashfall Reavers" link="WGLoreReavers"] grew out of the people the sector broke. They now hold strongholds and raid anyone too weak to shoot back.
+  - The [textlink="Automated Defense System" link="WGLoreAds"] woke. Its derelict hulls hold ground in the dark and query every ship that passes.
+  - The [textlink="Astraeus Solar Federation" link="WGAsf"] keeps an envoy post on the sector's edge, watching and taking notes.
   - The judges of [textlink="the Bench" link="WGLoreJudges"] fly patrol around the station, and further out than anyone else is allowed to.
-  - The Federation's [textlink="reinforcements" link="WGLoreReinforcements"] keep arriving. Nobody outside the Federation knows from where.
 
   ## Things that should not be
 

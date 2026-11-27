@@ -53,27 +53,32 @@ the same level through `declaredWar` in `wgStanding` and `requiresWar` on its en
 
 - [`Content.Server/_Mono/WarDeclarator/ManualPortstrikeRuleSystem.cs`](../../_Mono/WarDeclarator/ManualPortstrikeRuleSystem.cs): each use flips the faction's stance, so a declaration or a war can be called off
 - [`Resources/Locale/en-US/_Mono/gamerules/gamemodes.ftl`](../../../Resources/Locale/en-US/_Mono/gamerules/gamemodes.ftl)
-  - the default round opens under the Caelestinus Accord
-  - both sides hold the Lattice together
-- [`Resources/Locale/en-US/_Mono/poi/stations.ftl`](../../../Resources/Locale/en-US/_Mono/poi/stations.ftl): the Accord covers the Jupiter while the war level is COLD
+  - the default round opens under a ceasefire
+  - names both sides of the cold war
+- [`Resources/Locale/en-US/_Mono/poi/stations.ftl`](../../../Resources/Locale/en-US/_Mono/poi/stations.ftl): the ceasefire covers the Jupiter while the war level is COLD
 - [`Resources/Locale/en-US/_Mono/war-declarator/war-declarator.ftl`](../../../Resources/Locale/en-US/_Mono/war-declarator/war-declarator.ftl): one declaration is an ultimatum the other side has to answer
 - [`Resources/Locale/en-US/_NF/job/job-description.ftl`](../../../Resources/Locale/en-US/_NF/job/job-description.ftl)
-  - the peace with the Vanguard, not executions
-  - hold the line, not hunt the PDV
-  - hunt Reavers and pirates, not the PDV
-  - the Vanguard holds the line under the Sultan's peace; was "a theocratic insurgency"
-  - the Colonel keeps the peace with the Vanguard
+  - the ceasefire with the PDV, not executions
+  - watch the PDV under the ceasefire, not hunt it
+  - the Dynasty opposes the TSF under a ceasefire, was "a theocratic insurgency"
+  - the Colonel decides between the ceasefire and war
 - [`Resources/Locale/en-US/_NF/tips.ftl`](../../../Resources/Locale/en-US/_NF/tips.ftl)
   - was "glassing whatever hostile approaches"
-  - Caelestinus Accord tips
-- [`Resources/Locale/en-US/alert-levels/alert-levels.ftl`](../../../Resources/Locale/en-US/alert-levels/alert-levels.ftl): the cold level is the Caelestinus Accord, not only a ceasefire on base strikes
+  - cold war tips
+- [`Resources/Locale/en-US/alert-levels/alert-levels.ftl`](../../../Resources/Locale/en-US/alert-levels/alert-levels.ftl): the cold level is a ceasefire between the factions, not only on base strikes
 - [`Resources/Prototypes/_Mono/Entities/Objects/Devices/Misc/faction_war_declarator.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Devices/Misc/faction_war_declarator.yml): the declarator also withdraws a declaration and calls a war off
 - [`Resources/Prototypes/_Mono/Guidebook/factions.yml`](../../../Resources/Prototypes/_Mono/Guidebook/factions.yml): the Vanguard's standing orders page
 - [`Resources/Prototypes/_Mono/Guidebook/rules.yml`](../../../Resources/Prototypes/_Mono/Guidebook/rules.yml)
 - [`Resources/Prototypes/_NF/Datasets/tips.yml`](../../../Resources/Prototypes/_NF/Datasets/tips.yml): three cold war tips
+- [`Resources/ServerInfo/_Mono/Guidebook/Factions/PDV.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/PDV.xml): the Vanguard under the ceasefire
+- [`Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC.xml)
+  - a standoff with the Dynasty; was "constant conflicts with insurgent cells, pirates, and the local Phaethon Dynasty"
+  - was "Bring the displaced terrorists of the Phaethon Dynasty, as well as anyone who dares support them, to justice."
+- [`Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC_Culture.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC_Culture.xml): was "a local war against the PDV"
 - [`Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC_SOP.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/TSFMC_SOP.xml)
-  - Vanguard ships answer hails under the Accord; was "you may choose to hail or immediately open fire" at all times
-  - conduct toward the Vanguard under the Caelestinus Accord, and if it breaks
+  - hail and warn off under the ceasefire; was "you may choose to hail or immediately open fire" at all times
+  - conduct toward the Dynasty under the ceasefire and in a declared war
+- [`Resources/ServerInfo/_Mono/Guidebook/Factions/USSP_Remnants.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Factions/USSP_Remnants.xml): was "too burdened by their own conflict"
 - [`Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/Four_PortStriking.xml`](../../../Resources/ServerInfo/_Mono/Guidebook/Rules/Conflict/Four_PortStriking.xml)
   - the announcement is the war level going HOT
   - mobile bases are still covered by the ceasefire

@@ -20,10 +20,7 @@ nf-adventure-title = Adventure
 nf-adventure-description = Join a ship crew or buy your own and explore, research, salvage, or haul your way to riches!
 
 nf-pirate-title = Arms Race
-# WOLFGATE(LoreBook) START: war rounds are the Accord breaking
-# nf-pirate-description = The PDV threatens TSF expansion into the sector. A tense cold war between the TSF and USSP also takes place.
-nf-pirate-description = The Caelestinus Accord has broken, and the PDV threatens the TSF in the sector. A tense cold war between the TSF and USSP also takes place.
-# WOLFGATE END
+nf-pirate-description = The PDV threatens TSF expansion into the sector. A tense cold war between the TSF and USSP also takes place.
 
 # WOLFGATE(Currency): the currency is thalers
 currency = Thalers

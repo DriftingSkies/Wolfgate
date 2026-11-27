@@ -122,7 +122,7 @@ nf-tips-dataset-117 = If you get stranded in space, make sure to notify others u
 nf-tips-dataset-118 = Salvage isn't just about whacking rocks. You can try to find large derelict stations, or try to bury deep into an unusual asteroid - but beware of the dangers that await you inside.
 nf-tips-dataset-119 = Trust is something that takes ages to build, and seconds to lose. Don't give players and admins a reason to hate you!
 nf-tips-dataset-120 = There are multiple ways to earn money. Why not get a job at Caelestinus Central, join TSFMC, go salvaging, do science, or do something totally illegal? Other players can teach you each one of them!
-# WOLFGATE(ColdWar): Caelestinus Accord tips
-nf-tips-dataset-121 = Your PDA shows the war level. While it's COLD, the Caelestinus Accord holds and TSF and PDV can't just shoot each other.
+# WOLFGATE(ColdWar): cold war tips
+nf-tips-dataset-121 = Your PDA shows the war level. While it's COLD, TSF and PDV are under a ceasefire and can't just shoot each other.
 nf-tips-dataset-122 = As the Colonel or Grand Vizier, your war declarator only starts a war if the other side uses theirs too. Use it again to take it back.
-nf-tips-dataset-123 = Faction patrols will warn you before shooting while the Accord holds. Back off and they'll leave you alone.
+nf-tips-dataset-123 = Faction patrols will warn you before shooting during the ceasefire. Back off and they'll leave you alone.

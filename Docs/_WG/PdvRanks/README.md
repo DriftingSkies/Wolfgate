@@ -5,7 +5,7 @@ the way the TSF ladder works. Each PDV job gets the ranks of its tier:
 
 | Job | Ranks (hours on that job) |
 |---|---|
-| Rahkshan | Nefer, Onbaşı 10, Çavuş 30, Başçavuş 75 |
+| Rakhshan | Nefer, Onbaşı 10, Çavuş 30, Başçavuş 75 |
 | Denasvar | Çavuş, Başçavuş 50, Mülazım-ı Sani 50, Mülazım-ı Evvel 100 |
 | Asvaran | Mülazım-ı Evvel, Yüzbaşı, Kolağası 100 |
 | Grand Vizier | Grand Vizier, Binbaşı, Kaymakam, Miralay |

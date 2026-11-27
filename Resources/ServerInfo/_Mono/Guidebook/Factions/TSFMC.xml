@@ -1,8 +1,7 @@
-<!-- WOLFGATE(LoreBook) START: the marines as the last fleet of a vanished Federation; the upstream text is kept in the comment below -->
-<!--
+<Document>
 # TSFMC
 
-  The [color=cyan]Trans-Solarian Federation Marine Corps[/color], the space-ground fighting force for the TSF, is one of the primary actors in the Colossus Sector. This brigade-level detachment has been deployed to Colossus in the interest of keeping the peace, although their constant conflicts with insurgent cells, pirates, and the local [color=tan]Phaethon Dynasty[/color] speak otherwise. Their natural militant approach and tendency to overhanded brute force methods have painted them as invaders to the locals who side with the [color=tan]Dynasty[/color], the 'rightful rulers of the sector.'
+  <!-- WOLFGATE(ColdWar): a standoff with the Dynasty; was "constant conflicts with insurgent cells, pirates, and the local Phaethon Dynasty" -->The [color=cyan]Trans-Solarian Federation Marine Corps[/color], the space-ground fighting force for the TSF, is one of the primary actors in the Colossus Sector. This brigade-level detachment has been deployed to Colossus in the interest of keeping the peace, although their constant conflicts with insurgent cells and pirates, and their armed standoff with the local [color=tan]Phaethon Dynasty[/color], speak otherwise. Their natural militant approach and tendency to overhanded brute force methods have painted them as invaders to the locals who side with the [color=tan]Dynasty[/color], the 'rightful rulers of the sector.'
 
   The [color=cyan]TSFMC[/color] detachment is backed by powerful futuristic technology, their gear favoring durable equipment and heavier weapons such as pulse lasers.
   However, they are at an extreme disadvantage due to being separated from reinforcements by interference from the monolithic region and the many AI drones corrupted by the [color=pink]local anomalous emissions[/color].
@@ -11,9 +10,9 @@
 
   The detachment's overall objectives, as briefed by High Command before deployment to the Colossus sector, are to:
 
-  > [bold][color=red]Confiscate and study Corporate-war era technology wielded by the locals[/bold][/color]
+  > [bold][color=red]Assert your new-found control over the Colossus sector and enforce the law of the Colonel and the Federation.[/bold][/color]
 
-  > [bold][color=red]Eliminate opposition and establish control over the sector for the TSF[/bold][/color]
+  <!-- WOLFGATE(ColdWar): was "Bring the displaced terrorists of the Phaethon Dynasty, as well as anyone who dares support them, to justice." -->> [bold][color=red]Keep the Phaethon Dynasty in check, and bring anyone who smuggles for them to justice.[/bold][/color]
 
   Detailed objectives for the everyday [color=yellow]Marine[/color] will be outlined by the commanding officer in charge as situations unfold, but with the detachment largely cut off from High Command and the outer sectors of [color=cyan]TSF[/color] space, the overall task is clear: survival. [color=yellow]Marines[/color] might very well be called upon to fend off anomalous threats, collect resources from debris and detritus, and study any relevant technology to strengthen their local military. Only through discipline and following the Chain of Command can a [color=yellow]Marine[/color] expect to thrive in this unforgiving sector.
 
@@ -76,83 +75,4 @@
   - Like most of their gear, some [color=cyan]TSFMC[/color] armors are vulnerable to high-strength EMP attacks, discharging their shield capacitors.
   - While durable, their armor is quite heavy, reducing wearer maneuverability in combat and becoming a nuisance outside of it.
 
--->
-<Document>
-# TSFMC
-
-  The [color=cyan]Trans-Solarian Federation Marine Corps[/color] came to Colossus as an invasion force. Three years ago, a Federation fleet led by the battleship [italic]Halcyon[/italic] pushed into the sector to finish the insurgency, drive out the USSP and bring the [color=tan]Phaethon Dynasty[/color] to heel. Its marines fought the Vanguard for two years, and to the locals who sided with the Dynasty, the 'rightful rulers of the sector', they were invaders. To many of them they still are.
-
-  Then Kyphrus fell. The Unmooring caught the fleet strung out along the sector's edge, and in forty days it was gone. What is left is the [italic]Halcyon[/italic], a handful of capital patrols and the marines of the [textlink="21st Brigade" link="TSFMC_Brigade"]: the last Federation force in Colossus, and perhaps, though no marine would say so aloud, the last anywhere.
-
-  The detachment is backed by powerful technology. Its gear favours durable equipment and heavy weapons such as pulse lasers. But it is far from home, short of ships and surrounded by drones corrupted by the sector's [color=pink]anomalous emissions[/color]. Its [color=yellow]Marines[/color] are on the defensive, forced to use local resources and strategies their training never covered.
-
-  The detachment's standing orders arrive with every draft of [textlink="reinforcements" link="WGLoreReinforcements"], sealed and signed by Federation High Command. They have not changed since the Long Night:
-
-  > [bold][color=red]Hold the Halcyon. While she flies, the Federation is in Colossus.[/color][/bold]
-
-  > [bold][color=red]Keep the Lattice standing. There is no Federation victory in a sector that has come apart.[/color][/bold]
-
-  > [bold][color=red]Uphold the law of the Colonel and the Federation, protect loyal civilians. Bring pirates, smugglers and Reavers to justice.[/color][/bold]
-
-  Day-to-day objectives come from the commanding officer as situations unfold. With the detachment cut off, the overall task is plain: survival. [color=yellow]Marines[/color] may be called on to fend off anomalous threats, defend the anchors, collect resources from debris and wreckage, and study any technology that could strengthen the detachment. Only through discipline and the Chain of Command can a [color=yellow]Marine[/color] expect to thrive in this sector.
-
-# The Chain of Command
-
-  The [color=gold][bold]Chain of Command[/bold][/color] is a tool to keep order and discipline in the [color=cyan]TSFMC[/color], but it is not a weapon to brutalize your fellow [color=yellow]Marines[/color]. Follow it, obey orders, and treat your fellow [color=yellow]Marines[/color] with respect, no matter if they are above you, the same rank as you, or below you. The CoC is made up of, in order of authority, [color=gold]Colonel[/color]s, [color=cyan]Captain[/color], [color=silver]Fireteam Leaders[/color], [color=yellow]Marines[/color] (of multiple roles), and Cyborgs.
-
-1.  The [color=gold]Colonel[/color] is the [bold]Commanding Officer (CO)[/bold] and ultimate authority in the sector for the [color=cyan]TSF[/color], answering only to [color=cyan]TSFMC High Command[/color]. The overall goals and objectives of the detachment as well as forward-facing diplomacy falls under their purview. Most tasks will be delegated to their [color=cyan]Captain[/color]s, who will delegate it to the [color=silver]FTL[/color]s. While they may personally head operations themselves, commanding a vessel and soaring into the fray, [color=gold]Colonel[/color]s who do so often don't return and become a detriment to the operation as a whole.
-
-  Keep in mind the realities your troops fight against as well — while you may be in charge, you are responsible for your [color=yellow]Marines[/color]' safety and success, and for their failures and deaths.
-  
-2.  The [color=cyan]Captain[/color] is the [bold]Executive Officer (XO)[/bold] of the detachment and right hand of the [color=gold]Colonel[/color]. Their job entails taking the directives laid down by the [color=gold]Colonel[/color] and breaking them down into detailed objectives for the Fireteams under their battalion. They may also be an experienced officer in combat, able to head out into the fray to personally oversee operations as needed.
-
-3.  [color=silver]Fireteam Leaders[/color] live on the front line with the [color=yellow]Marines[/color] under their command and are directly responsible for the training and real-time organization of their fireteam in battle, be it in space or on the ground. They are a [color=yellow]Marines[/color]'s closest connection to detachment command, and as such [color=silver]FTL[/color]s should be in constant communication with their [color=yellow]Marines[/color]. [color=silver]FTL[/color]s answer to the [color=cyan]Captain[/color] and command their own fireteam, assigned either by their superiors or handpicked from among the unassigned [color=yellow]Marines[/color].
-
-4.  [color=yellow]Marines[/color] answer to every high-ranking officer and fall into multiple roles of equal position: [color=yellow]Marines[/color], [color=red]Corpsmen[/color], and [color=orange]Engineers[/color].
-
-  [color=yellow]Marines[/color] are the front line soldiers, existing to follow the orders of their superiors and to live or die for the glory of the Federation. They are assigned into Fireteams, and conduct boarding operations, extract technology, and do typical grunt combat work.
-
-4(a).  [color=red]Corpsmen[/color] are specialized [color=yellow]Marines[/color], acting as medical professionals in times of combat. If a [color=yellow]Marine[/color] is wounded, a Corpsman is the one to keep them alive. Their goal is to preserve the lives of other [color=yellow]Marines[/color], but they aren't afraid to shoot some rounds themselves.
-
-4(b).  [color=orange]Engineers[/color] are also specialized [color=yellow]Marines[/color], prioritizing repairs and modifications to existing ships, handling logistics, and creating fortifications. If a ship has half its hull gone from a railgun shot, [color=orange]Engineers[/color] are the ones to make it seem like the ship came right from the drydock.
-
-5.  [color=gray]Cyborgs[/color] are AI-controlled constructs, the latest advancement of superior Federation technology. They answer to their Federation Laws and any other [color=cyan]TSFMC[/color] personnel.
-
-# Gear
-
-  <Box>
-    <GuideEntityEmbed Entity="WeaponDEWCalico"/>
-    <GuideEntityEmbed Entity="WeaponRifleAnnie"/>
-    <GuideEntityEmbed Entity="WeaponEnergyRevolver"/>
-  </Box>
-
-  The [color=cyan]TSFMC[/color] use a variety of weapons in ground combat, usually wielding state-of-the-art yet fickle energy weapons, advanced rifles, high-caliber SMGs, and plasma melee equipment.
-
-  [color=green]Strengths:
-  - [color=cyan]TSFMC[/color] weapons are capable of dealing significant amounts of damage in a quick period of time.
-  - Energy weapons are often easy to charge or reload, with most of their material investment being initial production.
-  - Their advanced equipment has many different additional functions, ranging from EMP protection to additional ammo storage.
-  - Energy weapons are able to pierce through glass - if you can see something, you can shoot it.
-
-  [color=red]Weaknesses:
-  - Like most of their gear, the [color=cyan]TSFMC[/color]'s energy weapons are vulnerable to high-strength EMP attacks, discharging their batteries.
-  - Their heavier weapons are not good for quick responses - tight corridors will lead to a fast downfall without preperation.
-  - While their weapons are powerful, they can each be countered through specific items - vary your loadout or stay with your squad.
-
-  <Box>
-    <GuideEntityEmbed Entity="ClothingOuterHardsuitM82c"/>
-    <GuideEntityEmbed Entity="ClothingOuterHardsuitM86"/>
-    <GuideEntityEmbed Entity="ClothingOuterHardsuitNfsdExperimental"/>
-  </Box>
-
-  The [color=cyan]TSFMC[/color] use heavy power armor for boarding operations, with more advanced equipment sacrificing base statistics for additional combat features.
-
-  [color=green]Strengths:
-  - [color=cyan]TSFMC[/color] armor is durable and effective. With the right selection of gear, a [color=yellow]Marine[/color] can become nigh invincible.
-  - Higher-level armor feature more perks and additions allowing for better adaptivity in combat, such as energy shields and optical enhancements.
-
-  [color=red]Weaknesses:
-  - Like most of their gear, some [color=cyan]TSFMC[/color] armors are vulnerable to high-strength EMP attacks, discharging their shield capacitors.
-  - While durable, their armor is quite heavy, reducing wearer maneuverability in combat and becoming a nuisance outside of it.
-<!-- WOLFGATE END -->
 </Document>

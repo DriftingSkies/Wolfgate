@@ -291,16 +291,10 @@ uplink-pirate-cv82-tacsuit-name = CV-82 Combat Tacsuit
 uplink-pirate-cv82-tacsuit-desc = A nimble tacsuit equipped with in-built movement prediction allowing it to speed up its user's movement.
 
 uplink-pirate-juggernaut-hardsuit-name = Juggernaut Hardsuit
-# WOLFGATE(LoreBook) START: the Sultan is a woman
-# uplink-pirate-juggernaut-hardsuit-desc = A hardsuit of which the blueprint originates from the Sultan Himself, capable of walking off attacks like nothing. The armour is extremely heavy.
-uplink-pirate-juggernaut-hardsuit-desc = A hardsuit of which the blueprint originates from the Sultan Herself, capable of walking off attacks like nothing. The armour is extremely heavy.
-# WOLFGATE END
+uplink-pirate-juggernaut-hardsuit-desc = A hardsuit of which the blueprint originates from the Sultan Himself, capable of walking off attacks like nothing. The armour is extremely heavy.
 
 uplink-pirate-stealth-hardsuit-name = Stealth Hardsuit
-# WOLFGATE(LoreBook) START: the Sultan is a woman
-# uplink-pirate-stealth-hardsuit-desc = A hardsuit of which the blueprint originates from the Sultan Himself, trading armour plating for plates capable of camouflaging into the surrounding environment automatically.
-uplink-pirate-stealth-hardsuit-desc = A hardsuit of which the blueprint originates from the Sultan Herself, trading armour plating for plates capable of camouflaging into the surrounding environment automatically.
-# WOLFGATE END
+uplink-pirate-stealth-hardsuit-desc = A hardsuit of which the blueprint originates from the Sultan Himself, trading armour plating for plates capable of camouflaging into the surrounding environment automatically.
 
 
 uplink-pirate-viper-group-standard-hardsuit-name = Viper Group JACKAL Hardsuit

@@ -22,7 +22,7 @@ public sealed partial class WGLoreBookUIController : UIController, IOnStateExite
     [Dependency] private IPrototypeManager _proto = default!;
 
     /// <summary>The book's edition. Raising it opens the book once for every player on their next lobby or round, at its front.</summary>
-    public const int Edition = 2;
+    public const int Edition = 1;
 
     private static readonly SoundSpecifier OpenSound = new SoundPathSpecifier("/Audio/_Goobstation/Items/handling/book_pickup.ogg");
 

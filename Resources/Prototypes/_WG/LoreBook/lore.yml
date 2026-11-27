@@ -22,21 +22,6 @@
   text: "/ServerInfo/_WG/LoreBook/Factions/Judges.xml"
 
 - type: guideEntry
-  id: WGLoreSultan
-  name: wg-lore-entry-sultan
-  text: "/ServerInfo/_WG/LoreBook/Factions/Sultan.xml"
-
-- type: guideEntry
-  id: WGLoreReinforcements
-  name: wg-lore-entry-reinforcements
-  text: "/ServerInfo/_WG/LoreBook/Factions/Reinforcements.xml"
-
-- type: guideEntry
-  id: WGLoreAccord
-  name: wg-lore-entry-accord
-  text: "/ServerInfo/_WG/LoreBook/Factions/Accord.xml"
-
-- type: guideEntry
   id: WGLoreCollapse
   name: wg-lore-entry-collapse
   text: "/ServerInfo/_WG/LoreBook/StarSystem/Collapse.xml"

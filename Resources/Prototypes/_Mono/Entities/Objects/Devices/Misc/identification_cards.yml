@@ -99,7 +99,7 @@
 - type: entity
   parent: PirateIDCard
   id: PDVRakhshanIDCard
-  name: PDV rahkshan ID card # WOLFGATE(LoreBook): Rahkshan spelling
+  name: PDV rakhshan id card
   components:
   - type: PresetIdCard
     titleOverride: Vagrant

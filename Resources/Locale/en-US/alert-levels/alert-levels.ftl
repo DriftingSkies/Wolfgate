@@ -4,11 +4,11 @@
 alert-level-announcement = WARNING. Sector DEFCON level is now DEFCON {CAPITALIZE($name)}. {$announcement}
 # Mono
 war-level-announcement-sender = International Diplomatic Monitoring
-# WOLFGATE(ColdWar) START: the cold level is the Caelestinus Accord, not only a ceasefire on base strikes
+# WOLFGATE(ColdWar) START: the cold level is a ceasefire between the factions, not only on base strikes
 # war-level-announcement-pre = ATTENTION! TSF and PDV high command have called a ceasefire on base strikes!
 # war-level-announcement-post = ATTENTION! TSF and PDV high command have declared total war! Civilians are advised to stay away from faction bases until the conflict passes!
-war-level-announcement-pre = ATTENTION! The Caelestinus Accord is in force between the TSF and PDV. The war level is COLD.
-war-level-announcement-post = ATTENTION! The Caelestinus Accord has broken. TSF and PDV high command have declared total war! The war level is HOT. Civilians are advised to stay away from faction bases until the conflict passes!
+war-level-announcement-pre = ATTENTION! A ceasefire is in effect between the TSF and PDV. The war level is COLD.
+war-level-announcement-post = ATTENTION! TSF and PDV high command have declared total war! The war level is HOT. Civilians are advised to stay away from faction bases until the conflict passes!
 # WOLFGATE END
 
 alert-level-unknown = Unknown.

@@ -11,7 +11,6 @@ public enum WgMusicPauseReason : byte
     InternetSound = 1 << 0,
     SoundtrackMute = 1 << 1,
     CombatMusicPreview = 1 << 2,
-    Hymn = 1 << 4,
 }
 
 /// <summary>

@@ -82,10 +82,9 @@ and boarders, a hauler under attack, TSF and Dynasty backup requests, frigate an
 lying in wait, skirmishes (TSF or Dynasty against raiders, corsairs or each other; plain, and hostile ones that also
 fire on players who come close) and black market transports.
 
-The TSF and the Dynasty keep the Caelestinus Accord, a peace (see `ColdWar`): `standing.yml` lists them under `declaredWar`, which
+The TSF and the Dynasty are under a ceasefire (see `ColdWar`): `standing.yml` lists them under `declaredWar`, which
 only counts while the sector's war level is hot. Until then their patrols warn each other's ships off and fire only
-when fired on, and the encounters marked `requiresWar` (the navy against navy fights) are not scheduled. In peace the Dynasty gets
-the TSF's distress calls instead, with Reaver attackers (`vanguard_distress.yml`).
+when fired on, and the encounters marked `requiresWar` (the navy against navy fights) are not scheduled.
 
 Warships come in three tiers. Frigates (TSF Fujian, Altair, Andromeda; PDV Kortik, Europa, Saintie) are the common big
 ships, under attack or on patrol. Capitals (TSF Flyssa, PDV Saturn) are rare scheduled encounters. Supercapitals (the
@@ -365,7 +364,6 @@ stops. Extorters weigh the four nearest crewed ships and go for the richest hold
 - [`Resources/Prototypes/_WG/Encounters/presets.yml`](../../../Resources/Prototypes/_WG/Encounters/presets.yml)
 - [`Resources/Prototypes/_WG/Encounters/retrofits.yml`](../../../Resources/Prototypes/_WG/Encounters/retrofits.yml)
 - [`Resources/Prototypes/_WG/Encounters/standing.yml`](../../../Resources/Prototypes/_WG/Encounters/standing.yml)
-- [`Resources/Prototypes/_WG/Encounters/vanguard_distress.yml`](../../../Resources/Prototypes/_WG/Encounters/vanguard_distress.yml)
 - [`Resources/Prototypes/_WG/Encounters/vessels.yml`](../../../Resources/Prototypes/_WG/Encounters/vessels.yml)
 - [`Resources/Prototypes/_WG/Encounters/warrants.yml`](../../../Resources/Prototypes/_WG/Encounters/warrants.yml)
 
