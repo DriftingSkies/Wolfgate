@@ -29,6 +29,7 @@ using Content.Shared.FixedPoint;
 using Content.Shared.Mind;
 using Content.Shared.Players;
 using Content.Shared.Stacks;
+using Robust.Shared;
 using Robust.Shared.Containers;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.GameObjects;
@@ -1128,6 +1129,74 @@ public sealed class DrydockTest
                     Assert.That(crane.Extension, Is.EqualTo((float) crane.SectionLength), "Booms should retract.");
                 });
             }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>
+    /// On a wreck the hull is laid outward from what is left of it. With grid splitting on, a tile laid clear of the
+    /// hull would break straight off, and the parts meant for it would spawn over space.
+    /// </summary>
+    [Test]
+    public async Task WreckHullGrowsFromWhatIsLeft()
+    {
+        const int WreckSize = 9;
+
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var em = server.EntMan;
+        var map = await pair.CreateTestMap();
+        var maps = server.System<SharedMapSystem>();
+        var drydock = server.System<WGDrydockSystem>();
+        var plating = Plating(pair);
+        var splitting = server.CfgMan.GetCVar(CVars.GridSplitting);
+
+        EntityUid console = default, ship = default;
+
+        await server.WaitAssertion(() =>
+        {
+            server.CfgMan.SetCVar(CVars.GridSplitting, true);
+            (_, console, _) = LoadDrydock(pair, map.MapId);
+            ship = CreateShip(pair, map.MapId, BerthAHull - new Vector2(WreckSize / 2f));
+            SetFloor(pair, ship, WreckSize);
+            server.System<ShipRepairSystem>().GenerateRepairData(ship);
+
+            // All that is left is an L along two edges. Its bounds are the whole hull, so the cranes start over the
+            // empty middle, clear of it.
+            var cut = new List<(Vector2i, Tile)>();
+            for (var x = 0; x < WreckSize; x++)
+            for (var y = 0; y < WreckSize; y++)
+            {
+                if (x != 0 && y != 0)
+                    cut.Add((new Vector2i(x, y), Tile.Empty));
+            }
+
+            maps.SetTiles(ship, em.GetComponent<MapGridComponent>(ship), cut);
+
+            var comp = em.GetComponent<WGDrydockConsoleComponent>(console);
+            var items = drydock.BuildRepairItems(ship, comp);
+            Assert.That(items, Has.Count.EqualTo((WreckSize - 1) * (WreckSize - 1)), "Every cut tile should need work.");
+            drydock.StartJob(console, comp, ship, null, items, 0);
+        });
+
+        var skipped = await RunJob(pair, console, 600);
+
+        await server.WaitAssertion(() =>
+        {
+            server.CfgMan.SetCVar(CVars.GridSplitting, splitting);
+            Assert.That(em.HasComponent<WGDrydockJobComponent>(console), Is.False, "The job should finish.");
+            Assert.That(skipped, Is.EqualTo(0), "Cranes should reach every tile.");
+            var grid = em.GetComponent<MapGridComponent>(ship);
+            Assert.Multiple(() =>
+            {
+                for (var x = 0; x < WreckSize; x++)
+                for (var y = 0; y < WreckSize; y++)
+                {
+                    Assert.That(maps.GetTileRef(ship, grid, new Vector2i(x, y)).Tile.TypeId, Is.EqualTo(plating),
+                        $"Tile ({x}, {y}) is not on the ship: it was laid clear of the hull and broke off.");
+                }
+            });
         });
 
         await pair.CleanReturnAsync();

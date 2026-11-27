@@ -461,11 +461,15 @@ public sealed partial class NPCUtilitySystem : EntitySystem
                        && _faunaEater.CanEat((owner, eater), targetUid) ? 1f : 0f;
             }
             // WOLFGATE END
-            // WOLFGATE(NpcCrew) START: crew keep their chores on the ship they serve
+            // WOLFGATE(NpcCrew) START: crew keep their chores on the ship they serve, one crewman to each
             case WGTargetOnHomeGridCon:
             {
                 var home = EntityManager.System<WGCrewSystem>().HomeGrid(owner) ?? Transform(owner).GridUid;
                 return home != null && Transform(targetUid).GridUid == home ? 1f : 0f;
+            }
+            case WGTargetUnclaimedCon:
+            {
+                return EntityManager.System<WGCrewClaimSystem>().ClaimedByOther(owner, targetUid, "Target") ? 0f : 1f;
             }
             // WOLFGATE END
             default:

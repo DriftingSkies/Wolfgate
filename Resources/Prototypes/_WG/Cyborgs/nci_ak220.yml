@@ -1,0 +1,76 @@
+- type: entity
+  id: WGNCIAK220Cartridge
+  parent: Cartridge9x19mmFMJ
+  components:
+  - type: CartridgeAmmo
+    proto: Bullet9x19mmFMJ
+    deleteOnSpawn: true
+
+- type: entity
+  id: WGNCIAK220
+  parent: [ BaseItem, BaseGunWieldable ]
+  components:
+  - type: Sprite
+    sprite: _Mono/Objects/Weapons/Guns/SMGs/ak220.rsi
+    layers:
+    - state: base
+      map: ["enum.GunVisualLayers.Base"]
+    - state: mag-0
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: Item
+    size: Large
+  - type: Clothing
+    sprite: _Mono/Objects/Weapons/Guns/SMGs/ak220.rsi
+    slots: BELT
+  - type: GunWieldBonus
+    minAngle: -19
+    maxAngle: -34
+  - type: Wieldable
+    freeHandsRequired: 0
+  - type: Gun
+    minAngle: 22
+    maxAngle: 40
+    fireRate: 6
+    angleIncrease: 21
+    angleDecay: 14
+    selectedMode: FullAuto
+    soundGunshot:
+      path: /Audio/_Mono/Weapons/Guns/SmallArms/Gunshots/smg.ogg
+    availableModes:
+    - SemiAuto
+    - FullAuto
+  - type: AmmoCounter
+  - type: ContainerContainer
+    containers:
+      ballistic-ammo: !type:Container
+        ents: []
+  - type: BallisticAmmoProvider
+    proto: WGNCIAK220Cartridge
+    capacity: 35
+    autoCycle: true
+    cycleable: false
+  - type: BallisticAmmoSelfRefiller
+    autoRefillRate: 1s
+  - type: MagazineVisuals
+    magState: mag
+    steps: 1
+    zeroVisible: true
+  - type: Appearance
+  - type: StaticPrice
+    price: 500
+
+- type: entity
+  id: WGNCIAK220Module
+  parent: [ BaseBorgModuleSyndicateAssault, BaseProviderBorgModule ]
+  components:
+  - type: Sprite
+    layers:
+    - state: syndicate
+    - state: icon-syndicate
+  - type: ItemBorgModule
+    moduleId: NCIAK220
+    items:
+    - WGNCIAK220
+    - Machete
+  - type: BorgModuleIcon
+    icon: { sprite: Interface/Actions/actions_borg.rsi, state: syndicate-weapon-module }

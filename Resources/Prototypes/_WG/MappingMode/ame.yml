@@ -1,0 +1,51 @@
+# IRE controllers that start with a full canister and injecting, at the safe injection for a core count (2 per core).
+# The mapper still places the shielding: a controller injecting for more cores than it has overloads them.
+
+- type: entity
+  parent: AmeController
+  id: WGAmeControllerFueled
+  suffix: Fueled, running, 1 core
+  components:
+  - type: AmeController
+    injecting: true
+    injectionAmount: 2
+    fuelSlot:
+      startingItem: AmeJar
+      whitelist:
+        components:
+        - AmeFuelContainer
+      whitelistFailPopup: ame-controller-component-fuel-slot-fail-whitelist
+      lockedFailPopup: ame-controller-component-fuel-slot-fail-locked
+      insertSuccessPopup: ame-controller-component-fuel-slot-success-insert
+
+- type: entity
+  parent: WGAmeControllerFueled
+  id: WGAmeControllerFueled2
+  suffix: Fueled, running, 2 cores
+  components:
+  - type: AmeController
+    injectionAmount: 4
+
+- type: entity
+  parent: WGAmeControllerFueled
+  id: WGAmeControllerFueled3
+  suffix: Fueled, running, 3 cores
+  components:
+  - type: AmeController
+    injectionAmount: 6
+
+- type: entity
+  parent: WGAmeControllerFueled
+  id: WGAmeControllerFueled4
+  suffix: Fueled, running, 4 cores
+  components:
+  - type: AmeController
+    injectionAmount: 8
+
+- type: entity
+  parent: WGAmeControllerFueled
+  id: WGAmeControllerFueled6
+  suffix: Fueled, running, 6 cores
+  components:
+  - type: AmeController
+    injectionAmount: 12

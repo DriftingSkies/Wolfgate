@@ -1,4 +1,4 @@
-# The contract board and everything its contracts put in the world.
+﻿# The contract board and everything its contracts put in the world.
 
 - type: entity
   parent: BaseStructure
@@ -200,8 +200,9 @@
     ui: !type:ContractsUi
   - type: Cartridge
     programName: wg-contract-program-name
+    size: 16
     icon: { sprite: Objects/Misc/clipboard.rsi, state: clipboard_paper }
-    readonly: true
+    readonly: false
   - type: WGContractCartridge
   - type: StaticPrice
     price: 50
@@ -390,6 +391,28 @@
     color: "#bfe6f0"
   - type: StaticPrice
     price: 0
+
+# The manifest parcel for supply and mining contracts: it takes the goods as they are used on it.
+- type: entity
+  parent: BaseItem
+  id: WGContractManifestParcel
+  name: contract manifest parcel
+  description: A bonded parcel tagged with a supply manifest. Use goods on it, or it on goods, a bag or a crate, and it takes only what the manifest still needs. Carry it onto the contractor's station once it is full.
+  components:
+  - type: Sprite
+    sprite: _NF/Objects/Specific/Mail/mail_large.rsi
+    layers:
+    - state: icon
+      color: "#bfe6f0"
+  - type: Item
+    size: Normal
+    sprite: _NF/Objects/Specific/Mail/mail_large.rsi
+  - type: StaticPrice
+    price: 0
+  - type: WGContractParcel
+  - type: ContainerContainer
+    containers:
+      wg-contract-parcel: !type:Container
 
 # Salvage finds.
 - type: entity

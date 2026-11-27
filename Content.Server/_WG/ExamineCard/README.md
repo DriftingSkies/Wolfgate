@@ -15,10 +15,10 @@ The card changes with what the examiner can make out. Within details range it is
 look, but no ID or clothes. A refused examine (out of sight) gives a blank NO VISUAL card. The header band turns
 rust for critical and dark red, tagged DECEASED, for the dead.
 
-A character with an adult description (Anatomy tab) shows a heart beside DESCRIPTION, but only to an examiner who
-may read their anatomy (`GenitalConsentSystem.CanExamine`: adult content on for both, adult characters, owner
-present) and only while their face shows; the server never sends the text otherwise. The heart opens it beside the
-card. Being examined tells the character in chat ("X looks you over", or "glances your way" from afar), at most once
+A character with an adult description or an adult headshot (Anatomy tab) shows a heart beside DESCRIPTION, but only
+to an examiner who may read their anatomy (`GenitalConsentSystem.CanExamine`: adult content on for both, adult
+characters, owner present) and only while their face shows (`MayReadNsfw`); the server never sends either otherwise.
+The heart opens them beside the card, the headshot above the text. Being examined tells the character in chat ("X looks you over", or "glances your way" from afar), at most once
 per examiner every 20 seconds, never for ghosts; `wg.examine_card.notice` turns it off.
 
 The stamp compares the face with the ID: ID MATCH, MISMATCH, UNVERIFIED when the face is covered (the name field

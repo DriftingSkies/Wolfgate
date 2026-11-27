@@ -6,7 +6,7 @@ queue (up to `WGBoomboxComponent.MaxQueued`, 10) with move up and remove. Tracks
 within earshot, following whoever carries it. A YouTube playlist or SoundCloud set link is listed without
 downloading; entries that are private, deleted, live, members-only or over the length limit are skipped, and the
 first 10 playable ones are queued. Starting from quiet waits out the request cooldown
-(`wg.internet_sound.request_cooldown`); queueing is free. Examine shows what is playing, and the Stop music verb
+(`wg.internet_sound.request_cooldown`); queueing is free, and active admins skip the request and Skip cooldowns. Examine shows what is playing, and the Stop music verb
 silences it. Sold in the AutoTune vendor and by John Wolfgate, and a contractor loadout item; sprites are
 /tg/station's boombox.
 

@@ -90,6 +90,21 @@ with nothing skipped. A repair then brings each owned line back to tier, rebuilt
 for cost `refitRepairShare` (20%) of their tiers, and units past that coverage, such as machines added later, pay in
 full. Refit costs sit outside the repair cap. The ship repair tool rebuilds machines stock.
 
+Admins can bring any ship's refit line to a tier, free, with `shiprefit <grid | here> <refit> <tier>` (ShipAdmin), the
+console form of Shipmaster's refit.
+
+## Ship modules
+
+Every drydock that sells refits also fits ship modules (ShipModules module) into a ship's three module slots
+(`WGDrydockSystem.Modules.cs`). The refits panel ends in a Ship modules row with a key per slot, showing what is
+fitted; a slot's key opens a drawer beside the column that lists every `wgShipModule` with its icon, name,
+description and price, and a key to fit it to that slot. A fitting is a refit-kind crane job worked at the ship's
+helm: its work order travels the console, terminal and booking paths as a refit id built by `WGShipModuleFitting`
+(`wg-module:<slot>:<module>`), it is priced at the module's `price` (or billed its `materials` at a mobile drydock)
+times the yard's service price, and the module goes in when the item is done. A slot must be empty to be fitted, and a
+ship carries one module of each kind. The drawer's free Empty slot key, at a berth console or terminal
+only, takes a module out at once; on a ship with a deed, only the deed holder may.
+
 ## Console
 
 The console window is an instrument deck in the cockpit style (CombatConsole's instrument kit). A live berth plot
@@ -257,6 +272,7 @@ bought at a bargain less its discount, as a shipyard does.
 - [`Content.Server/_WG/Drydock/WGDrydockSystem.Job.cs`](WGDrydockSystem.Job.cs)
 - [`Content.Server/_WG/Drydock/WGDrydockSystem.Linking.cs`](WGDrydockSystem.Linking.cs)
 - [`Content.Server/_WG/Drydock/WGDrydockSystem.Materials.cs`](WGDrydockSystem.Materials.cs)
+- [`Content.Server/_WG/Drydock/WGDrydockSystem.Modules.cs`](WGDrydockSystem.Modules.cs)
 - [`Content.Server/_WG/Drydock/WGDrydockSystem.Refits.cs`](WGDrydockSystem.Refits.cs)
 - [`Content.Server/_WG/Drydock/WGDrydockSystem.Supplies.cs`](WGDrydockSystem.Supplies.cs)
 - [`Content.Server/_WG/Drydock/WGDrydockSystem.Terminal.cs`](WGDrydockSystem.Terminal.cs)
@@ -299,6 +315,7 @@ bought at a bargain less its discount, as a shipyard does.
 
 - [`Content.Client/_WG/Drydock/WGDrydockBerthPlot.cs`](../../../Content.Client/_WG/Drydock/WGDrydockBerthPlot.cs)
 - [`Content.Client/_WG/Drydock/WGDrydockConsoleBoundUserInterface.cs`](../../../Content.Client/_WG/Drydock/WGDrydockConsoleBoundUserInterface.cs)
+- [`Content.Client/_WG/Drydock/WGDrydockConsoleWindow.Modules.cs`](../../../Content.Client/_WG/Drydock/WGDrydockConsoleWindow.Modules.cs)
 - [`Content.Client/_WG/Drydock/WGDrydockConsoleWindow.xaml`](../../../Content.Client/_WG/Drydock/WGDrydockConsoleWindow.xaml)
 - [`Content.Client/_WG/Drydock/WGDrydockConsoleWindow.xaml.cs`](../../../Content.Client/_WG/Drydock/WGDrydockConsoleWindow.xaml.cs)
 - [`Content.Client/_WG/Drydock/WGDrydockCraneVisualSystem.cs`](../../../Content.Client/_WG/Drydock/WGDrydockCraneVisualSystem.cs)

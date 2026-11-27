@@ -1,0 +1,4 @@
+- type: guideEntry
+  id: WGLargeApc
+  name: guide-entry-wg-large-apc
+  text: "/ServerInfo/_WG/Power/LargeApc.xml"

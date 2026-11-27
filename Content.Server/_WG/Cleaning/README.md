@@ -4,7 +4,8 @@ Makes cleaning reach the decals it should. A decal counts as cleanable when its 
 `defaultCleanable`, since many mapped dirt, blood splatter and footprint decals were saved with the flag off. Space
 cleaner, showers and the Wolfmed wash all use that test. A wet mop used on bare floor scrubs every cleanable decal off
 the tile (plain spilled water still only takes blood). Cleanbots with no puddle in reach walk to a nearby dirty tile and
-wash it.
+wash it. A tile someone else's plan is already headed for is left to them. With `stains` set (NPC janitors), a tile
+holding a Wolfmed blood splat counts as dirty too, a wall's included, and the wash scrubs the splats off as well.
 
 Entry points: `WGDecalCleaningSystem.IsCleanable` and `CleanTile`; `WGPickDirtyTileOperator` and `WGCleanTileOperator`
 for the cleanbot's `WGCleanNearbyDecalsCompound`.

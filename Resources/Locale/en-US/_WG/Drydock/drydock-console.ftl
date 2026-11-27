@@ -71,3 +71,10 @@ drydock-voucher-examine-ship = Issued to the [color=yellow]{ $ship }[/color]. It
 drydock-voucher-issued-popup = FREE REPAIR EARNED!
 drydock-voucher-issued-holder = [font size=16][bold]FREE REPAIR EARNED![/bold][/font] The { $ship } gets one full repair at the Anvilhold Drydock, on the house. The voucher is in your hands: keep it on you when the cranes start.
 drydock-voucher-issued-crew = [font size=16][bold]FREE REPAIR EARNED![/bold][/font] The { $ship } gets one full repair at the Anvilhold Drydock, on the house. { $holder } holds the voucher.
+
+drydock-module-already-fitted = That module is already in this slot.
+drydock-module-fitted-elsewhere = That module is already fitted in slot { $slot }; a ship carries one of each.
+drydock-module-slot-taken = Slot { $slot } already holds a module; empty it first.
+drydock-module-needs-kit = That module needs a { $kit } aboard the ship.
+drydock-module-not-owner = Only the ship's deed holder can empty its module slots.
+drydock-module-removed = Removed { $module } from slot { $slot }.

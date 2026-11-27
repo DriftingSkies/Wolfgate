@@ -73,6 +73,10 @@ public sealed partial class WolfmedBrainComponent : Component
         new WolfmedBrainColdStep { Below = 303.15f, Factor = 0.5f },
     };
 
+    /// <summary>Normal body temperature the cold steps are written for; a species' reading shifts by its own normal.</summary>
+    [DataField]
+    public float ColdStepsNormal = 310.15f;
+
     /// <summary>Organ health under which the patient blurs and slurs, as a share of the organ's maximum.</summary>
     [DataField]
     public float ConcussionAt = 0.9f;

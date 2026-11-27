@@ -44,11 +44,8 @@ namespace Content.Client.Launcher
             ConnectFail.AddChild(_symphonyRow);
             _symphonyRow.SetPositionInParent(1);
 
-            // Over the parallax, under the windows, on every page: it mops up spills while they wait.
-            Control window = ExitButton;
-            while (window.Parent != null && window.Parent != this)
-                window = window.Parent;
-            _symphonyMoproach = new SymphonyMoproach(window, LoginTips);
+            // Over the parallax, under the windows, on every page: it mops up whatever they spill while they wait.
+            _symphonyMoproach = new SymphonyMoproach();
             AddChild(_symphonyMoproach);
             _symphonyMoproach.SetPositionInParent(1);
         }

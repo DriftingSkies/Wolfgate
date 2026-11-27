@@ -22,8 +22,8 @@ namespace Content.Server._WG.Remade.Variants;
 
 /// <summary>
 /// A Remade that is steering for a target but gets nowhere attacks what is in its way, with its normal melee, until it breaks.
-/// The pathfinder can't see a railing (it samples each tile on a quarter grid and the rail is thinner than the gap), so steering
-/// walks a Remade straight into one and never runs its own climb or smash; this covers that and anything else the navmesh missed.
+/// Steering only climbs or smashes what the navmesh shows, so it walks a Remade straight into anything the navmesh missed or
+/// hasn't rebuilt for yet; this covers that.
 /// </summary>
 public sealed class WGStuckBreakerSystem : EntitySystem
 {

@@ -19,6 +19,10 @@
   # Bolts down only on the first hull it is bolted to; see the HullBond README.
   - type: WGHullBond
   - type: WiresPanel
+  # In the ship's repair snapshot, so an SRD or drydock rebuilds it: the board can't be printed.
+  - type: ShipRepairable
+    repairTime: 10
+    repairCost: 30
   # No fee, and no cap on a repair's work, so its bill is never scaled below what breaking the same work pays.
   - type: WGDrydockConsole
     minFee: 0

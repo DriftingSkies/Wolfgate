@@ -66,7 +66,14 @@ public sealed partial class WGCockpitGunnerySystem : EntitySystem
     private void OnCommand(Entity<ShuttleConsoleComponent> ent, ref WGCockpitGunneryCommandMessage args) =>
         TryCommand(args.Actor, ent, args.Console, args.Command);
 
-    /// <summary>Starts a validated helm session or releases only the requesting helm's existing link.</summary>
+    /// <summary>
+    /// Starts a validated helm session, updates the pilot's request on an existing one, or releases only the requesting
+    /// helm's link. Returns whether the link may be used now.
+    /// </summary>
+    /// <remarks>
+    /// The client sends its request only when it changes, so an existing session takes it even while the pilot is
+    /// briefly ineligible; dropping it left the pilot holding guns the server would not fire.
+    /// </remarks>
     public bool SetSession(EntityUid actor, EntityUid helm, bool active, bool controlling = false)
     {
         if (!active)
@@ -75,18 +82,19 @@ public sealed partial class WGCockpitGunnerySystem : EntitySystem
                 EndSession(actor, previous);
             return true;
         }
-        if (!CanMaintainSession(actor, helm))
+        var existing = _sessions.TryGetValue(actor, out var session) && session.Helm == helm;
+        if (existing ? !IsSubscribed(actor, helm) : !CanMaintainSession(actor, helm))
             return false;
-        if (!_sessions.TryGetValue(actor, out var session) || session.Helm != helm)
+        if (!existing)
         {
             if (session != null)
                 EndSession(actor, session);
             _sessions[actor] = session = new Session(helm);
             CaptureCamera(actor, helm);
         }
-        session.Controlling = controlling;
+        session!.Controlling = controlling;
         Refresh(actor, session);
-        return true;
+        return CanMaintainSession(actor, helm);
     }
 
     /// <summary>Returns a linked console only while the complete authorization still holds.</summary>
@@ -140,10 +148,14 @@ public sealed partial class WGCockpitGunnerySystem : EntitySystem
         return true;
     }
 
-    private bool CanMaintainSession(EntityUid actor, EntityUid helm) =>
+    /// <summary>Whether the pilot's player still has this helm open; only losing this ends a session.</summary>
+    private bool IsSubscribed(EntityUid actor, EntityUid helm) =>
         TryComp<ActorComponent>(actor, out var player) && player.PlayerSession.AttachedEntity == actor &&
         player.PlayerSession.Status == SessionStatus.InGame &&
-        _cockpit.CanEnter(actor, helm) && _ui.IsUiOpen(helm, ShuttleConsoleUiKey.Key, actor);
+        !TerminatingOrDeleted(helm) && _ui.IsUiOpen(helm, ShuttleConsoleUiKey.Key, actor);
+
+    private bool CanMaintainSession(EntityUid actor, EntityUid helm) =>
+        IsSubscribed(actor, helm) && _cockpit.CanEnter(actor, helm);
 
     private bool CanUseHelm(EntityUid actor, EntityUid helm) =>
         CanMaintainSession(actor, helm) &&
@@ -262,7 +274,8 @@ public sealed partial class WGCockpitGunnerySystem : EntitySystem
         _accumulator = 0;
         foreach (var (actor, session) in _sessions.ToArray())
         {
-            if (!CanMaintainSession(actor, session.Helm))
+            // A brief loss of the seat or piloting only withholds the guns; Refresh links them again when it returns.
+            if (!IsSubscribed(actor, session.Helm))
             {
                 EndSession(actor, session);
                 continue;

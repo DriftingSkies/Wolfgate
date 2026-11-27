@@ -23,15 +23,16 @@ right side shows the selected ship in tabs:
 
 - **Overview**: design, position, what it is docked to, every owner (deed cards, vouchers and registered
   accounts, with who is online), access mode and lock, who is aboard. Scan appraises it and counts its damage.
-- **Ownership**: transfer to a connected player, add a co-owner by account, remove one owner, release, and set
+- **Ownership**: rename, transfer to a connected player, add a co-owner by account, remove one owner, release, and set
   the hull faction or the player company it flies for without changing its owner.
 - **Access**: lock, mode (Public included, which only staff set), allow list, reset door rules and the ship code.
 - **Repair**: a fix of ticked parts, quick fixes that run one part at once (air, fires, trash, puddles, lights),
-  and the repair snapshot (re-take, restore).
+  and the repair snapshot (re-take, restore). Puddles takes the stains with them: footprints, blood and dirt decals
+  that cleaning would take (a mapper's paint stays) and Wolfmed's blood splats on the walls (`RemoveStains`).
 - **Move**: bring it to the admin, send it to a position or another grid, dock it at any free dock or one picked
   from the target's docks (those in use are shown and can't be picked), Stop Knotting, return to orbit, undock,
   halt, clear pilots, FTL lock and jump cooldown.
-- **Systems**: rename, radar colour and visibility, shields (raise, drop, restore to full, set strength), power,
+- **Systems**: radar colour and visibility, shields (raise, drop, restore to full, set strength), power,
   protections.
 - **Upgrades**: refit tiers, best machine parts, hull modifiers, all free.
 - **Danger**: aim an event at the ship, bring everyone aboard to the admin, strip to a bare hull, delete.
@@ -140,6 +141,7 @@ Entry points: `WGShipAdminSystem` (`Open`, `BuildList`, `BuildDetail`, and one p
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Repair.cs`](WGShipAdminSystem.Repair.cs)
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Rescue.cs`](WGShipAdminSystem.Rescue.cs)
 - [`Content.Server/_WG/ShipAdmin/WGShipAdminSystem.Systems.cs`](WGShipAdminSystem.Systems.cs)
+- [`Content.Server/_WG/ShipAdmin/WGShipRefitCommand.cs`](WGShipRefitCommand.cs)
 
 ### Shared
 

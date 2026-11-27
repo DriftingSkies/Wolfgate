@@ -1,0 +1,46 @@
+<cartridges:PdaStoreUiFragment xmlns:cartridges="clr-namespace:Content.Client._WG.PdaStorage"
+                               xmlns:ui="clr-namespace:Content.Client._WG.PdaUi"
+                               xmlns="https://spacestation14.io"
+                               Margin="1 0 2 0">
+    <PanelContainer StyleClasses="BackgroundDark"/>
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+        <BoxContainer Name="TabBar" Orientation="Horizontal" Margin="4 0"/>
+        <Label Name="ErrorLabel" Visible="False" Margin="6 2 6 4"/>
+        <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="4">
+            <ScrollContainer Name="StoreView" HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False">
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                    <ui:PdaSection Name="StoreHeader" Title="{Loc 'pda-store-title-store'}">
+                        <ui:PdaTaskProgress Name="CapacityBar" HorizontalExpand="True" MinHeight="22" Margin="6 4 6 4"/>
+                        <LineEdit Name="Search" PlaceHolder="{Loc 'pda-store-search'}" Margin="6 2 6 4"/>
+                    </ui:PdaSection>
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True" Margin="0 2 0 0">
+                        <BoxContainer Name="CategoryBar" Orientation="Vertical" MinWidth="118" Margin="0 0 4 0"/>
+                        <ScrollContainer Name="AppScroll" HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False">
+                            <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                                <BoxContainer Name="AppList" Orientation="Vertical" HorizontalExpand="True"/>
+                                <Label Name="NoAppsLabel" Visible="False" Margin="6 4"/>
+                            </BoxContainer>
+                        </ScrollContainer>
+                    </BoxContainer>
+                </BoxContainer>
+            </ScrollContainer>
+            <ScrollContainer Name="StorageView" Visible="False" HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False">
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                    <ui:PdaSection Name="StorageHeader" Title="{Loc 'pda-store-title-storage'}">
+                        <ui:PdaInfoRow Name="StorageCapacityRow"/>
+                        <ui:PdaInfoRow Name="MediaRow"/>
+                    </ui:PdaSection>
+                    <ui:PdaSection Name="DiskSection" Title="{Loc 'pda-store-disk-title'}" Visible="False">
+                        <ui:PdaInfoRow Name="DiskCapacityRow"/>
+                        <BoxContainer Name="DiskList" Orientation="Vertical" HorizontalExpand="True"/>
+                        <Label Name="DiskEmptyLabel" Visible="False" Margin="6 4"/>
+                    </ui:PdaSection>
+                    <ui:PdaSection Title="{Loc 'pda-store-installed-title'}">
+                        <BoxContainer Name="InstalledList" Orientation="Vertical" HorizontalExpand="True"/>
+                        <Label Name="NothingInstalledLabel" Visible="False" Margin="6 4"/>
+                    </ui:PdaSection>
+                </BoxContainer>
+            </ScrollContainer>
+        </BoxContainer>
+    </BoxContainer>
+</cartridges:PdaStoreUiFragment>

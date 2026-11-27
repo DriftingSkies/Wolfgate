@@ -13,6 +13,7 @@ public sealed partial class ShipShieldsSystem
         if (!float.IsFinite(damage) || damage <= 0f || TerminatingOrDeleted(shield.Shielded)
             || !HasComp<MapGridComponent>(shield.Shielded))
             return;
+        AddWolfgateShieldHitHeat(shield, damage);
         var attacker = WolfgateAttackSourceGrid(launchGrid) ?? WolfgateAttackSourceGrid(weapon) ?? WolfgateAttackSourceGrid(shooter);
         if (attacker is not { } attackerGrid || attackerGrid == shield.Shielded)
             return;

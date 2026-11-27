@@ -42,6 +42,7 @@ public sealed partial class WorldControllerSystem : EntitySystem
         SubscribeLocalEvent<WorldChunkComponent, ComponentShutdown>(OnChunkShutdown);
         WGInitializeUnloadGrace(); // WOLFGATE(Performance): chunk unload grace
         WGInitializeIdleHelms(); // WOLFGATE(Performance): idle helms load nothing
+        WGInitializeFreeChunks(); // WOLFGATE(Performance): unloaded chunks are deleted after a while
     }
 
     /// <summary>
@@ -71,6 +72,7 @@ public sealed partial class WorldControllerSystem : EntitySystem
         if (!TryComp<WorldChunkComponent>(uid, out var chunk))
             return;
 
+        WGNoteChunkLoaded(uid); // WOLFGATE(Performance): no longer a candidate for freeing
         var ev = new WorldChunkLoadedEvent(uid, chunk.Coordinates);
         RaiseLocalEvent(chunk.Map, ref ev);
         RaiseLocalEvent(uid, ref ev, broadcast: true);
@@ -88,6 +90,7 @@ public sealed partial class WorldControllerSystem : EntitySystem
         if (Terminating(uid))
             return; // SAFETY: This is in case a loaded chunk gets deleted, to avoid double unload.
 
+        WGNoteChunkUnloaded(uid); // WOLFGATE(Performance): freed once it has been unloaded long enough
         var ev = new WorldChunkUnloadedEvent(uid, chunk.Coordinates);
         RaiseLocalEvent(chunk.Map, ref ev);
         RaiseLocalEvent(uid, ref ev);
@@ -171,7 +174,7 @@ public sealed partial class WorldControllerSystem : EntitySystem
 
             // WOLFGATE(Performance): wait out the unload grace, so passing ships don't unload and respawn debris
             // if (!_chunksToLoad[chunk.Map].ContainsKey(coords))
-            if (WGShouldUnload(uid, _chunksToLoad[chunk.Map].ContainsKey(coords)))
+            if (WGShouldUnload(uid, WGChunkWanted(uid, chunk)))
             {
                 RemCompDeferred<LoadedChunkComponent>(uid);
                 chunksUnloaded++;
@@ -181,6 +184,7 @@ public sealed partial class WorldControllerSystem : EntitySystem
         if (chunksUnloaded > 0)
             _sawmill.Debug($"Queued {chunksUnloaded} chunks for unload.");
 
+        WGFreeIdleChunks(); // WOLFGATE(Performance): delete chunks unloaded long ago
         WGLogChunkCount(); // WOLFGATE(Performance): loaded-chunk counter
 
         if (_chunksToLoad.All(x => x.Value.Count == 0))

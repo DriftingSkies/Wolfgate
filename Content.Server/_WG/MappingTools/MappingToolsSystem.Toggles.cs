@@ -1,4 +1,5 @@
 using Content.Server.Storage.Components;
+using Content.Shared._WG.Drydock;
 using Content.Shared._WG.MappingTools;
 using Content.Shared.Database;
 using Content.Shared.Doors.Components;
@@ -30,7 +31,7 @@ public sealed partial class MappingToolsSystem
     }
 
     /// <summary>
-    /// Flips bolts, a weld, a lock, a panel or a door on one entity as one undoable edit, straight to the end state:
+    /// Flips bolts, a weld, a lock, a panel, a door or a crane's mirroring on one entity as one undoable edit, straight to the end state:
     /// no tool, wait, power or user, so it works on paused session maps.
     /// </summary>
     public void Toggle(ICommonSession session, NetEntity target, MappingToggle toggle)
@@ -92,6 +93,9 @@ public sealed partial class MappingToolsSystem
             case MappingToggle.Door when TryComp(uid, out DoorComponent? door):
                 on = door.State is DoorState.Open or DoorState.Opening;
                 return true;
+            case MappingToggle.Mirror when TryComp(uid, out WGDrydockCraneComponent? crane) && crane.MirrorInPlace:
+                on = crane.Mirrored;
+                return true;
             default:
                 return false;
         }
@@ -138,6 +142,10 @@ public sealed partial class MappingToolsSystem
                 break;
             case MappingToggle.Door when TryComp(uid, out DoorComponent? door):
                 _door.WGSetRestingState((uid, door), value);
+                break;
+            case MappingToggle.Mirror when TryComp(uid, out WGDrydockCraneComponent? crane):
+                crane.Mirrored = value;
+                Dirty(uid, crane);
                 break;
         }
     }

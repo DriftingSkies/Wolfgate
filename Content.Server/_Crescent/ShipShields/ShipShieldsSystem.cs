@@ -56,12 +56,14 @@ public sealed partial class ShipShieldsSystem : EntitySystem
             {
                 emitter.OverloadAccumulator -= EmitterUpdateRate;
             }
+            OverloadWolfgateAtPowerCap(uid, emitter); // WOLFGATE(ShipShields): a ship generator at its power cap overloads like one past its limit
 
             float healed = emitter.HealPerSecond * EmitterUpdateRate;
 
             if (emitter.Recharging)
                 healed *= emitter.UnpoweredBonus;
 
+            healed = CoolWolfgateHull(uid, emitter, healed); // WOLFGATE(ShipShields): heat is the hull's, and a generator cools it by the hull's rules
             emitter.Damage -= healed;
 
             // WOLFGATE(ShipShields) START: complete recharge when healing lands exactly on zero damage
@@ -73,6 +75,7 @@ public sealed partial class ShipShieldsSystem : EntitySystem
                 if (power.Powered)
                     emitter.Recharging = false;
             }
+            ReleaseWolfgateRecharge(uid, emitter, power.Powered); // WOLFGATE(ShipShields): a powered ship generator waits out its overload, not zero heat
 
             AdjustEmitterLoad(uid, emitter, power);
 
@@ -84,7 +87,10 @@ public sealed partial class ShipShieldsSystem : EntitySystem
             // var filter = _station.GetInOwningStation(uid); // WOLFGATE(Performance): unused, and the lookup is costly
 
             if (emitter.Damage > emitter.DamageLimit)
-                emitter.OverloadAccumulator = emitter.DamageOverloadTimePunishment;
+                // WOLFGATE(ShipShields) START: a ship generator's overload wait grows with its ship's capacity
+                // emitter.OverloadAccumulator = emitter.DamageOverloadTimePunishment;
+                emitter.OverloadAccumulator = WolfgateOverloadWait(uid, emitter);
+                // WOLFGATE END
 
             // WOLFGATE(ShipShields) START: respect the ship's manual field switch
             // if (!emitter.Recharging && emitter.Shield is null && emitter.OverloadAccumulator < 1)
@@ -113,6 +119,7 @@ public sealed partial class ShipShieldsSystem : EntitySystem
                 // WOLFGATE END
                 emitter.Shield = null;
                 emitter.Shielded = null;
+                if (removed && power.Powered && !HasComp<ShipShieldDisabledGridComponent>(parent.Value)) LockWolfgateShieldGuns(parent.Value, uid); // WOLFGATE(ShipShields): a field beaten down by damage locks the ship's guns
                 // WOLFGATE(ShipShields) START: share the startup cooldown and use shutdown audio parameters
                 if (removed && !HasComp<ShipShieldDisabledGridComponent>(Transform(uid).GridUid)) // WOLFGATE(ShipShields): announce only actual shutdown
                 {

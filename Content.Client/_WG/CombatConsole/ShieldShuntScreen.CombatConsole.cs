@@ -68,9 +68,10 @@ public sealed partial class WGShipShieldShuntScreen
 
         _status.HorizontalExpand = true;
         _enabled.MinWidth = 160;
+        _vent.MinWidth = 120;
         _stats.MinWidth = 160;
         var header = new Content.Client._WG.CombatConsole.WGInstrumentPanel(8) { HorizontalExpand = true };
-        header.AddChild(InstrumentTheme.Column(InstrumentTheme.Row(new WGGlassReadout(_status), _stats, _enabled), new WGGlassReadout(_health, true), _recovery));
+        header.AddChild(InstrumentTheme.Column(InstrumentTheme.Row(new WGGlassReadout(_status), _stats, _enabled, _vent), new WGGlassReadout(_heat), _recovery, _gunLock));
         var scope = InstrumentTheme.Scope("wg-console-shield-scope", _dial, Vector2.Zero);
         // The dial takes the middle of the page, with the sector and power banks to its left and coverage to its right.
         var body = new ShieldColumns(scope, _settings, true);
@@ -82,6 +83,8 @@ public sealed partial class WGShipShieldShuntScreen
         AddChild(header);
         AddChild(body);
         AddChild(footer);
+        _generatorOnly.Clear();
+        _generatorOnly.AddRange(new Control[] { body, footer, _enabled, _stats });
         InstrumentTheme.Apply(this);
         UpdateHealthAppearance();
     }

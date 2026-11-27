@@ -5,7 +5,7 @@ namespace Content.Shared._WG.Augments;
 
 /// <summary>
 /// A reviver in the torso: when the heart stops it holds the body's bleeding, runs a reserve of blood in and shocks,
-/// on the same rules and the same odds as a medic's paddles, and then has to recharge.
+/// on the same rules and the same odds as a medic's paddles, and then has to recharge. The hold outlasts the shock.
 /// </summary>
 [RegisterComponent, AutoGenerateComponentPause]
 public sealed partial class WGReviverComponent : Component
@@ -30,17 +30,17 @@ public sealed partial class WGReviverComponent : Component
     [DataField]
     public TimeSpan EmpLockout = TimeSpan.FromMinutes(2);
 
-    /// <summary>How long the bleeding stays held after the shock it is charging.</summary>
+    /// <summary>How long the bleeding stays held after the shock it is charging: its owner's time to dress it.</summary>
     [DataField]
-    public TimeSpan HoldTime = TimeSpan.FromSeconds(60);
+    public TimeSpan HoldTime = TimeSpan.FromMinutes(3);
 
     /// <summary>The blood it carries, which it has back when it has recharged.</summary>
     [DataField]
     public float Reserve = 60f;
 
-    /// <summary>The blood it runs in each second it is charging, up to what keeps a restarted heart going.</summary>
+    /// <summary>The blood it runs in each second it is charging, so the whole reserve is in by the first shock.</summary>
     [DataField]
-    public float InfuseRate = 3f;
+    public float InfuseRate = 6f;
 
     [DataField]
     public SoundSpecifier? ChargeSound = new SoundPathSpecifier("/Audio/Items/Defib/defib_charge.ogg");

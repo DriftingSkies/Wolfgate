@@ -88,6 +88,9 @@ public sealed partial class ModSuitSystem
 
     private void UpdateDeployQueues()
     {
+        if (_net.IsClient)
+            return;
+
         var now = _timing.CurTime;
         var query = EntityQueryEnumerator<ModSuitComponent>();
         while (query.MoveNext(out var uid, out var comp))
@@ -115,7 +118,7 @@ public sealed partial class ModSuitSystem
             {
                 comp.DeployQueue.Clear();
                 if (!comp.DeployQueueRetracting)
-                    _popup.PopupClient(Loc.GetString("modsuit-deploy-failed"), wearer, wearer);
+                    _popup.PopupEntity(Loc.GetString("modsuit-deploy-failed"), wearer, wearer);
             }
 
             comp.NextDeployStep = now + comp.DeployStepTime;
@@ -149,6 +152,15 @@ public sealed partial class ModSuitSystem
             return false;
         }
 
+        if (slot == OuterClothingSlot
+            && _inventory.TryGetSlotEntity(wearer, slot, out var wornOuter)
+            && _tags.HasTag(wornOuter.Value, "Hardsuit"))
+        {
+            if (user != null && !silent)
+                _popup.PopupClient(Loc.GetString("modsuit-hardsuit-too-thick"), ent, user.Value);
+            return false;
+        }
+
         var suitStorage = StashSuitStorage(wearer, slot);
         if (_inventory.TryGetSlotEntity(wearer, slot, out var current))
         {
@@ -167,7 +179,7 @@ public sealed partial class ModSuitSystem
         }
 
         _movingParts.Add(part);
-        var equipped = _inventory.TryEquip(wearer, wearer, part, slot, silent: silent, force: true, predicted: true);
+        var equipped = _inventory.TryEquip(wearer, wearer, part, slot, silent: true, force: true, predicted: true);
         _movingParts.Remove(part);
 
         if (!equipped)
@@ -176,6 +188,11 @@ public sealed partial class ModSuitSystem
             RestoreSuitStorage(wearer, suitStorage);
             return false;
         }
+
+        if (!silent
+            && TryComp<ClothingComponent>(part, out var wornClothing)
+            && wornClothing.EquipSound != null)
+            _audio.PlayPvs(wornClothing.EquipSound, wearer);
 
         RestoreSuitStorage(wearer, suitStorage);
 
@@ -209,7 +226,13 @@ public sealed partial class ModSuitSystem
         var suitStorage = wearer != null ? StashSuitStorage(wearer.Value, slot) : null;
         _movingParts.Add(part);
         if (wearer != null && _inventory.TryGetSlotEntity(wearer.Value, slot, out var worn) && worn == part)
-            _inventory.TryUnequip(wearer.Value, wearer.Value, slot, silent: silent, force: true, predicted: true);
+        {
+            _inventory.TryUnequip(wearer.Value, wearer.Value, slot, silent: true, force: true, predicted: true);
+            if (!silent
+                && TryComp<ClothingComponent>(part, out var removedClothing)
+                && removedClothing.UnequipSound != null)
+                _audio.PlayPvs(removedClothing.UnequipSound, wearer.Value);
+        }
         _container.Insert(part, ent.Comp.PartsContainer);
         _movingParts.Remove(part);
 

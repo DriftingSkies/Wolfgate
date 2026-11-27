@@ -14,6 +14,7 @@
   parent: BaseBulletTrigger
   categories: [ HideSpawnMenu ]
   components:
+  - type: WGShipMissile # WOLFGATE(ShipShields): firing a missile adds no heat to the ship
   - type: Projectile
     damage:
       types:
@@ -64,6 +65,7 @@
   parent: BaseBulletTrigger
   categories: [ HideSpawnMenu ]
   components:
+  - type: WGShipMissile # WOLFGATE(ShipShields): firing a rocket adds no heat to the ship
   - type: Projectile
     damage:
       types:

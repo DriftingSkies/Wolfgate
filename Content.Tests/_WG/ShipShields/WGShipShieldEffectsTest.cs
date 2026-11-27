@@ -217,4 +217,67 @@ public sealed class WGShipShieldEffectsTest
             Assert.That(WGShipShieldEffects.WaveWake(88f, 4f, 1f), Is.Zero);
         });
     }
+
+    [Test]
+    public void HullCapacityTapersTowardItsCeiling()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(WGShipShieldEffects.HullCapacity(8000f, 15f, 30000f, 0), Is.EqualTo(8000f).Within(0.01f));
+            // A small hull gains nearly the full rate per tile.
+            Assert.That(WGShipShieldEffects.HullCapacity(8000f, 15f, 30000f, 200), Is.InRange(10700f, 11000f));
+            // A capital gains far less than its tiles would add in a straight line, and never passes the ceiling.
+            Assert.That(WGShipShieldEffects.HullCapacity(8000f, 15f, 30000f, 2000), Is.InRange(23000f, 25000f));
+            Assert.That(WGShipShieldEffects.HullCapacity(8000f, 15f, 30000f, 100000), Is.LessThanOrEqualTo(30000f));
+            Assert.That(WGShipShieldEffects.HullCapacity(8000f, 15f, 30000f, 2000),
+                Is.GreaterThan(WGShipShieldEffects.HullCapacity(8000f, 15f, 30000f, 1000)));
+            Assert.That(WGShipShieldEffects.HullCapacity(8000f, 15f, 5000f, 500), Is.EqualTo(5000f));
+        });
+    }
+
+    [Test]
+    public void BiggerShipsWaitAndVentLonger()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(WGShipShieldEffects.SizeScale(WGShipShieldEffects.ReferenceCapacity), Is.EqualTo(1f).Within(0.001f));
+            Assert.That(WGShipShieldEffects.SizeScale(1000f), Is.EqualTo(0.75f));
+            Assert.That(WGShipShieldEffects.SizeScale(10000000f), Is.EqualTo(1.5f));
+            Assert.That(WGShipShieldEffects.SizeScale(80000f), Is.GreaterThan(WGShipShieldEffects.SizeScale(40000f)));
+
+            // A fast plain rate is capped, so the full vent takes FullVentSeconds scaled by size.
+            const float big = 80000f;
+            var bigVent = big / WGShipShieldEffects.VentRate(10000f, big);
+            Assert.That(bigVent, Is.EqualTo(WGShipShieldEffects.FullVentSeconds * WGShipShieldEffects.SizeScale(big)).Within(0.01f));
+            const float small = 40000f;
+            Assert.That(bigVent, Is.GreaterThan(small / WGShipShieldEffects.VentRate(10000f, small)));
+            // A slow plain rate keeps its own multiple.
+            Assert.That(WGShipShieldEffects.VentRate(100f, small), Is.EqualTo(100f * WGShipShieldEffects.VentCooling).Within(0.01f));
+        });
+    }
+
+    [Test]
+    public void OverloadedShipsCoolAtThePlainRate()
+    {
+        Assert.Multiple(() =>
+        {
+            Assert.That(WGShipShieldEffects.CoolingRate(100f, 40000f, true, false, false), Is.EqualTo(100f));
+            Assert.That(WGShipShieldEffects.CoolingRate(100f, 40000f, false, false, true), Is.EqualTo(100f));
+            Assert.That(WGShipShieldEffects.CoolingRate(100f, 40000f, false, false, false),
+                Is.EqualTo(100f * WGShipShieldEffects.FieldDownCooling));
+            Assert.That(WGShipShieldEffects.CoolingRate(100f, 40000f, false, true, true),
+                Is.EqualTo(WGShipShieldEffects.VentRate(100f, 40000f)));
+            Assert.That(WGShipShieldEffects.OverloadWait(16f, WGShipShieldEffects.ReferenceCapacity), Is.EqualTo(16f).Within(0.001f));
+        });
+    }
+
+    [TestCase(1000f, 1f)]
+    [TestCase(200f, 1f)]
+    [TestCase(100f, 0.5f)]
+    [TestCase(70f, 0.35f)]
+    [TestCase(10f, 0.25f)]
+    public void SmallHitsChargeLess(float hit, float expected)
+    {
+        Assert.That(WGShipShieldEffects.HitWeight(hit), Is.EqualTo(expected).Within(0.001f));
+    }
 }

@@ -65,7 +65,8 @@
   components:
   - type: WGCrewEngineer
 
-# Mops up puddles and washes dirt off the floors across the ship, back at his post when it's clean.
+# Mops up puddles and washes dirt off the floors across the ship, back at his post when it's clean. Now and then he
+# runs down a mouse or a roach that came out of the vents.
 - type: wgCrewRole
   id: WGCrewJanitor
   kit: WGCrewKitJanitor
@@ -74,6 +75,14 @@
   engagement: WhenAttacked
   title: wg-crew-role-janitor
   order: 45
+  components:
+  - type: WGCrewPestHunter
+    pests:
+    - MobMouse
+    - MobMouse1
+    - MobMouse2
+    - MobMouseCancer
+    - MobCockroach
 
 - type: wgCrewRole
   id: WGCrewDeckhand

@@ -97,7 +97,7 @@ public sealed partial class WolfmedExplanationCardOverlay : Overlay
 
         var handle = args.ScreenHandle;
         var control = args.ViewportControl as Control;
-        var bounds = WolfmedSyntheticHudLayout.Screen(args.ViewportBounds, control?.GlobalPixelPosition ?? Vector2i.Zero);
+        var bounds = WolfmedSyntheticHudLayout.Screen(args);
         var ui = MathF.Max(0.1f, control?.UIScale ?? 1f);
         var scale = WolfmedExplanationCardLayout.Scale(bounds, ui);
         var width = WolfmedExplanationCardLayout.Width(bounds, scale);
@@ -389,8 +389,7 @@ public sealed class WolfmedFaintOverlay : Overlay
 
     protected override void Draw(in OverlayDrawArgs args)
     {
-        var bounds = WolfmedSyntheticHudLayout.Screen(args.ViewportBounds,
-            (args.ViewportControl as Control)?.GlobalPixelPosition ?? Vector2i.Zero);
+        var bounds = WolfmedSyntheticHudLayout.Screen(args);
         args.ScreenHandle.DrawRect(bounds, Color.FromHex("#f4f1ea").WithAlpha(Alpha));
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using Content.IntegrationTests.Tests.Interaction;
 using Content.Server._WG.Audio.InternetSound;
 using Content.Server._WG.ShipPa;
+using Content.Server.Administration.Managers;
 using Content.Server.Power.Components;
 using Content.Shared._WG.CCVar;
 using Content.Shared._WG.ShipPa;
@@ -119,6 +120,7 @@ public sealed class ShipPaPlaylistTest : InteractionTest
         {
             using var downloader = Override(InternetSoundCVars.YtDlpPath, MissingDownloader);
             using var cooldown = Override(InternetSoundCVars.RequestCooldown, 0);
+            using var player = AsPlayer();
             var internet = SEntMan.System<InternetSoundSystem>();
 
             Add(console, First);
@@ -249,6 +251,7 @@ public sealed class ShipPaPlaylistTest : InteractionTest
         await Server.WaitAssertion(() =>
         {
             using var downloader = Override(InternetSoundCVars.YtDlpPath, MissingDownloader);
+            using var player = AsPlayer();
 
             var alert = SEntMan.GetComponent<ShipAlertComponent>(grid);
             var timing = Server.ResolveDependency<Robust.Shared.Timing.IGameTiming>();
@@ -600,5 +603,16 @@ public sealed class ShipPaPlaylistTest : InteractionTest
         var old = Server.CfgMan.GetCVar(cvar);
         Server.CfgMan.SetCVar(cvar, value);
         return new Restore(() => Server.CfgMan.SetCVar(cvar, old));
+    }
+
+    /// <summary>Deadmins the test player, a host admin who would skip the cooldowns, until disposed.</summary>
+    private IDisposable AsPlayer()
+    {
+        var admins = Server.ResolveDependency<IAdminManager>();
+        if (!admins.IsAdmin(ServerSession))
+            return new Restore(() => { });
+
+        admins.DeAdmin(ServerSession);
+        return new Restore(() => admins.ReAdmin(ServerSession));
     }
 }

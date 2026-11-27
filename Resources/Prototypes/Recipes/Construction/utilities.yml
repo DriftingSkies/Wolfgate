@@ -61,6 +61,10 @@
   objectType: Structure
   placementMode: SnapgridCenter
   canBuildInImpassable: true
+  # WOLFGATE(Construction) START: one APC per wall face
+  conditions:
+  - !type:WGApcFaceFree {}
+  # WOLFGATE END
 
 - type: construction
   name: cable terminal

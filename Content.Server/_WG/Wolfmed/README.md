@@ -1933,6 +1933,7 @@ Skipped ("dirty-disposed").
   - D20 reversed - Caustic stays routed and creates burn wounds
   - W5: burned skin is no longer a barrier.
   - M1b: burns weep into blood volume (OD11), set against the measured fire. WolfmedFluidLossSystem.
+  - was 0.8; heat wounds hurt more than gunshots
   - playtest 2: burned hands are slow, never switched off (WolfmedLimbIntegrity).
   - W4: tissue burned this far is dead. Crossing into this stage leaves charring, which no
   - W5: a patient left open on the table is the classic surgical site infection.

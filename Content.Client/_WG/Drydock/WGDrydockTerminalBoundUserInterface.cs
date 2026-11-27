@@ -64,6 +64,7 @@ public sealed class WGDrydockTerminalBoundUserInterface(EntityUid owner, Enum ui
         window.OnCleanDriftPressed += () => SendMessage(new WGDrydockCleanDriftMessage { Berth = console });
         window.OnUpgradePressed += upgrade => SendMessage(new WGDrydockUpgradeMessage(upgrade) { Berth = console });
         window.OnBerthLightsPressed += () => SendMessage(new WGDrydockToggleBerthLightsMessage { Berth = console });
+        window.OnModuleRemovePressed += slot => SendMessage(new WGDrydockRemoveModuleMessage(slot) { Berth = console });
         window.OnClose += () => _berths.Remove(console);
         _berths[console] = window;
 

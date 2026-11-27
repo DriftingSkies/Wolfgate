@@ -9,6 +9,7 @@ using Content.Client.UserInterface.Screens;
 using Content.IntegrationTests.Tests.Interaction;
 using Content.Server._WG.Hailing;
 using Content.Server._WG.ShipPa;
+using Content.Server.Administration.Managers;
 using Content.Server.Power.Components;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Systems;
@@ -219,11 +220,16 @@ public sealed partial class HailingTest : InteractionTest
         var cfg = Server.ResolveDependency<IConfigurationManager>();
         var timeout = cfg.GetCVar(HailingCVars.RingTimeout);
         var retry = cfg.GetCVar(HailingCVars.RetryDelay);
+        var admins = Server.ResolveDependency<IAdminManager>();
 
         try
         {
             await Server.WaitAssertion(() =>
             {
+                // The test player is a host admin, who skips the retry delay.
+                if (admins.IsAdmin(ServerSession))
+                    admins.DeAdmin(ServerSession);
+
                 Assert.That(hailing.TryHail(_console, SPlayer, _otherGrid), Is.True);
                 hailing.Answer(_otherConsole, _otherPilot, false);
                 Assert.That(State(_console), Is.Null, "A declined hail should stop.");
@@ -272,7 +278,12 @@ public sealed partial class HailingTest : InteractionTest
         }
         finally
         {
-            await Server.WaitPost(() => cfg.SetCVar(HailingCVars.RingTimeout, timeout));
+            await Server.WaitPost(() =>
+            {
+                cfg.SetCVar(HailingCVars.RingTimeout, timeout);
+                if (admins.IsAdmin(ServerSession, includeDeAdmin: true))
+                    admins.ReAdmin(ServerSession);
+            });
         }
     }
 

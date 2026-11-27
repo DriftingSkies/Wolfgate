@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Content.Server.Worldgen.Components;
+using Content.Server.Worldgen.Systems;
 using Content.Server.Worldgen.Systems.GC;
 using Content.Shared._WG.Performance;
 using Robust.Shared.GameObjects;
@@ -27,6 +28,88 @@ public sealed class WGWorldgenChurnTest
   - type: GCAbleObject
     queue: WGTestAgedQueue
 ";
+
+    /// <summary>A chunk left unloaded for long enough is deleted, and made anew when someone comes back.</summary>
+    [Test]
+    public async Task AnUnloadedChunkIsFreed()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var maps = server.System<SharedMapSystem>();
+        var xforms = server.System<SharedTransformSystem>();
+        var world = server.System<WorldControllerSystem>();
+        var grace = server.CfgMan.GetCVar(WGPerformanceCVars.ChunkUnloadGrace);
+        var free = server.CfgMan.GetCVar(WGChunkFreeCVars.ChunkFreeSeconds);
+
+        EntityUid map = default;
+        EntityUid loader = default;
+        await server.WaitPost(() =>
+        {
+            server.CfgMan.SetCVar(WGPerformanceCVars.ChunkUnloadGrace, 1f);
+            server.CfgMan.SetCVar(WGChunkFreeCVars.ChunkFreeSeconds, 3f);
+            map = maps.CreateMap(out var mapId);
+            entMan.EnsureComponent<WorldControllerComponent>(map);
+            loader = entMan.SpawnEntity(null, new MapCoordinates(new Vector2(8f, 8f), mapId));
+            entMan.EnsureComponent<WorldLoaderComponent>(loader);
+        });
+        await pair.RunTicksSync(60);
+
+        try
+        {
+            EntityUid first = default;
+            var freed = world.WGChunksFreed;
+            await server.WaitAssertion(() =>
+            {
+                var chunks = entMan.GetComponent<WorldControllerComponent>(map).Chunks;
+                Assert.That(chunks.TryGetValue(Vector2i.Zero, out first), "The loader's own chunk should exist.");
+                xforms.SetWorldPosition(loader, new Vector2(100000f, 0f));
+            });
+
+            // Out of its grace and unloaded, but not yet old enough to go. When it unloads depends on where the
+            // controller's sweep stands, so it is waited for.
+            for (var i = 0; i < 80 && entMan.HasComponent<LoadedChunkComponent>(first); i++)
+            {
+                await pair.RunTicksSync(3);
+            }
+
+            await server.WaitAssertion(() =>
+            {
+                Assert.That(entMan.Deleted(first), Is.False, "The chunk was freed as soon as it unloaded.");
+                Assert.That(entMan.HasComponent<LoadedChunkComponent>(first), Is.False, "Precondition: the chunk has unloaded.");
+            });
+
+            await pair.RunSeconds(20f);
+            await server.WaitAssertion(() =>
+            {
+                Assert.That(entMan.Deleted(first), Is.True, "A chunk unloaded long ago was kept.");
+                var chunks = entMan.GetComponent<WorldControllerComponent>(map).Chunks;
+                Assert.That(chunks.ContainsKey(Vector2i.Zero), Is.False, "The world still lists the freed chunk.");
+                Assert.That(world.WGChunksFreed, Is.GreaterThan(freed));
+                xforms.SetWorldPosition(loader, new Vector2(8f, 8f));
+            });
+
+            await pair.RunSeconds(3f);
+            await server.WaitAssertion(() =>
+            {
+                var chunks = entMan.GetComponent<WorldControllerComponent>(map).Chunks;
+                Assert.That(chunks.TryGetValue(Vector2i.Zero, out var second), "Coming back made no chunk.");
+                Assert.That(second, Is.Not.EqualTo(first));
+                Assert.That(entMan.HasComponent<LoadedChunkComponent>(second), Is.True);
+            });
+        }
+        finally
+        {
+            await server.WaitPost(() =>
+            {
+                server.CfgMan.SetCVar(WGPerformanceCVars.ChunkUnloadGrace, grace);
+                server.CfgMan.SetCVar(WGChunkFreeCVars.ChunkFreeSeconds, free);
+                entMan.DeleteEntity(map);
+            });
+        }
+
+        await pair.CleanReturnAsync();
+    }
 
     /// <summary>A chunk nothing needs stays loaded through the grace, then unloads.</summary>
     [Test]

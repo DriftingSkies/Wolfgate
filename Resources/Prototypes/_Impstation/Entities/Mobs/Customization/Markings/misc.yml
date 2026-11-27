@@ -780,7 +780,7 @@
 
 - type: marking
   id: VoxTailStripes
-  bodyPart: Chest
+  bodyPart: Tail # WOLFGATE(Species): was Chest, which the tail layer covers
   markingCategory: Overlay
   speciesRestriction: [ Vox ]
   forcedColoring: false
@@ -1005,7 +1005,7 @@
 
 - type: marking
   id: VoxTailSingleStripe
-  bodyPart: Chest
+  bodyPart: Tail # WOLFGATE(Species): was Chest, which the tail layer covers
   markingCategory: Overlay
   speciesRestriction: [ Vox ]
   forcedColoring: false

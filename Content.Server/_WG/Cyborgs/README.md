@@ -40,9 +40,21 @@ It also covers player AI cores; see **Station AI** below.
   the cyborg's issued card; `WGBorgPdaSystem` names the PDA after the cyborg and sends app notifications to the
   cyborg's chat, since the stock path only tells whoever carries a PDA. A marked edit on `BaseBorgChassis`.
 
+- **Encryption keys**: every chassis has eight key slots. Unlock the chassis, open its panel with a screwdriver and
+  use a key on it; wirecutters take them all out. The stock key path (`IntrinsicRadioKeySystem`) would replace the
+  cyborg's radio channels with its keys', so `WGBorgRadioKeysServerSystem` puts the built-in channels back on top,
+  and takes the type's channels as the new built-in set when a type is picked. While an AI drives the cyborg it
+  keeps the AI's channels and updates the ones it restores. The Corvax back-to-AI action restores no channels (only
+  removing the controller does), so the system gives the cyborg its own back when that action or a reopened core
+  (`WGAiCoreGhostRoleSystem`) lets the AI go. The key holder isn't networked, so
+  `WGBorgRadioKeysSystem` opens the slots from the networked lock right before each use or examine. A marked edit on
+  `BaseBorgChassis`.
+- **NCI AK-220 weapon module** (`nci_ak220.yml`): Viper Assault starts with a one-handed AK-220 with integrated,
+  self-refilling caseless ammunition and a machete; it has no detachable magazine or manual bolt.
+
 `BorgPdaTest` covers the apps, the action and a cyborg's NanoChat, `BorgStackRefillTest` the issued kit and the
 cell-paid refill, `BorgPowerTest` the drinker lookup, `BorgShipPurchaseTest` a cyborg buying a ship with its card,
-and `BorgShipAccessTest` a crew door admitting it.
+`BorgShipAccessTest` a crew door admitting it, and `BorgRadioKeysTest` the lock-gated key slots and channels, and an AI's return.
 
 ## Station AI
 
@@ -88,40 +100,55 @@ borg-bound AI, the overwatch view and the chassis company.
 - [`Content.Server/_WG/Cyborgs/WGBorgIdCardServerSystem.cs`](WGBorgIdCardServerSystem.cs)
 - [`Content.Server/_WG/Cyborgs/WGBorgPdaSystem.cs`](WGBorgPdaSystem.cs)
 - [`Content.Server/_WG/Cyborgs/WGBorgPowerSystem.cs`](WGBorgPowerSystem.cs)
+- [`Content.Server/_WG/Cyborgs/WGBorgRadioKeysServerSystem.cs`](WGBorgRadioKeysServerSystem.cs)
 - [`Content.Server/_WG/Cyborgs/WGBorgStackRefillSystem.cs`](WGBorgStackRefillSystem.cs)
+- [`Content.Server/_WG/Cyborgs/WGOverwatchZoomLimitComponent.cs`](WGOverwatchZoomLimitComponent.cs)
 
 ### Shared
 
 - [`Content.Shared/_WG/Cyborgs/WGBorgIdCardComponent.cs`](../../../Content.Shared/_WG/Cyborgs/WGBorgIdCardComponent.cs)
 - [`Content.Shared/_WG/Cyborgs/WGBorgIdCardSystem.cs`](../../../Content.Shared/_WG/Cyborgs/WGBorgIdCardSystem.cs)
 - [`Content.Shared/_WG/Cyborgs/WGBorgPdaComponent.cs`](../../../Content.Shared/_WG/Cyborgs/WGBorgPdaComponent.cs)
+- [`Content.Shared/_WG/Cyborgs/WGBorgRadioKeysComponent.cs`](../../../Content.Shared/_WG/Cyborgs/WGBorgRadioKeysComponent.cs)
+- [`Content.Shared/_WG/Cyborgs/WGBorgRadioKeysSystem.cs`](../../../Content.Shared/_WG/Cyborgs/WGBorgRadioKeysSystem.cs)
+- [`Content.Shared/_WG/Cyborgs/WGBorgRescueSystem.cs`](../../../Content.Shared/_WG/Cyborgs/WGBorgRescueSystem.cs)
 - [`Content.Shared/_WG/Cyborgs/WGBorgStackRefillComponent.cs`](../../../Content.Shared/_WG/Cyborgs/WGBorgStackRefillComponent.cs)
 
 ### Client
 
 - [`Content.Client/_WG/Cyborgs/StationAiOverlay.Overwatch.cs`](../../../Content.Client/_WG/Cyborgs/StationAiOverlay.Overwatch.cs)
+- [`Content.Client/_WG/Cyborgs/WGBorgRescueClientSystem.cs`](../../../Content.Client/_WG/Cyborgs/WGBorgRescueClientSystem.cs)
 
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/BorgPdaTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/BorgPdaTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/BorgPowerTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/BorgPowerTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Cyborgs/BorgRadioKeysTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/BorgRadioKeysTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/BorgRepairVoucherTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/BorgRepairVoucherTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/BorgShipAccessTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/BorgShipAccessTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/BorgShipPurchaseTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/BorgShipPurchaseTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/BorgStackRefillTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/BorgStackRefillTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/FactionBorgCardTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/FactionBorgCardTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/WGAiCoreTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/WGAiCoreTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Cyborgs/WGBorgRescueTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/WGBorgRescueTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Cyborgs/WGViperAssaultModuleTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/WGViperAssaultModuleTest.cs)
 
 ### Prototypes
 
 - [`Resources/Prototypes/_WG/Cyborgs/id.yml`](../../../Resources/Prototypes/_WG/Cyborgs/id.yml)
 - [`Resources/Prototypes/_WG/Cyborgs/materials.yml`](../../../Resources/Prototypes/_WG/Cyborgs/materials.yml)
 - [`Resources/Prototypes/_WG/Cyborgs/medical.yml`](../../../Resources/Prototypes/_WG/Cyborgs/medical.yml)
+- [`Resources/Prototypes/_WG/Cyborgs/nci_ak220.yml`](../../../Resources/Prototypes/_WG/Cyborgs/nci_ak220.yml)
 - [`Resources/Prototypes/_WG/Cyborgs/pda.yml`](../../../Resources/Prototypes/_WG/Cyborgs/pda.yml)
+- [`Resources/Prototypes/_WG/Cyborgs/viper_borg_job.yml`](../../../Resources/Prototypes/_WG/Cyborgs/viper_borg_job.yml)
+- [`Resources/Prototypes/_WG/Cyborgs/viper_borg_subtypes.yml`](../../../Resources/Prototypes/_WG/Cyborgs/viper_borg_subtypes.yml)
+- [`Resources/Prototypes/_WG/Cyborgs/viper_borg_types.yml`](../../../Resources/Prototypes/_WG/Cyborgs/viper_borg_types.yml)
+- [`Resources/Prototypes/_WG/Cyborgs/viper_group.yml`](../../../Resources/Prototypes/_WG/Cyborgs/viper_group.yml)
 
 ### Localization
 
 - [`Resources/Locale/en-US/_WG/Cyborgs/power.ftl`](../../../Resources/Locale/en-US/_WG/Cyborgs/power.ftl)
+- [`Resources/Locale/en-US/_WG/Cyborgs/viper_group.ftl`](../../../Resources/Locale/en-US/_WG/Cyborgs/viper_group.ftl)
 
 ## Non-modular edits
 
@@ -129,32 +156,56 @@ borg-bound AI, the overwatch view and the chassis company.
   - a borg the AI already controlled stays reachable off the core's grid
   - lets this AI reconnect once the borg leaves the grid
   - list linked borgs off the core's grid too
-- [`Content.Server/_Rat/Overwatch/OverwatchSystem.cs`](../../_Rat/Overwatch/OverwatchSystem.cs): an AI's view returns to its remote eye
+- [`Content.Server/_Rat/Overwatch/OverwatchSystem.cs`](../../_Rat/Overwatch/OverwatchSystem.cs)
+  - a reused component must send its new target to the client
+  - a feed is seen at the default zoom limit, not an AI's
+  - an AI's view returns to its remote eye
+  - the client sees the feed end, so an AI's static returns
+- [`Content.Server/Chat/Systems/ChatSystem.Emote.cs`](../../Chat/Systems/ChatSystem.Emote.cs)
+  - resolve shared typed emotes against entity restrictions
+  - grants on shared trigger words bypass availability, not entity restrictions
 - [`Content.Server/Silicons/Borgs/BorgSystem.cs`](../../Silicons/Borgs/BorgSystem.cs)
   - the charge changes every tick with the headlight on
   - an empty cell raises this on every failed draw
 - [`Content.Shared/_CorvaxNext/Silicons/Borgs/SharedAiRemoteControlSystem.cs`](../../../Content.Shared/_CorvaxNext/Silicons/Borgs/SharedAiRemoteControlSystem.cs): a destroyed core leaves the AI in the borg instead of throwing on the deleted brain
+- [`Resources/Maps/_Mono/POI/camelot.yml`](../../../Resources/Maps/_Mono/POI/camelot.yml): Mapped Viper Group cyborg spawns beside the other Viper spawns.
+- [`Resources/Maps/_Mono/Test/dev_map.yml`](../../../Resources/Maps/_Mono/Test/dev_map.yml): Added a VG cyborg spawn point to the MonoDev test map.
+- [`Resources/Prototypes/_DV/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_DV/Voice/speech_emotes.yml)
+  - share honk triggers while restricting the emote by entity
+  - give borgs a separate Harpy-voiced honk emote
+  - share beep triggers while restricting the emote by entity
+  - give borgs a separate Harpy-voiced beep emote
 - [`Resources/Prototypes/_Mono/borg_types.yml`](../../../Resources/Prototypes/_Mono/borg_types.yml)
   - was 2, too few to fit a printed kit
   - the treatment module carries the defibrillator
 - [`Resources/Prototypes/_Mono/Entities/Mobs/Cyborgs/base_borg_chassis.yml`](../../../Resources/Prototypes/_Mono/Entities/Mobs/Cyborgs/base_borg_chassis.yml)
   - built and ghost-role borgs pass TSF company readers, not only job-spawned ones
+  - Harpy noise emotes for TSF cyborgs
   - built and ghost-role borgs pass PDV company readers, not only job-spawned ones
+  - Harpy noise emotes for PDV cyborgs
+  - Harpy noise emotes for xenoborgs
 - [`Resources/Prototypes/_Mono/Entities/Mobs/Player/silicon.yml`](../../../Resources/Prototypes/_Mono/Entities/Mobs/Player/silicon.yml)
   - passes TSF company readers (requisition station, overwatch console)
   - passes PDV company readers (requisition station, overwatch console)
 - [`Resources/Prototypes/_Mono/Entities/Objects/Tools/repair.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Tools/repair.yml): was 50, a 20 minute wait before a cyborg's first real repair
+- [`Resources/Prototypes/_Mono/PointsOfInterest/ussp.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/ussp.yml): raises Camelot's Viper borg cap to three
+- [`Resources/Prototypes/_Mono/Roles/Jobs/departments.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/departments.yml): registers the Viper Group borg job
 - [`Resources/Prototypes/_Mono/Roles/Jobs/PDV/borg.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/PDV/borg.yml): stamped on the issued card so the PDV shipyard sells to it
 - [`Resources/Prototypes/_Mono/Roles/Jobs/TSFMC/borg.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/TSFMC/borg.yml): stamped on the issued card so the TSFMC shipyard sells to it
+- [`Resources/Prototypes/_NF/Maps/debug.yml`](../../../Resources/Prototypes/_NF/Maps/debug.yml): make VG cyborg selectable on MonoDev
 - [`Resources/Prototypes/borg_types.yml`](../../../Resources/Prototypes/borg_types.yml): the treatment module carries the defibrillator
 - [`Resources/Prototypes/Entities/Mobs/Cyborgs/base_borg_chassis.yml`](../../../Resources/Prototypes/Entities/Mobs/Cyborgs/base_borg_chassis.yml)
   - the built-in PDA's window and ringtone picker
+  - encryption key slots behind the chassis lock and panel, adding to the built-in channels
   - the built-in PDA's installed apps
   - recharge from APCs and loose cells, and a bank account for ATMs and pay
-  - buckle into seats and climb onto tables
+  - buckle into seats, carry patients, and climb onto tables
   - a built-in PDA with a vagrant's apps, opened from an action
   - the headlight Monolith commented out, back as a toggle
+  - Harpy noise emotes for cyborgs
+  - installed keys drop when the chassis is destroyed
   - the action that opens the built-in PDA
+  - Harpy noise emotes for syndicate, faction, and xenoborgs
 - [`Resources/Prototypes/Entities/Mobs/Player/silicon.yml`](../../../Resources/Prototypes/Entities/Mobs/Player/silicon.yml): was PowerCellMedium, half an hour of work per charge
 - [`Resources/Prototypes/Entities/Objects/Specific/Robotics/borg_modules.yml`](../../../Resources/Prototypes/Entities/Objects/Specific/Robotics/borg_modules.yml)
   - gripper hands for cells, tanks, fuel, flatpacks and materials, and one holding an ID card
@@ -164,5 +215,8 @@ borg-bound AI, the overwatch view and the chassis company.
   - the refilling WGSutureBorg above replaces it
   - to tell the beakers apart
   - four beakers, two were not enough to mix anything
+- [`Resources/Prototypes/Voice/speech_emote_sounds.yml`](../../../Resources/Prototypes/Voice/speech_emote_sounds.yml)
+  - Harpy noise emotes for cyborgs
+  - Harpy noise emotes for syndicate, faction, and xenoborgs
 
 <!-- WOLFGATE-GENERATED END -->

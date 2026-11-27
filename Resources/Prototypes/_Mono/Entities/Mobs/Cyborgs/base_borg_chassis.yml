@@ -101,6 +101,31 @@
     speechSounds: SyndieBorg
     allowedEmotes:
     - Laugh
+    # WOLFGATE(Cyborgs) START: Harpy noise emotes for TSF cyborgs
+    - Meow
+    - Hiss
+    - Mew
+    - Purr
+    - Growl
+    - Bark
+    - Snarl
+    - Whine
+    - Howl
+    - Awoo
+    - BorgHarpyHonk
+    - HarpyRing
+    - HarpyPew
+    - HarpyBang
+    - BorgHarpyBeep
+    - HarpyRev
+    - HarpyCaw
+    - Squish
+    - Chitter
+    - Squeak
+    - Click
+    - Belch
+    - Bagawk
+    # WOLFGATE END
   - type: Vocal
     sounds:
       Unsexed: UnisexSiliconSyndicate
@@ -161,6 +186,31 @@
     speechSounds: SyndieBorg
     allowedEmotes:
     - Laugh
+    # WOLFGATE(Cyborgs) START: Harpy noise emotes for PDV cyborgs
+    - Meow
+    - Hiss
+    - Mew
+    - Purr
+    - Growl
+    - Bark
+    - Snarl
+    - Whine
+    - Howl
+    - Awoo
+    - BorgHarpyHonk
+    - HarpyRing
+    - HarpyPew
+    - HarpyBang
+    - BorgHarpyBeep
+    - HarpyRev
+    - HarpyCaw
+    - Squish
+    - Chitter
+    - Squeak
+    - Click
+    - Belch
+    - Bagawk
+    # WOLFGATE END
   - type: Vocal
     sounds:
       Unsexed: UnisexSiliconSyndicate
@@ -260,6 +310,31 @@
     speechSounds: Xenoborg
     allowedEmotes:
     - Laugh
+    # WOLFGATE(Cyborgs) START: Harpy noise emotes for xenoborgs
+    - Meow
+    - Hiss
+    - Mew
+    - Purr
+    - Growl
+    - Bark
+    - Snarl
+    - Whine
+    - Howl
+    - Awoo
+    - BorgHarpyHonk
+    - HarpyRing
+    - HarpyPew
+    - HarpyBang
+    - BorgHarpyBeep
+    - HarpyRev
+    - HarpyCaw
+    - Squish
+    - Chitter
+    - Squeak
+    - Click
+    - Belch
+    - Bagawk
+    # WOLFGATE END
   - type: Vocal
     sounds:
       Unsexed: UnisexSiliconSyndicate

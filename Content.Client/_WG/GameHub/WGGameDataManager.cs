@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Content.Shared._WG.GameHub;
 using Robust.Shared.Asynchronous;
 using Robust.Shared.ContentPack;
+using Robust.Shared.Network;
 using Robust.Shared.Network.Transfer;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
@@ -25,6 +26,7 @@ public sealed partial class WGGameDataManager
     private static readonly ResPath Folder = new("/wolfgate_games");
 
     [Dependency] private ILogManager _log = default!;
+    [Dependency] private IClientNetManager _net = default!;
     [Dependency] private IPrototypeManager _protos = default!;
     [Dependency] private IResourceManager _resources = default!;
     [Dependency] private ITaskManager _task = default!;
@@ -37,6 +39,33 @@ public sealed partial class WGGameDataManager
     {
         _sawmill = _log.GetSawmill("gamehub");
         _transfer.RegisterTransferMessage(WGGameHubProtocol.TransferKey, OnTransfer);
+        _net.RegisterNetMessage<MsgWGGameData>(OnMessage);
+    }
+
+    /// <summary>Asks the server what the current data for a game is.</summary>
+    public void RequestManifest(string game)
+    {
+        _net.ClientSendMessage(new MsgWGGameData { Kind = WGGameDataMessage.ManifestRequest, Game = game });
+    }
+
+    /// <summary>Asks the server to stream a game's data.</summary>
+    public void RequestDownload(string game)
+    {
+        BeginDownload(game);
+        _net.ClientSendMessage(new MsgWGGameData { Kind = WGGameDataMessage.DownloadRequest, Game = game });
+    }
+
+    private void OnMessage(MsgWGGameData message)
+    {
+        switch (message.Kind)
+        {
+            case WGGameDataMessage.Manifest:
+                SetManifest(message.Game, message.Size, message.Version);
+                break;
+            case WGGameDataMessage.DownloadFailed:
+                SetFailed(message.Game);
+                break;
+        }
     }
 
     public WGGameDataStatus GetStatus(string game) => GetEntry(game).Status;

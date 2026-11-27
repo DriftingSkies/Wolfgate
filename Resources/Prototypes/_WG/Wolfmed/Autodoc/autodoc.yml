@@ -232,7 +232,7 @@
     sprite: Objects/Specific/Research/researchdisk.rsi
     state: icon
   - type: StaticPrice
-    price: 1500
+    price: 150 # prints for about 100
     vendPrice: 15000 # bought from John Wolfgate or a vendor
 
 - type: entity

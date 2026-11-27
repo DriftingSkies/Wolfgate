@@ -66388,6 +66388,18 @@ entities:
     - type: Transform
       pos: 22.5,25.5
       parent: 1
+- proto: SpawnPointWGViperBorg
+  entities:
+  - uid: 11908
+    components:
+    - type: Transform
+      pos: 22.5,25.5
+      parent: 1
+  - uid: 11909
+    components:
+    - type: Transform
+      pos: 23.5,25.5
+      parent: 1
 - proto: SpiderWeb
   entities:
   - uid: 9231

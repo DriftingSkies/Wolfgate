@@ -70,6 +70,7 @@ public sealed partial class WGCockpitView
     private void MeasureHud(WGCockpitPanelLayout.Frame frame, Vector2 full)
     {
         _speechClip.Measure(full);
+        _gunLock.Measure(WGCockpitGunLockLamp.Size);
         // A maximised MFD measured its docked alerts and votes before it could be sized.
         if (!frame.WorldShown)
             return;
@@ -80,6 +81,7 @@ public sealed partial class WGCockpitView
 
     private void ArrangeHud(WGCockpitPanelLayout.Frame frame)
     {
+        ArrangeGunLock(frame);
         if (!frame.WorldShown)
         {
             // Bubbles have no world view to speak over, so the clip keeps them off screen; chat still carries the speech.
@@ -98,5 +100,14 @@ public sealed partial class WGCockpitView
         var voteWidth = Math.Max(140, Math.Min(340, world.Width - 164));
         _votes.Arrange(UIBox2.FromDimensions(world.TopLeft + new Vector2(6),
             new Vector2(voteWidth, Math.Max(0, Math.Min(world.Height - 12, _votes.DesiredSize.Y)))));
+    }
+
+    /// <summary>Centres the gun lock lamp at the top of the world view, or at the foot of a maximised MFD, clear of its header.</summary>
+    private void ArrangeGunLock(WGCockpitPanelLayout.Frame frame)
+    {
+        var area = frame.WorldShown ? frame.World : frame.Mfd;
+        var size = new Vector2(Math.Min(WGCockpitGunLockLamp.Size.X, Math.Max(1, area.Width - 12)), WGCockpitGunLockLamp.Size.Y);
+        var top = frame.WorldShown ? area.Top + 8 : area.Bottom - size.Y - 8;
+        _gunLock.Arrange(UIBox2.FromDimensions(new Vector2(area.Left + (area.Width - size.X) / 2, top), size));
     }
 }

@@ -39,6 +39,7 @@ public sealed partial class ShipShieldsSystem
         SubscribeLocalEvent<ShipShieldedComponent, MoveEvent>(OnWolfgateShieldGridMove);
         SubscribeLocalEvent<ShipShieldedComponent, EntityTerminatingEvent>(OnWolfgateShieldGridTerminating);
         InitializeWolfgateDeflectors();
+        InitializeWolfgateShieldCosts();
     }
 
     private void OnWolfgateShieldGridMove(EntityUid uid, ShipShieldedComponent component, ref MoveEvent args)
@@ -54,8 +55,13 @@ public sealed partial class ShipShieldsSystem
     }
     private void OnWolfgateShieldTileChanged(ref TileChangedEvent args)
     {
-        if (HasComp<ShipShieldedComponent>(args.Entity) && args.Changes.Any(c => c.OldTile.IsEmpty != c.NewTile.IsEmpty))
+        if (!args.Changes.Any(c => c.OldTile.IsEmpty != c.NewTile.IsEmpty))
+            return;
+        if (HasComp<ShipShieldedComponent>(args.Entity))
             _wgChangedShieldHulls.Add(args.Entity);
+        // A hull's own heat capacity follows its size.
+        if (TryComp<WGShipHeatComponent>(args.Entity, out var hull))
+            hull.Sized = false;
     }
 
     /// <summary>Refreshes changing hulls and emitter health.</summary>
@@ -64,6 +70,9 @@ public sealed partial class ShipShieldsSystem
         UpdateWolfgateFtlShields();
         UpdateWolfgateShieldTails();
         UpdateWolfgateShieldPvs(frameTime);
+        UpdateWolfgateHullHeat(frameTime);
+        UpdateWolfgateVents();
+        UpdateWolfgateRadarMarks(frameTime);
         var query = EntityQueryEnumerator<WGShipShieldVisualsComponent, ShipShieldComponent>();
         while (query.MoveNext(out var uid, out var visuals, out var shield))
             UpdateWolfgateShieldHealth(uid, visuals, shield.Source);
@@ -243,8 +252,11 @@ public sealed partial class ShipShieldsSystem
             var previousDamage = emitter.Damage;
             var ev = new ShieldDeflectedEvent(args.ProjUid, projectile);
             RaiseLocalEvent(source, ref ev);
-            emitter.Damage = previousDamage + (emitter.Damage - previousDamage) / strength;
-            ReportWolfgateShieldAttack(component, emitter.Damage - previousDamage, launchGrid, projectile.Weapon, projectile.Shooter);
+            var hit = emitter.Damage - previousDamage;
+            var absorbed = hit / strength;
+            // The generator is charged its share of the hit; the hull's own capacity takes the rest.
+            emitter.Damage = previousDamage + WolfgateHitCharge(source, emitter, absorbed, hit);
+            ReportWolfgateShieldAttack(component, absorbed, launchGrid, projectile.Weapon, projectile.Shooter);
             var impactStrength = WGShipShieldEffects.ImpactStrength(emitter.Damage - previousDamage,
                 WGShipShieldEffects.EffectiveCapacity(emitter.DamageLimit, emitter.MaxDraw, emitter.PowerModifier, emitter.DamageExp));
             WolfgateShieldImpact(uid, impactPosition, impactStrength);

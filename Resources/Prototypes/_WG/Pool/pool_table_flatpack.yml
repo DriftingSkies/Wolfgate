@@ -20,6 +20,20 @@
   name: pool table kit
   categories: [ HideSpawnMenu ]
   components:
+  # The table's fixture, which never collides: flatpacks only unpack what has fixtures, and check the tile is free for it.
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        mask:
+        - TableMask
+        layer:
+        - TableLayer
   - type: EntityTableSpawner
     offset: 0
     table: !type:AllSelector

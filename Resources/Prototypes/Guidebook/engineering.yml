@@ -280,6 +280,7 @@
     - PowerStorage
     - Ramping
     - VoltageNetworks
+    - WGLargeApc # WOLFGATE(Power): LAPC substations for high-draw machines
 
 - type: guideEntry
   id: InspectingPower

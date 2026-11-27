@@ -1,4 +1,5 @@
 using Content.Server._WG.Genitals;
+using Content.Server._WG.Headshot;
 using Content.Server.Chat.Managers;
 using Content.Shared._WG.ExamineCard;
 using Content.Shared._WG.Genitals.Systems;
@@ -20,6 +21,7 @@ public sealed partial class ExamineCardSystem : SharedExamineCardSystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private GenitalConsentSystem _genitalConsent = default!;
     [Dependency] private Content.Server._WG.Companies.WGCompanySystem _companies = default!;
+    [Dependency] private HeadshotSystem _headshot = default!;
 
     /// <summary>The same examiner looking again within this time doesn't tell the character twice.</summary>
     private static readonly TimeSpan NoticeCooldown = TimeSpan.FromSeconds(20);
@@ -34,7 +36,12 @@ public sealed partial class ExamineCardSystem : SharedExamineCardSystem
         var card = BuildCard(target, examiner, detailed);
         if (detailed)
         {
-            card.NsfwText = NsfwTextFor(target, examiner);
+            if (MayReadNsfw(target, examiner))
+            {
+                card.NsfwText = CompOrNull<NsfwDescriptionComponent>(target)?.Text;
+                card.NsfwHeadshot = _headshot.ShowNsfw(target, session);
+            }
+
             _companies.FillExamineCard(target, card);
         }
 
@@ -43,14 +50,18 @@ public sealed partial class ExamineCardSystem : SharedExamineCardSystem
     }
 
     /// <summary>
-    /// The target's adult description if the examiner may read it: the anatomy rules apply, and like the normal
-    /// description it needs the face to show. Null otherwise.
+    /// Whether the examiner may see the target's adult description and adult headshot: the anatomy rules apply,
+    /// and like the normal description it needs the face to show.
     /// </summary>
+    public bool MayReadNsfw(EntityUid target, EntityUid examiner)
+    {
+        return Identity.Name(target, EntityManager) == Name(target) && _genitalConsent.CanExamine(examiner, target);
+    }
+
+    /// <summary>The target's adult description if the examiner may read it, else null.</summary>
     public string? NsfwTextFor(EntityUid target, EntityUid examiner)
     {
-        if (!TryComp<NsfwDescriptionComponent>(target, out var nsfw)
-            || Identity.Name(target, EntityManager) != Name(target)
-            || !_genitalConsent.CanExamine(examiner, target))
+        if (!TryComp<NsfwDescriptionComponent>(target, out var nsfw) || !MayReadNsfw(target, examiner))
             return null;
 
         return nsfw.Text;

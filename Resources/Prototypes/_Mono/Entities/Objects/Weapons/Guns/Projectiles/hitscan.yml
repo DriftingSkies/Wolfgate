@@ -109,7 +109,7 @@
   - type: HitscanBasicDamage
     damage:
       types:
-        Heat: 25 # Mono
+        Heat: 29 # WOLFGATE(Weapons): was 25; the pulse rifle hits a little harder
         Shock: 10
         Structural: 70
 

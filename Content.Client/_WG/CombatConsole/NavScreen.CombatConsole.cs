@@ -74,7 +74,7 @@ public sealed partial class NavScreen
         var coordinates = new WGGlassReadout(coordinateBody) { Name = "WgCoordinates" };
         var fuel = new WGCockpitFuelBank(() => WgFuel, "Nav");
         var instruments = Column(new WGGlassReadout(identity), Row(speed, yaw), forward, coordinates, lateral,
-            vertical, travel, fuel, WgCargoGauge("Nav"), ReadonlyDisplay);
+            vertical, travel, fuel, WgCargoGauge("Nav"), WgShipModuleBank("Nav"), ReadonlyDisplay);
         instruments.SeparationOverride = WgPanelGap;
         var telemetry = Panel("wg-console-telemetry", instruments, padding: WgPanelPadding, gap: 2);
         MaximumShuttleSpeedBox.Margin = IffSearchBox.Margin = MaximumIFFDistanceBox.Margin = new Thickness(0);

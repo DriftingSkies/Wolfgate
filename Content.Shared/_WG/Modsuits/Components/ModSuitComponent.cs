@@ -52,6 +52,10 @@ public sealed partial class ModSuitComponent : Component
     [DataField, AutoNetworkedField, AutoPausedField]
     public TimeSpan NextActivationStep;
 
+    /// <summary>Scales the theme's activation step time; springlock and magnetic deployment modules lower it.</summary>
+    [DataField]
+    public float ActivationStepMultiplier = 1f;
+
     [DataField, AutoNetworkedField]
     public List<string> DeployQueue = new();
 

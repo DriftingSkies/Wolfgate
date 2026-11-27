@@ -38,3 +38,14 @@
   storage:
     back:
     - LogProbeCartridge
+
+# WOLFGATE(PdaStorage): the contractor program choices ship as one disk
+- type: loadout
+  id: ContractorSoftwareDisk
+  effects:
+  - !type:GroupLoadoutEffect
+    proto: ContractorT1
+  price: 0
+  storage:
+    back:
+    - PdaDataDiskContractor

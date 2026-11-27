@@ -22,6 +22,7 @@
     - suitStorage # Frontier
     sprite: _DV/Objects/Weapons/Guns/Battery/energygun.rsi
   - type: Gun
+    fireRate: 3 # WOLFGATE(Weapons): was 2; part of the laser sustain buff
     soundGunshot:
       path: /Audio/_DV/Weapons/Guns/Gunshots/laser.ogg
     soundEmpty:
@@ -36,6 +37,13 @@
   - type: Battery
     maxCharge: 2250 # Mono 2000->2250
     startingCharge: 2250 # Mono 2000->2250
+  # WOLFGATE(Weapons) START: a kill shot back every 4 s after 2 s idle
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 18
+    autoRechargePause: true
+    autoRechargePauseTime: 2
+  # WOLFGATE END
   - type: ProjectileBatteryAmmoProvider
     proto: BulletDisabler
     fireCost: 45 # 100->45

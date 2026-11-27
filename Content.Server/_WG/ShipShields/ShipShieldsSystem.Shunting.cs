@@ -68,25 +68,31 @@ public sealed partial class ShipShieldsSystem
         var allocation = EnsureComp<WGShipShieldShuntComponent>(grid);
         allocation.Enabled = enabled;
         DirtyField(grid, allocation, nameof(WGShipShieldShuntComponent.Enabled));
-        if (!enabled && TryComp<ShipShieldedComponent>(grid, out var shielded))
-        {
-            if (shielded.Source is { } source && TryComp<ShipShieldEmitterComponent>(source, out var emitter))
-            {
-                if (RemoveWolfgateEmitterShield(source, emitter, "manual disable"))
-                    PlayWolfgateShieldPowerSound(source, grid, false);
-                emitter.Shield = null;
-                emitter.Shielded = null;
-            }
-            else
-                UnshieldEntity(grid, shielded);
-        }
+        if (!enabled)
+            LowerWolfgateShield(grid, "manual disable");
         return true;
     }
 
-    /// <summary>Checks the persistent manual operating state for installed emitters.</summary>
+    /// <summary>Drops a ship's field by its crew's choice: the generator stays ready and no guns lock.</summary>
+    private void LowerWolfgateShield(EntityUid grid, string reason)
+    {
+        if (!TryComp<ShipShieldedComponent>(grid, out var shielded))
+            return;
+        if (shielded.Source is { } source && TryComp<ShipShieldEmitterComponent>(source, out var emitter))
+        {
+            if (RemoveWolfgateEmitterShield(source, emitter, reason))
+                PlayWolfgateShieldPowerSound(source, grid, false);
+            emitter.Shield = null;
+            emitter.Shielded = null;
+        }
+        else
+            UnshieldEntity(grid, shielded);
+    }
+
+    /// <summary>Whether a ship's crew lets its field rise: the manual switch is on and the ship isn't venting.</summary>
     private bool IsWolfgateShieldEnabled(EntityUid grid)
     {
-        return !TryComp<WGShipShieldShuntComponent>(grid, out var allocation) || allocation.Enabled;
+        return (!TryComp<WGShipShieldShuntComponent>(grid, out var allocation) || allocation.Enabled) && !IsWolfgateShipVenting(grid);
     }
 
     /// <summary>Validates and applies one ship's shield power allocation.</summary>

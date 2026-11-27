@@ -61,6 +61,27 @@ public sealed class WGNetTrafficTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>A hacking dart is an item that is its own projectile; it is never hidden like a shell.</summary>
+    [Test]
+    public async Task HarpoonDartIsNotHidden()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var em = server.EntMan;
+
+        await server.WaitAssertion(() =>
+        {
+            var dart = em.SpawnEntity("WGHackDart", map.MapCoords);
+            Assert.That(em.HasComponent<WGNetShellComponent>(dart), Is.False, "A dart is not an off-network shell.");
+            var hidden = em.TryGetComponent<VisibilityComponent>(dart, out var vis)
+                && (vis.Layer & WGNetTraffic.NeverSentLayer) != 0;
+            Assert.That(hidden, Is.False, "A dart is not on the layer no eye sees.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     /// <summary>A player watching through a far camera is told of shells by the camera, not by where they stand.</summary>
     [Test]
     public async Task ShellReachesAPlayerWatchingThroughACamera()

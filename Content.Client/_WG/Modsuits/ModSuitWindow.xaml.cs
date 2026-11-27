@@ -374,7 +374,7 @@ public sealed partial class ModSuitWindow : FancyWindow
         var idlePower = module.IdlePower * ModSuitSystem.PowerDrainScale;
         var activePower = module.ActivePower * ModSuitSystem.PowerDrainScale;
         var usePower = module.UsePower * ModSuitSystem.PowerDrainScale;
-        var complexity = module.Complexity;
+        var complexity = module.Removable ? module.Complexity : 0;
         row.Idle.Text = idlePower.ToString("0.##");
         row.ActivePower.Text = activePower.ToString("0.##");
         row.Use.Text = usePower.ToString("0.##");

@@ -17,8 +17,9 @@ namespace Content.Server._WG.NetTraffic;
 /// whole, as a join does.
 /// </summary>
 /// <remarks>
-/// Maps still go to everyone: the FTL map lists the maps the client has. Grids on planet worlds and z-transit maps are
-/// left as they were, as are rocks <see cref="WGAsteroidCullSystem"/> sends only to players near them.
+/// Maps still go to everyone: the FTL map lists the maps the client has. Grids on planet worlds, z-transit maps and
+/// maps exempted through <see cref="WGMapScopeExemptEvent"/> are left as they were, as are rocks
+/// <see cref="WGAsteroidCullSystem"/> sends only to players near them.
 /// </remarks>
 public sealed class WGMapScopedPvsSystem : EntitySystem
 {
@@ -101,7 +102,7 @@ public sealed class WGMapScopedPvsSystem : EntitySystem
         UpdateSessions();
     }
 
-    // Grids on planet worlds and transit maps keep the sending they have.
+    // Grids on planet worlds, transit maps and maps other systems exempt keep the sending they have.
     private void CollectExcluded()
     {
         _excluded.Clear();
@@ -119,6 +120,9 @@ public sealed class WGMapScopedPvsSystem : EntitySystem
         {
             _excluded.Add(uid);
         }
+
+        var ev = new WGMapScopeExemptEvent(_excluded);
+        RaiseLocalEvent(ref ev);
     }
 
     private EntityUid SystemOf(EntityUid map)

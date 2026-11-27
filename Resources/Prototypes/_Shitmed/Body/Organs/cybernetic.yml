@@ -9,6 +9,9 @@
     state: "eyes"
   - type: PirateBountyItem # Mono
     id: Cybernetics
+  # WOLFGATE: priced as a printed part, not the 4500 harvested organ it inherits
+  - type: StaticPrice
+    price: 330
 
 - type: entity
   parent: BaseCyberneticEyes

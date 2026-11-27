@@ -32,3 +32,4 @@
     - id: Poison
     - id: Narcotic
     - id: Alcohol
+      rateModifier: 0.1 # WOLFGATE(WolfChem): at full rate the stomach cleared ethanol before it could make a moth drunk

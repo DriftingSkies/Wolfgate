@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using Content.Server._Mono.Radar;
 using Content.Server._NF.SectorServices;
+using Content.Server._NF.Shipyard.Systems;
 using Content.Server._WG.CargoSales;
 using Content.Server._WG.WolfChem.Narcotics;
 using Content.Server.Cargo.Systems;
+using Content.Server.Fluids.EntitySystems;
 using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WG.WolfChem.Narcotics;
 using Content.Shared.Cargo.Components;
 using Content.Shared.Cargo.Events;
+using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Contraband;
 using Content.Shared.FixedPoint;
 using Content.Shared.Stacks;
+using Content.Shared.Storage.EntitySystems;
 using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -229,6 +233,49 @@ public sealed class NarcoticHeatTest
                 Assert.That(clean, Is.EqualTo(5), "A clean tank hands in for more than its own reward.");
                 Assert.That(taken, Is.Empty, "The narcotics hand-in takes a clean tank.");
             });
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A hull's appraisal leaves out the narcotics aboard, loose, stowed, spilled or in a tank, and keeps the rest.</summary>
+    [Test]
+    public async Task AHullSalePaysNothingForNarcotics()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entMan = server.EntMan;
+
+        await server.WaitAssertion(() =>
+        {
+            var shipyard = server.System<ShipyardSystem>();
+            var pricing = server.System<PricingSystem>();
+            var solutions = server.System<SharedSolutionContainerSystem>();
+            var ship = map.Grid.Owner;
+
+            var crate = entMan.SpawnEntity("CrateGenericSteel", map.GridCoords);
+            var hull = shipyard.GetShipAppraisal(ship);
+            Assert.That(hull, Is.GreaterThanOrEqualTo((int) pricing.GetPrice(crate)).And.Positive, "A hull sale pays for a crate.");
+
+            var baggie = entMan.SpawnEntity("WGBaggieCocaine", map.GridCoords);
+            Assert.That(pricing.GetPrice(baggie), Is.Positive);
+            Assert.That(shipyard.GetShipAppraisal(ship), Is.EqualTo(hull), "A hull sale paid for a baggie on the deck.");
+
+            Assert.That(server.System<SharedEntityStorageSystem>().Insert(baggie, crate), Is.True);
+            Assert.That(shipyard.GetShipAppraisal(ship), Is.EqualTo(hull), "A baggie in a crate changed what the hull sells for.");
+
+            var spilled = new Solution("WGCocaine", FixedPoint2.New(10));
+            Assert.That(server.System<PuddleSystem>().TrySpillAt(map.GridCoords, spilled, out var puddle, false), Is.True);
+            Assert.That(pricing.GetPrice(puddle), Is.Positive);
+            Assert.That(shipyard.GetShipAppraisal(ship), Is.EqualTo(hull), "A hull sale paid for cocaine spilled on the deck.");
+
+            var tank = entMan.SpawnEntity("WaterTank", map.GridCoords);
+            var clean = shipyard.GetShipAppraisal(ship);
+            Assert.That(clean, Is.GreaterThan(hull), "A hull sale pays for a clean tank.");
+            Assert.That(solutions.TryGetSolution(tank, "tank", out var soln, out _));
+            solutions.TryAddReagent(soln!.Value, "WGCocaine", FixedPoint2.New(100));
+            Assert.That(shipyard.GetShipAppraisal(ship), Is.EqualTo(hull), "A hull sale paid for a tank of cocaine.");
         });
 
         await pair.CleanReturnAsync();

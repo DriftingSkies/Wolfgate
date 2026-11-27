@@ -68,6 +68,7 @@ public sealed partial class WGHackHarpoonSystem : EntitySystem
         SubscribeLocalEvent<WGHackHarpoonGunComponent, RopeDetachedEvent>(OnCableGone);
         SubscribeLocalEvent<WGHackHarpoonGunComponent, ComponentShutdown>(OnGunShutdown);
         SubscribeLocalEvent<FireControllableComponent, ShotAttemptedEvent>(OnShipGunShot);
+        InitializeShields();
     }
 
     /// <summary>The hack itself starts on the next tick, with the rope finished and the dart settled in the hull.</summary>

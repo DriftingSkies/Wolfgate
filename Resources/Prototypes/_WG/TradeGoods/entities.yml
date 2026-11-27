@@ -1,4 +1,4 @@
-# The Market PDA app: live chute prices, sector alerts and the hold.
+﻿# The Market PDA app: live chute prices, sector alerts and the hold.
 - type: entity
   parent: NFBasePDACartridge
   id: WGMarketCartridge
@@ -15,8 +15,9 @@
     ui: !type:MarketUi
   - type: Cartridge
     programName: wg-market-program-name
+    size: 8
     icon: { sprite: _WG/TradeGoods/market.rsi, state: icon }
-    readonly: true
+    readonly: false
   - type: WGMarketCartridge
   - type: StaticPrice
     price: 50

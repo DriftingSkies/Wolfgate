@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Server._WG.MappingTools;
 using Content.Server.Administration.Logs;
+using Content.Server.Cargo.Systems;
 using Content.Server.Communications;
 using Content.Server.Preferences.Managers;
 using Content.Server.Radio;
@@ -10,6 +11,7 @@ using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Events;
 using Content.Server.Spawners.Components;
 using Content.Server.Station.Systems;
+using Content.Shared._NF.Bank;
 using Content.Shared._WG.MappingMode;
 using Content.Shared._WG.MappingMode.Test;
 using Content.Shared.Database;
@@ -49,6 +51,7 @@ public sealed partial class WGMappingTestSystem : EntitySystem
     [Dependency] private MapSystem _map = default!;
     [Dependency] private MappingZLevelsSystem _zLevels = default!;
     [Dependency] private MetaDataSystem _meta = default!;
+    [Dependency] private PricingSystem _pricing = default!;
     [Dependency] private SharedMindSystem _mind = default!;
     [Dependency] private StationSpawningSystem _spawning = default!;
     [Dependency] private TransformSystem _transform = default!;
@@ -104,12 +107,47 @@ public sealed partial class WGMappingTestSystem : EntitySystem
                 continue;
             }
 
+            if (test.Appraisal == null && now > test.Started)
+                Appraise(test);
+
             foreach (var (user, tester) in test.Testers.ToList())
             {
                 if (TerminatingOrDeleted(tester.Mob) || tester.ReturnAt is { } at && now >= at)
                     EndTest(user, "wg-mapping-test-returned");
             }
         }
+    }
+
+    /// <summary>
+    /// Prices the test's ship once its maps have run a tick, so map init's fills, spawners and machine contents count,
+    /// and tells every tester.
+    /// </summary>
+    private void Appraise(WGMappingTest test)
+    {
+        if (test.Ship is not { } ship || TerminatingOrDeleted(ship))
+        {
+            test.Appraisal = 0;
+            return;
+        }
+
+        // Testers aboard aren't part of the ship.
+        test.Appraisal = (int) Math.Round(_pricing.AppraiseGrid(ship, uid => !HasComp<WGMappingTesterComponent>(uid)));
+        foreach (var (user, tester) in test.Testers)
+        {
+            ShowAppraisal(tester.Mob, test);
+            if (_players.TryGetSessionById(user, out var player))
+                _mapping.Notify(player, true, "wg-mapping-test-appraised",
+                    ("value", BankSystemExtensions.ToSpesoString(test.Appraisal.Value)));
+        }
+    }
+
+    private void ShowAppraisal(EntityUid mob, WGMappingTest test)
+    {
+        if (test.Appraisal is not { } value || !TryComp<WGMappingTesterComponent>(mob, out var tester))
+            return;
+
+        tester.Appraisal = value;
+        Dirty(mob, tester);
     }
 
     /// <summary>Whether a player is in a live test.</summary>
@@ -506,6 +544,9 @@ public sealed partial class WGMappingTestSystem : EntitySystem
         var tester = EnsureComp<WGMappingTesterComponent>(mob);
         tester.MapName = session.Name;
         tester.Ends = test.Ends;
+        if (test.Ship != null)
+            tester.Appraisal = test.Appraisal;
+
         Dirty(mob, tester);
 
         var observerAt = _transform.GetMapCoordinates(observer);

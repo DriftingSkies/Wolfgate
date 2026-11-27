@@ -263,8 +263,7 @@ public sealed partial class WGMarketCartridgeSystem : EntitySystem
                 hiddenChutes.Add(chute);
             }
 
-            var restocking = _market.ScarceGoods(grid).Where(good => !dispenser.Inventory.ContainsKey(good)).ToList();
-            foreach (var good in dispenser.Inventory.Keys.Concat(restocking))
+            foreach (var good in dispenser.Inventory.Keys.Concat(_market.Unlisted(grid, dispenser)))
             {
                 // Contraband that sells at the drop alone goes on the drop's own card, and on no open station's.
                 var card = station;
@@ -312,7 +311,7 @@ public sealed partial class WGMarketCartridgeSystem : EntitySystem
             foreach (var (good, quote) in _market.StationBuyQuotes(grid))
             {
                 station.Buys.Add(new WGMarketPrice(_market.GoodName(good), quote.Amount, quote.Factor,
-                    Loc.GetString(quote.Reason), _cargo.GoodWeight(good), false, stocked.Contains(good) ? _market.VendorStock(grid, good) : null, Shelf(grid, good, profile)));
+                    Loc.GetString(quote.Reason), _cargo.GoodWeight(good), false, stocked.Contains(good) ? _market.ForSale(grid, good) : null, Shelf(grid, good, profile)));
             }
 
             station.Buys.Sort((a, b) => a.Amount.CompareTo(b.Amount));

@@ -185,6 +185,15 @@ public sealed partial class FireControlWindow
         WgUpdateSelection();
     }
 
+    /// <summary>Recalls a group as its button would, doing nothing where the button is disabled.</summary>
+    internal bool WgTryRecallGroup(int slot)
+    {
+        if (slot < 0 || slot >= WGWeaponGroups.Count || _wgRecall[slot].Disabled)
+            return false;
+        WgRecallGroup(slot);
+        return true;
+    }
+
     private void WgRecallGroup(int slot)
     {
         if (_wgCombat == null)

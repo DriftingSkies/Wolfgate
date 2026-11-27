@@ -148,6 +148,11 @@
     - Power
   - type: BatteryDrinkerSource # EE IPCs
     maxAmount: 10000
+  # WOLFGATE(Construction) START: marks its wall face as taken for the APC recipe
+  - type: Tag
+    tags:
+    - WGApc
+  # WOLFGATE END
 
 # APC under construction
 - type: entity
@@ -196,6 +201,11 @@
           collection: MetalBreak
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
+  # WOLFGATE(Construction) START: a frame takes its wall face like a finished APC
+  - type: Tag
+    tags:
+    - WGApc
+  # WOLFGATE END
 
 # Constructed APC
 - type: entity

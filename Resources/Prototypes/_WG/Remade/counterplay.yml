@@ -100,7 +100,7 @@
     maxCharge: 1000
     startingCharge: 1000
   - type: StaticPrice
-    price: 900
+    price: 160 # prints for about 125
 
 - type: entity
   parent: BasicHitscan
@@ -133,7 +133,7 @@
   - type: Flatpack
     entity: WGMonolithTap
   - type: StaticPrice
-    price: 1500
+    price: 160 # prints for about 125
 
 - type: latheRecipePack
   id: WGRemadeStatic

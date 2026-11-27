@@ -1,8 +1,14 @@
+using System.Linq;
+using Content.Server._WG.Cleaning;
+using Content.Server.Decals;
 using Content.Server.Light.EntitySystems;
+using Content.Shared._WG.Wolfmed.Gore;
+using Content.Shared.Decals;
 using Content.Shared.Fluids.Components;
 using Content.Shared.Light.Components;
 using Content.Shared.Tag;
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server._WG.ShipAdmin;
@@ -11,6 +17,8 @@ public sealed partial class WGShipAdminSystem
 {
     [Dependency] private PoweredLightSystem _lights = default!;
     [Dependency] private TagSystem _tags = default!;
+    [Dependency] private DecalSystem _decals = default!;
+    [Dependency] private WGDecalCleaningSystem _cleaning = default!;
 
     private static readonly ProtoId<TagPrototype> TrashTag = "Trash";
     private static readonly EntProtoId SpareBulb = "LightBulb";
@@ -34,7 +42,7 @@ public sealed partial class WGShipAdminSystem
         return count;
     }
 
-    /// <summary>Deletes every puddle on the ship.</summary>
+    /// <summary>Deletes every puddle on the ship, and washes its stains off with them (<see cref="RemoveStains"/>).</summary>
     private int RemovePuddles(EntityUid grid)
     {
         var count = 0;
@@ -45,6 +53,38 @@ public sealed partial class WGShipAdminSystem
                 continue;
 
             QueueDel(uid);
+            count++;
+        }
+
+        return count + RemoveStains(grid);
+    }
+
+    /// <summary>
+    /// Washes off what cleaning would take: footprints, blood and dirt decals on the floors (a mapper's paint stays)
+    /// and Wolfmed's blood splats, the walls' included.
+    /// </summary>
+    private int RemoveStains(EntityUid grid)
+    {
+        var count = 0;
+        var splats = EntityQueryEnumerator<WolfmedCleanableComponent, TransformComponent>();
+        while (splats.MoveNext(out var uid, out _, out var xform))
+        {
+            if (xform.GridUid != grid)
+                continue;
+
+            QueueDel(uid);
+            count++;
+        }
+
+        if (!TryComp<DecalGridComponent>(grid, out var decalGrid) || !TryComp<MapGridComponent>(grid, out var map))
+            return count;
+
+        foreach (var (index, decal) in _decals.GetDecalsIntersecting(grid, map.LocalAABB, decalGrid).ToList())
+        {
+            if (!_cleaning.IsCleanable(decal))
+                continue;
+
+            _decals.RemoveDecal(grid, index, decalGrid);
             count++;
         }
 

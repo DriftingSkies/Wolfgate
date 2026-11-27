@@ -4,7 +4,7 @@
   id: WGShieldGeneratorDeflector
   parent: ShieldGeneratorSmall
   name: MD-10 "Parasol" Deflector Generator
-  description: A micrometeorite reflector for long hauls with a low power consumption to save costs while providing minimum protection. In a pinch its field can absorb most of the kinetic damage off incoming projectiles, and still stops missiles and energy fire outright.
+  description: A low-power micrometeorite deflector for long hauls. Its field absorbs most kinetic damage from projectiles and stops missiles and energy fire outright.
   components:
   - type: ShipShieldEmitter
     # Same capacity as the MS-100: the draw limits and the power modifier shrink together.
@@ -12,6 +12,12 @@
     maxDraw: 12000
     powerModifier: 0.1
     shieldColor: "#FFFFFF"
+  # A thin field costs the ship less thrust and turning than the MS-100 and half its signature; the gun lock on collapse is the same.
+  - type: WGShipShieldCost
+    thrustFactor: 0.83
+    turnFactor: 0.85
+    signature: 300000
+    hitSignature: 200
   - type: WGShipShieldDeflector
     reduction: 0.7
     maxArc: 180

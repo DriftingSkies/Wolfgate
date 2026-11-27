@@ -2,6 +2,7 @@ using System.Linq;
 using Content.Server._WG.NpcCrew.Components;
 using Content.Server.Shuttles.Events;
 using Content.Shared._Mono.Company;
+using Content.Shared._Mono.CorticalBorer;
 using Content.Shared._WG.NpcCrew;
 using Content.Shared.Humanoid;
 using Content.Shared.Mobs.Components;
@@ -78,6 +79,22 @@ public sealed partial class WGCrewSecuritySystem : EntitySystem
         return !(aiRemotes ?? AiRemotes()).Contains(visitor);
     }
 
+    /// <summary>A cortical borer: never welcome aboard, whatever the ship's command or the zone says.</summary>
+    public bool IsAlwaysHostile(EntityUid visitor) => HasComp<CorticalBorerComponent>(visitor);
+
+    /// <summary>
+    /// An animal that is no threat to the crewman, such as a mouse from a vent: not a person, a cyborg or a borer, and
+    /// of no faction hostile to his either way. Crew leave these alone rather than warn, report or shoot them.
+    /// </summary>
+    public bool IsFauna(EntityUid crew, EntityUid visitor)
+    {
+        if (HasComp<HumanoidAppearanceComponent>(visitor) || HasComp<BorgChassisComponent>(visitor) || IsAlwaysHostile(visitor))
+            return false;
+        if (!TryComp<NpcFactionMemberComponent>(visitor, out var theirs) || !TryComp<NpcFactionMemberComponent>(crew, out var ours))
+            return true;
+        return !_factions.IsMemberOfAny(crew, theirs.HostileFactions) && !_factions.IsMemberOfAny(visitor, ours.HostileFactions);
+    }
+
     /// <summary>Every station AI core's remote body.</summary>
     private HashSet<EntityUid> AiRemotes()
     {
@@ -97,7 +114,7 @@ public sealed partial class WGCrewSecuritySystem : EntitySystem
     private void ReceiveSighting(EntityUid uid, EntityUid visitor, HashSet<EntityUid>? aiRemotes)
     {
         if (!TryComp<WGCrewComponent>(uid, out var crew) || !TryComp<WGCrewSecurityComponent>(uid, out var rules)
-            || !_mobs.IsAlive(uid) || !IsBoardingCandidate(visitor, aiRemotes) || IsAuthorized(uid, visitor)
+            || !_mobs.IsAlive(uid) || !IsBoardingCandidate(visitor, aiRemotes) || IsFauna(uid, visitor) || IsAuthorized(uid, visitor)
             || Transform(uid).GridUid is not { } grid
             || crew.Post is { } post && post.EntityId != grid || Transform(visitor).GridUid != grid)
             return;
@@ -173,7 +190,7 @@ public sealed partial class WGCrewSecuritySystem : EntitySystem
     public bool IsAuthorized(EntityUid crew, EntityUid other)
     {
         // A hull boarders hold has no leave to dock, whatever colours it still shows.
-        if (HasComp<WGCrewSeizedHullComponent>(other))
+        if (HasComp<WGCrewSeizedHullComponent>(other) || IsAlwaysHostile(other))
             return false;
 
         if (AskCommand(crew, other).Authorized is { } answer)
@@ -203,6 +220,8 @@ public sealed partial class WGCrewSecuritySystem : EntitySystem
     /// <summary>How this crewman answers an unauthorized visitor: as the ship's command says for where he stands, else by his boarding rule.</summary>
     public WGCrewSecurityResponse BoardingResponse(EntityUid crew, EntityUid visitor, WGCrewSecurityComponent rules)
     {
+        if (IsAlwaysHostile(visitor))
+            return WGCrewSecurityResponse.Hostile;
         return AskCommand(crew, visitor).Response ?? rules.Boarding;
     }
 
@@ -296,7 +315,7 @@ public sealed partial class WGCrewSecuritySystem : EntitySystem
             {
                 foreach (var visitor in people[grid])
                 {
-                    if (visitor == uid || IsAuthorized(uid, visitor) || crews.SameCrew(uid, visitor))
+                    if (visitor == uid || IsFauna(uid, visitor) || IsAuthorized(uid, visitor) || crews.SameCrew(uid, visitor))
                         continue;
                     present.Add((uid, visitor));
                     strangers.Add((grid, group, visitor));

@@ -1,46 +1,24 @@
-# Where the hacking harpoon and its darts come from: PDV and the Underground buy them, Viper Group researches and prints them.
+# Where the hacking harpoon and its darts come from: anyone can order them from cargo, and Viper Group researches and prints them.
 
-- type: listing
-  id: WGUplinkPirateHackHarpoon
-  productEntity: WGHackHarpoonGunFlatpack
-  cost:
-    Doubloon: 5
-  categories:
-  - UplinkPirateWeapons
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
+- type: cargoProduct
+  id: WGHackHarpoonGun
+  icon:
+    sprite: _WG/BoardingAction/hack_harpoon_gun.rsi
+    state: icon
+  product: WGHackHarpoonGunFlatpack
+  cost: 15000
+  category: cargoproduct-category-name-shuttle
+  group: market
 
-- type: listing
-  id: WGUplinkPirateHackDart
-  productEntity: WGHackDart
-  cost:
-    Doubloon: 1
-  categories:
-  - UplinkPirateAmmo
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - PirateUplink
-
-- type: listing
-  id: WGUplinkHackHarpoon
-  productEntity: WGHackHarpoonGunFlatpack
-  cost:
-    Telecrystal: 5
-  categories:
-  - UplinkWeaponry
-
-- type: listing
-  id: WGUplinkHackDart
-  productEntity: WGHackDart
-  cost:
-    Telecrystal: 1
-  categories:
-  - UplinkAmmo
+- type: cargoProduct
+  id: WGHackDart
+  icon:
+    sprite: _WG/BoardingAction/hack_dart.rsi
+    state: dart
+  product: WGHackDart
+  cost: 2000
+  category: cargoproduct-category-name-shipammo
+  group: market
 
 - type: technology
   id: WGViperGroupHackHarpoon

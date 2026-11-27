@@ -47,6 +47,10 @@ public sealed partial class GenitalProfile
     [DataField]
     public string NsfwText { get; private set; } = string.Empty;
 
+    /// <summary>Image URL shown beside the adult description, to the same examiners. Empty for none.</summary>
+    [DataField]
+    public string NsfwHeadshotUrl { get; private set; } = string.Empty;
+
     /// <summary>The stored column could not be fully read. The DB keeps its old text until anatomy is edited.</summary>
     /// <remarks>Load-time state: networked for the creator's warning, never written to exports.</remarks>
     public bool LoadFailed { get; private set; }
@@ -75,6 +79,7 @@ public sealed partial class GenitalProfile
             Womb = Womb,
             Breasts = Breasts?.Clone(),
             NsfwText = NsfwText,
+            NsfwHeadshotUrl = NsfwHeadshotUrl,
             LoadFailed = LoadFailed,
             LegacyMarkings = LegacyMarkings == null ? null : new List<string>(LegacyMarkings),
         };
@@ -91,6 +96,7 @@ public sealed partial class GenitalProfile
                && Womb == other.Womb
                && LoadFailed == other.LoadFailed
                && NsfwText == other.NsfwText
+               && NsfwHeadshotUrl == other.NsfwHeadshotUrl
                && (Penis == null ? other.Penis == null : other.Penis != null && Penis.MemberwiseEquals(other.Penis))
                && (Testicles == null ? other.Testicles == null : other.Testicles != null && Testicles.MemberwiseEquals(other.Testicles))
                && (Vagina == null ? other.Vagina == null : other.Vagina != null && Vagina.MemberwiseEquals(other.Vagina))
@@ -156,6 +162,13 @@ public sealed partial class GenitalProfile
         return copy;
     }
 
+    public GenitalProfile WithNsfwHeadshotUrl(string url)
+    {
+        var copy = Edit();
+        copy.NsfwHeadshotUrl = url;
+        return copy;
+    }
+
     /// <summary>Marks the profile as converted by the legacy migration and records the removed marking strings.</summary>
     public GenitalProfile AsMigrated(List<string>? legacy)
     {
@@ -182,10 +195,11 @@ public sealed partial class GenitalProfile
 
     /// <summary>Validator output: keeps LoadFailed, takes the filtered legacy list, and returns this instance when nothing changed.</summary>
     internal GenitalProfile Normalised(int version, GenitalRevealMode reveal, PenisProfile? penis, TesticlesProfile? testicles,
-        VaginaProfile? vagina, bool womb, BreastsProfile? breasts, string nsfwText, List<string>? legacy)
+        VaginaProfile? vagina, bool womb, BreastsProfile? breasts, string nsfwText, string nsfwHeadshotUrl, List<string>? legacy)
     {
         if (version == Version
             && nsfwText == NsfwText
+            && nsfwHeadshotUrl == NsfwHeadshotUrl
             && reveal == RevealMode
             && ReferenceEquals(penis, Penis)
             && ReferenceEquals(testicles, Testicles)
@@ -205,6 +219,7 @@ public sealed partial class GenitalProfile
             Womb = womb,
             Breasts = breasts,
             NsfwText = nsfwText,
+            NsfwHeadshotUrl = nsfwHeadshotUrl,
             LoadFailed = LoadFailed,
             LegacyMarkings = legacy,
         };
@@ -223,6 +238,7 @@ public sealed partial class GenitalProfile
             Womb = Womb,
             Breasts = Breasts,
             NsfwText = NsfwText,
+            NsfwHeadshotUrl = NsfwHeadshotUrl,
             LoadFailed = false,
             LegacyMarkings = LegacyMarkings,
         };

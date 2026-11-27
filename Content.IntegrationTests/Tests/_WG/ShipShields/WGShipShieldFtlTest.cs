@@ -108,8 +108,10 @@ public sealed class WGShipShieldFtlTest
                 shields.SetWolfgateShieldEnabled(map.Grid.Owner, false);
             else if (reason == "recharge")
             {
+                // A ship generator's collapse holds its field down by the overload wait.
                 emitter.Damage = emitter.DamageLimit;
                 emitter.Recharging = true;
+                emitter.OverloadAccumulator = emitter.DamageOverloadTimePunishment;
                 emitter.HealPerSecond = 0f;
             }
             else

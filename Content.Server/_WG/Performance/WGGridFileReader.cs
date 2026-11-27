@@ -63,7 +63,15 @@ public static class WGGridFileReader
     public static bool TryLoad(MapLoaderSystem loader, MappingDataNode data, string source, MapId map,
         [NotNullWhen(true)] out Entity<MapGridComponent>? grid, System.Numerics.Vector2 offset = default)
     {
+        return TryLoad(loader, data, source, map, out grid, out _, offset);
+    }
+
+    /// <summary>Loads parsed single-grid data onto a map and says how many entities it made.</summary>
+    public static bool TryLoad(MapLoaderSystem loader, MappingDataNode data, string source, MapId map,
+        [NotNullWhen(true)] out Entity<MapGridComponent>? grid, out int entities, System.Numerics.Vector2 offset = default)
+    {
         grid = null;
+        entities = 0;
         var options = new MapLoadOptions { MergeMap = map, Offset = offset, ExpectedCategory = FileCategory.Grid };
         if (!loader.TryLoadGeneric(data, source, out var result, options))
             return false;
@@ -75,6 +83,7 @@ public static class WGGridFileReader
         }
 
         grid = result.Grids.Single();
+        entities = result.Entities.Count;
         return true;
     }
 }

@@ -1,4 +1,4 @@
-# The Bench PDA app, installed on judges' PDAs at spawn: write tickets, read the ledger, post ordinances.
+﻿# The Bench PDA app, installed on judges' PDAs at spawn: write tickets, read the ledger, post ordinances.
 - type: entity
   parent: NFBasePDACartridge
   id: WGBenchCartridge
@@ -15,6 +15,7 @@
     ui: !type:BenchUi
   - type: Cartridge
     programName: wg-bench-program-name
+    size: 16
     icon:
       sprite: Objects/Misc/books.rsi
       state: icon_law

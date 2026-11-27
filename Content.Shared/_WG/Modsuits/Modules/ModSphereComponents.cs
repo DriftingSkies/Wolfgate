@@ -65,6 +65,24 @@ public sealed partial class ModSphereTransformModuleComponent : Component
     [DataField]
     public float KnockdownSpeedMultiplier = 0.8f;
 
+    /// <summary>Stamina damage the wearer takes for each hard bump.</summary>
+    [DataField]
+    public float BumpStamina = 25f;
+
+    /// <summary>Hard bumps needed before the sphere stuns the wearer and unfolds.</summary>
+    [DataField]
+    public int BumpsBeforeStun = 4;
+
+    [DataField]
+    public TimeSpan BumpStunTime = TimeSpan.FromSeconds(5);
+
+    [DataField]
+    public TimeSpan BumpCooldown = TimeSpan.FromSeconds(0.5);
+
+    /// <summary>Stamina damage the wearer takes for each person run over.</summary>
+    [DataField]
+    public float MobImpactStamina = 15f;
+
     [DataField]
     public float ExplosionCoefficient = 0.8f;
 
@@ -192,6 +210,12 @@ public sealed partial class ModSphereFormComponent : Component
 
     [DataField, AutoNetworkedField]
     public Vector2 ImpactDirection;
+
+    [DataField, AutoNetworkedField]
+    public int Bumps;
+
+    [DataField, AutoNetworkedField]
+    public TimeSpan NextBump;
 
     [ViewVariables]
     public Vector2 PreSolveVelocity;

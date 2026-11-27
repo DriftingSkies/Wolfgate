@@ -48,6 +48,9 @@ public sealed partial class WGContractSystem
 
     private const float SiteWidening = 1.3f;
 
+    /// <summary>Furthest a widened band reaches, as a multiple of its own far edge, so a site stays near where the board says.</summary>
+    private const float MaxWidening = 1.6f;
+
     /// <summary>Open space a bounty or wreck needs round it.</summary>
     private const float SiteClearance = 250f;
 
@@ -70,6 +73,7 @@ public sealed partial class WGContractSystem
         SubscribeLocalEvent<WGContractItemComponent, StorageAfterCloseEvent>(OnCrateClosed);
         SubscribeLocalEvent<WGEncounterResolvedEvent>(OnEncounterResolved);
         InitializeOperations();
+        InitializeParcels();
     }
 
     /// <summary>Fixes an offer's ends, counts and pay from its template. False if the round cannot give it.</summary>
@@ -272,15 +276,14 @@ public sealed partial class WGContractSystem
         return 0;
     }
 
-    /// <summary>How much of each supply line a crate holds, in manifest order. An entity counts for the first line it fits.</summary>
+    /// <summary>How much of each supply line a parcel or crate holds, in manifest order. An entity counts for the first line it fits.</summary>
     public List<int> Packed(WGContract contract, EntityUid crate)
     {
         var have = new List<int>(contract.Goods.Select(_ => 0));
-        if (_proto.Index(contract.Prototype).Objective is not WGContractSupply supply
-            || !TryComp<EntityStorageComponent>(crate, out var storage))
+        if (_proto.Index(contract.Prototype).Objective is not WGContractSupply supply)
             return have;
 
-        foreach (var uid in storage.Contents.ContainedEntities)
+        foreach (var uid in Contents(crate))
         {
             for (var i = 0; i < contract.Goods.Count; i++)
             {
@@ -633,10 +636,10 @@ public sealed partial class WGContractSystem
             : null;
     }
 
-    /// <summary>Whether a supply crate is closed on its station with the whole manifest inside.</summary>
+    /// <summary>Whether a supply parcel, or a closed crate, is on its station with the whole manifest inside.</summary>
     private bool Delivers(WGContract contract, EntityUid crate)
     {
-        if (TerminatingOrDeleted(crate) || !TryComp<EntityStorageComponent>(crate, out var storage) || storage.Open
+        if (TerminatingOrDeleted(crate) || TryComp<EntityStorageComponent>(crate, out var storage) && storage.Open
             || !OnStation(crate, contract.Destination))
             return false;
 
@@ -655,7 +658,15 @@ public sealed partial class WGContractSystem
 
             var set = comp.Delivered;
             comp.Delivered = true;
-            // An undelivered supply crate is the holder's to keep.
+            // An undelivered parcel gives its goods back; an undelivered crate is the holder's to keep.
+            if (proto.Objective is WGContractSupply && contract.Status != WGContractStatus.Completed
+                && HasComp<WGContractParcelComponent>(item))
+            {
+                SpillParcel(item);
+                QueueDel(item);
+                continue;
+            }
+
             if (proto.Objective is WGContractSupply && contract.Status != WGContractStatus.Completed)
             {
                 RemComp<WGContractItemComponent>(item);
@@ -692,22 +703,20 @@ public sealed partial class WGContractSystem
             QueueDel(wreck);
     }
 
-    /// <summary>Takes a delivered crate's manifest goods and puts everything else, players above all, out beside it.</summary>
+    /// <summary>Takes a delivered parcel's or crate's manifest goods and puts everything else, players above all, out beside it.</summary>
     private void TakeDelivery(WGContract contract, EntityUid crate)
     {
-        if (_proto.Index(contract.Prototype).Objective is not WGContractSupply supply
-            || !TryComp<EntityStorageComponent>(crate, out var storage))
+        if (_proto.Index(contract.Prototype).Objective is not WGContractSupply supply)
             return;
 
         var needed = contract.Goods.Select(g => g.Count).ToList();
         var faction = contract.Destination is { } station && HousesFaction(station) ? station : (EntityUid?) null;
-        // A member supplying their own faction would find the goods in its receiving crate and could deliver them
-        // again; the faction uses them up instead.
         var companies = faction is { } receiving ? ReceivingCompanies(receiving, contract) : null;
-        if (companies != null && contract.Company is { } own && companies.Any(c => c.Id == own))
-            faction = null;
+        // A member supplying their own faction could take goods back out of its receiving crate and deliver them again,
+        // so only what its silo takes reaches the faction; the rest is used up.
+        var ownFaction = companies != null && contract.Company is { } own && companies.Any(c => c.Id == own);
         EntityUid? received = null;
-        foreach (var uid in storage.Contents.ContainedEntities.ToList())
+        foreach (var uid in Contents(crate).ToList())
         {
             if (HasComp<MobStateComponent>(uid) || HasComp<MindContainerComponent>(uid))
                 continue;
@@ -718,15 +727,18 @@ public sealed partial class WGContractSystem
                     continue;
 
                 needed[i] -= count;
-                if (faction is not { } home)
+                if (faction is not { } home || ownFaction && !Stock(home, uid))
                     Del(uid);
-                else
+                else if (!ownFaction)
                     Receive(home, uid, companies!, ref received);
                 break;
             }
         }
 
-        _entityStorage.EmptyContents(crate);
+        if (HasComp<EntityStorageComponent>(crate))
+            _entityStorage.EmptyContents(crate);
+        else
+            SpillParcel(crate);
     }
 
     private void OnItemShutdown(Entity<WGContractItemComponent> ent, ref ComponentShutdown args)
@@ -880,7 +892,7 @@ public sealed partial class WGContractSystem
             }
 
             if (pass + 1 >= SitePasses / 2)
-                far *= SiteWidening;
+                far = Math.Min(far * SiteWidening, Math.Max(min, max) * MaxWidening);
         }
 
         if (!quiet)
@@ -919,21 +931,35 @@ public sealed partial class WGContractSystem
             : 0f;
     }
 
-    /// <summary>A random floor tile of a wreck clear of tables and machines, else any walkable one.</summary>
+    /// <summary>A random reachable floor tile of a wreck or site clear of tables and machines, else any reachable walkable one.</summary>
     private EntityCoordinates? FreeTile(Entity<MapGridComponent> grid, Box2i? bounds = null)
     {
         // Spawns in the same tick share one scan, each taking its own tile.
         if (_freeTiles is not { } cache || cache.Grid != grid.Owner || cache.Bounds != bounds || cache.Tick != _timing.CurTick)
         {
             cache = (grid.Owner, bounds, _timing.CurTick, new List<Vector2i>(), new List<Vector2i>());
+            var walkable = new HashSet<Vector2i>();
+            var doors = new HashSet<Vector2i>();
             foreach (var tile in SiteTiles(grid, bounds))
             {
-                if (_turf.IsSpace(tile) || _turf.IsTileBlocked(grid, tile.GridIndices, CollisionGroup.Impassable, grid.Comp))
+                if (_turf.IsSpace(tile))
                     continue;
 
-                cache.Walkable.Add(tile.GridIndices);
-                if (!_turf.IsTileBlocked(grid, tile.GridIndices, CargoBlockers, grid.Comp))
-                    cache.Clear.Add(tile.GridIndices);
+                if (_turf.IsTileBlocked(grid, tile.GridIndices, CollisionGroup.Impassable, grid.Comp))
+                {
+                    if (HasDoor(grid, tile.GridIndices))
+                        doors.Add(tile.GridIndices);
+                    continue;
+                }
+
+                walkable.Add(tile.GridIndices);
+            }
+
+            foreach (var index in Reachable(walkable, doors, bounds))
+            {
+                cache.Walkable.Add(index);
+                if (!_turf.IsTileBlocked(grid, index, CargoBlockers, grid.Comp))
+                    cache.Clear.Add(index);
             }
 
             _freeTiles = cache;
@@ -952,6 +978,60 @@ public sealed partial class WGContractSystem
     }
 
     private (EntityUid Grid, Box2i? Bounds, Robust.Shared.Timing.GameTick Tick, List<Vector2i> Clear, List<Vector2i> Walkable)? _freeTiles;
+
+    private bool HasDoor(Entity<MapGridComponent> grid, Vector2i index)
+    {
+        var anchored = _map.GetAnchoredEntitiesEnumerator(grid, grid.Comp, index);
+        while (anchored.MoveNext(out var uid))
+        {
+            if (HasComp<Content.Shared.Doors.Components.DoorComponent>(uid))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static readonly Vector2i[] Steps = { Vector2i.Up, Vector2i.Down, Vector2i.Left, Vector2i.Right };
+
+    /// <summary>Walkable floor reachable through doors: a planet site's pockets open to its edge, or a wreck's largest deck.</summary>
+    private List<Vector2i> Reachable(HashSet<Vector2i> walkable, HashSet<Vector2i> doors, Box2i? bounds)
+    {
+        var seen = new HashSet<Vector2i>();
+        var best = new List<Vector2i>();
+        var open = new List<Vector2i>();
+        var queue = new Queue<Vector2i>();
+        foreach (var start in walkable)
+        {
+            if (!seen.Add(start))
+                continue;
+
+            var region = new List<Vector2i>();
+            var edge = false;
+            queue.Enqueue(start);
+            while (queue.TryDequeue(out var at))
+            {
+                if (walkable.Contains(at))
+                    region.Add(at);
+                if (bounds is { } box && (at.X == box.Left || at.Y == box.Bottom || at.X == box.Right - 1 || at.Y == box.Top - 1))
+                    edge = true;
+
+                foreach (var step in Steps)
+                {
+                    var next = at + step;
+                    if ((walkable.Contains(next) || doors.Contains(next)) && seen.Add(next))
+                        queue.Enqueue(next);
+                }
+            }
+
+            if (edge)
+                open.AddRange(region);
+            if (region.Count > best.Count)
+                best = region;
+        }
+
+        // A planet site with no floor open to its edge has nowhere reachable; a sealed interior is no fallback.
+        return bounds != null ? open : best;
+    }
 
     /// <summary>Every tile of a wreck, or the ground tiles within a planet site's bounds.</summary>
     private IEnumerable<TileRef> SiteTiles(Entity<MapGridComponent> grid, Box2i? bounds)

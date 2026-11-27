@@ -12,11 +12,30 @@
     components:
     - BorgChassis
   chatMessages: [honks.]
+  # WOLFGATE(Cyborgs): share honk triggers while restricting the emote by entity
   chatTriggers:
     - honk
     - honks
     - honking
     - honked
+
+# WOLFGATE(Cyborgs) START: give borgs a separate Harpy-voiced honk emote
+- type: emote
+  id: BorgHarpyHonk
+  name: delta-chat-emote-name-honk
+  icon: Interface/Emotes/honk.png
+  category: Vocal
+  available: false
+  whitelist:
+    components:
+    - BorgChassis
+  chatMessages: [honks.]
+  chatTriggers:
+    - harpyhonk
+    - harpyhonks
+    - harpyhonking
+    - harpyhonked
+# WOLFGATE END
 
 - type: emote
   id: HarpyRing
@@ -88,11 +107,30 @@
     components:
     - BorgChassis
   chatMessages: [beeps.]
+  # WOLFGATE(Cyborgs): share beep triggers while restricting the emote by entity
   chatTriggers:
     - beep
     - beeps
     - beeping
     - beeped
+
+# WOLFGATE(Cyborgs) START: give borgs a separate Harpy-voiced beep emote
+- type: emote
+  id: BorgHarpyBeep
+  name: delta-chat-emote-name-beep
+  icon: Interface/Emotes/beep.png
+  category: Vocal
+  available: false
+  whitelist:
+    components:
+    - BorgChassis
+  chatMessages: [beeps.]
+  chatTriggers:
+    - harpybeep
+    - harpybeeps
+    - harpybeeping
+    - harpybeeped
+# WOLFGATE END
 
 - type: emote
   id: HarpyRev

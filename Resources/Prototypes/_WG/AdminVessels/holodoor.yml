@@ -54,6 +54,8 @@
         volume: -4
     denySound:
       path: /Audio/Machines/airlock_deny.ogg
+  # No airlock to shut it: the field closes itself behind whoever went through.
+  - type: WGAutoCloseDoor
   - type: AccessReader
   - type: Airtight
   - type: NavMapDoor

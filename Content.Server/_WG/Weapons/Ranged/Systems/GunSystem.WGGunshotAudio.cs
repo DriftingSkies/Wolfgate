@@ -19,7 +19,7 @@ public sealed partial class GunSystem
     {
         if (gun.FireRateModified <= WgUnthrottledFireRate)
         {
-            Audio.PlayPredicted(sound, gunUid, user);
+            WGLightSound.PlayPredicted(sound, gunUid, user);
             return;
         }
 
@@ -28,6 +28,6 @@ public sealed partial class GunSystem
             return;
 
         throttle.Next = Timing.CurTime + WgGunshotInterval;
-        Audio.PlayPredicted(sound, gunUid, user);
+        WGLightSound.PlayPredicted(sound, gunUid, user);
     }
 }

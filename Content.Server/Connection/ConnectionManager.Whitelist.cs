@@ -143,7 +143,10 @@ public sealed partial class ConnectionManager
 
     private bool CheckConditionPlayerCount(ConditionPlayerCount conditionPlayerCount)
     {
-        var count = _plyMgr.PlayerCount;
+        // WOLFGATE(JoinQueue) START: players waiting in the queue aren't playing
+        // var count = _plyMgr.PlayerCount;
+        var count = _plyMgr.PlayerCount - _joinQueue.WaitingCount;
+        // WOLFGATE END
         return count >= conditionPlayerCount.MinimumPlayers && count <= conditionPlayerCount.MaximumPlayers;
     }
 

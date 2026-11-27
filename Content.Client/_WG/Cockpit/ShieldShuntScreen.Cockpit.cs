@@ -11,8 +11,14 @@ namespace Content.Client._WG.ShipShields;
 
 public sealed partial class WGShipShieldShuntScreen : IWGCockpitOptionalPage
 {
-    /// <summary>The cockpit shows shield controls only while the ship has a shield generator.</summary>
-    bool IWGCockpitOptionalPage.Available => _state is { Available: true };
+    /// <summary>The cockpit shows this panel for any ship: a shield generator's controls, or a bare hull's heat and vent.</summary>
+    bool IWGCockpitOptionalPage.Available => _state is { Available: true } or { Hull: true };
+
+    /// <summary>The MFD's shield page, which only a ship with a shield generator has.</summary>
+    private sealed class GeneratorPage(WGShipShieldShuntScreen screen) : IWGCockpitOptionalPage
+    {
+        public bool Available => screen._state is { Available: true };
+    }
 
     private Action<WGShipShieldGeneratorStats>? _wgCockpitShowStats;
     private bool _wgCockpitCompact;
@@ -31,19 +37,26 @@ public sealed partial class WGShipShieldShuntScreen : IWGCockpitOptionalPage
         var originalName = arc.Name;
         arc.Name = "CockpitShieldArc";
         _wgCockpitCompact = true;
+        var fullHeight = _heat.MinHeight;
         lease.Remember(() =>
         {
             arc.Name = originalName;
             _wgCockpitCompact = false;
+            _heat.MinHeight = fullHeight;
+            _heat.Legend = true;
+            _compactGeneratorOnly.Clear();
         });
-        var controls = InstrumentTheme.Column(lease.Take(_enabled),
-            InstrumentTheme.Row(InstrumentTheme.Label("wg-cockpit-shield-arc"), arc),
-            allocation, lease.Take(_concentration), lease.Take(_health));
+        var arcRow = InstrumentTheme.Row(InstrumentTheme.Label("wg-cockpit-shield-arc"), arc);
+        var controls = InstrumentTheme.Column(lease.Take(_enabled), lease.Take(_heat), lease.Take(_vent), arcRow,
+            allocation, lease.Take(_concentration), lease.Take(_gunLock, restoreVisibility: false));
         controls.HorizontalExpand = true;
         // The thin shield panel is sized from this column, so it fixes the narrowest usable power slider.
         controls.MinWidth = 150;
-        _health.MinHeight = 12;
+        _heat.MinHeight = HeatGauge.CompactHeight;
+        _heat.Legend = false;
+        _compactGeneratorOnly.AddRange(new Control[] { dial, _enabled, arcRow, allocation, _concentration });
         AddChild(InstrumentTheme.Row(dial, controls));
+        UpdateState(_state, _helmRotation);
         return this;
     }
 
@@ -84,7 +97,7 @@ public sealed partial class WGShipShieldShuntScreen : IWGCockpitOptionalPage
             if (!stats.Disposed)
                 stats.Orphan();
         });
-        return new WGCockpitOptionalHost(this, WGCockpitMfdLayout.Details(InstrumentTheme.Column(telemetry, InstrumentTheme.Label("wg-console-shield-vector"),
+        return new WGCockpitOptionalHost(new GeneratorPage(this), WGCockpitMfdLayout.Details(InstrumentTheme.Column(telemetry, InstrumentTheme.Label("wg-console-shield-vector"),
             InstrumentTheme.Label("wg-shield-helm-bearing"), lease.Take(_direction),
             lease.Take(_stats), lease.Take(_status), lease.Take(_recovery, restoreVisibility: false),
             lease.Take(_draft), lease.Take(_reset), lease.Take(_unprotected, restoreVisibility: false), specifications)));

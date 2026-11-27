@@ -110,6 +110,36 @@ public sealed class TypedEmoteTest
     }
 
     [Test]
+    public async Task SharedNoiseTriggersResolveForEachEntityAndKeepBorgAliases()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var chat = entMan.System<ChatSystem>();
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var borg = entMan.SpawnEntity("BorgChassisGeneric", map.GridCoords);
+            var harpy = entMan.SpawnEntity("MobHarpy", map.GridCoords);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(chat.GetEligibleEmotesForTypedTrigger(borg, "beep").Select(e => e.ID), Is.EqualTo(new[] { "Beep" }));
+                Assert.That(chat.GetEligibleEmotesForTypedTrigger(harpy, "beep").Select(e => e.ID), Is.EqualTo(new[] { "HarpyBeep" }));
+                Assert.That(chat.GetEligibleEmotesForTypedTrigger(borg, "honk").Select(e => e.ID), Is.EqualTo(new[] { "Honk" }));
+                Assert.That(chat.GetEligibleEmotesForTypedTrigger(harpy, "honk").Select(e => e.ID), Is.EqualTo(new[] { "HarpyHonk" }));
+                Assert.That(chat.GetEligibleEmotesForTypedTrigger(borg, "harpybeep").Select(e => e.ID), Is.EqualTo(new[] { "BorgHarpyBeep" }));
+                Assert.That(chat.GetEligibleEmotesForTypedTrigger(borg, "harpyhonk").Select(e => e.ID), Is.EqualTo(new[] { "BorgHarpyHonk" }));
+                Assert.That(chat.GetEligibleEmotesForTypedTrigger(harpy, "harpybeep"), Is.Empty);
+                Assert.That(chat.GetEligibleEmotesForTypedTrigger(harpy, "harpyhonk"), Is.Empty);
+            });
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
     public async Task EllipsisIsNotARadioKey()
     {
         await using var pair = await PoolManager.GetServerClient();

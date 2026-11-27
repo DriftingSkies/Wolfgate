@@ -114,6 +114,14 @@
     - Traffic
     - Common
     - Science
+  # WOLFGATE(Cyborgs) START: encryption key slots behind the chassis lock and panel, adding to the built-in channels
+  - type: EncryptionKeyHolder
+    keySlots: 8
+    examineWhileLocked: false
+    keysExtractionMethod: Cutting
+    keysUnlocked: false
+  - type: WGBorgRadioKeys
+  # WOLFGATE END
   - type: CollectiveMind
     channels:
     - Binary
@@ -146,8 +154,13 @@
     drinkSpeed: 2
   - type: BankAccount
   # WOLFGATE END
-  # WOLFGATE(Cyborgs) START: buckle into seats and climb onto tables
+  # WOLFGATE(Cyborgs) START: buckle into seats, carry patients, and climb onto tables
   - type: Buckle
+  - type: Strap
+    position: Stand
+    buckleOffset: "0, 0.25"
+    buckleOnInteractHand: false
+    maintainSpriteLayers: true
   - type: Climbing
   # WOLFGATE END
   # WOLFGATE(Cyborgs) START: a built-in PDA with a vagrant's apps, opened from an action
@@ -159,8 +172,13 @@
       locked: true
     paiSlot:
       locked: true
+    diskSlot:
+      locked: true
   - type: WGBorgPda
   - type: WGGameHubInstaller
+  # WOLFGATE(PdaStorage): the built-in PDA gets the app store too
+  - type: PdaAppStoreInstaller
+    program: PdaAppStoreCartridge
   - type: Ringer
   - type: CartridgeLoader
     uiKey: enum.PdaUiKey.Key
@@ -253,6 +271,32 @@
     - Sigh
     - Crying
     - Whistle
+    # WOLFGATE(Cyborgs) START: Harpy noise emotes for cyborgs
+    - Meow
+    - Hiss
+    - Mew
+    - Purr
+    - Growl
+    - Bark
+    - Snarl
+    - Whine
+    - Howl
+    - Awoo
+    - BorgHarpyHonk
+    - HarpyRing
+    - HarpyPew
+    - HarpyBang
+    - BorgHarpyBeep
+    - HarpyRev
+    - HarpyCaw
+    - Squish
+    - Chitter
+    - Squeak
+    - Click
+    - Belch
+    - Bagawk
+    # WOLFGATE END
+
   - type: Vocal
     sounds:
       Unsexed: UnisexSilicon
@@ -298,6 +342,7 @@
         - borg_brain
         - borg_module
         - cell_slot
+        - key_slots # WOLFGATE(Cyborgs): installed keys drop when the chassis is destroyed
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
   #- type: HandheldLight # Mono - Light removal PR: Borg Adjustments
@@ -502,6 +547,32 @@
     - Crying
     - Whistle
     # end Goobstation - Cyborg emote sounds
+
+    # WOLFGATE(Cyborgs) START: Harpy noise emotes for syndicate, faction, and xenoborgs
+    - Meow
+    - Hiss
+    - Mew
+    - Purr
+    - Growl
+    - Bark
+    - Snarl
+    - Whine
+    - Howl
+    - Awoo
+    - BorgHarpyHonk
+    - HarpyRing
+    - HarpyPew
+    - HarpyBang
+    - BorgHarpyBeep
+    - HarpyRev
+    - HarpyCaw
+    - Squish
+    - Chitter
+    - Squeak
+    - Click
+    - Belch
+    - Bagawk
+    # WOLFGATE END
   - type: Vocal
     sounds:
       Unsexed: UnisexSiliconSyndicate

@@ -1,5 +1,6 @@
 #nullable enable
 using System.Numerics;
+using Content.Shared._WG.GridMomentum;
 using Content.Shared.Movement.Systems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -58,7 +59,7 @@ public sealed class WGGridMomentumTest
         await HoldShip(server, physics, grid, -shipVelocity, 40);
         await server.WaitAssertion(() =>
         {
-            Assert.That(entMan.GetComponent<Content.Shared._WG.GridMomentum.WGGridMomentumComponent>(mob).Frame, Is.EqualTo(Vector2.Zero),
+            Assert.That(entMan.GetComponent<WGGridMomentumComponent>(mob).Frame, Is.EqualTo(Vector2.Zero),
                 "A mob far from the grid it left still carries that grid's velocity.");
         });
 
@@ -105,6 +106,59 @@ public sealed class WGGridMomentumTest
             var mobVelocity = entMan.GetComponent<PhysicsComponent>(mob).LinearVelocity;
             Assert.That(mobVelocity.Length(), Is.LessThan(0.5f), $"The ship dragged the floating mob up to {mobVelocity}.");
         });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A deleted grid is dropped from every mob that stood on it or floated off it, so it is never networked.</summary>
+    [Test]
+    public async Task DeletedGridIsForgotten()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var xforms = server.System<SharedTransformSystem>();
+        var map = await pair.CreateTestMap();
+        var grid = map.Grid.Owner;
+
+        EntityUid floater = default;
+        EntityUid stander = default;
+        await server.WaitPost(() =>
+            floater = entMan.SpawnEntity("MobHuman", new EntityCoordinates(grid, new Vector2(0.5f, 0.5f))));
+        await server.WaitRunTicks(5);
+
+        // One mob floats off beside the grid and still remembers it as the grid it left; another takes its place.
+        await server.WaitPost(() =>
+        {
+            var origin = xforms.GetWorldPosition(grid);
+            xforms.SetMapCoordinates(floater, new MapCoordinates(origin + new Vector2(2.5f, 0.5f), map.MapId));
+            stander = entMan.SpawnEntity("MobHuman", new EntityCoordinates(grid, new Vector2(0.5f, 0.5f)));
+        });
+        await server.WaitRunTicks(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entMan.GetComponent<WGGridMomentumComponent>(floater).Left, Is.EqualTo(grid),
+                "The floating mob must remember the grid it left.");
+            Assert.That(entMan.GetComponent<WGGridMomentumComponent>(stander).Grid, Is.EqualTo(grid),
+                "The standing mob must remember the grid under it.");
+
+            // The other steps off in the same tick the grid goes, before its mover can notice.
+            var origin = xforms.GetWorldPosition(grid);
+            xforms.SetMapCoordinates(stander, new MapCoordinates(origin + new Vector2(0.5f, 2.5f), map.MapId));
+            entMan.DeleteEntity(grid);
+
+            foreach (var mob in new[] { floater, stander })
+            {
+                var momentum = entMan.GetComponent<WGGridMomentumComponent>(mob);
+                Assert.That(momentum.Grid, Is.Null, "A mob still references a deleted grid as the one under it.");
+                Assert.That(momentum.Left, Is.Null, "A mob still references a deleted grid as the one it left.");
+                Assert.That(momentum.Frame, Is.EqualTo(Vector2.Zero), "A mob still carries a deleted grid's velocity.");
+            }
+        });
+
+        // Send the cleared state to the client; a stale uid would log a resolve error here.
+        await pair.RunTicksSync(10);
 
         await pair.CleanReturnAsync();
     }

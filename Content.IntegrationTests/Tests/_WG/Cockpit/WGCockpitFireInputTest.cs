@@ -8,6 +8,7 @@ using System.Reflection;
 using Content.Client._Mono.Radar;
 using Content.Client._WG.Cockpit;
 using Content.Client._WG.CombatConsole;
+using Content.Client._WG.ShipFacing;
 using Content.Client.Shuttles.UI;
 using Content.Client.UserInterface.Controls;
 using Content.Client.Viewport;
@@ -348,6 +349,16 @@ public sealed class WGCockpitFireInputTest
             pressed[(int) Keyboard.Key.Shift] = true;
             Tick(fire, 0, pointer, false);
             Assert.That(nav.DefaultCursorShape, Is.EqualTo(Control.CursorShape.Pointer), "Alternate modifier gestures retain their normal pointer.");
+            // Shift held as the ship-facing key is steering: the guns stay aimed and a Shift+click fires.
+            var facing = pair.Client.EntMan.System<WGShipFacingSystem>();
+            var facingHeld = typeof(WGShipFacingSystem).GetField("_held", BindingFlags.Instance | BindingFlags.NonPublic)!;
+            facingHeld.SetValue(facing, true);
+            Tick(fire, 0, pointer, false);
+            Assert.That(nav.CustomCursorShape, Is.SameAs(reticle), "Steering with Shift keeps the reticle.");
+            Assert.That(Key(nav, ContentKeyFunctions.ExamineEntity, BoundKeyState.Down, pointer).Handled, Is.True,
+                "A Shift+click while steering fires instead of examining.");
+            Key(nav, ContentKeyFunctions.ExamineEntity, BoundKeyState.Up, pointer);
+            facingHeld.SetValue(facing, false);
             pressed[(int) Keyboard.Key.Shift] = false;
             Tick(fire, 0, default, false);
             Assert.That(nav.DefaultCursorShape, Is.EqualTo(Control.CursorShape.Pointer), "An invalid pointer has no armed cursor.");

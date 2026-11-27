@@ -1,0 +1,22 @@
+# Sold by the Wolfgate vendor. Put it on a table and use it to open the game.
+- type: entity
+  parent: [BaseItem, RecyclableItemCardboard]
+  id: WGSettlersBoard
+  name: Settlers of Colossus
+  description: A board game for one to four players. Build outposts and lanes in the Colossus sector, trade resources and get ten points to win.
+  components:
+  - type: Sprite
+    sprite: _WG/Settlers/board.rsi
+    state: icon
+  - type: Item
+    size: Normal
+  - type: WGSettlersBoard
+  - type: UserInterface
+    interfaces:
+      enum.WGSettlersUiKey.Key:
+        type: SettlersBoundUserInterface
+  - type: StaticPrice
+    price: 250
+  - type: GuideHelp
+    guides:
+    - WGSettlers

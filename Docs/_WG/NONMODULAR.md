@@ -172,6 +172,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Content.Server/Administration/Systems/BwoinkSystem.cs`](../../Content.Server/Administration/Systems/BwoinkSystem.cs)
   - a mention in an embed never pings; it goes in the content below
   - only message content pings, and the payload suppresses every mention unless roles are allowed
+  - admins aren't rate limited in ahelps
 - [`Content.Server/Anomaly/AnomalySynchronizerSystem.cs`](../../Content.Server/Anomaly/AnomalySynchronizerSystem.cs): a deleted anomaly threw here every tick and stopped every other synchronizer
 - [`Content.Server/Anomaly/AnomalySystem.Scanner.cs`](../../Content.Server/Anomaly/AnomalySystem.Scanner.cs): points earned ran onto the point output line
 - [`Content.Server/Anomaly/Effects/ProjectileAnomalySystem.cs`](../../Content.Server/Anomaly/Effects/ProjectileAnomalySystem.cs): with nothing in range Pick threw, so a supercritical never ended and retried every tick
@@ -184,6 +185,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Content.Server/Cargo/Systems/CargoSystem.Shuttle.cs`](../../Content.Server/Cargo/Systems/CargoSystem.Shuttle.cs)
   - sums the bounty hand-in value
   - items handed in to a bounty are paid by its reward, not sold
+- [`Content.Server/Chat/Managers/ChatManager.RateLimit.cs`](../../Content.Server/Chat/Managers/ChatManager.RateLimit.cs): admins aren't chat rate limited
 - [`Content.Server/Chat/Systems/ChatSystem.cs`](../../Content.Server/Chat/Systems/ChatSystem.cs)
   - a voice mask's speech style
   - a voice mask's speech style, for the wraps below
@@ -523,6 +525,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Resources/Prototypes/_Mono/Entities/Objects/Electronics/mech.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Electronics/mech.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/_Mono/Entities/Objects/Specific/Mechs/mech_construction.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Specific/Mechs/mech_construction.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/_Mono/Entities/Objects/Specific/Robotics/borg_modules.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Specific/Robotics/borg_modules.yml): its own id; the shared Security id made every faction weapon module a duplicate of the rest
+- [`Resources/Prototypes/_Mono/Entities/Objects/Tools/repair.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Tools/repair.yml): was 2000, about three times its print cost
 - [`Resources/Prototypes/_Mono/Entities/Objects/Weapons/Guns/Launchers/mpssm.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Weapons/Guns/Launchers/mpssm.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/_Mono/Entities/Objects/Weapons/Guns/Snipers/snipers.yml`](../../Resources/Prototypes/_Mono/Entities/Objects/Weapons/Guns/Snipers/snipers.yml): low-cap 7.62x51 mags fit like every other 7.62x51 rifle
 - [`Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/base_launcher.yml`](../../Resources/Prototypes/_Mono/Entities/SpaceArtillery/SpaceArtillery/base_launcher.yml): restore the licence header removed by Kill Spdx
@@ -586,6 +589,7 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Resources/Prototypes/_NF/Catalog/VendingMachines/Inventories/engivend.yml`](../../Resources/Prototypes/_NF/Catalog/VendingMachines/Inventories/engivend.yml): radiation suits buyable from the EngiVend
 - [`Resources/Prototypes/_NF/Entities/Objects/Consumable/Food/meals.yml`](../../Resources/Prototypes/_NF/Entities/Objects/Consumable/Food/meals.yml): OwO accent removed
 - [`Resources/Prototypes/_NF/Entities/Objects/Devices/door_remote.yml`](../../Resources/Prototypes/_NF/Entities/Objects/Devices/door_remote.yml): Halcyon doors read the Tsfmc tag since the access refactor, which Security no longer holds
+- [`Resources/Prototypes/_NF/Entities/Objects/Specific/chemical-containers.yml`](../../Resources/Prototypes/_NF/Entities/Objects/Specific/chemical-containers.yml): one map key in both hands crashed Resomi clients; SolutionContainerVisuals adds the fill
 - [`Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/Ammunition/Projectiles/misc.yml`](../../Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/Ammunition/Projectiles/misc.yml): a flare that lands inside a wall still lights the room
 - [`Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/expedition_guns.yml`](../../Resources/Prototypes/_NF/Entities/Objects/Weapons/Guns/expedition_guns.yml): was WeaponSubMachineGunTypewriter, class-3 contraband since Monolith#4816
 - [`Resources/Prototypes/_NF/Entities/Structures/atm.yml`](../../Resources/Prototypes/_NF/Entities/Structures/atm.yml): the access refactor took the payroll console from Fireteam Leaders
@@ -596,6 +600,8 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
   - gas leak event disabled
   - vent clog event disabled
 - [`Resources/Prototypes/_NF/Guidebook/rules.yml`](../../Resources/Prototypes/_NF/Guidebook/rules.yml): Frontier ruleset is unused, only MonolithRuleset is shown in-game and on Symphony
+- [`Resources/Prototypes/_NF/Recipes/Lathes/misc.yml`](../../Resources/Prototypes/_NF/Recipes/Lathes/misc.yml): Add whistle to mercfab and vend
+- [`Resources/Prototypes/_NF/Recipes/Lathes/Packs/Deprecated/mercenary_techfab.yml`](../../Resources/Prototypes/_NF/Recipes/Lathes/Packs/Deprecated/mercenary_techfab.yml): Add whistle to mercfab and vend
 - [`Resources/Prototypes/_NF/Roles/Jobs/Medical/doc.yml`](../../Resources/Prototypes/_NF/Roles/Jobs/Medical/doc.yml)
   - the Medical department has no roles since Monolith#4807, so count medic time instead
   - the Director of Care boards ships to rescue people like the responders
@@ -603,11 +609,13 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
   - PDV pack, TSF pod report 2 min later
   - PDV pack, tighter PDV pod coordinates
 - [`Resources/Prototypes/_Obelisk/Species/hydrakin.yml`](../../Resources/Prototypes/_Obelisk/Species/hydrakin.yml): hydrakin is not selectable in character creation
+- [`Resources/Prototypes/_Shitmed/Body/Organs/cybernetic.yml`](../../Resources/Prototypes/_Shitmed/Body/Organs/cybernetic.yml): priced as a printed part, not the 4500 harvested organ it inherits
 - [`Resources/Prototypes/_Shitmed/Entities/Objects/Devices/Circuitboards/Machine/production.yml`](../../Resources/Prototypes/_Shitmed/Entities/Objects/Devices/Circuitboards/Machine/production.yml): a machine part under stackRequirements can't be inserted; the frame reads parts from requirements
 - [`Resources/Prototypes/_StarLight/Entities/Mobs/Species/felionoid.yml`](../../Resources/Prototypes/_StarLight/Entities/Mobs/Species/felionoid.yml): OwO accent removed
 - [`Resources/Prototypes/Atmospherics/gases.yml`](../../Resources/Prototypes/Atmospherics/gases.yml): a tritium is worth the same as frezon or as nitrium, 10 -> 5 (Mono 1\<10)
 - [`Resources/Prototypes/Catalog/Cargo/cargo_atmospherics.yml`](../../Resources/Prototypes/Catalog/Cargo/cargo_atmospherics.yml): bought plasma costs what it is worth as tritium feedstock, 7000 -> 45000 (Mono - Gas sell prices)
 - [`Resources/Prototypes/Catalog/Fills/Crates/engines.yml`](../../Resources/Prototypes/Catalog/Fills/Crates/engines.yml): the IRE rebrand missed this crate
+- [`Resources/Prototypes/Catalog/VendingMachines/Inventories/clothesmate.yml`](../../Resources/Prototypes/Catalog/VendingMachines/Inventories/clothesmate.yml): Add whistle to mercfab and vend
 - [`Resources/Prototypes/Catalog/VendingMachines/Inventories/engivend.yml`](../../Resources/Prototypes/Catalog/VendingMachines/Inventories/engivend.yml): radiation suits buyable from the EngiVend
 - [`Resources/Prototypes/Damage/modifier_sets.yml`](../../Resources/Prototypes/Damage/modifier_sets.yml): restore the licence header removed by Kill Spdx
 - [`Resources/Prototypes/Entities/Clothing/Back/specific.yml`](../../Resources/Prototypes/Entities/Clothing/Back/specific.yml): Frontier hid ClothingBackpack, so it was never a valid chameleon pick and the menu got no state

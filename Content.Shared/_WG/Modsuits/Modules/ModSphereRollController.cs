@@ -1,6 +1,8 @@
 using System.Numerics;
+using Content.Shared._WG.Modsuits.Components;
 using Content.Shared._WG.Modsuits.Systems;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Friction;
 using Content.Shared.Gravity;
@@ -36,6 +38,7 @@ public sealed partial class ModSphereRollController : VirtualController
     [Dependency] private SharedGravitySystem _gravity = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedStunSystem _stun = default!;
+    [Dependency] private StaminaSystem _stamina = default!;
     [Dependency] private StandingStateSystem _standing = default!;
     [Dependency] private EntityQuery<MapGridComponent> _gridQuery = default!;
     [Dependency] private EntityQuery<ModSphereTransformModuleComponent> _moduleQuery = default!;
@@ -111,6 +114,7 @@ public sealed partial class ModSphereRollController : VirtualController
                 continue;
 
             PhysicsSystem.SetLinearVelocity(uid, after - lost * module.Restitution, body: body);
+            ApplyBump((uid, form), module, impact);
 
             if (impact < module.ImpactSoundThreshold)
                 continue;
@@ -153,7 +157,37 @@ public sealed partial class ModSphereRollController : VirtualController
     {
         return _mobState.IsAlive(uid)
             && !HasComp<StunnedComponent>(uid)
+            && !(TryComp<StaminaComponent>(uid, out var stamina) && stamina.Critical)
             && !(_pullableQuery.TryComp(uid, out var pullable) && pullable.BeingPulled);
+    }
+
+    /// <summary>Charges the wearer stamina for a hard impact and unfolds the sphere after enough bumps.</summary>
+    private void ApplyBump(Entity<ModSphereFormComponent> ent, ModSphereTransformModuleComponent module, float impact)
+    {
+        var now = _timing.CurTime;
+        if (impact < module.BounceThreshold || now < ent.Comp.NextBump)
+            return;
+
+        ent.Comp.NextBump = now + module.BumpCooldown;
+        ent.Comp.Bumps++;
+        Dirty(ent);
+        _stamina.TakeStaminaDamage(ent.Owner, module.BumpStamina, source: ent.Owner);
+
+        if (ent.Comp.Bumps < module.BumpsBeforeStun)
+            return;
+
+        _stun.TryStun(ent.Owner, module.BumpStunTime, true);
+        Deactivate(ent);
+    }
+
+    private void Deactivate(Entity<ModSphereFormComponent> ent)
+    {
+        if (ent.Comp.Module is not { } module
+            || !TryComp<ModModuleComponent>(module, out var moduleComp)
+            || !_modSuit.TryGetModuleSuit(module, out var suit))
+            return;
+
+        _modSuit.SetModuleActive(suit, (module, moduleComp), false);
     }
 
     private void Steer(Entity<ModSphereFormComponent> ent, ModSphereTransformModuleComponent module, float frameTime, ref Vector2 velocity)
@@ -255,6 +289,7 @@ public sealed partial class ModSphereRollController : VirtualController
             ent.Comp.Hits.Add(mob);
             hit = true;
             _stun.TryKnockdown(mob.Owner, module.KnockdownTime, true);
+            _stamina.TakeStaminaDamage(ent.Owner, module.MobImpactStamina, source: mob.Owner);
             _audio.PlayPredicted(module.KnockdownSound, mob, ent);
             velocity *= module.KnockdownSpeedMultiplier;
         }

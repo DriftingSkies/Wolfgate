@@ -381,6 +381,7 @@ public sealed partial class WGMappingPropertiesPanel : BoxContainer
             (ToolLockButton, WGMappingTool.Lock),
             (ToolPanelButton, WGMappingTool.Panel),
             (ToolDoorButton, WGMappingTool.Door),
+            (ToolMirrorButton, WGMappingTool.Mirror),
         ];
     }
 

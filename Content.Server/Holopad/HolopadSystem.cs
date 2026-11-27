@@ -172,7 +172,7 @@ public sealed partial class HolopadSystem : SharedHolopadSystem
 
     private void OnHolopadStartBroadcast(Entity<HolopadComponent> source, ref HolopadStartBroadcastMessage args)
     {
-        if (IsHolopadControlLocked(source, args.Actor) || IsHolopadBroadcastOnCoolDown(source))
+        if (IsHolopadControlLocked(source, args.Actor) || IsHolopadBroadcastOnCoolDown(source) && !EntityManager.System<Content.Server._WG.AdminCooldowns.WGAdminCooldownSystem>().Skips(args.Actor)) // WOLFGATE(AdminCooldowns): admins skip the broadcast cooldown
             return;
 
         if (!_accessReaderSystem.IsAllowed(args.Actor, source))
@@ -715,7 +715,7 @@ public sealed partial class HolopadSystem : SharedHolopadSystem
                 continue;
 
             // If any holopads in range are on broadcast cooldown, exit
-            if (IsHolopadBroadcastOnCoolDown((receiver, receiverHolopad)))
+            if (IsHolopadBroadcastOnCoolDown((receiver, receiverHolopad)) && !EntityManager.System<Content.Server._WG.AdminCooldowns.WGAdminCooldownSystem>().Skips(user)) // WOLFGATE(AdminCooldowns): admins skip the broadcast cooldown
                 return;
 
             receivers.Add(receiverTelephoneEntity);

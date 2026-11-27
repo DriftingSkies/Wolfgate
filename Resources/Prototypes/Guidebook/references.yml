@@ -9,6 +9,7 @@
   - FoodRecipes
   - Writing
   - MedicalRecipes # Frontier
+  - WGGames # WOLFGATE(Settlers): games section
 
 - type: guideEntry
   id: Drinks

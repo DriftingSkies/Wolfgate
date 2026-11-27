@@ -30,12 +30,9 @@ public sealed partial class ModEmpShieldModuleSystem : EntitySystem
     {
         foreach (var module in ent.Comp.ModulesContainer.ContainedEntities)
         {
-            if (!TryComp<ModEmpShieldModuleComponent>(module, out var shield)
-                || !TryComp<ModModuleComponent>(module, out var moduleComp)
-                || shield.RequireActive && !moduleComp.Active)
-                continue;
-
-            return true;
+            // The ward belongs to the suit item, so it works even when the suit is folded on the floor.
+            if (HasComp<ModEmpShieldModuleComponent>(module))
+                return true;
         }
 
         return false;

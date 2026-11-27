@@ -20,12 +20,9 @@ public sealed partial class ChatSystem
             end--;
 
         var typed = word[start..end].ToString().ToLowerInvariant();
-        if (!_wordEmoteDict.TryGetValue(typed, out var emotes))
-            return action;
-
-        foreach (var emote in emotes)
+        foreach (var emote in GetEligibleEmotesForTypedTrigger(source, typed))
         {
-            if (emote.ChatMessages.Count == 0 || !AllowedToUseEmote(source, emote))
+            if (emote.ChatMessages.Count == 0)
                 continue;
 
             var messages = new List<string>();

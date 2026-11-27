@@ -6,6 +6,7 @@ using System.Text.Json;
 using Content.Client._WG.Feedback;
 using Content.IntegrationTests.Tests.Interaction;
 using Content.Server._NF.CryoSleep;
+using Content.Server.Administration.Managers;
 using Content.Server.Database;
 using Content.Server.GameTicking;
 using Content.Shared._WG.CCVar;
@@ -39,6 +40,7 @@ public sealed class FeedbackTest : InteractionTest
     {
         var cfg = Server.ResolveDependency<IConfigurationManager>();
         var db = Server.ResolveDependency<IServerDbManager>();
+        var admins = Server.ResolveDependency<IAdminManager>();
         var system = CEntMan.System<FeedbackSystem>();
         var controller = UiMan.GetUIController<FeedbackUIController>();
         var cooldown = cfg.GetCVar(FeedbackCVars.Cooldown);
@@ -142,11 +144,17 @@ public sealed class FeedbackTest : InteractionTest
                 Assert.That(client.GetProperty("info").GetProperty("entity").GetString(), Is.EqualTo(SEntMan.GetNetEntity(SPlayer).Id.ToString()));
             });
 
-            // Too soon after the last one.
+            // Too soon after the last one. The test player is a host admin, who skips the cooldown.
+            await Server.WaitPost(() =>
+            {
+                if (admins.IsAdmin(ServerSession))
+                    admins.DeAdmin(ServerSession);
+            });
             await Send(new FeedbackSubmitEvent { Title = Title, Description = Description });
             var early = await Answer();
             Assert.That(early.Error, Is.EqualTo("wg-feedback-error-cooldown"));
             Assert.That(early.RetrySeconds, Is.GreaterThan(0));
+            await Server.WaitPost(() => admins.ReAdmin(ServerSession));
 
             await Server.WaitPost(() => cfg.SetCVar(FeedbackCVars.Cooldown, 0));
 
@@ -265,6 +273,8 @@ public sealed class FeedbackTest : InteractionTest
             system.History -= _histories.Add;
             await Server.WaitPost(() =>
             {
+                if (admins.IsAdmin(ServerSession, includeDeAdmin: true))
+                    admins.ReAdmin(ServerSession);
                 cfg.SetCVar(FeedbackCVars.Enabled, true);
                 cfg.SetCVar(FeedbackCVars.Cooldown, cooldown);
                 cfg.SetCVar(FeedbackCVars.DailyLimit, dailyLimit);

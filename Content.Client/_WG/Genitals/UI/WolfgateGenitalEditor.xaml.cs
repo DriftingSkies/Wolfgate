@@ -125,6 +125,8 @@ public sealed partial class WolfgateGenitalEditor : BoxContainer
         NsfwTextEdit.Placeholder = new Rope.Leaf(Loc.GetString("wg-genitals-nsfw-text-placeholder"));
         NsfwTextEdit.OnTextChanged += _ => OnNsfwTextChanged();
         IoCManager.InjectDependencies(this);
+        InitializeNsfwHeadshot();
+        UpdateNsfwHeadshot();
 
         _previewMode.Add(GenitalPreviewMode.AsWorn, Loc.GetString("wg-genitals-preview-worn"));
         _previewMode.Add(GenitalPreviewMode.UnderwearOnly, Loc.GetString("wg-genitals-preview-underwear"));
@@ -246,6 +248,10 @@ public sealed partial class WolfgateGenitalEditor : BoxContainer
         if (Rope.Collapse(NsfwTextEdit.TextRope) != _profile.NsfwText)
             NsfwTextEdit.TextRope = new Rope.Leaf(_profile.NsfwText);
         UpdateNsfwCounter();
+
+        // An editor left open would write into the newly loaded character.
+        CloseNsfwHeadshotWindow();
+        UpdateNsfwHeadshot();
     }
 
     /// <summary>Hands typed text straight to the profile editor; it carries no organ rules, so no full refresh.</summary>
@@ -314,6 +320,7 @@ public sealed partial class WolfgateGenitalEditor : BoxContainer
         _consent.OnServerDataLoaded -= RefreshConsent;
         _cfg.UnsubValueChanged(WolfgateCVars.AnatomyEnabled, OnAnatomyEnabledChanged);
         ResetPreview();
+        CloseNsfwHeadshotWindow();
     }
 
     // Columns come from the width on offer, not the current width, so the grids can shrink as well as grow.

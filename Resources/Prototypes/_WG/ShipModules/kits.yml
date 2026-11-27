@@ -1,0 +1,53 @@
+# Ship module kits: printed at a circuit imprinter once their research node is unlocked. A drydock fitting the module
+# uses up one carried anywhere aboard the ship.
+- type: entity
+  parent: BaseItem
+  id: WGShipModuleKitBase
+  abstract: true
+  name: ship module kit
+  description: Control cores and wiring looms for a ship module. Carry it aboard the ship and a drydock fits the module with it.
+  components:
+  - type: Sprite
+    sprite: Objects/Misc/module.rsi
+    state: cpuboard_super
+  - type: Item
+    size: Normal
+    storedRotation: -90
+  - type: StaticPrice
+    price: 2500
+
+- type: entity
+  parent: WGShipModuleKitBase
+  id: WGShipModuleKitPhaseSkimmer
+  name: phase skimmer kit
+  components:
+  - type: WGShipModuleKit
+    module: WGShipModulePhaseSkimmer
+
+- type: entity
+  parent: WGShipModuleKitBase
+  id: WGShipModuleKitGunGyros
+  name: advanced gyros kit
+  components:
+  - type: Sprite
+    state: cpuboard_adv
+  - type: WGShipModuleKit
+    module: WGShipModuleGunGyros
+
+- type: entity
+  parent: WGShipModuleKitBase
+  id: WGShipModuleKitFortressShield
+  name: fortress shield kit
+  components:
+  - type: WGShipModuleKit
+    module: WGShipModuleFortressShield
+
+- type: entity
+  parent: WGShipModuleKitBase
+  id: WGShipModuleKitAmmoFeeder
+  name: accelerated ammo feeder kit
+  components:
+  - type: Sprite
+    state: cpuboard_adv
+  - type: WGShipModuleKit
+    module: WGShipModuleAmmoFeeder

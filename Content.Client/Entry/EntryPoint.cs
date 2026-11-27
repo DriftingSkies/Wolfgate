@@ -178,6 +178,7 @@ namespace Content.Client.Entry
             _clientPreferencesManager.Initialize();
             _clientConsentManager.Initialize(); // WOLFGATE(Genitals): consent system
             IoCManager.Resolve<_WG.JoinProgress.JoinProgressManager>().Initialize(); // WOLFGATE(JoinProgress): register the download size message
+            IoCManager.Resolve<_WG.JoinQueue.JoinQueueManager>().Initialize(); // WOLFGATE(JoinQueue): register the queue message
             IoCManager.Resolve<_WG.GameHub.WGGameDataManager>().Initialize(); // WOLFGATE(GameHub): register the game data transfer
             IoCManager.Resolve<_WG.MameArcade.MameArcadeNetManager>().Initialize(); // WOLFGATE(MameArcade): register the 2-player input message
             _euiManager.Initialize();

@@ -129,6 +129,10 @@
   suffix: Large, T4
   description: Large hard hitting naval gun for steady damage. Fires APHEDS rounds, allowing for enhanced penetration, but not as much explosive power as full-sized APHE rounds. Feeds from an 96 round internal magazine.
   components:
+  # WOLFGATE(ShipShields) START: a fixed heat per round, so four of them don't outrun a corvette's cooling in seconds
+  - type: WGShipGunHeat
+    heatPerShot: 140
+  # WOLFGATE END
   - type: StaticPrice
     price: 16000
   - type: Sprite
@@ -311,6 +315,10 @@
   suffix: Capital/Station, T4
   description: One of the largest chemical-based kinetic weapons in the sector. Its power is only rivaled by mass drivers such as the M381. Automatically reloads full-power 203x940mm shells.
   components:
+  # WOLFGATE(ShipShields) START: about half its damage share; mostly Structural, it would fill a ship's heat in two salvos
+  - type: WGShipGunHeat
+    heatPerShot: 1500
+  # WOLFGATE END
   - type: StaticPrice
     price: 30000
   - type: Sprite

@@ -595,7 +595,9 @@ it back up to Okay after any drain, a Kelotane overdose included, before their d
 - [`Resources/Prototypes/_Impstation/Entities/Consumable/Food/meat.yml`](../../../Resources/Prototypes/_Impstation/Entities/Consumable/Food/meat.yml): ported from HardLight
 - [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/headcovers.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/headcovers.yml): add Canine
 - [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/human_hair.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/human_hair.yml): add Canine
-- [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/misc.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/misc.yml): eye markings get their own points (was Head)
+- [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/misc.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/misc.yml)
+  - eye markings get their own points (was Head)
+  - was Chest, which the tail layer covers
 - [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/moth.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/moth.yml): eye markings get their own points (was Head)
 - [`Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/thaven.yml`](../../../Resources/Prototypes/_Impstation/Entities/Mobs/Customization/Markings/thaven.yml)
   - Wolfgate species in the list

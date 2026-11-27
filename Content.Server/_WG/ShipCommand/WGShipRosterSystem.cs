@@ -344,6 +344,10 @@ public sealed class WGShipRosterSystem : EntitySystem
     {
         if (args.NewMobState == MobState.Dead)
             Lost(mob);
+        // Brought back before his post was filled: it is his again, and nobody is sent to replace him.
+        else if (args.OldMobState == MobState.Dead && TryComp<WGShipRosterComponent>(mob.Comp.Grid, out var roster)
+                 && roster.Slots.TryGetValue(mob.Comp.Slot, out var slot) && slot.Occupant == mob.Owner)
+            slot.Down = null;
     }
 
     private void OnMemberTerminating(Entity<WGShipRosterMemberComponent> mob, ref EntityTerminatingEvent args)

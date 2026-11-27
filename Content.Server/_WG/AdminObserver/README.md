@@ -236,6 +236,7 @@ and `WGAdminKitControl` (client).
   - the manifest key works in the admin observer
   - the observer panel key works in the admin observer
   - the admin ghost key works from any body
+- [`Content.Client/Interactable/Components/InteractionOutlineComponent.cs`](../../../Content.Client/Interactable/Components/InteractionOutlineComponent.cs): the outline is its own post-shader pass, removed by id
 - [`Content.Client/Options/UI/Tabs/KeyRebindTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/KeyRebindTab.xaml.cs): admin ghost, manifest and observer panel keys
 - [`Content.Client/UserInterface/Systems/Chat/ChatUIController.cs`](../../../Content.Client/UserInterface/Systems/Chat/ChatUIController.cs)
   - a manifested admin observer speaks in character

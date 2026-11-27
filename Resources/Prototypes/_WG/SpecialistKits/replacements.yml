@@ -1,5 +1,6 @@
 # Replacement kits, bought on the faction uplink by a player who already drew that kit this round. The listing sells
-# the same case the rack hands out.
+# the same case the rack hands out. Each player may buy one replacement per kit per round: the cooldown, keyed by
+# listing and player, outlasts any round and clears at round restart.
 
 - type: listing
   id: WGUplinkKitReplacementTsfAssaultman
@@ -15,6 +16,12 @@
       - SecurityUplink
   - !type:WGKitHolderCondition
     kit: WGKitTsfAssaultman
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementTsfAssaultman
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementTsfAssaultman
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementPdvLagimci
@@ -30,6 +37,12 @@
       - PirateUplink
   - !type:WGKitHolderCondition
     kit: WGKitPdvLagimci
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementPdvLagimci
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementPdvLagimci
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementTsfAntitank
@@ -45,6 +58,12 @@
       - SecurityUplink
   - !type:WGKitHolderCondition
     kit: WGKitTsfAntitank
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementTsfAntitank
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementTsfAntitank
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementPdvDarbzenci
@@ -60,6 +79,12 @@
       - PirateUplink
   - !type:WGKitHolderCondition
     kit: WGKitPdvDarbzenci
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementPdvDarbzenci
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementPdvDarbzenci
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementTsfMachineGunner
@@ -75,6 +100,12 @@
       - SecurityUplink
   - !type:WGKitHolderCondition
     kit: WGKitTsfMachineGunner
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementTsfMachineGunner
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementTsfMachineGunner
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementPdvYeniceri
@@ -90,6 +121,12 @@
       - PirateUplink
   - !type:WGKitHolderCondition
     kit: WGKitPdvYeniceri
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementPdvYeniceri
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementPdvYeniceri
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementTsfMortarman
@@ -105,6 +142,12 @@
       - SecurityUplink
   - !type:WGKitHolderCondition
     kit: WGKitTsfMortarman
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementTsfMortarman
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementTsfMortarman
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementPdvHumbaraci
@@ -120,6 +163,12 @@
       - PirateUplink
   - !type:WGKitHolderCondition
     kit: WGKitPdvHumbaraci
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementPdvHumbaraci
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementPdvHumbaraci
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementTsfScoutSniper
@@ -135,6 +184,12 @@
       - SecurityUplink
   - !type:WGKitHolderCondition
     kit: WGKitTsfScoutSniper
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementTsfScoutSniper
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementTsfScoutSniper
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementPdvTufekci
@@ -150,6 +205,12 @@
       - PirateUplink
   - !type:WGKitHolderCondition
     kit: WGKitPdvTufekci
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementPdvTufekci
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementPdvTufekci
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementTsfRecon
@@ -165,6 +226,12 @@
       - SecurityUplink
   - !type:WGKitHolderCondition
     kit: WGKitTsfRecon
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementTsfRecon
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementTsfRecon
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementPdvAkinci
@@ -180,6 +247,12 @@
       - PirateUplink
   - !type:WGKitHolderCondition
     kit: WGKitPdvAkinci
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementPdvAkinci
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementPdvAkinci
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementTsfCombatEngineer
@@ -195,6 +268,12 @@
       - SecurityUplink
   - !type:WGKitHolderCondition
     kit: WGKitTsfCombatEngineer
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementTsfCombatEngineer
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementTsfCombatEngineer
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementPdvCebeci
@@ -210,6 +289,12 @@
       - PirateUplink
   - !type:WGKitHolderCondition
     kit: WGKitPdvCebeci
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementPdvCebeci
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementPdvCebeci
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementTsfCorpsman
@@ -225,6 +310,12 @@
       - SecurityUplink
   - !type:WGKitHolderCondition
     kit: WGKitTsfCorpsman
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementTsfCorpsman
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementTsfCorpsman
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementPdvCerrah
@@ -240,6 +331,12 @@
       - PirateUplink
   - !type:WGKitHolderCondition
     kit: WGKitPdvCerrah
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementPdvCerrah
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementPdvCerrah
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementTsfMasterAtArms
@@ -255,6 +352,12 @@
       - SecurityUplink
   - !type:WGKitHolderCondition
     kit: WGKitTsfMasterAtArms
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementTsfMasterAtArms
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementTsfMasterAtArms
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementPdvBostanci
@@ -270,6 +373,12 @@
       - PirateUplink
   - !type:WGKitHolderCondition
     kit: WGKitPdvBostanci
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementPdvBostanci
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementPdvBostanci
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementTsfLavCrewman
@@ -285,6 +394,12 @@
       - SecurityUplink
   - !type:WGKitHolderCondition
     kit: WGKitTsfLavCrewman
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementTsfLavCrewman
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementTsfLavCrewman
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementPdvSipahi
@@ -300,6 +415,12 @@
       - PirateUplink
   - !type:WGKitHolderCondition
     kit: WGKitPdvSipahi
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementPdvSipahi
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementPdvSipahi
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementTsfCulinary
@@ -315,6 +436,12 @@
       - SecurityUplink
   - !type:WGKitHolderCondition
     kit: WGKitTsfCulinary
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementTsfCulinary
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementTsfCulinary
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementPdvAsci
@@ -330,6 +457,12 @@
       - PirateUplink
   - !type:WGKitHolderCondition
     kit: WGKitPdvAsci
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementPdvAsci
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementPdvAsci
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementTsfMachinistMate
@@ -345,6 +478,12 @@
       - SecurityUplink
   - !type:WGKitHolderCondition
     kit: WGKitTsfMachinistMate
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementTsfMachinistMate
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementTsfMachinistMate
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementPdvArabaci
@@ -360,6 +499,12 @@
       - PirateUplink
   - !type:WGKitHolderCondition
     kit: WGKitPdvArabaci
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementPdvArabaci
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementPdvArabaci
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementTsfLandingSupport
@@ -375,6 +520,12 @@
       - SecurityUplink
   - !type:WGKitHolderCondition
     kit: WGKitTsfLandingSupport
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementTsfLandingSupport
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementTsfLandingSupport
+    cooldown: 86400
+  raiseProductEventOnUser: true
 
 - type: listing
   id: WGUplinkKitReplacementPdvMenzilci
@@ -390,3 +541,9 @@
       - PirateUplink
   - !type:WGKitHolderCondition
     kit: WGKitPdvMenzilci
+  - !type:WGListingCooldownCondition
+    key: WGUplinkKitReplacementPdvMenzilci
+  productEvent: !type:WGListingCooldownEvent
+    key: WGUplinkKitReplacementPdvMenzilci
+    cooldown: 86400
+  raiseProductEventOnUser: true

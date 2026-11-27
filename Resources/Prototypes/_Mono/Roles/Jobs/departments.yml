@@ -43,6 +43,9 @@
   - VGInfanteer
   - VGLieutenant
   - VGCommander
+  # WOLFGATE(Cyborgs) START: registers the Viper Group borg job
+  - WGViperBorg
+  # WOLFGATE END
   primary: false
   editorHidden: false
 

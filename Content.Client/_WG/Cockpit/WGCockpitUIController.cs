@@ -40,6 +40,9 @@ public sealed partial class WGCockpitUIController : UIController
         UIManager.GetUIController<GameplayStateLoadController>().OnScreenUnload += () => Exit();
     }
 
+    /// <summary>Selects a saved fire group in the open cockpit, if there is one.</summary>
+    public void RecallWeaponGroup(int slot) => _view?.RecallWeaponGroup(slot);
+
     /// <summary>Checks seat and helm ownership without changing gameplay state; a replay viewer never enters.</summary>
     public bool CanEnter(EntityUid? console) => UIManager.ActiveScreen is InGameScreen && _replay.Replay == null &&
         _entities.System<SharedWGCockpitSystem>().CanEnter(_player.LocalEntity, console);

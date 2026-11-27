@@ -1,0 +1,23 @@
+# Played once on entering a Lattice band (the band's `music` in lattice.yml); other ambient music stays off there.
+
+# Feedback, the last band before the Coda.
+- type: ambientMusic
+  id: WGLatticeFeedbackMusic
+  sound:
+    collection: WGLatticeFeedbackMusic
+
+- type: soundCollection
+  id: WGLatticeFeedbackMusic
+  files:
+  - /Audio/_WG/Ambience/the_sentients.ogg
+
+# The Coda.
+- type: ambientMusic
+  id: WGLatticeCodaMusic
+  sound:
+    collection: WGLatticeCodaMusic
+
+- type: soundCollection
+  id: WGLatticeCodaMusic
+  files:
+  - /Audio/_WG/Ambience/the_abyss.ogg

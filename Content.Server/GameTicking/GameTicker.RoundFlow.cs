@@ -1032,6 +1032,10 @@ namespace Content.Server.GameTicking
             // Move everybody currently in the server to lobby.
             foreach (var player in _playerManager.Sessions)
             {
+                // WOLFGATE(JoinQueue): players waiting in the queue stay out of the lobby until let in
+                if (_joinQueue.IsWaiting(player.UserId))
+                    continue;
+
                 PlayerJoinLobby(player);
             }
 
@@ -1058,6 +1062,10 @@ namespace Content.Server.GameTicking
             _playerGameStatuses.Clear();
             foreach (var session in _playerManager.Sessions)
             {
+                // WOLFGATE(JoinQueue): players waiting in the queue get no lobby status until let in
+                if (_joinQueue.IsWaiting(session.UserId))
+                    continue;
+
                 _playerGameStatuses[session.UserId] = LobbyEnabled ? PlayerGameStatus.NotReadyToPlay : PlayerGameStatus.ReadyToPlay;
             }
         }

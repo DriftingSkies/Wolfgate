@@ -22,6 +22,8 @@ markers (`WGEncounterCollectMarkersEvent`). It stands until CANCEL SOS, which sa
 after `DistressDuration` (20 minutes). A new call waits out `DistressCooldown` (one minute) after the last one.
 Other code calls `ShipAlertSystem.SetDistress`.
 
+Active admins skip the PA's cooldowns: announcements, starting a track, skipping one and the distress call.
+
 Entry points: `ShipPaSystem` (speakers, broadcasts, alarms), `ShipAlertSystem` (situation codes, general quarters,
 announcements and the playlist messages from the console), `ShipPaPlaylistSystem` (the queue), `ShipAlarmPanel` (the
 console panel), the client `ShipPaMeshSystem` (plays the ship's programme from real speaker positions), and

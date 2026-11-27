@@ -509,6 +509,20 @@ public sealed class WGCockpitGunneryTest
             cockpit.Update(0.3f);
             Assert.That(cockpit.GetConsole(actor), Is.Null);
             Assert.That(cockpit.GetActors(replacement), Is.Empty, "Losing the seat releases crew and telemetry occupancy.");
+            Assert.That(cockpit.SetSession(actor, helm, true), Is.False, "An unseated pilot cannot use the guns.");
+            Assert.That(buckles.TryBuckle(actor, actor, seat), Is.True);
+            cockpit.Update(0.3f);
+            Assert.That(cockpit.GetConsole(actor), Is.EqualTo(replacement),
+                "Retaking the seat relinks the guns without the helm being reopened.");
+            Assert.That(cockpit.CanOperate(actor, replacement), Is.False,
+                "A request released while unseated still counts when the seat is retaken.");
+            ui.RaiseUiMessage(helm, ShuttleConsoleUiKey.Key, new WGCockpitGunnerySessionMessage(true, true) { Actor = actor });
+            buckles.Unbuckle((actor, em.GetComponent<BuckleComponent>(actor)), actor);
+            cockpit.Update(0.3f);
+            Assert.That(buckles.TryBuckle(actor, actor, seat), Is.True);
+            cockpit.Update(0.3f);
+            Assert.That(cockpit.CanOperate(actor, replacement), Is.True,
+                "Gun control held before a brief loss of the seat comes back with it; the client does not ask again.");
             ui.CloseUi(helm, ShuttleConsoleUiKey.Key, actor);
             pair.Server.PlayerMan.SetAttachedEntity(pair.Player!, null);
             foreach (var entity in new[] { actor, otherActor, helm, seat, otherSeat, gun, replacement, flare, weapon, foreign, serverUid })

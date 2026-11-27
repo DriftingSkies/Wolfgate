@@ -654,7 +654,7 @@ public partial class ShuttleNavControl : BaseShuttleControl // Mono
         var coordEnt = _coordinates.Value.EntityId;
         var coordEntRot = _transform.GetWorldRotation(coordEnt);
         if (_angleFollow && EntManager.TryGetComponent<TransformComponent>(coordEnt, out var coordXform))
-            _rotation = coordEntRot;
+            _rotation = WgFacingRotation(coordEntRot); // WOLFGATE(ShipFacing): the radar stands still while the pilot steers by the cursor
         else
             _rotation = Angle.Zero;
 

@@ -1,0 +1,114 @@
+- files: ["harvested_moon.ogg"]
+  license: "Custom"
+  copyright: "Harvested Moon by Troupe Gammage. Used as Outer Cloud ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["paen_to_the_past.ogg"]
+  license: "Custom"
+  copyright: "Paen to the Past by Troupe Gammage and Joel Corelitz. Used as Outer Cloud ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["clarion.ogg"]
+  license: "Custom"
+  copyright: "Clarion by Joel Corelitz. Used as Outer Cloud ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["melody_for_morys.ogg"]
+  license: "Custom"
+  copyright: "Melody for Morys by Troupe Gammage and Disasterpiece. Used as Colossus Inner Region ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["sun_chalice.ogg"]
+  license: "Custom"
+  copyright: "Sun Chalice by Amos Roddy. Used as Colossus Inner Region ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["imagined_futures_piano.ogg"]
+  license: "Custom"
+  copyright: "Imagined Futures (Piano) by Amos Roddy. Used as Colossus Inner Region ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["sennas_rest.ogg"]
+  license: "Custom"
+  copyright: "Senna's Rest by Amos Roddy. Used as Colossus Inner Region ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["density.ogg"]
+  license: "Custom"
+  copyright: "Density by Amos Roddy. Used as Inner Rubicon ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["little_sister.ogg"]
+  license: "Custom"
+  copyright: "Little Sister by Amos Roddy. Used as Inner Rubicon ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["beneath_fog.ogg"]
+  license: "Custom"
+  copyright: "Beneath Fog by Amos Roddy. Used as Inner Rubicon ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["equinox.ogg"]
+  license: "Custom"
+  copyright: "Equinox by Amos Roddy. Used as Inner Rubicon ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["the_gray_orchard.ogg"]
+  license: "Custom"
+  copyright: "The Gray Orchard by Amos Roddy. Used as Inner Rubicon ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["memory_cloud.ogg"]
+  license: "Custom"
+  copyright: "Memory Cloud by Amos Roddy. Used as Inner Rubicon ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["synthetic_warmth.ogg"]
+  license: "Custom"
+  copyright: "Synthetic Warmth by Amos Roddy. Used as Cloud Interstitial ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["the_last_color_of_land.ogg"]
+  license: "Custom"
+  copyright: "The Last Color of Land by Amos Roddy. Used as Cloud Interstitial ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["a_tired_ghost.ogg"]
+  license: "Custom"
+  copyright: "A Tired Ghost by Amos Roddy. Used as Cloud Interstitial ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["the_hermit.ogg"]
+  license: "Custom"
+  copyright: "The Hermit by Amos Roddy. Used as INSO-357k beacon cluster ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["possible_futures.ogg"]
+  license: "Custom"
+  copyright: "Possible Futures by Amos Roddy. Used as INSO-357k beacon cluster ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["basilisk.ogg"]
+  license: "Custom"
+  copyright: "Basilisk by Amos Roddy. Used as LINEAR-21 beacon cluster ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["matsutake.ogg"]
+  license: "Custom"
+  copyright: "Matsutake by Amos Roddy. Used as LINEAR-21 beacon cluster ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["disentangle.ogg"]
+  license: "Custom"
+  copyright: "Disentangle by Amos Roddy. Used as LINEAR-21 beacon cluster ambient music."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["the_sentients.ogg"]
+  license: "Custom"
+  copyright: "The Sentients by Disasterpiece. Played once on entering the Lattice's Feedback band."
+  source: "https://github.com/VanguardControl/Wolfgate"
+
+- files: ["the_abyss.ogg"]
+  license: "Custom"
+  copyright: "The Abyss by Disasterpiece. Played once on entering the Lattice's Coda."
+  source: "https://github.com/VanguardControl/Wolfgate"

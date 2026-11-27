@@ -99,6 +99,16 @@ public sealed partial class WGTradeMarketSystem
         return (int) MathF.Floor(Row(grid, good).Stock + 0.001f);
     }
 
+    /// <summary>
+    /// Crates of a good a station's vendors sell: what it holds above the level it turns scarce at. A station short of a
+    /// good keeps it, so a crate its chutes paid the full rate for can't be bought back for less.
+    /// </summary>
+    public int ForSale(EntityUid grid, string good)
+    {
+        var profile = Profile(grid);
+        return Math.Max(0, (int) MathF.Floor(Row(grid, good).Stock - profile.StockTarget * profile.ScarceLevel));
+    }
+
     /// <summary>Puts crates on a station's shelf or takes them off, up to what it can hold. Prices catch up over a few minutes.</summary>
     public void AddStock(EntityUid grid, string good, float amount)
     {

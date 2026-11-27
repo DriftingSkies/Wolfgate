@@ -8,7 +8,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Client._WG.DoomArcade;
 
-/// <summary>Downloads a Doom-engine game if needed, then runs it. Opened by a cabinet or the PDA Gamehub.</summary>
+/// <summary>Downloads a Doom-engine game if needed, then runs it. Opened by a cabinet, the PDA Gamehub or the join queue.</summary>
 public sealed partial class DoomArcadeWindow : DefaultWindow
 {
     private const float BytesPerMegabyte = 1024f * 1024f;
@@ -22,7 +22,9 @@ public sealed partial class DoomArcadeWindow : DefaultWindow
     private readonly ProgressBar _progress;
     private readonly Button _retry;
     private readonly Label _failed;
+    private readonly Button _leaderboard;
     private EntityUid? _source;
+    private bool _begun;
     private string _game = WGGameHubSystem.DoomGame;
     private bool _downloadStarted;
 
@@ -57,7 +59,7 @@ public sealed partial class DoomArcadeWindow : DefaultWindow
             Children = { _message, _progress, _retry },
         };
 
-        var leaderboard = new Button { Text = Loc.GetString("wg-gamehub-leaderboard"), HorizontalAlignment = HAlignment.Right };
+        var leaderboard = _leaderboard = new Button { Text = Loc.GetString("wg-gamehub-leaderboard"), HorizontalAlignment = HAlignment.Right };
         leaderboard.OnPressed += _ => _systems.GetEntitySystem<WGGameHubSystem>().OpenLeaderboard(_game);
 
         Contents.AddChild(new BoxContainer
@@ -67,9 +69,15 @@ public sealed partial class DoomArcadeWindow : DefaultWindow
         });
     }
 
-    /// <summary>Starts a game for the cabinet or PDA that nearby players will hear it from.</summary>
-    public void Begin(EntityUid source, string game)
+    /// <summary>
+    /// Starts a game for the cabinet or PDA that nearby players will hear it from, or with no source for one only this
+    /// player hears, such as from the join queue.
+    /// </summary>
+    public void Begin(EntityUid? source, string game)
     {
+        _begun = true;
+        // Leaderboards come by entity event, which a client waiting in the join queue never dispatches.
+        _leaderboard.Visible = source != null;
         _source = source;
         _game = game;
         Title = Loc.GetString(_protos.Index<WGGamePrototype>(game).Name);
@@ -80,7 +88,7 @@ public sealed partial class DoomArcadeWindow : DefaultWindow
     {
         base.FrameUpdate(args);
 
-        if (_source == null || Screen.Running || _failed.Visible)
+        if (!_begun || Screen.Running || _failed.Visible)
             return;
 
         var status = _data.GetStatus(_game);
@@ -118,6 +126,6 @@ public sealed partial class DoomArcadeWindow : DefaultWindow
     {
         _downloadPanel.Visible = false;
         Screen.Visible = true;
-        Screen.Start(_source!.Value, _game);
+        Screen.Start(_source, _game);
     }
 }

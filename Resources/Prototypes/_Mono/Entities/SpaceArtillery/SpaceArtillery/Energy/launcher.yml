@@ -494,6 +494,10 @@
   suffix: Small, T1
   description: A light laser emplacement designed by the Pantheon Collective, used to shred threats of all types.
   components:
+  # WOLFGATE(ShipShields) START: point defence fires fast at missiles, so each beam barely heats the ship
+  - type: WGShipGunHeat
+    heatPerShot: 3
+  # WOLFGATE END
   - type: StaticPrice
     price: 3000
   - type: Sprite

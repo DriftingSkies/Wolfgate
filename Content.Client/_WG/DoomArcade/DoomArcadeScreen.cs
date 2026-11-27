@@ -38,7 +38,7 @@ public sealed partial class DoomArcadeScreen : Control
     private ISawmill _sawmill = default!;
     private DoomArcadeSession? _session;
     private OwnedTexture? _texture;
-    private EntityUid _source;
+    private EntityUid? _source;
     private string _game = WGGameHubSystem.DoomGame;
 
     /// <summary>The player quit from the game's menu.</summary>
@@ -61,8 +61,11 @@ public sealed partial class DoomArcadeScreen : Control
         VerticalExpand = true;
     }
 
-    /// <summary>Starts a game from downloaded data, with its sound heard around <paramref name="source"/>.</summary>
-    public void Start(EntityUid source, string game)
+    /// <summary>
+    /// Starts a game from downloaded data, with its sound heard around <paramref name="source"/>. Without a source
+    /// (the join queue) nobody else hears it and finished levels win nothing.
+    /// </summary>
+    public void Start(EntityUid? source, string game)
     {
         if (_session != null)
             return;
@@ -78,10 +81,13 @@ public sealed partial class DoomArcadeScreen : Control
             _session = new DoomArcadeSession(_protos.Index<WGGamePrototype>(game).DataFile, _data.OpenData(game), audio, _resources.UserData);
             _texture = _clyde.CreateBlankTexture<Rgba32>((_session.Width, _session.Height), "doom-arcade");
 
-            var hub = _systems.GetEntitySystem<WGGameHubSystem>();
-            _session.Sound!.NoiseMade += (sound, volume) => hub.SendNoise(_source, _game, sound, volume);
-            _session.Music!.TrackChanged += (track, loop) => hub.SendMusic(_source, _game, track, loop);
-            _session.LevelCompleted += result => hub.SendLevelComplete(_source, _game, result);
+            if (_source is { } heardAt)
+            {
+                var hub = _systems.GetEntitySystem<WGGameHubSystem>();
+                _session.Sound!.NoiseMade += (sound, volume) => hub.SendNoise(heardAt, _game, sound, volume);
+                _session.Music!.TrackChanged += (track, loop) => hub.SendMusic(heardAt, _game, track, loop);
+                _session.LevelCompleted += result => hub.SendLevelComplete(heardAt, _game, result);
+            }
 
             GrabKeyboardFocus();
         }
@@ -176,8 +182,8 @@ public sealed partial class DoomArcadeScreen : Control
 
     private void Stop()
     {
-        if (_session != null)
-            _systems.GetEntitySystem<WGGameHubSystem>().SendStopped(_source, _game);
+        if (_session != null && _source is { } heardAt)
+            _systems.GetEntitySystem<WGGameHubSystem>().SendStopped(heardAt, _game);
 
         _held.Clear();
         _session?.Dispose();

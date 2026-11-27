@@ -9,7 +9,7 @@
   tier: 1
   title: wg-contract-cael-parcel-run
   briefing: wg-contract-cael-parcel-run-brief
-  reward: 4500, 6500
+  reward: 6300, 9100
   minutes: 40
   weight: 3
   objective: !type:WGContractCourier
@@ -17,8 +17,8 @@
     count: 1, 2
     from: Board
     to: Other
-    perPackage: 750
-    perKilometre: 1125
+    perPackage: 1050
+    perKilometre: 1600
 
 - type: wgContract
   id: WGContractCaelPriorityMail
@@ -27,7 +27,7 @@
   tier: 2
   title: wg-contract-cael-priority-mail
   briefing: wg-contract-cael-priority-mail-brief
-  reward: 7500, 10500
+  reward: 10500, 14700
   deposit: 800
   minutes: 35
   weight: 2
@@ -36,8 +36,8 @@
     count: 2, 4
     from: Board
     to: Other
-    perPackage: 1000
-    perKilometre: 1375
+    perPackage: 1400
+    perKilometre: 1900
 
 - type: wgContract
   id: WGContractCaelFragile
@@ -46,7 +46,7 @@
   tier: 2
   title: wg-contract-cael-fragile
   briefing: wg-contract-cael-fragile-brief
-  reward: 8000, 11250
+  reward: 11200, 15750
   deposit: 1000
   minutes: 40
   weight: 1.5
@@ -55,8 +55,8 @@
     count: 1, 3
     from: Board
     to: Other
-    perPackage: 1250
-    perKilometre: 1500
+    perPackage: 1750
+    perKilometre: 2100
 
 - type: wgContract
   id: WGContractCaelGeneralFreight
@@ -65,7 +65,7 @@
   tier: 2
   title: wg-contract-cael-general-freight
   briefing: wg-contract-cael-general-freight-brief
-  reward: 13750, 18750
+  reward: 19250, 26250
   deposit: 2000
   minutes: 50
   weight: 4
@@ -74,8 +74,8 @@
     count: 2, 4
     from: Board
     to: Other
-    perPackage: 2250
-    perKilometre: 1625
+    perPackage: 3150
+    perKilometre: 2300
 
 - type: wgContract
   id: WGContractCaelInboundFreight
@@ -84,7 +84,7 @@
   tier: 2
   title: wg-contract-cael-inbound-freight
   briefing: wg-contract-cael-inbound-freight-brief
-  reward: 13750, 18750
+  reward: 19250, 26250
   deposit: 2000
   minutes: 55
   weight: 3
@@ -93,8 +93,8 @@
     count: 2, 4
     from: Other
     to: Board
-    perPackage: 2250
-    perKilometre: 1625
+    perPackage: 3150
+    perKilometre: 2300
 
 - type: wgContract
   id: WGContractCaelBulkFreight
@@ -103,7 +103,7 @@
   tier: 3
   title: wg-contract-cael-bulk-freight
   briefing: wg-contract-cael-bulk-freight-brief
-  reward: 22500, 30000
+  reward: 31500, 42000
   deposit: 5000
   minutes: 60
   weight: 2
@@ -112,8 +112,8 @@
     count: 4, 7
     from: Board
     to: Other
-    perPackage: 2750
-    perKilometre: 2125
+    perPackage: 3850
+    perKilometre: 3000
 
 - type: wgContract
   id: WGContractCaelLuxuryConvoy
@@ -122,7 +122,7 @@
   tier: 4
   title: wg-contract-cael-luxury-convoy
   briefing: wg-contract-cael-luxury-convoy-brief
-  reward: 40000, 50000
+  reward: 56000, 70000
   deposit: 10000
   minutes: 70
   weight: 1.2
@@ -132,8 +132,8 @@
     count: 6, 10
     from: Board
     to: Other
-    perPackage: 3250
-    perKilometre: 2500
+    perPackage: 4550
+    perKilometre: 3500
 
 - type: wgContract
   id: WGContractCaelStationStores
@@ -142,7 +142,7 @@
   tier: 1
   title: wg-contract-cael-station-stores
   briefing: wg-contract-cael-station-stores-brief
-  reward: 10950, 15300
+  reward: 15350, 21400
   minutes: 45
   weight: 3
   objective: !type:WGContractSupply
@@ -167,13 +167,13 @@
   tier: 1
   title: wg-contract-cael-medical-stock
   briefing: wg-contract-cael-medical-stock-brief
-  reward: 21900, 27100
+  reward: 30650, 37950
   minutes: 45
   weight: 2
   objective: !type:WGContractSupply
     pick: 2
     premium: 1.5
-    goodsCap: 2500
+    goodsCap: 3500
     goods:
     - stack: Gauze
       count: 8, 12
@@ -194,7 +194,7 @@
   tier: 1
   title: wg-contract-marshal-skip
   briefing: wg-contract-marshal-skip-brief
-  reward: 15000, 20000
+  reward: 21000, 28000
   deposit: 500
   minutes: 50
   crewBonus: 0.25
@@ -211,7 +211,7 @@
   tier: 2
   title: wg-contract-marshal-smuggler
   briefing: wg-contract-marshal-smuggler-brief
-  reward: 30000, 37500
+  reward: 42000, 52500
   deposit: 2000
   minutes: 55
   crewBonus: 0.25
@@ -228,7 +228,7 @@
   tier: 3
   title: wg-contract-marshal-raiders
   briefing: wg-contract-marshal-raiders-brief
-  reward: 55000, 67500
+  reward: 77000, 94500
   deposit: 4000
   minutes: 60
   crewBonus: 0.25
@@ -246,7 +246,7 @@
   tier: 4
   title: wg-contract-marshal-gunship
   briefing: wg-contract-marshal-gunship-brief
-  reward: 90000, 110000
+  reward: 126000, 154000
   deposit: 8000
   minutes: 60
   crewBonus: 0.25
@@ -264,7 +264,7 @@
   tier: 5
   title: wg-contract-marshal-warlord
   briefing: wg-contract-marshal-warlord-brief
-  reward: 175000, 212500
+  reward: 245000, 297500
   deposit: 15000
   minutes: 75
   crewBonus: 0.25
@@ -282,7 +282,7 @@
   tier: 2
   title: wg-contract-marshal-evidence
   briefing: wg-contract-marshal-evidence-brief
-  reward: 17500, 22500
+  reward: 24500, 31500
   deposit: 1000
   minutes: 50
   crewBonus: 0.25
@@ -304,13 +304,13 @@
   tier: 1
   title: wg-contract-cael-escort-trader
   briefing: wg-contract-cael-escort-trader-brief
-  reward: 7500, 10500
+  reward: 10500, 14700
   minutes: 50
   crewBonus: 0.25
   weight: 1.5
   objective: !type:WGContractEscort
     encounters: [ WGContractEscortQuiet ]
-    perKilometre: 875
+    perKilometre: 1200
 
 - type: wgContract
   id: WGContractCaelEscortFreighter
@@ -319,14 +319,14 @@
   tier: 2
   title: wg-contract-cael-escort-freighter
   briefing: wg-contract-cael-escort-freighter-brief
-  reward: 20000, 27500
+  reward: 28000, 38500
   deposit: 1500
   minutes: 60
   crewBonus: 0.25
   weight: 1.2
   objective: !type:WGContractEscort
     encounters: [ WGContractEscortLight ]
-    perKilometre: 1250
+    perKilometre: 1750
 
 - type: wgContract
   id: WGContractCaelEscortConvoy
@@ -335,7 +335,7 @@
   tier: 3
   title: wg-contract-cael-escort-convoy
   briefing: wg-contract-cael-escort-convoy-brief
-  reward: 40000, 50000
+  reward: 56000, 70000
   deposit: 4000
   minutes: 70
   crewBonus: 0.25
@@ -343,7 +343,7 @@
   minPlayers: 3
   objective: !type:WGContractEscort
     encounters: [ WGContractEscortHeavy ]
-    perKilometre: 1750
+    perKilometre: 2450
 
 - type: wgContract
   id: WGContractCaelClearLane
@@ -352,7 +352,7 @@
   tier: 1
   title: wg-contract-cael-clear-lane
   briefing: wg-contract-cael-clear-lane-brief
-  reward: 9000, 12000
+  reward: 12600, 16800
   minutes: 50
   crewBonus: 0.25
   weight: 1
@@ -380,7 +380,7 @@
   tier: 2
   title: wg-contract-cael-repossession
   briefing: wg-contract-cael-repossession-brief
-  reward: 22500, 28000
+  reward: 31500, 39200
   deposit: 1000
   minutes: 55
   crewBonus: 0.25
@@ -399,7 +399,7 @@
   tier: 3
   title: wg-contract-marshals-smuggler-convoy
   briefing: wg-contract-marshals-smuggler-convoy-brief
-  reward: 47500, 57500
+  reward: 66500, 80500
   deposit: 3000
   minutes: 65
   crewBonus: 0.25
@@ -416,7 +416,7 @@
   tier: 3
   title: wg-contract-marshals-ace
   briefing: wg-contract-marshals-ace-brief
-  reward: 45000, 55000
+  reward: 63000, 77000
   deposit: 3000
   minutes: 60
   crewBonus: 0.25
@@ -433,7 +433,7 @@
   tier: 2
   title: wg-contract-marshals-black-box
   briefing: wg-contract-marshals-black-box-brief
-  reward: 22500, 28000
+  reward: 31500, 39200
   deposit: 1500
   minutes: 55
   crewBonus: 0.25
@@ -465,14 +465,14 @@
   tier: 1
   title: wg-contract-cael-mail-sweep
   briefing: wg-contract-cael-mail-sweep-brief
-  reward: 6000, 8000
+  reward: 8400, 11200
   minutes: 60
   weight: 1.5
   objective: !type:WGContractMailRun
     package: WGContractParcel
     stops: 3, 4
-    perStop: 1500
-    perKilometre: 750
+    perStop: 2100
+    perKilometre: 1050
 
 - type: wgContract
   id: WGContractCaelLaneSurvey
@@ -481,12 +481,12 @@
   tier: 1
   title: wg-contract-cael-lane-survey
   briefing: wg-contract-cael-lane-survey-brief
-  reward: 5000, 7000
+  reward: 7000, 9800
   minutes: 45
   weight: 1.5
   objective: !type:WGContractSweep
     points: 3, 4
-    perPoint: 1500
+    perPoint: 2100
     minDistance: 2000
     maxDistance: 5000
 
@@ -497,7 +497,7 @@
   tier: 1
   title: wg-contract-cael-beacon
   briefing: wg-contract-cael-beacon-brief
-  reward: 10000, 14000
+  reward: 14000, 19600
   minutes: 50
   crewBonus: 0.25
   weight: 1.2
@@ -517,7 +517,7 @@
   tier: 2
   title: wg-contract-marshals-carp-nests
   briefing: wg-contract-marshals-carp-nests-brief
-  reward: 20000, 26000
+  reward: 28000, 36400
   deposit: 1000
   minutes: 55
   crewBonus: 0.25
@@ -541,7 +541,7 @@
   tier: 2
   title: wg-contract-marshals-inspection
   briefing: wg-contract-marshals-inspection-brief
-  reward: 22000, 28000
+  reward: 30800, 39200
   deposit: 1000
   minutes: 55
   crewBonus: 0.25
@@ -562,7 +562,7 @@
   tier: 3
   title: wg-contract-marshals-lieutenant
   briefing: wg-contract-marshals-lieutenant-brief
-  reward: 45000, 55000
+  reward: 63000, 77000
   deposit: 2500
   minutes: 60
   crewBonus: 0.25
@@ -581,7 +581,7 @@
   tier: 3
   title: wg-contract-marshals-warlord-chain
   briefing: wg-contract-marshals-warlord-chain-brief
-  reward: 95000, 115000
+  reward: 133000, 161000
   deposit: 5000
   minutes: 75
   minCrew: 2
@@ -599,13 +599,13 @@
   tier: 1
   title: wg-contract-cael-nav-buoys
   briefing: wg-contract-cael-nav-buoys-brief
-  reward: 6000, 8000
+  reward: 8400, 11200
   minutes: 45
   weight: 1.3
   objective: !type:WGContractDeploy
     buoy: WGContractRelayBuoy
     points: 2, 3
-    perPoint: 1500
+    perPoint: 2100
     minDistance: 1500
     maxDistance: 4000
 
@@ -616,7 +616,7 @@
   tier: 2
   title: wg-contract-marshals-picket
   briefing: wg-contract-marshals-picket-brief
-  reward: 17500, 22500
+  reward: 24500, 31500
   deposit: 1000
   minutes: 40
   weight: 1.3
@@ -632,7 +632,7 @@
   tier: 3
   title: wg-contract-marshals-hold-line
   briefing: wg-contract-marshals-hold-line-brief
-  reward: 45000, 55000
+  reward: 63000, 77000
   deposit: 2500
   minutes: 50
   weight: 0.9
@@ -651,7 +651,7 @@
   tier: 2
   title: wg-contract-marshals-rescue
   briefing: wg-contract-marshals-rescue-brief
-  reward: 20000, 26000
+  reward: 28000, 36400
   deposit: 1000
   minutes: 55
   minCrew: 2
@@ -674,7 +674,7 @@
   tier: 2
   title: wg-contract-cael-planet-relay
   briefing: wg-contract-cael-planet-relay-brief
-  reward: 22000, 28000
+  reward: 30800, 39200
   deposit: 1000
   minutes: 70
   weight: 1.1
@@ -692,7 +692,7 @@
   tier: 1
   title: wg-contract-cael-planet-produce
   briefing: wg-contract-cael-planet-produce-brief
-  reward: 10500, 15750
+  reward: 14700, 22050
   minutes: 75
   weight: 2.4
   objective: !type:WGContractSupply
@@ -731,7 +731,7 @@
   tier: 2
   title: wg-contract-marshals-planet-dens
   briefing: wg-contract-marshals-planet-dens-brief
-  reward: 24000, 30000
+  reward: 33600, 42000
   deposit: 1000
   minutes: 70
   weight: 1.3
@@ -751,7 +751,7 @@
   tier: 4
   title: wg-contract-marshals-planet-purge
   briefing: wg-contract-marshals-planet-purge-brief
-  reward: 95000, 110000
+  reward: 133000, 154000
   deposit: 4000
   minutes: 90
   weight: 0.7
@@ -772,7 +772,7 @@
   tier: 3
   title: wg-contract-outpost-claim
   briefing: wg-contract-outpost-claim-brief
-  reward: 55000, 65000
+  reward: 77000, 91000
   minutes: 30
   weight: 1.0
   minCrew: 2
@@ -792,7 +792,7 @@
   tier: 3
   title: wg-contract-outpost-clearance
   briefing: wg-contract-outpost-clearance-brief
-  reward: 85000, 95000
+  reward: 119000, 133000
   minutes: 30
   weight: 0
   minCrew: 2
@@ -813,7 +813,7 @@
   tier: 3
   title: wg-contract-outpost-power
   briefing: wg-contract-outpost-power-brief
-  reward: 75000, 85000
+  reward: 105000, 119000
   minutes: 25
   weight: 0
   minCrew: 2
@@ -835,7 +835,7 @@
   tier: 4
   title: wg-contract-outpost-fab
   briefing: wg-contract-outpost-fab-brief
-  reward: 105000, 115000
+  reward: 147000, 161000
   minutes: 25
   weight: 0
   minCrew: 2
@@ -859,7 +859,7 @@
   tier: 4
   title: wg-contract-outpost-hold
   briefing: wg-contract-outpost-hold-brief
-  reward: 115000, 125000
+  reward: 161000, 175000
   minutes: 30
   weight: 0
   minCrew: 2
@@ -881,13 +881,13 @@
   tier: 4
   title: wg-contract-outpost-commission
   briefing: wg-contract-outpost-commission-brief
-  reward: 236250, 253750
+  reward: 330750, 355250
   minutes: 40
   weight: 0
   minCrew: 2
   crewBonus: 0.25
   objective: !type:WGContractSupply
-    goodsCap: 10000
+    goodsCap: 14000
     goods:
     - stack: Steel
       count: 120, 150

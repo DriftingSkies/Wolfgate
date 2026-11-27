@@ -1,0 +1,38 @@
+<ui:PdaOsWindow xmlns="https://spacestation14.io"
+               xmlns:ui="clr-namespace:Content.Client._WG.PdaUi"
+               MinSize="520 400"
+               SetSize="576 480"
+               MouseFilter="Stop">
+    <PanelContainer Name="Frame" HorizontalExpand="True" VerticalExpand="True">
+        <PanelContainer Name="FrameTexture" HorizontalExpand="True" VerticalExpand="True">
+            <Control>
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True">
+                    <PanelContainer Name="AccentStrip" SetWidth="2" Visible="False"/>
+                    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+                        <PanelContainer Name="TitleBar" HorizontalExpand="True" SetHeight="30">
+                            <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                                <AnimatedTextureRect Name="TitleIcon" SetSize="18 18" VerticalAlignment="Center"/>
+                                <Label Name="TitleLabel" Access="Public" VerticalAlignment="Center"
+                                       Margin="6 0" HorizontalExpand="True" ClipText="True"/>
+                                <ui:PdaIconButton Name="TitleCloseButton" Access="Public" SetWidth="22" MinHeight="20"/>
+                            </BoxContainer>
+                        </PanelContainer>
+                        <ui:PdaHeaderBar Name="Header" Access="Public"/>
+                        <BoxContainer Name="ContentsContainer" Access="Public"
+                                      Orientation="Vertical"
+                                      HorizontalExpand="True"
+                                      VerticalExpand="True"/>
+                        <PanelContainer Name="Footer" HorizontalExpand="True" SetHeight="20">
+                            <BoxContainer Orientation="Horizontal" Margin="6 0">
+                                <Label Name="FooterLabel" VerticalAlignment="Center"/>
+                                <Control HorizontalExpand="True"/>
+                                <Label Name="AddressLabel" Access="Public" VerticalAlignment="Center"/>
+                            </BoxContainer>
+                        </PanelContainer>
+                    </BoxContainer>
+                </BoxContainer>
+                <PanelContainer Name="Scanlines" MouseFilter="Ignore"/>
+            </Control>
+        </PanelContainer>
+    </PanelContainer>
+</ui:PdaOsWindow>

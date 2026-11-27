@@ -1,0 +1,57 @@
+- type: entity
+  parent: BaseItem
+  id: PdaDataDisk
+  name: ent-PdaDataDisk
+  description: ent-PdaDataDisk-desc
+  components:
+  - type: Sprite
+    sprite: Nyanotrasen/Objects/Specific/Research/datadisk.rsi
+    state: icon
+  - type: Icon
+    sprite: Nyanotrasen/Objects/Specific/Research/datadisk.rsi
+    state: icon
+  - type: ContainerContainer
+    containers:
+      data: !type:Container
+  - type: DataDisk
+    capacity: 32
+  - type: StaticPrice
+    price: 60
+
+- type: entity
+  parent: PdaDataDisk
+  id: PdaDataDiskAdvanced
+  name: ent-PdaDataDiskAdvanced
+  description: ent-PdaDataDiskAdvanced-desc
+  components:
+  - type: DataDisk
+    capacity: 64
+  - type: StaticPrice
+    price: 120
+
+- type: entity
+  parent: PdaDataDisk
+  id: PdaDataDiskSuper
+  name: ent-PdaDataDiskSuper
+  description: ent-PdaDataDiskSuper-desc
+  components:
+  - type: DataDisk
+    capacity: 128
+  - type: StaticPrice
+    price: 240
+
+- type: entity
+  parent: PdaDataDiskAdvanced
+  id: PdaDataDiskContractor
+  name: ent-PdaDataDiskContractor
+  description: ent-PdaDataDiskContractor-desc
+  components:
+  - type: DataDisk
+    capacity: 64
+    startingPrograms:
+    - AppraisalCartridge
+    - MedTekCartridge
+    - NetProbeCartridge
+    - LogProbeCartridge
+
+

@@ -1,0 +1,153 @@
+- type: pdaApp
+  id: Notekeeper
+  program: NotekeeperCartridge
+  description: pda-store-app-notekeeper-desc
+  category: pdaUtility
+  availableInStore: false
+  sortOrder: 0
+
+- type: pdaApp
+  id: NewsReader
+  program: NewsReaderCartridge
+  description: pda-store-app-news-desc
+  category: pdaUtility
+  sortOrder: 1
+
+- type: pdaApp
+  id: CrewManifest
+  program: CrewManifestCartridge
+  description: pda-store-app-crew-desc
+  category: pdaUtility
+  sortOrder: 2
+
+- type: pdaApp
+  id: AstroNav
+  program: AstroNavCartridge
+  description: pda-store-app-astronav-desc
+  category: pdaUtility
+  sortOrder: 3
+
+- type: pdaApp
+  id: NanoChat
+  program: NanoChatCartridge
+  description: pda-store-app-nanochat-desc
+  category: pdaUtility
+  availableInStore: false
+  sortOrder: 4
+
+- type: pdaApp
+  id: ArtCatalogue
+  program: WGArtCartridge
+  description: pda-store-app-art-desc
+  category: pdaEntertainment
+  sortOrder: 0
+
+- type: pdaApp
+  id: GameHub
+  program: WGGameHubCartridge
+  description: pda-store-app-gamehub-desc
+  category: pdaEntertainment
+  sortOrder: 1
+
+- type: pdaApp
+  id: MedTek
+  program: MedTekCartridge
+  description: pda-store-app-medtek-desc
+  category: pdaMedical
+  sortOrder: 0
+
+- type: pdaApp
+  id: NetProbe
+  program: NetProbeCartridge
+  description: pda-store-app-netprobe-desc
+  category: pdaEngineering
+  sortOrder: 0
+
+- type: pdaApp
+  id: LatticeStatus
+  program: WGLatticeStatusCartridge
+  description: pda-store-app-lattice-desc
+  category: pdaEngineering
+  downloadAccess:
+  - Engineering
+  sortOrder: 1
+
+- type: pdaApp
+  id: LogProbe
+  program: LogProbeCartridge
+  description: pda-store-app-logprobe-desc
+  category: pdaSecurity
+  sortOrder: 0
+
+- type: pdaApp
+  id: WantedList
+  program: WantedListCartridge
+  description: pda-store-app-wanted-desc
+  category: pdaSecurity
+  availableInStore: false
+  downloadAccess:
+  - Security
+  sortOrder: 1
+
+- type: pdaApp
+  id: Bench
+  program: WGBenchCartridge
+  description: pda-store-app-bench-desc
+  category: pdaSecurity
+  availableInStore: false
+  downloadAccess:
+  - Security
+  sortOrder: 2
+
+- type: pdaApp
+  id: JudgeLine
+  program: WGJudgeLineCartridge
+  description: pda-store-app-judgeline-desc
+  category: pdaSecurity
+  availableInStore: false
+  downloadAccess:
+  - Security
+  sortOrder: 3
+
+- type: pdaApp
+  id: BountyContracts
+  program: BountyContractsCartridge
+  description: pda-store-app-bounty-desc
+  category: pdaCargo
+  sortOrder: 0
+
+- type: pdaApp
+  id: Contracts
+  program: WGContractsCartridge
+  description: pda-store-app-contracts-desc
+  category: pdaCargo
+  sortOrder: 1
+
+- type: pdaApp
+  id: Appraisal
+  program: AppraisalCartridge
+  description: pda-store-app-appraisal-desc
+  category: pdaCargo
+  sortOrder: 2
+
+- type: pdaApp
+  id: Ledger
+  program: LedgerCartridge
+  description: pda-store-app-ledger-desc
+  category: pdaCargo
+  sortOrder: 3
+
+- type: pdaApp
+  id: MailMetrics
+  program: MailMetricsCartridge
+  description: pda-store-app-mail-desc
+  category: pdaCargo
+  sortOrder: 4
+
+- type: pdaApp
+  id: Market
+  program: WGMarketCartridge
+  description: pda-store-app-market-desc
+  category: pdaCargo
+  sortOrder: 5
+

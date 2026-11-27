@@ -53,13 +53,40 @@
       WGLupercalQuartermaster: quartermaster
       WGLupercalApothecary: apothecary
   # Best parts everywhere; guns, hardpoints and turrets that can't be destroyed, with four times the battery and
-  # recharge; doors nobody pries; cranes at the mobile crane's top speed.
+  # recharge; doors nobody pries; cranes at the mobile crane's top speed; vending machines that never run out and sell
+  # everything the sector's stations sell from the same machine and more (vending.yml).
   - type: WGShipFitting
     indestructibleArms: true
     unpryableDoors: true
     gunChargeScale: 4
     gunRechargeScale: 4
     craneSpeed: 3
+    unlimitedVending: true
+    vendingExtras:
+      RobustSoftdrinksInventory: WGLupercalSodaExtras
+      DrGibbInventory: WGLupercalSodaExtras
+      HotDrinksMachineInventory: WGLupercalHotDrinksExtras
+      GetmoreChocolateCorpInventory: WGLupercalSnackExtras
+      ChangInventory: WGLupercalChangExtras
+      DonutInventory: WGLupercalDonutExtras
+      DiscountDansInventory: WGLupercalDiscountExtras
+      CigaretteMachineInventory: WGLupercalCigarettesExtras
+      BoozeOMatInventory: WGLupercalBoozeExtras
+      DinnerwareInventory: WGLupercalDinnerwareExtras
+      ChefvendInventory: WGLupercalChefvendExtras
+      NutriMaxInventory: WGLupercalNutriExtras
+      MegaSeedServitorInventory: WGLupercalSeedsExtras
+      NanoMedPlusInventory: WGLupercalMedicalExtras
+      ChemVendInventory: WGLupercalChemicalsExtras
+      EngiVendInventory: WGLupercalEngivendExtras
+      YouToolInventory: WGLupercalYouToolExtras
+      VendomatInventory: WGLupercalVendomatExtras
+      TankDispenserEVAInventory: WGLupercalTankExtras
+      NFSalvageEquipmentInventory: WGLupercalSalvageExtras
+      RoboticsInventory: WGLupercalRoboticsExtras
+      MailVendInventory: WGLupercalMailExtras
+      ClothesMateInventory: WGLupercalClothingExtras
+      FlatpackVendInventory: WGLupercalFlatpackExtras
   # Every job starts closed (the gameMap below); a player who takes one relieves the NPC at the matching post and
   # stands on the command list named here while they hold it.
   - type: WGShipJobs

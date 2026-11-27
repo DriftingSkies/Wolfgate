@@ -13,6 +13,7 @@ using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Configuration;
+using Robust.Shared.Localization;
 using Robust.Shared.Maths;
 using Robust.Shared.Timing;
 
@@ -39,7 +40,7 @@ public sealed class WGShipShieldControlsTest
                 var body = Tree(panel).Single(control => control.GetType().Name == "ShieldColumns");
                 Assert.That(body.Size.Y, Is.GreaterThan(100f), "Preview and settings must receive remaining height instead of collapsing inside a scroll container.");
                 Assert.That(body.Size.X, Is.GreaterThan(500f));
-                var health = Field<ProgressBar>(panel, "_health");
+                var health = Field<ProgressBar>(panel, "_heat");
                 Assert.That(health.Size.Y, Is.GreaterThanOrEqualTo(22f), "Integrity must have a readable thick bar.");
                 foreach (var action in new Control[] { Field<Button>(panel, "_reset"), Field<Button>(panel, "_enabled"), health })
                 {
@@ -81,7 +82,7 @@ public sealed class WGShipShieldControlsTest
             Assert.That(recovery.Text, Does.Contain("Manually lowered"));
             panel.UpdateState(State(), 0f);
             Assert.That(recovery.Visible, Is.False);
-            var bar = Field<ProgressBar>(panel, "_health");
+            var bar = Field<ProgressBar>(panel, "_heat");
             var dial = Field<Control>(panel, "_dial");
             Color Tint() => ((StyleBoxFlat)bar.ForegroundStyleBoxOverride!).BackgroundColor;
             Assert.That(Tint(), Is.EqualTo(WGShipShieldEffects.HealthColor(0.6f)));
@@ -107,16 +108,32 @@ public sealed class WGShipShieldControlsTest
             Press(Field<Button>(panel, "_enabled"));
             Assert.That(enabledRequests, Has.Count.EqualTo(2));
 
+            var vents = 0;
+            panel.OnVent += () => vents++;
+            panel.UpdateState(BareHull(0.4f), 0f);
+            Assert.That(bar.Value, Is.EqualTo(0.4f).Within(0.001f), "A ship with no generator still shows its hull's heat.");
+            Assert.That(Field<Button>(panel, "_enabled").Visible, Is.False, "A bare hull has no field to deploy.");
+            Assert.That(Tree(panel).Single(control => control.GetType().Name == "ShieldColumns").Visible, Is.False);
+            Assert.That(Field<Button>(panel, "_vent").Disabled, Is.False);
+            Press(Field<Button>(panel, "_vent"));
+            Assert.That(vents, Is.EqualTo(1), "A bare hull vents from the same button.");
+            panel.UpdateState(State(), 0f);
+            Assert.That(Field<Button>(panel, "_enabled").Visible, Is.True);
+
             using var helm = new ShuttleConsoleWindow();
             var tab = Field<Button>(helm, "_shieldModeButton");
             var screen = Field<WGShipShieldShuntScreen>(helm, "_shieldScreen");
-            Assert.That(tab.Visible, Is.False, "Ships without an installed generator must not show the Shields tab.");
+            Assert.That(tab.Visible, Is.False, "A helm that has heard of no ship shows no shield or heat tab.");
             var rotation = Angle.FromDegrees(17f);
             void Update(WGShipShieldShuntState state) => typeof(ShuttleConsoleWindow)
                 .GetMethod("WgShieldUpdateState", BindingFlags.Instance | BindingFlags.NonPublic)!
                 .Invoke(helm, new object[] { state, rotation });
+            Update(BareHull(0f));
+            Assert.That(tab.Visible, Is.True, "A ship with no generator keeps a page for its heat and vent.");
+            Assert.That(tab.Text, Is.EqualTo(Loc.GetString("wg-shield-helm-tab-heat")));
             Update(State());
             Assert.That(tab.Visible, Is.True);
+            Assert.That(tab.Text, Is.EqualTo(Loc.GetString("wg-shield-helm-tab")));
             helm.SwitchMode(ShuttleConsoleWindow.ShuttleConsoleMode.Shields);
             Assert.That(screen.Visible, Is.True);
             foreach (var size in new[] { helm.MinSize, new Vector2(1128, 776) })
@@ -126,7 +143,7 @@ public sealed class WGShipShieldControlsTest
                 helm.Arrange(UIBox2.FromDimensions(Vector2.Zero, size));
                 var body = Tree(screen).Single(control => control.GetType().Name == "ShieldColumns");
                 Assert.That(body.Height, Is.GreaterThan(100), "The instrument layout must reserve space for the coverage dial.");
-                foreach (var action in new Control[] { Field<Button>(screen, "_enabled"), Field<Button>(screen, "_reset"), Field<ProgressBar>(screen, "_health") })
+                foreach (var action in new Control[] { Field<Button>(screen, "_enabled"), Field<Button>(screen, "_reset"), Field<ProgressBar>(screen, "_heat") })
                 {
                     Assert.That(action.Height, Is.GreaterThan(0));
                     Assert.That(action.GlobalPosition.Y, Is.GreaterThanOrEqualTo(screen.GlobalPosition.Y));
@@ -278,6 +295,9 @@ public sealed class WGShipShieldControlsTest
 
     private static WGShipShieldShuntState State(float health = 0.6f, bool available = true, bool enabled = true) =>
         new(available, enabled, health, 0.8f, 0.2f, MathF.PI / 2f, enabled);
+
+    private static WGShipShieldShuntState BareHull(float heat) =>
+        new(false, false, 0f, 0.8f, 0.2f, MathF.PI / 2f) { Hull = true, Heat = heat, CanVent = heat > 0f };
 
     private static T Field<T>(object target, string name) => (T)target.GetType()
         .GetField(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!.GetValue(target)!;

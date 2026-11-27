@@ -23,6 +23,9 @@ public sealed partial class HeadshotSystem : EntitySystem
     /// <summary>Portraits this system created, filled in when their image arrives and cleared on reset.</summary>
     private readonly List<(string Hash, HeadshotPortrait Rect)> _portraits = new();
 
+    /// <summary>When each image still on its way was asked for; asked again once that is stale.</summary>
+    private readonly Dictionary<string, TimeSpan> _requested = new();
+
     private (EntityUid Target, string Hash, TimeSpan Time)? _pending;
 
     /// <summary>Raised when the server answers a preview request from the profile editor.</summary>
@@ -69,12 +72,12 @@ public sealed partial class HeadshotSystem : EntitySystem
     private void OnShow(HeadshotShowEvent ev)
     {
         _pending = (GetEntity(ev.Target), ev.Hash, _timing.RealTime);
-        if (!_textures.ContainsKey(ev.Hash))
-            RaiseNetworkEvent(new HeadshotRequestEvent(ev.Hash));
+        Request(ev.Hash);
     }
 
     private void OnImage(HeadshotImageEvent ev)
     {
+        _requested.Remove(ev.Hash);
         if (_textures.ContainsKey(ev.Hash) || LoadTexture(ev.Png) is not { } texture)
             return;
 
@@ -96,18 +99,39 @@ public sealed partial class HeadshotSystem : EntitySystem
         if (_timing.RealTime - pending.Time > PendingTimeout)
             return;
 
+        var rect = CreatePortrait(pending.Hash);
+        rect.Margin = new Thickness(0, 4);
+        ev.Box.AddChild(rect);
+        rect.SetPositionInParent(1);
+    }
+
+    /// <summary>
+    /// A portrait for a hash the server has just shown this client, filled in when its image arrives. Asks for the
+    /// image unless it is cached or already on its way.
+    /// </summary>
+    public HeadshotPortrait CreatePortrait(string hash)
+    {
+        Request(hash);
         var rect = new HeadshotPortrait
         {
             HorizontalAlignment = Control.HAlignment.Center,
-            Margin = new Thickness(0, 4),
-            Texture = _textures.GetValueOrDefault(pending.Hash),
+            Texture = _textures.GetValueOrDefault(hash),
         };
 
         _portraits.RemoveAll(p => p.Rect.Disposed);
-        _portraits.Add((pending.Hash, rect));
+        _portraits.Add((hash, rect));
+        return rect;
+    }
 
-        ev.Box.AddChild(rect);
-        rect.SetPositionInParent(1);
+    private void Request(string hash)
+    {
+        var now = _timing.RealTime;
+        if (_textures.ContainsKey(hash)
+            || _requested.TryGetValue(hash, out var sent) && now - sent < PendingTimeout)
+            return;
+
+        _requested[hash] = now;
+        RaiseNetworkEvent(new HeadshotRequestEvent(hash));
     }
 
     private void Reset()
@@ -124,6 +148,7 @@ public sealed partial class HeadshotSystem : EntitySystem
 
         _portraits.Clear();
         _textures.Clear();
+        _requested.Clear();
         _pending = null;
     }
 }

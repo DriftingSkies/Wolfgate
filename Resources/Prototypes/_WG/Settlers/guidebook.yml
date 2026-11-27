@@ -1,0 +1,11 @@
+- type: guideEntry
+  id: WGGames
+  name: guide-entry-wg-games
+  text: "/ServerInfo/_WG/Settlers/Guidebook/Games.xml"
+  children:
+  - WGSettlers
+
+- type: guideEntry
+  id: WGSettlers
+  name: guide-entry-wg-settlers
+  text: "/ServerInfo/_WG/Settlers/Guidebook/Settlers.xml"

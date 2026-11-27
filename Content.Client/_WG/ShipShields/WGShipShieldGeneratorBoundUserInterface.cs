@@ -22,6 +22,7 @@ public sealed class WGShipShieldGeneratorBoundUserInterface : BoundUserInterface
         _window.ShieldPanel.AllocationRequested += (direction, concentration, arc) =>
             SendMessage(new WGShipShieldSetShuntMessage(direction, concentration, arc));
         _window.ShieldPanel.OnSetEnabled += enabled => SendMessage(new WGShipShieldSetEnabledMessage(enabled));
+        _window.ShieldPanel.OnVent += () => SendMessage(new WGShipShieldVentMessage());
         _window.StrengthRequested += strength => SendMessage(new WGShipShieldSetStrengthMessage(strength));
         if (State is WGShipShieldGeneratorUiState state)
             Show(state);

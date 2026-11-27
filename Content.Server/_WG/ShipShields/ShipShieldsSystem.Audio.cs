@@ -26,7 +26,12 @@ public sealed partial class ShipShieldsSystem
         if (now < state.NextPowerSound)
             return;
         state.NextPowerSound = now + TimeSpan.FromSeconds(5);
-        var sound = powered ? emitter.PowerUpSound : emitter.PowerDownSound;
+        PlayWolfgateHullSound(grid, powered ? emitter.PowerUpSound : emitter.PowerDownSound);
+    }
+
+    /// <summary>Plays a sound across a whole hull, heard by everyone aboard and near it.</summary>
+    private void PlayWolfgateHullSound(EntityUid grid, SoundSpecifier sound)
+    {
         var bounds = _wgShieldAudioLookup.GetWorldAABB(grid);
         var center = _wgShieldMap.GetGridPosition(grid);
         var extent = Vector2.Max(Vector2.Abs(bounds.BottomLeft - center), Vector2.Abs(bounds.TopRight - center));

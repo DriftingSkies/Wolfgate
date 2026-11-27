@@ -44,3 +44,7 @@ public sealed partial class WGContractKitComponent : Component
     [DataField(required: true)]
     public Robust.Shared.Prototypes.EntProtoId Unfold;
 }
+
+/// <summary>A supply or mining parcel: goods used on it, or it on goods, are taken as far as the manifest still needs.</summary>
+[RegisterComponent]
+public sealed partial class WGContractParcelComponent : Component;

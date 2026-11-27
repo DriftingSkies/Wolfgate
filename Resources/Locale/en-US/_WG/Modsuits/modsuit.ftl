@@ -24,6 +24,9 @@ modsuit-seal-broken = The suit's seal breaks!
 modsuit-part-sealed = The part is sealed to the suit, deactivate it first!
 modsuit-part-retract-instead = Retract the part through the suit instead!
 modsuit-part-slot-occupied = You can't fit the suit part over {THE($item)}!
+modsuit-hardsuit-too-thick = The clothing underneath is too thick to deploy the MODsuit over.
+modsuit-springlock-click = { $module } makes an ominous click...
+modsuit-springlock-snap = { $module } snaps shut inside your suit!
 
 modsuit-part-seal-up = {CAPITALIZE(THE($part))} seals.
 modsuit-part-seal-down = {CAPITALIZE(THE($part))} unseals.

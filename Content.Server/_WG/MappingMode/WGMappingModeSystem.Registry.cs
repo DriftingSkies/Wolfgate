@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server._WG.MappingTools;
+using Content.Server._WG.NetTraffic;
 using Robust.Shared.Map.Components;
 
 namespace Content.Server._WG.MappingMode;
@@ -14,6 +15,16 @@ public sealed partial class WGMappingModeSystem
     {
         SubscribeLocalEvent<WGMappingSessionMapComponent, EntityTerminatingEvent>(OnMapTerminating);
         SubscribeLocalEvent<WGMappingStackChangedEvent>(OnStackChanged);
+        SubscribeLocalEvent<WGMapScopeExemptEvent>(OnMapScopeExempt);
+    }
+
+    /// <summary>
+    /// Mapping maps keep their grids sent to everyone. Scoped, a grid is deleted on a mapper's client whenever they
+    /// look elsewhere (a live test, another level) and its walls come back detached from it.
+    /// </summary>
+    private void OnMapScopeExempt(ref WGMapScopeExemptEvent ev)
+    {
+        ev.Maps.UnionWith(_registry.Keys);
     }
 
     private void RegisterMap(EntityUid map, WGMappingMapKind kind, int sessionId)

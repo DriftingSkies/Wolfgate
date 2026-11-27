@@ -7,7 +7,7 @@
   tier: 1
   title: wg-contract-sb-colony-stores
   briefing: wg-contract-sb-colony-stores-brief
-  reward: 10950, 18800
+  reward: 15350, 26300
   minutes: 45
   weight: 4
   objective: !type:WGContractSupply
@@ -32,7 +32,7 @@
   tier: 2
   title: wg-contract-sb-construction
   briefing: wg-contract-sb-construction-brief
-  reward: 21900, 30600
+  reward: 30650, 42850
   deposit: 1000
   minutes: 55
   weight: 3
@@ -60,7 +60,7 @@
   tier: 1
   title: wg-contract-sb-settler-mail
   briefing: wg-contract-sb-settler-mail-brief
-  reward: 4000, 6000
+  reward: 5600, 8400
   minutes: 40
   weight: 2.5
   objective: !type:WGContractCourier
@@ -68,8 +68,8 @@
     count: 1, 3
     from: Contractor
     to: Other
-    perPackage: 750
-    perKilometre: 1125
+    perPackage: 1050
+    perKilometre: 1600
 
 - type: wgContract
   id: WGContractSBInboundSupplies
@@ -78,7 +78,7 @@
   tier: 2
   title: wg-contract-sb-inbound-supplies
   briefing: wg-contract-sb-inbound-supplies-brief
-  reward: 12500, 16250
+  reward: 17500, 22750
   deposit: 1500
   minutes: 50
   weight: 3
@@ -87,8 +87,8 @@
     count: 2, 4
     from: Board
     to: Contractor
-    perPackage: 2250
-    perKilometre: 1625
+    perPackage: 3150
+    perKilometre: 2300
 
 - type: wgContract
   id: WGContractSBMedicalRelief
@@ -97,7 +97,7 @@
   tier: 2
   title: wg-contract-sb-medical-relief
   briefing: wg-contract-sb-medical-relief-brief
-  reward: 13750, 17500
+  reward: 19250, 24500
   deposit: 1500
   minutes: 50
   weight: 2
@@ -106,8 +106,8 @@
     count: 2, 3
     from: Other
     to: Contractor
-    perPackage: 2250
-    perKilometre: 1625
+    perPackage: 3150
+    perKilometre: 2300
 
 - type: wgContract
   id: WGContractSBOreQuota
@@ -138,7 +138,7 @@
   tier: 1
   title: wg-contract-sb-lost-shuttle
   briefing: wg-contract-sb-lost-shuttle-brief
-  reward: 11250, 15000
+  reward: 15750, 21000
   minutes: 45
   crewBonus: 0.25
   weight: 1.5
@@ -162,7 +162,7 @@
   tier: 2
   title: wg-contract-sb-foundation
   briefing: wg-contract-sb-foundation-brief
-  reward: 84000, 101500
+  reward: 117600, 142100
   deposit: 2000
   minutes: 90
   minCrew: 2
@@ -170,7 +170,7 @@
   weight: 2
   objective: !type:WGContractSupply
     premium: 1.25
-    goodsCap: 30000
+    goodsCap: 42000
     goods:
     - stack: Steel
       count: 180, 260
@@ -214,7 +214,7 @@
   tier: 2
   title: wg-contract-sb-scrap-hull
   briefing: wg-contract-sb-scrap-hull-brief
-  reward: 17500, 22500
+  reward: 24500, 31500
   deposit: 1000
   minutes: 60
   crewBonus: 0.25
@@ -245,7 +245,7 @@
   tier: 1
   title: wg-contract-sb-livestock
   briefing: wg-contract-sb-livestock-brief
-  reward: 7500, 10000
+  reward: 10500, 14000
   deposit: 500
   minutes: 45
   weight: 2.4
@@ -254,8 +254,8 @@
     count: 2, 4
     from: Board
     to: Contractor
-    perPackage: 1500
-    perKilometre: 1250
+    perPackage: 2100
+    perKilometre: 1750
 
 - type: wgContract
   id: WGContractSBSeedBank
@@ -264,7 +264,7 @@
   tier: 1
   title: wg-contract-sb-seed-bank
   briefing: wg-contract-sb-seed-bank-brief
-  reward: 10500, 14900
+  reward: 14700, 20850
   minutes: 50
   weight: 2.4
   objective: !type:WGContractSupply
@@ -284,7 +284,7 @@
   tier: 2
   title: wg-contract-sb-carp-nests
   briefing: wg-contract-sb-carp-nests-brief
-  reward: 18000, 24000
+  reward: 25200, 33600
   deposit: 1000
   minutes: 55
   crewBonus: 0.25
@@ -313,14 +313,14 @@
   tier: 1
   title: wg-contract-sb-census-mail
   briefing: wg-contract-sb-census-mail-brief
-  reward: 5500, 7500
+  reward: 7700, 10500
   minutes: 60
   weight: 1.2
   objective: !type:WGContractMailRun
     package: WGContractParcel
     stops: 3, 4
-    perStop: 1250
-    perKilometre: 750
+    perStop: 1750
+    perKilometre: 1050
 
 - type: wgContract
   id: WGContractSBCommRelays
@@ -329,13 +329,13 @@
   tier: 1
   title: wg-contract-sb-comm-relays
   briefing: wg-contract-sb-comm-relays-brief
-  reward: 5500, 7500
+  reward: 7700, 10500
   minutes: 45
   weight: 1.2
   objective: !type:WGContractDeploy
     buoy: WGContractRelayBuoy
     points: 2, 3
-    perPoint: 1500
+    perPoint: 2100
     minDistance: 1500
     maxDistance: 4000
 
@@ -346,7 +346,7 @@
   tier: 2
   title: wg-contract-sb-planet-homesteaders
   briefing: wg-contract-sb-planet-homesteaders-brief
-  reward: 24000, 30000
+  reward: 33600, 42000
   deposit: 1000
   minutes: 80
   weight: 1.1

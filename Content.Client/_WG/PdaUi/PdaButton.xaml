@@ -1,0 +1,6 @@
+<ui:PdaButton xmlns="https://spacestation14.io"
+             xmlns:ui="clr-namespace:Content.Client._WG.PdaUi"
+             MinHeight="20">
+    <PanelContainer Name="Background"/>
+    <Label Name="TextLabel" Margin="8 1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+</ui:PdaButton>

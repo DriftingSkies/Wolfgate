@@ -78,3 +78,21 @@ wg-crew-bark-common-jump-4 = Everybody grab a rail!
 wg-crew-bark-common-arrived-1 = And we're through. Everyone still got all their limbs?
 wg-crew-bark-common-arrived-2 = Out of the jump. My stomach's still back there.
 wg-crew-bark-common-arrived-3 = Made it. Never doubted the pilot. Much.
+
+wg-crew-bark-common-stations-1 = General quarters! Moving to my station!
+wg-crew-bark-common-stations-2 = That's the alarm. Battle stations!
+wg-crew-bark-common-stations-3 = On my way. Clear the corridor!
+wg-crew-bark-common-stations-4 = Here we go. Everyone to their posts!
+
+wg-crew-bark-common-alert-1 = Code Yellow. Eyes open, everyone.
+wg-crew-bark-common-alert-2 = Yellow alert. Guess the break's off.
+wg-crew-bark-common-alert-3 = Heard that. Staying sharp.
+
+wg-crew-bark-common-stand-down-1 = Standing down. That was close. Or was it a drill?
+wg-crew-bark-common-stand-down-2 = All clear. Back to it.
+wg-crew-bark-common-stand-down-3 = Secured. My heart's still going, mind.
+
+wg-crew-bark-common-break-1 = Back in five. Ten, tops.
+wg-crew-bark-common-break-2 = I'm grabbing a bite. Cover for me?
+wg-crew-bark-common-break-3 = Time for a breather.
+wg-crew-bark-common-break-4 = Anyone want anything from the machine?

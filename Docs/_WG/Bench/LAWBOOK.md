@@ -25,8 +25,8 @@ Fines show a default and, in brackets, the range a judge may set.
 | Law | Text | Level | Fine |
 |---|---|---|---|
 | **Breach of the Anchors** | Raising a hand, weapon or tool against an anchor, its shield or its wardens, or cutting the power to a sanctioned relay. | Outlawry | – |
-| **Trespass beyond the Anchors** | Entering Adrift or Untethered space without a Deep Writ. | Citation | 10,000 (5,000–20,000) |
-| **Trespass in the Deep** | Entering the Deep without a Bench-sanctioned expedition. | Impound | 60,000 (50,000–100,000) |
+| **Trespass beyond the Anchors** | Entering Dissonance or Feedback space without a Coda Writ. | Citation | 10,000 (5,000–20,000) |
+| **Trespass in the Coda** | Entering the Coda without a Bench-sanctioned expedition. | Impound | 60,000 (50,000–100,000) |
 | **Unsanctioned Landing** | Entering orbit around, or landing on, a world the Bench has not sanctioned. | Impound | 50,000 (30,000–80,000) |
 | **Quarantine Breach** | Landing on a quarantine world, or carrying anything off one. | Banishment | 100,000 (75,000–150,000) |
 | **Possession of Unlawful Material** | Holding unlawful material for personal use: a shard, a charm, a token. | Citation | 15,000 (10,000–25,000) |
@@ -64,6 +64,9 @@ follow-up.
 | **Assault** | Unlawfully harming a person. | Citation | 10,000 (5,000–25,000) |
 | **Piracy** | Harpooning, pinning, boarding or stripping a vessel without its crew's consent. | Impound | 75,000 (50,000–120,000) |
 | **Hull Theft** | Flying, selling or breaking a vessel without its deed, or dealing in its parts. | Impound | 75,000 (50,000–120,000) |
+| **Narcotics Possession** | Holding a controlled narcotic or neuroware build for personal use. | Citation | 5,000 (2,500–10,000) |
+| **Narcotics Trafficking** | Growing, cooking, selling or carrying in bulk any controlled narcotic or neuroware build. | Impound | 50,000 (30,000–90,000) |
+| **Unlawful Loading** | Loading neuroware into a synthetic without its consent. Charged together with Assault where it harms them. | Citation | 20,000 (10,000–40,000) |
 
 ## Article III: Crimes against the Bench
 

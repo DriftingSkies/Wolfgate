@@ -149,7 +149,7 @@ public sealed class WGShipShieldHullDamageTest
                 expectedDamage = entities.GetComponent<ShipShieldEmitterComponent>(emitterUid).Damage + (float)projectile.Damage.GetTotal();
                 if (entities.TryGetComponent<ExplosiveComponent>(uid, out var explosive) &&
                     prototypes.TryIndex(explosive.ExplosionType, out var explosion))
-                    expectedDamage += explosive.TotalIntensity * (float)explosion.DamagePerIntensity.GetTotal();
+                    expectedDamage += WGShipShieldEffects.AbsorbedBlastDamage(explosive.TotalIntensity, (float)explosion.DamagePerIntensity.GetTotal());
                 physics.SetLinearVelocity(uid, direction * shot.Speed);
                 physics.WakeBody(uid);
             });

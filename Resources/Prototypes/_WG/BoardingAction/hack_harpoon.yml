@@ -29,7 +29,7 @@
   id: WGHackDart
   parent: WGShipHarpoon
   name: hacking dart
-  description: A barbed intrusion probe for the ARACHNE hacking harpoon. Shields stop it.
+  description: A barbed intrusion probe for the ARACHNE hacking harpoon. A shield stops it until its ship runs half full of heat.
   components:
   - type: Sprite
     sprite: _WG/BoardingAction/hack_dart.rsi

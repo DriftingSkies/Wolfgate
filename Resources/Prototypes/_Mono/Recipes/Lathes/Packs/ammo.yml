@@ -597,6 +597,7 @@
   - SpeedLoader762x54mmRFMJ
   - AmmoBox762x54mmRFMJ
   - Magazine556x45mmFMJ
+  - MagazineNovaliteC1FMJ #WOLFGATE(Weapons): Adding Novalite mags to the mercfab.
   - SpeedLoader556x45mmFMJ
   - AmmoBox556x45mmFMJ
   - Magazine762x39mmFMJ
@@ -682,6 +683,7 @@
   - Magazine762x54mmREmpty
   - Magazine8x65mmEmpty
   - Magazine556x45mmEmpty
+  - MagazineNovaliteC1Empty #WOLFGATE(Weapons): Adding Novalite mags to the mercfab.
   - SpeedLoader556x45mmEmpty
   - Magazine762x39mmEmpty
   - SpeedLoader357_magnumEmpty

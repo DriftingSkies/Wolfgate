@@ -1,0 +1,17 @@
+# Left where a lost ID was when its owner had it reissued (Content.Server/_WG/IdReissue). It is no ID card at all, so
+# nothing that takes an ID accepts it.
+- type: entity
+  parent: BaseItem
+  id: WGVoidIdCard
+  name: voided ID card
+  description: An ID card reported lost and voided at the shipyard office, its chip punched through. It opens nothing and pays for nothing.
+  components:
+  - type: Sprite
+    sprite: _WG/IdReissue/void_card.rsi
+    state: icon
+  - type: Item
+    # In hand it is just a card: the standard ID card's inhands.
+    sprite: Objects/Misc/id_cards.rsi
+    size: Small
+    heldPrefix: default
+    storedRotation: -90

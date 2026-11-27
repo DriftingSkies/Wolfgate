@@ -367,19 +367,22 @@ public sealed partial class GunSystem : SharedGunSystem
 
             if (type != null && rangedSound.SoundTypes?.TryGetValue(type, out var damageSoundType) == true)
             {
-                Audio.PlayPvs(damageSoundType, otherEntity, AudioParams.Default.WithVariation(DamagePitchVariation));
+                // Audio.PlayPvs(damageSoundType, otherEntity, AudioParams.Default.WithVariation(DamagePitchVariation));
+                WGLightSound.PlayPvs(damageSoundType, otherEntity, AudioParams.Default.WithVariation(DamagePitchVariation)); // WOLFGATE(Performance): hits make no sound entity
                 playedSound = true;
             }
             else if (type != null && rangedSound.SoundGroups?.TryGetValue(type, out var damageSoundGroup) == true)
             {
-                Audio.PlayPvs(damageSoundGroup, otherEntity, AudioParams.Default.WithVariation(DamagePitchVariation));
+                // Audio.PlayPvs(damageSoundGroup, otherEntity, AudioParams.Default.WithVariation(DamagePitchVariation));
+                WGLightSound.PlayPvs(damageSoundGroup, otherEntity, AudioParams.Default.WithVariation(DamagePitchVariation)); // WOLFGATE(Performance): hits make no sound entity
                 playedSound = true;
             }
         }
 
         if (!playedSound && weaponSound != null)
         {
-            Audio.PlayPvs(weaponSound, otherEntity);
+            // Audio.PlayPvs(weaponSound, otherEntity);
+            WGLightSound.PlayPvs(weaponSound, otherEntity); // WOLFGATE(Performance): hits make no sound entity
         }
     }
 }

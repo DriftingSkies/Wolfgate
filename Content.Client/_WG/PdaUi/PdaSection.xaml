@@ -1,0 +1,15 @@
+<ui:PdaSection xmlns="https://spacestation14.io"
+              xmlns:ui="clr-namespace:Content.Client._WG.PdaUi"
+              HorizontalExpand="True"
+              Margin="0 0 0 6">
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+        <PanelContainer Name="HeaderPanel" HorizontalExpand="True">
+            <BoxContainer Orientation="Horizontal" Margin="0 0" SetHeight="28">
+                <Label Name="TitleLabel" VerticalAlignment="Center"/>
+                <Control HorizontalExpand="True"/>
+                <BoxContainer Name="HeaderButtons" Orientation="Horizontal" VerticalAlignment="Center"/>
+            </BoxContainer>
+        </PanelContainer>
+        <BoxContainer Name="Contents" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" Margin="6 5 6 8"/>
+    </BoxContainer>
+</ui:PdaSection>

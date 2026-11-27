@@ -69,6 +69,7 @@ module that grips the void like magboots grip a hull.
 - [`Content.Server/_WG/Modsuits/ModMouthholeModuleSystem.cs`](ModMouthholeModuleSystem.cs)
 - [`Content.Server/_WG/Modsuits/ModPlasmaStabilizerSystem.cs`](ModPlasmaStabilizerSystem.cs)
 - [`Content.Server/_WG/Modsuits/ModRecyclerSystem.cs`](ModRecyclerSystem.cs)
+- [`Content.Server/_WG/Modsuits/ModSpringlockSystem.cs`](ModSpringlockSystem.cs)
 - [`Content.Server/_WG/Modsuits/ModStasisMetabolismSystem.cs`](ModStasisMetabolismSystem.cs)
 - [`Content.Server/_WG/Modsuits/ModsuitCellPriceSystem.cs`](ModsuitCellPriceSystem.cs)
 - [`Content.Server/_WG/Modsuits/ModSuitChargingSystem.cs`](ModSuitChargingSystem.cs)
@@ -117,6 +118,7 @@ module that grips the void like magboots grip a hull.
 - [`Content.Shared/_WG/Modsuits/Modules/ModSphereComponents.cs`](../../../Content.Shared/_WG/Modsuits/Modules/ModSphereComponents.cs)
 - [`Content.Shared/_WG/Modsuits/Modules/ModSphereRollController.cs`](../../../Content.Shared/_WG/Modsuits/Modules/ModSphereRollController.cs)
 - [`Content.Shared/_WG/Modsuits/Modules/ModSphereTransformModuleSystem.cs`](../../../Content.Shared/_WG/Modsuits/Modules/ModSphereTransformModuleSystem.cs)
+- [`Content.Shared/_WG/Modsuits/Modules/ModSpringlockModuleSystem.cs`](../../../Content.Shared/_WG/Modsuits/Modules/ModSpringlockModuleSystem.cs)
 - [`Content.Shared/_WG/Modsuits/Modules/ModStorageModuleSystem.cs`](../../../Content.Shared/_WG/Modsuits/Modules/ModStorageModuleSystem.cs)
 - [`Content.Shared/_WG/Modsuits/Modules/ModStripComponentsModuleSystem.cs`](../../../Content.Shared/_WG/Modsuits/Modules/ModStripComponentsModuleSystem.cs)
 - [`Content.Shared/_WG/Modsuits/Modules/ModStunEvents.cs`](../../../Content.Shared/_WG/Modsuits/Modules/ModStunEvents.cs)
@@ -246,6 +248,7 @@ module that grips the void like magboots grip a hull.
   - the native module system sets its own sealed appearance
 - [`Resources/Prototypes/_Mono/Entities/Clothing/Head/modsuit.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/Head/modsuit.yml)
   - the rsi only has the default and vox states, so other species drew an error sprite
+  - helmet lights cannot be toggled on a worn suit; the flashlight module provides light
   - the rsi only has the default, vox and vulpkanin states, so other species drew an error sprite
 - [`Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/modsuit.yml`](../../../Resources/Prototypes/_Mono/Entities/Clothing/OuterClothing/modsuit.yml)
   - MODsuit parts use the native module system.

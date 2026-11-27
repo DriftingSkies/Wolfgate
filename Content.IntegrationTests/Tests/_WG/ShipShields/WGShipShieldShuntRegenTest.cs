@@ -27,14 +27,16 @@ public sealed class WGShipShieldShuntRegenTest
 
             float Heal()
             {
-                emitter.Damage = 10000f;
+                // Heat from the ship itself; what the field absorbs would stay while it is up.
+                emitter.Damage = 0f;
+                shields.AddWolfgateShipHeat(map.Grid.Owner, 10000f);
                 emitter.Accumulator = 0f;
                 shields.Update(1.5f);
-                return 10000f - emitter.Damage;
+                return 10000f - shields.GetWolfgateShipHeat(map.Grid.Owner).Heat;
             }
 
             var even = Heal();
-            Assert.That(even, Is.EqualTo(emitter.HealPerSecond * 1.5f).Within(0.01f));
+            Assert.That(even, Is.EqualTo((emitter.HealPerSecond + shields.WolfgateHullCooling(generator)) * 1.5f).Within(0.01f));
             Assert.That(shields.SetWolfgateShieldShunt(map.Grid.Owner, 0f, 1f, MathF.PI / 6f), Is.True);
             Assert.That(Heal(), Is.EqualTo(even).Within(0.01f), "A narrow full shunt must not change regeneration.");
         });

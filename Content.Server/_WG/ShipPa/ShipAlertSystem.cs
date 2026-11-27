@@ -1,5 +1,6 @@
 using System;
 using Content.Server.Administration.Logs;
+using Content.Server.Administration.Managers;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Events;
 using Content.Shared._WG.Prototypes;
@@ -22,6 +23,7 @@ namespace Content.Server._WG.ShipPa;
 /// </summary>
 public sealed partial class ShipAlertSystem : EntitySystem
 {
+    [Dependency] private IAdminManager _admin = default!;
     [Dependency] private IPlayerManager _players = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IPrototypeManager _proto = default!;
@@ -55,6 +57,12 @@ public sealed partial class ShipAlertSystem : EntitySystem
         });
 
         InitializeDistress();
+    }
+
+    /// <summary>Whether the actor is an active admin, who skips the PA's cooldowns.</summary>
+    private bool IsAdmin(EntityUid actor)
+    {
+        return _players.TryGetSessionByEntity(actor, out var session) && _admin.IsAdmin(session);
     }
 
     /// <summary>Moves a grid saved before the WG id prefix onto the renamed code.</summary>
@@ -130,7 +138,7 @@ public sealed partial class ShipAlertSystem : EntitySystem
         if (string.IsNullOrWhiteSpace(text))
             return;
 
-        if (_timing.CurTime < alert.NextAnnouncement)
+        if (_timing.CurTime < alert.NextAnnouncement && !IsAdmin(args.Actor))
         {
             _popup.PopupEntity(Loc.GetString("ship-pa-announce-cooldown"), ent, args.Actor);
             return;
@@ -173,7 +181,7 @@ public sealed partial class ShipAlertSystem : EntitySystem
             return;
 
         // The cooldown paces starting a track. Adding to a running queue is free of it; the queue has its own cap.
-        if (_playlist.IsIdle(grid) && _timing.CurTime < alert.NextInternetSound)
+        if (_playlist.IsIdle(grid) && _timing.CurTime < alert.NextInternetSound && !IsAdmin(args.Actor))
         {
             var seconds = (int) Math.Ceiling((alert.NextInternetSound - _timing.CurTime).TotalSeconds);
             _popup.PopupEntity(Loc.GetString("ship-pa-sound-cooldown", ("seconds", seconds)), ent, args.Actor);
@@ -234,7 +242,7 @@ public sealed partial class ShipAlertSystem : EntitySystem
         switch (args.Action)
         {
             case ShipPaPlaylistAction.Skip:
-                switch (_playlist.Skip(grid, out var wait))
+                switch (_playlist.Skip(grid, out var wait, IsAdmin(args.Actor)))
                 {
                     case ShipPaSkipResult.TooSoon:
                         var seconds = (int) Math.Ceiling(wait.TotalSeconds);

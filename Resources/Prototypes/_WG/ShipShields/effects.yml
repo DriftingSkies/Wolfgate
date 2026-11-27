@@ -1,0 +1,46 @@
+# The crackle round a ship gun while a shield collapse has it locked. The server sets how long it lasts.
+- type: entity
+  id: WGEffectShieldGunLock
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    drawdepth: Effects
+    noRot: true
+    sprite: _WG/ShipShields/gun_lock.rsi
+    layers:
+    - state: sparks
+      shader: unshaded
+  - type: PointLight
+    radius: 2.5
+    energy: 1.5
+    color: "#00F0FF"
+    castShadows: false
+  - type: TimedDespawn
+    lifetime: 6
+  - type: Tag
+    tags:
+    - HideContextMenu
+
+# A plume of heat leaving the edge of a venting hull. It drifts the way the entity faces and is gone when its animation ends.
+- type: entity
+  id: WGEffectShipHeatVent
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Transform
+    gridTraversal: false # it sits past the hull's edge and must stay with the ship
+  - type: Sprite
+    drawdepth: Effects
+    sprite: _WG/ShipShields/heat_vent.rsi
+    layers:
+    - state: plume
+      shader: unshaded
+  - type: PointLight
+    radius: 2.5
+    energy: 1.2
+    color: "#FF8A1E"
+    castShadows: false
+  - type: TimedDespawn
+    lifetime: 0.88
+  - type: Tag
+    tags:
+    - HideContextMenu

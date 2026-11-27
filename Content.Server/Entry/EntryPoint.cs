@@ -114,6 +114,7 @@ namespace Content.Server.Entry
                 IoCManager.Resolve<INodeGroupFactory>().Initialize();
                 IoCManager.Resolve<ContentNetworkResourceManager>().Initialize();
                 IoCManager.Resolve<_WG.JoinProgress.JoinProgressManager>().Initialize(); // WOLFGATE(JoinProgress): tells joining clients their download size
+                IoCManager.Resolve<_WG.JoinQueue.JoinQueueManager>().Initialize(); // WOLFGATE(JoinQueue): holds players a full server has no slot for
                 IoCManager.Resolve<GhostKickManager>().Initialize();
                 IoCManager.Resolve<ServerInfoManager>().Initialize();
                 IoCManager.Resolve<ServerApi>().Initialize();

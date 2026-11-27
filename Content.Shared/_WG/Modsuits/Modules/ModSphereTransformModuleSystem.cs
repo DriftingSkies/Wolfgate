@@ -2,9 +2,10 @@ using System.Numerics;
 using Content.Shared._WG.Modsuits.Components;
 using Content.Shared._WG.Modsuits.Systems;
 using Content.Shared._Goobstation.Wizard.Projectiles;
-using Content.Shared.ActionBlocker;
 using Content.Shared.Actions;
 using Content.Shared.Buckle.Components;
+using Content.Shared.Damage.Components;
+using Content.Shared.Ensnaring.Components;
 using Content.Shared.Explosion;
 using Content.Shared.Gravity;
 using Content.Shared.Hands;
@@ -43,9 +44,6 @@ public sealed partial class ModSphereTransformModuleSystem : EntitySystem
         SubscribeLocalEvent<ModSphereTransformModuleComponent, ModSphereMissileActionEvent>(OnMissileAction);
         SubscribeLocalEvent<ModMiningMissileComponent, ProjectileHitEvent>(OnMissileHit);
         SubscribeLocalEvent<ModSphereFormComponent, GetExplosionResistanceEvent>(OnExplosionResistance);
-        SubscribeLocalEvent<ModSphereFormComponent, ComponentStartup>(OnFormStartup);
-        SubscribeLocalEvent<ModSphereFormComponent, ComponentShutdown>(OnFormShutdown);
-        SubscribeLocalEvent<ModSphereFormComponent, UpdateCanMoveEvent>(OnCanMove);
         SubscribeLocalEvent<ModSphereFormComponent, TileFrictionEvent>(OnTileFriction);
         SubscribeLocalEvent<ModSphereFormComponent, SlipAttemptEvent>(OnSlipAttempt);
         SubscribeLocalEvent<ModSphereFormComponent, KnockDownAttemptEvent>(OnKnockdownAttempt);
@@ -60,7 +58,6 @@ public sealed partial class ModSphereTransformModuleSystem : EntitySystem
 
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private INetManager _net = default!;
-    [Dependency] private ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private ActionContainerSystem _actionContainer = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private ModSuitSystem _modSuit = default!;
@@ -134,6 +131,8 @@ public sealed partial class ModSphereTransformModuleSystem : EntitySystem
         form.SteerOffset = Vector2.Zero;
         form.Thrusting = false;
         form.Hits.Clear();
+        form.Bumps = 0;
+        form.NextBump = TimeSpan.Zero;
         Dirty(wearer, form);
 
         ent.Comp.FormOwner = wearer;
@@ -237,20 +236,6 @@ public sealed partial class ModSphereTransformModuleSystem : EntitySystem
         if (TryComp<ModSphereTransformModuleComponent>(ent.Comp.Module, out var module))
             args.DamageCoefficient *= module.ExplosionCoefficient;
     }
-    private void OnFormStartup(Entity<ModSphereFormComponent> ent, ref ComponentStartup args)
-    {
-        _actionBlocker.UpdateCanMove(ent);
-    }
-    private void OnFormShutdown(Entity<ModSphereFormComponent> ent, ref ComponentShutdown args)
-    {
-        if (!TerminatingOrDeleted(ent))
-            _actionBlocker.UpdateCanMove(ent);
-    }
-    private void OnCanMove(Entity<ModSphereFormComponent> ent, ref UpdateCanMoveEvent args)
-    {
-        if (ent.Comp.LifeStage <= ComponentLifeStage.Running)
-            args.Cancel();
-    }
     private void OnTileFriction(Entity<ModSphereFormComponent> ent, ref TileFrictionEvent args)
     {
         args.Modifier = 0f;
@@ -336,6 +321,8 @@ public sealed partial class ModSphereTransformModuleSystem : EntitySystem
         {
             if (_gravity.IsWeightless(uid)
                 || TryComp<BuckleComponent>(uid, out var buckle) && buckle.Buckled
+                || TryComp<EnsnareableComponent>(uid, out var ensnareable) && ensnareable.IsEnsnared
+                || TryComp<StaminaComponent>(uid, out var stamina) && stamina.Critical
                 || _mobState.IsIncapacitated(uid))
                 _toDeactivate.Add((uid, form));
         }

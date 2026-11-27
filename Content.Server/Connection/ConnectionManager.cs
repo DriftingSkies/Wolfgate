@@ -65,6 +65,7 @@ namespace Content.Server.Connection
         [Dependency] private IHttpClientHolder _http = default!;
         [Dependency] private IAdminManager _adminManager = default!;
         [Dependency] private MiniAuthManager _authManager = default!; //Frontier
+        [Dependency] private _WG.JoinQueue.JoinQueueManager _joinQueue = default!; // WOLFGATE(JoinQueue)
 
         private ISawmill _sawmill = default!;
         private readonly Dictionary<NetUserId, TimeSpan> _temporaryBypasses = [];
@@ -318,7 +319,13 @@ namespace Content.Server.Connection
                 softPlayerCount -= _adminManager.ActiveAdmins.Count();
             }
 
-            if ((softPlayerCount >= _cfg.GetCVar(CCVars.SoftMaxPlayers) && !adminBypass) && !wasInGame)
+            // WOLFGATE(JoinQueue) START: queued players aren't playing, and a full server lets a player in to wait
+            softPlayerCount -= _joinQueue.WaitingForCap(_cfg.GetCVar(CCVars.AdminsCountForMaxPlayers));
+
+            // if ((softPlayerCount >= _cfg.GetCVar(CCVars.SoftMaxPlayers) && !adminBypass) && !wasInGame)
+            if ((softPlayerCount >= _cfg.GetCVar(CCVars.SoftMaxPlayers) && !adminBypass) && !wasInGame &&
+                !_joinQueue.CanWait(userId))
+            // WOLFGATE END
             {
                 return (ConnectionDenyReason.Full, Loc.GetString("soft-player-cap-full"), null);
             }

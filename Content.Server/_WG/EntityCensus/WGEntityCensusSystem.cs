@@ -75,6 +75,26 @@ public sealed class WGEntityCensusSystem : EntitySystem
 
     private const string NoPrototype = "(none)";
 
+    /// <summary>Components nearly every entity has, which say nothing about what a prototype-less one is.</summary>
+    private static readonly HashSet<string> Plumbing = new()
+    {
+        "MetaData", "Transform", "Physics", "Fixtures", "Broadphase", "ContainerContainer", "Visibility",
+    };
+
+    /// <summary>Components that say what a prototype-less entity is by themselves, most telling first.</summary>
+    private static readonly string[] Telling = { "MapGrid", "Map", "Mind", "StationData", "GameRule" };
+
+    /// <summary>What each live entity without a prototype is counted under.</summary>
+    private readonly Dictionary<EntityUid, string> _unnamed = new();
+    private readonly List<string> _names = new();
+
+    /// <summary>Entities made but not yet counted as made.</summary>
+    private readonly HashSet<EntityUid> _uncounted = new();
+    private readonly List<EntityUid> _counted = new();
+
+    /// <summary>Live prototype-less entities made since the last count, not yet counted as made.</summary>
+    private readonly HashSet<EntityUid> _pending = new();
+
     private static readonly Gauge KindGauge = Metrics.CreateGauge(
         "wg_entities",
         "Entities by where they are and whether they are paused",
@@ -92,6 +112,7 @@ public sealed class WGEntityCensusSystem : EntitySystem
 
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IComponentFactory _factory = default!;
 
     private EntityQuery<MetaDataComponent> _metaQuery;
     private EntityQuery<TransformComponent> _xformQuery;
@@ -125,6 +146,7 @@ public sealed class WGEntityCensusSystem : EntitySystem
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestart);
         EntityManager.EntityDeleted += OnEntityDeleted;
         EntityManager.EntityInitialized += OnEntityAdded;
+        EntityManager.EntityAdded += OnEntityAllocated;
         _countedSince = _timing.CurTime;
     }
 
@@ -133,6 +155,7 @@ public sealed class WGEntityCensusSystem : EntitySystem
         base.Shutdown();
         EntityManager.EntityDeleted -= OnEntityDeleted;
         EntityManager.EntityInitialized -= OnEntityAdded;
+        EntityManager.EntityAdded -= OnEntityAllocated;
     }
 
     private void OnRoundRestart(RoundRestartCleanupEvent ev)
@@ -141,20 +164,137 @@ public sealed class WGEntityCensusSystem : EntitySystem
         _snapshot = [];
         _deleted.Clear();
         _spawned.Clear();
+        _unnamed.Clear();
+        _pending.Clear();
+        _uncounted.Clear();
         _countedSince = _timing.CurTime;
         Last = null;
     }
 
+    /// <summary>
+    /// Notes every entity as it is made. Most go on to raise <see cref="OnEntityAdded"/> when they are initialised;
+    /// a grid is initialised by hand and never does, and is counted from here when the count finishes.
+    /// </summary>
+    private void OnEntityAllocated(Entity<MetaDataComponent> ent)
+    {
+        _uncounted.Add(ent.Owner);
+    }
+
     private void OnEntityAdded(Entity<MetaDataComponent> ent)
     {
-        var id = ent.Comp.EntityPrototype?.ID ?? NoPrototype;
-        _spawned[id] = _spawned.GetValueOrDefault(id) + 1;
+        _uncounted.Remove(ent.Owner);
+        if (ent.Comp.EntityPrototype is { } prototype)
+        {
+            _spawned[prototype.ID] = _spawned.GetValueOrDefault(prototype.ID) + 1;
+            return;
+        }
+
+        // One made without a prototype gets what makes it what it is after this: a grid is not yet a grid. It is
+        // named for now by what it has, in case it is deleted first, and again when it is counted.
+        NameOf(ent.Owner, ent.Comp);
+        _pending.Add(ent.Owner);
+    }
+
+    /// <summary>
+    /// Names the prototype-less entities made since the last count by what they turned out to be, and counts them
+    /// as made. Run before a count walks the entities, so it names each the same way.
+    /// </summary>
+    private void ResolvePending()
+    {
+        foreach (var uid in _pending)
+        {
+            var id = NoPrototype;
+            if (_metaQuery.TryComp(uid, out var meta))
+            {
+                _unnamed.Remove(uid);
+                id = NameOf(uid, meta);
+            }
+
+            _spawned[id] = _spawned.GetValueOrDefault(id) + 1;
+        }
+
+        _pending.Clear();
+    }
+
+    /// <summary>Counts the prototype-less entities made since the last count under what they turned out to be.</summary>
+    private void NamePending()
+    {
+        // What was made without raising its initialisation, such as a grid, is counted now that it is whole.
+        _counted.Clear();
+        foreach (var uid in _uncounted)
+        {
+            if (!_metaQuery.TryComp(uid, out var made) || made.EntityLifeStage < EntityLifeStage.Initialized)
+                continue;
+
+            _counted.Add(uid);
+            var name = NameOf(uid, made);
+            _spawned[name] = _spawned.GetValueOrDefault(name) + 1;
+        }
+
+        foreach (var uid in _counted)
+        {
+            _uncounted.Remove(uid);
+        }
+
+        ResolvePending();
     }
 
     private void OnEntityDeleted(Entity<MetaDataComponent> ent)
     {
-        var id = ent.Comp.EntityPrototype?.ID ?? NoPrototype;
+        // Its components are gone by now, so one with no prototype is named by what it was when it was made.
+        var id = ent.Comp.EntityPrototype?.ID
+                 ?? (_unnamed.Remove(ent.Owner, out var known) ? known : NoPrototype);
         _deleted[id] = _deleted.GetValueOrDefault(id) + 1;
+
+        // Made and deleted without ever being counted as made: it counts both ways, under the same name.
+        if (_uncounted.Remove(ent.Owner) | _pending.Remove(ent.Owner))
+            _spawned[id] = _spawned.GetValueOrDefault(id) + 1;
+    }
+
+    /// <summary>
+    /// What to count an entity under: its prototype, or for one made without a prototype the components that say
+    /// what it is, such as "(none: MapGrid)" for a grid or "(none: Mind)" for a mind.
+    /// </summary>
+    private string NameOf(EntityUid uid, MetaDataComponent meta)
+    {
+        if (meta.EntityPrototype is { } prototype)
+            return prototype.ID;
+
+        if (_unnamed.TryGetValue(uid, out var known))
+            return known;
+
+        _names.Clear();
+        foreach (var component in EntityManager.GetComponents(uid))
+        {
+            var name = _factory.GetComponentName(component.GetType());
+            if (!Plumbing.Contains(name))
+                _names.Add(name);
+        }
+
+        // A component that says outright what the entity is names it alone; a grid also carries a dozen trees and
+        // containers that come and go.
+        string? telling = null;
+        foreach (var name in Telling)
+        {
+            if (_names.Contains(name))
+            {
+                telling = name;
+                break;
+            }
+        }
+
+        _names.Sort(StringComparer.Ordinal);
+        var described = telling != null
+            ? $"(none: {telling})"
+            : _names.Count switch
+            {
+                0 => NoPrototype,
+                1 => $"(none: {_names[0]})",
+                _ => $"(none: {_names[0]}+{_names[1]})",
+            };
+
+        _unnamed[uid] = described;
+        return described;
     }
 
     public override void Update(float frameTime)
@@ -199,6 +339,7 @@ public sealed class WGEntityCensusSystem : EntitySystem
 
     private void Begin()
     {
+        ResolvePending();
         _snapshot = EntityManager.GetEntities().ToArray();
         _cursor = 0;
         _gridKinds.Clear();
@@ -221,7 +362,7 @@ public sealed class WGEntityCensusSystem : EntitySystem
         if ((meta.Flags & MetaDataFlags.InContainer) != 0)
             census.Contained++;
 
-        var id = meta.EntityPrototype?.ID ?? NoPrototype;
+        var id = NameOf(uid, meta);
         census.Prototypes[id] = census.Prototypes.GetValueOrDefault(id) + 1;
     }
 
@@ -234,17 +375,18 @@ public sealed class WGEntityCensusSystem : EntitySystem
         if (_gridKinds.TryGetValue(grid, out var known))
             return known;
 
+        // A bought ship is its own station for late joins, so its deed is asked before its station membership.
         WGCensusKind kind;
         if (HasComp<MapComponent>(grid) || HasComp<MapGridComponent>(Transform(grid).ParentUid))
             kind = WGCensusKind.Planet;
-        else if (HasComp<StationMemberComponent>(grid))
-            kind = WGCensusKind.Station;
-        else if (HasComp<WGAsteroidGridComponent>(grid))
-            kind = WGCensusKind.Asteroid;
         else if (HasComp<WGEncounterGridComponent>(grid) || HasComp<WGCrewShipProfileComponent>(grid))
             kind = WGCensusKind.NpcShip;
         else if (HasComp<ShuttleDeedComponent>(grid))
             kind = WGCensusKind.PlayerShip;
+        else if (HasComp<StationMemberComponent>(grid))
+            kind = WGCensusKind.Station;
+        else if (HasComp<WGAsteroidGridComponent>(grid))
+            kind = WGCensusKind.Asteroid;
         else
             kind = WGCensusKind.OtherGrid;
 
@@ -256,6 +398,7 @@ public sealed class WGEntityCensusSystem : EntitySystem
     {
         var census = _building!;
         _building = null;
+        NamePending();
         _snapshot = [];
         _next = _timing.CurTime + TimeSpan.FromSeconds(_interval);
 

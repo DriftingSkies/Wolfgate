@@ -374,7 +374,11 @@ public sealed partial class WGCrewSystem : EntitySystem
         EntityManager.System<WGCrewEscortSystem>().Invalidate();
         _crewAccess.SetDown(uid, component, args.NewMobState);
         if (args.NewMobState == MobState.Alive)
+        {
+            // Revival may pass through Critical, so any return to Alive gives back a tool his death took.
+            RestoreRepair(uid, component);
             return;
+        }
 
         EntityManager.System<WGCrewWorkSystem>().CancelWorker(uid);
         if (args.NewMobState == MobState.Dead && HasComp<WGCrewRepairComponent>(uid))
@@ -386,6 +390,34 @@ public sealed partial class WGCrewSystem : EntitySystem
 
         var ev = new WGCrewMemberDownEvent(uid, component.Group, component.Role, args.NewMobState == MobState.Dead, args.Origin);
         RaiseLocalEvent(uid, ref ev, true);
+    }
+
+    /// <summary>
+    /// Gives a revived crewman back the built-in repair tool his body or kit came with, which his death took so the
+    /// corpse would be no endless tool. Without it a revived deckhand never repaired again.
+    /// </summary>
+    private void RestoreRepair(EntityUid uid, WGCrewComponent component)
+    {
+        if (HasComp<WGCrewRepairComponent>(uid))
+            return;
+        var sources = new List<EntityPrototype>();
+        if (MetaData(uid).EntityPrototype is { } body)
+            sources.Add(body);
+        if (component.Role is { } roleId && _prototypes.TryIndex(roleId, out var role) && role.Kit is { } kit
+            && _prototypes.TryIndex<EntityPrototype>(kit, out var parts))
+            sources.Add(parts);
+        foreach (var source in sources)
+        {
+            if (!source.Components.TryGetValue("WGCrewRepair", out var marker)
+                || !source.Components.TryGetValue("ShipRepairTool", out var tool))
+                continue;
+            var registry = new ComponentRegistry { ["ShipRepairTool"] = tool, ["WGCrewRepair"] = marker };
+            // His death took the tool qualities too.
+            if (source.Components.TryGetValue("Tool", out var qualities))
+                registry["Tool"] = qualities;
+            EntityManager.AddComponents(uid, registry);
+            return;
+        }
     }
 
     private void OnSpawnPointMapInit(EntityUid uid, WGCrewSpawnPointComponent component, MapInitEvent args)

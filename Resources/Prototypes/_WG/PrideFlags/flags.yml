@@ -1,0 +1,92 @@
+# Wall-hung pride flags, beside the rainbow LGBTQFlag. The sprites are drawn by Tools/_WG/PrideFlags/pride_flags.py.
+- type: entity
+  abstract: true
+  parent: BaseFlag
+  id: WGPrideFlagBase
+  components:
+  - type: Sprite
+    sprite: _WG/PrideFlags/flags.rsi
+
+- type: entity
+  parent: WGPrideFlagBase
+  id: WGPrideFlagGay
+  components:
+  - type: Sprite
+    state: gay
+
+- type: entity
+  parent: WGPrideFlagBase
+  id: WGPrideFlagLesbian
+  components:
+  - type: Sprite
+    state: lesbian
+
+- type: entity
+  parent: WGPrideFlagBase
+  id: WGPrideFlagBisexual
+  components:
+  - type: Sprite
+    state: bisexual
+
+- type: entity
+  parent: WGPrideFlagBase
+  id: WGPrideFlagTransgender
+  components:
+  - type: Sprite
+    state: transgender
+
+- type: entity
+  parent: WGPrideFlagBase
+  id: WGPrideFlagPansexual
+  components:
+  - type: Sprite
+    state: pansexual
+
+- type: entity
+  parent: WGPrideFlagBase
+  id: WGPrideFlagAsexual
+  components:
+  - type: Sprite
+    state: asexual
+
+- type: entity
+  parent: WGPrideFlagBase
+  id: WGPrideFlagAromantic
+  components:
+  - type: Sprite
+    state: aromantic
+
+- type: entity
+  parent: WGPrideFlagBase
+  id: WGPrideFlagNonbinary
+  components:
+  - type: Sprite
+    state: nonbinary
+
+- type: entity
+  parent: WGPrideFlagBase
+  id: WGPrideFlagGenderfluid
+  components:
+  - type: Sprite
+    state: genderfluid
+
+- type: entity
+  parent: WGPrideFlagBase
+  id: WGPrideFlagAgender
+  components:
+  - type: Sprite
+    state: agender
+
+- type: entity
+  parent: WGPrideFlagBase
+  id: WGPrideFlagGenderqueer
+  components:
+  - type: Sprite
+    state: genderqueer
+
+- type: entity
+  parent: WGPrideFlagBase
+  id: WGPrideFlagIntersex
+  components:
+  - type: Sprite
+    state: intersex

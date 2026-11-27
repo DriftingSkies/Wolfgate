@@ -18,8 +18,9 @@ is no longer sent; the client engine stays stock.
 - **Grids by system** (`WGMapScopedPvsSystem`): instead of every grid going to every player, a player gets those of
   the systems they look at (a map, or every map of one z-level stack) through their body, the entity their eye follows
   and any camera they watch. Leaving a system deletes its grids on the client; entering one sends them as a join does.
-  Maps still go to everyone, since the FTL map lists the maps the client has. Planet worlds, z-transit maps and culled
-  asteroid rocks keep their own sending. `wg.net.map_scoped_grids`; the test pool runs with it off.
+  Maps still go to everyone, since the FTL map lists the maps the client has. Planet worlds, z-transit maps, culled
+  asteroid rocks and maps another module exempts through `WGMapScopeExemptEvent` (mapping mode's maps) keep their own
+  sending. `wg.net.map_scoped_grids`; the test pool runs with it off.
 - **UI states** (`WGUiStateTrimSystem`): the engine sends every UI state stored on an entity to each player who can see
   it, and all of them again when one changes, whether or not a window is open. Radar consoles (every cyborg and gunnery
   console has one), shuttle consoles, gas canisters, holopads and AME controllers now only hold a state while someone
@@ -54,6 +55,7 @@ sent bytes down by message, network event, component and prototype.
 - [`Content.Server/_WG/NetTraffic/SolutionHeaterSystem.NetTraffic.cs`](SolutionHeaterSystem.NetTraffic.cs)
 - [`Content.Server/_WG/NetTraffic/WGEncounterMarkerSystem.NetTraffic.cs`](WGEncounterMarkerSystem.NetTraffic.cs)
 - [`Content.Server/_WG/NetTraffic/WGMapScopedPvsSystem.cs`](WGMapScopedPvsSystem.cs)
+- [`Content.Server/_WG/NetTraffic/WGMapScopeExemptEvent.cs`](WGMapScopeExemptEvent.cs)
 - [`Content.Server/_WG/NetTraffic/WGNetExplosionSystem.cs`](WGNetExplosionSystem.cs)
 - [`Content.Server/_WG/NetTraffic/WGNetShellComponent.cs`](WGNetShellComponent.cs)
 - [`Content.Server/_WG/NetTraffic/WGNetShellSystem.cs`](WGNetShellSystem.cs)

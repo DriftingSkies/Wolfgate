@@ -34,8 +34,11 @@ public sealed partial class ShuttleConsoleWindow
             ("wg-cockpit-systems", systems),
             ("wg-cockpit-alarms", announcements),
         };
+        var reserves = Column(Row(ShipContainer.WgCockpitFuel(), NavContainer.WgCargoGauge("Cockpit")),
+            NavContainer.WgShipModuleBank("Cockpit"));
+        reserves.SeparationOverride = 3;
         return new WGCockpitParts(CameraBar.WgCockpitControls(lease), lease.Take(CaptureBanner, restoreVisibility: false),
-            instruments, Row(ShipContainer.WgCockpitFuel(), NavContainer.WgCargoGauge("Cockpit")),
+            instruments, reserves,
             translation, NavContainer.WgCockpitFlight(lease), shield,
             new WGCockpitTcasPanel(CollisionBanner.WgCockpitTcasReading), pages);
     }

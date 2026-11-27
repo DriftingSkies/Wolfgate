@@ -37,6 +37,7 @@
 - type: reaction
   id: FentanylSolidification
   impact: Low
+  quantized: true # WOLFGATE(WolfChem): under 25u it waits instead of eating the fentanyl for no crystal
   minTemp: 310
   reactants:
     Fentanyl:

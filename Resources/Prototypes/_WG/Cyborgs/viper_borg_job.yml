@@ -1,0 +1,35 @@
+- type: job
+  id: WGViperBorg
+  name: job-name-wg-viper-borg
+  description: job-description-wg-viper-borg
+  playTimeTracker: JobWGViperBorg
+  setPreference: true
+  whitelisted: true
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 43200
+  alwaysUseSpawner: true
+  assignedCompany: TheViperGroup
+  canBeAntag: false
+  icon: JobIconBorg
+  hideConsoleVisibility: true
+  supervisors: job-supervisors-hire
+  jobEntity: PlayerBorgWGViperGroup
+  applyTraits: false
+  access:
+  - Viper
+  guides:
+  - Viper_Group
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: RadioOnCryosleep
+      radioChannel: Viper
+
+- type: roleLoadout
+  id: JobWGViperBorg
+  nameDataset: NFNamesBorg
+  canCustomizeName: true
+
+- type: playTimeTracker
+  id: JobWGViperBorg

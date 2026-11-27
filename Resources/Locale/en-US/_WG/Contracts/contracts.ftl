@@ -30,6 +30,7 @@ wg-contract-category-science = Science
 wg-contract-category-planetary = Planetary
 
 wg-contract-tier-short = T{$tier}
+wg-contract-row-planetside = Planetside
 wg-contract-tier = Risk tier {$tier}
 
 wg-contract-status-offered = Offered
@@ -60,7 +61,7 @@ wg-contract-board-owed = {$pay} {$pay ->
     } owed to you will be paid when your account can take it.
 
 wg-contract-empty-offers = Nothing posted in this category right now. Contractors post again every few minutes.
-wg-contract-empty-planetary = Planetary operations open once surface survey licences are issued. Check back later.
+wg-contract-empty-planetary = No planetside work is posted right now. Check back later.
 wg-contract-empty-accepted = You hold no contracts. Take one from any contract board.
 wg-contract-empty-history = Nothing finished yet this shift.
 
@@ -96,7 +97,11 @@ wg-contract-standing-absent = {$description} (not in the sector this shift)
 wg-contract-standing-progress = {$points} / {$next} to the next rank
 wg-contract-standing-max = {$points}: top rank
 
-wg-contract-pda-hint = {$offers} offers on the boards. {$crew ->
+wg-contract-pda-back = < Back
+wg-contract-pda-tab-offers = Offers {$count}
+wg-contract-pda-tab-accepted = Held {$count}/{$max}
+wg-contract-pda-detail-header = {$tab}
+wg-contract-pda-hint = {$offers} offers you can see. {$crew ->
     [1] Solo: {$slots} slot.
    *[other] Crew of {$crew}: {$slots} shared slots.
 }
@@ -114,6 +119,7 @@ wg-contract-locked-crew = Needs a crew of {$needed} in the sector; yours has {$s
 wg-contract-locked-company = {$contractor} only deals with its own people.
 wg-contract-locked-hostile = {$contractor} won't deal with you. Your standing with them is Hostile.
 wg-contract-error-gone = Someone else took that contract.
+wg-contract-error-no-board = No board that posts this contract stands in the sector to hand out its cargo.
 wg-contract-error-deposit = Your account can't cover the {$deposit} {$deposit ->
         [one] thaler
        *[other] thalers
@@ -168,7 +174,7 @@ wg-contract-interfered = You fired on a target held by {$claimant} under a {$con
 ## Contract cargo
 
 wg-contract-package-name = {$name} for {$destination}
-wg-contract-crate-name = contract crate #{$id} for {$destination}
+wg-contract-crate-name = contract parcel #{$id} for {$destination}
 wg-contract-crate-void-name = empty contract crate
 wg-contract-wreck-name = Wreck (contract #{$id})
 wg-contract-item-examine = [color=#9fd3e0]Contract #{$id}, "{$title}", held by {$holder}. Deliver to {$destination}.[/color]
@@ -178,11 +184,14 @@ wg-contract-crate-line = {$done ->
 }
 wg-contract-crate-missing-line = {$count} {$name}
 wg-contract-crate-short = The manifest is short: {$missing}.
+wg-contract-parcel-took = Took {$count}. Still needed: {$missing}.
+wg-contract-parcel-full = Took {$count}. The manifest is complete; carry the parcel onto the contractor's station.
+wg-contract-parcel-nothing = Nothing here the manifest needs. Still needed: {$missing}.
 
 ## Where to go, and what to do
 
 wg-contract-location-courier = Pick up at {$origin}, deliver to {$destination} ({$km} km).
-wg-contract-location-supply = Collect the manifest crate at the board; deliver it closed to {$destination} ({$km} km).
+wg-contract-location-supply = Fill the manifest parcel by using goods on it; bring it to {$destination} ({$km} km).
 wg-contract-location-bounty = {$active ->
     [true] Target last reported about {$km} km out from {$home}. It shows on the sector radar.
    *[false] Target reported about {$km} km out from {$home}. Exact position on accepting.
@@ -197,7 +206,7 @@ wg-contract-objective-goods = {$active ->
     [true] Pack {$name} ({$have}/{$count})
    *[false] Pack {$count} {$name}
 }
-wg-contract-objective-crate = Close the crate aboard {$destination}
+wg-contract-objective-crate = Bring the full parcel aboard {$destination}
 wg-contract-objective-bounty = Destroy {$target}
 wg-contract-objective-recover = Recover the {$item} from the {$planet ->
     [true] site

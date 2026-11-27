@@ -1,3 +1,4 @@
+using Lidgren.Network;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
 
@@ -19,32 +20,49 @@ public static class WGGameHubProtocol
     public const float HearRange = 10f;
 }
 
-/// <summary>Asks for a game's size and version.</summary>
-[Serializable, NetSerializable]
-public sealed class WGGameManifestRequestEvent(string game) : EntityEventArgs
+public enum WGGameDataMessage : byte
 {
-    public readonly string Game = game;
+    /// <summary>The client asks for a game's size and version.</summary>
+    ManifestRequest,
+
+    /// <summary>The server's answer, with <see cref="MsgWGGameData.Size"/> and <see cref="MsgWGGameData.Version"/>.</summary>
+    Manifest,
+
+    /// <summary>The client asks the server to stream a game's data to it.</summary>
+    DownloadRequest,
+
+    /// <summary>The server couldn't read or send the data.</summary>
+    DownloadFailed,
 }
 
-[Serializable, NetSerializable]
-public sealed class WGGameManifestEvent(string game, long size, string version) : EntityEventArgs
+/// <summary>
+/// Game data requests and answers. A net message rather than an entity event, so a client waiting in the join queue,
+/// which gets no game states and so dispatches no entity events, can still fetch a game.
+/// </summary>
+public sealed class MsgWGGameData : NetMessage
 {
-    public readonly string Game = game;
-    public readonly long Size = size;
-    public readonly string Version = version;
-}
+    public override MsgGroups MsgGroup => MsgGroups.Command;
 
-/// <summary>Asks the server to stream a game's data to this client.</summary>
-[Serializable, NetSerializable]
-public sealed class WGGameDownloadRequestEvent(string game) : EntityEventArgs
-{
-    public readonly string Game = game;
-}
+    public WGGameDataMessage Kind;
+    public string Game = string.Empty;
+    public long Size;
+    public string Version = string.Empty;
 
-[Serializable, NetSerializable]
-public sealed class WGGameDownloadFailedEvent(string game) : EntityEventArgs
-{
-    public readonly string Game = game;
+    public override void ReadFromBuffer(NetIncomingMessage buffer, IRobustSerializer serializer)
+    {
+        Kind = (WGGameDataMessage) buffer.ReadByte();
+        Game = buffer.ReadString();
+        Size = buffer.ReadInt64();
+        Version = buffer.ReadString();
+    }
+
+    public override void WriteToBuffer(NetOutgoingMessage buffer, IRobustSerializer serializer)
+    {
+        buffer.Write((byte) Kind);
+        buffer.Write(Game);
+        buffer.Write(Size);
+        buffer.Write(Version);
+    }
 }
 
 /// <summary>The player started or changed their game's music on a cabinet or PDA. Null stops broadcasting.</summary>

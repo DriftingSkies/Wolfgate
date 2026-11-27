@@ -132,6 +132,7 @@
     yield: 1.5
     flash: true
     ftl: false
+    music: WGLatticeFeedbackMusic
   - name: wg-lattice-band-deep
     message: wg-lattice-enter-deep
     edge: 66000
@@ -142,6 +143,7 @@
     chip: Warning
     color: "#d030a0"
     yield: 1.8
+    music: WGLatticeCodaMusic
     # Exotic matter is found only in the Coda.
     exotic: 0.06
     flash: true

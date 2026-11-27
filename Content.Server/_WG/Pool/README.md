@@ -47,6 +47,7 @@ them (`WGPoolTableSystem.GetRoot`), and its window stays open for anyone within 
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WG/Pool/PoolTableFlatpackTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Pool/PoolTableFlatpackTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Pool/PoolTableTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Pool/PoolTableTest.cs)
 
 ### Unit tests

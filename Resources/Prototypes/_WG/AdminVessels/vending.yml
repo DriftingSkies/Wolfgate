@@ -1,0 +1,387 @@
+# The Lupercal's extra vending lines: WGShipFitting.vendingExtras on the vessel adds each pack here to every machine
+# aboard that carries the pack it is keyed by, and unlimitedVending makes every line unlimited, so the amounts only
+# matter on a ship without it. Each pack first brings the machine level with what the sector's stations sell from the
+# same kind of machine (Docs/_WG/AdminVessels/vending-survey.md), then adds a few lines past that.
+
+# Cola and Dr. Gibb machines: every can and bottle the station soda machines sell (Space-Up, PWR Game, Boda, Smite).
+- type: vendingMachineInventory
+  id: WGLupercalSodaExtras
+  startingInventory:
+    # Parity
+    DrinkColaCan: 4
+    DrinkDrGibbCan: 4
+    DrinkSpaceUpCan: 3
+    DrinkSpaceMountainWindCan: 3
+    DrinkPwrGameCan: 4
+    DrinkEnergyDrinkCan: 4
+    DrinkSodaWaterCan: 10
+    # Past the common set
+    DrinkTonicWaterCan: 4
+    DrinkStarkistCan: 3
+    DrinkShamblersJuiceCan: 3
+    DrinkColaBottleFull: 2
+    DrinkSpaceUpBottleFull: 2
+    DrinkSpaceMountainWindBottleFull: 2
+    DrinkSodaWaterBottleFull: 2
+    DrinkWaterBottleFull: 6
+
+# Hot drinks machines: the barista vendor's tea and coffee (Caelestinus Central, Halcyon), then teaware.
+- type: vendingMachineInventory
+  id: WGLupercalHotDrinksExtras
+  startingInventory:
+    # Parity
+    ReagentContainerBlackTeaPouch: 4
+    ReagentContainerDecafBlackTeaPouch: 4
+    ReagentContainerGreenTeaPouch: 4
+    ReagentContainerBerryTeaPouch: 4
+    ReagentContainerChamomileTeaPouch: 4
+    ReagentContainerFruitTeaPouch: 4
+    ReagentContainerCoffeePouch: 4
+    ReagentContainerDecafCoffeePouch: 4
+    FoodBoxBiscuitOatmeal: 2
+    FoodBoxBiscuitSimple: 2
+    FoodBoxBiscuitSugar: 2
+    PaperCup: 10
+    DrinkMug: 6
+    DrinkTeaGlassEmpty: 8
+    DrinkTeapotEmpty: 4
+    Kettle: 3
+    Teaspoon: 5
+    PaperWrittenTeaGuide: 4
+    # Past the common set
+    DrinkTeapot: 2
+
+# Getmore snack machines: the ration vendor's MREs (Sustenance), Discount Dan's crisps and Luvvits' pies.
+- type: vendingMachineInventory
+  id: WGLupercalSnackExtras
+  startingInventory:
+    # Parity
+    MonoMRE: 10
+    DrinkMREFlask: 3
+    FoodSnackMREBrownie: 5
+    FoodSnackNutribrick: 5
+    FoodCondimentPacketKetchup: 5
+    FoodSnackBoritos: 3
+    FoodSnackCheesie: 3
+    FoodSnackChips: 3
+    FoodSnackEnergy: 3
+    FoodSnackPopcorn: 3
+    WGFoodPackCornishPasty: 3
+    WGFoodPackPorkPie: 3
+    WGFoodPackSteakAlePie: 3
+    WGFoodPackChickenMushroomPie: 3
+    WGFoodPackCheesyBeanMelt: 3
+    WGFoodPackHuntersChicken: 3
+    WGFoodPackWelshCawl: 3
+    WGFoodPackScones: 3
+    WGFoodPackEtonMess: 3
+    WGFoodPackStickyToffeePudding: 3
+    # Past the common set
+    FoodSnackCookieFortune: 5
+    FoodTinBeans: 3
+    FoodTinPeaches: 3
+    FoodTinMRE: 3
+
+- type: vendingMachineInventory
+  id: WGLupercalChangExtras
+  startingInventory:
+    # Past the common set
+    FoodBakedDumplings: 3
+    FoodSoupMiso: 3
+
+- type: vendingMachineInventory
+  id: WGLupercalDonutExtras
+  startingInventory:
+    # Past the common set
+    FoodDonutPlain: 3
+    FoodDonut: 3
+    FoodDonutCaramel: 3
+    FoodDonutBluePumpkin: 3
+    FoodDonutSweetpea: 3
+    FoodDonutJellyPlain: 3
+    FoodDonutJellyPink: 3
+    FoodDonutJellyChocolate: 3
+    FoodDonutJellyApple: 3
+    FoodDonutJellyCaramel: 3
+    FoodBagel: 3
+    FoodBagelPoppy: 3
+
+- type: vendingMachineInventory
+  id: WGLupercalDiscountExtras
+  startingInventory:
+    # Past the common set
+    FoodSnackDanDanNoodles: 3
+    FoodSnackChowMein: 3
+    FoodBakedBunHoney: 3
+
+- type: vendingMachineInventory
+  id: WGLupercalCigarettesExtras
+  startingInventory:
+    # Past the common set
+    CigarGold: 2
+    TobaccoPouchRedFilled: 2
+    GroundTobacco: 3
+    PackPaperRolling: 3
+
+# Booze-O-Mat: the top shelf.
+- type: vendingMachineInventory
+  id: WGLupercalBoozeExtras
+  startingInventory:
+    # Past the common set
+    DrinkPremiumAbsintheBottleFull: 1
+    DrinkPremiumGinBottleFull: 1
+    DrinkPremiumRumBottleFull: 1
+    DrinkPremiumTequilaBottleFull: 1
+    DrinkPremiumVodkaBottleFull: 1
+    DrinkPremiumWhiskeyBottleFull: 1
+
+# Dinnerware: the condiment vendor's stock (Bahama, the casino, Grifty, Halcyon), then bar tools.
+- type: vendingMachineInventory
+  id: WGLupercalDinnerwareExtras
+  startingInventory:
+    # Parity
+    FoodCondimentBottleBBQ: 1
+    FoodCondimentBottleColdsauce: 1
+    FoodCondimentBottleHotsauce: 1
+    FoodCondimentBottleKetchup: 1
+    FoodCondimentPacketAstrotame: 5
+    FoodCondimentPacketBbq: 5
+    FoodCondimentPacketColdsauce: 5
+    FoodCondimentPacketCornoil: 5
+    FoodCondimentPacketHorseradish: 5
+    FoodCondimentPacketHotsauce: 5
+    FoodCondimentPacketKetchup: 5
+    FoodCondimentPacketMustard: 5
+    FoodCondimentPacketPepper: 5
+    FoodCondimentPacketSalt: 5
+    FoodCondimentPacketSoy: 5
+    FoodCondimentPacketSugar: 5
+    FoodCondimentSqueezeBottleClear: 2
+    FoodCondimentSqueezeBottleKetchup: 1
+    FoodCondimentSqueezeBottleMustard: 1
+    FoodPlatePlastic: 10
+    FoodPlateSmallPlastic: 10
+    FoodShakerPepper: 2
+    FoodShakerSalt: 2
+    ForkPlastic: 10
+    KnifePlastic: 10
+    SpoonPlastic: 10
+    # Past the common set
+    CandyBowl: 1
+    BarSpoon: 2
+    DrinkShaker: 2
+
+- type: vendingMachineInventory
+  id: WGLupercalChefvendExtras
+  startingInventory:
+    # Past the common set
+    FoodBoxDonkpocket: 2
+    FoodBoxDonkpocketPizza: 2
+    FoodBoxDonkpocketBerry: 2
+    FoodBoxDonkpocketSpicy: 2
+    FoodBoxDonkpocketTeriyaki: 2
+    FoodFrozenSandwich: 2
+    FoodFrozenSandwichStrawberry: 2
+
+- type: vendingMachineInventory
+  id: WGLupercalNutriExtras
+  startingInventory:
+    # Past the common set
+    PlantAnalyzer: 2
+    Left4ZedChemistryBottle: 3
+    HydroponicsTrayEmptyFlatpack: 4
+
+# MegaSeed: the harmless mutant strains, and tobacco. Nothing that harms, prints money or grows drugs.
+- type: vendingMachineInventory
+  id: WGLupercalSeedsExtras
+  startingInventory:
+    # Past the common set
+    TobaccoSeeds: 3
+    BluePumpkinSeeds: 3
+    BlueTomatoSeeds: 3
+    ChillySeeds: 3
+    ExtradimensionalOrangeSeeds: 3
+    KoibeanSeeds: 3
+    LemoonSeeds: 3
+    LilySeeds: 3
+    MeatwheatSeeds: 3
+    PapercaneSeeds: 3
+    SteelcapSeeds: 3
+    WorldPeaSeeds: 3
+
+# NanoMed Plus: the civilian medical vendor's lines (CiviMed Plus, on ten stations) and the wall NanoMed's, then kits.
+- type: vendingMachineInventory
+  id: WGLupercalMedicalExtras
+  startingInventory:
+    # Parity
+    BodyBagFolded: 4
+    EmergencyMedipen: 6
+    HypoMini: 2
+    Hypospray: 1
+    WGWolfmedAnalgesicPen: 4
+    WGWolfmedHydraulicFluidPack: 2
+    WGWolfmedOpiatePen: 2
+    # Past the common set
+    MedkitFilled: 3
+    MedkitBruteFilled: 2
+    MedkitBurnFilled: 2
+    MedkitToxinFilled: 2
+    MedkitOxygenFilled: 2
+    MedkitRadiationFilled: 2
+    MedkitAdvancedFilled: 1
+    AntiPoisonMedipen: 3
+    SpaceMedipen: 3
+    ClothingMaskBreathMedical: 4
+
+- type: vendingMachineInventory
+  id: WGLupercalChemicalsExtras
+  startingInventory:
+    # Past the common set
+    JugWeldingFuel: 2
+    JugPlantBGone: 2
+    BoxBeaker: 2
+    LargeBeaker: 4
+    Dropper: 4
+
+# Engi-Vend: the station machines' inflatables, then high-capacity cells and a filled belt.
+- type: vendingMachineInventory
+  id: WGLupercalEngivendExtras
+  startingInventory:
+    # Parity
+    InflatableDoorStack1: 10
+    InflatableWallStack1: 10
+    # Past the common set
+    PowerCellHigh: 6
+    Holoprojector: 4
+    ClothingBeltUtilityEngineering: 4
+
+- type: vendingMachineInventory
+  id: WGLupercalYouToolExtras
+  startingInventory:
+    # Past the common set
+    Multitool: 5
+    PowerDrill: 4
+    WelderIndustrial: 4
+    HandLabeler: 4
+
+- type: vendingMachineInventory
+  id: WGLupercalVendomatExtras
+  startingInventory:
+    # Past the common set
+    ProximitySensor: 4
+    TimerTrigger: 4
+    SignalTrigger: 4
+    VoiceTrigger: 4
+    PowerCellMedium: 6
+    AdvancedCapacitorStockPart: 4
+    AdvancedMatterBinStockPart: 4
+    NanoManipulatorStockPart: 4
+
+# EVA tank dispenser: the POI dispenser's water-vapour double tank and the engineering dispenser's plasma (Edison,
+# Helios, Halcyon), then emergency tanks and masks.
+- type: vendingMachineInventory
+  id: WGLupercalTankExtras
+  startingInventory:
+    # Parity
+    DoubleEmergencyWaterVaporTankFilled: 10
+    PlasmaTankFilled: 10
+    # Past the common set
+    EmergencyOxygenTankFilled: 10
+    EmergencyNitrogenTankFilled: 10
+    EmergencyWaterVaporTankFilled: 10
+    ClothingMaskBreath: 10
+
+- type: vendingMachineInventory
+  id: WGLupercalSalvageExtras
+  startingInventory:
+    # Parity
+    SalvageRadarFlatpack: 2
+    # Past the common set
+    MiningDrill: 4
+    MineralScannerUnpowered: 4
+    ClothingBeltSalvageWebbing: 4
+    JetpackMiniFilled: 4
+
+- type: vendingMachineInventory
+  id: WGLupercalRoboticsExtras
+  startingInventory:
+    # Past the common set
+    PowerCellMedium: 6
+    PowerCellHigh: 4
+    Multitool: 3
+    BorgChargerFlatpack: 2
+
+# MailVend: office supplies from the mail and PTech vendors.
+- type: vendingMachineInventory
+  id: WGLupercalMailExtras
+  startingInventory:
+    # Past the common set
+    BoxEnvelope: 4
+    BoxFolderClipboard: 4
+    BoxFolderBlue: 4
+    BoxFolderRed: 4
+    BoxFolderYellow: 4
+    BoxPaper: 4
+    BoxPaperOffice: 4
+    MailBag: 2
+    DeskBell: 2
+    RubberStampApproved: 2
+    RubberStampDenied: 2
+
+# ClothesMate: the pride and boxing drobes (Caelestinus Central, the Pit, Zvezda).
+- type: vendingMachineInventory
+  id: WGLupercalClothingExtras
+  startingInventory:
+    # Parity
+    BedsheetRainbow: 2
+    ClothingHeadHatFlowerWreath: 2
+    ClothingNeckAllyPin: 2
+    ClothingNeckAromanticPin: 2
+    ClothingNeckAsexualPin: 2
+    ClothingNeckAutismPin: 2
+    ClothingNeckBisexualPin: 2
+    ClothingNeckGayPin: 2
+    ClothingNeckGenderqueerPin: 2
+    ClothingNeckGoldAutismPin: 2
+    ClothingNeckIntersexPin: 2
+    ClothingNeckLGBTPin: 2
+    ClothingNeckLesbianPin: 2
+    ClothingNeckNonBinaryPin: 2
+    ClothingNeckOmnisexualPin: 2
+    ClothingNeckPansexualPin: 2
+    ClothingNeckTransPin: 2
+    ClothingNeckScarfStripedAce: 2
+    ClothingNeckScarfStripedAro: 2
+    ClothingNeckScarfStripedBiSexual: 2
+    ClothingNeckScarfStripedGay: 2
+    ClothingNeckScarfStripedInter: 2
+    ClothingNeckScarfStripedLesbian: 2
+    ClothingNeckScarfStripedNonBinary: 2
+    ClothingNeckScarfStripedPan: 2
+    ClothingNeckScarfStripedRainbow: 2
+    ClothingNeckScarfStripedTrans: 2
+    ClothingNeckHeadphones: 2
+    ClothingUnderSocksBee: 2
+    ClothingUnderSocksCoder: 2
+    ClothingUniformColorRainbow: 2
+    ClothingHandsGlovesBoxingBlue: 2
+    ClothingHandsGlovesBoxingGreen: 2
+    ClothingHandsGlovesBoxingRed: 2
+    ClothingHandsGlovesBoxingYellow: 2
+    ClothingOuterEVASuitBoxerBlue: 2
+    ClothingOuterEVASuitBoxerGreen: 2
+    ClothingOuterEVASuitBoxerRed: 2
+    ClothingOuterEVASuitBoxerYellow: 2
+    UniformShortsRed: 2
+    UniformShortsRedWithTop: 2
+
+# Flatpack vendor, once one is placed aboard: Caelestinus Central's premium vendor's civilian lines.
+- type: vendingMachineInventory
+  id: WGLupercalFlatpackExtras
+  startingInventory:
+    # Parity
+    ComputerCrewMonitoringFlatpack: 2
+    ComputerIFFFlatpack: 2
+    FTLDriveFlatpack: 2
+    TelecomServerFlatpack: 2
+    WGVendingMachineLuvvitsFlatpack: 2

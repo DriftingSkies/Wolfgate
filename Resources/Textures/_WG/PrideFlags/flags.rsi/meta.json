@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Repainted by Tools/_WG/PrideFlags/pride_flags.py from Structures/Wallmounts/flags.rsi lgbtq_flag (derived from tgstation at https://github.com/tgstation/tgstation/commit/d0d81185f09ca30d3b0856d476544240dba0de53, adapted by Saveliy360)",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "gay"
+    },
+    {
+      "name": "lesbian"
+    },
+    {
+      "name": "bisexual"
+    },
+    {
+      "name": "transgender"
+    },
+    {
+      "name": "pansexual"
+    },
+    {
+      "name": "asexual"
+    },
+    {
+      "name": "aromantic"
+    },
+    {
+      "name": "nonbinary"
+    },
+    {
+      "name": "genderfluid"
+    },
+    {
+      "name": "agender"
+    },
+    {
+      "name": "genderqueer"
+    },
+    {
+      "name": "intersex"
+    }
+  ]
+}

@@ -292,25 +292,28 @@ public sealed class WolfmedSyntheticHudTest : WolfmedGameTest
     }
 
     /// <summary>
-    /// The readout draws in the viewport control's own coordinates. <c>ViewportBounds</c> arrives in global
-    /// physical pixels while the handle is already translated to the control's top-left, so a viewport that
-    /// does not start at the window origin used to throw both corner blocks off the screen; and the text
-    /// scale has to carry the UI scale, because those pixels are physical ones.
+    /// The readout draws in window pixels. The engine resets a screen-space overlay's handle to the window's
+    /// origin, so <c>ViewportBounds</c> is used as it comes: a viewport away from the origin, such as a console's
+    /// cockpit view, keeps its own position. A picture stretched wider than its control is cropped to the control.
+    /// The text scale carries the UI scale, because those pixels are physical ones.
     /// </summary>
     [Test]
     public void LayoutFollowsTheViewportControlTest()
     {
         Assert.Multiple(() =>
         {
+            var cropped = WolfmedSyntheticHudLayout.Screen(new UIBox2i(-200, 0, 2120, 1080), new UIBox2i(0, 0, 1920, 1080));
+            Assert.That(cropped, Is.EqualTo(new UIBox2(0f, 0f, 1920f, 1080f)), "a picture wider than its control was not cropped to it.");
+
             foreach (var (x, y, width, height) in new[] { (0, 0, 1920, 1080), (260, 140, 1280, 720), (96, 0, 1600, 900) })
             {
                 var bounds = new UIBox2i(x, y, x + width, y + height);
 
                 foreach (var ui in new[] { 1f, 1.25f, 2f })
                 {
-                    var screen = WolfmedSyntheticHudLayout.Screen(bounds, new Vector2(x, y));
-                    Assert.That(screen.Left, Is.EqualTo(0f), "the readout kept the viewport's global origin.");
-                    Assert.That(screen.Top, Is.EqualTo(0f), "the readout kept the viewport's global origin.");
+                    var screen = WolfmedSyntheticHudLayout.Screen(bounds, bounds);
+                    Assert.That(screen.Left, Is.EqualTo((float) x), "the readout lost the viewport's place in the window.");
+                    Assert.That(screen.Top, Is.EqualTo((float) y), "the readout lost the viewport's place in the window.");
                     Assert.That(screen.Width, Is.EqualTo((float) width));
                     Assert.That(screen.Height, Is.EqualTo((float) height));
 
@@ -532,7 +535,8 @@ public sealed class WolfmedSyntheticHudTest : WolfmedGameTest
                          (0, 0, 1920, 1080), (0, 0, 1280, 720), (0, 0, 2560, 1351), (96, 40, 1600, 900),
                      })
             {
-                var screen = WolfmedSyntheticHudLayout.Screen(new UIBox2i(x, y, x + width, y + height), new Vector2(x, y));
+                var bounds = new UIBox2i(x, y, x + width, y + height);
+                var screen = WolfmedSyntheticHudLayout.Screen(bounds, bounds);
 
                 foreach (var ui in new[] { 1f, 1.25f })
                 {

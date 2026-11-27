@@ -113,7 +113,9 @@ Live testing is the step before the export: Test map in the menu bar (`WGMapping
 session's levels with the library's save code into a scratch folder, loads the copy back onto fresh maps registered to
 the session as test maps (a CE z-network when there are several), runs `FixAtmos` on the copy, gives the ship grid
 what the shipyard gives a purchased one (`ShuttleComponent`, IFF, the session's name) and places the test range named
-by `test_range` 60 tiles east of it, then initializes and unpauses the maps so power, atmos, doors and gravity run. The
+by `test_range` 60 tiles east of it, then initializes and unpauses the maps so power, atmos, doors and gravity run. A
+tick later the ship is appraised with `PricingSystem.AppraiseGrid`, so map init's fills and machine contents count,
+and the value goes to every tester as a popup and on the banner (`WGMappingTesterComponent.Appraisal`). The
 mapper is spawned as their selected character (`StationSpawningSystem.SpawnPlayerMob`) at a spawn point on the ship,
 else the tile in front of the first shuttle console, else the free floor tile nearest the grid's centre, and their mind
 moves across; the observer is parked in nullspace with its place recorded. The tester carries
@@ -621,6 +623,7 @@ requests are handled in MappingTools (`MappingToolsSystem.Links.cs`). Cvars are 
 - [`Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingPlaceSpamTest.cs`](../../../Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingPlaceSpamTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingProtectionTest.cs`](../../../Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingProtectionTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingReferenceTest.cs`](../../../Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingReferenceTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingScopeTest.cs`](../../../Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingScopeTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingScreenTest.cs`](../../../Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingScreenTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingSessionTest.cs`](../../../Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingSessionTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingShipTest.cs`](../../../Content.IntegrationTests/Tests/_WG/MappingMode/WGMappingShipTest.cs)
@@ -656,6 +659,7 @@ requests are handled in MappingTools (`MappingToolsSystem.Links.cs`). Cvars are 
 
 ### Prototypes
 
+- [`Resources/Prototypes/_WG/MappingMode/ame.yml`](../../../Resources/Prototypes/_WG/MappingMode/ame.yml)
 - [`Resources/Prototypes/_WG/MappingMode/guidebook.yml`](../../../Resources/Prototypes/_WG/MappingMode/guidebook.yml)
 - [`Resources/Prototypes/_WG/MappingMode/observer.yml`](../../../Resources/Prototypes/_WG/MappingMode/observer.yml)
 

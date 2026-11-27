@@ -63,9 +63,13 @@ public sealed partial class PlateletFactoriesSystem : EntitySystem
             return;
 
         var multiplier = _mobState.IsCritical(uid) ? comp.CritMultiplier : 1f;
-        // WOLFGATE(Wolfmed) START: removed damage barely closes a wound, so the trait mends wounds like a healing chem.
+        // WOLFGATE(Traits) START: each group's heal goes to the damage present; split over every type it truncated to 0.
+        // if (damage.TotalDamage > 0)
+        //     _damageable.TryChangeDamage(uid, comp.DamagePerInterval*multiplier, true, false, damage);
         if (damage.TotalDamage > 0)
-            _damageable.TryChangeDamage(uid, comp.DamagePerInterval*multiplier, true, false, damage);
+            HealByGroup(uid, comp.DamagePerInterval, multiplier, damage);
+        // WOLFGATE END
+        // WOLFGATE(Wolfmed) START: removed damage barely closes a wound, so the trait mends wounds like a healing chem.
         if (HasComp<WoundHostComponent>(uid))
         {
             var healed = comp.DamagePerInterval.DamageDict.Where(pair => pair.Value < 0).ToList();

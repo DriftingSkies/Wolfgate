@@ -29,6 +29,7 @@ public sealed class WGAiCoreGhostRoleSystem : EntitySystem
     [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private SharedMindSystem _mind = default!;
     [Dependency] private SharedStationAiSystem _stationAi = default!;
+    [Dependency] private WGBorgRadioKeysServerSystem _radioKeys = default!;
 
     private TimeSpan _nextCheck;
 
@@ -119,13 +120,14 @@ public sealed class WGAiCoreGhostRoleSystem : EntitySystem
 
         // A borg the old AI ghosted out of would otherwise hand that player's mind back to the core on shutdown.
         var remotes = EntityQueryEnumerator<AiRemoteControllerComponent>();
-        while (remotes.MoveNext(out _, out var remote))
+        while (remotes.MoveNext(out var borg, out var remote))
         {
             if (remote.AiHolder != uid)
                 continue;
 
             remote.AiHolder = null;
             remote.LinkedMind = null;
+            _radioKeys.RestoreAfterAi(borg);
         }
 
         EntityManager.AddComponents(uid, new ComponentRegistry

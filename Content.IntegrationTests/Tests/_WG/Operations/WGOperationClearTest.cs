@@ -4,6 +4,8 @@ using Content.Server._WG.Operations;
 using Content.Shared._WG.Operations;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
@@ -43,6 +45,32 @@ public sealed class WGOperationClearTest
         // Past the window in which a site keeps picking up guards its spawners make late.
         await pair.RunSeconds(35f);
 
+        // What became of a site's guards and which other sites sit close by, for a site that cleared itself.
+        string Aftermath(WGActiveOperationComponent active)
+        {
+            var guards = active.Npcs.Select(npc =>
+            {
+                if (!entMan.EntityExists(npc))
+                    return $"{npc} (deleted)";
+
+                // Read into a local first: MobStateComponent lets other types read its state, not call into it.
+                var current = entMan.TryGetComponent<MobStateComponent>(npc, out var mob) ? mob.CurrentState : MobState.Invalid;
+                var state = current.ToString();
+                var damage = entMan.TryGetComponent<DamageableComponent>(npc, out var hurt)
+                    ? string.Join(", ", hurt.Damage.DamageDict.Where(d => d.Value > 0).Select(d => $"{d.Key} {d.Value}"))
+                    : "not damageable";
+                var where = entMan.GetComponent<TransformComponent>(npc).GridUid == active.Grid ? "on" : "off";
+                return $"{entMan.ToPrettyString(npc)} {state}, {where} the site, damage: {damage}";
+            });
+            var near = started
+                .Where(other => entMan.TryGetComponent<WGActiveOperationComponent>(other.Value, out var there)
+                    && there != active
+                    && there.Target.MapId == active.Target.MapId
+                    && (there.Target.Position - active.Target.Position).Length() < 500f)
+                .Select(other => other.Key);
+            return $"Guards: {string.Join("; ", guards)}. Sites within 500 m: {string.Join(", ", near.DefaultIfEmpty("none"))}.";
+        }
+
         var notes = new List<string>();
         await server.WaitPost(() =>
         {
@@ -59,7 +87,7 @@ public sealed class WGOperationClearTest
                 if (active.Grid == null)
                     notes.Add($"{id}: never arrived.");
                 if (active.Paid)
-                    notes.Add($"{id}: paid out with nobody there.");
+                    notes.Add($"{id}: paid out with nobody there. {Aftermath(active)}");
                 if (active.Npcs.Count == 0)
                     notes.Add($"{id}: has no guards, so it can't be cleared.");
                 foreach (var npc in active.Npcs.Where(entMan.EntityExists))

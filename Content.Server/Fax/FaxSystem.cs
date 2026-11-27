@@ -477,7 +477,7 @@ public sealed partial class FaxSystem : EntitySystem
         if (!Resolve(uid, ref component))
             return;
 
-        if (component.SendTimeoutRemaining > 0)
+        if (component.SendTimeoutRemaining > 0 && !EntityManager.System<Content.Server._WG.AdminCooldowns.WGAdminCooldownSystem>().Skips(args.Actor)) // WOLFGATE(AdminCooldowns): admins skip the send timeout
             return;
 
         var sendEntity = component.PaperSlot.Item;
@@ -535,7 +535,7 @@ public sealed partial class FaxSystem : EntitySystem
         if (!Resolve(uid, ref component))
             return;
 
-        if (component.SendTimeoutRemaining > 0)
+        if (component.SendTimeoutRemaining > 0 && !EntityManager.System<Content.Server._WG.AdminCooldowns.WGAdminCooldownSystem>().Skips(args.Actor)) // WOLFGATE(AdminCooldowns): admins skip the send timeout
             return;
 
         var sendEntity = component.PaperSlot.Item;

@@ -1,6 +1,7 @@
 using System.Linq;
 using Content.Server._WG.TradeGoods.Systems;
 using Content.Server.CartridgeLoader;
+using Content.Shared._Mono.Company;
 using Content.Shared._WG.Contracts;
 using Content.Shared.CartridgeLoader;
 using Robust.Server.GameObjects;
@@ -67,21 +68,61 @@ public sealed partial class WGContractSystem
         if (HolderOf(holder) is { } who)
             PayOwed(who);
 
-        _cartridgeLoader.UpdateCartridgeUiState(args.Loader, new WGContractCartridgeUiState(State(holder)));
+        _cartridgeLoader.UpdateCartridgeUiState(args.Loader, new WGContractCartridgeUiState(State(holder, pda: true)));
     }
 
     private void OnCartridgeMessage(Entity<WGContractCartridgeComponent> ent, ref CartridgeMessageEvent args)
     {
-        if (args is not WGContractCartridgeAbandonMessage abandon)
-            return;
-
         var loader = GetEntity(args.LoaderUid);
-        // Only the PDA's carrier may abandon from it.
+        // Only the PDA's carrier may take or abandon from it.
         if (LoaderViewer(loader) != args.Actor || HolderOf(args.Actor) is not { } holder)
             return;
 
-        TryAbandon(holder, abandon.Id);
-        _cartridgeLoader.UpdateCartridgeUiState(loader, new WGContractCartridgeUiState(State(args.Actor)));
+        switch (args)
+        {
+            case WGContractCartridgeAbandonMessage abandon:
+                TryAbandon(holder, abandon.Id);
+                break;
+            case WGContractCartridgeAcceptMessage accept:
+                if (BoardFor(accept.Id, args.Actor) is not { } board)
+                    _popup.PopupEntity(Loc.GetString("wg-contract-error-no-board"), args.Actor, args.Actor);
+                else if (TryAccept(args.Actor, accept.Id, board) is { } error)
+                    _popup.PopupEntity(error, args.Actor, args.Actor);
+                break;
+            default:
+                return;
+        }
+
+        _cartridgeLoader.UpdateCartridgeUiState(loader, new WGContractCartridgeUiState(State(args.Actor, pda: true)));
+    }
+
+    /// <summary>The board an offer taken from a PDA hands its cargo out at: the nearest one its contractor posts on.</summary>
+    private EntityUid? BoardFor(int id, EntityUid mob)
+    {
+        if (!_contracts.TryGetValue(id, out var contract))
+            return null;
+
+        var tag = _proto.Index(_proto.Index(contract.Prototype).Contractor).Board;
+        var from = _transform.GetMapCoordinates(mob);
+        EntityUid? best = null;
+        var bestScore = float.MaxValue;
+        var boards = EntityQueryEnumerator<WGContractBoardComponent, TransformComponent>();
+        while (boards.MoveNext(out var uid, out var comp, out var xform))
+        {
+            if (comp.Board != tag || xform.GridUid == null)
+                continue;
+
+            var at = _transform.GetMapCoordinates(uid, xform);
+            // Any board on the viewer's map beats one elsewhere.
+            var score = at.MapId == from.MapId ? (at.Position - from.Position).Length() : float.MaxValue / 2;
+            if (score < bestScore)
+            {
+                bestScore = score;
+                best = uid;
+            }
+        }
+
+        return best;
     }
 
     /// <summary>Whose contracts a PDA shows: a cyborg's built-in one is the cyborg, any other its carrier.</summary>
@@ -117,21 +158,24 @@ public sealed partial class WGContractSystem
                 continue;
 
             _cartridgeLoader.UpdateCartridgeUiState(loader,
-                new WGContractCartridgeUiState(State(LoaderViewer(loader), homes: homes ??= ContractorHomes())), loader: loaderComp);
+                new WGContractCartridgeUiState(State(LoaderViewer(loader), homes: homes ??= ContractorHomes(), pda: true)), loader: loaderComp);
         }
     }
 
-    /// <summary>A viewer's board state: offers (one board's, or all), crew contracts, history and standing.</summary>
-    public WGContractBoardState State(EntityUid viewer, string? board = null, Dictionary<string, EntityUid>? homes = null)
+    /// <summary>A viewer's board state: offers (one board's, or all; the PDA skips other factions'), crew contracts, history, standing.</summary>
+    public WGContractBoardState State(EntityUid viewer, string? board = null, Dictionary<string, EntityUid>? homes = null,
+        bool pda = false)
     {
+        var company = CompOrNull<CompanyComponent>(viewer)?.CompanyName.Id;
         var holder = HolderOf(viewer);
         var state = new WGContractBoardState { CanHold = holder != null };
         var crew = holder is { } h ? CrewSlots(h.User) : ((int, int, int)?) null;
 
         foreach (var contract in _contracts.Values.Where(c => c.Status == WGContractStatus.Offered).OrderBy(c => c.Id))
         {
-            if (board != null && _proto.Index(_proto.Index(contract.Prototype).Contractor).Board != board
-                || !OfferedTo(contract, holder?.User))
+            var contractor = _proto.Index(_proto.Index(contract.Prototype).Contractor);
+            if (board != null && contractor.Board != board || !OfferedTo(contract, holder?.User)
+                || pda && contractor.Companies.Count > 0 && !contractor.Companies.Any(c => c.Id == company))
                 continue;
 
             var view = View(contract);

@@ -313,7 +313,7 @@ public sealed class WGShipPageLayoutTest
             screen.WgRefitInstruments();
             screen.UpdateState(new WGShipShieldShuntState(true, true, 0.6f, 0.8f, 0.2f, MathF.PI / 2f), 0f);
             // The deployment row and integrity bar sit in the page's header, the draft line and reset key in its footer.
-            var framing = new[] { "_enabled", "_health", "_stats", "_status", "_recovery", "_draft", "_reset" }
+            var framing = new[] { "_enabled", "_heat", "_stats", "_status", "_recovery", "_draft", "_reset" }
                 .Select(name => Field<Control>(screen, name)).ToList();
             var controls = new[] { "_dial", "_amount", "_arc", "_concentration", "_direction", "_unprotected" }
                 .Select(name => Field<Control>(screen, name)).ToList();

@@ -1,4 +1,4 @@
-- type: wgGame
+﻿- type: wgGame
   id: WGGameFreedoom
   name: wg-gamehub-game-freedoom-name
   description: wg-gamehub-game-freedoom-description
@@ -34,6 +34,7 @@
     ui: !type:WGGameHubUi
   - type: Cartridge
     programName: wg-gamehub-program-name
+    size: 8
     icon:
       sprite: Structures/Machines/arcade.rsi
       state: icon

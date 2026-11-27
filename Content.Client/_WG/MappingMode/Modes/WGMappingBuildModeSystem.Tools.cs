@@ -1,3 +1,4 @@
+using Content.Shared._WG.Drydock;
 using Content.Shared._WG.MappingTools;
 using Content.Shared.Construction.Components;
 using Content.Shared.Doors.Components;
@@ -48,6 +49,9 @@ public sealed partial class WGMappingBuildModeSystem
                 return true;
             case WGMappingTool.Door when TryComp(uid, out DoorComponent? door):
                 on = door.State is DoorState.Open or DoorState.Opening;
+                return true;
+            case WGMappingTool.Mirror when TryComp(uid, out WGDrydockCraneComponent? crane) && crane.MirrorInPlace:
+                on = crane.Mirrored;
                 return true;
             default:
                 return false;

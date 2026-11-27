@@ -130,7 +130,7 @@
   tier: 2
   title: wg-contract-mmc-refined
   briefing: wg-contract-mmc-refined-brief
-  reward: 21900, 30600
+  reward: 30650, 42850
   deposit: 1000
   minutes: 50
   weight: 2.4
@@ -154,7 +154,7 @@
   tier: 2
   title: wg-contract-mmc-machine-parts
   briefing: wg-contract-mmc-machine-parts-brief
-  reward: 13750, 17500
+  reward: 19250, 24500
   deposit: 2000
   minutes: 50
   weight: 2.4
@@ -163,8 +163,8 @@
     count: 2, 4
     from: Board
     to: Contractor
-    perPackage: 2250
-    perKilometre: 1625
+    perPackage: 3150
+    perKilometre: 2300
 
 - type: wgContract
   id: WGContractMMCClaimJumpers
@@ -173,7 +173,7 @@
   tier: 2
   title: wg-contract-mmc-claim-jumpers
   briefing: wg-contract-mmc-claim-jumpers-brief
-  reward: 32500, 40000
+  reward: 45500, 56000
   deposit: 2000
   minutes: 55
   crewBonus: 0.25
@@ -190,7 +190,7 @@
   tier: 2
   title: wg-contract-mmc-survey-recorder
   briefing: wg-contract-mmc-survey-recorder-brief
-  reward: 18750, 23750
+  reward: 26250, 33250
   deposit: 1000
   minutes: 50
   crewBonus: 0.25
@@ -212,7 +212,7 @@
   tier: 2
   title: wg-contract-mmc-escort-ore-hauler
   briefing: wg-contract-mmc-escort-ore-hauler-brief
-  reward: 20000, 26250
+  reward: 28000, 36750
   deposit: 1500
   minutes: 60
   crewBonus: 0.25
@@ -220,7 +220,7 @@
   objective: !type:WGContractEscort
     encounters: [ WGContractEscortLight ]
     destinations: [ WGContractorCaelPort, WGContractorStellarBlessing ]
-    perKilometre: 1250
+    perKilometre: 1750
 
 # Crew work: big quotas priced for a crew, so each share beats a solo quota.
 
@@ -309,7 +309,7 @@
   tier: 2
   title: wg-contract-mmc-hauler-hull
   briefing: wg-contract-mmc-hauler-hull-brief
-  reward: 18000, 23000
+  reward: 25200, 32200
   deposit: 1000
   minutes: 60
   crewBonus: 0.25
@@ -391,7 +391,7 @@
   tier: 3
   title: wg-contract-mmc-heavy-convoy
   briefing: wg-contract-mmc-heavy-convoy-brief
-  reward: 40000, 50000
+  reward: 56000, 70000
   deposit: 3000
   minutes: 75
   minCrew: 2
@@ -400,7 +400,7 @@
   objective: !type:WGContractEscort
     encounters: [ WGContractEscortHeavy ]
     destinations: [ WGContractorCaelPort, WGContractorCamelot ]
-    perKilometre: 1500
+    perKilometre: 2100
 
 - type: wgContract
   id: WGContractMMCOutpostCore
@@ -409,7 +409,7 @@
   tier: 2
   title: wg-contract-mmc-outpost-core
   briefing: wg-contract-mmc-outpost-core-brief
-  reward: 20000, 26000
+  reward: 28000, 36400
   deposit: 1500
   minutes: 55
   crewBonus: 0.3
@@ -432,7 +432,7 @@
   tier: 2
   title: wg-contract-mmc-claim-guard
   briefing: wg-contract-mmc-claim-guard-brief
-  reward: 15000, 20000
+  reward: 21000, 28000
   deposit: 1000
   minutes: 40
   weight: 1.2
@@ -448,7 +448,7 @@
   tier: 2
   title: wg-contract-mmc-planet-rig
   briefing: wg-contract-mmc-planet-rig-brief
-  reward: 20000, 26000
+  reward: 28000, 36400
   deposit: 1000
   minutes: 70
   weight: 1.1
@@ -464,7 +464,7 @@
   tier: 2
   title: wg-contract-mmc-planet-claim
   briefing: wg-contract-mmc-planet-claim-brief
-  reward: 22000, 28000
+  reward: 30800, 39200
   deposit: 1000
   minutes: 70
   weight: 1.2

@@ -513,10 +513,12 @@ public sealed class OverwatchSystem : EntitySystem
         var watchingCompActor = EnsureComp<RatOverwatchWatchingComponent>(actor);
         watchingCompActor.Watching = target;
         watchingCompActor.Console = ent.Owner;
+        Dirty(actor, watchingCompActor); // WOLFGATE(Cyborgs): a reused component must send its new target to the client
 
         _watchingPairs[actor] = target;
 
         _eyeSystem.SetTarget(actor, target);
+        _wgAiOverwatch.LimitZoom(actor); // WOLFGATE(Cyborgs): a feed is seen at the default zoom limit, not an AI's
         _viewSubscriberSystem.AddViewSubscriber(target, actorComp.PlayerSession);
     }
 
@@ -562,6 +564,7 @@ public sealed class OverwatchSystem : EntitySystem
         _watchingPairs.Remove(watcher);
         watchingComp.Watching = null;
         watchingComp.Console = null;
+        Dirty(watcher, watchingComp); // WOLFGATE(Cyborgs): the client sees the feed end, so an AI's static returns
     }
 
     /// <summary>

@@ -11,6 +11,9 @@ public abstract class CartridgeLoaderBoundUserInterface : BoundUserInterface
     [ViewVariables]
     private EntityUid? _activeProgram;
 
+    // WOLFGATE(PdaUi): expose the hosted cartridge to the PDA shell
+    protected EntityUid? ActiveProgram => _activeProgram;
+
     [ViewVariables]
     private UIFragment? _activeCartridgeUI;
 

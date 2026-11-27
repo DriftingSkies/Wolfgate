@@ -404,23 +404,26 @@ public sealed partial class WGCrewPlannerSystem : EntitySystem
     }
 
     /// <summary>Whether the air over a tile can be stood in without a suit.</summary>
-    private bool HasSafeAir(EntityUid grid, Vector2i tile)
+    private bool HasSafeAir(EntityUid grid, Vector2i tile) => HasBreathableAir(grid, tile, 0.1f);
+
+    /// <summary>Whether the air over a tile is breathable with at most <paramref name="contaminants"/> kPa of other gases.</summary>
+    public bool HasBreathableAir(EntityUid grid, Vector2i tile, float contaminants)
     {
         var air = _atmos.GetTileMixture(grid, Transform(grid).MapUid, tile);
         if (air == null || !_atmos.IsMixtureProbablySafe(air) || !float.IsFinite(air.Pressure))
             return false;
-        return IsBreathable(air, air.Pressure);
+        return IsBreathable(air, air.Pressure, contaminants);
     }
 
     /// <summary>Whether the mix, regulated to the given pressure, has enough oxygen and almost nothing besides nitrogen.</summary>
-    public static bool IsBreathable(GasMixture air, float pressure)
+    public static bool IsBreathable(GasMixture air, float pressure, float contaminantLimit = 0.1f)
     {
         if (air.TotalMoles <= 0 || !float.IsFinite(air.TotalMoles) || !float.IsFinite(pressure))
             return false;
         var pressurePerMole = pressure / air.TotalMoles;
         var oxygen = air.GetMoles(Gas.Oxygen);
         var contaminants = MathF.Max(0, air.TotalMoles - oxygen - air.GetMoles(Gas.Nitrogen));
-        return oxygen * pressurePerMole >= 16 && contaminants * pressurePerMole <= 0.1f;
+        return oxygen * pressurePerMole >= 16 && contaminants * pressurePerMole <= contaminantLimit;
     }
 
     /// <summary>The free untaken tile nearest to a console within <see cref="StandRadius"/>, the orthogonal ones first.</summary>

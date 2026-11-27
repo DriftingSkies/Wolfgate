@@ -67,8 +67,8 @@ public sealed class WGShipShieldPinholeTest
             var body = entities.GetComponent<PhysicsComponent>(shell);
             var expectedDamage = (float) projectile.Damage.GetTotal();
             if (explosive != null)
-                expectedDamage += explosive.TotalIntensity *
-                    (float) pair.Server.ResolveDependency<IPrototypeManager>().Index(explosive.ExplosionType).DamagePerIntensity.GetTotal();
+                expectedDamage += WGShipShieldEffects.AbsorbedBlastDamage(explosive.TotalIntensity,
+                    (float) pair.Server.ResolveDependency<IPrototypeManager>().Index(explosive.ExplosionType).DamagePerIntensity.GetTotal());
             BatteryComponent? empObserver = null;
             if (entities.TryGetComponent<EmpOnTriggerComponent>(shell, out var emp))
             {
@@ -114,7 +114,13 @@ public sealed class WGShipShieldPinholeTest
             {
                 absorbedExplosive = explosive;
                 Assert.That(projectile.ProjectileSpent, Is.True);
-                Assert.That(emitter.Damage, Is.EqualTo(expectedDamage).Within(0.01f), "Direct and explosive damage must charge exactly once.");
+                // One hit adds no more than a share of the ship's capacity, so a big warhead can't overrun a cool field.
+                var heat = system.GetWolfgateShipHeat(map.Grid.Owner);
+                var expectedHeat = MathF.Min(expectedDamage * WGShipShieldEffects.HitHeat * WGShipShieldEffects.HitWeight(expectedDamage),
+                    heat.Capacity * WGShipShieldEffects.HitHeatCap);
+                Assert.That(heat.Heat, Is.EqualTo(expectedHeat).Within(MathF.Max(0.01f, expectedHeat * 0.00001f)),
+                    "Direct and explosive damage must charge exactly once, up to the most one hit adds.");
+                Assert.That(emitter.OverloadAccumulator, Is.Zero, "One hit doesn't overload a cool field.");
             }
             else
                 Assert.That(emitter.Damage, Is.Zero);

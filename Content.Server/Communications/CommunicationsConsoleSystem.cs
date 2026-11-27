@@ -237,7 +237,7 @@ namespace Content.Server.Communications
             var author = Loc.GetString("comms-console-announcement-unknown-sender");
             if (message.Actor is { Valid: true } mob)
             {
-                if (!CanAnnounce(comp))
+                if (!CanAnnounce(comp) && !EntityManager.System<Content.Server._WG.AdminCooldowns.WGAdminCooldownSystem>().Skips(mob)) // WOLFGATE(AdminCooldowns): admins skip the announcement cooldown
                 {
                     return;
                 }

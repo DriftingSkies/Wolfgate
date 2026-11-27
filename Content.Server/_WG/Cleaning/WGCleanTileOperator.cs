@@ -26,6 +26,10 @@ public sealed partial class WGCleanTileOperator : HTNOperator
     [DataField]
     public float Budget = 10f;
 
+    /// <summary>Whether the wash also scrubs Wolfmed blood splats off the tile, a wall's included.</summary>
+    [DataField]
+    public bool Stains;
+
     public override void Initialize(IEntitySystemManager sysManager)
     {
         base.Initialize(sysManager);
@@ -52,7 +56,10 @@ public sealed partial class WGCleanTileOperator : HTNOperator
         }
 
         var tile = _map.TileIndicesFor(gridUid, grid, target);
-        if (_cleaning.CleanTile(gridUid, grid, tile, Budget) <= 0f)
+        var spent = _cleaning.CleanTile(gridUid, grid, tile, Budget);
+        if (Stains && spent < Budget)
+            spent += _entManager.System<Content.Server._WG.Wolfmed.Gore.WolfmedGoreSystem>().CleanTile(gridUid, grid, tile, Budget - spent);
+        if (spent <= 0f)
             return HTNOperatorStatus.Failed;
 
         if (_entManager.TryGetComponent<AbsorbentComponent>(owner, out var absorbent))

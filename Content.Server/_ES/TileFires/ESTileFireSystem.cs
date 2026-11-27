@@ -183,6 +183,9 @@ public sealed class ESTileFireSystem : ESSharedTileFireSystem
         if (_atmos.IsTileAirBlocked(grid, tile, mapGridComp: mapGrid))
             return false;
 
+        if (!_wgGroundFire.CanIgnite(grid)) // WOLFGATE(GroundFire): planet ground holds only so many fires at once
+            return false;
+
         // ESTileFire vs ESTileFireStage2/3/4
         EntProtoId proto = stage == 1 ? _stage1Fire : $"{_stage1Fire}Stage{stage}";
 

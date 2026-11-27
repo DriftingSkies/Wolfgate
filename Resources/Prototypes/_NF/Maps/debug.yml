@@ -56,6 +56,7 @@
             PDVInfiltrator: [ -1, -1] # Mono]
             TsfBorg: [ -1, -1 ]
             PdvBorg: [ -1, -1 ]
+            WGViperBorg: [ -1, -1 ] # WOLFGATE(Cyborgs): make VG cyborg selectable on MonoDev
             # Prisoner: [ -1, -1] # Mono
             USSPCommissar: [ -1, -1]
             USSPSergeant: [ -1, -1]

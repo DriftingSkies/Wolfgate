@@ -29,6 +29,9 @@ public sealed class WGMappingTest(List<EntityUid> maps, EntityUid ground, Entity
 
     /// <summary>The members in the test right now.</summary>
     public readonly Dictionary<NetUserId, WGMappingTester> Testers = new();
+
+    /// <summary>The initialised ship's appraisal, taken the tick after the maps start; null until then or with no ship.</summary>
+    public int? Appraisal;
 }
 
 /// <summary>A member in a live test: their character, and the parked observer they go back to.</summary>

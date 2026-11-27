@@ -11,6 +11,8 @@ using Content.Shared._WG.Synthetics;
 using Content.Shared._WG.Wolfmed.Body;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Systems;
+using Content.Shared.Damage;
+using Content.Shared.FixedPoint;
 using Content.Shared.Preferences;
 using Robust.Shared.GameObjects;
 using Robust.UnitTesting.Pool;
@@ -104,6 +106,49 @@ public sealed class WGRadCollectorTest : WolfmedGameTest
         {
             Assert.That(SEntMan.Deleted(collector) || SEntMan.GetComponent<OrganComponent>(collector).Body == null, Is.True,
                 "a burnt-out collector stays in the chassis.");
+        });
+    }
+
+    /// <summary>
+    /// Radiation that reached the body past the collector is drawn into a collector with room; a full one leaves it
+    /// until it is vented or replaced.
+    /// </summary>
+    [Test]
+    public async Task CollectorDrawsBodyRadiationTest()
+    {
+        var map = await CreateTestMap();
+        EntityUid body = default, collector = default;
+
+        await Server.WaitAssertion(() =>
+        {
+            body = SpawnSynthetic(map);
+            collector = SEntMan.System<WGRadCollectorSystem>().GetCollector(body)!.Value.Owner;
+            SEntMan.GetComponent<WGRadCollectorComponent>(collector).Charge = 300f;
+
+            var rads = new DamageSpecifier();
+            rads.DamageDict["Radiation"] = FixedPoint2.New(20);
+            SEntMan.System<DamageableSystem>().TryChangeDamage(body, rads, ignoreResistances: true);
+            Assert.That(Radiation(body), Is.EqualTo(20f).Within(0.01f), "the test could not put radiation on the body.");
+        });
+
+        await RunSeconds(5);
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(Radiation(body), Is.EqualTo(20f).Within(0.01f), "a full collector drew radiation.");
+            SEntMan.GetComponent<WGRadCollectorComponent>(collector).Charge = 0f;
+        });
+
+        await RunSeconds(15);
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(Radiation(body), Is.Zero, "the collector did not draw the body's radiation.");
+                Assert.That(Charge(collector), Is.EqualTo(20f).Within(0.01f), "the drawn radiation is not in the collector.");
+                Assert.That(CoreHealth(body), Is.EqualTo(CoreMax(body)), "drawing radiation touched the core.");
+            });
         });
     }
 

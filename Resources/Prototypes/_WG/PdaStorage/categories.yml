@@ -1,0 +1,29 @@
+- type: pdaAppCategory
+  id: pdaUtility
+  name: pda-store-category-utility
+  order: 0
+
+- type: pdaAppCategory
+  id: pdaSecurity
+  name: pda-store-category-security
+  order: 1
+
+- type: pdaAppCategory
+  id: pdaEngineering
+  name: pda-store-category-engineering
+  order: 2
+
+- type: pdaAppCategory
+  id: pdaCargo
+  name: pda-store-category-cargo
+  order: 3
+
+- type: pdaAppCategory
+  id: pdaMedical
+  name: pda-store-category-medical
+  order: 4
+
+- type: pdaAppCategory
+  id: pdaEntertainment
+  name: pda-store-category-entertainment
+  order: 5

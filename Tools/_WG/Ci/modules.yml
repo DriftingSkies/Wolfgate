@@ -139,6 +139,12 @@ unmarked:
   - path: Resources/Maps/_Mono/POI/pdvhelios_hw.yml
     module: PdvArtificer
     reason: Mapped two Artificer spawn markers beside the Jarrah's.
+  - path: Resources/Maps/_Mono/POI/camelot.yml
+    module: Cyborgs
+    reason: Mapped Viper Group cyborg spawns beside the other Viper spawns.
+  - path: Resources/Maps/_Mono/Test/dev_map.yml
+    module: Cyborgs
+    reason: Added a VG cyborg spawn point to the MonoDev test map.
   - path: Resources/Maps/_Mono/POI/pdvhelios.yml
     module: SpecialistKits
     reason: Mapped the Vanguard specialist rack against the east wall of the spawn hall.
@@ -2491,6 +2497,18 @@ unmarked:
   - path: Resources/SharedMaps/_Mono/Shuttles/VG/wolfsnake.yml
     module: null
     reason: The plasma windoor by the shield generator faced the corridor; turned to shut the generator in.
+  - path: Resources/SharedMaps/_Mono/Shuttles/VG/keelback.yml
+    module: Shipyard
+    reason: VG shipyard shuttle map with crew spawns for its listed jobs.
+  - path: Resources/SharedMaps/_Mono/Shuttles/VG/lancehead.yml
+    module: Shipyard
+    reason: VG shipyard shuttle map with restored job-specific crew spawns.
+  - path: Resources/SharedMaps/_Mono/Shuttles/VG/leviathan.yml
+    module: Shipyard
+    reason: VG shipyard shuttle map for its shipyard listing.
+  - path: Resources/SharedMaps/_Mono/Shuttles/VG/venom.yml
+    module: Shipyard
+    reason: VG shipyard shuttle map with restored job-specific crew spawns.
   - path: Resources/SharedMaps/_Mono/Shuttles/MMC/akasono.yml
     module: AsteroidMining
     reason: Its M25 mining pulsar is swapped for the M12 Prospector, the light asteroid mining laser.

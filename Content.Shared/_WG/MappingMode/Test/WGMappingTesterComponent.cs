@@ -16,4 +16,8 @@ public sealed partial class WGMappingTesterComponent : Component
     /// <summary>Game time the test ends on its own.</summary>
     [AutoNetworkedField]
     public TimeSpan Ends;
+
+    /// <summary>The initialised ship's appraisal in spesos, for the banner; null until it is taken.</summary>
+    [AutoNetworkedField]
+    public int? Appraisal;
 }

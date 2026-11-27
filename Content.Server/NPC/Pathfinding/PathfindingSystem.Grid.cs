@@ -523,6 +523,8 @@ public sealed partial class PathfindingSystem
                         var damage = 0f;
                         // WOLFGATE(NpcCrew): whether only loose crates block this point
                         var movable = (bool?) null;
+                        // WOLFGATE(NpcNav): door, access and climb flags belong to the points an entity covers, not every later point in the tile
+                        flags = tile.Tile.IsEmpty ? PathfindingBreadcrumbFlag.Space : PathfindingBreadcrumbFlag.None;
 
                         // WOLFGATE(Performance) START: wizden#44340, iterate the cached hard fixtures
                         // foreach (var ent in tileEntities)
@@ -542,6 +544,15 @@ public sealed partial class PathfindingSystem
                                 if ((collisionMask & fixture.CollisionMask) == fixture.CollisionMask &&
                                     (collisionLayer & fixture.CollisionLayer) == fixture.CollisionLayer)
                                 {
+                                    continue;
+                                }
+
+                                // WOLFGATE(NpcNav): a fixture thinner than a sample cell can miss every sample point, so it blocks the cells it overlaps
+                                if (WgThinFixtureBlocks(fixture, localPos))
+                                {
+                                    collisionLayer |= fixture.CollisionLayer;
+                                    collisionMask |= fixture.CollisionMask;
+                                    colliding = true;
                                     continue;
                                 }
 

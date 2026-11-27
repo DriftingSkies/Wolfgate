@@ -86,4 +86,5 @@ public enum WGMappingTool : byte
     Lock,
     Panel,
     Door,
+    Mirror,
 }

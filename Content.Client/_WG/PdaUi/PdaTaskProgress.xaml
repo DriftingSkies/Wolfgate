@@ -1,0 +1,6 @@
+<ui:PdaTaskProgress xmlns="https://spacestation14.io"
+                   xmlns:ui="clr-namespace:Content.Client._WG.PdaUi"
+                   MinSize="92 20">
+    <ProgressBar Name="Bar"/>
+    <Label Name="TextLabel" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+</ui:PdaTaskProgress>

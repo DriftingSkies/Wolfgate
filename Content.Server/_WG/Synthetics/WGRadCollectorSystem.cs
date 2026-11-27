@@ -19,7 +19,8 @@ namespace Content.Server._WG.Synthetics;
 
 /// <summary>
 /// Radiation on a synthetic goes to its collector, never to the body's damage. Full, the overflow strains the
-/// collector and leaks into the core at half rate; missing or burnt out, it all corrupts the core. A pulled collector
+/// collector and leaks into the core at half rate; missing or burnt out, it all corrupts the core. Radiation that got
+/// onto the body anyway is drawn into a collector with room (<see cref="Draw"/>). A pulled collector
 /// vents its charge and can be welded back to full integrity; at zero integrity it burns out and is gone.
 /// </summary>
 public sealed partial class WGRadCollectorSystem : EntitySystem
@@ -37,6 +38,8 @@ public sealed partial class WGRadCollectorSystem : EntitySystem
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedToolSystem _tools = default!;
     [Dependency] private WolfmedLifeSystem _life = default!;
+    [Dependency] private WolfmedRadiationSystem _radiation = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
 
     private readonly Dictionary<EntityUid, TimeSpan> _nextWarning = new();
 
@@ -68,10 +71,10 @@ public sealed partial class WGRadCollectorSystem : EntitySystem
     public float GetExposure(EntityUid body) =>
         _exposure.TryGetValue(body, out var last) && _timing.CurTime - last.At <= ExposureHold ? last.Rate : 0f;
 
-    // A chassis keeps no radiation of its own: the collector or the core takes it in OnIrradiated.
+    // A chassis keeps no radiation of its own: the collector or the core takes it in OnIrradiated. Healing passes.
     private void OnDamageModify(Entity<WGChassisComponent> ent, ref DamageModifyEvent args)
     {
-        if (!args.Damage.DamageDict.ContainsKey(Radiation))
+        if (args.Damage.DamageDict.GetValueOrDefault(Radiation) <= FixedPoint2.Zero)
             return;
 
         var damage = new DamageSpecifier(args.Damage);
@@ -158,12 +161,47 @@ public sealed partial class WGRadCollectorSystem : EntitySystem
         var query = EntityQueryEnumerator<WGRadCollectorComponent, OrganComponent>();
         while (query.MoveNext(out var uid, out var collector, out var organ))
         {
-            if (organ.Body != null || collector.Charge <= 0f)
+            if (organ.Body is { } body)
+            {
+                Draw(body, (uid, collector), seconds);
+                continue;
+            }
+
+            if (collector.Charge <= 0f)
                 continue;
 
             collector.Charge = MathF.Max(0f, collector.Charge - collector.VentPerSecond * seconds);
             Dirty(uid, collector);
         }
+    }
+
+    /// <summary>
+    /// Draws radiation that reached a chassis past the collector (an explosion, a reagent) into a working collector
+    /// with room, so venting or replacing the collector clears it.
+    /// </summary>
+    public void Draw(EntityUid body, Entity<WGRadCollectorComponent> collector, float seconds)
+    {
+        var room = collector.Comp.Capacity - collector.Comp.Charge;
+        if (room <= 0f || !HasComp<WGChassisComponent>(body) ||
+            !TryComp(collector, out WolfmedOrganComponent? health) || health.Health <= FixedPoint2.Zero)
+            return;
+
+        var radiation = _radiation.GetRadiation(body);
+        var amount = FixedPoint2.New(MathF.Min(MathF.Min(radiation, room), collector.Comp.DrawPerSecond * seconds));
+        if (amount <= FixedPoint2.Zero)
+            return;
+
+        var heal = new DamageSpecifier();
+        heal.DamageDict[Radiation] = -amount;
+        _damageable.TryChangeDamage(body, heal, ignoreResistances: true, interruptsDoAfters: false,
+            ignoreGlobalModifiers: true);
+
+        var drawn = radiation - _radiation.GetRadiation(body);
+        if (drawn <= 0f)
+            return;
+
+        collector.Comp.Charge += drawn;
+        Dirty(collector);
     }
 
     private void OnExamined(Entity<WGRadCollectorComponent> ent, ref ExaminedEvent args)

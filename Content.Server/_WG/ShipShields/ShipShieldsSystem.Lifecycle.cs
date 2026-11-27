@@ -14,6 +14,7 @@ public sealed partial class ShipShieldsSystem
     /// <summary>Releases stale emitter references without claiming another owner's field.</summary>
     private void ReconcileWolfgateShieldEmitter(EntityUid uid, ShipShieldEmitterComponent emitter)
     {
+        SyncWolfgateGeneratorHeat(uid, emitter);
         if (emitter.Shield == null && emitter.Shielded == null)
             return;
         if (emitter.Shield is { } shield && emitter.Shielded is { } grid &&

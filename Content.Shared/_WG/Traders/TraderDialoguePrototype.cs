@@ -87,6 +87,9 @@ public enum TraderAction : byte
 
     /// <summary>Offers a game for a stake (<c>Content.Server._WG.Minigames</c>); the argument is the offer's index.</summary>
     PlayMinigame,
+
+    /// <summary>Reprints the customer's lost ID (<c>Content.Server._WG.IdReissue</c>).</summary>
+    ReissueId,
 }
 
 /// <summary>

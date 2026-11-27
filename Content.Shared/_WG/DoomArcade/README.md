@@ -1,7 +1,8 @@
 # DoomArcade
 
 Freedoom and Freedoom Phase 2, played from an arcade cabinet (`WGDoomArcade`, `WGFreedoom2Arcade`) or the PDA Gamehub. It opens a window running a Doom engine on
-the player's own client, so nobody else sees the screen. See the GameHub module for its download, the sound nearby
+the player's own client, so nobody else sees the screen. The join queue screen opens the same window with no cabinet:
+nobody else hears it and finished levels go to no leaderboard or prize. See the GameHub module for its download, the sound nearby
 players hear, the leaderboard and prizes.
 
 `Engine/` is [ManagedDoom](https://github.com/sinshu/managed-doom) (GPL-2.0-or-later, see `Engine/LICENSE.txt`) without

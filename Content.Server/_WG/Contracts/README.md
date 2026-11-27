@@ -4,8 +4,11 @@ A contract board. Stations post offers on the public board at the crossing of Ca
 Central's plaza; any character, Vagrants included, takes one there, pays its deposit if it has one, and has until its
 deadline. Faction boards on the Halcyon (TSF), Camelot (USSP and the Viper Group), Helios (PDV), the Stellar
 Blessing (TSF civilians) and the ASF Lantern Post post work for their own members, paid in faction credits on top.
-Planetside work runs at sites on the sector's worlds, never Carcinoma. The Contracts PDA app (on every PDA) tracks the crew's accepted contracts: objectives, the clock, where
-to go and coordinates for targets in space, with Abandon. Offers are taken at a board only.
+Planetside work runs at sites on the sector's worlds, never Carcinoma. The Contracts PDA app (on every PDA) is the board
+in a pocket: every offer the viewer may take (faction boards only for members), the crew's contracts with objectives,
+the clock, where to go and coordinates, history and standing, in two layers (a list page, then the picked contract's
+page with Accept or Abandon). An offer taken from the PDA hands its cargo out at the nearest board that posts it. The
+board and app list planetside work under Planetary as well as its own category.
 
 Entry points: `WGContractSystem` (offers, accepting, payouts; partials for objectives, stations, crews, standing
 persistence, markers and UI), `WGContractPrototype`, `WGContractorPrototype` and `WGContractFactionPrototype`
@@ -78,20 +81,23 @@ escort encounters), `world_fauna.yml` (each world's hostiles for planetside work
 - `WGContractCourier` (Delivery, Hauling): packages spawn at the start end (see cargo placement) and count as delivered the moment
   they are anywhere on the destination station's grids, carried or not. Ends are `Board`, `Contractor` or `Other`
   (another contractor's station, from `destinations` or any). Pay adds `perPackage` and `perKilometre`.
-- `WGContractSupply` (Supply, Mining): a manifest crate spawns beside the board; the goods are rolled from `goods`
-  (`pick` lines at random, or all). A line matches a stack type, an entity prototype or its children, a tag or a
-  component. The crate is collected when it is closed on the contractor's station with the whole manifest inside;
-  closing it short there says what is missing, and examining it shows progress. Pay adds `premium` times the goods'
+- `WGContractSupply` (Supply, Mining): a manifest parcel (`WGContractParcel`) is handed to the taker, else left at the
+  board; the goods are rolled from `goods` (`pick` lines at random, or all). A line matches a stack type, an entity
+  prototype or its children, a tag or a component. Goods used on the parcel, or the parcel used on goods, a bag, box or
+  crate, go into it as far as the manifest still needs (stacks are split); it is collected once it is full on the
+  contractor's station, and examining it shows progress. A failed parcel gives its goods back where it is. A template
+  may still name a crate (`crate`), packed and closed by hand. Pay adds `premium` times the goods'
   market value. A crate from a failed contract is the holder's to keep. On a station a faction contractor calls home,
   the goods stay with the faction: into the station's material silo when it takes them, else into a receiving crate
-  left at its cargo pad. Goods a member of the receiving faction delivers are used up instead: the pay is new money,
-  and goods handed back to the deliverer could be delivered again for ever. Elsewhere the contractor keeps them and
+  left at its cargo pad. Goods a member of the receiving faction delivers, as on every faction board, go only into the
+  silo and the rest is used up: the pay is new money, and goods in a crate the deliverer can open could be delivered
+  again for ever. Elsewhere the contractor keeps them and
   they are gone. A line with `ammo: true` takes any
   loaded magazine, speed loader or ammunition box.
 - `WGContractBounty` (Bounty): accepting starts one of `encounters` (Encounters module, `start: Manual`, no warrant)
   in open sector space `minDistance` to `maxDistance` from the contractor's station, at least `stationClearance`
   (2.5 km) from every station, 2 km from every Lattice reality anchor (`AnchorClearance`: primary cores, Central's and
-  relays) and clear of planet wells; a crowded band is tried again wider, never closer to a
+  relays) and clear of planet wells; a crowded band is tried again wider (to 1.6 times its far edge at most), never closer to a
   station, and a bounty or picket is only posted while such a site exists. It is done when the encounter resolves Destroyed; expired or
   flown off fails it. The target shows on the sector radar like any encounter and leaves a claimable deed.
 - `WGContractRecovery` (Salvage): accepting loads a wreck from `wrecks` in open space, placed as bounties are, and puts
@@ -136,9 +142,11 @@ escort encounters), `world_fauna.yml` (each world's hostiles for planetside work
 - **Planetside**: a recovery, clear, repair, download, inspection or survey with `planet` runs at a site on one of the
   sector's worlds instead of a wreck. Posting picks a world with a `wgContractWorldFauna` pool and a free site (one an
   expedition may use, nobody holds and no city stands on); accepting claims a site there (`ContractClaim`, which
-  expeditions skip), marks its orbit signal and places `hostiles` of the world's wildlife on it, mostly common ones,
+  expeditions skip), loads and holds the ground chunks under it so its terrain stands before anything is placed (let go
+  when the site is), marks its orbit signal and places `hostiles` of the world's wildlife on it, mostly common ones,
   tougher ones from tier 2 and one boss from tier 4. A download's waves add `waveHostiles` more. Everything is placed
-  inside the site's bounds. When the contract ends the site is given back and what was left on it removed, unless a
+  inside the site's bounds, on floor open to its edge (doors count as open; sealed rooms and rock pockets are skipped).
+  Wreck contents go on the wreck's largest connected deck. When the contract ends the site is given back and what was left on it removed, unless a
   player is within 64 m. A clear's targets count once destroyed or dead. Carcinoma is in `ExcludedWorlds` and has no
   pool, so it never takes a contract.
 - `WGContractConstruct` (planetside only): `kits` are handed out at the board; a kit set down on the ground within six
@@ -165,6 +173,7 @@ escort encounters), `world_fauna.yml` (each world's hostiles for planetside work
 - [`Content.Server/_WG/Contracts/WGContractSystem.Markers.cs`](WGContractSystem.Markers.cs)
 - [`Content.Server/_WG/Contracts/WGContractSystem.Objectives.cs`](WGContractSystem.Objectives.cs)
 - [`Content.Server/_WG/Contracts/WGContractSystem.Operations.cs`](WGContractSystem.Operations.cs)
+- [`Content.Server/_WG/Contracts/WGContractSystem.Parcels.cs`](WGContractSystem.Parcels.cs)
 - [`Content.Server/_WG/Contracts/WGContractSystem.Persistence.cs`](WGContractSystem.Persistence.cs)
 - [`Content.Server/_WG/Contracts/WGContractSystem.Planets.cs`](WGContractSystem.Planets.cs)
 - [`Content.Server/_WG/Contracts/WGContractSystem.Requirements.cs`](WGContractSystem.Requirements.cs)

@@ -28,14 +28,18 @@
       inhandVisuals:
         left:
         - state: inhand-left
-        - state: inhand-left-fill-1
-          map: [ "enum.SolutionContainerLayers.Fill" ]
-          visible: false
+        # WOLFGATE START: one map key in both hands crashed Resomi clients; SolutionContainerVisuals adds the fill
+        # - state: inhand-left-fill-1
+        #   map: [ "enum.SolutionContainerLayers.Fill" ]
+        #   visible: false
+        # WOLFGATE END
         right:
         - state: inhand-right
-        - state: inhand-right-fill-1
-          map: [ "enum.SolutionContainerLayers.Fill" ]
-          visible: false
+        # WOLFGATE START: one map key in both hands crashed Resomi clients; SolutionContainerVisuals adds the fill
+        # - state: inhand-right-fill-1
+        #   map: [ "enum.SolutionContainerLayers.Fill" ]
+        #   visible: false
+        # WOLFGATE END
     - type: Openable
       sound:
         collection: bottleOpenSounds
@@ -79,16 +83,20 @@
         - state: inhand-left
         - state: inhand-left-unlit
           shader: unshaded
-        - state: inhand-left-fill-1
-          map: [ "enum.SolutionContainerLayers.Fill" ]
-          visible: false
+        # WOLFGATE START: one map key in both hands crashed Resomi clients; SolutionContainerVisuals adds the fill
+        # - state: inhand-left-fill-1
+        #   map: [ "enum.SolutionContainerLayers.Fill" ]
+        #   visible: false
+        # WOLFGATE END
         right:
         - state: inhand-right
         - state: inhand-right-unlit
           shader: unshaded
-        - state: inhand-right-fill-1
-          map: [ "enum.SolutionContainerLayers.Fill" ]
-          visible: false
+        # WOLFGATE START: one map key in both hands crashed Resomi clients; SolutionContainerVisuals adds the fill
+        # - state: inhand-right-fill-1
+        #   map: [ "enum.SolutionContainerLayers.Fill" ]
+        #   visible: false
+        # WOLFGATE END
     - type: StaticPrice
       price: 30 # Consistent with BaseBeakerMetallic
     - type: Destructible # Hacky - takes damage, but shouldn't be destructible

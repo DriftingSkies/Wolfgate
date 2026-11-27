@@ -93,6 +93,22 @@
   - type: WGShipCrewPost
     role: WGCrewSurgeon
 
+# Behind a bar with a booze and a soda dispenser within ten tiles, and a counter between him and the customers.
+- type: entity
+  parent: WGShipCrewPostBase
+  id: WGShipCrewPostBartender
+  components:
+  - type: WGShipCrewPost
+    role: WGCrewBartender
+
+# In the galley beside the serving counter: the chef cooks with the appliances, stores and counter around it.
+- type: entity
+  parent: WGShipCrewPostBase
+  id: WGShipCrewPostChef
+  components:
+  - type: WGShipCrewPost
+    role: WGCrewChef
+
 # A counter post: the roster stands the named trader here, facing the way the marker faces (the counter table).
 - type: entity
   abstract: true

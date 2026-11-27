@@ -6,8 +6,8 @@ namespace Content.Shared._WG.Synthetics;
 
 /// <summary>
 /// A chassis organ that soaks up the radiation reaching a synthetic. While it has room nothing else is touched; full,
-/// the overflow strains it and leaks into the core; missing or burnt out, all of it corrupts the core.
-/// Pulled out, it vents its charge; a welder restores its integrity (its organ health) until it burns out at zero.
+/// the overflow strains it and leaks into the core; missing or burnt out, all of it corrupts the core. With room
+/// left, it draws back radiation that reached the body another way. Pulled out, it vents its charge; a welder restores its integrity (its organ health) until it burns out at zero.
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class WGRadCollectorComponent : Component
@@ -23,6 +23,10 @@ public sealed partial class WGRadCollectorComponent : Component
     /// <summary>Rads a second it sheds while out of a body.</summary>
     [DataField]
     public float VentPerSecond = 5f;
+
+    /// <summary>Rads a second it draws out of radiation already on its body, while it has room.</summary>
+    [DataField]
+    public float DrawPerSecond = 2f;
 
     /// <summary>Integrity lost per rad of overflow while it is full.</summary>
     [DataField]

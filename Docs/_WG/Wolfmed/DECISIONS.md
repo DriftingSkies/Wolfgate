@@ -764,6 +764,13 @@ off for it (`WolfmedSyntheticHudOverlaySystem.OwnsView`, checked in `DamageOverl
   are physical ones. `WolfmedDeathBannerOverlay` read the same bounds the same wrong way and is fixed with
   it. The fault list is now also cut to `MaxLines`, so a large text scale shortens the list instead of
   running it under the game HUD.
+  *[2026-11-24 correction: right for engine v277 at the time. A later engine update brought RobustToolbox
+  #7031, which resets a screen-space overlay's handle to the window's origin before drawing it, so
+  `ViewportBounds` is now already in the handle's coordinates and taking the origin off moved every readout
+  away from a viewport not at the window's top-left, such as a console's cockpit view. `Screen` now takes the
+  overlay's draw args and returns the bounds clipped to the viewport control, with no subtraction; the clip
+  the HUD overlay did on its own now covers the death banner, the explanation card and the chassis bay
+  overlay too.]*
 - **STANDBY over a walking machine.** Two causes, both fixed. `MobIPC` had no `Critical` state, so CONSC's
   Unconscious could never reach the mob state: pain or a pulled pump left the chassis on its feet with the
   readout saying STANDBY. Critical is back in `allowedStates` (marked); `MobThresholds` still names no

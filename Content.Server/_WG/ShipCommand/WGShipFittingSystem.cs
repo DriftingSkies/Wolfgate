@@ -22,6 +22,7 @@ using Content.Shared.Examine;
 using Content.Shared.Materials;
 using Content.Shared.Materials.OreSilo;
 using Content.Shared.Popups;
+using Content.Shared.VendingMachines;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
 
@@ -29,8 +30,9 @@ namespace Content.Server._WG.ShipCommand;
 
 /// <summary>
 /// Fits out a commanded ship: best-tier parts in every machine and every ordinary lathe on the ship's ore silo, and
-/// optionally hardened guns and doors, bigger gun batteries and faster cranes, in one pass the tick after the ship's
-/// machines have built their stock parts; and keeps bottomless storages topped up. A
+/// optionally hardened guns and doors, bigger gun batteries, faster cranes and vending machines with extra lines and
+/// unlimited stock, in one pass the tick after the ship's machines have built their stock parts; and keeps bottomless
+/// storages topped up and vending machines brought aboard later stocked. A
 /// bottomless storage's stock stays in it: it won't eject, drops nothing when the machine is taken apart or destroyed,
 /// adds nothing to the machine's price, and what it prints sells for nothing.
 /// </summary>
@@ -103,6 +105,14 @@ public sealed class WGShipFittingSystem : EntitySystem
         var query = EntityQueryEnumerator<WGBottomlessMaterialsComponent, MaterialStorageComponent>();
         while (query.MoveNext(out var uid, out var bottomless, out var storage))
             TopUp((uid, bottomless, storage));
+
+        // Machines built or brought aboard after the fitting pass, and a line knocked loose by a forced eject.
+        var vendors = EntityQueryEnumerator<VendingMachineComponent, TransformComponent>();
+        while (vendors.MoveNext(out var vendorUid, out var vendor, out var xform))
+        {
+            if (xform.GridUid is { } gridUid && TryComp<WGShipFittingComponent>(gridUid, out var fitting) && fitting.Fitted)
+                StockVendor((vendorUid, vendor), fitting);
+        }
     }
 
     /// <summary>Runs the fitting pass on a ship now. Returns how many machines got new parts.</summary>
@@ -129,6 +139,9 @@ public sealed class WGShipFittingSystem : EntitySystem
                 clients.Add(child);
 
             FitArms(grid.Comp, child);
+
+            if (TryComp<VendingMachineComponent>(child, out var vendor))
+                StockVendor((child, vendor), grid.Comp);
         }
 
         if (grid.Comp.LinkSilo && silo is { } s)
@@ -177,6 +190,44 @@ public sealed class WGShipFittingSystem : EntitySystem
             crane.SpeedMultiplier = speed;
             Dirty(child, crane);
         }
+    }
+
+    /// <summary>
+    /// Adds the ship's extra lines for a vending machine's pack to its regular stock and, on a ship with unlimited
+    /// vending, makes every regular line unlimited. Lines already there keep their place; repeating it changes nothing.
+    /// </summary>
+    public void StockVendor(Entity<VendingMachineComponent> vendor, WGShipFittingComponent fitting)
+    {
+        var inventory = vendor.Comp.Inventory;
+        var changed = false;
+        if (fitting.VendingExtras.TryGetValue(vendor.Comp.PackPrototypeId, out var extrasId)
+            && _proto.TryIndex(extrasId, out var extras))
+        {
+            foreach (var (id, amount) in extras.StartingInventory)
+            {
+                if (inventory.ContainsKey(id) || !_proto.HasIndex<EntityPrototype>(id))
+                    continue;
+
+                inventory.Add(id, new VendingMachineInventoryEntry(InventoryType.Regular, id, amount));
+                changed = true;
+            }
+        }
+
+        if (fitting.UnlimitedVending)
+        {
+            // uint.MaxValue is Frontier's unlimited line: a vend leaves it and a restock skips it.
+            foreach (var entry in inventory.Values)
+            {
+                if (entry.Amount == uint.MaxValue)
+                    continue;
+
+                entry.Amount = uint.MaxValue;
+                changed = true;
+            }
+        }
+
+        if (changed)
+            Dirty(vendor);
     }
 
     /// <summary>Swaps each of a machine's parts for the best part of its kind. False when nothing changed.</summary>

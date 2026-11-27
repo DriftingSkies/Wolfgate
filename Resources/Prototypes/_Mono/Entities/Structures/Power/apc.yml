@@ -109,6 +109,11 @@
     maxChargeRate: 20000
     supplyRampTolerance: 15000
     supplyRampRate: 2000
+  # WOLFGATE(Power) START: capacitors scale the LAPC's output, and its instant headroom matches its rated supply
+  - type: WGNetworkBatteryUpgrade
+    baseSupply: 60000
+    baseRampTolerance: 60000
+  # WOLFGATE END
   - type: WiresPanel
   - type: WiresVisuals
   - type: Damageable
@@ -153,6 +158,7 @@
     price: 2000
   - type: GuideHelp
     guides:
+    - WGLargeApc # WOLFGATE(Power): the LAPC's own page comes first
     - VoltageNetworks
     - Power
   - type: BatteryDrinkerSource # EE IPCs

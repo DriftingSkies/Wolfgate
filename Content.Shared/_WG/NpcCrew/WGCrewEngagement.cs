@@ -22,6 +22,8 @@ public static class WGCrewDuties
     public const string Pilot = "Pilot";
     public const string Gunnery = "Gunnery";
     public const string Janitor = "Janitor";
+    public const string Bartender = "Bartender";
+    public const string Chef = "Chef";
 }
 
 /// <summary>The role prototypes the planner hands out.</summary>
@@ -34,4 +36,5 @@ public static class WGCrewRoles
     public static readonly ProtoId<WGCrewRolePrototype> Captain = "WGCrewCaptain";
     public static readonly ProtoId<WGCrewRolePrototype> Gunner = "WGCrewGunner";
     public static readonly ProtoId<WGCrewRolePrototype> Engineer = "WGCrewEngineer";
+    public static readonly ProtoId<WGCrewRolePrototype> Chef = "WGCrewChef";
 }

@@ -1,8 +1,9 @@
 # Bench
 
 The Common Writ, the sector's in-character law, and the tools Caelestinus judges use to enforce it. The laws are
-`wgLaw` prototypes grouped by `wgLawChapter` (`Resources/Prototypes/_WG/Bench/laws.yml`); the Common Writ page
-(`WGCommonWrit`, under Caelestinus in the lore book) and the app both read them. Judges spawn with `WGBookCommonWrit`,
+`wgLaw` prototypes grouped by `wgLawChapter` (`Resources/Prototypes/_WG/Bench/laws.yml`), which the app reads. The
+Common Writ page (`WGCommonWrit`, under Caelestinus in the lore book) is written by hand: a law added to the prototypes
+needs its line there too. Judges spawn with `WGBookCommonWrit`,
 a book that opens that page. Items listed in the Writ's Schedule of Unlawful Material carry `Contraband` with the
 `WGUnlawful` severity, so examine marks them. `Docs/_WG/Bench/LAWBOOK.md` is the review copy.
 

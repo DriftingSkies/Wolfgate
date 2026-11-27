@@ -50,6 +50,7 @@ public sealed partial class FireVisualizerSystem : VisualizerSystem<FireVisualsC
         if (component.Sprite != null)
             sprite.LayerSetRSI(FireVisualLayers.Fire, component.Sprite);
         AddFireUnderlay(uid, component, sprite); // WOLFGATE(BetterFire): adds a fire underlay layer below the sprite
+        UnsnapFireLayers(uid, component, sprite); // WOLFGATE(BetterFire): directional flames on a sprite that snaps to cardinals turn on their own
 
         UpdateAppearance(uid, component, sprite, appearance);
     }

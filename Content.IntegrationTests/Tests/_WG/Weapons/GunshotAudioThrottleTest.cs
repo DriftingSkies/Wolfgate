@@ -1,5 +1,6 @@
 #nullable enable
 using System.Collections.Generic;
+using Content.Shared._WG.Performance;
 using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Weapons.Ranged.Systems;
 using Robust.Shared.Audio.Components;
@@ -32,6 +33,8 @@ public sealed class GunshotAudioThrottleTest
         var startShots = 0;
         await server.WaitAssertion(() =>
         {
+            // Counted as sound entities, which a light sound does not make.
+            server.CfgMan.SetCVar(WGLightSoundCVars.Enabled, false);
             gunUid = entMan.SpawnEntity(proto, map.GridCoords);
             var gun = entMan.GetComponent<GunComponent>(gunUid);
             gun.SelectedMode = SelectiveFire.FullAuto;
@@ -62,7 +65,10 @@ public sealed class GunshotAudioThrottleTest
 
         var shots = 0;
         await server.WaitPost(() =>
-            shots = startShots - entMan.GetComponent<HitscanBatteryAmmoProviderComponent>(gunUid).Shots);
+        {
+            shots = startShots - entMan.GetComponent<HitscanBatteryAmmoProviderComponent>(gunUid).Shots;
+            server.CfgMan.SetCVar(WGLightSoundCVars.Enabled, true);
+        });
 
         await pair.CleanReturnAsync();
         return (shots, seen.Count);
@@ -83,7 +89,7 @@ public sealed class GunshotAudioThrottleTest
     {
         var (shots, sounds) = await Fire(SlowGun);
         TestContext.Out.WriteLine($"slow gun: {shots} shots, {sounds} sounds");
-        Assert.That(shots, Is.InRange(3, 5));
+        Assert.That(shots, Is.InRange(5, 7)); // 3 shots/s for 2 s
         Assert.That(sounds, Is.EqualTo(shots), "a gun at or under 5 shots/s plays every shot");
     }
 }

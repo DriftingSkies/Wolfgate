@@ -1,0 +1,64 @@
+<ui:PdaOsWindow xmlns="https://spacestation14.io"
+               xmlns:ui="clr-namespace:Content.Client._WG.PdaUi">
+    <PanelContainer Name="NavBar" HorizontalExpand="True" SetHeight="26">
+        <BoxContainer Orientation="Horizontal" Margin="4 0">
+            <ui:PdaIconButton Name="HomeButton" Access="Public" LabelText="{Loc 'pda-ui-nav-main'}" MinHeight="24"/>
+            <ui:PdaIconButton Name="InfoButton" Access="Public" LabelText="{Loc 'pda-ui-nav-info'}" MinHeight="24"/>
+            <ui:PdaIconButton Name="SettingsButton" Access="Public" LabelText="{Loc 'comp-pda-io-settings-button'}" MinHeight="24"/>
+            <Control HorizontalExpand="True"/>
+        </BoxContainer>
+    </PanelContainer>
+    <BoxContainer Name="ViewContainer" HorizontalExpand="True" VerticalExpand="True" Margin="6 4 6 6">
+        <ScrollContainer Name="HomeView" HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False">
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+                <ui:PdaSection Name="DetailsSection" Title="{Loc 'pda-ui-section-details'}">
+                    <ui:PdaInfoRow Name="PdaOwnerLabel"/>
+                    <ui:PdaInfoRow Name="IdInfoLabel"/>
+                    <ui:PdaInfoRow Name="BalanceLabel"/>
+                </ui:PdaSection>
+                <ui:PdaSection Name="ProgramsSection" Title="{Loc 'comp-pda-io-program-list-button'}" VerticalExpand="True">
+                    <BoxContainer Name="ProgramList" Orientation="Vertical" HorizontalExpand="True"/>
+                    <Label Name="NoProgramsLabel" Visible="False"/>
+                </ui:PdaSection>
+            </BoxContainer>
+        </ScrollContainer>
+        <ScrollContainer Name="InfoView" HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False" Visible="False">
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+                <ui:PdaSection Name="InfoSection" Title="{Loc 'pda-ui-section-info'}" VerticalExpand="True">
+                    <ui:PdaInfoRow Name="StationNameLabel"/>
+                    <ui:PdaInfoRow Name="StationAlertLevelLabel"/>
+                    <ui:PdaInfoRow Name="StationAlertLevelInstructions"/>
+                    <ui:PdaInfoRow Name="WarLevelLabel"/>
+                    <ui:PdaInfoRow Name="StationTimeLabel"/>
+                    <ui:PdaInfoRow Name="CurrentDateLabel"/>
+                    <ui:PdaInfoRow Name="ShuttleDeedLabel"/>
+                </ui:PdaSection>
+            </BoxContainer>
+        </ScrollContainer>
+        <ScrollContainer Name="SettingsView" HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False" Visible="False">
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+                <ui:PdaSection Title="{Loc 'pda-ui-section-settings'}">
+                    <ui:PdaSettingsRow Name="AccessRingtoneButton" Access="Public"
+                                      Title="{Loc 'comp-pda-ui-ringtone-button'}"
+                                      Description="{Loc 'comp-pda-ui-ringtone-button-description'}"/>
+                    <ui:PdaSettingsRow Name="ActivateMusicButton" Access="Public" Visible="False"
+                                      Title="{Loc 'pda-bound-user-interface-music-button'}"
+                                      Description="{Loc 'pda-bound-user-interface-music-button-description'}"/>
+                    <ui:PdaSettingsRow Name="NotificationsButton" Access="Public"
+                                      Title="{Loc 'pda-ui-notifications-title'}"
+                                      Description="{Loc 'pda-ui-notifications-description'}"/>
+                </ui:PdaSection>
+                <ui:PdaSection Title="{Loc 'pda-ui-section-uplink'}">
+                    <ui:PdaSettingsRow Name="ShowUplinkButton" Access="Public" Visible="False"
+                                      Title="{Loc 'pda-bound-user-interface-show-uplink-title'}"
+                                      Description="{Loc 'pda-bound-user-interface-show-uplink-description'}"/>
+                    <ui:PdaSettingsRow Name="LockUplinkButton" Access="Public" Visible="False"
+                                      Title="{Loc 'pda-bound-user-interface-lock-uplink-title'}"
+                                      Description="{Loc 'pda-bound-user-interface-lock-uplink-description'}"/>
+                </ui:PdaSection>
+            </BoxContainer>
+        </ScrollContainer>
+        <BoxContainer Name="ProgramView" Access="Public" Orientation="Vertical"
+                      HorizontalExpand="True" VerticalExpand="True" Visible="False"/>
+    </BoxContainer>
+</ui:PdaOsWindow>

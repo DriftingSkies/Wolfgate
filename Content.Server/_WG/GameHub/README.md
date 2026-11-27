@@ -7,7 +7,8 @@ each `wgGame` prototype to download, play and compare scores on. Games also run 
 **Downloads.** A game's data sits under `Resources/GameData`, which clients don't ship (`Content.Packaging/ClientPackaging.cs`).
 `WGGameDownloadSystem` streams it over the transfer channel, rate-limited because most servers share it with the game
 connection (`wg.gamehub.download_rate`, `wg.gamehub.max_downloads`). The client's `WGGameDataManager` keeps it in user
-data with its version, so a player only downloads it again when it changes.
+data with its version, so a player only downloads it again when it changes. Requests and answers go by net message (`MsgWGGameData`),
+not entity events, so a player waiting in the join queue, who gets no game states, can download too.
 
 **Nearby sound.** The playing client reports each sound and music track. `WGGameHubSystem` passes sounds to players in
 PVS, capped by `wg.gamehub.max_noise_per_second`, and puts the track on `WGGameBroadcastComponent`. Bystanders haven't

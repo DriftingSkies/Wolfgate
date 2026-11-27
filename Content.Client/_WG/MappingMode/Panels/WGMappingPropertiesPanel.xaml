@@ -119,6 +119,9 @@
                             Text="{Loc 'wg-mapping-tool-door'}"
                             ToolTip="{Loc 'wg-mapping-tool-door-tooltip'}" />
                 </BoxContainer>
+                <Button Name="ToolMirrorButton" ToggleMode="True" HorizontalExpand="True"
+                        Text="{Loc 'wg-mapping-tool-mirror'}"
+                        ToolTip="{Loc 'wg-mapping-tool-mirror-tooltip'}" />
             </BoxContainer>
 
             <Label Text="{Loc 'wg-mapping-screen-section-levels'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />

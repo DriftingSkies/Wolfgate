@@ -15,6 +15,7 @@
     ui: !type:WGLatticeStatusUi
   - type: Cartridge
     programName: wg-lattice-status-program-name
+    size: 32
     icon:
       sprite: Structures/Machines/Anomaly/adv_anomaly_vessel.rsi
       state: base
@@ -84,7 +85,7 @@
       enum.WGLatticeStatusUiKey.Key:
         type: WGLatticeStatusBoundUserInterface
   - type: StaticPrice
-    price: 1500
+    price: 230 # prints for about 185
 
 - type: entity
   parent: BaseFlatpack
@@ -93,7 +94,7 @@
   - type: Flatpack
     entity: WGLatticeStatusConsole
   - type: StaticPrice
-    price: 1500
+    price: 230 # prints for about 185
 
 - type: latheRecipe
   id: WGLatticeStatusCartridge
@@ -116,3 +117,4 @@
     Steel: 1500
     Glass: 800
     Gold: 100
+

@@ -1,4 +1,4 @@
-# Ported from Delta-V; the ID is Delta-V's.
+﻿# Ported from Delta-V; the ID is Delta-V's.
 - type: entity
   parent: NFBasePDACartridge
   id: NanoChatCartridge
@@ -15,6 +15,7 @@
     ui: !type:NanoChatUi
   - type: Cartridge
     programName: nano-chat-program-name
+    size: 8
     icon: { sprite: _WG/NanoChat/program_icon.rsi, state: nanochat }
     readonly: true
   - type: NanoChatCartridge

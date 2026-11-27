@@ -8,6 +8,11 @@ outfit, build and call an ERT, power or unpower grids, and play internet sounds.
 body to put its player in it, and ctrl+click a ghost to spawn that player as their character in an outfit. The
 upstream Set Outfit debug verb and `setoutfit <entity>` open the same outfit picker in set mode.
 
+An admin alert about an entity (`IChatManager.SendAdminAlert(entity, message)`: explosions, the AME, the particle
+accelerator, the Choir) carries that entity as its source (`ChatManager.AdminFollow.cs`), and an active admin's chat
+puts an (F) link in front of it (`AdminFollowLinkSystem`, `AdminFollowLinkTag`) that runs `follow` on it, aghosting an
+admin in a body first.
+
 Offer to Ghosts (right-click Admin verb, or `offertoghosts <entity> [name] [description] [rules]`) pops a sign-up
 prompt with a chime for every current ghost, like an ERT call. A mob nobody is playing becomes a ghost role in a short
 draw; an entity that is already an open ghost role, such as a spawner or one set up with Make Ghost Role for custom
@@ -49,6 +54,7 @@ Audio.
 ### Server
 
 - [`Content.Server/_WG/Administration/AdminManager.WGToolshed.cs`](AdminManager.WGToolshed.cs)
+- [`Content.Server/_WG/Administration/ChatManager.AdminFollow.cs`](ChatManager.AdminFollow.cs)
 - [`Content.Server/_WG/Administration/Commands/ErtBuilderCommand.cs`](Commands/ErtBuilderCommand.cs)
 - [`Content.Server/_WG/Administration/Commands/GridPowerCommand.cs`](Commands/GridPowerCommand.cs)
 - [`Content.Server/_WG/Administration/Commands/InternetSoundCommands.cs`](Commands/InternetSoundCommands.cs)
@@ -87,6 +93,8 @@ Audio.
 
 ### Client
 
+- [`Content.Client/_WG/Administration/AdminFollow/AdminFollowLinkSystem.cs`](../../../Content.Client/_WG/Administration/AdminFollow/AdminFollowLinkSystem.cs)
+- [`Content.Client/_WG/Administration/AdminFollow/AdminFollowLinkTag.cs`](../../../Content.Client/_WG/Administration/AdminFollow/AdminFollowLinkTag.cs)
 - [`Content.Client/_WG/Administration/AdminRadar/AdminRadarSystem.cs`](../../../Content.Client/_WG/Administration/AdminRadar/AdminRadarSystem.cs)
 - [`Content.Client/_WG/Administration/AdminRadar/ShuttleSystem.TrueIff.cs`](../../../Content.Client/_WG/Administration/AdminRadar/ShuttleSystem.TrueIff.cs)
 - [`Content.Client/_WG/Administration/Commands/ErtBuilderUiCommand.cs`](../../../Content.Client/_WG/Administration/Commands/ErtBuilderUiCommand.cs)
@@ -141,6 +149,7 @@ Audio.
 
 ### Localization
 
+- [`Resources/Locale/en-US/_WG/Administration/admin-follow.ftl`](../../../Resources/Locale/en-US/_WG/Administration/admin-follow.ftl)
 - [`Resources/Locale/en-US/_WG/Administration/admin-radar.ftl`](../../../Resources/Locale/en-US/_WG/Administration/admin-radar.ftl)
 - [`Resources/Locale/en-US/_WG/Administration/admin-tooling.ftl`](../../../Resources/Locale/en-US/_WG/Administration/admin-tooling.ftl)
 - [`Resources/Locale/en-US/_WG/Administration/ert.ftl`](../../../Resources/Locale/en-US/_WG/Administration/ert.ftl)
@@ -159,9 +168,11 @@ Audio.
   - the scanner window an admin in a ghost gets instead
   - an admin in a ghost gets the resizable, far-zooming scanner
 - [`Content.Client/UserInterface/Controls/MapGridControl.xaml.cs`](../../../Content.Client/UserInterface/Controls/MapGridControl.xaml.cs): protected so the admin scanner can look up grids further out
+- [`Content.Client/UserInterface/Systems/Chat/ChatUIController.cs`](../../../Content.Client/UserInterface/Systems/Chat/ChatUIController.cs): follow link on admin alerts about an entity
 - [`Content.Server/Administration/Commands/FollowCommand.cs`](../../Administration/Commands/FollowCommand.cs): aghost before orbiting
 - [`Content.Server/Administration/Managers/AdminManager.cs`](../../Administration/Managers/AdminManager.cs): the client refuses a command missing from this list
 - [`Content.Server/Administration/UI/AdminCameraEui.cs`](../../Administration/UI/AdminCameraEui.cs): aghost before orbiting
+- [`Content.Server/Chat/Managers/ChatManager.cs`](../../Chat/Managers/ChatManager.cs): the alert carries its entity for the follow link
 - [`Content.Server/RoundEnd/RoundEndSystem.cs`](../../RoundEnd/RoundEndSystem.cs): no auto-call while delayroundend holds the round
 - [`Content.Server/Shuttles/Systems/EmergencyShuttleSystem.Console.cs`](../../Shuttles/Systems/EmergencyShuttleSystem.Console.cs)
   - delayroundend sets this; shuttle round-end paths and the auto-call check it.

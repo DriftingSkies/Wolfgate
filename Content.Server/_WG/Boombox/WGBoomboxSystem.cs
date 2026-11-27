@@ -1,6 +1,7 @@
 using System.Linq;
 using Content.Server._WG.Audio.InternetSound;
 using Content.Server._WG.ShipPa;
+using Content.Server.Administration.Managers;
 using Content.Shared._WG.Audio.InternetSound;
 using Content.Shared._WG.Boombox;
 using Content.Shared._WG.CCVar;
@@ -24,6 +25,7 @@ namespace Content.Server._WG.Boombox;
 /// </summary>
 public sealed partial class WGBoomboxSystem : EntitySystem
 {
+    [Dependency] private IAdminManager _admin = default!;
     [Dependency] private InternetSoundSystem _internetSound = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private AppearanceSystem _appearance = default!;
@@ -128,7 +130,7 @@ public sealed partial class WGBoomboxSystem : EntitySystem
         }
 
         var idle = IsIdle(ent);
-        if (idle && _timing.CurTime < ent.Comp.NextRequest)
+        if (idle && _timing.CurTime < ent.Comp.NextRequest && (session == null || !_admin.IsAdmin(session)))
         {
             var seconds = (int) Math.Ceiling((ent.Comp.NextRequest - _timing.CurTime).TotalSeconds);
             error = Loc.GetString("wg-boombox-cooldown", ("seconds", seconds));
@@ -322,7 +324,8 @@ public sealed partial class WGBoomboxSystem : EntitySystem
 
     private void OnSkip(Entity<WGBoomboxComponent> ent, ref WGBoomboxSkipMessage args)
     {
-        if (_timing.CurTime < ent.Comp.NextSkip)
+        if (_timing.CurTime < ent.Comp.NextSkip
+            && !(_players.TryGetSessionByEntity(args.Actor, out var session) && _admin.IsAdmin(session)))
             return;
 
         ent.Comp.NextSkip = _timing.CurTime + SkipCooldown;

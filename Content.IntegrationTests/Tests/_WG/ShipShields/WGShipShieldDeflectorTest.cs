@@ -63,7 +63,7 @@ public sealed class WGShipShieldDeflectorTest
             var intensity = explosive.TotalIntensity;
             var peak = explosive.MaxIntensity;
             var slope = explosive.IntensitySlope;
-            var blast = intensity * (float) prototypes.Index<ExplosionPrototype>(explosive.ExplosionType).DamagePerIntensity.GetTotal();
+            var blast = WGShipShieldEffects.AbsorbedBlastDamage(intensity, (float) prototypes.Index<ExplosionPrototype>(explosive.ExplosionType).DamagePerIntensity.GetTotal());
             projectiles.ProjectileCollide((shellUid, shell, shellBody), shield);
             Assert.That(shell.ProjectileSpent, Is.False);
             Assert.That(entities.IsQueuedForDeletion(shellUid), Is.False);
@@ -71,7 +71,10 @@ public sealed class WGShipShieldDeflectorTest
             Assert.That(explosive.TotalIntensity, Is.EqualTo(intensity * kept).Within(0.01f));
             Assert.That(explosive.MaxIntensity, Is.EqualTo(peak * kept).Within(0.01f));
             Assert.That(explosive.IntensitySlope, Is.EqualTo(slope * kept).Within(0.01f));
-            Assert.That(emitter.Damage, Is.EqualTo((hit + blast) * (1f - kept)).Within(1f));
+            var (slowedHeat, slowedCapacity) = shields.GetWolfgateShipHeat(map.Grid.Owner);
+            Assert.That(slowedHeat, Is.EqualTo(MathF.Min((hit + blast) * (1f - kept) * WGShipShieldEffects.HitHeat,
+                    slowedCapacity * WGShipShieldEffects.HitHeatCap)).Within(1f),
+                "The field is charged for what it took off the shell, at the rate and cap of any absorbed hit.");
 
             // The field lets the slowed shell through and never charges for it twice.
             var charged = emitter.Damage;
@@ -90,12 +93,13 @@ public sealed class WGShipShieldDeflectorTest
             // Missiles and energy bolts are stopped as by any shield.
             foreach (var stopped in new[] { "ShipMissileASM150", "ShipMediumPlasmaProjectile" })
             {
-                var before = emitter.Damage;
+                var (before, capacity) = shields.GetWolfgateShipHeat(map.Grid.Owner);
                 var uid = entities.SpawnEntity(stopped, map.GridCoords);
                 var projectile = entities.GetComponent<ProjectileComponent>(uid);
                 projectiles.ProjectileCollide((uid, projectile, entities.GetComponent<PhysicsComponent>(uid)), shield);
                 Assert.That(projectile.ProjectileSpent, Is.True, stopped);
-                Assert.That(emitter.Damage, Is.GreaterThan(before + (float) projectile.Damage.GetTotal() - 1f), stopped);
+                Assert.That(shields.GetWolfgateShipHeat(map.Grid.Owner).Heat, Is.GreaterThan(before +
+                    MathF.Min((float) projectile.Damage.GetTotal() * WGShipShieldEffects.HitHeat, capacity * WGShipShieldEffects.HitHeatCap) - 1f), stopped);
             }
 
             Assert.That(shell.Shooter, Is.EqualTo(shooter), "A deflected shell stays its shooter's.");

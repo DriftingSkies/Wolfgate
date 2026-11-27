@@ -1,0 +1,372 @@
+- type: borgSubtype
+  parentBorgType: WGViperAssault
+  id: WGViperAssaultDefault
+  spritePath: _WG/BorgSkins/Small/ViperGroup/Assault.rsi
+  dummyPrototype: WGViperBorgChassisAssault
+
+- type: borgSubtype
+  parentBorgType: WGViperAssault
+  id: WGViperAssaultMedicalHound
+  spritePath: _WG/BorgSkins/Wide/ViperGroup/MedicalHound.rsi
+  dummyPrototype: WGViperBorgPreviewMedicalHound
+
+- type: borgSubtype
+  parentBorgType: WGViperAssault
+  id: WGViperAssaultSyndicateWyvern
+  spritePath: _WG/BorgSkins/Large/ViperGroup/SyndicateWyvern.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateWyvern
+
+- type: borgSubtype
+  parentBorgType: WGViperAssault
+  id: WGViperAssaultSyndicateDullahan
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateDullahan.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateDullahan
+
+- type: borgSubtype
+  parentBorgType: WGViperAssault
+  id: WGViperAssaultSyndicateDullahanTaur
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateDullahanTaur.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateDullahanTaur
+
+- type: borgSubtype
+  parentBorgType: WGViperAssault
+  id: WGViperAssaultSyndicateK4T
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateK4T.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateK4T
+
+- type: borgSubtype
+  parentBorgType: WGViperAssault
+  id: WGViperAssaultSyndicateMeka
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateMeka.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateMeka
+
+- type: borgSubtype
+  parentBorgType: WGViperAssault
+  id: WGViperAssaultSyndicateNiKA
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateNiKA.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateNiKA
+
+- type: borgSubtype
+  parentBorgType: WGViperAssault
+  id: WGViperAssaultSyndicateNiKO
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateNiKO.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateNiKO
+
+- type: borgSubtype
+  parentBorgType: WGViperAssault
+  id: WGViperAssaultSyndicateMyomer
+  spritePath: _WG/BorgSkins/Wide/ViperGroup/SyndicateMyomer.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateMyomer
+
+- type: borgSubtype
+  parentBorgType: WGViperAssault
+  id: WGViperAssaultZoomba
+  spritePath: _WG/BorgSkins/Small/ViperGroup/Zoomba.rsi
+  dummyPrototype: WGViperBorgPreviewZoomba
+
+- type: borgSubtype
+  parentBorgType: WGViperEngineering
+  id: WGViperEngineeringDefault
+  spritePath: _WG/BorgSkins/Small/ViperGroup/Engineering.rsi
+  dummyPrototype: WGViperBorgChassisEngineering
+
+- type: borgSubtype
+  parentBorgType: WGViperEngineering
+  id: WGViperEngineeringMedicalHound
+  spritePath: _WG/BorgSkins/Wide/ViperGroup/MedicalHound.rsi
+  dummyPrototype: WGViperBorgPreviewMedicalHound
+
+- type: borgSubtype
+  parentBorgType: WGViperEngineering
+  id: WGViperEngineeringSyndicateWyvern
+  spritePath: _WG/BorgSkins/Large/ViperGroup/SyndicateWyvern.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateWyvern
+
+- type: borgSubtype
+  parentBorgType: WGViperEngineering
+  id: WGViperEngineeringSyndicateDullahan
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateDullahan.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateDullahan
+
+- type: borgSubtype
+  parentBorgType: WGViperEngineering
+  id: WGViperEngineeringSyndicateDullahanTaur
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateDullahanTaur.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateDullahanTaur
+
+- type: borgSubtype
+  parentBorgType: WGViperEngineering
+  id: WGViperEngineeringSyndicateK4T
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateK4T.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateK4T
+
+- type: borgSubtype
+  parentBorgType: WGViperEngineering
+  id: WGViperEngineeringSyndicateMeka
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateMeka.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateMeka
+
+- type: borgSubtype
+  parentBorgType: WGViperEngineering
+  id: WGViperEngineeringSyndicateNiKA
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateNiKA.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateNiKA
+
+- type: borgSubtype
+  parentBorgType: WGViperEngineering
+  id: WGViperEngineeringSyndicateNiKO
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateNiKO.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateNiKO
+
+- type: borgSubtype
+  parentBorgType: WGViperEngineering
+  id: WGViperEngineeringSyndicateMyomer
+  spritePath: _WG/BorgSkins/Wide/ViperGroup/SyndicateMyomer.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateMyomer
+
+- type: borgSubtype
+  parentBorgType: WGViperEngineering
+  id: WGViperEngineeringZoomba
+  spritePath: _WG/BorgSkins/Small/ViperGroup/Zoomba.rsi
+  dummyPrototype: WGViperBorgPreviewZoomba
+
+- type: borgSubtype
+  parentBorgType: WGViperMedical
+  id: WGViperMedicalDefault
+  spritePath: _WG/BorgSkins/Small/ViperGroup/Medical.rsi
+  dummyPrototype: WGViperBorgChassisMedical
+
+- type: borgSubtype
+  parentBorgType: WGViperMedical
+  id: WGViperMedicalMedicalHound
+  spritePath: _WG/BorgSkins/Wide/ViperGroup/MedicalHound.rsi
+  dummyPrototype: WGViperBorgPreviewMedicalHound
+
+- type: borgSubtype
+  parentBorgType: WGViperMedical
+  id: WGViperMedicalSyndicateWyvern
+  spritePath: _WG/BorgSkins/Large/ViperGroup/SyndicateWyvern.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateWyvern
+
+- type: borgSubtype
+  parentBorgType: WGViperMedical
+  id: WGViperMedicalSyndicateDullahan
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateDullahan.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateDullahan
+
+- type: borgSubtype
+  parentBorgType: WGViperMedical
+  id: WGViperMedicalSyndicateDullahanTaur
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateDullahanTaur.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateDullahanTaur
+
+- type: borgSubtype
+  parentBorgType: WGViperMedical
+  id: WGViperMedicalSyndicateK4T
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateK4T.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateK4T
+
+- type: borgSubtype
+  parentBorgType: WGViperMedical
+  id: WGViperMedicalSyndicateMeka
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateMeka.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateMeka
+
+- type: borgSubtype
+  parentBorgType: WGViperMedical
+  id: WGViperMedicalSyndicateNiKA
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateNiKA.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateNiKA
+
+- type: borgSubtype
+  parentBorgType: WGViperMedical
+  id: WGViperMedicalSyndicateNiKO
+  spritePath: _WG/BorgSkins/Tall/ViperGroup/SyndicateNiKO.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateNiKO
+
+- type: borgSubtype
+  parentBorgType: WGViperMedical
+  id: WGViperMedicalSyndicateMyomer
+  spritePath: _WG/BorgSkins/Wide/ViperGroup/SyndicateMyomer.rsi
+  dummyPrototype: WGViperBorgPreviewSyndicateMyomer
+
+- type: borgSubtype
+  parentBorgType: WGViperMedical
+  id: WGViperMedicalZoomba
+  spritePath: _WG/BorgSkins/Small/ViperGroup/Zoomba.rsi
+  dummyPrototype: WGViperBorgPreviewZoomba
+
+- type: wgBorgSkin
+  id: WGViperAssaultDefault
+
+- type: wgBorgSkin
+  id: WGViperAssaultMedicalHound
+  animated: true
+  walks: true
+  poses: [ Rest, Sit, BellyUp ]
+
+- type: wgBorgSkin
+  id: WGViperAssaultSyndicateWyvern
+  offset: 0, 0.5
+  animated: true
+  walks: true
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperAssaultSyndicateDullahan
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperAssaultSyndicateDullahanTaur
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperAssaultSyndicateK4T
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperAssaultSyndicateMeka
+  offset: 0, 0.5
+  animated: true
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperAssaultSyndicateNiKA
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperAssaultSyndicateNiKO
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperAssaultSyndicateMyomer
+  animated: true
+  walks: true
+  poses: [ Rest, Sit, BellyUp ]
+
+- type: wgBorgSkin
+  id: WGViperAssaultZoomba
+  animated: true
+  walks: true
+
+- type: wgBorgSkin
+  id: WGViperEngineeringDefault
+
+- type: wgBorgSkin
+  id: WGViperEngineeringMedicalHound
+  animated: true
+  walks: true
+  poses: [ Rest, Sit, BellyUp ]
+
+- type: wgBorgSkin
+  id: WGViperEngineeringSyndicateWyvern
+  offset: 0, 0.5
+  animated: true
+  walks: true
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperEngineeringSyndicateDullahan
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperEngineeringSyndicateDullahanTaur
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperEngineeringSyndicateK4T
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperEngineeringSyndicateMeka
+  offset: 0, 0.5
+  animated: true
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperEngineeringSyndicateNiKA
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperEngineeringSyndicateNiKO
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperEngineeringSyndicateMyomer
+  animated: true
+  walks: true
+  poses: [ Rest, Sit, BellyUp ]
+
+- type: wgBorgSkin
+  id: WGViperEngineeringZoomba
+  animated: true
+  walks: true
+
+- type: wgBorgSkin
+  id: WGViperMedicalDefault
+  animated: true
+
+- type: wgBorgSkin
+  id: WGViperMedicalMedicalHound
+  animated: true
+  walks: true
+  poses: [ Rest, Sit, BellyUp ]
+
+- type: wgBorgSkin
+  id: WGViperMedicalSyndicateWyvern
+  offset: 0, 0.5
+  animated: true
+  walks: true
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperMedicalSyndicateDullahan
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperMedicalSyndicateDullahanTaur
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperMedicalSyndicateK4T
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperMedicalSyndicateMeka
+  offset: 0, 0.5
+  animated: true
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperMedicalSyndicateNiKA
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperMedicalSyndicateNiKO
+  offset: 0, 0.5
+  poses: [ Rest ]
+
+- type: wgBorgSkin
+  id: WGViperMedicalSyndicateMyomer
+  animated: true
+  walks: true
+  poses: [ Rest, Sit, BellyUp ]
+
+- type: wgBorgSkin
+  id: WGViperMedicalZoomba
+  animated: true
+  walks: true

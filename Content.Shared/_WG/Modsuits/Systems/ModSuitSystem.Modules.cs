@@ -47,7 +47,8 @@ public sealed partial class ModSuitSystem
         var complexity = 0;
         foreach (var module in ent.Comp.ModulesContainer.ContainedEntities)
         {
-            if (TryComp<ModModuleComponent>(module, out var moduleComp))
+            // Built-in parts of the suit are free; only modules that can be removed and swapped cost space.
+            if (TryComp<ModModuleComponent>(module, out var moduleComp) && moduleComp.Removable)
                 complexity += moduleComp.Complexity;
         }
 

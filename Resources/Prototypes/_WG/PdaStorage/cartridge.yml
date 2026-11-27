@@ -1,0 +1,23 @@
+- type: entity
+  parent: NFBasePDACartridge
+  id: PdaAppStoreCartridge
+  name: ent-PdaAppStoreCartridge
+  description: ent-PdaAppStoreCartridge-desc
+  components:
+  - type: Sprite
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-y
+  - type: Icon
+    sprite: Objects/Devices/cartridge.rsi
+    state: cart-y
+  - type: UIFragment
+    ui: !type:PdaStoreUi
+  - type: Cartridge
+    programName: pda-store-program-name
+    size: 16
+    readonly: true
+    icon: { sprite: _WG/PdaUi/program_icons.rsi, state: store }
+  - type: PdaStoreCartridge
+  - type: StaticPrice
+    price: 100
+    vendPrice: 500

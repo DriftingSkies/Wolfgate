@@ -1,0 +1,39 @@
+# Circuit imprinter recipes for ship module kits, kept for when a kit module is researchable again: its recipe then goes
+# in a pack on the circuit imprinter's dynamic packs, unlocked by its research node. Every kit module is unlisted for now.
+- type: latheRecipe
+  id: WGShipModuleKitPhaseSkimmer
+  result: WGShipModuleKitPhaseSkimmer
+  completetime: 10
+  materials:
+    Steel: 500
+    Glass: 1000
+    Gold: 500
+    Plasma: 500
+
+- type: latheRecipe
+  id: WGShipModuleKitGunGyros
+  result: WGShipModuleKitGunGyros
+  completetime: 8
+  materials:
+    Steel: 500
+    Glass: 750
+    Gold: 300
+
+- type: latheRecipe
+  id: WGShipModuleKitFortressShield
+  result: WGShipModuleKitFortressShield
+  completetime: 10
+  materials:
+    Steel: 500
+    Glass: 1000
+    Gold: 500
+    Plasma: 500
+
+- type: latheRecipe
+  id: WGShipModuleKitAmmoFeeder
+  result: WGShipModuleKitAmmoFeeder
+  completetime: 8
+  materials:
+    Steel: 750
+    Glass: 750
+    Gold: 300

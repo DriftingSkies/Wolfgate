@@ -150,6 +150,13 @@ public sealed partial class WGCockpitView
         InvalidateMeasure();
     }
 
+    /// <summary>Selects a saved fire group from its hotkey; on FLIGHT the guns take control at once.</summary>
+    public void RecallWeaponGroup(int slot)
+    {
+        if (!_restored && _gunneryPanel?.RecallGroup(slot) == true)
+            SyncGunneryControl();
+    }
+
     /// <summary>Holds gun control while GUNS is open or any weapon is selected, and tells the server when that changes.</summary>
     private void SyncGunneryControl()
     {

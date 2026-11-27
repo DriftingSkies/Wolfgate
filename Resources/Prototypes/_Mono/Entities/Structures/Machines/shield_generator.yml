@@ -311,14 +311,21 @@
   description: A heavy capital shield. Good durability, quick recharge and anti-collison built in one.
   suffix: TSF CAPITAL ONLY
   components:
+  # WOLFGATE(ShipShields) START: a raised field costs thrust, turning and stealth, and locks the guns when beaten down
+  - type: WGShipShieldCost
+    thrustFactor: 0.6
+    turnFactor: 0.65
+    signature: 2000000
+    hardHeatHold: 15 # a gun line: it fights on under its field
+  # WOLFGATE END
   - type: ShipShieldEmitter
-    damageLimit: 85000
+    damageLimit: 50000 # WOLFGATE(ShipShields): the hull's own heat capacity adds to the generator's (Mono: 85000)
     healPerSecond: 800
     damageExp: 1
     baseDraw: 60000
     maxDraw: 100000
     unpoweredBonus: 6
-    damageOverloadTimePunishment: 35
+    damageOverloadTimePunishment: 18 # WOLFGATE(ShipShields): a ship-sized wait, and the field returns with its heat left (Mono: 35)
     shieldColor: "#FF0A70"
     collisionResistanceMultiplier: 0.05
   - type: Sprite
@@ -385,9 +392,17 @@
   description: The Titan. Advanced shielding, with a quick recharge time, and excels against colisions.
   suffix: ADS ONLY
   components:
+  # WOLFGATE(ShipShields) START: a raised field costs thrust, turning and stealth, and locks the guns when beaten down
+  - type: WGShipShieldCost
+    thrustFactor: 0.55
+    turnFactor: 0.6
+    signature: 2000000
+    gunLockout: 3 # a brawler: losing its field costs it the least
+    collapseHeat: 0.8 # under the mark where hot guns resume, so the lock is all that silences them
+  # WOLFGATE END
   - type: ShipShieldEmitter
-    damageLimit: 75000
-    damageOverloadTimePunishment: 40
+    damageLimit: 40000 # WOLFGATE(ShipShields): the hull's own heat capacity adds to the generator's (Mono: 75000)
+    damageOverloadTimePunishment: 14 # WOLFGATE(ShipShields): the Titan is back from an overload soonest (Mono: 40)
     healPerSecond: 950 # Base is 250
     damageExp: 1.05 # Base is 1.1
     baseDraw: 40000 # Base is 50000
@@ -411,14 +426,23 @@
   description: The Aegis. Advanced shielding, with a long recharge time, with very high durability.
   suffix: ADS/TSF ONLY, SCI VOUCHER SHIPS ONLY
   components:
+  # WOLFGATE(ShipShields) START: a raised field costs thrust, turning and stealth, and locks the guns when beaten down
+  - type: WGShipShieldCost
+    thrustFactor: 0.65
+    turnFactor: 0.7
+    signature: 1200000
+    hardHeatHold: 45 # a wall: it soaks one long fight, then has to leave
+  # WOLFGATE END
   - type: ShipShieldEmitter
     damageLimit: 180000
+    # WOLFGATE(ShipShields): the hull's own heat capacity adds to the generator's 50000, which the power cap sets (was 85000 at 0.5)
+    powerModifier: 0.873
     healPerSecond: 750 # Base is 250
     damageExp: 1.05 # Base is 1.1
     baseDraw: 30000 # Base is 50000
     maxDraw: 75000 # Base is 150000
     unpoweredBonus: 4 # Base is 6
-    damageOverloadTimePunishment: 100
+    damageOverloadTimePunishment: 20 # WOLFGATE(ShipShields): a ship-sized wait, and the field returns with its heat left (Mono: 100)
     shieldColor: "#9933FF"
     collisionResistanceMultiplier: 0.6
   - type: Sprite
@@ -498,14 +522,20 @@
   name: MS-100 "Sentinel" Shield Generator
   description: The Sentinel. A good, reliable shield.
   components:
+  # WOLFGATE(ShipShields) START: a raised field costs thrust, turning and stealth, and locks the guns when beaten down
+  - type: WGShipShieldCost
+    thrustFactor: 0.75
+    turnFactor: 0.8
+    signature: 600000
+  # WOLFGATE END
   - type: ShipShieldEmitter
-    damageLimit: 65000 # Mono
+    damageLimit: 30000 # WOLFGATE(ShipShields): the hull's own heat capacity adds to the generator's (Mono: 65000)
     healPerSecond: 500 # Mono
     damageExp: 1.05 # Mono
     baseDraw: 20000
     maxDraw: 60000
     unpoweredBonus: 3 # Mono
-    damageOverloadTimePunishment: 80
+    damageOverloadTimePunishment: 16 # WOLFGATE(ShipShields): a ship-sized wait, and the field returns with its heat left (Mono: 80)
     shieldColor: "#3399FF"
     collisionResistanceMultiplier: 0.5
   - type: Sprite

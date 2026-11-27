@@ -19,8 +19,8 @@ using static Content.Client._WG.CombatConsole.WGInstrumentTheme;
 namespace Content.Client._WG.Drydock;
 
 /// <summary>
-/// Drydock console: a live berth plot beside the hull survey, repair and refit keys, and on a dockmaster's booking
-/// window, the booking.
+/// Drydock console: a live berth plot beside the hull survey, repair, refit and module keys, and on a dockmaster's
+/// booking window, the booking.
 /// </summary>
 [GenerateTypedNameReferences]
 public sealed partial class WGDrydockConsoleWindow : FancyWindow
@@ -83,6 +83,9 @@ public sealed partial class WGDrydockConsoleWindow : FancyWindow
     private string? _suppliesKey;
 
     private WGDrydockConsoleState _state = new();
+
+    /// <summary>Whether the last state left the work keys blocked.</summary>
+    private bool _blocked;
 
     /// <summary>This viewer's own prices, sent apart from a console's shared state.</summary>
     private WGDrydockQuote? _viewerQuote;
@@ -149,7 +152,10 @@ public sealed partial class WGDrydockConsoleWindow : FancyWindow
         var supplies = new ScrollContainer { HScrollEnabled = false, HorizontalExpand = true, SetHeight = SupplyListHeight };
         supplies.AddChild(_supplyList);
         _suppliesPanel = Panel("drydock-ui-supplies", supplies, padding: 10, gap: 4);
-        _refitsPanel = Panel("drydock-ui-refits", RefitContainer, padding: 10, gap: 4);
+        BuildModules();
+        var refits = Column(RefitContainer, _moduleSection);
+        refits.SeparationOverride = 10;
+        _refitsPanel = Panel("drydock-ui-refits", refits, padding: 10, gap: 4);
         _bookingPanel = Panel("drydock-ui-booking", Column(_booked, _expires, CancelBookingButton), padding: 10, gap: 4);
         _berthPanel = Panel("drydock-ui-berth", BerthLightsButton, padding: 10, gap: 4);
         var column = Column(survey, _suppliesPanel, _refitsPanel, _bookingPanel, _berthPanel);
@@ -161,6 +167,7 @@ public sealed partial class WGDrydockConsoleWindow : FancyWindow
         Body.RemoveAllChildren();
         Body.AddChild(left);
         Body.AddChild(right);
+        Body.AddChild(_moduleDrawer);
         Install(this);
         WindowTitle.FontColorOverride = Accent;
     }
@@ -175,6 +182,7 @@ public sealed partial class WGDrydockConsoleWindow : FancyWindow
 
         // A booking window with a notice cannot book anything, and work needs a crane linked to this console.
         var blocked = (state.Booking && state.Notice != null) || state.CraneCount == 0;
+        _blocked = blocked;
 
         UpdateStatus(state);
         UpdatePlot(state);
@@ -182,6 +190,7 @@ public sealed partial class WGDrydockConsoleWindow : FancyWindow
         UpdateRepairs(state, blocked);
         UpdateSupplies(state);
         UpdateRefits(state, blocked);
+        UpdateModules(state, blocked);
         UpdateBerthLights(state, blocked);
     }
 

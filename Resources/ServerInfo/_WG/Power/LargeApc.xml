@@ -1,0 +1,40 @@
+<Document>
+  # LAPC Substations
+  An APC can only raise its output by about [color=green]15 kW[/color] from one moment to the next. Every machine on an APC shares the same supply, so when one machine asks for more than that at once, [bold]every[/bold] machine on that APC loses power until the APC catches up. Lathes and presses lose the job they were working on, and shield generators drop their field.
+
+  Shield generators, data farms and hellfire freezers each draw 20 kW or more. For machines like these, build an [color=orange]LAPC substation[/color] instead of more APCs.
+
+  <Box>
+    <GuideEntityEmbed Entity="LargeAPC"/>
+    <GuideEntityEmbed Entity="APCBasic"/>
+  </Box>
+
+  ## What it does
+  The LAPC takes power straight from [color=orange]High Voltage[/color] cable and feeds [color=green]Low Voltage[/color] cable, with no substation in between. It can supply [color=green]60 kW[/color] and add all of it at once, so a large machine switching on doesn't brown out the rest of the room, as long as everything on it together stays within that supply and the HV network has the power to feed it. It stores 150 kJ.
+
+  ## Building one
+  Put [color=#a4885c]APC electronics[/color] into a machine frame instead of building a wall APC. The frame needs:
+  - 6 capacitors
+  - 5 LV cable and 5 HV cable
+  - 15 plasma glass
+  - 8 metal rods
+
+  Run [color=orange]HV cable[/color] under the LAPC for its input and [color=green]LV cable[/color] from it to your machines.
+
+  ## Upgrading
+  Better capacitors raise both the LAPC's supply and how much it can add at once. Examine it and use the upgrade verb to see the current bonus.
+
+  <Box>
+    <GuideEntityEmbed Entity="CapacitorStockPart"/>
+    <GuideEntityEmbed Entity="AdvancedCapacitorStockPart"/>
+    <GuideEntityEmbed Entity="SuperCapacitorStockPart"/>
+    <GuideEntityEmbed Entity="QuadraticCapacitorStockPart"/>
+  </Box>
+
+  - Capacitors (rating 1): 60 kW
+  - Advanced capacitors (rating 3): 120 kW
+  - Super capacitors (rating 4): 150 kW
+  - Bluespace capacitors (rating 6): 210 kW
+
+  Mixed capacitors count as their average rating.
+</Document>

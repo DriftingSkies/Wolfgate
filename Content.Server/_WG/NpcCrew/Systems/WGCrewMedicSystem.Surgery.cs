@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server._WG.NpcCrew.Components;
+using Content.Shared._Shitmed.Medical.Surgery;
 using Content.Shared._WG.Wolfmed.Autodoc;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Part;
@@ -266,7 +267,10 @@ public sealed partial class WGCrewMedicSystem
         switch (comp.State)
         {
             case AutodocState.Waiting:
-                if (comp.Pending is { Kind: AutodocRequirementKind.Item } && comp.BlockedReason == null)
+                // Clothing in the way: off by his hands and onto the floor, before the pod's shears cut it up.
+                if (comp.BlockedReason == StepInvalidReason.Armor)
+                    _autodoc.TakeOffBlocking(pod, medic, patient);
+                else if (comp.Pending is { Kind: AutodocRequirementKind.Item } && comp.BlockedReason == null)
                     _autodoc.Abort(pod); // something for a cavity: not his to supply
                 else if (comp.Pending is { Kind: AutodocRequirementKind.Part or AutodocRequirementKind.Organ } pending)
                     StockTray(pod, patient, pending);

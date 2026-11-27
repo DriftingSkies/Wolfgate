@@ -39,7 +39,11 @@ public sealed class NewsWriterBoundUserInterface : BoundUserInterface
         if (state is not NewsWriterBoundUserInterfaceState cast)
             return;
 
-        _menu?.UpdateUI(cast.Articles, cast.PublishEnabled, cast.NextPublish, cast.DraftTitle, cast.DraftContent);
+        // WOLFGATE(AdminCooldowns) START: admins skip the publish cooldown
+        var admin = IoCManager.Resolve<Content.Client.Administration.Managers.IClientAdminManager>().IsActive();
+        _menu?.UpdateUI(cast.Articles, cast.PublishEnabled || admin, admin ? TimeSpan.Zero : cast.NextPublish, cast.DraftTitle, cast.DraftContent);
+        // _menu?.UpdateUI(cast.Articles, cast.PublishEnabled, cast.NextPublish, cast.DraftTitle, cast.DraftContent);
+        // WOLFGATE END
     }
 
     private void OnPublishButtonPressed()

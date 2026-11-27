@@ -10,7 +10,7 @@
     icon:
       sprite: _WG/Xenonids/Actions/xeno_actions.rsi
       state: screech
-    useDelay: 50
+    useDelay: 270 # 4.5 minutes; RMC's 50 seconds suits much bigger fights
     event: !type:XenoScreechActionEvent
   - type: RMCDazeableAction
 

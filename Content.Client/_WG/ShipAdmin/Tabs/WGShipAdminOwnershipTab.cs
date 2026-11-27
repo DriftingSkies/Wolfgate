@@ -3,6 +3,7 @@ using System.Numerics;
 using Content.Client.Administration.UI.CustomControls;
 using Content.Client.UserInterface.Controls;
 using Content.Shared._Mono.Company;
+using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WG.ShipAdmin;
 using Content.Shared.Administration;
 using Robust.Client.UserInterface;
@@ -11,9 +12,11 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Client._WG.ShipAdmin.Tabs;
 
-/// <summary>Who owns the ship, and handing it to someone else: transfer, add a co-owner, remove an owner, release.</summary>
+/// <summary>The ship's name, who owns it, and handing it to someone else: transfer, add a co-owner, remove an owner, release.</summary>
 public sealed class WGShipAdminOwnershipTab : WGShipAdminTab
 {
+    private readonly LineEdit _name;
+    private readonly Button _rename;
     private readonly BoxContainer _owners;
     private readonly PlayerListControl _players;
     private readonly WGShipAdminText _picked;
@@ -49,6 +52,13 @@ public sealed class WGShipAdminOwnershipTab : WGShipAdminTab
 
     public WGShipAdminOwnershipTab()
     {
+        Body.AddChild(Heading(Loc.GetString("wg-ship-admin-ownership-name")));
+        _name = new LineEdit { MinWidth = 260 };
+        _name.IsValid = text => text.Trim().Length > 0 && text.Trim().Length <= ShuttleDeedComponent.MaxNameLength;
+        _rename = new Button { Text = Loc.GetString("wg-ship-admin-ownership-rename"), StyleClasses = { "ButtonSquare" } };
+        _rename.OnPressed += _ => Send(new WGShipAdminRenameMessage(Grid, _name.Text));
+        Body.AddChild(Row(_name, _rename));
+
         _owners = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Vertical, SeparationOverride = 2 };
         Body.AddChild(Heading(Loc.GetString("wg-ship-admin-overview-owners")));
         Body.AddChild(_owners);
@@ -186,6 +196,12 @@ public sealed class WGShipAdminOwnershipTab : WGShipAdminTab
 
         Gate(_release, WGShipAdminAction.Release, flags);
         Gate(_setFaction, WGShipAdminAction.SetFaction, flags);
+        Gate(_rename, WGShipAdminAction.Rename, flags);
+
+        // The name box is only refilled for another ship, so typing isn't wiped by a refresh.
+        if (_shown != detail.Grid)
+            _name.Text = detail.Name;
+
         if (_shown != detail.Grid || _shownFaction != detail.Faction || _shownCompany != detail.CompanyId)
         {
             _shown = detail.Grid;

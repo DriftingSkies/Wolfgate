@@ -8,8 +8,9 @@ namespace Content.Client._WG.ShipShields;
 public sealed partial class WGShipShieldShuntScreen
 {
     /// <summary>
-    /// Rebuilds this screen as the gunnery console's short shield column: the dial, deployment, arc, power and
-    /// integrity, and none of the helm page's detail. The change is for good, so use a screen made for it.
+    /// Rebuilds this screen as the gunnery console's short shield column: the dial, deployment, heat, vent, arc and
+    /// power, and none of the helm page's detail. A ship with no generator keeps only its heat and vent. The change is
+    /// for good, so use a screen made for it.
     /// </summary>
     public Control WgGunneryShield()
     {
@@ -27,13 +28,20 @@ public sealed partial class WGShipShieldShuntScreen
         allocation.Visible = true;
         var arc = lease.Take(_arc);
         _wgCockpitCompact = true;
-        _health.MinHeight = 12;
+        var arcRow = InstrumentTheme.Row(InstrumentTheme.Label("wg-cockpit-shield-arc"), arc);
         AddChild(dial);
         AddChild(lease.Take(_enabled));
-        AddChild(InstrumentTheme.Row(InstrumentTheme.Label("wg-cockpit-shield-arc"), arc));
+        AddChild(lease.Take(_heat));
+        AddChild(lease.Take(_vent));
+        AddChild(arcRow);
         AddChild(allocation);
         AddChild(lease.Take(_concentration));
-        AddChild(lease.Take(_health));
+        _heat.MinHeight = HeatGauge.CompactHeight;
+        _heat.Legend = false;
+        _generatorOnly.Clear();
+        _compactGeneratorOnly.AddRange(new Control[] { dial, _enabled, arcRow, allocation, _concentration });
+        UpdateState(_state, _helmRotation);
+        AddChild(lease.Take(_gunLock, restoreVisibility: false));
         return this;
     }
 }

@@ -69,6 +69,7 @@ namespace Content.Client.IoC
             collection.Register<MonoCoinsManager>(); // Mono
             collection.Register<MidiFileCollectionManager>(); // WOLFGATE(Instruments): wizden#44469 MIDI file collection.
             collection.Register<_WG.JoinProgress.JoinProgressManager>(); // WOLFGATE(JoinProgress): holds the server's download size
+            collection.Register<_WG.JoinQueue.JoinQueueManager>(); // WOLFGATE(JoinQueue): shows the queue screen when the server is full
             collection.Register<_WG.GameHub.WGGameDataManager>(); // WOLFGATE(GameHub): downloads and caches game data
             collection.Register<_WG.MameArcade.MameArcadeNetManager>(); // WOLFGATE(MameArcade): relays 2-player inputs
             collection.Register<_WG.UploadCache.WGUploadCacheManager>(); // WOLFGATE(UploadCache): keeps shared files on disk across joins

@@ -10,6 +10,9 @@ wg-crew-medic-take-in-3 = You're coming with me.
 wg-crew-medic-delivered-1 = There. The doctor will see you.
 wg-crew-medic-delivered-2 = You're in Medical now.
 wg-crew-medic-delivered-3 = Rest. We'll take it from here.
+wg-crew-medic-walked-off-1 = Suit yourself. Come back if it gets worse.
+wg-crew-medic-walked-off-2 = Fine, on your feet then. Don't push it.
+wg-crew-medic-walked-off-3 = Your call. You know where we are.
 
 wg-crew-medic-doing-shock = {CAPITALIZE(THE($medic))} puts the paddles on {THE($patient)}.
 wg-crew-medic-doing-cpr = {CAPITALIZE(THE($medic))} starts chest compressions on {THE($patient)}.
@@ -20,6 +23,8 @@ wg-crew-medic-doing-antitoxin = {CAPITALIZE(THE($medic))} gives {THE($patient)} 
 wg-crew-medic-doing-brute = {CAPITALIZE(THE($medic))} patches up {THE($patient)}'s injuries.
 wg-crew-medic-doing-burn = {CAPITALIZE(THE($medic))} treats {THE($patient)}'s burns.
 wg-crew-medic-doing-suture = {CAPITALIZE(THE($medic))} sutures {THE($patient)}'s wounds.
+wg-crew-medic-doing-brutepen = {CAPITALIZE(THE($medic))} jabs {THE($patient)} with a brute auto-injector.
+wg-crew-medic-doing-burnpen = {CAPITALIZE(THE($medic))} jabs {THE($patient)} with a burn auto-injector.
 
 # M3: the surgeon and the autodoc.
 wg-crew-surgeon-take-in-1 = You need the autodoc. Let's go.

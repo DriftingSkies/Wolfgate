@@ -37,7 +37,9 @@ public sealed partial class GhostOrbitSystem : EntitySystem
     /// </summary>
     public void AddChatLink(ChatMessage msg)
     {
+        // An admin alert gets the admin follow link instead (AdminFollowLinkSystem).
         if (!msg.SenderEntity.Valid
+            || msg.Channel == ChatChannel.AdminAlert
             || _player.LocalEntity is not { } local
             || !HasComp<GhostComponent>(local)
             || GetNetEntity(local) == msg.SenderEntity)
