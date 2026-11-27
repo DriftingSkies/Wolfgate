@@ -17,14 +17,16 @@ one slips the hack.
 
 ## Hacking harpoon
 
-The gun and its darts aren't sold to the public. PDV buys them at its requisition station with Doubloons, the
-Underground at `UndergroundVend` with Telecrystals, and Viper Group researches `WGViperGroupHackHarpoon` and prints them
-at the Viper lathe. The listings, tech and recipes are in `hack_harpoon_sources.yml`.
+Anyone can order the gun's flatpack (shuttle category) and its darts (ship ammo) from cargo, and Viper Group researches
+`WGViperGroupHackHarpoon` and prints them at the Viper lathe. The cargo products, tech and recipes are in
+`hack_harpoon_sources.yml`.
 
 `WGHackHarpoonGun` is a universal gun for any hardpoint of Light size or larger, fired from gunnery or the cockpit and
 built on the Tether module's harpoon (`ShipHarpoonTurret` with `manned: false`). It is loaded by hand with one
 `WGHackDart`. A dart that glances, misses or
-meets a shield is destroyed, and a hit has to be square on, as with any harpoon.
+meets a shield is destroyed, and a hit has to be square on, as with any harpoon. A field whose ship holds at least
+half its heat capacity (`ShieldPierceHeat`, `WGHackHarpoonSystem.Shields.cs`) lets the dart through instead, by the
+shield's own intercept event, so a hacker has to press a ship's shield before it can latch.
 
 The cable (`WGRopeHackCable`) pulls on nothing and has sparks running along it. It pays out as the ships move, keeping
 a little slack, and parts at 250 m. On the latch:
@@ -74,6 +76,7 @@ reloads itself.
 - [`Content.Server/_WG/BoardingAction/WGEngineDisruptorSystem.cs`](WGEngineDisruptorSystem.cs)
 - [`Content.Server/_WG/BoardingAction/WGFtlDisruptionSystem.cs`](WGFtlDisruptionSystem.cs)
 - [`Content.Server/_WG/BoardingAction/WGHackHarpoonSystem.cs`](WGHackHarpoonSystem.cs)
+- [`Content.Server/_WG/BoardingAction/WGHackHarpoonSystem.Shields.cs`](WGHackHarpoonSystem.Shields.cs)
 
 ### Shared
 
@@ -89,6 +92,7 @@ reloads itself.
 ### Integration tests
 
 - [`Content.IntegrationTests/Tests/_WG/BoardingAction/WGBoardingActionTest.cs`](../../../Content.IntegrationTests/Tests/_WG/BoardingAction/WGBoardingActionTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/BoardingAction/WGHackDartShieldTest.cs`](../../../Content.IntegrationTests/Tests/_WG/BoardingAction/WGHackDartShieldTest.cs)
 
 ### Prototypes
 

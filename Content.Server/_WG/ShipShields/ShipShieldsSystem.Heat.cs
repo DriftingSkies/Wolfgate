@@ -161,6 +161,8 @@ public sealed partial class ShipShieldsSystem
         if (!TryComp<WGShipShieldCostComponent>(uid, out var cost))
             return charged;
         charged *= MathF.Max(0f, cost.HitHeat) * WGShipShieldEffects.HitWeight(hit);
+        if (TryComp<WGShipShieldHardenedComponent>(Transform(uid).GridUid, out var hardened))
+            charged *= Math.Clamp(hardened.HitFactor, 0f, 1f);
         var capacity = WGShipShieldEffects.EffectiveCapacity(emitter.DamageLimit, emitter.MaxDraw, emitter.PowerModifier, emitter.DamageExp);
         return capacity > 0f ? MathF.Min(charged, capacity * WGShipShieldEffects.HitHeatCap) : charged;
     }

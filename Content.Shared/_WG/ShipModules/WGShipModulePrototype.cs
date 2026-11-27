@@ -1,6 +1,8 @@
 using Content.Shared.Materials;
+using Content.Shared.Research.Prototypes;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
 
 namespace Content.Shared._WG.ShipModules;
@@ -71,6 +73,53 @@ public sealed partial class WGShipModulePrototype : IPrototype
     /// <summary>What it does when fired; a server system handles each kind.</summary>
     [DataField(required: true)]
     public WGShipModuleEffect Effect = default!;
+
+    /// <summary>How the pilot works it: fired, switched on and off, or always on while fitted.</summary>
+    [DataField]
+    public WGShipModuleMode Mode = WGShipModuleMode.Fired;
+
+    /// <summary>How long one use stays on; zero for an effect that is over at once. Fired modules only.</summary>
+    [DataField]
+    public TimeSpan Duration = TimeSpan.Zero;
+
+    /// <summary>Played through the hull when a switch or a timed use goes off.</summary>
+    [DataField]
+    public SoundSpecifier? DeactivateSound;
+
+    /// <summary>
+    /// Whether any drydock fits it as is. Set exactly one of this, <see cref="Technology"/> or <see cref="Unlisted"/>;
+    /// a test checks it.
+    /// </summary>
+    [DataField]
+    public bool Free;
+
+    /// <summary>Kept off drydock lists and out of research; only mapping presets and admins fit it.</summary>
+    [DataField]
+    public bool Unlisted;
+
+    /// <summary>
+    /// The research node whose kit (<see cref="Kit"/>) a drydock needs aboard the ship to fit it; null for a free module.
+    /// </summary>
+    [DataField]
+    public ProtoId<TechnologyPrototype>? Technology;
+
+    /// <summary>The kit that node unlocks at a circuit imprinter; the drydock uses up one aboard the ship per fitting.</summary>
+    [DataField]
+    public EntProtoId? Kit;
+}
+
+/// <summary>How a ship module is worked from the helm.</summary>
+[Serializable, NetSerializable]
+public enum WGShipModuleMode : byte
+{
+    /// <summary>Each press spends a charge; a <see cref="WGShipModulePrototype.Duration"/> keeps it on for a while.</summary>
+    Fired,
+
+    /// <summary>Each press switches it on or off; it spends no charges.</summary>
+    Toggle,
+
+    /// <summary>On whenever it is fitted; its key only shows its state.</summary>
+    Passive,
 }
 
 /// <summary>The kind of effect a ship module has, with its settings.</summary>

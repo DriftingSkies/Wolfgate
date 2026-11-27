@@ -100,13 +100,26 @@ public sealed partial class WGShipModuleBank : GridContainer
             }
 
             var label = _prototype.TryIndex(slot.Module, out var module) ? Loc.GetString(module.Label) : slot.Module.Id;
-            var text = Loc.GetString("wg-ship-module-key", ("label", label),
-                ("charges", slot.Charges), ("max", slot.MaxCharges)) + "\n" + Status(slot, now);
+            var first = slot.Mode switch
+            {
+                WGShipModuleMode.Fired => Loc.GetString("wg-ship-module-key", ("label", label),
+                    ("charges", slot.Charges), ("max", slot.MaxCharges)),
+                WGShipModuleMode.Toggle => Loc.GetString("wg-ship-module-key-toggle", ("label", label), ("on", slot.Active)),
+                _ => label,
+            };
+            var text = first + "\n" + Status(slot, now);
             if (key.Text != text)
                 key.Text = text;
 
-            key.Disabled = slot.Lock != WGShipModuleLock.None || slot.Charges <= 0 || now < slot.ReadyAt;
-            Light(i, _timing.RealTime < _litUntil[i]);
+            key.Disabled = slot.Mode switch
+            {
+                WGShipModuleMode.Passive => true,
+                WGShipModuleMode.Toggle when slot.Active => now < slot.ReadyAt,
+                _ => slot.Lock != WGShipModuleLock.None || slot.Active || slot.Mode == WGShipModuleMode.Fired && slot.Charges <= 0
+                     || now < slot.ReadyAt,
+            };
+            // A switched-on or running module keeps its key lit.
+            Light(i, slot.Active && slot.Mode != WGShipModuleMode.Passive || _timing.RealTime < _litUntil[i]);
         }
     }
 
@@ -179,8 +192,28 @@ public sealed partial class WGShipModuleBank : GridContainer
     /// <summary>The second line of a module's key: what stops it, the cooldown, how long until a charge, or ready.</summary>
     public static string Status(WGShipModuleSlot slot, TimeSpan now)
     {
+        if (slot.Mode == WGShipModuleMode.Passive)
+        {
+            return slot.Gauge is { } gauge
+                ? Loc.GetString(gauge > 0f ? "wg-ship-module-status-reserve" : "wg-ship-module-status-empty",
+                    ("percent", (int) MathF.Round(gauge * 100f)))
+                : Loc.GetString("wg-ship-module-status-online");
+        }
+
+        if (slot.Active && slot.Mode == WGShipModuleMode.Fired)
+        {
+            var left = Math.Max(1, (int) Math.Ceiling((slot.ActiveUntil - now).TotalSeconds));
+            return Loc.GetString("wg-ship-module-status-active", ("seconds", left));
+        }
+
+        if (slot.Active)
+            return Loc.GetString("wg-ship-module-status-engaged");
+
         if (slot.Lock != WGShipModuleLock.None)
             return Loc.GetString($"wg-ship-module-status-{slot.Lock.ToString().ToLowerInvariant()}");
+
+        if (slot.Mode == WGShipModuleMode.Toggle)
+            return Loc.GetString(now < slot.ReadyAt ? "wg-ship-module-status-cooldown" : "wg-ship-module-status-ready");
 
         if (slot.Charges > 0)
             return Loc.GetString(now < slot.ReadyAt ? "wg-ship-module-status-cooldown" : "wg-ship-module-status-ready");

@@ -587,21 +587,21 @@
       severity: 0
       behaviors:
       - !type:WoundPainBehavior
-        painPerSeverity: 0.8
+        painPerSeverity: 1.2 # WOLFGATE(Wolfmed): was 0.8; heat wounds hurt more than gunshots
         minSeverity: 10
     Moderate:
       name: wound-stage-moderate
       severity: 25
       behaviors:
       - !type:WoundPainBehavior
-        painPerSeverity: 0.8
+        painPerSeverity: 1.2 # WOLFGATE(Wolfmed): was 0.8; heat wounds hurt more than gunshots
         minSeverity: 10
     Severe:
       name: wound-stage-severe
       severity: 50
       behaviors:
       - !type:WoundPainBehavior
-        painPerSeverity: 0.8
+        painPerSeverity: 1.2 # WOLFGATE(Wolfmed): was 0.8; heat wounds hurt more than gunshots
         minSeverity: 10
       # WOLFGATE(Wolfmed): playtest 2: burned hands are slow, never switched off (WolfmedLimbIntegrity).
       - !type:WolfmedLimbPenaltyBehavior
@@ -611,7 +611,7 @@
       severity: 80
       behaviors:
       - !type:WoundPainBehavior
-        painPerSeverity: 0.8
+        painPerSeverity: 1.2 # WOLFGATE(Wolfmed): was 0.8; heat wounds hurt more than gunshots
         minSeverity: 10
       # WOLFGATE(Wolfmed): playtest 2: burned hands are slow, never switched off (WolfmedLimbIntegrity).
       - !type:WolfmedLimbPenaltyBehavior

@@ -7,6 +7,7 @@ using Content.Server.Shuttles.Components;
 using Content.Shared._Crescent.ShipShields;
 using Content.Shared._Mono.Detection;
 using Content.Shared._Mono.FireControl;
+using Content.Shared._WG.ShipShields;
 using Content.Shared.Popups;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.Weapons.Ranged.Systems;
@@ -40,6 +41,12 @@ public sealed partial class ShipShieldsSystem
         return TryComp<ShipShieldedComponent>(grid, out var shielded) && shielded.Source is { } source &&
             IsWolfgateShieldLive(shielded.Shield) && TryComp<WGShipShieldCostComponent>(source, out var cost)
             ? cost : null;
+    }
+
+    /// <summary>Whether a ship has a live field raised by a ship generator, not an outpost's.</summary>
+    public bool IsWolfgateShipFieldRaised(EntityUid grid)
+    {
+        return GetWolfgateRaisedCost(grid) != null;
     }
 
     /// <summary>Share of linear thrust a ship keeps under its raised field; 1 with the field down.</summary>
@@ -142,6 +149,7 @@ public sealed partial class ShipShieldsSystem
         if (args.Cancelled || Transform(gun).GridUid is not { } grid)
             return;
         if (IsWolfgateShipVenting(grid) || GetWolfgateGunLockSeconds(grid) > 0 || IsWolfgateShipHeatHeld(grid) ||
+            HasComp<WGShipShieldHardenedComponent>(grid) ||
             _wgNpcHulls.ContainsKey(grid) && WantsWolfgateNpcHoldFire(grid))
             args.Cancelled = true;
     }

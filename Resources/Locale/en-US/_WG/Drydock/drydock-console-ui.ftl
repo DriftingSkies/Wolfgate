@@ -123,4 +123,7 @@ drydock-ui-modules-fit = Fit to slot { $slot }
 drydock-ui-modules-book = Book fitting to slot { $slot }
 drydock-ui-modules-fitted = Fitted
 drydock-ui-modules-fitted-elsewhere = Fitted in slot { $slot }
+drydock-ui-modules-free = Free to fit.
+drydock-ui-modules-kit-needed = Needs research: { $technology }. Bring a { $kit } aboard to fit it.
+drydock-ui-modules-kit-aboard = Research: { $technology }. A { $kit } is aboard.
 drydock-ui-modules-slot-taken = Empty slot { $slot } first

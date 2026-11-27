@@ -75,5 +75,6 @@ drydock-voucher-issued-crew = [font size=16][bold]FREE REPAIR EARNED![/bold][/fo
 drydock-module-already-fitted = That module is already in this slot.
 drydock-module-fitted-elsewhere = That module is already fitted in slot { $slot }; a ship carries one of each.
 drydock-module-slot-taken = Slot { $slot } already holds a module; empty it first.
+drydock-module-needs-kit = That module needs a { $kit } aboard the ship.
 drydock-module-not-owner = Only the ship's deed holder can empty its module slots.
 drydock-module-removed = Removed { $module } from slot { $slot }.

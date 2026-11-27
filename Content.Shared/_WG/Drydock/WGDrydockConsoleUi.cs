@@ -257,6 +257,9 @@ public sealed class WGDrydockModuleEntry
 
     /// <summary>Bill of fitting it when paying with materials.</summary>
     public Dictionary<string, int> Materials = new();
+
+    /// <summary>Whether the berthed ship carries the kit a researched module needs.</summary>
+    public bool KitAboard;
 }
 
 /// <summary>

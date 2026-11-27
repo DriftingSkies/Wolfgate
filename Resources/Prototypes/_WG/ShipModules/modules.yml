@@ -10,6 +10,7 @@
   icon:
     sprite: Structures/Shuttles/thruster.rsi
     state: base
+  free: true
   price: 20000
   materials:
     Steel: 5000
@@ -28,3 +29,123 @@
   effect: !type:WGManeuveringJetsEffect
     deltaV: 20
     burnTime: 0.4
+
+# Phase skimmer: the hull drops out of space and back a short way along its course.
+- type: wgShipModule
+  id: WGShipModulePhaseSkimmer
+  name: wg-ship-module-skimmer-name
+  description: wg-ship-module-skimmer-description
+  label: wg-ship-module-skimmer-label
+  icon:
+    sprite: _Mono/Structures/ShuttleComponents/drive.rsi
+    state: control_on
+  unlisted: true # not researchable for now; presets and admins only
+  kit: WGShipModuleKitPhaseSkimmer
+  price: 45000
+  materials:
+    Steel: 5000
+    Plasteel: 2500
+    Plasma: 5000
+    Gold: 2000
+    Uranium: 2000
+  maxCharges: 3
+  rechargeTime: 10
+  cooldown: 1
+  activateSound:
+    path: /Audio/Magic/Eldritch/voidblink.ogg
+    params:
+      volume: -2
+  jolt: 0.8
+  effect: !type:WGPhaseSkimmerEffect
+    departSound:
+      path: /Audio/_Starlight/Effects/Shadekin/nullphase.ogg
+    arriveSound:
+      path: /Audio/Machines/phasein.ogg
+
+# Advanced gyros: every rotating ship gun on the hull turns half as fast again.
+- type: wgShipModule
+  id: WGShipModuleGunGyros
+  name: wg-ship-module-gyros-name
+  description: wg-ship-module-gyros-description
+  label: wg-ship-module-gyros-label
+  icon:
+    sprite: Structures/Shuttles/gyroscope.rsi
+    state: base
+  unlisted: true # not researchable for now; presets and admins only
+  kit: WGShipModuleKitGunGyros
+  price: 30000
+  materials:
+    Steel: 5000
+    Plastic: 2500
+    Gold: 1500
+    Silver: 1500
+  mode: Passive
+  jolt: 0
+  effect: !type:WGGunGyrosEffect
+    swingSound:
+      path: /Audio/Mecha/sound_mecha_hydraulic.ogg
+
+# Fortress shield: a switch that hardens the raised field against hits, at the cost of hard heat and the guns.
+- type: wgShipModule
+  id: WGShipModuleFortressShield
+  name: wg-ship-module-fortress-name
+  description: wg-ship-module-fortress-description
+  label: wg-ship-module-fortress-label
+  icon:
+    sprite: _Mono/Structures/ShuttleComponents/shield.rsi
+    state: control_on
+  unlisted: true # not researchable for now; presets and admins only
+  kit: WGShipModuleKitFortressShield
+  price: 50000
+  materials:
+    Steel: 6000
+    Plasteel: 3000
+    Plasma: 6000
+    Gold: 2000
+    Silver: 2000
+  mode: Toggle
+  cooldown: 2
+  activateSound:
+    path: /Audio/_WG/ShipModules/fortress_on.ogg
+    params:
+      volume: 2
+  deactivateSound:
+    path: /Audio/_WG/ShipShields/shield_off.ogg
+    params:
+      pitch: 0.6
+  jolt: 0.6
+  effect: !type:WGFortressShieldEffect
+    hum:
+      path: /Audio/_WG/ShipModules/fortress_hum.ogg
+      params:
+        volume: -2
+
+# Accelerated ammo feeder: ballistic guns fire twice as fast for a few seconds.
+- type: wgShipModule
+  id: WGShipModuleAmmoFeeder
+  name: wg-ship-module-feeder-name
+  description: wg-ship-module-feeder-description
+  label: wg-ship-module-feeder-label
+  icon:
+    sprite: _Mono/Objects/AmmoLoader/powdergate_sealed.rsi
+    state: icon
+  unlisted: true # not researchable for now; presets and admins only
+  kit: WGShipModuleKitAmmoFeeder
+  price: 35000
+  materials:
+    Steel: 6000
+    Plasteel: 2000
+    Gold: 1500
+    Silver: 1000
+  maxCharges: 1
+  rechargeTime: 24
+  cooldown: 1
+  duration: 6
+  activateSound:
+    path: /Audio/Weapons/Guns/Cock/lmg_cock.ogg
+    params:
+      volume: 4
+  deactivateSound:
+    path: /Audio/Weapons/Guns/MagIn/kinetic_reload.ogg
+  jolt: 0.5
+  effect: !type:WGAmmoFeederEffect {}

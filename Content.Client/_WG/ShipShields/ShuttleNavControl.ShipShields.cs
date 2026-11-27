@@ -38,7 +38,7 @@ public partial class ShuttleNavControl
             var tint = EntManager.TryGetComponent<ShipShieldVisualsComponent>(uid, out var generatorVisuals)
                 ? WGShipShieldEffects.HealthColor(visuals.Health, generatorVisuals.ShieldColor)
                 : WGShipShieldEffects.HealthColor(visuals.Health);
-            DrawWolfgateShieldOutline(handle, uid, visuals.Contours, allocation, tint, gridXform, worldToView);
+            DrawWolfgateShieldOutline(handle, uid, visuals.Contours, allocation, WgHardened(grid, tint), gridXform, worldToView);
         }
 
         var far = EntManager.AllEntityQueryEnumerator<WGShipShieldRadarComponent>();
@@ -48,7 +48,7 @@ public partial class ShuttleNavControl
                 continue;
             EntManager.TryGetComponent<WGShipShieldShuntComponent>(grid, out var allocation);
             DrawWolfgateShieldOutline(handle, grid, radar.Contours, allocation,
-                WGShipShieldEffects.HealthColor(radar.Health, radar.Color), gridXform, worldToView);
+                WgHardened(grid, WGShipShieldEffects.HealthColor(radar.Health, radar.Color)), gridXform, worldToView);
         }
         _wgRadarShieldRemoved.Clear();
         foreach (var uid in _wgRadarShields.Keys)
@@ -60,6 +60,14 @@ public partial class ShuttleNavControl
             _wgRadarShields.Remove(uid);
         DrawWolfgateVents(handle, consoleXform, worldToView);
         DrawWolfgateOverloads(handle, consoleXform, worldToView);
+    }
+
+    /// <summary>A field's radar colour, turned yellow while its hull hardens it (the Fortress shield module).</summary>
+    private Color WgHardened(EntityUid grid, Color tint)
+    {
+        return EntManager.HasComponent<WGShipShieldHardenedComponent>(grid)
+            ? Color.InterpolateBetween(tint, WGShipShieldHardenedComponent.FieldColor, WGShipShieldHardenedComponent.FieldTint)
+            : tint;
     }
 
     /// <summary>Whether a shielded grid shares this radar's map, isn't in FTL and is fully detected.</summary>

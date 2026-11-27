@@ -88,3 +88,6 @@
     WGPaintingFrameKit: 6
     WGPaintingFrameLargeKit: 4
     WGEaselFlatpack: 2
+    # Luggage tugs: the sit-on tug and the trolleys it tows, up to five per tug.
+    WGLuggageTug: 2
+    WGLuggageTrolley: 10

@@ -87,8 +87,9 @@
   id: Stealth
   kind: source
   # WOLFGATE(Stealth) START: z-level safe; the upstream shader read the level below.
-  # path: "/Textures/Shaders/stealth.swsl"
-  path: "/Textures/_WG/Stealth/stealth.swsl"
+  path: "/Textures/Shaders/stealth.swsl"
+  # Comments out WOLFGATE shader as the upstream shader currently has better functionality with the intention of recent stealth options as it has been fixed since the introduction of the WG stealth which was meant to solve the shader being bugged.
+  # path: "/Textures/_WG/Stealth/stealth.swsl"
   # WOLFGATE END
 
 - type: shader

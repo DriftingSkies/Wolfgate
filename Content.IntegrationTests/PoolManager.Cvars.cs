@@ -54,6 +54,7 @@ public static partial class PoolManager
         ("wg.ghost.orbit_share_seconds", "0"), // WOLFGATE(Ghost): tests read the orbit list right after changing the world
         ("wg.shipyard.async_purchase", "false"), // WOLFGATE(Performance): purchase tests check the ship the moment they buy it
         ("wolfmed.infection_slow_seconds", "5"), // WOLFGATE(Wolfmed): tests watch a corpse's infection over a few seconds of ticks
+        ("wg.speech.vacuum_whisper", "false"), // WOLFGATE(Speech): test maps have no air; the vacuum speech test turns it on
         (CCVars.StorageLimit.Name, "1")// Frontier: test failures with multiple storage
     };
 }

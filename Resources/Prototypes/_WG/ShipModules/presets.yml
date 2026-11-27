@@ -1,0 +1,79 @@
+# Mapping markers that fit a ship module for free when the ship spawns, then delete themselves. Place one anywhere on a
+# ship's grid; set `slot: 1`-`3` on its WGShipModulePreset component to pick the hotkey, or leave it for the first free.
+- type: entity
+  parent: MarkerBase
+  id: WGShipModulePresetBase
+  abstract: true
+  name: ship module preset
+  description: Fits its module into the ship's slots when the ship spawns.
+  components:
+  - type: Sprite
+    layers:
+    - state: pink
+    - sprite: Structures/Shuttles/thruster.rsi
+      state: base
+      scale: 0.6, 0.6
+
+- type: entity
+  parent: WGShipModulePresetBase
+  id: WGShipModulePresetManeuveringJets
+  name: maneuvering jets preset
+  components:
+  - type: WGShipModulePreset
+    module: WGShipModuleManeuveringJets
+
+- type: entity
+  parent: WGShipModulePresetBase
+  id: WGShipModulePresetPhaseSkimmer
+  name: phase skimmer preset
+  components:
+  - type: WGShipModulePreset
+    module: WGShipModulePhaseSkimmer
+  - type: Sprite
+    layers:
+    - state: pink
+    - sprite: _Mono/Structures/ShuttleComponents/drive.rsi
+      state: control_on
+      scale: 0.6, 0.6
+
+- type: entity
+  parent: WGShipModulePresetBase
+  id: WGShipModulePresetGunGyros
+  name: advanced gyros preset
+  components:
+  - type: WGShipModulePreset
+    module: WGShipModuleGunGyros
+  - type: Sprite
+    layers:
+    - state: pink
+    - sprite: Structures/Shuttles/gyroscope.rsi
+      state: base
+      scale: 0.6, 0.6
+
+- type: entity
+  parent: WGShipModulePresetBase
+  id: WGShipModulePresetFortressShield
+  name: fortress shield preset
+  components:
+  - type: WGShipModulePreset
+    module: WGShipModuleFortressShield
+  - type: Sprite
+    layers:
+    - state: pink
+    - sprite: _Mono/Structures/ShuttleComponents/shield.rsi
+      state: control_on
+      scale: 0.6, 0.6
+
+- type: entity
+  parent: WGShipModulePresetBase
+  id: WGShipModulePresetAmmoFeeder
+  name: ammo feeder preset
+  components:
+  - type: WGShipModulePreset
+    module: WGShipModuleAmmoFeeder
+  - type: Sprite
+    layers:
+    - state: pink
+    - sprite: _Mono/Objects/AmmoLoader/powdergate_sealed.rsi
+      state: icon
+      scale: 0.6, 0.6

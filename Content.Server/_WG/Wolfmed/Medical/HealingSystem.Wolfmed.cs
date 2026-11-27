@@ -82,7 +82,8 @@ public sealed partial class HealingSystem
         if (suturedPart is { } closedPart)
             _wgInfection.MarkSutured(closedPart, healing.TreatedDamageTypes?.Select(type => type.Id).ToList());
 
-        if (healing.ModifyBloodLevel != 0)
+        // WOLFGATE(MeridianTraits): a hemophage keeps a pack's blood past a full bloodstream
+        if (healing.ModifyBloodLevel != 0 && !WgHemophageTakesBlood(entity.Owner, healing.ModifyBloodLevel))
             _bloodstreamSystem.TryModifyBloodLevel(entity.Owner, healing.ModifyBloodLevel);
 
         if (stoppedBleeding)

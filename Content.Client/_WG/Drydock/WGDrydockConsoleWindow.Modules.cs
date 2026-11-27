@@ -153,7 +153,8 @@ public sealed partial class WGDrydockConsoleWindow
         foreach (var entry in state.Modules)
         {
             keyText.Append('|').Append(entry.Id).Append(':')
-                .Append(quote?.ModulePrices.GetValueOrDefault(entry.Id, entry.Price) ?? entry.Price);
+                .Append(quote?.ModulePrices.GetValueOrDefault(entry.Id, entry.Price) ?? entry.Price)
+                .Append(entry.KitAboard ? 'k' : '-');
             // Each bill row is red by its own shortage, so the key tracks every material, not just the whole bill.
             foreach (var (material, amount) in entry.Materials)
             {
@@ -198,6 +199,9 @@ public sealed partial class WGDrydockConsoleWindow
         name.SetMessage(FormattedMessage.FromUnformatted(Loc.GetString(module.Name)), defaultColor: Accent);
         var description = new RichTextLabel { HorizontalExpand = true };
         description.SetMessage(FormattedMessage.FromUnformatted(Loc.GetString(module.Description)), defaultColor: Muted);
+        var needsKit = module.Kit != null && !entry.KitAboard;
+        var access = new RichTextLabel { HorizontalExpand = true };
+        access.SetMessage(FormattedMessage.FromUnformatted(AccessText(module, entry)), defaultColor: needsKit ? Skin.Caution : Accent);
 
         var bill = new WGDrydockReadout("drydock-ui-refit-cost") { EmptyText = Loc.GetString("drydock-console-materials-none") };
         if (state.PaysWithMaterials)
@@ -238,12 +242,12 @@ public sealed partial class WGDrydockConsoleWindow
         else
         {
             fitKey.Text = Loc.GetString(state.Booking ? "drydock-ui-modules-book" : "drydock-ui-modules-fit", ("slot", slot + 1));
-            fitKey.Disabled = blocked || (state.PaysWithMaterials && !Covers(entry.Materials, state.StoredMaterials));
+            fitKey.Disabled = blocked || needsKit || (state.PaysWithMaterials && !Covers(entry.Materials, state.StoredMaterials));
             var key = WGShipModuleFitting.Key(slot, entry.Id);
             fitKey.OnPressed += _ => OnUpgradePressed?.Invoke(key);
         }
 
-        var details = Column(name, Row(icon, description), bill, fitKey);
+        var details = Column(name, Row(icon, description), access, bill, fitKey);
         details.SeparationOverride = 4;
         details.HorizontalExpand = true;
         details.Margin = new Thickness(4);
@@ -252,5 +256,17 @@ public sealed partial class WGDrydockConsoleWindow
         var card = new PanelContainer { HorizontalExpand = true };
         card.AddChild(details);
         return card;
+    }
+
+    /// <summary>Whether a module is free to fit, or which research node and kit it needs and whether the kit is aboard.</summary>
+    private string AccessText(WGShipModulePrototype module, WGDrydockModuleEntry entry)
+    {
+        if (module.Technology is not { } technology)
+            return Loc.GetString("drydock-ui-modules-free");
+
+        var node = _prototypeManager.TryIndex(technology, out var tech) ? Loc.GetString(tech.Name) : technology.Id;
+        var kit = module.Kit is { } kitId && _prototypeManager.TryIndex(kitId, out var kitProto) ? kitProto.Name : module.Kit?.Id ?? "";
+        return Loc.GetString(entry.KitAboard ? "drydock-ui-modules-kit-aboard" : "drydock-ui-modules-kit-needed",
+            ("technology", node), ("kit", kit));
     }
 }

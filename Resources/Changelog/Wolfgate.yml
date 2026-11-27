@@ -9319,3 +9319,83 @@ Entries:
   id: 100594
   time: '2026-11-26T13:33:17.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/840
+- author: mnemosynium
+  changes:
+    - type: Fix
+      message: Let blood packs fill a hemophage's reserve
+  id: 100595
+  time: '2026-11-26T18:13:34.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/855
+- author: AvText
+  changes:
+    - type: Tweak
+      message: Swapped stealth shaders from WG shaders back to default ss14 ones.
+  id: 100596
+  time: '2026-11-26T21:51:54.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/849
+- author: Happyowl93
+  changes:
+    - type: Tweak
+      message: >-
+        Laser guns fire faster and slowly recharge themselves when not firing.
+        TSF pulse rifle does a bit more damage.
+    - type: Tweak
+      message: Burns from heat weapons hurt more.
+    - type: Tweak
+      message: Mantis blades hit harder. A pair now outdamages an energy sword.
+    - type: Add
+      message: Press Q to retract an arm augment's blade or tool.
+    - type: Add
+      message: Talking in a vacuum only comes out as a whisper.
+    - type: Tweak
+      message: The hacking dart pierces shields on ships at half heat or more.
+    - type: Tweak
+      message: >-
+        The ARACHNE hacking harpoon and its darts are now sold in cargo instead
+        of the PDV and Underground vendors.
+  id: 100597
+  time: '2026-11-26T21:53:04.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/854
+- author: mnemosynium
+  changes:
+    - type: Add
+      message: Added luggage tug and trolleys to John Wolfgate's catalogue
+  id: 100598
+  time: '2026-11-26T21:53:33.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/856
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        Lost your ID? The shipyard dealer on Caelestinus can reissue it for a
+        small fee.
+  id: 100599
+  time: '2026-11-26T22:23:06.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/858
+- author: Balls2zawall
+  changes:
+    - type: Fix
+      message: >-
+        The Nebula's shield generator was causing strange npc ship interactions,
+        it's been removed for now.
+  id: 100600
+  time: '2026-11-27T00:44:15.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/861
+- author: MacaroniCritter
+  changes:
+    - type: Tweak
+      message: The VG Snake Eater has been reconfigured for better quality of life.
+  id: 100601
+  time: '2026-11-27T13:08:53.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/851
+- author: antanananat
+  changes:
+    - type: Fix
+      message: Added missing vacuum fix markers to VOX Vrikaash and VOX Srashakri
+    - type: Fix
+      message: >-
+        VOX Vrikaash and VOX Srashakri should no longer have you spawn outside
+        of your ship in the Crew start
+  id: 100602
+  time: '2026-11-27T13:09:38.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/859
