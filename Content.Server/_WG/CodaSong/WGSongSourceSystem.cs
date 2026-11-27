@@ -49,7 +49,8 @@ public sealed partial class WGSongSourceSystem : EntitySystem
         var query = EntityQueryEnumerator<WGSongSourceComponent, TransformComponent>();
         while (query.MoveNext(out _, out var song, out var xform))
         {
-            if (!song.Silent)
+            // A source with no range is heard nowhere.
+            if (!song.Silent && song.Range > 0f)
                 sources.Add((song, xform.MapID, _transform.GetWorldPosition(xform)));
         }
 
