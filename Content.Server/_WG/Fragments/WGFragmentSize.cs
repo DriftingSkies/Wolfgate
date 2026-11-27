@@ -36,6 +36,10 @@ public sealed partial class WGFragmentSize
     [DataField]
     public TimeSpan? WaveInterval;
 
+    /// <summary>How long the event runs with this size, in place of the event's own duration.</summary>
+    [DataField]
+    public TimeSpan? Duration;
+
     [DataField]
     public int? EliteEvery;
 

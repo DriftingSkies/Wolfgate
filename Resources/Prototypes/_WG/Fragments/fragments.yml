@@ -97,6 +97,8 @@
       waveBase: 14
       playersPerExtra: 1
       waveInterval: 75
+      # Forty-five minutes: crews need far longer to fight through it than a lesser one's twenty.
+      duration: 2700
       eliteEvery: 1
       maxAlive: 150
       decorCount: 50

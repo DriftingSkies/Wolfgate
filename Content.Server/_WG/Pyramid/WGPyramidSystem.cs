@@ -282,7 +282,10 @@ public sealed partial class WGPyramidSystem : EntitySystem
 
     #region Hunting
 
-    /// <summary>Picks the nearest crewed ship in the Coda within reach, keeping its current one while it can.</summary>
+    /// <summary>
+    /// Picks the nearest crewed ship in the Coda within reach, keeping its current one while it can, and never one it
+    /// has broken off from.
+    /// </summary>
     private void Look(Entity<WGPyramidComponent> ent, TransformComponent xform, TimeSpan now)
     {
         var here = _transform.GetWorldPosition(xform);
@@ -295,7 +298,7 @@ public sealed partial class WGPyramidSystem : EntitySystem
 
         foreach (var grid in ships)
         {
-            if (Transform(grid).MapID != xform.MapID)
+            if (ent.Comp.Spared.Contains(grid) || Transform(grid).MapID != xform.MapID)
                 continue;
 
             var distance = Vector2.Distance(_transform.GetWorldPosition(grid), here);
@@ -511,6 +514,32 @@ public sealed partial class WGPyramidSystem : EntitySystem
             ent.Comp.ExplosionMaxTile, ent);
         RaiseNetworkEvent(new WGPyramidBeamEvent(from.MapId, from.Position, new List<Vector2> { map.Position }),
             Filter.BroadcastMap(from.MapId));
+
+        if (Transform(at.EntityId).GridUid is not { } hit)
+            return;
+
+        var landed = ent.Comp.Landed.GetValueOrDefault(hit) + 1;
+        ent.Comp.Landed[hit] = landed;
+        if (hit == ent.Comp.Target && landed >= ent.Comp.BreakOffHits)
+            BreakOff(ent, xform, hit, now);
+    }
+
+    /// <summary>
+    /// Having done enough to a grid, it leaves that grid alone for good: it turns on another ship in reach, or with
+    /// none sinks away at once rather than circling for its usual wait.
+    /// </summary>
+    private void BreakOff(Entity<WGPyramidComponent> ent, TransformComponent xform, EntityUid grid, TimeSpan now)
+    {
+        ent.Comp.Spared.Add(grid);
+        ent.Comp.Volley.RemoveAll(shot => shot.At.EntityId == grid);
+        ClearMarks(ent.Comp);
+        ent.Comp.Target = null;
+        ent.Comp.LastTarget = now - ent.Comp.LeaveAfter;
+        foreach (var (_, mob) in Aboard(grid))
+            _popup.PopupEntity(Loc.GetString("wg-pyramid-breaks-off"), mob, mob, PopupType.Large);
+
+        Log.Info($"The Pyramid broke off from {ToPrettyString(grid)} after {ent.Comp.Landed[grid]} hits.");
+        Look(ent, xform, now);
     }
 
     private void ClearMarks(WGPyramidComponent pyramid)

@@ -196,6 +196,50 @@ public sealed class PyramidTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>
+    /// Even a summoned one, which otherwise keeps its grid for good, breaks off once enough lasers have landed there,
+    /// and with nothing else to hunt sinks away at once.
+    /// </summary>
+    [Test]
+    public async Task BreaksOffOnceItHasDoneEnough()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Dirty = true });
+        var server = pair.Server;
+        var em = server.EntMan;
+        var map = await pair.CreateTestMap();
+        EntityUid pyramid = default;
+
+        await server.WaitPost(() =>
+        {
+            var maps = server.System<SharedMapSystem>();
+            var grid = maps.CreateGridEntity(map.MapId);
+            em.GetComponent<TransformComponent>(grid.Owner).LocalPosition = new Vector2(3000f, 0f);
+            var plating = server.ResolveDependency<Robust.Shared.Map.ITileDefinitionManager>()["Plating"].TileId;
+            for (var x = 0; x < 8; x++)
+            {
+                for (var y = 0; y < 8; y++)
+                    maps.SetTile(grid.Owner, grid.Comp, new Vector2i(x, y), new Tile(plating));
+            }
+
+            pyramid = server.System<WGPyramidSystem>().Summon(grid.Owner);
+            var comp = em.GetComponent<WGPyramidComponent>(pyramid);
+            comp.FireRange = 2000f;
+            // One short of breaking off, with the last shot due now.
+            comp.Landed[grid.Owner] = comp.BreakOffHits - 1;
+            comp.Volley.Add((new EntityCoordinates(grid.Owner, new Vector2(4.5f, 4.5f)),
+                server.ResolveDependency<IGameTiming>().CurTime));
+        });
+        await pair.RunSeconds(2f);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(em.Deleted(pyramid) || em.IsQueuedForDeletion(pyramid), Is.True,
+                "a summoned Pyramid kept its grid after landing enough lasers on it.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     /// <summary>NPCs take it for a target: a hostile mob's pick, and an AI ship's.</summary>
     [Test]
     public async Task NpcsTargetIt()

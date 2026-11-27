@@ -1,0 +1,13 @@
+# The Pyramid's page in the lore book, among the pages that unsettle it.
+- type: guideEntry
+  id: WGLorePyramid
+  name: wg-lore-entry-pyramid
+  text: "/ServerInfo/_WG/Pyramid/Pyramid.xml"
+  unease: 0.4
+
+- type: wgLoreLink
+  id: WGLoreLinkPyramid
+  entry: WGLorePyramid
+  entities:
+  - WGPyramid
+  - WGChromeShard

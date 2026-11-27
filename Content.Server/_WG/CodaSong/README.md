@@ -12,7 +12,8 @@ of a piece at once, clean and turned, and mixes them live from the listener's Dr
 - **A Pyramid wave** passing through the listener turns every singer for a few seconds.
 - **Music** gives way to it: when the song takes hold, whatever is playing fades out over four seconds and new tracks
   are held off for as long as the song has the listener, between its pieces too. When it lets go, the song fades out
-  first and the music fades back in. A Lattice band's own piece plays first, unless a heart is singing.
+  first and the music fades back in. That includes a Lattice band's own piece: one entered while the song has the
+  listener waits until it lets go, and one the song cuts short plays again then.
 - **A fragment's heart outranks all music**, combat music included. The server tells each player which heart has them
   and how near (`WGSongListenerComponent`), so it is heard from its whole range, not only once the client can see it.
 - **In a fight** the song blends under the combat music instead of holding it off. The more hurt the listener, the

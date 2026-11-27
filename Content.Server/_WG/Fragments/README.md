@@ -28,7 +28,7 @@ damage and stops blasts, so nothing fired from outside reaches in. Crews get in 
 at some point before it broke. Every player who was aboard or within 60 m of the heart while it stood, whatever their
 faction, also gets 250,000 thalers, untaxed, in the bank of the character they took part as, so outside crews have a
 reason to help.
-The fragment leaves after 20 minutes, with a warning 5 minutes before.
+The fragment leaves after 20 minutes, a greater one after 45 (a size's `duration`), with a warning 5 minutes before.
 
 **Greater fragments.** One grid, `monolithfragmentlarge`, is a greater fragment (`sizes` in the rule): a whole shard of the
 Monolith with its own announcements and name, a garrison of ninety waiting as it lands (75 and 15 elites), far heavier and quicker waves (14 a wave,

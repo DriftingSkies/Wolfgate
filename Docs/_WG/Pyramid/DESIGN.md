@@ -21,10 +21,11 @@ Its numbers are in the README and on the prototype. This is the shape of a fight
    but it follows across the Coda for ten minutes before giving up.
 3. **Barrages.** Every 12 s, five pale-blue reticles appear on the hull, one under someone's feet, with a protocol line
    and the charge whine. Six seconds later lasers flash in from the Pyramid and each patch blows. Crews learn to step
-   out of the marks and patch hull between volleys.
+   out of the marks and patch hull between volleys. Once 30 lasers have landed on a ship, about six full volleys, it
+   breaks off from that ship for good, and leaves if no other is in reach. Before that a summoned one never lets go.
 4. **Fighting back.** Ship guns hurt it, shock weapons most. An EMP hangs it in place for 12 s with its marks cleared.
    Ramming doesn't work, because its force bubble shoves ships off at 35 m.
-5. **The collapse.** At 12,000 damage it groans, everything within 120 m shakes for 10 s, a last triple-strength wave
+5. **The collapse.** At 60,000 damage it groans, everything within 120 m shakes for 10 s, a last triple-strength wave
    rolls out, and it folds away. It leaves three chrome shards worth 12,000 each, which draw the Coda's hunters.
 
 ## Effects (v0.2)
@@ -69,7 +70,8 @@ rolls 2.5 % a minute and players still rarely meet it.
 
 ## Open questions
 
-- Is 12,000 health right against Wolfgate's ship guns? It needs a live fight to tune.
+- Is 60,000 health right? 12,000 went down in moments to high-tier ship guns, so it was raised fivefold; it needs
+  another live fight to confirm.
 - Should it be able to follow a ship out of the Coda? Currently it stops at the hazard bands' edge.
 - Should the shards do more than sell and lure, for example as a crafting input?
 - Should the reticles be shot or broken to cancel a patch? Not done.

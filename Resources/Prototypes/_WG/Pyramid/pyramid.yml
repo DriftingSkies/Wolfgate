@@ -5,7 +5,10 @@
   id: WGPyramid
   components:
   - type: WGPyramid
-    health: 12000
+    # High-tier ship guns took 12,000 down in moments.
+    health: 60000
+    # About six full volleys landed on its target, then it has done enough there and breaks off.
+    breakOffHits: 30
     # Each laser hit lands like a heavy ship missile (Mono's heavy missiles: 130 to 150, slope 3).
     explosionIntensity: 150
     explosionSlope: 3

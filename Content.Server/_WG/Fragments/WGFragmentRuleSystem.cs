@@ -188,7 +188,7 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
     /// Picks the fragment's grid from every size, and if it belongs to a larger size takes that size's waves, heart,
     /// payouts and announcements over the defaults.
     /// </summary>
-    private void ChooseSize(WGFragmentRuleComponent comp)
+    private void ChooseSize(EntityUid uid, WGFragmentRuleComponent comp)
     {
         var pool = new List<(ResPath Path, WGFragmentSize? Size)>();
         pool.AddRange(comp.Grids.Select(g => (g, (WGFragmentSize?) null)));
@@ -204,6 +204,13 @@ public sealed partial class WGFragmentRuleSystem : StationEventSystem<WGFragment
         comp.Chosen = path;
         if (chosen is not { } s)
             return;
+
+        // Chosen before the event starts, which is when its end is set from this.
+        if (s.Duration is { } duration && TryComp<StationEventComponent>(uid, out var stationEvent))
+        {
+            stationEvent.Duration = duration;
+            stationEvent.MaxDuration = duration;
+        }
 
         comp.GridName = s.GridName ?? comp.GridName;
         comp.Heart = s.Heart ?? comp.Heart;

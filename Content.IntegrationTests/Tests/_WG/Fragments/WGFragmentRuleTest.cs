@@ -66,6 +66,27 @@ public sealed class WGFragmentRuleTest
         await pair.CleanReturnAsync();
     }
 
+    /// <summary>A greater fragment runs for its own, longer time, set when its size is chosen before it starts.</summary>
+    [Test]
+    public async Task GreaterFragmentTakesLonger()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.EntMan;
+
+        await server.WaitAssertion(() =>
+        {
+            var ticker = entMan.System<GameTicker>();
+            var rule = ticker.AddGameRule("WGFragmentEventGreater");
+            var stationEvent = entMan.GetComponent<Content.Server.StationEvents.Components.StationEventComponent>(rule);
+            Assert.That(stationEvent.Duration, Is.EqualTo(System.TimeSpan.FromMinutes(45)), "a greater fragment kept the lesser one's time.");
+            Assert.That(stationEvent.MaxDuration, Is.EqualTo(System.TimeSpan.FromMinutes(45)));
+            ticker.EndGameRule(rule);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     /// <summary>Only someone aboard the heart's grid and within reach can hurt it; blasts never do.</summary>
     [Test]
     public async Task HeartOnlyTakesHarmFromAboard()

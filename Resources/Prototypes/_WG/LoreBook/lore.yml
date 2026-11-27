@@ -58,6 +58,7 @@
   - WGLoreUnmooring
   - WGLoreLattice
   - WGLoreChoir
+  - WGLorePyramid
 
 - type: guideEntry
   id: WGLoreMonolith

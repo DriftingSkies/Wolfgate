@@ -36,6 +36,11 @@ public sealed partial class ContentAudioSystem
     /// soundtrack mute; the song falls silent with it.</summary>
     public bool WgMusicHeldElsewhere => (_wgMusicPauseReasons & ~WgMusicPauseReason.CodaSong) != 0;
 
+    /// <summary>
+    /// Whether the Coda's song has the listener, fading in or between pieces; a Lattice band's own piece waits for it.
+    /// </summary>
+    public bool WgCodaSongHolding { get; set; }
+
     /// <summary>Whether combat music is playing now; the Coda's song blends with it rather than holding it off.</summary>
     public bool WgCombatMusicPlaying => _isCombatMusicPlaying && _currentlyPlaying == MusicType.Combat;
 

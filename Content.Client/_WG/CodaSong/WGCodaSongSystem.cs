@@ -101,24 +101,8 @@ public sealed partial class WGCodaSongSystem : EntitySystem
         var now = _timing.CurTime;
         var (pull, turn, source, drift) = Listen();
 
-        // A fragment's heart outranks every other music; otherwise a Lattice band's own piece comes first.
+        // The song outranks every ambient track, a Lattice band's own piece included; a heart's outranks combat too.
         var heart = source != null;
-        if (!heart && _music.WgBandTrackPlaying)
-        {
-            Release();
-            if (_song != null)
-            {
-                _fade = MathF.Max(0f, _fade - frameTime / HandOver);
-                Mix(0f, turn, drift, frameTime, 0f, false, false);
-                if (_fade <= 0f)
-                {
-                    StopSong();
-                    _next = now + TimeSpan.FromSeconds(_random.NextFloat(8f, 20f));
-                }
-            }
-
-            return;
-        }
 
         // Reaching the top of the scale mid-piece: that piece ebbs away now, and the finality follows soon after.
         if (_song is { Source: null } && !_cutShort && drift >= 90f && _song.MinDrift < 85f)
@@ -143,6 +127,7 @@ public sealed partial class WGCodaSongSystem : EntitySystem
         if (want && !_holding)
         {
             _holding = true;
+            _music.WgCodaSongHolding = true;
             _music.FadeOutMusicWolfgate(HandOver);
             _pauseAt = now + TimeSpan.FromSeconds(HandOver - 0.1);
         }
@@ -200,6 +185,7 @@ public sealed partial class WGCodaSongSystem : EntitySystem
 
         _holding = false;
         _pauseAt = null;
+        _music.WgCodaSongHolding = false;
         _music.ResumeMusicFadingWolfgate(WgMusicPauseReason.CodaSong, HandOver);
     }
 

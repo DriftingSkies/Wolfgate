@@ -9,6 +9,7 @@ wg-pyramid-arrive = Something on the scanners isn't a ship. It has turned toward
 wg-pyramid-stalled = The Pyramid shudders. Its lights stutter and it hangs still.
 wg-pyramid-collapsing = The Pyramid groans as a thousand sun-weights crush its chrome skin!
 wg-pyramid-folds = The Pyramid folds in on itself and is gone.
+wg-pyramid-breaks-off = The Pyramid's eye slides off your hull. Whatever it wanted here, it is done.
 
 wg-pyramid-line-1 = PROTOCOL ONE: CONTAIN.
 wg-pyramid-line-2 = PROTOCOL TWO: ERASE.
@@ -27,3 +28,5 @@ cmd-wgpyramid-desc = Summons the Pyramid onto your ship, or brings it down.
 cmd-wgpyramid-help = Usage: wgpyramid summon|collapse
 cmd-wgpyramid-no-ship = Stand on a ship to summon the Pyramid onto it.
 cmd-wgpyramid-summoned = Summoned {$pyramid}.
+
+wg-lore-entry-pyramid = The Pyramid

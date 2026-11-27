@@ -51,6 +51,10 @@ public sealed partial class WGPyramidComponent : Component
     [DataField]
     public TimeSpan LeaveAfter = TimeSpan.FromMinutes(10);
 
+    /// <summary>Lasers it lands on its target before it has done enough there and breaks off from that grid for good.</summary>
+    [DataField]
+    public int BreakOffHits = 30;
+
     // The force bubble.
 
     /// <summary>Anything that comes this close to it is shoved away, in metres.</summary>
@@ -196,6 +200,12 @@ public sealed partial class WGPyramidComponent : Component
     /// <summary>Lasers of the current volley still to fire: where, and when.</summary>
     [ViewVariables]
     public readonly List<(EntityCoordinates At, TimeSpan When)> Volley = new();
+
+    /// <summary>Lasers landed on each grid it has fired on.</summary>
+    public readonly Dictionary<EntityUid, int> Landed = new();
+
+    /// <summary>Grids it has broken off from; it never hunts them again.</summary>
+    public readonly HashSet<EntityUid> Spared = new();
 
     [ViewVariables]
     public TimeSpan NextMend;
