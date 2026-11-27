@@ -307,13 +307,13 @@ public sealed partial class WGCodaSongSystem : EntitySystem
         // Under combat music the choir sits back, and sinks further the closer the listener is to death; a heart's
         // song holds combat music off instead.
         var combat = _music.WgCombatMusicPlaying && !heart;
-        var duck = combat ? -4f - 14f * danger : -10f * danger;
+        var duck = combat ? -2f - 8f * danger : -5f * danger;
         // Each piece swells in from nothing and ebbs away before it ends, so no piece starts or stops abruptly.
         var elapsed = (float) (_timing.CurTime - _started).TotalSeconds;
         var left = _song != null ? _song.Seconds - elapsed : PieceFade;
         var piece = Smooth(MathF.Min(elapsed, left) / PieceFade);
         // Far off and faint at first, near and full at the top.
-        var master = (-20f + 18f * pull) + duck + 20f * MathF.Log10(MathF.Max(0.001f, _musicVolume * _fade * piece));
+        var master = (-10f + 16f * pull) + duck + 20f * MathF.Log10(MathF.Max(0.001f, _musicVolume * _fade * piece));
         if (crisis)
             master += combat ? 10f : 6f;
         // Whatever else holds the music, an internet sound or the soundtrack mute, silences the choir too. The stems
