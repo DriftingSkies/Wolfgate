@@ -1,0 +1,24 @@
+<Document>
+# Recipes
+Every dish here starts the same way: lay your ingredients out on a [bold]prep board[/bold], chop what needs chopping, and use [bold]Put together[/bold]. Some dishes are ready to eat straight off the board. Most still need the heat: a turn in a hearth's oven, or a sizzle in a pan on the hob. The board's own window shows which dishes you're closest to and what's still missing, so keep it open while you work.
+
+Liquids count too. Anything a recipe needs, like water or milk, can sit on the board in a jug, a glass or a beaker, or in the very bowl the dish is served in.
+
+The cards below show what goes in and what comes out. Ingredients marked "or similar" take any of a few close cousins.
+
+## From the prep board
+Home-cooked dishes put together on the board, then finished on the hearth.
+<WGRecipeEmbed Kind="Board"/>
+
+## In the pan
+<WGRecipeEmbed Kind="Pan"/>
+
+## In the oven
+<WGRecipeEmbed Kind="Oven"/>
+
+## On the chopping board
+Use a knife on the prep board to open its window, then pick what to chop.
+<WGRecipeEmbed Kind="Chop"/>
+
+See [textlink="Soups and stews" link="WGRecipesSoups"], [textlink="Brews" link="WGRecipesBrews"] and [textlink="Station classics" link="WGRecipesClassics"] for the rest, and [textlink="Cooking" link="WGCooking"] for how the hearth works.
+</Document>

@@ -33,7 +33,7 @@
   startNode: start
   targetNode: built
   category: construction-category-machines
-  description: "Ferments fruit into wine and wheat into beer. Load it with glass bottles first; each batch fills one. What goes in keeps its quality."
+  description: "Ferments fruit into wine and wheat into beer, and bottles each batch itself. What goes in keeps its quality."
   icon:
     sprite: _DV/Objects/Storage/keg.rsi
     state: base
@@ -799,7 +799,7 @@
   startNode: start
   targetNode: built
   category: construction-category-machines
-  description: "Blows a sheet of glass into two bottles for the brewing keg."
+  description: "Blows a sheet of glass into two empty glass bottles."
   icon:
     sprite: _WG/Farming/kiln.rsi
     state: kiln

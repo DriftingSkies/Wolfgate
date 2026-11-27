@@ -90,7 +90,7 @@
   parent: BaseItem
   id: WGGlassBottle
   name: glass bottle
-  description: An empty bottle for the brewing keg.
+  description: An empty glass bottle.
   components:
   - type: Item
     size: Tiny

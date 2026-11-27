@@ -1,0 +1,9 @@
+<Document>
+# Breads and breakfasts
+## Breads
+A fresh loaf makes everything better, and plenty of other dishes start with one.
+<WGRecipeEmbed Kind="Kitchen" Groups="Breads"/>
+
+## Breakfasts
+<WGRecipeEmbed Kind="Kitchen" Groups="Breakfast"/>
+</Document>

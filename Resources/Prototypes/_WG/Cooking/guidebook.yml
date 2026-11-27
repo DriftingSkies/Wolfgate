@@ -9,3 +9,59 @@
   id: WGBrewing
   name: guide-entry-wg-brewing
   text: "/ServerInfo/_WG/Cooking/Guidebook/Brewing.xml"
+
+# Recipe pages: cards read from the recipe prototypes (WGRecipeEmbed), so they stay current on their own.
+- type: guideEntry
+  id: WGRecipes
+  name: guide-entry-wg-recipes
+  text: "/ServerInfo/_WG/Cooking/Guidebook/Recipes.xml"
+  children:
+  - WGRecipesSoups
+  - WGRecipesBrews
+  - WGRecipesClassics
+
+- type: guideEntry
+  id: WGRecipesSoups
+  name: guide-entry-wg-recipes-soups
+  text: "/ServerInfo/_WG/Cooking/Guidebook/RecipesSoups.xml"
+
+- type: guideEntry
+  id: WGRecipesBrews
+  name: guide-entry-wg-recipes-brews
+  text: "/ServerInfo/_WG/Cooking/Guidebook/RecipesBrews.xml"
+
+- type: guideEntry
+  id: WGRecipesClassics
+  name: guide-entry-wg-recipes-classics
+  text: "/ServerInfo/_WG/Cooking/Guidebook/RecipesClassics.xml"
+  children:
+  - WGRecipesSavory
+  - WGRecipesBreads
+  - WGRecipesSoupsPasta
+  - WGRecipesSweets
+  - WGRecipesOdds
+
+- type: guideEntry
+  id: WGRecipesSavory
+  name: guide-entry-wg-recipes-savory
+  text: "/ServerInfo/_WG/Cooking/Guidebook/RecipesSavory.xml"
+
+- type: guideEntry
+  id: WGRecipesBreads
+  name: guide-entry-wg-recipes-breads
+  text: "/ServerInfo/_WG/Cooking/Guidebook/RecipesBreads.xml"
+
+- type: guideEntry
+  id: WGRecipesSoupsPasta
+  name: guide-entry-wg-recipes-soups-pasta
+  text: "/ServerInfo/_WG/Cooking/Guidebook/RecipesSoupsPasta.xml"
+
+- type: guideEntry
+  id: WGRecipesSweets
+  name: guide-entry-wg-recipes-sweets
+  text: "/ServerInfo/_WG/Cooking/Guidebook/RecipesSweets.xml"
+
+- type: guideEntry
+  id: WGRecipesOdds
+  name: guide-entry-wg-recipes-odds
+  text: "/ServerInfo/_WG/Cooking/Guidebook/RecipesOdds.xml"

@@ -24,8 +24,8 @@ LOCALE = ROOT / "Resources" / "Locale" / "en-US" / "_WG" / "Farming"
 COPYRIGHT = "Taken from Paragon Moon (Roguetown lineage), {file}; adapted for Wolfgate."
 
 # TESTING: crop minutes are divided by this for gathering test data; set back to 1 when outposts ship.
-GROW_SCALE = 8
-SCALE_WORDS = {2: "a half", 4: "a quarter", 8: "an eighth"}
+GROW_SCALE = 16
+SCALE_WORDS = {2: "a half", 4: "a quarter", 8: "an eighth", 16: "a sixteenth"}
 
 # id: (crop stage prefix, produce state, name, tag, minutes, min C, max C, regrows, yield, flavour)
 CROPS = {

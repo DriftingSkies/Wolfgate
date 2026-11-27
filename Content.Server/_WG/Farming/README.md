@@ -7,7 +7,7 @@ turn the harvest into goods, animal care, and a market for it. The design and bu
 **Growth** (`WGFarmingSystem`): every 5 seconds each planted holder is checked. It ages only while lit and watered
 (upstream water over 10). On a world with a day (a light cycle) it needs daylight, in the open or under a greenhouse roof, or a powered
 `WGGrowLamp`, and its crop's outdoor temperature band unless roofed under a lamp; on stations and ships their lights
-count. Otherwise the system holds it with upstream's `SkipAging`, and examine says why. A seed's `wgCrop` entry
+count, as do a bought ship's (`ShuttleDeedComponent`) landed on a world. Otherwise the system holds it with upstream's `SkipAging`, and examine says why. A seed's `wgCrop` entry
 (`crops.yml`, keyed by seed ID) sets the real minutes of growing it takes; seeds without one keep upstream speed.
 Unguarded outdoor crops on worlds are now and then pecked by birds unless a `WGScarecrow` is near.
 
@@ -21,8 +21,8 @@ Water collectors (`WGWaterCollectorSystem`) suit worlds, never wells: rain catch
 moisture vaporators condense water on power (best when hot), snow melters melt snow and frost; each feeds the sprinklers
 within six tiles.
 
-**Processing** (`WGProcessorSystem`): one data-driven machine for every artisan machine (`recipes.yml`): keg (loaded
-with bottles), preserves jar, cheese press, mayonnaise machine, loom, mill, composter, fertilizer barrel, nutrient mixer,
+**Processing** (`WGProcessorSystem`): one data-driven machine for every artisan machine (`recipes.yml`): keg (bottles
+its own brew), preserves jar, cheese press, mayonnaise machine, loom, mill, composter, fertilizer barrel, nutrient mixer,
 oak cask, glass kiln, seed maker, bee hive, mushroom log, compute rack, digester, ore washer, geode cracker and packing
 table. A batch runs in real minutes while the machine is anchored and powered; goods keep the input's quality. A busy machine queues more of the same (`Queue`, up to `QueueCap`), taking the rest of a stack in one go, and runs them in turn.
 
@@ -125,7 +125,6 @@ project (art CC BY-SA 3.0). Everything here is sold at the Homestead Supply vend
 
 - [`Content.Server/Animals/Systems/EggLayerSystem.cs`](../../Animals/Systems/EggLayerSystem.cs): pass the eggs to animal mood to roll their quality
 - [`Content.Server/Botany/Systems/PlantHolderSystem.cs`](../../Botany/Systems/PlantHolderSystem.cs): pass the harvest to farming to roll its quality
-- [`Resources/Prototypes/Guidebook/service.yml`](../../../Resources/Prototypes/Guidebook/service.yml): the farming guide sits under the botany page
 - [`Resources/ServerInfo/Guidebook/Service/Botany.xml`](../../../Resources/ServerInfo/Guidebook/Service/Botany.xml): link the farming guide for light, weather, quality and farm machines
 
 <!-- WOLFGATE-GENERATED END -->

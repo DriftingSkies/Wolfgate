@@ -51,12 +51,12 @@ wg-brew-leaflet = [head=2]Brewing a proper pot[/head]
 
     1. [bold]Put the kettle on.[/bold] Fill it with water, set it on a lit hob, and wait for it to boil.
 
-    2. [bold]Add your brew.[/bold] Drop in tea leaves, roasted coffee beans, berries or herbs, or pour in some tea powder from a pouch. A teaspoon measures it out neatly.
+    2. [bold]Add your brew.[/bold] Drop in tea leaves, roasted coffee beans, berries or herbs, or pour in some tea powder from a pouch. A teaspoon measures it out neatly; a little goes a long way.
 
-    3. [bold]Pour a cup.[/bold] When it's ready, use a cup or a teapot on the kettle, or take the kettle off the hob and pour.
+    3. [bold]Pour a cup.[/bold] When it's ready, use any cup, mug or glass on the kettle, or take the kettle off the hob and pour. A teapot is nice for serving, but you don't need one.
 
-    Only a kettle brews. Tea brewed this way does you good, and it's nicer shared.
+    Only a kettle brews; a pot or a beaker won't. Tea brewed this way does you good, and it's nicer shared.
 
 guide-entry-wg-brewing = Brewing
 wg-brew-not-ready = Nothing has brewed yet.
-wg-brew-still-steeping = The powder is still steeping. Put it back on the hob until it's done.
+wg-brew-still-steeping = The tea is still steeping. Put the kettle back on the hob until it's done.

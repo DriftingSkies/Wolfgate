@@ -36,7 +36,7 @@
   parent: WGProcessorBase
   id: WGFarmKeg
   name: brewing keg
-  description: Ferments fruit into wine and wheat into beer. Load it with glass bottles first; each batch fills one. What goes in keeps its quality.
+  description: Ferments fruit into wine and wheat into beer, and bottles each batch itself. What goes in keeps its quality.
   components:
   - type: Construction
     graph: WGFarmKegGraph
@@ -322,7 +322,7 @@
   parent: WGProcessorPoweredBase
   id: WGFarmGlassKiln
   name: glass kiln
-  description: Blows a sheet of glass into two bottles for the brewing keg.
+  description: Blows a sheet of glass into two empty glass bottles.
   components:
   - type: Construction
     graph: WGFarmGlassKilnGraph

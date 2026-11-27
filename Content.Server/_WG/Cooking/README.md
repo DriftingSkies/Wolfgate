@@ -18,7 +18,8 @@ becomes a meal from raw ingredients in one step.
   of soup, and ingredients stewing together that make a stew of several (`combine`) become it instead. Soup shows in
   pots and bowls in its colour; ladle it out with a bowl.
 - **Prep board** (`wgPrepRecipe`, `wgChopRecipe`, and every kitchen recipe): lay ingredients on it, chop them with a
-  knife, then *Put together* (alt-click). Our raw dishes and the game's assembler recipes come out ready to cook or
+  knife, then *Put together* (alt-click). A recipe's reagents come from containers on the board and from a vessel it
+  uses up, such as a bowl of water. Our raw dishes and the game's assembler recipes come out ready to cook or
   eat; every game oven or microwave recipe comes out as an unbaked dish (`WGRawKitchenDish`) that still has to be cooked
   in a hearth's oven or pan. A secret recipe (`secretRecipe`) is offered only by a board within reach of a hearth that
   provides it (`FoodRecipeProvider`, such as the Donk Co. microwave and range), and only such a hearth takes and cooks
@@ -72,6 +73,7 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 - [`Content.Client/_WG/Cooking/WGChopMinigame.cs`](../../../Content.Client/_WG/Cooking/WGChopMinigame.cs)
 - [`Content.Client/_WG/Cooking/WGPrepBoardBoundUserInterface.cs`](../../../Content.Client/_WG/Cooking/WGPrepBoardBoundUserInterface.cs)
 - [`Content.Client/_WG/Cooking/WGPrepBoardWindow.cs`](../../../Content.Client/_WG/Cooking/WGPrepBoardWindow.cs)
+- [`Content.Client/_WG/Cooking/WGRecipeEmbed.cs`](../../../Content.Client/_WG/Cooking/WGRecipeEmbed.cs)
 - [`Content.Client/_WG/Cooking/WGStirBoundUserInterface.cs`](../../../Content.Client/_WG/Cooking/WGStirBoundUserInterface.cs)
 - [`Content.Client/_WG/Cooking/WGStirMinigame.cs`](../../../Content.Client/_WG/Cooking/WGStirMinigame.cs)
 
@@ -86,6 +88,8 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 - [`Content.IntegrationTests/Tests/_WG/Cooking/KitchenUiTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/KitchenUiTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/MealBuffTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/MealBuffTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/MessKitAndCraftingTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/MessKitAndCraftingTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Cooking/PlaytestFeedbackTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/PlaytestFeedbackTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Cooking/RecipeGuideTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/RecipeGuideTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/ReviewFixesTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/ReviewFixesTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cooking/WGHearthFire.cs`](../../../Content.IntegrationTests/Tests/_WG/Cooking/WGHearthFire.cs)
 
@@ -106,6 +110,7 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 - [`Resources/Locale/en-US/_WG/Cooking/brewing.ftl`](../../../Resources/Locale/en-US/_WG/Cooking/brewing.ftl)
 - [`Resources/Locale/en-US/_WG/Cooking/cooking.ftl`](../../../Resources/Locale/en-US/_WG/Cooking/cooking.ftl)
 - [`Resources/Locale/en-US/_WG/Cooking/kitchen.ftl`](../../../Resources/Locale/en-US/_WG/Cooking/kitchen.ftl)
+- [`Resources/Locale/en-US/_WG/Cooking/recipes.ftl`](../../../Resources/Locale/en-US/_WG/Cooking/recipes.ftl)
 
 ### Textures
 
@@ -121,6 +126,15 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
 
 - [`Resources/ServerInfo/_WG/Cooking/Guidebook/Brewing.xml`](../../../Resources/ServerInfo/_WG/Cooking/Guidebook/Brewing.xml)
 - [`Resources/ServerInfo/_WG/Cooking/Guidebook/Cooking.xml`](../../../Resources/ServerInfo/_WG/Cooking/Guidebook/Cooking.xml)
+- [`Resources/ServerInfo/_WG/Cooking/Guidebook/Recipes.xml`](../../../Resources/ServerInfo/_WG/Cooking/Guidebook/Recipes.xml)
+- [`Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesBreads.xml`](../../../Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesBreads.xml)
+- [`Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesBrews.xml`](../../../Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesBrews.xml)
+- [`Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesClassics.xml`](../../../Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesClassics.xml)
+- [`Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesOdds.xml`](../../../Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesOdds.xml)
+- [`Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesSavory.xml`](../../../Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesSavory.xml)
+- [`Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesSoups.xml`](../../../Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesSoups.xml)
+- [`Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesSoupsPasta.xml`](../../../Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesSoupsPasta.xml)
+- [`Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesSweets.xml`](../../../Resources/ServerInfo/_WG/Cooking/Guidebook/RecipesSweets.xml)
 
 ### Tools
 
@@ -154,9 +168,9 @@ Content comes from `Tools/_WG/Cooking/port_paragon_kitchen.py` (re-run it; don't
   - automation feeds the hearth's oven; nothing cooks in the old microwave container
   - taken apart, the microwave drops what was in its oven
   - a faster oven-only hearth like its parent; it alone bakes its secret recipes
-- [`Resources/Prototypes/Guidebook/service.yml`](../../../Resources/Prototypes/Guidebook/service.yml): the cooking guide sits under the chef's page
 - [`Resources/Prototypes/Recipes/Reactions/drinks.yml`](../../../Resources/Prototypes/Recipes/Reactions/drinks.yml): tea powder brews only in a kettle on a hob
 - [`Resources/ServerInfo/Guidebook/Service/Chef.xml`](../../../Resources/ServerInfo/Guidebook/Service/Chef.xml)
+  - the food recipe link opens our recipe pages, which show how the hearth cooks each dish Upstream: [textlink="Click here to see a list of food recipes." link="FoodRecipes"]
   - link the hands-on cooking guide
   - dishes are put together on a prep board and cooked on a hearth Upstream: - Check the Wiki (or Food Recipes) guidebook for things you can make, and put all the listed ingredients into a microwave to cook it into a meal.
 

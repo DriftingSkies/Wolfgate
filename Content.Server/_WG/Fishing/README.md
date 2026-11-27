@@ -51,7 +51,6 @@ The extras (`loot.yml`, written by hand; art from `port_fishing_loot.py`) are a 
 
 ## Non-modular edits
 
-- [`Resources/Prototypes/Guidebook/service.yml`](../../../Resources/Prototypes/Guidebook/service.yml): the fishing guide sits under the chef's page
 - [`Resources/ServerInfo/Guidebook/Service/Chef.xml`](../../../Resources/ServerInfo/Guidebook/Service/Chef.xml): link the fishing guide
 
 <!-- WOLFGATE-GENERATED END -->

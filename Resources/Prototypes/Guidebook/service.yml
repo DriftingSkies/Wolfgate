@@ -19,20 +19,11 @@
   id: Botany
   name: guide-entry-botany
   text: "/ServerInfo/Guidebook/Service/Botany.xml"
-  # WOLFGATE(Farming): the farming guide sits under the botany page
-  children:
-  - WGFarming
-  - WGForaging # WOLFGATE(Foraging): the foraging guide sits under the botany page
 
 - type: guideEntry
   id: Chef
   name: guide-entry-chef
   text: "/ServerInfo/Guidebook/Service/Chef.xml"
-  # WOLFGATE(Cooking): the cooking guide sits under the chef's page
-  children:
-  - WGCooking
-  - WGFishing # WOLFGATE(Fishing): the fishing guide sits under the chef's page
-  - WGHunting # WOLFGATE(Hunting): the hunting guide sits under the chef's page
 
 - type: guideEntry
   id: Janitorial

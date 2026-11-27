@@ -1,0 +1,13 @@
+# The Homestead tab: every guide to living off the land and the kitchen, in one place outside the jobs.
+- type: guideEntry
+  id: WGHomestead
+  name: guide-entry-wg-homestead
+  text: "/ServerInfo/_WG/Homestead/Guidebook/Homestead.xml"
+  priority: 4
+  children:
+  - WGCooking
+  - WGRecipes
+  - WGFarming
+  - WGForaging
+  - WGFishing
+  - WGHunting

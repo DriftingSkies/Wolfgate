@@ -1,5 +1,6 @@
 using Content.Server._WG.Farming;
 using Content.Server.Botany.Components;
+using Content.Shared._NF.Shipyard.Components;
 using Content.Shared.Interaction;
 using Content.Shared.Light.Components;
 using Content.Shared.Light.EntitySystems;
@@ -9,7 +10,7 @@ using Robust.Shared.Timing;
 
 namespace Content.IntegrationTests.Tests._WG.Farming;
 
-/// <summary>A plant under a roof on a world grows by day like one in the open, and rests at night without a lamp.</summary>
+/// <summary>A plant under a roof on a world grows by day like one in the open, and rests at night without a lamp; a landed ship keeps its own lights.</summary>
 [TestFixture]
 public sealed class GreenhouseRoofTest
 {
@@ -76,6 +77,51 @@ public sealed class GreenhouseRoofTest
         {
             Assert.That(entMan.GetComponent<WGFarmPlotComponent>(tray).Reason, Is.EqualTo("wg-farm-reason-night"),
                 "A roofed plant with no lamp kept growing through the night.");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task LandedShipGrowsAtNight()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var entMan = server.ResolveDependency<IEntityManager>();
+        var timing = server.ResolveDependency<IGameTiming>();
+        var map = await pair.CreateTestMap();
+        EntityUid tray = default;
+
+        await server.WaitAssertion(() =>
+        {
+            var comp = entMan.EnsureComponent<LightCycleComponent>(map.MapUid);
+            comp.Enabled = true;
+            comp.Duration = TimeSpan.FromMinutes(20);
+            Entity<LightCycleComponent> cycle = (map.MapUid, comp);
+            var seconds = (float) comp.Duration.TotalSeconds;
+            var darkest = 0f;
+            for (var t = 0f; t < seconds; t += seconds / 48f)
+            {
+                if (SharedLightCycleSystem.CalculateLightLevel(comp, t) < SharedLightCycleSystem.CalculateLightLevel(comp, darkest))
+                    darkest = t;
+            }
+            entMan.System<SharedLightCycleSystem>().SetOffset(cycle, TimeSpan.FromSeconds(darkest) - timing.CurTime);
+
+            entMan.EnsureComponent<ShuttleDeedComponent>(map.Grid.Owner);
+            tray = entMan.SpawnEntity("hydroponicsTray", map.GridCoords);
+            var farmer = entMan.SpawnEntity("MobHuman", map.GridCoords);
+            var plant = new InteractUsingEvent(farmer, entMan.SpawnEntity("WheatSeeds", map.GridCoords), tray, map.GridCoords);
+            entMan.EventBus.RaiseLocalEvent(tray, plant);
+            var holder = entMan.GetComponent<PlantHolderComponent>(tray);
+            holder.WaterLevel = 100f;
+            holder.NutritionLevel = 100f;
+        });
+
+        await pair.RunTicksSync(pair.SecondsToTicks(6));
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entMan.GetComponent<WGFarmPlotComponent>(tray).Reason, Is.Null,
+                "A plant aboard a ship landed on a world stalled for the world's night or weather.");
         });
 
         await pair.CleanReturnAsync();

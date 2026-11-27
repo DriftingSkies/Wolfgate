@@ -1,0 +1,22 @@
+<Document>
+# Homestead
+Not everything worth having comes off a cargo shuttle. Out here you can grow your own food, gather what the worlds offer, catch your supper, and cook it all into something that sets you up for the day. None of it needs a job title. Anyone with a bit of patience and a pair of willing hands can keep a homestead going, whether it's a garden on a planet or a galley tucked into a ship.
+
+<Box>
+<GuideEntityEmbed Entity="WGHearthStove"/>
+<GuideEntityEmbed Entity="WGPrepBoard"/>
+<GuideEntityEmbed Entity="WGCookKettle"/>
+<GuideEntityEmbed Entity="WGFarmKeg"/>
+<GuideEntityEmbed Entity="WGFishingRod"/>
+</Box>
+
+## Where to start
+- [textlink="Cooking" link="WGCooking"]: the hearth, the prep board, pans and pots, and what a good meal does for you. [textlink="Brewing" link="WGBrewing"] covers tea, coffee and cocoa from the kettle.
+- [textlink="Recipes" link="WGRecipes"]: every dish, soup and brew, and how to make each one.
+- [textlink="Farming" link="WGFarming"]: growing crops, keeping animals, and turning the harvest into goods worth selling.
+- [textlink="Foraging" link="WGForaging"]: wild berries, mushrooms and seeds out on the worlds.
+- [textlink="Fishing" link="WGFishing"]: a rod, some bait and a quiet bit of water.
+- [textlink="Hunting" link="WGHunting"]: tracking game and making the most of every catch.
+
+It all fits together. What you grow and gather goes on the prep board, what you catch and hunt goes in the pan, and a shared meal at the end of it does everyone good.
+</Document>

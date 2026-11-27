@@ -433,11 +433,22 @@ public sealed partial class WGCookingSystem : EntitySystem
 
     private void OnPotUsing(Entity<WGPotComponent> ent, ref InteractUsingEvent args)
     {
-        if (args.Handled || !Takes(ent, args.Used))
+        if (args.Handled)
             return;
 
-        args.Handled = true;
-        AddToPot(ent, args.Used, args.User);
+        if (Takes(ent, args.Used))
+        {
+            args.Handled = true;
+            AddToPot(ent, args.Used, args.User);
+            return;
+        }
+
+        // A cup, bowl or jug used on the pot itself pours in what it holds, or fills from it if empty, as on the hob.
+        if (TryComp<SolutionTransferComponent>(args.Used, out var transfer))
+        {
+            args.Handled = true;
+            Ladle(ent, (args.Used, transfer), args.User);
+        }
     }
 
     private void AddToPot(Entity<WGPotComponent> pot, EntityUid food, EntityUid user)
@@ -786,8 +797,8 @@ public sealed partial class WGCookingSystem : EntitySystem
             .ToList();
     }
 
-    /// <summary>The solids a kitchen recipe would use from the items, the first of each prototype; null if any are short.</summary>
-    private HashSet<EntityUid>? PickSolids(IReadOnlyList<EntityUid> items, FoodRecipePrototype recipe)
+    /// <summary>The solids a kitchen recipe would use from the items, the first of each prototype; null if any are short, unless partial.</summary>
+    private HashSet<EntityUid>? PickSolids(IReadOnlyList<EntityUid> items, FoodRecipePrototype recipe, bool partial = false)
     {
         if (recipe.IngredientsSolids.Count == 0)
             return null;
@@ -796,7 +807,7 @@ public sealed partial class WGCookingSystem : EntitySystem
         foreach (var (id, count) in recipe.IngredientsSolids)
         {
             var matches = items.Where(e => MetaData(e).EntityPrototype?.ID == id).Take(count.Int()).ToList();
-            if (matches.Count < count.Int())
+            if (matches.Count < count.Int() && !partial)
                 return null;
             picked.UnionWith(matches);
         }
@@ -804,42 +815,57 @@ public sealed partial class WGCookingSystem : EntitySystem
         return picked;
     }
 
-    /// <summary>Whether the items hold what a kitchen recipe needs: its solids, and its reagents outside those solids.</summary>
+    /// <summary>
+    /// The items a kitchen recipe's reagents come from: picked vessels first (a bowl it uses up, its water with it),
+    /// then the items it leaves. A picked food's own reagents never count; the food is used up whole.
+    /// </summary>
+    private IEnumerable<Entity<SolutionContainerManagerComponent?>> ReagentSources(IReadOnlyList<EntityUid> items, HashSet<EntityUid> solids)
+    {
+        foreach (var item in items.Where(solids.Contains).Concat(items.Where(e => !solids.Contains(e))))
+        {
+            if (solids.Contains(item) && HasComp<FoodComponent>(item) || !TryComp<SolutionContainerManagerComponent>(item, out var manager))
+                continue;
+            yield return (item, manager);
+        }
+    }
+
+    /// <summary>How much of a reagent the items hold toward a kitchen recipe.</summary>
+    private FixedPoint2 ReagentHeld(IReadOnlyList<EntityUid> items, HashSet<EntityUid> solids, string reagent)
+    {
+        var have = FixedPoint2.Zero;
+        foreach (var source in ReagentSources(items, solids))
+        {
+            foreach (var (_, soln) in _solutions.EnumerateSolutions(source))
+                have += soln.Comp.Solution.GetTotalPrototypeQuantity(reagent);
+        }
+
+        return have;
+    }
+
+    /// <summary>Whether the items hold what a kitchen recipe needs: its solids and its reagents.</summary>
     private bool Holds(IReadOnlyList<EntityUid> items, FoodRecipePrototype recipe)
     {
         if (PickSolids(items, recipe) is not { } solids)
             return false;
 
-        // Reagents inside a solid don't count: the solid is used up whole, as Consume does.
         foreach (var (reagent, amount) in recipe.IngredientsReagents)
         {
-            var have = FixedPoint2.Zero;
-            foreach (var item in items)
-            {
-                if (solids.Contains(item) || !TryComp<SolutionContainerManagerComponent>(item, out var manager))
-                    continue;
-                foreach (var (_, soln) in _solutions.EnumerateSolutions((item, manager)))
-                    have += soln.Comp.Solution.GetTotalPrototypeQuantity(reagent);
-            }
-
-            if (have < amount)
+            if (ReagentHeld(items, solids, reagent) < amount)
                 return false;
         }
 
         return true;
     }
 
-    /// <summary>Uses up a kitchen recipe's ingredients: the picked solids whole, and its reagents from the other items.</summary>
+    /// <summary>Uses up a kitchen recipe's ingredients: the picked solids whole, and its reagents, from picked vessels first.</summary>
     private void Consume(IReadOnlyList<EntityUid> items, FoodRecipePrototype recipe, HashSet<EntityUid> solids)
     {
         foreach (var (reagent, amount) in recipe.IngredientsReagents)
         {
             var left = amount;
-            foreach (var item in items)
+            foreach (var source in ReagentSources(items, solids))
             {
-                if (left <= FixedPoint2.Zero || solids.Contains(item) || !TryComp<SolutionContainerManagerComponent>(item, out var manager))
-                    continue;
-                foreach (var (_, soln) in _solutions.EnumerateSolutions((item, manager)))
+                foreach (var (_, soln) in _solutions.EnumerateSolutions(source))
                 {
                     var take = FixedPoint2.Min(left, soln.Comp.Solution.GetTotalPrototypeQuantity(reagent));
                     if (take <= FixedPoint2.Zero)
@@ -847,6 +873,9 @@ public sealed partial class WGCookingSystem : EntitySystem
                     _solutions.RemoveReagent(soln, reagent, take);
                     left -= take;
                 }
+
+                if (left <= FixedPoint2.Zero)
+                    break;
             }
         }
 
@@ -1325,16 +1354,20 @@ public sealed partial class WGCookingSystem : EntitySystem
                     missing.Add(Loc.GetString("wg-cook-board-count", ("name", label), ("count", need.Int() - count)));
             }
 
+            // Reagents count from the board's containers, and from vessels the recipe uses, like a bowl of water.
+            var picked = PickSolids(items, recipe, partial: true) ?? new HashSet<EntityUid>();
             foreach (var (reagent, amount) in recipe.IngredientsReagents)
             {
                 var label = _proto.TryIndex<ReagentPrototype>(reagent, out var r) ? r.LocalizedName : reagent;
-                missing.Add(Loc.GetString("wg-cook-board-reagent", ("name", label), ("amount", amount.Int())));
+                var held = FixedPoint2.Min(amount, ReagentHeld(items, picked, reagent));
+                if (held > FixedPoint2.Zero)
+                    have.Add(Loc.GetString("wg-cook-board-reagent", ("name", label), ("amount", held.Int())));
+                if (held < amount)
+                    missing.Add(Loc.GetString("wg-cook-board-reagent", ("name", label), ("amount", (amount - held).Int())));
             }
 
             if (!any || !_proto.TryIndex<EntityPrototype>(recipe.Result, out var result))
                 continue;
-            if (Holds(items, recipe))
-                missing.Clear();
             var unbaked = (recipe.RecipeType & (int) MicrowaveRecipeType.Assembler) == 0;
             recipes.Add((missing.Count, new WGPrepRecipeView(result.Name, recipe.Result, have, missing, unbaked)));
         }

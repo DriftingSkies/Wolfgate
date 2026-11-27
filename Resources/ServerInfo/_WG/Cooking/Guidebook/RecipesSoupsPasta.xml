@@ -1,0 +1,15 @@
+<Document>
+# Soups, salads and pasta
+## Soups
+These are the station's bowl soups, put together on the board. For soups simmered in a pot, see [textlink="Soups and stews" link="WGRecipesSoups"].
+<WGRecipeEmbed Kind="Kitchen" Groups="Soup"/>
+
+## Salads
+<WGRecipeEmbed Kind="Kitchen" Groups="Salad"/>
+
+## Pasta
+<WGRecipeEmbed Kind="Kitchen" Groups="Pasta"/>
+
+## Pizza
+<WGRecipeEmbed Kind="Kitchen" Groups="Pizza"/>
+</Document>

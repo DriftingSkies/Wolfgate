@@ -2202,7 +2202,7 @@
   parent: BaseItem
   id: WGCookKettle
   name: kettle
-  description: A kettle for the hob. Fill it with water, bring it to the boil, then drop in tea leaves or coffee beans, or spoon in tea powder, to brew.
+  description: A kettle for the hob, and the only thing that brews tea and coffee. Fill it with water, bring it to the boil, then drop in tea leaves or coffee beans, or spoon in a little tea powder. Use a cup on it to pour.
   components:
   - type: Construction
     graph: WGCookKettleGraph
@@ -2277,7 +2277,7 @@
   parent: BaseItem
   id: WGCookTeapot
   name: porcelain teapot
-  description: A fine porcelain teapot. Fill it from the kettle to serve, then pour out the cups.
+  description: A fine porcelain teapot for serving. Fill it from the kettle, carry it to the table, then pour out the cups.
   components:
   - type: Construction
     graph: WGCookTeapotGraph

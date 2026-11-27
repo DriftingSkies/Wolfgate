@@ -4,6 +4,7 @@ using Content.Server.Botany.Components;
 using Content.Server.Botany.Systems;
 using Content.Server.Cargo.Systems;
 using Content.Server.Power.Components;
+using Content.Shared._NF.Shipyard.Components;
 using Content.Shared._WG.Farming;
 using Content.Shared.Cargo.Components;
 using Content.Server.Popups;
@@ -145,15 +146,17 @@ public sealed class WGFarmingSystem : EntitySystem
         var indoors = TryComp<MapGridComponent>(grid, out var gridComp) && TryComp<RoofComponent>(grid, out var roof)
             && _roofs.IsRooved((grid, gridComp, roof), _maps.TileIndicesFor(grid, gridComp, xform.Coordinates));
         var lamp = UnderLamp(uid);
+        // A bought ship keeps its own lights and climate, even landed on a world.
+        var world = HasComp<ShuttleDeedComponent>(grid) ? null : day;
         // Without a day (stations, ships) the room's own lights grow plants; on a world, the sun or a lamp. A roof is a
         // greenhouse's: daylight still reaches the plants under it.
-        var daylight = day == null
-            || SharedLightCycleSystem.CalculateLightLevel(day, (float) (_timing.CurTime + day.Offset).TotalSeconds) >= DayLight;
+        var daylight = world == null
+            || SharedLightCycleSystem.CalculateLightLevel(world, (float) (_timing.CurTime + world.Offset).TotalSeconds) >= DayLight;
 
         string? reason = null;
         if (!daylight && !lamp)
             reason = "wg-farm-reason-night";
-        else if (crop != null && day != null && !(indoors && lamp) && map != null && _climate.GetOutsideTemperature(map.Value) is { } kelvin)
+        else if (crop != null && world != null && !(indoors && lamp) && map != null && _climate.GetOutsideTemperature(map.Value) is { } kelvin)
         {
             var celsius = kelvin - 273.15f;
             if (celsius < crop.MinTemp)
@@ -174,7 +177,7 @@ public sealed class WGFarmingSystem : EntitySystem
         }
 
         plot.Reason = reason;
-        if (reason == null && day != null && !indoors && Pecked(uid, holder))
+        if (reason == null && world != null && !indoors && Pecked(uid, holder))
             reason = plot.Reason = "wg-farm-reason-pecked";
         if (reason != null)
         {

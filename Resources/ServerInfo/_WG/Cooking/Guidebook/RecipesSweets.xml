@@ -1,0 +1,14 @@
+<Document>
+# Sweets and bakes
+## Cakes
+<WGRecipeEmbed Kind="Kitchen" Groups="Cake,LoafCakes"/>
+
+## Pies
+<WGRecipeEmbed Kind="Kitchen" Groups="Pie"/>
+
+## Bars and cookies
+<WGRecipeEmbed Kind="Kitchen" Groups="BarsAndCookies"/>
+
+## Desserts
+<WGRecipeEmbed Kind="Kitchen" Groups="Dessert"/>
+</Document>

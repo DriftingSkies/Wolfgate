@@ -34,7 +34,6 @@ Foraging on planets (`WGForagingSystem`). Every minute each planet world with pl
 
 ## Non-modular edits
 
-- [`Resources/Prototypes/Guidebook/service.yml`](../../../Resources/Prototypes/Guidebook/service.yml): the foraging guide sits under the botany page
 - [`Resources/ServerInfo/Guidebook/Service/Botany.xml`](../../../Resources/ServerInfo/Guidebook/Service/Botany.xml): link the foraging guide
 
 <!-- WOLFGATE-GENERATED END -->

@@ -3,7 +3,8 @@
 A fella has gotta eat, and it's the chef's job to make sure folks have something other than junk to munch on.
 
 
-[textlink="Click here to see a list of food recipes." link="FoodRecipes"]
+<!-- WOLFGATE(Cooking): the food recipe link opens our recipe pages, which show how the hearth cooks each dish
+     Upstream: [textlink="Click here to see a list of food recipes." link="FoodRecipes"] -->[textlink="Click here to see a list of food recipes." link="WGRecipes"]
 <!-- WOLFGATE(Cooking): link the hands-on cooking guide -->[textlink="Click here to learn how cooking works." link="WGCooking"]
 <!-- WOLFGATE(Fishing): link the fishing guide -->[textlink="Click here to learn how to fish." link="WGFishing"]
 

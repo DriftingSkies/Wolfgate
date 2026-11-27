@@ -80,12 +80,13 @@ public sealed partial class WGCookingSystem
         }
     }
 
-    /// <summary>A kettle lifted off the hob won't pour while powder is still steeping in it.</summary>
+    /// <summary>A kettle lifted off the hob won't pour while powder is still steeping in it; spent powder with no water left doesn't hold it.</summary>
     private void OnKettlePourAttempt(Entity<WGPotComponent> ent, ref SolutionTransferAttemptEvent args)
     {
         if (args.From != ent.Owner || !ent.Comp.Kettle || !_solutions.TryGetSolution(ent.Owner, ent.Comp.Solution, out _, out var solution))
             return;
-        if (BrewRecipes().Any(r => r.Powder is { } powder && solution.GetTotalPrototypeQuantity(powder.Id) > FixedPoint2.Zero))
+        if (solution.GetTotalPrototypeQuantity(Water) > FixedPoint2.Zero
+            && BrewRecipes().Any(r => r.Powder is { } powder && solution.GetTotalPrototypeQuantity(powder.Id) > FixedPoint2.Zero))
             args.Cancel(Loc.GetString("wg-brew-still-steeping"));
     }
 

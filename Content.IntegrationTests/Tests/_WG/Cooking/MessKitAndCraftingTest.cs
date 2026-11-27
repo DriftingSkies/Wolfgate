@@ -44,7 +44,7 @@ public sealed class MessKitAndCraftingTest
             }.Select(t => factory.GetComponentName(t)).ToList();
 
             var missing = protos.EnumeratePrototypes<EntityPrototype>()
-                .Where(p => !p.Abstract && p.ID.StartsWith("WG") && machines.Any(m => p.Components.ContainsKey(m)))
+                .Where(p => !p.Abstract && p.ID.StartsWith("WG") && !p.ID.StartsWith("WGTest") && machines.Any(m => p.Components.ContainsKey(m)))
                 .Select(p => p.ID)
                 .Where(id => !built.Contains(id))
                 .ToList();
