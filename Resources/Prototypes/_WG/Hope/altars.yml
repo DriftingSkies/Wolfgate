@@ -1,0 +1,14 @@
+# Altars that sing hymns to anyone near. Give any entity a WGHymnSource to make another: `source` picks the hymns
+# (wgHymn prototypes with the same source), `range` how far they carry in metres, `gap` the quiet between them.
+
+- type: entity
+  id: WGAltarSultan
+  parent: AltarConvertYellow
+  components:
+  - type: WGHymnSource
+    source: Sultan
+    range: 18
+  - type: PointLight
+    radius: 2.5
+    energy: 1.4
+    color: "#b48cff"

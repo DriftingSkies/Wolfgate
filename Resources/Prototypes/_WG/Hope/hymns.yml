@@ -1,0 +1,67 @@
+# The Sultan's hymns, sung at her altars. Rendered by make_sultan_hymn.py, kept outside the repo (see the Hope README).
+
+- type: wgHymn
+  id: WGHymnSultanHold
+  source: Sultan
+  path: /Audio/_WG/Hope/Sultan/hold.ogg
+  seconds: 89.25
+
+- type: wgHymn
+  id: WGHymnSultanHoldDeep
+  source: Sultan
+  path: /Audio/_WG/Hope/Sultan/hold-deep.ogg
+  seconds: 89.25
+
+- type: wgHymn
+  id: WGHymnSultanUnturning
+  source: Sultan
+  path: /Audio/_WG/Hope/Sultan/unturning.ogg
+  seconds: 89.25
+
+- type: wgHymn
+  id: WGHymnSultanVigil
+  source: Sultan
+  path: /Audio/_WG/Hope/Sultan/vigil.ogg
+  seconds: 60.30
+
+- type: wgHymn
+  id: WGHymnSultanDawn
+  source: Sultan
+  path: /Audio/_WG/Hope/Sultan/dawn.ogg
+  seconds: 64.90
+
+- type: wgHymn
+  id: WGHymnSultanDawnMen
+  source: Sultan
+  path: /Audio/_WG/Hope/Sultan/dawn-men.ogg
+  seconds: 52.40
+
+- type: wgHymn
+  id: WGHymnSultanProcession
+  source: Sultan
+  path: /Audio/_WG/Hope/Sultan/procession.ogg
+  seconds: 95.80
+
+- type: wgHymn
+  id: WGHymnSultanLitany
+  source: Sultan
+  path: /Audio/_WG/Hope/Sultan/litany.ogg
+  seconds: 76.40
+
+- type: wgHymn
+  id: WGHymnSultanElegy
+  source: Sultan
+  path: /Audio/_WG/Hope/Sultan/elegy.ogg
+  seconds: 100.50
+
+- type: wgHymn
+  id: WGHymnSultanNinni
+  source: Sultan
+  path: /Audio/_WG/Hope/Sultan/ninni.ogg
+  seconds: 40.30
+
+- type: wgHymn
+  id: WGHymnSultanNinniLow
+  source: Sultan
+  path: /Audio/_WG/Hope/Sultan/ninni-low.ogg
+  seconds: 40.30

@@ -3169,3 +3169,9 @@ unmarked:
   - path: Resources/Maps/_Mono/POI/Dungeons/lancelot.yml
     module: null
     reason: The plasma miner trickles 2 mol/s, down from 400, and refills its chamber to the 6,500 kPa it starts at.
+  - path: Resources/Maps/_Mono/POI/pdvhelios.yml
+    module: LoreBook
+    reason: The Vanguard oath papers name the Sultan as a woman and the Choir as heresy.
+  - path: Resources/Maps/_Mono/POI/pdvhelios.yml
+    module: Hope
+    reason: The altar of the Blessed Figure is the Sultan's altar, which sings her hymns.

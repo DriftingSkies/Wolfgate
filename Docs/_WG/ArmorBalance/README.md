@@ -82,7 +82,7 @@ prototypes in `_Mono` with `WOLFGATE(ArmorBalance)` markers.
 - [`Resources/Prototypes/_Mono/Shipyard/TSF/calypso.yml`](../../../Resources/Prototypes/_Mono/Shipyard/TSF/calypso.yml): reverts Monolith#4845.
 - [`Resources/Prototypes/_Mono/Shipyard/TSF/cinquedea.yml`](../../../Resources/Prototypes/_Mono/Shipyard/TSF/cinquedea.yml): reverts Monolith#4845.
 - [`Resources/Prototypes/_Mono/Shipyard/TSF/paladin.yml`](../../../Resources/Prototypes/_Mono/Shipyard/TSF/paladin.yml): reverts Monolith#4845.
-- [`Resources/Prototypes/Entities/Clothing/OuterClothing/hardsuits.yml`](../../../Resources/Prototypes/Entities/Clothing/OuterClothing/hardsuits.yml): grammar pass.
+- [`Resources/Prototypes/Entities/Clothing/OuterClothing/hardsuits.yml`](../../../Resources/Prototypes/Entities/Clothing/OuterClothing/hardsuits.yml): grammar pass and the Sultan's pronoun.
 - [`Resources/SharedMaps/_Mono/Shuttles/TSF/calypso.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/TSF/calypso.yml): Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
 - [`Resources/SharedMaps/_Mono/Shuttles/TSF/cinquedea.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/TSF/cinquedea.yml): Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.
 - [`Resources/SharedMaps/_Mono/Shuttles/TSF/fujian.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/TSF/fujian.yml): Reverts Monolith#4845, putting the mapped M82b and M82c suit storage back in place of the M86.

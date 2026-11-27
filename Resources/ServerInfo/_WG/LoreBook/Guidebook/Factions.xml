@@ -1,13 +1,13 @@
 <Document>
   # Factions
 
-  Every job belongs to a faction, and the factions do not get along. Their histories, ranks, culture and standing orders are in the lore book. This page lists where to find them.
+  Every job belongs to a faction. The factions do not all like each other, but every one of them needs the Lattice to stand. Their histories, ranks, culture and standing orders are in the lore book. This page lists where to find them.
 
   ## Who you can play
 
-  - [lorelink="TSFMC" link="TSFMC_Entry"]: the Federation's marines. Their [lorelink="S.O.P." link="TSFMC_SOP"] says how marines are expected to act.
-  - [lorelink="PDV" link="PDV_Entry"]: the Phaethon Dynasty Vanguard. Read their [lorelink="standing orders" link="WGPdvStandingOrders"] for the ceasefire.
-  - [lorelink="Caelestinus" link="Caelestinus"]: the neutral station staff, and the [lorelink="judges" link="WGLoreJudges"] who guard it.
+  - [lorelink="TSFMC" link="TSFMC_Entry"]: the last of the Federation's marines, and the [lorelink="reinforcements" link="WGLoreReinforcements"] that keep arriving. Their [lorelink="S.O.P." link="TSFMC_SOP"] says how marines are expected to act.
+  - [lorelink="PDV" link="PDV_Entry"]: the Phaethon Dynasty Vanguard. Read their [lorelink="standing orders" link="WGPdvStandingOrders"] for how the Vanguard keeps the peace, and about [lorelink="the Sultan" link="WGLoreSultan"] who gave them.
+  - [lorelink="Caelestinus" link="Caelestinus"]: the neutral station staff, the [lorelink="judges" link="WGLoreJudges"] who guard it, and [lorelink="the Accord" link="WGLoreAccord"] they keep.
   - [lorelink="USSP" link="USSP_Entry"]: what is left of the Union.
   - [lorelink="Viper Group" link="Viper_Group"] and [lorelink="Mieyo Manufacturing" link="MMC"]: hired guns and the company that sells to everyone.
   - [lorelink="Astraeus Solar Federation" link="WGAsf"]: the envoys at Lantern Post.
@@ -17,5 +17,5 @@
   - [lorelink="The Ashfall Reavers" link="WGLoreReavers"]: raiders with strongholds.
   - [lorelink="The ADS" link="WGLoreAds"]: the machines. How to handle them is under [textlink="ADS" link="WGAds"] below.
 
-  The cold war rules themselves are in the server rules, not the lore book. Breaking an in-character order gets you trouble from your officers. Breaking a rule gets you trouble from the admins.
+  The rules for breaking the Accord are in the server rules, not the lore book. Breaking an in-character order gets you trouble from your officers. Breaking a rule gets you trouble from the admins.
 </Document>
