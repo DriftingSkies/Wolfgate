@@ -106,12 +106,12 @@ public sealed partial class WGCodaSongSystem : EntitySystem
 
         // Reaching the top of the scale mid-piece: that piece ebbs away now, and the finality follows soon after.
         if (_song is { Source: null } && !_cutShort && drift >= 90f && _song.MinDrift < 85f)
-        {
-            _cutShort = true;
-            var cut = now - TimeSpan.FromSeconds(_song.Seconds - PieceFade);
-            if (cut > _started)
-                _started = cut;
-        }
+            CutShort(now);
+
+        // A heart coming into reach, another taking over, or the listener leaving one: the piece playing ebbs away and
+        // the one that fits follows soon after.
+        if (_song != null && !_cutShort && _song.Source != source)
+            CutShort(now);
 
         if (_song != null && now >= _started + TimeSpan.FromSeconds(_song.Seconds))
         {
@@ -175,6 +175,20 @@ public sealed partial class WGCodaSongSystem : EntitySystem
             turn = MathF.Max(turn, danger * 0.9f);
 
         Mix(pull, turn, drift, frameTime, danger, crisis, heart);
+    }
+
+    /// <summary>Brings the piece playing to its closing fade now, from wherever its fade stands, without a jump.</summary>
+    private void CutShort(TimeSpan now)
+    {
+        if (_song == null)
+            return;
+
+        _cutShort = true;
+        var elapsed = (float) (now - _started).TotalSeconds;
+        var remaining = MathF.Min(PieceFade, MathF.Min(elapsed, _song.Seconds - elapsed));
+        var cut = now - TimeSpan.FromSeconds(_song.Seconds - MathF.Max(0f, remaining));
+        if (cut > _started)
+            _started = cut;
     }
 
     /// <summary>Lets the music go: it fades back in where it was held, or starts again on its own.</summary>
@@ -316,6 +330,9 @@ public sealed partial class WGCodaSongSystem : EntitySystem
         var master = (-10f + 16f * pull) + duck + 20f * MathF.Log10(MathF.Max(0.001f, _musicVolume * _fade * piece));
         if (crisis)
             master += combat ? 10f : 6f;
+        // Ambient music turned all the way down silences the choir, crisis or not.
+        if (_musicVolume <= 0f)
+            master = Silent;
         // Whatever else holds the music, an internet sound or the soundtrack mute, silences the choir too. The stems
         // keep running muted so they stay together, and come back as soon as nothing holds them.
         if (_music.WgMusicHeldElsewhere)

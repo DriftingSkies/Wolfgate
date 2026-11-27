@@ -422,7 +422,8 @@ public sealed partial class WGPyramidSystem : EntitySystem
         _map.FindGridsIntersecting(xform.MapID, new Box2(here - new Vector2(range), here + new Vector2(range)), ref grids);
         foreach (var other in grids)
         {
-            if (other.Owner == target || ent.Comp.Marks.Count >= 24 || !InRange(other, xform, range))
+            if (other.Owner == target || ent.Comp.Spared.Contains(other.Owner) || ent.Comp.Marks.Count >= 24
+                || !InRange(other, xform, range))
                 continue;
 
             var tiles = _map.GetAllTiles(other, other.Comp).Select(t => t.GridIndices).ToList();
