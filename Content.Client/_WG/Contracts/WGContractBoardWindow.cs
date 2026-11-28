@@ -135,7 +135,7 @@ public sealed partial class WGContractBoardWindow : FancyWindow
 
         return _tab switch
         {
-            Tab.Offers => _state.Offers.Where(c => _category == null || c.Category == _category)
+            Tab.Offers => _state.Offers.Where(c => WGContractStyle.InCategory(c, _category))
                 .OrderBy(c => c.Locked != null)
                 .ThenBy(c => c.Tier)
                 .ThenByDescending(c => c.Reward)
@@ -185,7 +185,7 @@ public sealed partial class WGContractBoardWindow : FancyWindow
         ShowSelected();
     }
 
-    /// <summary>The category rail: every category with its offer count; planetary is listed though nothing uses it yet.</summary>
+    /// <summary>The category rail: every category with its offer count; Planetary also counts planetside work of other kinds.</summary>
     private void BuildRail()
     {
         _rail.RemoveAllChildren();
@@ -195,7 +195,7 @@ public sealed partial class WGContractBoardWindow : FancyWindow
         AddRailButton(null, Loc.GetString("wg-contract-category-all"), _state.Offers.Count);
         foreach (var category in Enum.GetValues<WGContractCategory>())
         {
-            AddRailButton(category, WGContractStyle.Category(category), _state.Offers.Count(c => c.Category == category));
+            AddRailButton(category, WGContractStyle.Category(category), _state.Offers.Count(c => WGContractStyle.InCategory(c, category)));
         }
     }
 

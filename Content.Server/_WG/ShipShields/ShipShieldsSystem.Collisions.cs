@@ -1,6 +1,7 @@
 using System.Numerics;
 using Content.Shared._Crescent.ShipShields;
 using Content.Server._Crescent.ShipShields.Components;
+using Content.Server._WG.ShipShields;
 using Content.Shared._WG.ShipShields;
 using Content.Server.Power.Components;
 using Robust.Shared.Physics.Components;
@@ -27,7 +28,9 @@ public sealed partial class ShipShieldsSystem
             return energy;
 
         var capacity = WGShipShieldEffects.EffectiveCapacity(emitter.DamageLimit, emitter.MaxDraw, emitter.PowerModifier, emitter.DamageExp);
-        var remaining = MathF.Max(0f, capacity - emitter.Damage);
+        // The generator is charged its share of the damage, so the ship still takes the rest of its own capacity too.
+        var share = WolfgateGeneratorShare(source, emitter);
+        var remaining = MathF.Max(0f, capacity - emitter.Damage) / share;
         if (remaining <= 0f)
         {
             ExhaustWolfgateCollisionShield(grid, source, emitter);
@@ -47,10 +50,10 @@ public sealed partial class ShipShieldsSystem
         if (absorbed <= 0d)
             return energy;
         var damage = (float)(absorbed * damagePerEnergy / strength);
-        emitter.Damage = absorbed >= availableEnergy ? capacity : Math.Min(capacity, emitter.Damage + damage);
+        emitter.Damage = absorbed >= availableEnergy ? capacity : Math.Min(capacity, emitter.Damage + damage * share);
         UpdateWolfgateShieldHealth(shielded.Shield, visuals, source);
         var position = GetWolfgateCollisionImpactPosition(shielded.Shield, worldPoint);
-        WolfgateShieldImpact(shielded.Shield, position, WGShipShieldEffects.ImpactStrength(damage, capacity));
+        WolfgateShieldImpact(shielded.Shield, position, WGShipShieldEffects.ImpactStrength(damage * share, capacity));
         if (emitter.Damage >= capacity)
             ExhaustWolfgateCollisionShield(grid, source, emitter);
         return MathF.Max(0f, energy - (float)absorbed);
@@ -69,10 +72,14 @@ public sealed partial class ShipShieldsSystem
     private void ExhaustWolfgateCollisionShield(EntityUid grid, EntityUid source, ShipShieldEmitterComponent emitter)
     {
         emitter.Recharging = true;
-        if (emitter.Damage >= emitter.DamageLimit)
-            emitter.OverloadAccumulator = MathF.Max(emitter.OverloadAccumulator, emitter.DamageOverloadTimePunishment);
+        // A ship generator always waits out an overload; its recharge mode ends as soon as it cools a little.
+        if (emitter.Damage >= emitter.DamageLimit || HasComp<WGShipShieldCostComponent>(source))
+            emitter.OverloadAccumulator = MathF.Max(emitter.OverloadAccumulator, WolfgateOverloadWait(source, emitter));
         if (RemoveWolfgateEmitterShield(source, emitter, "collision capacity exhausted"))
+        {
             PlayWolfgateShieldPowerSound(source, grid, false);
+            LockWolfgateShieldGuns(grid, source);
+        }
         emitter.Shield = null;
         emitter.Shielded = null;
     }

@@ -16,6 +16,7 @@ public sealed partial class ShuttleConsoleBoundUserInterface
         if (_window == null)
             return;
         _window.ShieldEnabledRequested += enabled => SendMessage(new WGShipShieldSetEnabledMessage(enabled));
+        _window.ShieldVentRequested += () => SendMessage(new WGShipShieldVentMessage());
         _window.ShieldShuntRequested += (direction, concentration, arc) =>
             SendMessage(new WGShipShieldSetShuntMessage(direction, concentration, arc));
     }

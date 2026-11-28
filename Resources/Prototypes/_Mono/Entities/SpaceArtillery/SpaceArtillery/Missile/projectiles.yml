@@ -16,6 +16,7 @@
   categories: [ HideSpawnMenu ]
   abstract: true
   components:
+  - type: WGShipMissile # WOLFGATE(ShipShields): firing a missile adds no heat to the ship
   - type: ShipWeaponProjectile
   - type: Fixtures
     fixtures:

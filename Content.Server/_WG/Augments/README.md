@@ -61,7 +61,11 @@ Wolfgate's own cyberware is in `implants.yml`. The tool arm and the finger light
 an action that folds the implant's item into that side's hand and back, and an EMP folds it in and locks it. The tool
 arm lists six tools, so its action opens a wheel under the mouse instead (`WGDeployableWheel`, sent and answered by
 network events): picking a tool folds it out in place of the one that was out, and picking that one folds it back in.
-A tool is spawned as it folds out and deleted as it folds in, so the welder comes out full each time. The
+A tool is spawned as it folds out and deleted as it folds in, so the welder comes out full each time. Pressing drop (Q) with a
+deployable's item or a mantis blade in the active hand folds it back in (`WGAugmentDropRetractSystem`, bound ahead of
+the hands system's drop, through the implant's own retract); anything else drops as usual. A mantis blade hits for
+Slash 17 + Piercing 9 at 1.5 a second, and its pair strikes along at two thirds (Goob `Multihit`), so one blade is
+well under an energy sword and a pair a little over it. The
 smartlink (`WGSmartlinkSystem`) is recoil control for a gun held in its hand: the camera kick is cut to about a third,
 projectiles fly a fifth faster, the spread each shot adds is halved and it settles half again as fast. The gun's
 tightest and widest spread stay its own (scaling those let a wielded rifle's flat wield bonus floor it at zero), so on
@@ -232,6 +236,7 @@ scratch, so an unpicked augment comes off it.
 - [`Content.Server/_WG/Augments/HealthAnalyzerSystem.Augments.cs`](HealthAnalyzerSystem.Augments.cs)
 - [`Content.Server/_WG/Augments/ServerPreferencesManager.Augments.cs`](ServerPreferencesManager.Augments.cs)
 - [`Content.Server/_WG/Augments/WGAdrenalBoosterSystem.cs`](WGAdrenalBoosterSystem.cs)
+- [`Content.Server/_WG/Augments/WGAugmentDropRetractSystem.cs`](WGAugmentDropRetractSystem.cs)
 - [`Content.Server/_WG/Augments/WGAugmentPaidComponent.cs`](WGAugmentPaidComponent.cs)
 - [`Content.Server/_WG/Augments/WGAugmentScavengeSpawnerComponent.cs`](WGAugmentScavengeSpawnerComponent.cs)
 - [`Content.Server/_WG/Augments/WGAugmentSystem.cs`](WGAugmentSystem.cs)
@@ -318,6 +323,7 @@ scratch, so an unpicked augment comes off it.
 - [`Content.IntegrationTests/Tests/_WG/Augments/AugmentClothedTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Augments/AugmentClothedTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Augments/AugmentCombatImplantsTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Augments/AugmentCombatImplantsTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Augments/AugmentCyberChestTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Augments/AugmentCyberChestTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Augments/AugmentDropRetractTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Augments/AugmentDropRetractTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Augments/AugmentEditorTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Augments/AugmentEditorTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Augments/AugmentHaloBurstTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Augments/AugmentHaloBurstTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Augments/AugmentHoloProjectorTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Augments/AugmentHoloProjectorTest.cs)
@@ -429,6 +435,9 @@ scratch, so an unpicked augment comes off it.
 - [`Content.Shared/Humanoid/SharedHumanoidAppearanceSystem.cs`](../../../Content.Shared/Humanoid/SharedHumanoidAppearanceSystem.cs): swaps in the augmented parts and draws their styles
 - [`Content.Shared/MedicalScanner/HealthAnalyzerScannedUserMessage.cs`](../../../Content.Shared/MedicalScanner/HealthAnalyzerScannedUserMessage.cs): the cyberware in the body, for the organs tab
 - [`Content.Shared/Preferences/HumanoidCharacterProfile.cs`](../../../Content.Shared/Preferences/HumanoidCharacterProfile.cs): augments the species can't take are dropped
+- [`Resources/Prototypes/_Goobstation/Entities/Objects/Weapons/Melee/mantis_blade.yml`](../../../Resources/Prototypes/_Goobstation/Entities/Objects/Weapons/Melee/mantis_blade.yml)
+  - was 14; one blade stays under an energy sword's DPS, a pair beats it
+  - was 7
 - [`Resources/Prototypes/_NF/Entities/World/Debris/wrecks.yml`](../../../Resources/Prototypes/_NF/Entities/World/Debris/wrecks.yml): scavenged cyberware, the dearer the rarer
 
 <!-- WOLFGATE-GENERATED END -->

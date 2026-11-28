@@ -65,6 +65,7 @@
             VGCommander: [1, 1]
             VGLieutenant: [2, 2]
             VGInfanteer: [-1, -1]
+            WGViperBorg: [0, 3] # WOLFGATE(Cyborgs): raises Camelot's Viper borg cap to three
             Contractor: [-1, -1]
             #Pilot: [0, -1]
             #Mercenary: [0, -1]

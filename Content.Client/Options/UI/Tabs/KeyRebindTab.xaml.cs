@@ -352,12 +352,19 @@ namespace Content.Client.Options.UI.Tabs
             AddButton(ContentKeyFunctions.ShuttleStrafeDown);
             AddButton(ContentKeyFunctions.ShuttleRotateLeft);
             AddButton(ContentKeyFunctions.ShuttleRotateRight);
+            AddButton(Content.Shared._WG.ShipFacing.WGShipFacingKeys.WGShuttleFaceCursor); // WOLFGATE(ShipFacing): turn toward the cursor
+            AddButton(Content.Shared._WG.ShipShields.WGShipShieldKeys.WGToggleShipShields); // WOLFGATE(ShipShields): shield hotkey
+            AddButton(Content.Shared._WG.ShipShields.WGShipShieldKeys.WGVentShipHeat); // WOLFGATE(ShipShields): vent hotkey
             AddButton(ContentKeyFunctions.ShuttleBrake);
             AddButton(ContentKeyFunctions.ShuttleAscend); // Mono
             AddButton(ContentKeyFunctions.ShuttleDescend); // Mono
             AddButton(WGLandingGuideKeys.WGToggleLandingGuide); // WOLFGATE(LandingGuide): landing guide toggle
             // WOLFGATE(ShipModules) START: ship module hotkeys
             foreach (var key in Content.Shared._WG.ShipModules.WGShipModuleKeys.Slots)
+                AddButton(key);
+            // WOLFGATE END
+            // WOLFGATE(Cockpit) START: cockpit fire-group hotkeys
+            foreach (var key in Content.Shared._WG.Cockpit.WGCockpitKeys.WeaponGroups)
                 AddButton(key);
             // WOLFGATE END
 

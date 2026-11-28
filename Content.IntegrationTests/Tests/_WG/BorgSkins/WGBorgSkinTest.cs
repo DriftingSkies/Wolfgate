@@ -34,7 +34,10 @@ public sealed class WGBorgSkinTest
             var count = 0;
             foreach (var subtype in prototypes.EnumeratePrototypes<BorgSubtypePrototype>())
             {
-                if (!subtype.ID.StartsWith(Prefix))
+                var isViper = subtype.ID.StartsWith("WGViperAssault")
+                              || subtype.ID.StartsWith("WGViperEngineering")
+                              || subtype.ID.StartsWith("WGViperMedical");
+                if (!subtype.ID.StartsWith(Prefix) && !isViper)
                     continue;
 
                 count++;
@@ -42,6 +45,9 @@ public sealed class WGBorgSkinTest
                 var path = SpriteSpecifierSerializer.TextureRoot / subtype.SpritePath;
                 Assert.That(resources.TryGetResource<RSIResource>(path, out var resource), $"{subtype.ID}: no RSI at {path}");
                 var rsi = resource!.RSI;
+                var hasSkin = prototypes.TryIndex<WGBorgSkinPrototype>(subtype.ID, out var skin);
+                if (isViper)
+                    Assert.That(hasSkin, $"{subtype.ID}: no wgBorgSkin capability metadata");
 
                 var states = new List<string>
                 {
@@ -53,7 +59,7 @@ public sealed class WGBorgSkinTest
                 if (type.SpriteBodyMovementState is { } movement)
                     states.Add(movement);
 
-                if (prototypes.TryIndex<WGBorgSkinPrototype>(subtype.ID, out var skin) && skin.Walks)
+                if (hasSkin && skin is { Walks: true })
                 {
                     foreach (var state in states.ToArray())
                     {

@@ -1,0 +1,26 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-3.0",
+    "copyright": "Made for Wolfgate. Scrap recoloured from Objects/Materials/Scrap/generic.rsi (Flareguy & EmoGarbage404, from tgstation), gas from Structures/Storage/canister.rsi (tgstation), biomass from Objects/Specific/Hydroponics/wheat.rsi (vgstation13); ice and ore drawn new.",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "scrap"
+        },
+        {
+            "name": "ice"
+        },
+        {
+            "name": "gas"
+        },
+        {
+            "name": "biomass"
+        },
+        {
+            "name": "ore"
+        }
+    ]
+}

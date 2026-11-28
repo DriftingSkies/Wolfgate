@@ -288,7 +288,8 @@ public sealed class WGOperationSystem : EntitySystem
             if (op.Reward > 0 && !active.Paid && active.Grid is { } scanned && _timing.CurTime < active.ArrivedAt + GuardScanWindow)
             {
                 AddMapGuards(active, scanned, true);
-                // Turrets aren't guards, but one a spawner makes late still fights for the site.
+                // Turrets aren't guards, but one a spawner makes late still fights for the site. Spawned entities keep
+                // their real CreationTick; only ones loaded from the map read zero, and Arrive joined those.
                 foreach (var child in _siteGrid.Children(scanned))
                 {
                     if (MetaData(child).CreationTick >= active.ArrivedTick
@@ -428,13 +429,14 @@ public sealed class WGOperationSystem : EntitySystem
             }
         }
 
-        // Everything that came with a PvE site fights for it, turrets included, whatever faction its map gave it.
+        // Everything that came with a PvE site fights for it, turrets included, whatever faction its map gave it. The grid
+        // was loaded this tick, so all of it came with the site; no CreationTick filter, since loading a map clears that
+        // tick to zero on every mapped entity.
         if (op.Reward > 0)
         {
             foreach (var child in _siteGrid.Children(grid.Value))
             {
-                if (MetaData(child).CreationTick >= ent.Comp.ArrivedTick)
-                    JoinGuardFaction(child, op);
+                JoinGuardFaction(child, op);
             }
         }
 
@@ -505,7 +507,8 @@ public sealed class WGOperationSystem : EntitySystem
                 || !HasComp<MobStateComponent>(npc)
                 || HasComp<ActorComponent>(npc)
                 || Transform(npc).Anchored
-                || MetaData(npc).CreationTick < active.ArrivedTick
+                // At arrival everything on the fresh grid came with it, and mapped mobs read CreationTick zero.
+                || atSpawners && MetaData(npc).CreationTick < active.ArrivedTick
                 || active.Npcs.Contains(npc))
                 continue;
 

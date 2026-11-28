@@ -1,0 +1,86 @@
+- type: borgType
+  id: WGViperAssault
+  dummyPrototype: WGViperBorgChassisAssault
+  extraModuleCount: 3
+  moduleWhitelist:
+    tags:
+    - BorgModuleGeneric
+    - BorgModuleSyndicate
+    - BorgModuleSyndicateAssault
+  defaultModules:
+  - BorgModuleMercenary
+  - WGNCIAK220Module
+  - BorgModuleJetpack
+  - BorgModuleTool
+  - BorgModuleGPS
+  inventoryTemplateId: borgShort
+  spriteBodyState: synd_sec
+  spriteHasMindState: synd_sec_e
+  spriteNoMindState: synd_sec_e
+  spriteToggleLightState: synd_sec_l
+  petSuccessString: petting-success-engineer-cyborg
+  petFailureString: petting-failure-engineer-cyborg
+
+- type: borgType
+  id: WGViperEngineering
+  dummyPrototype: WGViperBorgChassisEngineering
+  extraModuleCount: 4
+  moduleWhitelist:
+    tags:
+    - BorgModuleGeneric
+    - BorgModuleSyndicate
+    - BorgModuleEngineering
+  defaultModules:
+  - BorgModuleMercenary
+  - BorgModuleJetpack
+  - BorgModuleGPS
+  - BorgModuleTool
+  - BorgModuleConstruction
+  - BorgModuleRCD
+  - BorgModuleCable
+  radioChannels:
+  - Engineering
+  addComponents:
+  - type: ShowHealthBars
+    damageContainers:
+    - Inorganic
+    - Silicon
+    - WGSiliconWolfmed
+    - Synth
+  inventoryTemplateId: borgShort
+  spriteBodyState: synd_sec
+  spriteHasMindState: synd_sec_e
+  spriteNoMindState: synd_sec_e
+  spriteToggleLightState: synd_sec_l
+  petSuccessString: petting-success-engineer-cyborg
+  petFailureString: petting-failure-engineer-cyborg
+
+- type: borgType
+  id: WGViperMedical
+  dummyPrototype: WGViperBorgChassisMedical
+  extraModuleCount: 4
+  moduleWhitelist:
+    tags:
+    - BorgModuleGeneric
+    - BorgModuleSyndicate
+    - BorgModuleMedical
+  defaultModules:
+  - BorgModuleMercenary
+  - BorgModuleJetpack
+  - BorgModuleGPS
+  - BorgModuleTool
+  - BorgModuleTreatment
+  - BorgModuleSurgery
+  radioChannels:
+  - Medical
+  addComponents:
+  - type: ShowHealthBars
+    damageContainers:
+    - Biological
+  inventoryTemplateId: borgShort
+  spriteBodyState: synd_sec
+  spriteHasMindState: synd_sec_e
+  spriteNoMindState: synd_sec_e
+  spriteToggleLightState: synd_sec_l
+  petSuccessString: petting-success-engineer-cyborg
+  petFailureString: petting-failure-engineer-cyborg

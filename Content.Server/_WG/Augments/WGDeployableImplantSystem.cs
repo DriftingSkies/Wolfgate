@@ -93,6 +93,21 @@ public sealed class WGDeployableImplantSystem : EntitySystem
         _audio.PlayPvs(implant.RetractSound, part);
     }
 
+    /// <summary>Folds an implant item away if one of the part's deployables put it out, and returns whether one did.</summary>
+    public bool TryStowItem(EntityUid part, EntityUid item)
+    {
+        foreach (var implant in EntityManager.GetComponents<WGDeployableImplantComponent>(part))
+        {
+            if (implant.Deployed != item)
+                continue;
+
+            Stow(part, implant);
+            return true;
+        }
+
+        return false;
+    }
+
     /// <summary>Whether the part's implant may fold an item out into the body's hand.</summary>
     private bool CanDeploy(EntityUid part, EntityUid body)
     {

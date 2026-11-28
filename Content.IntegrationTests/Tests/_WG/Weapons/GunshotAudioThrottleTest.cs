@@ -89,7 +89,7 @@ public sealed class GunshotAudioThrottleTest
     {
         var (shots, sounds) = await Fire(SlowGun);
         TestContext.Out.WriteLine($"slow gun: {shots} shots, {sounds} sounds");
-        Assert.That(shots, Is.InRange(3, 5));
+        Assert.That(shots, Is.InRange(5, 7)); // 3 shots/s for 2 s
         Assert.That(sounds, Is.EqualTo(shots), "a gun at or under 5 shots/s plays every shot");
     }
 }

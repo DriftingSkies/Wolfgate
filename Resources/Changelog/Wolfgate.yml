@@ -9249,3 +9249,210 @@ Entries:
   id: 100591
   time: '2026-11-25T14:18:13.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/838
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        Ships now build heat. Shields turn absorbed damage into heat and firing
+        ship guns heats the hull; guns stop at 95% heat.
+    - type: Add
+      message: >-
+        Added a Vent heat button to the helm, generator and gunnery shield
+        panels. Venting drops the shield and silences guns while the ship cools
+        fast, and shows on radar.
+    - type: Tweak
+      message: A collapsed ship shield locks the ship's guns for 10 to 15 seconds.
+    - type: Tweak
+      message: >-
+        Raised ship shields reduce thrust and turning and make the ship easier
+        to detect.
+    - type: Tweak
+      message: >-
+        Ships can mount only one shield generator. Generator capacities and
+        recovery times were rebalanced.
+    - type: Tweak
+      message: Firing missiles adds no heat.
+  id: 100592
+  time: '2026-11-26T10:17:48.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/824
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        Added Settlers of Colossus, a board game for 1-4 players. Buy the box at
+        the Wolfgate vendor.
+  id: 100593
+  time: '2026-11-26T13:32:35.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/842
+- author: DriftingSkies
+  changes:
+    - type: Add
+      message: >-
+        The Contracts PDA app is now a full contract board. Browse, accept and
+        abandon contracts from your PDA, and cargo is handed out at the nearest
+        board.
+    - type: Add
+      message: >-
+        Supply and mining contracts give a manifest parcel. Use goods on it, or
+        it on goods, a bag or an open crate, and it takes only what's still
+        needed.
+    - type: Add
+      message: 20 new faction board contracts, and faction boards post more offers.
+    - type: Add
+      message: >-
+        Planetside contracts are listed under Planetary as well as their own
+        category.
+    - type: Tweak
+      message: Non-mining contract pay is up 40%.
+    - type: Tweak
+      message: >-
+        Station job wages are doubled, except MMC, and no longer draw from
+        faction accounts.
+    - type: Fix
+      message: >-
+        Planetside contracts no longer fail to spawn or spawn objectives inside
+        rock.
+    - type: Fix
+      message: Space contract sites no longer spawn far beyond their listed distance.
+    - type: Fix
+      message: Replacement specialist kits can be bought once per kit per round.
+  id: 100594
+  time: '2026-11-26T13:33:17.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/840
+- author: mnemosynium
+  changes:
+    - type: Fix
+      message: Let blood packs fill a hemophage's reserve
+  id: 100595
+  time: '2026-11-26T18:13:34.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/855
+- author: AvText
+  changes:
+    - type: Tweak
+      message: Swapped stealth shaders from WG shaders back to default ss14 ones.
+  id: 100596
+  time: '2026-11-26T21:51:54.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/849
+- author: Happyowl93
+  changes:
+    - type: Tweak
+      message: >-
+        Laser guns fire faster and slowly recharge themselves when not firing.
+        TSF pulse rifle does a bit more damage.
+    - type: Tweak
+      message: Burns from heat weapons hurt more.
+    - type: Tweak
+      message: Mantis blades hit harder. A pair now outdamages an energy sword.
+    - type: Add
+      message: Press Q to retract an arm augment's blade or tool.
+    - type: Add
+      message: Talking in a vacuum only comes out as a whisper.
+    - type: Tweak
+      message: The hacking dart pierces shields on ships at half heat or more.
+    - type: Tweak
+      message: >-
+        The ARACHNE hacking harpoon and its darts are now sold in cargo instead
+        of the PDV and Underground vendors.
+  id: 100597
+  time: '2026-11-26T21:53:04.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/854
+- author: mnemosynium
+  changes:
+    - type: Add
+      message: Added luggage tug and trolleys to John Wolfgate's catalogue
+  id: 100598
+  time: '2026-11-26T21:53:33.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/856
+- author: Happyowl93
+  changes:
+    - type: Add
+      message: >-
+        Lost your ID? The shipyard dealer on Caelestinus can reissue it for a
+        small fee.
+  id: 100599
+  time: '2026-11-26T22:23:06.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/858
+- author: Balls2zawall
+  changes:
+    - type: Fix
+      message: >-
+        The Nebula's shield generator was causing strange npc ship interactions,
+        it's been removed for now.
+  id: 100600
+  time: '2026-11-27T00:44:15.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/861
+- author: MacaroniCritter
+  changes:
+    - type: Tweak
+      message: The VG Snake Eater has been reconfigured for better quality of life.
+  id: 100601
+  time: '2026-11-27T13:08:53.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/851
+- author: antanananat
+  changes:
+    - type: Fix
+      message: Added missing vacuum fix markers to VOX Vrikaash and VOX Srashakri
+    - type: Fix
+      message: >-
+        VOX Vrikaash and VOX Srashakri should no longer have you spawn outside
+        of your ship in the Crew start
+  id: 100602
+  time: '2026-11-27T13:09:38.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/859
+- author: ImogenOC
+  changes:
+    - type: Fix
+      message: >-
+        the site grid is freshly loaded in `Arrive`, so everything on it joins
+        the guard faction without the tick filter. `AddMapGuards` drops the
+        filter at arrival too. It keeps it for the later spawner scan, where
+        spawned entities still carry their real tick.
+    - type: Fix
+      message: >-
+        `Update` gathers the awake Remade first, then lets them act. `NearMiss`
+        does the same with its own list, because a reaction can fire a gun and
+        land back in `NearMiss`, inside `Update`.
+    - type: Fix
+      message: '`StartLeviathan` replaces a visit already under way.'
+    - type: Fix
+      message: >-
+        `SetUpBeam` pins the rock's ores the same way, and the assert counts ore
+        on the test's own map.
+    - type: Fix
+      message: >-
+        `WgSpawnPipe` (`NuclearReactorSystem.WGPipes.cs`,
+        `TurbineSystem.WGPipes.cs` in `_WG/Power`) parents the pipes to the
+        machine's own grid, with the same position and rotation.
+    - type: Fix
+      message: >-
+        The vault turrets on Convoy Raid, Forward Base, Supply Drop and Black
+        Site sites fight for the site instead of shooting its guards, so those
+        sites no longer clear themselves.
+    - type: Fix
+      message: >-
+        A reactor or turbine on a ship landed or crashed on a world no longer
+        unanchors itself.
+  id: 100603
+  time: '2026-11-27T17:30:17.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/865
+- author: DriftingSkies
+  changes:
+    - type: Tweak
+      message: >-
+        Safety deposit boxes hold three times as much, and medium and large
+        boxes fit suits and armour vests.
+    - type: Add
+      message: >-
+        Safety deposit boxes now take thalers and tier 1 faction suits. Suits go
+        in empty, keeping only their helmet.
+    - type: Add
+      message: Move money between your bank and savings at any ATM.
+    - type: Add
+      message: >-
+        Savings earn 2% interest each round you play at least 30 minutes and
+        survive, up to $200,000 a round.
+    - type: Tweak
+      message: Purchases that can use savings now spend your bank first.
+  id: 100604
+  time: '2026-11-27T17:38:53.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/841

@@ -68,6 +68,7 @@ costs its operation's stake.
 - [`Content.IntegrationTests/Tests/_WG/Operations/WGOperationGuardFactionTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGOperationGuardFactionTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Operations/WGOperationPlanetSiteTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGOperationPlanetSiteTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Operations/WGOperationPrototypeTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGOperationPrototypeTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Operations/WGOperationSiteFactionTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGOperationSiteFactionTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Operations/WGStoreProductEventNetTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Operations/WGStoreProductEventNetTest.cs)
 
 ### Unit tests

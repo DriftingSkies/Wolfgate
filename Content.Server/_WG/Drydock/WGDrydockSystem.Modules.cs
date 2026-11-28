@@ -34,7 +34,8 @@ public sealed partial class WGDrydockSystem
         if (!FitsModules(comp)
             || slot < 0
             || slot >= WGShipModulesComponent.SlotCount
-            || !_prototype.TryIndex<WGShipModulePrototype>(moduleId, out var module))
+            || !_prototype.TryIndex<WGShipModulePrototype>(moduleId, out var module)
+            || module.Unlisted)
             return Loc.GetString("drydock-console-unknown-refit");
 
         if (_shipModules.FittedSlot(ship, module.ID) is { } fittedSlot)
@@ -47,6 +48,9 @@ public sealed partial class WGDrydockSystem
         // Fitting replaces the slot's module, so a taken slot is emptied first rather than losing a paid-for module.
         if (_shipModules.GetFitted(ship, slot) != null)
             return Loc.GetString("drydock-module-slot-taken", ("slot", slot + 1));
+
+        if (!_shipModules.HasKitFor(ship, module))
+            return Loc.GetString("drydock-module-needs-kit", ("kit", KitName(module)));
 
         var item = ModuleItem(ship, slot, module);
         item.LocalPos = HelmPosition(ship);
@@ -93,10 +97,21 @@ public sealed partial class WGDrydockSystem
         if (!WGShipModuleFitting.TryParse(item.Upgrade, out var slot, out var module))
             return false;
 
-        if (!TerminatingOrDeleted(item.Target) && _prototype.HasIndex<WGShipModulePrototype>(module))
+        if (!TerminatingOrDeleted(item.Target) && _prototype.TryIndex<WGShipModulePrototype>(module, out var prototype))
+        {
+            // The kit goes into the ship with the module.
+            if (prototype.Kit != null && _shipModules.FindKit(item.Target, prototype.ID) is { } kit)
+                QueueDel(kit);
             _shipModules.Fit(item.Target, slot, module);
+        }
 
         return true;
+    }
+
+    /// <summary>The name of the kit a module needs, or its id if the kit prototype is missing.</summary>
+    private string KitName(WGShipModulePrototype module)
+    {
+        return module.Kit is { } kit && _prototype.TryIndex(kit, out var prototype) ? prototype.Name : module.Kit?.Id ?? string.Empty;
     }
 
     /// <summary>
@@ -110,9 +125,11 @@ public sealed partial class WGDrydockSystem
             || TerminatingOrDeleted(item.Target))
             return false;
 
-        return !_prototype.HasIndex<WGShipModulePrototype>(module)
+        // A kit taken off the ship during the job leaves nothing to fit.
+        return !_prototype.TryIndex<WGShipModulePrototype>(module, out var prototype)
                || _shipModules.FittedSlot(item.Target, module) is { } other && other != slot
-               || _shipModules.GetFitted(item.Target, slot) is { } there && there.Module.Id != module;
+               || _shipModules.GetFitted(item.Target, slot) is { } there && there.Module.Id != module
+               || _shipModules.GetFitted(item.Target, slot) == null && !_shipModules.HasKitFor(item.Target, prototype);
     }
 
     /// <summary>The service record's name for a work order: the module for a fitting, else the refit id or a repair.</summary>
@@ -142,9 +159,13 @@ public sealed partial class WGDrydockSystem
         modules.Sort((a, b) => string.CompareOrdinal(a.ID, b.ID));
         foreach (var module in modules)
         {
+            if (module.Unlisted)
+                continue;
+
             var entry = new WGDrydockModuleEntry { Id = module.ID };
             if (ship is { } shipUid)
             {
+                entry.KitAboard = module.Kit != null && _shipModules.FindKit(shipUid, module.ID) != null;
                 var items = new List<WGDrydockWorkItem> { ModuleItem(shipUid, 0, module) };
                 entry.Price = WorkPrice(console, shipUid, comp, items[0].Upgrade, items);
                 if (pay != null)

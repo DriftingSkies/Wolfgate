@@ -97,6 +97,9 @@ public sealed class WGShipShieldOverlay : Overlay
             var tint = _entities.TryGetComponent<ShipShieldVisualsComponent>(uid, out var generatorVisuals)
                 ? WGShipShieldEffects.HealthColor(shield.Health, generatorVisuals.ShieldColor)
                 : WGShipShieldEffects.HealthColor(shield.Health);
+            // A hardened (fortress) field turns yellow.
+            if (shield.Grid is { } hardenedGrid && _entities.HasComponent<WGShipShieldHardenedComponent>(hardenedGrid))
+                tint = Color.InterpolateBetween(tint, WGShipShieldHardenedComponent.FieldColor, WGShipShieldHardenedComponent.FieldTint);
             mesh.UpdateColors(tint, shield.Health, impacts, _timing.CurTime, distant);
             handle.SetTransform(matrix);
             DrawBatches(handle, DrawPrimitiveTopology.TriangleList, mesh.Triangles);

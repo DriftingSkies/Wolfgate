@@ -7,3 +7,8 @@
   license: "CC-BY-SA-3.0"
   copyright: "Original shield generator startup and shutdown recordings by Gandalf (Gandalf2k15), supplied by the author for Wolfgate."
   source: "https://github.com/Gandalf2k15"
+
+- files: ["vent.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Original procedural heat vent synthesized for Wolfgate: filtered noise for the hiss, roar and rumble of a pressure release. No samples are included."
+  source: "https://github.com/VanguardControl/Wolfgate/blob/main/Tools/_WG/ShipShields/synthesize_vent.py"

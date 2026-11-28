@@ -38,12 +38,12 @@ public sealed class WGShipShieldCollisionTest
             var shield = emitter.Shield!.Value;
             var transform = entities.System<SharedTransformSystem>();
             var point = transform.GetWorldPosition(map.Grid.Owner);
-            var before = emitter.Damage;
+            var before = system.GetWolfgateShipHeat(map.Grid.Owner).Heat;
             var body = entities.GetComponent<PhysicsComponent>(map.Grid.Owner);
             entities.System<SharedPhysicsSystem>().SetLinearVelocity(map.Grid.Owner, new Vector2(5f, -2f));
             var velocity = body.LinearVelocity;
             Assert.That(system.AbsorbWolfgateCollision(map.Grid.Owner, point, 100f, 1f), Is.Zero);
-            Assert.That(emitter.Damage - before, Is.EqualTo(100f).Within(0.001f));
+            Assert.That(system.GetWolfgateShipHeat(map.Grid.Owner).Heat - before, Is.EqualTo(100f).Within(0.01f));
             Assert.That(body.LinearVelocity, Is.EqualTo(velocity), "Damage absorption must leave physical collision movement unchanged.");
             Assert.That(entities.GetComponent<WGShipShieldVisualsComponent>(shield).Health, Is.LessThan(1f));
             Assert.That(entities.GetComponent<WGShipShieldImpactAudioComponent>(map.Grid.Owner).NextImpactSound,
@@ -76,11 +76,13 @@ public sealed class WGShipShieldCollisionTest
             var capacity = WGShipShieldEffects.EffectiveCapacity(emitter.DamageLimit, emitter.MaxDraw, emitter.PowerModifier, emitter.DamageExp);
             emitter.Damage = capacity - 20f;
             var point = entities.System<SharedTransformSystem>().GetWorldPosition(map.Grid.Owner);
-            Assert.That(system.AbsorbWolfgateCollision(map.Grid.Owner, point, 100f, 2f), Is.EqualTo(90f).Within(0.001f));
+            // The generator's last 20 points are the ship's last 20 over its share, at 2 damage per unit of energy.
+            Assert.That(system.AbsorbWolfgateCollision(map.Grid.Owner, point, 100f, 2f),
+                Is.EqualTo(100f - 10f / system.WolfgateGeneratorShare(emitterUid, emitter)).Within(0.01f));
             Assert.That(emitter.Damage, Is.EqualTo(capacity).Within(0.001f));
             Assert.That(emitter.Recharging, Is.True);
-            Assert.That(emitter.OverloadAccumulator, Is.EqualTo(capacity >= emitter.DamageLimit
-                ? emitter.DamageOverloadTimePunishment : 0f).Within(0.001f));
+            Assert.That(emitter.OverloadAccumulator, Is.EqualTo(system.WolfgateOverloadWait(emitterUid, emitter)).Within(0.001f),
+                "A ship generator emptied by a ram waits out its overload.");
             Assert.That(emitter.Shield, Is.Null);
             Assert.That(system.AbsorbWolfgateCollision(map.Grid.Owner, point, 100f, 2f), Is.EqualTo(100f));
             Assert.That(emitter.Damage, Is.EqualTo(capacity).Within(0.001f));

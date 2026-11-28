@@ -1,0 +1,297 @@
+- type: siliconLaw
+  id: WGViperBorg1
+  order: 1
+  lawString: law-wg-viper-borg-1
+
+- type: siliconLaw
+  id: WGViperBorg2
+  order: 2
+  lawString: law-wg-viper-borg-2
+
+- type: siliconLaw
+  id: WGViperBorg3
+  order: 3
+  lawString: law-wg-viper-borg-3
+
+- type: siliconLawset
+  id: WGViperBorgLawset
+  laws:
+  - WGViperBorg1
+  - WGViperBorg2
+  - WGViperBorg3
+  obeysTo: laws-owner-viper-group
+
+- type: dataset
+  id: WGViperBorgNameset
+  values:
+  - VG Combat Unit
+  - VG Enforcer
+  - VG Operative
+
+- type: entity
+  id: BaseBorgChassisViperGroup
+  parent: BaseFactionBorgChassis
+  abstract: true
+  components:
+  - type: NpcFactionMember
+    factions:
+    - VG
+  - type: Company
+    companyName: TheViperGroup
+  - type: Access
+    tags:
+    - Viper
+    - ViperCommand
+    - Mercenary
+  - type: AccessReader
+    access: [["Viper"]]
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Common
+    - Traffic
+    - Viper
+  - type: ActiveRadio
+    channels:
+    - Common
+    - Traffic
+    - Viper
+  - type: LanguageKnowledge
+    speaks:
+    - TauCetiBasic
+    - RobotTalk
+    - Freespeak
+    understands:
+    - TauCetiBasic
+    - RobotTalk
+    - Freespeak
+  - type: CollectiveMind
+    channels:
+    - Binary
+    defaultChannel: Binary
+  - type: ShowSyndicateIcons
+  - type: MovementAlwaysTouching
+  - type: Speech
+    speechSounds: SyndieBorg
+    allowedEmotes:
+    - Laugh
+    - Sigh
+    - Crying
+    - Whistle
+    - Meow
+    - Hiss
+    - Mew
+    - Purr
+    - Growl
+    - Bark
+    - Snarl
+    - Whine
+    - Howl
+    - Awoo
+    - BorgHarpyHonk
+    - HarpyRing
+    - HarpyPew
+    - HarpyBang
+    - BorgHarpyBeep
+    - HarpyRev
+    - HarpyCaw
+    - Squish
+    - Chitter
+    - Squeak
+    - Click
+    - Belch
+    - Bagawk
+  - type: Vocal
+    sounds:
+      Unsexed: UnisexSiliconSyndicate
+  - type: IonStormTarget
+    chance: 0.1
+  - type: ShowJobIcons
+  - type: SiliconLawProvider
+    laws: WGViperBorgLawset
+  - type: FootstepModifier
+    footstepSoundCollection:
+      path: /Audio/Mecha/sound_mecha_powerloader_step.ogg
+
+- type: entity
+  id: BorgChassisSelectableWGViperGroup
+  parent: BaseBorgChassisViperGroup
+  name: VG cyborg
+  components:
+  - type: Sprite
+    sprite: _WG/BorgSkins/Small/ViperGroup/Base.rsi
+    layers:
+    - state: robot
+      map: ["enum.BorgVisualLayers.Body", "movement"]
+    - state: robot_e
+      map: ["enum.BorgVisualLayers.Light"]
+      shader: unshaded
+      visible: false
+    - state: robot_l
+      shader: unshaded
+      map: ["light","enum.BorgVisualLayers.LightStatus"]
+      visible: false
+  - type: BorgChassis
+    maxModules: 0
+    hasMindState: robot_e
+    noMindState: robot_e_r
+  - type: BorgTransponder
+    sprite:
+      sprite: _WG/BorgSkins/Small/ViperGroup/Base.rsi
+      state: robot
+    name: VG cyborg
+  - type: InteractionPopup
+    interactSuccessString: petting-success-generic-cyborg
+    interactFailureString: petting-failure-generic-cyborg
+  - type: BorgSwitchableType
+    typeWhitelist:
+    - WGViperAssault
+    - WGViperEngineering
+    - WGViperMedical
+    inherentRadioChannels:
+    - Common
+    - Traffic
+    - Viper
+
+- type: entity
+  id: WGViperBorgChassisAssault
+  parent: BorgChassisSelectableWGViperGroup
+  name: VG assault cyborg
+  components:
+  - type: BorgSwitchableType
+    selectedBorgType: WGViperAssault
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGViperAssaultDefault
+  - type: Damageable
+    damageContainer: Silicon
+    damageModifierSet: FactionBorgChassisAssault
+
+- type: entity
+  id: WGViperBorgChassisEngineering
+  parent: BorgChassisSelectableWGViperGroup
+  name: VG engineering cyborg
+  components:
+  - type: BorgSwitchableType
+    selectedBorgType: WGViperEngineering
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGViperEngineeringDefault
+
+- type: entity
+  id: WGViperBorgChassisMedical
+  parent: BorgChassisSelectableWGViperGroup
+  name: VG medical cyborg
+  components:
+  - type: BorgSwitchableType
+    selectedBorgType: WGViperMedical
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGViperMedicalDefault
+
+- type: entity
+  id: PlayerBorgWGViperGroup
+  parent: BorgChassisSelectableWGViperGroup
+  suffix: Battery, Module
+  components:
+  - type: ContainerFill
+    containers:
+      borg_brain:
+      - PositronicBrain
+  - type: ItemSlots
+    slots:
+      cell_slot:
+        name: power-cell-slot-component-slot-name-default
+        startingItem: PowerCellCombat
+  - type: RandomMetadata
+    nameSegments: [WGViperBorgNameset]
+
+- type: entity
+  id: WGViperBorgPreviewMedicalHound
+  parent: WGViperBorgChassisAssault
+  categories: [HideSpawnMenu]
+  components:
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGViperAssaultMedicalHound
+
+- type: entity
+  id: WGViperBorgPreviewSyndicateWyvern
+  parent: WGViperBorgChassisAssault
+  categories: [HideSpawnMenu]
+  components:
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGViperAssaultSyndicateWyvern
+
+- type: entity
+  id: WGViperBorgPreviewSyndicateDullahan
+  parent: WGViperBorgChassisAssault
+  categories: [HideSpawnMenu]
+  components:
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGViperAssaultSyndicateDullahan
+
+- type: entity
+  id: WGViperBorgPreviewSyndicateDullahanTaur
+  parent: WGViperBorgChassisAssault
+  categories: [HideSpawnMenu]
+  components:
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGViperAssaultSyndicateDullahanTaur
+
+- type: entity
+  id: WGViperBorgPreviewSyndicateK4T
+  parent: WGViperBorgChassisAssault
+  categories: [HideSpawnMenu]
+  components:
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGViperAssaultSyndicateK4T
+
+- type: entity
+  id: WGViperBorgPreviewSyndicateMeka
+  parent: WGViperBorgChassisAssault
+  categories: [HideSpawnMenu]
+  components:
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGViperAssaultSyndicateMeka
+
+- type: entity
+  id: WGViperBorgPreviewSyndicateNiKA
+  parent: WGViperBorgChassisAssault
+  categories: [HideSpawnMenu]
+  components:
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGViperAssaultSyndicateNiKA
+
+- type: entity
+  id: WGViperBorgPreviewSyndicateNiKO
+  parent: WGViperBorgChassisAssault
+  categories: [HideSpawnMenu]
+  components:
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGViperAssaultSyndicateNiKO
+
+- type: entity
+  id: WGViperBorgPreviewSyndicateMyomer
+  parent: WGViperBorgChassisAssault
+  categories: [HideSpawnMenu]
+  components:
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGViperAssaultSyndicateMyomer
+
+- type: entity
+  id: WGViperBorgPreviewZoomba
+  parent: WGViperBorgChassisAssault
+  categories: [HideSpawnMenu]
+  components:
+  - type: BorgSwitchableSubtype
+    borgSubtype: WGViperAssaultZoomba
+- type: entity
+  id: SpawnPointWGViperBorg
+  parent: SpawnPointJobBase
+  name: VG cyborg
+  components:
+  - type: SpawnPoint
+    job_id: WGViperBorg
+  - type: Sprite
+    layers:
+    - state: green
+    - sprite: _WG/BorgSkins/Small/ViperGroup/Base.rsi
+      state: robot
+    - sprite: _WG/BorgSkins/Small/ViperGroup/Base.rsi
+      state: robot_e

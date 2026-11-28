@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "license": "CC-BY-NC-SA-3.0",
+  "copyright": "Project Myomer borg by Toriate, commissioned by The Sharkenning. Taken from Bubberstation at https://github.com/Bubberstation/Bubberstation/blob/af69ef933ac71a75a5446f82e0e281ac811b25df/modular_zubbers/code/modules/silicons/borgs/sprites/myomer/ProjectMyomerSyndi.dmi",
+  "size": {
+    "x": 64,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "rest",
+      "directions": 4
+    },
+    {
+      "name": "sit",
+      "directions": 4
+    },
+    {
+      "name": "bellyup",
+      "directions": 4
+    },
+    {
+      "name": "synd_sec",
+      "directions": 4
+    },
+    {
+      "name": "synd_sec_e",
+      "directions": 4
+    },
+    {
+      "name": "synd_sec_e_r",
+      "directions": 4
+    },
+    {
+      "name": "synd_sec_l",
+      "directions": 4
+    },
+    {
+      "name": "synd_sec_moving",
+      "directions": 4,
+      "delays": [
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ],
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ],
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ],
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ]
+      ]
+    },
+    {
+      "name": "synd_sec_e_moving",
+      "directions": 4,
+      "delays": [
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ],
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ],
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ],
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ]
+      ]
+    },
+    {
+      "name": "synd_sec_e_r_moving",
+      "directions": 4,
+      "delays": [
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ],
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ],
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ],
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ]
+      ]
+    },
+    {
+      "name": "synd_sec_l_moving",
+      "directions": 4,
+      "delays": [
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ],
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ],
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ],
+        [
+          0.15,
+          0.15,
+          0.15,
+          0.15,
+          0.15
+        ]
+      ]
+    }
+  ]
+}

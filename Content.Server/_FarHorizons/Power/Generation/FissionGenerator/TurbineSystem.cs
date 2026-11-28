@@ -110,10 +110,14 @@ public sealed partial class TurbineSystem : SharedTurbineSystem
 
         supplier.MaxSupply = comp.LastGen;
 
+        // WOLFGATE(Power) START: pipes spawn on the turbine's grid, so a ship over the ground doesn't anchor them to it
         if (!comp.InletEnt.HasValue || EntityManager.Deleted(comp.InletEnt.Value))
-            comp.InletEnt = SpawnAttachedTo(comp.PipePrototype, new(uid, comp.InletPos), rotation: Angle.FromDegrees(comp.InletRot));
+            comp.InletEnt = WgSpawnPipe(uid, comp.PipePrototype, comp.InletPos, comp.InletRot);
+            // comp.InletEnt = SpawnAttachedTo(comp.PipePrototype, new(uid, comp.InletPos), rotation: Angle.FromDegrees(comp.InletRot));
         if (!comp.OutletEnt.HasValue || EntityManager.Deleted(comp.OutletEnt.Value))
-            comp.OutletEnt = SpawnAttachedTo(comp.PipePrototype, new(uid, comp.OutletPos), rotation: Angle.FromDegrees(comp.OutletRot));
+            comp.OutletEnt = WgSpawnPipe(uid, comp.PipePrototype, comp.OutletPos, comp.OutletRot);
+            // comp.OutletEnt = SpawnAttachedTo(comp.PipePrototype, new(uid, comp.OutletPos), rotation: Angle.FromDegrees(comp.OutletRot));
+        // WOLFGATE END
 
         CheckAnchoredPipes(uid, comp);
 

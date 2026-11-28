@@ -6,7 +6,7 @@
   parent: BaseVessel
   name: 'VOX-Vrakritatat'
   description: 'A large Vox scrapper and mining hauler. Has a docking bay for small craft'
-  price: 402373 # appraised at 321899, 25% markup
+  price: 452373 # appraised at 321899, 25% markup
   category: Large # 1327 tiles
   group: Scrap
   shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/vrakritatat.yml

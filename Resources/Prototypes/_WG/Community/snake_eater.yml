@@ -5,7 +5,7 @@
   parent: BaseVessel
   name: 'Snake Eater'
   description: 'A salvage vessel doubling as a broadsiding corvette. Comes with a salvage dock, clinic, and dormitory. The broadside is armed with two Dravon 57x460mm and two AK57s autocannons. Point defense systems and rear towing harpoon included.'
-  price: 246500 # appraised at 205409, close to 20% markup
+  price: 250000 # appraised at 208018, close to 20% markup
   category: Medium # 703 tiles
   group: Viper
   access: Viper

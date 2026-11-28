@@ -110,15 +110,19 @@ public sealed class WGShipShieldLifecycleTest
             power.Powered = true;
             if (exactZero)
             {
-                emitter.Damage = emitter.HealPerSecond * 1.5f * emitter.UnpoweredBonus;
+                emitter.Damage = 0f;
+                system.AddWolfgateShipHeat(map.Grid.Owner, (emitter.HealPerSecond + system.WolfgateHullCooling(uid)) * 1.5f);
                 system.Update(1.5f);
                 Assert.That(emitter.Damage, Is.Zero);
                 Assert.That(emitter.Recharging, Is.False, "Exact zero completes recharge immediately.");
                 Assert.That(emitter.Shield, Is.Not.Null);
             }
-            for (var i = 0; i < 40 && emitter.Shield == null; i++)
+            // A ship generator comes back as soon as power does, with whatever heat it still holds.
+            var heat = emitter.Damage;
+            for (var i = 0; i < 80 && emitter.Shield == null; i++)
                 system.Update(1.5f);
-            Assert.That(emitter.Damage, Is.Zero);
+            if (!exactZero)
+                Assert.That(emitter.Damage, Is.GreaterThan(0f).And.LessThan(heat), "Power back, the field must not wait for zero heat.");
             Assert.That(emitter.Recharging, Is.False);
             Assert.That(emitter.Shield, Is.Not.Null);
             var restored = entities.GetComponent<ShipShieldedComponent>(map.Grid.Owner).Shield;

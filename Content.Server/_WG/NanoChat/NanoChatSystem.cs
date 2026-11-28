@@ -225,6 +225,16 @@ public sealed class NanoChatSystem : SharedNanoChatSystem
         _cartridge.UpdateUIForCard(card);
     }
 
+    /// <summary>Moves a card's number, contacts and messages onto another card, as when a lost ID is reissued.</summary>
+    public void TransferCard(Entity<NanoChatCardComponent> from, Entity<NanoChatCardComponent> to)
+    {
+        MoveHistory(from, to);
+        if (from.Comp.Number is { } number)
+            AssignNumber(to, number);
+
+        _cartridge.UpdateUIForCard(to);
+    }
+
     private void OnMicrowaved(Entity<NanoChatCardComponent> ent, ref BeingMicrowavedEvent args)
     {
         if (TerminatingOrDeleted(ent) || !TryComp<MicrowaveComponent>(args.Microwave, out var micro) || micro.Broken)

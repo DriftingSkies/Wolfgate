@@ -76,6 +76,9 @@ public sealed partial class WGCodaHazardSystem
     /// <summary>Sends the leviathan to a ship now; whether it touches the hull is rolled unless given.</summary>
     public void StartLeviathan(EntityUid grid, WGLatticeProfilePrototype profile, bool? touch = null)
     {
+        // One leviathan per ship: a visit sent now replaces one already under way.
+        _leviathans.RemoveAll(l => l.Grid == grid);
+
         var leviathan = new Leviathan
         {
             Grid = grid,

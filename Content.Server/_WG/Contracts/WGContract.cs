@@ -66,6 +66,9 @@ public sealed class WGContract
     public int? PlanetSite;
     public Box2i? SiteBounds;
 
+    /// <summary>Ground chunks held loaded while the contract holds its planet site.</summary>
+    public List<Vector2i> HeldChunks = new();
+
     /// <summary>A chain link's site, held for it from the link before so the crew builds on the same ground.</summary>
     public int? PreferredSite;
 

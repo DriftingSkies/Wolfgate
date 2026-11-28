@@ -98,7 +98,7 @@ public sealed partial class WGContractSystem
     /// <summary>Hands delivered goods to a faction station: into its material silo, else into a receiving crate at its pad.</summary>
     private void Receive(EntityUid station, EntityUid goods, List<ProtoId<CompanyPrototype>> companies, ref EntityUid? crate)
     {
-        if (SiloOf(station) is { } silo && _materials.TryInsertMaterialEntity(silo, goods, silo))
+        if (Stock(station, goods))
             return;
 
         if (Anchor(station) is not { } at)
@@ -120,6 +120,12 @@ public sealed partial class WGContractSystem
         _transform.AnchorEntity(crate.Value);
         if (!_entityStorage.Insert(goods, crate.Value))
             Del(goods);
+    }
+
+    /// <summary>Puts delivered goods into a station's material silo; false if it has none or won't take them.</summary>
+    private bool Stock(EntityUid station, EntityUid goods)
+    {
+        return SiloOf(station) is { } silo && _materials.TryInsertMaterialEntity(silo, goods, silo);
     }
 
     /// <summary>A receiving crate already standing at the pad for the same factions.</summary>

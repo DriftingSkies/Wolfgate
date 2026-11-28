@@ -80,7 +80,7 @@ public sealed class WGShipShieldCentreTest
                     Assert.That(dial.Width, Is.GreaterThan(panels[0].Width), $"{context}: the dial is the widest element of the page body.");
                     Assert.That(dial.Height, Is.GreaterThan(180f), context);
 
-                    foreach (var name in new[] { "_enabled", "_stats", "_reset", "_health", "_direction", "_arc", "_concentration" })
+                    foreach (var name in new[] { "_enabled", "_stats", "_reset", "_heat", "_direction", "_arc", "_concentration" })
                         AssertWithin(Field<Control>(screen, name), screen);
                     AssertWithin(dial, screen);
                     if (scrolls)
@@ -101,9 +101,9 @@ public sealed class WGShipShieldCentreTest
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>Without a generator the dial stays centred and the settings stay hidden.</summary>
+    /// <summary>Without a generator the dial and settings are hidden, and the dial comes back centred.</summary>
     [Test]
-    public async Task UnavailableShieldsKeepTheDialCentred()
+    public async Task DialHidesWithoutAGeneratorAndReturnsCentred()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
         await pair.Client.WaitAssertion(() =>
@@ -112,18 +112,33 @@ public sealed class WGShipShieldCentreTest
             screen.WgRefitInstruments();
             var dial = Field<Control>(screen, "_dial");
             var size = new Vector2(1100, 600);
-            foreach (var available in new[] { false, true, false })
+            foreach (var available in new[] { false, true, false, true })
             {
                 screen.UpdateState(available
                     ? new WGShipShieldShuntState(true, true, 0.6f, 0.8f, 0.2f, MathF.PI / 2f)
                     : new WGShipShieldShuntState(false, false, 0f, 0f, 0f, MathF.PI / 2f), 0f);
                 Layout(screen, size);
                 Assert.That(Tree(screen).Single(control => control.GetType().Name == "ShieldSettings").Visible, Is.EqualTo(available));
+                Assert.That(Shown(dial, screen), Is.EqualTo(available), "A page with no generator keeps only the heat gauge and the vent.");
+                Assert.That(Shown(Field<Control>(screen, "_heat"), screen), Is.True);
+                if (!available)
+                    continue;
                 Assert.That(dial.GlobalPosition.X + dial.Width / 2f, Is.EqualTo(screen.GlobalPosition.X + size.X / 2f).Within(2f));
                 Assert.That(dial.Height, Is.GreaterThan(150f));
             }
         });
         await pair.CleanReturnAsync();
+    }
+
+    /// <summary>Whether nothing between a control and the page hides it; the page itself sits in no window here.</summary>
+    private static bool Shown(Control control, Control page)
+    {
+        for (var parent = control; parent != null && parent != page; parent = parent.Parent)
+        {
+            if (!parent.Visible)
+                return false;
+        }
+        return true;
     }
 
     private static T Field<T>(object target, string name) => (T) target.GetType()

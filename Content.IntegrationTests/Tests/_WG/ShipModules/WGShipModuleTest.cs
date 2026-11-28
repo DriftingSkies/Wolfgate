@@ -102,6 +102,14 @@ public sealed class WGShipModuleTest
             entities.DeleteEntity(emitter);
             bay.LastShielded = null;
 
+            // With the field lowered by hand, a vent or an overload still holds the jets.
+            entities.AddComponent<WGShipVentingComponent>(grid);
+            Assert.That(modules.GetLock(grid, bay, jets, true, timing.CurTime), Is.EqualTo(WGShipModuleLock.Venting));
+            entities.RemoveComponent<WGShipVentingComponent>(grid);
+            entities.AddComponent<WGShipOverloadedComponent>(grid);
+            Assert.That(modules.GetLock(grid, bay, jets, true, timing.CurTime), Is.EqualTo(WGShipModuleLock.Overloaded));
+            entities.RemoveComponent<WGShipOverloadedComponent>(grid);
+
             entities.GetComponent<PilotComponent>(pilot).HeldButtons = ShuttleButtons.StrafeRight;
             Assert.That(modules.TryActivate(grid, 1, pilot, helm), Is.True);
             Assert.That(fitted.Charges, Is.EqualTo(2));

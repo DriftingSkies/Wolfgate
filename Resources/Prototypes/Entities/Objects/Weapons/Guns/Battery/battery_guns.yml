@@ -208,6 +208,7 @@
   - type: Item
     sprite: Objects/Weapons/Guns/Battery/svalinn.rsi
   - type: Gun
+    fireRate: 3 # WOLFGATE(Weapons): was 2; part of the laser sustain buff
     burstCooldown: 0.75
     burstFireRate: 3
     shotsPerBurst: 3
@@ -239,6 +240,15 @@
   - type: HitscanBatteryAmmoProvider
     proto: RedMediumLaser
     fireCost: 33.3 # Mono: 83.3 >> 33.3
+  # WOLFGATE(Weapons) START: faster fire and a shot back every 4 s after 2 s idle
+  - type: Gun
+    fireRate: 3
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 8
+    autoRechargePause: true
+    autoRechargePauseTime: 2
+  # WOLFGATE END
   - type: MagazineVisuals
     magState: mag
     steps: 5
@@ -274,6 +284,15 @@
   - type: Battery
     maxCharge: 500
     startingCharge: 500
+  # WOLFGATE(Weapons) START: a little faster fire and a shot back every 6 s after 2 s idle
+  - type: Gun
+    fireRate: 2.5
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 6
+    autoRechargePause: true
+    autoRechargePauseTime: 2
+  # WOLFGATE END
 
 - type: entity
   name: tesla gun
@@ -349,10 +368,18 @@
   - type: PirateBountyItem # Mono
     id: StandardFactionLongarm
   - type: Gun
+    fireRate: 3 # WOLFGATE(Weapons): was 2; part of the laser sustain buff
     selectedMode: SemiAuto
     availableModes:
     - SemiAuto
     - FullAuto
+  # WOLFGATE(Weapons) START: a shot back every 4 s after 2 s idle
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 7.5
+    autoRechargePause: true
+    autoRechargePauseTime: 2
+  # WOLFGATE END
 
 - type: entity
   name: VCD QSH-13 Pulse Pistol
@@ -564,7 +591,7 @@
   - type: Clothing
     sprite: Objects/Weapons/Guns/Battery/laser_cannon.rsi
   - type: Gun
-    fireRate: 1.5
+    fireRate: 2 # WOLFGATE(Weapons): was 1.5; part of the laser sustain buff
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/laser_cannon.ogg
   - type: HitscanBatteryAmmoProvider
@@ -573,6 +600,13 @@
   - type: Battery
     maxCharge: 4000
     startingCharge: 4000
+  # WOLFGATE(Weapons) START: a shot back every 5 s after 2 s idle
+  - type: BatterySelfRecharger
+    autoRecharge: true
+    autoRechargeRate: 32
+    autoRechargePause: true
+    autoRechargePauseTime: 2
+  # WOLFGATE END
   - type: Tag
     tags:
     - TurretCompatibleWeapon

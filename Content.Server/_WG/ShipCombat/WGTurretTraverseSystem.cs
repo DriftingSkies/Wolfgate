@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Server._Mono.FireControl;
+using Content.Server._WG.ShipModules;
 using Content.Server.Power.EntitySystems;
 using Content.Shared._Mono.FireControl;
 using Content.Shared._WG.ShipCombat;
@@ -18,6 +19,7 @@ public sealed partial class WGTurretTraverseSystem : EntitySystem
     [Dependency] private RotateToFaceSystem _rotate = default!;
     [Dependency] private PowerReceiverSystem _power = default!;
     [Dependency] private FireControlSystem _fireControl = default!;
+    [Dependency] private WGGunGyrosSystem _gyros = default!;
 
     /// <summary>How long a gun keeps following an aim point after the last fire or cursor update.</summary>
     private static readonly TimeSpan AimHold = TimeSpan.FromSeconds(3);
@@ -117,7 +119,7 @@ public sealed partial class WGTurretTraverseSystem : EntitySystem
             if (Math.Abs(offset) < Deadband)
                 continue;
 
-            var maxStep = MathHelper.DegreesToRadians(traverse.TurnRate) * frameTime;
+            var maxStep = MathHelper.DegreesToRadians(traverse.TurnRate) * frameTime * _gyros.TurnFactor(uid, xform.GridUid, offset);
             var next = rotation + Math.Clamp(offset, -maxStep, maxStep);
             if (Math.Abs(offset) > MathHelper.DegreesToRadians(traverse.Tolerance) &&
                 StopsAtBlockedArc(uid, xform, position, direction.Length(), goal, rotation, next))

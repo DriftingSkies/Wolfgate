@@ -50,6 +50,23 @@ public abstract class SharedNanoChatSystem : EntitySystem
         Dirty(card);
     }
 
+    /// <summary>Moves a card's contacts, messages and settings onto another card, leaving the first empty.</summary>
+    public void MoveHistory(Entity<NanoChatCardComponent> from, Entity<NanoChatCardComponent> to)
+    {
+        to.Comp.Recipients = from.Comp.Recipients;
+        to.Comp.Messages = from.Comp.Messages;
+        to.Comp.MutedChats = from.Comp.MutedChats;
+        to.Comp.CurrentChat = from.Comp.CurrentChat;
+        to.Comp.NotificationsMuted = from.Comp.NotificationsMuted;
+        to.Comp.ListNumber = from.Comp.ListNumber;
+        from.Comp.Recipients = new Dictionary<uint, NanoChatRecipient>();
+        from.Comp.Messages = new Dictionary<uint, List<NanoChatMessage>>();
+        from.Comp.MutedChats = new HashSet<uint>();
+        from.Comp.CurrentChat = null;
+        Dirty(to);
+        Dirty(from);
+    }
+
     public void SetPda(Entity<NanoChatCardComponent> card, EntityUid? pda)
     {
         card.Comp.PdaUid = pda;

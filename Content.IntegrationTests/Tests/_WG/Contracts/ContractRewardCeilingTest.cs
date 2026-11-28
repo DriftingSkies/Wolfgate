@@ -16,7 +16,7 @@ namespace Content.IntegrationTests.Tests._WG.Contracts;
 public sealed class ContractRewardCeilingTest
 {
     /// <summary>Most a contract of each tier may ever pay one player, deposit aside.</summary>
-    private static readonly Dictionary<int, int> Ceilings = new() { [1] = 37500, [2] = 75000, [3] = 125000, [4] = 175000, [5] = 250000 };
+    private static readonly Dictionary<int, int> Ceilings = new() { [1] = 52500, [2] = 105000, [3] = 175000, [4] = 245000, [5] = 350000 };
 
     [Test]
     public async Task NoContractPaysPastItsTier()

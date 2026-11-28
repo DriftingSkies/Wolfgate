@@ -173,6 +173,10 @@
   - BallisticArtilleryTier3HP
   description: A quad-barrel, 25x170mm chaingun firing solid shot AP rounds, designed to be mounted upon fighters by Armamenti Corvus. Can be remotely activated or linked up to a GCS.
   components:
+  # WOLFGATE(ShipShields) START: a rapid-fire cannon heats at a lower share of its damage than the hull's rate
+  - type: WGShipGunHeat
+    damageShare: 0.15
+  # WOLFGATE END
   - type: StaticPrice
     price: 3000
   - type: Sprite

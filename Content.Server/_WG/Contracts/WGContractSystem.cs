@@ -300,6 +300,9 @@ public sealed partial class WGContractSystem : EntitySystem
             return Loc.GetString("wg-contract-error-start");
         }
 
+        if (contract.Items.FirstOrDefault() is { Valid: true } parcel && HasComp<WGContractParcelComponent>(parcel))
+            HandParcel(parcel, mob);
+
         _nextOffer[_proto.Index(contract.Prototype).Contractor] = now + RefillDelay;
         _adminLog.Add(LogType.Action, LogImpact.Low,
             $"{ToPrettyString(mob):player} accepted contract #{contract.Id} {contract.Prototype} for {contract.Reward}, deposit {contract.Deposit}");

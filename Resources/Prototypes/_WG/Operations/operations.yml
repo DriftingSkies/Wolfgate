@@ -123,6 +123,8 @@
   clearSpawns:
   - proto: WGOperationSpoilsSmallTsf
   duration: 1200
+  # The map's turrets would otherwise shoot the mercenary guards and clear the site.
+  guardFaction: MercenariesExpeditionNF
   npcPerMembers: 10
   npcs:
   - proto: MobMercenarySoldierPistol
@@ -195,6 +197,8 @@
   failRefund: 0.25
   clearSpawns:
   - proto: WGOperationSpoilsTsf
+  # The map's turret would otherwise shoot the mercenary guards and clear the site.
+  guardFaction: MercenariesExpeditionNF
   npcPerMembers: 8
   npcs:
   - proto: MobMercenarySoldierPistol

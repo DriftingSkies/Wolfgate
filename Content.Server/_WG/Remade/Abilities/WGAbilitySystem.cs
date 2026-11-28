@@ -56,6 +56,9 @@ public sealed partial class WGAbilitySystem : EntitySystem
 
     private readonly HashSet<Entity<MobStateComponent>> _mobs = new();
 
+    /// <summary>Awake Remade gathered before any of them acts, since an ability can spawn or delete Remade.</summary>
+    private readonly List<Entity<WGRemadeAbilitiesComponent>> _awake = new();
+
     public override void Initialize()
     {
         base.Initialize();
@@ -108,6 +111,8 @@ public sealed partial class WGAbilitySystem : EntitySystem
 
         var direction = line / length;
         var now = _timing.CurTime;
+        // Its own list: a reaction can fire a gun and land back here, or this can run inside Update.
+        List<Entity<WGRemadeAbilitiesComponent>>? near = null;
         var query = EntityQueryEnumerator<WGRemadeAbilitiesComponent, ActiveNPCComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var comp, out _, out var xform))
         {
@@ -120,8 +125,20 @@ public sealed partial class WGAbilitySystem : EntitySystem
             if (along < NearMissMin || along > NearMissReach || across < NearMissInner || across > NearMissOuter || _mobState.IsDead(uid))
                 continue;
 
-            var ent = new Entity<WGRemadeAbilitiesComponent>(uid, comp);
-            var ctx = new WGAbilityContext(this, uid, shooter, false, now);
+            near ??= new List<Entity<WGRemadeAbilitiesComponent>>();
+            near.Add((uid, comp));
+        }
+
+        if (near == null)
+            return;
+
+        foreach (var ent in near)
+        {
+            if (TerminatingOrDeleted(ent) || ent.Comp.Deleted || ent.Comp.Active != null)
+                continue;
+
+            var comp = ent.Comp;
+            var ctx = new WGAbilityContext(this, ent, shooter, false, now);
             foreach (var ability in comp.Abilities)
             {
                 if (now < ability.NextUse || !Allowed(ent, ability))
@@ -138,9 +155,18 @@ public sealed partial class WGAbilitySystem : EntitySystem
         base.Update(frameTime);
 
         var now = _timing.CurTime;
+        _awake.Clear();
         var query = EntityQueryEnumerator<WGRemadeAbilitiesComponent, HTNComponent, ActiveNPCComponent>();
-        while (query.MoveNext(out var uid, out var comp, out var htn, out _))
+        while (query.MoveNext(out var uid, out var comp, out _, out _))
         {
+            _awake.Add((uid, comp));
+        }
+
+        foreach (var (uid, comp) in _awake)
+        {
+            if (TerminatingOrDeleted(uid) || comp.Deleted || !TryComp<HTNComponent>(uid, out var htn))
+                continue;
+
             EntityUid? target = htn.Blackboard.TryGetValue<EntityUid>("Target", out var found, EntityManager) ? found : null;
             if (target != null && !IsLive(target.Value))
                 target = null;

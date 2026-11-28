@@ -113,6 +113,9 @@ public sealed class WGCockpitGunneryPanel : Control
         _quiet = false;
     }
 
+    /// <summary>Selects a saved fire group, as its recall button does. False if the group is empty or the bank offline.</summary>
+    public bool RecallGroup(int slot) => _window.WgTryRecallGroup(slot);
+
     private void OnSelectionChanged()
     {
         if (!_quiet)

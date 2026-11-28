@@ -10,6 +10,111 @@ public static class WGShipShieldEffects
     /// <summary>Ripple travel speed in tiles per second.</summary>
     public const float WaveSpeed = 22f;
 
+    /// <summary>Share of its heat capacity at which a ship stops firing through its raised field.</summary>
+    public const float GunHoldHeat = 0.95f;
+    /// <summary>Share of its heat capacity a held ship must cool below before its guns fire again.</summary>
+    public const float GunResumeHeat = 0.85f;
+    /// <summary>Seconds after the field's last hit for which hard heat stays under a raised field.</summary>
+    public const float HardHeatHold = 30f;
+    /// <summary>How many times its plain rate a ship cools with no field up, a bare hull included.</summary>
+    public const float FieldDownCooling = 2f;
+    /// <summary>How many times its plain rate a venting ship cools.</summary>
+    public const float VentCooling = 6f;
+    /// <summary>Heat each point of damage a ship generator's field absorbs adds, unless the generator sets its own.</summary>
+    public const float HitHeat = 0.8f;
+    /// <summary>Most of a ship's heat capacity one hit absorbed by its field can add.</summary>
+    public const float HitHeatCap = 0.2f;
+    /// <summary>Ship heat capacity at which overload waits and the shortest full vent are as configured.</summary>
+    public const float ReferenceCapacity = 40000f;
+    /// <summary>Least seconds a ship at <see cref="ReferenceCapacity"/> takes to vent a full load.</summary>
+    public const float FullVentSeconds = 12f;
+    /// <summary>Least seconds any vent lasts, however little heat it sheds.</summary>
+    public const float MinVentSeconds = 3f;
+    /// <summary>Damage of a hit that charges a ship's field in full; a smaller hit charges its share of this.</summary>
+    public const float FullHitDamage = 200f;
+    /// <summary>Least share of its damage a small hit charges a ship's field.</summary>
+    public const float MinHitWeight = 0.25f;
+
+    /// <summary>
+    /// How much longer than configured a ship of <paramref name="capacity"/> waits out an overload and vents a full
+    /// load: the square root of its size against <see cref="ReferenceCapacity"/>, from 0.75 to 1.5.
+    /// </summary>
+    public static float SizeScale(float capacity)
+    {
+        if (!float.IsFinite(capacity) || capacity <= 0f)
+            return 1f;
+        return Math.Clamp(MathF.Sqrt(capacity / ReferenceCapacity), 0.75f, 1.5f);
+    }
+
+    /// <summary>Seconds a ship of <paramref name="capacity"/> waits out an overload: its generator's configured wait scaled by its size.</summary>
+    public static float OverloadWait(float configured, float capacity) => configured * SizeScale(capacity);
+
+    /// <summary>
+    /// Heat per second a venting ship sheds: <see cref="VentCooling"/> times its plain rate, but never so fast that a
+    /// full load goes in under <see cref="FullVentSeconds"/> scaled by its size.
+    /// </summary>
+    public static float VentRate(float plainRate, float capacity)
+    {
+        var rate = MathF.Max(0f, plainRate) * VentCooling;
+        if (!float.IsFinite(capacity) || capacity <= 0f)
+            return rate;
+        return MathF.Min(rate, capacity / (FullVentSeconds * SizeScale(capacity)));
+    }
+
+    /// <summary>Share of a hit's damage a ship's field is charged: in full from <see cref="FullHitDamage"/>, less for small rounds.</summary>
+    public static float HitWeight(float hit)
+    {
+        if (!float.IsFinite(hit) || hit >= FullHitDamage)
+            return 1f;
+        return Math.Clamp(hit / FullHitDamage, MinHitWeight, 1f);
+    }
+
+    /// <summary>
+    /// Heat a hull holds by its tiles: each adds <paramref name="perTile"/> at first, tapering toward
+    /// <paramref name="max"/> so a huge hull is not a huge shield.
+    /// </summary>
+    public static float HullCapacity(float baseCapacity, float perTile, float max, int tiles)
+    {
+        var span = max - baseCapacity;
+        if (!float.IsFinite(span) || span <= 0f)
+            return MathF.Max(0f, MathF.Min(baseCapacity, max));
+        return baseCapacity + span * (1f - MathF.Exp(-Math.Max(0, tiles) * MathF.Max(0f, perTile) / span));
+    }
+
+    /// <summary>
+    /// What a shell's blast counts as for the heat of the ship that fires it: the damage of its peak tile, not the sum
+    /// over every tile it spreads to.
+    /// </summary>
+    public static float BlastDamage(float totalIntensity, float maxIntensity, float damagePerIntensity)
+    {
+        return MathF.Max(0f, MathF.Min(maxIntensity, totalIntensity) * damagePerIntensity);
+    }
+
+    /// <summary>What a shell's blast charges a field that stops or slows it: the whole blast, every tile it would reach.</summary>
+    public static float AbsorbedBlastDamage(float totalIntensity, float damagePerIntensity)
+    {
+        return MathF.Max(0f, totalIntensity * damagePerIntensity);
+    }
+
+    /// <summary>
+    /// A value for display, at most two decimals. Rounded as a double: a rounded float still prints its binary tail
+    /// (1417.9000244140625) once Fluent widens it.
+    /// </summary>
+    public static double Display(float value) => Math.Round((double) value, 2);
+
+    /// <summary>
+    /// Heat per second a ship of <paramref name="capacity"/> sheds in its state from its plain rate; every ship, with or
+    /// without a generator, uses this. Raised or overloaded it cools at the plain rate (an overload as in Starsector,
+    /// so the wait is no free refill), otherwise down at <see cref="FieldDownCooling"/> times it, and venting at
+    /// <see cref="VentRate"/>.
+    /// </summary>
+    public static float CoolingRate(float plainRate, float capacity, bool raised, bool venting, bool overloaded)
+    {
+        if (venting)
+            return VentRate(plainRate, capacity);
+        return MathF.Max(0f, plainRate) * (raised || overloaded ? 1f : FieldDownCooling);
+    }
+
     /// <summary>Returns full capacity bounded by overload and power demand limits.</summary>
     public static float EffectiveCapacity(float damageLimit, float maxDraw, float powerModifier, float damageExp)
     {

@@ -42,4 +42,12 @@ public sealed partial class WGFittedModule
     /// <summary>When the cooldown from the last use ends.</summary>
     [ViewVariables]
     public TimeSpan ReadyAt;
+
+    /// <summary>Whether its effect is on: a switch turned on, a timed use running, or a passive module started.</summary>
+    [ViewVariables]
+    public bool Active;
+
+    /// <summary>When a timed use ends.</summary>
+    [ViewVariables]
+    public TimeSpan ActiveUntil;
 }

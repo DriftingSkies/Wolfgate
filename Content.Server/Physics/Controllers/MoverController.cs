@@ -175,6 +175,7 @@ public sealed partial class MoverController : SharedMoverController
             return;
 
         var input = GetPilotVelocityInput(entity.Comp);
+        WgFaceCursor(entity, args.ShuttleUid, args.FrameTime, ref input); // WOLFGATE(ShipFacing): the facing key turns the ship toward the cursor
         // don't slow down the ship if we're just looking at the console with zero input
         if (input.Brakes == 0f && input.Rotation == 0f && input.Strafe.LengthSquared() == 0f)
             return;
@@ -430,7 +431,7 @@ public sealed partial class MoverController : SharedMoverController
     /// </summary>
     public float GetTorque(ShuttleComponent shuttle)
     {
-        return shuttle.AngularThrust * shuttle.AngularMultiplier;
+        return shuttle.AngularThrust * shuttle.AngularMultiplier * WgShieldTurnFactor(shuttle.Owner); // WOLFGATE(ShipShields): a raised shield field slows the turn
     }
 
     /// <summary>
@@ -478,6 +479,7 @@ public sealed partial class MoverController : SharedMoverController
             dir = dir - dirCompVel + scaledComp;
         }
 
+        dir *= WgShieldThrustFactor(xform.Owner); // WOLFGATE(ShipShields): a raised shield field cuts linear thrust
         return dir * shuttle.AccelerationMultiplier * WgAtmosphereManeuvering(xform.Owner); // WOLFGATE(Planets): planet lift and cargo load scale thrust
     }
 
@@ -743,7 +745,7 @@ public sealed partial class MoverController : SharedMoverController
 
                 if (angularBrakeInput > 0f && body.AngularVelocity != 0f)
                 {
-                    var torque = shuttle.AngularThrust * angularBrakeInput * (body.AngularVelocity > 0f ? -1f : 1f) * ShuttleComponent.BrakeCoefficient;
+                    var torque = shuttle.AngularThrust * angularBrakeInput * (body.AngularVelocity > 0f ? -1f : 1f) * ShuttleComponent.BrakeCoefficient * WgShieldTurnFactor(uid); // WOLFGATE(ShipShields): a raised shield field slows the turn brake too
                     var torqueMul = body.InvI * frameTime;
 
                     if (body.AngularVelocity > 0f)

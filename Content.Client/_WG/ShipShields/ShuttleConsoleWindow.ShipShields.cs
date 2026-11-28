@@ -11,6 +11,8 @@ public sealed partial class ShuttleConsoleWindow
     private Button _shieldModeButton = default!;
     /// <summary>The pilot changes shield deployment.</summary>
     public event Action<bool>? ShieldEnabledRequested;
+    /// <summary>The pilot vents the ship's heat.</summary>
+    public event Action? ShieldVentRequested;
     /// <summary>The pilot commits a shield allocation.</summary>
     public event Action<float, float, float>? ShieldShuntRequested;
 
@@ -28,6 +30,7 @@ public sealed partial class ShuttleConsoleWindow
         _shieldScreen.AllocationRequested += (direction, concentration, arc) =>
             ShieldShuntRequested?.Invoke(direction, concentration, arc);
         _shieldScreen.OnSetEnabled += enabled => ShieldEnabledRequested?.Invoke(enabled);
+        _shieldScreen.OnVent += () => ShieldVentRequested?.Invoke();
         Contents.AddChild(_shieldScreen);
     }
 
@@ -40,7 +43,9 @@ public sealed partial class ShuttleConsoleWindow
     private void WgShieldUpdateState(WGShipShieldShuntState? state, Angle? helmRotation)
     {
         _wgShieldHelmRotation = helmRotation;
-        _shieldModeButton.Visible = state is { Available: true };
+        // A ship with no generator keeps the page for its heat and vent.
+        _shieldModeButton.Visible = state is { Available: true } or { Hull: true };
+        _shieldModeButton.Text = Loc.GetString(state is { Available: false, Hull: true } ? "wg-shield-helm-tab-heat" : "wg-shield-helm-tab");
         if (!_shieldModeButton.Visible && _mode == ShuttleConsoleMode.Shields && !WgCockpitActive)
         {
             NavModeButton.Pressed = true;

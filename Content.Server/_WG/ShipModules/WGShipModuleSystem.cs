@@ -37,6 +37,8 @@ public sealed partial class WGShipModuleSystem : EntitySystem
     private readonly HashSet<EntityUid> _shieldsOn = new();
 
     private readonly List<WGShipModuleSlot> _slots = new();
+    private readonly List<WGFittedModule> _fitted = new();
+    private readonly List<WGFittedModule> _stripFitted = new();
     private TimeSpan _nextSweep;
 
     public override void Initialize()
@@ -53,9 +55,26 @@ public sealed partial class WGShipModuleSystem : EntitySystem
         while (query.MoveNext(out var grid, out var bay))
         {
             var powered = _poweredHelms.Contains(grid);
-            foreach (var fitted in bay.Fitted)
+            // Effect handlers may switch modules off, so walk a copy.
+            _fitted.Clear();
+            _fitted.AddRange(bay.Fitted);
+            foreach (var fitted in _fitted)
             {
                 if (!_prototype.TryIndex(fitted.Module, out var module))
+                    continue;
+
+                // A passive module starts as soon as it is fitted or its ship loads.
+                if (module.Mode == WGShipModuleMode.Passive)
+                {
+                    if (!fitted.Active)
+                        StartEffect(grid, fitted, module, null);
+                    continue;
+                }
+
+                if (fitted.Active && module.Mode == WGShipModuleMode.Fired && now >= fitted.ActiveUntil)
+                    StopEffect(grid, fitted, module, true);
+
+                if (module.Mode == WGShipModuleMode.Toggle)
                     continue;
 
                 if (fitted.Charges < 0)
@@ -166,16 +185,27 @@ public sealed partial class WGShipModuleSystem : EntitySystem
             bay.LastShielded = now;
 
         _slots.Clear();
-        foreach (var fitted in bay.Fitted)
+        _stripFitted.Clear();
+        _stripFitted.AddRange(bay.Fitted);
+        foreach (var fitted in _stripFitted)
         {
             if (!_prototype.TryIndex(fitted.Module, out var module))
                 continue;
 
             var charges = fitted.Charges < 0 ? module.MaxCharges : fitted.Charges;
-            var locked = GetLock(grid, bay, module, _poweredHelms.Contains(grid), now);
-            var charging = charges < module.MaxCharges && locked != WGShipModuleLock.Unpowered;
+            var locked = module.Mode == WGShipModuleMode.Passive
+                ? WGShipModuleLock.None
+                : GetLock(grid, bay, module, _poweredHelms.Contains(grid), now);
+            // Whatever stops a switched-on or running module switches it off; a dead helm alone doesn't.
+            if (fitted.Active && module.Mode != WGShipModuleMode.Passive && locked is not (WGShipModuleLock.None or WGShipModuleLock.Unpowered))
+                StopEffect(grid, fitted, module, true);
+
+            var charging = module.Mode == WGShipModuleMode.Fired && charges < module.MaxCharges && locked != WGShipModuleLock.Unpowered;
+            var gauge = new WGShipModuleGaugeEvent(grid, module);
+            RaiseLocalEvent(ref gauge);
             _slots.Add(new WGShipModuleSlot(fitted.Slot, fitted.Module, charges, module.MaxCharges,
-                charging ? fitted.NextCharge : TimeSpan.Zero, fitted.ReadyAt, locked));
+                charging ? fitted.NextCharge : TimeSpan.Zero, fitted.ReadyAt, locked, module.Mode, fitted.Active,
+                fitted.Active ? fitted.ActiveUntil : TimeSpan.Zero, gauge.Gauge is { } level ? MathF.Round(level, 2) : null));
         }
 
         _slots.Sort(static (a, b) => a.Slot.CompareTo(b.Slot));
@@ -212,6 +242,8 @@ public sealed partial class WGShipModuleSystem : EntitySystem
             return false;
 
         var bay = EnsureComp<WGShipModuleBayComponent>(grid);
+        if (GetFitted(grid, slot) is { } replaced)
+            StopIfActive(grid, replaced);
         bay.Fitted.RemoveAll(f => f.Slot == slot);
         bay.Fitted.Add(new WGFittedModule { Slot = slot, Module = module });
         bay.Fitted.Sort(static (a, b) => a.Slot.CompareTo(b.Slot));
@@ -237,6 +269,9 @@ public sealed partial class WGShipModuleSystem : EntitySystem
     /// <summary>Empties a slot; a ship left with no modules loses its strip.</summary>
     public void Unfit(EntityUid grid, int slot)
     {
+        if (GetFitted(grid, slot) is { } removed)
+            StopIfActive(grid, removed);
+
         if (!TryComp<WGShipModuleBayComponent>(grid, out var bay) || bay.Fitted.RemoveAll(f => f.Slot == slot) == 0)
             return;
 
@@ -260,10 +295,16 @@ public sealed partial class WGShipModuleSystem : EntitySystem
         if (TryComp<FTLComponent>(grid, out var ftl) && ftl.State is FTLState.Travelling or FTLState.Arriving)
             return WGShipModuleLock.Ftl;
 
-        if (module.BlockedByShields
-            && (ShieldOn(grid)
-                || bay.LastShielded is { } seen && now < seen + module.ShieldLockout))
-            return WGShipModuleLock.Shields;
+        if (module.BlockedByShields)
+        {
+            if (ShieldOn(grid) || bay.LastShielded is { } seen && now < seen + module.ShieldLockout)
+                return WGShipModuleLock.Shields;
+            // Lowering the field by hand is no way out of a vent or an overload.
+            if (HasComp<WGShipVentingComponent>(grid))
+                return WGShipModuleLock.Venting;
+            if (HasComp<WGShipOverloadedComponent>(grid))
+                return WGShipModuleLock.Overloaded;
+        }
 
         var ev = new WGShipModuleLockEvent(grid, module);
         RaiseLocalEvent(ref ev);
@@ -300,6 +341,17 @@ public sealed partial class WGShipModuleSystem : EntitySystem
     /// </summary>
     public bool TryActivate(EntityUid grid, int slot, EntityUid? user, EntityUid helm)
     {
+        return Activate(grid, slot, user, _power.IsPowered(helm));
+    }
+
+    /// <summary>Fires a slot for a crew with no helm in hand, such as an NPC; the ship's power is its last sweep's.</summary>
+    public bool TryActivateAboard(EntityUid grid, int slot, EntityUid? user)
+    {
+        return Activate(grid, slot, user, _poweredHelms.Contains(grid));
+    }
+
+    private bool Activate(EntityUid grid, int slot, EntityUid? user, bool powered)
+    {
         if (!TryComp<WGShipModuleBayComponent>(grid, out var bay)
             || GetFitted(grid, slot) is not { } fitted
             || !_prototype.TryIndex(fitted.Module, out var module))
@@ -310,20 +362,42 @@ public sealed partial class WGShipModuleSystem : EntitySystem
         if (now < fitted.ReadyAt)
             return false;
 
+        if (module.Mode == WGShipModuleMode.Passive)
+        {
+            Refuse(user, "wg-ship-module-refused-passive");
+            return false;
+        }
+
+        // Switching off is always allowed, power or not.
+        if (module.Mode == WGShipModuleMode.Toggle && fitted.Active)
+        {
+            fitted.ReadyAt = now + module.Cooldown;
+            StopEffect(grid, fitted, module, true, user, slot);
+            UpdateStrip(grid, bay, now);
+            return true;
+        }
+
+        if (fitted.Active)
+        {
+            Refuse(user, "wg-ship-module-refused-running");
+            return false;
+        }
+
         if (module.BlockedByShields)
             RefreshShields(grid, bay, now);
 
-        var locked = GetLock(grid, bay, module, _power.IsPowered(helm), now);
+        var locked = GetLock(grid, bay, module, powered, now);
         if (locked != WGShipModuleLock.None)
         {
             Refuse(user, $"wg-ship-module-refused-{locked.ToString().ToLowerInvariant()}");
             return false;
         }
 
+        var fired = module.Mode == WGShipModuleMode.Fired;
         if (fitted.Charges < 0)
             fitted.Charges = module.MaxCharges;
 
-        if (fitted.Charges <= 0)
+        if (fired && fitted.Charges <= 0)
         {
             Refuse(user, "wg-ship-module-refused-empty");
             return false;
@@ -338,22 +412,87 @@ public sealed partial class WGShipModuleSystem : EntitySystem
             return false;
         }
 
-        if (fitted.Charges >= module.MaxCharges)
-            fitted.NextCharge = now + module.RechargeTime;
+        if (fired)
+        {
+            if (fitted.Charges >= module.MaxCharges)
+                fitted.NextCharge = now + module.RechargeTime;
+            fitted.Charges--;
+        }
 
-        fitted.Charges--;
         fitted.ReadyAt = now + module.Cooldown;
-        // Everyone aboard, and a pilot flying it from elsewhere, hears it through the hull and feels it.
-        var crew = Filter.BroadcastGrid(grid);
-        if (TryComp<ActorComponent>(user, out var actor))
-            crew.AddPlayer(actor.PlayerSession);
+        var crew = Crew(grid, user);
         _audio.PlayGlobal(module.ActivateSound, crew, true);
         RaiseNetworkEvent(new WGShipModuleFiredEvent(GetNetEntity(grid), slot, module.Jolt), crew);
+
+        // A switch stays on until pressed again; a timed use for its duration.
+        if (!fired || module.Duration > TimeSpan.Zero)
+        {
+            fitted.Active = true;
+            fitted.ActiveUntil = now + module.Duration;
+        }
 
         var ev = new WGShipModuleActivatedEvent(grid, module, user);
         RaiseLocalEvent(ref ev);
         UpdateStrip(grid, bay, now);
         return true;
+    }
+
+    /// <summary>Players who hear a ship's module sounds: everyone aboard, and the user wherever they are.</summary>
+    public Filter Crew(EntityUid grid, EntityUid? user)
+    {
+        var crew = Filter.BroadcastGrid(grid);
+        if (TryComp<ActorComponent>(user, out var actor))
+            crew.AddPlayer(actor.PlayerSession);
+        return crew;
+    }
+
+    /// <summary>Starts a passive module's effect, with no sound or charge.</summary>
+    private void StartEffect(EntityUid grid, WGFittedModule fitted, WGShipModulePrototype module, EntityUid? user)
+    {
+        fitted.Active = true;
+        var ev = new WGShipModuleActivatedEvent(grid, module, user);
+        RaiseLocalEvent(ref ev);
+    }
+
+    /// <summary>Stops a module's effect; <paramref name="audible"/> plays its off sound and lights its key.</summary>
+    private void StopEffect(EntityUid grid, WGFittedModule fitted, WGShipModulePrototype module, bool audible,
+        EntityUid? user = null, int? slot = null)
+    {
+        if (!fitted.Active)
+            return;
+
+        fitted.Active = false;
+        fitted.ActiveUntil = TimeSpan.Zero;
+        if (audible && !TerminatingOrDeleted(grid))
+        {
+            var crew = Crew(grid, user);
+            _audio.PlayGlobal(module.DeactivateSound, crew, true);
+            RaiseNetworkEvent(new WGShipModuleFiredEvent(GetNetEntity(grid), slot ?? fitted.Slot, 0f), crew);
+        }
+
+        var ev = new WGShipModuleDeactivatedEvent(grid, module);
+        RaiseLocalEvent(ref ev);
+    }
+
+    /// <summary>Stops a module that is being taken out or replaced, quietly.</summary>
+    private void StopIfActive(EntityUid grid, WGFittedModule fitted)
+    {
+        if (fitted.Active && _prototype.TryIndex(fitted.Module, out var module))
+            StopEffect(grid, fitted, module, false);
+    }
+
+    /// <summary>
+    /// Switches off a ship's running module, for an effect system that can no longer keep it on. The strip catches up
+    /// at the next sweep, so this is safe to call from an effect handler.
+    /// </summary>
+    public void Deactivate(EntityUid grid, ProtoId<WGShipModulePrototype> module)
+    {
+        if (FittedSlot(grid, module) is not { } slot
+            || GetFitted(grid, slot) is not { } fitted
+            || !_prototype.TryIndex(module, out var prototype))
+            return;
+
+        StopEffect(grid, fitted, prototype, true);
     }
 
     private void Refuse(EntityUid? user, LocId reason)

@@ -1,0 +1,9 @@
+- files: ["fortress_on.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Shield generator startup by Gandalf (Gandalf2k15), supplied for Wolfgate; slowed to 0.6 pitch and cut short for the fortress shield."
+  source: "https://github.com/VanguardControl/Wolfgate/blob/main/Tools/_WG/ShipModules/synthesize_fortress.py"
+
+- files: ["fortress_hum.ogg"]
+  license: "CC-BY-SA-3.0"
+  copyright: "Original procedural shield hum synthesized for Wolfgate from the tonal peaks of the shield generator startup. No samples are included."
+  source: "https://github.com/VanguardControl/Wolfgate/blob/main/Tools/_WG/ShipModules/synthesize_fortress.py"

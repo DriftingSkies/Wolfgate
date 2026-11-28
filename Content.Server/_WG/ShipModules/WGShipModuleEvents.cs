@@ -22,6 +22,24 @@ public record struct WGShipModuleActivateAttemptEvent(EntityUid Grid, WGShipModu
     public LocId? Reason;
 }
 
-/// <summary>Broadcast once a charge is spent: the module's effect system does the effect here.</summary>
+/// <summary>
+/// Broadcast once a charge is spent, a switch is turned on or a passive module starts: the module's effect system does
+/// the effect here.
+/// </summary>
 [ByRefEvent]
 public readonly record struct WGShipModuleActivatedEvent(EntityUid Grid, WGShipModulePrototype Module, EntityUid? User);
+
+/// <summary>
+/// Broadcast when a module's effect stops: a switch turned off, a timed use run out, or the module taken out. The
+/// effect system undoes what it did.
+/// </summary>
+[ByRefEvent]
+public readonly record struct WGShipModuleDeactivatedEvent(EntityUid Grid, WGShipModulePrototype Module);
+
+/// <summary>Broadcast as a ship's strip is built, so an effect system can show a reading on its key, such as a reserve.</summary>
+[ByRefEvent]
+public record struct WGShipModuleGaugeEvent(EntityUid Grid, WGShipModulePrototype Module)
+{
+    /// <summary>A reading from 0 to 1, or null for none.</summary>
+    public float? Gauge;
+}

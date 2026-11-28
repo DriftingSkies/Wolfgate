@@ -27,7 +27,8 @@ counts by entry position across every rack, so it would mix the factions' kits; 
 
 Each kit is a case (`WGKitCaseBase`) whose `StorageFill` is its gear. `WGTakeOnlyStorage` seals it once filled, so
 nothing goes back in, and `WGKitCaseSystem` deletes it once empty. The uplink's replacement listing for a kit sells the
-same case, to a player who drew that kit this round (`WGKitHolderCondition`). Eight kits carry an implant autosurgeon;
+same case, to a player who drew that kit this round (`WGKitHolderCondition`), once per kit per player per round (a
+`WGListingCooldownCondition` keyed by the listing, with a cooldown longer than a round, tracked by account). Eight kits carry an implant autosurgeon;
 it has no purchase mark, so the implant ends with the round. A kit whose implant needs a cybernetic arm or an organic
 body names that in its `warning`. The cavalry kits carry a Gygax voucher (`cavalry.yml`) that sets down a powered
 mech when used in hand.

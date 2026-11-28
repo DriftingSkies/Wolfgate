@@ -23,6 +23,8 @@ using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.FixedPoint;
+using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Interaction;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Traits;
@@ -365,6 +367,58 @@ public sealed class HemophageTest
             Assert.That(hemophages.TryGiveBlood(hemophage, room));
             Assert.That(hemophages.TotalBlood((hemophage, comp, blood)), Is.EqualTo(hemophages.MaxBlood((hemophage, comp, blood))));
             Assert.That(hemophages.BloodRoom(control), Is.Null);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    /// <summary>A blood pack used on a hemophage with a full bloodstream goes into the reserve.</summary>
+    [Test]
+    public async Task BloodpackFillsReserve()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings { Dirty = true });
+        var server = pair.Server;
+        var entMan = server.EntMan;
+        var hemophages = entMan.System<WGHemophageSystem>();
+        var solutions = entMan.System<SharedSolutionContainerSystem>();
+        var map = await WolfmedGameTest.CreateTestMap(pair);
+
+        EntityUid hemophage = default, medic = default;
+        await server.WaitPost(() =>
+        {
+            hemophage = entMan.SpawnEntity("MobHuman", map.MapCoords);
+            medic = entMan.SpawnEntity("MobHuman", map.MapCoords);
+            entMan.AddComponents(hemophage, server.ProtoMan.Index(Trait).Components, false);
+        });
+
+        await pair.RunSeconds(2);
+
+        WGHemophageComponent comp = default!;
+        BloodstreamComponent blood = default!;
+        FixedPoint2 before = default;
+        await server.WaitAssertion(() =>
+        {
+            comp = entMan.GetComponent<WGHemophageComponent>(hemophage);
+            blood = entMan.GetComponent<BloodstreamComponent>(hemophage);
+            Assert.That(entMan.HasComponent<WoundHostComponent>(hemophage), "A player body should be a wound host.");
+            Assert.That(solutions.TryGetSolution(hemophage, blood.BloodSolutionName, out _, out var stream));
+            Assert.That(stream!.Volume, Is.EqualTo(stream.MaxVolume), "The bloodstream should start full.");
+            Assert.That(hemophages.BloodRoom(hemophage), Is.GreaterThan(FixedPoint2.Zero));
+            before = comp.Reserve;
+
+            var pack = entMan.SpawnEntity("Bloodpack", map.MapCoords);
+            Assert.That(entMan.System<SharedHandsSystem>().TryPickupAnyHand(medic, pack));
+            var click = new AfterInteractEvent(medic, pack, hemophage, map.GridCoords, canReach: true);
+            entMan.EventBus.RaiseLocalEvent(pack, click);
+            Assert.That(click.Handled, "The blood pack should start on a hemophage with room in the reserve.");
+        });
+
+        await pair.RunSeconds(3);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(comp.Reserve, Is.GreaterThan(before + FixedPoint2.New(20)),
+                "A blood pack's blood should go into the reserve past a full bloodstream.");
         });
 
         await pair.CleanReturnAsync();

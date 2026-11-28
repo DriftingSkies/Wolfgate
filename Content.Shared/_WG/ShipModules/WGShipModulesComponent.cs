@@ -27,7 +27,11 @@ public record struct WGShipModuleSlot(
     int MaxCharges,
     TimeSpan NextCharge,
     TimeSpan ReadyAt,
-    WGShipModuleLock Lock);
+    WGShipModuleLock Lock,
+    WGShipModuleMode Mode = WGShipModuleMode.Fired,
+    bool Active = false,
+    TimeSpan ActiveUntil = default,
+    float? Gauge = null);
 
 /// <summary>Why a module can't be fired right now, whatever its charges.</summary>
 [Serializable, NetSerializable]
@@ -39,6 +43,17 @@ public enum WGShipModuleLock : byte
     Ftl,
     Docked,
     Anchored,
+    Venting,
+    Overloaded,
+
+    /// <summary>A harpoon, hack or tractor beam holds the ship.</summary>
+    Held,
+
+    /// <summary>The ship is flying over a planet.</summary>
+    Planet,
+
+    /// <summary>The ship has no field of its own generator raised.</summary>
+    NoField,
 }
 
 /// <summary>A pilot asks to fire one module slot of the ship they are flying.</summary>

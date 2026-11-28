@@ -32,6 +32,13 @@ namespace Content.Client.Shuttles.Systems
             shuttle.AddFunction(ContentKeyFunctions.ShuttleAscend); // Mono
             shuttle.AddFunction(ContentKeyFunctions.ShuttleDescend); // Mono
             shuttle.AddFunction(WGLandingGuideKeys.WGToggleLandingGuide); // WOLFGATE(LandingGuide): the landing guide toggle works while piloting
+            shuttle.AddFunction(Content.Shared._WG.ShipFacing.WGShipFacingKeys.WGShuttleFaceCursor); // WOLFGATE(ShipFacing): the facing key works while piloting
+            shuttle.AddFunction(Content.Shared._WG.ShipShields.WGShipShieldKeys.WGToggleShipShields); // WOLFGATE(ShipShields): the shield hotkey works while piloting
+            shuttle.AddFunction(Content.Shared._WG.ShipShields.WGShipShieldKeys.WGVentShipHeat); // WOLFGATE(ShipShields): the vent hotkey works while piloting
+            // WOLFGATE(Cockpit) START: the fire-group hotkeys work while piloting
+            foreach (var key in Content.Shared._WG.Cockpit.WGCockpitKeys.WeaponGroups)
+                shuttle.AddFunction(key);
+            // WOLFGATE END
             // WOLFGATE(ShipModules) START: the module hotkeys work while piloting
             foreach (var key in Content.Shared._WG.ShipModules.WGShipModuleKeys.Slots)
                 shuttle.AddFunction(key);

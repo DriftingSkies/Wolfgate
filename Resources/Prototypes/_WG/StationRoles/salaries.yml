@@ -1,175 +1,150 @@
 # Hourly wages of station roles. The ID is the job's ID. Jobs left out earn nothing: free agents with no assigned
 # work (Contractor, TsfCivilian, WGAsfColonist, Fugitive, Godfather) and borgs, which have no bank.
-# Wages come out of the sector account leaders draw on, so keep a faction's roster within its income
-# (SectorBank in Resources/Prototypes/_NF/SectorServices/services.yml). No account means nothing is drawn.
+# Wages are paid in full and draw on no sector account (a role may still name one with `account`, and a short account
+# then pays everyone on it a share); the sector accounts are left to their leaders.
 
-# Caelestinus, Frontier account: 50K an hour.
+# Caelestinus.
 - type: wgStationSalary
   id: StationRepresentative
-  wage: 8000
-  account: Frontier
+  wage: 16000
 
 - type: wgStationSalary
   id: SecurityGuard
-  wage: 6000
-  account: Frontier
+  wage: 12000
 
 - type: wgStationSalary
   id: CCServiceWorker
-  wage: 5000
-  account: Frontier
+  wage: 10000
 
 - type: wgStationSalary
   id: NFJanitor
-  wage: 4500
-  account: Frontier
+  wage: 9000
 
-# Caelestinus medical, Medical account: 65K an hour.
+# Caelestinus medical.
 - type: wgStationSalary
   id: DirectorOfCare
-  wage: 8000
-  account: Medical
+  wage: 16000
 
 - type: wgStationSalary
   id: MdMedic
-  wage: 6000
-  account: Medical
+  wage: 12000
 
-# TSF, Nfsd account: 234K an hour.
+# TSF.
 - type: wgStationSalary
   id: Sheriff
-  wage: 10000
-  account: Nfsd
+  wage: 20000
 
 - type: wgStationSalary
   id: Bailiff
-  wage: 8000
-  account: Nfsd
+  wage: 16000
 
 - type: wgStationSalary
   id: TsfMarsoc
-  wage: 7000
-  account: Nfsd
+  wage: 14000
 
 - type: wgStationSalary
   id: SeniorOfficer
-  wage: 7000
-  account: Nfsd
+  wage: 14000
 
 - type: wgStationSalary
   id: Brigmedic
-  wage: 7000
-  account: Nfsd
+  wage: 14000
 
 - type: wgStationSalary
   id: TsfEngineer
-  wage: 6000
-  account: Nfsd
+  wage: 12000
 
 - type: wgStationSalary
   id: Deputy
-  wage: 5000
-  account: Nfsd
+  wage: 10000
 
 - type: wgStationSalary
   id: TsfInfantry
-  wage: 5000
-  account: Nfsd
+  wage: 10000
 
-# PDV, BlackMarket account: 432K an hour.
+# PDV.
 - type: wgStationSalary
   id: PirateCaptain
-  wage: 10000
-  account: BlackMarket
+  wage: 20000
 
 - type: wgStationSalary
   id: PDVTarkhan
-  wage: 8000
-  account: BlackMarket
+  wage: 16000
 
 - type: wgStationSalary
   id: PirateFirstMate
-  wage: 8000
-  account: BlackMarket
+  wage: 16000
 
 - type: wgStationSalary
   id: PDVDenasvar
-  wage: 7000
-  account: BlackMarket
+  wage: 14000
 
 - type: wgStationSalary
   id: WGPdvJarrah
-  wage: 6000
-  account: BlackMarket
+  wage: 12000
 
 - type: wgStationSalary
   id: WGPdvArtificer
-  wage: 6000
-  account: BlackMarket
+  wage: 12000
 
 - type: wgStationSalary
   id: Pirate
-  wage: 5000
-  account: BlackMarket
+  wage: 10000
 
 - type: wgStationSalary
   id: PdvInfantry
-  wage: 5000
-  account: BlackMarket
+  wage: 10000
 
-# Mieyo, Mieyo account: 108K an hour.
+# Mieyo. Not doubled.
 - type: wgStationSalary
   id: MMCLiason
   wage: 8000
-  account: Mieyo
 
 - type: wgStationSalary
   id: MMCSecurity
   wage: 6000
-  account: Mieyo
 
 - type: wgStationSalary
   id: MMCEmployee
   wage: 4000
-  account: Mieyo
 
-# Factions without a sector account.
+# USSP, the Viper Group, the ASF and Crocus.
 - type: wgStationSalary
   id: USSPCommissar
-  wage: 10000
+  wage: 20000
 
 - type: wgStationSalary
   id: USSPSergeant
-  wage: 7000
+  wage: 14000
 
 - type: wgStationSalary
   id: USSPRifleman
-  wage: 5000
-
-- type: wgStationSalary
-  id: VGCommander
   wage: 10000
 
 - type: wgStationSalary
+  id: VGCommander
+  wage: 20000
+
+- type: wgStationSalary
   id: VGLieutenant
-  wage: 7000
+  wage: 14000
 
 - type: wgStationSalary
   id: VGInfanteer
-  wage: 5000
+  wage: 10000
 
 - type: wgStationSalary
   id: WGAsfEnvoy
-  wage: 8000
+  wage: 16000
 
 - type: wgStationSalary
   id: WGAsfEnforcer
-  wage: 6000
+  wage: 12000
 
 - type: wgStationSalary
   id: WGAsfFieldResearcher
-  wage: 6000
+  wage: 12000
 
 - type: wgStationSalary
   id: CrocusDockworker
-  wage: 4000
+  wage: 8000

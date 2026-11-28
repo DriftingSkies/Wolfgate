@@ -504,6 +504,26 @@ public sealed class WGCockpitTest : InteractionTest
             window.UpdateShieldShuntSnapshot(new WGShipShieldShuntState(true, true, 0.76f, MathF.PI / 2f, 0.65f, MathF.PI / 2f));
             SyncHud(hud);
             Assert.That(shieldPanel.Visible, Is.True, "Installing a shield generator brings the shield controls back.");
+            var gunLock = Named<WGCockpitGunLockLamp>(hud, "CockpitGunLock");
+            Assert.That(gunLock.Visible, Is.False, "With the guns free the lock lamp stays dark.");
+            window.UpdateShieldShuntSnapshot(new WGShipShieldShuntState(true, false, 0f, MathF.PI / 2f, 0.65f, MathF.PI / 2f) { GunLockSeconds = 5 });
+            SyncHud(hud);
+            Layout(hud, new Vector2(1600, 900));
+            Assert.That(gunLock.VisibleInTree, Is.True, "A shield collapse that locks the guns lights the lamp over the world view.");
+            Assert.That(gunLock.Seconds, Is.EqualTo(5));
+            Assert.That(gunLock.GlobalPosition.Y, Is.GreaterThanOrEqualTo(viewport.GlobalPosition.Y));
+            Assert.That(Bottom(gunLock), Is.LessThanOrEqualTo(Bottom(viewport)));
+            Assert.That(gunLock.GlobalPosition.X, Is.GreaterThanOrEqualTo(viewport.GlobalPosition.X));
+            Assert.That(Right(gunLock), Is.LessThanOrEqualTo(Right(viewport)));
+            Assert.That(gunLock.MouseFilter, Is.EqualTo(Control.MouseFilterMode.Ignore), "The lamp must not take aiming or firing clicks.");
+            window.UpdateShieldShuntSnapshot(new WGShipShieldShuntState(true, true, 0.05f, MathF.PI / 2f, 0.65f, MathF.PI / 2f) { GunsHeld = true });
+            SyncHud(hud);
+            Assert.That(gunLock.VisibleInTree, Is.True, "A ship too hot to fire through its field lights the lamp too.");
+            Assert.That(gunLock.Held, Is.True);
+            Assert.That(gunLock.Seconds, Is.Zero);
+            window.UpdateShieldShuntSnapshot(new WGShipShieldShuntState(true, true, 0.76f, MathF.PI / 2f, 0.65f, MathF.PI / 2f));
+            SyncHud(hud);
+            Assert.That(gunLock.Visible, Is.False, "The lamp goes out when the lock ends.");
             var cockpitShip = Named<ShipScreen>(hud, "ShipContainer");
             cockpitShip.UpdateStatus(new ShipStatusMessage(null, new List<ShipTileStatus>(),
                 new ShipStatusSummary { DamagedTiles = 3, WorstIntegrity = 0.5f }));

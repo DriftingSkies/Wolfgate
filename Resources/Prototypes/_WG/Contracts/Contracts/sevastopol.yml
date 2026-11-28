@@ -7,7 +7,7 @@
   tier: 1
   title: wg-contract-sev-data-courier
   briefing: wg-contract-sev-data-courier-brief
-  reward: 5500, 7500
+  reward: 7700, 10500
   minutes: 40
   weight: 2.5
   objective: !type:WGContractCourier
@@ -15,8 +15,8 @@
     count: 1, 2
     from: Contractor
     to: Other
-    perPackage: 750
-    perKilometre: 1250
+    perPackage: 1050
+    perKilometre: 1750
 
 - type: wgContract
   id: WGContractSevDataInbound
@@ -25,7 +25,7 @@
   tier: 1
   title: wg-contract-sev-data-inbound
   briefing: wg-contract-sev-data-inbound-brief
-  reward: 5000, 7000
+  reward: 7000, 9800
   minutes: 40
   weight: 2
   objective: !type:WGContractCourier
@@ -33,8 +33,8 @@
     count: 1, 3
     from: Board
     to: Contractor
-    perPackage: 750
-    perKilometre: 1250
+    perPackage: 1050
+    perKilometre: 1750
 
 - type: wgContract
   id: WGContractSevSecureTransfer
@@ -43,7 +43,7 @@
   tier: 3
   title: wg-contract-sev-secure-transfer
   briefing: wg-contract-sev-secure-transfer-brief
-  reward: 15000, 20000
+  reward: 21000, 28000
   deposit: 3000
   minutes: 35
   weight: 1
@@ -52,8 +52,8 @@
     count: 3, 5
     from: Contractor
     to: Other
-    perPackage: 1500
-    perKilometre: 1750
+    perPackage: 2100
+    perKilometre: 2450
 
 - type: wgContract
   id: WGContractSevServerRacks
@@ -62,7 +62,7 @@
   tier: 2
   title: wg-contract-sev-server-racks
   briefing: wg-contract-sev-server-racks-brief
-  reward: 13750, 17500
+  reward: 19250, 24500
   deposit: 2000
   minutes: 50
   weight: 2.4
@@ -71,8 +71,8 @@
     count: 2, 3
     from: Board
     to: Contractor
-    perPackage: 2500
-    perKilometre: 1625
+    perPackage: 3500
+    perKilometre: 2300
 
 - type: wgContract
   id: WGContractSevHardware
@@ -81,7 +81,7 @@
   tier: 2
   title: wg-contract-sev-hardware
   briefing: wg-contract-sev-hardware-brief
-  reward: 19700, 26250
+  reward: 27600, 36750
   deposit: 1000
   minutes: 50
   weight: 3
@@ -107,7 +107,7 @@
   tier: 2
   title: wg-contract-sev-core-recovery
   briefing: wg-contract-sev-core-recovery-brief
-  reward: 17500, 23750
+  reward: 24500, 33250
   deposit: 1000
   minutes: 50
   crewBonus: 0.25
@@ -129,7 +129,7 @@
   tier: 2
   title: wg-contract-sev-data-thief
   briefing: wg-contract-sev-data-thief-brief
-  reward: 30000, 37500
+  reward: 42000, 52500
   deposit: 2000
   minutes: 50
   crewBonus: 0.25
@@ -146,14 +146,14 @@
   tier: 2
   title: wg-contract-sev-signal-survey
   briefing: wg-contract-sev-signal-survey-brief
-  reward: 15000, 20000
+  reward: 21000, 28000
   deposit: 1000
   minutes: 55
   crewBonus: 0.25
   weight: 1
   objective: !type:WGContractSurvey
     count: 1, 2
-    perAnomaly: 3500
+    perAnomaly: 4900
     minDistance: 3000
     maxDistance: 5000
     anomalies: [ AnomalyElectricity, AnomalyBluespace, AnomalyGravity ]
@@ -174,7 +174,7 @@
   tier: 2
   title: wg-contract-sev-electronics
   briefing: wg-contract-sev-electronics-brief
-  reward: 21900, 28900
+  reward: 30650, 40450
   deposit: 1000
   minutes: 55
   weight: 2.4
@@ -199,7 +199,7 @@
   tier: 2
   title: wg-contract-sev-archive-pull
   briefing: wg-contract-sev-archive-pull-brief
-  reward: 22000, 28000
+  reward: 30800, 39200
   deposit: 1500
   minutes: 55
   crewBonus: 0.3
@@ -224,7 +224,7 @@
   tier: 3
   title: wg-contract-sev-deep-archive
   briefing: wg-contract-sev-deep-archive-brief
-  reward: 45000, 55000
+  reward: 63000, 77000
   deposit: 3000
   minutes: 65
   minCrew: 2
@@ -254,12 +254,12 @@
   tier: 2
   title: wg-contract-sev-debris-charting
   briefing: wg-contract-sev-debris-charting-brief
-  reward: 9000, 12000
+  reward: 12600, 16800
   minutes: 55
   weight: 1
   objective: !type:WGContractSweep
     points: 4, 5
-    perPoint: 1750
+    perPoint: 2450
     minDistance: 3000
     maxDistance: 6500
 
@@ -272,15 +272,15 @@
   tier: 2
   title: wg-contract-sev-backup-tapes
   briefing: wg-contract-sev-backup-tapes-brief
-  reward: 9000, 12000
+  reward: 12600, 16800
   deposit: 1000
   minutes: 65
   weight: 1
   objective: !type:WGContractMailRun
     package: WGContractDataCase
     stops: 3, 4
-    perStop: 2000
-    perKilometre: 1000
+    perStop: 2800
+    perKilometre: 1400
 
 - type: wgContract
   id: WGContractSevRelayChain
@@ -289,13 +289,13 @@
   tier: 1
   title: wg-contract-sev-relay-chain
   briefing: wg-contract-sev-relay-chain-brief
-  reward: 5500, 7500
+  reward: 7700, 10500
   minutes: 45
   weight: 1.2
   objective: !type:WGContractDeploy
     buoy: WGContractRelayBuoy
     points: 2, 3
-    perPoint: 1500
+    perPoint: 2100
     minDistance: 1500
     maxDistance: 4000
 
@@ -306,7 +306,7 @@
   tier: 2
   title: wg-contract-sev-planet-archive
   briefing: wg-contract-sev-planet-archive-brief
-  reward: 26000, 32000
+  reward: 36400, 44800
   deposit: 1500
   minutes: 75
   weight: 1.1

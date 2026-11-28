@@ -35,6 +35,7 @@ public sealed partial class WGCockpitView : Control
     private readonly Control _camera;
     private readonly Control _tcas;
     private readonly Control _shields;
+    private readonly WGCockpitGunLockLamp _gunLock;
     private readonly Button _swap;
     private readonly Button _expand;
     private readonly Button _maximise;
@@ -193,6 +194,8 @@ public sealed partial class WGCockpitView : Control
         AddChild(_shields);
         InitializeGunnery(viewport);
         InitializeScanner(viewport);
+        // Last, so it draws over the world view and over a maximised MFD alike.
+        AddChild(_gunLock = new WGCockpitGunLockLamp(console.WgCockpitGunWarning));
         LayoutContainer.SetAnchorPreset(this, LayoutContainer.LayoutPreset.Wide);
         screen.AddChild(this);
         SyncOptionalPages();
@@ -357,5 +360,6 @@ public sealed partial class WGCockpitView : Control
         base.FrameUpdate(args);
         _console.WgCockpitRefresh();
         SyncOptionalPages();
+        _gunLock.Refresh();
     }
 }

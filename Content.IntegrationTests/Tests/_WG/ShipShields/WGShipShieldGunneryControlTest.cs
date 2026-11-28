@@ -77,7 +77,7 @@ public sealed class WGShipShieldGunneryControlTest
         {
             using var gunnery = new FireControlWindow();
             var panel = WGCockpitLease.Descendants(gunnery).Single(control => control.Name == "WgGunneryShields");
-            Assert.That(panel.Visible, Is.False, "A ship with no shield generator has no shield column.");
+            Assert.That(panel.Visible, Is.False, "A console that has heard of no ship has no shield column.");
 
             gunnery.WgUpdateShields(new WGShipShieldShuntState(true, true, 0.8f, MathF.PI / 2f, 0.25f, MathF.PI / 2f));
             Assert.That(panel.Visible, Is.True);
@@ -100,7 +100,12 @@ public sealed class WGShipShieldGunneryControlTest
             Assert.That(scope, Is.GreaterThanOrEqualTo(240), "The fire scope keeps its minimum width between the two columns.");
 
             gunnery.WgUpdateShields(new WGShipShieldShuntState(false, false, 0f, MathF.PI / 2f, 0f, MathF.PI / 2f));
-            Assert.That(panel.Visible, Is.False, "Losing the generator takes the column away again.");
+            Assert.That(panel.Visible, Is.False, "A console that speaks for no ship has no column.");
+
+            gunnery.WgUpdateShields(new WGShipShieldShuntState(false, false, 0f, MathF.PI / 2f, 0f, MathF.PI / 2f) { Hull = true, Heat = 0.3f, CanVent = true });
+            Assert.That(panel.Visible, Is.True, "A ship with no generator keeps the column for its heat and vent.");
+            Assert.That(WGCockpitLease.Descendants(panel).Single(control => control.GetType().Name == "ShieldDial").Visible, Is.False,
+                "A bare hull has no field to aim.");
         });
         await pair.CleanReturnAsync();
     }

@@ -139,6 +139,12 @@ unmarked:
   - path: Resources/Maps/_Mono/POI/pdvhelios_hw.yml
     module: PdvArtificer
     reason: Mapped two Artificer spawn markers beside the Jarrah's.
+  - path: Resources/Maps/_Mono/POI/camelot.yml
+    module: Cyborgs
+    reason: Mapped Viper Group cyborg spawns beside the other Viper spawns.
+  - path: Resources/Maps/_Mono/Test/dev_map.yml
+    module: Cyborgs
+    reason: Added a VG cyborg spawn point to the MonoDev test map.
   - path: Resources/Maps/_Mono/POI/pdvhelios.yml
     module: SpecialistKits
     reason: Mapped the Vanguard specialist rack against the east wall of the spawn hall.

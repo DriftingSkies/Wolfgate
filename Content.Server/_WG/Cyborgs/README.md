@@ -49,6 +49,8 @@ It also covers player AI cores; see **Station AI** below.
   (`WGAiCoreGhostRoleSystem`) lets the AI go. The key holder isn't networked, so
   `WGBorgRadioKeysSystem` opens the slots from the networked lock right before each use or examine. A marked edit on
   `BaseBorgChassis`.
+- **NCI AK-220 weapon module** (`nci_ak220.yml`): Viper Assault starts with a one-handed AK-220 with integrated,
+  self-refilling caseless ammunition and a machete; it has no detachable magazine or manual bolt.
 
 `BorgPdaTest` covers the apps, the action and a cyborg's NanoChat, `BorgStackRefillTest` the issued kit and the
 cell-paid refill, `BorgPowerTest` the drinker lookup, `BorgShipPurchaseTest` a cyborg buying a ship with its card,
@@ -129,17 +131,24 @@ borg-bound AI, the overwatch view and the chassis company.
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/FactionBorgCardTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/FactionBorgCardTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/WGAiCoreTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/WGAiCoreTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/WGBorgRescueTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/WGBorgRescueTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Cyborgs/WGViperAssaultModuleTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/WGViperAssaultModuleTest.cs)
 
 ### Prototypes
 
 - [`Resources/Prototypes/_WG/Cyborgs/id.yml`](../../../Resources/Prototypes/_WG/Cyborgs/id.yml)
 - [`Resources/Prototypes/_WG/Cyborgs/materials.yml`](../../../Resources/Prototypes/_WG/Cyborgs/materials.yml)
 - [`Resources/Prototypes/_WG/Cyborgs/medical.yml`](../../../Resources/Prototypes/_WG/Cyborgs/medical.yml)
+- [`Resources/Prototypes/_WG/Cyborgs/nci_ak220.yml`](../../../Resources/Prototypes/_WG/Cyborgs/nci_ak220.yml)
 - [`Resources/Prototypes/_WG/Cyborgs/pda.yml`](../../../Resources/Prototypes/_WG/Cyborgs/pda.yml)
+- [`Resources/Prototypes/_WG/Cyborgs/viper_borg_job.yml`](../../../Resources/Prototypes/_WG/Cyborgs/viper_borg_job.yml)
+- [`Resources/Prototypes/_WG/Cyborgs/viper_borg_subtypes.yml`](../../../Resources/Prototypes/_WG/Cyborgs/viper_borg_subtypes.yml)
+- [`Resources/Prototypes/_WG/Cyborgs/viper_borg_types.yml`](../../../Resources/Prototypes/_WG/Cyborgs/viper_borg_types.yml)
+- [`Resources/Prototypes/_WG/Cyborgs/viper_group.yml`](../../../Resources/Prototypes/_WG/Cyborgs/viper_group.yml)
 
 ### Localization
 
 - [`Resources/Locale/en-US/_WG/Cyborgs/power.ftl`](../../../Resources/Locale/en-US/_WG/Cyborgs/power.ftl)
+- [`Resources/Locale/en-US/_WG/Cyborgs/viper_group.ftl`](../../../Resources/Locale/en-US/_WG/Cyborgs/viper_group.ftl)
 
 ## Non-modular edits
 
@@ -159,6 +168,8 @@ borg-bound AI, the overwatch view and the chassis company.
   - the charge changes every tick with the headlight on
   - an empty cell raises this on every failed draw
 - [`Content.Shared/_CorvaxNext/Silicons/Borgs/SharedAiRemoteControlSystem.cs`](../../../Content.Shared/_CorvaxNext/Silicons/Borgs/SharedAiRemoteControlSystem.cs): a destroyed core leaves the AI in the borg instead of throwing on the deleted brain
+- [`Resources/Maps/_Mono/POI/camelot.yml`](../../../Resources/Maps/_Mono/POI/camelot.yml): Mapped Viper Group cyborg spawns beside the other Viper spawns.
+- [`Resources/Maps/_Mono/Test/dev_map.yml`](../../../Resources/Maps/_Mono/Test/dev_map.yml): Added a VG cyborg spawn point to the MonoDev test map.
 - [`Resources/Prototypes/_DV/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_DV/Voice/speech_emotes.yml)
   - share honk triggers while restricting the emote by entity
   - give borgs a separate Harpy-voiced honk emote
@@ -177,8 +188,11 @@ borg-bound AI, the overwatch view and the chassis company.
   - passes TSF company readers (requisition station, overwatch console)
   - passes PDV company readers (requisition station, overwatch console)
 - [`Resources/Prototypes/_Mono/Entities/Objects/Tools/repair.yml`](../../../Resources/Prototypes/_Mono/Entities/Objects/Tools/repair.yml): was 50, a 20 minute wait before a cyborg's first real repair
+- [`Resources/Prototypes/_Mono/PointsOfInterest/ussp.yml`](../../../Resources/Prototypes/_Mono/PointsOfInterest/ussp.yml): raises Camelot's Viper borg cap to three
+- [`Resources/Prototypes/_Mono/Roles/Jobs/departments.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/departments.yml): registers the Viper Group borg job
 - [`Resources/Prototypes/_Mono/Roles/Jobs/PDV/borg.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/PDV/borg.yml): stamped on the issued card so the PDV shipyard sells to it
 - [`Resources/Prototypes/_Mono/Roles/Jobs/TSFMC/borg.yml`](../../../Resources/Prototypes/_Mono/Roles/Jobs/TSFMC/borg.yml): stamped on the issued card so the TSFMC shipyard sells to it
+- [`Resources/Prototypes/_NF/Maps/debug.yml`](../../../Resources/Prototypes/_NF/Maps/debug.yml): make VG cyborg selectable on MonoDev
 - [`Resources/Prototypes/borg_types.yml`](../../../Resources/Prototypes/borg_types.yml): the treatment module carries the defibrillator
 - [`Resources/Prototypes/Entities/Mobs/Cyborgs/base_borg_chassis.yml`](../../../Resources/Prototypes/Entities/Mobs/Cyborgs/base_borg_chassis.yml)
   - the built-in PDA's window and ringtone picker

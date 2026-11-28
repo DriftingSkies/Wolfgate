@@ -88,7 +88,9 @@ each selected weapon's own position to the aim point, on the NAV plot and on the
 ignores line of sight or nothing on its own grid is in the way, the check the server makes before it fires; the ship cam draws nothing while the world view is hidden. A native aiming reticle
 replaces the pointer over valid world and NAV targets while offensive weapons are selected, independently
 of character combat mode. HUD controls, chat, modifiers, lost focus and an unarmed bank retain ordinary
-cursors and mouse interactions. The cockpit holds gun control while GUNS is open or any weapon is selected,
+cursors and mouse interactions, except Shift held as the ShipFacing turn key: it is steering, so the reticle stays and
+a Shift+click fires instead of examining. **Shift+1** to **Shift+4** (`WGCockpitKeys`, rebindable under Shuttle)
+recall saved fire groups as their buttons do, on either tab, and take gun control at once. The cockpit holds gun control while GUNS is open or any weapon is selected,
 so weapons selected on GUNS stay armed when the pilot returns to FLIGHT to fly and shoot; the click is
 consumed by firing there. With nothing selected, FLIGHT releases gun control and keeps the normal pointer
 and clicks. A lost link clears the selection and releases control at once; a changed link does the same unless GUNS is open. The client remembers the weapons selected on each gunnery console for the round (`WGCockpitGunneryMemorySystem`), so a bank rebuilt after the helm closes and reopens, or after the link comes back, has them selected again.
@@ -133,6 +135,7 @@ NAV plot (`WGCockpitAimLines`) and the ship cam (`WGCockpitAimOverlay`, added wh
 - [`Content.Shared/_WG/Cockpit/SharedWGCockpitSystem.cs`](../../../Content.Shared/_WG/Cockpit/SharedWGCockpitSystem.cs)
 - [`Content.Shared/_WG/Cockpit/WGCockpitAutopilotUpdateMessage.cs`](../../../Content.Shared/_WG/Cockpit/WGCockpitAutopilotUpdateMessage.cs)
 - [`Content.Shared/_WG/Cockpit/WGCockpitGunneryMessages.cs`](../../../Content.Shared/_WG/Cockpit/WGCockpitGunneryMessages.cs)
+- [`Content.Shared/_WG/Cockpit/WGCockpitKeys.cs`](../../../Content.Shared/_WG/Cockpit/WGCockpitKeys.cs)
 - [`Content.Shared/_WG/Cockpit/WGCockpitSeatComponent.cs`](../../../Content.Shared/_WG/Cockpit/WGCockpitSeatComponent.cs)
 
 ### Client
@@ -168,9 +171,11 @@ NAV plot (`WGCockpitAimLines`) and the ship cam (`WGCockpitAimOverlay`, added wh
 - [`Content.Client/_WG/Cockpit/WGCockpitFireInput.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitFireInput.cs)
 - [`Content.Client/_WG/Cockpit/WGCockpitFuelBank.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitFuelBank.cs)
 - [`Content.Client/_WG/Cockpit/WGCockpitFuelLamp.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitFuelLamp.cs)
+- [`Content.Client/_WG/Cockpit/WGCockpitGunLockLamp.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitGunLockLamp.cs)
 - [`Content.Client/_WG/Cockpit/WGCockpitGunneryMemorySystem.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitGunneryMemorySystem.cs)
 - [`Content.Client/_WG/Cockpit/WGCockpitGunneryPanel.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitGunneryPanel.cs)
 - [`Content.Client/_WG/Cockpit/WGCockpitInstrumentSizing.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitInstrumentSizing.cs)
+- [`Content.Client/_WG/Cockpit/WGCockpitKeysSystem.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitKeysSystem.cs)
 - [`Content.Client/_WG/Cockpit/WGCockpitLease.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitLease.cs)
 - [`Content.Client/_WG/Cockpit/WGCockpitMfdLayout.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitMfdLayout.cs)
 - [`Content.Client/_WG/Cockpit/WGCockpitOptionalHost.cs`](../../../Content.Client/_WG/Cockpit/WGCockpitOptionalHost.cs)
@@ -238,10 +243,12 @@ NAV plot (`WGCockpitAimLines`) and the ship cam (`WGCockpitAimOverlay`, added wh
 
 - [`Content.Client/_RMC14/CombatMode/RMCCombatModeUISystem.cs`](../../../Content.Client/_RMC14/CombatMode/RMCCombatModeUISystem.cs): let the cockpit controls own their reticle and ordinary HUD cursors.
 - [`Content.Client/CombatMode/CombatModeIndicatorsOverlay.cs`](../../../Content.Client/CombatMode/CombatModeIndicatorsOverlay.cs): character combat indicators must not cover the ship's aiming reticle.
+- [`Content.Client/Options/UI/Tabs/KeyRebindTab.xaml.cs`](../../../Content.Client/Options/UI/Tabs/KeyRebindTab.xaml.cs): cockpit fire-group hotkeys
 - [`Content.Client/Pinpointer/UI/NavMapControl.cs`](../../../Content.Client/Pinpointer/UI/NavMapControl.cs)
   - department labels stay compact instead of growing with map zoom.
   - update shared right-mouse map panning.
 - [`Content.Client/Shuttles/BUI/ShuttleConsoleBoundUserInterface.cs`](../../../Content.Client/Shuttles/BUI/ShuttleConsoleBoundUserInterface.cs): enter the cockpit by itself when the helm opens while buckled.
+- [`Content.Client/Shuttles/Systems/ShuttleConsoleSystem.cs`](../../../Content.Client/Shuttles/Systems/ShuttleConsoleSystem.cs): the fire-group hotkeys work while piloting
 - [`Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleConsoleWindow.xaml.cs): consume authoritative autopilot status on every page.
 - [`Content.Client/Shuttles/UI/ShuttleDockControl.xaml.cs`](../../../Content.Client/Shuttles/UI/ShuttleDockControl.xaml.cs)
   - selecting an approach target recentres its panned plot.
@@ -272,6 +279,7 @@ NAV plot (`WGCockpitAimLines`) and the ship cam (`WGCockpitAimOverlay`, added wh
   - report confirmed steering in the initial helm snapshot.
   - keep autopilot lamps current while any helm page is open.
 - [`Content.Shared/Shuttles/BUIStates/ShuttleBoundUserInterfaceState.cs`](../../../Content.Shared/Shuttles/BUIStates/ShuttleBoundUserInterfaceState.cs): include confirmed autopilot activity in the initial helm state.
+- [`Resources/keybinds.yml`](../../../Resources/keybinds.yml): cockpit fire-group hotkeys while piloting
 - [`Resources/Prototypes/Entities/Structures/Furniture/chairs.yml`](../../../Resources/Prototypes/Entities/Structures/Furniture/chairs.yml): allow every seat family to host the buckled piloting HUD.
 
 <!-- WOLFGATE-GENERATED END -->

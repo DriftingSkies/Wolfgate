@@ -49,6 +49,9 @@
     response: trader-shipyard-response-unassign
     action: UnassignDeed
     requires: DeedId
+  - prompt: wg-id-reissue-prompt
+    response: wg-id-reissue-response
+    action: ReissueId
   - prompt: trader-shipyard-prompt-who
     response: trader-shipyard-response-who
     action: None
@@ -67,6 +70,7 @@
     prototypes: [ WGTraderShipyardGear ]
   - type: Trader
     dialogue: WGTraderShipyardDialogue
+  - type: WGTraderIdReissue
   - type: TraderShipyard
     consoles:
     - console: ComputerShipyard

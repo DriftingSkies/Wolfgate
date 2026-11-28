@@ -7,6 +7,9 @@
   id: WGAsfTurretFlutter
   parent: WeaponLaserTurretL1Phalanx
   components:
+  # Not point defence: its pulses heat at the hull's rate (250 damage at 0.25), not the Phalanx's.
+  - type: WGShipGunHeat
+    heatPerShot: 62.5
   - type: StaticPrice
     price: 3500
   - type: Sprite

@@ -15,6 +15,7 @@ public enum WGShipShieldRecoveryStatus : byte
     Lowered,
     Disabled,
     FtlLocked,
+    Venting,
 }
 
 /// <summary>Identifies the shield generator's shared control panel.</summary>
@@ -37,6 +38,10 @@ public sealed class WGShipShieldSetEnabledMessage : BoundUserInterfaceMessage
         Enabled = enabled;
     }
 }
+
+/// <summary>Requests a vent of the ship's heat from an authorized control panel.</summary>
+[Serializable, NetSerializable]
+public sealed class WGShipShieldVentMessage : BoundUserInterfaceMessage;
 
 /// <summary>Requests a new overload strength at a generator that allows it.</summary>
 [Serializable, NetSerializable]
@@ -131,6 +136,21 @@ public sealed class WGShipShieldShuntState
     public float TargetConcentration;
     /// <summary>Requested reinforced sector width.</summary>
     public float TargetArcRadians;
+
+    /// <summary>Whole seconds the ship's guns stay locked after its field was beaten down; 0 when they are free.</summary>
+    public int GunLockSeconds;
+    /// <summary>Whether the ship is too hot to fire through its raised field.</summary>
+    public bool GunsHeld;
+    /// <summary>The part of the heat gauge that is hard heat: it came through the shield and stays while the field is up.</summary>
+    public float HardHeat;
+    /// <summary>Whole seconds the ship's vent still needs, or minus one when it can't be timed; 0 when it isn't venting.</summary>
+    public int VentSeconds;
+    /// <summary>Whether the ship could start a vent now.</summary>
+    public bool CanVent;
+    /// <summary>The console speaks for a ship, which holds heat and can vent it with or without an emitter.</summary>
+    public bool Hull;
+    /// <summary>The ship's heat as a share of what it can hold.</summary>
+    public float Heat;
 
     /// <summary>Creates an authoritative snapshot for all helms on the ship.</summary>
     public WGShipShieldShuntState(bool available, bool active, float health, float directionRadians, float concentration, float arcRadians, bool enabled = true)

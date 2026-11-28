@@ -760,6 +760,12 @@ public sealed class AsteroidMiningTest
         comp.Instability = 0f;
         comp.WindowCenter = 0.55f;
         comp.WindowHalfWidth = 0.12f;
+        // A rock that rolls artifact fragments as its only ore drops nothing tagged as ore, so fix what it holds.
+        comp.Ores = new List<WGAsteroidOre>
+        {
+            new("NFOreSteel", 0.4f, Color.Brown, 0f),
+            new("NFOreCoal", 0.2f, Color.DarkGray, 0f),
+        };
         return (gun, rock);
     }
 
@@ -853,7 +859,7 @@ public sealed class AsteroidMiningTest
             Assert.Multiple(() =>
             {
                 Assert.That(em.Deleted(rock), Is.True, "Heat held in the window should crack the rock.");
-                Assert.That(OreItems(em), Is.GreaterThan(0), "A small rock should crack straight into ore.");
+                Assert.That(OreItems(em, map.MapId), Is.GreaterThan(0), "A small rock should crack straight into ore.");
                 Assert.That(em.GetComponent<WGMiningBeamEmitterComponent>(gun).Active, Is.False,
                     "The beam should go out once the gun stops firing.");
             });

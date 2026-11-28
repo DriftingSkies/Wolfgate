@@ -19,8 +19,8 @@
     heavyPartDamageMultiplier: 1
     damage:
       types:
-        Slash: 14
-        Piercing: 7
+        Slash: 17 # WOLFGATE(Augments): was 14; one blade stays under an energy sword's DPS, a pair beats it
+        Piercing: 9 # WOLFGATE(Augments): was 7
         Structural: 20
     soundHit:
       path: /Audio/Weapons/bladeslice.ogg

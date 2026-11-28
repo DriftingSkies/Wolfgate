@@ -1,5 +1,7 @@
+using Content.Client._WG.ShipFacing;
 using Content.Client.Shuttles.UI;
 using Content.Client.UserInterface.Controls;
+using Content.Shared.Input;
 using Content.Client.Viewport;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
@@ -197,10 +199,14 @@ public sealed partial class WGCockpitFireInput : Control
     private bool IsHovered(Control surface, ScreenCoordinates pointer) => pointer.IsValid && surface.VisibleInTree &&
         pointer.Window == surface.Window?.Id && UserInterfaceManager.MouseGetControl(pointer) == surface;
 
-    private bool Modified() => _input.IsKeyDown(Keyboard.Key.Shift) || _input.IsKeyDown(Keyboard.Key.Control) ||
+    // Shift held for the facing key is steering, so the guns stay aimed and a Shift+click still fires.
+    private bool Modified() => _input.IsKeyDown(Keyboard.Key.Shift) && !FacingHeld() || _input.IsKeyDown(Keyboard.Key.Control) ||
         _input.IsKeyDown(Keyboard.Key.Alt);
 
-    private static bool Primary(BoundKeyFunction function) => function == EngineKeyFunctions.UIClick || function == EngineKeyFunctions.Use;
+    private bool Primary(BoundKeyFunction function) => function == EngineKeyFunctions.UIClick || function == EngineKeyFunctions.Use ||
+        function == ContentKeyFunctions.ExamineEntity && FacingHeld();
+
+    private bool FacingHeld() => _entities.System<WGShipFacingSystem>().Held;
 
     private void SendAim(Control surface, ScreenCoordinates pointer, bool fire)
     {
