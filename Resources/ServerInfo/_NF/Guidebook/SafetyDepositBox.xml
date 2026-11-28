@@ -87,7 +87,7 @@ The safety deposit system preserves:
 <!-- WOLFGATE(SafetyDepositBox) START: what a box refuses is read from the box prototype, not hand-listed -->
 ## What Can Be Stored
 
-A box takes ordinary items that fit its grid and its size limit: Small boxes hold up to Normal items, while Medium and Large boxes hold up to Huge items, such as armour vests and hardsuits. Tools, weapons, clothing, ammunition, paperwork, food, drinks and most other gear are fine, and so are bags, boxes and backpacks to keep it tidy, though not bags of holding. Faction weapons and armour are fine up to tier 3, and stock parts up to tier 2, with a limit on tier 2 parts and on medicine across the whole box; rocket and grenade launchers, other machine parts and anything built into a body or a machine are not.
+A box takes ordinary items that fit its grid and its size limit: Small boxes hold up to Normal items, while Medium and Large boxes hold up to Huge items, such as armour vests and hardsuits. Tools, weapons, clothing, ammunition, paperwork, food, drinks and most other gear are fine, and so are bags, boxes and backpacks to keep it tidy, though not bags of holding. Faction weapons are fine up to tier 3, faction armour and stock parts up to tier 2, with a limit on tier 2 parts and on medicine across the whole box; rocket and grenade launchers, other machine parts and anything built into a body or a machine are not.
 
 [color=#ff6600]The box refuses these:[/color]
   <SafetyDepositRefusedEmbed/>

@@ -63,7 +63,7 @@ public sealed class SafetyDepositAllowListTest
     [TestCase("ClothingHeadsetGrey", true, TestName = "AHeadsetGoesIn")]
     [TestCase("CapacitorStockPart", true, TestName = "ATier1StockPartGoesIn")]
     [TestCase("AdvancedCapacitorStockPart", true, TestName = "ATier2StockPartGoesIn")]
-    [TestCase("ClothingOuterHardsuitM86", true, TestName = "ATier3FactionSuitGoesIn")]
+    [TestCase("ClothingOuterHardsuitM86", false, TestName = "ATier3FactionSuitStaysOut")]
     [TestCase("WeaponPulseRifle", true, TestName = "ATier3FactionGunGoesIn")]
     [TestCase("WeaponEnergyShotgunOverseer", false, TestName = "ATaggedGunStaysOut")]
     [TestCase("WeaponRifleXlr556", true, TestName = "AResearchGunGoesIn")]

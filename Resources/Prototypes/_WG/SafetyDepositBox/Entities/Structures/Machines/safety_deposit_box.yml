@@ -112,7 +112,7 @@
       - FactionGear1
       - OtherFactionGear0
       - OtherFactionGear1
-    # Faction suits, vests and helmets up to tier 3; tier 1 ones that aren't contraband are listed by prototype above.
+    # Faction suits, vests and helmets up to tier 2; tier 1 ones that aren't contraband are listed by prototype above.
     - name: safety-deposit-allowed-faction-armour
       whitelist:
         components:
@@ -121,11 +121,9 @@
       - FactionGear0
       - FactionGear1
       - FactionGear2
-      - FactionGear3
       - OtherFactionGear0
       - OtherFactionGear1
       - OtherFactionGear2
-      - OtherFactionGear3
     - name: safety-deposit-allowed-power-cells
       whitelist:
         components:

@@ -38,7 +38,7 @@ carry no markers; check them on an upstream merge:
   no longer refuses storage, containers or solutions, so bags, boxes, guns, powered tools, food and drink go in.
   Currency, contraband and machine parts moved to the box's `restricted` list, which refuses them unless the allow
   list names them: thalers by stack type, tier 1 faction suits and webbing by prototype, and the rest by `allowances`
-  (faction weapons and armour up to tier 3 by contraband severity, tier 1 faction gear, power cells, tier 1 and 2
+  (faction weapons up to tier 3 and armour up to tier 2 by contraband severity, tier 1 faction gear, power cells, tier 1 and 2
   stock parts by exact prototype). An allowance naming severities takes only contraband of them; one naming none takes
   no contraband. An allowance with a `limit` lets in that many items, stacks counted, across the whole box. `refused`
   groups name launchers, bluespace storage, built-in, mech, magic and admin items, abstract bases included, and refuse
