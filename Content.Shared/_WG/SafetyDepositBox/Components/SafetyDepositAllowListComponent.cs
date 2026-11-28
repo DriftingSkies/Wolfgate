@@ -1,4 +1,6 @@
 using Content.Shared.Contraband;
+using Content.Shared.FixedPoint;
+using Content.Shared.Item;
 using Content.Shared.Stacks;
 using Content.Shared.Whitelist;
 using Robust.Shared.GameStates;
@@ -49,21 +51,38 @@ public sealed partial class SafetyDepositAllowListComponent : Component
     /// </summary>
     [DataField]
     public HashSet<string> ReagentGroups = new();
+
+    /// <summary>
+    /// Reagent groups items may hold beyond what they spawn with, up to this many units across the whole box.
+    /// </summary>
+    [DataField]
+    public Dictionary<string, FixedPoint2> ReagentLimits = new();
+
+    /// <summary>
+    /// Largest item the box takes. Its storage's own limit sits a size above, so bags that hold this size fit.
+    /// </summary>
+    [DataField]
+    public ProtoId<ItemSizePrototype>? MaxItemSize;
 }
 
 /// <summary>
-/// Restricted items that pass <see cref="Whitelist"/> and miss <see cref="Blacklist"/>: contraband of one of
-/// <see cref="Severities"/>, or with none listed, items that aren't contraband.
+/// Restricted items that pass <see cref="Whitelist"/>, are one of <see cref="Prototypes"/> and miss
+/// <see cref="Blacklist"/>: contraband of one of <see cref="Severities"/>, or with none listed, items that aren't
+/// contraband. At least one of the whitelist and the prototypes must be set.
 /// </summary>
 [DataDefinition]
 public sealed partial class SafetyDepositAllowance
 {
-    /// <summary>What the guidebook calls these items.</summary>
+    /// <summary>What the guidebook calls these items. Gets <c>$limit</c>.</summary>
     [DataField(required: true)]
     public LocId Name;
 
-    [DataField(required: true)]
-    public EntityWhitelist Whitelist = new();
+    [DataField]
+    public EntityWhitelist? Whitelist;
+
+    /// <summary>Exact prototypes let in, not their children.</summary>
+    [DataField]
+    public HashSet<EntProtoId> Prototypes = new();
 
     [DataField]
     public EntityWhitelist? Blacklist;
@@ -71,6 +90,10 @@ public sealed partial class SafetyDepositAllowance
     /// <summary>Contraband severities let in. Empty lets in only items that aren't contraband.</summary>
     [DataField]
     public HashSet<ProtoId<ContrabandSeverityPrototype>> Severities = new();
+
+    /// <summary>How many items, counting stacks, this lets in across the whole box. Null for no limit.</summary>
+    [DataField]
+    public int? Limit;
 }
 
 /// <summary>

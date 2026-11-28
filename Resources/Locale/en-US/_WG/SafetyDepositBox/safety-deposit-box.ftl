@@ -48,8 +48,8 @@ safety-deposit-console-error-not-owner = This box does not belong to you.
 safety-deposit-console-error-no-storage = Error: Box has no storage.
 safety-deposit-console-deposit-success = Safety deposit box contents saved. The box has been stored.
 safety-deposit-console-deposit-nested-refused = {$count ->
-    [one] One item tucked inside something can't be stored and was handed back.
-   *[other] {$count} items tucked inside things can't be stored and were handed back.
+    [one] One item can't be stored or would go over the box's limits, and was handed back.
+   *[other] {$count} items can't be stored or would go over the box's limits, and were handed back.
 }
 safety-deposit-console-error-box-not-found = Box not found.
 safety-deposit-console-error-not-lost = This box is not lost and cannot be reclaimed.
@@ -71,7 +71,6 @@ safety-deposit-refused-component-idcard = ID cards
 safety-deposit-refused-component-currency = Currency (faction scrip, LPCs, telecrystals)
 safety-deposit-refused-component-store = Anything with a store
 safety-deposit-refused-component-encryptionkey = Encryption keys
-safety-deposit-refused-component-headset = Headsets
 safety-deposit-refused-component-subdermalimplant = Implants
 safety-deposit-refused-component-implanter = Implanters
 safety-deposit-refused-component-safetydepositbox = Safety deposit boxes
@@ -85,7 +84,6 @@ safety-deposit-refused-component-contraband = Contraband (items that sell for FM
 safety-deposit-refused-component-thiefundeterminedbackpack = Thief kits
 safety-deposit-refused-component-accessoverrider = Access overriders
 safety-deposit-refused-component-pda = PDAs
-safety-deposit-refused-component-pill = Pills
 safety-deposit-refused-component-machineboard = Machine boards
 safety-deposit-refused-component-flatpack = Flatpacks
 safety-deposit-refused-component-mobstate = Anything alive (mice, hamsters and other pets)
@@ -94,7 +92,7 @@ safety-deposit-refused-component-plantanalyzer = Plant analyzers, which carry pl
 safety-deposit-refused-component-seed = Seeds, which carry plant genes
 safety-deposit-refused-tag-unstashable = Items marked unstashable (some weapons and loot)
 safety-deposit-refused-tag-safetydepositblacklist = Items marked unstashable (some weapons and loot)
-safety-deposit-refused-component-machinepart = Machine parts (capacitors, manipulators, matter bins)
+safety-deposit-refused-component-machinepart = Machine parts (capacitors, manipulators, matter bins), apart from the stock parts below
 safety-deposit-refused-component-computerboard = Computer boards
 safety-deposit-refused-component-baseelectronics = Electronics (door, APC, firelock and law boards)
 safety-deposit-refused-component-reactorpart = Reactor parts and fuel rods
@@ -108,11 +106,15 @@ safety-deposit-refused-component-organ = Organs and cybernetic implants
 safety-deposit-refused-component-emag = Emags and access breakers
 
 # Guidebook names of the allow list's refusal groups and allowances
-safety-deposit-refused-heavy-weapons = Machine guns, rocket and grenade launchers, and the Hristov
-safety-deposit-refused-top-tier-weapons = Top-tier weapons: tier 3 research guns, pulse and plasma guns, the best blades
+safety-deposit-refused-launchers = Rocket and grenade launchers
+safety-deposit-refused-bluespace-storage = Bags of holding and other bluespace storage
 safety-deposit-refused-built-in-weapons = Weapons built into cyborgs, augments, vehicles and modsuits
 safety-deposit-refused-mech-parts = Mech chassis, limbs and harnesses
 safety-deposit-refused-magic-and-admin = Magic, cult and admin items
-safety-deposit-allowed-faction-weapons = Faction guns, melee weapons, shields and ammunition up to tier 2
+safety-deposit-allowed-faction-weapons = Faction guns, melee weapons, shields and ammunition up to tier 3
+safety-deposit-allowed-faction-armour = Faction suits and armour up to tier 3
 safety-deposit-allowed-faction-gear = Tier 1 faction gear (magboots, gas masks, visors, holsters)
 safety-deposit-allowed-power-cells = Power cells
+safety-deposit-allowed-tier1-parts = Tier 1 stock parts
+safety-deposit-allowed-tier2-parts = Tier 2 stock parts, up to {$limit} per box
+safety-deposit-allowed-reagents-medicine = Medicine beyond what an item comes with, up to {$units}u per box

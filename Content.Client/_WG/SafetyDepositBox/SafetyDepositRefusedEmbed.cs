@@ -106,7 +106,14 @@ public sealed partial class SafetyDepositRefusedEmbed : BoxContainer, IDocumentT
 
         foreach (var allowance in allowList.Allowances)
         {
-            lines.Add(Loc.GetString(allowance.Name));
+            lines.Add(Loc.GetString(allowance.Name, ("limit", allowance.Limit ?? 0)));
+        }
+
+        var loc = IoCManager.Resolve<ILocalizationManager>();
+        foreach (var (group, units) in allowList.ReagentLimits)
+        {
+            var key = "safety-deposit-allowed-reagents-" + group.ToLowerInvariant();
+            lines.Add(loc.TryGetString(key, out var text, ("units", units)) ? text : $"{group} ({units}u)");
         }
 
         return lines;

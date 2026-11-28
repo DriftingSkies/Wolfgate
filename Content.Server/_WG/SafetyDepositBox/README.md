@@ -31,22 +31,26 @@ carry no markers; check them on an upstream merge:
   after charging. The charge goes through the session, which leaves the bank component and the ATM showing the old
   balance. The bank is spent before savings (the Savings module changed the order in `BankSystem.TryBankWithdraw`).
 - Box sizes are three times upstream's: small 4x3 up to Normal items, medium 6x4 and large 9x4 up to Huge, so armour
-  vests and hardsuits fit. A box that takes Huge items is itself Huge (`StorageSizeArbitrageTest`), which also keeps it
-  out of bags.
+  vests, hardsuits and backpacks fit. Storage refuses a bag that holds items as big as its own limit, so the medium and
+  large boxes' storage takes Ginormous and the allow list's `maxItemSize` keeps single items to Huge. A box's item size
+  matches its storage (`StorageSizeArbitrageTest`), so those two are Ginormous.
 - `SafetyDepositAllowListComponent` and `SafetyDepositAllowListSystem` are Wolfgate's own. The storage blacklist
   no longer refuses storage, containers or solutions, so bags, boxes, guns, powered tools, food and drink go in.
-  Currency and contraband moved to the box's `restricted` list, which refuses them unless the allow list names them:
-  thalers by stack type, tier 1 faction suits and webbing by prototype, and the rest by `allowances` (faction
-  weapons, shields and ammunition up to tier 2 by contraband severity, tier 1 faction gear, power cells). An
-  allowance naming severities takes only contraband of them; one naming none takes no contraband. `refused` groups
-  name high-tier, built-in, mech, magic and admin items, abstract bases included, and refuse everything inheriting from
-  them whatever else lets them in. An item's solutions may hold the `reagentGroups` (food and drink) freely and other
-  reagents only up to what its prototype spawns with. Living things, minds, plant analyzers, seeds, emags, body parts,
-  organs and machine parts in raw form (boards, electronics, stock parts, reactor parts, mech equipment, cyborg
-  modules, vehicle hardpoints) joined the blacklist or the restricted list.
-- `EjectNestedRefused` holds everything inside a stored item, however deep, to the blacklist and the allow list, and
-  hands back what fails. A hardsuit's helmet is exempt, as it belongs to the suit. Storage's own rule keeps out any
-  bag that takes items as big as the box does, so backpacks, duffels and bags of holding stay out.
+  Currency, contraband and machine parts moved to the box's `restricted` list, which refuses them unless the allow
+  list names them: thalers by stack type, tier 1 faction suits and webbing by prototype, and the rest by `allowances`
+  (faction weapons and armour up to tier 3 by contraband severity, tier 1 faction gear, power cells, tier 1 and 2
+  stock parts by exact prototype). An allowance naming severities takes only contraband of them; one naming none takes
+  no contraband. An allowance with a `limit` lets in that many items, stacks counted, across the whole box. `refused`
+  groups name launchers, bluespace storage, built-in, mech, magic and admin items, abstract bases included, and refuse
+  everything inheriting from them whatever else lets them in. An item's solutions may hold the `reagentGroups` (food
+  and drink) freely, the `reagentLimits` groups (medicine) past what it spawns with up to a total across the box, and
+  other reagents only up to what its prototype spawns with. Living things, minds, plant analyzers, seeds, emags, body
+  parts, organs and machine parts in raw form (boards, electronics, reactor parts, mech equipment, cyborg modules,
+  vehicle hardpoints) joined the blacklist or the restricted list.
+- `SafetyDepositAllowListSystem.FindRefused`, called by `EjectNestedRefused` on deposit, holds everything in the box,
+  however deep, to the blacklist, the allow list and the limits, and hands back what fails. Stored items count first,
+  so what goes over a limit comes out of the bags. A hardsuit's helmet is exempt, as it belongs to the suit. Inserting
+  counts the same way, against what the box already holds.
 - The guidebook lists the refused and allowed items from the box prototype (`SafetyDepositRefusedEmbed`,
   `List="Allowed"`). The implant string's key now matches its component, `SubdermalImplant`.
 
