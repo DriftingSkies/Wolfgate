@@ -383,7 +383,10 @@ public abstract partial class SharedStationAiSystem : EntitySystem
 
         ent.Comp.Remote = isRemote;
 
-        EntityCoordinates? coords = ent.Comp.RemoteEntity != null ? Transform(ent.Comp.RemoteEntity.Value).Coordinates : null;
+        // WOLFGATE(Cyborgs) START: a hologram deleted with its grid or drone sends the new eye to the core instead of throwing
+        // EntityCoordinates? coords = ent.Comp.RemoteEntity != null ? Transform(ent.Comp.RemoteEntity.Value).Coordinates : null;
+        EntityCoordinates? coords = ent.Comp.RemoteEntity is { } remote && !TerminatingOrDeleted(remote) ? Transform(remote).Coordinates : null;
+        // WOLFGATE END
 
         // Attach new eye
         ClearEye(ent);

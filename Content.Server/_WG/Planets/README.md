@@ -865,7 +865,7 @@ left dirty, and built again when someone comes near or a path is asked for acros
   - no fresh arc mid-air.
   - a long throw peaked above a level and landed on the one over it
 - [`Content.Shared/_Mono/ForceParent/ForceParentSystem.cs`](../../../Content.Shared/_Mono/ForceParent/ForceParentSystem.cs): the pin isn't networked, so a client applying a body's state must not re-parent it to nothing.
-- [`Content.Shared/CCVar/CCVars.Game.cs`](../../../Content.Shared/CCVar/CCVars.Game.cs): defaults to MonoStandard (was nfpirate), whose round start spawns the star system.
+- [`Content.Shared/CCVar/CCVars.Game.cs`](../../../Content.Shared/CCVar/CCVars.Game.cs): defaults to WGContestedSector (was nfpirate), whose round start spawns the star system.
 - [`Content.Shared/Maps/TileSystem.cs`](../../../Content.Shared/Maps/TileSystem.cs): lattice laid on a planet's ground gives the ground back, not a hole through the world.
 - [`Content.Shared/Movement/Systems/SharedJetpackSystem.cs`](../../../Content.Shared/Movement/Systems/SharedJetpackSystem.cs)
   - the condition continues on the next line.

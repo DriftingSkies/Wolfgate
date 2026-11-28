@@ -2,7 +2,7 @@
   id: MonoXeno
   name: mono-Xeno-title
   description: mono-Xeno-description
-  showInVote: true
+  showInVote: false # Broken; admins can still set it.
   minPlayers: 20
   rules:
   - NFAdventure

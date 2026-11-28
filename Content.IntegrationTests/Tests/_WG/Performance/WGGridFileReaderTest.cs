@@ -13,7 +13,7 @@ namespace Content.IntegrationTests.Tests._WG.Performance;
 [TestOf(typeof(WGGridFileReader))]
 public sealed class WGGridFileReaderTest
 {
-    private static readonly ResPath Hull = new("/SharedMaps/_WG/Shipyard/Shuttles/dredger.yml");
+    private static readonly ResPath Hull = new("/SharedMaps/_WG/Shipyard/Shuttles/Mieyo/dredger.yml");
 
     [Test]
     public async Task ParsedLoadMatchesTryLoadGrid()

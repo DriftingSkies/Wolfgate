@@ -9,6 +9,8 @@ wg-narcotics-buyer-sold-near = The buyer takes it and tells you not to come back
 wg-narcotics-buyer-sold-warm = The buyer pays short and hurries you out. People are starting to talk.
 wg-narcotics-buyer-sold-hot = The buyer pays short and won't meet your eye. People got a good look at you.
 wg-narcotics-buyer-sold-wanted = The buyer pays short and won't meet your eye. Someone has given customs your name.
+# A buyer that won't deal in narcotics at all; what holds them stays on the pallet.
+wg-narcotics-buyer-refuses = The buyer pushes the narcotics back. Not here.
 
 # Tips to security about a sale. They never name anyone.
 wg-narcotics-tip-goods = narcotics

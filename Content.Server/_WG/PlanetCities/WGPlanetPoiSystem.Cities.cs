@@ -5,6 +5,7 @@ using Content.Server._CE.ZLevels.Core.Components;
 using Content.Server._WG.Caverns;
 using Content.Server._WG.PlanetCities;
 using Content.Server._WG.Planets;
+using Content.Server.Station.Components;
 using Content.Server.Station.Systems;
 using Content.Shared._CE.ZLevels.Core.Components;
 using Content.Shared._WG.CCVar;
@@ -627,6 +628,10 @@ public sealed partial class WGPlanetPoiSystem
         {
             _meta.SetEntityName(uid, name);
         }
+
+        // Without its jobs the station drops off the join list.
+        if (!city.Joinable)
+            RemComp<StationJobsComponent>(station);
 
         created.Add(station);
         EnsureComp<WGPlanetCitiesComponent>(ground).Stations.Add(station);

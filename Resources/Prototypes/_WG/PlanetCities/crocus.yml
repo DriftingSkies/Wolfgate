@@ -1,9 +1,11 @@
-# Monolith's Crocus (Jianghui Industrial) on Asclepiu: a random spot each round, joinable through its own station.
+# Monolith's Crocus (Jianghui Industrial) on Asclepiu: a random spot each round, explored but not joined.
 - type: wgFixedCity
   id: WGCityCrocus
   surface: WGSurfaceAsclepiu
   gameMap: CrocusJianghuiIndustrial
   station: Jianghui
+  # Its jobs are the ground war's (dockworker and both infantries); nobody spawns into the city.
+  joinable: false
   name: wg-city-crocus
   # The map's boundary rock and walls are indestructible on Crocus; here the whole city can be broken into.
   replace:

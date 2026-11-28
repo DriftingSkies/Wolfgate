@@ -100,6 +100,17 @@
     borderColor: "#757575"
   - type: Icon
     state: pda-interncadet
+  # WOLFGATE(Bench) START: judges carry the Bench app from the PDA itself, so a reprinted PDA keeps it
+  - type: CartridgeLoader
+    preinstalled:
+    - CrewManifestCartridge
+    - NotekeeperCartridge
+    - NewsReaderCartridge
+    - BountyContractsCartridge
+    - AstroNavCartridge
+    - WantedListCartridge
+    - WGBenchCartridge
+  # WOLFGATE END
 
 - type: entity
   parent: ERTLeaderPDA
@@ -317,6 +328,7 @@
     - AstroNavCartridge
     - LedgerCartridge
     - MailMetricsCartridge
+    - WGBenchCartridge # WOLFGATE(Bench): the Overseer carries the Bench app from the PDA itself
 
 - type: entity
   parent: PassengerPDA

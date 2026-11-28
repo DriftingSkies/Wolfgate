@@ -9456,3 +9456,56 @@ Entries:
   id: 100604
   time: '2026-11-27T17:38:53.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/841
+- author: Happyowl93
+  changes:
+    - type: Tweak
+      message: >-
+        Contested Sector is now the only game mode in the round vote, and the
+        default. Standoff, Crocus, Hyperwar, All At Once, Biothreat and
+        Reclamation can only be started by admins.
+    - type: Remove
+      message: >-
+        You can no longer spawn at Jianghui Industrial. The city is still on
+        Asclepiu to explore.
+    - type: Fix
+      message: Viper Group borgs no longer know Asher.
+  id: 100605
+  time: '2026-11-27T20:50:17.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/869
+- author: Happyowl93
+  changes:
+    - type: Fix
+      message: >-
+        Reloading a revolver, such as the Wayward HCLM, no longer crashes your
+        game.
+    - type: Tweak
+      message: >-
+        The Underground Black Market no longer buys narcotics; they stay on the
+        pallet.
+    - type: Fix
+      message: >-
+        Judges and the Overseer always have the Bench app on their PDA,
+        including a reprinted one.
+  id: 100606
+  time: '2026-11-27T20:50:34.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/868
+- author: Balls2zawall
+  changes:
+    - type: Add
+      message: Added the MMC-GGS Tetsu-kuzu, a new drydock ship for the MMC.
+    - type: Fix
+      message: >-
+        Fixed the Dredgers author credits and lowered the price based on
+        re-appraisal.
+  id: 100607
+  time: '2026-11-27T23:12:11.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/870
+- author: Layla-Veridian
+  changes:
+    - type: Fix
+      message: >-
+        Local chat no longer stops working for everyone after an AI's drone is
+        destroyed.
+  id: 100608
+  time: '2026-11-28T10:58:58.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/875

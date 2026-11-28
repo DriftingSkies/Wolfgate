@@ -549,6 +549,9 @@ Standalone edits outside `_WG` that serve no module: files with an untagged `WOL
 - [`Resources/Prototypes/_Mono/Entities/Structures/Shuttles/thrusters_nfsd.yml`](../../Resources/Prototypes/_Mono/Entities/Structures/Shuttles/thrusters_nfsd.yml): PDV pack, 0.33x of the 150 default; cant be upgraded with parts
 - [`Resources/Prototypes/_Mono/Entities/Structures/Shuttles/thrusters_rogue.yml`](../../Resources/Prototypes/_Mono/Entities/Structures/Shuttles/thrusters_rogue.yml): PDV pack, 0.33x of the 150 default; cant be upgraded with parts
 - [`Resources/Prototypes/_Mono/Entities/Structures/Specific/Atmospherics/storagesensors.yml`](../../Resources/Prototypes/_Mono/Entities/Structures/Specific/Atmospherics/storagesensors.yml): a gas missing from this list crashed the air alarm UI
+- [`Resources/Prototypes/_Mono/game_presets.yml`](../../Resources/Prototypes/_Mono/game_presets.yml)
+  - Contested Sector is the voted mode; admins can still set it.
+  - broken on Wolfgate; admins can still set it.
 - [`Resources/Prototypes/_Mono/Guidebook/rules.yml`](../../Resources/Prototypes/_Mono/Guidebook/rules.yml)
   - rule 0 is listed in the ruleset, nest it so Symphony doesn't show it as its own ruleset
   - erotic roleplay rule removed, PR #27

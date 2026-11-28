@@ -31,7 +31,7 @@ public sealed class CrashBreakupFallTest
 
     // gridSplitting false is the development config preset a DebugOpt playtest server loads.
     [TestCase("WGSurfaceCarcinoma", "/SharedMaps/_WG/OldVessels/vaquita.yml", false)]
-    [TestCase("WGSurfaceAsclepiu", "/SharedMaps/_WG/Shipyard/Shuttles/dredger.yml", false)]
+    [TestCase("WGSurfaceAsclepiu", "/SharedMaps/_WG/Shipyard/Shuttles/Mieyo/dredger.yml", false)]
     [TestCase("WGSurfaceCarcinoma", "/SharedMaps/_WG/OldVessels/vaquita.yml", true)]
     public async Task LiftLostHullBreaksIntoLatticedSections(string surface, string path, bool gridSplitting)
     {

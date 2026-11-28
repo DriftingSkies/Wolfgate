@@ -48,13 +48,20 @@ public abstract partial class SharedAiRemoteControlSystem : EntitySystem
 
         stationAiHeldComp.CurrentConnectedEntity = null;
 
+        // WOLFGATE(Cyborgs) START: free the eye before the mind returns, so a failed transfer can't strand the core on a dead hologram
+        _stationAiSystem.SwitchRemoteEntityMode(stationAiCore, true);
+        // WOLFGATE END
         _mind.TransferTo(remoteComp.LinkedMind.Value, remoteComp.AiHolder);
 
-        _stationAiSystem.SwitchRemoteEntityMode(stationAiCore, true);
+        // _stationAiSystem.SwitchRemoteEntityMode(stationAiCore, true); // WOLFGATE(Cyborgs): the mode switch now runs before the mind transfer
         remoteComp.AiHolder = null;
         remoteComp.LinkedMind = null;
 
-        _xformSystem.SetCoordinates(stationAiCore.Comp.RemoteEntity.Value, Transform(entity).Coordinates);
+        // WOLFGATE(Cyborgs) START: a drone being deleted has no place left to drop the eye
+        // _xformSystem.SetCoordinates(stationAiCore.Comp.RemoteEntity.Value, Transform(entity).Coordinates);
+        if (stationAiCore.Comp.RemoteEntity is { } eye && !TerminatingOrDeleted(entity) && !TerminatingOrDeleted(eye))
+            _xformSystem.SetCoordinates(eye, Transform(entity).Coordinates);
+        // WOLFGATE END
     }
 }
 

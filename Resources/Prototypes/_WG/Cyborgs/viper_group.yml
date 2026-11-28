@@ -59,11 +59,9 @@
     speaks:
     - TauCetiBasic
     - RobotTalk
-    - Freespeak
     understands:
     - TauCetiBasic
     - RobotTalk
-    - Freespeak
   - type: CollectiveMind
     channels:
     - Binary

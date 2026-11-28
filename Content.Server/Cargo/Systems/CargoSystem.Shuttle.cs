@@ -479,6 +479,10 @@ public sealed partial class CargoSystem
                     continue;
                 // End Frontier
 
+                // WOLFGATE(WolfChem): a grid that refuses narcotics leaves them on the pallet
+                if (WgRefusesNarcotics(consoleUid, gridUid, ent))
+                    continue;
+
                 if (_blacklistQuery.HasComponent(ent))
                     continue;
 

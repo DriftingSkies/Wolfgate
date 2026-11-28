@@ -107,7 +107,7 @@ public partial class SharedGunSystem
     // NOTE: closely resembles OnBallisticAmmoFillDoAfter except for bullet count check - redundancy could be removed.
     private void OnRevolverAmmoFillDoAfter(EntityUid uid, RevolverAmmoProviderComponent component, AmmoFillDoAfterEvent args)
     {
-        if (Deleted(args.Target))
+        if (args.Cancelled || Deleted(args.Target)) // WOLFGATE(Weapons): a cancelled transfer still moved rounds
             return;
 
         BallisticAmmoProviderComponent? ballisticTarget;
@@ -445,6 +445,14 @@ public partial class SharedGunSystem
                 component.Chambers[i] = null;
                 anyEmpty = true;
             }
+            // WOLFGATE(Weapons) START: a slot can hold a round that is gone or not yet received; clear it without touching it
+            else if (Deleted(slot.Value))
+            {
+                component.AmmoSlots[i] = null;
+                component.Chambers[i] = null;
+                anyEmpty = true;
+            }
+            // WOLFGATE END
             else
             {
                 component.AmmoSlots[i] = null;
@@ -595,7 +603,7 @@ public partial class SharedGunSystem
                 {
                     // Get current cartridge, or spawn a new one if it doesn't exist.
                     EntityUid? ent = component.AmmoSlots[index]!;
-                    if (ent == null)
+                    if (ent == null || Deleted(ent.Value)) // WOLFGATE(Weapons): a round that is gone or not yet received threw on reload, so spawn a fresh one
                     {
                         ent = Spawn(component.FillPrototype, args.Coordinates);
 

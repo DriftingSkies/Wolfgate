@@ -10,7 +10,8 @@ layers this module adds when the world has no cavern. Each level is loaded as a 
 site code, so Monolith's map files are used as they are; it loads whole, since a level's buildings don't touch and a grid
 free to split would lose all but one of them. The street's holes over stairs on the level below stay open and pinned, as
 stairwells, so the biome doesn't grow over them. The game map's station is created over the city's grids
-(the whole ground included), so it is joinable with the game map's jobs and spawn points. The prototype lists
+(the whole ground included), so it is joinable with the game map's jobs and spawn points; `joinable: false` (Crocus)
+drops the station's jobs, so the city stays off the join list. The prototype lists
 prototypes to swap on load (Crocus's indestructible rock and walls become ordinary ones, its observer spawns go)
 and road entrances cut from the city's streets to the edge of its footprint, where the world's roads join. A
 fixed city is placed before the world's other sites; one that finds no room is left out with a warning. Bare rock on

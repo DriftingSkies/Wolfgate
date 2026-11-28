@@ -71,7 +71,11 @@ public sealed partial class StationAiSystem : SharedStationAiSystem
             if (stationAiCore.Comp?.RemoteEntity == null || stationAiCore.Comp.Remote)
                 continue;
 
-            var xform = Transform(stationAiCore.Comp.RemoteEntity.Value);
+            // WOLFGATE(Cyborgs) START: a core whose hologram or eye was deleted no longer breaks every IC message
+            // var xform = Transform(stationAiCore.Comp.RemoteEntity.Value);
+            if (!TryComp(stationAiCore.Comp.RemoteEntity.Value, out TransformComponent? xform))
+                continue;
+            // WOLFGATE END
 
             var range = (xform.MapID != sourceXform.MapID)
                 ? -1

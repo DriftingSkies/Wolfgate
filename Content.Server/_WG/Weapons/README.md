@@ -5,7 +5,8 @@ beam, so shots appear the moment they're fired; the server links its copy to the
 shooter. When the server fires fewer rounds than a request predicted (a burst it carried on itself, a late request it
 had already caught up), it names the unfired copies in `WGPredictedShotsRefusedEvent` and the shooter's client drops
 them, so no phantom round flies on. Also material bullet impact and punch sounds ported from Skyrat-tg, a Mosin loadout for the Contractor, and the Strix
-.357 revolver with extra Vagrant gun loadouts.
+.357 revolver with extra Vagrant gun loadouts. A revolver's reload and empty treat a chamber whose round is gone, or
+hasn't reached the client yet, as empty, where it used to throw and could take the client down mid-reload.
 
 Hand-held lasers are the sustain choice against ballistics' burst: the retro laser and the NF laser pistol, the laser
 rifle, the energy gun and the Svalinn fire at 3 a second (the laser cannon at 2, the makeshift at 2.5), and all but the
@@ -114,6 +115,7 @@ keeps the bolas (`CatcherAmmoTest`).
 - [`Content.IntegrationTests/Tests/_WG/Weapons/HitscanPointBlankTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/HitscanPointBlankTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Weapons/NpcHitscanTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/NpcHitscanTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Weapons/ProjectileSweepTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/ProjectileSweepTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Weapons/RevolverStaleRoundTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/RevolverStaleRoundTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Weapons/SecondaryKeyGunTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/SecondaryKeyGunTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Weapons/ShieldSidearmTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/ShieldSidearmTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Weapons/SingleAmmoProviderTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Weapons/SingleAmmoProviderTest.cs)
@@ -291,6 +293,10 @@ keeps the bolas (`CatcherAmmoTest`).
 - [`Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs`](../../../Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.cs)
   - one path for both sides that links predicted projectiles
   - a shot at a target on the shooter's own spot has no direction to trace
+- [`Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.Revolver.cs`](../../../Content.Shared/Weapons/Ranged/Systems/SharedGunSystem.Revolver.cs)
+  - a cancelled transfer still moved rounds
+  - a slot can hold a round that is gone or not yet received; clear it without touching it
+  - a round that is gone or not yet received threw on reload, so spawn a fresh one
 - [`Content.Shared/Wieldable/SharedWieldableSystem.cs`](../../../Content.Shared/Wieldable/SharedWieldableSystem.cs)
   - a gun loaded from a save skipped map init and had no wield bonus
   - attachable pistols have no wield bonus, which is not an error

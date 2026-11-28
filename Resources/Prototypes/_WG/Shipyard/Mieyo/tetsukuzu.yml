@@ -1,0 +1,37 @@
+# Author Info
+# Punishedbrungus (Discord), balls2zawall(Github)
+
+- type: vessel
+  id: WGTetsukuzu
+  parent: BaseVessel
+  name: 'MMC-GGS Tetsu-kuzu'
+  description: 'A jointly designed mobile drydock ship developed between General Gravitonics Shipyards and the Mieyo Manufacturing Concern, the Tetsu-kuzu comes with 3 mobile drydocks, a 2 core AME engine, 2 Marauder plasma cannons, 3 L85 14mm CIWS autocannons, a 5km FTL drive, and what most would consider a studio apartment. Guaranteed to scrap most hulks in three minutes or less, you can bet money on it.'
+  price: 244400 # appraised at 203695, roughly 20% markup
+  category: Medium # 496 tiles
+  group: Mieyo
+  access: Mieyo
+  shuttlePath: /SharedMaps/_WG/Shipyard/Shuttles/Mieyo/tetsukuzu.yml
+  guidebookPage: null
+  class:
+  - Salvage
+  engine:
+  - AME
+
+- type: gameMap
+  id: WGTetsukuzu
+  mapName: 'MMC-GGS Tetsu-kuzu'
+  mapPath: /SharedMaps/_WG/Shipyard/Shuttles/Mieyo/tetsukuzu.yml
+  isGrid: true
+  minPlayers: 0
+  stations:
+    WGTetsukuzu:
+      stationProto: StandardFrontierVessel
+      components:
+      - type: StationNameSetup
+        mapNameTemplate: 'Tetsu-kuzu MMC{1}'
+        nameGenerator:
+          !type:NanotrasenNameGenerator
+          prefixCreator: '14'
+      - type: StationJobs
+        availableJobs:
+          MMCEmployee: [ 0, 0 ]

@@ -52,7 +52,7 @@ public sealed partial class CCVars
     ///     Controls the default game preset.
     /// </summary>
     public static readonly CVarDef<string>
-        GameLobbyDefaultPreset = CVarDef.Create("game.defaultpreset", "MonoStandard", CVar.ARCHIVE); // Frontier: secret<nfpirate; WOLFGATE(Planets): defaults to MonoStandard (was nfpirate), whose round start spawns the star system.
+        GameLobbyDefaultPreset = CVarDef.Create("game.defaultpreset", "WGContestedSector", CVar.ARCHIVE); // Frontier: secret<nfpirate; WOLFGATE(Planets): defaults to WGContestedSector (was nfpirate), whose round start spawns the star system.
 
     /// <summary>
     ///     Controls if the game can force a different preset if the current preset's criteria are not met.

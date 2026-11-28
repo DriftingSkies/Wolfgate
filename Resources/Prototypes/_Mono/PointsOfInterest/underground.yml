@@ -14,6 +14,7 @@
   - type: WGOrdnanceStation
     terminal: WGOrdnanceTerminalUnderground
   # WOLFGATE END
+  - type: WGRefusesNarcotics # WOLFGATE(WolfChem): the black market's pallets won't buy narcotics
   # WOLFGATE(ReaverCampaign): the station flies the neutral WGUnderground company, so the Reavers leave it and its cell alone
   - type: Company
     companyName: WGUnderground

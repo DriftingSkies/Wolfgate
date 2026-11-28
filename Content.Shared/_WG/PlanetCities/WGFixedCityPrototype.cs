@@ -29,6 +29,10 @@ public sealed partial class WGFixedCityPrototype : IPrototype
     [DataField(required: true)]
     public string Station = string.Empty;
 
+    /// <summary>Whether players can join at the city's station; if not, the station keeps its grids but offers no jobs.</summary>
+    [DataField]
+    public bool Joinable = true;
+
     /// <summary>
     /// Where the levels' tiles lie, in the ground level's own coordinates: held as soon as the world starts loading, so
     /// other claims keep out while the city loads. Anything outside it is left out.

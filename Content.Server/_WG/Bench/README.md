@@ -7,7 +7,7 @@ needs its line there too. Judges spawn with `WGBookCommonWrit`,
 a book that opens that page. Items listed in the Writ's Schedule of Unlawful Material carry `Contraband` with the
 `WGUnlawful` severity, so examine marks them. `Docs/_WG/Bench/LAWBOOK.md` is the review copy.
 
-**Judges.** A judge or the Overseer (`SecurityGuard`, `StationRepresentative`: `WGBenchSystem.JudgeJobs`) spawns with the Bench app on their PDA. A
+**Judges.** A judge or the Overseer (`SecurityGuard`, `StationRepresentative`: `WGBenchSystem.JudgeJobs`) has the Bench app preinstalled on their PDA (`SecurityGuardPDA`, `SrPDA`, so a reprinted PDA keeps it), and `WGBenchSystem` installs it on any other PDA a judge spawns with. A
 `WGBenchTerminal` gives the same tools in place. Ticket tab: pick someone within `wg.bench.range` (3 tiles, plus 1.5 so someone stepping back stays listed and can be ticketed), tick laws
 and set each fine inside its range, add posted ordinances or custom charges, then Issue. Ledger tab: the round's
 tickets, and Pardon. Laws tab: the Writ, plus ordinances judges post for the round. Only judges can act; anyone else
@@ -59,6 +59,7 @@ stop ships that won't heave to.
 
 ### Integration tests
 
+- [`Content.IntegrationTests/Tests/_WG/Bench/BenchPdaTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Bench/BenchPdaTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Bench/WGBenchTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Bench/WGBenchTest.cs)
 
 ### Unit tests
@@ -87,6 +88,9 @@ stop ships that won't heave to.
 
 - [`Resources/Prototypes/_Mono/Guidebook/factions.yml`](../../../Resources/Prototypes/_Mono/Guidebook/factions.yml): the Common Writ
 - [`Resources/Prototypes/_Mono/Shipyard/CSec/lightning.yml`](../../../Resources/Prototypes/_Mono/Shipyard/CSec/lightning.yml): Bench refit swaps a TOVEK for a SHRIKE ion disruptor
+- [`Resources/Prototypes/_NF/Entities/Objects/Devices/pda.yml`](../../../Resources/Prototypes/_NF/Entities/Objects/Devices/pda.yml)
+  - judges carry the Bench app from the PDA itself, so a reprinted PDA keeps it
+  - the Overseer carries the Bench app from the PDA itself
 - [`Resources/Prototypes/_NF/Roles/Jobs/Frontier/security_guard.yml`](../../../Resources/Prototypes/_NF/Roles/Jobs/Frontier/security_guard.yml): judges carry the Common Writ
 - [`Resources/SharedMaps/_Mono/Shuttles/CSec/lightning.yml`](../../../Resources/SharedMaps/_Mono/Shuttles/CSec/lightning.yml): Bench refit swapped one TOVEK hardpoint for a SHRIKE ion disruptor.
 

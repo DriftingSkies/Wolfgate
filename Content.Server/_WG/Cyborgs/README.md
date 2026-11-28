@@ -129,6 +129,7 @@ borg-bound AI, the overwatch view and the chassis company.
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/BorgShipPurchaseTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/BorgShipPurchaseTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/BorgStackRefillTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/BorgStackRefillTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/FactionBorgCardTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/FactionBorgCardTest.cs)
+- [`Content.IntegrationTests/Tests/_WG/Cyborgs/WGAiChatRecipientsTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/WGAiChatRecipientsTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/WGAiCoreTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/WGAiCoreTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/WGBorgRescueTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/WGBorgRescueTest.cs)
 - [`Content.IntegrationTests/Tests/_WG/Cyborgs/WGViperAssaultModuleTest.cs`](../../../Content.IntegrationTests/Tests/_WG/Cyborgs/WGViperAssaultModuleTest.cs)
@@ -167,7 +168,13 @@ borg-bound AI, the overwatch view and the chassis company.
 - [`Content.Server/Silicons/Borgs/BorgSystem.cs`](../../Silicons/Borgs/BorgSystem.cs)
   - the charge changes every tick with the headlight on
   - an empty cell raises this on every failed draw
-- [`Content.Shared/_CorvaxNext/Silicons/Borgs/SharedAiRemoteControlSystem.cs`](../../../Content.Shared/_CorvaxNext/Silicons/Borgs/SharedAiRemoteControlSystem.cs): a destroyed core leaves the AI in the borg instead of throwing on the deleted brain
+- [`Content.Server/Silicons/StationAi/StationAiSystem.cs`](../../Silicons/StationAi/StationAiSystem.cs): a core whose hologram or eye was deleted no longer breaks every IC message
+- [`Content.Shared/_CorvaxNext/Silicons/Borgs/SharedAiRemoteControlSystem.cs`](../../../Content.Shared/_CorvaxNext/Silicons/Borgs/SharedAiRemoteControlSystem.cs)
+  - a destroyed core leaves the AI in the borg instead of throwing on the deleted brain
+  - free the eye before the mind returns, so a failed transfer can't strand the core on a dead hologram
+  - the mode switch now runs before the mind transfer
+  - a drone being deleted has no place left to drop the eye
+- [`Content.Shared/Silicons/StationAi/SharedStationAiSystem.cs`](../../../Content.Shared/Silicons/StationAi/SharedStationAiSystem.cs): a hologram deleted with its grid or drone sends the new eye to the core instead of throwing
 - [`Resources/Maps/_Mono/POI/camelot.yml`](../../../Resources/Maps/_Mono/POI/camelot.yml): Mapped Viper Group cyborg spawns beside the other Viper spawns.
 - [`Resources/Maps/_Mono/Test/dev_map.yml`](../../../Resources/Maps/_Mono/Test/dev_map.yml): Added a VG cyborg spawn point to the MonoDev test map.
 - [`Resources/Prototypes/_DV/Voice/speech_emotes.yml`](../../../Resources/Prototypes/_DV/Voice/speech_emotes.yml)

@@ -74,7 +74,7 @@ public sealed partial class WGCrewTest
         await Server.WaitAssertion(() =>
         {
             var loader = Server.System<MapLoaderSystem>();
-            Assert.That(loader.TryLoadGrid(MapData.MapId, new ResPath("/SharedMaps/_WG/Shipyard/Shuttles/dredger.yml"), out var loadedShip,
+            Assert.That(loader.TryLoadGrid(MapData.MapId, new ResPath("/SharedMaps/_WG/Shipyard/Shuttles/Mieyo/dredger.yml"), out var loadedShip,
                 offset: new Vector2(2000, 2200)), Is.True);
             Assert.That(loader.TryLoadGrid(MapData.MapId, new ResPath("/Maps/_Mono/POI/derelictdrillsite.yml"), out var loadedSite,
                 offset: new Vector2(2000, 2000)), Is.True);
